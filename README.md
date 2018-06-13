@@ -2,6 +2,8 @@
 
 Qt5 based LinuxCNC interface
 
+![](docs/screenshots/demo.png)
+
 ## Dependencies
   * Python 2.7
   * Qt 5
