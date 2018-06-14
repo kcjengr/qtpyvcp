@@ -10,11 +10,11 @@ Qt5 based LinuxCNC interface
   * PyQt 5
 
 ### For use only
-`sudo apt-get install python-pyqt5`
+`sudo apt-get install python-pyqt5`  
 
 ### For development/screen editing
-`sudo apt-get install qttools5-dev-tools`
-`sudo apt-get install qttools5.dev`
+`sudo apt-get install qttools5-dev-tools`  
+`sudo apt-get install qttools5.dev`  
 
 
 In order for the QtDesigner plugins to load, you must have the correct version
