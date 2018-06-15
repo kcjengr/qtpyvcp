@@ -30,6 +30,9 @@ from PyQt5.QtWidgets import QApplication, QWidget, QStyleFactory, QErrorMessage
 from QtPyVCP.core import logger
 log = logger.get('QtPyVCP')
 
+from QtPyVCP.widgets.dialogs.error_dialog import ErrorDialog
+
+
 # File paths
 PYDIR = os.path.abspath(os.path.dirname(__file__))
 uifile = os.path.join(PYDIR, 'QtPyVCP/demo.ui')
@@ -39,17 +42,14 @@ form, base = uic.loadUiType(uifile)
 def excepthook(exc_type, exc_value, exc_traceback):
     msg = "".join(traceback.format_exception(exc_type, exc_value, exc_traceback))
     log.exception(msg)
-    errorbox = QErrorMessage()
-    errorbox.showMessage(msg)
-    errorbox.setWindowTitle(exc_type.__name__)
-    errorbox.exec_()
+    error_dialog = ErrorDialog(msg)
+    error_dialog.exec_()
 
 sys.excepthook = excepthook
 
-
 class PyQtUI(base, form):
     def __init__(self):
-        super(base,self).__init__()
+        super(base, self).__init__()
         self.setupUi(self)
         self.show()
 
