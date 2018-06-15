@@ -42,7 +42,6 @@ class Config(object):
     def get_file_path(section, option, default):
         global ini
         temp = ini.find(section, option) or default
-        print 'File path: ', temp
         if temp and temp.startswith('~'):
             path = os.path.expanduser(temp)
         elif not os.path.isabs(temp):
@@ -122,7 +121,6 @@ class Config(object):
 
     def get_file_path(section, option, default):
         temp = ini.find(section, option) or default
-        print 'File path: ', temp
         if temp and temp.startswith('~'):
             path = os.path.expanduser(temp)
         elif not os.path.isabs(temp):
