@@ -40,21 +40,24 @@ class DROWidget(QLabel):
         self.factor = 1
 
         self.stat = Status()
-        # self.stat.connect('axis_positions', self.setPosition)
         self.stat.addObserver('actual_position', self.setPosition, index=self._dro_number)
+        self.setNum(0.1234)
 
 
     @pyqtSlot(tuple)
     def setPosition(self, pos):
+        try:
+            # pos = positions[self._dro_type][self._dro_number] * self.factor
 
-        # pos = positions[self._dro_type][self._dro_number] * self.factor
-
-        # try:
-        #     pos_str = self._imperial_template % pos
-        #     self.setText(pos_str)
-        # except:
-        #     self.setText("<font color='red'>Format ERROR!</font>")
-        self.setText(str(pos))
+            # try:
+            #     pos_str = self._imperial_template % pos
+            #     self.setText(pos_str)
+            # except:
+            #     self.setText("<font color='red'>Format ERROR!</font>")
+            self.setText(str(pos))
+        except:
+            pass
+        return True
 
     def _update_units(self, status, units):
         if units == self.machine_units:
