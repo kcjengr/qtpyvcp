@@ -31,9 +31,15 @@ except:
     FORMAT = "[%(levelname)s]: %(message)s (%(filename)s:%(lineno)d)"
     log.basicConfig(level=log.DEBUG, format=FORMAT)
 
+
+#==============================================================================
+# Status Monitor
+#==============================================================================
+
 class StatusItem(object):
     """docstring for StatusItem"""
     def __init__(self, name, index=None, key=None, log_change=False):
+        super(StatusItem, self).__init__()
         """StatusItem monitor class
 
         Args:
@@ -42,7 +48,6 @@ class StatusItem(object):
             key (None, optional):   the key of the dict item to monitor, used with `joint`, `axis` and `tool_table` attributes.
             log_change (bool, optional): whether to log value changes of the attribute's value.
         """
-        super(StatusItem, self).__init__()
         self.name = name
         self.index = index
         self.key = key
@@ -91,7 +96,7 @@ class StatusItem(object):
             index = '[{}]'.format(self.index)
         if self.key is not None:
             key = '[{}]'.format(self.key)
-        log.debug("Value Changed: stat.{}{}{} => {}".format(self.name, index, key, self.value))
+        log.debug("Status value changed: {}{}{} => {}".format(self.name, index, key, self.value))
 
     def forceUpdate(self, observer=None):
         self.value = None
@@ -113,7 +118,7 @@ class StatusPoller(QObject):
     def __init__(self):
         super(StatusPoller, self).__init__()
 
-        self.StatusItems = {}
+        self.status_items = {}
 
         # Start the timer
         self._cycle_time = 75
@@ -127,12 +132,12 @@ class StatusPoller(QObject):
         except Exception as e:
             log.exception(e)
             return
-        for StatusItem in self.StatusItems.values():
+        for status_item in self.status_items.values():
             try:
-                StatusItem.update(self.stat)
+                status_item.update(self.stat)
             except Exception as e:
                 log.exception(e)
-                del self.StatusItems[StatusItem]
+                del self.status_items[status_item]
         # print time.time() - s
 
     def getValue(self, value_name, index=None, key=None):
@@ -159,25 +164,25 @@ class StatusPoller(QObject):
             return None
 
     def addObserver(self, attribute, callback, index=None, key=None, log_change=False):
-        si = self.StatusItems.get(hash((attribute, index, key)))
+        si = self.status_items.get(hash((attribute, index, key)))
         if si is None:
-            log.debug("Adding new StatusItem for '{}'".format(attribute))
+            log.debug("Adding new StatusItem 'stat.{}'".format(attribute))
             si = StatusItem(attribute, index=index, key=key, log_change=log_change)
-            self.StatusItems[hash(si)] = si
-        log.debug("Adding new observer to '{}': {}".format(attribute, callback))
+            self.status_items[hash(si)] = si
+        log.debug("Adding new observer for 'stat.{}': {}".format(attribute, callback))
         si.addObserver(callback)
         si.forceUpdate(callback)
 
     def removeObserver(self, attribute, callback='', index=None, key=None):
-        si = self.StatusItems.get(hash((attribute, index, key)))
+        si = self.status_items.get(hash((attribute, index, key)))
         if si:
-            if callback is not '' and callback in si.observers:
-                log.debug("Removing '{}' observer: {}".format(attribute, callback))
-                si.removeObserver(callback)
+            if callback is not '':
+                if callback in si.observers:
+                    log.debug("Removing '{}' observer: {}".format(attribute, callback))
+                    si.removeObserver(callback)
             else:
-                del self.StatusItems[si]
+                del self.status_items[si]
                 log.debug("Removing '{}' StatusItem: {}".format(attribute, hash(si)))
-
 
 class Status(QObject):
     """Ensures only one instance of StatusPoller exists per python interpretor.
@@ -189,19 +194,81 @@ class Status(QObject):
         return cls._instance
 
 
-UpdateHALPollPeriodInMilliSeconds = 50
+#==============================================================================
+# HAL Status Monitor
+#==============================================================================
 
-class HALStatus(QObject):
+class HALStatusItem(object):
+    """docstring for StatusItem"""
+    def __init__(self, pin_name, log_change=False):
+        super(HALStatusItem, self).__init__()
+        """StatusItem monitor class
+
+        Args:
+            name (str):                     the name of the HAL pin to monitor
+            log_change (bool, optional):    whether to log value changes
+        """
+        self.pin_name = pin_name
+        self.log_change = log_change
+
+        pin_data = subprocess.check_output(['halcmd', '-s', 'show', 'pin', self.pin_name]).split()
+        hal_type_map = {'float': float, 's32': int, 'u32': int, 'bit': bool}
+        self.type = hal_type_map.get(pin_data[1].strip())
+
+        self.observers = []
+        self.value = self.type(pin_data[3])
+
+    def __hash__(self):
+        return hash(self.pin_name)
+
+    def __eq__(self, other):
+        return type(self) == type(other) and hash(self.pin_name) == hash(other.pin_name)
+
+    def __ne__(self, other):
+        # Needed to avoid having both x==y and x!=y True at the same time!
+        return not(self == other)
+
+    def update(self, value):
+        self.value = self.type(self.value)
+        if self.log_change:
+            self.logValue()
+        for observer in self.observers:
+            if observer is None:
+                continue
+            try:
+                observer(self.value)
+            except Exception as e:
+                log.exception(e)
+                self.observers.remove(observer)
+
+    def logValue(self):
+        log.debug("HAL value changed: {} => {}".format(self.pin_name, self.value))
+
+    def forceUpdate(self, callback=None):
+        data = subprocess.check_output(['halcmd', '-s', 'show', 'pin', self.pin_name]).split()
+        value = self.type(data[3])
+        if callback is not None:
+            callback(value)
+        else:
+            self.update(value)
+
+    def addObserver(self, callback):
+        # if callback not in self.observers:
+            self.observers.append(callback)
+
+    def removeObserver(self, callback):
+        self.observers.remove(callback)
+
+
+class HALStatusPoller(QObject):
     """docstring for StatusPoller"""
-
-
     def __init__(self):
-        super(HALStatus, self).__init__()
+        super(HALStatusPoller, self).__init__()
 
-        self.poll_start_delay = 0
-        self.poll_cycle_time = 100
+        self.cycle_time = 100
         self.linuxcnc_is_alive = False
 
+        self.status_items = {}
         self.pin_dict = {}
         self.sig_dict = {}
 
@@ -217,34 +284,30 @@ class HALStatus(QObject):
     def hal_poll_thread(self):
 
         while True:
-
-            print 'Polling HAL'
-
             s = time.time()
 
             # first, check if linuxcnc is running at all
             if not os.path.isfile( '/tmp/linuxcnc.lock' ):
-
                 self.hal_mutex.acquire()
                 try:
-                    if ( self.linuxcnc_is_alive ):
-                        print "LinuxCNC has stopped."
+                    if self.linuxcnc_is_alive:
+                        log.debug("LinuxCNC has stopped.")
                     self.linuxcnc_is_alive = False
                     self.pin_dict = {}
                     self.sig_dict = {}
                 finally:
                     self.hal_mutex.release()
-                time.sleep(self.poll_cycle_time/1000.0)
+                time.sleep(self.cycle_time/1000.0)
                 continue
             else:
                 if not self.linuxcnc_is_alive:
-                    print "LinuxCNC has started."
+                    log.debug("LinuxCNC has started.")
                 self.linuxcnc_is_alive = True
 
             self.p = subprocess.Popen( ['halcmd', '-s', 'show', 'pin'] , stderr=subprocess.PIPE, stdout=subprocess.PIPE )
             rawtuple = self.p.communicate()
             if len(rawtuple[0]) <= 0:
-                time.sleep(self.poll_cycle_time/1000.0)
+                time.sleep(self.cycle_time/1000.0)
                 continue
             raw = rawtuple[0].split('\n')
 
@@ -268,37 +331,57 @@ class HALStatus(QObject):
                 self.hal_mutex.release()
 
             changed_items = set(pin_dict.items()) - set(self.pin_dict.items())
-            for item in changed_items:
-                print 'HAL pin Changed: {} => {}'.format(item[0], item[1])
+            # for item in changed_items:
+            #     print 'HAL pin Changed: {} => {}'.format(item[0], item[1])
 
             self.pin_dict = pin_dict
             self.sig_dict = sig_dict
 
-            print time.time() - s
+            for changed_item in changed_items:
+                if changed_item[0] in self.status_items:
+                    self.status_items[changed_item[0]].update(changed_item[1])
 
-
-            # print json.dumps(changed_items, indent=4, sort_keys=True)
+            # print time.time() - s
+            # print json.dumps(pin_dict, indent=4, sort_keys=True)
 
             # before starting the next check, sleep a little so we don't use all the CPU
-            time.sleep(self.poll_cycle_time/1000.0)
-        print "HAL Monitor exiting... " #,myinstance, instance_number
+            time.sleep(self.cycle_time/1000.0)
+
+    def addObserver(self, pin_name, callback, log_change=False):
+        si = self.status_items.get(pin_name)
+        if si is None:
+            log.debug("Adding new HALStatusItem '{}'".format(pin_name))
+            si = HALStatusItem(pin_name, log_change=log_change)
+            self.status_items[pin_name] = si
+        log.debug("Adding new observer for HAL '{}': {}".format(pin_name, callback))
+        si.addObserver(callback)
+        si.forceUpdate(callback)
+
+    def removeObserver(self, pin_name, callback=''):
+        si = self.status_items.get(pin_name)
+        if si:
+            if callback is not '':
+                if callback in si.observers:
+                    log.debug("Removing '{}' observer: {}".format(pin_name, callback))
+                    si.removeObserver(callback)
+            else:
+                del self.status_items[pin_name]
+                log.debug("Removing '{}' HALStatusItem: {}".format(pin_name, si))
+
+class HALStatus(QObject):
+    """Ensures only one instance of StatusPoller exists per python interpretor.
+    """
+    _instance = None
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = HALStatusPoller()
+        return cls._instance
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#==============================================================================
 # For standalone testing
+#==============================================================================
+
 if __name__ == '__main__':
     import sys
     from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QVBoxLayout
@@ -312,6 +395,7 @@ if __name__ == '__main__':
     s.addObserver('position', (lambda v: dro.setNum(v)), index=0, log_change=True)
 
     h = HALStatus()
+    h.addObserver('joint.0.pos-cmd', (lambda v: dro.setNum(v)), log_change=True)
 
     dro.show()
     sys.exit(app.exec_())
