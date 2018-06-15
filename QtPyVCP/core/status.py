@@ -25,7 +25,7 @@ from PyQt5.QtCore import QObject, QTimer
 try:
     from QtPyVCP.core import logger
     log = logger.get(__name__)
-    log.setLevel('ERROR')
+    log.setLevel('WARNING')
 except:
     import logging as log
     FORMAT = "[%(levelname)s]: %(message)s (%(filename)s:%(lineno)d)"
@@ -129,8 +129,9 @@ class StatusPoller(QObject):
         # s = time.time()
         try:
             self.stat.poll()
-        except Exception as e:
-            log.exception(e)
+        except:
+            log.warning("LinuxCNC does not appear to be running, status polling failed.")
+            self.timer.stop()
             return
         for status_item in self.status_items.values():
             try:
