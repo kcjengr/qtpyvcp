@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
+    <width>319</width>
     <height>161</height>
    </rect>
   </property>
@@ -462,16 +462,6 @@
        <string>LED Demo</string>
       </property>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="LEDWidget" name="ledWidget_2">
-         <property name="toolTip">
-          <string>The current time</string>
-         </property>
-         <property name="whatsThis">
-          <string>The analog clock widget displays the current time.</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="0">
         <widget class="QPushButton" name="pushButton">
          <property name="text">
@@ -489,14 +479,11 @@
          </property>
         </widget>
        </item>
+       <item row="0" column="0">
+        <widget class="HalLedWidget" name="hal_led"/>
+       </item>
        <item row="0" column="1">
-        <widget class="LEDWidget" name="ledWidget">
-         <property name="toolTip">
-          <string>The current time</string>
-         </property>
-         <property name="whatsThis">
-          <string>The analog clock widget displays the current time.</string>
-         </property>
+        <widget class="HalLedWidget" name="hal_led_2">
          <property name="color">
           <color>
            <red>78</red>
@@ -504,11 +491,14 @@
            <blue>6</blue>
           </color>
          </property>
+         <property name="state">
+          <bool>true</bool>
+         </property>
          <property name="flashing">
           <bool>true</bool>
          </property>
          <property name="flashRate">
-          <number>400</number>
+          <number>440</number>
          </property>
         </widget>
        </item>
@@ -522,7 +512,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>320</width>
+     <width>319</width>
      <height>20</height>
     </rect>
    </property>
@@ -531,15 +521,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>DROWidget</class>
-   <extends>QLabel</extends>
-   <header>QtPyVCP.widgets.dro_widget</header>
+   <class>HalLedWidget</class>
+   <extends>QWidget</extends>
+   <header>QtPyVCP.widgets.hal_widgets.hal_led_widget</header>
   </customwidget>
   <customwidget>
-   <class>LEDWidget</class>
-   <extends>QWidget</extends>
-   <header>QtPyVCP.widgets.led_widget</header>
-   <container>1</container>
+   <class>DROWidget</class>
+   <extends>QLabel</extends>
+   <header>QtPyVCP.widgets.status_widgets.dro_widget</header>
   </customwidget>
  </customwidgets>
  <resources/>
@@ -547,32 +536,32 @@
   <connection>
    <sender>pushButton</sender>
    <signal>clicked()</signal>
-   <receiver>ledWidget_2</receiver>
+   <receiver>hal_led</receiver>
    <slot>toggleState()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>222</x>
-     <y>98</y>
+     <x>194</x>
+     <y>104</y>
     </hint>
     <hint type="destinationlabel">
-     <x>220</x>
-     <y>77</y>
+     <x>197</x>
+     <y>71</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>checkBox</sender>
    <signal>toggled(bool)</signal>
-   <receiver>ledWidget</receiver>
+   <receiver>hal_led_2</receiver>
    <slot>setFlashing(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>282</x>
-     <y>105</y>
+     <x>275</x>
+     <y>112</y>
     </hint>
     <hint type="destinationlabel">
-     <x>279</x>
-     <y>85</y>
+     <x>265</x>
+     <y>82</y>
     </hint>
    </hints>
   </connection>

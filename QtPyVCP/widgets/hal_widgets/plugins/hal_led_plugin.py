@@ -3,12 +3,12 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtDesigner import QPyDesignerCustomWidgetPlugin
 
-from QtPyVCP.widgets.led_widget import LEDWidget
+from QtPyVCP.widgets.hal_widgets.hal_led_widget import HalLedWidget
 
-class LedPlugin(QPyDesignerCustomWidgetPlugin):
+class HalLedPlugin(QPyDesignerCustomWidgetPlugin):
 
     def __init__(self, parent=None):
-        super(LedPlugin, self).__init__(parent)
+        super(HalLedPlugin, self).__init__(parent)
 
         self.initialized = False
 
@@ -22,22 +22,22 @@ class LedPlugin(QPyDesignerCustomWidgetPlugin):
         return self.initialized
 
     def createWidget(self, parent):
-        return LEDWidget(parent)
+        return HalLedWidget(parent)
 
     def name(self):
-        return "LEDWidget"
+        return "HalLedWidget"
 
     def group(self):
-        return "LinuxCNC - Status"
+        return "LinuxCNC - HAL"
 
     def icon(self):
         return QIcon()
 
     def toolTip(self):
-        return ""
+        return "LED widget used to indicate the state of bool HAL pins."
 
     def whatsThis(self):
-        return ""
+        return "LED widget used to indicate the state of bool HAL pins."
 
     def isContainer(self):
         return False
@@ -46,15 +46,18 @@ class LedPlugin(QPyDesignerCustomWidgetPlugin):
     # default values for its properties. Each custom widget created by this
     # plugin will be configured using this description.
     def domXml(self):
-        return '<widget class="LEDWidget" name="ledWidget">\n' \
-               ' <property name="toolTip">\n' \
-               '  <string>The current time</string>\n' \
-               ' </property>\n' \
-               ' <property name="whatsThis">\n' \
-               '  <string>The analog clock widget displays the current ' \
-               'time.</string>\n' \
-               ' </property>\n' \
-               '</widget>\n'
+        return '''<widget class="HalLedWidget" name="hal_led_2">
+         <property name="color">
+          <color>
+           <red>78</red>
+           <green>154</green>
+           <blue>6</blue>
+          </color>
+         </property>
+         <property name="state">
+          <bool>false</bool>
+         </property>
+        </widget>'''
 
     def includeFile(self):
-        return "QtPyVCP.widgets.led_widget"
+        return "QtPyVCP.widgets.hal_widgets.hal_led_widget"

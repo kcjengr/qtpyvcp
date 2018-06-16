@@ -3,7 +3,7 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtDesigner import QPyDesignerCustomWidgetPlugin
 
-from QtPyVCP.widgets.entry_widget import EntryWidget
+from QtPyVCP.widgets.action_widgets.entry_widget import EntryWidget
 
 class EntryPlugin(QPyDesignerCustomWidgetPlugin):
     def __init__(self, parent=None):
@@ -43,4 +43,4 @@ class EntryPlugin(QPyDesignerCustomWidgetPlugin):
         return '<widget class="EntryWidget" name="lcnc_mdiline" />\n'
 
     def includeFile(self):
-        return "QtPyVCP.widgets.entry_widget"
+        return "QtPyVCP.widgets.action_widgets.entry_widget"

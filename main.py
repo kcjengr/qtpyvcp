@@ -30,7 +30,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QStyleFactory, QErrorMessage
 from QtPyVCP.core import logger
 log = logger.get('QtPyVCP')
 
-from QtPyVCP.widgets.dialogs.error_dialog import ErrorDialog
+from QtPyVCP.core.dialogs.error_dialog import ErrorDialog
 
 
 # File paths
