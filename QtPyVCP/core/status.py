@@ -205,7 +205,7 @@ class HALPin(QObject):
         self.pin_name = pin_name
 
         pin_data = subprocess.check_output(['halcmd', '-s', 'show', 'pin', self.pin_name]).split()
-        hal_type_map = {'float': float, 's32': int, 'u32': int, 'bit': bool}
+        hal_type_map = {'float': float, 's32': int, 'u32': int, 'bit': self.toBool}
         self.type = hal_type_map.get(pin_data[1].strip())
 
         self.log_change = False
@@ -255,6 +255,11 @@ class HALPin(QObject):
 
     def getLogChange(self):
         return self.log_change
+
+    def toBool(self, value):
+        if value.lower() in ['true', '1']:
+            return True
+        return False
 
 class HALPoller(QObject):
     """docstring for StatusPoller"""
