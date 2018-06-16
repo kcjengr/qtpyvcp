@@ -9,7 +9,6 @@ from PyQt5.QtCore import Qt, QEvent, pyqtSlot, pyqtProperty, Q_ENUMS
 from QtPyVCP.core.status import Status
 from QtPyVCP.core import ini_info
 
-from QtPyVCP.core import ini_info
 
 class DROWidget(QLabel):
     coords = ini_info.Config.COORDINATES
@@ -39,8 +38,9 @@ class DROWidget(QLabel):
 
         self.factor = 1
 
-        self.stat = Status()
-        self.stat.addObserver('actual_position', self.setPosition, index=self._dro_number)
+        self.status = Status()
+        self.status.getStatAttr('actual_position', index=self._dro_number).valueChanged.connect(self.setPosition)
+
         self.setNum(0.1234)
 
 
@@ -76,8 +76,8 @@ class DROWidget(QLabel):
     @pyqtSlot(int)
     def setAxis(self, value):
         if value in range(0, 8):
-            self.stat.removeObserver('actual_position', self.setPosition, index=self._dro_number)
-            self.stat.addObserver('actual_position', self.setPosition, index=value)
+            self.status.getStatAttr('actual_position', index=self._dro_number).valueChanged.disconnect(self.setPosition)
+            self.status.getStatAttr('actual_position', index=value).valueChanged.connect(self.setPosition)
             self._dro_number = value
     def getAxis(self):
         return self._dro_number
