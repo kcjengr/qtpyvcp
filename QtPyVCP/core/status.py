@@ -195,20 +195,21 @@ class HALPin(QObject):
     valueChanged = pyqtSignal('PyQt_PyObject')
 
     """docstring for HALPin"""
-    def __init__(self, pin_name, pin_type, pin_value):
+    def __init__(self, pin_name, pin_type, pin_direction, pin_value):
         super(HALPin, self).__init__()
         """HALPin monitor class
 
         Args:
             name (str):                     the name of the HAL pin to monitor
         """
-        self.pin_name = pin_name
 
+        self.pin_name = pin_name
         hal_type_map = {'float': float, 's32': int, 'u32': int, 'bit': self.toBool}
         self.type = hal_type_map.get(pin_type)
+        self.settable = pin_direction in ['IN', 'I/O']
+        self.value = self.type(pin_value)
 
         self.log_change = False
-        self.value = self.type(pin_value)
 
     def __hash__(self):
         return hash(self.pin_name)
@@ -244,6 +245,14 @@ class HALPin(QObject):
     def getValue(self):
         data = subprocess.check_output(['halcmd', '-s', 'show', 'pin', self.pin_name]).split()
         return self.type(data[3])
+
+    def setValue(self, value):
+        if self.settable:
+            return subprocess.call(['halcmd', 'setp', self.pin_name, str(value)])
+        raise TypeError("setValue failed, HAL pin '{}' is read only".format(self.pin_name))
+
+    def getSettable(self):
+        return self.settable
 
     def forceUpdate(self):
         self.value = self.getValue()
@@ -355,9 +364,10 @@ class HALPoller(QObject):
                 raise ValueError("HAL pin '{}' does not exist".format(pin_name))
                 return
             pin_type = pin_data[1].strip()
+            pin_direction = pin_data[2].strip()
             pin_value = pin_data[3].strip()
             log.debug("Adding new HALStatusItem for pin '{}'".format(pin_name))
-            si = HALPin(pin_name, pin_type, pin_value)
+            si = HALPin(pin_name, pin_type, pin_direction, pin_value)
             self.status_items[pin_name] = si
         return si
 
