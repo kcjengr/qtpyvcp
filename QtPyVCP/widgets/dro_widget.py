@@ -39,7 +39,7 @@ class DROWidget(QLabel):
         self.factor = 1
 
         self.status = Status()
-        self.status.valueChanged('actual_position', index=self._dro_number).connect(self.setPosition)
+        self.status.getStatAttr('actual_position', index=self._dro_number).valueChanged.connect(self.setPosition)
 
         self.setNum(0.1234)
 
@@ -76,8 +76,8 @@ class DROWidget(QLabel):
     @pyqtSlot(int)
     def setAxis(self, value):
         if value in range(0, 8):
-            self.status.valueChanged('actual_position', index=self._dro_number).disconnect(self.setPosition)
-            self.status.valueChanged('actual_position', index=value).connect(self.setPosition)
+            self.status.getStatAttr('actual_position', index=self._dro_number).valueChanged.disconnect(self.setPosition)
+            self.status.getStatAttr('actual_position', index=value).valueChanged.connect(self.setPosition)
             self._dro_number = value
     def getAxis(self):
         return self._dro_number

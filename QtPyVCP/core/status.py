@@ -36,41 +36,42 @@ except:
 # Status Monitor
 #==============================================================================
 
-class StatusItem(QObject):
-    """docstring for StatusItem"""
+class StatusAttr(QObject):
+    """docstring for StatusAttr"""
 
     valueChanged = pyqtSignal('PyQt_PyObject')
 
-    def __init__(self, name, index=None, key=None):
-        super(StatusItem, self).__init__()
-        """StatusItem monitor class
+    def __init__(self, attr_name, index=None, key=None, stat=None):
+        super(StatusAttr, self).__init__()
+        """StatusAttr monitor class
 
         Args:
-            name (str):             the name of the `linuxcnc.status` attribute to monitor
+            attr_name (str):        the name of the `linuxcnc.status` attribute to monitor
             index (None, optional): the index of the array item to monitor, used with `joint`, `axis` and `tool_table` attributes.
             key (None, optional):   the key of the dict item to monitor, used with `joint`, `axis` and `tool_table` attributes.
         """
 
-        self.name = name
+        self.attr_name = attr_name
         self.index = index
         self.key = key
+        self.stat = stat
 
         self.value = None
         self.log_change = False
         self.formated_name = self.getFormatedName()
 
     def __hash__(self):
-        return hash((self.name, self.index, self.key))
+        return hash((self.attr_name, self.index, self.key))
 
     def __eq__(self, other):
-        return type(self) == type(other) and (self.name, self.index, self.key) == (other.name, other.index, other.key)
+        return type(self) == type(other) and (self.attr_name, self.index, self.key) == (other.attr_name, other.index, other.key)
 
     def __ne__(self, other):
         # Needed to avoid having both x==y and x!=y True at the same time!
         return not(self == other)
 
     def update(self, status):
-        val = getattr(status, self.name)
+        val = getattr(status, self.attr_name)
         if val == self.value:
             return
         if self.index is not None:
@@ -103,7 +104,21 @@ class StatusItem(QObject):
             # remove all slots from signal it not slot given
             self.valueChanged.disconnect()
 
-    def forceUpdate(self, observer=None):
+    def getValue(self):
+        try:
+            self.stat.poll() # get fresh data
+        except Exception as e:
+            log.exception(e)
+            return
+        val = getattr(self.stat, self.attr_name)
+        if self.index is not None:
+            val = val[self.index]
+            if self.key is not None:
+                val = val[self.key]
+        return val
+
+    def forceUpdate(self):
+        self.value = self.getValue()
         self.valueChanged.emit(self.value)
 
     def setLogChange(self, log_change):
@@ -118,7 +133,7 @@ class StatusItem(QObject):
             index = '[{}]'.format(self.index)
         if self.key is not None:
             key = '[{}]'.format(self.key)
-        return "stat.{}{}{}".format(self.name, index, key)
+        return "stat.{}{}{}".format(self.attr_name, index, key)
 
 
 class StatusPoller(QObject):
@@ -141,8 +156,8 @@ class StatusPoller(QObject):
         # s = time.time()
         try:
             self.stat.poll()
-        except:
-            log.warning("LinuxCNC does not appear to be running, status polling failed.")
+        except Exception as e:
+            log.warning("Status polling failed, is LinuxCNC running?", exc_info=e)
             self.timer.stop()
             return
         for status_item in self.status_items.values():
@@ -153,33 +168,10 @@ class StatusPoller(QObject):
                 del self.status_items[status_item]
         # print time.time() - s
 
-    def getValue(self, value_name, index=None, key=None):
-        """Retrieves the current value of the specified `linuxcnc.stat` attribute.
-
-        Args:
-            value_name (str):       the name of a `linuxcnc.stat` attribute
-            index (int, optional):  the joint/axis number for array items
-            key (str, optional):    the key of the value for dict items
-
-        Returns:
-            varies: the value of the specified `linuxcnc.stat` item
-        """
-        try:
-            self.stat.poll() # Poll, otherwise data could be up to `cycle_time` old
-            val = getattr(self.stat, self.name)
-            if self.index is not None:
-                val = val[self.index]
-                if self.key is not None:
-                    val = val[self.key]
-            return val
-        except Exception as e:
-            log.exception(e)
-            return None
-
-    def valueChanged(self, attribute, index=None, key=None):
+    def getStatAttr(self, attribute, index=None, key=None):
         si = self.status_items.get(hash((attribute, index, key)))
         if si is None:
-            si = StatusItem(attribute, index=index, key=key)
+            si = StatusAttr(attribute, index=index, key=key, stat=self.stat)
             log.debug("Adding new StatusItem for '{}'".format(si.formated_name))
             self.status_items[hash(si)] = si
         return si
@@ -198,14 +190,14 @@ class Status(QObject):
 # HAL Status Monitor
 #==============================================================================
 
-class HALStatusItem(QObject):
+class HALPin(QObject):
 
     valueChanged = pyqtSignal('PyQt_PyObject')
 
-    """docstring for StatusItem"""
+    """docstring for HALPin"""
     def __init__(self, pin_name):
-        super(HALStatusItem, self).__init__()
-        """StatusItem monitor class
+        super(HALPin, self).__init__()
+        """HALPin monitor class
 
         Args:
             name (str):                     the name of the HAL pin to monitor
@@ -250,9 +242,12 @@ class HALStatusItem(QObject):
             # remove all slots from signal it not slot given
             self.valueChanged.disconnect()
 
-    def forceUpdate(self):
+    def getValue(self):
         data = subprocess.check_output(['halcmd', '-s', 'show', 'pin', self.pin_name]).split()
-        self.value = self.type(data[3])
+        return self.type(data[3])
+
+    def forceUpdate(self):
+        self.value = self.getValue()
         self.valueChanged.emit(self.value)
 
     def setLogChange(self, log_change):
@@ -261,12 +256,12 @@ class HALStatusItem(QObject):
     def getLogChange(self):
         return self.log_change
 
-class HALStatusPoller(QObject):
+class HALPoller(QObject):
     """docstring for StatusPoller"""
     def __init__(self):
-        super(HALStatusPoller, self).__init__()
+        super(HALPoller, self).__init__()
 
-        self.cycle_time = 100
+        self.cycle_time = 50
         self.linuxcnc_is_alive = False
 
         self.status_items = {}
@@ -348,11 +343,11 @@ class HALStatusPoller(QObject):
             # before starting the next check, sleep a little so we don't use all the CPU
             time.sleep(self.cycle_time/1000.0)
 
-    def valueChanged(self, pin_name):
+    def getHALPin(self, pin_name):
         si = self.status_items.get(pin_name)
         if si is None:
             log.debug("Adding new HALStatusItem for pin '{}'".format(pin_name))
-            si = HALStatusItem(pin_name)
+            si = HALPin(pin_name)
             self.status_items[pin_name] = si
         return si
 
@@ -362,7 +357,7 @@ class HALStatus(QObject):
     _instance = None
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
-            cls._instance = HALStatusPoller()
+            cls._instance = HALPoller()
         return cls._instance
 
 
@@ -379,13 +374,13 @@ if __name__ == '__main__':
     dro.resize(250,50)
     dro.setMargin(30)
 
-    # stat = Status()
-    # stat.valueChanged('position', index=0).connect((lambda v: dro.setNum(v)))
-    # stat.valueChanged('position', index=0).setLogChange(True)
+    stat = Status()
+    stat.getStatAttr('position', index=0).valueChanged.connect((lambda v: dro.setNum(v)))
+    stat.getStatAttr('position', index=0).setLogChange(True)
 
-    hal_stat = HALStatus()
-    hal_stat.valueChanged('joint.0.pos-cmd').connect((lambda v: dro.setNum(v)))
-    hal_stat.valueChanged('joint.0.pos-cmd').setLogChange(True)
+    # hal_stat = HALStatus()
+    # hal_stat.getHALPin('joint.0.pos-cmd').connect((lambda v: dro.setNum(v)))
+    # hal_stat.getHALPin('joint.0.pos-cmd').setLogChange(True)
 
     dro.show()
 
