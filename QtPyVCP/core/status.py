@@ -235,7 +235,7 @@ class HALPin(QObject):
         return not(self == other)
 
     def update(self, value):
-        self.value = self.toBool(value) if self.type == bool else self.type(value)
+        self.value = self.convertType(value)
         if self.log_change:
             log.debug("HAL value changed: {} => {}".format(self.pin_name, self.value))
         self.valueChanged[self.type].emit(self.value)
@@ -257,7 +257,7 @@ class HALPin(QObject):
 
     def getValue(self):
         data = subprocess.check_output(['halcmd', '-s', 'show', 'pin', self.pin_name]).split()
-        return self.type(data[3])
+        return self.convertType(data[3])
 
     def setValue(self, value):
         if self.settable:
@@ -277,10 +277,11 @@ class HALPin(QObject):
     def getLogChange(self):
         return self.log_change
 
-    def toBool(self, value):
-        if value.lower() in ['true', '1']:
-            return True
-        return False
+    def convertType(self, value):
+        if self.type == bool:
+            return value.lower() in ['true', '1']
+        return self.type(value)
+
 
 class HALPoller(QObject):
     """docstring for StatusPoller"""
