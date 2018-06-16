@@ -203,7 +203,7 @@ class HALPin(QObject):
         valueChanged (QtSignal): signal emitted when the HAL pin value changes
     """
 
-    valueChanged = pyqtSignal('PyQt_PyObject')
+    valueChanged = pyqtSignal([bool], [float], [int])
 
     def __init__(self, pin_name, pin_type, pin_direction, pin_value):
         super(HALPin, self).__init__()
@@ -217,8 +217,8 @@ class HALPin(QObject):
         """
 
         self.pin_name = pin_name
-        hal_type_map = {'float': float, 's32': int, 'u32': int, 'bit': self.toBool}
-        self.type = hal_type_map.get(pin_type)
+        type_map = {'float': float, 's32': int, 'u32': int, 'bit': bool}
+        self.type = type_map.get(pin_type)
         self.settable = pin_direction in ['IN', 'I/O']
         self.value = self.type(pin_value)
 
@@ -235,10 +235,10 @@ class HALPin(QObject):
         return not(self == other)
 
     def update(self, value):
-        self.value = self.type(value)
+        self.value = self.toBool(value) if self.type == bool else self.type(value)
         if self.log_change:
             log.debug("HAL value changed: {} => {}".format(self.pin_name, self.value))
-        self.valueChanged.emit(self.value)
+        self.valueChanged[self.type].emit(self.value)
 
     def connect(self, slot, log_change=False):
         log.debug("Connecting '{}' valueChanged signal to {}".format(self.pin_name, slot))
@@ -269,7 +269,7 @@ class HALPin(QObject):
 
     def forceUpdate(self):
         self.value = self.getValue()
-        self.valueChanged.emit(self.value)
+        self.valueChanged[self.type].emit(self.value)
 
     def setLogChange(self, log_change):
         self.log_change = log_change
