@@ -395,26 +395,106 @@ class HALStatus(QObject):
 
 
 #==============================================================================
-# For standalone testing
+# Demo and code for standalone testing
 #==============================================================================
 
 if __name__ == '__main__':
     import sys
-    from PyQt5.QtWidgets import QWidget, QLabel, QApplication, QVBoxLayout
+    from PyQt5.QtCore import Qt
+    from PyQt5.QtWidgets import QWidget, QPushButton, QLabel, QLineEdit, QCheckBox, QTextEdit, QApplication, QMainWindow, QVBoxLayout, QGridLayout
 
     app = QApplication(sys.argv)
-    dro = QLabel()
-    dro.resize(250,50)
-    dro.setMargin(30)
 
+    win = QWidget()
+    win.resize(300, 100)
+    win.setWindowTitle("Status Demo")
+
+    #==========================================================================
+    # Status example usage
+    #==========================================================================
+
+    # Status label and DRO
+    stat_pos_label = QLabel("stat.position[0] =")
+    stat_pos_dro = QLabel("0.1234")
+
+    # Initialize the status object
     stat = Status()
-    stat.getStatAttr('position', index=0).valueChanged.connect((lambda v: dro.setNum(v)))
-    stat.getStatAttr('position', index=0).setLogChange(True)
 
-    # hal_stat = HALStatus()
-    # hal_stat.getHALPin('joint.0.pos-cmd').connect((lambda v: dro.setNum(v)))
-    # hal_stat.getHALPin('joint.0.pos-cmd').setLogChange(True)
+    # retrieve/initialize StatAttr objects
+    #   `stat.position` is a tuple with 9 values for each axis, setting
+    #   the index=0 specifies that we want the position value of the x-axis
+    stat_pos_attr = stat.getStatAttr('position', index=0)
 
-    dro.show()
+    # set the StatAttr object to log changes to its value, used for debuging
+    stat_pos_attr.setLogChange(True)
 
+    # connect the pos valueChanged signal to update the label
+    stat_pos_attr.valueChanged.connect((lambda v: stat_pos_dro.setNum(v)))
+
+    #==========================================================================
+    # HAL Status example usage
+    #==========================================================================
+
+    # HAL Label and DRO
+    hal_pos_label = QLabel("joint.0.pos-cmd =")
+    hal_pos_dro = QLabel("0.12345")
+
+    # Initialize the HALStatus object
+    hal_stat = HALStatus()
+
+    # retrieve/initialize HALPin objects
+    hal_pos_pin = hal_stat.getHALPin('joint.0.pos-cmd')
+    hal_pos_pin.setLogChange(True)
+    hal_pos_pin.valueChanged.connect((lambda v: hal_pos_dro.setNum(v)))
+
+    #==========================================================================
+    # HAL setting and reading values Status example usage
+    #==========================================================================
+
+    # retrieve/initialize HALPin objects
+    flood_on_pin = hal_stat.getHALPin('halui.flood.on')
+    flood_off_pin = hal_stat.getHALPin('halui.flood.off')
+    flood_is_on_pin = hal_stat.getHALPin('halui.flood.is-on')
+
+    # method to set flood ON/OFF
+    def setFloodOn(state):
+        flood_on_pin.setValue(state)
+        flood_off_pin.setValue(not state)
+
+    # check button for turning flood ON/OFF
+    flood_toggle = QCheckBox("Flood ON")
+    flood_toggle.setChecked(flood_is_on_pin.getValue())
+
+    # keep checkbox in sync with HALs value, e.g. if flood was turned on from a UI
+    flood_is_on_pin.valueChanged.connect((lambda v: flood_toggle.setChecked(v)))
+
+    # connect button toggled signal to our method
+    flood_toggle.toggled.connect(setFloodOn)
+
+    # set HALPin object to log changes to its value
+    flood_is_on_pin.setLogChange(True)
+
+    # initialize out flood state label with the current state
+    flood_state_label = QLabel(str(flood_is_on_pin.getValue()))
+
+    # connect the `halui.flood.is-on` state changes signal to our label
+    flood_is_on_pin.valueChanged.connect((lambda v: flood_state_label.setText(str(v))))
+
+
+    # setup the window
+    mainLayout = QGridLayout()
+    win.setLayout(mainLayout)
+
+    # status stuff
+    mainLayout.addWidget(stat_pos_label, 0, 0, Qt.AlignRight)
+    mainLayout.addWidget(stat_pos_dro, 0, 1)
+
+    # HAL stuff
+    mainLayout.addWidget(hal_pos_label, 1, 0, Qt.AlignRight)
+    mainLayout.addWidget(hal_pos_dro, 1, 1)
+
+    mainLayout.addWidget(flood_toggle, 2, 0, Qt.AlignRight)
+    mainLayout.addWidget(flood_state_label, 2, 1)
+
+    win.show()
     sys.exit(app.exec_())
