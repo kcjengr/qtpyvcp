@@ -372,10 +372,15 @@ class HALPoller(QObject):
     def getHALPin(self, pin_name):
         si = self.status_items.get(pin_name)
         if si is None:
-            pin_data = subprocess.check_output(['halcmd', '-s', 'show', 'pin', pin_name]).split()
-            if len(pin_data) == 0:
-                raise ValueError("HAL pin '{}' does not exist".format(pin_name))
+            raw = subprocess.check_output(['halcmd', '-s', 'show', 'pin', pin_name]).strip()
+            if len(raw.split('\n')) > 1: # more than one pin name matches
+                raise ValueError("HAL pin red<{}> does not exist".format(pin_name))
+            pin_data = raw.split()
+            if len(pin_data) == 0: # no pin names match
+                raise ValueError("HAL pin red<{}> does not exist".format(pin_name))
                 return
+            if pin_name != pin_data[4]: # name is not complete, but only one pin could match
+                raise ValueError("HAL pin red<{}> does not exist, did you mean green<{}>?".format(pin_name, pin_data[4]))
             pin_type = pin_data[1].strip()
             pin_direction = pin_data[2].strip()
             pin_value = pin_data[3].strip()
