@@ -191,16 +191,29 @@ class Status(QObject):
 #==============================================================================
 
 class HALPin(QObject):
+    """HALPin object, represents a single LinuxCNC HAL pin, enables reading.
+        writing and connecting slots to be called when the HAL pin value changes.
+
+    Attributes:
+        log_change (bool):      whether to log changes to selfs value
+        pin_name (str):         the name of the HAL pin self represents
+        settable (bool):        weather the HAL pin is writable
+        type (type):            the python type of the HAL pins value
+        value (varies):         the value of the HAL pin as of last check
+        valueChanged (QtSignal): signal emitted when the HAL pin value changes
+    """
 
     valueChanged = pyqtSignal('PyQt_PyObject')
 
-    """docstring for HALPin"""
     def __init__(self, pin_name, pin_type, pin_direction, pin_value):
         super(HALPin, self).__init__()
-        """HALPin monitor class
+        """Initializes a new HALPin object
 
         Args:
-            name (str):                     the name of the HAL pin to monitor
+            pin_name (str):      the HAL pin name
+            pin_type (str):      the HAL type for the pin, float, u32, s32 or bit
+            pin_direction (str): the pin direction, IN, OUT, or I/O
+            pin_value (str):     the initial value of the HAL pin
         """
 
         self.pin_name = pin_name
