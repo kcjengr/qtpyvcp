@@ -1,4 +1,4 @@
-#!/usr/bin/python2
+#!/usr/bin/python
 
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
@@ -99,7 +99,7 @@ class LEDWidget(QWidget):
         self.update()
 
     def getState(self):
-        return self._alignment
+        return self._state
 
     @pyqtSlot(bool)
     def setState(self, value):
