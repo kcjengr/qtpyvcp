@@ -72,5 +72,8 @@ export PYTHONPATH=$DIR:$PYTHONPATH
 export PYQTDESIGNERPATH=$DIR/QtPyVCP/widgets/plugins:$PLUGIN
 export QT_SELECT=qt5
 
+# QtDesigner sometimes reads old .pyc files, this ensures that it always recompiles
+export PYTHONDONTWRITEBYTECODE=1
+
 # launch the designer
 designer $UI_FILE
