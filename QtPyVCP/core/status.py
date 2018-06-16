@@ -195,7 +195,7 @@ class HALPin(QObject):
     valueChanged = pyqtSignal('PyQt_PyObject')
 
     """docstring for HALPin"""
-    def __init__(self, pin_name):
+    def __init__(self, pin_name, pin_type, pin_value):
         super(HALPin, self).__init__()
         """HALPin monitor class
 
@@ -204,12 +204,11 @@ class HALPin(QObject):
         """
         self.pin_name = pin_name
 
-        pin_data = subprocess.check_output(['halcmd', '-s', 'show', 'pin', self.pin_name]).split()
         hal_type_map = {'float': float, 's32': int, 'u32': int, 'bit': self.toBool}
-        self.type = hal_type_map.get(pin_data[1].strip())
+        self.type = hal_type_map.get(pin_type)
 
         self.log_change = False
-        self.value = self.type(pin_data[3])
+        self.value = self.type(pin_value)
 
     def __hash__(self):
         return hash(self.pin_name)
@@ -351,8 +350,14 @@ class HALPoller(QObject):
     def getHALPin(self, pin_name):
         si = self.status_items.get(pin_name)
         if si is None:
+            pin_data = subprocess.check_output(['halcmd', '-s', 'show', 'pin', pin_name]).split()
+            if len(pin_data) == 0:
+                raise ValueError("HAL pin '{}' does not exist".format(pin_name))
+                return
+            pin_type = pin_data[1].strip()
+            pin_value = pin_data[3].strip()
             log.debug("Adding new HALStatusItem for pin '{}'".format(pin_name))
-            si = HALPin(pin_name)
+            si = HALPin(pin_name, pin_type, pin_value)
             self.status_items[pin_name] = si
         return si
 
