@@ -4,6 +4,13 @@ import os
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtCore import Qt, QEvent
 
+from QtPyVCP.utilities import ini_info
+from QtPyVCP.utilities.status import Status
+from QtPyVCP.utilities.actions import Action
+
+STATUS = Status()
+ACTION = Action()
+
 class EntryWidget(QLineEdit):
     def __init__(self, parent=None):
         super(EntryWidget, self).__init__(parent)
@@ -11,8 +18,8 @@ class EntryWidget(QLineEdit):
         self.returnPressed.connect(self.submit)
 
     def submit(self):
-        text = str(self.text()).strip()
-        print text
+        cmd = str(self.text()).strip()
+        ACTION.issueMDI(cmd)
         self.setText('')
 
     def keyPressEvent(self, event):

@@ -23,8 +23,8 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-INI_FILE=$HOME/linuxcnc/configs/sim.axis/axis.ini
-UI_FILE=$DIR/QtPyVCP/demo.ui
+INI_FILE=$PWD/sim/xyz.ini
+UI_FILE=$DIR/sim/xyz.ui
 PLUGIN=
 
 usage()
@@ -69,7 +69,7 @@ done
 export INI_FILE_NAME=$INI_FILE
 export CONFIG_DIR=$(dirname -- "$INI_FILE")
 export PYTHONPATH=$DIR:$PYTHONPATH
-export PYQTDESIGNERPATH=$DIR/QtPyVCP/widgets/plugins:$PLUGIN
+export PYQTDESIGNERPATH=$DIR/QtPyVCP/widgets:$PLUGIN
 export QT_SELECT=qt5
 
 # QtDesigner sometimes reads old .pyc files, this ensures that it always recompiles

@@ -3,11 +3,11 @@
 from PyQt5.QtCore import pyqtSlot, pyqtProperty
 
 from QtPyVCP.widgets.base_widgets.led_widget import LEDWidget
-from QtPyVCP.core.status import HALStatus
+from QtPyVCP.utilities.obj_status import HALStatus
 
 # Setup logging
-from QtPyVCP.core import logger
-log = logger.get(__name__)
+from QtPyVCP.utilities import logger
+log = logger.getLogger(__name__)
 
 
 class HalLedWidget(LEDWidget):

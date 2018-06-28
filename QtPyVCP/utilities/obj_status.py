@@ -23,10 +23,11 @@ from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtSlot
 
 # Setup logging
 try:
-    from QtPyVCP.core import logger
-    log = logger.get(__name__)
-    log.setLevel('WARNING')
-except:
+    from QtPyVCP.utilities import logger
+    log = logger.getLogger(__name__)
+    log.setLevel(logger.WARNING)
+except Exception as e:
+    print e
     import logging as log
     FORMAT = "[%(levelname)s]: %(message)s (%(filename)s:%(lineno)d)"
     log.basicConfig(level=log.DEBUG, format=FORMAT)
@@ -36,14 +37,14 @@ except:
 # Status Monitor
 #==============================================================================
 
-class StatusAttr(QObject):
-    """docstring for StatusAttr"""
+class StatusItem(QObject):
+    """docstring for StatusItem"""
 
     valueChanged = pyqtSignal('PyQt_PyObject')
 
     def __init__(self, attr_name, index=None, key=None, stat=None):
-        super(StatusAttr, self).__init__()
-        """StatusAttr monitor class
+        super(StatusItem, self).__init__()
+        """StatusItem monitor class
 
         Args:
             attr_name (str):        the name of the `linuxcnc.status` attribute to monitor
@@ -70,8 +71,8 @@ class StatusAttr(QObject):
         # Needed to avoid having both x==y and x!=y True at the same time!
         return not(self == other)
 
-    def update(self, status):
-        val = getattr(status, self.attr_name)
+    def update(self):
+        val = getattr(self.stat, self.attr_name)
         if val == self.value:
             return
         if self.index is not None:
@@ -90,7 +91,7 @@ class StatusAttr(QObject):
 
 
     def connect(self, slot, log_change=False):
-        log.debug("Connecting '{}' valueChanged signal to {}".format(self.formated_name, slot))
+        log.debug("Connecting '{}' valueChanged signal to {}".format(self.formated_name, slot.__name__))
         self.valueChanged.connect(slot)
         self.log_change = log_change
 
@@ -162,16 +163,16 @@ class StatusPoller(QObject):
             return
         for status_item in self.status_items.values():
             try:
-                status_item.update(self.stat)
+                status_item.update()
             except Exception as e:
                 log.exception(e)
-                del self.status_items[status_item]
+                del self.status_items[hash(status_item)]
         # print time.time() - s
 
-    def getStatAttr(self, attribute, index=None, key=None):
-        si = self.status_items.get(hash((attribute, index, key)))
+    def getStatAttr(self, name, index=None, key=None, stat_class=StatusItem):
+        si = self.status_items.get(hash((name, index, key)))
         if si is None:
-            si = StatusAttr(attribute, index=index, key=key, stat=self.stat)
+            si = stat_class(name, index=index, key=key, stat=self.stat)
             log.debug("Adding new StatusItem for '{}'".format(si.formated_name))
             self.status_items[hash(si)] = si
         return si

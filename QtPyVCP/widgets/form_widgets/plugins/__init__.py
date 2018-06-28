@@ -1,0 +1,1 @@
+from QtPyVCP.widgets.form_widgets.plugins.main_window_plugin import MainWindowPlugin
