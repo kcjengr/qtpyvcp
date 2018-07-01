@@ -4,12 +4,10 @@ import os
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtCore import Qt, QEvent
 
-from QtPyVCP.utilities import ini_info
-from QtPyVCP.utilities.status import Status
-from QtPyVCP.utilities.actions import Action
-
+from QtPyVCP.core import Status, Action, Info
 STATUS = Status()
 ACTION = Action()
+INFO = Info()
 
 class EntryWidget(QLineEdit):
     def __init__(self, parent=None):

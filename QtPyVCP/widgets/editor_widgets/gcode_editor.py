@@ -38,24 +38,18 @@ except ImportError as e:
     LOG.critical("Can't import QsciScintilla - is package python-pyqt5.qsci installed?", exc_info=e)
     sys.exit(1)
 
-from QtPyVCP.utilities.status import Status
 from QtPyVCP.utilities import logger
-
-# Instantiate the libraries with global reference
-# INFO holds INI file details
-# STATUS gives us status messages from linuxcnc
-# LOG is for running code logging
-STATUS = Status()
-# INFO = Info()
 LOG = logger.getLogger(__name__)
 
-# Set the log level for this module
-# LOG.setLevel(logger.INFO) # One of DEBUG, INFO, WARNING, ERROR, CRITICAL
+from QtPyVCP.core import Status, Action, Info
+STATUS = Status()
+ACTION = Action()
+INFO = Info()
 
 
-##############################################################
+#==============================================================================
 # Simple custom lexer for Gcode
-##############################################################
+#==============================================================================
 class GcodeLexer(QsciLexerCustom):
     def __init__(self, parent=None):
         super(GcodeLexer, self).__init__(parent)
@@ -71,7 +65,7 @@ class GcodeLexer(QsciLexerCustom):
         font = QFont()
         font.setFamily('Courier')
         font.setFixedPitch(True)
-        font.setPointSize(12)
+        font.setPointSize(10)
         font.setBold(True)
         self.setFont(font, 2)
 
@@ -173,9 +167,9 @@ class GcodeLexer(QsciLexerCustom):
             index += 1
 
 
-##########################################################
+#==============================================================================
 # Base editor class
-##########################################################
+#==============================================================================
 class EditorBase(QsciScintilla):
     ARROW_MARKER_NUM = 8
 
@@ -184,19 +178,19 @@ class EditorBase(QsciScintilla):
         # linuxcnc defaults
         self.idle_line_reset = False
         # don't allow editing by default
-        self.setReadOnly(False)
+        self.setReadOnly(True)
         # Set the default font
         font = QFont()
         font.setFamily('Courier')
         font.setFixedPitch(True)
-        font.setPointSize(12)
+        font.setPointSize(10)
         self.setFont(font)
         self.setMarginsFont(font)
 
         # Margin 0 is used for line numbers
         fontmetrics = QFontMetrics(font)
         self.setMarginsFont(font)
-        self.setMarginWidth(0, fontmetrics.width("00000") + 6)
+        self.setMarginWidth(0, fontmetrics.width("0000") + 6)
         self.setMarginLineNumbers(0, True)
         self.setMarginsBackgroundColor(QColor("#cccccc"))
 
@@ -223,14 +217,6 @@ class EditorBase(QsciScintilla):
         self.lexer = GcodeLexer(self)
         self.lexer.setDefaultFont(font)
         self.setLexer(self.lexer)
-        # Set style for Python comments (style number 1) to a fixed-width
-        # courier.
-        #self.SendScintilla(QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
-
-        # Don't want to see the horizontal scrollbar at all
-        # Use raw message to Scintilla here (all messages are documented
-        # here: http://www.scintilla.org/ScintillaDoc.html)
-        #self.SendScintilla(QsciScintilla.SCI_SETHSCROLLBAR, 0)
 
         # default gray background
         self.set_background_color('#C0C0C0')
@@ -251,9 +237,9 @@ class EditorBase(QsciScintilla):
             self.markerAdd(nline, self.ARROW_MARKER_NUM)
 
 
-##########################################################
+#==============================================================================
 # Gcode widget
-##########################################################
+#==============================================================================
 class GcodeEditor(EditorBase):
     ARROW_MARKER_NUM = 8
 
@@ -264,27 +250,17 @@ class GcodeEditor(EditorBase):
         self.last_line = None
         #self.setEolVisibility(True)
 
-    def _hal_init(self):
-        self.cursorPositionChanged.connect(self.line_changed)
-        if self.auto_show_mdi:
-            STATUS.connect('mode-mdi', self.load_mdi)
-            STATUS.connect('reload-mdi-history', self.load_mdi)
-            STATUS.connect('machine-log-changed', self.load_manual)
-            STATUS.connect('mode-auto', self.reload_last)
-            STATUS.connect('mode-manual', self.load_manual)
-            STATUS.connect('move-text-lineup', self.select_lineup)
-            STATUS.connect('move-text-linedown', self.select_linedown)
-        STATUS.connect('file-loaded', self.load_program)
-        STATUS.connect('line-changed', self.highlight_line)
-        if self.idle_line_reset:
-            STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))
+        STATUS.file_loaded.connect(self.load_program)
+        # STATUS.connect('line-changed', self.highlight_line)
+        # if self.idle_line_reset:
+        #     STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))
 
-    def load_program(self, w, filename=None):
-        if filename is None:
-            filename = self._last_filename
+    def load_program(self, fname=None):
+        if fname is None:
+            fname = self._last_filename
         else:
-            self._last_filename = filename
-        self.load_text(filename)
+            self._last_filename = fname
+        self.load_text(fname)
         #self.zoomTo(6)
         self.setCursorPosition(0, 0)
 
@@ -309,12 +285,12 @@ class GcodeEditor(EditorBase):
             self.load_text(INFO.MACHINE_LOG_HISTORY_PATH)
             self.setCursorPosition(self.lines(), 0)
 
-    def load_text(self, filename):
+    def load_text(self, fname):
         try:
-            fp = os.path.expanduser(filename)
+            fp = os.path.expanduser(fname)
             self.setText(open(fp).read())
         except:
-            LOG.error('File path is not valid: {}'.format(filename))
+            LOG.error('File path is not valid: {}'.format(fname))
             self.setText('')
             return
 
@@ -368,9 +344,9 @@ class GcodeEditor(EditorBase):
         self.auto_show_mdi = True
     auto_show_mdi_status = pyqtProperty(bool, get_auto_show_mdi, set_auto_show_mdi, reset_auto_show_mdi)
 
-#############################################
+#==============================================================================
 # For testing
-#############################################
+#==============================================================================
 if __name__ == "__main__":
     from PyQt4.QtGui import QApplication
     app = QApplication(sys.argv)

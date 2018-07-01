@@ -24,16 +24,14 @@ from enum import Enum
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtCore import Qt, QEvent, pyqtSlot, pyqtProperty, Q_ENUMS
 
-from QtPyVCP.utilities import ini_info
-from QtPyVCP.utilities.status import Status
-from QtPyVCP.utilities.actions import Action
-
+from QtPyVCP.core import Status, Action, Info
 STATUS = Status()
 ACTION = Action()
+INFO = Info()
 
 class DROWidget(QLabel):
-    coords = ini_info.get_coordinates()
-    machine_metric = ini_info.get_is_machine_metric()
+    coords = INFO.getCoordinates()
+    machine_metric = INFO.getIsMachineMetric()
 
     # Set the conversions used for changing the DRO units
     # Only convert linear axes (XYZUVW), use factor of unity for ABC
@@ -56,17 +54,12 @@ class DROWidget(QLabel):
         self._dro_number = 0                # Axis or Joint number
         self._metric_template = '%10.3f'
         self._imperial_template = '%9.4f'
-
         self.factor = 1
-
-        self.status = Status()
-        self.status.axis_positions.connect(self.setPosition)
 
         self.setNum(0.1234)
 
-        self.status.updateAxisPositions()
-
-
+        STATUS.axis_positions.connect(self.setPosition)
+        STATUS.updateAxisPositions()
 
     @pyqtSlot(tuple)
     def setPosition(self, positions):
@@ -96,7 +89,7 @@ class DROWidget(QLabel):
     @pyqtSlot(int)
     def setAxis(self, value):
         self._dro_number = clamp(value, 0, 8)
-        self.status.updateAxisPositions()
+        STATUS.updateAxisPositions()
         return False
     def getAxis(self):
         return self._dro_number
@@ -105,7 +98,7 @@ class DROWidget(QLabel):
     @pyqtSlot(int)
     def setReferenceType(self, value):
         self._dro_type = clamp(value, 0, 2)
-        self.status.updateAxisPositions()
+        STATUS.updateAxisPositions()
     def getReferenceType(self):
         return self._dro_type
     reference_type = pyqtProperty(int, getReferenceType, setReferenceType)
@@ -113,7 +106,7 @@ class DROWidget(QLabel):
     @pyqtSlot(str)
     def setMetricTemplate(self, value):
         self._metric_template = value
-        self.status.updateAxisPositions()
+        STATUS.updateAxisPositions()
     def getMetricTemplate(self):
         return self._metric_template
     metric_template = pyqtProperty(str, getMetricTemplate, setMetricTemplate)
@@ -121,7 +114,7 @@ class DROWidget(QLabel):
     @pyqtSlot(str)
     def setImperialTemplate(self, value):
         self._imperial_template = value
-        self.status.updateAxisPositions()
+        STATUS.updateAxisPositions()
     def getImperialTemplate(self):
         return self._imperial_template
     imperial_template = pyqtProperty(str, getImperialTemplate, setImperialTemplate)

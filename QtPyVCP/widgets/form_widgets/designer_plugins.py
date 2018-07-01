@@ -1,16 +1,13 @@
 #!/usr/bin/env python
 
-from QtPyVCP.widgets.base_widgets.designer_plugin import DesignerPlugin
+from QtPyVCP.widgets.base_widgets.designer_plugin import _DesignerPlugin
+
 from QtPyVCP.widgets.form_widgets.main_window import VCPMainWindow
-
-class MainWindowPlugin(DesignerPlugin):
-
+class MainWindowPlugin(_DesignerPlugin):
     def pluginClass(self):
         return VCPMainWindow
-
     def group(self):
         return "Use ONLY as a Toplevel!!!"
-
     def domXml(self):
         return '''<widget class="VCPMainWindow" name="VCP Main Window">
                    <property name="geometry">

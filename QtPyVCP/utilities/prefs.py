@@ -35,36 +35,38 @@ import ast
 
 import ConfigParser
 
-from QtPyVCP.utilities import ini_info
+from QtPyVCP.utilities.info import Info
 
 # Set up logging
 from QtPyVCP.utilities import logger
 log = logger.getLogger(__name__)
 
+INFO = Info()
 
-class Preferences(ConfigParser.RawConfigParser):
+
+class _Preferences(ConfigParser.RawConfigParser):
 
     def __init__(self):
         ConfigParser.RawConfigParser.__init__(self)
 
         self.getters = {
-            bool: self.get_boolean,
-            float: self.get_float,
-            int: self.get_int,
-            list: self.get_list,
-            dict: self.get_dict,
-            str: self.get_str,
+            bool: self.getBool,
+            float: self.getFloat,
+            int: self.getInt,
+            list: self.getList,
+            dict: self.getDict,
+            str: self.getStr,
         }
 
         self.optionxform = str  # Needed to maintain options case
 
-        self.fn = ini_info.get_preference_file()
+        self.fn = INFO.getPreferenceFile()
         if not os.path.isfile(self.fn):
             log.info("No preference file exists, creating: {}".format(self.fn))
 
         self.read(self.fn)
 
-    def get_pref(self, section, option, default_val=None, opt_type=bool):
+    def getPref(self, section, option, default_val=None, opt_type=bool):
         try:
             getter = self.getters.get(opt_type)
             value = getter(section, option, default_val)
@@ -85,7 +87,7 @@ class Preferences(ConfigParser.RawConfigParser):
 
         return default_val
 
-    def set_pref(self, section, option, value):
+    def setPref(self, section, option, value):
         try:
             self.set(section, option, str(value))
         except ConfigParser.NoSectionError:
@@ -97,24 +99,24 @@ class Preferences(ConfigParser.RawConfigParser):
         with open(self.fn, "w") as fh:
             self.write(fh)
 
-    def get_str(self, section, option, default):
+    def getStr(self, section, option, default):
         return self.get(section, option)
 
-    def get_float(self, section, option, default):
+    def getFloat(self, section, option, default):
         value = self.get(section, option)
         try:
             return float(value)
         except (ValueError, SyntaxError):
             return default
 
-    def get_int(self, section, option, default):
+    def getInt(self, section, option, default):
         value = self.get(section, option)
         try:
             return int(value)
         except (ValueError, SyntaxError):
             return default
 
-    def get_boolean(self, section, option, default):
+    def getBool(self, section, option, default):
         value = self.get(section, option)
         if value.lower() in ['1', 'true', 'yes', 'on']:
             return True
@@ -124,7 +126,7 @@ class Preferences(ConfigParser.RawConfigParser):
             ' using default value of "{3}"'.format(value, section, option, default))
         return default
 
-    def get_list(self, section, option, default):
+    def getList(self, section, option, default):
         value = self.get(section, option)
         try:
             return ast.literal_eval(value)
@@ -133,7 +135,7 @@ class Preferences(ConfigParser.RawConfigParser):
                 ' using default value of "{3}"'.format(value, section, option, default))
             return default
 
-    def get_dict(self, section, option, default):
+    def getDict(self, section, option, default):
         value = self.get(section, option)
         try:
             return ast.literal_eval(value)
@@ -142,11 +144,9 @@ class Preferences(ConfigParser.RawConfigParser):
                 ' using default value of "{3}"'.format(value, section, option, default))
             return default
 
-
-prefs = Preferences()
-
-def set(section, option, value, opt_type=None):
-    prefs.set_pref(section, option, value)
-
-def get(section, option, default_val=None, opt_type=None):
-    return prefs.get_pref(section, option, default_val, opt_type)
+class Prefs(_Preferences):
+    _instance = None
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = _Preferences(*args, **kwargs)
+        return cls._instance

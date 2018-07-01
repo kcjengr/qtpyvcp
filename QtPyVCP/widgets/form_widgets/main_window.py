@@ -26,12 +26,17 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QMessageBox, QFileDialog
 
-from QtPyVCP.utilities import ini_info
-from QtPyVCP.utilities.status import Status
-from QtPyVCP.utilities.actions import Action
+from QtPyVCP.utilities import logger
+LOG = logger.getLogger(__name__)
 
+from QtPyVCP.core import Status, Action, Prefs, Info
 STATUS = Status()
 ACTION = Action()
+PREFS = Prefs()
+INFO = Info()
+
+from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
+
 
 class VCPMainWindow(QMainWindow):
 
@@ -39,8 +44,7 @@ class VCPMainWindow(QMainWindow):
         super(VCPMainWindow, self).__init__(parent=None)
 
         # QtDesigner settable vars
-        self.promot_at_exit = True
-        self.max_recent_files = 10
+        self.prompt_at_exit = True
 
         # Variables
         self.recent_file_actions = []
@@ -48,25 +52,22 @@ class VCPMainWindow(QMainWindow):
 
         self.log_file_path = ''
 
+        self.open_file_dialog = OpenFileDialog(self)
+
         self.initUi()
 
     def initUi(self):
         self.initRecentFileMenu()
 
         if hasattr(self, 'actionToggle_Power'):
-            print "has action toggle estop"
             action = getattr(self, 'actionToggle_Power')
             STATUS.estop.connect(lambda v:action.setEnabled(not bool(v)))
 
             # STATUS.forceUpdate()
 
-    def on_custom_value_changed(self, v):
-        print v
-
-
     def closeEvent(self, event):
         """Catch close event and show confirmation dialog if set to"""
-        if self.promot_at_exit:
+        if self.prompt_at_exit:
             quit_msg = "Are you sure you want to exit LinuxCNC?"
             reply = QMessageBox.question(self, 'Exit LinuxCNC?',
                              quit_msg, QMessageBox.Yes, QMessageBox.No)
@@ -111,17 +112,7 @@ class VCPMainWindow(QMainWindow):
 
     @pyqtSlot()
     def on_actionOpen_triggered(self):
-        nc_file_types = ini_info.get_qt_filefilter()
-        nc_file_dir = ini_info.get_program_prefix()
-        fname = QFileDialog.getOpenFileName(
-                    parent=self,
-                    caption=self.tr("Select a file"),
-                    filter=self.tr(nc_file_types),
-                    directory=nc_file_dir,
-                    options=QFileDialog.DontUseNativeDialog,
-                    )[0]
-        if fname:
-            self.openFile(fname)
+        self.open_file_dialog.show()
 
     @pyqtSlot()
     def on_actionExit_triggered(self):
@@ -162,28 +153,23 @@ class VCPMainWindow(QMainWindow):
 
     def initRecentFileMenu(self):
         if hasattr(self, 'menuRecentFiles'):
-            recent_file_menu = getattr(self, 'menuRecentFiles')
 
             # remove any actions that were added in QtDesigner
-            for action in recent_file_menu.actions():
-                recent_file_menu.removeAction(action)
+            for action in self.menuRecentFiles.actions():
+                self.menuRecentFiles.removeAction(action)
 
             # add new actions
-            for i in range(self.max_recent_files):
+            for i in range(STATUS.max_recent_files):
                 action = QAction(self, visible=False,
-                                 triggered=(lambda:self.openFile(self.sender().data())))
+                                 triggered=(lambda:ACTION.loadProgram(self.sender().data())))
                 self.recent_file_actions.append(action)
-                recent_file_menu.addAction(action)
+                self.menuRecentFiles.addAction(action)
 
-    def addToRecentFiles(self, fname):
-        if fname in self.recent_files:
-            self.recent_files.remove(fname)
-        self.recent_files.insert(0, fname)
+            self.updateRecentFilesMenu(STATUS.recent_files)
+            STATUS.recent_files_changed.connect(self.updateRecentFilesMenu)
 
-        if len(self.recent_files) > self.max_recent_files:
-            self.recent_files.pop()
-
-        for i, fname in enumerate(self.recent_files):
+    def updateRecentFilesMenu(self, recent_files):
+        for i, fname in enumerate(recent_files):
             text = "&{} {}".format(i + 1, os.path.split(fname)[1])
             action = self.recent_file_actions[i]
             action.setText(text)
@@ -194,10 +180,6 @@ class VCPMainWindow(QMainWindow):
 # helper functions
 #==============================================================================
 
-    def openFile(self, fname):
-        ACTION.loadProgram(fname)
-        self.addToRecentFiles(fname)
-
 
 #==============================================================================
 #  QtDesigner property setters/getters
@@ -205,17 +187,17 @@ class VCPMainWindow(QMainWindow):
 
     # Whether to show a confirmation prompt when closing the main window
     def getPromptBeforeExit(self):
-        return self.promot_at_exit
+        return self.prompt_at_exit
     def setPromptBeforeExit(self, value):
-        self.promot_at_exit = value
-    promot_on_exit = pyqtProperty(bool, getPromptBeforeExit, setPromptBeforeExit)
+        self.prompt_at_exit = value
+    promptAtExit = pyqtProperty(bool, getPromptBeforeExit, setPromptBeforeExit)
 
-    # Max number of resent files to display in menu
+    # Max number of recent files to display in menu
     def getMaxRecentFiles(self):
-        return self.max_recent_files
+        return STATUS.max_recent_files
     def setMaxRecentFiles(self, number):
-        self.max_recent_files = number
-    num_recent_files = pyqtProperty(int, getMaxRecentFiles, setMaxRecentFiles)
+        STATUS.max_recent_files = number
+    maxNumRecentFiles = pyqtProperty(int, getMaxRecentFiles, setMaxRecentFiles)
 
 
 if __name__ == '__main__':

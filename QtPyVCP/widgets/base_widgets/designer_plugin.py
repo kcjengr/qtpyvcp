@@ -3,10 +3,10 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtDesigner import QPyDesignerCustomWidgetPlugin
 
-class DesignerPlugin(QPyDesignerCustomWidgetPlugin):
+class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 
     def __init__(self, parent=None):
-        super(DesignerPlugin, self).__init__(parent=parent)
+        super(_DesignerPlugin, self).__init__(parent=parent)
         self.initialized = False
         # print(self.name(), self.includeFile(), self.objectName())
 

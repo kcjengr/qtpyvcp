@@ -1,1 +1,0 @@
-from QtPyVCP.widgets.editor_widgets.plugins.gcode_editor_plugin import GcodeEditorPlugin

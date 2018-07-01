@@ -32,8 +32,10 @@ from QtPyVCP.widgets.base_widgets.qbackplot import QBackPlot
 from QtPyVCP.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from QtPyVCP.utilities.status import Status
+from QtPyVCP.core import Status, Action, Info
 STATUS = Status()
+ACTION = Action()
+INFO = Info()
 
 
 class  GcodeBackplot(QBackPlot):

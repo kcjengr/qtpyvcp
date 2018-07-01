@@ -21,9 +21,14 @@
 from PyQt5.QtWidgets import QDialog, QLabel, QHBoxLayout, QWidget
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtBoundSignal, pyqtSlot, QTimer, QThread
 
-
+import os
 import time
 import linuxcnc
+
+from QtPyVCP.utilities.info import Info
+from QtPyVCP.utilities.prefs import Prefs
+INFO = Info()
+PREFS = Prefs()
 
 from QtPyVCP.utilities import logger
 log = logger.getLogger(__name__)
@@ -160,13 +165,19 @@ class _Status(QObject):
     backplot_gcode_error = pyqtSignal(str)
     reload_backplot = pyqtSignal()
 
+    recent_files_changed = pyqtSignal(tuple)
 
+    # Emitted on app shutdown
+    on_shutown = pyqtSignal()
 
     def __init__(self):
         super(_Status, self).__init__()
 
-        self.axis_list = [0, 1, 2]
         self._report_actual_position = False
+
+        self.max_recent_files = PREFS.getPref("STATUS", "MAX_RECENT_FILES", 10, int)
+        files = PREFS.getPref("STATUS", "RECENT_FILES", [], list)
+        self.recent_files = [file for file in files if os.path.exists(file)]
 
         # Try initial poll
         try:
@@ -275,7 +286,7 @@ class _Status(QObject):
         tool_offset = self.stat.tool_offset
 
         rel = [0] * 9
-        for axis in self.axis_list:
+        for axis in INFO.AXIS_NUMBER_LIST:
             rel[axis] = pos[axis] - g5x_offset[axis] - tool_offset[axis]
 
         if self.stat.rotation_xy != 0:
@@ -285,7 +296,7 @@ class _Status(QObject):
             rel[0] = xr
             rel[1] = yr
 
-        for axis in self.axis_list:
+        for axis in INFO.AXIS_NUMBER_LIST:
             rel[axis] -= g92_offset[axis]
 
         self.axis_positions.emit(tuple([pos, tuple(rel), tuple(dtg)]))
@@ -323,7 +334,10 @@ class _Status(QObject):
                 and self.stat.call_level == 0:
             self.file_loaded.emit(file)
 
-
+    def onShutdown(self):
+        self.on_shutown.emit()
+        PREFS.setPref("STATUS", "RECENT_FILES", self.recent_files)
+        PREFS.setPref("STATUS", "MAX_RECENT_FILES", self.max_recent_files)
 
 
 class _Joint(QObject):
@@ -406,4 +420,3 @@ class _Error(QObject):
         else:
             # notifications.show_error("UNKNOWN ERROR!", msg)
             log.error(msg)
-
