@@ -120,13 +120,23 @@
         <property name="title">
          <string>GroupBox</string>
         </property>
+        <widget class="EntryWidget" name="entry">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>40</y>
+           <width>291</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="placeholderText">
+          <string>MDI</string>
+         </property>
+        </widget>
        </widget>
       </item>
       <item>
        <widget class="QFrame" name="frame">
-        <property name="styleSheet">
-         <string notr="true"> QTabWidget: { font: bold; color: green; }</string>
-        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -342,82 +352,40 @@
             </widget>
            </item>
            <item>
-            <widget class="DROWidget" name="dro_2">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>110</width>
-               <height>16777215</height>
-              </size>
-             </property>
+            <widget class="DROWidget" name="dro">
              <property name="font">
               <font>
                <family>Roboto</family>
                <pointsize>16</pointsize>
               </font>
              </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="reference_type" stdset="0">
-              <number>1</number>
+              <enum>DROWidget::Relative</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="DROWidget" name="dro_9">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>110</width>
-               <height>16777215</height>
-              </size>
-             </property>
+            <widget class="DROWidget" name="dro_5">
              <property name="font">
               <font>
                <family>Roboto</family>
                <pointsize>16</pointsize>
               </font>
              </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="reference_type" stdset="0">
-              <number>2</number>
+              <enum>DROWidget::DistanceToGo</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
@@ -506,88 +474,46 @@
             </widget>
            </item>
            <item>
-            <widget class="DROWidget" name="dro_3">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>110</width>
-               <height>16777215</height>
-              </size>
-             </property>
+            <widget class="DROWidget" name="dro_2">
              <property name="font">
               <font>
                <family>Roboto</family>
                <pointsize>16</pointsize>
               </font>
              </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="axis_number" stdset="0">
-              <number>1</number>
-             </property>
              <property name="reference_type" stdset="0">
-              <number>1</number>
+              <enum>DROWidget::Relative</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::Y</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="DROWidget" name="dro_10">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>110</width>
-               <height>16777215</height>
-              </size>
-             </property>
+            <widget class="DROWidget" name="dro_6">
              <property name="font">
               <font>
                <family>Roboto</family>
                <pointsize>16</pointsize>
               </font>
              </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="axis_number" stdset="0">
-              <number>1</number>
-             </property>
              <property name="reference_type" stdset="0">
-              <number>2</number>
+              <enum>DROWidget::DistanceToGo</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::Y</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
@@ -676,88 +602,46 @@
             </widget>
            </item>
            <item>
-            <widget class="DROWidget" name="dro_4">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>110</width>
-               <height>16777215</height>
-              </size>
-             </property>
+            <widget class="DROWidget" name="dro_3">
              <property name="font">
               <font>
                <family>Roboto</family>
                <pointsize>16</pointsize>
               </font>
              </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="axis_number" stdset="0">
-              <number>2</number>
-             </property>
              <property name="reference_type" stdset="0">
-              <number>1</number>
+              <enum>DROWidget::Relative</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::Z</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="DROWidget" name="dro_11">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>110</width>
-               <height>16777215</height>
-              </size>
-             </property>
+            <widget class="DROWidget" name="dro_7">
              <property name="font">
               <font>
                <family>Roboto</family>
                <pointsize>16</pointsize>
               </font>
              </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="axis_number" stdset="0">
-              <number>2</number>
-             </property>
              <property name="reference_type" stdset="0">
-              <number>2</number>
+              <enum>DROWidget::DistanceToGo</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::Z</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
@@ -846,88 +730,46 @@
             </widget>
            </item>
            <item>
-            <widget class="DROWidget" name="dro_5">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>110</width>
-               <height>16777215</height>
-              </size>
-             </property>
+            <widget class="DROWidget" name="dro_4">
              <property name="font">
               <font>
                <family>Roboto</family>
                <pointsize>16</pointsize>
               </font>
              </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="axis_number" stdset="0">
-              <number>3</number>
-             </property>
              <property name="reference_type" stdset="0">
-              <number>1</number>
+              <enum>DROWidget::Relative</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::A</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="DROWidget" name="dro_12">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>100</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>110</width>
-               <height>16777215</height>
-              </size>
-             </property>
+            <widget class="DROWidget" name="dro_8">
              <property name="font">
               <font>
                <family>Roboto</family>
                <pointsize>16</pointsize>
               </font>
              </property>
-             <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
-             </property>
-             <property name="scaledContents">
-              <bool>true</bool>
-             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="axis_number" stdset="0">
-              <number>3</number>
-             </property>
              <property name="reference_type" stdset="0">
-              <number>2</number>
+              <enum>DROWidget::DistanceToGo</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::A</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
@@ -961,6 +803,11 @@
            <normaloff>images/down_arrow.png</normaloff>images/down_arrow.png</iconset>
          </property>
         </widget>
+        <zorder>pushButton</zorder>
+        <zorder>dro_4</zorder>
+        <zorder>dro_3</zorder>
+        <zorder>dro</zorder>
+        <zorder>dro_2</zorder>
        </widget>
       </item>
      </layout>
@@ -1137,6 +984,11 @@
   </action>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>EntryWidget</class>
+   <extends>QLineEdit</extends>
+   <header>QtPyVCP.widgets.control_widgets.entry_widget</header>
+  </customwidget>
   <customwidget>
    <class>RecentFileComboBox</class>
    <extends>QComboBox</extends>
