@@ -21,7 +21,7 @@
 import os
 
 from PyQt5.QtWidgets import QLabel
-from PyQt5.QtCore import Qt, QEvent, pyqtSlot, pyqtProperty, Q_ENUMS
+from PyQt5.QtCore import pyqtSlot, pyqtProperty, Q_ENUMS
 
 from QtPyVCP.core import Status, Action, Info
 STATUS = Status()
@@ -54,7 +54,6 @@ class DROWidget(QLabel, Axis, ReferenceType, Units):
         # self.axis_letter = axis_letter
         # self.axis_num = 'xyzabcuvw'.index(self.axis_letter.lower())
         # self.joint_num = self.coords.index(self.axis_letter   .lower())
-        # self.dro_type = dro_type
 
         self._axis = Axis.X
         self._type = ReferenceType.Absolute
@@ -115,9 +114,9 @@ class DROWidget(QLabel, Axis, ReferenceType, Units):
 
         STATUS.updateAxisPositions()
 
-    #--------------------
-    # Designer methods
-    # -------------------
+    #==========================================================================
+    # Designer property Getters/Setters
+    #==========================================================================
 
     def getReferenceType(self):
         return self._type
@@ -143,34 +142,41 @@ class DROWidget(QLabel, Axis, ReferenceType, Units):
         self.updateUnits(STATUS.stat.program_units)
     units = pyqtProperty(Units, getUnits, setUnits)
 
+    def getDiamterMode(self):
+        return self._diameter_mode
     @pyqtSlot(bool)
     def setDiamterMode(self, diameter_mode):
         self._diameter_mode = diameter_mode
         self.updateUnits(STATUS.stat.program_units)
-    def getDiamterMode(self):
-        return self._diameter_mode
     diameter_mode = pyqtProperty(bool, getDiamterMode, setDiamterMode)
 
+    def getMetricTemplate(self):
+        return self._metric_template
     @pyqtSlot(str)
     def setMetricTemplate(self, value):
         self._metric_template = value
         STATUS.updateAxisPositions()
-    def getMetricTemplate(self):
-        return self._metric_template
     metric_template = pyqtProperty(str, getMetricTemplate, setMetricTemplate)
 
+    def getImperialTemplate(self):
+        return self._imperial_template
     @pyqtSlot(str)
     def setImperialTemplate(self, value):
         self._imperial_template = value
         STATUS.updateAxisPositions()
-    def getImperialTemplate(self):
-        return self._imperial_template
     imperial_template = pyqtProperty(str, getImperialTemplate, setImperialTemplate)
+
+    @pyqtSlot(float)
+    def setTest(self, value):
+        print value
+    def getTest(self):
+        return 2.0
+    test = pyqtProperty(float, getTest, setTest)
 
 if __name__ == "__main__":
     import sys
     from PyQt5.QtWidgets import QApplication
     app = QApplication(sys.argv)
-    led = DROWidget()
-    led.show()
+    w = DROWidget()
+    w.show()
     sys.exit(app.exec_())
