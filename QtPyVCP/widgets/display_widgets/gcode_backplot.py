@@ -23,6 +23,7 @@ import sys
 import os
 import gcode
 
+from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import pyqtProperty, pyqtSignal
 from PyQt5.QtGui import QColor
 
@@ -95,6 +96,7 @@ class  GcodeBackplot(QBackPlot):
 
     def report_progress_line(self, line):
         if self.previous_line != line:
+            QApplication.processEvents()
             self.previous_line = line
             progress = line * 100 / self.program_length
 
