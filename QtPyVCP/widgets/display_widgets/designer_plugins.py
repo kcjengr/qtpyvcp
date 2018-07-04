@@ -13,3 +13,5 @@ class GcodeBackPlotPlugin(_DesignerPlugin):
         return GcodeBackplot
     def toolTip(self):
         return "G-code backplot widget"
+    def isContainer(self):
+        return True

@@ -162,6 +162,9 @@ class _Status(QObject):
 
     # Gcode Backplot
     backplot_line_selected = pyqtSignal(int)
+    backplot_loading_started = pyqtSignal()
+    backplot_loading_progress = pyqtSignal(int)
+    backplot_loading_finished = pyqtSignal()
     backplot_gcode_error = pyqtSignal(str)
     reload_backplot = pyqtSignal()
 

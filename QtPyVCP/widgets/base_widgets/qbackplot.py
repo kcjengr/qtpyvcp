@@ -126,11 +126,12 @@ class DummyProgress:
         pass
 
 class StatCanon(glcanon.GLCanon, interpret.StatMixin):
-    def __init__(self, colors, geometry, lathe_view_option, stat, random):
+    def __init__(self, colors, geometry, lathe_view_option, stat, random, progress_callback):
         glcanon.GLCanon.__init__(self, colors, geometry)
         interpret.StatMixin.__init__(self, stat, random)
         self.progress = DummyProgress()
         self.lathe_view_option = lathe_view_option
+        self.progress_callback = progress_callback
 
     def is_lathe(self):
         return self.lathe_view_option
@@ -138,6 +139,11 @@ class StatCanon(glcanon.GLCanon, interpret.StatMixin):
     def change_tool(self, pocket):
         glcanon.GLCanon.change_tool(self,pocket)
         interpret.StatMixin.change_tool(self,pocket)
+
+    def next_line(self, st):
+        self.state = st
+        self.lineno = self.state.sequence_number
+        self.progress_callback(self.lineno)
 
 #==============================================================================
 # QtGl widget for displaying g-code toolpath backplot
@@ -181,7 +187,8 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         self.minlat = -90
         self.maxlat = 90
 
-        self._current_file = None
+        self.current_file = None
+        self.program_length = 0
         self.highlight_line = None
         self.program_alpha = False
         self.use_joints_mode = False
@@ -256,10 +263,11 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
             return
 
         td = tempfile.mkdtemp()
-        self._current_file = filename
+        self.current_file = filename
         try:
+            self.program_length = self.count_lines(filename)
             random = int(self.inifile.find("EMCIO", "RANDOM_TOOLCHANGER") or 0)
-            canon = StatCanon(self.colors, self.get_geometry(),self.lathe_option, s, random)
+            canon = StatCanon(self.colors, self.get_geometry(),self.lathe_option, s, random, self.report_progress_line)
             parameter = self.inifile.find("RS274NGC", "PARAMETER_FILE")
             parameter = os.path.join(os.environ['CONFIG_DIR'], parameter)
             temp_parameter = os.path.join(td, os.path.basename(parameter or "linuxcnc.var"))
@@ -268,13 +276,36 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
             canon.parameter_file = temp_parameter
             unitcode = "G%d" % (20 + (s.linear_units == 1))
             initcode = self.inifile.find("RS274NGC", "RS274NGC_STARTUP_CODE") or ""
+            self.report_loading_started()
             result, seq = self.load_preview(filename, canon, unitcode, initcode)
+            self.report_loading_finished()
             if result > gcode.MIN_ERROR:
                 self.report_gcode_error(result, seq, filename)
 
         finally:
             shutil.rmtree(td)
         self.set_current_view()
+
+    def count_lines(self, fname):
+        lines = 0
+        buf_size = 1024 * 1024
+        with open(fname) as fh:
+            read_f = fh.read
+            buf = read_f(buf_size)
+            while buf:
+                lines += buf.count('\n')
+                buf = read_f(buf_size)
+        return lines + 1
+
+    def report_loading_started(self):
+        pass
+
+    def report_loading_finished(self):
+        pass
+
+    def report_progress_line(self, line):
+        # print line * 100 / self._program_line_count
+        pass
 
     # setup details when window shows
     def realize(self):
@@ -284,7 +315,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
             s.poll()
         except:
             return
-        self._current_file = None
+        self.current_file = None
 
         # self.font_base, width, linespace = \
         # # glnav.use_pango_font('courier bold 16', 0, 128)

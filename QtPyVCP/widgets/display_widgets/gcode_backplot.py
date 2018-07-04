@@ -21,10 +21,9 @@
 
 import sys
 import os
-
 import gcode
 
-from PyQt5.QtCore import pyqtProperty
+from PyQt5.QtCore import pyqtProperty, pyqtSignal
 from PyQt5.QtGui import QColor
 
 from QtPyVCP.widgets.base_widgets.qbackplot import QBackPlot
@@ -39,12 +38,20 @@ INFO = Info()
 
 
 class  GcodeBackplot(QBackPlot):
+
+    line_selected = pyqtSignal(int)
+    loading_started = pyqtSignal()
+    loading_progress = pyqtSignal(int)
+    loading_finished = pyqtSignal()
+    gcode_error = pyqtSignal(str)
+
     def __init__(self, parent=None):
         super(GcodeBackplot, self).__init__(parent)
         # self.colors['overlay_background'] = (0.0, 0.0, 0.57)  # blue
         # self.colors['back'] = (0.0, 0.0, 0.75)  # blue
         self.show_overlay = False  # no DRO or DRO overlay
         self._reload_filename = None
+        self.previous_line = 0
         if os.path.isfile( '/tmp/linuxcnc.lock' ):
             path = os.path.realpath(os.path.join(__file__, '../../../..', 'sim/example_gcode/qtpyvcp.ngc'))
             self.loadBackplot(path)
@@ -65,8 +72,11 @@ class  GcodeBackplot(QBackPlot):
             self.loadBackplot(self._reload_filename)
             self.set_zoom_distance(dist)
         except:
-            print 'error', self._reload_filename
-            pass
+            LOG.warning("Problem reloading backplot file: {}".format(self._reload_filename), exc_info=True)
+
+    #==========================================================================
+    #  Override QBackPlot methods
+    #==========================================================================
 
     def set_view(self, value):
         view = str(value).lower()
@@ -79,6 +89,21 @@ class  GcodeBackplot(QBackPlot):
         if self.initialised:
             self.set_current_view()
 
+    def report_loading_started(self):
+        self.loading_started.emit()
+        STATUS.backplot_loading_started.emit()
+
+    def report_progress_line(self, line):
+        if self.previous_line != line:
+            self.previous_line = line
+            progress = line * 100 / self.program_length
+
+            self.loading_progress.emit(progress)
+            STATUS.backplot_loading_progress.emit(progress)
+
+    def report_loading_finished(self):
+        self.loading_finished.emit()
+        STATUS.backplot_loading_finished.emit()
 
 
     # overriding functions
