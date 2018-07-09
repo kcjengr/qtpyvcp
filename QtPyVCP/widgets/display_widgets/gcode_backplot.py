@@ -22,9 +22,12 @@
 import sys
 import os
 import gcode
+import time
+
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import pyqtProperty, pyqtSignal
+from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QColor
 
 from QtPyVCP.widgets.base_widgets.qbackplot import QBackPlot
@@ -41,22 +44,29 @@ INFO = Info()
 class  GcodeBackplot(QBackPlot):
 
     line_selected = pyqtSignal(int)
-    loading_started = pyqtSignal()
-    loading_progress = pyqtSignal(int)
-    loading_finished = pyqtSignal()
     gcode_error = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(GcodeBackplot, self).__init__(parent)
-        # self.colors['overlay_background'] = (0.0, 0.0, 0.57)  # blue
-        # self.colors['back'] = (0.0, 0.0, 0.75)  # blue
         self.show_overlay = False  # no DRO or DRO overlay
         self._reload_filename = None
-        self.previous_line = 0
-        if os.path.isfile( '/tmp/linuxcnc.lock' ):
-            path = os.path.realpath(os.path.join(__file__, '../../../..', 'sim/example_gcode/qtpyvcp.ngc'))
-            self.loadBackplot(path)
 
+        # Add loading progress bar and abort button
+        self.progressBar = QtWidgets.QProgressBar(visible=False)
+        self.progressBar.setFormat("Loading backplot: %p%")
+        self.abortButton = QtWidgets.QPushButton('Abort', visible=False)
+
+        hBox = QtWidgets.QHBoxLayout()
+        hBox.addWidget(self.progressBar)
+        hBox.addWidget(self.abortButton)
+
+        vBox = QtWidgets.QVBoxLayout(self)
+        vBox.addStretch()
+        vBox.addLayout(hBox)
+
+        self.abortButton.clicked.connect(self.abort)
+
+        # Connect status signals
         STATUS.file_loaded.connect(self.loadBackplot)
         STATUS.reload_backplot.connect(self.reloadBackplot)
         STATUS.program_units.connect(lambda v: self.setMetricUnits(v==2))
@@ -91,22 +101,18 @@ class  GcodeBackplot(QBackPlot):
             self.set_current_view()
 
     def report_loading_started(self):
-        self.loading_started.emit()
-        STATUS.backplot_loading_started.emit()
+        self.progressBar.show()
+        self.abortButton.show()
+        self.start = time.time()
 
-    def report_progress_line(self, line):
-        if self.previous_line != line:
-            QApplication.processEvents()
-            self.previous_line = line
-            progress = line * 100 / self.program_length
-
-            self.loading_progress.emit(progress)
-            STATUS.backplot_loading_progress.emit(progress)
+    def report_progress_percentage(self, percentage):
+        QApplication.processEvents()
+        self.progressBar.setValue(percentage)
 
     def report_loading_finished(self):
-        self.loading_finished.emit()
-        STATUS.backplot_loading_finished.emit()
-
+        print time.time() - self.start
+        self.progressBar.hide()
+        self.abortButton.hide()
 
     # overriding functions
     def report_gcode_error(self, result, seq, filename):

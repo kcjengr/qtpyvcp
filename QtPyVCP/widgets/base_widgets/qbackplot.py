@@ -118,32 +118,32 @@ class Window(QWidget):
 # Helper classes
 #==============================================================================
 
-# FixMe use this to update a progress bar in the GUI
-class DummyProgress:
-    def nextphase(self, unused):
-        pass
-    def progress(self):
-        pass
-
 class StatCanon(glcanon.GLCanon, interpret.StatMixin):
-    def __init__(self, colors, geometry, lathe_view_option, stat, random, progress_callback):
+    def __init__(self, colors, geometry, is_lathe, stat, random, line_count, progress_callback):
         glcanon.GLCanon.__init__(self, colors, geometry)
         interpret.StatMixin.__init__(self, stat, random)
-        self.progress = DummyProgress()
-        self.lathe_view_option = lathe_view_option
+        self.is_lathe = is_lathe
         self.progress_callback = progress_callback
-
-    def is_lathe(self):
-        return self.lathe_view_option
+        self.aborted = False
+        self.total_lines = line_count
+        self.previous_progress = 0
 
     def change_tool(self, pocket):
         glcanon.GLCanon.change_tool(self,pocket)
         interpret.StatMixin.change_tool(self,pocket)
 
+    def check_abort(self):
+        if self.aborted:
+            raise KeyboardInterrupt
+
     def next_line(self, st):
         self.state = st
         self.lineno = self.state.sequence_number
-        self.progress_callback(self.lineno)
+
+        progress = self.lineno * 100 / self.total_lines
+        if progress != self.previous_progress:
+            self.previous_progress = progress
+            self.progress_callback(progress + 1)
 
 #==============================================================================
 # QtGl widget for displaying g-code toolpath backplot
@@ -179,6 +179,8 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         thread.start_new_thread(self.logger.start, (.01,))
         glcanon.GlCanonDraw.__init__(self, linuxcnc.stat(), self.logger)
 
+        self.canon = None
+
         # set defaults
         self.current_view = 'p'
         self.fingerprint = ()
@@ -204,8 +206,11 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         self.show_tool = True
         self.show_dtg = True
         self.grid_size = 0.0
-        temp = self.inifile.find("DISPLAY", "LATHE")
-        self.lathe_option = bool(temp == "1" or temp == "True" or temp == "true" )
+        self.is_lathe = self.inifile.find("DISPLAY", "LATHE") in ['1', 'True', 'true']
+        self.random = int(self.inifile.find("EMCIO", "RANDOM_TOOLCHANGER") or 0)
+        temp = self.inifile.find("RS274NGC", "PARAMETER_FILE") or "linuxcnc.var"
+        self.parameter_file = os.path.join(os.environ['CONFIG_DIR'], temp)
+
         self.foam_option = bool(self.inifile.find("DISPLAY", "FOAM"))
         self.show_offsets = False
         self.show_overlay = False
@@ -265,22 +270,27 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         td = tempfile.mkdtemp()
         self.current_file = filename
         try:
-            self.program_length = self.count_lines(filename)
-            random = int(self.inifile.find("EMCIO", "RANDOM_TOOLCHANGER") or 0)
-            canon = StatCanon(self.colors, self.get_geometry(),self.lathe_option, s, random, self.report_progress_line)
-            parameter = self.inifile.find("RS274NGC", "PARAMETER_FILE")
-            parameter = os.path.join(os.environ['CONFIG_DIR'], parameter)
-            temp_parameter = os.path.join(td, os.path.basename(parameter or "linuxcnc.var"))
-            if parameter:
-                shutil.copy(parameter, temp_parameter)
-            canon.parameter_file = temp_parameter
+            line_count = self.count_lines(filename)
+            self.canon = StatCanon(self.colors, self.get_geometry(), self.is_lathe, s, self.random, line_count, self.report_progress_percentage)
+            temp_parameter = os.path.join(td, os.path.basename(self.parameter_file))
+            shutil.copy(self.parameter_file, temp_parameter)
+            self.canon.parameter_file = temp_parameter
             unitcode = "G%d" % (20 + (s.linear_units == 1))
             initcode = self.inifile.find("RS274NGC", "RS274NGC_STARTUP_CODE") or ""
             self.report_loading_started()
-            result, seq = self.load_preview(filename, canon, unitcode, initcode)
+            try:
+                result, seq = self.load_preview(filename, self.canon, unitcode, initcode)
+            except KeyboardInterrupt:
+                result, seq = 0, 0
             self.report_loading_finished()
             if result > gcode.MIN_ERROR:
                 self.report_gcode_error(result, seq, filename)
+                # FixMe instead of just loading an empty file find a way
+                # to clear the backplot directly
+                # self.clear()
+            # else:
+            #     glcanon.GlCanonDraw.realize(self)
+
 
         finally:
             shutil.rmtree(td)
@@ -303,9 +313,15 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
     def report_loading_finished(self):
         pass
 
-    def report_progress_line(self, line):
-        # print line * 100 / self._program_line_count
+    def report_progress_percentage(self, line):
         pass
+
+    def abort(self):
+        self.canon.aborted = True
+
+    def clear(self):
+        path = "/home/kurt/dev/cnc/QtControl/pyqtui/lib/empty.ngc"
+        QTimer.singleShot(0, lambda: self.load(path))
 
     # setup details when window shows
     def realize(self):
@@ -352,7 +368,6 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         else:
             self._geometry = 'XYZ'
         return self._geometry
-    def is_lathe(self): return self.lathe_option
     def is_foam(self): return self.foam_option
     def get_current_tool(self):
         for i in self.stat.tool_table:
@@ -450,6 +465,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         # GL.glRotated(self.xRot / 16.0, 1.0, 0.0, 0.0) # rotate on x
         # GL.glRotated(self.yRot / 16.0, 0.0, 1.0, 0.0) # rotate on y
         # GL.glRotated(self.zRot / 16.0, 0.0, 0.0, 1.0) # rotate on z
+
         try:
             if self.perspective:
                 self.redraw_perspective()
