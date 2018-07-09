@@ -251,6 +251,7 @@ class GcodeEditor(EditorBase):
         #self.setEolVisibility(True)
 
         STATUS.file_loaded.connect(self.load_program)
+        STATUS.motion_line.connect(self.highlight_line)
         # STATUS.connect('line-changed', self.highlight_line)
         # if self.idle_line_reset:
         #     STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))
@@ -266,12 +267,12 @@ class GcodeEditor(EditorBase):
 
     # when switching from MDI to AUTO we need to reload the
     # last (linuxcnc loaded) program.
-    def reload_last(self, w):
+    def reload_last(self):
         self.load_text(STATUS.old['file'])
         self.setCursorPosition(0, 0)
 
     # With the auto_show__mdi option, MDI history is shown
-    def load_mdi(self, w):
+    def load_mdi(self):
         self.load_text(INFO.MDI_HISTORY_PATH)
         self._last_filename = INFO.MDI_HISTORY_PATH
         #print 'font point size', self.font().pointSize()
@@ -280,7 +281,7 @@ class GcodeEditor(EditorBase):
         self.setCursorPosition(self.lines(), 0)
 
     # With the auto_show__mdi option, MDI history is shown
-    def load_manual(self, w):
+    def load_manual(self):
         if STATUS.is_man_mode():
             self.load_text(INFO.MACHINE_LOG_HISTORY_PATH)
             self.setCursorPosition(self.lines(), 0)
@@ -298,12 +299,12 @@ class GcodeEditor(EditorBase):
         self.ensureCursorVisible()
         self.SendScintilla(QsciScintilla.SCI_VERTICALCENTRECARET)
 
-    def highlight_line(self, w, line):
-        if STATUS.is_auto_running():
-            if not STATUS.old['file'] == self._last_filename:
-                LOG.debug('should reload the display')
-                self.load_text(STATUS.old['file'])
-                self._last_filename = STATUS.old['file']
+    def highlight_line(self, line):
+        # if STATUS.is_auto_running():
+        #     if not STATUS.old['file'] == self._last_filename:
+        #         LOG.debug('should reload the display')
+        #         self.load_text(STATUS.old['file'])
+        #         self._last_filename = STATUS.old['file']
         self.markerAdd(line, self.ARROW_MARKER_NUM)
         if self.last_line:
             self.markerDelete(self.last_line, self.ARROW_MARKER_NUM)
@@ -312,7 +313,7 @@ class GcodeEditor(EditorBase):
         self.SendScintilla(QsciScintilla.SCI_VERTICALCENTRECARET)
         self.last_line = line
 
-    def set_line_number(self, w, line):
+    def set_line_number(self, line):
         pass
 
     def line_changed(self, line, index):
@@ -322,17 +323,17 @@ class GcodeEditor(EditorBase):
         if STATUS.is_mdi_mode() and STATUS.is_auto_running() is False:
             STATUS.emit('mdi-line-selected', self.line_text, self._last_filename)
 
-    def select_lineup(self, w):
+    def select_lineup(self):
         line, col = self.getCursorPosition()
         LOG.debug(line)
         self.setCursorPosition(line-1, 0)
-        self.highlight_line(None, line-1)
+        self.highlight_line(line-1)
 
-    def select_linedown(self, w):
+    def select_linedown(self):
         line, col = self.getCursorPosition()
         LOG.debug(line)
         self.setCursorPosition(line+1, 0)
-        self.highlight_line(None, line+1)
+        self.highlight_line(line+1)
 
     # designer recognized getter/setters
     # auto_show_mdi status
