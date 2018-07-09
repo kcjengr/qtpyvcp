@@ -6,6 +6,8 @@ from QtPyVCP.widgets.form_widgets.main_window import VCPMainWindow
 class MainWindowPlugin(_DesignerPlugin):
     def pluginClass(self):
         return VCPMainWindow
+    def isContainer(self):
+        return True
     def group(self):
         return "Use ONLY as a Toplevel!!!"
     def domXml(self):
