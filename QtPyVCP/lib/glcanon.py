@@ -187,7 +187,7 @@ class GLCanon(Translated, ArcsToSegmentsMixin):
             self.draw_lines(lines, for_selection, j)
 
     def draw_dwells(self, dwells, alpha, for_selection, j0=0):
-        return linuxcnc.draw_dwells(self.geometry, dwells, alpha, for_selection, self.is_lathe())
+        return linuxcnc.draw_dwells(self.geometry, dwells, alpha, for_selection, self.is_lathe)
 
     def calc_extents(self):
         self.min_extents, self.max_extents, self.min_extents_notool, self.max_extents_notool = gcode.calc_extents(self.arcfeed, self.feed, self.traverse)
@@ -460,9 +460,6 @@ class GlCanonDraw:
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
         self.basic_lighting()
         self.initialised = 1
-
-    def set_canon(self, canon):
-        self.canon = canon
 
     @with_context
     def basic_lighting(self):
@@ -1122,7 +1119,7 @@ class GlCanonDraw:
                         label = "G59.%d" % (i-6)
                     glPushMatrix()
                     glScalef(0.2,0.2,0.2)
-                    if self.is_lathe():
+                    if self.is_lathe:
                         g5xrot=math.atan2(g5x_offset[0], -g5x_offset[2])
                         glRotatef(90, 1, 0, 0)
                         glRotatef(-90, 0, 0, 1)
@@ -1145,7 +1142,7 @@ class GlCanonDraw:
 
                     glPushMatrix()
                     glScalef(0.2,0.2,0.2)
-                    if self.is_lathe():
+                    if self.is_lathe:
                         g92rot=math.atan2(g92_offset[0], -g92_offset[2])
                         glRotatef(90, 1, 0, 0)
                         glRotatef(-90, 0, 0, 1)
@@ -1298,7 +1295,7 @@ class GlCanonDraw:
                                        2 ) * .5
                     else:
                         cone_scale = 1
-                    if self.is_lathe():
+                    if self.is_lathe:
                         glRotatef(90, 0, 1, 0)
                     cone = self.dlist("cone", gen=self.make_cone)
                     glScalef(cone_scale, cone_scale, cone_scale)
@@ -1429,12 +1426,12 @@ class GlCanonDraw:
     def cache_tool(self, current_tool):
         self.cached_tool = current_tool
         glNewList(self.dlist('tool'), GL_COMPILE)
-        if self.is_lathe() and current_tool and current_tool.orientation != 0:
+        if self.is_lathe and current_tool and current_tool.orientation != 0:
             glBlendColor(0,0,0,self.colors['lathetool_alpha'])
             self.lathetool(current_tool)
         else:
             glBlendColor(0,0,0,self.colors['tool_alpha'])
-            if self.is_lathe():
+            if self.is_lathe:
                 glRotatef(90, 0, 1, 0)
             else:
                 dia = current_tool.diameter
@@ -1454,7 +1451,7 @@ class GlCanonDraw:
 
     def lathe_historical_config(self,trajcoordinates):
         # detect historical lathe config with dummy joint 1
-        if      (self.is_lathe()
+        if      (self.is_lathe
             and (trajcoordinates == "XZ")
             and (self.get_num_joints() == 3)):
             return True
@@ -1579,7 +1576,7 @@ class GlCanonDraw:
                 if s.axis_mask & (1<<i):
                     droposstrs.append(rotformat % ("TLO", a, tlo_offset[i]))
 
-            if self.is_lathe():
+            if self.is_lathe:
                 posstrs[0] = format % ("Rad", positions[0])
                 posstrs.insert(1, format % ("Dia", positions[0]*2.0))
                 droposstrs[0] = droformat % ("Rad", positions[0], "R", axisdtg[0])
@@ -1648,7 +1645,7 @@ class GlCanonDraw:
 
         if view != x:
             glPushMatrix()
-            if self.is_lathe():
+            if self.is_lathe:
                 glTranslatef(1.3, -0.1, 0)
                 glTranslatef(0, 0, -0.1)
                 glRotatef(-90, 0, 1, 0)
@@ -1689,14 +1686,14 @@ class GlCanonDraw:
         if view != z:
             glPushMatrix()
             glTranslatef(0, 0, 1.2)
-            if self.is_lathe():
+            if self.is_lathe:
                 glRotatef(-90, 0, 1, 0)
             if view == x:
                 glRotatef(90, 0, 1, 0)
                 glRotatef(90, 0, 0, 1)
             elif view == y or view == p:
                 glRotatef(90, 1, 0, 0)
-            if self.is_lathe():
+            if self.is_lathe:
                 glTranslatef(0, -.1, 0)
             glScalef(0.2, 0.2, 0.2)
             self.hershey.plot_string(letters[2], 0.5)
@@ -1817,11 +1814,9 @@ class GlCanonDraw:
         glEndList()
 
     def load_preview(self, f, canon, *args):
-        self.set_canon(canon)
         result, seq = gcode.parse(f, canon, *args)
 
         if result <= gcode.MIN_ERROR:
-            self.canon.progress.nextphase(1)
             canon.calc_extents()
             self.stale_dlist('program_rapids')
             self.stale_dlist('program_norapids')

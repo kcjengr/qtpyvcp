@@ -349,7 +349,7 @@ class GlNavBase:
     def set_view_y(self):
         self.reset()
         glRotatef(-90, 1, 0, 0)
-        if self.is_lathe():
+        if self.is_lathe:
             glRotatef(90, 0, 1, 0)
         mid, size = self.extents_info()
         glTranslatef(-mid[0], -mid[1], -mid[2])
