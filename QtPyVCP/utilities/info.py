@@ -81,13 +81,13 @@ class _Info(object):
         return self.ini.find('EMC', 'MACHINE') or "PyQtVCP Machine"
 
     def getFilePath(self, section, option, default):
-        temp = self.ini.find(section, option) or default
-        if temp is None:
+        path = self.ini.find(section, option) or default
+        if path is None:
             return
-        elif temp.startswith('~'):
-            path = os.path.expanduser(temp)
-        elif not os.path.isabs(temp):
-            path = os.path.join(self.CONFIG_DIR, temp)
+        elif path.startswith('~'):
+            path = os.path.expanduser(path)
+        elif not os.path.isabs(path):
+            path = os.path.join(self.CONFIG_DIR, path)
         return os.path.realpath(path)
 
     def getUiFile(self, default='pyqtvcp.ui'):
@@ -110,6 +110,10 @@ class _Info(object):
 
     def getToolTableFile(self, default='tool.tbl'):
         return self.getFilePath('EMCIO', 'TOOL_TABLE', default)
+
+    def getOpenFile(self, default=None):
+        return self.getFilePath('DISPLAY', 'OPEN_FILE', default)
+
 
     def getCoordinates(self):
         '''Returns [TRAJ] COORDINATES or xyz'''
