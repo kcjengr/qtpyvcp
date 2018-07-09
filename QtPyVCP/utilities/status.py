@@ -79,7 +79,7 @@ class _Status(QObject):
     dout = pyqtSignal(tuple)                # current value of the digital output pins
 
     # Cooling
-    mist = pyqtSignal(int)                  # mist self.status
+    mist = pyqtSignal(bool)                 # mist self.status
     flood = pyqtSignal(bool)                # flood self.status, either FLOOD_OFF or FLOOD_ON
 
     # M-codes and G-codes
@@ -137,14 +137,14 @@ class _Status(QObject):
     # State
     enabled = pyqtSignal(bool)              # trajectory planner enabled
     estop = pyqtSignal(int)                 # linuxcnc.STATE_ESTOP or not
-    state = pyqtSignal(int)                 # current command execution self.status
-    exec_state = pyqtSignal(int)            # task execution self.state
+    state = pyqtSignal(int)                 # current command execution status
+    exec_state = pyqtSignal(int)            # task execution state
     task_mode = pyqtSignal(int)             # current task mode
     task_paused = pyqtSignal(bool)          # task paused flag
-    task_state = pyqtSignal(bool)           # current task self.state
+    task_state = pyqtSignal(int)            # current task state
     motion_mode = pyqtSignal(int)           # mode of the motion controller
     motion_type = pyqtSignal(int)           # type of the currently executing motion
-    interp_state = pyqtSignal(int)          # current self.state of RS274NGC interpreter
+    interp_state = pyqtSignal(int)          # current state of RS274NGC interpreter
     interpreter_errcode = pyqtSignal(int)   # current RS274NGC interpreter return code
 
     # Tool
@@ -152,13 +152,15 @@ class _Status(QObject):
     pocket_prepped = pyqtSignal(int)        # Tx command completed, and this pocket is prepared
     tool_table = pyqtSignal(tuple)          # list of tool entries
 
-
     # Extended status signals
     axis_positions = pyqtSignal(tuple)      # ABS, REL and DTG axis values
     joint_positions = pyqtSignal(tuple)     # joint pos respecting INI settings
     formated_gcodes = pyqtSignal(tuple)     # preformed gcodes
     formated_mcodes = pyqtSignal(tuple)     # preformed mcodes
     file_loaded = pyqtSignal(str)           # file loaded
+
+    on = pyqtSignal(bool)
+    all_homed = pyqtSignal(bool)
 
     # Gcode Backplot
     backplot_line_selected = pyqtSignal(int)
@@ -215,6 +217,10 @@ class _Status(QObject):
         # Formated G-codes / M-codes
         self.gcodes.connect(self.updateFormatedGcodes)
         self.mcodes.connect(self.updateFormatedMcodes)
+
+        self.task_state.connect(lambda v: self.on.emit(v == linuxcnc.STATE_ON))
+
+
 
         # File
         self.file.connect(self.updateFileLoaded)
