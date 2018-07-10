@@ -50,6 +50,16 @@
       </property>
      </widget>
     </item>
+    <item row="5" column="1">
+     <widget class="QPushButton" name="muteButton">
+      <property name="text">
+       <string>Mute</string>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="0" rowspan="8">
      <widget class="QStackedWidget" name="stackedWidget">
       <property name="enabled">
@@ -126,7 +136,7 @@
        </palette>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="viewfinderPage">
        <layout class="QGridLayout" name="gridLayout_5">
@@ -155,16 +165,6 @@
         </item>
        </layout>
       </widget>
-     </widget>
-    </item>
-    <item row="5" column="1">
-     <widget class="QPushButton" name="muteButton">
-      <property name="text">
-       <string>Mute</string>
-      </property>
-      <property name="checkable">
-       <bool>true</bool>
-      </property>
      </widget>
     </item>
    </layout>
