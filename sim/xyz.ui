@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1024</width>
-    <height>768</height>
+    <width>1000</width>
+    <height>750</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,9 +17,6 @@
    <number>-1</number>
   </property>
   <property name="promptAtExit" stdset="0">
-   <bool>false</bool>
-  </property>
-  <property name="prompt_at_exit" stdset="0">
    <bool>false</bool>
   </property>
   <property name="promot_on_exit" stdset="0">
@@ -75,13 +72,26 @@
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
-                  <height>32</height>
+                  <height>0</height>
                  </size>
                 </property>
                </widget>
               </item>
               <item>
                <widget class="GcodeEditor" name="gcodeeditor"/>
+              </item>
+              <item>
+               <widget class="EntryWidget" name="entry">
+                <property name="font">
+                 <font>
+                  <family>Roboto</family>
+                  <pointsize>14</pointsize>
+                 </font>
+                </property>
+                <property name="placeholderText">
+                 <string>MDI</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -91,6 +101,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="renderProgramAlpha" stdset="0">
+              <bool>true</bool>
              </property>
              <property name="backgroundColor">
               <color>
@@ -104,9 +117,24 @@
           </item>
          </layout>
         </widget>
+        <widget class="QWidget" name="tab_3">
+         <attribute name="title">
+          <string>File</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="tab_4">
+         <attribute name="title">
+          <string>Status</string>
+         </attribute>
+        </widget>
         <widget class="QWidget" name="tab">
          <attribute name="title">
           <string>Tool Table</string>
+         </attribute>
+        </widget>
+        <widget class="QWidget" name="tab_5">
+         <attribute name="title">
+          <string>Probing</string>
          </attribute>
         </widget>
        </widget>
@@ -115,22 +143,246 @@
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="0,0,0">
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
+      <property name="rightMargin">
+       <number>10</number>
+      </property>
       <item>
        <widget class="QGroupBox" name="groupBox_2">
         <property name="title">
-         <string>GroupBox</string>
+         <string>PROGRAM</string>
         </property>
-        <widget class="EntryWidget" name="entry">
+        <widget class="QWidget" name="buttonBox" native="true">
          <property name="geometry">
           <rect>
-           <x>20</x>
-           <y>40</y>
-           <width>291</width>
+           <x>160</x>
+           <y>60</y>
+           <width>141</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QPushButton" name="pushButton_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <family>Roboto Medium</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>ABS</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="autoExclusive">
+             <bool>true</bool>
+            </property>
+            <property name="position" stdset="0">
+             <string>first</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_7">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <family>Roboto Medium</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>REL</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="autoExclusive">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="pushButton_8">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <family>Roboto Medium</family>
+             </font>
+            </property>
+            <property name="text">
+             <string>DTG</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="autoExclusive">
+             <bool>true</bool>
+            </property>
+            <property name="position" stdset="0">
+             <string>last</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QPushButton" name="power">
+         <property name="geometry">
+          <rect>
+           <x>210</x>
+           <y>30</y>
+           <width>80</width>
            <height>23</height>
           </rect>
          </property>
-         <property name="placeholderText">
-          <string>MDI</string>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>Power</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="AxisActionButton" name="axisactionbutton_4">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>80</y>
+           <width>80</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+          </font>
+         </property>
+         <property name="action_id" stdset="0">
+          <enum>AxisActionButton::Home</enum>
+         </property>
+         <property name="axis">
+          <enum>AxisActionButton::X</enum>
+         </property>
+        </widget>
+        <widget class="AxisActionButton" name="axisactionbutton_5">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>140</y>
+           <width>80</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+          </font>
+         </property>
+         <property name="action_id" stdset="0">
+          <enum>AxisActionButton::Home</enum>
+         </property>
+         <property name="axis">
+          <enum>AxisActionButton::Z</enum>
+         </property>
+        </widget>
+        <widget class="AxisActionButton" name="axisactionbutton_6">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>50</y>
+           <width>80</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+          </font>
+         </property>
+         <property name="action_id" stdset="0">
+          <enum>AxisActionButton::Home</enum>
+         </property>
+         <property name="axis">
+          <enum>AxisActionButton::ALL</enum>
+         </property>
+        </widget>
+        <widget class="AxisActionButton" name="axisactionbutton_7">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>110</y>
+           <width>80</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+          </font>
+         </property>
+         <property name="action_id" stdset="0">
+          <enum>AxisActionButton::Home</enum>
+         </property>
+         <property name="axis">
+          <enum>AxisActionButton::Y</enum>
+         </property>
+        </widget>
+        <widget class="AxisActionButton" name="axisactionbutton_8">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>100</y>
+           <width>80</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+          </font>
+         </property>
+         <property name="action_id" stdset="0">
+          <enum>AxisActionButton::Jog</enum>
+         </property>
+         <property name="axis">
+          <enum>AxisActionButton::X</enum>
          </property>
         </widget>
        </widget>
@@ -786,28 +1038,173 @@
         <property name="title">
          <string>GroupBox</string>
         </property>
-        <widget class="QPushButton" name="pushButton">
+        <widget class="ActionButton" name="actionbutton_2">
          <property name="geometry">
           <rect>
-           <x>90</x>
-           <y>80</y>
+           <x>190</x>
+           <y>60</y>
+           <width>101</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Power </string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="action_id" stdset="0">
+          <enum>ActionButton::MachinePower</enum>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton">
+         <property name="geometry">
+          <rect>
+           <x>190</x>
+           <y>110</y>
+           <width>100</width>
+           <height>100</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+           <pointsize>16</pointsize>
+          </font>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="action_id" stdset="0">
+          <enum>ActionButton::EmergencyStop</enum>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_4">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
            <width>80</width>
            <height>23</height>
           </rect>
          </property>
-         <property name="text">
-          <string>PushButton</string>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+          </font>
          </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>images/down_arrow.png</normaloff>images/down_arrow.png</iconset>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="action_id" stdset="0">
+          <enum>ActionButton::Flood</enum>
          </property>
         </widget>
-        <zorder>pushButton</zorder>
-        <zorder>dro_4</zorder>
-        <zorder>dro_3</zorder>
-        <zorder>dro</zorder>
-        <zorder>dro_2</zorder>
+        <widget class="ActionButton" name="actionbutton_5">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>30</y>
+           <width>80</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+          </font>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="action_id" stdset="0">
+          <enum>ActionButton::BlockDelete</enum>
+         </property>
+         <property name="action_type" stdset="0">
+          <enum>ActionButton::Toggle</enum>
+         </property>
+         <property name="option" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_6">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>60</y>
+           <width>80</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>Opt Stop </string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="action_id" stdset="0">
+          <enum>ActionButton::OptionalStop</enum>
+         </property>
+         <property name="option" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_9">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>80</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>Mist </string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="action_id" stdset="0">
+          <enum>ActionButton::Mist</enum>
+         </property>
+         <property name="action_type" stdset="0">
+          <enum>ActionButton::Toggle</enum>
+         </property>
+        </widget>
+        <widget class="JogButton" name="jogbutton">
+         <property name="geometry">
+          <rect>
+           <x>50</x>
+           <y>120</y>
+           <width>80</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+          </font>
+         </property>
+         <property name="axis">
+          <enum>JogButton::X</enum>
+         </property>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -819,7 +1216,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1024</width>
+     <width>1000</width>
      <height>20</height>
     </rect>
    </property>
@@ -845,26 +1242,35 @@
     <property name="title">
      <string>Machine</string>
     </property>
-    <widget class="QMenu" name="menuHomeing">
+    <widget class="QMenu" name="menuHoming">
      <property name="title">
-      <string>Homeing</string>
+      <string>Homing</string>
      </property>
      <addaction name="actionHome_All"/>
      <addaction name="actionHome_X"/>
      <addaction name="actionHome_Y"/>
      <addaction name="actionHome_Z"/>
     </widget>
-    <addaction name="actionToggle_E_stop"/>
-    <addaction name="actionToggle_Power"/>
+    <widget class="QMenu" name="menuCooling">
+     <property name="title">
+      <string>Cooling</string>
+     </property>
+     <addaction name="action_Mist_toggle"/>
+     <addaction name="action_Flood_toggle"/>
+    </widget>
+    <addaction name="action_EmergencyStop_toggle"/>
+    <addaction name="action_MachinePower_toggle"/>
     <addaction name="separator"/>
     <addaction name="actionRun_Program"/>
-    <addaction name="menuHomeing"/>
+    <addaction name="menuHoming"/>
+    <addaction name="menuCooling"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
      <string>View</string>
     </property>
     <addaction name="actionReport_Actual_Position"/>
+    <addaction name="actionTest"/>
    </widget>
    <addaction name="menuExit"/>
    <addaction name="menuMachine"/>
@@ -874,14 +1280,6 @@
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
-   </property>
-  </action>
-  <action name="actionHome">
-   <property name="text">
-    <string>Home X</string>
-   </property>
-   <property name="joint_number" stdset="0">
-    <number>-1</number>
    </property>
   </action>
   <action name="actionOpen">
@@ -910,11 +1308,6 @@
     <string>Save As ...</string>
    </property>
   </action>
-  <action name="action1_Axis_ngc">
-   <property name="text">
-    <string>&amp;1 axis.ngc</string>
-   </property>
-  </action>
   <action name="actionHome_X">
    <property name="text">
     <string>Home &amp;X</string>
@@ -930,7 +1323,7 @@
     <string>Home &amp;Z</string>
    </property>
   </action>
-  <action name="actionToggle_E_stop">
+  <action name="action_EmergencyStop_toggle">
    <property name="text">
     <string>Toggle E-stop</string>
    </property>
@@ -938,22 +1331,20 @@
     <string>F1</string>
    </property>
   </action>
-  <action name="actionToggle_Power">
+  <action name="action_MachinePower_toggle">
    <property name="text">
-    <string>Toggle Power</string>
+    <string>Machine Power</string>
    </property>
    <property name="shortcut">
     <string>F2</string>
+   </property>
+   <property name="_axis" stdset="0">
+    <number>2</number>
    </property>
   </action>
   <action name="actionHome_All">
    <property name="text">
     <string>Home All</string>
-   </property>
-  </action>
-  <action name="action_2_hazzy_ngc">
-   <property name="text">
-    <string>&amp;2 hazzy.ngc</string>
    </property>
   </action>
   <action name="actionRun_Program">
@@ -962,11 +1353,6 @@
    </property>
    <property name="shortcut">
     <string>R</string>
-   </property>
-  </action>
-  <action name="actionTest">
-   <property name="text">
-    <string>Test</string>
    </property>
   </action>
   <action name="actionFile1">
@@ -982,27 +1368,45 @@
     <string>Report Actual Position</string>
    </property>
   </action>
+  <action name="actionTest">
+   <property name="text">
+    <string>Test</string>
+   </property>
+  </action>
+  <action name="action_Mist_toggle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Mist On</string>
+   </property>
+   <property name="shortcut">
+    <string>F7</string>
+   </property>
+  </action>
+  <action name="action_Flood_toggle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Flood On</string>
+   </property>
+   <property name="shortcut">
+    <string>F8</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>EntryWidget</class>
-   <extends>QLineEdit</extends>
-   <header>QtPyVCP.widgets.control_widgets.entry_widget</header>
-  </customwidget>
-  <customwidget>
-   <class>RecentFileComboBox</class>
-   <extends>QComboBox</extends>
-   <header>QtPyVCP.widgets.editor_widgets.recent_file_combobox</header>
+   <class>ActionButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.control_widgets.action_button</header>
   </customwidget>
   <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
    <header>QtPyVCP.widgets.display_widgets.gcode_backplot</header>
-  </customwidget>
-  <customwidget>
-   <class>DROWidget</class>
-   <extends>QLabel</extends>
-   <header>QtPyVCP.widgets.display_widgets.dro_widget</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>GcodeEditor</class>
@@ -1015,9 +1419,52 @@
    <header>QtPyVCP.widgets.form_widgets.main_window</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>JogButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.control_widgets.jog_button</header>
+  </customwidget>
+  <customwidget>
+   <class>RecentFileComboBox</class>
+   <extends>QComboBox</extends>
+   <header>QtPyVCP.widgets.editor_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>EntryWidget</class>
+   <extends>QLineEdit</extends>
+   <header>QtPyVCP.widgets.control_widgets.entry_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>DROWidget</class>
+   <extends>QLabel</extends>
+   <header>QtPyVCP.widgets.display_widgets.dro_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>AxisActionButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.control_widgets.axis_button</header>
+  </customwidget>
  </customwidgets>
  <resources>
   <include location="xyz.qrc"/>
+  <include location="ui.qrc"/>
  </resources>
  <connections/>
+ <designerdata>
+  <property name="gridDeltaX">
+   <number>10</number>
+  </property>
+  <property name="gridDeltaY">
+   <number>10</number>
+  </property>
+  <property name="gridSnapX">
+   <bool>true</bool>
+  </property>
+  <property name="gridSnapY">
+   <bool>true</bool>
+  </property>
+  <property name="gridVisible">
+   <bool>true</bool>
+  </property>
+ </designerdata>
 </ui>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="VCPMainWindow" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="AxisActionButton" name="axisactionbutton">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>40</y>
+      <width>101</width>
+      <height>51</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="AxisActionButton" name="axisactionbutton_2">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>50</y>
+      <width>181</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="action_id" stdset="0">
+     <enum>AxisActionButton::Home</enum>
+    </property>
+    <property name="axis">
+     <enum>AxisActionButton::X</enum>
+    </property>
+    <property name="action_type" stdset="0">
+     <enum>AxisActionButton::On</enum>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>VCPMainWindow</class>
+   <extends>QMainWindow</extends>
+   <header>QtPyVCP.widgets.form_widgets.main_window</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>AxisActionButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.control_widgets.axis_button</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

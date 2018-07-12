@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>hazzy_XYZCW.ini</file>
+    <file>../QtPyVCP/widgets/dialogs/error_dialog.ui</file>
+  </qresource>
+  <qresource prefix="newPrefix">
+    <file>test.qss</file>
+  </qresource>
+</RCC>
