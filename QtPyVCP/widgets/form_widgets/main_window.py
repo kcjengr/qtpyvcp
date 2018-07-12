@@ -21,10 +21,14 @@
 
 import os
 import sys
+import time
 
+from PyQt5 import uic
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QMessageBox, QFileDialog
+from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty, QTimer
+from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QMessageBox, QFileDialog, QMenu, QLineEdit
+
+from PyQt5 import QtWidgets, QtGui
 
 from QtPyVCP.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -35,12 +39,16 @@ ACTION = Action()
 PREFS = Prefs()
 INFO = Info()
 
+from QtPyVCP.utilities import action
+
 from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
+
+from QtPyVCP.utilities import action
 
 
 class VCPMainWindow(QMainWindow):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, ui_file=None):
         super(VCPMainWindow, self).__init__(parent=None)
 
         # QtDesigner settable vars
@@ -48,25 +56,53 @@ class VCPMainWindow(QMainWindow):
 
         # Variables
         self.recent_file_actions = []
-        self.recent_files = []
-
         self.log_file_path = ''
-
+        self.actions = []
         self.open_file_dialog = OpenFileDialog(self)
 
+        # Load the UI file AFTER defining variables, otherwise the values
+        # set in QtDesigner get overridden by the default values
+        if ui_file is not None:
+            print uic.loadUi(ui_file, self)
+
+        STATUS.init_ui.emit()
         self.initUi()
 
     def initUi(self):
+        print "initiating"
+        self.loadSplashGcode()
         self.initRecentFileMenu()
+        self.initHomingMenu()
 
-        if hasattr(self, 'actionToggle_Power'):
-            action = getattr(self, 'actionToggle_Power')
-            STATUS.estop.connect(lambda v:action.setEnabled(not bool(v)))
+        s = time.time()
 
-            # STATUS.forceUpdate()
+        menus = self.findChildren(QMenu)
+        for menu in menus:
+            menu_actions = menu.actions()
+            for menu_action in menu_actions:
+                if menu_action.isSeparator():
+                    continue
+                data = menu_action.objectName().split('_', 2)
+                if data[0] == "action" and len(data) > 1:
+                    try:
+                        action_class =  getattr(action, data[1])
+                        action_instance = action_class(menu_action, action_type=data[2])
+                        # print "ACTION: ", action_instance
+                    except:
+                        LOG.warn("Could not connect action", exc_info=True)
+                        continue
+                    self.actions.append(action_instance)
+
+        print "action time ", time.time() - s
+        # print self.actions
+
+    @pyqtSlot()
+    def on_power_clicked(self):
+        action.Home.unhomeAxis('x')
 
     def closeEvent(self, event):
         """Catch close event and show confirmation dialog if set to"""
+        print "prompt: ", self.prompt_at_exit
         if self.prompt_at_exit:
             quit_msg = "Are you sure you want to exit LinuxCNC?"
             reply = QMessageBox.question(self, 'Exit LinuxCNC?',
@@ -97,12 +133,10 @@ class VCPMainWindow(QMainWindow):
         if focused_widget is not None:
             focused_widget.clearFocus()
 
-
-        # focused_widget = QtGui.QApplication.focusWidget()
-        # if isinstance(focused_widget, MyLineEdit):
-        #     focused_widget.clearFocus()
-        # QtGui.QMainWindow.mousePressEvent(self, event)
-
+    def focusChangedEvent(self, new_w, old_w):
+        print "focus changed"
+        if isinstance(new_w, QLineEdit):
+            print "Line edit got focus"
 
 #==============================================================================
 #  menu action slots
@@ -176,9 +210,42 @@ class VCPMainWindow(QMainWindow):
             action.setData(fname)
             action.setVisible(True)
 
+
+    def initHomingMenu(self):
+        if hasattr(self, 'menuHoming'):
+
+            # remove any actions that were added in QtDesigner
+            for menu_action in self.menuHoming.actions():
+                self.menuHoming.removeAction(menu_action)
+
+            # Register the submenu with the action (so it will be disabled
+            # if the actions are not valid), but don't connect it to method
+            home_action = action.Home(widget=self.menuHoming, method=None)
+
+            menu_action = QAction(self)
+            menu_action.setText("Home &All")
+            home_action = action.Home(widget=menu_action, method='homeAll', axis='all')
+            self.menuHoming.addAction(menu_action)
+
+            # add homing actions for each axis
+            for aletter in INFO.AXIS_LETTER_LIST:
+                menu_action = QAction(self)
+                menu_action.setText("Home &{}".format(aletter.upper()))
+                home_action = action.Home(widget=menu_action, method='homeAxis', axis=aletter)
+                self.menuHoming.addAction(menu_action)
+                self.actions.append(menu_action)
+
 #==============================================================================
 # helper functions
 #==============================================================================
+
+    def loadSplashGcode(self):
+        # Load backplot splash code
+        path = os.path.realpath(os.path.join(__file__, '../../../..', 'sim/example_gcode/qtpyvcp.ngc'))
+        splash_code = INFO.getOpenFile() or path
+        if splash_code is not None:
+            # Load after startup to not cause delay
+            QTimer.singleShot(0, lambda: ACTION.loadProgram(splash_code, add_to_recents=False))
 
 
 #==============================================================================
