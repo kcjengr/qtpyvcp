@@ -14,7 +14,7 @@ ACTION = Action()
 PREFS = Prefs()
 INFO = Info()
 
-import xyz_ui
+# import xyz_ui
 
 class MainWindow(VCPMainWindow):
     def __init__(self, ui_file):

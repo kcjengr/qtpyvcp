@@ -1,135 +1,13 @@
-/* Customize any plain widget that is a child of a QMainWindow. */
-QMainWindow > .QWidget {
-    background-color: gainsboro;
-    background-image: url(:/images/pagefold.png);
-    background-position: top right;
-    background-repeat: no-repeat
-}
-
-/* Provide a padding for the layout inside the frame. The frame
-   exists only to provide a padding for the top-right image, so we
-   explicitly disable the border. */
-#mainFrame {
-    padding-right: 30px;
-    border-style: none;
-    border-image: none; /* since we set a border-image below */
-}
-
-/* mainFrame won't have this border-image since we have
-   explicitly set it to 'none' using a more specific selector. */
-QFrame, QLineEdit, QComboBox[editable="true"], QSpinBox {
-    border-image: url(:/images/frame.png) 4;
-    border-width: 3;
-}
-
-QLabel {
-    border: none;
-    border-image: none;
-    padding: 0;
-    background: none;
-}
-
-/* Make text in message boxes selectable. */
-QMessageBox {
-    /* LinksAccessibleByMouse | TextSelectableByMouse */
-    messagebox-text-interaction-flags: 5;
-}
-
-/* Set the selection colors for all widgets. */
-QWidget {
-    selection-color: black;
-    selection-background-color: Silver;
-    color: black;
-}
-
-/* Make the entire row selected in item views. */
-QAbstractItemView {
-    show-decoration-selected: 1;
-}
-
-/* Nice WindowsXP-style password character for password line edits. */
-QLineEdit[echoMode="2"] {
-    lineedit-password-character: 9679;
-}
-
-/* Customize tooltips. */
-QToolTip {
-    background-color: rgb(200,200,255);
-    border-color: darkslategray;
-    border-width: 1px;
-    border-style: solid;
-    padding: 3px;
-    font: bold;
-    border-radius: 3px;
-    opacity: 200;
-}
-
-/* Customize radio buttons. */
-
-QRadioButton {
-    spacing: 5px;
-}
-
-QRadioButton::indicator {
-    width: 13px;
-    height: 13px;
-}
-
-QRadioButton::indicator::unchecked {
-    image: url(:/images/radiobutton_unchecked.png);
-}
-
-QRadioButton::indicator:unchecked:hover {
-    image: url(:/images/radiobutton_unchecked_hover.png);
-}
-
-QRadioButton::indicator:unchecked:pressed {
-    image: url(:/images/radiobutton_unchecked_pressed.png);
-}
-
-QRadioButton::indicator::checked {
-    image: url(:/images/radiobutton_checked.png);
-}
-
-QRadioButton::indicator:checked:hover {
-    image: url(:/images/radiobutton_checked_hover.png);
-}
-
-QRadioButton::indicator:checked:pressed {
-    image: url(:/images/radiobutton_checked_pressed.png);
-}
-
-/* Customize arrows. */
-
-*::down-arrow, *::menu-indicator {
-    image: url(:/images/down_arrow.png);
-    width: 7px;
-    height: 7px;
-}
-
-*::down-arrow:disabled, *::down-arrow:off {
-   image: url(:/images/down_arrow_disabled.png);
-}
-
-*::up-arrow {
-    image: url(:/images/up_arrow.png);
-    width: 7px;
-    height: 7px;
-}
-
-*::up-arrow:disabled, *::up-arrow:off {
-   image: url(:/images/up_arrow_disabled.png);
-}
-
-/* Customize push buttons and comboboxes. Our read-only combobox
-   is very similar to a push button, so they share the same border image. */
-
-QPushButton {
-    min-width: 4em;
+QMainWindow {
+    background: #707070
+    /*border-image: url(:/images/dark_background.jpg);*/
+    /*background-image: url(:/images/dark_background.jpg);*/
+/*    background-image: url(:/images/pp_border.png);*/
 }
 
 QPushButton, QComboBox[editable="false"],
 QComboBox[editable="true"]::drop-down {
+    border-image: url(:/images/pp_border.png);
     border-color: black;
     border-style: solid;
     border-radius: 4px;
@@ -138,172 +16,201 @@ QComboBox[editable="true"]::drop-down {
                                      stop: 0 #b6b6b6, stop: 1.0 #626262);
 }
 
-QPushButton:hover, QComboBox[editable="false"]:hover,
-QComboBox[editable="true"]::drop-down:hover, QMenuBar::item:hover {
+QPushButton:disabled {
+    border-color: gray;
+}
+
+/*QPushButton[error="true"] {
+    border-color: red;
+}*/
+
+QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:pressed, QComboBox[editable="false"]:on,
-QComboBox[editable="true"]::drop-down:on, QMenuBar::item:on {
+QPushButton:pressed {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #5C5959, stop: 1.0 #A19E9E)
 }
 
+QPushButton:checked[option="true"] {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd)
+}
+
 QPushButton:checked {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #5d8f30, stop: 1.0 #89c758)
+                                     stop: 0 #599428, stop: 1.0 #8acd4a)
 }
 
-
-/* Customize read-only comboboxes. */
-
-QComboBox[editable="false"] {
-    padding-left: 3px;
-    padding-right: 20px; /* space for the arrow */
+/*E-Stop button*/
+ActionButton[action_id="0"]:checked {
+    border-radius: 50px;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #C40100, stop: 1.0 #F22E2D)
 }
 
-QComboBox[editable="false"]::drop-down {
-    subcontrol-origin: padding;
-    subcontrol-position: top right;
-    width: 15px;
-    border-left-style: solid;
-    border-left-color: darkgray;
-    border-left-width: 1px;
+QLineEdit {
+    border-style: solid;
+    border-color: transparent;
+    border-width: 2px;
+    border-radius: 5px;
+    color: #ffbb0e;
+    background: black;
 }
 
-QComboBox[editable="false"]::down-arrow {
-    subcontrol-origin: content;
-    subcontrol-position: center;
-    position: relative;
-    left: 1px; /* 1 pixel dropdown border */
+QLineEdit:focus {
+    border-color: #4a6aa7;
 }
 
-/* The combobox arrow is on when the popup is open. */
-QComboBox[editable="false"]::down-arrow:on {
-    position: relative;
-    top: 1px;
-    left: 2px;
-}
-
-/* Customize editable comboboxes. */
-
-QComboBox[editable="true"] {
-    padding-right: 16px;
-}
-
-QComboBox[editable="true"]::drop-down {
-    subcontrol-origin: border;
-    subcontrol-position: top right;
-    width: 13px;
-    position: absolute;
-    top: 2px;
-    bottom: 2px;
-    right: 2px;
-}
-
-QComboBox[editable="true"]::drop-down,
-QComboBox[editable="true"]::drop-down:hover,
-QComboBox[editable="true"]::drop-down:on {
-    border-width: 0px;
-    border-left-width: 3px; /* we need only left and center part */
-}
-
-/* Shift the arrow when it's open. */
-QComboBox[editable="true"]::down-arrow:on {
-    position: relative;
-    top: 1px;
-    left: 1px;
-}
-
-/* Customize check boxes. */
-QCheckBox {
-    spacing: 5px;
-}
-
-QCheckBox::indicator {
-    width: 13px;
-    height: 13px;
-}
-
-QCheckBox::indicator:unchecked {
-    image: url(:/images/checkbox_unchecked.png);
-}
-
-QCheckBox::indicator:unchecked:hover {
-    image: url(:/images/checkbox_unchecked_hover.png);
-}
-
-QCheckBox::indicator:unchecked:pressed {
-    image: url(:/images/checkbox_unchecked_pressed.png);
-}
-
-QCheckBox::indicator:checked {
-    image: url(:/images/checkbox_checked.png);
-}
-
-QCheckBox::indicator:checked:hover {
-    image: url(:/images/checkbox_checked_hover.png);
-}
-
-QCheckBox::indicator:checked:pressed {
-    image: url(:/images/checkbox_checked_pressed.png);
-}
-
-/* Customize the size grip. */
-QSizeGrip {
-    image: url(:/images/sizegrip.png);
-    width: 16px;
-    height: 16px;
-}
-
-/* Customize the menu bar. */
-QMenuBar {
-    border-image: none;
-    border-style: none;
+.QFrame {
+    padding: 0px;
     border-width: 1px;
-    border-bottom-style: solid;
-    border-bottom-color: darkslategray;
+    border-radius: 4px;
+    border-style: solid;
+    border-color: #8A8484;
+}
+
+DROWidget {
+    color: #ffbb0e;
+    border-color: black;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 4px;
+    background-color: black;
+}
+
+
+/*QMenuBar {
+    background-color: red;
+}
+
+
+QMenuBar:item {
+    background-color: red;
+}
+
+QMenu {
+    background-color: blue;
+}
+*/
+GcodeBackplot {
+    border-color: black;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 4px;
+    background-color: black;
+    margin: 10px;
+}
+
+QGroupBox {
+    /*background-color: #6B6B6B;*/
+    border: 1px solid #8A8484;
+    border-radius: 5px;
+    margin-top: 1ex;
+    font-family: Roboto;
+    font-style: normal;
+    font-size: 12pt;
+/*    font-weight: bold;*/
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top center;
+    padding: 0 3px;
+    color: black;
+}
+
+
+
+GcodeEditor {
+    background-color: white;
+    border-color: black;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 4px;
     padding: 2px;
 }
 
-/* Customize spin boxes. */
-
-QSpinBox {
-    padding-right: 15px;
+GcodeBackplot {
+    border-color: black;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 4px;
+    padding: 10px;
 }
 
-QSpinBox::up-button {
-    subcontrol-origin: border;
-    subcontrol-position: top right;
 
-    width: 16px; /* 16 + 2*1px border-width = 15px padding + 3px parent border */
-    border-image: url(:/images/spinup.png) 1;
-    border-width: 1px;
+QTabWidget::pane { /* The tab widget frame */
+    border-bottom: 2px solid black;
 }
 
-QSpinBox::up-button:hover {
-    border-image: url(:/images/spinup_hover.png) 1;
+QTabWidget::tab-bar {
+    left: 5px; /* move to the right by 5px */
 }
 
-QSpinBox::up-button:pressed {
-    border-image: url(:/images/spinup_pressed.png) 1;
+/* Style the tab using the tab sub-control. Note that it reads QTabBar _not_ QTabWidget */
+QTabBar::tab {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #b6b6b6, stop: 1.0 #626262);
+    border: 2px solid black;
+    border-top-color: black; /* same as the pane color */
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    min-width: 8ex;
+    padding: 2px;
 }
 
-QSpinBox::down-button {
-    subcontrol-origin: border;
-    subcontrol-position: bottom right;
-
-    width: 16px;
-    border-image: url(:/images/spindown.png) 1;
-    border-width: 1px;
-    border-top-width: 0;
+QTabBar::tab:selected, QTabBar::tab:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QSpinBox::down-button:hover {
-    border-image: url(:/images/spindown_hover.png) 1;
+QTabBar::tab:selected {
+    /*border-color: black;*/
+    border-top-color: #4a6aa7;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
 }
 
-QSpinBox::down-button:pressed {
-    border-image: url(:/images/spindown_pressed.png) 1;
+QTabBar::tab:!selected {
+    margin-bottom: 2px; /* make non-selected tabs look smaller */
+}
+
+QTabBar::tab:selected {
+    /* expand/overlap to the left and right by 4px */
+    margin-left: -4px; margin-right: -4px;
+
+}
+
+QTabBar::tab:first:selected {
+    margin-left: 0; /* the first selected tab has nothing to overlap with on the left */
+}
+
+QTabBar::tab:last:selected {
+    margin-right: 0; /* the last selected tab has nothing to overlap with on the right */
+}
+
+QTabBar::tab:only-one {
+    margin: 0; /* if there is only one tab, we don't want overlapping margins */
+}
+
+
+QWidget#buttonBox QPushButton {
+    border-radius: 0px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+}
+
+QWidget#buttonBox QPushButton[position='first'] {
+    border-left-width: 2px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+QWidget#buttonBox QPushButton[position='last'] {
+    border-right-width: 2px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
 }
