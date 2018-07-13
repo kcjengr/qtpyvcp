@@ -66,6 +66,17 @@ class  GcodeBackplot(QBackPlot):
 
         self.abortButton.clicked.connect(self.abort)
 
+
+        STATUS.actual_position.connect(self.update)
+        STATUS.joint_actual_position.connect(self.update)
+        STATUS.homed.connect(self.update)
+        STATUS.g5x_offset.connect(self.update)
+        STATUS.g92_offset.connect(self.update)
+        STATUS.limit.connect(self.update)
+        STATUS.tool_in_spindle.connect(self.update)
+        STATUS.motion_mode.connect(self.update)
+        STATUS.current_vel.connect(self.update)
+
         # Connect status signals
         STATUS.file_loaded.connect(self.loadBackplot)
         STATUS.reload_backplot.connect(self.reloadBackplot)
