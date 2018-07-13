@@ -364,7 +364,7 @@
    <sender>actionSettings</sender>
    <signal>triggered()</signal>
    <receiver>Camera</receiver>
-   <slot>configureCaptureSettings()</slot>
+   <slot>configureSettings()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -430,7 +430,7 @@
   <slot>pause()</slot>
   <slot>stop()</slot>
   <slot>enablePreview(bool)</slot>
-  <slot>configureCaptureSettings()</slot>
+  <slot>configureSettings()</slot>
   <slot>takeImage()</slot>
   <slot>startCamera()</slot>
   <slot>toggleLock()</slot>
