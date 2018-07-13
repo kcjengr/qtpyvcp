@@ -125,6 +125,30 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
+       <widget class="QPushButton" name="settingsButton">
+        <property name="text">
+         <string>Settings</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="start_stopButton">
+        <property name="text">
+         <string>Start/Stop</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Device:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="devicesCombo"/>
+      </item>
+      <item>
        <widget class="QPushButton" name="lockButton">
         <property name="text">
          <string>Focus</string>
@@ -134,7 +158,7 @@
       <item>
        <widget class="QTabWidget" name="captureWidget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -246,7 +270,6 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -385,6 +408,22 @@
     <hint type="destinationlabel">
      <x>333</x>
      <y>210</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>settingsButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Camera</receiver>
+   <slot>configureSettings()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>639</x>
+     <y>44</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>372</x>
+     <y>286</y>
     </hint>
    </hints>
   </connection>

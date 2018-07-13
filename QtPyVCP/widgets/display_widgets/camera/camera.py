@@ -182,7 +182,6 @@ class Settings(QDialog):
         for i in range(box.count()):
             if box.itemData(i) == value:
                 box.setCurrentIndex(i)
-                print(i)
                 break
 
 
@@ -203,7 +202,6 @@ class Camera(QMainWindow):
         self.videoSettings = QVideoEncoderSettings()
         self.videoContainerFormat = ''
 
-        # self.ui.setupUi(self)
 
         camera_device = QByteArray()
 
@@ -223,9 +221,9 @@ class Camera(QMainWindow):
             self.ui.menuDevices.addAction(videoDeviceAction)
 
         video_devices_group.triggered.connect(self.updateCameraDevice)
-        # self.ui.captureWidget.currentChanged.connect(self.updateCaptureMode)
+        self.ui.captureWidget.currentChanged.connect(self.updateCaptureMode)
 
-        # self.ui.lockButton.hide()
+        self.ui.lockButton.hide()
 
         self.setCamera(camera_device)
 
@@ -248,8 +246,8 @@ class Camera(QMainWindow):
 
         self.mediaRecorder.setMetaData(QMediaMetaData.Title, "Test Title")
 
-        # self.ui.exposureCompensation.valueChanged.connect(
-        #     self.setExposureCompensation)
+        self.ui.exposureCompensation.valueChanged.connect(
+            self.setExposureCompensation)
 
         self.camera.setViewfinder(self.ui.viewfinder)
 
@@ -263,12 +261,12 @@ class Camera(QMainWindow):
 
         self.camera.lockStatusChanged.connect(self.updateLockStatus)
 
-        # self.ui.captureWidget.setTabEnabled(0,
-        #                                     self.camera.isCaptureModeSupported(QCamera.CaptureStillImage))
-        # self.ui.captureWidget.setTabEnabled(1,
-        #                                     self.camera.isCaptureModeSupported(QCamera.CaptureVideo))
+        self.ui.captureWidget.setTabEnabled(0,
+                                            self.camera.isCaptureModeSupported(QCamera.CaptureStillImage))
+        self.ui.captureWidget.setTabEnabled(1,
+                                            self.camera.isCaptureModeSupported(QCamera.CaptureVideo))
 
-        # self.updateCaptureMode()
+        self.updateCaptureMode()
 
         self.camera.start()
 
@@ -366,15 +364,15 @@ class Camera(QMainWindow):
             self.ui.statusbar.showMessage("Focused", 2000)
             indicationColor = Qt.darkGreen
         elif status == QCamera.Unlocked:
-            # self.ui.lockButton.setText("Focus")
+            self.ui.lockButton.setText("Focus")
 
             if reason == QCamera.LockFailed:
                 self.ui.statusbar.showMessage("Focus Failed", 2000)
                 indicationColor = Qt.red
 
-        # palette = self.ui.lockButton.palette()
-        # palette.setColor(QPalette.ButtonText, indicationColor)
-        # self.ui.lockButton.setPalette(palette)
+        palette = self.ui.lockButton.palette()
+        palette.setColor(QPalette.ButtonText, indicationColor)
+        self.ui.lockButton.setPalette(palette)
 
     def takeImage(self):
         self.isCapturingImage = True
@@ -397,12 +395,12 @@ class Camera(QMainWindow):
         if state == QCamera.ActiveState:
             self.ui.actionStartCamera.setEnabled(False)
             self.ui.actionStopCamera.setEnabled(True)
-            # self.ui.captureWidget.setEnabled(True)
+            self.ui.captureWidget.setEnabled(True)
             self.ui.actionSettings.setEnabled(True)
         elif state in (QCamera.UnloadedState, QCamera.LoadedState):
             self.ui.actionStartCamera.setEnabled(True)
             self.ui.actionStopCamera.setEnabled(False)
-            # self.ui.captureWidget.setEnabled(False)
+            self.ui.captureWidget.setEnabled(False)
             self.ui.actionSettings.setEnabled(False)
 
     def updateRecorderState(self, state):
