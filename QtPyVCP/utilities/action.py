@@ -554,9 +554,10 @@ class Jog(object):
     @classmethod
     def autoJog(cls, axis, direction):
         axis = getAxisNumber(axis)
-        jog_joint = False
+        jog_joint = 0
         if STAT.motion_mode == linuxcnc.TRAJ_MODE_FREE:
-            jog_joint = True
+            jog_joint = 1
+            # CMD.traj_mode(linuxcnc.TRAJ_MODE_FREE)
 
         if axis in (3,4,5):
             rate = STATUS.angular_jog_velocity / 60

@@ -116,6 +116,9 @@ class VCPMainWindow(QMainWindow):
 
     def keyPressEvent(self, event):
         # super(VCPMainWindow, self).keyPressEvent(event)
+        if event.isAutoRepeat():
+            return
+
         if event.key() == Qt.Key_Up:
             print 'Move Up'
             action.Jog.autoJog('Y', 1)
@@ -132,6 +135,9 @@ class VCPMainWindow(QMainWindow):
             print 'Unhandled key press event '
 
     def keyReleaseEvent(self, event):
+        if event.isAutoRepeat():
+            return
+
         if event.key() == Qt.Key_Up:
             print 'Move Up'
             action.Jog.autoJog('Y', 0)
