@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# coding: utf-8
 #
 #    Copyright 2016 Chris Morley
 #
@@ -83,7 +84,7 @@ class  GcodeBackplot(QBackPlot):
         STATUS.program_units.connect(lambda v: self.setMetricUnits(v==2))
 
     def loadBackplot(self, fname):
-        LOG.debug('load the display: {}'.format(fname))
+        LOG.debug('load the display: {}'.format(fname.encode('utf-8')))
         self._reload_filename = fname
         self.load(fname)
 

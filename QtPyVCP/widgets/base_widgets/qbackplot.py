@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# coding: utf-8
 #
 #    Copyright 2016 Chris Morley
 #
@@ -245,6 +246,9 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
             filename = s.file
         elif not filename and not s.file:
             return
+
+        # Needed to support special chars in path name, such as `coño.ngc`
+        filename = filename.encode('utf-8')
 
         td = tempfile.mkdtemp()
         self.current_file = filename

@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding: utf-8
 
 #   Copyright (c) 2018 Kurt Jacobson
 #      <kurtcjacobson@gmail.com>
@@ -233,6 +234,7 @@ class VCPMainWindow(QMainWindow):
 
     def updateRecentFilesMenu(self, recent_files):
         for i, fname in enumerate(recent_files):
+            fname = fname.encode('utf-8')
             text = "&{} {}".format(i + 1, os.path.split(fname)[1])
             action = self.recent_file_actions[i]
             action.setText(text)

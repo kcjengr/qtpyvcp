@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding: utf-8
 
 #   Copyright (c) 2018 Kurt Jacobson
 #      <kurtcjacobson@gmail.com>
@@ -72,7 +73,7 @@ class _Action(object):
         setTaskMode(linuxcnc.MODE_AUTO)
         filter_prog = INFO.getFilterProgram(fname)
         if not filter_prog:
-            CMD.program_open(fname)
+            CMD.program_open(fname.encode('utf-8'))
         else:
             self.open_filter_program(fname, filter_prog)
 
