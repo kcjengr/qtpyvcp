@@ -42,6 +42,7 @@
 #############################################################################
 
 from PyQt5 import uic
+
 from PyQt5.QtCore import QByteArray, qFuzzyCompare, Qt, QTimer
 from PyQt5.QtGui import QPalette, QPixmap
 from PyQt5.QtMultimedia import (QAudioEncoderSettings, QCamera,
@@ -51,78 +52,32 @@ from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QDialog,
                              QMainWindow, QMessageBox)
 
 
-class ImageSettings(QDialog):
+class Settings(QDialog):
 
-    def __init__(self, imageCapture, parent=None):
-        super(ImageSettings, self).__init__(parent)
+    def __init__(self, mediaRecorder, imageCapture, parent=None):
+        super(Settings, self).__init__(parent)
 
-        self.ui = uic.loadUi("imagesettings.ui", self)
         self.imagecapture = imageCapture
+        self.mediaRecorder = mediaRecorder
 
-        # self.ui.setupUi(self)
+        self.ui = uic.loadUi("settings.ui", self)
 
         self.ui.imageCodecBox.addItem("Default image format", "")
         for codecName in self.imagecapture.supportedImageCodecs():
             description = self.imagecapture.imageCodecDescription(codecName)
-            self.ui.imageCodecBox.addItem(codecName + ": " + description,
-                                          codecName)
+            self.ui.imageCodecBox.addItem("{}: {}".format(codecName, description), codecName)
 
         self.ui.imageQualitySlider.setRange(0, QMultimedia.VeryHighQuality)
 
         self.ui.imageResolutionBox.addItem("Default resolution")
         supportedResolutions, _ = self.imagecapture.supportedResolutions()
         for resolution in supportedResolutions:
-            self.ui.imageResolutionBox.addItem(
-                "%dx%d" % (resolution.width(), resolution.height()),
-                resolution)
-
-    def imageSettings(self):
-        settings = self.imagecapture.encodingSettings()
-        settings.setCodec(self.boxValue(self.ui.imageCodecBox))
-        settings.setQuality(
-            QMultimedia.EncodingQuality(
-                self.ui.imageQualitySlider.value()))
-        settings.setResolution(self.boxValue(self.ui.imageResolutionBox))
-
-        return settings
-
-    def setImageSettings(self, settings):
-        self.selectComboBoxItem(self.ui.imageCodecBox, settings.codec())
-        self.selectComboBoxItem(self.ui.imageResolutionBox,
-                                settings.resolution())
-        self.ui.imageQualitySlider.setValue(settings.quality())
-
-    @staticmethod
-    def boxValue(box):
-        idx = box.currentIndex()
-        if idx == -1:
-            return None
-
-        return box.itemData(idx)
-
-    @staticmethod
-    def selectComboBoxItem(box, value):
-        for i in range(box.count()):
-            if box.itemData(i) == value:
-                box.setCurrentIndex(i)
-                break
-
-
-class VideoSettings(QDialog):
-
-    def __init__(self, mediaRecorder, parent=None):
-        super(VideoSettings, self).__init__(parent)
-
-        self.ui = uic.loadUi("videosettings.ui", self)
-        self.mediaRecorder = mediaRecorder
-
-        self.ui.setupUi(self)
+            self.ui.imageResolutionBox.addItem("{}x{}".format(resolution.width(), resolution.height()), resolution)
 
         self.ui.audioCodecBox.addItem("Default audio codec", "")
         for codecName in self.mediaRecorder.supportedAudioCodecs():
             description = self.mediaRecorder.audioCodecDescription(codecName)
-            self.ui.audioCodecBox.addItem(codecName + ": " + description,
-                                          codecName)
+            self.ui.audioCodecBox.addItem("{}: {}".format(codecName, description), codecName)
 
         supportedSampleRates, _ = self.mediaRecorder.supportedAudioSampleRates()
         for sampleRate in supportedSampleRates:
@@ -133,29 +88,43 @@ class VideoSettings(QDialog):
         self.ui.videoCodecBox.addItem("Default video codec", "")
         for codecName in self.mediaRecorder.supportedVideoCodecs():
             description = self.mediaRecorder.videoCodecDescription(codecName)
-            self.ui.videoCodecBox.addItem(codecName + ": " + description,
-                                          codecName)
+            self.ui.videoCodecBox.addItem("{}: {}".format(codecName, description.encode("utf-8")), codecName)
 
         self.ui.videoQualitySlider.setRange(0, QMultimedia.VeryHighQuality)
 
         self.ui.videoResolutionBox.addItem("Default")
         supportedResolutions, _ = self.mediaRecorder.supportedResolutions()
         for resolution in supportedResolutions:
-            self.ui.videoResolutionBox.addItem(
-                "%dx%d" % (resolution.width(), resolution.height()),
-                resolution)
+            self.ui.videoResolutionBox.addItem("{}x{}".format(resolution.width(), resolution.height()), resolution)
 
         self.ui.videoFramerateBox.addItem("Default")
         supportedFrameRates, _ = self.mediaRecorder.supportedFrameRates()
         for rate in supportedFrameRates:
-            self.ui.videoFramerateBox.addItem("%0.2f" % rate, rate)
+            self.ui.videoFramerateBox.addItem("{}".format(rate), rate)
 
         self.ui.containerFormatBox.addItem("Default container", "")
         for format in self.mediaRecorder.supportedContainers():
-            self.ui.containerFormatBox.addItem(
-                format + ":" + self.mediaRecorder.containerDescription(
-                    format),
-                format)
+            self.ui.containerFormatBox.addItem("{}: {}".format(format, self.mediaRecorder.containerDescription(format)),
+                                               format)
+
+    def imageSettings(self):
+        settings = self.imagecapture.encodingSettings()
+        settings.setCodec(self.boxValue(self.ui.imageCodecBox))
+        settings.setQuality(
+            QMultimedia.EncodingQuality(
+                self.ui.imageQualitySlider.value()))
+
+        resolution = self.boxValue(self.ui.imageResolutionBox)
+
+        settings.setResolution(resolution)
+
+        return settings
+
+    def setImageSettings(self, settings):
+
+        self.selectComboBoxItem(self.ui.imageCodecBox, settings.codec())
+        self.selectComboBoxItem(self.ui.imageResolutionBox, settings.resolution())
+        self.ui.imageQualitySlider.setValue(settings.quality())
 
     def audioSettings(self):
         settings = self.mediaRecorder.audioSettings()
@@ -163,22 +132,21 @@ class VideoSettings(QDialog):
         settings.setQuality(
             QMultimedia.EncodingQuality(
                 self.ui.audioQualitySlider.value()))
-        settings.setSampleRate(self.boxValue(self.ui.audioSampleRateBox))
+
+        sample_rate = self.boxValue(self.ui.audioSampleRateBox)
+        settings.setSampleRate(sample_rate)
 
         return settings
 
     def setAudioSettings(self, settings):
         self.selectComboBoxItem(self.ui.audioCodecBox, settings.codec())
-        self.selectComboBoxItem(self.ui.audioSampleRateBox,
-                                settings.sampleRate())
+        self.selectComboBoxItem(self.ui.audioSampleRateBox, settings.sampleRate())
         self.ui.audioQualitySlider.setValue(settings.quality())
 
     def videoSettings(self):
         settings = self.mediaRecorder.videoSettings()
         settings.setCodec(self.boxValue(self.ui.videoCodecBox))
-        settings.setQuality(
-            QMultimedia.EncodingQuality(
-                self.ui.videoQualitySlider.value()))
+        settings.setQuality(QMultimedia.EncodingQuality(self.ui.videoQualitySlider.value()))
         settings.setResolution(self.boxValue(self.ui.videoResolutionBox))
         settings.setFrameRate(self.boxValue(self.ui.videoFramerateBox))
 
@@ -186,8 +154,7 @@ class VideoSettings(QDialog):
 
     def setVideoSettings(self, settings):
         self.selectComboBoxItem(self.ui.videoCodecBox, settings.codec())
-        self.selectComboBoxItem(self.ui.videoResolutionBox,
-                                settings.resolution())
+        self.selectComboBoxItem(self.ui.videoResolutionBox, settings.resolution())
         self.ui.videoQualitySlider.setValue(settings.quality())
 
         for i in range(1, self.ui.videoFramerateBox.count()):
@@ -215,11 +182,8 @@ class VideoSettings(QDialog):
         for i in range(box.count()):
             if box.itemData(i) == value:
                 box.setCurrentIndex(i)
+                print(i)
                 break
-
-
-class StreamingSettings(QDialog):
-    pass
 
 
 class Camera(QMainWindow):
@@ -241,29 +205,29 @@ class Camera(QMainWindow):
 
         # self.ui.setupUi(self)
 
-        cameraDevice = QByteArray()
+        camera_device = QByteArray()
 
-        videoDevicesGroup = QActionGroup(self)
-        videoDevicesGroup.setExclusive(True)
+        video_devices_group = QActionGroup(self)
+        video_devices_group.setExclusive(True)
 
         for deviceName in QCamera.availableDevices():
             description = QCamera.deviceDescription(deviceName)
-            videoDeviceAction = QAction(description, videoDevicesGroup)
+            videoDeviceAction = QAction(description, video_devices_group)
             videoDeviceAction.setCheckable(True)
             videoDeviceAction.setData(deviceName)
 
-            if cameraDevice.isEmpty():
-                cameraDevice = deviceName
+            if camera_device.isEmpty():
+                camera_device = deviceName
                 videoDeviceAction.setChecked(True)
 
             self.ui.menuDevices.addAction(videoDeviceAction)
 
-        videoDevicesGroup.triggered.connect(self.updateCameraDevice)
+        video_devices_group.triggered.connect(self.updateCameraDevice)
         # self.ui.captureWidget.currentChanged.connect(self.updateCaptureMode)
 
         # self.ui.lockButton.hide()
 
-        self.setCamera(cameraDevice)
+        self.setCamera(camera_device)
 
     def setCamera(self, cameraDevice):
         if cameraDevice.isEmpty():
@@ -305,6 +269,7 @@ class Camera(QMainWindow):
         #                                     self.camera.isCaptureModeSupported(QCamera.CaptureVideo))
 
         # self.updateCaptureMode()
+
         self.camera.start()
 
     def keyPressEvent(self, event):
@@ -349,35 +314,26 @@ class Camera(QMainWindow):
         self.displayCapturedImage()
         QTimer.singleShot(4000, self.displayViewfinder)
 
-    def configureCaptureSettings(self):
-        if self.camera.captureMode() == QCamera.CaptureStillImage:
-            self.configureImageSettings()
-        elif self.camera.captureMode() == QCamera.CaptureVideo:
-            self.configureVideoSettings()
+    def configureSettings(self):
 
-    def configureVideoSettings(self):
-        settingsDialog = VideoSettings(self.mediaRecorder)
+        settings_dialog = Settings(self.mediaRecorder, self.imageCapture)
 
-        settingsDialog.setAudioSettings(self.audioSettings)
-        settingsDialog.setVideoSettings(self.videoSettings)
-        settingsDialog.setFormat(self.videoContainerFormat)
+        settings_dialog.setImageSettings(self.imageSettings)
+        settings_dialog.setAudioSettings(self.audioSettings)
+        settings_dialog.setVideoSettings(self.videoSettings)
 
-        if settingsDialog.exec_():
-            self.audioSettings = settingsDialog.audioSettings()
-            self.videoSettings = settingsDialog.videoSettings()
-            self.videoContainerFormat = settingsDialog.format()
+        settings_dialog.setFormat(self.videoContainerFormat)
+        # settings_dialog.setStreamingSettings(self.streamingSettings)
 
+        if settings_dialog.exec_():
+            self.imageSettings = settings_dialog.imageSettings()
+            self.audioSettings = settings_dialog.audioSettings()
+            self.videoSettings = settings_dialog.videoSettings()
+            self.videoContainerFormat = settings_dialog.format()
+
+            self.imageCapture.setEncodingSettings(self.imageSettings)
             self.mediaRecorder.setEncodingSettings(self.audioSettings,
                                                    self.videoSettings, self.videoContainerFormat)
-
-    def configureImageSettings(self):
-        settingsDialog = ImageSettings(self.imageCapture)
-
-        settingsDialog.setImageSettings(self.imageSettings)
-
-        if settingsDialog.exec_():
-            self.imageSettings = settingsDialog.imageSettings()
-            self.imageCapture.setEncodingSettings(self.imageSettings)
 
     def record(self):
         self.mediaRecorder.record()
@@ -410,7 +366,7 @@ class Camera(QMainWindow):
             self.ui.statusbar.showMessage("Focused", 2000)
             indicationColor = Qt.darkGreen
         elif status == QCamera.Unlocked:
-            #self.ui.lockButton.setText("Focus")
+            # self.ui.lockButton.setText("Focus")
 
             if reason == QCamera.LockFailed:
                 self.ui.statusbar.showMessage("Focus Failed", 2000)
