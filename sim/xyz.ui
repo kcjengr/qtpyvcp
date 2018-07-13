@@ -40,6 +40,9 @@
       </property>
       <item>
        <widget class="QTabWidget" name="tabWidget">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
@@ -56,6 +59,9 @@
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
            <widget class="QSplitter" name="splitter">
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
             <property name="lineWidth">
              <number>2</number>
             </property>
@@ -66,6 +72,9 @@
              <number>10</number>
             </property>
             <widget class="QWidget" name="verticalLayoutWidget">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <layout class="QVBoxLayout" name="verticalLayout_2">
               <item>
                <widget class="RecentFileComboBox" name="recentfilecombobox">
@@ -75,10 +84,17 @@
                   <height>0</height>
                  </size>
                 </property>
+                <property name="focusPolicy">
+                 <enum>Qt::NoFocus</enum>
+                </property>
                </widget>
               </item>
               <item>
-               <widget class="GcodeEditor" name="gcodeeditor"/>
+               <widget class="GcodeEditor" name="gcodeeditor">
+                <property name="focusPolicy">
+                 <enum>Qt::NoFocus</enum>
+                </property>
+               </widget>
               </item>
               <item>
                <widget class="EntryWidget" name="entry">
@@ -87,6 +103,9 @@
                   <family>Roboto</family>
                   <pointsize>14</pointsize>
                  </font>
+                </property>
+                <property name="focusPolicy">
+                 <enum>Qt::NoFocus</enum>
                 </property>
                 <property name="placeholderText">
                  <string>MDI</string>
@@ -101,6 +120,9 @@
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="renderProgramAlpha" stdset="0">
               <bool>true</bool>
@@ -151,6 +173,9 @@
       </property>
       <item>
        <widget class="QGroupBox" name="groupBox_2">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="title">
          <string>PROGRAM</string>
         </property>
@@ -162,6 +187,9 @@
            <width>141</width>
            <height>31</height>
           </rect>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout_4">
           <property name="spacing">
@@ -192,6 +220,9 @@
               <family>Roboto Medium</family>
              </font>
             </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
             <property name="text">
              <string>ABS</string>
             </property>
@@ -219,6 +250,9 @@
               <family>Roboto Medium</family>
              </font>
             </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
+            </property>
             <property name="text">
              <string>REL</string>
             </property>
@@ -242,6 +276,9 @@
              <font>
               <family>Roboto Medium</family>
              </font>
+            </property>
+            <property name="focusPolicy">
+             <enum>Qt::NoFocus</enum>
             </property>
             <property name="text">
              <string>DTG</string>
@@ -273,6 +310,9 @@
            <family>Roboto</family>
           </font>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="text">
           <string>Power</string>
          </property>
@@ -293,6 +333,9 @@
           <font>
            <family>Roboto</family>
           </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="action_id" stdset="0">
           <enum>AxisActionButton::Home</enum>
@@ -315,6 +358,9 @@
            <family>Roboto</family>
           </font>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="action_id" stdset="0">
           <enum>AxisActionButton::Home</enum>
          </property>
@@ -335,6 +381,9 @@
           <font>
            <family>Roboto</family>
           </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="action_id" stdset="0">
           <enum>AxisActionButton::Home</enum>
@@ -357,6 +406,9 @@
            <family>Roboto</family>
           </font>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="action_id" stdset="0">
           <enum>AxisActionButton::Home</enum>
          </property>
@@ -364,10 +416,23 @@
           <enum>AxisActionButton::Y</enum>
          </property>
         </widget>
+        <widget class="QKeySequenceEdit" name="keySequenceEdit">
+         <property name="geometry">
+          <rect>
+           <x>150</x>
+           <y>170</y>
+           <width>113</width>
+           <height>23</height>
+          </rect>
+         </property>
+        </widget>
        </widget>
       </item>
       <item>
        <widget class="QFrame" name="frame">
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
@@ -388,6 +453,9 @@
            </property>
            <item>
             <spacer name="horizontalSpacer">
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
@@ -424,6 +492,9 @@
                <bold>true</bold>
               </font>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="text">
               <string>ABS</string>
              </property>
@@ -454,6 +525,9 @@
                <bold>true</bold>
               </font>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="text">
               <string>REL</string>
              </property>
@@ -483,6 +557,9 @@
                <weight>75</weight>
                <bold>true</bold>
               </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="text">
               <string>DTG</string>
@@ -522,6 +599,9 @@
                <pointsize>12</pointsize>
               </font>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="text">
               <string>X</string>
              </property>
@@ -557,7 +637,7 @@
               </font>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::ClickFocus</enum>
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="contextMenuPolicy">
               <enum>Qt::NoContextMenu</enum>
@@ -590,6 +670,9 @@
                <pointsize>16</pointsize>
               </font>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
@@ -608,6 +691,9 @@
                <family>Roboto</family>
                <pointsize>16</pointsize>
               </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -650,6 +736,9 @@
                <pointsize>12</pointsize>
               </font>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="text">
               <string>Y</string>
              </property>
@@ -682,7 +771,7 @@
               </font>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::ClickFocus</enum>
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="contextMenuPolicy">
               <enum>Qt::NoContextMenu</enum>
@@ -712,6 +801,9 @@
                <pointsize>16</pointsize>
               </font>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
@@ -733,6 +825,9 @@
                <family>Roboto</family>
                <pointsize>16</pointsize>
               </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -778,6 +873,9 @@
                <pointsize>12</pointsize>
               </font>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="text">
               <string>Z</string>
              </property>
@@ -810,7 +908,7 @@
               </font>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::ClickFocus</enum>
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="contextMenuPolicy">
               <enum>Qt::NoContextMenu</enum>
@@ -840,6 +938,9 @@
                <pointsize>16</pointsize>
               </font>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
@@ -861,6 +962,9 @@
                <family>Roboto</family>
                <pointsize>16</pointsize>
               </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -906,6 +1010,9 @@
                <pointsize>12</pointsize>
               </font>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="text">
               <string>A</string>
              </property>
@@ -938,7 +1045,7 @@
               </font>
              </property>
              <property name="focusPolicy">
-              <enum>Qt::ClickFocus</enum>
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="contextMenuPolicy">
               <enum>Qt::NoContextMenu</enum>
@@ -968,6 +1075,9 @@
                <pointsize>16</pointsize>
               </font>
              </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
@@ -989,6 +1099,9 @@
                <family>Roboto</family>
                <pointsize>16</pointsize>
               </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1012,7 +1125,7 @@
       <item>
        <widget class="QGroupBox" name="groupBox_4">
         <property name="focusPolicy">
-         <enum>Qt::ClickFocus</enum>
+         <enum>Qt::NoFocus</enum>
         </property>
         <property name="title">
          <string>GroupBox</string>
@@ -1031,6 +1144,9 @@
            <family>Roboto</family>
            <pointsize>14</pointsize>
           </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="text">
           <string>Power </string>
@@ -1057,6 +1173,9 @@
            <pointsize>16</pointsize>
           </font>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="checkable">
           <bool>true</bool>
          </property>
@@ -1078,6 +1197,9 @@
            <family>Roboto</family>
           </font>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="checkable">
           <bool>true</bool>
          </property>
@@ -1098,6 +1220,9 @@
           <font>
            <family>Roboto</family>
           </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="checkable">
           <bool>true</bool>
@@ -1126,6 +1251,9 @@
            <family>Roboto</family>
           </font>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="text">
           <string>Opt Stop </string>
          </property>
@@ -1152,6 +1280,9 @@
           <font>
            <family>Roboto</family>
           </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="text">
           <string>Mist </string>
@@ -1180,6 +1311,9 @@
            <family>Roboto</family>
           </font>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="action_id" stdset="0">
           <enum>AxisActionButton::Jog</enum>
          </property>
@@ -1204,6 +1338,9 @@
            <family>Roboto</family>
           </font>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="action_id" stdset="0">
           <enum>AxisActionButton::Jog</enum>
          </property>
@@ -1227,6 +1364,9 @@
           <font>
            <family>Roboto</family>
           </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="text">
           <string>Jog +Y</string>
@@ -1254,6 +1394,9 @@
           <font>
            <family>Roboto</family>
           </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="text">
           <string>Jog −Y</string>
