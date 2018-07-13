@@ -416,16 +416,6 @@
           <enum>AxisActionButton::Y</enum>
          </property>
         </widget>
-        <widget class="QKeySequenceEdit" name="keySequenceEdit">
-         <property name="geometry">
-          <rect>
-           <x>150</x>
-           <y>170</y>
-           <width>113</width>
-           <height>23</height>
-          </rect>
-         </property>
-        </widget>
        </widget>
       </item>
       <item>
