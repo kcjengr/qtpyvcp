@@ -29,7 +29,12 @@ class ActionType(object):
     def toString(cls, action_type):
         return ['OFF', 'ON', 'TOGGLE'][action_type]
 
-class ActionButton(QPushButton, Action, ActionType):
+class Direction(object):
+    Negative = -1
+    Null = 0
+    Positive = 1
+
+class ActionButton(QPushButton, Action, ActionType, Direction):
 
     Q_ENUMS(Action)
     Q_ENUMS(ActionType)
@@ -62,6 +67,15 @@ class ActionButton(QPushButton, Action, ActionType):
         self._action_id = action_id
         self._setUpAction()
     action_id = pyqtProperty(Action, getAction, setAction)
+
+    def getActionType(self):
+        return self._action_type
+    @pyqtSlot(ActionType)
+    def setActionType(self, action_type):
+        self._action_type = action_type
+        self._setUpAction()
+    action_type = pyqtProperty(ActionType, getActionType, setActionType)
+
 
     def getActionType(self):
         return self._action_type
