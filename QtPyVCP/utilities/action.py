@@ -415,11 +415,18 @@ class _JointAction(object):
                 sig.connect(getattr(self, 'btn_' + method))
             except:
                 LOG.error("Failed to initialize action.", exc_info=True)
-            self._widgetInit(self.widget)
 
 
-    def _widgetInit(self, widget):
-        pass
+def getAxisLetter(axis):
+    """Takes an axis letter or number and returns the axis letter"""
+    if isinstance(axis, int):
+        return ['x', 'y', 'z', 'a', 'b', 'c', 'u', 'v', 'w', 'all'][axis]
+    return axis.lower()
+
+def getAxisNumber(axis):
+    if isinstance(axis, str):
+        return ['x', 'y', 'z', 'a', 'b', 'c', 'u', 'v', 'w', 'all'].index(axis.lower())
+    return axis
 
 #==============================================================================
 # Homing action
@@ -441,10 +448,10 @@ class Home(_JointAction):
     action_id = 6
     action_text = "Home"
 
-    def __init__(self, widget, method='homeAxis', axis='x'):
+    def __init__(self, widget, method='homeAxis', axis='x', direction=0):
         super(Home, self).__init__(widget, method)
 
-        self._axis = self.get_axis_letter(axis)
+        self._axis = getAxisLetter(axis)
         if self._axis == 'all':
             self._joint = -1
         else:
@@ -486,7 +493,7 @@ class Home(_JointAction):
 
     @classmethod
     def homeAxis(cls, axis=None):
-        axis = cls.get_axis_letter(axis)
+        axis = getAxisLetter(axis)
         if axis.lower() == 'all':
             cls.homeAll()
             return
@@ -506,7 +513,7 @@ class Home(_JointAction):
 
     @classmethod
     def unhomeAxis(cls, axis=None):
-        axis = cls.get_axis_letter(axis)
+        axis = getAxisLetter(axis)
         if axis.lower() == 'all':
             cls.unhomeAll()
             return
@@ -519,38 +526,40 @@ class Home(_JointAction):
         LOG.info('Unhoming Joint: {}'.format(jnum))
         unhomeJoint(jnum)
 
-    @staticmethod
-    def get_axis_letter(axis):
-        """Takes an axis letter or number and returns the axis letter"""
-        if isinstance(axis, int):
-            return ['x', 'y', 'z', 'a', 'b', 'c', 'u', 'v', 'w', 'all'][axis]
-        return axis.lower()
-
 
 class Jog(object):
 
     action_id = 7
     action_text = "Jog"
 
-    def __init__(self, widget=None, method='_button_jog', axis=0, direction=0):
+    def __init__(self, widget=None, method='jog', axis=0, direction=0):
         self.widget = widget
-        self.axis = axis
-        self.direction = 1
+        self._axis = axis
+        self._direction = direction
 
         if self.widget is not None and method is not None:
-            self.widget.pressed.connect(getattr(self, method))
-            self.widget.released.connect(self.stop)
+            self.widget.pressed.connect(self.btn_jog)
+            self.widget.released.connect(self.btn_stop)
 
-        STATUS.on.connect(lambda s: self.setEnabled(s))
-        STATUS.executing.connect(lambda s: self.setEnabled(not s))
+        STATUS.on.connect(lambda s: self.widget.setEnabled(s))
+        STATUS.executing.connect(lambda s: self.widget.setEnabled(not s))
 
-    def _button_jog(self):
-        print "joggomg ", self
-        jog_joint = False
+
+    def btn_jog(self):
+        self.__class__.autoJog(self._axis, self._direction)
+
+    def btn_stop(self):
+        self.__class__.autoJog(self._axis, 0)
+
+    @classmethod
+    def autoJog(cls, axis, direction):
+        axis = getAxisNumber(axis)
+        jog_joint = 0
         if STAT.motion_mode == linuxcnc.TRAJ_MODE_FREE:
-            jog_joint = True
+            jog_joint = 1
+            # CMD.traj_mode(linuxcnc.TRAJ_MODE_FREE)
 
-        if self.axis in (3,4,5):
+        if axis in (3,4,5):
             rate = STATUS.angular_jog_velocity / 60
         else:
             rate = STATUS.linear_jog_velocity / 60
@@ -558,19 +567,12 @@ class Jog(object):
         distance = STATUS.jog_increment
 
         if distance == 0:
-            CMD.jog(linuxcnc.JOG_CONTINUOUS, jog_joint, self.axis, self.direction * rate)
+            CMD.jog(linuxcnc.JOG_CONTINUOUS, jog_joint, axis, direction * rate)
         else:
-            CMD.jog(linuxcnc.JOG_INCREMENT, jog_joint, self.axis, self.direction * rate, distance)
+            CMD.jog(linuxcnc.JOG_INCREMENT, jog_joint, axis, direction * rate, distance)
 
     @classmethod
-    def auto(cls, axis=None, direction=None):
-        if axis is None and isinstance(cls, Jog):
-            axis = self.axis
-        else:
-            raise ValueError("Jog.auto() must have the axis letter number " \
-                "passed as the first argument when called as a classmethod")
-            return
-
+    def auto(cls, axis, direction):
         joint_jog = False
         if STAT.motion_mode == linuxcnc.TRAJ_MODE_FREE:
             joint_jog = True
@@ -629,14 +631,6 @@ class Jog(object):
             axis = cls.axis
         print "axis: ", axis, cls
         CMD.jog(linuxcnc.JOG_STOP, 0, axis)
-
-    def setEnabled(self, enabled):
-        if self.widget is not None:
-            self.widget.setEnabled(enabled)
-
-    def setState(self, state):
-        if self.widget is not None:
-            self.widget.setChecked(state)
 
     def __enter__(self):
         return self

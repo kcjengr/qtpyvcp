@@ -29,7 +29,7 @@ import time
 
 
 from PyQt5.QtGui import QColor
-from PyQt5.QtCore import pyqtSignal, QPoint, QSize, Qt, QTimer
+from PyQt5.QtCore import pyqtSignal, QPoint, QSize, Qt
 from PyQt5.QtWidgets import QApplication, QHBoxLayout, QSlider, QWidget
 
 # Set up logging
@@ -233,28 +233,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         self.yRot = 0
         self.zRot = 0
 
-        # add a 100ms timer to poll linuxcnc stats
-        self.timer = QTimer()
-        self.timer.timeout.connect(self.poll)
-        self.timer.start(100)
-
         self.Green = QColor.fromCmykF(0.40, 0.0, 1.0, 0.0)
-
-    def poll(self):
-        s = self.stat
-        try:
-            s.poll()
-        except:
-            return
-        fingerprint = (self.logger.npts, self.soft_limits(),
-            s.actual_position, s.joint_actual_position,
-            s.homed, s.g5x_offset, s.g92_offset, s.limit, s.tool_in_spindle,
-            s.motion_mode, s.current_vel)
-
-        if fingerprint != self.fingerprint:
-            self.fingerprint = fingerprint
-            self.update()
-        return True
 
     def load(self, filename=None):
         s = self.stat

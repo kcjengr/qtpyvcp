@@ -364,27 +364,6 @@
           <enum>AxisActionButton::Y</enum>
          </property>
         </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_8">
-         <property name="geometry">
-          <rect>
-           <x>160</x>
-           <y>100</y>
-           <width>80</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Jog</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::X</enum>
-         </property>
-        </widget>
        </widget>
       </item>
       <item>
@@ -1187,13 +1166,13 @@
           <enum>ActionButton::Toggle</enum>
          </property>
         </widget>
-        <widget class="JogButton" name="jogbutton">
+        <widget class="AxisActionButton" name="axisactionbutton_10">
          <property name="geometry">
           <rect>
-           <x>50</x>
-           <y>120</y>
-           <width>80</width>
-           <height>23</height>
+           <x>110</x>
+           <y>140</y>
+           <width>40</width>
+           <height>40</height>
           </rect>
          </property>
          <property name="font">
@@ -1201,8 +1180,92 @@
            <family>Roboto</family>
           </font>
          </property>
+         <property name="action_id" stdset="0">
+          <enum>AxisActionButton::Jog</enum>
+         </property>
          <property name="axis">
-          <enum>JogButton::X</enum>
+          <enum>AxisActionButton::X</enum>
+         </property>
+         <property name="direction">
+          <enum>AxisActionButton::Positive</enum>
+         </property>
+        </widget>
+        <widget class="AxisActionButton" name="axisactionbutton_8">
+         <property name="geometry">
+          <rect>
+           <x>30</x>
+           <y>140</y>
+           <width>40</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+          </font>
+         </property>
+         <property name="action_id" stdset="0">
+          <enum>AxisActionButton::Jog</enum>
+         </property>
+         <property name="axis">
+          <enum>AxisActionButton::X</enum>
+         </property>
+         <property name="direction">
+          <enum>AxisActionButton::Negative</enum>
+         </property>
+        </widget>
+        <widget class="AxisActionButton" name="axisactionbutton_9">
+         <property name="geometry">
+          <rect>
+           <x>70</x>
+           <y>100</y>
+           <width>40</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>Jog +Y</string>
+         </property>
+         <property name="action_id" stdset="0">
+          <enum>AxisActionButton::Jog</enum>
+         </property>
+         <property name="axis">
+          <enum>AxisActionButton::Y</enum>
+         </property>
+         <property name="direction">
+          <enum>AxisActionButton::Positive</enum>
+         </property>
+        </widget>
+        <widget class="AxisActionButton" name="axisactionbutton_11">
+         <property name="geometry">
+          <rect>
+           <x>70</x>
+           <y>180</y>
+           <width>40</width>
+           <height>40</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Roboto</family>
+          </font>
+         </property>
+         <property name="text">
+          <string>Jog −Y</string>
+         </property>
+         <property name="action_id" stdset="0">
+          <enum>AxisActionButton::Jog</enum>
+         </property>
+         <property name="axis">
+          <enum>AxisActionButton::Y</enum>
+         </property>
+         <property name="direction">
+          <enum>AxisActionButton::Negative</enum>
          </property>
         </widget>
        </widget>
@@ -1420,11 +1483,6 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>JogButton</class>
-   <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.control_widgets.jog_button</header>
-  </customwidget>
-  <customwidget>
    <class>RecentFileComboBox</class>
    <extends>QComboBox</extends>
    <header>QtPyVCP.widgets.editor_widgets.recent_file_combobox</header>
@@ -1447,7 +1505,6 @@
  </customwidgets>
  <resources>
   <include location="xyz.qrc"/>
-  <include location="ui.qrc"/>
  </resources>
  <connections/>
  <designerdata>
