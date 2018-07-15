@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# coding: utf-8
 
 #   Copyright (c) 2018 Kurt Jacobson
 #      <kurtcjacobson@gmail.com>
@@ -22,16 +23,23 @@
 #   Collection of linuxcnc.command convenience functions.
 #   Incomplete
 
+import time
 import linuxcnc
+
+from PyQt5.QtCore import QTimer, pyqtSlot
+from PyQt5.QtWidgets import QAction, QPushButton
 
 # Set up logging
 from QtPyVCP.utilities import logger
-log = logger.getLogger(__name__)
+LOG = logger.getLogger(__name__)
 
 from QtPyVCP.utilities.info import Info
 from QtPyVCP.utilities.status import Status
 INFO = Info()
 STATUS = Status()
+STAT = STATUS.stat
+
+CMD = linuxcnc.command()
 
 
 class Action(object):
@@ -55,109 +63,48 @@ class _Action(object):
 
         self.tmp = None
 
-    def setEmergencyStop(self, state):
-        if state:
-            log.debug("Setting Estop red<ACTIVE>")
-            self.cmd.state(linuxcnc.STATE_ESTOP)
-        else:
-            log.debug("Setting Estop green<RESET>")
-            self.cmd.state(linuxcnc.STATE_ESTOP_RESET)
+    def safePoll(self):
+        try:
+            self.stat.poll()
+        except:
+            pass
 
-    def toggleEmergencyStop(self):
-        self.stat.poll()
-        state = not self.stat.estop
-        self.setEmergencyStop(state)
-
-    def setMachinePower(self, state):
-        self.stat.poll()
-        if self.stat.estop:
-            log.warning("Can't set machine green<ON> until machine is out of red<Estop>")
-            return
-        if state:
-            log.debug("Setting machine power green<ON>")
-            self.cmd.state(linuxcnc.STATE_ON)
-        else:
-            log.debug("Setting machine power red<OFF>")
-            self.cmd.state(linuxcnc.STATE_OFF)
-
-    def toggleMachinePower(self):
-        self.stat.poll()
-        state = not self.stat.task_state == linuxcnc.STATE_ON
-        self.setMachinePower(state)
-
-
-
-    def homeJoint(self, jnum):
-        if self.set_task_mode(linuxcnc.MODE_MANUAL):
-            log.info('Homing Joint: {}'.format(jnum))
-            self.cmd.teleop_enable(False)
-            self.cmd.home(jnum)
-        else:
-            log.error("Can't home joint {}, machine must be ON and IDLE".fomrat(jnum))
-
-    def homeAxis(self, axis_letter):
-        jnum = self.coords.index(axis_letter.lower())
-        self.homeJoint(jnum)
-
-    def loadProgram(self, fname):
-        self.set_task_mode(linuxcnc.MODE_AUTO)
+    def loadProgram(self, fname, add_to_recents=True):
+        setTaskMode(linuxcnc.MODE_AUTO)
         filter_prog = INFO.getFilterProgram(fname)
         if not filter_prog:
-            self.cmd.program_open(fname)
+            CMD.program_open(fname.encode('utf-8'))
         else:
             self.open_filter_program(fname, filter_prog)
 
-        self.addToRecentFiles(fname)
+        if add_to_recents:
+            self.addToRecentFiles(fname)
 
     def addToRecentFiles(self, fname):
         if fname in STATUS.recent_files:
             STATUS.recent_files.remove(fname)
         STATUS.recent_files.insert(0, fname)
+        STATUS.recent_files = STATUS.recent_files[:STATUS.max_recent_files]
 
-        if len(STATUS.recent_files) > STATUS.max_recent_files:
-            STATUS.recent_files.pop()
+        # if len(STATUS.recent_files) > STATUS.max_recent_files:
+        #     STATUS.recent_files.pop()
         STATUS.recent_files_changed.emit(tuple(STATUS.recent_files))
 
     def runProgram(self, start_line=0):
-        if self.set_task_mode(linuxcnc.MODE_AUTO):
+        if setTaskMode(linuxcnc.MODE_AUTO):
             self.cmd.auto(linuxcnc.AUTO_RUN, start_line)
 
     def issueMDI(self, command):
-        if self.set_task_mode(linuxcnc.MODE_MDI):
+        if setTaskMode(linuxcnc.MODE_MDI):
             self.cmd.mdi(command)
         else:
-            log.error("Can't issue MDI, machine must be ON, HOMED and IDLE")
+            LOG.error("Can't issue MDI, machine must be ON, HOMED and IDLE")
 
 
     #==========================================================================
     #  Helper functions
     #==========================================================================
 
-    def set_task_mode(self, new_mode):
-        """Sets task mode, if possible
-
-        Args:
-            new_mode (int): linuxcnc.MODE_MANUAL, MODE_MDI or MODE_AUTO
-
-        Returns:
-            bool: TRUE if successful
-        """
-        if self.is_running():
-            log.error("Can't set mode while machine is running")
-            return False
-        else:
-            self.cmd.mode(new_mode)
-            self.cmd.wait_complete()
-            return True
-
-    def is_running(self):
-        """Returns TRUE if machine is moving due to MDI, program execution, etc."""
-        self.stat.poll()
-        if self.stat.state == linuxcnc.RCS_EXEC:
-            return True
-        else:
-            return self.stat.task_mode == linuxcnc.MODE_AUTO \
-                and self.stat.interp_state != linuxcnc.INTERP_IDLE
 
     def open_filter_program(self,fname, flt):
         if not self.tmp:
@@ -175,6 +122,548 @@ class _Action(object):
             return
         self.tmp = tempfile.mkdtemp(prefix='emcflt-', suffix='.d')
         atexit.register(lambda: shutil.rmtree(self.tmp))
+
+
+def setTaskMode(new_mode):
+    """Sets task mode, if possible
+
+    Args:
+        new_mode (int): linuxcnc.MODE_MANUAL, MODE_MDI or MODE_AUTO
+
+    Returns:
+        bool: TRUE if successful
+    """
+    if isRunning():
+        LOG.error("Can't set mode while machine is running")
+        return False
+    else:
+        CMD.mode(new_mode)
+        CMD.wait_complete()
+        return True
+
+def isRunning():
+    """Returns TRUE if machine is moving due to MDI, program execution, etc."""
+    if STAT.state == linuxcnc.RCS_EXEC:
+        return True
+    else:
+        return STAT.task_mode == linuxcnc.MODE_AUTO \
+            and STAT.interp_state != linuxcnc.INTERP_IDLE
+
+
+#==========================================================================
+#  Boolean action classes
+#==========================================================================
+
+class _BoolAction(object):
+    """Base boolean action class"""
+    def __init__(self, widget, action_type):
+        self.widget = widget
+        self.action_type = action_type.upper()
+
+        if self.widget is not None:
+            if isinstance(self.widget, QAction):
+                sig = self.widget.triggered
+            else:
+                sig = self.widget.clicked
+            sig.connect(getattr(self, self.action_type))
+
+    @classmethod
+    def ON(cls):
+        pass
+
+    @classmethod
+    def OFF(cls):
+        pass
+
+    @classmethod
+    def TOGGLE(cls):
+        if cls.state:
+            cls.OFF()
+        else:
+            cls.ON()
+
+    def setEnabled(self, enabled):
+        if self.widget is not None:
+            self.widget.setEnabled(enabled)
+
+    def setState(self, state):
+        if self.widget is not None:
+            self.widget.setChecked(state)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.widget.clicked.disconnect(getattr(self, self.action_type))
+
+
+class EmergencyStop(_BoolAction):
+
+    action_id = 0
+    action_text = "E-Stop"
+
+    def __init__(self, widget=None, action_type='TOGGLE'):
+        super(EmergencyStop, self).__init__(widget, action_type)
+        STATUS.estop.connect(lambda v: self.setState(not v))
+
+    @classmethod
+    def ON(cls):
+        LOG.debug("Setting state red<ESTOP>")
+        CMD.state(linuxcnc.STATE_ESTOP)
+
+    @classmethod
+    def OFF(cls):
+        LOG.debug("Setting state green<ESTOP_RESET>")
+        CMD.state(linuxcnc.STATE_ESTOP_RESET)
+
+    @classmethod
+    def TOGGLE(cls):
+        if STAT.estop:
+            cls.OFF()
+        else:
+            cls.ON()
+
+class MachinePower(_BoolAction):
+
+    action_id = 1
+    action_text = "Power"
+
+    def __init__(self, widget=None, action_type='TOGGLE'):
+        super(MachinePower, self).__init__(widget, action_type)
+        STATUS.estop.connect(lambda v: self.setEnabled(not v))
+        STATUS.task_state.connect(lambda s: self.setState(s == linuxcnc.STATE_ON))
+        self.setEnabled(False)
+
+    @classmethod
+    def ON(cls):
+        if STAT.task_state == linuxcnc.STATE_ESTOP_RESET:
+            LOG.debug("Setting state green<ON>")
+            CMD.state(linuxcnc.STATE_ON)
+            CMD.wait_complete()
+        elif STAT.task_state == linuxcnc.STATE_ESTOP:
+            LOG.warn("Can't turn machine green<ON> until out of red<E-Stop>")
+
+    @classmethod
+    def OFF(cls):
+        if STAT.task_state == linuxcnc.STATE_ON:
+            LOG.debug("Setting state red<OFF>")
+            CMD.state(linuxcnc.STATE_OFF)
+            CMD.wait_complete()
+
+    @classmethod
+    def TOGGLE(cls):
+        if STATUS.stat.task_state == linuxcnc.STATE_ON:
+            cls.OFF()
+        else:
+            cls.ON()
+
+class Mist(_BoolAction):
+
+    action_id = 2
+    action_text = "Mist"
+
+    def __init__(self, widget=None, action_type='TOGGLE'):
+        super(Mist, self).__init__(widget, action_type)
+
+        self.widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
+        self.widget.setChecked(STAT.mist == linuxcnc.MIST_ON)
+
+        STATUS.on.connect(lambda v: self.setEnabled(v))
+        STATUS.mist.connect(lambda s: self.setState(s == linuxcnc.MIST_ON))
+
+    @classmethod
+    def ON(cls):
+        if STAT.task_state == linuxcnc.STATE_ON:
+            LOG.debug("Setting mist green<ON>")
+            CMD.mist(linuxcnc.MIST_ON)
+            CMD.wait_complete()
+        elif STAT.task_state == linuxcnc.STATE_ESTOP:
+            LOG.warn("Can't turn mist green<ON> with machine red<OFF>")
+
+    @classmethod
+    def OFF(cls):
+        LOG.debug("Setting mist red<OFF>")
+        CMD.mist(linuxcnc.MIST_OFF)
+        CMD.wait_complete()
+
+    @classmethod
+    def TOGGLE(cls):
+        if STATUS.stat.mist == linuxcnc.MIST_ON:
+            cls.OFF()
+        else:
+            cls.ON()
+
+class Flood(_BoolAction):
+
+    action_id = 3
+    action_text = "Flood"
+
+    def __init__(self, widget=None, action_type='TOGGLE'):
+        super(Flood, self).__init__(widget, action_type)
+
+        self.widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
+        self.widget.setChecked(STAT.flood == linuxcnc.FLOOD_ON)
+
+        STATUS.on.connect(lambda v: self.setEnabled(v))
+        STATUS.flood.connect(lambda s: self.setState(s == linuxcnc.FLOOD_ON))
+
+    @classmethod
+    def ON(cls):
+        if STAT.task_state == linuxcnc.STATE_ON:
+            LOG.debug("Setting flood green<ON>")
+            CMD.flood(linuxcnc.FLOOD_ON)
+            CMD.wait_complete()
+        elif STATUS.stat.task_state == linuxcnc.STATE_ESTOP:
+            LOG.warn("Can't turn flood green<ON> with machine red<OFF>")
+
+    @classmethod
+    def OFF(cls):
+        LOG.debug("Setting flood red<OFF>")
+        CMD.flood(linuxcnc.FLOOD_OFF)
+        CMD.wait_complete()
+
+    @classmethod
+    def TOGGLE(cls):
+        if STAT.flood == linuxcnc.FLOOD_ON:
+            cls.OFF()
+        else:
+            cls.ON()
+
+class BlockDelete(_BoolAction):
+
+    action_id = 4
+    action_text = "Block Del"
+
+    def __init__(self, widget=None, action_type='TOGGLE'):
+        super(BlockDelete, self).__init__(widget, action_type)
+
+        self.widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
+        self.widget.setChecked(STAT.block_delete)
+
+        STATUS.on.connect(lambda v: self.setEnabled(v))
+        STATUS.block_delete.connect(lambda s: self.setState(s))
+
+    @classmethod
+    def ON(cls):
+        if STAT.task_state == linuxcnc.STATE_ON:
+            LOG.debug("Setting block delete green<ACTIVE>")
+            CMD.set_block_delete(True)
+            CMD.wait_complete()
+
+    @classmethod
+    def OFF(cls):
+        LOG.debug("Setting block delete red<INACTIVE>")
+        CMD.set_block_delete(False)
+        CMD.wait_complete()
+
+    @classmethod
+    def TOGGLE(cls):
+        if STAT.block_delete == True:
+            cls.OFF()
+        else:
+            cls.ON()
+
+class OptionalStop(_BoolAction):
+
+    action_id = 5
+    action_text = "Opt Stop"
+
+    def __init__(self, widget=None, action_type='TOGGLE'):
+        super(OptionalStop, self).__init__(widget, action_type)
+
+        self.widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
+        self.widget.setChecked(STAT.optional_stop)
+
+        STATUS.on.connect(lambda v: self.setEnabled(v))
+        STATUS.optional_stop.connect(lambda s: self.setState(s))
+
+    @classmethod
+    def ON(cls):
+        if STAT.task_state == linuxcnc.STATE_ON:
+            LOG.debug("Setting optional stop green<ACTIVE>")
+            CMD.set_optional_stop(True)
+            CMD.wait_complete()
+
+    @classmethod
+    def Off(cls):
+        LOG.debug("Setting optional stop red<INACTIVE>")
+        CMD.set_optional_stop(False)
+        CMD.wait_complete()
+
+    @classmethod
+    def TOGGLE(cls):
+        if STAT.optional_stop == True:
+            cls.OFF()
+        else:
+            cls.ON()
+
+
+#==============================================================================
+#  Axis/Joint actions
+#==============================================================================
+
+class _JointAction(object):
+
+    def __init__(self, widget, method):
+        self.widget = widget
+
+        if self.widget is not None and method is not None:
+            if isinstance(self.widget, QAction):
+                sig = self.widget.triggered
+            else:
+                sig = self.widget.clicked
+            try:
+                sig.connect(getattr(self, 'btn_' + method))
+            except:
+                LOG.error("Failed to initialize action.", exc_info=True)
+
+
+def getAxisLetter(axis):
+    """Takes an axis letter or number and returns the axis letter"""
+    if isinstance(axis, int):
+        return ['x', 'y', 'z', 'a', 'b', 'c', 'u', 'v', 'w', 'all'][axis]
+    return axis.lower()
+
+def getAxisNumber(axis):
+    if isinstance(axis, str):
+        return ['x', 'y', 'z', 'a', 'b', 'c', 'u', 'v', 'w', 'all'].index(axis.lower())
+    return axis
+
+#==============================================================================
+# Homing action
+#==============================================================================
+
+def homeJoint(jnum):
+    setTaskMode(linuxcnc.MODE_MANUAL)
+    CMD.teleop_enable(False)
+    CMD.home(jnum)
+
+def unhomeJoint(jnum):
+    setTaskMode(linuxcnc.MODE_MANUAL)
+    CMD.teleop_enable(False)
+    CMD.unhome(jnum)
+
+
+class Home(_JointAction):
+
+    action_id = 6
+    action_text = "Home"
+
+    def __init__(self, widget, method='homeAxis', axis='x', direction=0):
+        super(Home, self).__init__(widget, method)
+
+        self._axis = getAxisLetter(axis)
+        if self._axis == 'all':
+            self._joint = -1
+        else:
+            self._joint = INFO.ALETTER_JNUM_DICT[self._axis]
+
+        self._homed = False
+
+        STATUS.on.connect(lambda s: self.widget.setEnabled(s))
+        STATUS.executing.connect(lambda s: self.wigget.setEnabled(not s))
+
+        if method is not None:
+            STATUS.joint.homed.connect(self.onHomed)
+            STATUS.all_homed.connect(lambda v: self.onHomed(-1, v))
+
+    def btn_homeAxis(self, checked):
+        if self._homed:
+            self.__class__.unhomeAxis(self._axis)
+        else:
+            self.__class__.homeAxis(self._axis)
+
+    def btn_homeAll(self, checked):
+        if self._homed:
+            self.__class__.unhomeAll()
+        else:
+            self.__class__.homeAll()
+
+    def onHomed(self, jnum, homed):
+        if jnum == self._joint:
+            self._homed = homed
+            if homed:
+                self.widget.setText('Unhome &{}'.format(self._axis.capitalize()))
+            else:
+                self.widget.setText('Home &{}'.format(self._axis.capitalize()))
+
+    @classmethod
+    def homeAll(cls):
+        LOG.info('Homing All')
+        homeJoint(-1)
+
+    @classmethod
+    def homeAxis(cls, axis=None):
+        axis = getAxisLetter(axis)
+        if axis.lower() == 'all':
+            cls.homeAll()
+            return
+        jnum = INFO.COORDINATES.index(axis)
+        LOG.info('Homing Axis: {}'.format(axis.upper()))
+        homeJoint(jnum)
+
+    @classmethod
+    def homeJoint(cls, jnum=0):
+        LOG.info('Homing Joint: {}'.format(jnum))
+        homeJoint(jnum)
+
+    @classmethod
+    def unhomeAll(cls):
+        LOG.info('unoming All')
+        unhomeJoint(-1)
+
+    @classmethod
+    def unhomeAxis(cls, axis=None):
+        axis = getAxisLetter(axis)
+        if axis.lower() == 'all':
+            cls.unhomeAll()
+            return
+        jnum = INFO.COORDINATES.index(axis)
+        LOG.info('Unhoming Axis: {}'.format(axis.upper()))
+        unhomeJoint(jnum)
+
+    @classmethod
+    def unhomeJoint(cls, jnum=0):
+        LOG.info('Unhoming Joint: {}'.format(jnum))
+        unhomeJoint(jnum)
+
+
+class Jog(object):
+
+    action_id = 7
+    action_text = "Jog"
+
+    def __init__(self, widget=None, method='jog', axis=0, direction=0):
+        self.widget = widget
+        self._axis = axis
+        self._direction = direction
+
+        if self.widget is not None and method is not None:
+            self.widget.pressed.connect(self.btn_jog)
+            self.widget.released.connect(self.btn_stop)
+
+        STATUS.on.connect(lambda s: self.widget.setEnabled(s))
+        STATUS.executing.connect(lambda s: self.widget.setEnabled(not s))
+
+
+    def btn_jog(self):
+        self.__class__.autoJog(self._axis, self._direction)
+
+    def btn_stop(self):
+        self.__class__.autoJog(self._axis, 0)
+
+    @classmethod
+    def autoJog(cls, axis, direction):
+        axis = getAxisNumber(axis)
+        jog_joint = 0
+        if STAT.motion_mode == linuxcnc.TRAJ_MODE_FREE:
+            jog_joint = 1
+            # CMD.traj_mode(linuxcnc.TRAJ_MODE_FREE)
+
+        if axis in (3,4,5):
+            rate = STATUS.angular_jog_velocity / 60
+        else:
+            rate = STATUS.linear_jog_velocity / 60
+
+        distance = STATUS.jog_increment
+
+        if distance == 0:
+            CMD.jog(linuxcnc.JOG_CONTINUOUS, jog_joint, axis, direction * rate)
+        else:
+            CMD.jog(linuxcnc.JOG_INCREMENT, jog_joint, axis, direction * rate, distance)
+
+    @classmethod
+    def auto(cls, axis, direction):
+        joint_jog = False
+        if STAT.motion_mode == linuxcnc.TRAJ_MODE_FREE:
+            joint_jog = True
+
+        if j_or_anum in (3,4,5):
+            rate = STATUS.angular_jog_velocity / 60
+        else:
+            rate = STATUS.linear_jog_velocity / 60
+
+        distance = STATUS.jog_increment
+
+        cls.JOG(axisnum, direction, rate, distance)
+
+    @classmethod
+    def jog(cls, axisnum, direction):
+        distance = STATUS.jog_increment
+        if axisnum in (3,4,5):
+            rate = STATUS.angular_jog_velocity/60
+        else:
+            rate = STATUS.current_jog_rate/60
+        cls.JOG(axisnum, direction, rate, distance)
+
+    @classmethod
+    def _jog(cls, axisnum, direction, rate, distance=0):
+
+        if direction == 0:
+            CMD.jog(linuxcnc.JOG_STOP, cls.jog_joint, j_or_a)
+        else:
+            if distance == 0:
+                CMD.jog(linuxcnc.JOG_CONTINUOUS, cls.jog_joint, j_or_a, direction * rate)
+            else:
+                CMD.jog(linuxcnc.JOG_INCREMENT, cls.jog_joint, j_or_a, direction * rate, distance)
+
+    @classmethod
+    def continuous(cls, jnum=-1, anum=-1, velocity=0):
+        if jnum != -1:
+            # Joint jog
+            CMD.jog(linuxcnc.JOG_CONTINUOUS, 1, jnum, velocity)
+        elif anum != -1:
+            # Axis jog
+            CMD.jog(linuxcnc.JOG_CONTINUOUS, 0, anum, velocity)
+
+    @classmethod
+    def increment(cls, jnum=-1, anum=-1, velocity=0, distance=0):
+        if jnum != -1:
+            # Joint jog
+            CMD.jog(linuxcnc.JOG_INCREMENT, 1, jnum, velocity, distance)
+        elif anum != -1:
+            # Axis jog
+            CMD.jog(linuxcnc.JOG_INCREMENT, 0, anum, velocity, distance)
+
+
+    @classmethod
+    def stop(cls, axis=None):
+        if axis is None and isinstance(cls, Jog):
+            axis = cls.axis
+        print "axis: ", axis, cls
+        CMD.jog(linuxcnc.JOG_STOP, 0, axis)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.widget.pressed.disconnect(getattr(self, self.action_type))
+        self.widget.released.disconnect(self.STOP)
+
+action_by_id = {
+    0 : EmergencyStop,
+    1 : MachinePower,
+    2 : Mist,
+    3 : Flood,
+    4 : BlockDelete,
+    5 : OptionalStop,
+    6 : Home,
+    7 : Jog,
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # ################################################################
@@ -199,7 +688,7 @@ class _Action(object):
 #             self.cmd.state(linuxcnc.STATE_OFF)
 
 #     def SET_MACHINE_HOMING(self, joint):
-#         log.info('Homing Joint: {}'.format(joint))
+#         LOG.info('Homing Joint: {}'.format(joint))
 #         self.set_task_mode(linuxcnc.MODE_MANUAL)
 #         self.cmd.teleop_enable(False)
 #         self.cmd.home(joint)
@@ -258,7 +747,7 @@ class _Action(object):
 #         if not STATUS.stat.paused:
 #             self.cmd.auto(linuxcnc.AUTO_PAUSE)
 #         else:
-#             log.debug('resume')
+#             LOG.debug('resume')
 #             self.cmd.auto(linuxcnc.AUTO_RESUME)
 
 #     def SET_RAPID_RATE(self, rate):
@@ -360,7 +849,7 @@ class _Action(object):
 #             tuple: (success, previous_mode)
 #         """
 #         if is_running():
-#             log.error("Can't set mode while machine is running")
+#             LOG.error("Can't set mode while machine is running")
 #             return (False, current_mode)
 #         current_mode = self.stat.task_mode
 #         if current_mode == new_mode:
@@ -462,7 +951,7 @@ class FilterProgram:
                 _("The program %(program)r exited with code %(code)d.  "
                 "Any error messages it produced are shown below:")
                     % {'program': self.program_filter, 'code': exitcode})
-        dialog.format_secondary_text(stderr)
-        dialog.run()
-        dialog.destroy()
+        diaLOG.format_secondary_text(stderr)
+        diaLOG.run()
+        diaLOG.destroy()
 

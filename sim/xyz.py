@@ -14,13 +14,17 @@ ACTION = Action()
 PREFS = Prefs()
 INFO = Info()
 
+# import xyz_ui
+
 class MainWindow(VCPMainWindow):
     def __init__(self, ui_file):
-        super(MainWindow, self).__init__()
-        uic.loadUi(ui_file, self)
+        super(MainWindow, self).__init__(ui_file=ui_file)
+        # uic.loadUi(ui_file, self)
 
-        self.initUi()
-        self.show()
+        # ui = xyz_ui.Ui_Form()
+        # ui.setupUi(self)
+
+        print "Hurray ", self
 
     #==========================================================================
     #  Add/Override methods and slots below to customize the main window

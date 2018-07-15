@@ -160,6 +160,7 @@ class _Status(QObject):
     file_loaded = pyqtSignal(str)           # file loaded
 
     on = pyqtSignal(bool)
+    executing = pyqtSignal(bool)
     all_homed = pyqtSignal(bool)
 
     # Gcode Backplot
@@ -172,6 +173,10 @@ class _Status(QObject):
 
     recent_files_changed = pyqtSignal(tuple)
 
+
+    # Emitted when the UI is loaded
+    init_ui = pyqtSignal()
+
     # Emitted on app shutdown
     on_shutown = pyqtSignal()
 
@@ -183,6 +188,10 @@ class _Status(QObject):
         self.max_recent_files = PREFS.getPref("STATUS", "MAX_RECENT_FILES", 10, int)
         files = PREFS.getPref("STATUS", "RECENT_FILES", [], list)
         self.recent_files = [file for file in files if os.path.exists(file)]
+
+        self.jog_increment = 0
+        self.linear_jog_velocity = INFO.getJogVelocity()
+        self.angular_jog_velocity = INFO.getJogVelocity()
 
         # Try initial poll
         try:
@@ -202,11 +211,6 @@ class _Status(QObject):
                 continue
             self.old[item] = getattr(self.stat, item)
 
-        # Initialize Joint status class
-        self.joint = _Joint(self.stat)
-        # Initialize Error status class
-        self.error = _Error()
-
         # These signals should all cause position updates
         self.position.connect(self.updateAxisPositions)
         self.g5x_offset.connect(self.updateAxisPositions)
@@ -218,12 +222,22 @@ class _Status(QObject):
         self.gcodes.connect(self.updateFormatedGcodes)
         self.mcodes.connect(self.updateFormatedMcodes)
 
+        self.homed.connect(self.isAllHomed)
+
         self.task_state.connect(lambda v: self.on.emit(v == linuxcnc.STATE_ON))
 
-
-
+        # self.state.connect(lambda v: self.executing.emit(v == linuxcnc.RCS_EXEC))
+        # self.interp_state.connect(lambda v:
+        #     self.executing.emit(v != linuxcnc.INTERP_IDLE
+        #         and self.stat.task_mode == linuxcnc.MODE_AUTO))
         # File
         self.file.connect(self.updateFileLoaded)
+
+
+        # Initialize Joint status class
+        self.joint = _Joint(self.stat)
+        # Initialize Error status class
+        self.error = _Error()
 
         # Set up the periodic update timer
         self._cycle_time = 75
@@ -343,11 +357,24 @@ class _Status(QObject):
                 and self.stat.call_level == 0:
             self.file_loaded.emit(file)
 
+    def isAllHomed(self, homed_tuple):
+        '''Returns TRUE if all joints are homed.'''
+        for jnum in range(self.stat.joints):
+            if not self.stat.joint[jnum]['homed']:
+                self.all_homed.emit(False)
+                return
+        self.all_homed.emit(True)
+
+
     def onShutdown(self):
         self.on_shutown.emit()
         PREFS.setPref("STATUS", "RECENT_FILES", self.recent_files)
         PREFS.setPref("STATUS", "MAX_RECENT_FILES", self.max_recent_files)
 
+
+#==============================================================================
+# Joint status class
+#==============================================================================
 
 class _Joint(QObject):
 
@@ -371,12 +398,15 @@ class _Joint(QObject):
     override_limits = pyqtSignal(int, bool)  # override limits flag
     velocity = pyqtSignal(int, float)        # current velocity
 
+    units = pyqtSignal(int, float)
+    min_ferror= pyqtSignal(int, float)
+    max_position_limit = pyqtSignal(int, float)
+    min_position_limit = pyqtSignal(int, float)
+
     def __init__(self, stat):
         super(_Joint, self).__init__()
 
         self.stat = stat
-        self.num_joints = self.stat.joints
-
         self.old = self.stat.joint
 
     def _periodic(self):
@@ -386,7 +416,7 @@ class _Joint(QObject):
         self.old = new
 
         # start = time.time()
-        for jnum in range(self.num_joints):
+        for jnum in range(self.stat.joints):
             if new[jnum] != old[jnum]:
                 # print '\nJoint {}'.format(jnum)
                 changed_items = tuple(set(new[jnum].items())-set(old[jnum].items()))
@@ -398,6 +428,10 @@ class _Joint(QObject):
         self.stat.poll()
         return self.stat.joint[jnum][attribute]
 
+
+#==============================================================================
+# Error status class
+#==============================================================================
 
 class _Error(QObject):
 

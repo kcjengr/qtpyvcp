@@ -1,4 +1,5 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# coding: utf-8
 #
 #    Copyright 2016 Chris Morley
 #
@@ -66,13 +67,24 @@ class  GcodeBackplot(QBackPlot):
 
         self.abortButton.clicked.connect(self.abort)
 
+
+        STATUS.actual_position.connect(self.update)
+        STATUS.joint_actual_position.connect(self.update)
+        STATUS.homed.connect(self.update)
+        STATUS.g5x_offset.connect(self.update)
+        STATUS.g92_offset.connect(self.update)
+        STATUS.limit.connect(self.update)
+        STATUS.tool_in_spindle.connect(self.update)
+        STATUS.motion_mode.connect(self.update)
+        STATUS.current_vel.connect(self.update)
+
         # Connect status signals
         STATUS.file_loaded.connect(self.loadBackplot)
         STATUS.reload_backplot.connect(self.reloadBackplot)
         STATUS.program_units.connect(lambda v: self.setMetricUnits(v==2))
 
     def loadBackplot(self, fname):
-        LOG.debug('load the display: {}'.format(fname))
+        LOG.debug('load the display: {}'.format(fname.encode('utf-8')))
         self._reload_filename = fname
         self.load(fname)
 

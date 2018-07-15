@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 class Axis(object):
+    ALL = -1
     X, Y, Z, A, B, C, U, V, W = range(9)
 
 class ReferenceType(object):
