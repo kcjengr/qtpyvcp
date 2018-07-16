@@ -206,28 +206,28 @@ class Camera(QWidget):
         self.videoSettings = QVideoEncoderSettings()
         self.videoContainerFormat = ''
 
-
         camera_device = QByteArray()
 
         video_devices_group = QActionGroup(self)
         video_devices_group.setExclusive(True)
 
-        for deviceName in QCamera.availableDevices():
-            description = QCamera.deviceDescription(deviceName)
-            videoDeviceAction = QAction(description, video_devices_group)
-            videoDeviceAction.setCheckable(True)
-            videoDeviceAction.setData(deviceName)
+        # for deviceName in QCamera.availableDevices():
+        #     description = QCamera.deviceDescription(deviceName)
+        #     videoDeviceAction = QAction(description, video_devices_group)
+        #     videoDeviceAction.setCheckable(True)
+        #     videoDeviceAction.setData(deviceName)
 
-            if camera_device.isEmpty():
-                camera_device = deviceName
-                videoDeviceAction.setChecked(True)
+        #     if camera_device.isEmpty():
+        #         camera_device = deviceName
+        #         videoDeviceAction.setChecked(True)
 
-            self.ui.menuDevices.addAction(videoDeviceAction)
+        #     self.menu_bar.menuDevices.addAction(videoDeviceAction)
 
         video_devices_group.triggered.connect(self.updateCameraDevice)
         self.ui.captureWidget.currentChanged.connect(self.updateCaptureMode)
 
         self.ui.lockButton.hide()
+
 
         self.setCamera(camera_device)
 
