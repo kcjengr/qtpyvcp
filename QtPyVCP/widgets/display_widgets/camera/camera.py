@@ -41,6 +41,8 @@
 #
 #############################################################################
 
+import os
+
 from PyQt5 import uic
 
 from PyQt5.QtCore import QByteArray, qFuzzyCompare, Qt, QTimer
@@ -51,6 +53,7 @@ from PyQt5.QtMultimedia import (QAudioEncoderSettings, QCamera,
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QDialog,
                              QMainWindow, QMessageBox)
 
+HERE = os.path.dirname(os.path.abspath(__file__))
 
 class Settings(QDialog):
 
@@ -60,7 +63,7 @@ class Settings(QDialog):
         self.imagecapture = imageCapture
         self.mediaRecorder = mediaRecorder
 
-        self.ui = uic.loadUi("settings.ui", self)
+        self.ui = uic.loadUi(os.path.join(HERE, "settings.ui"), self)
 
         self.ui.imageCodecBox.addItem("Default image format", "")
         for codecName in self.imagecapture.supportedImageCodecs():
@@ -190,7 +193,7 @@ class Camera(QMainWindow):
     def __init__(self, parent=None):
         super(Camera, self).__init__(parent)
 
-        self.ui = uic.loadUi("camera.ui", self)
+        self.ui = uic.loadUi(os.path.join(HERE, "camera.ui"), self)
         self.camera = None
         self.imageCapture = None
         self.mediaRecorder = None
