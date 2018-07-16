@@ -51,9 +51,10 @@ from PyQt5.QtMultimedia import (QAudioEncoderSettings, QCamera,
                                 QCameraImageCapture, QImageEncoderSettings, QMediaMetaData,
                                 QMediaRecorder, QMultimedia, QVideoEncoderSettings)
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QDialog,
-                             QMainWindow, QMessageBox)
+                             QWidget, QMessageBox)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+
 
 class Settings(QDialog):
 
@@ -188,7 +189,7 @@ class Settings(QDialog):
                 break
 
 
-class Camera(QMainWindow):
+class Camera(QWidget):
 
     def __init__(self, parent=None):
         super(Camera, self).__init__(parent)

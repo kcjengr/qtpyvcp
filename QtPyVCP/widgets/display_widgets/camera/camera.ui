@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>Camera</class>
- <widget class="QMainWindow" name="Camera">
+ <widget class="QWidget" name="Camera">
   <property name="geometry">
    <rect>
     <x>0</x>

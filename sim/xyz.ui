@@ -50,7 +50,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -137,15 +137,17 @@
             </widget>
            </widget>
           </item>
-          <item>
-           <widget class="Camera" name="camera"/>
-          </item>
          </layout>
         </widget>
         <widget class="QWidget" name="tab_3">
          <attribute name="title">
           <string>File</string>
          </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="Camera" name="camera"/>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="tab_4">
          <attribute name="title">
@@ -1426,7 +1428,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
@@ -1640,7 +1642,7 @@
   </customwidget>
   <customwidget>
    <class>Camera</class>
-   <extends>QMainWindow</extends>
+   <extends>QWidget</extends>
    <header>QtPyVCP.widgets.display_widgets.camera.camera</header>
    <container>1</container>
   </customwidget>
