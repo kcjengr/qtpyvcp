@@ -92,7 +92,7 @@ sys.path.insert(1, py_dir)
 from importlib import import_module
 module_name = os.path.splitext(py_file)[0]
 module = import_module(module_name)
-# recources = import_module(module_name + '_rc')
+recources = import_module(module_name + '_rc')
 
 if __name__ == '__main__':
     from PyQt5.QtWidgets import QApplication, QStyleFactory
