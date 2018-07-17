@@ -81,20 +81,6 @@ DROWidget {
     background-color: black;
 }
 
-
-/*QMenuBar {
-    background-color: red;
-}
-
-
-QMenuBar:item {
-    background-color: red;
-}
-
-QMenu {
-    background-color: blue;
-}
-*/
 GcodeBackplot {
     border-color: black;
     border-style: solid;
@@ -122,8 +108,6 @@ QGroupBox::title {
     color: black;
 }
 
-
-
 GcodeEditor {
     background-color: white;
     border-color: black;
@@ -141,9 +125,16 @@ GcodeBackplot {
     padding: 10px;
 }
 
+/*===========================================================================*/
+/*                            Tabbed Widget                                  */
+/*===========================================================================*/
 
-QTabWidget::pane { /* The tab widget frame */
-    border-bottom: 2px solid black;
+QTabWidget {
+    background: #707070;
+}
+
+QTabWidget::pane {
+    background: transparent;
 }
 
 QTabWidget::tab-bar {
@@ -152,13 +143,19 @@ QTabWidget::tab-bar {
 
 /* Style the tab using the tab sub-control. Note that it reads QTabBar _not_ QTabWidget */
 QTabBar::tab {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #b6b6b6, stop: 1.0 #626262);
-    border: 2px solid black;
-    border-top-color: black; /* same as the pane color */
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-    min-width: 8ex;
+                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
+    border-style: solid;
+    border-color: black;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    min-width: 10ex;
+    min-height: 3ex;
     padding: 2px;
 }
 
@@ -167,33 +164,26 @@ QTabBar::tab:selected, QTabBar::tab:hover {
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QTabBar::tab:selected {
-    /*border-color: black;*/
-    border-top-color: #4a6aa7;
+QTabBar::tab:selected { 
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
 }
 
-QTabBar::tab:!selected {
-    margin-bottom: 2px; /* make non-selected tabs look smaller */
+QTabBar::tab:first {
+    border-left-width: 2px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
 }
 
-QTabBar::tab:selected {
-    /* expand/overlap to the left and right by 4px */
-    margin-left: -4px; margin-right: -4px;
-
-}
-
-QTabBar::tab:first:selected {
-    margin-left: 0; /* the first selected tab has nothing to overlap with on the left */
-}
-
-QTabBar::tab:last:selected {
-    margin-right: 0; /* the last selected tab has nothing to overlap with on the right */
+QTabBar::tab:last {
+    border-right-width: 2px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
 }
 
 QTabBar::tab:only-one {
-    margin: 0; /* if there is only one tab, we don't want overlapping margins */
+    border-width: 2px;
+    border-radius: 4px;
 }
 
 

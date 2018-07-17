@@ -40,6 +40,12 @@
       </property>
       <item>
        <widget class="QTabWidget" name="tabWidget">
+        <property name="font">
+         <font>
+          <family>Roboto</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
@@ -156,7 +162,7 @@
         </widget>
         <widget class="QWidget" name="tab">
          <attribute name="title">
-          <string>Tool Table</string>
+          <string>Tool</string>
          </attribute>
         </widget>
         <widget class="QWidget" name="tab_5">
@@ -232,6 +238,9 @@
              <string>ABS</string>
             </property>
             <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="checked">
              <bool>true</bool>
             </property>
             <property name="autoExclusive">
@@ -419,16 +428,6 @@
          </property>
          <property name="axis">
           <enum>AxisActionButton::Y</enum>
-         </property>
-        </widget>
-        <widget class="QKeySequenceEdit" name="keySequenceEdit">
-         <property name="geometry">
-          <rect>
-           <x>150</x>
-           <y>170</y>
-           <width>113</width>
-           <height>23</height>
-          </rect>
          </property>
         </widget>
        </widget>
