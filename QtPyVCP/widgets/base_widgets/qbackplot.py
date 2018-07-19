@@ -41,11 +41,13 @@ try:
     from PyQt5.QtOpenGL import QGLWidget
 except ImportError:
     LOG.critical("Qtvcp error with qt5_graphics - is package python-pyqt5.qtopengl installed?")
+    sys.exit()
 
 try:
     from OpenGL import GL
 except ImportError:
     LOG.error('Qtvcp Error with graphics - is python-openGL installed?')
+    sys.exit()
 
 
 import gcode
