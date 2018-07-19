@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>618</width>
-    <height>623</height>
+    <height>423</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -170,7 +170,7 @@
        <item>
         <widget class="QTabWidget" name="captureWidget">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="image_tab">
           <property name="layoutDirection">
