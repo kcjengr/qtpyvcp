@@ -32,14 +32,14 @@ import os
 from PyQt5.QtCore import pyqtProperty
 from PyQt5.QtGui import QFont, QFontMetrics, QColor
 
+from QtPyVCP.utilities import logger
+LOG = logger.getLogger(__name__)
+
 try:
     from PyQt5.Qsci import QsciScintilla, QsciLexerCustom
 except ImportError as e:
     LOG.critical("Can't import QsciScintilla - is package python-pyqt5.qsci installed?", exc_info=e)
     sys.exit(1)
-
-from QtPyVCP.utilities import logger
-LOG = logger.getLogger(__name__)
 
 from QtPyVCP.core import Status, Action, Info
 STATUS = Status()
