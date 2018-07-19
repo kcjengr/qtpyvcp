@@ -77,7 +77,7 @@ if not os.path.exists(py_file_path):
     raise ValueError("Py file '{}' does not exist".format(py_file_path))
 LOG.info("Using Py file: yellow<{}>".format(py_file_path))
 
-qss_file_path = args.qss or INFO.getPyFile(default='{}.qss'.format(ini_name))
+qss_file_path = args.qss or INFO.getQssFile(default='{}.qss'.format(ini_name))
 style_sheet = ''
 if os.path.exists(qss_file_path):
     with open(qss_file_path, 'r') as fh:
