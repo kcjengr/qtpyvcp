@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>764</width>
+    <width>618</width>
     <height>623</height>
    </rect>
   </property>
@@ -133,11 +133,22 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="start_stopButton">
-         <property name="text">
-          <string>Start/Stop</string>
-         </property>
-        </widget>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QPushButton" name="start_Button">
+           <property name="text">
+            <string>Start</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="stop_Button">
+           <property name="text">
+            <string>Stop</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
        <item>
         <widget class="QLabel" name="label_2">
@@ -161,7 +172,13 @@
          <property name="currentIndex">
           <number>1</number>
          </property>
-         <widget class="QWidget" name="tab_2">
+         <widget class="QWidget" name="image_tab">
+          <property name="layoutDirection">
+           <enum>Qt::LeftToRight</enum>
+          </property>
+          <property name="autoFillBackground">
+           <bool>false</bool>
+          </property>
           <attribute name="title">
            <string>Image</string>
           </attribute>
@@ -214,7 +231,7 @@
            </item>
           </layout>
          </widget>
-         <widget class="QWidget" name="tab">
+         <widget class="QWidget" name="video_tab">
           <attribute name="title">
            <string>Video</string>
           </attribute>
@@ -315,62 +332,14 @@
  <resources/>
  <connections>
   <connection>
-   <sender>actionExit</sender>
-   <signal>triggered()</signal>
-   <receiver>Camera</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>154</x>
-     <y>130</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionSettings</sender>
-   <signal>triggered()</signal>
-   <receiver>Camera</receiver>
-   <slot>configureSettings()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>333</x>
-     <y>210</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionStartCamera</sender>
-   <signal>triggered()</signal>
-   <receiver>Camera</receiver>
-   <slot>startCamera()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>333</x>
-     <y>210</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionStopCamera</sender>
-   <signal>triggered()</signal>
+   <sender>stop_Button</sender>
+   <signal>clicked()</signal>
    <receiver>Camera</receiver>
    <slot>stopCamera()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>-1</x>
-     <y>-1</y>
+     <x>558</x>
+     <y>59</y>
     </hint>
     <hint type="destinationlabel">
      <x>333</x>
@@ -385,12 +354,28 @@
    <slot>configureSettings()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>639</x>
-     <y>44</y>
+     <x>606</x>
+     <y>38</y>
     </hint>
     <hint type="destinationlabel">
      <x>372</x>
      <y>286</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>start_Button</sender>
+   <signal>clicked()</signal>
+   <receiver>Camera</receiver>
+   <slot>startCamera()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>493</x>
+     <y>59</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>381</x>
+     <y>311</y>
     </hint>
    </hints>
   </connection>
