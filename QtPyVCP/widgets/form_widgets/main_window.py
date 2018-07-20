@@ -64,7 +64,7 @@ class VCPMainWindow(QMainWindow):
         # Load the UI file AFTER defining variables, otherwise the values
         # set in QtDesigner get overridden by the default values
         if ui_file is not None:
-            print uic.loadUi(ui_file, self)
+            uic.loadUi(ui_file, self)
 
         STATUS.init_ui.emit()
         self.initUi()
@@ -95,7 +95,6 @@ class VCPMainWindow(QMainWindow):
                     self.actions.append(action_instance)
 
         print "action time ", time.time() - s
-        # print self.actions
 
     @pyqtSlot()
     def on_power_clicked(self):
@@ -103,7 +102,6 @@ class VCPMainWindow(QMainWindow):
 
     def closeEvent(self, event):
         """Catch close event and show confirmation dialog if set to"""
-        print "prompt: ", self.prompt_at_exit
         if self.prompt_at_exit:
             quit_msg = "Are you sure you want to exit LinuxCNC?"
             reply = QMessageBox.question(self, 'Exit LinuxCNC?',
