@@ -130,6 +130,12 @@ class VCPMainWindow(QMainWindow):
         elif event.key() == Qt.Key_Right:
             print 'Move Right'
             action.Jog.autoJog('X', 1)
+        elif event.key() == Qt.Key_PageUp:
+            print 'Page Up'
+            action.Jog.autoJog('Z', 1)
+        elif event.key() == Qt.Key_PageDown:
+            print 'Page Down'
+            action.Jog.autoJog('Z', -1)
         else:
             print 'Unhandled key press event '
 
@@ -149,6 +155,12 @@ class VCPMainWindow(QMainWindow):
         elif event.key() == Qt.Key_Right:
             print 'Move Right'
             action.Jog.autoJog('X', 0)
+        elif event.key() == Qt.Key_PageUp:
+            print 'Page Up'
+            action.Jog.autoJog('Z', 0)
+        elif event.key() == Qt.Key_PageDown:
+            print 'Page Down'
+            action.Jog.autoJog('Z', 0)
         else:
             print 'Unhandled key release event '
 
