@@ -3,7 +3,11 @@
 import os
 import sys
 
-from PyQt5 import Qt
+
+from PyQt5 import QtCore
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtWidgets import QMessageBox, QFileDialog
 
 from QtPyVCP.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -14,7 +18,7 @@ ACTION = Action()
 PREFS = Prefs()
 INFO = Info()
 
-class _OpenFileDialog(Qt.QFileDialog):
+class _OpenFileDialog(QFileDialog):
     """docstring for OpenFileDialog"""
     def __init__(self, parent=None):
         super(_OpenFileDialog, self).__init__(parent)
@@ -28,12 +32,12 @@ class _OpenFileDialog(Qt.QFileDialog):
         self.setOption(self.DontUseNativeDialog)
 
         urls = self.sidebarUrls()
-        urls.append(Qt.QUrl.fromLocalFile(nc_file_dir))
+        urls.append(QtCore.QUrl.fromLocalFile(nc_file_dir))
         self.setSidebarUrls(urls)
 
     def accept(self):
         path = self.selectedFiles()[0]
-        stats = Qt.QFileInfo(path)
+        stats = QtCore.QFileInfo(path)
         if stats.isDir():
             self.setDirectory(path)
             return

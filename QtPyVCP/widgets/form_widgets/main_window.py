@@ -24,7 +24,12 @@ import os
 import sys
 import time
 
-from PyQt5 import Qt, uic
+from PyQt5 import uic
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty, QTimer
+from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QMessageBox, QFileDialog, QMenu, QLineEdit
+
+from PyQt5 import QtWidgets, QtGui
 
 from QtPyVCP.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -42,7 +47,7 @@ from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
 from QtPyVCP.utilities import action
 
 
-class VCPMainWindow(Qt.QMainWindow):
+class VCPMainWindow(QMainWindow):
 
     def __init__(self, parent=None, ui_file=None):
         super(VCPMainWindow, self).__init__(parent=None)
@@ -72,7 +77,7 @@ class VCPMainWindow(Qt.QMainWindow):
 
         s = time.time()
 
-        menus = self.findChildren(Qt.QMenu)
+        menus = self.findChildren(QMenu)
         for menu in menus:
             menu_actions = menu.actions()
             for menu_action in menu_actions:
@@ -91,7 +96,7 @@ class VCPMainWindow(Qt.QMainWindow):
 
         print "action time ", time.time() - s
 
-    @Qt.pyqtSlot()
+    @pyqtSlot()
     def on_power_clicked(self):
         action.Home.unhomeAxis('x')
 
@@ -100,8 +105,8 @@ class VCPMainWindow(Qt.QMainWindow):
         if self.prompt_at_exit:
             quit_msg = "Are you sure you want to exit LinuxCNC?"
             reply = QMessageBox.question(self, 'Exit LinuxCNC?',
-                             quit_msg, Qt.QMessageBox.Yes, Qt.QMessageBox.No)
-            if reply == Qt.QMessageBox.Yes:
+                             quit_msg, QMessageBox.Yes, QMessageBox.No)
+            if reply == QMessageBox.Yes:
                 event.accept()
             else:
                 event.ignore()
@@ -113,22 +118,22 @@ class VCPMainWindow(Qt.QMainWindow):
         if event.isAutoRepeat():
             return
 
-        if event.key() == Qt.Qt.Key_Up:
+        if event.key() == Qt.Key_Up:
             print 'Move Up'
             action.Jog.autoJog('Y', 1)
-        elif event.key() == Qt.Qt.Key_Down:
+        elif event.key() == Qt.Key_Down:
             print 'Move Down'
             action.Jog.autoJog('Y', -1)
-        elif event.key() == Qt.Qt.Key_Left:
+        elif event.key() == Qt.Key_Left:
             print 'Move Left'
             action.Jog.autoJog('X', -1)
-        elif event.key() == Qt.Qt.Key_Right:
+        elif event.key() == Qt.Key_Right:
             print 'Move Right'
             action.Jog.autoJog('X', 1)
-        elif event.key() == Qt.Qt.Key_PageUp:
+        elif event.key() == Qt.Key_PageUp:
             print 'Page Up'
             action.Jog.autoJog('Z', 1)
-        elif event.key() == Qt.Qt.Key_PageDown:
+        elif event.key() == Qt.Key_PageDown:
             print 'Page Down'
             action.Jog.autoJog('Z', -1)
         else:
@@ -138,22 +143,22 @@ class VCPMainWindow(Qt.QMainWindow):
         if event.isAutoRepeat():
             return
 
-        if event.key() == Qt.Qt.Key_Up:
+        if event.key() == Qt.Key_Up:
             print 'Move Up'
             action.Jog.autoJog('Y', 0)
-        elif event.key() == Qt.Qt.Key_Down:
+        elif event.key() == Qt.Key_Down:
             print 'Move Down'
             action.Jog.autoJog('Y', 0)
-        elif event.key() == Qt.Qt.Key_Left:
+        elif event.key() == Qt.Key_Left:
             print 'Move Left'
             action.Jog.autoJog('X', 0)
-        elif event.key() == Qt.Qt.Key_Right:
+        elif event.key() == Qt.Key_Right:
             print 'Move Right'
             action.Jog.autoJog('X', 0)
-        elif event.key() == Qt.Qt.Key_PageUp:
+        elif event.key() == Qt.Key_PageUp:
             print 'Page Up'
             action.Jog.autoJog('Z', 0)
-        elif event.key() == Qt.Qt.Key_PageDown:
+        elif event.key() == Qt.Key_PageDown:
             print 'Page Down'
             action.Jog.autoJog('Z', 0)
         else:
@@ -170,7 +175,7 @@ class VCPMainWindow(Qt.QMainWindow):
 
     def focusChangedEvent(self, new_w, old_w):
         print "focus changed"
-        if isinstance(new_w, Qt.QLineEdit):
+        if isinstance(new_w, QLineEdit):
             print "Line edit got focus"
 
 #==============================================================================
@@ -179,11 +184,11 @@ class VCPMainWindow(Qt.QMainWindow):
 
     # File menu
 
-    @Qt.pyqtSlot()
+    @pyqtSlot()
     def on_actionOpen_triggered(self):
         self.open_file_dialog.show()
 
-    @Qt.pyqtSlot()
+    @pyqtSlot()
     def on_actionExit_triggered(self):
         self.close()
 
@@ -191,27 +196,27 @@ class VCPMainWindow(Qt.QMainWindow):
     # Machine menu
     #==========================================================================
 
-    @Qt.pyqtSlot()
+    @pyqtSlot()
     def on_actionToggle_E_stop_triggered(self):
         ACTION.toggleEmergencyStop()
 
-    @Qt.pyqtSlot()
+    @pyqtSlot()
     def on_actionToggle_Power_triggered(self):
         ACTION.toggleMachinePower()
 
-    @Qt.pyqtSlot()
+    @pyqtSlot()
     def on_actionRun_Program_triggered(self):
         ACTION.runProgram()
 
-    @Qt.pyqtSlot()
+    @pyqtSlot()
     def on_actionHome_All_triggered(self):
         ACTION.homeJoint(-1)
 
-    @Qt.pyqtSlot()
+    @pyqtSlot()
     def on_actionHome_X_triggered(self):
         ACTION.homeJoint(1)
 
-    @Qt.pyqtSlot(bool)
+    @pyqtSlot(bool)
     def on_actionReport_Actual_Position_toggled(self, report_actual):
         STATUS.setReportActualPosition(report_actual)
 
@@ -229,7 +234,7 @@ class VCPMainWindow(Qt.QMainWindow):
 
             # add new actions
             for i in range(STATUS.max_recent_files):
-                action = Qt.QAction(self, visible=False,
+                action = QAction(self, visible=False,
                                  triggered=(lambda:ACTION.loadProgram(self.sender().data())))
                 self.recent_file_actions.append(action)
                 self.menuRecentFiles.addAction(action)
@@ -258,14 +263,14 @@ class VCPMainWindow(Qt.QMainWindow):
             # if the actions are not valid), but don't connect it to method
             home_action = action.Home(widget=self.menuHoming, method=None)
 
-            menu_action = Qt.QAction(self)
+            menu_action = QAction(self)
             menu_action.setText("Home &All")
             home_action = action.Home(widget=menu_action, method='homeAll', axis='all')
             self.menuHoming.addAction(menu_action)
 
             # add homing actions for each axis
             for aletter in INFO.AXIS_LETTER_LIST:
-                menu_action = Qt.QAction(self)
+                menu_action = QAction(self)
                 menu_action.setText("Home &{}".format(aletter.upper()))
                 home_action = action.Home(widget=menu_action, method='homeAxis', axis=aletter)
                 self.menuHoming.addAction(menu_action)
@@ -281,7 +286,7 @@ class VCPMainWindow(Qt.QMainWindow):
         splash_code = INFO.getOpenFile() or path
         if splash_code is not None:
             # Load after startup to not cause delay
-            Qt.QTimer.singleShot(0, lambda: ACTION.loadProgram(splash_code, add_to_recents=False))
+            QTimer.singleShot(0, lambda: ACTION.loadProgram(splash_code, add_to_recents=False))
 
 
 #==============================================================================
@@ -293,17 +298,17 @@ class VCPMainWindow(Qt.QMainWindow):
         return self.prompt_at_exit
     def setPromptBeforeExit(self, value):
         self.prompt_at_exit = value
-    promptAtExit = Qt.pyqtProperty(bool, getPromptBeforeExit, setPromptBeforeExit)
+    promptAtExit = pyqtProperty(bool, getPromptBeforeExit, setPromptBeforeExit)
 
     # Max number of recent files to display in menu
     def getMaxRecentFiles(self):
         return STATUS.max_recent_files
     def setMaxRecentFiles(self, number):
         STATUS.max_recent_files = number
-    maxNumRecentFiles = Qt.pyqtProperty(int, getMaxRecentFiles, setMaxRecentFiles)
+    maxNumRecentFiles = pyqtProperty(int, getMaxRecentFiles, setMaxRecentFiles)
 
 
 if __name__ == '__main__':
-    app = Qt.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     ex = App()
     sys.exit(app.exec_())

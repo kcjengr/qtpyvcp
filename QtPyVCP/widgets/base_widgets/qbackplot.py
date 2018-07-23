@@ -28,7 +28,10 @@ import re
 import math
 import time
 
-from PyQt5 import Qt
+
+from PyQt5.QtGui import QColor
+from PyQt5.QtCore import pyqtSignal, QPoint, QSize, Qt
+from PyQt5.QtWidgets import QApplication, QHBoxLayout, QSlider, QWidget
 
 # Set up logging
 from QtPyVCP.utilities import logger
@@ -58,7 +61,7 @@ from QtPyVCP.lib import glcanon
 # Stand alone window for testing
 #==============================================================================
 
-class Window(Qt.QWidget):
+class Window(QWidget):
     def __init__(self, inifile):
         super(Window, self).__init__()
         self.glWidget = QBackPlot()
@@ -76,7 +79,7 @@ class Window(Qt.QWidget):
         self.glWidget.zRotationChanged.connect(self.zSlider.setValue)
         self.zoomSlider.valueChanged.connect(self.glWidget.setZoom)
 
-        mainLayout = Qt.QHBoxLayout()
+        mainLayout = QHBoxLayout()
         mainLayout.addWidget(self.glWidget)
         mainLayout.addWidget(self.xSlider)
         mainLayout.addWidget(self.ySlider)
@@ -92,7 +95,7 @@ class Window(Qt.QWidget):
         self.setWindowTitle("Hello GL")
 
     def createSlider(self):
-        slider = Qt.QSlider(Qt.Vertical)
+        slider = QSlider(Qt.Vertical)
 
         slider.setRange(0, 360 * 16)
         slider.setSingleStep(16)
@@ -103,7 +106,7 @@ class Window(Qt.QWidget):
         return slider
 
     def createZoomSlider(self):
-        slider = Qt.QSlider(Qt.Vertical)
+        slider = QSlider(Qt.Vertical)
 
         slider.setRange(1, 1000000)
         slider.setSingleStep(1)
@@ -150,9 +153,9 @@ class StatCanon(glcanon.GLCanon, interpret.StatMixin):
 #==============================================================================
 
 class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
-    xRotationChanged = Qt.pyqtSignal(int)
-    yRotationChanged = Qt.pyqtSignal(int)
-    zRotationChanged = Qt.pyqtSignal(int)
+    xRotationChanged = pyqtSignal(int)
+    yRotationChanged = pyqtSignal(int)
+    zRotationChanged = pyqtSignal(int)
     rotation_vectors = [(1.,0.,0.), (0., 0., 1.)]
 
     def __init__(self, parent=None):
@@ -233,7 +236,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         self.yRot = 0
         self.zRot = 0
 
-        self.Green = Qt.QColor.fromCmykF(0.40, 0.0, 1.0, 0.0)
+        self.Green = QColor.fromCmykF(0.40, 0.0, 1.0, 0.0)
 
     def load(self, filename=None):
         s = self.stat
@@ -396,10 +399,10 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
     #     return glcanon.GlCanonDraw.dro_format(self,s,spd,dtg,limit,homed,positions,axisdtg,g5x_offset,g92_offset,tlo_offset)
 
     def minimumSizeHint(self):
-        return Qt.QSize(50, 50)
+        return QSize(50, 50)
 
     def sizeHint(self):
-        return Qt.QSize(400, 400)
+        return QSize(400, 400)
 
     def normalizeAngle(self, angle):
         while angle < 0:
@@ -504,7 +507,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         _event.accept()
 
     def mousePressEvent(self, event):
-        if (event.buttons() & Qt.Qt.LeftButton):
+        if (event.buttons() & Qt.LeftButton):
             self.select_prime(event.pos().x(), event.pos().y())
             #print self.winfo_width()/2 - event.pos().x(), self.winfo_height()/2 - event.pos().y()
         self.recordMouse(event.pos().x(), event.pos().y())
@@ -513,23 +516,23 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
     # event.buttons = current button state
     # event_button  = event causing button
     def mouseReleaseEvent(self, event):
-        if event.button() & Qt.Qt.LeftButton:
+        if event.button() & Qt.LeftButton:
             self.select_fire()
 
     def mouseDoubleClickEvent(self, event):
-        if event.button() & Qt.Qt.RightButton:
+        if event.button() & Qt.RightButton:
             self.clear_live_plotter()
 
     def mouseMoveEvent(self, event):
         # move
-        if event.buttons() & Qt.Qt.LeftButton:
+        if event.buttons() & Qt.LeftButton:
             self.translateOrRotate(event.pos().x(), event.pos().y())
         # rotate
-        elif event.buttons() & Qt.Qt.RightButton:
+        elif event.buttons() & Qt.RightButton:
             self.set_prime(event.pos().x(), event.pos().y())
             self.rotateOrTranslate(event.pos().x(), event.pos().y())
         # zoom
-        elif event.buttons() & Qt.Qt.MiddleButton:
+        elif event.buttons() & Qt.MiddleButton:
             self.continueZoom(event.pos().y())
 
     def user_plot(self):
@@ -622,7 +625,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
 #==============================================================================
 if __name__ == '__main__':
 
-    app = Qt.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     if len(sys.argv) == 1:
         inifilename = None
     elif len(sys.argv) == 2:
