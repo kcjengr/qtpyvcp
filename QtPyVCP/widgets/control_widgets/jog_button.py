@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 
-from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtCore import pyqtSlot, pyqtProperty, Q_ENUMS
+from PyQt5 import Qt
 
 from QtPyVCP.utilities import action, info
 from QtPyVCP.enums import Axis
 
-class JogButton(QPushButton, Axis):
+class JogButton(Qt.QPushButton, Axis):
 
-    Q_ENUMS(Axis)
+    Qt.Q_ENUMS(Axis)
 
     def __init__(self, parent=None):
         super(JogButton, self).__init__(parent)
@@ -65,11 +64,11 @@ class JogButton(QPushButton, Axis):
 
     def getAxis(self):
         return self._axis
-    @pyqtSlot(Axis)
+    @Qt.pyqtSlot(Axis)
     def setAxis(self, axis):
         self._axis = axis
         self._setUpAction()
-    axis = pyqtProperty(Axis, getAxis, setAxis)
+    axis = Qt.pyqtProperty(Axis, getAxis, setAxis)
 
     # def getJoint(self):
     #     return self._joint_number

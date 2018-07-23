@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
 import os
-from PyQt5.QtWidgets import QLineEdit
-from PyQt5.QtCore import Qt, QEvent
+
+from PyQt5 import Qt
 
 from QtPyVCP.core import Status, Action, Info
 STATUS = Status()
 ACTION = Action()
 INFO = Info()
 
-class EntryWidget(QLineEdit):
+class EntryWidget(Qt.QLineEdit):
     def __init__(self, parent=None):
         super(EntryWidget, self).__init__(parent)
 
@@ -22,16 +22,15 @@ class EntryWidget(QLineEdit):
 
     def keyPressEvent(self, event):
         super(EntryWidget, self).keyPressEvent(event)
-        if event.key() == Qt.Key_Up:
+        if event.key() == Qt.Qt.Key_Up:
             print 'Move up'
-        if event.key() == Qt.Key_Down:
+        if event.key() == Qt.Qt.Key_Down:
             print 'Move down'
 
 
 if __name__ == "__main__":
     import sys
-    from PyQt5.QtWidgets import QApplication
-    app = QApplication(sys.argv)
+    app = Qt.QApplication(sys.argv)
     led = EntryWidget()
     led.show()
     sys.exit(app.exec_())

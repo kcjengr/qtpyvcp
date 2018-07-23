@@ -19,17 +19,12 @@
 
 # PyQt5 widget for plotting gcode.
 
-
 import sys
 import os
 import gcode
 import time
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
-from PyQt5.QtGui import QColor
+from PyQt5 import Qt
 
 from QtPyVCP.widgets.base_widgets.qbackplot import QBackPlot
 
@@ -44,8 +39,8 @@ INFO = Info()
 
 class  GcodeBackplot(QBackPlot):
 
-    line_selected = pyqtSignal(int)
-    gcode_error = pyqtSignal(str)
+    line_selected = Qt.pyqtSignal(int)
+    gcode_error = Qt.pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(GcodeBackplot, self).__init__(parent)
@@ -53,15 +48,15 @@ class  GcodeBackplot(QBackPlot):
         self._reload_filename = None
 
         # Add loading progress bar and abort button
-        self.progressBar = QtWidgets.QProgressBar(visible=False)
+        self.progressBar = Qt.QProgressBar(visible=False)
         self.progressBar.setFormat("Loading backplot: %p%")
-        self.abortButton = QtWidgets.QPushButton('Abort', visible=False)
+        self.abortButton = Qt.QPushButton('Abort', visible=False)
 
-        hBox = QtWidgets.QHBoxLayout()
+        hBox = Qt.QHBoxLayout()
         hBox.addWidget(self.progressBar)
         hBox.addWidget(self.abortButton)
 
-        vBox = QtWidgets.QVBoxLayout(self)
+        vBox = Qt.QVBoxLayout(self)
         vBox.addStretch()
         vBox.addLayout(hBox)
 
@@ -118,7 +113,7 @@ class  GcodeBackplot(QBackPlot):
         self.start = time.time()
 
     def report_progress_percentage(self, percentage):
-        QApplication.processEvents()
+        Qt.QApplication.processEvents()
         self.progressBar.setValue(percentage)
 
     def report_loading_finished(self):
@@ -159,7 +154,7 @@ class  GcodeBackplot(QBackPlot):
             self.set_current_view()
     def getView(self):
         return self.current_view
-    defaultView = pyqtProperty(str, getView, setView)
+    defaultView = Qt.pyqtProperty(str, getView, setView)
 
     # DRO
     def setdro(self, state):
@@ -167,7 +162,7 @@ class  GcodeBackplot(QBackPlot):
         self.updateGL()
     def getdro(self):
         return self.enable_dro
-    _dro = pyqtProperty(bool, getdro, setdro)
+    _dro = Qt.pyqtProperty(bool, getdro, setdro)
 
     # DTG
     def setdtg(self, state):
@@ -175,7 +170,7 @@ class  GcodeBackplot(QBackPlot):
         self.updateGL()
     def getdtg(self):
         return self.show_dtg
-    _dtg = pyqtProperty(bool, getdtg, setdtg)
+    _dtg = Qt.pyqtProperty(bool, getdtg, setdtg)
 
     # METRIC
     def setMetricUnits(self, metric):
@@ -183,7 +178,7 @@ class  GcodeBackplot(QBackPlot):
         self.updateGL()
     def getMetricUnits(self):
         return self.metric_units
-    metricUnits = pyqtProperty(bool, getMetricUnits, setMetricUnits)
+    metricUnits = Qt.pyqtProperty(bool, getMetricUnits, setMetricUnits)
 
 
 
@@ -192,7 +187,7 @@ class  GcodeBackplot(QBackPlot):
         self.updateGL()
     def getProgramAlpha(self):
         return self.program_alpha
-    renderProgramAlpha = pyqtProperty(bool, getProgramAlpha, setProgramAlpha)
+    renderProgramAlpha = Qt.pyqtProperty(bool, getProgramAlpha, setProgramAlpha)
 
 
     def setBackgroundColor(self, color):
@@ -200,10 +195,10 @@ class  GcodeBackplot(QBackPlot):
         self.updateGL()
     def getBackgroundColor(self):
         r, g, b = self.colors['back']
-        color = QColor()
+        color = Qt.QColor()
         color.setRgbF(r, g, b, 1.0)
         return color
-    backgroundColor = pyqtProperty(QColor, getBackgroundColor, setBackgroundColor)
+    backgroundColor = Qt.pyqtProperty(Qt.QColor, getBackgroundColor, setBackgroundColor)
 
 
 
@@ -211,9 +206,7 @@ class  GcodeBackplot(QBackPlot):
 # if this file is run.
 if __name__ == "__main__":
     import sys
-    from PyQt5.QtWidgets import QApplication
-
-    app = QApplication(sys.argv)
+    app = Qt.QApplication(sys.argv)
     widget =  GcodeBackPlot()
     widget.show()
     sys.exit(app.exec_())

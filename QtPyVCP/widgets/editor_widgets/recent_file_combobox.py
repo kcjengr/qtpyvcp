@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 
 import os
-from PyQt5.QtWidgets import QComboBox
-from PyQt5.QtCore import Qt, QEvent
+from PyQt5 import Qt
 
 from QtPyVCP.core import Status, Action, Prefs, Info
 STATUS = Status()
@@ -12,7 +11,7 @@ INFO = Info()
 
 from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
 
-class RecentFileComboBox(QComboBox):
+class RecentFileComboBox(Qt.QComboBox):
     def __init__(self, parent=None):
         super(RecentFileComboBox, self).__init__(parent)
 
