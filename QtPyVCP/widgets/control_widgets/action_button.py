@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtCore import pyqtSlot, pyqtProperty, Q_ENUMS
-
+from PyQt5 import Qt
 from QtPyVCP.utilities import action
 
 class DummyAction(object):
@@ -34,10 +32,10 @@ class Direction(object):
     Null = 0
     Positive = 1
 
-class ActionButton(QPushButton, Action, ActionType, Direction):
+class ActionButton(Qt.QPushButton, Action, ActionType, Direction):
 
-    Q_ENUMS(Action)
-    Q_ENUMS(ActionType)
+    Qt.Q_ENUMS(Action)
+    Qt.Q_ENUMS(ActionType)
 
     def __init__(self, parent=None):
         super(ActionButton, self).__init__(parent)
@@ -62,25 +60,25 @@ class ActionButton(QPushButton, Action, ActionType, Direction):
 
     def getAction(self):
         return self._action_id
-    @pyqtSlot(Action)
+    @Qt.pyqtSlot(Action)
     def setAction(self, action_id):
         self._action_id = action_id
         self._setUpAction()
-    action_id = pyqtProperty(Action, getAction, setAction)
+    action_id = Qt.pyqtProperty(Action, getAction, setAction)
 
     def getActionType(self):
         return self._action_type
-    @pyqtSlot(ActionType)
+    @Qt.pyqtSlot(ActionType)
     def setActionType(self, action_type):
         self._action_type = action_type
         self._setUpAction()
-    action_type = pyqtProperty(ActionType, getActionType, setActionType)
+    action_type = Qt.pyqtProperty(ActionType, getActionType, setActionType)
 
 
     def getActionType(self):
         return self._action_type
-    @pyqtSlot(ActionType)
+    @Qt.pyqtSlot(ActionType)
     def setActionType(self, action_type):
         self._action_type = action_type
         self._setUpAction()
-    action_type = pyqtProperty(ActionType, getActionType, setActionType)
+    action_type = Qt.pyqtProperty(ActionType, getActionType, setActionType)

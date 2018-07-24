@@ -96,8 +96,8 @@ class _Info(object):
     def getPyFile(self, default='pyqtvcp.py'):
         return self.getFilePath('DISPLAY', 'PY_FILE', default)
 
-    def getPyFile(self, default='pyqtvcp.css'):
-        return self.getFilePath('DISPLAY', 'PY_FILE', default)
+    def getQssFile(self, default='pyqtvcp.qss'):
+        return self.getFilePath('DISPLAY', 'QSS_FILE', default)
 
     def getLogFile(self, default='~/pyqtvcp.log'):
         return self.getFilePath('DISPLAY', 'LOG_FILE', default)

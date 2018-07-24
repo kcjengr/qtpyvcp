@@ -32,14 +32,16 @@ import os
 from PyQt5.QtCore import pyqtProperty
 from PyQt5.QtGui import QFont, QFontMetrics, QColor
 
+from PyQt5 import Qt
+
+from QtPyVCP.utilities import logger
+LOG = logger.getLogger(__name__)
+
 try:
     from PyQt5.Qsci import QsciScintilla, QsciLexerCustom
 except ImportError as e:
     LOG.critical("Can't import QsciScintilla - is package python-pyqt5.qsci installed?", exc_info=e)
     sys.exit(1)
-
-from QtPyVCP.utilities import logger
-LOG = logger.getLogger(__name__)
 
 from QtPyVCP.core import Status, Action, Info
 STATUS = Status()
@@ -62,7 +64,7 @@ class GcodeLexer(QsciLexerCustom):
             }
         for key, value in self._styles.iteritems():
             setattr(self, value, key)
-        font = QFont()
+        font = Qt.QFont()
         font.setFamily('Courier')
         font.setFixedPitch(True)
         font.setPointSize(10)
@@ -82,15 +84,15 @@ class GcodeLexer(QsciLexerCustom):
 
     def defaultColor(self, style):
         if style == self.Default:
-            return QColor('#000000')  # black
+            return Qt.QColor('#000000')  # black
         elif style == self.Comment:
-            return QColor('#000000')  # black
+            return Qt.QColor('#000000')  # black
         elif style == self.Key:
-            return QColor('#0000CC')  # blue
+            return Qt.QColor('#0000CC')  # blue
         elif style == self.Assignment:
-            return QColor('#CC0000')  # red
+            return Qt.QColor('#CC0000')  # red
         elif style == self.Value:
-            return QColor('#00CC00')  # green
+            return Qt.QColor('#00CC00')  # green
         return QsciLexerCustom.defaultColor(self, style)
 
     def styleText(self, start, end):
@@ -180,7 +182,7 @@ class EditorBase(QsciScintilla):
         # don't allow editing by default
         self.setReadOnly(True)
         # Set the default font
-        font = QFont()
+        font = Qt.QFont()
         font.setFamily('Courier')
         font.setFixedPitch(True)
         font.setPointSize(10)
@@ -188,7 +190,7 @@ class EditorBase(QsciScintilla):
         self.setMarginsFont(font)
 
         # Margin 0 is used for line numbers
-        fontmetrics = QFontMetrics(font)
+        fontmetrics = Qt.QFontMetrics(font)
         self.setMarginsFont(font)
         self.setMarginWidth(0, fontmetrics.width("0000") + 6)
         self.setMarginLineNumbers(0, True)
@@ -349,8 +351,7 @@ class GcodeEditor(EditorBase):
 # For testing
 #==============================================================================
 if __name__ == "__main__":
-    from PyQt4.QtGui import QApplication
-    app = QApplication(sys.argv)
+    app = Qt.QApplication(sys.argv)
     editor = GcodeEditor()
     editor.show()
 

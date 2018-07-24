@@ -93,7 +93,6 @@ class AxisActionButton(QPushButton, Action, ActionType, Axis, Direction):
         return self._direction
     @pyqtSlot(Direction)
     def setDirection(self, direction):
-        print 'Direction: ', 
         self._direction = direction
         self.setLabel()
     direction = pyqtProperty(Direction, getDirection, setDirection)
