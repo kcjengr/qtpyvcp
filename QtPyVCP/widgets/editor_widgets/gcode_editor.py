@@ -32,8 +32,6 @@ import os
 from PyQt5.QtCore import pyqtProperty
 from PyQt5.QtGui import QFont, QFontMetrics, QColor
 
-from PyQt5 import Qt
-
 from QtPyVCP.utilities import logger
 LOG = logger.getLogger(__name__)
 
@@ -64,7 +62,7 @@ class GcodeLexer(QsciLexerCustom):
             }
         for key, value in self._styles.iteritems():
             setattr(self, value, key)
-        font = Qt.QFont()
+        font = QFont()
         font.setFamily('Courier')
         font.setFixedPitch(True)
         font.setPointSize(10)
@@ -84,15 +82,15 @@ class GcodeLexer(QsciLexerCustom):
 
     def defaultColor(self, style):
         if style == self.Default:
-            return Qt.QColor('#000000')  # black
+            return QColor('#000000')  # black
         elif style == self.Comment:
-            return Qt.QColor('#000000')  # black
+            return QColor('#000000')  # black
         elif style == self.Key:
-            return Qt.QColor('#0000CC')  # blue
+            return QColor('#0000CC')  # blue
         elif style == self.Assignment:
-            return Qt.QColor('#CC0000')  # red
+            return QColor('#CC0000')  # red
         elif style == self.Value:
-            return Qt.QColor('#00CC00')  # green
+            return QColor('#00CC00')  # green
         return QsciLexerCustom.defaultColor(self, style)
 
     def styleText(self, start, end):
@@ -182,7 +180,7 @@ class EditorBase(QsciScintilla):
         # don't allow editing by default
         self.setReadOnly(True)
         # Set the default font
-        font = Qt.QFont()
+        font = QFont()
         font.setFamily('Courier')
         font.setFixedPitch(True)
         font.setPointSize(10)
@@ -190,7 +188,7 @@ class EditorBase(QsciScintilla):
         self.setMarginsFont(font)
 
         # Margin 0 is used for line numbers
-        fontmetrics = Qt.QFontMetrics(font)
+        fontmetrics = QFontMetrics(font)
         self.setMarginsFont(font)
         self.setMarginWidth(0, fontmetrics.width("0000") + 6)
         self.setMarginLineNumbers(0, True)
@@ -351,7 +349,8 @@ class GcodeEditor(EditorBase):
 # For testing
 #==============================================================================
 if __name__ == "__main__":
-    app = Qt.QApplication(sys.argv)
+    from PyQt4.QtGui import QApplication
+    app = QApplication(sys.argv)
     editor = GcodeEditor()
     editor.show()
 

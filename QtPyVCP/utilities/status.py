@@ -18,8 +18,8 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5 import Qt
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QDialog, QLabel, QHBoxLayout, QWidget
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtBoundSignal, pyqtSlot, QTimer, QThread
 
 import os
 import time
@@ -35,7 +35,7 @@ log = logger.getLogger(__name__)
 log.setLevel(logger.WARNING)
 
 
-class Status(Qt.QObject):
+class Status(QObject):
     _instance = None
     def __new__(cls, *args, **kwargs):
         if not cls._instance:
@@ -43,9 +43,9 @@ class Status(Qt.QObject):
         return cls._instance
 
 
-class _Status(Qt.QObject):
+class _Status(QObject):
     stat = linuxcnc.stat()
-    timer = Qt.QTimer()
+    timer = QTimer()
 
     # Queues
     active_queue = pyqtSignal(int)          # number of motions blending
@@ -245,7 +245,7 @@ class _Status(Qt.QObject):
 
         # Use a single shot to stat the main periodic timer, this ensures it
         # starts after the main Qt event loop to prevent errors
-        Qt.QTimer.singleShot(0, self.startPeriodic)
+        QTimer.singleShot(0, self.startPeriodic)
 
     def startPeriodic(self):
         self.timer.start(self._cycle_time)
@@ -376,7 +376,7 @@ class _Status(Qt.QObject):
 # Joint status class
 #==============================================================================
 
-class _Joint( Qt.QObject):
+class _Joint(QObject):
 
     # `linuxcnc.stat.join[n]` attribute signals
     jointType = pyqtSignal(int, int)         # reflects [JOINT_n]TYPE
@@ -433,7 +433,7 @@ class _Joint( Qt.QObject):
 # Error status class
 #==============================================================================
 
-class _Error(Qt.QObject):
+class _Error(QObject):
 
     error = linuxcnc.error_channel()
 

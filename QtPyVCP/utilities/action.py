@@ -26,7 +26,8 @@
 import time
 import linuxcnc
 
-from PyQt5 import Qt
+from PyQt5.QtCore import QTimer, pyqtSlot
+from PyQt5.QtWidgets import QAction, QPushButton
 
 # Set up logging
 from QtPyVCP.utilities import logger
@@ -84,6 +85,9 @@ class _Action(object):
             STATUS.recent_files.remove(fname)
         STATUS.recent_files.insert(0, fname)
         STATUS.recent_files = STATUS.recent_files[:STATUS.max_recent_files]
+
+        # if len(STATUS.recent_files) > STATUS.max_recent_files:
+        #     STATUS.recent_files.pop()
         STATUS.recent_files_changed.emit(tuple(STATUS.recent_files))
 
     def runProgram(self, start_line=0):
@@ -157,7 +161,7 @@ class _BoolAction(object):
         self.action_type = action_type.upper()
 
         if self.widget is not None:
-            if isinstance(self.widget, Qt.QAction):
+            if isinstance(self.widget, QAction):
                 sig = self.widget.triggered
             else:
                 sig = self.widget.clicked
@@ -404,7 +408,7 @@ class _JointAction(object):
         self.widget = widget
 
         if self.widget is not None and method is not None:
-            if isinstance(self.widget, Qt.QAction):
+            if isinstance(self.widget, QAction):
                 sig = self.widget.triggered
             else:
                 sig = self.widget.clicked
@@ -540,6 +544,7 @@ class Jog(object):
 
         STATUS.on.connect(lambda s: self.widget.setEnabled(s))
         STATUS.executing.connect(lambda s: self.widget.setEnabled(not s))
+
 
     def btn_jog(self):
         self.__class__.autoJog(self._axis, self._direction)

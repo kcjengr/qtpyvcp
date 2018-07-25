@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
-from PyQt5 import Qt
+from PyQt5.QtGui import QIcon
+from PyQt5.QtDesigner import QPyDesignerCustomWidgetPlugin
 
-class _DesignerPlugin(Qt.QPyDesignerCustomWidgetPlugin):
+class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 
     def __init__(self, parent=None):
         super(_DesignerPlugin, self).__init__(parent=parent)
@@ -31,7 +32,7 @@ class _DesignerPlugin(Qt.QPyDesignerCustomWidgetPlugin):
 
     # Override to set the icon used for the widget in QtDesigner
     def icon(self):
-        return Qt.QIcon()
+        return QIcon()
 
     # Override to set the QtDesigner widget box group heading
     def group(self):
