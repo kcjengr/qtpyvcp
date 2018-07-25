@@ -208,26 +208,34 @@ class Camera(QWidget):
 
         camera_device = QByteArray()
 
-        video_devices_group = QActionGroup(self)
-        video_devices_group.setExclusive(True)
+        videoDevicesGroup = QActionGroup(self)
 
-        for deviceName in QCamera.availableDevices():
-            description = QCamera.deviceDescription(deviceName)
-            self.ui.devicesCombo.addItem(description)
-            # videoDeviceAction.setCheckable(True)
-            # videoDeviceAction.setData(deviceName)
+        videoDevicesGroup.setExclusive(True)
 
-            # if camera_device.isEmpty():
-            #    camera_device = deviceName
-            #    videoDeviceAction.setChecked(True)
+        if not QCamera.availableDevices():
+            self.ui.devicesCombo.addItem("No Camera")
+        else:
+            for deviceName in QCamera.availableDevices():
+                description = QCamera.deviceDescription(deviceName)
+                self.ui.devicesCombo.addItem(description)
 
-            # self.menu_bar.menuDevices.addAction(videoDeviceAction)
+                videoDeviceAction = QAction(description, videoDevicesGroup)
+                videoDeviceAction.setCheckable(True)
+                videoDeviceAction.setData(deviceName)
 
-        video_devices_group.triggered.connect(self.updateCameraDevice)
+                if camera_device.isEmpty():
+                    cameraDevice = deviceName
+                    videoDeviceAction.setChecked(True)
+
+                self.ui.devicesCombo.addAction(videoDeviceAction)
+
+        videoDevicesGroup.triggered.connect(self.updateCameraDevice)
+
         self.ui.captureWidget.currentChanged.connect(self.updateCaptureMode)
 
-        self.ui.lockButton.hide()
+        self.ui.devicesCombo.currentIndexChanged.connect(self.get_device_action)
 
+        self.ui.lockButton.hide()
 
         self.setCamera(camera_device)
 
@@ -265,10 +273,8 @@ class Camera(QWidget):
 
         self.camera.lockStatusChanged.connect(self.updateLockStatus)
 
-        self.ui.captureWidget.setTabEnabled(0,
-                                            self.camera.isCaptureModeSupported(QCamera.CaptureStillImage))
-        self.ui.captureWidget.setTabEnabled(1,
-                                            self.camera.isCaptureModeSupported(QCamera.CaptureVideo))
+        self.ui.captureWidget.setTabEnabled(0, self.camera.isCaptureModeSupported(QCamera.CaptureStillImage))
+        self.ui.captureWidget.setTabEnabled(1, self.camera.isCaptureModeSupported(QCamera.CaptureVideo))
 
         self.updateCaptureMode()
 
@@ -334,8 +340,7 @@ class Camera(QWidget):
             self.videoContainerFormat = settings_dialog.format()
 
             self.imageCapture.setEncodingSettings(self.imageSettings)
-            self.mediaRecorder.setEncodingSettings(self.audioSettings,
-                                                   self.videoSettings, self.videoContainerFormat)
+            self.mediaRecorder.setEncodingSettings(self.audioSettings, self.videoSettings, self.videoContainerFormat)
 
     def record(self):
         self.mediaRecorder.record()
@@ -430,6 +435,9 @@ class Camera(QWidget):
 
     def displayCameraError(self):
         QMessageBox.warning(self, "Camera error", self.camera.errorString())
+
+    def get_device_action(self, index):
+        self.ui.devicesCombo.actions()[index].trigger()
 
     def updateCameraDevice(self, action):
         self.setCamera(action.data())
