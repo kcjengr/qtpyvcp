@@ -53,7 +53,7 @@ from PyQt5.QtMultimedia import (QAudioEncoderSettings, QCamera,
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QDialog,
                              QWidget, QMessageBox)
 
-THIS_WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
+WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 class Settings(QDialog):
@@ -64,7 +64,7 @@ class Settings(QDialog):
         self.imagecapture = imageCapture
         self.mediaRecorder = mediaRecorder
 
-        self.ui = uic.loadUi(os.path.join(THIS_WIDGET_PATH, "settings.ui"), self)
+        self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "settings.ui"), self)
 
         self.ui.imageCodecBox.addItem("Default image format", "")
         for codecName in self.imagecapture.supportedImageCodecs():
@@ -194,7 +194,7 @@ class Camera(QWidget):
     def __init__(self, parent=None):
         super(Camera, self).__init__(parent)
 
-        self.ui = uic.loadUi(os.path.join(THIS_WIDGET_PATH, "camera.ui"), self)
+        self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "camera.ui"), self)
         self.camera = None
         self.imageCapture = None
         self.mediaRecorder = None
