@@ -256,7 +256,7 @@ class Camera(QWidget):
         self.mediaRecorder.durationChanged.connect(self.updateRecordTime)
         self.mediaRecorder.error.connect(self.displayRecorderError)
 
-        self.mediaRecorder.setMetaData(QMediaMetaData.Title, "Test Title")
+        self.mediaRecorder.setMetaData(QMediaMetaData.Title, "Camera Widget")
 
         self.ui.exposureCompensation.valueChanged.connect(
             self.setExposureCompensation)
@@ -310,8 +310,9 @@ class Camera(QWidget):
             super(Camera, self).keyReleaseEvent(event)
 
     def updateRecordTime(self):
-        msg = "Recorded %d sec" % self.mediaRecorder.duration() // 1000
-        self.ui.statusbar.showMessage(msg)
+        msg = "Recorded {} sec".format(self.mediaRecorder.duration())
+        self.ui.timeLabel.text = msg
+        print(msg)
 
     def processCapturedImage(self, requestId, img):
         scaledImage = img.scaled(self.ui.viewfinder.size(), Qt.KeepAspectRatio,
