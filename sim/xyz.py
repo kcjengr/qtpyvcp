@@ -17,8 +17,8 @@ INFO = Info()
 # import xyz_ui
 
 class MainWindow(VCPMainWindow):
-    def __init__(self, ui_file):
-        super(MainWindow, self).__init__(ui_file=ui_file)
+    def __init__(self, *args, **kwargs):
+        super(MainWindow, self).__init__(*args, **kwargs)
         # uic.loadUi(ui_file, self)
 
         # ui = xyz_ui.Ui_Form()

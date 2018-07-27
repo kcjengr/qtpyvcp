@@ -18,7 +18,7 @@ class DummyAction(object):
 class Action(object):
     NoAction = DummyAction.action_id
     Home = action.Home.action_id
-    Jog = action.Jog.action_id
+    Jog = action.Jogging.action_id
 
 class ActionType(object):
     Toggle = -1

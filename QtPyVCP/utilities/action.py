@@ -528,7 +528,7 @@ class Home(_JointAction):
         unhomeJoint(jnum)
 
 
-class Jog(object):
+class Jogging(object):
 
     action_id = 7
     action_text = "Jog"
@@ -573,65 +573,23 @@ class Jog(object):
             CMD.jog(linuxcnc.JOG_INCREMENT, jog_joint, axis, direction * rate, distance)
 
     @classmethod
-    def auto(cls, axis, direction):
-        joint_jog = False
-        if STAT.motion_mode == linuxcnc.TRAJ_MODE_FREE:
-            joint_jog = True
-
-        if j_or_anum in (3,4,5):
-            rate = STATUS.angular_jog_velocity / 60
-        else:
-            rate = STATUS.linear_jog_velocity / 60
-
-        distance = STATUS.jog_increment
-
-        cls.JOG(axisnum, direction, rate, distance)
-
-    @classmethod
-    def jog(cls, axisnum, direction):
-        distance = STATUS.jog_increment
-        if axisnum in (3,4,5):
-            rate = STATUS.angular_jog_velocity/60
-        else:
-            rate = STATUS.current_jog_rate/60
-        cls.JOG(axisnum, direction, rate, distance)
-
-    @classmethod
-    def _jog(cls, axisnum, direction, rate, distance=0):
-
+    def jog(cls, aixs, direction, velocity, distance=0):
+        axis = getAxisNumber(axis)
         if direction == 0:
-            CMD.jog(linuxcnc.JOG_STOP, cls.jog_joint, j_or_a)
+            CMD.jog(linuxcnc.JOG_STOP, cls.jog_joint, axis)
         else:
             if distance == 0:
-                CMD.jog(linuxcnc.JOG_CONTINUOUS, cls.jog_joint, j_or_a, direction * rate)
+                CMD.jog(linuxcnc.JOG_CONTINUOUS, cls.jog_joint, axis, direction * velocity)
             else:
-                CMD.jog(linuxcnc.JOG_INCREMENT, cls.jog_joint, j_or_a, direction * rate, distance)
+                CMD.jog(linuxcnc.JOG_INCREMENT, cls.jog_joint, axis, direction * velocity, distance)
 
     @classmethod
-    def continuous(cls, jnum=-1, anum=-1, velocity=0):
-        if jnum != -1:
-            # Joint jog
-            CMD.jog(linuxcnc.JOG_CONTINUOUS, 1, jnum, velocity)
-        elif anum != -1:
-            # Axis jog
-            CMD.jog(linuxcnc.JOG_CONTINUOUS, 0, anum, velocity)
-
-    @classmethod
-    def increment(cls, jnum=-1, anum=-1, velocity=0, distance=0):
-        if jnum != -1:
-            # Joint jog
-            CMD.jog(linuxcnc.JOG_INCREMENT, 1, jnum, velocity, distance)
-        elif anum != -1:
-            # Axis jog
-            CMD.jog(linuxcnc.JOG_INCREMENT, 0, anum, velocity, distance)
-
-
-    @classmethod
-    def stop(cls, axis=None):
+    def bindKey(cls, axis, key):
         if axis is None and isinstance(cls, Jog):
             axis = cls.axis
         print "axis: ", axis, cls
         CMD.jog(linuxcnc.JOG_STOP, 0, axis)
+
 
     def __enter__(self):
         return self
@@ -648,7 +606,7 @@ action_by_id = {
     4 : BlockDelete,
     5 : OptionalStop,
     6 : Home,
-    7 : Jog,
+    7 : Jogging,
 }
 
 

@@ -25,9 +25,10 @@ import sys
 import time
 
 from PyQt5 import uic
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QKeySequence
 from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty, QTimer
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QMessageBox, QFileDialog, QMenu, QLineEdit
+from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QPushButton, 
+    QAction, QMessageBox, QFileDialog, QMenu, QLineEdit, QShortcut, qApp)
 
 from PyQt5 import QtWidgets, QtGui
 
@@ -41,9 +42,7 @@ PREFS = Prefs()
 INFO = Info()
 
 from QtPyVCP.utilities import action
-
 from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
-
 from QtPyVCP.utilities import action
 
 
@@ -68,6 +67,9 @@ class VCPMainWindow(QMainWindow):
 
         STATUS.init_ui.emit()
         self.initUi()
+
+        # QShortcut(QKeySequence("t"), self, self.test)
+        qApp.focusChanged.connect(self.focusChangedEvent)
 
     def initUi(self):
         print "initiating"
@@ -120,24 +122,24 @@ class VCPMainWindow(QMainWindow):
 
         if event.key() == Qt.Key_Up:
             print 'Move Up'
-            action.Jog.autoJog('Y', 1)
+            action.Jogging.autoJog('Y', 1)
         elif event.key() == Qt.Key_Down:
             print 'Move Down'
-            action.Jog.autoJog('Y', -1)
+            action.Jogging.autoJog('Y', -1)
         elif event.key() == Qt.Key_Left:
             print 'Move Left'
-            action.Jog.autoJog('X', -1)
+            action.Jogging.autoJog('X', -1)
         elif event.key() == Qt.Key_Right:
             print 'Move Right'
-            action.Jog.autoJog('X', 1)
+            action.Jogging.autoJog('X', 1)
         elif event.key() == Qt.Key_PageUp:
             print 'Page Up'
-            action.Jog.autoJog('Z', 1)
+            action.Jogging.autoJog('Z', 1)
         elif event.key() == Qt.Key_PageDown:
             print 'Page Down'
-            action.Jog.autoJog('Z', -1)
+            action.Jogging.autoJog('Z', -1)
         else:
-            print 'Unhandled key press event '
+            print 'Unhandled key press event'
 
     def keyReleaseEvent(self, event):
         if event.isAutoRepeat():
@@ -145,26 +147,24 @@ class VCPMainWindow(QMainWindow):
 
         if event.key() == Qt.Key_Up:
             print 'Move Up'
-            action.Jog.autoJog('Y', 0)
+            action.Jogging.autoJog('Y', 0)
         elif event.key() == Qt.Key_Down:
             print 'Move Down'
-            action.Jog.autoJog('Y', 0)
+            action.Jogging.autoJog('Y', 0)
         elif event.key() == Qt.Key_Left:
             print 'Move Left'
-            action.Jog.autoJog('X', 0)
+            action.Jogging.autoJog('X', 0)
         elif event.key() == Qt.Key_Right:
             print 'Move Right'
-            action.Jog.autoJog('X', 0)
+            action.Jogging.autoJog('X', 0)
         elif event.key() == Qt.Key_PageUp:
             print 'Page Up'
-            action.Jog.autoJog('Z', 0)
+            action.Jogging.autoJog('Z', 0)
         elif event.key() == Qt.Key_PageDown:
             print 'Page Down'
-            action.Jog.autoJog('Z', 0)
+            action.Jogging.autoJog('Z', 0)
         else:
-            print 'Unhandled key release event '
-
-
+            print 'Unhandled key release event'
 
 
     def mousePressEvent(self, event):
@@ -175,7 +175,8 @@ class VCPMainWindow(QMainWindow):
 
     def focusChangedEvent(self, new_w, old_w):
         print "focus changed"
-        if isinstance(new_w, QLineEdit):
+        print new_w, old_w
+        if issubclass(new_w.__class__, QLineEdit):
             print "Line edit got focus"
 
 #==============================================================================

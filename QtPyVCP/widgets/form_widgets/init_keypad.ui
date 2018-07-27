@@ -181,7 +181,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton{ background:rgb(206, 92, 0)}</string>
+        <string notr="true">QPushButton{ background:rgb(252, 175, 62)}</string>
        </property>
        <property name="text">
         <string>÷</string>
@@ -320,7 +320,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton{ background:rgb(206, 92, 0)}</string>
+        <string notr="true">QPushButton{ background:rgb(252, 175, 62)}</string>
        </property>
        <property name="text">
         <string>×</string>
@@ -459,7 +459,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton{ background:rgb(206, 92, 0)}</string>
+        <string notr="true">QPushButton{ background:rgb(252, 175, 62)}</string>
        </property>
        <property name="text">
         <string>−</string>
@@ -601,7 +601,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton{ background:rgb(206, 92, 0)}</string>
+        <string notr="true">QPushButton{ background:rgb(252, 175, 62)}</string>
        </property>
        <property name="text">
         <string>+</string>
@@ -657,10 +657,10 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton{ background:rgb(164, 0, 0)}</string>
+        <string notr="true">QPushButton{ background:rgb(239, 41, 41)}</string>
        </property>
        <property name="text">
-        <string>ESC</string>
+        <string>CANCEL</string>
        </property>
       </widget>
      </item>
@@ -728,7 +728,7 @@
         <enum>Qt::NoFocus</enum>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton{ background:rgb(78, 154, 6)}</string>
+        <string notr="true">QPushButton{ background:rgb(138, 226, 52)}</string>
        </property>
        <property name="text">
         <string>ENTER</string>

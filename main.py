@@ -100,6 +100,6 @@ if __name__ == '__main__':
     app.aboutToQuit.connect(STATUS.onShutdown)
     app.setStyle(QStyleFactory.create(args.theme))
     app.setStyleSheet(style_sheet)
-    ui = module.MainWindow(ui_file_path)
+    ui = module.MainWindow(ui_file=ui_file_path)
     ui.show()
     sys.exit(app.exec_())
