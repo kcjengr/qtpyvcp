@@ -1,4 +1,4 @@
-QMainWindow {
+QMainWindow, QDialog {
     background: #707070
     /*border-image: url(:/images/dark_background.jpg);*/
     /*background-image: url(:/images/dark_background.jpg);*/
