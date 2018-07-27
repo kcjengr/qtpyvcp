@@ -25,9 +25,10 @@ import sys
 import time
 
 from PyQt5 import uic
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QKeySequence
 from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty, QTimer
-from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QAction, QMessageBox, QFileDialog, QMenu, QLineEdit
+from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QPushButton, 
+    QAction, QMessageBox, QFileDialog, QMenu, QLineEdit, QShortcut, qApp)
 
 from PyQt5 import QtWidgets, QtGui
 
@@ -41,9 +42,7 @@ PREFS = Prefs()
 INFO = Info()
 
 from QtPyVCP.utilities import action
-
 from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
-
 from QtPyVCP.utilities import action
 
 
@@ -68,6 +67,9 @@ class VCPMainWindow(QMainWindow):
 
         STATUS.init_ui.emit()
         self.initUi()
+
+        # QShortcut(QKeySequence("t"), self, self.test)
+        qApp.focusChanged.connect(self.focusChangedEvent)
 
     def initUi(self):
         print "initiating"
@@ -173,7 +175,8 @@ class VCPMainWindow(QMainWindow):
 
     def focusChangedEvent(self, new_w, old_w):
         print "focus changed"
-        if isinstance(new_w, QLineEdit):
+        print new_w, old_w
+        if issubclass(new_w.__class__, QLineEdit):
             print "Line edit got focus"
 
 #==============================================================================
