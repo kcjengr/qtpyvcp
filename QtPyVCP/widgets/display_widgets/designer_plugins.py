@@ -15,3 +15,12 @@ class GcodeBackPlotPlugin(_DesignerPlugin):
         return "G-code backplot widget"
     def isContainer(self):
         return True
+
+from QtPyVCP.widgets.display_widgets.camera.camera import Camera
+class CameraPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return Camera
+    def toolTip(self):
+        return "Camera widget"
+    def isContainer(self):
+        return True
