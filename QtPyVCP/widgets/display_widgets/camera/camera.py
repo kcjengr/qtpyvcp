@@ -120,7 +120,8 @@ class Settings(QDialog):
 
         resolution = self.boxValue(self.ui.imageResolutionBox)
 
-        settings.setResolution(resolution)
+        if resolution:
+            settings.setResolution(resolution)
 
         return settings
 
@@ -137,8 +138,9 @@ class Settings(QDialog):
             QMultimedia.EncodingQuality(
                 self.ui.audioQualitySlider.value()))
 
-        sample_rate = self.boxValue(self.ui.audioSampleRateBox)
-        settings.setSampleRate(sample_rate)
+        if self.ui.audioSampleRateBox.count() > 1:
+            sample_rate = self.boxValue(self.ui.audioSampleRateBox)
+            settings.setSampleRate(sample_rate)
 
         return settings
 
@@ -151,8 +153,12 @@ class Settings(QDialog):
         settings = self.mediaRecorder.videoSettings()
         settings.setCodec(self.boxValue(self.ui.videoCodecBox))
         settings.setQuality(QMultimedia.EncodingQuality(self.ui.videoQualitySlider.value()))
-        settings.setResolution(self.boxValue(self.ui.videoResolutionBox))
-        settings.setFrameRate(self.boxValue(self.ui.videoFramerateBox))
+
+        if self.ui.videoResolutionBox.count() > 1:
+            settings.setResolution(self.boxValue(self.ui.videoResolutionBox))
+
+        if self.ui.videoFramerateBox.count() > 1:
+            settings.setFrameRate(self.boxValue(self.ui.videoFramerateBox))
 
         return settings
 
@@ -213,7 +219,7 @@ class Camera(QWidget):
         videoDevicesGroup.setExclusive(True)
 
         if not QCamera.availableDevices():
-            self.ui.devicesCombo.addItem("No Camera")
+            self.ui.devicesCombo.addItem("No Device")
         else:
             for deviceName in QCamera.availableDevices():
                 description = QCamera.deviceDescription(deviceName)
