@@ -59,7 +59,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>5</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -167,6 +167,16 @@
          <attribute name="title">
           <string>Probing</string>
          </attribute>
+        </widget>
+        <widget class="QWidget" name="tab_6">
+         <attribute name="title">
+          <string>Video</string>
+         </attribute>
+         <layout class="QGridLayout" name="gridLayout">
+          <item row="0" column="0">
+           <widget class="Camera" name="camera"/>
+          </item>
+         </layout>
         </widget>
        </widget>
       </item>
@@ -1425,7 +1435,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>20</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
@@ -1636,6 +1646,12 @@
    <class>EntryWidget</class>
    <extends>QLineEdit</extends>
    <header>QtPyVCP.widgets.control_widgets.entry_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>Camera</class>
+   <extends>QWidget</extends>
+   <header>QtPyVCP.widgets.display_widgets.camera.camera</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>DROWidget</class>
