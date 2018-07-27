@@ -59,7 +59,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -152,11 +152,6 @@
          <attribute name="title">
           <string>File</string>
          </attribute>
-         <layout class="QHBoxLayout" name="horizontalLayout_5">
-          <item>
-           <widget class="Camera" name="camera"/>
-          </item>
-         </layout>
         </widget>
         <widget class="QWidget" name="tab_4">
          <attribute name="title">
@@ -1641,12 +1636,6 @@
    <class>EntryWidget</class>
    <extends>QLineEdit</extends>
    <header>QtPyVCP.widgets.control_widgets.entry_widget</header>
-  </customwidget>
-  <customwidget>
-   <class>Camera</class>
-   <extends>QWidget</extends>
-   <header>QtPyVCP.widgets.display_widgets.camera.camera</header>
-   <container>1</container>
   </customwidget>
   <customwidget>
    <class>DROWidget</class>
