@@ -90,6 +90,9 @@ class _Info(object):
             path = os.path.join(self.CONFIG_DIR, path)
         return os.path.realpath(path)
 
+    def getVCPDir(self, default='~/.local/share/vcps'):
+        return self.getFilePath('DISPLAY', 'VCP_HOME', default)
+
     def getUiFile(self, default='pyqtvcp.ui'):
         return self.getFilePath('DISPLAY', 'UI_FILE', default)
 
@@ -313,7 +316,7 @@ class _Info(object):
         subroutines_paths = self.ini.find('RS274NGC', 'SUBROUTINE_PATH')
         if not subroutines_paths:
             log.info("No subroutine folder or program prefix given in self.ini file")
-            subroutines_paths = program_prefix()
+            subroutines_paths = getProgramPrefix()
         if not subroutines_paths:
             return False
         return subroutines_paths
