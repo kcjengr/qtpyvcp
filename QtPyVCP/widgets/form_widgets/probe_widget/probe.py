@@ -20,19 +20,23 @@ import os       # For file path manipulation
 import linuxcnc # For commanding linuxcnc
 
 from PyQt5 import uic, QtWidgets
+from QtPyVCP.utilities.info import Info
 
 PARENT_DIR = os.path.dirname(os.path.realpath(__file__))
 
+INFO = Info()
+
 # Change this path to match [RS274NGC] SUBROUTINE_PATH given in the INI
-SUBROUTINE_PATH = os.path.join(PARENT_DIR, 'subroutines')
+SUBROUTINE_PATH = INFO.getSubroutinePaths()
+
 
 CMD = linuxcnc.command()
 STAT = linuxcnc.stat()
 
-class SubCaller(QtWidgets.QMainWindow):
+class SubCaller(QtWidgets.QWidget):
 
-    def __init__(self):
-        super(SubCaller, self).__init__()
+    def __init__(self, parent=None):
+        super(SubCaller, self).__init__(parent)
         uic.loadUi(os.path.join(PARENT_DIR, "probe.ui"), self)
 
         for filename in os.listdir(SUBROUTINE_PATH):
