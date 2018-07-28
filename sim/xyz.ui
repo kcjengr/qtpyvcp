@@ -171,9 +171,6 @@
           <item>
            <widget class="SubCaller" name="subcaller"/>
           </item>
-          <item>
-           <widget class="GcodeBackplot" name="gcodebackplot_2"/>
-          </item>
          </layout>
         </widget>
         <widget class="QWidget" name="tab_6">
