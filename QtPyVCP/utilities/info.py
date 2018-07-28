@@ -316,7 +316,7 @@ class _Info(object):
         subroutines_paths = self.ini.find('RS274NGC', 'SUBROUTINE_PATH')
         if not subroutines_paths:
             log.info("No subroutine folder or program prefix given in self.ini file")
-            subroutines_paths = getProgramPrefix()
+            subroutines_paths = self.getProgramPrefix()
         if not subroutines_paths:
             return False
         return subroutines_paths
