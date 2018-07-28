@@ -22,3 +22,14 @@ class MainWindowPlugin(_DesignerPlugin):
                    </property>
                    <widget class="QWidget" name="centralwidget"/>
                   </widget>'''
+
+"""
+from QtPyVCP.widgets.form_widgets.probe_widget.probe import SubCaller
+class ProbePlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return SubCaller
+    def toolTip(self):
+        return "Probe widget"
+    def isContainer(self):
+        return True
+"""
