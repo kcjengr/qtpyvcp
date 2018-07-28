@@ -59,7 +59,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -167,6 +167,14 @@
          <attribute name="title">
           <string>Probing</string>
          </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <widget class="SubCaller" name="subcaller"/>
+          </item>
+          <item>
+           <widget class="GcodeBackplot" name="gcodebackplot_2"/>
+          </item>
+         </layout>
         </widget>
         <widget class="QWidget" name="tab_6">
          <attribute name="title">
@@ -1641,6 +1649,12 @@
    <class>RecentFileComboBox</class>
    <extends>QComboBox</extends>
    <header>QtPyVCP.widgets.editor_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>SubCaller</class>
+   <extends>QWidget</extends>
+   <header>QtPyVCP.widgets.form_widgets.probe_widget.probe</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>EntryWidget</class>

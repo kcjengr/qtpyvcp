@@ -27,8 +27,7 @@ PARENT_DIR = os.path.dirname(os.path.realpath(__file__))
 INFO = Info()
 
 # Change this path to match [RS274NGC] SUBROUTINE_PATH given in the INI
-SUBROUTINE_PATH = INFO.getSubroutinePaths()
-
+SUBROUTINE_PATH = INFO.getSubroutinePath()
 
 CMD = linuxcnc.command()
 STAT = linuxcnc.stat()
