@@ -312,14 +312,14 @@ class _Info(object):
             log.warning("No default jog increments entry found in [DISPLAY] of self.ini file")
         return jog_increments
 
-    def getSubroutinePaths(self):
-        subroutines_paths = self.ini.find('RS274NGC', 'SUBROUTINE_PATH')
-        if not subroutines_paths:
+    def getSubroutinePath(self):
+        subroutines_path = self.ini.find('RS274NGC', 'SUBROUTINE_PATH')
+        if not subroutines_path:
             log.info("No subroutine folder or program prefix given in self.ini file")
-            subroutines_paths = self.getProgramPrefix()
-        if not subroutines_paths:
+            subroutines_path = self.getProgramPrefix()
+        if not subroutines_path:
             return False
-        return subroutines_paths
+        return subroutines_path
 
     def getRS274StartCode(self):
         temp = self.ini.find('RS274NGC', 'RS274NGC_STARTUP_CODE')
