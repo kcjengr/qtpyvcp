@@ -34,7 +34,7 @@
       </font>
      </property>
      <property name="cursor" stdset="0">
-      <cursorShape>UpArrowCursor</cursorShape>
+      <cursorShape>IBeamCursor</cursorShape>
      </property>
      <property name="tabChangesFocus">
       <bool>false</bool>
