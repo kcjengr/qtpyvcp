@@ -36,14 +36,14 @@ class SubCaller(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super(SubCaller, self).__init__(parent)
-        uic.loadUi(os.path.join(PARENT_DIR, "probe.ui"), self)
+        self. ui = uic.loadUi(os.path.join(PARENT_DIR, "probe.ui"), self)
 
         for filename in os.listdir(SUBROUTINE_PATH):
             filename_and_ext = os.path.splitext(filename)
             subname = filename_and_ext[0]
-            self.subComboBox.addItem(filename, subname)
+            self.ui.subComboBox.addItem(filename, subname)
 
-        self.callSubButton.clicked.connect(self.callSub)
+        self.ui.callSubButton.clicked.connect(self.callSub)
 
     def callSub(self):
 
@@ -65,8 +65,8 @@ class SubCaller(QtWidgets.QWidget):
         # Print the command to the terminal so the user can see what is happening
         print "Calling MDI command: ", cmd_str
 
-        self.statusBar.setStyleSheet("QStatusBar{color:black}")
-        self.statusBar.showMessage("Probing ...")
+        self.status_label.setStyleSheet("QStatusBar{color:black}")
+        self.status_label.setText("Probing ...")
 
         # Set the LinuxCNC mode to MDI
         CMD.mode(linuxcnc.MODE_MDI)
@@ -77,12 +77,12 @@ class SubCaller(QtWidgets.QWidget):
         print 'Done'
         STAT.poll()
         if STAT.probe_tripped:
-            self.statusBar.setStyleSheet("QStatusBar{color:green}")
-            self.statusBar.showMessage("Probing finished successfully")
+            self.status_label.setStyleSheet("QStatusBar{color:green}")
+            self.status_label.setText("Probing finished successfully")
             self.onProbeSuccess()
         else:
-            self.statusBar.setStyleSheet("QStatusBar{color:red}")
-            self.statusBar.showMessage("ERROR: Probe move finished without making contact", msecs=5000)
+            self.status_label.setStyleSheet("QStatusBar{color:red}")
+            self.status_label.setText("ERROR: Probe move finished without making contact")
 
     def onProbeSuccess(self):
         probed_pos = STAT.probed_position
@@ -99,6 +99,7 @@ class SubCaller(QtWidgets.QWidget):
             value = line_edit.text()
             args[key] = value
         return args
+
 
 if __name__ == '__main__':
     import sys
