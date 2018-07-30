@@ -28,27 +28,6 @@
      <property name="bottomMargin">
       <number>10</number>
      </property>
-     <item row="0" column="0">
-      <layout class="QHBoxLayout" name="horizontalLayout_7">
-       <item>
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Probe Routine:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="subComboBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
      <item row="3" column="0">
       <widget class="QGroupBox" name="groupBox_2">
        <property name="title">
@@ -213,6 +192,27 @@
         </item>
        </layout>
       </widget>
+     </item>
+     <item row="0" column="0">
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Probe Routine:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="subComboBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item row="0" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_8"/>
@@ -547,20 +547,10 @@
        </layout>
       </widget>
      </item>
-     <item row="5" column="0">
+     <item row="4" column="0">
       <widget class="QPushButton" name="callSubButton">
        <property name="text">
         <string>Do Probe</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="status_label">
-       <property name="autoFillBackground">
-        <bool>true</bool>
-       </property>
-       <property name="text">
-        <string/>
        </property>
       </widget>
      </item>

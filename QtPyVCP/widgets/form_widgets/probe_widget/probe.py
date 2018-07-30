@@ -19,6 +19,8 @@
 import os       # For file path manipulation
 import linuxcnc # For commanding linuxcnc
 
+from QtPyVCP.lib.notify import Notification, Urgency, init
+
 from PyQt5 import uic, QtWidgets
 from QtPyVCP.utilities.info import Info
 
@@ -36,7 +38,14 @@ class SubCaller(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super(SubCaller, self).__init__(parent)
+
         self. ui = uic.loadUi(os.path.join(PARENT_DIR, "probe.ui"), self)
+
+
+        self.notification = Notification("ProbeScreen")
+        self.notification.setUrgency(Urgency.NORMAL)
+        self.notification.setCategory("device")
+        self.notification.setIconPath("/usr/share/icons/Tango/scalable/status/dialog-error.svg")
 
         for filename in os.listdir(SUBROUTINE_PATH):
             filename_and_ext = os.path.splitext(filename)
@@ -65,8 +74,9 @@ class SubCaller(QtWidgets.QWidget):
         # Print the command to the terminal so the user can see what is happening
         print "Calling MDI command: ", cmd_str
 
-        self.status_label.setStyleSheet("QStatusBar{color:black}")
-        self.status_label.setText("Probing ...")
+        # self.status_label.setStyleSheet("QStatusBar{color:black}")
+        # self.status_label.setText("Probing ...")
+        self.notification.show("Probing ...")
 
         # Set the LinuxCNC mode to MDI
         CMD.mode(linuxcnc.MODE_MDI)
@@ -77,12 +87,17 @@ class SubCaller(QtWidgets.QWidget):
         print 'Done'
         STAT.poll()
         if STAT.probe_tripped:
-            self.status_label.setStyleSheet("QStatusBar{color:green}")
-            self.status_label.setText("Probing finished successfully")
+            # self.status_label.setStyleSheet("QStatusBar{color:green}")
+            # self.status_label.setText("Probing finished successfully")
+
+            self.notification.show("Probing finished successfully")
+
             self.onProbeSuccess()
         else:
-            self.status_label.setStyleSheet("QStatusBar{color:red}")
-            self.status_label.setText("ERROR: Probe move finished without making contact")
+            # self.status_label.setStyleSheet("QStatusBar{color:red}")
+            # self.status_label.setText("ERROR: Probe move finished without making contact")
+
+            self.notification.show("ERROR: Probe move finished without making contact")
 
     def onProbeSuccess(self):
         probed_pos = STAT.probed_position
