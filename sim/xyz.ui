@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1236</width>
-    <height>946</height>
+    <width>1305</width>
+    <height>934</height>
    </rect>
   </property>
   <property name="font">
@@ -64,7 +64,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -90,6 +90,18 @@
               <enum>Qt::NoFocus</enum>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_2">
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
               <item>
                <widget class="RecentFileComboBox" name="recentfilecombobox">
                 <property name="minimumSize">
@@ -183,13 +195,13 @@
        <enum>QLayout::SetNoConstraint</enum>
       </property>
       <property name="leftMargin">
-       <number>10</number>
+       <number>12</number>
       </property>
       <property name="topMargin">
        <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>10</number>
+       <number>12</number>
       </property>
       <item>
        <widget class="QGroupBox" name="groupBox">
@@ -201,7 +213,7 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>310</width>
+          <width>350</width>
           <height>291</height>
          </size>
         </property>
@@ -223,7 +235,7 @@ border-radius: 6px;
           <rect>
            <x>22</x>
            <y>187</y>
-           <width>160</width>
+           <width>185</width>
            <height>25</height>
           </rect>
          </property>
@@ -236,14 +248,14 @@ border-radius: 6px;
           <rect>
            <x>22</x>
            <y>134</y>
-           <width>120</width>
+           <width>130</width>
            <height>30</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
+           <pointsize>15</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -258,14 +270,14 @@ border-radius: 6px;
           <rect>
            <x>22</x>
            <y>97</y>
-           <width>120</width>
+           <width>130</width>
            <height>30</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
+           <pointsize>15</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -280,7 +292,7 @@ border-radius: 6px;
           <rect>
            <x>22</x>
            <y>253</y>
-           <width>160</width>
+           <width>185</width>
            <height>25</height>
           </rect>
          </property>
@@ -291,16 +303,16 @@ border-radius: 6px;
         <widget class="QPushButton" name="power">
          <property name="geometry">
           <rect>
-           <x>22</x>
+           <x>26</x>
            <y>21</y>
-           <width>265</width>
+           <width>300</width>
            <height>33</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>18</pointsize>
+           <pointsize>20</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -321,7 +333,7 @@ border-radius: 6px;
           <rect>
            <x>22</x>
            <y>221</y>
-           <width>160</width>
+           <width>185</width>
            <height>25</height>
           </rect>
          </property>
@@ -332,16 +344,16 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_19">
          <property name="geometry">
           <rect>
-           <x>241</x>
-           <y>190</y>
-           <width>45</width>
-           <height>22</height>
+           <x>270</x>
+           <y>189</y>
+           <width>54</width>
+           <height>23</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>10</pointsize>
+           <pointsize>11</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -360,16 +372,16 @@ border-radius: 6px;
         <widget class="AxisActionButton" name="axisactionbutton_13">
          <property name="geometry">
           <rect>
-           <x>167</x>
+           <x>195</x>
            <y>134</y>
-           <width>120</width>
+           <width>130</width>
            <height>30</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
+           <pointsize>15</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -382,16 +394,16 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_20">
          <property name="geometry">
           <rect>
-           <x>241</x>
-           <y>223</y>
-           <width>45</width>
-           <height>22</height>
+           <x>270</x>
+           <y>222</y>
+           <width>54</width>
+           <height>23</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>10</pointsize>
+           <pointsize>11</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -410,16 +422,16 @@ border-radius: 6px;
         <widget class="AxisActionButton" name="axisactionbutton_12">
          <property name="geometry">
           <rect>
-           <x>167</x>
+           <x>195</x>
            <y>97</y>
-           <width>120</width>
+           <width>130</width>
            <height>30</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
+           <pointsize>15</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -432,16 +444,16 @@ border-radius: 6px;
         <widget class="AxisActionButton" name="axisactionbutton_5">
          <property name="geometry">
           <rect>
-           <x>167</x>
+           <x>195</x>
            <y>61</y>
-           <width>120</width>
+           <width>130</width>
            <height>30</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
+           <pointsize>15</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -456,14 +468,14 @@ border-radius: 6px;
           <rect>
            <x>22</x>
            <y>61</y>
-           <width>120</width>
+           <width>130</width>
            <height>30</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
+           <pointsize>15</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -476,16 +488,16 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_21">
          <property name="geometry">
           <rect>
-           <x>241</x>
-           <y>256</y>
-           <width>45</width>
-           <height>22</height>
+           <x>270</x>
+           <y>255</y>
+           <width>54</width>
+           <height>23</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>10</pointsize>
+           <pointsize>11</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -504,9 +516,9 @@ border-radius: 6px;
         <widget class="Line" name="line_3">
          <property name="geometry">
           <rect>
-           <x>20</x>
+           <x>17</x>
            <y>178</y>
-           <width>270</width>
+           <width>310</width>
            <height>2</height>
           </rect>
          </property>
@@ -527,7 +539,7 @@ border-radius: 1px;
         <widget class="QLineEdit" name="lineEdit_18">
          <property name="geometry">
           <rect>
-           <x>190</x>
+           <x>217</x>
            <y>190</y>
            <width>45</width>
            <height>20</height>
@@ -771,7 +783,7 @@ border-radius: 1px;
         <widget class="QLineEdit" name="lineEdit_19">
          <property name="geometry">
           <rect>
-           <x>190</x>
+           <x>217</x>
            <y>223</y>
            <width>45</width>
            <height>20</height>
@@ -1015,7 +1027,7 @@ border-radius: 1px;
         <widget class="QLineEdit" name="lineEdit_20">
          <property name="geometry">
           <rect>
-           <x>190</x>
+           <x>217</x>
            <y>256</y>
            <width>45</width>
            <height>20</height>
@@ -3736,7 +3748,7 @@ border-radius: 6px;
         </property>
         <property name="minimumSize">
          <size>
-          <width>380</width>
+          <width>420</width>
           <height>291</height>
          </size>
         </property>
@@ -3759,7 +3771,7 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton">
          <property name="geometry">
           <rect>
-           <x>297</x>
+           <x>338</x>
            <y>247</y>
            <width>65</width>
            <height>30</height>
@@ -3768,7 +3780,7 @@ border-radius: 6px;
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>16</pointsize>
+           <pointsize>17</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -3784,9 +3796,9 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_5">
          <property name="geometry">
           <rect>
-           <x>214</x>
+           <x>239</x>
            <y>21</y>
-           <width>45</width>
+           <width>50</width>
            <height>33</height>
           </rect>
          </property>
@@ -3812,9 +3824,9 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_6">
          <property name="geometry">
           <rect>
-           <x>161</x>
+           <x>180</x>
            <y>21</y>
-           <width>45</width>
+           <width>50</width>
            <height>33</height>
           </rect>
          </property>
@@ -3840,9 +3852,9 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_7">
          <property name="geometry">
           <rect>
-           <x>108</x>
+           <x>120</x>
            <y>21</y>
-           <width>45</width>
+           <width>50</width>
            <height>33</height>
           </rect>
          </property>
@@ -3870,7 +3882,7 @@ border-radius: 6px;
           <rect>
            <x>55</x>
            <y>21</y>
-           <width>45</width>
+           <width>55</width>
            <height>33</height>
           </rect>
          </property>
@@ -3898,14 +3910,14 @@ border-radius: 6px;
           <rect>
            <x>18</x>
            <y>131</y>
-           <width>50</width>
+           <width>60</width>
            <height>33</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
+           <pointsize>17</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -3924,16 +3936,16 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_10">
          <property name="geometry">
           <rect>
-           <x>77</x>
+           <x>87</x>
            <y>131</y>
-           <width>50</width>
+           <width>60</width>
            <height>33</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
+           <pointsize>17</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -3952,16 +3964,16 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_11">
          <property name="geometry">
           <rect>
-           <x>136</x>
+           <x>156</x>
            <y>131</y>
-           <width>50</width>
+           <width>60</width>
            <height>33</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
+           <pointsize>17</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -3980,16 +3992,16 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_13">
          <property name="geometry">
           <rect>
-           <x>284</x>
+           <x>316</x>
            <y>21</y>
-           <width>35</width>
+           <width>40</width>
            <height>33</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>13</pointsize>
+           <pointsize>14</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -4008,16 +4020,16 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_14">
          <property name="geometry">
           <rect>
-           <x>326</x>
+           <x>362</x>
            <y>21</y>
-           <width>35</width>
+           <width>40</width>
            <height>33</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>13</pointsize>
+           <pointsize>14</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -4075,7 +4087,7 @@ border-radius: 6px;
         <widget class="QLineEdit" name="lineEdit_2">
          <property name="geometry">
           <rect>
-           <x>263</x>
+           <x>303</x>
            <y>132</y>
            <width>63</width>
            <height>33</height>
@@ -4319,7 +4331,7 @@ border-radius: 6px;
         <widget class="QLineEdit" name="lineEdit_9">
          <property name="geometry">
           <rect>
-           <x>328</x>
+           <x>369</x>
            <y>135</y>
            <width>36</width>
            <height>28</height>
@@ -4353,7 +4365,7 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_2">
          <property name="geometry">
           <rect>
-           <x>223</x>
+           <x>264</x>
            <y>247</y>
            <width>65</width>
            <height>30</height>
@@ -4362,7 +4374,7 @@ border-radius: 6px;
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>16</pointsize>
+           <pointsize>17</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
@@ -4378,7 +4390,7 @@ border-radius: 6px;
         <widget class="QLineEdit" name="lineEdit_12">
          <property name="geometry">
           <rect>
-           <x>88</x>
+           <x>293</x>
            <y>70</y>
            <width>75</width>
            <height>33</height>
@@ -4604,7 +4616,7 @@ border-radius: 6px;
           <string/>
          </property>
          <property name="text">
-          <string>0.0</string>
+          <string>0000.0</string>
          </property>
          <property name="frame">
           <bool>true</bool>
@@ -4622,7 +4634,7 @@ border-radius: 6px;
         <widget class="QLineEdit" name="lineEdit_14">
          <property name="geometry">
           <rect>
-           <x>16</x>
+           <x>221</x>
            <y>73</y>
            <width>71</width>
            <height>28</height>
@@ -4657,7 +4669,7 @@ border-radius: 6px;
         <widget class="QLineEdit" name="lineEdit_16">
          <property name="geometry">
           <rect>
-           <x>200</x>
+           <x>240</x>
            <y>135</y>
            <width>63</width>
            <height>28</height>
@@ -4692,9 +4704,9 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_24">
          <property name="geometry">
           <rect>
-           <x>79</x>
+           <x>75</x>
            <y>239</y>
-           <width>71</width>
+           <width>75</width>
            <height>30</height>
           </rect>
          </property>
@@ -4998,9 +5010,9 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_23">
          <property name="geometry">
           <rect>
-           <x>115</x>
+           <x>106</x>
            <y>192</y>
-           <width>60</width>
+           <width>75</width>
            <height>33</height>
           </rect>
          </property>
@@ -5023,23 +5035,10 @@ border-radius: 6px;
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QSlider" name="horizontalSlider_4">
-         <property name="geometry">
-          <rect>
-           <x>191</x>
-           <y>70</y>
-           <width>160</width>
-           <height>35</height>
-          </rect>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
         <widget class="QLineEdit" name="lineEdit_17">
          <property name="geometry">
           <rect>
-           <x>191</x>
+           <x>230</x>
            <y>195</y>
            <width>31</width>
            <height>28</height>
@@ -5074,7 +5073,7 @@ border-radius: 6px;
         <widget class="QLineEdit" name="lineEdit_11">
          <property name="geometry">
           <rect>
-           <x>223</x>
+           <x>262</x>
            <y>192</y>
            <width>100</width>
            <height>33</height>
@@ -5320,7 +5319,7 @@ border-radius: 6px;
           <rect>
            <x>15</x>
            <y>115</y>
-           <width>350</width>
+           <width>393</width>
            <height>2</height>
           </rect>
          </property>
@@ -5343,7 +5342,7 @@ border-radius: 1px;
           <rect>
            <x>15</x>
            <y>177</y>
-           <width>350</width>
+           <width>393</width>
            <height>2</height>
           </rect>
          </property>
@@ -5364,7 +5363,7 @@ border-radius: 1px;
         <widget class="QLineEdit" name="lineEdit_21">
          <property name="geometry">
           <rect>
-           <x>324</x>
+           <x>364</x>
            <y>195</y>
            <width>41</width>
            <height>28</height>
@@ -5396,6 +5395,53 @@ border-radius: 1px;
           <string>INCH</string>
          </property>
         </widget>
+        <widget class="QLineEdit" name="lineEdit_13">
+         <property name="geometry">
+          <rect>
+           <x>372</x>
+           <y>73</y>
+           <width>33</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>16</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit{
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 16pt &quot;Bebas Kai&quot;;
+}
+
+
+
+
+</string>
+         </property>
+         <property name="text">
+          <string>IPM</string>
+         </property>
+        </widget>
+        <widget class="QSlider" name="horizontalSlider_4">
+         <property name="geometry">
+          <rect>
+           <x>22</x>
+           <y>69</y>
+           <width>185</width>
+           <height>35</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -5407,7 +5453,7 @@ border-radius: 1px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1236</width>
+     <width>1305</width>
      <height>20</height>
     </rect>
    </property>
