@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1305</width>
-    <height>934</height>
+    <width>1326</width>
+    <height>910</height>
    </rect>
   </property>
   <property name="font">
@@ -1293,7 +1293,7 @@ border-radius: 1px;
         </property>
         <property name="minimumSize">
          <size>
-          <width>469</width>
+          <width>490</width>
           <height>291</height>
          </size>
         </property>
@@ -1316,45 +1316,175 @@ border-radius: 6px;
         <widget class="QWidget" name="layoutWidget">
          <property name="geometry">
           <rect>
-           <x>24</x>
-           <y>30</y>
-           <width>421</width>
-           <height>233</height>
+           <x>14</x>
+           <y>18</y>
+           <width>461</width>
+           <height>261</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QLineEdit" name="lineEdit_5">
-            <property name="font">
-             <font>
-              <family>Bebas Kai</family>
-              <pointsize>18</pointsize>
-              <weight>50</weight>
-              <italic>false</italic>
-              <bold>false</bold>
-             </font>
+           <layout class="QHBoxLayout" name="horizontalLayout_15">
+            <property name="spacing">
+             <number>6</number>
             </property>
-            <property name="styleSheet">
-             <string notr="true">QLineEdit{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="minimumSize">
+               <size>
+                <width>50</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>50</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel{
+    border-style: transparant;
+    border-color: rgb(238, 238, 236);
+    border-width: 2px;
     border-radius: 5px;
     color: rgb(238, 238, 236);
     background: rgb(46, 52, 54);
-	font: 18pt &quot;Bebas Kai&quot;;
-}
-
-
-
-
-
-</string>
-            </property>
-            <property name="text">
-             <string>                ABS                 REL                 DTG</string>
-            </property>
-           </widget>
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+              </property>
+              <property name="text">
+               <string>AXIS</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_2">
+              <property name="minimumSize">
+               <size>
+                <width>110</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>110</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel{
+    border-style: transparant;
+    border-color: rgb(238, 238, 236);
+    border-width: 2px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+              </property>
+              <property name="text">
+               <string>ABS</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_3">
+              <property name="enabled">
+               <bool>true</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel{
+    border-style: transparant;
+    border-color: rgb(238, 238, 236);
+    border-width: 2px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+              </property>
+              <property name="text">
+               <string>REL</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_5">
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel{
+    border-style: transparant;
+    border-color: rgb(238, 238, 236);
+    border-width: 2px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+              </property>
+              <property name="text">
+               <string>DTG</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="minimumSize">
+               <size>
+                <width>50</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>50</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel{
+    border-style: transparant;
+    border-color: rgb(238, 238, 236);
+    border-width: 2px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+              </property>
+              <property name="text">
+               <string>REF</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
           <item>
            <layout class="QHBoxLayout" name="horizontalLayout_10">
@@ -1368,22 +1498,20 @@ border-radius: 6px;
               </property>
               <property name="minimumSize">
                <size>
-                <width>30</width>
-                <height>30</height>
+                <width>50</width>
+                <height>33</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>30</width>
-                <height>30</height>
+                <width>50</width>
+                <height>33</height>
                </size>
               </property>
               <property name="font">
                <font>
                 <family>Bebas Kai</family>
-                <pointsize>16</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
+                <pointsize>18</pointsize>
                </font>
               </property>
               <property name="focusPolicy">
@@ -1411,13 +1539,13 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>110</width>
-                <height>0</height>
+                <height>33</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>110</width>
-                <height>16777215</height>
+                <height>33</height>
                </size>
               </property>
               <property name="palette">
@@ -1639,12 +1767,88 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="DROWidget" name="dro">
+             <widget class="DROWidget" name="dro_5">
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="palette">
+               <palette>
+                <active>
+                 <colorrole role="Base">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>255</red>
+                    <green>255</green>
+                    <blue>255</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Window">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>243</red>
+                    <green>243</green>
+                    <blue>243</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                </active>
+                <inactive>
+                 <colorrole role="Base">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>255</red>
+                    <green>255</green>
+                    <blue>255</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Window">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>243</red>
+                    <green>243</green>
+                    <blue>243</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                </inactive>
+                <disabled>
+                 <colorrole role="Base">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>243</red>
+                    <green>243</green>
+                    <blue>243</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Window">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>243</red>
+                    <green>243</green>
+                    <blue>243</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                </disabled>
+               </palette>
               </property>
               <property name="font">
                <font>
@@ -1672,12 +1876,24 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="DROWidget" name="dro_5">
+             <widget class="DROWidget" name="dro_13">
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>33</height>
+               </size>
               </property>
               <property name="palette">
                <palette>
@@ -1772,14 +1988,14 @@ border-radius: 6px;
              <widget class="ActionButton" name="actionbutton_15">
               <property name="minimumSize">
                <size>
-                <width>45</width>
-                <height>30</height>
+                <width>50</width>
+                <height>33</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>45</width>
-                <height>30</height>
+                <width>50</width>
+                <height>33</height>
                </size>
               </property>
               <property name="font">
@@ -1816,22 +2032,20 @@ border-radius: 6px;
               </property>
               <property name="minimumSize">
                <size>
-                <width>30</width>
-                <height>30</height>
+                <width>50</width>
+                <height>33</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>30</width>
-                <height>30</height>
+                <width>50</width>
+                <height>33</height>
                </size>
               </property>
               <property name="font">
                <font>
                 <family>Bebas Kai</family>
-                <pointsize>16</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
+                <pointsize>18</pointsize>
                </font>
               </property>
               <property name="focusPolicy">
@@ -1859,13 +2073,13 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>110</width>
-                <height>0</height>
+                <height>33</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>110</width>
-                <height>16777215</height>
+                <height>33</height>
                </size>
               </property>
               <property name="palette">
@@ -2094,6 +2308,18 @@ border-radius: 6px;
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>33</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>Sans</family>
@@ -2126,6 +2352,18 @@ border-radius: 6px;
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>33</height>
+               </size>
               </property>
               <property name="palette">
                <palette>
@@ -2220,13 +2458,13 @@ border-radius: 6px;
              <widget class="ActionButton" name="actionbutton_16">
               <property name="minimumSize">
                <size>
-                <width>45</width>
+                <width>50</width>
                 <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>45</width>
+                <width>50</width>
                 <height>30</height>
                </size>
               </property>
@@ -2264,22 +2502,20 @@ border-radius: 6px;
               </property>
               <property name="minimumSize">
                <size>
-                <width>30</width>
-                <height>30</height>
+                <width>50</width>
+                <height>33</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>30</width>
-                <height>30</height>
+                <width>50</width>
+                <height>33</height>
                </size>
               </property>
               <property name="font">
                <font>
                 <family>Bebas Kai</family>
-                <pointsize>16</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
+                <pointsize>18</pointsize>
                </font>
               </property>
               <property name="focusPolicy">
@@ -2304,13 +2540,13 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>110</width>
-                <height>0</height>
+                <height>33</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>110</width>
-                <height>16777215</height>
+                <height>33</height>
                </size>
               </property>
               <property name="palette">
@@ -2536,6 +2772,18 @@ border-radius: 6px;
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>33</height>
+               </size>
+              </property>
               <property name="palette">
                <palette>
                 <active>
@@ -2633,6 +2881,18 @@ border-radius: 6px;
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>33</height>
+               </size>
+              </property>
               <property name="palette">
                <palette>
                 <active>
@@ -2726,13 +2986,13 @@ border-radius: 6px;
              <widget class="ActionButton" name="actionbutton_17">
               <property name="minimumSize">
                <size>
-                <width>45</width>
+                <width>50</width>
                 <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>45</width>
+                <width>50</width>
                 <height>30</height>
                </size>
               </property>
@@ -2770,22 +3030,20 @@ border-radius: 6px;
               </property>
               <property name="minimumSize">
                <size>
-                <width>30</width>
-                <height>30</height>
+                <width>50</width>
+                <height>33</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>30</width>
-                <height>30</height>
+                <width>50</width>
+                <height>33</height>
                </size>
               </property>
               <property name="font">
                <font>
                 <family>Bebas Kai</family>
-                <pointsize>16</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
+                <pointsize>18</pointsize>
                </font>
               </property>
               <property name="focusPolicy">
@@ -2810,13 +3068,13 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>110</width>
-                <height>0</height>
+                <height>33</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>110</width>
-                <height>16777215</height>
+                <height>33</height>
                </size>
               </property>
               <property name="palette">
@@ -3042,6 +3300,18 @@ border-radius: 6px;
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>33</height>
+               </size>
+              </property>
               <property name="palette">
                <palette>
                 <active>
@@ -3138,6 +3408,18 @@ border-radius: 6px;
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>33</height>
+               </size>
               </property>
               <property name="palette">
                <palette>
@@ -3238,13 +3520,13 @@ border-radius: 6px;
               </property>
               <property name="minimumSize">
                <size>
-                <width>45</width>
+                <width>50</width>
                 <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>45</width>
+                <width>50</width>
                 <height>30</height>
                </size>
               </property>
@@ -3282,22 +3564,20 @@ border-radius: 6px;
               </property>
               <property name="minimumSize">
                <size>
-                <width>30</width>
-                <height>30</height>
+                <width>50</width>
+                <height>33</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>30</width>
-                <height>30</height>
+                <width>50</width>
+                <height>33</height>
                </size>
               </property>
               <property name="font">
                <font>
                 <family>Bebas Kai</family>
-                <pointsize>16</pointsize>
-                <weight>75</weight>
-                <bold>true</bold>
+                <pointsize>18</pointsize>
                </font>
               </property>
               <property name="focusPolicy">
@@ -3325,13 +3605,13 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>110</width>
-                <height>0</height>
+                <height>33</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
                 <width>110</width>
-                <height>16777215</height>
+                <height>33</height>
                </size>
               </property>
               <property name="palette">
@@ -3560,6 +3840,18 @@ border-radius: 6px;
                 <verstretch>0</verstretch>
                </sizepolicy>
               </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>33</height>
+               </size>
+              </property>
               <property name="font">
                <font>
                 <family>Sans</family>
@@ -3592,6 +3884,18 @@ border-radius: 6px;
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>33</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>33</height>
+               </size>
               </property>
               <property name="palette">
                <palette>
@@ -3686,13 +3990,13 @@ border-radius: 6px;
              <widget class="ActionButton" name="actionbutton_22">
               <property name="minimumSize">
                <size>
-                <width>45</width>
+                <width>50</width>
                 <height>30</height>
                </size>
               </property>
               <property name="maximumSize">
                <size>
-                <width>45</width>
+                <width>50</width>
                 <height>30</height>
                </size>
               </property>
@@ -3796,9 +4100,9 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_5">
          <property name="geometry">
           <rect>
-           <x>239</x>
+           <x>241</x>
            <y>21</y>
-           <width>50</width>
+           <width>55</width>
            <height>33</height>
           </rect>
          </property>
@@ -3824,9 +4128,9 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_6">
          <property name="geometry">
           <rect>
-           <x>180</x>
+           <x>179</x>
            <y>21</y>
-           <width>50</width>
+           <width>55</width>
            <height>33</height>
           </rect>
          </property>
@@ -3852,9 +4156,9 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_7">
          <property name="geometry">
           <rect>
-           <x>120</x>
+           <x>117</x>
            <y>21</y>
-           <width>50</width>
+           <width>55</width>
            <height>33</height>
           </rect>
          </property>
@@ -4390,7 +4694,7 @@ border-radius: 6px;
         <widget class="QLineEdit" name="lineEdit_12">
          <property name="geometry">
           <rect>
-           <x>293</x>
+           <x>294</x>
            <y>70</y>
            <width>75</width>
            <height>33</height>
@@ -4669,7 +4973,7 @@ border-radius: 6px;
         <widget class="QLineEdit" name="lineEdit_16">
          <property name="geometry">
           <rect>
-           <x>240</x>
+           <x>239</x>
            <y>135</y>
            <width>63</width>
            <height>28</height>
@@ -5453,7 +5757,7 @@ border-radius: 1px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1305</width>
+     <width>1326</width>
      <height>20</height>
     </rect>
    </property>
