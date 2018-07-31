@@ -358,7 +358,7 @@ class _Info(object):
                 self.DOUBLE_ALETTER += aletter
         if self.DOUBLE_ALETTER != "":
             log.info("Machine appearers to be a gantry config having a double {0} axis"
-                  .format(DOUBLE_ALETTER.upper()))
+                  .format(self.DOUBLE_ALETTER.upper()))
 
         self.NUM_AXES = len(self.AXIS_LETTER_LIST)
         if self.NUM_JOINTS == len(self.COORDINATES):
