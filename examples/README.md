@@ -1,7 +1,11 @@
 # Example PyQtVCP based Virtual Control Panels
 
-## QControl
+## ProbeBasic
 Basic PathPilot inspired VCP with integrated probing.
 
-## Minimal
-A minimal VCP for demonstrating how simple a VCP can be.
+## QControl
+Traditional Axis/WinXP style VCP.
+
+## Mini
+A minimal VCP for demonstrating the bare minimum needed for a complete VCP 
+package.
