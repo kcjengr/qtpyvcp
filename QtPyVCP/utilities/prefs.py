@@ -60,7 +60,7 @@ class _Preferences(ConfigParser.RawConfigParser):
 
         self.optionxform = str  # Needed to maintain options case
 
-        self.fn = INFO.getPreferenceFile()
+        self.fn = os.environ.get('VCP_PREF_FILE') or '/dev/null'
         if not os.path.isfile(self.fn):
             log.info("No preference file exists, creating: {}".format(self.fn))
 
