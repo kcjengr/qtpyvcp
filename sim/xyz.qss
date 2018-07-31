@@ -1,3 +1,7 @@
+* { /*change the global font to Bebas Kai*/
+    font-family: "Bebas Kai";
+}
+
 QMainWindow {
     background: #2e3436
     /*border-image: url(:/images/dark_background.jpg);*/
@@ -91,19 +95,16 @@ GcodeBackplot {
 }
 
 QGroupBox {
-    /*background-color: #6B6B6B;*/
     border: 1px solid #8A8484;
     border-radius: 5px;
     margin-top: 1ex;
-    font-family: Roboto;
-    font-style: normal;
     font-size: 12pt;
 /*    font-weight: bold;*/
 }
 
 QGroupBox::title {
     subcontrol-origin: margin;
-    subcontrol-position: top center;
+    subcontrol-position: top left;
     padding: 0 3px;
     color: black;
 }
