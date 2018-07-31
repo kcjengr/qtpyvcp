@@ -192,7 +192,13 @@
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
-           <widget class="SubCaller" name="subcaller" native="true"/>
+           <widget class="SubCaller" name="subcaller" native="true">
+            <property name="font">
+             <font>
+              <pointsize>17</pointsize>
+             </font>
+            </property>
+           </widget>
           </item>
           <item>
            <spacer name="horizontalSpacer_2">
@@ -215,11 +221,16 @@
               <height>0</height>
              </size>
             </property>
+            <property name="font">
+             <font>
+              <pointsize>13</pointsize>
+             </font>
+            </property>
             <property name="tabPosition">
              <enum>QTabWidget::North</enum>
             </property>
             <property name="tabShape">
-             <enum>QTabWidget::Rounded</enum>
+             <enum>QTabWidget::Triangular</enum>
             </property>
             <property name="currentIndex">
              <number>0</number>
