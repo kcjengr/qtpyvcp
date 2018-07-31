@@ -190,6 +190,37 @@
          <attribute name="title">
           <string>Probing</string>
          </attribute>
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <item>
+           <spacer name="horizontalSpacer_3">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>222</width>
+              <height>534</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item>
+           <widget class="SubCaller" name="subcaller"/>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>108</width>
+              <height>534</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
         </widget>
        </widget>
       </item>
@@ -6047,6 +6078,12 @@ border-radius: 1px;
    <class>RecentFileComboBox</class>
    <extends>QComboBox</extends>
    <header>QtPyVCP.widgets.editor_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>SubCaller</class>
+   <extends>QWidget</extends>
+   <header>QtPyVCP.widgets.form_widgets.probe_widget.probe</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>EntryWidget</class>
