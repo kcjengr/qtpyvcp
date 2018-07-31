@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1600</width>
-    <height>831</height>
+    <width>1538</width>
+    <height>899</height>
    </rect>
   </property>
   <property name="font">
@@ -192,20 +192,7 @@
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
-           <spacer name="horizontalSpacer_3">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>222</width>
-              <height>534</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="SubCaller" name="subcaller"/>
+           <widget class="SubCaller" name="subcaller" native="true"/>
           </item>
           <item>
            <spacer name="horizontalSpacer_2">
@@ -219,6 +206,60 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item>
+           <widget class="QTabWidget" name="tabWidget_2">
+            <property name="minimumSize">
+             <size>
+              <width>800</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="tabPosition">
+             <enum>QTabWidget::North</enum>
+            </property>
+            <property name="tabShape">
+             <enum>QTabWidget::Rounded</enum>
+            </property>
+            <property name="currentIndex">
+             <number>0</number>
+            </property>
+            <widget class="QWidget" name="tab_6">
+             <attribute name="title">
+              <string>OUTSIDE CORNERS</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="tab_7">
+             <attribute name="title">
+              <string>INSIDE CORNERS</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="tab_8">
+             <attribute name="title">
+              <string>BOSSES AND POCKETS</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="tab_9">
+             <attribute name="title">
+              <string>VALLEYS AND RIDGES</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="tab_10">
+             <attribute name="title">
+              <string>ROTARY AXIS</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="tab_11">
+             <attribute name="title">
+              <string>MULTIAXIS</string>
+             </attribute>
+            </widget>
+            <widget class="QWidget" name="tab_12">
+             <attribute name="title">
+              <string>PROBE HELP</string>
+             </attribute>
+            </widget>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -5870,7 +5911,7 @@ border-radius: 1px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1600</width>
+     <width>1538</width>
      <height>20</height>
     </rect>
    </property>
