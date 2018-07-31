@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1326</width>
-    <height>910</height>
+    <width>1600</width>
+    <height>831</height>
    </rect>
   </property>
   <property name="font">
@@ -28,7 +28,7 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout" stretch="2,1">
+   <layout class="QVBoxLayout" name="verticalLayout" stretch="2,0">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <property name="leftMargin">
@@ -45,6 +45,12 @@
       </property>
       <item>
        <widget class="QTabWidget" name="tabWidget">
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>40</height>
+         </size>
+        </property>
         <property name="font">
          <font>
           <family>Bebas Kai</family>
@@ -64,7 +70,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -190,10 +196,7 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="0,0,0,0,0">
-      <property name="sizeConstraint">
-       <enum>QLayout::SetNoConstraint</enum>
-      </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_9">
       <property name="leftMargin">
        <number>12</number>
       </property>
@@ -213,8 +216,8 @@
         </property>
         <property name="minimumSize">
          <size>
-          <width>350</width>
-          <height>291</height>
+          <width>335</width>
+          <height>340</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -230,26 +233,13 @@ border-radius: 6px;
         <property name="title">
          <string/>
         </property>
-        <widget class="QSlider" name="horizontalSlider">
-         <property name="geometry">
-          <rect>
-           <x>22</x>
-           <y>187</y>
-           <width>185</width>
-           <height>25</height>
-          </rect>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
         <widget class="AxisActionButton" name="axisactionbutton_7">
          <property name="geometry">
           <rect>
-           <x>22</x>
-           <y>134</y>
+           <x>17</x>
+           <y>196</y>
            <width>130</width>
-           <height>30</height>
+           <height>45</height>
           </rect>
          </property>
          <property name="font">
@@ -268,10 +258,10 @@ border-radius: 6px;
         <widget class="AxisActionButton" name="axisactionbutton_4">
          <property name="geometry">
           <rect>
-           <x>22</x>
-           <y>97</y>
+           <x>17</x>
+           <y>139</y>
            <width>130</width>
-           <height>30</height>
+           <height>45</height>
           </rect>
          </property>
          <property name="font">
@@ -287,26 +277,13 @@ border-radius: 6px;
           <string>FEEDHOLD</string>
          </property>
         </widget>
-        <widget class="QSlider" name="horizontalSlider_3">
-         <property name="geometry">
-          <rect>
-           <x>22</x>
-           <y>253</y>
-           <width>185</width>
-           <height>25</height>
-          </rect>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
         <widget class="QPushButton" name="power">
          <property name="geometry">
           <rect>
-           <x>26</x>
+           <x>17</x>
            <y>21</y>
            <width>300</width>
-           <height>33</height>
+           <height>50</height>
           </rect>
          </property>
          <property name="font">
@@ -328,54 +305,13 @@ border-radius: 6px;
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QSlider" name="horizontalSlider_2">
-         <property name="geometry">
-          <rect>
-           <x>22</x>
-           <y>221</y>
-           <width>185</width>
-           <height>25</height>
-          </rect>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="actionbutton_19">
-         <property name="geometry">
-          <rect>
-           <x>270</x>
-           <y>189</y>
-           <width>54</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>11</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>F 100%</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
         <widget class="AxisActionButton" name="axisactionbutton_13">
          <property name="geometry">
           <rect>
-           <x>195</x>
-           <y>134</y>
+           <x>187</x>
+           <y>196</y>
            <width>130</width>
-           <height>30</height>
+           <height>45</height>
           </rect>
          </property>
          <property name="font">
@@ -391,41 +327,13 @@ border-radius: 6px;
           <string>RESET</string>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_20">
-         <property name="geometry">
-          <rect>
-           <x>270</x>
-           <y>222</y>
-           <width>54</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>11</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>S 100%</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
         <widget class="AxisActionButton" name="axisactionbutton_12">
          <property name="geometry">
           <rect>
-           <x>195</x>
-           <y>97</y>
+           <x>187</x>
+           <y>139</y>
            <width>130</width>
-           <height>30</height>
+           <height>45</height>
           </rect>
          </property>
          <property name="font">
@@ -444,10 +352,10 @@ border-radius: 6px;
         <widget class="AxisActionButton" name="axisactionbutton_5">
          <property name="geometry">
           <rect>
-           <x>195</x>
-           <y>61</y>
+           <x>187</x>
+           <y>83</y>
            <width>130</width>
-           <height>30</height>
+           <height>45</height>
           </rect>
          </property>
          <property name="font">
@@ -466,10 +374,10 @@ border-radius: 6px;
         <widget class="AxisActionButton" name="axisactionbutton_6">
          <property name="geometry">
           <rect>
-           <x>22</x>
-           <y>61</y>
+           <x>17</x>
+           <y>83</y>
            <width>130</width>
-           <height>30</height>
+           <height>45</height>
           </rect>
          </property>
          <property name="font">
@@ -485,40 +393,12 @@ border-radius: 6px;
           <string>SINGLE BLOCK</string>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_21">
-         <property name="geometry">
-          <rect>
-           <x>270</x>
-           <y>255</y>
-           <width>54</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>11</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>MV 100%</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
         <widget class="Line" name="line_3">
          <property name="geometry">
           <rect>
-           <x>17</x>
-           <y>178</y>
-           <width>310</width>
+           <x>14</x>
+           <y>270</y>
+           <width>305</width>
            <height>2</height>
           </rect>
          </property>
@@ -536,13 +416,159 @@ border-radius: 1px;
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
-        <widget class="QLineEdit" name="lineEdit_18">
+        <widget class="ActionButton" name="actionbutton_4">
          <property name="geometry">
           <rect>
-           <x>217</x>
-           <y>190</y>
-           <width>45</width>
-           <height>20</height>
+           <x>19</x>
+           <y>299</y>
+           <width>65</width>
+           <height>30</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>17</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>Power</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_3">
+         <property name="geometry">
+          <rect>
+           <x>252</x>
+           <y>299</y>
+           <width>65</width>
+           <height>30</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>17</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>EXIT</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>2</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox_7">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>325</width>
+          <height>340</height>
+         </size>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QGroupBox{
+color: rgb(46, 52, 54);
+border-style: solid;
+border-color: rgb(186, 189, 182);
+background-color: rgb(46, 52, 54);
+border-width: 2px;
+border-radius: 6px;
+}</string>
+        </property>
+        <property name="title">
+         <string/>
+        </property>
+        <widget class="Line" name="line_5">
+         <property name="geometry">
+          <rect>
+           <x>15</x>
+           <y>144</y>
+           <width>300</width>
+           <height>2</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">Line{
+color:rgb(186, 189, 182);
+border-style: solid;
+border-color: rgb(186, 189, 182);
+background-color: rgb(186, 189, 182);
+border-width: 1px;
+border-radius: 1px;
+}</string>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_21">
+         <property name="geometry">
+          <rect>
+           <x>257</x>
+           <y>280</y>
+           <width>54</width>
+           <height>35</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>13</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>MV 100%</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="option" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_20">
+         <property name="geometry">
+          <rect>
+           <x>212</x>
+           <y>281</y>
+           <width>37</width>
+           <height>33</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -553,14 +579,14 @@ border-radius: 1px;
          </property>
          <property name="minimumSize">
           <size>
-           <width>45</width>
-           <height>20</height>
+           <width>37</width>
+           <height>33</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>45</width>
-           <height>20</height>
+           <width>37</width>
+           <height>33</height>
           </size>
          </property>
          <property name="palette">
@@ -755,7 +781,7 @@ border-radius: 1px;
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
-    border-radius: 3px;
+    border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
 	font: 75 14pt &quot;Bebas Kai&quot;;
@@ -783,10 +809,10 @@ border-radius: 1px;
         <widget class="QLineEdit" name="lineEdit_19">
          <property name="geometry">
           <rect>
-           <x>217</x>
-           <y>223</y>
-           <width>45</width>
-           <height>20</height>
+           <x>212</x>
+           <y>224</y>
+           <width>37</width>
+           <height>33</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -797,14 +823,14 @@ border-radius: 1px;
          </property>
          <property name="minimumSize">
           <size>
-           <width>45</width>
-           <height>20</height>
+           <width>37</width>
+           <height>33</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>45</width>
-           <height>20</height>
+           <width>37</width>
+           <height>33</height>
           </size>
          </property>
          <property name="palette">
@@ -999,7 +1025,7 @@ border-radius: 1px;
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
-    border-radius: 3px;
+    border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
 	font: 75 14pt &quot;Bebas Kai&quot;;
@@ -1024,13 +1050,54 @@ border-radius: 1px;
           <enum>Qt::VisualMoveStyle</enum>
          </property>
         </widget>
-        <widget class="QLineEdit" name="lineEdit_20">
+        <widget class="QSlider" name="horizontalSlider_3">
          <property name="geometry">
           <rect>
-           <x>217</x>
-           <y>256</y>
-           <width>45</width>
-           <height>20</height>
+           <x>19</x>
+           <y>284</y>
+           <width>182</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_20">
+         <property name="geometry">
+          <rect>
+           <x>257</x>
+           <y>223</y>
+           <width>54</width>
+           <height>35</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>13</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>S 100%</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="option" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_18">
+         <property name="geometry">
+          <rect>
+           <x>212</x>
+           <y>170</y>
+           <width>37</width>
+           <height>33</height>
           </rect>
          </property>
          <property name="sizePolicy">
@@ -1041,14 +1108,14 @@ border-radius: 1px;
          </property>
          <property name="minimumSize">
           <size>
-           <width>45</width>
-           <height>20</height>
+           <width>37</width>
+           <height>33</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>45</width>
-           <height>20</height>
+           <width>37</width>
+           <height>33</height>
           </size>
          </property>
          <property name="palette">
@@ -1243,7 +1310,7 @@ border-radius: 1px;
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
-    border-radius: 3px;
+    border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
 	font: 75 14pt &quot;Bebas Kai&quot;;
@@ -1268,10 +1335,725 @@ border-radius: 1px;
           <enum>Qt::VisualMoveStyle</enum>
          </property>
         </widget>
+        <widget class="ActionButton" name="actionbutton_19">
+         <property name="geometry">
+          <rect>
+           <x>257</x>
+           <y>169</y>
+           <width>54</width>
+           <height>35</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>13</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>F 100%</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="option" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QSlider" name="horizontalSlider">
+         <property name="geometry">
+          <rect>
+           <x>19</x>
+           <y>173</y>
+           <width>182</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="QSlider" name="horizontalSlider_2">
+         <property name="geometry">
+          <rect>
+           <x>19</x>
+           <y>228</y>
+           <width>182</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_31">
+         <property name="geometry">
+          <rect>
+           <x>244</x>
+           <y>88</y>
+           <width>41</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>17</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}
+
+
+
+
+
+</string>
+         </property>
+         <property name="text">
+          <string>INCH</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_34">
+         <property name="geometry">
+          <rect>
+           <x>126</x>
+           <y>27</y>
+           <width>60</width>
+           <height>35</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>M6 G43</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="option" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_29">
+         <property name="geometry">
+          <rect>
+           <x>38</x>
+           <y>88</y>
+           <width>101</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>17</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}
+
+
+
+
+
+</string>
+         </property>
+         <property name="text">
+          <string>TOOL LENGTH</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_28">
+         <property name="geometry">
+          <rect>
+           <x>42</x>
+           <y>30</y>
+           <width>23</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>17</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}
+
+
+
+
+
+</string>
+         </property>
+         <property name="text">
+          <string>T#</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_30">
+         <property name="geometry">
+          <rect>
+           <x>142</x>
+           <y>85</y>
+           <width>100</width>
+           <height>33</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>60</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="palette">
+          <palette>
+           <active>
+            <colorrole role="WindowText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Text">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </active>
+           <inactive>
+            <colorrole role="WindowText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Text">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </inactive>
+           <disabled>
+            <colorrole role="WindowText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Text">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </disabled>
+          </palette>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>17</pointsize>
+           <weight>9</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::NoContextMenu</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 75 17pt &quot;Bebas Kai&quot;;
+}</string>
+         </property>
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="text">
+          <string>0.0000</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+         <property name="cursorMoveStyle">
+          <enum>Qt::VisualMoveStyle</enum>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_27">
+         <property name="geometry">
+          <rect>
+           <x>66</x>
+           <y>27</y>
+           <width>45</width>
+           <height>33</height>
+          </rect>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>30</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>45</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="palette">
+          <palette>
+           <active>
+            <colorrole role="WindowText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Text">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </active>
+           <inactive>
+            <colorrole role="WindowText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Text">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </inactive>
+           <disabled>
+            <colorrole role="WindowText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Button">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Text">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="ButtonText">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>0</red>
+               <green>0</green>
+               <blue>0</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Base">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+            <colorrole role="Window">
+             <brush brushstyle="SolidPattern">
+              <color alpha="255">
+               <red>235</red>
+               <green>235</green>
+               <blue>235</blue>
+              </color>
+             </brush>
+            </colorrole>
+           </disabled>
+          </palette>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>17</pointsize>
+           <weight>9</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="contextMenuPolicy">
+          <enum>Qt::NoContextMenu</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 75 17pt &quot;Bebas Kai&quot;;
+}</string>
+         </property>
+         <property name="inputMask">
+          <string/>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+         <property name="frame">
+          <bool>true</bool>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+         <property name="cursorMoveStyle">
+          <enum>Qt::VisualMoveStyle</enum>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_33">
+         <property name="geometry">
+          <rect>
+           <x>202</x>
+           <y>27</y>
+           <width>75</width>
+           <height>35</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>GO TO G30</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="option" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
        </widget>
       </item>
       <item>
-       <spacer name="horizontalSpacer_3">
+       <spacer name="horizontalSpacer">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -1293,8 +2075,8 @@ border-radius: 1px;
         </property>
         <property name="minimumSize">
          <size>
-          <width>490</width>
-          <height>291</height>
+          <width>480</width>
+          <height>340</height>
          </size>
         </property>
         <property name="focusPolicy">
@@ -1316,10 +2098,10 @@ border-radius: 6px;
         <widget class="QWidget" name="layoutWidget">
          <property name="geometry">
           <rect>
-           <x>14</x>
-           <y>18</y>
-           <width>461</width>
-           <height>261</height>
+           <x>20</x>
+           <y>17</y>
+           <width>441</width>
+           <height>311</height>
           </rect>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -1499,7 +2281,7 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>50</width>
-                <height>33</height>
+                <height>35</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -1734,6 +2516,9 @@ border-radius: 6px;
               </property>
               <property name="contextMenuPolicy">
                <enum>Qt::NoContextMenu</enum>
+              </property>
+              <property name="layoutDirection">
+               <enum>Qt::LeftToRight</enum>
               </property>
               <property name="styleSheet">
                <string notr="true">QLineEdit {
@@ -1989,7 +2774,7 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>50</width>
-                <height>33</height>
+                <height>35</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -2033,7 +2818,7 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>50</width>
-                <height>33</height>
+                <height>35</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -2459,7 +3244,7 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>50</width>
-                <height>30</height>
+                <height>35</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -2503,7 +3288,7 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>50</width>
-                <height>33</height>
+                <height>35</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -2987,7 +3772,7 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>50</width>
-                <height>30</height>
+                <height>35</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -3031,7 +3816,7 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>50</width>
-                <height>33</height>
+                <height>35</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -3521,7 +4306,7 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>50</width>
-                <height>30</height>
+                <height>35</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -3565,7 +4350,7 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>50</width>
-                <height>33</height>
+                <height>35</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -3991,7 +4776,7 @@ border-radius: 6px;
               <property name="minimumSize">
                <size>
                 <width>50</width>
-                <height>30</height>
+                <height>35</height>
                </size>
               </property>
               <property name="maximumSize">
@@ -4052,8 +4837,8 @@ border-radius: 6px;
         </property>
         <property name="minimumSize">
          <size>
-          <width>420</width>
-          <height>291</height>
+          <width>320</width>
+          <height>340</height>
          </size>
         </property>
         <property name="focusPolicy">
@@ -4072,150 +4857,13 @@ border-radius: 6px;
         <property name="title">
          <string/>
         </property>
-        <widget class="ActionButton" name="actionbutton">
-         <property name="geometry">
-          <rect>
-           <x>338</x>
-           <y>247</y>
-           <width>65</width>
-           <height>30</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>17</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>EXIT</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="actionbutton_5">
-         <property name="geometry">
-          <rect>
-           <x>241</x>
-           <y>21</y>
-           <width>55</width>
-           <height>33</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>.1000</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="actionbutton_6">
-         <property name="geometry">
-          <rect>
-           <x>179</x>
-           <y>21</y>
-           <width>55</width>
-           <height>33</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>.0100</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="actionbutton_7">
-         <property name="geometry">
-          <rect>
-           <x>117</x>
-           <y>21</y>
-           <width>55</width>
-           <height>33</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>.0010</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="actionbutton_8">
-         <property name="geometry">
-          <rect>
-           <x>55</x>
-           <y>21</y>
-           <width>55</width>
-           <height>33</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>.0001</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
         <widget class="ActionButton" name="actionbutton_9">
          <property name="geometry">
           <rect>
-           <x>18</x>
-           <y>131</y>
-           <width>60</width>
-           <height>33</height>
+           <x>29</x>
+           <y>270</y>
+           <width>75</width>
+           <height>45</height>
           </rect>
          </property>
          <property name="font">
@@ -4240,10 +4888,10 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_10">
          <property name="geometry">
           <rect>
-           <x>87</x>
-           <y>131</y>
-           <width>60</width>
-           <height>33</height>
+           <x>121</x>
+           <y>270</y>
+           <width>75</width>
+           <height>45</height>
           </rect>
          </property>
          <property name="font">
@@ -4268,10 +4916,10 @@ border-radius: 6px;
         <widget class="ActionButton" name="actionbutton_11">
          <property name="geometry">
           <rect>
-           <x>156</x>
-           <y>131</y>
-           <width>60</width>
-           <height>33</height>
+           <x>213</x>
+           <y>270</y>
+           <width>75</width>
+           <height>45</height>
           </rect>
          </property>
          <property name="font">
@@ -4293,107 +4941,12 @@ border-radius: 6px;
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_13">
-         <property name="geometry">
-          <rect>
-           <x>316</x>
-           <y>21</y>
-           <width>40</width>
-           <height>33</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>STEP</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="actionbutton_14">
-         <property name="geometry">
-          <rect>
-           <x>362</x>
-           <y>21</y>
-           <width>40</width>
-           <height>33</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>CONT</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="lineEdit_8">
-         <property name="geometry">
-          <rect>
-           <x>16</x>
-           <y>24</y>
-           <width>37</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>16</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 16pt &quot;Bebas Kai&quot;;
-}
-
-
-
-
-
-</string>
-         </property>
-         <property name="text">
-          <string>STEP</string>
-         </property>
-        </widget>
         <widget class="QLineEdit" name="lineEdit_2">
          <property name="geometry">
           <rect>
-           <x>303</x>
-           <y>132</y>
-           <width>63</width>
+           <x>170</x>
+           <y>214</y>
+           <width>75</width>
            <height>33</height>
           </rect>
          </property>
@@ -4405,13 +4958,13 @@ border-radius: 6px;
          </property>
          <property name="minimumSize">
           <size>
-           <width>60</width>
+           <width>75</width>
            <height>0</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>65</width>
+           <width>75</width>
            <height>16777215</height>
           </size>
          </property>
@@ -4635,8 +5188,8 @@ border-radius: 6px;
         <widget class="QLineEdit" name="lineEdit_9">
          <property name="geometry">
           <rect>
-           <x>369</x>
-           <y>135</y>
+           <x>250</x>
+           <y>217</y>
            <width>36</width>
            <height>28</height>
           </rect>
@@ -4644,7 +5197,7 @@ border-radius: 6px;
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>16</pointsize>
+           <pointsize>17</pointsize>
            <weight>50</weight>
            <italic>false</italic>
            <bold>false</bold>
@@ -4652,10 +5205,15 @@ border-radius: 6px;
          </property>
          <property name="styleSheet">
           <string notr="true">QLineEdit{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
     color: rgb(238, 238, 236);
     background: rgb(46, 52, 54);
-	font: 16pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
 }
+
 
 
 
@@ -4666,36 +5224,181 @@ border-radius: 6px;
           <string>RPM</string>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_2">
+        <widget class="QLineEdit" name="lineEdit_16">
          <property name="geometry">
           <rect>
-           <x>264</x>
-           <y>247</y>
-           <width>65</width>
-           <height>30</height>
+           <x>103</x>
+           <y>217</y>
+           <width>63</width>
+           <height>28</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
            <pointsize>17</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}
+
+
+
+
+
+</string>
+         </property>
+         <property name="text">
+          <string>SPINDLE</string>
+         </property>
+        </widget>
+        <widget class="Line" name="line_4">
+         <property name="geometry">
+          <rect>
+           <x>21</x>
+           <y>195</y>
+           <width>260</width>
+           <height>2</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">Line{
+color:rgb(186, 189, 182);
+border-style: solid;
+border-color: rgb(186, 189, 182);
+background-color: rgb(186, 189, 182);
+border-width: 1px;
+border-radius: 1px;
+}</string>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="QSlider" name="horizontalSlider_4">
+         <property name="geometry">
+          <rect>
+           <x>96</x>
+           <y>90</y>
+           <width>180</width>
+           <height>35</height>
+          </rect>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_30">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>130</y>
+           <width>40</width>
+           <height>35</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>14</pointsize>
           </font>
          </property>
          <property name="focusPolicy">
           <enum>Qt::NoFocus</enum>
          </property>
          <property name="text">
-          <string>Power</string>
+          <string>CONT</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
          </property>
+         <property name="option" stdset="0">
+          <bool>true</bool>
+         </property>
         </widget>
-        <widget class="QLineEdit" name="lineEdit_12">
+        <widget class="QLineEdit" name="lineEdit_10">
          <property name="geometry">
           <rect>
-           <x>294</x>
-           <y>70</y>
+           <x>20</x>
+           <y>29</y>
+           <width>37</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>17</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}
+
+
+
+
+
+</string>
+         </property>
+         <property name="text">
+          <string>STEP</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_23">
+         <property name="geometry">
+          <rect>
+           <x>186</x>
+           <y>21</y>
+           <width>50</width>
+           <height>45</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>15</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>.0100</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="option" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_15">
+         <property name="geometry">
+          <rect>
+           <x>172</x>
+           <y>144</y>
            <width>75</width>
            <height>33</height>
           </rect>
@@ -4935,19 +5638,131 @@ border-radius: 6px;
           <enum>Qt::VisualMoveStyle</enum>
          </property>
         </widget>
-        <widget class="QLineEdit" name="lineEdit_14">
+        <widget class="ActionButton" name="actionbutton_12">
          <property name="geometry">
           <rect>
-           <x>221</x>
-           <y>73</y>
-           <width>71</width>
+           <x>248</x>
+           <y>21</y>
+           <width>50</width>
+           <height>45</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>15</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>.1000</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="option" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_25">
+         <property name="geometry">
+          <rect>
+           <x>62</x>
+           <y>21</y>
+           <width>50</width>
+           <height>45</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>15</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>.0001</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="option" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_24">
+         <property name="geometry">
+          <rect>
+           <x>124</x>
+           <y>21</y>
+           <width>50</width>
+           <height>45</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>15</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>.0010</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="option" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_29">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>83</y>
+           <width>40</width>
+           <height>35</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>14</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="text">
+          <string>STEP</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="option" stdset="0">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_17">
+         <property name="geometry">
+          <rect>
+           <x>93</x>
+           <y>147</y>
+           <width>75</width>
            <height>28</height>
           </rect>
          </property>
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>16</pointsize>
+           <pointsize>17</pointsize>
            <weight>50</weight>
            <italic>false</italic>
            <bold>false</bold>
@@ -4955,9 +5770,13 @@ border-radius: 6px;
          </property>
          <property name="styleSheet">
           <string notr="true">QLineEdit{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
     color: rgb(238, 238, 236);
     background: rgb(46, 52, 54);
-	font: 16pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
 }
 
 
@@ -4970,740 +5789,11 @@ border-radius: 6px;
           <string>FEEDRATE</string>
          </property>
         </widget>
-        <widget class="QLineEdit" name="lineEdit_16">
+        <widget class="QLineEdit" name="lineEdit_22">
          <property name="geometry">
           <rect>
-           <x>239</x>
-           <y>135</y>
-           <width>63</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>16</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit{
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 16pt &quot;Bebas Kai&quot;;
-}
-
-
-
-
-
-</string>
-         </property>
-         <property name="text">
-          <string>SPINDLE</string>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="actionbutton_24">
-         <property name="geometry">
-          <rect>
-           <x>75</x>
-           <y>239</y>
-           <width>75</width>
-           <height>30</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>GO TO G30</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="lineEdit_15">
-         <property name="geometry">
-          <rect>
-           <x>46</x>
-           <y>192</y>
-           <width>45</width>
-           <height>33</height>
-          </rect>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>30</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>45</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="palette">
-          <palette>
-           <active>
-            <colorrole role="WindowText">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Button">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Text">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="ButtonText">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Base">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Window">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-           </active>
-           <inactive>
-            <colorrole role="WindowText">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Button">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Text">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="ButtonText">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Base">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Window">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-           </inactive>
-           <disabled>
-            <colorrole role="WindowText">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Button">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Text">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="ButtonText">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Base">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Window">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-           </disabled>
-          </palette>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>17</pointsize>
-           <weight>9</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="contextMenuPolicy">
-          <enum>Qt::NoContextMenu</enum>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
-}</string>
-         </property>
-         <property name="inputMask">
-          <string/>
-         </property>
-         <property name="text">
-          <string>0</string>
-         </property>
-         <property name="frame">
-          <bool>true</bool>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="readOnly">
-          <bool>false</bool>
-         </property>
-         <property name="cursorMoveStyle">
-          <enum>Qt::VisualMoveStyle</enum>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="lineEdit_10">
-         <property name="geometry">
-          <rect>
-           <x>22</x>
-           <y>195</y>
-           <width>23</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>16</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit{
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 16pt &quot;Bebas Kai&quot;;
-}
-
-
-
-
-</string>
-         </property>
-         <property name="text">
-          <string>T#</string>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="actionbutton_23">
-         <property name="geometry">
-          <rect>
-           <x>106</x>
-           <y>192</y>
-           <width>75</width>
-           <height>33</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>M6 G43</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="lineEdit_17">
-         <property name="geometry">
-          <rect>
-           <x>230</x>
-           <y>195</y>
-           <width>31</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>16</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit{
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 16pt &quot;Bebas Kai&quot;;
-}
-
-
-
-
-
-</string>
-         </property>
-         <property name="text">
-          <string>PTL</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="lineEdit_11">
-         <property name="geometry">
-          <rect>
-           <x>262</x>
-           <y>192</y>
-           <width>100</width>
-           <height>33</height>
-          </rect>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>60</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>100</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="palette">
-          <palette>
-           <active>
-            <colorrole role="WindowText">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Button">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Text">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="ButtonText">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Base">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Window">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-           </active>
-           <inactive>
-            <colorrole role="WindowText">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Button">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Text">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="ButtonText">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Base">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Window">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-           </inactive>
-           <disabled>
-            <colorrole role="WindowText">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Button">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Text">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="ButtonText">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>0</red>
-               <green>0</green>
-               <blue>0</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Base">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-            <colorrole role="Window">
-             <brush brushstyle="SolidPattern">
-              <color alpha="255">
-               <red>235</red>
-               <green>235</green>
-               <blue>235</blue>
-              </color>
-             </brush>
-            </colorrole>
-           </disabled>
-          </palette>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>17</pointsize>
-           <weight>9</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="contextMenuPolicy">
-          <enum>Qt::NoContextMenu</enum>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
-}</string>
-         </property>
-         <property name="inputMask">
-          <string/>
-         </property>
-         <property name="text">
-          <string>0.0000</string>
-         </property>
-         <property name="frame">
-          <bool>true</bool>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-         </property>
-         <property name="readOnly">
-          <bool>false</bool>
-         </property>
-         <property name="cursorMoveStyle">
-          <enum>Qt::VisualMoveStyle</enum>
-         </property>
-        </widget>
-        <widget class="Line" name="line">
-         <property name="geometry">
-          <rect>
-           <x>15</x>
-           <y>115</y>
-           <width>393</width>
-           <height>2</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">Line{
-color:rgb(186, 189, 182);
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(186, 189, 182);
-border-width: 1px;
-border-radius: 1px;
-}</string>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="Line" name="line_2">
-         <property name="geometry">
-          <rect>
-           <x>15</x>
-           <y>177</y>
-           <width>393</width>
-           <height>2</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">Line{
-color:rgb(186, 189, 182);
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(186, 189, 182);
-border-width: 1px;
-border-radius: 1px;
-}</string>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="lineEdit_21">
-         <property name="geometry">
-          <rect>
-           <x>364</x>
-           <y>195</y>
-           <width>41</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>16</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit{
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 16pt &quot;Bebas Kai&quot;;
-}
-
-
-
-
-
-</string>
-         </property>
-         <property name="text">
-          <string>INCH</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="lineEdit_13">
-         <property name="geometry">
-          <rect>
-           <x>372</x>
-           <y>73</y>
+           <x>252</x>
+           <y>147</y>
            <width>33</width>
            <height>28</height>
           </rect>
@@ -5711,7 +5801,7 @@ border-radius: 1px;
          <property name="font">
           <font>
            <family>Bebas Kai</family>
-           <pointsize>16</pointsize>
+           <pointsize>17</pointsize>
            <weight>50</weight>
            <italic>false</italic>
            <bold>false</bold>
@@ -5719,10 +5809,15 @@ border-radius: 1px;
          </property>
          <property name="styleSheet">
           <string notr="true">QLineEdit{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
     color: rgb(238, 238, 236);
     background: rgb(46, 52, 54);
-	font: 16pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
 }
+
 
 
 
@@ -5731,19 +5826,6 @@ border-radius: 1px;
          </property>
          <property name="text">
           <string>IPM</string>
-         </property>
-        </widget>
-        <widget class="QSlider" name="horizontalSlider_4">
-         <property name="geometry">
-          <rect>
-           <x>22</x>
-           <y>69</y>
-           <width>185</width>
-           <height>35</height>
-          </rect>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </widget>
@@ -5757,7 +5839,7 @@ border-radius: 1px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1326</width>
+     <width>1600</width>
      <height>20</height>
     </rect>
    </property>
