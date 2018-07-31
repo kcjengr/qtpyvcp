@@ -83,7 +83,7 @@ def initBaseLogger(name, log_file=None, log_level=DEBUG):
 
     # Get logger for logger
     log = getLogger(__name__)
-    base_log.info('Logging to "{}"'.format(log_file))
+    base_log.info('Logging to yellow<{}>'.format(log_file))
 
     return base_log
 
@@ -92,7 +92,7 @@ def initBaseLogger(name, log_file=None, log_level=DEBUG):
 def getLogFile(name):
 
     # Default log file to use if not specified in INI
-    log_file = os.path.expanduser('~/{}.log').format(name.lower())
+    log_file = os.path.expanduser('~/{}.log').format(name)
 
     # LinuxCNC may not be running, so use get() to avoid a KeyError
     ini_file = os.environ.get('INI_FILE_NAME')

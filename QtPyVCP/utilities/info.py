@@ -48,6 +48,8 @@ class _Info(object):
     INI_FILE = os.environ.get("INI_FILE_NAME")
     CONFIG_DIR =  os.environ.get('CONFIG_DIR')
 
+    VCP_DIR = '~/linuxcnc/vcps'
+
     AXIS_LETTERS = 'xyzabcuvw'
 
     COORDINATES = 'xyz'
@@ -80,42 +82,40 @@ class _Info(object):
     def getMachineName(self):
         return self.ini.find('EMC', 'MACHINE') or "PyQtVCP Machine"
 
-    def getFilePath(self, section, option, default):
+    def getFilePath(self, section, option, base, default):
         path = self.ini.find(section, option) or default
         if path is None:
             return
         elif path.startswith('~'):
             path = os.path.expanduser(path)
         elif not os.path.isabs(path):
-            path = os.path.join(self.CONFIG_DIR, path)
-        return os.path.realpath(path)
-
-    def getVCPDir(self, default='~/.local/share/vcps'):
-        return self.getFilePath('DISPLAY', 'VCP_HOME', default)
+            path = os.path.join(base, path)
+        return os.path.realpath(os.path.expandvars(path))
 
     def getUiFile(self, default='pyqtvcp.ui'):
-        return self.getFilePath('DISPLAY', 'UI_FILE', default)
+        return self.getFilePath('VCP', 'UI_FILE', self.VCP_DIR, default)
 
     def getPyFile(self, default='pyqtvcp.py'):
-        return self.getFilePath('DISPLAY', 'PY_FILE', default)
+        return self.getFilePath('VCP', 'PY_FILE', self.VCP_DIR, default)
 
     def getQssFile(self, default='pyqtvcp.qss'):
-        return self.getFilePath('DISPLAY', 'QSS_FILE', default)
-
-    def getLogFile(self, default='~/pyqtvcp.log'):
-        return self.getFilePath('DISPLAY', 'LOG_FILE', default)
+        return self.getFilePath('VCP', 'QSS_FILE', self.VCP_DIR, default)
 
     def getPreferenceFile(self, default='~/pyqtvcp.pref'):
-        return self.getFilePath('DISPLAY', 'PREFERENCE_FILE', default)
+        return self.getFilePath('VCP', 'PREFERENCE_FILE', self.VCP_DIR, default)
+
+    def getLogFile(self, default='~/pyqtvcp.log'):
+        return self.getFilePath('VCP', 'LOG_FILE', self.VCP_DIR, default)
+
 
     def getMdiHystoryFile(self, default='~/.axis_mdi_history'):
-        return self.getFilePath('DISPLAY', 'MDI_HISTORY_FILE', default)
+        return self.getFilePath('DISPLAY', 'MDI_HISTORY_FILE', self.CONFIG_DIR, default)
 
     def getToolTableFile(self, default='tool.tbl'):
-        return self.getFilePath('EMCIO', 'TOOL_TABLE', default)
+        return self.getFilePath('EMCIO', 'TOOL_TABLE', self.CONFIG_DIR, default)
 
     def getOpenFile(self, default=None):
-        return self.getFilePath('DISPLAY', 'OPEN_FILE', default)
+        return self.getFilePath('DISPLAY', 'OPEN_FILE', self.CONFIG_DIR, default)
 
 
     def getCoordinates(self):
