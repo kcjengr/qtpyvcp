@@ -2,13 +2,6 @@
 
 from QtPyVCP.widgets.base_widgets.designer_plugin import _DesignerPlugin
 
-from entry_widget import EntryWidget
-class EntryPlugin(_DesignerPlugin):
-    def pluginClass(self):
-        return EntryWidget
-    def toolTip(self):
-        return "MDI command entry"
-
 from action_button import ActionButton
 class ActionButtonPlugin(_DesignerPlugin):
     def pluginClass(self):

@@ -106,7 +106,7 @@
                </widget>
               </item>
               <item>
-               <widget class="EntryWidget" name="entry">
+               <widget class="MDIEntry" name="entry">
                 <property name="font">
                  <font>
                   <family>Roboto</family>
@@ -114,7 +114,7 @@
                  </font>
                 </property>
                 <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
+                 <enum>Qt::ClickFocus</enum>
                 </property>
                 <property name="placeholderText">
                  <string>MDI</string>
@@ -1435,7 +1435,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
@@ -1643,11 +1643,6 @@
    <header>QtPyVCP.widgets.input_widgets.recent_file_combobox</header>
   </customwidget>
   <customwidget>
-   <class>EntryWidget</class>
-   <extends>QLineEdit</extends>
-   <header>QtPyVCP.widgets.button_widgets.entry_widget</header>
-  </customwidget>
-  <customwidget>
    <class>Camera</class>
    <extends>QWidget</extends>
    <header>QtPyVCP.widgets.display_widgets.camera.camera</header>
@@ -1662,6 +1657,11 @@
    <class>AxisActionButton</class>
    <extends>QPushButton</extends>
    <header>QtPyVCP.widgets.button_widgets.axis_button</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
  </customwidgets>
  <resources>
