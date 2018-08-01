@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1538</width>
-    <height>857</height>
+    <height>934</height>
    </rect>
   </property>
   <property name="font">
@@ -201,7 +201,7 @@
             </property>
             <property name="font">
              <font>
-              <pointsize>8</pointsize>
+              <pointsize>14</pointsize>
              </font>
             </property>
            </widget>
@@ -291,7 +291,7 @@
      </layout>
     </item>
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_9">
+     <layout class="QHBoxLayout" name="main_control_screen_layout_panel">
       <property name="leftMargin">
        <number>12</number>
       </property>
@@ -302,7 +302,7 @@
        <number>12</number>
       </property>
       <item>
-       <widget class="QGroupBox" name="groupBox">
+       <widget class="QGroupBox" name="main_control_qgroupbox">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -328,7 +328,7 @@ border-radius: 6px;
         <property name="title">
          <string/>
         </property>
-        <widget class="AxisActionButton" name="axisactionbutton_7">
+        <widget class="AxisActionButton" name="coolant_button">
          <property name="geometry">
           <rect>
            <x>17</x>
@@ -350,7 +350,7 @@ border-radius: 6px;
           <string>COOLANT</string>
          </property>
         </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_4">
+        <widget class="AxisActionButton" name="feedhold_button">
          <property name="geometry">
           <rect>
            <x>17</x>
@@ -372,7 +372,7 @@ border-radius: 6px;
           <string>FEEDHOLD</string>
          </property>
         </widget>
-        <widget class="QPushButton" name="power">
+        <widget class="QPushButton" name="cycle_start_button">
          <property name="geometry">
           <rect>
            <x>17</x>
@@ -400,7 +400,7 @@ border-radius: 6px;
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_13">
+        <widget class="AxisActionButton" name="reset_button">
          <property name="geometry">
           <rect>
            <x>187</x>
@@ -422,7 +422,7 @@ border-radius: 6px;
           <string>RESET</string>
          </property>
         </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_12">
+        <widget class="AxisActionButton" name="stop_button">
          <property name="geometry">
           <rect>
            <x>187</x>
@@ -444,7 +444,7 @@ border-radius: 6px;
           <string>STOP</string>
          </property>
         </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_5">
+        <widget class="AxisActionButton" name="m01_break_button">
          <property name="geometry">
           <rect>
            <x>187</x>
@@ -466,7 +466,7 @@ border-radius: 6px;
           <string>M01 BREAK</string>
          </property>
         </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_6">
+        <widget class="AxisActionButton" name="single_block_button">
          <property name="geometry">
           <rect>
            <x>17</x>
@@ -511,7 +511,7 @@ border-radius: 1px;
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_4">
+        <widget class="ActionButton" name="power_button">
          <property name="geometry">
           <rect>
            <x>19</x>
@@ -536,7 +536,7 @@ border-radius: 1px;
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_3">
+        <widget class="ActionButton" name="exit_button">
          <property name="geometry">
           <rect>
            <x>252</x>
@@ -577,7 +577,7 @@ border-radius: 1px;
        </spacer>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox_7">
+       <widget class="QGroupBox" name="main_override_tool_qgroupbox">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -1484,46 +1484,7 @@ border-radius: 1px;
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
-        <widget class="QLineEdit" name="lineEdit_31">
-         <property name="geometry">
-          <rect>
-           <x>244</x>
-           <y>88</y>
-           <width>41</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>17</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 17pt &quot;Bebas Kai&quot;;
-}
-
-
-
-
-
-</string>
-         </property>
-         <property name="text">
-          <string>INCH</string>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="actionbutton_34">
+        <widget class="ActionButton" name="m6_g43_button">
          <property name="geometry">
           <rect>
            <x>126</x>
@@ -1549,84 +1510,6 @@ border-radius: 1px;
          </property>
          <property name="option" stdset="0">
           <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="lineEdit_29">
-         <property name="geometry">
-          <rect>
-           <x>38</x>
-           <y>88</y>
-           <width>101</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>17</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 17pt &quot;Bebas Kai&quot;;
-}
-
-
-
-
-
-</string>
-         </property>
-         <property name="text">
-          <string>TOOL LENGTH</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="lineEdit_28">
-         <property name="geometry">
-          <rect>
-           <x>42</x>
-           <y>30</y>
-           <width>23</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>17</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 17pt &quot;Bebas Kai&quot;;
-}
-
-
-
-
-
-</string>
-         </property>
-         <property name="text">
-          <string>T#</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="lineEdit_30">
@@ -1873,7 +1756,7 @@ border-radius: 1px;
           <enum>Qt::VisualMoveStyle</enum>
          </property>
         </widget>
-        <widget class="QLineEdit" name="lineEdit_27">
+        <widget class="QLineEdit" name="tool_number_entry_box">
          <property name="geometry">
           <rect>
            <x>66</x>
@@ -2117,7 +2000,7 @@ border-radius: 1px;
           <enum>Qt::VisualMoveStyle</enum>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_33">
+        <widget class="ActionButton" name="go_to_g30_button">
          <property name="geometry">
           <rect>
            <x>202</x>
@@ -2145,6 +2028,123 @@ border-radius: 1px;
           <bool>true</bool>
          </property>
         </widget>
+        <widget class="QLineEdit" name="lineEdit_23">
+         <property name="geometry">
+          <rect>
+           <x>42</x>
+           <y>30</y>
+           <width>23</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>17</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}
+
+
+
+
+
+</string>
+         </property>
+         <property name="text">
+          <string>T#</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_24">
+         <property name="geometry">
+          <rect>
+           <x>38</x>
+           <y>88</y>
+           <width>101</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>17</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}
+
+
+
+
+
+</string>
+         </property>
+         <property name="text">
+          <string>TOOL LENGTH</string>
+         </property>
+        </widget>
+        <widget class="QLineEdit" name="lineEdit_25">
+         <property name="geometry">
+          <rect>
+           <x>244</x>
+           <y>88</y>
+           <width>41</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>17</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLineEdit{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}
+
+
+
+
+
+</string>
+         </property>
+         <property name="text">
+          <string>INCH</string>
+         </property>
+        </widget>
        </widget>
       </item>
       <item>
@@ -2161,7 +2161,7 @@ border-radius: 1px;
        </spacer>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox_5">
+       <widget class="QGroupBox" name="main_dro_qgroupbox">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
@@ -2194,19 +2194,19 @@ border-radius: 6px;
          <property name="geometry">
           <rect>
            <x>20</x>
-           <y>17</y>
+           <y>20</y>
            <width>441</width>
-           <height>311</height>
+           <height>301</height>
           </rect>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3">
+         <layout class="QVBoxLayout" name="dro_qvboxlayout">
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_15">
+           <layout class="QHBoxLayout" name="dro_column_headers">
             <property name="spacing">
              <number>6</number>
             </property>
             <item>
-             <widget class="QLabel" name="label">
+             <widget class="QLabel" name="axis_column_header">
               <property name="minimumSize">
                <size>
                 <width>50</width>
@@ -2239,7 +2239,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_2">
+             <widget class="QLabel" name="abs_column_header">
               <property name="minimumSize">
                <size>
                 <width>110</width>
@@ -2272,7 +2272,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_3">
+             <widget class="QLabel" name="rel_column_header">
               <property name="enabled">
                <bool>true</bool>
               </property>
@@ -2302,7 +2302,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_5">
+             <widget class="QLabel" name="dtg_column_header">
               <property name="minimumSize">
                <size>
                 <width>0</width>
@@ -2329,7 +2329,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="label_6">
+             <widget class="QLabel" name="ref_coilumn_header">
               <property name="minimumSize">
                <size>
                 <width>50</width>
@@ -2364,9 +2364,9 @@ border-radius: 6px;
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_10">
+           <layout class="QHBoxLayout" name="x_axis_dro_layout">
             <item>
-             <widget class="QPushButton" name="pushButton_3">
+             <widget class="QPushButton" name="x_axis_button">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -2406,7 +2406,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit">
+             <widget class="QLineEdit" name="x_axis_abs_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -2647,7 +2647,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="DROWidget" name="dro_5">
+             <widget class="DROWidget" name="x_axis_rel_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -2756,7 +2756,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="DROWidget" name="dro_13">
+             <widget class="DROWidget" name="x_axis_dtg_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -2865,7 +2865,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="ActionButton" name="actionbutton_15">
+             <widget class="ActionButton" name="x_axis_ref_button">
               <property name="minimumSize">
                <size>
                 <width>50</width>
@@ -2901,9 +2901,9 @@ border-radius: 6px;
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_14">
+           <layout class="QHBoxLayout" name="y_axis_dro_layout">
             <item>
-             <widget class="QPushButton" name="pushButton_8">
+             <widget class="QPushButton" name="y_axis_button">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -2943,7 +2943,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_7">
+             <widget class="QLineEdit" name="y_axis_abs_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -3181,7 +3181,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="DROWidget" name="dro_11">
+             <widget class="DROWidget" name="y_axis_rel_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -3226,7 +3226,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="DROWidget" name="dro_12">
+             <widget class="DROWidget" name="y_axis_dtg_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -3335,7 +3335,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="ActionButton" name="actionbutton_16">
+             <widget class="ActionButton" name="y_axis_ref_button">
               <property name="minimumSize">
                <size>
                 <width>50</width>
@@ -3371,9 +3371,9 @@ border-radius: 6px;
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_12">
+           <layout class="QHBoxLayout" name="z_axis_dro_layout">
             <item>
-             <widget class="QPushButton" name="pushButton_5">
+             <widget class="QPushButton" name="z_axis_button">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -3410,7 +3410,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_3">
+             <widget class="QLineEdit" name="z_axis_abs_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -3645,7 +3645,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="DROWidget" name="dro_3">
+             <widget class="DROWidget" name="z_axis_rel_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -3754,7 +3754,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="DROWidget" name="dro_7">
+             <widget class="DROWidget" name="z_axis_dtg_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -3863,7 +3863,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="ActionButton" name="actionbutton_17">
+             <widget class="ActionButton" name="z_axis_ref_button">
               <property name="minimumSize">
                <size>
                 <width>50</width>
@@ -3899,9 +3899,9 @@ border-radius: 6px;
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_13">
+           <layout class="QHBoxLayout" name="a_axis_dro_layout">
             <item>
-             <widget class="QPushButton" name="pushButton_6">
+             <widget class="QPushButton" name="a_axis_button">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -3938,7 +3938,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_4">
+             <widget class="QLineEdit" name="a_axis_abs_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -4173,7 +4173,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="DROWidget" name="dro_4">
+             <widget class="DROWidget" name="a_axis_rel_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -4282,7 +4282,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="DROWidget" name="dro_8">
+             <widget class="DROWidget" name="a_axis_dtg_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -4391,7 +4391,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="ActionButton" name="actionbutton_18">
+             <widget class="ActionButton" name="a_axis_ref_button">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -4433,9 +4433,9 @@ border-radius: 6px;
            </layout>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="horizontalLayout_11">
+           <layout class="QHBoxLayout" name="b_axis_dro_layout">
             <item>
-             <widget class="QPushButton" name="pushButton_7">
+             <widget class="QPushButton" name="b_axis_button">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -4475,7 +4475,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit_6">
+             <widget class="QLineEdit" name="b_axis_abs_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -4713,7 +4713,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="DROWidget" name="dro_9">
+             <widget class="DROWidget" name="b_axis_rel_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -4758,7 +4758,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="DROWidget" name="dro_10">
+             <widget class="DROWidget" name="b_axis_dtg_dro">
               <property name="sizePolicy">
                <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
@@ -4867,7 +4867,7 @@ border-radius: 6px;
              </widget>
             </item>
             <item>
-             <widget class="ActionButton" name="actionbutton_22">
+             <widget class="ActionButton" name="b_axis_ref_button">
               <property name="minimumSize">
                <size>
                 <width>50</width>
@@ -5344,45 +5344,6 @@ border-radius: 1px;
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="lineEdit_10">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>29</y>
-           <width>37</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>17</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 17pt &quot;Bebas Kai&quot;;
-}
-
-
-
-
-
-</string>
-         </property>
-         <property name="text">
-          <string>STEP</string>
-         </property>
-        </widget>
         <widget class="ActionButton" name="step_inc_0100">
          <property name="geometry">
           <rect>
@@ -5767,52 +5728,13 @@ border-radius: 1px;
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="lineEdit_22">
-         <property name="geometry">
-          <rect>
-           <x>252</x>
-           <y>147</y>
-           <width>33</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>17</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 17pt &quot;Bebas Kai&quot;;
-}
-
-
-
-
-
-</string>
-         </property>
-         <property name="text">
-          <string>IPM</string>
-         </property>
-        </widget>
         <widget class="QLabel" name="label_4">
          <property name="geometry">
           <rect>
            <x>251</x>
-           <y>222</y>
+           <y>220</y>
            <width>31</width>
-           <height>16</height>
+           <height>20</height>
           </rect>
          </property>
          <property name="styleSheet">
@@ -5858,9 +5780,9 @@ border-radius: 1px;
          <property name="geometry">
           <rect>
            <x>94</x>
-           <y>150</y>
+           <y>147</y>
            <width>71</width>
-           <height>20</height>
+           <height>25</height>
           </rect>
          </property>
          <property name="styleSheet">
@@ -5876,6 +5798,54 @@ border-radius: 1px;
          </property>
          <property name="text">
           <string>FEEDRATE</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_5">
+         <property name="geometry">
+          <rect>
+           <x>252</x>
+           <y>147</y>
+           <width>33</width>
+           <height>25</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+         </property>
+         <property name="text">
+          <string>IPM</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_6">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>29</y>
+           <width>37</width>
+           <height>28</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+         </property>
+         <property name="text">
+          <string>STEP</string>
          </property>
         </widget>
        </widget>
