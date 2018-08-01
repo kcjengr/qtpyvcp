@@ -85,6 +85,20 @@ DROWidget {
     background-color: white;
 }
 
+QGroupBox {
+    border: 1px solid #8A8484;
+    border-radius: 5px;
+    margin-top: 1ex;
+    font-size: 14pt;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 3px;
+    color: white;
+}
+
 GcodeBackplot {
     border-color: black;
     border-style: solid;
@@ -92,22 +106,6 @@ GcodeBackplot {
     border-radius: 4px;
     background-color: black;
     margin: 10px;
-}
-
-QGroupBox {
-    border: 1px solid #8A8484;
-    border-radius: 5px;
-    margin-top: 1ex;
-    font-size: 12pt;
-/*    font-weight: bold;*/
-}
-
-QGroupBox::title {
-    subcontrol-origin: margin;
-    subcontrol-position: top left;
-    font-size: 14pt;
-    padding: 0 3px;
-    color: black;
 }
 
 GcodeEditor {

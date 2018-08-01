@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1538</width>
-    <height>899</height>
+    <height>857</height>
    </rect>
   </property>
   <property name="font">
@@ -193,9 +193,15 @@
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
            <widget class="SubCaller" name="subcaller" native="true">
+            <property name="maximumSize">
+             <size>
+              <width>450</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="font">
              <font>
-              <pointsize>17</pointsize>
+              <pointsize>8</pointsize>
              </font>
             </property>
            </widget>
@@ -233,7 +239,13 @@
              <enum>QTabWidget::Triangular</enum>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>2</number>
+            </property>
+            <property name="iconSize">
+             <size>
+              <width>25</width>
+              <height>16</height>
+             </size>
             </property>
             <widget class="QWidget" name="tab_6">
              <attribute name="title">
@@ -4940,7 +4952,7 @@ border-radius: 6px;
         <property name="title">
          <string/>
         </property>
-        <widget class="ActionButton" name="actionbutton_9">
+        <widget class="ActionButton" name="spindle_rev">
          <property name="geometry">
           <rect>
            <x>29</x>
@@ -4968,7 +4980,7 @@ border-radius: 6px;
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_10">
+        <widget class="ActionButton" name="spindle_stop">
          <property name="geometry">
           <rect>
            <x>121</x>
@@ -4996,7 +5008,7 @@ border-radius: 6px;
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_11">
+        <widget class="ActionButton" name="spindle_fwd">
          <property name="geometry">
           <rect>
            <x>213</x>
@@ -5024,7 +5036,7 @@ border-radius: 6px;
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="lineEdit_2">
+        <widget class="QLineEdit" name="spindle_dro">
          <property name="geometry">
           <rect>
            <x>170</x>
@@ -5268,84 +5280,6 @@ border-radius: 6px;
           <enum>Qt::VisualMoveStyle</enum>
          </property>
         </widget>
-        <widget class="QLineEdit" name="lineEdit_9">
-         <property name="geometry">
-          <rect>
-           <x>250</x>
-           <y>217</y>
-           <width>36</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>17</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 17pt &quot;Bebas Kai&quot;;
-}
-
-
-
-
-
-</string>
-         </property>
-         <property name="text">
-          <string>RPM</string>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="lineEdit_16">
-         <property name="geometry">
-          <rect>
-           <x>103</x>
-           <y>217</y>
-           <width>63</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>17</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 17pt &quot;Bebas Kai&quot;;
-}
-
-
-
-
-
-</string>
-         </property>
-         <property name="text">
-          <string>SPINDLE</string>
-         </property>
-        </widget>
         <widget class="Line" name="line_4">
          <property name="geometry">
           <rect>
@@ -5369,7 +5303,7 @@ border-radius: 1px;
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
-        <widget class="QSlider" name="horizontalSlider_4">
+        <widget class="QSlider" name="feedrate_slider">
          <property name="geometry">
           <rect>
            <x>96</x>
@@ -5382,7 +5316,7 @@ border-radius: 1px;
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_30">
+        <widget class="ActionButton" name="jog_cont">
          <property name="geometry">
           <rect>
            <x>20</x>
@@ -5449,7 +5383,7 @@ border-radius: 1px;
           <string>STEP</string>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_23">
+        <widget class="ActionButton" name="step_inc_0100">
          <property name="geometry">
           <rect>
            <x>186</x>
@@ -5477,7 +5411,7 @@ border-radius: 1px;
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="QLineEdit" name="lineEdit_15">
+        <widget class="QLineEdit" name="feedrate_dro">
          <property name="geometry">
           <rect>
            <x>172</x>
@@ -5721,7 +5655,7 @@ border-radius: 1px;
           <enum>Qt::VisualMoveStyle</enum>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_12">
+        <widget class="ActionButton" name="step_inc_1000">
          <property name="geometry">
           <rect>
            <x>248</x>
@@ -5749,7 +5683,7 @@ border-radius: 1px;
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_25">
+        <widget class="ActionButton" name="step_inc_0001">
          <property name="geometry">
           <rect>
            <x>62</x>
@@ -5777,7 +5711,7 @@ border-radius: 1px;
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_24">
+        <widget class="ActionButton" name="step_inc_0010">
          <property name="geometry">
           <rect>
            <x>124</x>
@@ -5805,7 +5739,7 @@ border-radius: 1px;
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_29">
+        <widget class="ActionButton" name="jog_step">
          <property name="geometry">
           <rect>
            <x>20</x>
@@ -5831,45 +5765,6 @@ border-radius: 1px;
          </property>
          <property name="option" stdset="0">
           <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QLineEdit" name="lineEdit_17">
-         <property name="geometry">
-          <rect>
-           <x>93</x>
-           <y>147</y>
-           <width>75</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>17</pointsize>
-           <weight>50</weight>
-           <italic>false</italic>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLineEdit{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 17pt &quot;Bebas Kai&quot;;
-}
-
-
-
-
-
-</string>
-         </property>
-         <property name="text">
-          <string>FEEDRATE</string>
          </property>
         </widget>
         <widget class="QLineEdit" name="lineEdit_22">
@@ -5909,6 +5804,78 @@ border-radius: 1px;
          </property>
          <property name="text">
           <string>IPM</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="label_4">
+         <property name="geometry">
+          <rect>
+           <x>251</x>
+           <y>222</y>
+           <width>31</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+         </property>
+         <property name="text">
+          <string>RPM</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="spindle">
+         <property name="geometry">
+          <rect>
+           <x>103</x>
+           <y>220</y>
+           <width>61</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+         </property>
+         <property name="text">
+          <string>SPINDLE</string>
+         </property>
+        </widget>
+        <widget class="QLabel" name="feedrate">
+         <property name="geometry">
+          <rect>
+           <x>94</x>
+           <y>150</y>
+           <width>71</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+         </property>
+         <property name="text">
+          <string>FEEDRATE</string>
          </property>
         </widget>
        </widget>

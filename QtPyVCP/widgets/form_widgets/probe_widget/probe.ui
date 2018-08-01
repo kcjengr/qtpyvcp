@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>566</width>
-    <height>581</height>
+    <width>466</width>
+    <height>471</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -51,8 +51,14 @@
         </property>
         <item row="1" column="1">
          <widget class="QLineEdit" name="y_probed_pos">
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
-           <string>0.7500</string>
+           <string>0.0000</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -64,6 +70,12 @@
         </item>
         <item row="1" column="3">
          <widget class="QLineEdit" name="y_probed_width">
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
            <string>0.0000</string>
           </property>
@@ -100,6 +112,12 @@
         </item>
         <item row="0" column="3">
          <widget class="QLineEdit" name="x_probed_width">
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
            <string>0.0000</string>
           </property>
@@ -113,8 +131,14 @@
         </item>
         <item row="2" column="3">
          <widget class="QLineEdit" name="probed_diameter">
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
-           <string>0.7500</string>
+           <string>0.0000</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -126,8 +150,14 @@
         </item>
         <item row="0" column="1">
          <widget class="QLineEdit" name="x_probed_pos">
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
-           <string>0.7500</string>
+           <string>0.0000</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -139,6 +169,12 @@
         </item>
         <item row="2" column="1">
          <widget class="QLineEdit" name="z_probed_pos">
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
            <string>0.0000</string>
           </property>
@@ -246,18 +282,14 @@
         </property>
         <item>
          <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="3">
-           <widget class="QLabel" name="label_4">
-            <property name="text">
-             <string>Step Off Width:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="1">
            <widget class="QLabel" name="label_5">
+            <property name="maximumSize">
+             <size>
+              <width>130</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>Probe Fast FR:</string>
             </property>
@@ -266,78 +298,14 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="2">
-           <widget class="QLineEdit" name="extra_probe_depth">
-            <property name="text">
-             <string>0.0000</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="4">
-           <widget class="QLineEdit" name="calibration_dia">
-            <property name="text">
-             <string>.0020</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="1">
-           <widget class="QLabel" name="label_12">
-            <property name="text">
-             <string>Extra Probe Depth:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="2">
-           <widget class="QLineEdit" name="max_xy_distance">
-            <property name="text">
-             <string>1.2500</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="4">
-           <widget class="QLineEdit" name="step_off_width">
-            <property name="text">
-             <string>0.5000</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="1">
-           <widget class="QLabel" name="label_10">
-            <property name="text">
-             <string>Max Z Distance:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
-           <widget class="QLabel" name="label_7">
-            <property name="text">
-             <string>Max X/Y Distance:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
           <item row="1" column="4">
            <widget class="QLineEdit" name="probe_slow_fr">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>5.0</string>
             </property>
@@ -346,20 +314,112 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="4">
-           <widget class="QLineEdit" name="xy_clearance">
+          <item row="0" column="3">
+           <widget class="QLabel" name="label_4">
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
-             <string>0.1000</string>
+             <string>Step Off Width:</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
           </item>
-          <item row="6" column="3">
-           <widget class="QLabel" name="label_9">
+          <item row="3" column="2">
+           <widget class="QLineEdit" name="max_xy_distance">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
-             <string>Z Clearance:</string>
+             <string>1.0000</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <widget class="QLineEdit" name="extra_probe_depth">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>0.0000</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QLabel" name="label_7">
+            <property name="maximumSize">
+             <size>
+              <width>130</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Max X/Y Distance:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QLabel" name="label_8">
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>X/Y Clearance:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <widget class="QLineEdit" name="step_off_width">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>0.5000</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QLabel" name="label_12">
+            <property name="maximumSize">
+             <size>
+              <width>130</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Extra Probe Depth:</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -368,6 +428,12 @@
           </item>
           <item row="6" column="4">
            <widget class="QLineEdit" name="z_clearance">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>0.1000</string>
             </property>
@@ -376,8 +442,142 @@
             </property>
            </widget>
           </item>
+          <item row="7" column="3">
+           <widget class="QLabel" name="label_11">
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Calibration Dia:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QLabel" name="label_10">
+            <property name="maximumSize">
+             <size>
+              <width>130</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Max Z Distance:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="3">
+           <widget class="QLabel" name="label_6">
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Probe Slow FR:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="2">
+           <widget class="QLineEdit" name="max_z_distance">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>1.0000</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="label_3">
+            <property name="maximumSize">
+             <size>
+              <width>130</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Probe Tool #:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="4">
+           <widget class="QLineEdit" name="xy_clearance">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>0.1000</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="4">
+           <widget class="QLineEdit" name="calibration_dia">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>0.1500</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="6" column="3">
+           <widget class="QLabel" name="label_9">
+            <property name="maximumSize">
+             <size>
+              <width>120</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Z Clearance:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+            </property>
+           </widget>
+          </item>
           <item row="1" column="2">
            <widget class="QLineEdit" name="probe_fast_fr">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="inputMask">
              <string/>
             </property>
@@ -389,60 +589,16 @@
             </property>
            </widget>
           </item>
-          <item row="7" column="3">
-           <widget class="QLabel" name="label_11">
-            <property name="text">
-             <string>Calibration Dia:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="2">
            <widget class="QLineEdit" name="probe_tool_number">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="text">
              <string>99</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="1" column="3">
-           <widget class="QLabel" name="label_6">
-            <property name="text">
-             <string>Probe Slow FR:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="3">
-           <widget class="QLabel" name="label_8">
-            <property name="text">
-             <string>X/Y Clearance:</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="6" column="2">
-           <widget class="QLineEdit" name="max_z_distance">
-            <property name="text">
-             <string>0.5000</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QLabel" name="label_3">
-            <property name="text">
-             <string>Probe Tool #:</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -484,8 +640,30 @@
         <property name="spacing">
          <number>5</number>
         </property>
-        <item row="0" column="3">
-         <widget class="QLineEdit" name="y_hint">
+        <item row="0" column="4">
+         <widget class="QLabel" name="label_21">
+          <property name="text">
+           <string>Diameter</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="5">
+         <widget class="QLineEdit" name="diameter_hint">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
            <string>0.0000</string>
           </property>
@@ -506,8 +684,42 @@
         </item>
         <item row="0" column="1">
          <widget class="QLineEdit" name="x_hint">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="text">
-           <string>0.7500</string>
+           <string>0.0000</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QLineEdit" name="y_hint">
+          <property name="minimumSize">
+           <size>
+            <width>80</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>0.0000</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -518,26 +730,6 @@
          <widget class="QLabel" name="label_20">
           <property name="text">
            <string>Y:</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="4">
-         <widget class="QLabel" name="label_21">
-          <property name="text">
-           <string>Diameter</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="5">
-         <widget class="QLineEdit" name="diameter_hint">
-          <property name="text">
-           <string>1.5000</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
