@@ -1,5 +1,26 @@
 #!/usr/bin/env python
 
+#   Copyright (c) 2018 Kurt Jacobson
+#
+#   This file is part of QtPyVCP.
+#
+#   QtPyVCP is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   QtPyVCP is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
+
+# Description:
+#   Generic button for calling a NGCGUI style subroutines. Useful for probing
+#   quill-up, go home, goto etc functionality.
+
 import os
 import re
 from PyQt5.QtWidgets import QPushButton, qApp
@@ -85,9 +106,6 @@ class SubCallButton(QPushButton):
 
         LOG.debug('Calling sub file: yellow<{}> with args blue<{}>'.format(self._sub_path, arg_str))
         ACTION.issueMDI(cmd_str)
-
-    def onProbingEnd(self):
-        pass
 
     def getSubName(self):
         return self._sub_name
