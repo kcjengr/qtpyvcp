@@ -15,6 +15,8 @@ PREFS = Prefs()
 INFO = Info()
 
 # import xyz_ui
+import xyz_rc
+
 
 class MainWindow(VCPMainWindow):
     def __init__(self, *args, **kwargs):
