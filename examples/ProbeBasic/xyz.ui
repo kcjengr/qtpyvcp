@@ -1813,11 +1813,11 @@
                <enum>QTabWidget::South</enum>
               </property>
               <property name="currentIndex">
-               <number>5</number>
+               <number>1</number>
               </property>
               <widget class="QWidget" name="tab_5">
                <attribute name="title">
-                <string>STEP OFF WIDTH</string>
+                <string>  STEP OFF WIDTH  </string>
                </attribute>
                <widget class="QLabel" name="label">
                 <property name="geometry">
@@ -1853,15 +1853,15 @@
               </widget>
               <widget class="QWidget" name="tab_6">
                <attribute name="title">
-                <string>EXTRA PROBE DEPTH</string>
+                <string>  EXTRA PROBE DEPTH  </string>
                </attribute>
                <widget class="QLabel" name="label_2">
                 <property name="geometry">
                  <rect>
-                  <x>140</x>
-                  <y>20</y>
-                  <width>551</width>
-                  <height>441</height>
+                  <x>190</x>
+                  <y>60</y>
+                  <width>411</width>
+                  <height>331</height>
                  </rect>
                 </property>
                 <property name="styleSheet">
@@ -1895,7 +1895,7 @@
               </widget>
               <widget class="QWidget" name="tab_8">
                <attribute name="title">
-                <string>MAX DISTANCE</string>
+                <string>  MAX DISTANCE  </string>
                </attribute>
                <widget class="QLabel" name="label_3">
                 <property name="geometry">
@@ -1949,7 +1949,7 @@
               </widget>
               <widget class="QWidget" name="tab_9">
                <attribute name="title">
-                <string>Clearance</string>
+                <string>  Clearance  </string>
                </attribute>
                <widget class="QLabel" name="label_4">
                 <property name="geometry">
@@ -1988,12 +1988,12 @@
               </widget>
               <widget class="QWidget" name="tab_11">
                <attribute name="title">
-                <string>PROBE FAST FR</string>
+                <string>  PROBE FAST FR  </string>
                </attribute>
               </widget>
               <widget class="QWidget" name="tab_12">
                <attribute name="title">
-                <string>PROBE SLOW FR</string>
+                <string>  PROBE SLOW FR  </string>
                </attribute>
               </widget>
              </widget>
