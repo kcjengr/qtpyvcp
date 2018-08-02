@@ -1813,7 +1813,7 @@
                <enum>QTabWidget::South</enum>
               </property>
               <property name="currentIndex">
-               <number>2</number>
+               <number>5</number>
               </property>
               <widget class="QWidget" name="tab_5">
                <attribute name="title">
@@ -1822,14 +1822,32 @@
                <widget class="QLabel" name="label">
                 <property name="geometry">
                  <rect>
-                  <x>40</x>
-                  <y>40</y>
-                  <width>721</width>
+                  <x>130</x>
+                  <y>10</y>
+                  <width>541</width>
                   <height>451</height>
                  </rect>
                 </property>
+                <property name="styleSheet">
+                 <string notr="true">QLabel{
+    border-style: solid;
+    border-color: rgb(46, 54, 56);
+    border-width: 3px;
+    border-radius: 10px;
+    background: rgb(245, 240, 255);
+}</string>
+                </property>
                 <property name="text">
                  <string/>
+                </property>
+                <property name="pixmap">
+                 <pixmap resource="xyz.qrc">:/images/step_off_width.png</pixmap>
+                </property>
+                <property name="scaledContents">
+                 <bool>true</bool>
+                </property>
+                <property name="indent">
+                 <number>0</number>
                 </property>
                </widget>
               </widget>
@@ -1837,40 +1855,29 @@
                <attribute name="title">
                 <string>EXTRA PROBE DEPTH</string>
                </attribute>
-              </widget>
-              <widget class="QWidget" name="tab_8">
-               <attribute name="title">
-                <string>MAX DISTANCE</string>
-               </attribute>
                <widget class="QLabel" name="label_2">
                 <property name="geometry">
                  <rect>
-                  <x>427</x>
-                  <y>78</y>
-                  <width>374</width>
-                  <height>331</height>
+                  <x>140</x>
+                  <y>20</y>
+                  <width>551</width>
+                  <height>441</height>
                  </rect>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true"/>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::Box</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Sunken</enum>
-                </property>
-                <property name="lineWidth">
-                 <number>2</number>
-                </property>
-                <property name="midLineWidth">
-                 <number>2</number>
+                 <string notr="true">QLabel{
+    border-style: solid;
+    border-color: rgb(46, 54, 56);
+    border-width: 3px;
+    border-radius: 10px;
+    background: rgb(245, 240, 255);
+}</string>
                 </property>
                 <property name="text">
                  <string/>
                 </property>
                 <property name="pixmap">
-                 <pixmap resource="xyz.qrc">:/images/max_x_y_distance.png</pixmap>
+                 <pixmap resource="xyz.qrc">:/images/extra_probe_depth.png</pixmap>
                 </property>
                 <property name="scaledContents">
                  <bool>true</bool>
@@ -1878,39 +1885,56 @@
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
                 </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+                <property name="indent">
+                 <number>0</number>
+                </property>
                </widget>
+              </widget>
+              <widget class="QWidget" name="tab_8">
+               <attribute name="title">
+                <string>MAX DISTANCE</string>
+               </attribute>
                <widget class="QLabel" name="label_3">
                 <property name="geometry">
                  <rect>
-                  <x>6</x>
-                  <y>38</y>
-                  <width>414</width>
-                  <height>373</height>
+                  <x>11</x>
+                  <y>30</y>
+                  <width>785</width>
+                  <height>407</height>
                  </rect>
                 </property>
                 <property name="autoFillBackground">
                  <bool>false</bool>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true"/>
+                 <string notr="true">QLabel{
+    border-style: solid;
+    border-color: rgb(46, 54, 56);
+    border-width: 3px;
+    border-radius: 10px;
+    background: rgb(245, 240, 255);
+}</string>
                 </property>
                 <property name="frameShape">
-                 <enum>QFrame::Box</enum>
+                 <enum>QFrame::NoFrame</enum>
                 </property>
                 <property name="frameShadow">
-                 <enum>QFrame::Sunken</enum>
+                 <enum>QFrame::Plain</enum>
                 </property>
                 <property name="lineWidth">
-                 <number>2</number>
+                 <number>0</number>
                 </property>
                 <property name="midLineWidth">
-                 <number>2</number>
+                 <number>0</number>
                 </property>
                 <property name="text">
                  <string/>
                 </property>
                 <property name="pixmap">
-                 <pixmap resource="xyz.qrc">:/images/max_z_distance.png</pixmap>
+                 <pixmap resource="xyz.qrc">:/images/max_distance.png</pixmap>
                 </property>
                 <property name="scaledContents">
                  <bool>true</bool>
@@ -1918,14 +1942,49 @@
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
                 </property>
+                <property name="indent">
+                 <number>0</number>
+                </property>
                </widget>
-               <zorder>label_3</zorder>
-               <zorder>label_2</zorder>
               </widget>
               <widget class="QWidget" name="tab_9">
                <attribute name="title">
                 <string>Clearance</string>
                </attribute>
+               <widget class="QLabel" name="label_4">
+                <property name="geometry">
+                 <rect>
+                  <x>8</x>
+                  <y>38</y>
+                  <width>791</width>
+                  <height>391</height>
+                 </rect>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLabel{
+    border-style: solid;
+    border-color: rgb(46, 54, 56);
+    border-width: 3px;
+    border-radius: 10px;
+    background: rgb(245, 240, 255);
+}</string>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="pixmap">
+                 <pixmap resource="xyz.qrc">:/images/clearance.png</pixmap>
+                </property>
+                <property name="scaledContents">
+                 <bool>true</bool>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+                <property name="indent">
+                 <number>0</number>
+                </property>
+               </widget>
               </widget>
               <widget class="QWidget" name="tab_11">
                <attribute name="title">

@@ -21,8 +21,11 @@
     <file>images/rect_pocket.png</file>
     <file>images/rect_boss.png</file>
     <file>images/round_boss.png</file>
-    <file>images/max_x_y_distance.png</file>
-    <file>images/max_z_distance.png</file>
+    <file>images/clearance.png</file>
+    <file>images/max_distance.png</file>
+    <file>images/extra_probe_depth.png</file>
+    <file>images/step_off_width.png</file>
+    
     
 
 </qresource>
