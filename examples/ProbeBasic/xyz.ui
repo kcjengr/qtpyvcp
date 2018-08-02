@@ -132,7 +132,7 @@
                </widget>
               </item>
               <item>
-               <widget class="EntryWidget" name="mdi_entry_box">
+               <widget class="MDIEntry" name="mdi_entry_box">
                 <property name="font">
                  <font>
                   <family>Bebas Kai</family>
@@ -140,7 +140,7 @@
                  </font>
                 </property>
                 <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
+                 <enum>Qt::ClickFocus</enum>
                 </property>
                 <property name="placeholderText">
                  <string>MDI</string>
@@ -7849,7 +7849,7 @@ border-radius: 1px;
   <customwidget>
    <class>ActionButton</class>
    <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.control_widgets.action_button</header>
+   <header>QtPyVCP.widgets.button_widgets.action_button</header>
   </customwidget>
   <customwidget>
    <class>GcodeBackplot</class>
@@ -7860,8 +7860,7 @@ border-radius: 1px;
   <customwidget>
    <class>GcodeEditor</class>
    <extends>QFrame</extends>
-   <header>QtPyVCP.widgets.editor_widgets.gcode_editor</header>
-   <container>1</container>
+   <header>QtPyVCP.widgets.input_widgets.gcode_editor</header>
   </customwidget>
   <customwidget>
    <class>VCPMainWindow</class>
@@ -7872,18 +7871,13 @@ border-radius: 1px;
   <customwidget>
    <class>RecentFileComboBox</class>
    <extends>QComboBox</extends>
-   <header>QtPyVCP.widgets.editor_widgets.recent_file_combobox</header>
+   <header>QtPyVCP.widgets.input_widgets.recent_file_combobox</header>
   </customwidget>
   <customwidget>
    <class>SubCaller</class>
    <extends>QWidget</extends>
    <header>QtPyVCP.widgets.form_widgets.probe_widget.probe</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>EntryWidget</class>
-   <extends>QLineEdit</extends>
-   <header>QtPyVCP.widgets.control_widgets.entry_widget</header>
   </customwidget>
   <customwidget>
    <class>DROWidget</class>
@@ -7893,7 +7887,12 @@ border-radius: 1px;
   <customwidget>
    <class>AxisActionButton</class>
    <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.control_widgets.axis_button</header>
+   <header>QtPyVCP.widgets.button_widgets.axis_button</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
  </customwidgets>
  <resources>
