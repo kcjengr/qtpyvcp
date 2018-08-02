@@ -2,12 +2,12 @@
 
 from QtPyVCP.widgets.base_widgets.designer_plugin import _DesignerPlugin
 
-from QtPyVCP.widgets.display_widgets.dro_widget import DROWidget
+from dro_widget import DROWidget
 class DROPlugin(_DesignerPlugin):
     def pluginClass(self):
         return DROWidget
 
-from QtPyVCP.widgets.display_widgets.gcode_backplot import GcodeBackplot
+from gcode_backplot import GcodeBackplot
 class GcodeBackPlotPlugin(_DesignerPlugin):
     def pluginClass(self):
         return GcodeBackplot
@@ -16,7 +16,7 @@ class GcodeBackPlotPlugin(_DesignerPlugin):
     def isContainer(self):
         return True
 
-from QtPyVCP.widgets.display_widgets.camera.camera import Camera
+from camera.camera import Camera
 class CameraPlugin(_DesignerPlugin):
     def pluginClass(self):
         return Camera

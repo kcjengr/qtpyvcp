@@ -132,7 +132,7 @@
                </widget>
               </item>
               <item>
-               <widget class="EntryWidget" name="mdi_entry_box">
+               <widget class="MDIEntry" name="mdi_entry_box">
                 <property name="font">
                  <font>
                   <family>Bebas Kai</family>
@@ -140,7 +140,7 @@
                  </font>
                 </property>
                 <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
+                 <enum>Qt::ClickFocus</enum>
                 </property>
                 <property name="placeholderText">
                  <string>MDI</string>
@@ -149,7 +149,7 @@
               </item>
              </layout>
             </widget>
-            <widget class="GcodeBackplot" name="gcodebackplot" native="true">
+            <widget class="GcodeBackplot" name="gcodebackplot">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
@@ -162,7 +162,7 @@
              <property name="renderProgramAlpha" stdset="0">
               <bool>true</bool>
              </property>
-             <property name="backgroundColor" stdset="0">
+             <property name="backgroundColor">
               <color>
                <red>0</red>
                <green>0</green>
@@ -205,29 +205,1188 @@
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
-           <widget class="SubCaller" name="subcaller" native="true">
-            <property name="maximumSize">
-             <size>
-              <width>530</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>14</pointsize>
-             </font>
-            </property>
-           </widget>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QGroupBox" name="groupBox">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="title">
+               <string>Probing Parameters</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <property name="spacing">
+                <number>5</number>
+               </property>
+               <property name="leftMargin">
+                <number>10</number>
+               </property>
+               <property name="topMargin">
+                <number>10</number>
+               </property>
+               <property name="rightMargin">
+                <number>10</number>
+               </property>
+               <property name="bottomMargin">
+                <number>10</number>
+               </property>
+               <item>
+                <layout class="QGridLayout" name="gridLayout_9">
+                 <item row="7" column="2">
+                  <widget class="QLineEdit" name="extra_probe_depth">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>0.0000</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="2">
+                  <widget class="QLineEdit" name="probe_fast_fr">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                   </property>
+                   <property name="inputMask">
+                    <string/>
+                   </property>
+                   <property name="text">
+                    <string>30.0</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="4">
+                  <widget class="QLineEdit" name="step_off_width">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>0.5000</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="3">
+                  <widget class="QLabel" name="label_8">
+                   <property name="maximumSize">
+                    <size>
+                     <width>140</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>X/Y Clearance:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QLabel" name="label_5">
+                   <property name="maximumSize">
+                    <size>
+                     <width>155</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>Probe Fast FR:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="3">
+                  <widget class="QLabel" name="label_4">
+                   <property name="maximumSize">
+                    <size>
+                     <width>140</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>Step Off Width:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="1">
+                  <widget class="QLabel" name="label_10">
+                   <property name="maximumSize">
+                    <size>
+                     <width>155</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>Max Z Distance:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="4">
+                  <widget class="QLineEdit" name="calibration_dia">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>0.1500</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="1">
+                  <widget class="QLabel" name="label_12">
+                   <property name="maximumSize">
+                    <size>
+                     <width>155</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>Extra Probe Depth:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="4">
+                  <widget class="QLineEdit" name="probe_slow_fr">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>5.0</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="2">
+                  <widget class="QLineEdit" name="max_z_distance">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>1.0000</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="2">
+                  <widget class="QLineEdit" name="probe_tool_number">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>99</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="2">
+                  <widget class="QLineEdit" name="max_xy_distance">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>1.0000</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="3">
+                  <widget class="QLabel" name="label_6">
+                   <property name="maximumSize">
+                    <size>
+                     <width>140</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>Probe Slow FR:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="3">
+                  <widget class="QLabel" name="label_9">
+                   <property name="maximumSize">
+                    <size>
+                     <width>140</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>Z Clearance:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="1">
+                  <widget class="QLabel" name="label_7">
+                   <property name="maximumSize">
+                    <size>
+                     <width>155</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>Max X/Y Distance:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="3" column="4">
+                  <widget class="QLineEdit" name="xy_clearance">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>0.1000</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="6" column="4">
+                  <widget class="QLineEdit" name="z_clearance">
+                   <property name="minimumSize">
+                    <size>
+                     <width>80</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>80</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>0.1000</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="7" column="3">
+                  <widget class="QLabel" name="label_11">
+                   <property name="maximumSize">
+                    <size>
+                     <width>140</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>Calibration Dia:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="0" column="1">
+                  <widget class="QLabel" name="label_22">
+                   <property name="maximumSize">
+                    <size>
+                     <width>155</width>
+                     <height>16777215</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>Probe Tool #:</string>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="title">
+               <string>Hints</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_8">
+               <property name="sizeConstraint">
+                <enum>QLayout::SetFixedSize</enum>
+               </property>
+               <property name="leftMargin">
+                <number>10</number>
+               </property>
+               <property name="topMargin">
+                <number>10</number>
+               </property>
+               <property name="rightMargin">
+                <number>10</number>
+               </property>
+               <property name="bottomMargin">
+                <number>10</number>
+               </property>
+               <property name="spacing">
+                <number>5</number>
+               </property>
+               <item row="0" column="5">
+                <widget class="QLabel" name="label_21">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 5px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Diameter</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="6">
+                <widget class="QLineEdit" name="diameter_hint">
+                 <property name="minimumSize">
+                  <size>
+                   <width>80</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>80</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>0.0000</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLabel" name="label_19">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 0px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>X:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QLineEdit" name="x_hint">
+                 <property name="minimumSize">
+                  <size>
+                   <width>80</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>80</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>0.0000</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="4">
+                <widget class="QLineEdit" name="y_hint">
+                 <property name="minimumSize">
+                  <size>
+                   <width>80</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>80</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>0.0000</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="3">
+                <widget class="QLabel" name="label_20">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 5px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Y:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <spacer name="horizontalSpacer_6">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>77</width>
+                   <height>25</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox_2">
+              <property name="title">
+               <string>Probe Results</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_7">
+               <property name="leftMargin">
+                <number>10</number>
+               </property>
+               <property name="topMargin">
+                <number>10</number>
+               </property>
+               <property name="rightMargin">
+                <number>10</number>
+               </property>
+               <property name="bottomMargin">
+                <number>10</number>
+               </property>
+               <property name="spacing">
+                <number>5</number>
+               </property>
+               <item row="1" column="1">
+                <widget class="QLineEdit" name="y_probed_pos">
+                 <property name="minimumSize">
+                  <size>
+                   <width>80</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>80</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>0.0000</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="3">
+                <widget class="QLineEdit" name="y_probed_width">
+                 <property name="minimumSize">
+                  <size>
+                   <width>80</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>80</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>0.0000</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="label_18">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Z Probed Pos:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_14">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::NoFrame</enum>
+                 </property>
+                 <property name="text">
+                  <string>X Probed Pos:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="3">
+                <widget class="QLineEdit" name="x_probed_width">
+                 <property name="minimumSize">
+                  <size>
+                   <width>80</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>80</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>0.0000</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="3">
+                <widget class="QLineEdit" name="probed_diameter">
+                 <property name="minimumSize">
+                  <size>
+                   <width>80</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>80</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>0.0000</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLineEdit" name="x_probed_pos">
+                 <property name="minimumSize">
+                  <size>
+                   <width>80</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>80</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>0.0000</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLineEdit" name="z_probed_pos">
+                 <property name="minimumSize">
+                  <size>
+                   <width>80</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>80</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>0.0000</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="2">
+                <widget class="QLabel" name="label_17">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Diameter</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QLabel" name="label_13">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>X Width</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="label_16">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Y Probed Pos:</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="QLabel" name="label_15">
+                 <property name="styleSheet">
+                  <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 20px;
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>Y Width</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_3">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>493</width>
+                <height>148</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
           </item>
           <item>
-           <spacer name="horizontalSpacer_2">
+           <spacer name="horizontalSpacer_7">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>108</width>
-              <height>534</height>
+              <width>163</width>
+              <height>615</height>
              </size>
             </property>
            </spacer>
@@ -252,7 +1411,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>6</number>
+             <number>0</number>
             </property>
             <property name="iconSize">
              <size>
@@ -267,10 +1426,10 @@
              <widget class="QFrame" name="frame">
               <property name="geometry">
                <rect>
-                <x>200</x>
-                <y>35</y>
-                <width>481</width>
-                <height>481</height>
+                <x>150</x>
+                <y>20</y>
+                <width>551</width>
+                <height>541</height>
                </rect>
               </property>
               <property name="frameShape">
@@ -282,8 +1441,8 @@
               <widget class="QWidget" name="gridLayoutWidget_2">
                <property name="geometry">
                 <rect>
-                 <x>10</x>
-                 <y>10</y>
+                 <x>60</x>
+                 <y>30</y>
                  <width>461</width>
                  <height>461</height>
                 </rect>
@@ -293,7 +1452,7 @@
                  <number>0</number>
                 </property>
                 <item row="2" column="2">
-                 <widget class="QPushButton" name="pushButton_10">
+                 <widget class="SubCallButton" name="pushButton_10">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -331,7 +1490,7 @@
                  </widget>
                 </item>
                 <item row="2" column="1">
-                 <widget class="QPushButton" name="pushButton_12">
+                 <widget class="SubCallButton" name="pushButton_12">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -369,7 +1528,7 @@
                  </widget>
                 </item>
                 <item row="2" column="3">
-                 <widget class="QPushButton" name="pushButton_11">
+                 <widget class="SubCallButton" name="pushButton_11">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -407,7 +1566,7 @@
                  </widget>
                 </item>
                 <item row="0" column="3">
-                 <widget class="QPushButton" name="pushButton_13">
+                 <widget class="SubCallButton" name="pushButton_13">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -445,7 +1604,7 @@
                  </widget>
                 </item>
                 <item row="1" column="1">
-                 <widget class="QPushButton" name="pushButton_14">
+                 <widget class="SubCallButton" name="pushButton_14">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -483,7 +1642,7 @@
                  </widget>
                 </item>
                 <item row="1" column="2">
-                 <widget class="QPushButton" name="pushButton_15">
+                 <widget class="SubCallButton" name="pushButton_15">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -520,46 +1679,8 @@
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="1">
-                 <widget class="QPushButton" name="pushButton_16">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>140</width>
-                    <height>140</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>140</width>
-                    <height>140</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true"/>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="xyz.qrc">
-                    <normaloff>:/images/back_left_outside_corner.png</normaloff>:/images/back_left_outside_corner.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>130</width>
-                    <height>130</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="2">
-                 <widget class="QPushButton" name="pushButton_17">
+                 <widget class="SubCallButton" name="pushButton_17">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -597,7 +1718,7 @@
                  </widget>
                 </item>
                 <item row="1" column="3">
-                 <widget class="QPushButton" name="pushButton_18">
+                 <widget class="SubCallButton" name="pushButton_18">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -635,6 +1756,35 @@
                   </property>
                  </widget>
                 </item>
+                <item row="0" column="1">
+                 <widget class="SubCallButton" name="probe_front_left_top_corner">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>140</width>
+                    <height>140</height>
+                   </size>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="xyz.qrc">
+                    <normaloff>:/images/back_left_outside_corner.png</normaloff>:/images/back_left_outside_corner.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>130</width>
+                    <height>130</height>
+                   </size>
+                  </property>
+                  <property name="sub_name" stdset="0">
+                   <string>probe_front_left_top_corner</string>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </widget>
              </widget>
@@ -657,7 +1807,7 @@
                 <number>2</number>
                </property>
                <item row="2" column="2">
-                <widget class="QPushButton" name="pushButton_19">
+                <widget class="SubCallButton" name="pushButton_19">
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
@@ -686,7 +1836,7 @@
                 </widget>
                </item>
                <item row="2" column="3">
-                <widget class="QPushButton" name="pushButton_20">
+                <widget class="SubCallButton" name="pushButton_20">
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
@@ -715,7 +1865,7 @@
                 </widget>
                </item>
                <item row="2" column="1">
-                <widget class="QPushButton" name="pushButton_21">
+                <widget class="SubCallButton" name="pushButton_21">
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
@@ -744,7 +1894,7 @@
                 </widget>
                </item>
                <item row="0" column="3">
-                <widget class="QPushButton" name="pushButton_22">
+                <widget class="SubCallButton" name="pushButton_22">
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
@@ -773,7 +1923,7 @@
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QPushButton" name="pushButton_23">
+                <widget class="SubCallButton" name="pushButton_23">
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
@@ -802,7 +1952,7 @@
                 </widget>
                </item>
                <item row="1" column="2">
-                <widget class="QPushButton" name="pushButton_24">
+                <widget class="SubCallButton" name="pushButton_24">
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
@@ -831,7 +1981,7 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QPushButton" name="pushButton_25">
+                <widget class="SubCallButton" name="pushButton_25">
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
@@ -860,7 +2010,7 @@
                 </widget>
                </item>
                <item row="0" column="2">
-                <widget class="QPushButton" name="pushButton_26">
+                <widget class="SubCallButton" name="pushButton_26">
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
@@ -889,7 +2039,7 @@
                 </widget>
                </item>
                <item row="1" column="3">
-                <widget class="QPushButton" name="pushButton_27">
+                <widget class="SubCallButton" name="pushButton_27">
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
@@ -938,7 +2088,7 @@
                 <number>2</number>
                </property>
                <item row="1" column="1">
-                <widget class="QPushButton" name="pushButton_32">
+                <widget class="SubCallButton" name="pushButton_32">
                  <property name="minimumSize">
                   <size>
                    <width>180</width>
@@ -967,7 +2117,7 @@
                 </widget>
                </item>
                <item row="1" column="2">
-                <widget class="QPushButton" name="pushButton_33">
+                <widget class="SubCallButton" name="pushButton_33">
                  <property name="minimumSize">
                   <size>
                    <width>180</width>
@@ -996,7 +2146,7 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QPushButton" name="pushButton_34">
+                <widget class="SubCallButton" name="pushButton_34">
                  <property name="minimumSize">
                   <size>
                    <width>180</width>
@@ -1025,7 +2175,7 @@
                 </widget>
                </item>
                <item row="0" column="2">
-                <widget class="QPushButton" name="pushButton_35">
+                <widget class="SubCallButton" name="pushButton_35">
                  <property name="minimumSize">
                   <size>
                    <width>180</width>
@@ -1063,238 +2213,213 @@
              <widget class="QWidget" name="gridLayoutWidget_5">
               <property name="geometry">
                <rect>
-                <x>200</x>
+                <x>180</x>
                 <y>30</y>
-                <width>471</width>
-                <height>471</height>
+                <width>541</width>
+                <height>511</height>
                </rect>
               </property>
               <layout class="QGridLayout" name="gridLayout_5">
                <property name="spacing">
                 <number>2</number>
                </property>
-               <item row="4" column="3">
-                <widget class="QPushButton" name="pushButton_37">
+               <item row="0" column="1">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_4">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="5">
-                <widget class="QPushButton" name="pushButton_38">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="1">
-                <widget class="QPushButton" name="pushButton_39">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="1" colspan="5">
-                <spacer name="verticalSpacer_9">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="4">
-                <spacer name="horizontalSpacer_12">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="5">
-                <widget class="QPushButton" name="pushButton_40">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QPushButton" name="pushButton_41">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
                <item row="2" column="3">
-                <widget class="QPushButton" name="pushButton_42">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_9">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
-               <item row="0" column="1">
-                <widget class="QPushButton" name="pushButton_43">
+               <item row="0" column="2">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_3">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
                <item row="0" column="3">
-                <widget class="QPushButton" name="pushButton_44">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_5">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="5">
-                <widget class="QPushButton" name="pushButton_45">
+               <item row="1" column="2">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_7">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
+                  <size>
+                   <width>130</width>
+                   <height>130</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_6">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="text">
-                  <string/>
+                 <property name="iconSize">
+                  <size>
+                   <width>130</width>
+                   <height>130</height>
+                  </size>
                  </property>
                 </widget>
                </item>
-               <item row="1" column="3" colspan="3">
-                <spacer name="verticalSpacer_10">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
+               <item row="1" column="3">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_8">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
-                 <property name="sizeHint" stdset="0">
+                 <property name="minimumSize">
                   <size>
-                   <width>20</width>
-                   <height>40</height>
+                   <width>150</width>
+                   <height>150</height>
                   </size>
                  </property>
-                </spacer>
+                 <property name="iconSize">
+                  <size>
+                   <width>130</width>
+                   <height>130</height>
+                  </size>
+                 </property>
+                </widget>
                </item>
                <item row="2" column="2">
-                <spacer name="horizontalSpacer_13">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                <widget class="SubCallButton" name="probe_front_left_top_corner_10">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
-                 <property name="sizeHint" stdset="0">
+                 <property name="minimumSize">
                   <size>
-                   <width>40</width>
-                   <height>20</height>
+                   <width>150</width>
+                   <height>150</height>
                   </size>
                  </property>
-                </spacer>
+                 <property name="iconSize">
+                  <size>
+                   <width>130</width>
+                   <height>130</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_11">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>150</width>
+                   <height>150</height>
+                  </size>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>130</width>
+                   <height>130</height>
+                  </size>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -1316,228 +2441,203 @@
                <property name="spacing">
                 <number>2</number>
                </property>
-               <item row="4" column="3">
-                <widget class="QPushButton" name="pushButton_46">
+               <item row="0" column="3">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_13">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
-               <item row="4" column="5">
-                <widget class="QPushButton" name="pushButton_47">
+               <item row="1" column="3">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_16">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
-               <item row="4" column="1">
-                <widget class="QPushButton" name="pushButton_48">
+               <item row="0" column="2">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_12">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="1" colspan="5">
-                <spacer name="verticalSpacer_11">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="4">
-                <spacer name="horizontalSpacer_14">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="5">
-                <widget class="QPushButton" name="pushButton_49">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QPushButton" name="pushButton_50">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="3">
-                <widget class="QPushButton" name="pushButton_51">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QPushButton" name="pushButton_52">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_2">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
-               <item row="0" column="3">
-                <widget class="QPushButton" name="pushButton_53">
+               <item row="1" column="1">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_14">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="5">
-                <widget class="QPushButton" name="pushButton_54">
+               <item row="1" column="2">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_15">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
+                  <size>
+                   <width>130</width>
+                   <height>130</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="3">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_17">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="3" colspan="3">
-                <spacer name="verticalSpacer_12">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
+                 <property name="iconSize">
                   <size>
-                   <width>20</width>
-                   <height>40</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
                  </property>
-                </spacer>
+                </widget>
                </item>
                <item row="2" column="2">
-                <spacer name="horizontalSpacer_15">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                <widget class="SubCallButton" name="probe_front_left_top_corner_18">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
-                 <property name="sizeHint" stdset="0">
+                 <property name="minimumSize">
                   <size>
-                   <width>40</width>
-                   <height>20</height>
+                   <width>150</width>
+                   <height>150</height>
                   </size>
                  </property>
-                </spacer>
+                 <property name="iconSize">
+                  <size>
+                   <width>130</width>
+                   <height>130</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_19">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>150</width>
+                   <height>150</height>
+                  </size>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>130</width>
+                   <height>130</height>
+                  </size>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -1559,228 +2659,203 @@
                <property name="spacing">
                 <number>2</number>
                </property>
-               <item row="4" column="3">
-                <widget class="QPushButton" name="pushButton_2">
+               <item row="0" column="2">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_22">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
-               <item row="4" column="5">
-                <widget class="QPushButton" name="pushButton">
+               <item row="0" column="0">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_20">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
-               <item row="4" column="1">
-                <widget class="QPushButton" name="pushButton_3">
+               <item row="1" column="0">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_25">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
-               <item row="3" column="1" colspan="5">
-                <spacer name="verticalSpacer">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
+               <item row="1" column="1">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_24">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="4">
-                <spacer name="horizontalSpacer_5">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="5">
-                <widget class="QPushButton" name="pushButton_8">
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QPushButton" name="pushButton_4">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="3">
-                <widget class="QPushButton" name="pushButton_7">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QPushButton" name="pushButton_5">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_21">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
-               <item row="0" column="3">
-                <widget class="QPushButton" name="pushButton_6">
+               <item row="1" column="2">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_23">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="5">
-                <widget class="QPushButton" name="pushButton_9">
+               <item row="2" column="0">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_26">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
                  <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
+                  <size>
+                   <width>130</width>
+                   <height>130</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="SubCallButton" name="probe_front_left_top_corner_27">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
                   <size>
                    <width>150</width>
                    <height>150</height>
                   </size>
                  </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="3" colspan="3">
-                <spacer name="verticalSpacer_2">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
+                 <property name="iconSize">
                   <size>
-                   <width>20</width>
-                   <height>40</height>
+                   <width>130</width>
+                   <height>130</height>
                   </size>
                  </property>
-                </spacer>
+                </widget>
                </item>
                <item row="2" column="2">
-                <spacer name="horizontalSpacer_4">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
+                <widget class="SubCallButton" name="probe_front_left_top_corner_28">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
-                 <property name="sizeHint" stdset="0">
+                 <property name="minimumSize">
                   <size>
-                   <width>40</width>
-                   <height>20</height>
+                   <width>150</width>
+                   <height>150</height>
                   </size>
                  </property>
-                </spacer>
+                 <property name="iconSize">
+                  <size>
+                   <width>130</width>
+                   <height>130</height>
+                  </size>
+                 </property>
+                </widget>
                </item>
               </layout>
              </widget>
@@ -4390,61 +5465,169 @@ border-radius: 6px;
               <property name="palette">
                <palette>
                 <active>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </active>
                 <inactive>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </inactive>
                 <disabled>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
@@ -4453,8 +5636,11 @@ border-radius: 6px;
               </property>
               <property name="font">
                <font>
-                <family>Sans</family>
-                <pointsize>16</pointsize>
+                <family>Bebas Kai</family>
+                <pointsize>17</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
                </font>
               </property>
               <property name="focusPolicy">
@@ -4499,61 +5685,169 @@ border-radius: 6px;
               <property name="palette">
                <palette>
                 <active>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </active>
                 <inactive>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </inactive>
                 <disabled>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
@@ -4562,8 +5856,11 @@ border-radius: 6px;
               </property>
               <property name="font">
                <font>
-                <family>Sans</family>
-                <pointsize>16</pointsize>
+                <family>Bebas Kai</family>
+                <pointsize>17</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
                </font>
               </property>
               <property name="focusPolicy">
@@ -4923,8 +6220,11 @@ border-radius: 6px;
               </property>
               <property name="font">
                <font>
-                <family>Sans</family>
-                <pointsize>16</pointsize>
+                <family>Bebas Kai</family>
+                <pointsize>17</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
                </font>
               </property>
               <property name="focusPolicy">
@@ -4969,61 +6269,169 @@ border-radius: 6px;
               <property name="palette">
                <palette>
                 <active>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </active>
                 <inactive>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </inactive>
                 <disabled>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
@@ -5032,8 +6440,11 @@ border-radius: 6px;
               </property>
               <property name="font">
                <font>
-                <family>Sans</family>
-                <pointsize>16</pointsize>
+                <family>Bebas Kai</family>
+                <pointsize>17</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
                </font>
               </property>
               <property name="focusPolicy">
@@ -5388,61 +6799,169 @@ border-radius: 6px;
               <property name="palette">
                <palette>
                 <active>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </active>
                 <inactive>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </inactive>
                 <disabled>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
@@ -5451,8 +6970,11 @@ border-radius: 6px;
               </property>
               <property name="font">
                <font>
-                <family>Sans</family>
-                <pointsize>16</pointsize>
+                <family>Bebas Kai</family>
+                <pointsize>17</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
                </font>
               </property>
               <property name="focusPolicy">
@@ -5497,61 +7019,169 @@ border-radius: 6px;
               <property name="palette">
                <palette>
                 <active>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </active>
                 <inactive>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </inactive>
                 <disabled>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
@@ -5560,8 +7190,11 @@ border-radius: 6px;
               </property>
               <property name="font">
                <font>
-                <family>Sans</family>
-                <pointsize>16</pointsize>
+                <family>Bebas Kai</family>
+                <pointsize>17</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
                </font>
               </property>
               <property name="focusPolicy">
@@ -5916,61 +7549,169 @@ border-radius: 6px;
               <property name="palette">
                <palette>
                 <active>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </active>
                 <inactive>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </inactive>
                 <disabled>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
@@ -5979,8 +7720,11 @@ border-radius: 6px;
               </property>
               <property name="font">
                <font>
-                <family>Sans</family>
-                <pointsize>16</pointsize>
+                <family>Bebas Kai</family>
+                <pointsize>17</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
                </font>
               </property>
               <property name="focusPolicy">
@@ -6025,61 +7769,169 @@ border-radius: 6px;
               <property name="palette">
                <palette>
                 <active>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </active>
                 <inactive>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </inactive>
                 <disabled>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
@@ -6088,8 +7940,11 @@ border-radius: 6px;
               </property>
               <property name="font">
                <font>
-                <family>Sans</family>
-                <pointsize>16</pointsize>
+                <family>Bebas Kai</family>
+                <pointsize>17</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
                </font>
               </property>
               <property name="focusPolicy">
@@ -6455,8 +8310,11 @@ border-radius: 6px;
               </property>
               <property name="font">
                <font>
-                <family>Sans</family>
-                <pointsize>16</pointsize>
+                <family>Bebas Kai</family>
+                <pointsize>17</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
                </font>
               </property>
               <property name="focusPolicy">
@@ -6501,61 +8359,169 @@ border-radius: 6px;
               <property name="palette">
                <palette>
                 <active>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </active>
                 <inactive>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>255</red>
-                    <green>255</green>
-                    <blue>255</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                 </inactive>
                 <disabled>
+                 <colorrole role="WindowText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Text">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="ButtonText">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>0</red>
+                    <green>0</green>
+                    <blue>0</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
                  <colorrole role="Base">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
                  <colorrole role="Window">
                   <brush brushstyle="SolidPattern">
                    <color alpha="255">
-                    <red>243</red>
-                    <green>243</green>
-                    <blue>243</blue>
+                    <red>235</red>
+                    <green>235</green>
+                    <blue>235</blue>
                    </color>
                   </brush>
                  </colorrole>
@@ -6564,8 +8530,11 @@ border-radius: 6px;
               </property>
               <property name="font">
                <font>
-                <family>Sans</family>
-                <pointsize>16</pointsize>
+                <family>Bebas Kai</family>
+                <pointsize>17</pointsize>
+                <weight>50</weight>
+                <italic>false</italic>
+                <bold>false</bold>
                </font>
               </property>
               <property name="focusPolicy">
@@ -7725,7 +9694,7 @@ border-radius: 1px;
      <x>0</x>
      <y>0</y>
      <width>1558</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
@@ -7908,7 +9877,7 @@ border-radius: 1px;
   <customwidget>
    <class>ActionButton</class>
    <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.control_widgets.action_button</header>
+   <header>QtPyVCP.widgets.button_widgets.action_button</header>
   </customwidget>
   <customwidget>
    <class>GcodeBackplot</class>
@@ -7919,8 +9888,7 @@ border-radius: 1px;
   <customwidget>
    <class>GcodeEditor</class>
    <extends>QFrame</extends>
-   <header>QtPyVCP.widgets.editor_widgets.gcode_editor</header>
-   <container>1</container>
+   <header>QtPyVCP.widgets.input_widgets.gcode_editor</header>
   </customwidget>
   <customwidget>
    <class>VCPMainWindow</class>
@@ -7931,18 +9899,17 @@ border-radius: 1px;
   <customwidget>
    <class>RecentFileComboBox</class>
    <extends>QComboBox</extends>
-   <header>QtPyVCP.widgets.editor_widgets.recent_file_combobox</header>
+   <header>QtPyVCP.widgets.input_widgets.recent_file_combobox</header>
   </customwidget>
   <customwidget>
-   <class>SubCaller</class>
-   <extends>QWidget</extends>
-   <header>QtPyVCP.widgets.form_widgets.probe_widget.probe</header>
-   <container>1</container>
+   <class>SubCallButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.subcall_button</header>
   </customwidget>
   <customwidget>
-   <class>EntryWidget</class>
+   <class>MDIEntry</class>
    <extends>QLineEdit</extends>
-   <header>QtPyVCP.widgets.control_widgets.entry_widget</header>
+   <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
   <customwidget>
    <class>DROWidget</class>
@@ -7952,7 +9919,7 @@ border-radius: 1px;
   <customwidget>
    <class>AxisActionButton</class>
    <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.control_widgets.axis_button</header>
+   <header>QtPyVCP.widgets.button_widgets.axis_button</header>
   </customwidget>
  </customwidgets>
  <resources>

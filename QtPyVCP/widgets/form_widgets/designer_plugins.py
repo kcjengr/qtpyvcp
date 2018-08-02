@@ -2,9 +2,7 @@
 
 from QtPyVCP.widgets.base_widgets.designer_plugin import _DesignerPlugin
 
-from QtPyVCP.widgets.form_widgets.main_window import VCPMainWindow
-
-
+from main_window import VCPMainWindow
 class MainWindowPlugin(_DesignerPlugin):
     def pluginClass(self):
         return VCPMainWindow

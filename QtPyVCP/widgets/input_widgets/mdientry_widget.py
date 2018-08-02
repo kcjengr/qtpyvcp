@@ -9,9 +9,9 @@ STATUS = Status()
 ACTION = Action()
 INFO = Info()
 
-class EntryWidget(QLineEdit):
+class MDIEntry(QLineEdit):
     def __init__(self, parent=None):
-        super(EntryWidget, self).__init__(parent)
+        super(MDIEntry, self).__init__(parent)
 
         self.returnPressed.connect(self.submit)
 
@@ -21,7 +21,7 @@ class EntryWidget(QLineEdit):
         self.setText('')
 
     def keyPressEvent(self, event):
-        super(EntryWidget, self).keyPressEvent(event)
+        super(MDIEntry, self).keyPressEvent(event)
         if event.key() == Qt.Key_Up:
             print 'Move up'
         if event.key() == Qt.Key_Down:
@@ -32,6 +32,6 @@ if __name__ == "__main__":
     import sys
     from PyQt5.QtWidgets import QApplication
     app = QApplication(sys.argv)
-    led = EntryWidget()
-    led.show()
+    w = MDIEntry()
+    w.show()
     sys.exit(app.exec_())
