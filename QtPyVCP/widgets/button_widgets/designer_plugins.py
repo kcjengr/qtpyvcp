@@ -9,6 +9,13 @@ class ActionButtonPlugin(_DesignerPlugin):
     def toolTip(self):
         return "MDI command entry"
 
+from subcall_button import SubCallButton
+class MacroButtonPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return SubCallButton
+    def toolTip(self):
+        return "Execute a macro"
+
 from axis_button import AxisActionButton
 class AxisActionButtonPlugin(_DesignerPlugin):
     def pluginClass(self):
