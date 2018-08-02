@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1558</width>
-    <height>1097</height>
+    <height>1096</height>
    </rect>
   </property>
   <property name="font">
@@ -20,6 +20,9 @@
   </property>
   <property name="toolTipDuration">
    <number>-1</number>
+  </property>
+  <property name="documentMode">
+   <bool>false</bool>
   </property>
   <property name="promptAtExit" stdset="0">
    <bool>false</bool>
@@ -249,7 +252,7 @@
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>0</number>
+             <number>6</number>
             </property>
             <property name="iconSize">
              <size>
@@ -265,9 +268,9 @@
               <property name="geometry">
                <rect>
                 <x>200</x>
-                <y>40</y>
-                <width>440</width>
-                <height>440</height>
+                <y>35</y>
+                <width>481</width>
+                <height>481</height>
                </rect>
               </property>
               <property name="frameShape">
@@ -281,8 +284,8 @@
                 <rect>
                  <x>10</x>
                  <y>10</y>
-                 <width>421</width>
-                 <height>421</height>
+                 <width>461</width>
+                 <height>461</height>
                 </rect>
                </property>
                <layout class="QGridLayout" name="gridLayout_2">
@@ -299,15 +302,18 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
                   </property>
                   <property name="text">
                    <string/>
@@ -318,8 +324,8 @@
                   </property>
                   <property name="iconSize">
                    <size>
-                    <width>120</width>
-                    <height>120</height>
+                    <width>130</width>
+                    <height>130</height>
                    </size>
                   </property>
                  </widget>
@@ -334,14 +340,14 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
                   </property>
                   <property name="styleSheet">
@@ -356,8 +362,8 @@
                   </property>
                   <property name="iconSize">
                    <size>
-                    <width>120</width>
-                    <height>120</height>
+                    <width>130</width>
+                    <height>130</height>
                    </size>
                   </property>
                  </widget>
@@ -372,15 +378,18 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
                   </property>
                   <property name="text">
                    <string/>
@@ -391,8 +400,8 @@
                   </property>
                   <property name="iconSize">
                    <size>
-                    <width>120</width>
-                    <height>120</height>
+                    <width>130</width>
+                    <height>130</height>
                    </size>
                   </property>
                  </widget>
@@ -407,15 +416,18 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
                   </property>
                   <property name="text">
                    <string/>
@@ -426,8 +438,8 @@
                   </property>
                   <property name="iconSize">
                    <size>
-                    <width>120</width>
-                    <height>120</height>
+                    <width>130</width>
+                    <height>130</height>
                    </size>
                   </property>
                  </widget>
@@ -442,15 +454,18 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
                   </property>
                   <property name="text">
                    <string/>
@@ -461,8 +476,8 @@
                   </property>
                   <property name="iconSize">
                    <size>
-                    <width>120</width>
-                    <height>120</height>
+                    <width>130</width>
+                    <height>130</height>
                    </size>
                   </property>
                  </widget>
@@ -477,15 +492,18 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
                   </property>
                   <property name="text">
                    <string/>
@@ -496,8 +514,8 @@
                   </property>
                   <property name="iconSize">
                    <size>
-                    <width>120</width>
-                    <height>120</height>
+                    <width>130</width>
+                    <height>130</height>
                    </size>
                   </property>
                  </widget>
@@ -512,15 +530,18 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
                   </property>
                   <property name="text">
                    <string/>
@@ -531,8 +552,8 @@
                   </property>
                   <property name="iconSize">
                    <size>
-                    <width>120</width>
-                    <height>120</height>
+                    <width>130</width>
+                    <height>130</height>
                    </size>
                   </property>
                  </widget>
@@ -547,15 +568,18 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
                   </property>
                   <property name="text">
                    <string/>
@@ -566,8 +590,8 @@
                   </property>
                   <property name="iconSize">
                    <size>
-                    <width>120</width>
-                    <height>120</height>
+                    <width>130</width>
+                    <height>130</height>
                    </size>
                   </property>
                  </widget>
@@ -582,15 +606,18 @@
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>130</width>
-                    <height>130</height>
+                    <width>140</width>
+                    <height>140</height>
                    </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true"/>
                   </property>
                   <property name="text">
                    <string/>
@@ -602,8 +629,8 @@
                   </property>
                   <property name="iconSize">
                    <size>
-                    <width>120</width>
-                    <height>120</height>
+                    <width>130</width>
+                    <height>130</height>
                    </size>
                   </property>
                  </widget>
@@ -619,7 +646,7 @@
              <widget class="QWidget" name="gridLayoutWidget_3">
               <property name="geometry">
                <rect>
-                <x>200</x>
+                <x>180</x>
                 <y>30</y>
                 <width>471</width>
                 <height>471</height>
@@ -629,7 +656,7 @@
                <property name="spacing">
                 <number>2</number>
                </property>
-               <item row="4" column="3">
+               <item row="2" column="2">
                 <widget class="QPushButton" name="pushButton_19">
                  <property name="minimumSize">
                   <size>
@@ -646,9 +673,19 @@
                  <property name="text">
                   <string/>
                  </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/y_minus.png</normaloff>:/images/y_minus.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>135</width>
+                   <height>135</height>
+                  </size>
+                 </property>
                 </widget>
                </item>
-               <item row="4" column="5">
+               <item row="2" column="3">
                 <widget class="QPushButton" name="pushButton_20">
                  <property name="minimumSize">
                   <size>
@@ -665,9 +702,19 @@
                  <property name="text">
                   <string/>
                  </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/inside_front_right_corner.png</normaloff>:/images/inside_front_right_corner.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>135</width>
+                   <height>135</height>
+                  </size>
+                 </property>
                 </widget>
                </item>
-               <item row="4" column="1">
+               <item row="2" column="1">
                 <widget class="QPushButton" name="pushButton_21">
                  <property name="minimumSize">
                   <size>
@@ -684,35 +731,19 @@
                  <property name="text">
                   <string/>
                  </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/inside_front_left_corner.png</normaloff>:/images/inside_front_left_corner.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>135</width>
+                   <height>135</height>
+                  </size>
+                 </property>
                 </widget>
                </item>
-               <item row="3" column="1" colspan="5">
-                <spacer name="verticalSpacer_5">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="4">
-                <spacer name="horizontalSpacer_8">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="5">
+               <item row="0" column="3">
                 <widget class="QPushButton" name="pushButton_22">
                  <property name="minimumSize">
                   <size>
@@ -729,9 +760,19 @@
                  <property name="text">
                   <string/>
                  </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/inside_back_right_corner.png</normaloff>:/images/inside_back_right_corner.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>135</width>
+                   <height>135</height>
+                  </size>
+                 </property>
                 </widget>
                </item>
-               <item row="2" column="1">
+               <item row="1" column="1">
                 <widget class="QPushButton" name="pushButton_23">
                  <property name="minimumSize">
                   <size>
@@ -748,9 +789,19 @@
                  <property name="text">
                   <string/>
                  </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/x_minus.png</normaloff>:/images/x_minus.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>135</width>
+                   <height>135</height>
+                  </size>
+                 </property>
                 </widget>
                </item>
-               <item row="2" column="3">
+               <item row="1" column="2">
                 <widget class="QPushButton" name="pushButton_24">
                  <property name="minimumSize">
                   <size>
@@ -766,6 +817,16 @@
                  </property>
                  <property name="text">
                   <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/z_top.png</normaloff>:/images/z_top.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>145</width>
+                   <height>145</height>
+                  </size>
                  </property>
                 </widget>
                </item>
@@ -786,9 +847,19 @@
                  <property name="text">
                   <string/>
                  </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/inside_back_left_corner.png</normaloff>:/images/inside_back_left_corner.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>135</width>
+                   <height>135</height>
+                  </size>
+                 </property>
                 </widget>
                </item>
-               <item row="0" column="3">
+               <item row="0" column="2">
                 <widget class="QPushButton" name="pushButton_26">
                  <property name="minimumSize">
                   <size>
@@ -805,9 +876,19 @@
                  <property name="text">
                   <string/>
                  </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/y_plus.png</normaloff>:/images/y_plus.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>135</width>
+                   <height>135</height>
+                  </size>
+                 </property>
                 </widget>
                </item>
-               <item row="2" column="5">
+               <item row="1" column="3">
                 <widget class="QPushButton" name="pushButton_27">
                  <property name="minimumSize">
                   <size>
@@ -824,33 +905,17 @@
                  <property name="text">
                   <string/>
                  </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/x_plus.png</normaloff>:/images/x_plus.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>135</width>
+                   <height>135</height>
+                  </size>
+                 </property>
                 </widget>
-               </item>
-               <item row="1" column="3" colspan="3">
-                <spacer name="verticalSpacer_6">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="2" column="2">
-                <spacer name="horizontalSpacer_9">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
                </item>
               </layout>
              </widget>
@@ -862,153 +927,71 @@
              <widget class="QWidget" name="gridLayoutWidget_4">
               <property name="geometry">
                <rect>
-                <x>190</x>
-                <y>30</y>
-                <width>471</width>
-                <height>471</height>
+                <x>210</x>
+                <y>43</y>
+                <width>391</width>
+                <height>391</height>
                </rect>
               </property>
               <layout class="QGridLayout" name="gridLayout_4">
                <property name="spacing">
                 <number>2</number>
                </property>
-               <item row="4" column="3">
-                <widget class="QPushButton" name="pushButton_28">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="5">
-                <widget class="QPushButton" name="pushButton_29">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="1">
-                <widget class="QPushButton" name="pushButton_30">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="1" colspan="5">
-                <spacer name="verticalSpacer_7">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="4">
-                <spacer name="horizontalSpacer_10">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="5">
-                <widget class="QPushButton" name="pushButton_31">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
+               <item row="1" column="1">
                 <widget class="QPushButton" name="pushButton_32">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>180</width>
+                   <height>180</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>180</width>
+                   <height>180</height>
                   </size>
                  </property>
                  <property name="text">
                   <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/rect_boss.png</normaloff>:/images/rect_boss.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>180</width>
+                   <height>180</height>
+                  </size>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="3">
+               <item row="1" column="2">
                 <widget class="QPushButton" name="pushButton_33">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>180</width>
+                   <height>180</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>180</width>
+                   <height>180</height>
                   </size>
                  </property>
                  <property name="text">
                   <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/rect_pocket.png</normaloff>:/images/rect_pocket.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
                  </property>
                 </widget>
                </item>
@@ -1016,84 +999,59 @@
                 <widget class="QPushButton" name="pushButton_34">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>180</width>
+                   <height>180</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>180</width>
+                   <height>180</height>
                   </size>
                  </property>
                  <property name="text">
                   <string/>
                  </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/round_boss.png</normaloff>:/images/round_boss.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>180</width>
+                   <height>180</height>
+                  </size>
+                 </property>
                 </widget>
                </item>
-               <item row="0" column="3">
+               <item row="0" column="2">
                 <widget class="QPushButton" name="pushButton_35">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>180</width>
+                   <height>180</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>180</width>
+                   <height>180</height>
                   </size>
                  </property>
                  <property name="text">
                   <string/>
                  </property>
-                </widget>
-               </item>
-               <item row="2" column="5">
-                <widget class="QPushButton" name="pushButton_36">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/round_pocket.png</normaloff>:/images/round_pocket.png</iconset>
                  </property>
-                 <property name="maximumSize">
+                 <property name="iconSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>170</width>
+                   <height>170</height>
                   </size>
-                 </property>
-                 <property name="text">
-                  <string/>
                  </property>
                 </widget>
-               </item>
-               <item row="1" column="3" colspan="3">
-                <spacer name="verticalSpacer_8">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="2" column="2">
-                <spacer name="horizontalSpacer_11">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
                </item>
               </layout>
              </widget>
@@ -1831,243 +1789,154 @@
              <attribute name="title">
               <string>  PROBE HELP </string>
              </attribute>
-             <widget class="QWidget" name="gridLayoutWidget_7">
+             <widget class="QTabWidget" name="tabWidget_2">
               <property name="geometry">
                <rect>
-                <x>200</x>
-                <y>30</y>
-                <width>471</width>
-                <height>471</height>
+                <x>10</x>
+                <y>10</y>
+                <width>811</width>
+                <height>511</height>
                </rect>
               </property>
-              <layout class="QGridLayout" name="gridLayout_7">
-               <property name="spacing">
-                <number>2</number>
-               </property>
-               <item row="4" column="3">
-                <widget class="QPushButton" name="pushButton_55">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="5">
-                <widget class="QPushButton" name="pushButton_56">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="4" column="1">
-                <widget class="QPushButton" name="pushButton_57">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="1" colspan="5">
-                <spacer name="verticalSpacer_13">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="4">
-                <spacer name="horizontalSpacer_16">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="0" column="5">
-                <widget class="QPushButton" name="pushButton_58">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QPushButton" name="pushButton_59">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="3">
-                <widget class="QPushButton" name="pushButton_60">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QPushButton" name="pushButton_61">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="3">
-                <widget class="QPushButton" name="pushButton_62">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="5">
-                <widget class="QPushButton" name="pushButton_63">
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="3" colspan="3">
-                <spacer name="verticalSpacer_14">
-                 <property name="orientation">
-                  <enum>Qt::Vertical</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>20</width>
-                   <height>40</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-               <item row="2" column="2">
-                <spacer name="horizontalSpacer_17">
-                 <property name="orientation">
-                  <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="sizeHint" stdset="0">
-                  <size>
-                   <width>40</width>
-                   <height>20</height>
-                  </size>
-                 </property>
-                </spacer>
-               </item>
-              </layout>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+               </font>
+              </property>
+              <property name="tabPosition">
+               <enum>QTabWidget::South</enum>
+              </property>
+              <property name="currentIndex">
+               <number>2</number>
+              </property>
+              <widget class="QWidget" name="tab_5">
+               <attribute name="title">
+                <string>STEP OFF WIDTH</string>
+               </attribute>
+               <widget class="QLabel" name="label">
+                <property name="geometry">
+                 <rect>
+                  <x>40</x>
+                  <y>40</y>
+                  <width>721</width>
+                  <height>451</height>
+                 </rect>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+               </widget>
+              </widget>
+              <widget class="QWidget" name="tab_6">
+               <attribute name="title">
+                <string>EXTRA PROBE DEPTH</string>
+               </attribute>
+              </widget>
+              <widget class="QWidget" name="tab_8">
+               <attribute name="title">
+                <string>MAX DISTANCE</string>
+               </attribute>
+               <widget class="QLabel" name="label_2">
+                <property name="geometry">
+                 <rect>
+                  <x>427</x>
+                  <y>78</y>
+                  <width>374</width>
+                  <height>331</height>
+                 </rect>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="lineWidth">
+                 <number>2</number>
+                </property>
+                <property name="midLineWidth">
+                 <number>2</number>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="pixmap">
+                 <pixmap resource="xyz.qrc">:/images/max_x_y_distance.png</pixmap>
+                </property>
+                <property name="scaledContents">
+                 <bool>true</bool>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+               <widget class="QLabel" name="label_3">
+                <property name="geometry">
+                 <rect>
+                  <x>6</x>
+                  <y>38</y>
+                  <width>414</width>
+                  <height>373</height>
+                 </rect>
+                </property>
+                <property name="autoFillBackground">
+                 <bool>false</bool>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true"/>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::Box</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Sunken</enum>
+                </property>
+                <property name="lineWidth">
+                 <number>2</number>
+                </property>
+                <property name="midLineWidth">
+                 <number>2</number>
+                </property>
+                <property name="text">
+                 <string/>
+                </property>
+                <property name="pixmap">
+                 <pixmap resource="xyz.qrc">:/images/max_z_distance.png</pixmap>
+                </property>
+                <property name="scaledContents">
+                 <bool>true</bool>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
+                </property>
+               </widget>
+               <zorder>label_3</zorder>
+               <zorder>label_2</zorder>
+              </widget>
+              <widget class="QWidget" name="tab_9">
+               <attribute name="title">
+                <string>Clearance</string>
+               </attribute>
+              </widget>
+              <widget class="QWidget" name="tab_11">
+               <attribute name="title">
+                <string>PROBE FAST FR</string>
+               </attribute>
+              </widget>
+              <widget class="QWidget" name="tab_12">
+               <attribute name="title">
+                <string>PROBE SLOW FR</string>
+               </attribute>
+              </widget>
              </widget>
             </widget>
            </widget>
