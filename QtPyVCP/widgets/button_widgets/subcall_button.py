@@ -46,7 +46,7 @@ class SubCallButton(QPushButton):
         super(SubCallButton, self).__init__(parent)
 
         self._sub_name = ''
-        self._sub_path = '/dev/null'
+        self._sub_path = ''
 
         self.clicked.connect(self.onClick)
 
