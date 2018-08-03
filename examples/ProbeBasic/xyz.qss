@@ -14,10 +14,10 @@ QComboBox[editable="true"]::drop-down {
     border-image: url(:/images/pp_border.png);
     border-color: black; 
     border-style: solid;
-    border-radius: 4px;
+    border-radius: 8px;
     border-width: 2px;
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #b6b6b6, stop: 1.0 #626262);
+                                     stop: 0 #eaeaea, stop: 1.0 #b8b8b8);
 }
 
 QPushButton:disabled {
@@ -30,22 +30,22 @@ QPushButton:disabled {
 
 QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+                                     stop: 0 #ffffff, stop: 1.0 #e1e1e1);
 }
 
 QPushButton:pressed {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #5C5959, stop: 1.0 #A19E9E)
+                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
 }
 
 QPushButton:checked[option="true"] {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd)
+                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
 }
 
 QPushButton:checked {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #599428, stop: 1.0 #8acd4a)
+                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
 }
 
 /*E-Stop button*/
