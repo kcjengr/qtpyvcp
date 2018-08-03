@@ -35,6 +35,36 @@ log = logger.getLogger(__name__)
 log.setLevel(logger.WARNING)
 
 
+STRING_LOOKUP = {
+    "motion_type": {
+        0: "Idle",
+        linuxcnc.MOTION_TYPE_TRAVERSE: "Traverse",
+        linuxcnc.MOTION_TYPE_FEED: "Linear Feed",
+        linuxcnc.MOTION_TYPE_ARC: "Arc Feed",
+        linuxcnc.MOTION_TYPE_TOOLCHANGE: "Tool Change",
+        linuxcnc.MOTION_TYPE_PROBING: "Probing",
+        linuxcnc.MOTION_TYPE_INDEXROTARY: "Rotary Index",
+    },
+    "task_state": {
+        linuxcnc.STATE_ESTOP: "Estop",
+        linuxcnc.STATE_ESTOP_RESET: "Reset",
+        linuxcnc.STATE_ON: "On",
+        linuxcnc.STATE_OFF: "Off",
+    },
+    "motion_mode": {
+        linuxcnc.TRAJ_MODE_COORD: "Coord",
+        linuxcnc.TRAJ_MODE_FREE: "Free",
+        linuxcnc.TRAJ_MODE_TELEOP: "Teleop",
+    },
+    "interp_state": {
+        linuxcnc.INTERP_IDLE: "Idle",
+        linuxcnc.INTERP_READING: "Reading",
+        linuxcnc.INTERP_PAUSED: "Paused",
+        linuxcnc.INTERP_WAITING: "Waiting",
+    },
+}
+
+
 class Status(QObject):
     _instance = None
     def __new__(cls, *args, **kwargs):
@@ -136,15 +166,15 @@ class _Status(QObject):
 
     # State
     enabled = pyqtSignal(bool)              # trajectory planner enabled
-    estop = pyqtSignal(int)                 # linuxcnc.STATE_ESTOP or not
-    state = pyqtSignal(int)                 # current command execution status
-    exec_state = pyqtSignal(int)            # task execution state
-    task_mode = pyqtSignal(int)             # current task mode
+    estop = pyqtSignal([int], [bool])          # linuxcnc.STATE_ESTOP or not
+    state = pyqtSignal([int], [str])          # current command execution status
+    exec_state = pyqtSignal([int], [str])     # task execution state
+    task_mode = pyqtSignal([int], [str])      # current task mode
     task_paused = pyqtSignal(bool)          # task paused flag
-    task_state = pyqtSignal(int)            # current task state
-    motion_mode = pyqtSignal(int)           # mode of the motion controller
-    motion_type = pyqtSignal(int)           # type of the currently executing motion
-    interp_state = pyqtSignal(int)          # current state of RS274NGC interpreter
+    task_state = pyqtSignal([int], [str])     # current task state
+    motion_mode = pyqtSignal([int], [str])    # mode of the motion controller
+    motion_type = pyqtSignal([int], [str])    # type of the currently executing motion
+    interp_state = pyqtSignal([int], [str])   # current state of RS274NGC interpreter
     interpreter_errcode = pyqtSignal(int)   # current RS274NGC interpreter return code
 
     # Tool
@@ -264,6 +294,11 @@ class _Status(QObject):
             if old_value != new_value:
                 self.old[key] = new_value
                 getattr(self, key).emit(new_value)
+
+                str_dict = STRING_LOOKUP.get(key)
+                if str_dict is not None:
+                    str_val = str_dict[new_value]
+                    getattr(self, key)[str].emit(str_val)
 
         self.joint._periodic()
         self.error._periodic()
