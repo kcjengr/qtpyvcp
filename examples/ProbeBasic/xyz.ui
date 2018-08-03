@@ -1755,7 +1755,7 @@ padding-left: 20px;
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>1</number>
             </property>
             <property name="iconSize">
              <size>
@@ -1770,7 +1770,7 @@ padding-left: 20px;
              <widget class="QWidget" name="gridLayoutWidget_2">
               <property name="geometry">
                <rect>
-                <x>250</x>
+                <x>46</x>
                 <y>50</y>
                 <width>461</width>
                 <height>461</height>
@@ -2116,6 +2116,28 @@ padding-left: 20px;
                </item>
               </layout>
              </widget>
+             <widget class="QLabel" name="label_36">
+              <property name="geometry">
+               <rect>
+                <x>554</x>
+                <y>50</y>
+                <width>441</width>
+                <height>311</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="xyz.qrc">:/images/probe_corner_group_3d_images.png</pixmap>
+              </property>
+              <property name="scaledContents">
+               <bool>true</bool>
+              </property>
+              <property name="indent">
+               <number>0</number>
+              </property>
+             </widget>
             </widget>
             <widget class="QWidget" name="inside_corners_tab">
              <attribute name="title">
@@ -2124,7 +2146,7 @@ padding-left: 20px;
              <widget class="QWidget" name="gridLayoutWidget_3">
               <property name="geometry">
                <rect>
-                <x>250</x>
+                <x>48</x>
                 <y>40</y>
                 <width>471</width>
                 <height>471</height>
@@ -2396,6 +2418,28 @@ padding-left: 20px;
                 </widget>
                </item>
               </layout>
+             </widget>
+             <widget class="QLabel" name="label_35">
+              <property name="geometry">
+               <rect>
+                <x>561</x>
+                <y>40</y>
+                <width>441</width>
+                <height>301</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="xyz.qrc">:/images/inside_corners_3d_image.png</pixmap>
+              </property>
+              <property name="scaledContents">
+               <bool>true</bool>
+              </property>
+              <property name="indent">
+               <number>0</number>
+              </property>
              </widget>
             </widget>
             <widget class="QWidget" name="boss_and_pocket_tab">
