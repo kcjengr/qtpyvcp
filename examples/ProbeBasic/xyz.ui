@@ -1653,9 +1653,15 @@ padding-left: 20px;
           </item>
           <item>
            <widget class="QTabWidget" name="probe_tab_widget">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="minimumSize">
              <size>
-              <width>830</width>
+              <width>1000</width>
               <height>0</height>
              </size>
             </property>
@@ -1681,7 +1687,7 @@ padding-left: 20px;
             </property>
             <widget class="QWidget" name="outside_corners_tab">
              <attribute name="title">
-              <string>  OUTSIDE CORNERS </string>
+              <string>      OUTSIDE CORNERS      </string>
              </attribute>
              <widget class="QFrame" name="frame">
               <property name="geometry">
@@ -2051,7 +2057,7 @@ padding-left: 20px;
             </widget>
             <widget class="QWidget" name="inside_corners_tab">
              <attribute name="title">
-              <string>  INSIDE CORNERS </string>
+              <string>      INSIDE CORNERS     </string>
              </attribute>
              <widget class="QWidget" name="gridLayoutWidget_3">
               <property name="geometry">
@@ -2332,12 +2338,12 @@ padding-left: 20px;
             </widget>
             <widget class="QWidget" name="boss_and_pocket_tab">
              <attribute name="title">
-              <string>  BOSS AND POCKETS </string>
+              <string>      BOSS AND POCKETS     </string>
              </attribute>
              <widget class="QWidget" name="gridLayoutWidget_4">
               <property name="geometry">
                <rect>
-                <x>320</x>
+                <x>260</x>
                 <y>90</y>
                 <width>411</width>
                 <height>411</height>
@@ -2360,6 +2366,9 @@ padding-left: 20px;
                    <width>180</width>
                    <height>180</height>
                   </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string/>
@@ -2390,6 +2399,9 @@ padding-left: 20px;
                    <height>180</height>
                   </size>
                  </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
                  <property name="text">
                   <string/>
                  </property>
@@ -2399,8 +2411,8 @@ padding-left: 20px;
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>170</width>
-                   <height>170</height>
+                   <width>150</width>
+                   <height>150</height>
                   </size>
                  </property>
                 </widget>
@@ -2419,6 +2431,9 @@ padding-left: 20px;
                    <height>180</height>
                   </size>
                  </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
                  <property name="text">
                   <string/>
                  </property>
@@ -2428,8 +2443,8 @@ padding-left: 20px;
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>170</width>
-                   <height>170</height>
+                   <width>150</width>
+                   <height>150</height>
                   </size>
                  </property>
                 </widget>
@@ -2447,6 +2462,9 @@ padding-left: 20px;
                    <width>180</width>
                    <height>180</height>
                   </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string/>
@@ -2468,7 +2486,7 @@ padding-left: 20px;
              <widget class="QGroupBox" name="groupBox">
               <property name="geometry">
                <rect>
-                <x>99</x>
+                <x>39</x>
                 <y>110</y>
                 <width>181</width>
                 <height>101</height>
@@ -2575,7 +2593,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb
              <widget class="QGroupBox" name="groupBox_2">
               <property name="geometry">
                <rect>
-                <x>99</x>
+                <x>39</x>
                 <y>306</y>
                 <width>181</width>
                 <height>131</height>
@@ -2733,7 +2751,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb
             </widget>
             <widget class="QWidget" name="valley_and_ridge_tab">
              <attribute name="title">
-              <string>  VALLEYS AND RIDGES </string>
+              <string>      VALLEYS AND RIDGES     </string>
              </attribute>
              <widget class="QWidget" name="gridLayoutWidget_5">
               <property name="geometry">
@@ -2951,7 +2969,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb
             </widget>
             <widget class="QWidget" name="rotary_axis_tab">
              <attribute name="title">
-              <string>  ROTARY AXIS </string>
+              <string>      ROTARY AXIS     </string>
              </attribute>
              <widget class="QWidget" name="gridLayoutWidget_6">
               <property name="geometry">
@@ -3169,7 +3187,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb
             </widget>
             <widget class="QWidget" name="multi_axis_tab">
              <attribute name="title">
-              <string>  MULTI-AXIS </string>
+              <string>      MULTI-AXIS      </string>
              </attribute>
              <widget class="QWidget" name="gridLayoutWidget">
               <property name="geometry">
@@ -3387,7 +3405,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb
             </widget>
             <widget class="QWidget" name="probe_help_tab">
              <attribute name="title">
-              <string>  PROBE HELP </string>
+              <string>      PROBE HELP     </string>
              </attribute>
              <widget class="QTabWidget" name="tabWidget_2">
               <property name="geometry">
