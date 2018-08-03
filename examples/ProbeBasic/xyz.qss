@@ -130,7 +130,7 @@ GcodeBackplot {
 /*===========================================================================*/
 
 QTabWidget {
-    background: #707070;
+    background: #818584;
 }
 
 QTabWidget::pane {

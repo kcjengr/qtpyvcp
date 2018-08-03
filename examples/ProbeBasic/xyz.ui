@@ -258,7 +258,7 @@
     border-width: 2px;
     border-radius: 5px;
     color: rgb(238, 238, 236);    
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgbargb(95, 95, 95), stop:0.339795 rgb(95, 95, 95), stop:0.5939799 rgb(62, 62, 62), stop:0.762444 rgb(127, 127, 127), stop:0.902469 rgb(165, 165, 165), stop:1 rgb(91, 91, 91));
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(121, 121, 121), stop:0.269795 rgb(147, 147, 147), stop:0.899799 rgb(103, 103, 103), stop:0.52444 rgb(120, 120, 120), stop:0.550246 rgb(117, 118, 124), stop:1 rgb(83, 84, 86));
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
               </property>
@@ -549,7 +549,7 @@
     border-width: 2px;
     border-radius: 5px;
     color: rgb(238, 238, 236);    
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgbargb(95, 95, 95), stop:0.339795 rgb(95, 95, 95), stop:0.5939799 rgb(62, 62, 62), stop:0.762444 rgb(127, 127, 127), stop:0.902469 rgb(165, 165, 165), stop:1 rgb(91, 91, 91));
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(121, 121, 121), stop:0.269795 rgb(147, 147, 147), stop:0.899799 rgb(103, 103, 103), stop:0.52444 rgb(120, 120, 120), stop:0.550246 rgb(117, 118, 124), stop:1 rgb(83, 84, 86));
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
               </property>
@@ -1228,7 +1228,7 @@ padding-left: 20px;
     border-width: 2px;
     border-radius: 5px;
     color: rgb(238, 238, 236);    
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgbargb(95, 95, 95), stop:0.339795 rgb(95, 95, 95), stop:0.5939799 rgb(62, 62, 62), stop:0.762444 rgb(127, 127, 127), stop:0.902469 rgb(165, 165, 165), stop:1 rgb(91, 91, 91));
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(121, 121, 121), stop:0.269795 rgb(147, 147, 147), stop:0.899799 rgb(103, 103, 103), stop:0.52444 rgb(120, 120, 120), stop:0.550246 rgb(117, 118, 124), stop:1 rgb(83, 84, 86));
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
               </property>
@@ -2479,7 +2479,7 @@ padding-left: 20px;
 color: rgb(46, 52, 54);
 border-style: solid;
 border-color: black;
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgbargb(95, 95, 95), stop:0.339795 rgb(95, 95, 95), stop:0.5939799 rgb(62, 62, 62), stop:0.762444 rgb(127, 127, 127), stop:0.902469 rgb(165, 165, 165), stop:1 rgb(91, 91, 91));
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(121, 121, 121), stop:0.269795 rgb(147, 147, 147), stop:0.899799 rgb(103, 103, 103), stop:0.52444 rgb(120, 120, 120), stop:0.550246 rgb(117, 118, 124), stop:1 rgb(83, 84, 86));
 border-width: 2px;
 border-radius: 6px;
 }</string>
@@ -2549,7 +2549,7 @@ padding-left: 5px;
                  </widget>
                 </item>
                 <item row="0" column="0" colspan="2">
-                 <widget class="QLabel" name="step_increment_label_2">
+                 <widget class="QLabel" name="step_increment_label_4">
                   <property name="styleSheet">
                    <string notr="true">QLabel{
     border-style: solid;
@@ -2557,7 +2557,7 @@ padding-left: 5px;
     border-width: 1px;
     border-radius: 5px;
     color: rgb(238, 238, 236);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgbargb(95, 95, 95), stop:0.339795 rgb(95, 95, 95), stop:0.5939799 rgb(62, 62, 62), stop:0.762444 rgb(127, 127, 127), stop:0.902469 rgb(165, 165, 165), stop:1 rgb(91, 91, 91));
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(121, 121, 121), stop:0.439795 rgb(147, 147, 147), stop:0.8539799 rgb(103, 103, 103), stop:0.72444 rgb(120, 120, 120), stop:0.650246 rgb(117, 118, 124), stop:1 rgb(83, 84, 86));
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
                   </property>
@@ -2586,7 +2586,7 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb
 color: rgb(46, 52, 54);
 border-style: solid;
 border-color: black;
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgbargb(95, 95, 95), stop:0.339795 rgb(95, 95, 95), stop:0.5939799 rgb(62, 62, 62), stop:0.762444 rgb(127, 127, 127), stop:0.902469 rgb(165, 165, 165), stop:1 rgb(91, 91, 91));
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(121, 121, 121), stop:0.269795 rgb(147, 147, 147), stop:0.899799 rgb(103, 103, 103), stop:0.52444 rgb(120, 120, 120), stop:0.550246 rgb(117, 118, 124), stop:1 rgb(83, 84, 86));
 border-width: 2px;
 border-radius: 6px;
 }</string>
@@ -2715,7 +2715,7 @@ padding-left: 0px;
     border-width: 1px;
     border-radius: 5px;
     color: rgb(238, 238, 236);
-background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgbargb(95, 95, 95), stop:0.339795 rgb(95, 95, 95), stop:0.5939799 rgb(62, 62, 62), stop:0.762444 rgb(127, 127, 127), stop:0.902469 rgb(165, 165, 165), stop:1 rgb(91, 91, 91));
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(121, 121, 121), stop:0.439795 rgb(147, 147, 147), stop:0.8539799 rgb(103, 103, 103), stop:0.72444 rgb(120, 120, 120), stop:0.650246 rgb(117, 118, 124), stop:1 rgb(83, 84, 86));
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
                   </property>
