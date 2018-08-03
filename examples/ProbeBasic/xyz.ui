@@ -1677,7 +1677,7 @@ padding-left: 20px;
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>0</number>
             </property>
             <property name="iconSize">
              <size>
@@ -1692,8 +1692,8 @@ padding-left: 20px;
              <widget class="QFrame" name="frame">
               <property name="geometry">
                <rect>
-                <x>150</x>
-                <y>20</y>
+                <x>210</x>
+                <y>10</y>
                 <width>551</width>
                 <height>541</height>
                </rect>
@@ -1707,8 +1707,8 @@ padding-left: 20px;
               <widget class="QWidget" name="gridLayoutWidget_2">
                <property name="geometry">
                 <rect>
-                 <x>60</x>
-                 <y>30</y>
+                 <x>40</x>
+                 <y>40</y>
                  <width>461</width>
                  <height>461</height>
                 </rect>
@@ -2062,8 +2062,8 @@ padding-left: 20px;
              <widget class="QWidget" name="gridLayoutWidget_3">
               <property name="geometry">
                <rect>
-                <x>180</x>
-                <y>30</y>
+                <x>250</x>
+                <y>40</y>
                 <width>471</width>
                 <height>471</height>
                </rect>
@@ -2343,8 +2343,8 @@ padding-left: 20px;
              <widget class="QWidget" name="gridLayoutWidget_4">
               <property name="geometry">
                <rect>
-                <x>260</x>
-                <y>90</y>
+                <x>380</x>
+                <y>70</y>
                 <width>411</width>
                 <height>411</height>
                </rect>
@@ -2486,8 +2486,8 @@ padding-left: 20px;
              <widget class="QGroupBox" name="groupBox">
               <property name="geometry">
                <rect>
-                <x>39</x>
-                <y>110</y>
+                <x>159</x>
+                <y>90</y>
                 <width>181</width>
                 <height>101</height>
                </rect>
@@ -2593,8 +2593,8 @@ background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb
              <widget class="QGroupBox" name="groupBox_2">
               <property name="geometry">
                <rect>
-                <x>39</x>
-                <y>306</y>
+                <x>159</x>
+                <y>286</y>
                 <width>181</width>
                 <height>131</height>
                </rect>
