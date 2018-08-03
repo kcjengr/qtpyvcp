@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1594</width>
-    <height>1096</height>
+    <width>1688</width>
+    <height>1097</height>
    </rect>
   </property>
   <property name="font">
@@ -34,17 +34,20 @@
    <layout class="QVBoxLayout" name="verticalLayout" stretch="2,0">
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="spacing">
+       <number>16</number>
+      </property>
       <property name="leftMargin">
-       <number>6</number>
+       <number>0</number>
       </property>
       <property name="topMargin">
-       <number>6</number>
+       <number>0</number>
       </property>
       <property name="rightMargin">
-       <number>6</number>
+       <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>6</number>
+       <number>0</number>
       </property>
       <item>
        <widget class="QTabWidget" name="tabWidget">
@@ -73,13 +76,37 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>7</number>
+         <number>6</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
           <string>          Main          </string>
          </attribute>
          <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="label_30">
+            <property name="minimumSize">
+             <size>
+              <width>6</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>6</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+    background: rgb(46, 52, 54);
+}</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
           <item>
            <widget class="QSplitter" name="splitter">
             <property name="focusPolicy">
@@ -99,6 +126,9 @@
               <enum>Qt::NoFocus</enum>
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_2">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <property name="leftMargin">
                <number>0</number>
               </property>
@@ -206,6 +236,9 @@
          <layout class="QHBoxLayout" name="horizontalLayout_5">
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_3">
+            <property name="leftMargin">
+             <number>5</number>
+            </property>
             <item>
              <spacer name="verticalSpacer_4">
               <property name="orientation">
@@ -225,7 +258,7 @@
             <item>
              <widget class="QLabel" name="label_24">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+               <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
@@ -263,7 +296,7 @@
 }</string>
               </property>
               <property name="text">
-               <string>  WORK OFFSETS</string>
+               <string> WORK OFFSETS</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -599,7 +632,7 @@
 }</string>
               </property>
               <property name="text">
-               <string>  Probing Parameters</string>
+               <string> Probing Parameters</string>
               </property>
              </widget>
             </item>
@@ -1278,7 +1311,7 @@ padding-left: 20px;
 }</string>
               </property>
               <property name="text">
-               <string>  Probe Results</string>
+               <string> Probe Results</string>
               </property>
              </widget>
             </item>
@@ -2372,124 +2405,28 @@ padding-left: 20px;
              <widget class="QWidget" name="gridLayoutWidget_4">
               <property name="geometry">
                <rect>
-                <x>380</x>
-                <y>70</y>
-                <width>411</width>
-                <height>411</height>
+                <x>90</x>
+                <y>33</y>
+                <width>372</width>
+                <height>372</height>
                </rect>
               </property>
-              <layout class="QGridLayout" name="gridLayout_4">
+              <layout class="QGridLayout" name="gridLayout_4" columnstretch="0,0,0">
                <property name="spacing">
-                <number>0</number>
+                <number>6</number>
                </property>
-               <item row="1" column="0">
-                <widget class="SubCallButton" name="pushButton_32">
-                 <property name="minimumSize">
-                  <size>
-                   <width>180</width>
-                   <height>180</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>180</width>
-                   <height>180</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true"/>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="xyz.qrc">
-                   <normaloff>:/images/rect_boss.png</normaloff>:/images/rect_boss.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>180</width>
-                   <height>180</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="2">
-                <widget class="SubCallButton" name="pushButton_35">
-                 <property name="minimumSize">
-                  <size>
-                   <width>180</width>
-                   <height>180</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>180</width>
-                   <height>180</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true"/>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="xyz.qrc">
-                   <normaloff>:/images/round_pocket.png</normaloff>:/images/round_pocket.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="2">
-                <widget class="SubCallButton" name="pushButton_33">
-                 <property name="minimumSize">
-                  <size>
-                   <width>180</width>
-                   <height>180</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>180</width>
-                   <height>180</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true"/>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="xyz.qrc">
-                   <normaloff>:/images/rect_pocket.png</normaloff>:/images/rect_pocket.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0">
+               <item row="0" column="1">
                 <widget class="SubCallButton" name="pushButton_34">
                  <property name="minimumSize">
                   <size>
-                   <width>180</width>
-                   <height>180</height>
+                   <width>170</width>
+                   <height>170</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>180</width>
-                   <height>180</height>
+                   <width>170</width>
+                   <height>170</height>
                   </size>
                  </property>
                  <property name="styleSheet">
@@ -2504,22 +2441,152 @@ padding-left: 20px;
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>180</width>
-                   <height>180</height>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="SubCallButton" name="pushButton_35">
+                 <property name="minimumSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/round_pocket.png</normaloff>:/images/round_pocket.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>145</width>
+                   <height>145</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
+                <widget class="SubCallButton" name="pushButton_33">
+                 <property name="minimumSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/rect_pocket.png</normaloff>:/images/rect_pocket.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>145</width>
+                   <height>145</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="SubCallButton" name="pushButton_32">
+                 <property name="minimumSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/rect_boss.png</normaloff>:/images/rect_boss.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
                   </size>
                  </property>
                 </widget>
                </item>
               </layout>
              </widget>
-             <widget class="QGroupBox" name="groupBox">
+             <widget class="QLabel" name="label_31">
               <property name="geometry">
                <rect>
-                <x>159</x>
-                <y>90</y>
-                <width>186</width>
-                <height>101</height>
+                <x>530</x>
+                <y>60</y>
+                <width>441</width>
+                <height>281</height>
                </rect>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="xyz.qrc">:/images/boss_pocket_3d_image.png</pixmap>
+              </property>
+              <property name="scaledContents">
+               <bool>true</bool>
+              </property>
+              <property name="indent">
+               <number>0</number>
+              </property>
+             </widget>
+             <widget class="QGroupBox" name="groupBox_3">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>440</y>
+                <width>561</width>
+                <height>80</height>
+               </rect>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>560</width>
+                <height>80</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>60</height>
+               </size>
               </property>
               <property name="styleSheet">
                <string notr="true">QGroupBox{
@@ -2534,79 +2601,28 @@ border-radius: 6px;
               <property name="title">
                <string/>
               </property>
-              <widget class="QWidget" name="layoutWidget">
+              <widget class="QWidget" name="horizontalLayoutWidget">
                <property name="geometry">
                 <rect>
-                 <x>12</x>
+                 <x>10</x>
                  <y>20</y>
-                 <width>171</width>
-                 <height>71</height>
+                 <width>543</width>
+                 <height>51</height>
                 </rect>
                </property>
-               <layout class="QGridLayout" name="gridLayout_7">
-                <item row="1" column="1">
-                 <widget class="QLineEdit" name="diameter_hint">
-                  <property name="minimumSize">
-                   <size>
-                    <width>80</width>
-                    <height>33</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>80</width>
-                    <height>33</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>0.0000</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_21">
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-font: 75 15pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
-padding-right: 1px;
-padding-left: 5px;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>Diameter:</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="0" colspan="2">
+               <layout class="QHBoxLayout" name="horizontalLayout_3">
+                <item>
                  <widget class="QLabel" name="step_increment_label_4">
                   <property name="minimumSize">
                    <size>
-                    <width>160</width>
-                    <height>30</height>
+                    <width>115</width>
+                    <height>40</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>160</width>
-                    <height>30</height>
+                    <width>115</width>
+                    <height>40</height>
                    </size>
                   </property>
                   <property name="styleSheet">
@@ -2628,53 +2644,48 @@ padding-left: 5px;
                   </property>
                  </widget>
                 </item>
-               </layout>
-              </widget>
-             </widget>
-             <widget class="QGroupBox" name="groupBox_2">
-              <property name="geometry">
-               <rect>
-                <x>159</x>
-                <y>286</y>
-                <width>186</width>
-                <height>142</height>
-               </rect>
-              </property>
-              <property name="styleSheet">
-               <string notr="true">QGroupBox{
-color: rgb(46, 52, 54);
-border-style: solid;
-border-color: black;
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
-border-width: 2px;
-border-radius: 6px;
-}</string>
-              </property>
-              <property name="title">
-               <string/>
-              </property>
-              <widget class="QWidget" name="gridLayoutWidget_7">
-               <property name="geometry">
-                <rect>
-                 <x>12</x>
-                 <y>21</y>
-                 <width>162</width>
-                 <height>110</height>
-                </rect>
-               </property>
-               <layout class="QGridLayout" name="gridLayout_11">
-                <item row="2" column="1">
-                 <widget class="QLineEdit" name="y_hint">
+                <item>
+                 <widget class="QLabel" name="label_33">
                   <property name="minimumSize">
                    <size>
                     <width>80</width>
-                    <height>33</height>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>30</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel{
+font: 75 15pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 5px;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>dIAMETER:</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="diameter_hint_2">
+                  <property name="minimumSize">
+                   <size>
+                    <width>80</width>
+                    <height>40</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
                     <width>80</width>
-                    <height>33</height>
+                    <height>40</height>
                    </size>
                   </property>
                   <property name="styleSheet">
@@ -2696,18 +2707,48 @@ border-radius: 6px;
                   </property>
                  </widget>
                 </item>
-                <item row="1" column="1">
-                 <widget class="QLineEdit" name="x_hint">
+                <item>
+                 <widget class="QLabel" name="label_21">
+                  <property name="minimumSize">
+                   <size>
+                    <width>30</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>30</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel{
+font: 75 15pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 5px;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>X :</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="x_hint_2">
                   <property name="minimumSize">
                    <size>
                     <width>80</width>
-                    <height>33</height>
+                    <height>40</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
                     <width>80</width>
-                    <height>33</height>
+                    <height>40</height>
                    </size>
                   </property>
                   <property name="styleSheet">
@@ -2729,72 +2770,66 @@ border-radius: 6px;
                   </property>
                  </widget>
                 </item>
-                <item row="2" column="0">
-                 <widget class="QLabel" name="label_20">
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-font: 75 15pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
-padding-right: 1px;
-padding-left: 5px;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>Y:</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="1" column="0">
-                 <widget class="QLabel" name="label_19">
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-font: 75 15pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
-padding-right: 1px;
-padding-left: 5px;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>X:</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                  </property>
-                 </widget>
-                </item>
-                <item row="0" column="0" colspan="2">
-                 <widget class="QLabel" name="step_increment_label_3">
+                <item>
+                 <widget class="QLabel" name="label_34">
                   <property name="minimumSize">
                    <size>
-                    <width>160</width>
-                    <height>30</height>
+                    <width>30</width>
+                    <height>0</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>160</width>
-                    <height>30</height>
+                    <width>30</width>
+                    <height>16777215</height>
                    </size>
                   </property>
                   <property name="styleSheet">
                    <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(191, 191, 191);
-    border-width: 1px;
-    border-radius: 5px;
-    color: rgb(238, 238, 236);
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
-	font: 16pt &quot;Bebas Kai&quot;;
+font: 75 15pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 5px;
 }</string>
                   </property>
                   <property name="text">
-                   <string>HINT</string>
+                   <string>Y :</string>
                   </property>
                   <property name="alignment">
-                   <set>Qt::AlignCenter</set>
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="y_hint_2">
+                  <property name="minimumSize">
+                   <size>
+                    <width>80</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>80</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>0.0000</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                   </property>
                  </widget>
                 </item>
@@ -3898,6 +3933,263 @@ padding-left: 5px;
            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
           </property>
          </widget>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="geometry">
+           <rect>
+            <x>1360</x>
+            <y>130</y>
+            <width>141</width>
+            <height>201</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QGroupBox{
+color: rgb(46, 52, 54);
+border-style: solid;
+border-color: black;
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
+border-width: 2px;
+border-radius: 6px;
+}</string>
+          </property>
+          <property name="title">
+           <string/>
+          </property>
+          <widget class="QWidget" name="gridLayoutWidget_7">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>20</y>
+             <width>121</width>
+             <height>170</height>
+            </rect>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_11">
+            <item row="0" column="0" colspan="2">
+             <widget class="QLabel" name="step_increment_label_3">
+              <property name="minimumSize">
+               <size>
+                <width>115</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>115</width>
+                <height>30</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel{
+    border-style: solid;
+    border-color: rgb(191, 191, 191);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
+	font: 16pt &quot;Bebas Kai&quot;;
+}</string>
+              </property>
+              <property name="text">
+               <string>HINT</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_32">
+              <property name="minimumSize">
+               <size>
+                <width>30</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>30</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel{
+font: 75 15pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 5px;
+}</string>
+              </property>
+              <property name="text">
+               <string>⌀:</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_20">
+              <property name="minimumSize">
+               <size>
+                <width>30</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>30</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel{
+font: 75 15pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 5px;
+}</string>
+              </property>
+              <property name="text">
+               <string>Y :</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_19">
+              <property name="minimumSize">
+               <size>
+                <width>30</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>30</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLabel{
+font: 75 15pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 5px;
+}</string>
+              </property>
+              <property name="text">
+               <string>X :</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="diameter_hint">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+              </property>
+              <property name="text">
+               <string>0.0000</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QLineEdit" name="y_hint">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+              </property>
+              <property name="text">
+               <string>0.0000</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QLineEdit" name="x_hint">
+              <property name="minimumSize">
+               <size>
+                <width>80</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>40</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+              </property>
+              <property name="text">
+               <string>0.0000</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </widget>
         </widget>
        </widget>
       </item>
@@ -4183,7 +4475,7 @@ border-radius: 1px;
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>2</width>
+          <width>5</width>
           <height>20</height>
          </size>
         </property>
@@ -6052,7 +6344,7 @@ border-radius: 1px;
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>2</width>
+          <width>5</width>
           <height>20</height>
          </size>
         </property>
@@ -9824,7 +10116,7 @@ border-radius: 6px;
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>2</width>
+          <width>5</width>
           <height>20</height>
          </size>
         </property>
@@ -10795,7 +11087,7 @@ border-radius: 1px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1594</width>
+     <width>1688</width>
      <height>20</height>
     </rect>
    </property>

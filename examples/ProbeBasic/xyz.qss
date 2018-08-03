@@ -6,7 +6,7 @@ QMainWindow {
     background: #2e3436
     /*border-image: url(:/images/dark_background.jpg);*/
     /*background-image: url(:/images/dark_background.jpg);*/
-/*    background-image: url(:/images/pp_border.png);*/
+    /*background-image: url(:/images/pp_border.png);*/
 }
 
 QPushButton, QComboBox[editable="false"],
