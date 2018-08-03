@@ -313,7 +313,7 @@ class _Status(QObject):
             rel[axis] = pos[axis] - g5x_offset[axis] - tool_offset[axis]
 
         if self.stat.rotation_xy != 0:
-            t = math.radians(-stat.rotation_xy)
+            t = math.radians(-self.stat.rotation_xy)
             xr = rel[0] * math.cos(t) - rel[1] * math.sin(t)
             yr = rel[0] * math.sin(t) + rel[1] * math.cos(t)
             rel[0] = xr
