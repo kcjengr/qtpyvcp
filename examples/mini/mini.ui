@@ -30,7 +30,15 @@
     <addaction name="actionOpen"/>
     <addaction name="actionExit"/>
    </widget>
+   <widget class="QMenu" name="menuMachine">
+    <property name="title">
+     <string>Machine</string>
+    </property>
+    <addaction name="action_EmergencyStop_toggle"/>
+    <addaction name="action_MachinePower_toggle"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuMachine"/>
   </widget>
   <action name="actionOpen">
    <property name="text">
@@ -46,6 +54,16 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="action_EmergencyStop_toggle">
+   <property name="text">
+    <string>Toggle Estop</string>
+   </property>
+  </action>
+  <action name="action_MachinePower_toggle">
+   <property name="text">
+    <string>Toggle Power</string>
    </property>
   </action>
  </widget>
