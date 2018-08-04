@@ -2,7 +2,7 @@
 
 QtPyVCP is a PyQt5-based framework for building Virtual Control Panels (VCPs)
 for the [LinuxCNC][linuxcnc] machine controller. The goal is to provide a no-code,
-drag-and-drop system for making simple VCPs, as well as an easy to use and expendable
+drag-and-drop system for making simple VCPs, as well as an easy to use and expand
 python framework for building complex VCPs.
 
 QtPyVCP is designed with the philosophy that it is impossible to predict and
@@ -25,9 +25,10 @@ minimal (if any) python code to create a fully custom VCP.
 ### For production use (non development)
 `sudo apt-get install python-pyqt5`  
 Additional dependencies may be needed depending on the particular VCP that is
-is being used. These may be listed in the docs for VCP. If not the error messages
-should clearly indicate what packages are missing, and in most cases will give
-the exact command for installing the package on Debian based systems.
+is being used. These should be listed in the docs for the particular VCP, but if
+not the error messages should clearly indicate what packages are missing, and in
+most cases will give the exact command for installing the package on Debian based
+systems.
 
 ### For QtPyVCP and VCP development
 `sudo apt-get install qttools5-dev-tools`  
