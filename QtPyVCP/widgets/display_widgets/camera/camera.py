@@ -60,7 +60,7 @@ try:
                                     QCameraImageCapture, QImageEncoderSettings, QMediaMetaData,
                                     QMediaRecorder, QVideoEncoderSettings)
 
-from settings import Settings
+    from settings import Settings
 except ImportError:
     multimedia_available = False
     LOG.error('Can\'t import QtMultimedia, is package "python-pyqt5.qtmultimedia" installed?')
@@ -119,7 +119,9 @@ class Camera(QWidget):
 
         self.ui.lockButton.hide()
 
-        self.setCamera(camera_device)
+        # Start camera 2s after the UI has loaded
+        QTimer.singleShot(2000, lambda: self.setCamera(camera_device))
+
 
     def setCamera(self, cameraDevice):
         if cameraDevice.isEmpty():
