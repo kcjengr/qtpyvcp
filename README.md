@@ -24,6 +24,7 @@ minimal (if any) python code to create a fully custom VCP.
 
 ### For production use (non development)
 `sudo apt-get install python-pyqt5`  
+`sudo apt-get install python-dbus.mainloop.pyqt5`  
 Additional dependencies may be needed depending on the particular VCP that is
 is being used. These should be listed in the docs for the particular VCP, but if
 not the error messages should clearly indicate what packages are missing, and in
@@ -35,10 +36,11 @@ systems.
 `sudo apt-get install qttools5.dev`  
 `sudo apt-get install pyqt5-dev-tools`  
 
+These are required for the camera widget to work:  
+`sudo apt-get install python-pyqt5.qtmultimedia`  
+`sudo apt-get install gstreamer1.0-plugins-bad`  
 
-`sudo apt-get install python-pyqt5.qtmultimedia` (needed for camera widget)
-
-These also might be needed for the camera:  
+These also might be needed for the camera, please confirm if needed:  
 `sudo apt-get install libqt5multimedia5`  
 `sudo apt-get install libqt5multimediawidgets5`  
 `sudo apt-get install libqt5multimedia5-plugins`  
