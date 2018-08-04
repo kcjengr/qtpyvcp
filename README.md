@@ -35,6 +35,14 @@ the exact command for installing the package on Debian based systems.
 `sudo apt-get install pyqt5-dev-tools`  
 
 
+`sudo apt-get install python-pyqt5.qtmultimedia` (needed for camera widget)
+
+These also might be needed for the camera:  
+`sudo apt-get install libqt5multimedia5`  
+`sudo apt-get install libqt5multimediawidgets5`  
+`sudo apt-get install libqt5multimedia5-plugins`  
+
+
 ## QtDesigner Plug-ins
 In order for the QtDesigner plugins to load, you must have the correct version
 of `libpyqt5.so` in `/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/`. This library
