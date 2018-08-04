@@ -76,7 +76,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>6</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -223,6 +223,50 @@
          <attribute name="title">
           <string>          Tool          </string>
          </attribute>
+         <widget class="QLabel" name="label_37">
+          <property name="geometry">
+           <rect>
+            <x>690</x>
+            <y>30</y>
+            <width>450</width>
+            <height>450</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="xyz.qrc">:/images/carousel_12.png</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+          <property name="indent">
+           <number>0</number>
+          </property>
+         </widget>
+         <widget class="QLabel" name="label_38">
+          <property name="geometry">
+           <rect>
+            <x>1206</x>
+            <y>53</y>
+            <width>280</width>
+            <height>407</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="xyz.qrc">:/images/atc_spindle_tool.png</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+          <property name="indent">
+           <number>0</number>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -1755,7 +1799,7 @@ padding-left: 20px;
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>1</number>
+             <number>2</number>
             </property>
             <property name="iconSize">
              <size>
@@ -1770,8 +1814,8 @@ padding-left: 20px;
              <widget class="QWidget" name="gridLayoutWidget_2">
               <property name="geometry">
                <rect>
-                <x>46</x>
-                <y>50</y>
+                <x>48</x>
+                <y>48</y>
                 <width>461</width>
                 <height>461</height>
                </rect>
@@ -2154,7 +2198,7 @@ padding-left: 20px;
               </property>
               <layout class="QGridLayout" name="gridLayout_3">
                <property name="spacing">
-                <number>2</number>
+                <number>3</number>
                </property>
                <item row="2" column="2">
                 <widget class="SubCallButton" name="pushButton_19">
@@ -2614,7 +2658,7 @@ padding-left: 20px;
              <widget class="QGroupBox" name="groupBox_3">
               <property name="geometry">
                <rect>
-                <x>20</x>
+                <x>0</x>
                 <y>440</y>
                 <width>561</width>
                 <height>80</height>
@@ -3103,437 +3147,11 @@ padding-left: 5px;
              <attribute name="title">
               <string>      ROTARY AXIS     </string>
              </attribute>
-             <widget class="QWidget" name="gridLayoutWidget_6">
-              <property name="geometry">
-               <rect>
-                <x>210</x>
-                <y>20</y>
-                <width>471</width>
-                <height>471</height>
-               </rect>
-              </property>
-              <layout class="QGridLayout" name="gridLayout_6">
-               <property name="spacing">
-                <number>2</number>
-               </property>
-               <item row="0" column="3">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_13">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="3">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_16">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="2">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_12">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_2">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_14">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="2">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_15">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="3">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_17">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="2">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_18">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_19">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
             </widget>
             <widget class="QWidget" name="multi_axis_tab">
              <attribute name="title">
               <string>      MULTI-AXIS      </string>
              </attribute>
-             <widget class="QWidget" name="gridLayoutWidget">
-              <property name="geometry">
-               <rect>
-                <x>190</x>
-                <y>20</y>
-                <width>471</width>
-                <height>471</height>
-               </rect>
-              </property>
-              <layout class="QGridLayout" name="gridLayout">
-               <property name="spacing">
-                <number>2</number>
-               </property>
-               <item row="0" column="2">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_22">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_20">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_25">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_24">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_21">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="2">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_23">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="0">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_26">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_27">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="2">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_28">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-              </layout>
-             </widget>
             </widget>
             <widget class="QWidget" name="tab_7">
              <attribute name="title">
