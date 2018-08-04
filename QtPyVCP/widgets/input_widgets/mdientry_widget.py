@@ -65,8 +65,9 @@ class MDIEntry(QLineEdit):
                 line = line.strip()
                 history.append(line)
             self.model.setStringList(history)
-        except Exception as e:
-            log.exception(e)
+        except:
+            # file does not exist
+            pass
 
     def saveMDIHistory(self):
         with open(MDI_HISTORY_FILE, 'w') as fh:
