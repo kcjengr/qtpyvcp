@@ -42,30 +42,41 @@
 #############################################################################
 
 import os
-import logging
 
 from PyQt5 import uic
 
 from PyQt5.QtCore import QByteArray, Qt, QTimer
 from PyQt5.QtGui import QPalette, QPixmap
-from PyQt5.QtMultimedia import (QAudioEncoderSettings, QCamera,
-                                QCameraImageCapture, QImageEncoderSettings, QMediaMetaData,
-                                QMediaRecorder, QVideoEncoderSettings)
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication,
                              QWidget, QMessageBox)
 
-WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
-# logging.getLogger('QCameraImageCapture').setLevel(logging.INFO)
+# Set up logging
+from QtPyVCP.utilities import logger
+LOG = logger.getLogger(__name__)
+
+multimedia_available = True
+try:
+    from PyQt5.QtMultimedia import (QAudioEncoderSettings, QCamera,
+                                    QCameraImageCapture, QImageEncoderSettings, QMediaMetaData,
+                                    QMediaRecorder, QVideoEncoderSettings)
 
 from settings import Settings
+except ImportError:
+    multimedia_available = False
+    LOG.error('Can\'t import QtMultimedia, is package "python-pyqt5.qtmultimedia" installed?')
 
+WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 
 class Camera(QWidget):
 
     def __init__(self, parent=None):
         super(Camera, self).__init__(parent)
 
+        if not multimedia_available:
+            return
+
         self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "camera.ui"), self)
+
         self.camera = None
         self.imageCapture = None
         self.mediaRecorder = None
