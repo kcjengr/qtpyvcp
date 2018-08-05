@@ -76,7 +76,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>6</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -179,7 +179,7 @@
               </item>
              </layout>
             </widget>
-            <widget class="GcodeBackplot" name="gcodebackplot" native="true">
+            <widget class="GcodeBackplot" name="gcodebackplot">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
@@ -192,7 +192,7 @@
              <property name="renderProgramAlpha" stdset="0">
               <bool>true</bool>
              </property>
-             <property name="backgroundColor" stdset="0">
+             <property name="backgroundColor">
               <color>
                <red>0</red>
                <green>0</green>
@@ -269,6 +269,9 @@ border-radius: 8px;
             </property>
             <property name="indent">
              <number>0</number>
+            </property>
+            <property name="buddy">
+             <cstring>yo9u</cstring>
             </property>
            </widget>
            <widget class="QLabel" name="label_60">
@@ -1518,7 +1521,7 @@ border-radius: 8px;
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>40</width>
+                <width>477</width>
                 <height>3</height>
                </size>
               </property>
@@ -1582,7 +1585,7 @@ border-radius: 8px;
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>20</width>
+                <width>477</width>
                 <height>5</height>
                </size>
               </property>
@@ -1872,7 +1875,7 @@ border-radius: 8px;
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>20</width>
+                <width>477</width>
                 <height>10</height>
                </size>
               </property>
@@ -1915,7 +1918,7 @@ border-radius: 8px;
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>20</width>
+                <width>477</width>
                 <height>5</height>
                </size>
               </property>
@@ -2538,7 +2541,7 @@ padding-left: 20px;
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>40</width>
+                <width>477</width>
                 <height>10</height>
                </size>
               </property>
@@ -2551,7 +2554,7 @@ padding-left: 20px;
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>20</width>
+                <width>477</width>
                 <height>40</height>
                </size>
               </property>
@@ -2594,7 +2597,7 @@ padding-left: 20px;
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>20</width>
+                <width>477</width>
                 <height>5</height>
                </size>
               </property>
@@ -2974,7 +2977,7 @@ padding-left: 20px;
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>20</width>
+                <width>477</width>
                 <height>200</height>
                </size>
               </property>
@@ -2992,8 +2995,8 @@ padding-left: 20px;
             </property>
             <property name="sizeHint" stdset="0">
              <size>
-              <width>40</width>
-              <height>20</height>
+              <width>137</width>
+              <height>560</height>
              </size>
             </property>
            </spacer>
@@ -3720,7 +3723,7 @@ padding-left: 20px;
                <rect>
                 <x>90</x>
                 <y>33</y>
-                <width>372</width>
+                <width>413</width>
                 <height>372</height>
                </rect>
               </property>
@@ -3728,38 +3731,6 @@ padding-left: 20px;
                <property name="spacing">
                 <number>6</number>
                </property>
-               <item row="0" column="1">
-                <widget class="SubCallButton" name="pushButton_34">
-                 <property name="minimumSize">
-                  <size>
-                   <width>170</width>
-                   <height>170</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>170</width>
-                   <height>170</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true"/>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="xyz.qrc">
-                   <normaloff>:/images/round_boss.png</normaloff>:/images/round_boss.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>170</width>
-                   <height>170</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
                <item row="0" column="2">
                 <widget class="SubCallButton" name="pushButton_35">
                  <property name="minimumSize">
@@ -3847,6 +3818,35 @@ padding-left: 20px;
                  <property name="icon">
                   <iconset resource="xyz.qrc">
                    <normaloff>:/images/rect_boss.png</normaloff>:/images/rect_boss.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QPushButton" name="pushButton">
+                 <property name="minimumSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/boss_round.png</normaloff>:/images/boss_round.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
@@ -5367,8 +5367,8 @@ border-radius: 1px;
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>5</width>
-          <height>20</height>
+          <width>40</width>
+          <height>337</height>
          </size>
         </property>
        </spacer>
@@ -7236,8 +7236,8 @@ border-radius: 1px;
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>5</width>
-          <height>20</height>
+          <width>41</width>
+          <height>337</height>
          </size>
         </property>
        </spacer>
@@ -11008,8 +11008,8 @@ border-radius: 6px;
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>5</width>
-          <height>20</height>
+          <width>40</width>
+          <height>337</height>
          </size>
         </property>
        </spacer>

@@ -1,5 +1,6 @@
 <RCC>
 <qresource prefix="/">
+    <file>images/boss_round.png</file>
     <file>images/back_left_outside_corner.png</file>
     <file>images/back_middle_outside_edge.png</file>
     <file>images/back_right_outside_corner.png</file>
@@ -20,7 +21,6 @@
     <file>images/round_pocket.png</file>
     <file>images/rect_pocket.png</file>
     <file>images/rect_boss.png</file>
-    <file>images/round_boss.png</file>
     <file>images/clearance.png</file>
     <file>images/max_distance.png</file>
     <file>images/extra_probe_depth.png</file>
@@ -31,10 +31,7 @@
     <file>images/probe_corner_group_3d_image.png</file>
     <file>images/carousel_12.png</file>
     <file>images/atc_spindle_tool.png</file>
-
-
+ 
     
-    
-
 </qresource>
 </RCC>
