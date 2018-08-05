@@ -122,46 +122,48 @@ class Camera(QWidget):
         # Start camera 2s after the UI has loaded
         QTimer.singleShot(2000, lambda: self.setCamera(camera_device))
 
-
     def setCamera(self, cameraDevice):
-        if cameraDevice.isEmpty():
-            self.camera = QCamera()
-        else:
-            self.camera = QCamera(cameraDevice)
+        try:
+            if cameraDevice.isEmpty():
+                self.camera = QCamera()
+            else:
+                self.camera = QCamera(cameraDevice)
 
-        self.camera.stateChanged.connect(self.updateCameraState)
-        self.camera.error.connect(self.displayCameraError)
+            self.camera.stateChanged.connect(self.updateCameraState)
+            self.camera.error.connect(self.displayCameraError)
 
-        self.mediaRecorder = QMediaRecorder(self.camera)
-        self.mediaRecorder.stateChanged.connect(self.updateRecorderState)
+            self.mediaRecorder = QMediaRecorder(self.camera)
+            self.mediaRecorder.stateChanged.connect(self.updateRecorderState)
 
-        self.imageCapture = QCameraImageCapture(self.camera)
+            self.imageCapture = QCameraImageCapture(self.camera)
 
-        self.mediaRecorder.durationChanged.connect(self.updateRecordTime)
-        self.mediaRecorder.error.connect(self.displayRecorderError)
+            self.mediaRecorder.durationChanged.connect(self.updateRecordTime)
+            self.mediaRecorder.error.connect(self.displayRecorderError)
 
-        self.mediaRecorder.setMetaData(QMediaMetaData.Title, "Camera Widget")
+            self.mediaRecorder.setMetaData(QMediaMetaData.Title, "Camera Widget")
 
-        self.ui.exposureCompensation.valueChanged.connect(
-            self.setExposureCompensation)
+            self.ui.exposureCompensation.valueChanged.connect(
+                self.setExposureCompensation)
 
-        self.camera.setViewfinder(self.ui.viewfinder)
+            self.camera.setViewfinder(self.ui.viewfinder)
 
-        self.updateCameraState(self.camera.state())
-        self.updateLockStatus(self.camera.lockStatus(), QCamera.UserRequest)
-        self.updateRecorderState(self.mediaRecorder.state())
+            self.updateCameraState(self.camera.state())
+            self.updateLockStatus(self.camera.lockStatus(), QCamera.UserRequest)
+            self.updateRecorderState(self.mediaRecorder.state())
 
-        self.imageCapture.readyForCaptureChanged.connect(self.readyForCapture)
-        self.imageCapture.imageCaptured.connect(self.processCapturedImage)
-        self.imageCapture.imageSaved.connect(self.imageSaved)
+            self.imageCapture.readyForCaptureChanged.connect(self.readyForCapture)
+            self.imageCapture.imageCaptured.connect(self.processCapturedImage)
+            self.imageCapture.imageSaved.connect(self.imageSaved)
 
-        self.camera.lockStatusChanged.connect(self.updateLockStatus)
+            self.camera.lockStatusChanged.connect(self.updateLockStatus)
 
-        self.ui.captureWidget.setTabEnabled(0, self.camera.isCaptureModeSupported(QCamera.CaptureStillImage))
-        self.ui.captureWidget.setTabEnabled(1, self.camera.isCaptureModeSupported(QCamera.CaptureVideo))
+            self.ui.captureWidget.setTabEnabled(0, self.camera.isCaptureModeSupported(QCamera.CaptureStillImage))
+            self.ui.captureWidget.setTabEnabled(1, self.camera.isCaptureModeSupported(QCamera.CaptureVideo))
 
-        self.updateCaptureMode()
-        self.camera.start()
+            self.updateCaptureMode()
+            self.camera.start()
+        except:
+            pass
 
     def keyPressEvent(self, event):
         if event.isAutoRepeat():
