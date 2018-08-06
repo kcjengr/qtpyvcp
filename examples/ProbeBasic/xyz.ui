@@ -179,7 +179,7 @@
               </item>
              </layout>
             </widget>
-            <widget class="GcodeBackplot" name="gcodebackplot">
+            <widget class="GcodeBackplot" name="gcodebackplot" native="true">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
@@ -192,7 +192,7 @@
              <property name="renderProgramAlpha" stdset="0">
               <bool>true</bool>
              </property>
-             <property name="backgroundColor">
+             <property name="backgroundColor" stdset="0">
               <color>
                <red>0</red>
                <green>0</green>
@@ -3027,7 +3027,7 @@ padding-left: 20px;
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>3</number>
             </property>
             <property name="iconSize">
              <size>
@@ -3828,7 +3828,7 @@ padding-left: 20px;
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QPushButton" name="pushButton">
+                <widget class="SubCallButton" name="pushButton_34">
                  <property name="minimumSize">
                   <size>
                    <width>170</width>
@@ -3840,6 +3840,9 @@ padding-left: 20px;
                    <width>170</width>
                    <height>170</height>
                   </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string/>
@@ -4154,218 +4157,382 @@ padding-left: 5px;
              <attribute name="title">
               <string>      VALLEYS AND RIDGES     </string>
              </attribute>
+             <widget class="QLabel" name="label_37">
+              <property name="geometry">
+               <rect>
+                <x>530</x>
+                <y>70</y>
+                <width>441</width>
+                <height>241</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+              <property name="pixmap">
+               <pixmap resource="xyz.qrc">:/images/ridge_and_valley_group.png</pixmap>
+              </property>
+              <property name="scaledContents">
+               <bool>true</bool>
+              </property>
+              <property name="indent">
+               <number>0</number>
+              </property>
+             </widget>
              <widget class="QWidget" name="gridLayoutWidget_5">
               <property name="geometry">
                <rect>
-                <x>180</x>
-                <y>30</y>
-                <width>541</width>
-                <height>511</height>
+                <x>90</x>
+                <y>33</y>
+                <width>413</width>
+                <height>372</height>
                </rect>
               </property>
-              <layout class="QGridLayout" name="gridLayout_5">
+              <layout class="QGridLayout" name="gridLayout_5" columnstretch="0,0,0">
                <property name="spacing">
-                <number>2</number>
+                <number>6</number>
                </property>
-               <item row="0" column="1">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_4">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="3">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_9">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
                <item row="0" column="2">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_3">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
+                <widget class="SubCallButton" name="pushButton_36">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>170</width>
+                   <height>170</height>
                   </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/probe_y_valley.png</normaloff>:/images/probe_y_valley.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="3">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_5">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
                    <width>150</width>
                    <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
                   </size>
                  </property>
                 </widget>
                </item>
                <item row="1" column="2">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_7">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
+                <widget class="SubCallButton" name="pushButton_37">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>170</width>
+                   <height>170</height>
                   </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/probe_x_valley.png</normaloff>:/images/probe_x_valley.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>130</width>
-                   <height>130</height>
+                   <width>150</width>
+                   <height>150</height>
                   </size>
                  </property>
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_6">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
+                <widget class="SubCallButton" name="pushButton_38">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>170</width>
+                   <height>170</height>
                   </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/probe_x_ridge.png</normaloff>:/images/probe_x_ridge.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>130</width>
-                   <height>130</height>
+                   <width>150</width>
+                   <height>150</height>
                   </size>
                  </property>
                 </widget>
                </item>
-               <item row="1" column="3">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_8">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
+               <item row="0" column="1">
+                <widget class="SubCallButton" name="pushButton_39">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>170</width>
+                   <height>170</height>
                   </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/probe_y_ridge.png</normaloff>:/images/probe_y_ridge.png</iconset>
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="2">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_10">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
                    <width>150</width>
                    <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="SubCallButton" name="probe_front_left_top_corner_11">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>130</width>
-                   <height>130</height>
                   </size>
                  </property>
                 </widget>
                </item>
               </layout>
+             </widget>
+             <widget class="QGroupBox" name="groupBox_5">
+              <property name="geometry">
+               <rect>
+                <x>81</x>
+                <y>440</y>
+                <width>441</width>
+                <height>80</height>
+               </rect>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>400</width>
+                <height>80</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>16777215</width>
+                <height>60</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QGroupBox{
+color: rgb(46, 52, 54);
+border-style: solid;
+border-color: black;
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
+border-width: 2px;
+border-radius: 6px;
+}</string>
+              </property>
+              <property name="title">
+               <string/>
+              </property>
+              <widget class="QWidget" name="horizontalLayoutWidget_2">
+               <property name="geometry">
+                <rect>
+                 <x>10</x>
+                 <y>20</y>
+                 <width>421</width>
+                 <height>51</height>
+                </rect>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_4">
+                <item>
+                 <widget class="QLabel" name="step_increment_label_5">
+                  <property name="minimumSize">
+                   <size>
+                    <width>115</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>115</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel{
+    border-style: solid;
+    border-color: rgb(191, 191, 191);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
+	font: 16pt &quot;Bebas Kai&quot;;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>HINT</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_39">
+                  <property name="minimumSize">
+                   <size>
+                    <width>30</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>30</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel{
+font: 75 15pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 5px;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>X :</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="x_hint_3">
+                  <property name="minimumSize">
+                   <size>
+                    <width>80</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>80</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>0.0000</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="label_40">
+                  <property name="minimumSize">
+                   <size>
+                    <width>30</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>30</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLabel{
+font: 75 15pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 1px;
+padding-left: 5px;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>Y :</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLineEdit" name="y_hint_3">
+                  <property name="minimumSize">
+                   <size>
+                    <width>80</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>80</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>0.0000</string>
+                  </property>
+                  <property name="alignment">
+                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
              </widget>
             </widget>
             <widget class="QWidget" name="rotary_axis_tab">
