@@ -76,7 +76,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>6</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -221,7 +221,7 @@
          <widget class="QGroupBox" name="groupBox_4">
           <property name="geometry">
            <rect>
-            <x>11</x>
+            <x>390</x>
             <y>0</y>
             <width>731</width>
             <height>561</height>
@@ -1489,6 +1489,25 @@ border-radius: 8px;
             </property>
            </widget>
           </widget>
+         </widget>
+         <widget class="QLabel" name="label_38">
+          <property name="geometry">
+           <rect>
+            <x>1250</x>
+            <y>350</y>
+            <width>240</width>
+            <height>200</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="xyz.qrc">:/images/tool_probe.png</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
          </widget>
         </widget>
         <widget class="QWidget" name="tooling_tab">
