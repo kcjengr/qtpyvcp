@@ -3027,7 +3027,7 @@ padding-left: 20px;
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>2</number>
+             <number>3</number>
             </property>
             <property name="iconSize">
              <size>
@@ -4163,7 +4163,7 @@ padding-left: 5px;
                 <x>550</x>
                 <y>60</y>
                 <width>411</width>
-                <height>281</height>
+                <height>271</height>
                </rect>
               </property>
               <property name="text">
@@ -4224,38 +4224,6 @@ padding-left: 5px;
                  </property>
                 </widget>
                </item>
-               <item row="1" column="2">
-                <widget class="SubCallButton" name="pushButton_37">
-                 <property name="minimumSize">
-                  <size>
-                   <width>170</width>
-                   <height>170</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>170</width>
-                   <height>170</height>
-                  </size>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true"/>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="xyz.qrc">
-                   <normaloff>:/images/probe_x_valley.png</normaloff>:/images/probe_x_valley.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>150</width>
-                   <height>150</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
                <item row="1" column="1">
                 <widget class="SubCallButton" name="pushButton_38">
                  <property name="minimumSize">
@@ -4289,6 +4257,38 @@ padding-left: 5px;
                 </widget>
                </item>
                <item row="0" column="1">
+                <widget class="SubCallButton" name="pushButton_37">
+                 <property name="minimumSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>170</width>
+                   <height>170</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true"/>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/probe_x_valley.png</normaloff>:/images/probe_x_valley.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>150</width>
+                   <height>150</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="2">
                 <widget class="SubCallButton" name="pushButton_39">
                  <property name="minimumSize">
                   <size>
