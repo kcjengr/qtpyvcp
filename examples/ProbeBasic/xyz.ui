@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1564</width>
+    <width>1573</width>
     <height>1090</height>
    </rect>
   </property>
@@ -59,6 +59,9 @@
           <italic>false</italic>
           <bold>false</bold>
          </font>
+        </property>
+        <property name="cursor">
+         <cursorShape>ArrowCursor</cursorShape>
         </property>
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
@@ -1424,7 +1427,7 @@ border-radius: 8px;
           <widget class="QWidget" name="widget_4" native="true">
            <property name="geometry">
             <rect>
-             <x>487</x>
+             <x>498</x>
              <y>25</y>
              <width>176</width>
              <height>291</height>
@@ -1455,10 +1458,10 @@ border-radius: 8px;
            <widget class="QLabel" name="label_90">
             <property name="geometry">
              <rect>
-              <x>57</x>
-              <y>134</y>
+              <x>58</x>
+              <y>138</y>
               <width>60</width>
-              <height>40</height>
+              <height>33</height>
              </rect>
             </property>
             <property name="styleSheet">
@@ -1622,6 +1625,20 @@ border-radius: 6px;
                   <width>130</width>
                   <height>40</height>
                  </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 75 17pt &quot;Bebas Kai&quot;;
+}</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -2214,7 +2231,7 @@ border-radius: 6px;
          <widget class="QGroupBox" name="groupBox_6">
           <property name="geometry">
            <rect>
-            <x>1178</x>
+            <x>1188</x>
             <y>10</y>
             <width>336</width>
             <height>251</height>
@@ -2331,6 +2348,20 @@ border-radius: 6px;
                   <width>130</width>
                   <height>40</height>
                  </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 75 17pt &quot;Bebas Kai&quot;;
+}</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignCenter</set>
                 </property>
                </widget>
               </item>
@@ -2515,7 +2546,7 @@ border-radius: 6px;
          <widget class="QLabel" name="label_38">
           <property name="geometry">
            <rect>
-            <x>941</x>
+            <x>951</x>
             <y>330</y>
             <width>240</width>
             <height>200</height>
@@ -2534,7 +2565,7 @@ border-radius: 6px;
          <widget class="QGroupBox" name="groupBox_7">
           <property name="geometry">
            <rect>
-            <x>1212</x>
+            <x>1222</x>
             <y>308</y>
             <width>301</width>
             <height>191</height>
@@ -4249,7 +4280,7 @@ padding-left: 20px;
              <enum>QTabWidget::Rounded</enum>
             </property>
             <property name="currentIndex">
-             <number>3</number>
+             <number>0</number>
             </property>
             <property name="iconSize">
              <size>
@@ -4264,7 +4295,7 @@ padding-left: 20px;
              <widget class="QWidget" name="gridLayoutWidget_2">
               <property name="geometry">
                <rect>
-                <x>48</x>
+                <x>63</x>
                 <y>48</y>
                 <width>461</width>
                 <height>461</height>
@@ -4272,7 +4303,7 @@ padding-left: 20px;
               </property>
               <layout class="QGridLayout" name="gridLayout_2">
                <property name="spacing">
-                <number>0</number>
+                <number>3</number>
                </property>
                <item row="2" column="2">
                 <widget class="SubCallButton" name="pushButton_10">
@@ -4613,7 +4644,7 @@ padding-left: 20px;
              <widget class="QLabel" name="label_36">
               <property name="geometry">
                <rect>
-                <x>554</x>
+                <x>559</x>
                 <y>50</y>
                 <width>441</width>
                 <height>311</height>
@@ -4640,10 +4671,10 @@ padding-left: 20px;
              <widget class="QWidget" name="gridLayoutWidget_3">
               <property name="geometry">
                <rect>
-                <x>48</x>
-                <y>40</y>
-                <width>471</width>
-                <height>471</height>
+                <x>65</x>
+                <y>54</y>
+                <width>451</width>
+                <height>451</height>
                </rect>
               </property>
               <layout class="QGridLayout" name="gridLayout_3">
@@ -4654,14 +4685,14 @@ padding-left: 20px;
                 <widget class="SubCallButton" name="pushButton_19">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="text">
@@ -4673,8 +4704,8 @@ padding-left: 20px;
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>135</width>
-                   <height>135</height>
+                   <width>125</width>
+                   <height>125</height>
                   </size>
                  </property>
                 </widget>
@@ -4683,14 +4714,14 @@ padding-left: 20px;
                 <widget class="SubCallButton" name="pushButton_20">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="text">
@@ -4702,8 +4733,8 @@ padding-left: 20px;
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>135</width>
-                   <height>135</height>
+                   <width>125</width>
+                   <height>125</height>
                   </size>
                  </property>
                 </widget>
@@ -4712,14 +4743,14 @@ padding-left: 20px;
                 <widget class="SubCallButton" name="pushButton_21">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="text">
@@ -4731,8 +4762,8 @@ padding-left: 20px;
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>135</width>
-                   <height>135</height>
+                   <width>125</width>
+                   <height>125</height>
                   </size>
                  </property>
                 </widget>
@@ -4741,14 +4772,14 @@ padding-left: 20px;
                 <widget class="SubCallButton" name="pushButton_22">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="text">
@@ -4760,8 +4791,8 @@ padding-left: 20px;
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>135</width>
-                   <height>135</height>
+                   <width>125</width>
+                   <height>125</height>
                   </size>
                  </property>
                 </widget>
@@ -4770,14 +4801,14 @@ padding-left: 20px;
                 <widget class="SubCallButton" name="pushButton_23">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="text">
@@ -4789,8 +4820,8 @@ padding-left: 20px;
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>135</width>
-                   <height>135</height>
+                   <width>125</width>
+                   <height>125</height>
                   </size>
                  </property>
                 </widget>
@@ -4799,14 +4830,14 @@ padding-left: 20px;
                 <widget class="SubCallButton" name="pushButton_24">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="text">
@@ -4818,8 +4849,8 @@ padding-left: 20px;
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>145</width>
-                   <height>145</height>
+                   <width>125</width>
+                   <height>125</height>
                   </size>
                  </property>
                 </widget>
@@ -4828,14 +4859,14 @@ padding-left: 20px;
                 <widget class="SubCallButton" name="pushButton_25">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="text">
@@ -4847,8 +4878,8 @@ padding-left: 20px;
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>135</width>
-                   <height>135</height>
+                   <width>125</width>
+                   <height>125</height>
                   </size>
                  </property>
                 </widget>
@@ -4857,14 +4888,14 @@ padding-left: 20px;
                 <widget class="SubCallButton" name="pushButton_26">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="text">
@@ -4876,8 +4907,8 @@ padding-left: 20px;
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>135</width>
-                   <height>135</height>
+                   <width>125</width>
+                   <height>125</height>
                   </size>
                  </property>
                 </widget>
@@ -4886,14 +4917,14 @@ padding-left: 20px;
                 <widget class="SubCallButton" name="pushButton_27">
                  <property name="minimumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
-                   <height>150</height>
+                   <width>140</width>
+                   <height>140</height>
                   </size>
                  </property>
                  <property name="text">
@@ -4905,8 +4936,8 @@ padding-left: 20px;
                  </property>
                  <property name="iconSize">
                   <size>
-                   <width>135</width>
-                   <height>135</height>
+                   <width>125</width>
+                   <height>125</height>
                   </size>
                  </property>
                 </widget>
@@ -4943,7 +4974,7 @@ padding-left: 20px;
              <widget class="QWidget" name="gridLayoutWidget_4">
               <property name="geometry">
                <rect>
-                <x>90</x>
+                <x>105</x>
                 <y>33</y>
                 <width>371</width>
                 <height>372</height>
@@ -5086,7 +5117,7 @@ padding-left: 20px;
              <widget class="QLabel" name="label_31">
               <property name="geometry">
                <rect>
-                <x>530</x>
+                <x>540</x>
                 <y>60</y>
                 <width>441</width>
                 <height>281</height>
@@ -5108,7 +5139,7 @@ padding-left: 20px;
              <widget class="QGroupBox" name="groupBox_3">
               <property name="geometry">
                <rect>
-                <x>1</x>
+                <x>16</x>
                 <y>440</y>
                 <width>561</width>
                 <height>80</height>
@@ -5382,7 +5413,7 @@ padding-left: 5px;
              <widget class="QLabel" name="label_37">
               <property name="geometry">
                <rect>
-                <x>550</x>
+                <x>560</x>
                 <y>60</y>
                 <width>411</width>
                 <height>271</height>
@@ -5404,7 +5435,7 @@ padding-left: 5px;
              <widget class="QWidget" name="gridLayoutWidget_5">
               <property name="geometry">
                <rect>
-                <x>88</x>
+                <x>103</x>
                 <y>33</y>
                 <width>371</width>
                 <height>372</height>
@@ -5547,7 +5578,7 @@ padding-left: 5px;
              <widget class="QGroupBox" name="groupBox_5">
               <property name="geometry">
                <rect>
-                <x>50</x>
+                <x>65</x>
                 <y>440</y>
                 <width>441</width>
                 <height>80</height>
@@ -6036,7 +6067,7 @@ padding-left: 5px;
     border-width: 2px;
     border-radius: 5px;
     color: rgb(238, 238, 236);    
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(197, 197, 197), stop:0.879795 rgb(147, 147, 147), stop:0.999999 rgb(234, 240, 255), stop:0.55444 rgb(120, 120, 120), stop:0.1550246 rgb(80, 82, 88), stop:1 rgb(57, 59, 66));
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(197, 197, 197), stop:0.999895 rgb(126, 126, 129), stop:0.998899 rgb(176, 174, 178), stop:0.750444 rgb(96, 95, 98), stop:0.193246 rgb(54, 53, 56), stop:1 rgb(43, 44, 46));
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
@@ -6090,8 +6121,8 @@ padding-left: 5px;
     border-width: 2px;
     border-radius: 5px;
     color: rgb(238, 238, 236);    
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(197, 197, 197), stop:0.879795 rgb(147, 147, 147), stop:0.999999 rgb(234, 240, 255), stop:0.55444 rgb(120, 120, 120), stop:0.1550246 rgb(80, 82, 88), stop:1 rgb(57, 59, 66));
-	font: 17pt &quot;Bebas Kai&quot;;
+	background-color: qlineargradient(spread:repeat, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(211, 215, 215, 255), stop:0.195767 rgba(75, 77, 77, 255), stop:0.349206 rgba(66, 66, 68, 255), stop:0.698413 rgba(73, 76, 76, 255), stop:0.835979 rgba(84, 87, 87, 255), stop:1 rgba(246, 252, 252, 255));
+font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -6144,7 +6175,7 @@ padding-left: 5px;
     border-width: 2px;
     border-radius: 5px;
     color: rgb(238, 238, 236);    
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(197, 197, 197), stop:0.879795 rgb(147, 147, 147), stop:0.999999 rgb(234, 240, 255), stop:0.55444 rgb(120, 120, 120), stop:0.1550246 rgb(80, 82, 88), stop:1 rgb(57, 59, 66));
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(197, 197, 197), stop:0.999895 rgb(126, 126, 129), stop:0.998899 rgb(176, 174, 178), stop:0.750444 rgb(96, 95, 98), stop:0.193246 rgb(54, 53, 56), stop:1 rgb(43, 44, 46));
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
@@ -6759,7 +6790,7 @@ border-radius: 1px;
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>2</width>
+          <width>5</width>
           <height>337</height>
          </size>
         </property>
@@ -6821,9 +6852,9 @@ border-radius: 1px;
         <widget class="ActionButton" name="max_velocity_100_button">
          <property name="geometry">
           <rect>
-           <x>257</x>
+           <x>254</x>
            <y>287</y>
-           <width>54</width>
+           <width>56</width>
            <height>35</height>
           </rect>
          </property>
@@ -6849,7 +6880,7 @@ border-radius: 1px;
         <widget class="QLineEdit" name="lineEdit_20">
          <property name="geometry">
           <rect>
-           <x>212</x>
+           <x>208</x>
            <y>288</y>
            <width>37</width>
            <height>33</height>
@@ -7093,7 +7124,7 @@ border-radius: 1px;
         <widget class="QLineEdit" name="lineEdit_19">
          <property name="geometry">
           <rect>
-           <x>212</x>
+           <x>208</x>
            <y>192</y>
            <width>37</width>
            <height>33</height>
@@ -7337,22 +7368,34 @@ border-radius: 1px;
         <widget class="QSlider" name="horizontalSlider_3">
          <property name="geometry">
           <rect>
-           <x>19</x>
+           <x>17</x>
            <y>291</y>
            <width>182</width>
            <height>25</height>
           </rect>
          </property>
+         <property name="cursor">
+          <cursorShape>OpenHandCursor</cursorShape>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="invertedAppearance">
+          <bool>false</bool>
+         </property>
+         <property name="invertedControls">
+          <bool>false</bool>
          </property>
         </widget>
         <widget class="ActionButton" name="spindle_100_button">
          <property name="geometry">
           <rect>
-           <x>257</x>
+           <x>254</x>
            <y>191</y>
-           <width>54</width>
+           <width>56</width>
            <height>35</height>
           </rect>
          </property>
@@ -7378,7 +7421,7 @@ border-radius: 1px;
         <widget class="QLineEdit" name="lineEdit_18">
          <property name="geometry">
           <rect>
-           <x>212</x>
+           <x>208</x>
            <y>144</y>
            <width>37</width>
            <height>33</height>
@@ -7622,9 +7665,9 @@ border-radius: 1px;
         <widget class="ActionButton" name="feedrate_100_button">
          <property name="geometry">
           <rect>
-           <x>257</x>
+           <x>254</x>
            <y>143</y>
-           <width>54</width>
+           <width>56</width>
            <height>35</height>
           </rect>
          </property>
@@ -7650,11 +7693,17 @@ border-radius: 1px;
         <widget class="QSlider" name="horizontalSlider">
          <property name="geometry">
           <rect>
-           <x>19</x>
+           <x>17</x>
            <y>147</y>
            <width>182</width>
            <height>25</height>
           </rect>
+         </property>
+         <property name="cursor">
+          <cursorShape>OpenHandCursor</cursorShape>
+         </property>
+         <property name="maximum">
+          <number>200</number>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -7663,11 +7712,17 @@ border-radius: 1px;
         <widget class="QSlider" name="horizontalSlider_2">
          <property name="geometry">
           <rect>
-           <x>19</x>
+           <x>17</x>
            <y>196</y>
            <width>182</width>
            <height>25</height>
           </rect>
+         </property>
+         <property name="cursor">
+          <cursorShape>OpenHandCursor</cursorShape>
+         </property>
+         <property name="maximum">
+          <number>200</number>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -7676,9 +7731,9 @@ border-radius: 1px;
         <widget class="ActionButton" name="m6_g43_button">
          <property name="geometry">
           <rect>
-           <x>126</x>
+           <x>121</x>
            <y>27</y>
-           <width>60</width>
+           <width>65</width>
            <height>35</height>
           </rect>
          </property>
@@ -7948,7 +8003,7 @@ border-radius: 1px;
         <widget class="QLineEdit" name="tool_number_entry_box">
          <property name="geometry">
           <rect>
-           <x>66</x>
+           <x>63</x>
            <y>27</y>
            <width>45</width>
            <height>33</height>
@@ -8192,9 +8247,9 @@ border-radius: 1px;
         <widget class="ActionButton" name="go_to_g30_button">
          <property name="geometry">
           <rect>
-           <x>202</x>
+           <x>199</x>
            <y>27</y>
-           <width>75</width>
+           <width>85</width>
            <height>35</height>
           </rect>
          </property>
@@ -8220,7 +8275,7 @@ border-radius: 1px;
         <widget class="QLineEdit" name="lineEdit_23">
          <property name="geometry">
           <rect>
-           <x>42</x>
+           <x>39</x>
            <y>30</y>
            <width>23</width>
            <height>28</height>
@@ -8337,9 +8392,9 @@ border-radius: 1px;
         <widget class="ActionButton" name="spindle_100_button_2">
          <property name="geometry">
           <rect>
-           <x>257</x>
+           <x>254</x>
            <y>239</y>
-           <width>54</width>
+           <width>56</width>
            <height>35</height>
           </rect>
          </property>
@@ -8365,11 +8420,17 @@ border-radius: 1px;
         <widget class="QSlider" name="horizontalSlider_4">
          <property name="geometry">
           <rect>
-           <x>19</x>
+           <x>17</x>
            <y>244</y>
            <width>182</width>
            <height>25</height>
           </rect>
+         </property>
+         <property name="cursor">
+          <cursorShape>OpenHandCursor</cursorShape>
+         </property>
+         <property name="maximum">
+          <number>100</number>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -8378,7 +8439,7 @@ border-radius: 1px;
         <widget class="QLineEdit" name="lineEdit_21">
          <property name="geometry">
           <rect>
-           <x>212</x>
+           <x>208</x>
            <y>240</y>
            <width>37</width>
            <height>33</height>
@@ -8631,7 +8692,7 @@ border-radius: 1px;
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>2</width>
+          <width>5</width>
           <height>337</height>
          </size>
         </property>
@@ -12403,7 +12464,7 @@ border-radius: 6px;
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>2</width>
+          <width>5</width>
           <height>337</height>
          </size>
         </property>
@@ -12775,6 +12836,9 @@ border-radius: 6px;
            <width>211</width>
            <height>35</height>
           </rect>
+         </property>
+         <property name="cursor">
+          <cursorShape>OpenHandCursor</cursorShape>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -13393,7 +13457,7 @@ border-radius: 1px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1564</width>
+     <width>1573</width>
      <height>20</height>
     </rect>
    </property>

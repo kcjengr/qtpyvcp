@@ -11,12 +11,13 @@ QMainWindow {
 
 QPushButton, QComboBox[editable="false"],
 QComboBox[editable="true"]::drop-down {
+    color: white;
     border-image: url(:/images/pp_border.png);
     border-color: black; 
     border-style: solid;
     border-radius: 5px;
     border-width: 2px;
-    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(197, 197, 197), stop:0.699795 rgb(147, 147, 147), stop:0.929799 rgb(234, 240, 255), stop:0.40444 rgb(120, 120, 120), stop:0.113246 rgb(117, 118, 124), stop:1 rgb(83, 84, 86));
+    background: qlineargradient(spread:repeat, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(211, 215, 215, 255), stop:0.195767 rgba(75, 77, 77, 255), stop:0.349206 rgba(66, 66, 68, 255), stop:0.698413 rgba(73, 76, 76, 255), stop:0.835979 rgba(84, 87, 87, 255), stop:1 rgba(246, 252, 252, 255));
 }
 
 QPushButton:disabled {
