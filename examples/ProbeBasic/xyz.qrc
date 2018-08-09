@@ -36,7 +36,8 @@
     <file>images/probe_x_ridge.png</file>
     <file>images/probe_y_ridge.png</file>
     <file>images/ridge_and_valley_group.png</file>
-     <file>images/tool_probe.png</file>
+    <file>images/tool_probe.png</file>
+    <file>images/atc_spindle_tool_dimensioned.png</file>
  
     
 </qresource>
