@@ -73,7 +73,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -8175,13 +8175,71 @@ border-radius: 6px;
          <property name="geometry">
           <rect>
            <x>21</x>
-           <y>283</y>
+           <y>276</y>
            <width>225</width>
-           <height>25</height>
+           <height>40</height>
           </rect>
          </property>
          <property name="cursor">
           <cursorShape>OpenHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QSlider::groove:horizontal {
+border: 1px solid #bbb;
+background: white;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal {
+background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
+    stop: 0 #66e, stop: 1 #bbf);
+background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
+    stop: 0 #bbf, stop: 1 #55f);
+border: 1px solid #777;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::add-page:horizontal {
+background: #fff;
+border: 1px solid #777;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal {
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0.006, stop:0 rgba(211, 215, 215, 245), stop:0.0899471 rgba(78, 80, 80, 255), stop:0.201058 rgba(66, 66, 68, 255), stop:0.242105 rgba(255, 255, 255, 255), stop:0.285714 rgba(67, 67, 67, 255), stop:0.455026 rgba(59, 59, 59, 255), stop:0.505263 rgba(255, 255, 255, 255), stop:0.539683 rgba(59, 59, 59, 255), stop:0.703704 rgba(62, 65, 65, 255), stop:0.763158 rgba(255, 255, 255, 255), stop:0.78836 rgba(60, 61, 61, 255), stop:0.910053 rgba(73, 76, 76, 255), stop:1 rgba(246, 252, 252, 245));
+border: 2px solid #777;
+border-color: rgb(40, 40, 40);
+width: 40px;
+margin-top: -11px;
+margin-bottom: -11px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal:hover {
+background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+    stop:0 #fff, stop:1 #ddd);
+border: 1px solid #444;
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal:disabled {
+background: #bbb;
+border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+background: #eee;
+border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+background: #eee;
+border: 1px solid #aaa;
+border-radius: 4px;
+}</string>
          </property>
          <property name="maximum">
           <number>100</number>
@@ -8512,13 +8570,71 @@ border-radius: 6px;
          <property name="geometry">
           <rect>
            <x>21</x>
-           <y>43</y>
+           <y>36</y>
            <width>225</width>
-           <height>25</height>
+           <height>40</height>
           </rect>
          </property>
          <property name="cursor">
           <cursorShape>OpenHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QSlider::groove:horizontal {
+border: 1px solid #bbb;
+background: white;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal {
+background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
+    stop: 0 #66e, stop: 1 #bbf);
+background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
+    stop: 0 #bbf, stop: 1 #55f);
+border: 1px solid #777;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::add-page:horizontal {
+background: #fff;
+border: 1px solid #777;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal {
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0.006, stop:0 rgba(211, 215, 215, 245), stop:0.0899471 rgba(78, 80, 80, 255), stop:0.201058 rgba(66, 66, 68, 255), stop:0.242105 rgba(255, 255, 255, 255), stop:0.285714 rgba(67, 67, 67, 255), stop:0.455026 rgba(59, 59, 59, 255), stop:0.505263 rgba(255, 255, 255, 255), stop:0.539683 rgba(59, 59, 59, 255), stop:0.703704 rgba(62, 65, 65, 255), stop:0.763158 rgba(255, 255, 255, 255), stop:0.78836 rgba(60, 61, 61, 255), stop:0.910053 rgba(73, 76, 76, 255), stop:1 rgba(246, 252, 252, 245));
+border: 2px solid #777;
+border-color: rgb(40, 40, 40);
+width: 40px;
+margin-top: -11px;
+margin-bottom: -11px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal:hover {
+background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+    stop:0 #fff, stop:1 #ddd);
+border: 1px solid #444;
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal:disabled {
+background: #bbb;
+border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+background: #eee;
+border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+background: #eee;
+border: 1px solid #aaa;
+border-radius: 4px;
+}</string>
          </property>
          <property name="maximum">
           <number>200</number>
@@ -8531,13 +8647,71 @@ border-radius: 6px;
          <property name="geometry">
           <rect>
            <x>21</x>
-           <y>123</y>
+           <y>116</y>
            <width>225</width>
-           <height>25</height>
+           <height>40</height>
           </rect>
          </property>
          <property name="cursor">
           <cursorShape>OpenHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QSlider::groove:horizontal {
+border: 1px solid #bbb;
+background: white;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal {
+background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
+    stop: 0 #66e, stop: 1 #bbf);
+background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
+    stop: 0 #bbf, stop: 1 #55f);
+border: 1px solid #777;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::add-page:horizontal {
+background: #fff;
+border: 1px solid #777;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal {
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0.006, stop:0 rgba(211, 215, 215, 245), stop:0.0899471 rgba(78, 80, 80, 255), stop:0.201058 rgba(66, 66, 68, 255), stop:0.242105 rgba(255, 255, 255, 255), stop:0.285714 rgba(67, 67, 67, 255), stop:0.455026 rgba(59, 59, 59, 255), stop:0.505263 rgba(255, 255, 255, 255), stop:0.539683 rgba(59, 59, 59, 255), stop:0.703704 rgba(62, 65, 65, 255), stop:0.763158 rgba(255, 255, 255, 255), stop:0.78836 rgba(60, 61, 61, 255), stop:0.910053 rgba(73, 76, 76, 255), stop:1 rgba(246, 252, 252, 245));
+border: 2px solid #777;
+border-color: rgb(40, 40, 40);
+width: 40px;
+margin-top: -11px;
+margin-bottom: -11px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal:hover {
+background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+    stop:0 #fff, stop:1 #ddd);
+border: 1px solid #444;
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal:disabled {
+background: #bbb;
+border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+background: #eee;
+border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+background: #eee;
+border: 1px solid #aaa;
+border-radius: 4px;
+}</string>
          </property>
          <property name="maximum">
           <number>200</number>
@@ -8584,13 +8758,71 @@ border-radius: 6px;
          <property name="geometry">
           <rect>
            <x>21</x>
-           <y>203</y>
+           <y>196</y>
            <width>225</width>
-           <height>25</height>
+           <height>40</height>
           </rect>
          </property>
          <property name="cursor">
           <cursorShape>OpenHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QSlider::groove:horizontal {
+border: 1px solid #bbb;
+background: white;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal {
+background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
+    stop: 0 #66e, stop: 1 #bbf);
+background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
+    stop: 0 #bbf, stop: 1 #55f);
+border: 1px solid #777;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::add-page:horizontal {
+background: #fff;
+border: 1px solid #777;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal {
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0.006, stop:0 rgba(211, 215, 215, 245), stop:0.0899471 rgba(78, 80, 80, 255), stop:0.201058 rgba(66, 66, 68, 255), stop:0.242105 rgba(255, 255, 255, 255), stop:0.285714 rgba(67, 67, 67, 255), stop:0.455026 rgba(59, 59, 59, 255), stop:0.505263 rgba(255, 255, 255, 255), stop:0.539683 rgba(59, 59, 59, 255), stop:0.703704 rgba(62, 65, 65, 255), stop:0.763158 rgba(255, 255, 255, 255), stop:0.78836 rgba(60, 61, 61, 255), stop:0.910053 rgba(73, 76, 76, 255), stop:1 rgba(246, 252, 252, 245));
+border: 2px solid #777;
+border-color: rgb(40, 40, 40);
+width: 40px;
+margin-top: -11px;
+margin-bottom: -11px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal:hover {
+background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+    stop:0 #fff, stop:1 #ddd);
+border: 1px solid #444;
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal:disabled {
+background: #bbb;
+border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+background: #eee;
+border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+background: #eee;
+border: 1px solid #aaa;
+border-radius: 4px;
+}</string>
          </property>
          <property name="maximum">
           <number>100</number>
@@ -14064,13 +14296,71 @@ border-radius: 6px;
          <property name="geometry">
           <rect>
            <x>25</x>
-           <y>99</y>
+           <y>96</y>
            <width>215</width>
-           <height>35</height>
+           <height>40</height>
           </rect>
          </property>
          <property name="cursor">
           <cursorShape>OpenHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QSlider::groove:horizontal {
+border: 1px solid #bbb;
+background: white;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal {
+background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
+    stop: 0 #66e, stop: 1 #bbf);
+background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
+    stop: 0 #bbf, stop: 1 #55f);
+border: 1px solid #777;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::add-page:horizontal {
+background: #fff;
+border: 1px solid #777;
+height: 18px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal {
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0.006, stop:0 rgba(211, 215, 215, 245), stop:0.0899471 rgba(78, 80, 80, 255), stop:0.201058 rgba(66, 66, 68, 255), stop:0.242105 rgba(255, 255, 255, 255), stop:0.285714 rgba(67, 67, 67, 255), stop:0.455026 rgba(59, 59, 59, 255), stop:0.505263 rgba(255, 255, 255, 255), stop:0.539683 rgba(59, 59, 59, 255), stop:0.703704 rgba(62, 65, 65, 255), stop:0.763158 rgba(255, 255, 255, 255), stop:0.78836 rgba(60, 61, 61, 255), stop:0.910053 rgba(73, 76, 76, 255), stop:1 rgba(246, 252, 252, 245));
+border: 2px solid #777;
+border-color: rgb(40, 40, 40);
+width: 40px;
+margin-top: -11px;
+margin-bottom: -11px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal:hover {
+background: qlineargradient(x1:0, y1:0, x2:1, y2:1,
+    stop:0 #fff, stop:1 #ddd);
+border: 1px solid #444;
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal:disabled {
+background: #bbb;
+border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+background: #eee;
+border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+background: #eee;
+border: 1px solid #aaa;
+border-radius: 4px;
+}</string>
          </property>
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
