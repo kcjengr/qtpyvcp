@@ -8083,126 +8083,6 @@ border-radius: 4px;
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
-        <widget class="QLabel" name="label_50">
-         <property name="geometry">
-          <rect>
-           <x>261</x>
-           <y>39</y>
-           <width>40</width>
-           <height>35</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLabel {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 15pt &quot;Bebas Kai&quot;;
-}</string>
-         </property>
-         <property name="text">
-          <string>100</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="indent">
-          <number>0</number>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_51">
-         <property name="geometry">
-          <rect>
-           <x>260</x>
-           <y>119</y>
-           <width>40</width>
-           <height>35</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLabel {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 15pt &quot;Bebas Kai&quot;;
-}</string>
-         </property>
-         <property name="text">
-          <string>100</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="indent">
-          <number>0</number>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_52">
-         <property name="geometry">
-          <rect>
-           <x>260</x>
-           <y>199</y>
-           <width>40</width>
-           <height>35</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLabel {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 15pt &quot;Bebas Kai&quot;;
-}</string>
-         </property>
-         <property name="text">
-          <string>100</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="indent">
-          <number>0</number>
-         </property>
-        </widget>
-        <widget class="QLabel" name="label_54">
-         <property name="geometry">
-          <rect>
-           <x>260</x>
-           <y>279</y>
-           <width>40</width>
-           <height>35</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLabel {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 15pt &quot;Bebas Kai&quot;;
-}</string>
-         </property>
-         <property name="text">
-          <string>100</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="indent">
-          <number>0</number>
-         </property>
-        </widget>
         <widget class="ActionButton" name="feedrate_100_button">
          <property name="geometry">
           <rect>
@@ -8231,10 +8111,142 @@ border-radius: 4px;
           <string>F 100%</string>
          </property>
          <property name="checkable">
-          <bool>true</bool>
+          <bool>false</bool>
          </property>
          <property name="option" stdset="0">
           <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="fr_override_dro">
+         <property name="geometry">
+          <rect>
+           <x>262</x>
+           <y>39</y>
+           <width>40</width>
+           <height>35</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QSpinBox {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 75 15pt &quot;Bebas Kai&quot;;
+}</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="maximum">
+          <number>200</number>
+         </property>
+         <property name="value">
+          <number>100</number>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="spindle_override_dro">
+         <property name="geometry">
+          <rect>
+           <x>262</x>
+           <y>119</y>
+           <width>40</width>
+           <height>35</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QSpinBox {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 75 15pt &quot;Bebas Kai&quot;;
+}</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="maximum">
+          <number>200</number>
+         </property>
+         <property name="value">
+          <number>100</number>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="rapid_override_dro">
+         <property name="geometry">
+          <rect>
+           <x>262</x>
+           <y>199</y>
+           <width>40</width>
+           <height>35</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QSpinBox {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 75 15pt &quot;Bebas Kai&quot;;
+}</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="value">
+          <number>100</number>
+         </property>
+        </widget>
+        <widget class="QSpinBox" name="max_velocity_override_dro">
+         <property name="geometry">
+          <rect>
+           <x>262</x>
+           <y>279</y>
+           <width>40</width>
+           <height>35</height>
+          </rect>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QSpinBox {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 75 15pt &quot;Bebas Kai&quot;;
+}</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+         <property name="value">
+          <number>100</number>
          </property>
         </widget>
        </widget>
@@ -14414,54 +14426,6 @@ border-radius: 1px;
  </resources>
  <connections>
   <connection>
-   <sender>spindle_override_slider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>label_51</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>618</x>
-     <y>876</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>654</x>
-     <y>876</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>rapids_override_slider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>label_52</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>595</x>
-     <y>953</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>654</x>
-     <y>952</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>max_velocity_override_slider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>label_54</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>574</x>
-     <y>1028</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>660</x>
-     <y>1033</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>jog_fr_slider</sender>
    <signal>valueChanged(int)</signal>
    <receiver>jog_fr_dro</receiver>
@@ -14480,16 +14444,48 @@ border-radius: 1px;
   <connection>
    <sender>feedrate_override_slider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>label_50</receiver>
-   <slot>setNum(int)</slot>
+   <receiver>fr_override_dro</receiver>
+   <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>584</x>
-     <y>810</y>
+     <x>590</x>
+     <y>789</y>
     </hint>
     <hint type="destinationlabel">
      <x>657</x>
-     <y>803</y>
+     <y>796</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fr_override_dro</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>feedrate_override_slider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>678</x>
+     <y>783</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>605</x>
+     <y>792</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>feedrate_100_button</sender>
+   <signal>clicked()</signal>
+   <receiver>fr_override_dro</receiver>
+   <slot>update()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>749</x>
+     <y>778</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>668</x>
+     <y>789</y>
     </hint>
    </hints>
   </connection>
