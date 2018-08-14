@@ -7622,7 +7622,7 @@ border-radius: 1px;
       <item>
        <widget class="QGroupBox" name="main_override_tool_qgroupbox">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -8270,7 +8270,7 @@ border-radius: 4px;
       <item>
        <widget class="QGroupBox" name="main_dro_qgroupbox">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -8310,7 +8310,7 @@ border-radius: 6px;
           <item>
            <layout class="QHBoxLayout" name="dro_column_headers">
             <property name="spacing">
-             <number>6</number>
+             <number>15</number>
             </property>
             <item>
              <widget class="QLabel" name="axis_column_header">
@@ -14129,7 +14129,7 @@ border-radius: 1px;
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
-        <widget class="QLabel" name="jog_fr_dro">
+        <widget class="QSpinBox" name="fr_override_dro_2">
          <property name="geometry">
           <rect>
            <x>231</x>
@@ -14139,7 +14139,7 @@ border-radius: 1px;
           </rect>
          </property>
          <property name="styleSheet">
-          <string notr="true">QLabel {
+          <string notr="true">QSpinBox {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -14149,14 +14149,17 @@ border-radius: 1px;
 	font: 75 15pt &quot;Bebas Kai&quot;;
 }</string>
          </property>
-         <property name="text">
-          <string>100</string>
-         </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
-         <property name="indent">
-          <number>0</number>
+         <property name="buttonSymbols">
+          <enum>QAbstractSpinBox::NoButtons</enum>
+         </property>
+         <property name="maximum">
+          <number>200</number>
+         </property>
+         <property name="value">
+          <number>100</number>
          </property>
         </widget>
         <zorder>spindle_stop_button</zorder>
@@ -14178,7 +14181,7 @@ border-radius: 1px;
         <zorder>jog_fr_100_button</zorder>
         <zorder>line_4</zorder>
         <zorder>spindle_rev_button</zorder>
-        <zorder>jog_fr_dro</zorder>
+        <zorder>fr_override_dro_2</zorder>
        </widget>
       </item>
      </layout>
@@ -14426,22 +14429,6 @@ border-radius: 1px;
  </resources>
  <connections>
   <connection>
-   <sender>jog_fr_slider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>jog_fr_dro</receiver>
-   <slot>setNum(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1747</x>
-     <y>856</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1815</x>
-     <y>854</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>feedrate_override_slider</sender>
    <signal>valueChanged(int)</signal>
    <receiver>fr_override_dro</receiver>
@@ -14486,6 +14473,134 @@ border-radius: 1px;
     <hint type="destinationlabel">
      <x>668</x>
      <y>789</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spindle_override_slider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>spindle_override_dro</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>609</x>
+     <y>873</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>664</x>
+     <y>876</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spindle_override_dro</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>spindle_override_slider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>666</x>
+     <y>862</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>630</x>
+     <y>866</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rapids_override_slider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>rapid_override_dro</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>602</x>
+     <y>953</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>662</x>
+     <y>952</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>rapid_override_dro</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>rapids_override_slider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>667</x>
+     <y>967</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>613</x>
+     <y>965</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>max_velocity_override_slider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>max_velocity_override_dro</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>592</x>
+     <y>1034</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>656</x>
+     <y>1029</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>max_velocity_override_dro</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>max_velocity_override_slider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>666</x>
+     <y>1042</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>623</x>
+     <y>1046</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>jog_fr_slider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>fr_override_dro_2</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1750</x>
+     <y>858</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1832</x>
+     <y>856</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>fr_override_dro_2</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>jog_fr_slider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1831</x>
+     <y>864</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1790</x>
+     <y>861</y>
     </hint>
    </hints>
   </connection>
