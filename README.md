@@ -35,6 +35,8 @@ systems.
 `sudo apt-get install qttools5-dev-tools`  
 `sudo apt-get install qttools5.dev`  
 `sudo apt-get install pyqt5-dev-tools`  
+`sudo apt-get install python-pyqt5.qtopengl`  
+`sudo apt-get install python-pyqt5.qsci`  
 
 These are required for the camera widget to work:  
 `sudo apt-get install python-pyqt5.qtmultimedia`  
@@ -44,6 +46,10 @@ These also might be needed for the camera, please confirm if needed:
 `sudo apt-get install libqt5multimedia5`  
 `sudo apt-get install libqt5multimediawidgets5`  
 `sudo apt-get install libqt5multimedia5-plugins`  
+
+### Run the development sim
+
+`linuxcnc sim/probe_basic.ini`
 
 
 ## QtDesigner Plug-ins
