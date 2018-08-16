@@ -108,7 +108,7 @@ class _Info(object):
         return self.getFilePath('VCP', 'LOG_FILE', self.VCP_DIR, default)
 
 
-    def getMdiHystoryFile(self, default='~/.axis_mdi_history'):
+    def getMDIHistoryFile(self, default='~/.axis_mdi_history'):
         return self.getFilePath('DISPLAY', 'MDI_HISTORY_FILE', self.CONFIG_DIR, default)
 
     def getToolTableFile(self, default='tool.tbl'):

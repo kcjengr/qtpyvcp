@@ -32,8 +32,29 @@ PREFS = Prefs()
 
 from QtPyVCP.utilities import logger
 log = logger.getLogger(__name__)
-log.setLevel(logger.WARNING)
+log.setLevel(logger.DEBUG)
 
+
+class GCodes:
+    def __getitem__(self, gcodes):
+        formated_gcodes = []
+        for gcode in sorted(gcodes[1:]):
+            if gcode == -1:
+                continue
+            if gcode % 10 == 0:
+                formated_gcodes.append("G{0}".format(gcode / 10))
+            else:
+                formated_gcodes.append("G{0}.{1}".format(gcode / 10, gcode % 10))
+        return " ".join(formated_gcodes)
+
+class MCodes:
+    def __getitem__(self, mcodes):
+        formated_mcodes = []
+        for mcode in sorted(mcodes[1:]):
+            if mcode == -1:
+                continue
+            formated_mcodes.append("M{0}".format(mcode))
+        return " ".join(formated_mcodes)
 
 class Status(QObject):
     _instance = None
@@ -42,8 +63,54 @@ class Status(QObject):
             cls._instance = _Status()
         return cls._instance
 
-
 class _Status(QObject):
+
+    STATE_STRING_LOOKUP = {
+        "task_state": {
+            0: "Unknown",
+            linuxcnc.STATE_ESTOP: "Estop",
+            linuxcnc.STATE_ESTOP_RESET: "Reset",
+            linuxcnc.STATE_ON: "On",
+            linuxcnc.STATE_OFF: "Off",
+        },
+        "interp_state": {
+            0: "Unknown",
+            linuxcnc.INTERP_IDLE: "Idle",
+            linuxcnc.INTERP_READING: "Reading",
+            linuxcnc.INTERP_PAUSED: "Paused",
+            linuxcnc.INTERP_WAITING: "Waiting",
+        },
+        "motion_mode": {
+            0: "Unknown",
+            linuxcnc.TRAJ_MODE_COORD: "Coord",
+            linuxcnc.TRAJ_MODE_FREE: "Free",
+            linuxcnc.TRAJ_MODE_TELEOP: "Teleop",
+        },
+        "motion_type": {
+            0: "None",
+            linuxcnc.MOTION_TYPE_TRAVERSE: "Traverse",
+            linuxcnc.MOTION_TYPE_FEED: "Linear Feed",
+            linuxcnc.MOTION_TYPE_ARC: "Arc Feed",
+            linuxcnc.MOTION_TYPE_TOOLCHANGE: "Tool Change",
+            linuxcnc.MOTION_TYPE_PROBING: "Probing",
+            linuxcnc.MOTION_TYPE_INDEXROTARY: "Rotary Index",
+        },
+        "interpreter_errcode": {
+            0: "Unknown",
+            1: "Ok",
+            2: "Exit",
+            3: "Finished",
+            4: "Endfile",
+            4: "File not open",
+            5: "Error",
+        },
+        "g5x_index": ["G53", "G54", "G55", "G56", "G57", "G58", "G59", "G59.1", "G59.2", "G59.3"],
+        "program_units": ["Unknown", "Inch", "Metric", "Centimeters"],
+        "gcodes": GCodes(),
+        "mcodes": MCodes(),
+    }
+
+
     stat = linuxcnc.stat()
     timer = QTimer()
 
@@ -66,7 +133,7 @@ class _Status(QObject):
     velocity = pyqtSignal(float)            # unclear
 
     # Offsets
-    g5x_index = pyqtSignal(int)             # active coordinate system index, G54=1, G55=2 etc
+    g5x_index = pyqtSignal([int], [str])    # active coordinate system index, G54=1, G55=2 etc
     g5x_offset = pyqtSignal(tuple)          # offset of the currently active coordinate system
     g92_offset = pyqtSignal(tuple)          # values of the current g92 offset
     tool_offset = pyqtSignal(tuple)         # offset values of the current tool
@@ -83,8 +150,8 @@ class _Status(QObject):
     flood = pyqtSignal(bool)                # flood self.status, either FLOOD_OFF or FLOOD_ON
 
     # M-codes and G-codes
-    mcodes = pyqtSignal(tuple)              # currently active M-codes
-    gcodes = pyqtSignal(tuple)              # active G-codes for each modal group
+    mcodes = pyqtSignal([tuple], [str])     # currently active M-codes
+    gcodes = pyqtSignal([tuple], [str])     # active G-codes for each modal group
 
     # Home and Limit
     homed = pyqtSignal(tuple)               # homes self.stat for each axis??
@@ -113,7 +180,7 @@ class _Status(QObject):
 
     # Program File
     file = pyqtSignal(str)                  # path of currently loaded gcode file
-    program_units = pyqtSignal(int)         # one of CANON_UNITS_INCHES=1, CANON_UNITS_MM=2
+    program_units = pyqtSignal([int], [str])# one of CANON_UNITS_INCHES=1, CANON_UNITS_MM=2
     motion_line = pyqtSignal(int)           # source line number motion is currently executing
     current_line = pyqtSignal(int)          # currently executing line
     read_line = pyqtSignal(int)             # line the RS274NGC interpreter is currently reading
@@ -136,16 +203,16 @@ class _Status(QObject):
 
     # State
     enabled = pyqtSignal(bool)              # trajectory planner enabled
-    estop = pyqtSignal(int)                 # linuxcnc.STATE_ESTOP or not
-    state = pyqtSignal(int)                 # current command execution status
-    exec_state = pyqtSignal(int)            # task execution state
-    task_mode = pyqtSignal(int)             # current task mode
+    estop = pyqtSignal([int], [bool])       # linuxcnc.STATE_ESTOP or not
+    state = pyqtSignal([int], [str])        # current command execution status
+    exec_state = pyqtSignal([int], [str])   # task execution state
+    task_mode = pyqtSignal([int], [str])    # current task mode
     task_paused = pyqtSignal(bool)          # task paused flag
-    task_state = pyqtSignal(int)            # current task state
-    motion_mode = pyqtSignal(int)           # mode of the motion controller
-    motion_type = pyqtSignal(int)           # type of the currently executing motion
-    interp_state = pyqtSignal(int)          # current state of RS274NGC interpreter
-    interpreter_errcode = pyqtSignal(int)   # current RS274NGC interpreter return code
+    task_state = pyqtSignal([int], [str])   # current task state
+    motion_mode = pyqtSignal([int], [str])  # mode of the motion controller
+    motion_type = pyqtSignal([int], [str])  # type of the currently executing motion
+    interp_state = pyqtSignal([int], [str]) # current state of RS274NGC interpreter
+    interpreter_errcode = pyqtSignal([int], [str]) # current RS274NGC interpreter return code
 
     # Tool
     tool_in_spindle = pyqtSignal(int)       # current tool number
@@ -155,8 +222,6 @@ class _Status(QObject):
     # Extended status signals
     axis_positions = pyqtSignal(tuple)      # ABS, REL and DTG axis values
     joint_positions = pyqtSignal(tuple)     # joint pos respecting INI settings
-    formated_gcodes = pyqtSignal(tuple)     # preformed gcodes
-    formated_mcodes = pyqtSignal(tuple)     # preformed mcodes
     file_loaded = pyqtSignal(str)           # file loaded
 
     on = pyqtSignal(bool)
@@ -172,7 +237,6 @@ class _Status(QObject):
     reload_backplot = pyqtSignal()
 
     recent_files_changed = pyqtSignal(tuple)
-
 
     # Emitted when the UI is loaded
     init_ui = pyqtSignal()
@@ -218,10 +282,6 @@ class _Status(QObject):
         self.tool_offset.connect(self.updateAxisPositions)
         self.joint_position.connect(self.updateJointPositions)
 
-        # Formated G-codes / M-codes
-        self.gcodes.connect(self.updateFormatedGcodes)
-        self.mcodes.connect(self.updateFormatedMcodes)
-
         self.homed.connect(self.isAllHomed)
 
         self.task_state.connect(lambda v: self.on.emit(v == linuxcnc.STATE_ON))
@@ -232,7 +292,6 @@ class _Status(QObject):
         #         and self.stat.task_mode == linuxcnc.MODE_AUTO))
         # File
         self.file.connect(self.updateFileLoaded)
-
 
         # Initialize Joint status class
         self.joint = _Joint(self.stat)
@@ -264,6 +323,12 @@ class _Status(QObject):
             if old_value != new_value:
                 self.old[key] = new_value
                 getattr(self, key).emit(new_value)
+
+                str_dict = self.STATE_STRING_LOOKUP.get(key)
+                if str_dict is not None:
+                    str_val = str_dict[new_value]
+                    getattr(self, key)[str].emit(str_val)
+                    log.debug("{}: {}".format(key, str_val))
 
         self.joint._periodic()
         self.error._periodic()
@@ -313,7 +378,7 @@ class _Status(QObject):
             rel[axis] = pos[axis] - g5x_offset[axis] - tool_offset[axis]
 
         if self.stat.rotation_xy != 0:
-            t = math.radians(-stat.rotation_xy)
+            t = math.radians(-self.stat.rotation_xy)
             xr = rel[0] * math.cos(t) - rel[1] * math.sin(t)
             yr = rel[0] * math.sin(t) + rel[1] * math.cos(t)
             rel[0] = xr
@@ -332,25 +397,6 @@ class _Status(QObject):
             else:
                 pos = self.stat.joint_position
         self.joint_positions.emit(pos)
-
-    def updateFormatedGcodes(self, gcodes):
-        formated_gcodes = []
-        for gcode in sorted(gcodes[1:]):
-            if gcode == -1:
-                continue
-            if gcode % 10 == 0:
-                formated_gcodes.append("G{0}".format(gcode / 10))
-            else:
-                formated_gcodes.append("G{0}.{1}".format(gcode / 10, gcode % 10))
-        self.formated_gcodes.emit(tuple(formated_gcodes))
-
-    def updateFormatedMcodes(self, mcodes):
-        formated_mcodes = []
-        for mcode in sorted(mcodes[1:]):
-            if mcode == -1:
-                continue
-            formated_mcodes.append("M{0}".format(mcode))
-        self.formated_mcodes.emit(tuple(formated_mcodes))
 
     def updateFileLoaded(self, file):
         if self.stat.interp_state == linuxcnc.INTERP_IDLE \

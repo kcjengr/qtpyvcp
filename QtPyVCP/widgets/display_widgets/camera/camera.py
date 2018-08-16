@@ -42,30 +42,41 @@
 #############################################################################
 
 import os
-import logging
 
 from PyQt5 import uic
 
 from PyQt5.QtCore import QByteArray, Qt, QTimer
 from PyQt5.QtGui import QPalette, QPixmap
-from PyQt5.QtMultimedia import (QAudioEncoderSettings, QCamera,
-                                QCameraImageCapture, QImageEncoderSettings, QMediaMetaData,
-                                QMediaRecorder, QVideoEncoderSettings)
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication,
                              QWidget, QMessageBox)
 
+# Set up logging
+from QtPyVCP.utilities import logger
+LOG = logger.getLogger(__name__)
+
+multimedia_available = True
+try:
+    from PyQt5.QtMultimedia import (QAudioEncoderSettings, QCamera,
+                                    QCameraImageCapture, QImageEncoderSettings, QMediaMetaData,
+                                    QMediaRecorder, QVideoEncoderSettings)
+
+    from settings import Settings
+except ImportError:
+    multimedia_available = False
+    LOG.error('Can\'t import QtMultimedia, is package "python-pyqt5.qtmultimedia" installed?')
+
 WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
-# logging.getLogger('QCameraImageCapture').setLevel(logging.INFO)
-
-from settings import Settings
-
 
 class Camera(QWidget):
 
     def __init__(self, parent=None):
         super(Camera, self).__init__(parent)
 
+        if not multimedia_available:
+            return
+
         self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "camera.ui"), self)
+
         self.camera = None
         self.imageCapture = None
         self.mediaRecorder = None
@@ -108,47 +119,51 @@ class Camera(QWidget):
 
         self.ui.lockButton.hide()
 
-        self.setCamera(camera_device)
+        # Start camera 2s after the UI has loaded
+        QTimer.singleShot(2000, lambda: self.setCamera(camera_device))
 
     def setCamera(self, cameraDevice):
-        if cameraDevice.isEmpty():
-            self.camera = QCamera()
-        else:
-            self.camera = QCamera(cameraDevice)
+        try:
+            if cameraDevice.isEmpty():
+                self.camera = QCamera()
+            else:
+                self.camera = QCamera(cameraDevice)
 
-        self.camera.stateChanged.connect(self.updateCameraState)
-        self.camera.error.connect(self.displayCameraError)
+            self.camera.stateChanged.connect(self.updateCameraState)
+            self.camera.error.connect(self.displayCameraError)
 
-        self.mediaRecorder = QMediaRecorder(self.camera)
-        self.mediaRecorder.stateChanged.connect(self.updateRecorderState)
+            self.mediaRecorder = QMediaRecorder(self.camera)
+            self.mediaRecorder.stateChanged.connect(self.updateRecorderState)
 
-        self.imageCapture = QCameraImageCapture(self.camera)
+            self.imageCapture = QCameraImageCapture(self.camera)
 
-        self.mediaRecorder.durationChanged.connect(self.updateRecordTime)
-        self.mediaRecorder.error.connect(self.displayRecorderError)
+            self.mediaRecorder.durationChanged.connect(self.updateRecordTime)
+            self.mediaRecorder.error.connect(self.displayRecorderError)
 
-        self.mediaRecorder.setMetaData(QMediaMetaData.Title, "Camera Widget")
+            self.mediaRecorder.setMetaData(QMediaMetaData.Title, "Camera Widget")
 
-        self.ui.exposureCompensation.valueChanged.connect(
-            self.setExposureCompensation)
+            self.ui.exposureCompensation.valueChanged.connect(
+                self.setExposureCompensation)
 
-        self.camera.setViewfinder(self.ui.viewfinder)
+            self.camera.setViewfinder(self.ui.viewfinder)
 
-        self.updateCameraState(self.camera.state())
-        self.updateLockStatus(self.camera.lockStatus(), QCamera.UserRequest)
-        self.updateRecorderState(self.mediaRecorder.state())
+            self.updateCameraState(self.camera.state())
+            self.updateLockStatus(self.camera.lockStatus(), QCamera.UserRequest)
+            self.updateRecorderState(self.mediaRecorder.state())
 
-        self.imageCapture.readyForCaptureChanged.connect(self.readyForCapture)
-        self.imageCapture.imageCaptured.connect(self.processCapturedImage)
-        self.imageCapture.imageSaved.connect(self.imageSaved)
+            self.imageCapture.readyForCaptureChanged.connect(self.readyForCapture)
+            self.imageCapture.imageCaptured.connect(self.processCapturedImage)
+            self.imageCapture.imageSaved.connect(self.imageSaved)
 
-        self.camera.lockStatusChanged.connect(self.updateLockStatus)
+            self.camera.lockStatusChanged.connect(self.updateLockStatus)
 
-        self.ui.captureWidget.setTabEnabled(0, self.camera.isCaptureModeSupported(QCamera.CaptureStillImage))
-        self.ui.captureWidget.setTabEnabled(1, self.camera.isCaptureModeSupported(QCamera.CaptureVideo))
+            self.ui.captureWidget.setTabEnabled(0, self.camera.isCaptureModeSupported(QCamera.CaptureStillImage))
+            self.ui.captureWidget.setTabEnabled(1, self.camera.isCaptureModeSupported(QCamera.CaptureVideo))
 
-        self.updateCaptureMode()
-        self.camera.start()
+            self.updateCaptureMode()
+            self.camera.start()
+        except:
+            pass
 
     def keyPressEvent(self, event):
         if event.isAutoRepeat():
