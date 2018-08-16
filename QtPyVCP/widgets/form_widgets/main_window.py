@@ -121,22 +121,16 @@ class VCPMainWindow(QMainWindow):
             return
 
         if event.key() == Qt.Key_Up:
-            print 'Move Up'
             action.Jogging.autoJog('Y', 1)
         elif event.key() == Qt.Key_Down:
-            print 'Move Down'
             action.Jogging.autoJog('Y', -1)
         elif event.key() == Qt.Key_Left:
-            print 'Move Left'
             action.Jogging.autoJog('X', -1)
         elif event.key() == Qt.Key_Right:
-            print 'Move Right'
             action.Jogging.autoJog('X', 1)
         elif event.key() == Qt.Key_PageUp:
-            print 'Page Up'
             action.Jogging.autoJog('Z', 1)
         elif event.key() == Qt.Key_PageDown:
-            print 'Page Down'
             action.Jogging.autoJog('Z', -1)
         else:
             print 'Unhandled key press event'
@@ -146,22 +140,16 @@ class VCPMainWindow(QMainWindow):
             return
 
         if event.key() == Qt.Key_Up:
-            print 'Move Up'
             action.Jogging.autoJog('Y', 0)
         elif event.key() == Qt.Key_Down:
-            print 'Move Down'
             action.Jogging.autoJog('Y', 0)
         elif event.key() == Qt.Key_Left:
-            print 'Move Left'
             action.Jogging.autoJog('X', 0)
         elif event.key() == Qt.Key_Right:
-            print 'Move Right'
             action.Jogging.autoJog('X', 0)
         elif event.key() == Qt.Key_PageUp:
-            print 'Page Up'
             action.Jogging.autoJog('Z', 0)
         elif event.key() == Qt.Key_PageDown:
-            print 'Page Down'
             action.Jogging.autoJog('Z', 0)
         else:
             print 'Unhandled key release event'
@@ -173,11 +161,9 @@ class VCPMainWindow(QMainWindow):
         if focused_widget is not None:
             focused_widget.clearFocus()
 
-    def focusChangedEvent(self, new_w, old_w):
-        print "focus changed"
-        print new_w, old_w
+    def focusChangedEvent(self, old_w, new_w):
         if issubclass(new_w.__class__, QLineEdit):
-            print "Line edit got focus"
+            print "QLineEdit got focus: ", new_w
 
 #==============================================================================
 #  menu action slots

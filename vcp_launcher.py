@@ -81,7 +81,7 @@ log_file = normalizePath(temp, confg_dir)
 os.environ['VCP_LOG_FILE'] = log_file
 
 # get the path to the preference file
-temp = INI.find('DISPLAY', 'PREFERENCE_FILE') or '$VCP_DIR/qtpyvcp.prefs'
+temp = INI.find('DISPLAY', 'PREFERENCE_FILE') or '$VCP_DIR/vcp.pref'
 pref_file = normalizePath(temp, confg_dir)
 os.environ['VCP_PREF_FILE'] = pref_file
 

@@ -18,3 +18,8 @@ from recent_file_combobox import RecentFileComboBox
 class RecentFileComboBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
         return RecentFileComboBox
+
+from override_slider import OverrideSlider
+class OverrideSliderPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return OverrideSlider

@@ -1,8 +1,0 @@
-{
-    "name": "QControl",
-    "author": "Kurt Jacobson",
-    "author_email": "kcjengr@gmail.com",
-    "git_url": "https://github.com/kcjengr/QContol-VCP",
-    "source_url": "",
-    "description": "Test VCP for QtPyVCP"
-}
