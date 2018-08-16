@@ -29,3 +29,8 @@ class CameraPlugin(_DesignerPlugin):
         return "Camera widget"
     def isContainer(self):
         return True
+
+from load_meter import LoadMeter
+class LoadMeterPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return LoadMeter
