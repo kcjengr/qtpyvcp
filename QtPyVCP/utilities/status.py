@@ -198,6 +198,7 @@ class _Status(QObject):
     feedrate = pyqtSignal(float)            # feed-rate override, 0-1
     rapidrate = pyqtSignal(float)           # rapid-rate override, 0-1
     spindlerate = pyqtSignal(float)         # spindle-rate override, 0-1
+    max_velocity = pyqtSignal(float)        # max velocity in machine units/s
     feed_override_enabled = pyqtSignal(bool)# enable flag for feed override
     adaptive_feed_enabled = pyqtSignal(bool)# self.status of adaptive feedrate override
 
@@ -264,7 +265,7 @@ class _Status(QObject):
             pass
 
         excluded_items = ['axes', 'axis', 'joint', 'cycle_time', 'linear_units',
-            'angular_units', 'acceleration', 'max_velocity', 'kinematics_type',
+            'angular_units', 'acceleration', 'kinematics_type',
             'joints', 'settings', 'axis_mask', 'max_acceleration', 'echo_serial_number',
             'id', 'poll', 'command', 'debug']
 
