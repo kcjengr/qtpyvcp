@@ -154,7 +154,7 @@ class _Status(QObject):
     gcodes = pyqtSignal([tuple], [str])     # active G-codes for each modal group
 
     # Home and Limit
-    homed = pyqtSignal(tuple)               # homes self.stat for each axis??
+    homed = pyqtSignal(tuple)               # homed flag for each joint
     inpos = pyqtSignal(bool)                # machine-in-position flag
     limit = pyqtSignal(tuple)               # axis limit self.status masks
 
