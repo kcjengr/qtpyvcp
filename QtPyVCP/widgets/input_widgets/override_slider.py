@@ -1,14 +1,11 @@
 #!/usr/bin/env python
 
-import os
 import linuxcnc
 from PyQt5.QtWidgets import QSlider
 from PyQt5.QtCore import pyqtSlot, pyqtProperty, Q_ENUMS
 
-from QtPyVCP.core import Status, Action, Prefs, Info
+from QtPyVCP.core import Status, Info
 STATUS = Status()
-ACTION = Action()
-PREFS = Prefs()
 INFO = Info()
 
 MAPPING = {
@@ -45,7 +42,7 @@ class OverrideSlider(QSlider, OverrideType):
     def __init__(self, parent=None):
         super(OverrideSlider, self).__init__(parent)
 
-        self._override_type = -1
+        self._override_type = 0
         self._or_method = lambda v:None
 
         self.valueChanged.connect(self.onValueChanged)
@@ -81,6 +78,9 @@ class OverrideSlider(QSlider, OverrideType):
     def reset(self):
         self.setValue(100)
 
+    # -------------------------------------------------------------------------
+    # properties
+    # -------------------------------------------------------------------------
     def getOverrideType(self):
         return self._override_type
     @pyqtSlot(OverrideType)
