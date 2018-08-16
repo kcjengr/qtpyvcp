@@ -3637,6 +3637,20 @@ font: 15pt &quot;Bebas Kai&quot;;
            <row/>
            <column>
             <property name="text">
+             <string>SELECT</string>
+            </property>
+            <property name="font">
+             <font>
+              <family>Bebas Kai</family>
+              <pointsize>15</pointsize>
+             </font>
+            </property>
+            <property name="textAlignment">
+             <set>AlignCenter</set>
+            </property>
+           </column>
+           <column>
+            <property name="text">
              <string>TOOL</string>
             </property>
             <property name="font">
