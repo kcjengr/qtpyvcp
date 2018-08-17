@@ -157,13 +157,14 @@ class ToolTable(QWidget):
                 if line:
                     line += "\n"
                     f.write(line)
-        # f.flush()
+            f.flush()
+            os.fsync(f.fileno())
 
         # Theses lines make sure the OS doesn't cache the data so that
         # linuxcnc will actually load the updated tool table
-        # fn.flush()
-        # os.fsync(fn.fileno())
-        # self.cmd.load_tool_table()
+
+        self.cmd.load_tool_table()
+        self.load_tool_table()
 
     def handleItem(self, item):
 
