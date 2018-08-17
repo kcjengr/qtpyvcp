@@ -105,7 +105,7 @@ class _Status(QObject):
             5: "Error",
         },
         "g5x_index": ["G53", "G54", "G55", "G56", "G57", "G58", "G59", "G59.1", "G59.2", "G59.3"],
-        "program_units": ["Unknown", "Inch", "Metric", "Centimeters"],
+        "program_units": ["NA", "in", "mm", "cm"],
         "gcodes": GCodes(),
         "mcodes": MCodes(),
     }
