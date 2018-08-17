@@ -62,18 +62,27 @@ class ToolTable(QWidget):
         self.load_tool_table()
 
         self.toolinfo = []
+        self.current_row = 0
+
+        self.ui.tooltable.itemClicked.connect(self.get_row)
 
         self.ui.load_button.clicked.connect(self.load_tool_table)
+        self.ui.delete_button.clicked.connect(self.delete_tool)
+        self.ui.empty_button.clicked.connect(self.empty_tool_table)
         self.ui.save_button.clicked.connect(self.save_tool_table)
+
+    def get_row(self, item):
+        self.current_row = self.ui.tooltable.row(item)
+
 
     # Parse and load tool table into the treeview
     # More or less copied from Chris Morley's GladeVcp tooledit widget
 
     def load_tool_table(self):
 
-        self.ui.tooltable.clear()
-        self.ui.tooltable.setHorizontalHeaderLabels(self.table_header)
-        self.ui.tooltable.setVerticalHeaderLabels(self.table_vertical_header)
+        # TODO show dialogs asking here
+
+        self.ui.tooltable.clearContents()
 
         fn = self.tool_table_file
 
@@ -138,10 +147,27 @@ class ToolTable(QWidget):
                                 # self.widget_window.show_error(msg)
                         break
 
+    def delete_tool(self):
+
+        # TODO show dialogs asking here
+
+        print(self.current_row)
+        for i in range(5):
+            self.ui.tooltable.setItem(self.current_row, i, self.handleItem(""))
+
+
+    def empty_tool_table(self):
+
+        # TODO show dialogs asking here
+
+        self.ui.tooltable.clearContents()
+
     # Save tool table
     # More or less copied from Chris Morley's GladeVcp tooledit widget
 
     def save_tool_table(self):
+
+        # TODO show dialogs asking here
 
         fn = self.tool_table_file
 
@@ -153,14 +179,14 @@ class ToolTable(QWidget):
         with open(fn, "w") as f:
             for row_index in range(self.ui.tooltable.rowCount()):
                 line = ""
-                for col_index in range(self.ui.tooltable.columnCount()):
+                for col_index in range(0, self.ui.tooltable.columnCount()):
                     item = self.ui.tooltable.item(row_index, col_index)
                     if item is not None:
-                        if col_index in (0, 6):
-                            continue
-                        elif col_index in (0, 1):  # tool# pocket#
+                        if col_index in (0, 1):  # tool# pocket#
+                            print("{} {} {}".format(col_index, row_index, item.text()))
                             line += "{}{} ".format(['T', 'P', 'D', 'Z', ';'][col_index], item.text())
                         else:
+                            print("{} {} {}".format(col_index, row_index, item.text()))
                             line += "{}{} ".format(['T', 'P', 'D', 'Z', ';'][col_index], item.text().strip())
                 if line:
                     line += "\n"
@@ -178,14 +204,11 @@ class ToolTable(QWidget):
 
         item = QTableWidgetItem()
 
-        if isinstance(value, bool):
-            if value:
-                item.setCheckState(True)
-            else:
-                item.setCheckState(False)
-        elif isinstance(value, str):
+        if isinstance(value, str):
             item.setText(value)
         elif isinstance(value, int):
+            item.setText(str(value))
+        elif isinstance(value, float):
             item.setText(str(value))
         elif value is None:
             item.setText("")
