@@ -28,7 +28,7 @@ import linuxcnc
 
 from PyQt5.QtCore import Qt
 from PyQt5 import uic
-from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QCheckBox
+from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QSpinBox
 
 # Set up logging
 from QtPyVCP.utilities import logger
@@ -51,10 +51,14 @@ class ToolTable(QWidget):
         self.log = LOG
 
         self.table_header = ["Select", "Tool", "Pocket", "Z", "Diameter", "Comment"]
+        self.table_vertical_header = ["    " for i in range(99)]
+
 
         self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "tooltable.ui"), self)
 
         self.ui.tooltable.setHorizontalHeaderLabels(self.table_header)
+        self.ui.tooltable.setVerticalHeaderLabels(self.table_vertical_header)
+
 
         self.tool_table_file = info.getToolTableFile()
         self.load_tool_table()
@@ -71,6 +75,7 @@ class ToolTable(QWidget):
 
         self.ui.tooltable.clear()
         self.ui.tooltable.setHorizontalHeaderLabels(self.table_header)
+        self.ui.tooltable.setVerticalHeaderLabels(self.table_vertical_header)
 
         fn = self.tool_table_file
 
@@ -114,9 +119,8 @@ class ToolTable(QWidget):
                         if offset in (1, 2):
                             try:
                                 array[offset] = int(word.lstrip(i))
-                                print(count)
                                 for i in range(len(array)):
-                                    self.ui.tooltable.setItem(count, i, QTableWidgetItem(self.handleItem(array[i])))
+                                    self.ui.tooltable.setItem(count, i, self.handleItem(array[i]))
 
                             except ValueError:
                                 msg = 'Error reading tool table, can\'t convert "{0}" to integer in {1}' \
@@ -126,9 +130,8 @@ class ToolTable(QWidget):
                         else:
                             try:
                                 array[offset] = "%.4f" % float(word.lstrip(i))
-                                print(count)
                                 for i in range(len(array)):
-                                    self.ui.tooltable.setItem(count, i, QTableWidgetItem(self.handleItem(array[i])))
+                                    self.ui.tooltable.setItem(count, i, self.handleItem(array[i]))
 
                             except ValueError:
                                 msg = 'Error reading tool table, can\'t convert "{0}" to float in {1}' \
@@ -173,16 +176,22 @@ class ToolTable(QWidget):
         self.cmd.load_tool_table()
         self.load_tool_table()
 
-    def handleItem(self, item):
+    def handleItem(self, value):
+        print(value )
 
-        if isinstance(item, bool):
-            if item:
-                return "yes"
+        item = QTableWidgetItem()
+
+        if isinstance(value, bool):
+            if value:
+                item.setCheckState(True)
             else:
-                return "no"
-        elif isinstance(item, str):
-            return item
-        elif isinstance(item, int):
-            return str(item)
-        elif item is None:
-            return ""
+                item.setCheckState(False)
+        elif isinstance(value, str):
+            item.setText(value)
+        elif isinstance(value, int):
+            item.setText(str(value))
+        elif value is None:
+            item.setText("")
+
+        return item
+
