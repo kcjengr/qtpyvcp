@@ -110,42 +110,19 @@ class ToolTable(QWidget):
                 comment = (line[index + 1:]).rstrip("\n")
                 line = line[0:index].rstrip()
 
-            array = [1, 1, '0', '0', comment, None]
-
             # search beginning of each word for keyword letters
             # offset 0 is the checkbox so ignore it
             # if i = ';' that is the comment and we have already added it
             # offset 1 and 2 are integers the rest floats
 
             for offset, i in enumerate(['T', 'P', 'D', 'Z', ';']):
-                if offset == 0 or i == ';':
-                    continue
-
                 for word in line.split():
+                    print(word)
                     if word.startswith(i):
-                        if offset in (0, 1):
-                            try:
-                                array[offset] = int(word.lstrip(i))
-                                for i in range(len(array)):
-                                    self.ui.tooltable.setItem(count, i, self.handleItem(array[i]))
+                        self.ui.tooltable.setItem(count, offset, self.handleItem(word.lstrip(i)))
 
-                            except ValueError:
-                                msg = 'Error reading tool table, can\'t convert "{0}" to integer in {1}' \
-                                    .format(word.lstrip(i), line)
-                                self.log.error(msg)
-                                # self.widget_window.show_error(msg)
-                        else:
-                            try:
-                                array[offset] = "%.4f" % float(word.lstrip(i))
-                                for i in range(len(array)):
-                                    self.ui.tooltable.setItem(count, i, self.handleItem(array[i]))
+            self.ui.tooltable.setItem(count, 4, self.handleItem(comment))
 
-                            except ValueError:
-                                msg = 'Error reading tool table, can\'t convert "{0}" to float in {1}' \
-                                    .format(word.lstrip(i), line)
-                                self.log.error(msg)
-                                # self.widget_window.show_error(msg)
-                        break
 
     def delete_tool(self):
 
@@ -198,9 +175,10 @@ class ToolTable(QWidget):
         # linuxcnc will actually load the updated tool table
 
         self.cmd.load_tool_table()
-        self.load_tool_table()
 
     def handleItem(self, value):
+
+        print(type(value), value)
 
         item = QTableWidgetItem()
 
