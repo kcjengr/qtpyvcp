@@ -53,12 +53,10 @@ class ToolTable(QWidget):
         self.table_header = ["Select", "Tool", "Pocket", "Z", "Diameter", "Comment"]
         self.table_vertical_header = ["    " for i in range(99)]
 
-
         self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "tooltable.ui"), self)
 
         self.ui.tooltable.setHorizontalHeaderLabels(self.table_header)
         self.ui.tooltable.setVerticalHeaderLabels(self.table_vertical_header)
-
 
         self.tool_table_file = info.getToolTableFile()
         self.load_tool_table()
@@ -177,8 +175,7 @@ class ToolTable(QWidget):
         self.load_tool_table()
 
     def handleItem(self, value):
-        print(value )
-
+        
         item = QTableWidgetItem()
 
         if isinstance(value, bool):
@@ -194,4 +191,3 @@ class ToolTable(QWidget):
             item.setText("")
 
         return item
-
