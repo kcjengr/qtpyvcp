@@ -15382,6 +15382,8 @@ border-color: rgb(186, 189, 182);
 background-color: rgb(46, 52, 54);
 border-width: 2px;
 border-radius: 6px;
+padding-left: 7px;
+padding-right: 7px;
 }</string>
         </property>
         <property name="title">
@@ -15481,14 +15483,14 @@ border-radius: 4px;
            </property>
            <property name="minimumSize">
             <size>
-             <width>80</width>
-             <height>35</height>
+             <width>65</width>
+             <height>40</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>80</width>
-             <height>16777215</height>
+             <width>65</width>
+             <height>40</height>
             </size>
            </property>
            <property name="font">
@@ -15661,13 +15663,13 @@ border-radius: 4px;
            <property name="minimumSize">
             <size>
              <width>50</width>
-             <height>25</height>
+             <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>50</width>
-             <height>16777215</height>
+             <height>30</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -15698,7 +15700,7 @@ border-radius: 4px;
          <item row="0" column="1">
           <widget class="StatusLabel" name="statuslabel">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -15706,13 +15708,13 @@ border-radius: 4px;
            <property name="minimumSize">
             <size>
              <width>50</width>
-             <height>25</height>
+             <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>50</width>
-             <height>16777215</height>
+             <height>30</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -15744,14 +15746,14 @@ border-radius: 4px;
            </property>
            <property name="minimumSize">
             <size>
-             <width>80</width>
-             <height>35</height>
+             <width>65</width>
+             <height>40</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>80</width>
-             <height>16777215</height>
+             <width>65</width>
+             <height>40</height>
             </size>
            </property>
            <property name="font">
@@ -15863,7 +15865,7 @@ border-radius: 4px;
          <item row="1" column="1">
           <widget class="StatusLabel" name="statuslabel_2">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -15871,13 +15873,13 @@ border-radius: 4px;
            <property name="minimumSize">
             <size>
              <width>50</width>
-             <height>25</height>
+             <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>50</width>
-             <height>16777215</height>
+             <height>30</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -15902,7 +15904,7 @@ border-radius: 4px;
          <item row="2" column="1">
           <widget class="StatusLabel" name="statuslabel_3">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -15910,13 +15912,13 @@ border-radius: 4px;
            <property name="minimumSize">
             <size>
              <width>50</width>
-             <height>25</height>
+             <height>30</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>50</width>
-             <height>16777215</height>
+             <height>30</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -15948,14 +15950,14 @@ border-radius: 4px;
            </property>
            <property name="minimumSize">
             <size>
-             <width>80</width>
-             <height>35</height>
+             <width>65</width>
+             <height>40</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>80</width>
-             <height>16777215</height>
+             <width>65</width>
+             <height>40</height>
             </size>
            </property>
            <property name="font">
@@ -15982,14 +15984,14 @@ border-radius: 4px;
            </property>
            <property name="minimumSize">
             <size>
-             <width>80</width>
-             <height>35</height>
+             <width>65</width>
+             <height>40</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>80</width>
-             <height>16777215</height>
+             <width>65</width>
+             <height>40</height>
             </size>
            </property>
            <property name="font">
