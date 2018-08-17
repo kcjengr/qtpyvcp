@@ -147,7 +147,7 @@
         <row/>
         <column>
          <property name="text">
-          <string>Select</string>
+          <string/>
          </property>
          <property name="textAlignment">
           <set>AlignCenter</set>
@@ -155,7 +155,7 @@
         </column>
         <column>
          <property name="text">
-          <string>Tool</string>
+          <string/>
          </property>
          <property name="textAlignment">
           <set>AlignCenter</set>
@@ -163,7 +163,7 @@
         </column>
         <column>
          <property name="text">
-          <string>Pocket</string>
+          <string/>
          </property>
          <property name="textAlignment">
           <set>AlignCenter</set>
@@ -171,7 +171,7 @@
         </column>
         <column>
          <property name="text">
-          <string>Z</string>
+          <string/>
          </property>
          <property name="textAlignment">
           <set>AlignCenter</set>
@@ -179,7 +179,7 @@
         </column>
         <column>
          <property name="text">
-          <string>Diam ⌀</string>
+          <string/>
          </property>
          <property name="textAlignment">
           <set>AlignCenter</set>
@@ -187,7 +187,7 @@
         </column>
         <column>
          <property name="text">
-          <string>Comment</string>
+          <string/>
          </property>
          <property name="textAlignment">
           <set>AlignCenter</set>

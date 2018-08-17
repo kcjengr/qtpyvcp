@@ -50,7 +50,11 @@ class ToolTable(QWidget):
 
         self.log = LOG
 
+        self.table_header = ["Select", "Tool", "Pocket", "Z", "Diameter", "Comment"]
+
         self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "tooltable.ui"), self)
+
+        self.ui.tooltable.setHorizontalHeaderLabels(self.table_header)
 
         self.tool_table_file = info.getToolTableFile()
         self.load_tool_table()
@@ -66,6 +70,7 @@ class ToolTable(QWidget):
     def load_tool_table(self):
 
         self.ui.tooltable.clear()
+        self.ui.tooltable.setHorizontalHeaderLabels(self.table_header)
 
         fn = self.tool_table_file
 
@@ -109,6 +114,7 @@ class ToolTable(QWidget):
                         if offset in (1, 2):
                             try:
                                 array[offset] = int(word.lstrip(i))
+                                print(count)
                                 for i in range(len(array)):
                                     self.ui.tooltable.setItem(count, i, QTableWidgetItem(self.handleItem(array[i])))
 
@@ -120,6 +126,7 @@ class ToolTable(QWidget):
                         else:
                             try:
                                 array[offset] = "%.4f" % float(word.lstrip(i))
+                                print(count)
                                 for i in range(len(array)):
                                     self.ui.tooltable.setItem(count, i, QTableWidgetItem(self.handleItem(array[i])))
 
