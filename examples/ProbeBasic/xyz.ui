@@ -14792,6 +14792,25 @@ border: transparent;
            <string>%v</string>
           </property>
          </widget>
+         <widget class="LoadMeter" name="loadmeter">
+          <property name="geometry">
+           <rect>
+            <x>380</x>
+            <y>550</y>
+            <width>291</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="maximum">
+           <number>200</number>
+          </property>
+          <property name="value">
+           <number>100</number>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab_10">
          <attribute name="title">
