@@ -50,7 +50,7 @@ class ToolTable(QWidget):
 
         self.log = LOG
 
-        self.table_header = ["Select", "Tool", "Pocket", "Z", "Diameter", "Comment"]
+        self.table_header = ["Tool", "Pocket", "Z", "Diameter", "Comment"]
         self.table_vertical_header = ["    " for i in range(99)]
 
         self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "tooltable.ui"), self)
@@ -101,20 +101,20 @@ class ToolTable(QWidget):
                 comment = (line[index + 1:]).rstrip("\n")
                 line = line[0:index].rstrip()
 
-            array = [False, 1, 1, '0', '0', comment, None]
+            array = [1, 1, '0', '0', comment, None]
 
             # search beginning of each word for keyword letters
             # offset 0 is the checkbox so ignore it
             # if i = ';' that is the comment and we have already added it
             # offset 1 and 2 are integers the rest floats
 
-            for offset, i in enumerate(['S', 'T', 'P', 'D', 'Z', ';']):
+            for offset, i in enumerate(['T', 'P', 'D', 'Z', ';']):
                 if offset == 0 or i == ';':
                     continue
 
                 for word in line.split():
                     if word.startswith(i):
-                        if offset in (1, 2):
+                        if offset in (0, 1):
                             try:
                                 array[offset] = int(word.lstrip(i))
                                 for i in range(len(array)):
@@ -158,10 +158,10 @@ class ToolTable(QWidget):
                     if item is not None:
                         if col_index in (0, 6):
                             continue
-                        elif col_index in (1, 2):  # tool# pocket#
-                            line += "{}{} ".format(['S', 'T', 'P', 'D', 'Z', ';'][col_index], item.text())
+                        elif col_index in (0, 1):  # tool# pocket#
+                            line += "{}{} ".format(['T', 'P', 'D', 'Z', ';'][col_index], item.text())
                         else:
-                            line += "{}{} ".format(['S', 'T', 'P', 'D', 'Z', ';'][col_index], item.text().strip())
+                            line += "{}{} ".format(['T', 'P', 'D', 'Z', ';'][col_index], item.text().strip())
                 if line:
                     line += "\n"
                     f.write(line)
@@ -175,7 +175,7 @@ class ToolTable(QWidget):
         self.load_tool_table()
 
     def handleItem(self, value):
-        
+
         item = QTableWidgetItem()
 
         if isinstance(value, bool):

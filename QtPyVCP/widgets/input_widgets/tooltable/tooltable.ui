@@ -37,15 +37,15 @@
         <property name="rowCount">
          <number>99</number>
         </property>
+        <property name="columnCount">
+         <number>5</number>
+        </property>
         <attribute name="horizontalHeaderMinimumSectionSize">
          <number>90</number>
         </attribute>
         <attribute name="horizontalHeaderStretchLastSection">
          <bool>true</bool>
         </attribute>
-        <attribute name="verticalHeaderVisible">
-         <bool>true</bool>
-        </attribute>
         <row/>
         <row/>
         <row/>
@@ -145,14 +145,6 @@
         <row/>
         <row/>
         <row/>
-        <column>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="textAlignment">
-          <set>AlignCenter</set>
-         </property>
-        </column>
         <column>
          <property name="text">
           <string/>
@@ -198,31 +190,6 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QPushButton" name="save_button">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>120</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>SAVE TABLE</string>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="load_button">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -243,7 +210,7 @@
            </size>
           </property>
           <property name="text">
-           <string>RELOAD TABLE</string>
+           <string>Load</string>
           </property>
          </widget>
         </item>
@@ -268,7 +235,7 @@
            </size>
           </property>
           <property name="text">
-           <string>DELETE</string>
+           <string>Delete</string>
           </property>
          </widget>
         </item>
@@ -293,12 +260,12 @@
            </size>
           </property>
           <property name="text">
-           <string>RE-READ</string>
+           <string>Empty</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="add_button">
+         <widget class="QPushButton" name="save_button">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -318,7 +285,7 @@
            </size>
           </property>
           <property name="text">
-           <string>ADD TOOL</string>
+           <string>Save</string>
           </property>
          </widget>
         </item>
