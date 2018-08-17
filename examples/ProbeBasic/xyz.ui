@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1950</width>
-    <height>1102</height>
+    <width>1962</width>
+    <height>1122</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -116,7 +116,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>5</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -4487,6 +4487,7 @@ border-radius: 6px;
              </property>
              <property name="font">
               <font>
+               <family>Bebas Kai</family>
                <pointsize>16</pointsize>
               </font>
              </property>
@@ -4780,6 +4781,11 @@ border-radius: 6px;
               <property name="text">
                <string>0.0000</string>
               </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
+              </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
               </property>
@@ -4787,6 +4793,11 @@ border-radius: 6px;
              <item row="0" column="2">
               <property name="text">
                <string>0.0000</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
               </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
@@ -4834,6 +4845,11 @@ border-radius: 6px;
               <property name="text">
                <string>0.0000</string>
               </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
+              </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
               </property>
@@ -4841,6 +4857,11 @@ border-radius: 6px;
              <item row="1" column="2">
               <property name="text">
                <string>0.0000</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
               </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
@@ -4888,6 +4909,11 @@ border-radius: 6px;
               <property name="text">
                <string>0.0000</string>
               </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
+              </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
               </property>
@@ -4895,6 +4921,11 @@ border-radius: 6px;
              <item row="2" column="2">
               <property name="text">
                <string>0.0000</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
               </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
@@ -4942,6 +4973,11 @@ border-radius: 6px;
               <property name="text">
                <string>0.0000</string>
               </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
+              </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
               </property>
@@ -4949,6 +4985,11 @@ border-radius: 6px;
              <item row="3" column="2">
               <property name="text">
                <string>0.0000</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
               </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
@@ -4996,6 +5037,11 @@ border-radius: 6px;
               <property name="text">
                <string>0.0000</string>
               </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
+              </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
               </property>
@@ -5003,6 +5049,11 @@ border-radius: 6px;
              <item row="4" column="2">
               <property name="text">
                <string>0.0000</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
               </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
@@ -5049,6 +5100,11 @@ border-radius: 6px;
              <item row="5" column="1">
               <property name="text">
                <string>0.0000</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
               </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
@@ -5104,6 +5160,11 @@ border-radius: 6px;
               <property name="text">
                <string>0.0000</string>
               </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
+              </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
               </property>
@@ -5158,6 +5219,11 @@ border-radius: 6px;
               <property name="text">
                <string>0.0000</string>
               </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
+              </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
               </property>
@@ -5211,6 +5277,11 @@ border-radius: 6px;
              <item row="8" column="1">
               <property name="text">
                <string>0.0000</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
               </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
@@ -12461,7 +12532,7 @@ padding-left: 20px;
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>20</width>
+                <width>477</width>
                 <height>2</height>
                </size>
               </property>
@@ -14605,7 +14676,7 @@ font: 17pt &quot;Bebas Kai&quot;;
           <property name="styleSheet">
            <string notr="true">QSlider::groove:horizontal {
 border: 1px solid #bbb;
-background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 255, 7, 255), stop:0.105263 rgba(0, 255, 7, 255), stop:0.231579 rgba(0, 255, 7, 255), stop:0.463158 rgba(29, 255, 36, 255), stop:0.642105 rgba(255, 206, 58, 255), stop:0.957895 rgba(255, 28, 28, 255));
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(3, 70, 242, 255), stop:0.338462 rgba(98, 142, 255, 255), stop:0.5 rgba(230, 250, 134, 255), stop:0.51 rgba(238, 247, 136, 255), stop:1 rgba(255, 0, 0, 255));
 height: 30px;
 border-radius: 4px;
 }
@@ -14686,48 +14757,23 @@ border-radius: 4px;
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">DEFAULT_STYLE = &quot;&quot;&quot;
-QProgressBar {
+           <string notr="true">QProgressBar {
 border-style: solid;
-border-width: 2px;
+border-width: 1px;
 border-color: rgb(162, 162, 162);
 border-radius: 4px;
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(3, 70, 242, 255), stop:0.338462 rgba(98, 142, 255, 255), stop:0.5 rgba(230, 250, 134, 255), stop:0.51 rgba(238, 247, 136, 255), stop:1 rgba(255, 0, 0, 255));
 font: 14pt &quot;Bebas Kai&quot;;
 }
 
 QProgressBar::chunk {
-background: rgb(61, 106, 255);
+background: blue;
 border-radius: 3px;
 border: transparent;
 }
-&quot;&quot;&quot;
 
-COMPLETED_STYLE = &quot;&quot;&quot;
-QProgressBar {
-border-style: solid;
-border-width: 2px;
-border-color: rgb(255, 255, 127);
-border-radius: 4px;
-font: 14pt &quot;Bebas Kai&quot;;
-}
 
-QProgressBar::chunk {
-background: rgb(61, 106, 255);
-border-radius: 3px;
-border: transparent;
-}
-&quot;&quot;&quot;
 
-class MyProgressBar(QProgressBar):
-    def __init__(self, parent = None):
-        QtGui.QProgressBar.__init__(self, parent)
-        self.setStyleSheet(DEFAULT_STYLE)
-
-    def setValue(self, value):
-        QtGui.QProgressBar.setValue(self, value)
-
-        if value == self.maximum():
-            self.setStyleSheet(COMPLETED_STYLE)
 
 
 
@@ -14737,7 +14783,7 @@ class MyProgressBar(QProgressBar):
            <number>200</number>
           </property>
           <property name="value">
-           <number>200</number>
+           <number>0</number>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -15391,7 +15437,7 @@ border-radius: 6px;
          <property name="geometry">
           <rect>
            <x>316</x>
-           <y>276</y>
+           <y>279</y>
            <width>65</width>
            <height>40</height>
           </rect>
@@ -15425,7 +15471,7 @@ border-radius: 6px;
          <property name="geometry">
           <rect>
            <x>21</x>
-           <y>276</y>
+           <y>279</y>
            <width>230</width>
            <height>40</height>
           </rect>
@@ -15511,7 +15557,7 @@ border-radius: 4px;
          <property name="geometry">
           <rect>
            <x>316</x>
-           <y>116</y>
+           <y>149</y>
            <width>65</width>
            <height>40</height>
           </rect>
@@ -15545,7 +15591,7 @@ border-radius: 4px;
          <property name="geometry">
           <rect>
            <x>21</x>
-           <y>36</y>
+           <y>84</y>
            <width>230</width>
            <height>40</height>
           </rect>
@@ -15631,7 +15677,7 @@ border-radius: 4px;
          <property name="geometry">
           <rect>
            <x>21</x>
-           <y>116</y>
+           <y>149</y>
            <width>230</width>
            <height>40</height>
           </rect>
@@ -15711,7 +15757,7 @@ border-radius: 4px;
          <property name="geometry">
           <rect>
            <x>316</x>
-           <y>196</y>
+           <y>214</y>
            <width>65</width>
            <height>40</height>
           </rect>
@@ -15745,7 +15791,7 @@ border-radius: 4px;
          <property name="geometry">
           <rect>
            <x>21</x>
-           <y>196</y>
+           <y>214</y>
            <width>230</width>
            <height>40</height>
           </rect>
@@ -15825,7 +15871,7 @@ border-radius: 4px;
          <property name="geometry">
           <rect>
            <x>316</x>
-           <y>36</y>
+           <y>84</y>
            <width>65</width>
            <height>40</height>
           </rect>
@@ -15859,7 +15905,7 @@ border-radius: 4px;
          <property name="geometry">
           <rect>
            <x>265</x>
-           <y>39</y>
+           <y>87</y>
            <width>40</width>
            <height>35</height>
           </rect>
@@ -15892,7 +15938,7 @@ border-radius: 4px;
          <property name="geometry">
           <rect>
            <x>265</x>
-           <y>119</y>
+           <y>152</y>
            <width>40</width>
            <height>35</height>
           </rect>
@@ -15925,7 +15971,7 @@ border-radius: 4px;
          <property name="geometry">
           <rect>
            <x>265</x>
-           <y>199</y>
+           <y>217</y>
            <width>40</width>
            <height>35</height>
           </rect>
@@ -15958,7 +16004,7 @@ border-radius: 4px;
          <property name="geometry">
           <rect>
            <x>265</x>
-           <y>279</y>
+           <y>282</y>
            <width>40</width>
            <height>35</height>
           </rect>
@@ -15985,6 +16031,70 @@ border-radius: 4px;
          </property>
          <property name="value">
           <number>100</number>
+         </property>
+        </widget>
+        <widget class="LoadMeter" name="loadmeter">
+         <property name="geometry">
+          <rect>
+           <x>21</x>
+           <y>32</y>
+           <width>230</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="maximum">
+          <number>200</number>
+         </property>
+         <property name="value">
+          <number>90</number>
+         </property>
+        </widget>
+        <widget class="QLabel" name="axis_column_header_13">
+         <property name="geometry">
+          <rect>
+           <x>265</x>
+           <y>25</y>
+           <width>118</width>
+           <height>35</height>
+          </rect>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>118</width>
+           <height>35</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>100</width>
+           <height>35</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Bebas Kai</family>
+           <pointsize>17</pointsize>
+           <weight>50</weight>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel{
+    border-style: transparent;
+    border-color: rgb(238, 238, 236);
+    border-width: 2px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+         </property>
+         <property name="text">
+          <string>SPINDLE LOAD</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
          </property>
         </widget>
        </widget>
@@ -21956,7 +22066,7 @@ border-radius: 1px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1950</width>
+     <width>1962</width>
      <height>20</height>
     </rect>
    </property>
@@ -22169,6 +22279,11 @@ border-radius: 1px;
    <class>SubCallButton</class>
    <extends>QPushButton</extends>
    <header>QtPyVCP.widgets.button_widgets.subcall_button</header>
+  </customwidget>
+  <customwidget>
+   <class>LoadMeter</class>
+   <extends>QProgressBar</extends>
+   <header>QtPyVCP.widgets.display_widgets.load_meter</header>
   </customwidget>
   <customwidget>
    <class>MDIEntry</class>
