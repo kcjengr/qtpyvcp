@@ -23,3 +23,9 @@ from override_slider import OverrideSlider
 class OverrideSliderPlugin(_DesignerPlugin):
     def pluginClass(self):
         return OverrideSlider
+
+from tooltable.tooltable import ToolTable
+class ToolTablePlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return ToolTable
+

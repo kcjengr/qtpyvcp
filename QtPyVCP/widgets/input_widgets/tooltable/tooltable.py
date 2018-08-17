@@ -48,7 +48,7 @@ class ToolTable(QWidget):
 
         self.log = LOG
 
-        self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "tootable.ui"), self)
+        self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "tooltable.ui"), self)
 
 
     # Parse and load tool table into the treeview
