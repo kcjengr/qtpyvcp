@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1950</width>
-    <height>1102</height>
+    <width>1962</width>
+    <height>1122</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -116,7 +116,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>5</number>
+         <number>7</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -219,7 +219,7 @@
               </item>
              </layout>
             </widget>
-            <widget class="GcodeBackplot" name="gcodebackplot" native="true">
+            <widget class="GcodeBackplot" name="gcodebackplot">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                <horstretch>0</horstretch>
@@ -232,7 +232,7 @@
              <property name="renderProgramAlpha" stdset="0">
               <bool>true</bool>
              </property>
-             <property name="backgroundColor" stdset="0">
+             <property name="backgroundColor">
               <color>
                <red>0</red>
                <green>0</green>
@@ -12461,7 +12461,7 @@ padding-left: 20px;
               </property>
               <property name="sizeHint" stdset="0">
                <size>
-                <width>20</width>
+                <width>477</width>
                 <height>2</height>
                </size>
               </property>
@@ -15387,54 +15387,26 @@ border-radius: 6px;
         <property name="title">
          <string/>
         </property>
-        <widget class="ActionButton" name="max_velocity_100_button">
-         <property name="geometry">
-          <rect>
-           <x>316</x>
-           <y>276</y>
-           <width>65</width>
-           <height>40</height>
-          </rect>
+        <layout class="QGridLayout" name="gridLayout">
+         <property name="horizontalSpacing">
+          <number>10</number>
          </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+         <property name="verticalSpacing">
+          <number>6</number>
          </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>MV 100%</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QSlider" name="max_velocity_override_slider">
-         <property name="geometry">
-          <rect>
-           <x>21</x>
-           <y>276</y>
-           <width>230</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QSlider::groove:horizontal {
+         <item row="1" column="0">
+          <widget class="OverrideSlider" name="feedrate_override_slider_4">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>OpenHandCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QSlider::groove:horizontal {
 border: 1px solid #bbb;
 background: white;
 height: 18px;
@@ -15490,71 +15462,62 @@ background: #eee;
 border: 1px solid #aaa;
 border-radius: 4px;
 }</string>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-         <property name="value">
-          <number>100</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="invertedAppearance">
-          <bool>false</bool>
-         </property>
-         <property name="invertedControls">
-          <bool>false</bool>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="spindle_100_button">
-         <property name="geometry">
-          <rect>
-           <x>316</x>
-           <y>116</y>
-           <width>65</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>S 100%</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QSlider" name="feedrate_override_slider">
-         <property name="geometry">
-          <rect>
-           <x>21</x>
-           <y>36</y>
-           <width>230</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QSlider::groove:horizontal {
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="override_type" stdset="0">
+            <enum>OverrideSlider::speed_override</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="pushButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Bebas Kai</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="text">
+            <string>F 100%</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="OverrideSlider" name="feedrate_override_slider_5">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>OpenHandCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QSlider::groove:horizontal {
 border: 1px solid #bbb;
 background: white;
 height: 18px;
@@ -15610,37 +15573,28 @@ background: #eee;
 border: 1px solid #aaa;
 border-radius: 4px;
 }</string>
-         </property>
-         <property name="maximum">
-          <number>200</number>
-         </property>
-         <property name="value">
-          <number>100</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="tickPosition">
-          <enum>QSlider::NoTicks</enum>
-         </property>
-         <property name="tickInterval">
-          <number>0</number>
-         </property>
-        </widget>
-        <widget class="QSlider" name="spindle_override_slider">
-         <property name="geometry">
-          <rect>
-           <x>21</x>
-           <y>116</y>
-           <width>230</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QSlider::groove:horizontal {
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="override_type" stdset="0">
+            <enum>OverrideSlider::rapid_override</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="OverrideSlider" name="feedrate_override_slider_3">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>OpenHandCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QSlider::groove:horizontal {
 border: 1px solid #bbb;
 background: white;
 height: 18px;
@@ -15696,65 +15650,143 @@ background: #eee;
 border: 1px solid #aaa;
 border-radius: 4px;
 }</string>
-         </property>
-         <property name="maximum">
-          <number>200</number>
-         </property>
-         <property name="value">
-          <number>100</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="rapids_100_button">
-         <property name="geometry">
-          <rect>
-           <x>316</x>
-           <y>196</y>
-           <width>65</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>R 100%</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QSlider" name="rapids_override_slider">
-         <property name="geometry">
-          <rect>
-           <x>21</x>
-           <y>196</y>
-           <width>230</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="cursor">
-          <cursorShape>OpenHandCursor</cursorShape>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QSlider::groove:horizontal {
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="1">
+          <widget class="QSpinBox" name="max_velocity_override_dro">
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QSpinBox {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 75 15pt &quot;Bebas Kai&quot;;
+}</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="buttonSymbols">
+            <enum>QAbstractSpinBox::NoButtons</enum>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>100</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="StatusLabel" name="statuslabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLabel {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 75 15pt &quot;Bebas Kai&quot;;
+}</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="label_type" stdset="0">
+            <enum>StatusLabel::feed_override</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="2">
+          <widget class="ActionButton" name="max_velocity_100_button">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Bebas Kai</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="text">
+            <string>MV 100%</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="option" stdset="0">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QSlider" name="max_velocity_override_slider">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>OpenHandCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QSlider::groove:horizontal {
 border: 1px solid #bbb;
 background: white;
 height: 18px;
@@ -15810,62 +15842,46 @@ background: #eee;
 border: 1px solid #aaa;
 border-radius: 4px;
 }</string>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-         <property name="value">
-          <number>100</number>
-         </property>
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="feedrate_100_button">
-         <property name="geometry">
-          <rect>
-           <x>316</x>
-           <y>36</y>
-           <width>65</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="font">
-          <font>
-           <family>Bebas Kai</family>
-           <pointsize>14</pointsize>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>F 100%</string>
-         </property>
-         <property name="checkable">
-          <bool>false</bool>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="QSpinBox" name="fr_override_dro">
-         <property name="geometry">
-          <rect>
-           <x>265</x>
-           <y>39</y>
-           <width>40</width>
-           <height>35</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QSpinBox {
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>100</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="invertedAppearance">
+            <bool>false</bool>
+           </property>
+           <property name="invertedControls">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="StatusLabel" name="statuslabel_2">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLabel {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -15874,31 +15890,37 @@ border-radius: 4px;
     background: rgb(235, 235, 235);
 	font: 75 15pt &quot;Bebas Kai&quot;;
 }</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="maximum">
-          <number>200</number>
-         </property>
-         <property name="value">
-          <number>100</number>
-         </property>
-        </widget>
-        <widget class="QSpinBox" name="spindle_override_dro">
-         <property name="geometry">
-          <rect>
-           <x>265</x>
-           <y>119</y>
-           <width>40</width>
-           <height>35</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QSpinBox {
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="label_type" stdset="0">
+            <enum>StatusLabel::speed_override</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="StatusLabel" name="statuslabel_3">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>25</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLabel {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -15907,86 +15929,84 @@ border-radius: 4px;
     background: rgb(235, 235, 235);
 	font: 75 15pt &quot;Bebas Kai&quot;;
 }</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="maximum">
-          <number>200</number>
-         </property>
-         <property name="value">
-          <number>100</number>
-         </property>
-        </widget>
-        <widget class="QSpinBox" name="rapid_override_dro">
-         <property name="geometry">
-          <rect>
-           <x>265</x>
-           <y>199</y>
-           <width>40</width>
-           <height>35</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QSpinBox {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 15pt &quot;Bebas Kai&quot;;
-}</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-         <property name="value">
-          <number>100</number>
-         </property>
-        </widget>
-        <widget class="QSpinBox" name="max_velocity_override_dro">
-         <property name="geometry">
-          <rect>
-           <x>265</x>
-           <y>279</y>
-           <width>40</width>
-           <height>35</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QSpinBox {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 15pt &quot;Bebas Kai&quot;;
-}</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="buttonSymbols">
-          <enum>QAbstractSpinBox::NoButtons</enum>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-         <property name="value">
-          <number>100</number>
-         </property>
-        </widget>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="label_type" stdset="0">
+            <enum>StatusLabel::rapid_override</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QPushButton" name="pushButton_48">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Bebas Kai</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="text">
+            <string>S 100%</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QPushButton" name="pushButton_49">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>80</width>
+             <height>35</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>80</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Bebas Kai</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="text">
+            <string>R 100%</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>
@@ -21956,8 +21976,8 @@ border-radius: 1px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1950</width>
-     <height>20</height>
+     <width>1962</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
@@ -22185,156 +22205,22 @@ border-radius: 1px;
    <extends>QPushButton</extends>
    <header>QtPyVCP.widgets.button_widgets.axis_button</header>
   </customwidget>
+  <customwidget>
+   <class>StatusLabel</class>
+   <extends>QLabel</extends>
+   <header>QtPyVCP.widgets.display_widgets.statuslabel_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>OverrideSlider</class>
+   <extends>QSlider</extends>
+   <header>QtPyVCP.widgets.input_widgets.override_slider</header>
+  </customwidget>
  </customwidgets>
  <resources>
   <include location="xyz.qrc"/>
   <include location="xyz.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>feedrate_override_slider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>fr_override_dro</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>590</x>
-     <y>789</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>657</x>
-     <y>796</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>fr_override_dro</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>feedrate_override_slider</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>678</x>
-     <y>783</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>605</x>
-     <y>792</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>feedrate_100_button</sender>
-   <signal>clicked()</signal>
-   <receiver>fr_override_dro</receiver>
-   <slot>update()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>749</x>
-     <y>778</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>668</x>
-     <y>789</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spindle_override_slider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>spindle_override_dro</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>609</x>
-     <y>873</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>664</x>
-     <y>876</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>spindle_override_dro</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>spindle_override_slider</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>666</x>
-     <y>862</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>630</x>
-     <y>866</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>rapids_override_slider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>rapid_override_dro</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>602</x>
-     <y>953</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>662</x>
-     <y>952</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>rapid_override_dro</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>rapids_override_slider</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>692</x>
-     <y>963</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>613</x>
-     <y>965</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>max_velocity_override_slider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>max_velocity_override_dro</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>592</x>
-     <y>1034</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>656</x>
-     <y>1029</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>max_velocity_override_dro</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>max_velocity_override_slider</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>666</x>
-     <y>1042</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>638</x>
-     <y>1045</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>jog_fr_slider</sender>
    <signal>valueChanged(int)</signal>
@@ -22390,12 +22276,92 @@ border-radius: 1px;
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>629</x>
-     <y>451</y>
+     <x>641</x>
+     <y>485</y>
     </hint>
     <hint type="destinationlabel">
      <x>594</x>
      <y>453</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>max_velocity_override_slider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>max_velocity_override_dro</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>592</x>
+     <y>1034</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>656</x>
+     <y>1029</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>max_velocity_override_dro</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>max_velocity_override_slider</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>666</x>
+     <y>1042</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>629</x>
+     <y>1058</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>feedrate_override_slider_3</receiver>
+   <slot>reset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>721</x>
+     <y>806</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>615</x>
+     <y>808</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_48</sender>
+   <signal>clicked()</signal>
+   <receiver>feedrate_override_slider_4</receiver>
+   <slot>reset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>726</x>
+     <y>888</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>604</x>
+     <y>887</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_49</sender>
+   <signal>clicked()</signal>
+   <receiver>feedrate_override_slider_5</receiver>
+   <slot>reset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>719</x>
+     <y>957</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>614</x>
+     <y>956</y>
     </hint>
    </hints>
   </connection>
