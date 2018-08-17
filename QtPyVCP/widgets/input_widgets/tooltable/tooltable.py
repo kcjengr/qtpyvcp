@@ -44,6 +44,8 @@ class ToolTable(QWidget):
     def __init__(self, parent=None):
         super(ToolTable, self).__init__(parent)
 
+        self.cmd = linuxcnc.command()
+
         info = Info()
 
         self.log = LOG
@@ -56,6 +58,7 @@ class ToolTable(QWidget):
         self.toolinfo = []
 
         self.ui.load_button.clicked.connect(self.load_tool_table)
+        self.ui.save_button.clicked.connect(self.save_tool_table)
 
     # Parse and load tool table into the treeview
     # More or less copied from Chris Morley's GladeVcp tooledit widget
@@ -64,8 +67,10 @@ class ToolTable(QWidget):
 
         self.ui.tooltable.clear()
 
-
         fn = self.tool_table_file
+
+        if fn is None:
+            return
 
         if not os.path.exists(fn):
             self.log.warning("Tool table does not exist")
@@ -128,39 +133,48 @@ class ToolTable(QWidget):
     # Save tool table
     # More or less copied from Chris Morley's GladeVcp tooledit widget
 
-    def save_tool_table(self, fn=None):
-        if fn is None:
-            fn = self.tool_table_file
+    def save_tool_table(self):
+
+        fn = self.tool_table_file
+
         if fn is None:
             return
+
         self.log.debug("Saving tool table as: {0}".format(fn))
-        fn = open(fn, "w")
-        for row in self.model:
-            values = [value for value in row]
-            line = ""
-            for num, i in enumerate(values):
-                if num in (0, 6):
-                    continue
-                elif num in (1, 2):  # tool# pocket#
-                    line = line + "%s%d " % (['S', 'T', 'P', 'D', 'Z', ';'][num], i)
-                else:
-                    line = line + "%s%s " % (['S', 'T', 'P', 'D', 'Z', ';'][num], i.strip())
-            # Write line to file
-            fn.write(line + "\n")
+
+        with open(fn, "w") as f:
+            for row_index in range(self.ui.tooltable.rowCount()):
+                line = ""
+                for col_index in range(self.ui.tooltable.columnCount()):
+                    item = self.ui.tooltable.item(row_index, col_index)
+                    if item is not None:
+                        if col_index in (0, 6):
+                            continue
+                        elif col_index in (1, 2):  # tool# pocket#
+                            line += "{}{} ".format(['S', 'T', 'P', 'D', 'Z', ';'][col_index], item.text())
+                        else:
+                            line += "{}{} ".format(['S', 'T', 'P', 'D', 'Z', ';'][col_index], item.text().strip())
+                if line:
+                    line += "\n"
+                    f.write(line)
+        # f.flush()
+
         # Theses lines make sure the OS doesn't cache the data so that
         # linuxcnc will actually load the updated tool table
-        fn.flush()
-        os.fsync(fn.fileno())
-        linuxcnc.command().load_tool_table()
+        # fn.flush()
+        # os.fsync(fn.fileno())
+        # self.cmd.load_tool_table()
 
     def handleItem(self, item):
 
-        if isinstance(item,bool):
+        if isinstance(item, bool):
             if item:
                 return "yes"
             else:
                 return "no"
         elif isinstance(item, str):
             return item
+        elif isinstance(item, int):
+            return str(item)
         elif item is None:
             return ""
