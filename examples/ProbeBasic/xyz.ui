@@ -4487,6 +4487,7 @@ border-radius: 6px;
              </property>
              <property name="font">
               <font>
+               <family>Bebas Kai</family>
                <pointsize>16</pointsize>
               </font>
              </property>
@@ -4780,6 +4781,11 @@ border-radius: 6px;
               <property name="text">
                <string>0.0000</string>
               </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
+              </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
               </property>
@@ -4787,6 +4793,11 @@ border-radius: 6px;
              <item row="0" column="2">
               <property name="text">
                <string>0.0000</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
               </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
@@ -4834,6 +4845,11 @@ border-radius: 6px;
               <property name="text">
                <string>0.0000</string>
               </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
+              </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
               </property>
@@ -4841,6 +4857,11 @@ border-radius: 6px;
              <item row="1" column="2">
               <property name="text">
                <string>0.0000</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
               </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
@@ -4888,6 +4909,11 @@ border-radius: 6px;
               <property name="text">
                <string>0.0000</string>
               </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
+              </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
               </property>
@@ -4895,6 +4921,11 @@ border-radius: 6px;
              <item row="2" column="2">
               <property name="text">
                <string>0.0000</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
               </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
@@ -4942,6 +4973,11 @@ border-radius: 6px;
               <property name="text">
                <string>0.0000</string>
               </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
+              </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
               </property>
@@ -4949,6 +4985,11 @@ border-radius: 6px;
              <item row="3" column="2">
               <property name="text">
                <string>0.0000</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
               </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
@@ -4996,6 +5037,11 @@ border-radius: 6px;
               <property name="text">
                <string>0.0000</string>
               </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
+              </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
               </property>
@@ -5003,6 +5049,11 @@ border-radius: 6px;
              <item row="4" column="2">
               <property name="text">
                <string>0.0000</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
               </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
@@ -5049,6 +5100,11 @@ border-radius: 6px;
              <item row="5" column="1">
               <property name="text">
                <string>0.0000</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
               </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
@@ -5104,6 +5160,11 @@ border-radius: 6px;
               <property name="text">
                <string>0.0000</string>
               </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
+              </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
               </property>
@@ -5158,6 +5219,11 @@ border-radius: 6px;
               <property name="text">
                <string>0.0000</string>
               </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
+              </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
               </property>
@@ -5211,6 +5277,11 @@ border-radius: 6px;
              <item row="8" column="1">
               <property name="text">
                <string>0.0000</string>
+              </property>
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+               </font>
               </property>
               <property name="textAlignment">
                <set>AlignTrailing|AlignVCenter</set>
@@ -14605,7 +14676,7 @@ font: 17pt &quot;Bebas Kai&quot;;
           <property name="styleSheet">
            <string notr="true">QSlider::groove:horizontal {
 border: 1px solid #bbb;
-background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(0, 255, 7, 255), stop:0.105263 rgba(0, 255, 7, 255), stop:0.231579 rgba(0, 255, 7, 255), stop:0.463158 rgba(29, 255, 36, 255), stop:0.642105 rgba(255, 206, 58, 255), stop:0.957895 rgba(255, 28, 28, 255));
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(3, 70, 242, 255), stop:0.338462 rgba(98, 142, 255, 255), stop:0.5 rgba(230, 250, 134, 255), stop:0.51 rgba(238, 247, 136, 255), stop:1 rgba(255, 0, 0, 255));
 height: 30px;
 border-radius: 4px;
 }
@@ -14686,48 +14757,23 @@ border-radius: 4px;
            </rect>
           </property>
           <property name="styleSheet">
-           <string notr="true">DEFAULT_STYLE = &quot;&quot;&quot;
-QProgressBar {
+           <string notr="true">QProgressBar {
 border-style: solid;
-border-width: 2px;
+border-width: 1px;
 border-color: rgb(162, 162, 162);
 border-radius: 4px;
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(3, 70, 242, 255), stop:0.338462 rgba(98, 142, 255, 255), stop:0.5 rgba(230, 250, 134, 255), stop:0.51 rgba(238, 247, 136, 255), stop:1 rgba(255, 0, 0, 255));
 font: 14pt &quot;Bebas Kai&quot;;
 }
 
 QProgressBar::chunk {
-background: rgb(61, 106, 255);
+background: blue;
 border-radius: 3px;
 border: transparent;
 }
-&quot;&quot;&quot;
 
-COMPLETED_STYLE = &quot;&quot;&quot;
-QProgressBar {
-border-style: solid;
-border-width: 2px;
-border-color: rgb(255, 255, 127);
-border-radius: 4px;
-font: 14pt &quot;Bebas Kai&quot;;
-}
 
-QProgressBar::chunk {
-background: rgb(61, 106, 255);
-border-radius: 3px;
-border: transparent;
-}
-&quot;&quot;&quot;
 
-class MyProgressBar(QProgressBar):
-    def __init__(self, parent = None):
-        QtGui.QProgressBar.__init__(self, parent)
-        self.setStyleSheet(DEFAULT_STYLE)
-
-    def setValue(self, value):
-        QtGui.QProgressBar.setValue(self, value)
-
-        if value == self.maximum():
-            self.setStyleSheet(COMPLETED_STYLE)
 
 
 
@@ -14737,7 +14783,7 @@ class MyProgressBar(QProgressBar):
            <number>200</number>
           </property>
           <property name="value">
-           <number>200</number>
+           <number>0</number>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -22191,6 +22237,11 @@ border-radius: 1px;
    <class>SubCallButton</class>
    <extends>QPushButton</extends>
    <header>QtPyVCP.widgets.button_widgets.subcall_button</header>
+  </customwidget>
+  <customwidget>
+   <class>LoadMeter</class>
+   <extends>QProgressBar</extends>
+   <header>QtPyVCP.widgets.display_widgets.load_meter</header>
   </customwidget>
   <customwidget>
    <class>MDIEntry</class>
