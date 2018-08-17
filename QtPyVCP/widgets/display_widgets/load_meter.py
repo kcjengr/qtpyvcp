@@ -19,14 +19,14 @@ class LoadMeter(QProgressBar):
         # g.setColorAt(.8, Qt.yellow)
         # g.setColorAt(1, Qt.red)
 
-        g.setColorAt(0, QColor(113, 137, 197))
-        g.setColorAt(0.62, QColor(88, 119, 197))
+        g.setColorAt(0, QColor(170, 170, 236))
+        g.setColorAt(0.63, QColor(85, 85, 238))
 
-        g.setColorAt(0.67, QColor(163, 183, 166))
-        g.setColorAt(0.81, QColor(238, 247, 136))
+        g.setColorAt(0.65, QColor(171, 177, 158))
+        g.setColorAt(0.79, QColor(227, 237, 106))
         
-        g.setColorAt(0.85, QColor(246, 135, 74))
-        g.setColorAt(1, QColor(255, 0, 0))
+        g.setColorAt(0.84, QColor(219, 124, 55))
+        g.setColorAt(1, QColor(209, 0, 0))
 
 
         return g

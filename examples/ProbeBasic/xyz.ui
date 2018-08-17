@@ -116,7 +116,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>8</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -263,8 +263,8 @@
            <rect>
             <x>500</x>
             <y>0</y>
-            <width>941</width>
-            <height>621</height>
+            <width>921</width>
+            <height>541</height>
            </rect>
           </property>
           <property name="styleSheet">
@@ -1470,7 +1470,7 @@ border-radius: 8px;
           <widget class="QWidget" name="widget_4" native="true">
            <property name="geometry">
             <rect>
-             <x>614</x>
+             <x>592</x>
              <y>25</y>
              <width>176</width>
              <height>291</height>
@@ -1501,7 +1501,7 @@ border-radius: 8px;
            <widget class="QLabel" name="label_90">
             <property name="geometry">
              <rect>
-              <x>59</x>
+              <x>58</x>
               <y>138</y>
               <width>60</width>
               <height>33</height>
@@ -1532,7 +1532,7 @@ border-radius: 8px;
           <widget class="QLabel" name="label_38">
            <property name="geometry">
             <rect>
-             <x>690</x>
+             <x>668</x>
              <y>338</y>
              <width>240</width>
              <height>200</height>
@@ -1552,9 +1552,9 @@ border-radius: 8px;
          <widget class="QGroupBox" name="groupBox">
           <property name="geometry">
            <rect>
-            <x>12</x>
+            <x>60</x>
             <y>10</y>
-            <width>335</width>
+            <width>370</width>
             <height>530</height>
            </rect>
           </property>
@@ -1566,7 +1566,7 @@ border-radius: 8px;
           </property>
           <property name="minimumSize">
            <size>
-            <width>335</width>
+            <width>370</width>
             <height>0</height>
            </size>
           </property>
@@ -1901,7 +1901,7 @@ padding-right: 10px;
                   <enum>Qt::NoFocus</enum>
                  </property>
                  <property name="text">
-                  <string>&lt; CAROUSEL REV</string>
+                  <string>&lt;&lt; CAROUSEL REV</string>
                  </property>
                 </widget>
                </item>
@@ -1935,7 +1935,7 @@ padding-right: 10px;
                   <enum>Qt::NoFocus</enum>
                  </property>
                  <property name="text">
-                  <string>CAROUSEL FWD &gt;</string>
+                  <string>CAROUSEL FWD &gt;&gt;</string>
                  </property>
                 </widget>
                </item>
@@ -2370,9 +2370,9 @@ padding-right: 10px;
          <widget class="QGroupBox" name="groupBox_6">
           <property name="geometry">
            <rect>
-            <x>1537</x>
+            <x>1474</x>
             <y>10</y>
-            <width>331</width>
+            <width>345</width>
             <height>260</height>
            </rect>
           </property>
@@ -2387,8 +2387,8 @@ border-radius: 6px;
 border-radius: 6px;
 padding-top: 0px;
 padding-bottom: 0px;
-padding-left: 6px;
-padding-right: 6px;
+padding-left: 10px;
+padding-right: 10px;
 }</string>
           </property>
           <property name="title">
@@ -2700,9 +2700,9 @@ padding-right: 6px;
          <widget class="QGroupBox" name="groupBox_7">
           <property name="geometry">
            <rect>
-            <x>1579</x>
-            <y>344</y>
-            <width>301</width>
+            <x>1504</x>
+            <y>325</y>
+            <width>315</width>
             <height>215</height>
            </rect>
           </property>
@@ -2717,8 +2717,8 @@ border-radius: 6px;
 border-radius: 6px;
 padding-top: 0px;
 padding-bottom: 0px;
-padding-left: 6px;
-padding-right: 6px;
+padding-left: 10px;
+padding-right: 10px;
 }</string>
           </property>
           <property name="title">
@@ -12618,7 +12618,7 @@ padding-left: 20px;
               <property name="sizeHint" stdset="0">
                <size>
                 <width>477</width>
-                <height>0</height>
+                <height>1</height>
                </size>
               </property>
              </spacer>
@@ -14717,8 +14717,8 @@ font: 17pt &quot;Bebas Kai&quot;;
          <widget class="QSlider" name="feedrate_override_slider_2">
           <property name="geometry">
            <rect>
-            <x>360</x>
-            <y>410</y>
+            <x>200</x>
+            <y>170</y>
             <width>230</width>
             <height>50</height>
            </rect>
@@ -14770,8 +14770,8 @@ border-radius: 4px;
          <widget class="QSpinBox" name="fr_override_dro_3">
           <property name="geometry">
            <rect>
-            <x>596</x>
-            <y>418</y>
+            <x>430</x>
+            <y>230</y>
             <width>40</width>
             <height>35</height>
            </rect>
@@ -14803,8 +14803,8 @@ border-radius: 4px;
          <widget class="QProgressBar" name="progressBar">
           <property name="geometry">
            <rect>
-            <x>360</x>
-            <y>490</y>
+            <x>190</x>
+            <y>230</y>
             <width>231</width>
             <height>31</height>
            </rect>
@@ -14920,8 +14920,8 @@ border: transparent;
          <widget class="QProgressBar" name="progressBar_2">
           <property name="geometry">
            <rect>
-            <x>340</x>
-            <y>320</y>
+            <x>190</x>
+            <y>280</y>
             <width>231</width>
             <height>31</height>
            </rect>
@@ -14932,7 +14932,7 @@ border-style: solid;
 border-width: 1px;
 border-color: rgb(162, 162, 162);
 border-radius: 4px;
-background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(3, 70, 242, 255), stop:0.338462 rgba(98, 142, 255, 255), stop:0.5 rgba(230, 250, 134, 255), stop:0.51 rgba(238, 247, 136, 255), stop:1 rgba(255, 0, 0, 255));
+background: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(170, 170, 236, 255), stop:0.622449 rgba(85, 85, 238, 255), stop:0.645503 rgba(171, 177, 158, 255), stop:0.809 rgba(227, 237, 106, 255), stop:0.857 rgba(219, 124, 55, 255), stop:1 rgba(209, 0, 0, 255));
 font: 14pt &quot;Bebas Kai&quot;;
 }
 
@@ -15613,114 +15613,6 @@ padding-right: 7px;
          <property name="verticalSpacing">
           <number>6</number>
          </property>
-         <item row="2" column="0">
-          <widget class="OverrideSlider" name="feedrate_override_slider_4">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>50</height>
-            </size>
-           </property>
-           <property name="cursor">
-            <cursorShape>OpenHandCursor</cursorShape>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QSlider::groove:horizontal {
-border: 1px solid #bbb;
-background: white;
-height: 18px;
-border-radius: 4px;
-}
-
-QSlider::sub-page:horizontal {
-background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
-    stop: 0 #66e, stop: 1 #bbf);
-background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
-    stop: 0 #bbf, stop: 1 #55f);
-border: 1px solid #777;
-height: 18px;
-border-radius: 4px;
-}
-
-QSlider::add-page:horizontal {
-background: #fff;
-border: 1px solid #777;
-height: 18px;
-border-radius: 4px;
-}
-
-QSlider::handle:horizontal {
-background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.1 rgba(60, 60, 60, 255), stop:0.21 rgba(60, 60, 60, 255), stop:0.25 rgba(255, 255, 255, 255), stop:0.29 rgba(60, 60, 60, 255), stop:0.46 rgba(60, 60, 60, 255), stop:0.5 rgba(255, 255, 255, 255), stop:0.54 rgba(60, 60, 60, 255), stop:0.71 rgba(60, 60, 60, 255), stop:0.75 rgba(255, 255, 255, 255), stop:0.79 rgba(60, 60, 60, 255), stop:0.9 rgba(60, 60, 60, 255), stop:1 rgba(255, 255, 255, 255));
-border: 1px solid #777;
-border-color: rgba(40, 40, 40, 255);
-width: 40px;
-margin-top: -11px;
-margin-bottom: -11px;
-border-radius: 4px;
-}
-
-QSlider::handle:horizontal:hover {
-background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.1 rgba(60, 60, 60, 255), stop:0.21 rgba(60, 60, 60, 255), stop:0.25 rgba(255, 255, 255, 255), stop:0.29 rgba(60, 60, 60, 255), stop:0.46 rgba(60, 60, 60, 255), stop:0.5 rgba(255, 255, 255, 255), stop:0.54 rgba(60, 60, 60, 255), stop:0.71 rgba(60, 60, 60, 255), stop:0.75 rgba(255, 255, 255, 255), stop:0.79 rgba(60, 60, 60, 255), stop:0.9 rgba(60, 60, 60, 255), stop:1 rgba(255, 255, 255, 255));
-border: 1px solid #444;
-border-color: rgb(241, 239, 237);
-border-radius: 4px;
-}
-
-QSlider::sub-page:horizontal:disabled {
-background: #bbb;
-border-color: #999;
-}
-
-QSlider::add-page:horizontal:disabled {
-background: #eee;
-border-color: #999;
-}
-
-QSlider::handle:horizontal:disabled {
-background: #eee;
-border: 1px solid #aaa;
-border-radius: 4px;
-}</string>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QPushButton" name="pushButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>65</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>65</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <family>Bebas Kai</family>
-             <pointsize>14</pointsize>
-            </font>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="text">
-            <string>F 100%</string>
-           </property>
-          </widget>
-         </item>
          <item row="3" column="0">
           <widget class="OverrideSlider" name="feedrate_override_slider_5">
            <property name="minimumSize">
@@ -15737,7 +15629,7 @@ border-radius: 4px;
 border: 1px solid #bbb;
 background: white;
 height: 18px;
-border-radius: 4px;
+border-radius: 3px;
 }
 
 QSlider::sub-page:horizontal {
@@ -15747,14 +15639,14 @@ background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
     stop: 0 #bbf, stop: 1 #55f);
 border: 1px solid #777;
 height: 18px;
-border-radius: 4px;
+border-radius: 3px;
 }
 
 QSlider::add-page:horizontal {
 background: #fff;
 border: 1px solid #777;
 height: 18px;
-border-radius: 4px;
+border-radius: 3px;
 }
 
 QSlider::handle:horizontal {
@@ -15811,7 +15703,7 @@ border-radius: 4px;
 border: 1px solid #bbb;
 background: white;
 height: 18px;
-border-radius: 4px;
+border-radius: 3px;
 }
 
 QSlider::sub-page:horizontal {
@@ -15821,14 +15713,14 @@ background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
     stop: 0 #bbf, stop: 1 #55f);
 border: 1px solid #777;
 height: 18px;
-border-radius: 4px;
+border-radius: 3px;
 }
 
 QSlider::add-page:horizontal {
 background: #fff;
 border: 1px solid #777;
 height: 18px;
-border-radius: 4px;
+border-radius: 3px;
 }
 
 QSlider::handle:horizontal {
@@ -15905,6 +15797,40 @@ border-radius: 4px;
            </property>
            <property name="value">
             <number>100</number>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QPushButton" name="pushButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>Bebas Kai</family>
+             <pointsize>14</pointsize>
+            </font>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="text">
+            <string>F 100%</string>
            </property>
           </widget>
          </item>
@@ -16000,7 +15926,7 @@ border-radius: 4px;
 border: 1px solid #bbb;
 background: white;
 height: 18px;
-border-radius: 4px;
+border-radius: 3px;
 }
 
 QSlider::sub-page:horizontal {
@@ -16010,14 +15936,14 @@ background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
     stop: 0 #bbf, stop: 1 #55f);
 border: 1px solid #777;
 height: 18px;
-border-radius: 4px;
+border-radius: 3px;
 }
 
 QSlider::add-page:horizontal {
 background: #fff;
 border: 1px solid #777;
 height: 18px;
-border-radius: 4px;
+border-radius: 3px;
 }
 
 QSlider::handle:horizontal {
@@ -16246,10 +16172,16 @@ border-radius: 4px;
            <property name="enabled">
             <bool>true</bool>
            </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="minimumSize">
             <size>
              <width>0</width>
-             <height>33</height>
+             <height>40</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -16268,6 +16200,80 @@ border-radius: 4px;
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="OverrideSlider" name="feedrate_override_slider_4">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="cursor">
+            <cursorShape>OpenHandCursor</cursorShape>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QSlider::groove:horizontal {
+border: 1px solid #bbb;
+background: white;
+height: 18px;
+border-radius: 3px;
+}
+
+QSlider::sub-page:horizontal {
+background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
+    stop: 0 #66e, stop: 1 #bbf);
+background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
+    stop: 0 #bbf, stop: 1 #55f);
+border: 1px solid #777;
+height: 18px;
+border-radius: 3px;
+}
+
+QSlider::add-page:horizontal {
+background: #fff;
+border: 1px solid #777;
+height: 18px;
+border-radius: 3px;
+}
+
+QSlider::handle:horizontal {
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.1 rgba(60, 60, 60, 255), stop:0.21 rgba(60, 60, 60, 255), stop:0.25 rgba(255, 255, 255, 255), stop:0.29 rgba(60, 60, 60, 255), stop:0.46 rgba(60, 60, 60, 255), stop:0.5 rgba(255, 255, 255, 255), stop:0.54 rgba(60, 60, 60, 255), stop:0.71 rgba(60, 60, 60, 255), stop:0.75 rgba(255, 255, 255, 255), stop:0.79 rgba(60, 60, 60, 255), stop:0.9 rgba(60, 60, 60, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid #777;
+border-color: rgba(40, 40, 40, 255);
+width: 40px;
+margin-top: -11px;
+margin-bottom: -11px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal:hover {
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.1 rgba(60, 60, 60, 255), stop:0.21 rgba(60, 60, 60, 255), stop:0.25 rgba(255, 255, 255, 255), stop:0.29 rgba(60, 60, 60, 255), stop:0.46 rgba(60, 60, 60, 255), stop:0.5 rgba(255, 255, 255, 255), stop:0.54 rgba(60, 60, 60, 255), stop:0.71 rgba(60, 60, 60, 255), stop:0.75 rgba(255, 255, 255, 255), stop:0.79 rgba(60, 60, 60, 255), stop:0.9 rgba(60, 60, 60, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid #444;
+border-color: rgb(241, 239, 237);
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal:disabled {
+background: #bbb;
+border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+background: #eee;
+border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+background: #eee;
+border: 1px solid #aaa;
+border-radius: 4px;
+}</string>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
           </widget>
          </item>
@@ -16327,6 +16333,9 @@ padding-bottom:0px;
         <layout class="QVBoxLayout" name="verticalLayout_4">
          <item>
           <layout class="QVBoxLayout" name="dro_qvboxlayout">
+           <property name="spacing">
+            <number>10</number>
+           </property>
            <item>
             <layout class="QHBoxLayout" name="dro_column_headers">
              <property name="spacing">
@@ -20475,9 +20484,9 @@ border-radius: 1px;
         <widget class="ActionButton" name="go_to_g30_button">
          <property name="geometry">
           <rect>
-           <x>111</x>
-           <y>89</y>
-           <width>83</width>
+           <x>117</x>
+           <y>90</y>
+           <width>78</width>
            <height>40</height>
           </rect>
          </property>
@@ -21147,9 +21156,9 @@ border-radius: 1px;
         <widget class="ActionButton" name="go_to_g30_button_2">
          <property name="geometry">
           <rect>
-           <x>16</x>
+           <x>15</x>
            <y>89</y>
-           <width>83</width>
+           <width>90</width>
            <height>40</height>
           </rect>
          </property>
@@ -21551,7 +21560,7 @@ border-radius: 6px;
         <widget class="QSlider" name="jog_fr_slider">
          <property name="geometry">
           <rect>
-           <x>22</x>
+           <x>20</x>
            <y>96</y>
            <width>200</width>
            <height>40</height>
@@ -21565,7 +21574,7 @@ border-radius: 6px;
 border: 1px solid #bbb;
 background: white;
 height: 18px;
-border-radius: 4px;
+border-radius: 3px;
 }
 
 QSlider::sub-page:horizontal {
@@ -21575,14 +21584,14 @@ background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
     stop: 0 #bbf, stop: 1 #55f);
 border: 1px solid #777;
 height: 18px;
-border-radius: 4px;
+border-radius: 3px;
 }
 
 QSlider::add-page:horizontal {
 background: #fff;
 border: 1px solid #777;
 height: 18px;
-border-radius: 4px;
+border-radius: 3px;
 }
 
 QSlider::handle:horizontal {
@@ -22163,9 +22172,9 @@ border-radius: 4px;
         <widget class="ActionButton" name="jog_fr_100_button">
          <property name="geometry">
           <rect>
-           <x>280</x>
-           <y>97</y>
-           <width>48</width>
+           <x>278</x>
+           <y>96</y>
+           <width>50</width>
            <height>40</height>
           </rect>
          </property>
@@ -22214,8 +22223,8 @@ border-radius: 1px;
         <widget class="QSpinBox" name="fr_override_dro_2">
          <property name="geometry">
           <rect>
-           <x>231</x>
-           <y>100</y>
+           <x>229</x>
+           <y>99</y>
            <width>40</width>
            <height>35</height>
           </rect>
@@ -22276,7 +22285,7 @@ border-radius: 1px;
      <x>0</x>
      <y>0</y>
      <width>1962</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
