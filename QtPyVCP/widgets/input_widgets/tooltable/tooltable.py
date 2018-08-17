@@ -117,7 +117,6 @@ class ToolTable(QWidget):
 
             for offset, i in enumerate(['T', 'P', 'D', 'Z', ';']):
                 for word in line.split():
-                    print(word)
                     if word.startswith(i):
                         self.ui.tooltable.setItem(count, offset, self.handleItem(word.lstrip(i)))
 
@@ -127,8 +126,6 @@ class ToolTable(QWidget):
     def delete_tool(self):
 
         # TODO show dialogs asking here
-
-        print(self.current_row)
         for i in range(5):
             self.ui.tooltable.setItem(self.current_row, i, self.handleItem(""))
 
@@ -160,10 +157,8 @@ class ToolTable(QWidget):
                     item = self.ui.tooltable.item(row_index, col_index)
                     if item is not None:
                         if col_index in (0, 1):  # tool# pocket#
-                            print("{} {} {}".format(col_index, row_index, item.text()))
                             line += "{}{} ".format(['T', 'P', 'D', 'Z', ';'][col_index], item.text())
                         else:
-                            print("{} {} {}".format(col_index, row_index, item.text()))
                             line += "{}{} ".format(['T', 'P', 'D', 'Z', ';'][col_index], item.text().strip())
                 if line:
                     line += "\n"
@@ -177,8 +172,6 @@ class ToolTable(QWidget):
         self.cmd.load_tool_table()
 
     def handleItem(self, value):
-
-        print(type(value), value)
 
         item = QTableWidgetItem()
 
