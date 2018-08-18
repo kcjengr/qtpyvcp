@@ -29,3 +29,10 @@ class JogButtonPlugin(_DesignerPlugin):
         return JogButton
     def toolTip(self):
         return "Axis/Joint jog button"
+
+from led_button import LEDButton
+class LedButtonPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return LEDButton
+    def toolTip(self):
+        return "LED button"

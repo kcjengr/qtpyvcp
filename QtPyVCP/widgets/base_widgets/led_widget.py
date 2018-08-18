@@ -46,16 +46,16 @@ class LEDWidget(QWidget):
             y = (self.height() - self._diameter) / 2
 
         gradient = QRadialGradient(x + self._diameter / 2, y + self._diameter / 2,
-                                   self._diameter * 0.3, self._diameter * 0, self._diameter * 0)
+                                   self._diameter * 0.3, self._diameter * 0.1, self._diameter * 0.1)
         gradient.setColorAt(0, Qt.white)
 
         # ensure the border/halo is same color as gradient
-        pen_color = self._color;
         if self._state:
-            gradient.setColorAt(1, self._color)
+            pen_color = self._color;
+            gradient.setColorAt(0.7, self._color)
         else:
-            # cut to black @ 75% for darker effect
-            gradient.setColorAt(.70, Qt.black)
+            # cut to black @ 70% for darker effect
+            gradient.setColorAt(.7, Qt.black)
             pen_color = Qt.black
 
         painter.begin(self)
@@ -84,6 +84,7 @@ class LEDWidget(QWidget):
     @pyqtSlot(int)
     def setDiameter(self, value):
         self._diameter = value
+        self.adjustSize()
         self.update()
 
     def getColor(self):
@@ -152,7 +153,7 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     led = LEDWidget()
-    led.setState(False)
+    # led.setState(False)
     led.setColor(QColor('green'))
     led.setDiameter(16)
     led.show()

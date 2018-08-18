@@ -52,27 +52,32 @@ MAPPING = {
         },
     10: {'name': 'feedrate',
         'format': '{:.0%}',
+        'factor': 1,
         'tooltip': 'Feed Override',
         },
     11: {'name': 'spindlerate',
         'format': '{:.0%}',
+        'factor': 1,
         'tooltip': 'Speed Override',
         },
     12: {'name': 'rapidrate',
         'format': '{:.0%}',
+        'factor': 1,
         'tooltip': 'Rapid Override',
         },
     13: {'name': 'max_velocity',
         'format': '{:.2f}',
+        'factor': 60,
         'tooltip': 'Max Velocity',
         },
     14: {'name': 'current_vel',
-        'format': '{:.1f}',
-        'units': ['in/s', 'mm/s'],
+        'format': '{:.1f} {units}/min',
+        'factor': 60,
         'tooltip': 'Current Velocity',
         },
     15: {'name': 'spindle_speed',
-        'format': None,
+        'format': '{:.2f} rpm',
+        'factor': 1,
         'tooltip': 'Current Spindle Speed'
         },
     }
@@ -103,6 +108,7 @@ class StatusLabel(QLabel, LabelType):
         super(StatusLabel, self).__init__(parent)
 
         self._label_type = 1
+        self._factor = 1
         self._format_spec = None
         self.setText(MAPPING[self._label_type]['name'])
 
@@ -111,6 +117,7 @@ class StatusLabel(QLabel, LabelType):
     def initUI(self):
         sig_name = MAPPING[self._label_type]['name']
         format_spec = self.property('format_spec') or '{}'
+        factor = self.property('conv_factor') or 1
         tooltip_text = MAPPING[self._label_type]['tooltip']
 
         value = getattr(STATUS.stat, sig_name)
@@ -120,11 +127,14 @@ class StatusLabel(QLabel, LabelType):
         except KeyError:
             sig = getattr(STATUS, sig_name)
 
-        if isinstance(value, str) and format_spec is None:
-            sig.connect(self.setText)
+        if isinstance(value, str):
+            if format_spec is None:
+                sig.connect(self.setText)
+            else:
+                sig.connect(lambda v: self.setText(format_spec.format(v)))
         else:
-            sig.connect(lambda v: self.setText(format_spec.format(v, pu='in/s')))
-            value = format_spec.format(value, pu='in/s')
+            sig.connect(lambda v: self.setText(format_spec.format(v * factor, units='in')))
+            value = format_spec.format(value * factor, units='in')
 
         self.setText(value)
 
@@ -134,9 +144,11 @@ class StatusLabel(QLabel, LabelType):
     def setLabelType(self, label_type):
         tooltip = MAPPING[label_type]['tooltip']
         format_spec = MAPPING[label_type]['format']
+        conv_factor = MAPPING[label_type].get('factor')
         self.setText(tooltip)
         self.setToolTip(tooltip)
         self.setProperty('format_spec', format_spec)
+        self.setProperty('conv_factor', conv_factor)
         self._label_type = label_type
     label_type = pyqtProperty(LabelType, getLabelType, setLabelType)
 
@@ -146,3 +158,10 @@ class StatusLabel(QLabel, LabelType):
     def setFormat(self, format_spec):
         self._format_spec = format_spec
     format_spec = pyqtProperty(str, getFormat, setFormat)
+
+    def getFactor(self):
+        return self._factor
+    @pyqtSlot(float)
+    def setFactor(self, factor):
+        self._factor = factor
+    conv_factor = pyqtProperty(float, getFactor, setFactor)

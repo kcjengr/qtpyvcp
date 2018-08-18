@@ -119,7 +119,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>7</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -251,6 +251,106 @@
          <attribute name="title">
           <string>          File          </string>
          </attribute>
+         <widget class="LEDButton" name="ledbutton">
+          <property name="geometry">
+           <rect>
+            <x>310</x>
+            <y>266</y>
+            <width>241</width>
+            <height>121</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(114, 159, 207);</string>
+          </property>
+          <property name="text">
+           <string>Foo Bar</string>
+          </property>
+          <property name="autoExclusive">
+           <bool>true</bool>
+          </property>
+          <property name="diameter" stdset="0">
+           <number>15</number>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>52</red>
+            <green>101</green>
+            <blue>164</blue>
+           </color>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+          </property>
+         </widget>
+         <widget class="LEDButton" name="ledbutton_2">
+          <property name="geometry">
+           <rect>
+            <x>540</x>
+            <y>190</y>
+            <width>131</width>
+            <height>27</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(114, 159, 207);</string>
+          </property>
+          <property name="text">
+           <string>Bletch</string>
+          </property>
+          <property name="autoExclusive">
+           <bool>true</bool>
+          </property>
+          <property name="diameter" stdset="0">
+           <number>12</number>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>117</red>
+            <green>80</green>
+            <blue>123</blue>
+           </color>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+          </property>
+         </widget>
+         <widget class="LEDButton" name="ledbutton_3">
+          <property name="geometry">
+           <rect>
+            <x>650</x>
+            <y>356</y>
+            <width>211</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: grey;
+</string>
+          </property>
+          <property name="text">
+           <string>Foo More</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="autoExclusive">
+           <bool>true</bool>
+          </property>
+          <property name="diameter" stdset="0">
+           <number>15</number>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>115</red>
+            <green>210</green>
+            <blue>22</blue>
+           </color>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab_3">
          <attribute name="title">
@@ -22658,6 +22758,11 @@ border-radius: 1px;
    <class>SubCallButton</class>
    <extends>QPushButton</extends>
    <header>QtPyVCP.widgets.button_widgets.subcall_button</header>
+  </customwidget>
+  <customwidget>
+   <class>LEDButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.led_button</header>
   </customwidget>
   <customwidget>
    <class>LoadMeter</class>
