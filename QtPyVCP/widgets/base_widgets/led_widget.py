@@ -84,6 +84,7 @@ class LEDWidget(QWidget):
     @pyqtSlot(int)
     def setDiameter(self, value):
         self._diameter = value
+        self.adjustSize()
         self.update()
 
     def getColor(self):
