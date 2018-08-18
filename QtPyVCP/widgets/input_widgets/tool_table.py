@@ -26,9 +26,7 @@ import sys
 
 import linuxcnc
 
-from PyQt5.QtCore import Qt
-from PyQt5 import uic
-from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QSpinBox
+from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QTableWidget, QPushButton, QVBoxLayout, QHBoxLayout
 
 # Set up logging
 from QtPyVCP.utilities import logger
@@ -49,30 +47,49 @@ class ToolTable(QWidget):
         info = Info()
 
         self.log = LOG
+        self.mainLayout = QVBoxLayout()
+        self.buttonLayout = QHBoxLayout()
+
+        self.setLayout(self.mainLayout)
 
         self.table_header = ["Tool", "Pocket", "Z", "Diameter", "Comment"]
-        self.table_vertical_header = ["    " for i in range(99)]
+        self.buttons = ["Load", "Delete", "Empty", "Add Up", "Add Down", "Save"]
 
-        self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "tooltable.ui"), self)
+        self.tool_table = QTableWidget(0, len(self.table_header), self)
 
-        self.ui.tooltable.setHorizontalHeaderLabels(self.table_header)
-        self.ui.tooltable.setVerticalHeaderLabels(self.table_vertical_header)
+        self.mainLayout.addWidget(self.tool_table)
+        self.mainLayout.addLayout(self.buttonLayout)
+
+        self.tool_table.setFixedSize(800, 400)
+
+        for index, header_text in enumerate(self.table_header):
+            print(index, header_text)
+            self.tool_table.setHorizontalHeaderItem(index, QTableWidgetItem(header_text))
 
         self.tool_table_file = info.getToolTableFile()
+
+        self.button_widgets = {}
+        for button in self.buttons:
+            self.button_widgets[button] = QPushButton(button)
+            self.buttonLayout.addWidget(self.button_widgets[button])
+
+
         self.load_tool_table()
 
-        self.toolinfo = []
         self.current_row = 0
 
-        self.ui.tooltable.itemClicked.connect(self.get_row)
+        self.tool_table.itemClicked.connect(self.get_row)
 
-        self.ui.load_button.clicked.connect(self.load_tool_table)
-        self.ui.delete_button.clicked.connect(self.delete_tool)
-        self.ui.empty_button.clicked.connect(self.empty_tool_table)
-        self.ui.save_button.clicked.connect(self.save_tool_table)
+        self.button_widgets["Load"].clicked.connect(self.load_tool_table)
+        self.button_widgets["Delete"].clicked.connect(self.delete_tool)
+        self.button_widgets["Empty"].clicked.connect(self.empty_tool_table)
+        self.button_widgets["Add Up"].clicked.connect(self.add_tool_up)
+        self.button_widgets["Add Down"].clicked.connect(self.add_tool_down)
+        self.button_widgets["Save"].clicked.connect(self.save_tool_table)
+
 
     def get_row(self, item):
-        self.current_row = self.ui.tooltable.row(item)
+        self.current_row = self.tool_table.row(item)
 
 
     # Parse and load tool table into the treeview
@@ -82,7 +99,7 @@ class ToolTable(QWidget):
 
         # TODO show dialogs asking here
 
-        self.ui.tooltable.clearContents()
+        self.tool_table.clearContents()
 
         fn = self.tool_table_file
 
@@ -115,26 +132,32 @@ class ToolTable(QWidget):
             # if i = ';' that is the comment and we have already added it
             # offset 1 and 2 are integers the rest floats
 
+            self.tool_table.insertRow(count)
             for offset, i in enumerate(['T', 'P', 'D', 'Z', ';']):
                 for word in line.split():
                     if word.startswith(i):
-                        self.ui.tooltable.setItem(count, offset, self.handleItem(word.lstrip(i)))
+                        self.tool_table.setItem(count, offset, self.handleItem(word.lstrip(i)))
 
-            self.ui.tooltable.setItem(count, 4, self.handleItem(comment))
+            self.tool_table.setItem(count, 4, self.handleItem(comment))
 
 
     def delete_tool(self):
 
         # TODO show dialogs asking here
-        for i in range(5):
-            self.ui.tooltable.setItem(self.current_row, i, self.handleItem(""))
+        self.tool_table.removeRow(self.current_row)
+
+    def add_tool_up(self):
+        self.tool_table.insertRow(self.current_row)
+
+    def add_tool_down(self):
+        self.tool_table.insertRow(self.current_row + 1)
 
 
     def empty_tool_table(self):
 
         # TODO show dialogs asking here
-
-        self.ui.tooltable.clearContents()
+        for i in reversed(range(self.tool_table.rowCount())):
+            self.tool_table.removeRow(i)
 
     # Save tool table
     # More or less copied from Chris Morley's GladeVcp tooledit widget
@@ -151,15 +174,16 @@ class ToolTable(QWidget):
         self.log.debug("Saving tool table as: {0}".format(fn))
 
         with open(fn, "w") as f:
-            for row_index in range(self.ui.tooltable.rowCount()):
+            for row_index in range(self.tool_table.rowCount()):
                 line = ""
-                for col_index in range(0, self.ui.tooltable.columnCount()):
-                    item = self.ui.tooltable.item(row_index, col_index)
-                    if item is not None:
-                        if col_index in (0, 1):  # tool# pocket#
-                            line += "{}{} ".format(['T', 'P', 'D', 'Z', ';'][col_index], item.text())
-                        else:
-                            line += "{}{} ".format(['T', 'P', 'D', 'Z', ';'][col_index], item.text().strip())
+                for col_index in range(0, self.tool_table.columnCount()):
+                    item = self.tool_table.item(row_index, col_index)
+                    if item.text() is not None:
+                        if item.text() != "":
+                            if col_index in (0, 1):  # tool# pocket#
+                                line += "{}{} ".format(['T', 'P', 'D', 'Z', ';'][col_index], item.text())
+                            else:
+                                line += "{}{} ".format(['T', 'P', 'D', 'Z', ';'][col_index], item.text().strip())
                 if line:
                     line += "\n"
                     f.write(line)

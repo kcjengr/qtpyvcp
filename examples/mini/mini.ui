@@ -100,7 +100,7 @@
   <customwidget>
    <class>ToolTable</class>
    <extends>QWidget</extends>
-   <header>QtPyVCP.widgets.input_widgets.tooltable.tooltable</header>
+   <header>QtPyVCP.widgets.input_widgets.tool_table</header>
   </customwidget>
  </customwidgets>
  <resources/>
