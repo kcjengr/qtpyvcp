@@ -109,6 +109,9 @@
         <property name="focusPolicy">
          <enum>Qt::NoFocus</enum>
         </property>
+        <property name="toolTipDuration">
+         <number>4</number>
+        </property>
         <property name="styleSheet">
          <string notr="true"/>
         </property>
@@ -116,7 +119,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>8</number>
+         <number>5</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -3259,7 +3262,7 @@ padding-left: 5px;
          <widget class="QGroupBox" name="groupBox_13">
           <property name="geometry">
            <rect>
-            <x>20</x>
+            <x>13</x>
             <y>-1</y>
             <width>1121</width>
             <height>570</height>
@@ -4012,7 +4015,7 @@ font: 15pt &quot;Bebas Kai&quot;;
          <widget class="QGroupBox" name="groupBox_8">
           <property name="geometry">
            <rect>
-            <x>1549</x>
+            <x>1543</x>
             <y>2</y>
             <width>340</width>
             <height>571</height>
@@ -4053,7 +4056,7 @@ border-radius: 6px;
            <property name="geometry">
             <rect>
              <x>61</x>
-             <y>18</y>
+             <y>17</y>
              <width>140</width>
              <height>231</height>
             </rect>
@@ -4071,7 +4074,7 @@ border-radius: 6px;
           <widget class="QGroupBox" name="groupBox_9">
            <property name="geometry">
             <rect>
-             <x>0</x>
+             <x>1</x>
              <y>438</y>
              <width>340</width>
              <height>120</height>
@@ -4419,7 +4422,7 @@ padding-left: 5px;
            <widget class="QGroupBox" name="groupBox_14">
             <property name="geometry">
              <rect>
-              <x>0</x>
+              <x>2</x>
               <y>-13</y>
               <width>707</width>
               <height>515</height>
@@ -15682,8 +15685,14 @@ border: 1px solid #aaa;
 border-radius: 4px;
 }</string>
            </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="override_type" stdset="0">
+            <enum>OverrideSlider::rapid_override</enum>
            </property>
           </widget>
          </item>
@@ -15756,8 +15765,14 @@ border: 1px solid #aaa;
 border-radius: 4px;
 }</string>
            </property>
+           <property name="maximum">
+            <number>200</number>
+           </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="override_type" stdset="0">
+            <enum>OverrideSlider::feed_override</enum>
            </property>
           </widget>
          </item>
@@ -15831,42 +15846,6 @@ border-radius: 4px;
            </property>
            <property name="text">
             <string>F 100%</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="StatusLabel" name="statuslabel">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>50</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>50</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QLabel {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 15pt &quot;Bebas Kai&quot;;
-}</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
            </property>
           </widget>
          </item>
@@ -16030,6 +16009,12 @@ border-radius: 4px;
            <property name="alignment">
             <set>Qt::AlignCenter</set>
            </property>
+           <property name="indent">
+            <number>0</number>
+           </property>
+           <property name="label_type" stdset="0">
+            <enum>StatusLabel::speed_override</enum>
+           </property>
           </widget>
          </item>
          <item row="3" column="1">
@@ -16065,6 +16050,12 @@ border-radius: 4px;
            </property>
            <property name="alignment">
             <set>Qt::AlignCenter</set>
+           </property>
+           <property name="indent">
+            <number>0</number>
+           </property>
+           <property name="label_type" stdset="0">
+            <enum>StatusLabel::rapid_override</enum>
            </property>
           </widget>
          </item>
@@ -16272,8 +16263,59 @@ border: 1px solid #aaa;
 border-radius: 4px;
 }</string>
            </property>
+           <property name="maximum">
+            <number>200</number>
+           </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="override_type" stdset="0">
+            <enum>OverrideSlider::speed_override</enum>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="StatusLabel" name="statuslabel">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>50</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>50</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="toolTipDuration">
+            <number>-3</number>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLabel {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 75 15pt &quot;Bebas Kai&quot;;
+}</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="indent">
+            <number>0</number>
+           </property>
+           <property name="label_type" stdset="0">
+            <enum>StatusLabel::feed_override</enum>
            </property>
           </widget>
          </item>
@@ -22285,7 +22327,7 @@ border-radius: 1px;
      <x>0</x>
      <y>0</y>
      <width>1962</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
@@ -22574,12 +22616,12 @@ border-radius: 1px;
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>576</x>
-     <y>460</y>
+     <x>441</x>
+     <y>253</y>
     </hint>
     <hint type="destinationlabel">
-     <x>625</x>
-     <y>463</y>
+     <x>481</x>
+     <y>298</y>
     </hint>
    </hints>
   </connection>
@@ -22590,12 +22632,12 @@ border-radius: 1px;
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>641</x>
-     <y>485</y>
+     <x>481</x>
+     <y>298</y>
     </hint>
     <hint type="destinationlabel">
-     <x>594</x>
-     <y>453</y>
+     <x>441</x>
+     <y>253</y>
     </hint>
    </hints>
   </connection>
@@ -22610,8 +22652,8 @@ border-radius: 1px;
      <y>1034</y>
     </hint>
     <hint type="destinationlabel">
-     <x>656</x>
-     <y>1029</y>
+     <x>697</x>
+     <y>1059</y>
     </hint>
    </hints>
   </connection>
@@ -22638,12 +22680,12 @@ border-radius: 1px;
    <slot>reset()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>721</x>
-     <y>806</y>
+     <x>772</x>
+     <y>869</y>
     </hint>
     <hint type="destinationlabel">
-     <x>615</x>
-     <y>808</y>
+     <x>637</x>
+     <y>874</y>
     </hint>
    </hints>
   </connection>
@@ -22654,12 +22696,12 @@ border-radius: 1px;
    <slot>reset()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>726</x>
-     <y>888</y>
+     <x>772</x>
+     <y>934</y>
     </hint>
     <hint type="destinationlabel">
-     <x>604</x>
-     <y>887</y>
+     <x>637</x>
+     <y>939</y>
     </hint>
    </hints>
   </connection>
@@ -22670,8 +22712,8 @@ border-radius: 1px;
    <slot>reset()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>719</x>
-     <y>957</y>
+     <x>772</x>
+     <y>999</y>
     </hint>
     <hint type="destinationlabel">
      <x>614</x>

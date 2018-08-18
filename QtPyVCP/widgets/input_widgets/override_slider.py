@@ -19,7 +19,7 @@ MAPPING = {
         "stat_name": "spindlerate",
         "tooltip": "Spindle Override",
         "min": INFO.getMinSpindleOverride() * 0,
-        "max": INFO.getMaxSpindleOverride() * 100,
+        "max": INFO.getMaxSpindleOverride() * 200,
         },
     2: {"cmd_name": "rapidrate",
         "stat_name": "rapidrate",
