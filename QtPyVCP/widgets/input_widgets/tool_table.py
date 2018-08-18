@@ -185,7 +185,6 @@ class ToolTable(QWidget):
 
         with open(fn, "w") as f:
             for row_index in range(self.row_count):
-                print(row_index)
                 line = ""
                 for col_index in range(self.col_count) :
                     item = self.model.item(row_index, col_index)
