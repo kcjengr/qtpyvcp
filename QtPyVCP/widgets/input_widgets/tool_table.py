@@ -71,6 +71,7 @@ class ToolTable(QWidget):
         self.tool_table.setModel(self.model)
         self.tool_table.horizontalHeader().setStretchLastSection(True)
         self.tool_table.setAlternatingRowColors(True)
+        self.tool_table.verticalHeader().hide()
 
         self.mainLayout.addWidget(self.tool_table)
         self.mainLayout.addLayout(self.buttonLayout)
