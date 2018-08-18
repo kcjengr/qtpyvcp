@@ -13,7 +13,7 @@ class LEDButton(QPushButton):
     def __init__(self, parent=None):
         super(LEDButton, self).__init__(parent)
 
-        self._alignment = 34
+        self._alignment = 33    # default to top left corner
         self.setCheckable(True)
         self.led = LEDWidget(self)
         self.led.setDiameter(16)
@@ -55,7 +55,7 @@ class LEDButton(QPushButton):
         self.led.setState(self.isChecked())
 
     def sizeHint( self ):
-        return QSize( 200, 200 )
+        return QSize(80, 30)
 
     def getLedDiameter(self):
         return self.led.getDiameter()
@@ -63,6 +63,7 @@ class LEDButton(QPushButton):
     @pyqtSlot(int)
     def setLedDiameter(self, value):
         self.led.setDiameter(value)
+        self.placeLed()
 
     def getLedColor(self):
         return self.led.getColor()
