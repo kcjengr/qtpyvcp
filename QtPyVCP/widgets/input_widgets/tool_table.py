@@ -67,6 +67,7 @@ class ToolTable(QWidget):
         self.tool_table = QTableView(self)
 
         self.tool_table.setModel(self.model)
+        self.tool_table.horizontalHeader().setStretchLastSection(True)
 
         self.tool_table.setAlternatingRowColors(True)
 
