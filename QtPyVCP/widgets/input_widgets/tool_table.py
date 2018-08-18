@@ -49,6 +49,7 @@ class ToolTable(QWidget):
 
         self.log = LOG
         self.mainLayout = QVBoxLayout()
+        self.mainLayout.expandingDirections()
         self.buttonLayout = QHBoxLayout()
 
         self.setLayout(self.mainLayout)
@@ -64,7 +65,7 @@ class ToolTable(QWidget):
         self.model.setHorizontalHeaderLabels(self.table_header)
 
         self.tool_table = QTableView(self)
-        self.tool_table.setFixedSize(800, 400)
+
         self.tool_table.setModel(self.model)
 
         self.tool_table.setAlternatingRowColors(True)
