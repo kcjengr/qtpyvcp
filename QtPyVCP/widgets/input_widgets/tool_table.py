@@ -72,19 +72,16 @@ class ToolTable(QWidget):
 
         self.tool_table_file = info.getToolTableFile()
 
-
         self.button_widgets = {}
         for button in self.buttons:
             self.button_widgets[button] = QPushButton(button)
             self.buttonLayout.addWidget(self.button_widgets[button])
-
 
         self.load_tool_table()
 
         self.current_row = 0
 
         self.tool_table.clicked.connect(self.get_row)
-
 
         self.button_widgets["Load"].clicked.connect(self.load_tool_table)
         self.button_widgets["Delete"].clicked.connect(self.delete_tool)
@@ -93,10 +90,8 @@ class ToolTable(QWidget):
         self.button_widgets["Add Down"].clicked.connect(self.add_tool_down)
         self.button_widgets["Save"].clicked.connect(self.save_tool_table)
 
-
     def get_row(self, item):
         self.current_row = item.row()
-
 
     # Parse and load tool table into the treeview
     # More or less copied from Chris Morley's GladeVcp tooledit widget
@@ -147,7 +142,6 @@ class ToolTable(QWidget):
 
             self.row_count = count
 
-
     def delete_tool(self):
 
         # TODO show dialogs asking here
@@ -161,7 +155,6 @@ class ToolTable(QWidget):
     def add_tool_down(self):
         self.model.insertRow(self.current_row + 1)
         self.row_count += 1
-
 
     def empty_tool_table(self):
 
@@ -186,7 +179,7 @@ class ToolTable(QWidget):
         with open(fn, "w") as f:
             for row_index in range(self.row_count):
                 line = ""
-                for col_index in range(self.col_count) :
+                for col_index in range(self.col_count):
                     item = self.model.item(row_index, col_index)
                     if item.text() is not None:
                         if item.text() != "":
