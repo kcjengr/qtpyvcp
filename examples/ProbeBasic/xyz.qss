@@ -34,18 +34,16 @@ QPushButton:hover {
 }
 
 QPushButton:pressed {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #5C5959, stop: 1.0 #A19E9E)
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
 }
 
 QPushButton:checked[option="true"] {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd)
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
 }
 
 QPushButton:checked {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #599428, stop: 1.0 #8acd4a)
+                                     stop: 0 #51ec35, stop: 1.0 #8acd4a)
 }
 /* Probe buttons */
 SubCallButton {
@@ -200,8 +198,7 @@ QTabBar::tab:selected, QTabBar::tab:hover {
 }
 
 QTabBar::tab:selected { 
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }
 
 QTabBar::tab:first {
