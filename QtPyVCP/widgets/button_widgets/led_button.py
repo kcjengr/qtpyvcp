@@ -18,6 +18,7 @@ class LEDButton(QPushButton):
         self.led = LEDWidget(self)
         self.led.setDiameter(16)
         self.toggled.connect(self.updateState)
+        self.updateState()
         self.placeLed()
 
     def placeLed(self):
