@@ -4397,6 +4397,30 @@ padding-left: 5px;
             </layout>
            </widget>
           </widget>
+          <widget class="QLabel" name="step_increment_label">
+           <property name="geometry">
+            <rect>
+             <x>200</x>
+             <y>330</y>
+             <width>37</width>
+             <height>28</height>
+            </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLabel{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: rgb(238, 238, 236);
+    background: rgb(46, 52, 54);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+           </property>
+           <property name="text">
+            <string>STEP</string>
+           </property>
+          </widget>
          </widget>
          <widget class="QTabWidget" name="tabWidget_3">
           <property name="geometry">
@@ -17299,8 +17323,11 @@ padding-bottom:0px;
                <property name="focusPolicy">
                 <enum>Qt::NoFocus</enum>
                </property>
+               <property name="acceptDrops">
+                <bool>true</bool>
+               </property>
                <property name="text">
-                <string>REF X</string>
+                <string>REF X     </string>
                </property>
                <property name="checkable">
                 <bool>true</bool>
@@ -21603,7 +21630,7 @@ border-radius: 6px;
          <property name="geometry">
           <rect>
            <x>20</x>
-           <y>96</y>
+           <y>93</y>
            <width>200</width>
            <height>40</height>
           </rect>
@@ -21710,10 +21737,10 @@ border-radius: 4px;
         <widget class="ActionButton" name="step_inc_0100_button">
          <property name="geometry">
           <rect>
-           <x>205</x>
+           <x>180</x>
            <y>28</y>
-           <width>53</width>
-           <height>45</height>
+           <width>70</width>
+           <height>40</height>
           </rect>
          </property>
          <property name="font">
@@ -21724,6 +21751,12 @@ border-radius: 4px;
          </property>
          <property name="focusPolicy">
           <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+padding-top: 4px;
+padding-right: 12px;
+}</string>
          </property>
          <property name="text">
           <string>.0100</string>
@@ -21982,10 +22015,10 @@ border-radius: 4px;
         <widget class="ActionButton" name="step_inc_1000_button">
          <property name="geometry">
           <rect>
-           <x>273</x>
+           <x>259</x>
            <y>28</y>
-           <width>53</width>
-           <height>45</height>
+           <width>70</width>
+           <height>40</height>
           </rect>
          </property>
          <property name="font">
@@ -21996,6 +22029,12 @@ border-radius: 4px;
          </property>
          <property name="focusPolicy">
           <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+padding-top: 4px;
+padding-right: 12px;
+}</string>
          </property>
          <property name="text">
           <string>.1000</string>
@@ -22010,10 +22049,10 @@ border-radius: 4px;
         <widget class="ActionButton" name="step_inc_0001_button">
          <property name="geometry">
           <rect>
-           <x>69</x>
+           <x>22</x>
            <y>28</y>
-           <width>53</width>
-           <height>45</height>
+           <width>70</width>
+           <height>40</height>
           </rect>
          </property>
          <property name="font">
@@ -22024,6 +22063,12 @@ border-radius: 4px;
          </property>
          <property name="focusPolicy">
           <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+padding-top: 4px;
+padding-right: 12px;
+}</string>
          </property>
          <property name="text">
           <string>.0001</string>
@@ -22038,10 +22083,10 @@ border-radius: 4px;
         <widget class="ActionButton" name="step_inc_0010_button">
          <property name="geometry">
           <rect>
-           <x>137</x>
+           <x>101</x>
            <y>28</y>
-           <width>53</width>
-           <height>45</height>
+           <width>70</width>
+           <height>40</height>
           </rect>
          </property>
          <property name="font">
@@ -22052,6 +22097,12 @@ border-radius: 4px;
          </property>
          <property name="focusPolicy">
           <enum>Qt::NoFocus</enum>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton{
+padding-top: 4px;
+padding-right: 12px;
+}</string>
          </property>
          <property name="text">
           <string>.0010</string>
@@ -22187,35 +22238,11 @@ border-radius: 4px;
           <string>IPM</string>
          </property>
         </widget>
-        <widget class="QLabel" name="step_increment_label">
-         <property name="geometry">
-          <rect>
-           <x>22</x>
-           <y>36</y>
-           <width>37</width>
-           <height>28</height>
-          </rect>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QLabel{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-         </property>
-         <property name="text">
-          <string>STEP</string>
-         </property>
-        </widget>
         <widget class="ActionButton" name="jog_fr_100_button">
          <property name="geometry">
           <rect>
            <x>278</x>
-           <y>96</y>
+           <y>93</y>
            <width>50</width>
            <height>40</height>
           </rect>
@@ -22266,7 +22293,7 @@ border-radius: 1px;
          <property name="geometry">
           <rect>
            <x>229</x>
-           <y>99</y>
+           <y>96</y>
            <width>40</width>
            <height>35</height>
           </rect>
@@ -22295,6 +22322,98 @@ border-radius: 1px;
           <number>100</number>
          </property>
         </widget>
+        <widget class="HalLedWidget" name="hal_led">
+         <property name="geometry">
+          <rect>
+           <x>73</x>
+           <y>33</y>
+           <width>16</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="diameter">
+          <number>16</number>
+         </property>
+         <property name="color">
+          <color>
+           <red>34</red>
+           <green>57</green>
+           <blue>255</blue>
+          </color>
+         </property>
+         <property name="state">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="HalLedWidget" name="hal_led_2">
+         <property name="geometry">
+          <rect>
+           <x>152</x>
+           <y>33</y>
+           <width>16</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="diameter">
+          <number>16</number>
+         </property>
+         <property name="color">
+          <color>
+           <red>34</red>
+           <green>57</green>
+           <blue>255</blue>
+          </color>
+         </property>
+         <property name="state">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="HalLedWidget" name="hal_led_3">
+         <property name="geometry">
+          <rect>
+           <x>231</x>
+           <y>33</y>
+           <width>16</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="diameter">
+          <number>16</number>
+         </property>
+         <property name="color">
+          <color>
+           <red>34</red>
+           <green>57</green>
+           <blue>255</blue>
+          </color>
+         </property>
+         <property name="state">
+          <bool>false</bool>
+         </property>
+        </widget>
+        <widget class="HalLedWidget" name="hal_led_4">
+         <property name="geometry">
+          <rect>
+           <x>310</x>
+           <y>33</y>
+           <width>16</width>
+           <height>16</height>
+          </rect>
+         </property>
+         <property name="diameter">
+          <number>16</number>
+         </property>
+         <property name="color">
+          <color>
+           <red>34</red>
+           <green>57</green>
+           <blue>255</blue>
+          </color>
+         </property>
+         <property name="state">
+          <bool>false</bool>
+         </property>
+        </widget>
         <zorder>spindle_stop_button</zorder>
         <zorder>spindle_fwd_button</zorder>
         <zorder>spindle_dro</zorder>
@@ -22310,11 +22429,14 @@ border-radius: 1px;
         <zorder>spindle_label</zorder>
         <zorder>feedrate</zorder>
         <zorder>unit_per_min_label</zorder>
-        <zorder>step_increment_label</zorder>
         <zorder>jog_fr_100_button</zorder>
         <zorder>line_4</zorder>
         <zorder>spindle_rev_button</zorder>
         <zorder>fr_override_dro_2</zorder>
+        <zorder>hal_led</zorder>
+        <zorder>hal_led_2</zorder>
+        <zorder>hal_led_3</zorder>
+        <zorder>hal_led_4</zorder>
        </widget>
       </item>
      </layout>
@@ -22564,6 +22686,11 @@ border-radius: 1px;
    <class>StatusLabel</class>
    <extends>QLabel</extends>
    <header>QtPyVCP.widgets.display_widgets.statuslabel_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>HalLedWidget</class>
+   <extends>QWidget</extends>
+   <header>QtPyVCP.widgets.hal_widgets.hal_led_widget</header>
   </customwidget>
   <customwidget>
    <class>OverrideSlider</class>
