@@ -67,6 +67,8 @@ class ToolTable(QWidget):
         self.tool_table.setFixedSize(800, 400)
         self.tool_table.setModel(self.model)
 
+        self.tool_table.setAlternatingRowColors(True)
+
         self.mainLayout.addWidget(self.tool_table)
         self.mainLayout.addLayout(self.buttonLayout)
 
