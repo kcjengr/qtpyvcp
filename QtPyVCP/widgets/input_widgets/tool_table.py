@@ -26,7 +26,7 @@ import sys
 
 import linuxcnc
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QTableView
+from PyQt5.QtWidgets import QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QTableView, QMessageBox
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
 # Set up logging
@@ -42,6 +42,8 @@ class ToolTable(QWidget):
 
     def __init__(self, parent=None):
         super(ToolTable, self).__init__(parent)
+
+        self.parent = parent
 
         self.cmd = linuxcnc.command()
 
@@ -68,7 +70,6 @@ class ToolTable(QWidget):
 
         self.tool_table.setModel(self.model)
         self.tool_table.horizontalHeader().setStretchLastSection(True)
-
         self.tool_table.setAlternatingRowColors(True)
 
         self.mainLayout.addWidget(self.tool_table)
@@ -76,12 +77,16 @@ class ToolTable(QWidget):
 
         self.tool_table_file = info.getToolTableFile()
 
+        self.tool_table_loaded = False
+
         self.button_widgets = {}
         for button in self.buttons:
             self.button_widgets[button] = QPushButton(button)
             self.buttonLayout.addWidget(self.button_widgets[button])
 
+        self.tool_table_loaded = False
         self.load_tool_table()
+        self.tool_table_loaded = True
 
         self.current_row = 0
 
@@ -102,9 +107,9 @@ class ToolTable(QWidget):
 
     def load_tool_table(self):
 
-        # TODO show dialogs asking here
-
-        # self.tool_table.clearContents()
+        if self.tool_table_loaded:
+            if not self.ask_dialog("Do you wan't to re-load the tool table?\n all unsaved changes will be lost."):
+                return
 
         fn = self.tool_table_file
 
@@ -148,7 +153,11 @@ class ToolTable(QWidget):
 
     def delete_tool(self):
 
-        # TODO show dialogs asking here
+        current_tool = self.model.item(self.current_row, 0)
+
+        if not self.ask_dialog("Do yo wan't to delete T{} ?".format(current_tool.text())):
+            return
+
         self.model.removeRow(self.current_row)
         self.row_count -= 1
 
@@ -161,7 +170,10 @@ class ToolTable(QWidget):
         self.row_count += 1
 
     def empty_tool_table(self):
-        # TODO show dialogs asking here
+
+        if not self.ask_dialog("Do yo wan't to delete the whole tool table?"):
+            return
+
         for i in reversed(range(self.row_count + 1)):
             self.model.removeRow(i)
 
@@ -170,7 +182,8 @@ class ToolTable(QWidget):
 
     def save_tool_table(self):
 
-        # TODO show dialogs asking here
+        if not self.ask_dialog("Do you wan't to save and load this tool table into the system?"):
+            return
 
         fn = self.tool_table_file
 
@@ -215,3 +228,15 @@ class ToolTable(QWidget):
             item.setText("")
 
         return item
+
+    def ask_dialog(self, message):
+        box = QMessageBox.question(self.parent,
+                                   'Are you sure?',
+                                   message,
+                                   QMessageBox.Yes,
+                                   QMessageBox.No)
+        if box == QMessageBox.Yes:
+            return True
+        else:
+            return False
+
