@@ -166,7 +166,7 @@ class ToolTable(QWidget):
     def empty_tool_table(self):
 
         # TODO show dialogs asking here
-        for i in reversed(range(self.tool_table.rowCount())):
+        for i in reversed(range(self.row_count)):
             self.model.removeRow(i)
 
     # Save tool table
