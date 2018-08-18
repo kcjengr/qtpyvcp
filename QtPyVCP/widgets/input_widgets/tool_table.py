@@ -26,7 +26,7 @@ import sys
 
 import linuxcnc
 
-from PyQt5.QtWidgets import QWidget, QTableWidgetItem, QTableWidget, QPushButton, QVBoxLayout, QHBoxLayout, QTableView
+from PyQt5.QtWidgets import QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QTableView
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
 # Set up logging
