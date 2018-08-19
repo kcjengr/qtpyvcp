@@ -26,7 +26,8 @@ import sys
 
 import linuxcnc
 
-from PyQt5.QtWidgets import QWidget, QPushButton, QVBoxLayout, QHBoxLayout, QTableView, QMessageBox
+from PyQt5.QtCore import pyqtSlot, pyqtProperty
+from PyQt5.QtWidgets import QTableView, QMessageBox
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
 # Set up logging
@@ -38,7 +39,7 @@ LOG = logger.getLogger(__name__)
 WIDGET_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
-class ToolTable(QWidget):
+class ToolTable(QTableView):
 
     def __init__(self, parent=None):
         super(ToolTable, self).__init__(parent)
@@ -49,15 +50,7 @@ class ToolTable(QWidget):
 
         info = Info()
 
-        self.log = LOG
-        self.mainLayout = QVBoxLayout()
-        self.mainLayout.expandingDirections()
-        self.buttonLayout = QHBoxLayout()
-
-        self.setLayout(self.mainLayout)
-
         self.table_header = ["Tool", "Pocket", "Z", "Diameter", "Comment"]
-        self.buttons = ["Load", "Delete", "Empty", "Add Up", "Add Down", "Save"]
 
         self.row_count = 0
         self.col_count = len(self.table_header)
@@ -66,48 +59,25 @@ class ToolTable(QWidget):
 
         self.model.setHorizontalHeaderLabels(self.table_header)
 
-        self.tool_table = QTableView(self)
-
-        self.tool_table.setModel(self.model)
-        self.tool_table.horizontalHeader().setStretchLastSection(True)
-        self.tool_table.setAlternatingRowColors(True)
-        self.tool_table.verticalHeader().hide()
-
-        self.mainLayout.addWidget(self.tool_table)
-        self.mainLayout.addLayout(self.buttonLayout)
+        self.setModel(self.model)
+        self.horizontalHeader().setStretchLastSection(True)
+        self.setAlternatingRowColors(True)
+        self.verticalHeader().hide()
 
         self.tool_table_file = info.getToolTableFile()
 
         self.tool_table_loaded = False
-
-        self.button_widgets = {}
-        for button in self.buttons:
-            self.button_widgets[button] = QPushButton(button)
-            self.buttonLayout.addWidget(self.button_widgets[button])
-
-        self.tool_table_loaded = False
-        self.load_tool_table()
-        self.tool_table_loaded = True
+        self.loadToolTable()
 
         self.current_row = 0
 
-        self.tool_table.clicked.connect(self.get_row)
-
-        self.button_widgets["Load"].clicked.connect(self.load_tool_table)
-        self.button_widgets["Delete"].clicked.connect(self.delete_tool)
-        self.button_widgets["Empty"].clicked.connect(self.empty_tool_table)
-        self.button_widgets["Add Up"].clicked.connect(self.add_tool_up)
-        self.button_widgets["Add Down"].clicked.connect(self.add_tool_down)
-        self.button_widgets["Save"].clicked.connect(self.save_tool_table)
+        self.clicked.connect(self.get_row)
 
     def get_row(self, item):
         self.current_row = item.row()
 
-    # Parse and load tool table into the treeview
-    # More or less copied from Chris Morley's GladeVcp tooledit widget
-
-    def load_tool_table(self):
-
+    @pyqtSlot()
+    def loadToolTable(self):
         if self.tool_table_loaded:
             if not self.ask_dialog("Do you wan't to re-load the tool table?\n all unsaved changes will be lost."):
                 return
@@ -118,10 +88,10 @@ class ToolTable(QWidget):
             return
 
         if not os.path.exists(fn):
-            self.log.warning("Tool table does not exist")
+            LOG.warning("Tool table does not exist")
             return
 
-        self.log.debug("Loading tool table: {0}".format(fn))
+        LOG.debug("Loading tool table: {0}".format(fn))
 
         with open(fn, "r") as tf:
             tool_table = tf.readlines()
@@ -152,37 +122,8 @@ class ToolTable(QWidget):
 
             self.row_count = count
 
-    def delete_tool(self):
-
-        current_tool = self.model.item(self.current_row, 0)
-
-        if not self.ask_dialog("Do yo wan't to delete T{} ?".format(current_tool.text())):
-            return
-
-        self.model.removeRow(self.current_row)
-        self.row_count -= 1
-
-    def add_tool_up(self):
-        self.model.insertRow(self.current_row)
-        self.row_count += 1
-
-    def add_tool_down(self):
-        self.model.insertRow(self.current_row + 1)
-        self.row_count += 1
-
-    def empty_tool_table(self):
-
-        if not self.ask_dialog("Do yo wan't to delete the whole tool table?"):
-            return
-
-        for i in reversed(range(self.row_count + 1)):
-            self.model.removeRow(i)
-
-    # Save tool table
-    # More or less copied from Chris Morley's GladeVcp tooledit widget
-
-    def save_tool_table(self):
-
+    @pyqtSlot()
+    def saveToolTable(self):
         if not self.ask_dialog("Do you wan't to save and load this tool table into the system?"):
             return
 
@@ -191,7 +132,7 @@ class ToolTable(QWidget):
         if fn is None:
             return
 
-        self.log.debug("Saving tool table as: {0}".format(fn))
+        LOG.debug("Saving tool table as: {0}".format(fn))
 
         with open(fn, "w") as f:
             for row_index in range(self.row_count):
@@ -207,16 +148,52 @@ class ToolTable(QWidget):
                 if line:
                     line += "\n"
                     f.write(line)
+
             f.flush()
             os.fsync(f.fileno())
 
-        # Theses lines make sure the OS doesn't cache the data so that
-        # linuxcnc will actually load the updated tool table
-
         self.cmd.load_tool_table()
 
-    def handleItem(self, value):
+    @pyqtSlot()
+    def insertToolAbove(self):
+        self.model.insertRow(self.current_row)
+        self.row_count += 1
 
+    @pyqtSlot()
+    def insertToolBelow(self):
+        self.model.insertRow(self.current_row + 1)
+        self.row_count += 1
+
+    @pyqtSlot()
+    def deleteSelectedTool(self):
+        current_tool = self.model.item(self.current_row, 0)
+
+        if not self.ask_dialog("Do yo wan't to delete T{} ?".format(current_tool.text())):
+            return
+
+        self.model.removeRow(self.current_row)
+        self.row_count -= 1
+
+    @pyqtSlot()
+    def removeAllTools(self):
+        if not self.ask_dialog("Do yo wan't to delete the whole tool table?"):
+            return
+
+        for i in reversed(range(self.row_count + 1)):
+            self.model.removeRow(i)
+
+    def ask_dialog(self, message):
+        box = QMessageBox.question(self.parent,
+                                   'Are you sure?',
+                                   message,
+                                   QMessageBox.Yes,
+                                   QMessageBox.No)
+        if box == QMessageBox.Yes:
+            return True
+        else:
+            return False
+
+    def handleItem(self, value):
         item = QStandardItem()
 
         if isinstance(value, str):
@@ -229,15 +206,4 @@ class ToolTable(QWidget):
             item.setText("")
 
         return item
-
-    def ask_dialog(self, message):
-        box = QMessageBox.question(self.parent,
-                                   'Are you sure?',
-                                   message,
-                                   QMessageBox.Yes,
-                                   QMessageBox.No)
-        if box == QMessageBox.Yes:
-            return True
-        else:
-            return False
 
