@@ -110,13 +110,13 @@ class ToolTable(QTableView):
             # if i = ';' that is the comment and we have already added it
             # offset 1 and 2 are integers the rest floats
 
-            for offset, i in enumerate(['T', 'P', 'D', 'Z', ';']):
+            for offset, i in enumerate(['T', 'P', 'Z', 'D', ';']):
                 for word in line.split():
                     if word.startswith(i):
                         item = self.handleItem(word.lstrip(i))
                         if i in ('T', 'P'):
                             item.setTextAlignment(Qt.AlignCenter)
-                        elif i in ('D', 'Z'):
+                        elif i in ('Z', 'D'):
                             item.setTextAlignment(Qt.AlignRight|Qt.AlignVCenter)
 
                         self.model.setItem(count, offset, item)
