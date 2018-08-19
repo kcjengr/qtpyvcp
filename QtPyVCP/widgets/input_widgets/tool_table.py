@@ -55,7 +55,7 @@ class ToolTable(QTableView):
         self.setModel(self.model)
         self.horizontalHeader().setStretchLastSection(True)
         self.setAlternatingRowColors(True)
-        self.setSelectionBehavior(QAbstractItemView.SelectRows);
+        self.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.verticalHeader().hide()
 
         self.tool_table_file = INFO.getToolTableFile()
