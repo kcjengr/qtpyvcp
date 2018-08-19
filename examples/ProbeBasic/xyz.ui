@@ -252,6 +252,29 @@
            <set>Qt::AlignRight|Qt::AlignTop|Qt::AlignTrailing</set>
           </property>
          </widget>
+         <widget class="JogIncrementWidget" name="jogincrement">
+          <property name="geometry">
+           <rect>
+            <x>120</x>
+            <y>110</y>
+            <width>791</width>
+            <height>51</height>
+           </rect>
+          </property>
+          <property name="diameter" stdset="0">
+           <number>15</number>
+          </property>
+          <property name="color" stdset="0">
+           <color>
+            <red>233</red>
+            <green>185</green>
+            <blue>110</blue>
+           </color>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab_4">
          <attribute name="title">
@@ -1715,6 +1738,11 @@
   </action>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>JogIncrementWidget</class>
+   <extends>QWidget</extends>
+   <header>QtPyVCP.widgets.input_widgets.jog_increment</header>
+  </customwidget>
   <customwidget>
    <class>ActionButton</class>
    <extends>QPushButton</extends>
