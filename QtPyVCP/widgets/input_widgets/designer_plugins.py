@@ -43,3 +43,8 @@ from tool_table import ToolTable
 class ToolTablePlugin(_DesignerPlugin):
     def pluginClass(self):
         return ToolTable
+
+from jog_increment import JogIncrementWidget
+class JogIncrementPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return JogIncrementWidget
