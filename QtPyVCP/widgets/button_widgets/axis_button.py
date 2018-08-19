@@ -12,7 +12,7 @@ STATUS = status.Status()
 class DummyAction(object):
     action_id = -1
     action_text = "NoAction"
-    def __init__(self, widget=None, action_type="TOGGLE"):
+    def __init__(self, *args, **kwargs):
         pass
 
 class Action(object):

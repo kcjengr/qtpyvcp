@@ -1,19 +1,23 @@
-QMainWindow, QDialog {
-    background: #707070
+* { /*change the global font to Bebas Kai*/
+    font-family: "Bebas Kai";
+}
+
+QMainWindow {
+    background: #2e3436
     /*border-image: url(:/images/dark_background.jpg);*/
     /*background-image: url(:/images/dark_background.jpg);*/
-/*    background-image: url(:/images/pp_border.png);*/
+    /*background-image: url(:/images/pp_border.png);*/
 }
 
 QPushButton, QComboBox[editable="false"],
 QComboBox[editable="true"]::drop-down {
+    color: white;
     border-image: url(:/images/pp_border.png);
-    border-color: black;
+    border-color: black; 
     border-style: solid;
-    border-radius: 4px;
+    border-radius: 5px;
     border-width: 2px;
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #b6b6b6, stop: 1.0 #626262);
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
 }
 
 QPushButton:disabled {
@@ -30,23 +34,56 @@ QPushButton:hover {
 }
 
 QPushButton:pressed {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #5C5959, stop: 1.0 #A19E9E)
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
 }
 
 QPushButton:checked[option="true"] {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd)
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
 }
 
 QPushButton:checked {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #599428, stop: 1.0 #8acd4a)
+                                     stop: 0 #51ec35, stop: 1.0 #8acd4a)
+}
+/* Probe buttons */
+SubCallButton {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #eaeaea, stop: 1.0 #b8b8b8);
+    border-radius: 10px;
+
 }
 
-/*E-Stop button*/
+SubCallButton:disabled {
+    border-color: gray;
+}
+
+/*SubCallButton[error="true"] {
+    border-color: red;
+}*/
+
+SubCallButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #ffffff, stop: 1.0 #e1e1e1);
+}
+
+SubCallButton:pressed {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
+}
+
+SubCallButton:checked[option="true"] {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
+}
+
+SubCallButton:checked {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
+}
+
+/* E-Stop button */
 ActionButton[action_id="0"]:checked {
-    border-radius: 50px;
+    border-radius: 5px;
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #C40100, stop: 1.0 #F22E2D)
 }
@@ -56,8 +93,8 @@ QLineEdit {
     border-color: transparent;
     border-width: 2px;
     border-radius: 5px;
-    color: #ffbb0e;
-    background: black;
+    color: black;
+    background: white;
 }
 
 QLineEdit:focus {
@@ -73,12 +110,26 @@ QLineEdit:focus {
 }
 
 DROWidget {
-    color: #ffbb0e;
+    color: black;
     border-color: black;
     border-style: solid;
     border-width: 2px;
     border-radius: 4px;
-    background-color: black;
+    background-color: white;
+}
+
+QGroupBox {
+    border: 1px solid #8A8484;
+    border-radius: 5px;
+    margin-top: 1ex;
+    font-size: 16pt;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding: 0 3px;
+    color: white;
 }
 
 GcodeBackplot {
@@ -88,24 +139,6 @@ GcodeBackplot {
     border-radius: 4px;
     background-color: black;
     margin: 10px;
-}
-
-QGroupBox {
-    /*background-color: #6B6B6B;*/
-    border: 1px solid #8A8484;
-    border-radius: 5px;
-    margin-top: 1ex;
-    font-family: Roboto;
-    font-style: normal;
-    font-size: 12pt;
-/*    font-weight: bold;*/
-}
-
-QGroupBox::title {
-    subcontrol-origin: margin;
-    subcontrol-position: top center;
-    padding: 0 3px;
-    color: black;
 }
 
 GcodeEditor {
@@ -130,7 +163,7 @@ GcodeBackplot {
 /*===========================================================================*/
 
 QTabWidget {
-    background: #707070;
+    background: #818584;
 }
 
 QTabWidget::pane {
@@ -165,8 +198,7 @@ QTabBar::tab:selected, QTabBar::tab:hover {
 }
 
 QTabBar::tab:selected { 
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }
 
 QTabBar::tab:first {
