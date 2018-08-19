@@ -146,9 +146,9 @@ class ToolTable(QTableView):
                     if item.text() is not None:
                         if item.text() != "":
                             if col_index in (0, 1):  # tool# pocket#
-                                line += "{}{} ".format(['T', 'P', 'D', 'Z', ';'][col_index], item.text())
+                                line += "{}{} ".format(['T', 'P', 'Z', 'D', ';'][col_index], item.text())
                             else:
-                                line += "{}{} ".format(['T', 'P', 'D', 'Z', ';'][col_index], item.text().strip())
+                                line += "{}{} ".format(['T', 'P', 'Z', 'D', ';'][col_index], item.text().strip())
                 if line:
                     line += "\n"
                     f.write(line)
