@@ -26,7 +26,7 @@ import sys
 
 import linuxcnc
 
-from PyQt5.QtCore import pyqtSlot, pyqtProperty
+from PyQt5.QtCore import pyqtSlot, pyqtProperty, Qt
 from PyQt5.QtWidgets import QTableView, QMessageBox, QAbstractItemView
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
@@ -49,7 +49,7 @@ class ToolTable(QTableView):
         self.table_header = ["Tool", "Pocket", "Z", "Diameter", "Comment"]
         self.col_count = len(self.table_header)
 
-        self.model = QStandardItemModel()
+        self.model = QStandardItemModel(0, 0, self)
         self.model.setHorizontalHeaderLabels(self.table_header)
 
         self.setModel(self.model)
@@ -113,9 +113,18 @@ class ToolTable(QTableView):
             for offset, i in enumerate(['T', 'P', 'D', 'Z', ';']):
                 for word in line.split():
                     if word.startswith(i):
-                        self.model.setItem(count, offset, self.handleItem(word.lstrip(i)))
+                        item = self.handleItem(word.lstrip(i))
+                        if i in ('T', 'P'):
+                            item.setTextAlignment(Qt.AlignCenter)
+                        elif i in ('D', 'Z'):
+                            item.setTextAlignment(Qt.AlignRight)
 
-            self.model.setItem(count, 4, self.handleItem(comment))
+                        self.model.setItem(count, offset, item)
+
+            item = self.handleItem(comment)
+            self.model.setItem(count, 4, item)
+
+
 
     @pyqtSlot()
     def saveToolTable(self):
