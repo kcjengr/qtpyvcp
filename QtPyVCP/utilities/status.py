@@ -342,6 +342,11 @@ class _Status(QObject):
 
     #===========================  Helper Functions  ===========================
 
+    def setJogIncrement(self, raw_increment):
+        self.jog_increment = raw_increment
+        # print "changed increment", raw_increment
+        # TODO: parse raw increment including units
+
     def setReportActualPosition(self, report_actual):
         # reports commanded by default
         if report_actual != self._report_actual_position:

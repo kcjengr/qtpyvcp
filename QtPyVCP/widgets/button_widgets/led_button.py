@@ -13,7 +13,7 @@ class LEDButton(QPushButton):
     def __init__(self, parent=None):
         super(LEDButton, self).__init__(parent)
 
-        self._alignment = 33    # default to top left corner
+        self._alignment = Qt.AlignRight | Qt.AlignTop
         self.setCheckable(True)
         self.led = LEDWidget(self)
         self.led.setDiameter(16)
@@ -46,10 +46,15 @@ class LEDButton(QPushButton):
             y = self.height()/2 - halfLed
         # print x, y
         self.led.move(x, y)
+        self.updateGeometry()
+
+    def resizeEvent(self, event):
+        self.placeLed()
+
 
     def update(self):
-        super(LEDButton, self).update()
         self.placeLed()
+        super(LEDButton, self).update()
 
     def updateState(self):
         self.led.setState(self.isChecked())

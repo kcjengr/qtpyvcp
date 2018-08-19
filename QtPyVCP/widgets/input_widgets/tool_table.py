@@ -26,7 +26,7 @@ import sys
 
 import linuxcnc
 
-from PyQt5.QtCore import pyqtSlot, pyqtProperty
+from PyQt5.QtCore import pyqtSlot, pyqtProperty, Qt
 from PyQt5.QtWidgets import QTableView, QMessageBox, QAbstractItemView
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
@@ -49,13 +49,13 @@ class ToolTable(QTableView):
         self.table_header = ["Tool", "Pocket", "Z", "Diameter", "Comment"]
         self.col_count = len(self.table_header)
 
-        self.model = QStandardItemModel()
+        self.model = QStandardItemModel(0, 0, self)
         self.model.setHorizontalHeaderLabels(self.table_header)
 
         self.setModel(self.model)
         self.horizontalHeader().setStretchLastSection(True)
         self.setAlternatingRowColors(True)
-        self.setSelectionBehavior(QAbstractItemView.SelectRows);
+        self.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.verticalHeader().hide()
 
         self.tool_table_file = INFO.getToolTableFile()
@@ -110,12 +110,21 @@ class ToolTable(QTableView):
             # if i = ';' that is the comment and we have already added it
             # offset 1 and 2 are integers the rest floats
 
-            for offset, i in enumerate(['T', 'P', 'D', 'Z', ';']):
+            for offset, i in enumerate(['T', 'P', 'Z', 'D', ';']):
                 for word in line.split():
                     if word.startswith(i):
-                        self.model.setItem(count, offset, self.handleItem(word.lstrip(i)))
+                        item = self.handleItem(word.lstrip(i))
+                        if i in ('T', 'P'):
+                            item.setTextAlignment(Qt.AlignCenter)
+                        elif i in ('Z', 'D'):
+                            item.setTextAlignment(Qt.AlignRight|Qt.AlignVCenter)
 
-            self.model.setItem(count, 4, self.handleItem(comment))
+                        self.model.setItem(count, offset, item)
+
+            item = self.handleItem(comment)
+            self.model.setItem(count, 4, item)
+
+
 
     @pyqtSlot()
     def saveToolTable(self):
@@ -137,9 +146,9 @@ class ToolTable(QTableView):
                     if item.text() is not None:
                         if item.text() != "":
                             if col_index in (0, 1):  # tool# pocket#
-                                line += "{}{} ".format(['T', 'P', 'D', 'Z', ';'][col_index], item.text())
+                                line += "{}{} ".format(['T', 'P', 'Z', 'D', ';'][col_index], item.text())
                             else:
-                                line += "{}{} ".format(['T', 'P', 'D', 'Z', ';'][col_index], item.text().strip())
+                                line += "{}{} ".format(['T', 'P', 'Z', 'D', ';'][col_index], item.text().strip())
                 if line:
                     line += "\n"
                     f.write(line)
