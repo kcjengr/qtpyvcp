@@ -23,7 +23,7 @@ import os
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty
 from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QVBoxLayout, QSizePolicy
+from PyQt5.QtWidgets import QWidget, QBoxLayout, QSizePolicy
 from QtPyVCP.core import Status, Action, Info
 from QtPyVCP.widgets.button_widgets.led_button import LEDButton
 
@@ -38,20 +38,13 @@ class JogIncrementWidget(QWidget):
     def __init__(self, parent=None):
         super(JogIncrementWidget, self).__init__(parent)
 
-        self._container = hBox = QHBoxLayout()
-        # hBox.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self._container = hBox = QBoxLayout(QBoxLayout.LeftToRight, self)
 
         self._ledDiameter = 15
         self._ledColor = QColor('green')
         self._alignment = Qt.AlignTop | Qt.AlignRight
 
-        vBox = QVBoxLayout(self)
-        # vBox.addStretch()
-        vBox.addLayout(hBox)
-
         increments = INFO.getIncrements()
-        print increments
-        
         for increment in increments:
             button = LEDButton();
             button.setCheckable(True)
@@ -102,9 +95,24 @@ class JogIncrementWidget(QWidget):
         self._alignment = Qt.Alignment(value)
         self.placeLed()
 
+    def getOrientation(self):
+        if self._container.direction() == QBoxLayout.LeftToRight:
+            return Qt.Horizontal
+        else:
+            return Qt.Vertical
+
+    @pyqtSlot(Qt.Orientation)
+    def setOrientation(self, value):
+        if value == Qt.Horizontal:
+            self._container.setDirection(QBoxLayout.LeftToRight)
+        else:
+            self._container.setDirection(QBoxLayout.TopToBottom)
+        self.adjustSize()
+
     diameter = pyqtProperty(int, getLedDiameter, setLedDiameter)
     color = pyqtProperty(QColor, getLedColor, setLedColor)
     alignment = pyqtProperty(Qt.Alignment, getAlignment, setAlignment)
+    orientation = pyqtProperty(Qt.Orientation, getOrientation, setOrientation)
 
 if __name__ == "__main__":
     import sys
