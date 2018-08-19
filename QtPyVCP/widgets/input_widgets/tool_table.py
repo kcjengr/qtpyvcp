@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-#   Copyright (c) 2017 Kurt Jacobson
+#   Copyright (c) 2018 Kurt Jacobson
 #      <kurtcjacobson@gmail.com>
 #
 #   This file is part of QtPyVCP.
@@ -27,7 +27,7 @@ import sys
 import linuxcnc
 
 from PyQt5.QtCore import pyqtSlot, pyqtProperty
-from PyQt5.QtWidgets import QTableView, QMessageBox
+from PyQt5.QtWidgets import QTableView, QMessageBox, QAbstractItemView
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
 # Set up logging
@@ -35,39 +35,34 @@ from QtPyVCP.utilities import logger
 from QtPyVCP.utilities.info import Info
 
 LOG = logger.getLogger(__name__)
-
-WIDGET_PATH = os.path.abspath(os.path.dirname(__file__))
+INFO = Info()
 
 
 class ToolTable(QTableView):
 
     def __init__(self, parent=None):
         super(ToolTable, self).__init__(parent)
-
         self.parent = parent
 
         self.cmd = linuxcnc.command()
 
-        info = Info()
-
         self.table_header = ["Tool", "Pocket", "Z", "Diameter", "Comment"]
-
-        self.row_count = 0
         self.col_count = len(self.table_header)
 
         self.model = QStandardItemModel()
-
         self.model.setHorizontalHeaderLabels(self.table_header)
 
         self.setModel(self.model)
         self.horizontalHeader().setStretchLastSection(True)
         self.setAlternatingRowColors(True)
+        self.setSelectionBehavior(QAbstractItemView.SelectRows);
         self.verticalHeader().hide()
 
-        self.tool_table_file = info.getToolTableFile()
+        self.tool_table_file = INFO.getToolTableFile()
 
         self.tool_table_loaded = False
         self.loadToolTable()
+        self.tool_table_loaded = True
 
         self.current_row = 0
 
@@ -81,6 +76,8 @@ class ToolTable(QTableView):
         if self.tool_table_loaded:
             if not self.ask_dialog("Do you wan't to re-load the tool table?\n all unsaved changes will be lost."):
                 return
+
+        self.removeAllTools(confirm=False)
 
         fn = self.tool_table_file
 
@@ -120,8 +117,6 @@ class ToolTable(QTableView):
 
             self.model.setItem(count, 4, self.handleItem(comment))
 
-            self.row_count = count
-
     @pyqtSlot()
     def saveToolTable(self):
         if not self.ask_dialog("Do you wan't to save and load this tool table into the system?"):
@@ -135,7 +130,7 @@ class ToolTable(QTableView):
         LOG.debug("Saving tool table as: {0}".format(fn))
 
         with open(fn, "w") as f:
-            for row_index in range(self.row_count):
+            for row_index in range(self.model.rowCount()):
                 line = ""
                 for col_index in range(self.col_count):
                     item = self.model.item(row_index, col_index)
@@ -155,14 +150,24 @@ class ToolTable(QTableView):
         self.cmd.load_tool_table()
 
     @pyqtSlot()
+    def appendTool(self):
+        row_num = self.model.rowCount() + 1
+        row_data = [row_num, row_num, 0.0, 0.0, 'New Tool']
+        row_items = [self.handleItem(item) for item in row_data]
+        self.model.appendRow(row_items)
+        self.selectRow(row_num - 1)
+
+    @pyqtSlot()
     def insertToolAbove(self):
-        self.model.insertRow(self.current_row)
-        self.row_count += 1
+        row_num = self.current_row
+        self.model.insertRow(row_num)
+        self.selectRow(row_num - 1)
 
     @pyqtSlot()
     def insertToolBelow(self):
-        self.model.insertRow(self.current_row + 1)
-        self.row_count += 1
+        row_num = self.current_row + 1
+        self.model.insertRow(row_num)
+        self.selectRow(row_num - 1)
 
     @pyqtSlot()
     def deleteSelectedTool(self):
@@ -172,14 +177,14 @@ class ToolTable(QTableView):
             return
 
         self.model.removeRow(self.current_row)
-        self.row_count -= 1
 
     @pyqtSlot()
-    def removeAllTools(self):
-        if not self.ask_dialog("Do yo wan't to delete the whole tool table?"):
-            return
+    def removeAllTools(self, confirm=True):
+        if confirm:
+            if not self.ask_dialog("Do yo wan't to delete the whole tool table?"):
+                return
 
-        for i in reversed(range(self.row_count + 1)):
+        for i in reversed(range(self.model.rowCount() + 1)):
             self.model.removeRow(i)
 
     def ask_dialog(self, message):
@@ -201,9 +206,8 @@ class ToolTable(QTableView):
         elif isinstance(value, int):
             item.setText(str(value))
         elif isinstance(value, float):
-            item.setText(str(value))
+            item.setText('{:0.4f}'.format(value))
         elif value is None:
             item.setText("")
 
         return item
-
