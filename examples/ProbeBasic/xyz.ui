@@ -119,7 +119,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -3382,7 +3382,7 @@ font: 15pt &quot;Bebas Kai&quot;;
           <property name="title">
            <string/>
           </property>
-          <widget class="QTableWidget" name="tableWidget_2">
+          <widget class="ToolTable" name="tableWidget_2">
            <property name="geometry">
             <rect>
              <x>20</x>
@@ -3499,18 +3499,24 @@ font: 15pt &quot;Bebas Kai&quot;;
            <property name="midLineWidth">
             <number>3</number>
            </property>
+           <property name="editTriggers">
+            <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+           </property>
+           <property name="showDropIndicator" stdset="0">
+            <bool>true</bool>
+           </property>
            <property name="alternatingRowColors">
             <bool>true</bool>
+           </property>
+           <property name="showGrid">
+            <bool>true</bool>
+           </property>
+           <property name="gridStyle">
+            <enum>Qt::DashLine</enum>
            </property>
            <property name="sortingEnabled">
             <bool>false</bool>
            </property>
-           <property name="rowCount">
-            <number>250</number>
-           </property>
-           <attribute name="horizontalHeaderCascadingSectionResizes">
-            <bool>false</bool>
-           </attribute>
            <attribute name="horizontalHeaderDefaultSectionSize">
             <number>90</number>
            </attribute>
@@ -3538,343 +3544,6 @@ font: 15pt &quot;Bebas Kai&quot;;
            <attribute name="verticalHeaderMinimumSectionSize">
             <number>30</number>
            </attribute>
-           <attribute name="verticalHeaderStretchLastSection">
-            <bool>true</bool>
-           </attribute>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <row/>
-           <column>
-            <property name="text">
-             <string>SELECT</string>
-            </property>
-            <property name="font">
-             <font>
-              <family>Bebas Kai</family>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="textAlignment">
-             <set>AlignCenter</set>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>TOOL</string>
-            </property>
-            <property name="font">
-             <font>
-              <family>Bebas Kai</family>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="textAlignment">
-             <set>AlignCenter</set>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Pocket</string>
-            </property>
-            <property name="font">
-             <font>
-              <family>Bebas Kai</family>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="textAlignment">
-             <set>AlignCenter</set>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>Z</string>
-            </property>
-            <property name="font">
-             <font>
-              <family>Bebas Kai</family>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="textAlignment">
-             <set>AlignCenter</set>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>DIAM</string>
-            </property>
-            <property name="font">
-             <font>
-              <family>Bebas Kai</family>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="textAlignment">
-             <set>AlignCenter</set>
-            </property>
-           </column>
-           <column>
-            <property name="text">
-             <string>COMMENT</string>
-            </property>
-            <property name="font">
-             <font>
-              <family>Bebas Kai</family>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="textAlignment">
-             <set>AlignCenter</set>
-            </property>
-           </column>
           </widget>
           <widget class="QPushButton" name="x_axis_button_2">
            <property name="geometry">
@@ -3917,9 +3586,6 @@ font: 15pt &quot;Bebas Kai&quot;;
            </property>
            <property name="text">
             <string>DELETE</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
            </property>
           </widget>
           <widget class="QPushButton" name="x_axis_button_3">
@@ -3964,9 +3630,6 @@ font: 15pt &quot;Bebas Kai&quot;;
            <property name="text">
             <string>ADD TOOL</string>
            </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
           </widget>
           <widget class="QPushButton" name="x_axis_button_4">
            <property name="geometry">
@@ -4009,9 +3672,6 @@ font: 15pt &quot;Bebas Kai&quot;;
            </property>
            <property name="text">
             <string>RE-READ</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
            </property>
           </widget>
           <widget class="QPushButton" name="x_axis_button_5">
@@ -4056,9 +3716,6 @@ font: 15pt &quot;Bebas Kai&quot;;
            <property name="text">
             <string>SAVE TABLE</string>
            </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
           </widget>
           <widget class="QPushButton" name="x_axis_button_6">
            <property name="geometry">
@@ -4101,9 +3758,6 @@ font: 15pt &quot;Bebas Kai&quot;;
            </property>
            <property name="text">
             <string>RELOAD TABLE</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
            </property>
           </widget>
          </widget>
@@ -22760,14 +22414,14 @@ border-radius: 1px;
    <header>QtPyVCP.widgets.button_widgets.subcall_button</header>
   </customwidget>
   <customwidget>
+   <class>ToolTable</class>
+   <extends>QTableView</extends>
+   <header>QtPyVCP.widgets.input_widgets.tool_table</header>
+  </customwidget>
+  <customwidget>
    <class>LEDButton</class>
    <extends>QPushButton</extends>
    <header>QtPyVCP.widgets.button_widgets.led_button</header>
-  </customwidget>
-  <customwidget>
-   <class>LoadMeter</class>
-   <extends>QProgressBar</extends>
-   <header>QtPyVCP.widgets.display_widgets.load_meter</header>
   </customwidget>
   <customwidget>
    <class>MDIEntry</class>
@@ -22798,6 +22452,11 @@ border-radius: 1px;
    <class>OverrideSlider</class>
    <extends>QSlider</extends>
    <header>QtPyVCP.widgets.input_widgets.override_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>LoadMeter</class>
+   <extends>QProgressBar</extends>
+   <header>QtPyVCP.widgets.display_widgets.load_meter</header>
   </customwidget>
  </customwidgets>
  <resources>
@@ -22947,6 +22606,86 @@ border-radius: 1px;
     <hint type="destinationlabel">
      <x>614</x>
      <y>956</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_axis_button_2</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>deleteSelectedTool()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>243</x>
+     <y>570</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>241</x>
+     <y>518</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_axis_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>appendTool()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>416</x>
+     <y>573</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>416</x>
+     <y>530</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_axis_button_4</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>loadToolTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>560</x>
+     <y>571</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>572</x>
+     <y>519</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_axis_button_5</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>saveToolTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>710</x>
+     <y>568</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>703</x>
+     <y>497</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_axis_button_6</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>loadToolTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>835</x>
+     <y>572</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>844</x>
+     <y>484</y>
     </hint>
    </hints>
   </connection>
