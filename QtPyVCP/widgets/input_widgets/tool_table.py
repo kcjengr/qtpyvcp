@@ -117,7 +117,7 @@ class ToolTable(QTableView):
                         if i in ('T', 'P'):
                             item.setTextAlignment(Qt.AlignCenter)
                         elif i in ('D', 'Z'):
-                            item.setTextAlignment(Qt.AlignRight)
+                            item.setTextAlignment(Qt.AlignRight|Qt.AlignVCenter)
 
                         self.model.setItem(count, offset, item)
 
