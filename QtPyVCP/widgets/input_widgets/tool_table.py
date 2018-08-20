@@ -26,7 +26,7 @@ import sys
 
 import linuxcnc
 
-from PyQt5.QtCore import pyqtSlot, pyqtProperty, Qt
+from PyQt5.QtCore import pyqtSlot, pyqtProperty, Qt, QItemSelectionModel
 from PyQt5.QtWidgets import QTableView, QMessageBox, QAbstractItemView
 from PyQt5.QtGui import QStandardItem, QStandardItemModel
 
@@ -56,6 +56,7 @@ class ToolTable(QTableView):
         self.horizontalHeader().setStretchLastSection(True)
         self.setAlternatingRowColors(True)
         self.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.setSelectionMode(QAbstractItemView.SingleSelection)
         self.verticalHeader().hide()
 
         self.tool_table_file = INFO.getToolTableFile()
@@ -63,13 +64,6 @@ class ToolTable(QTableView):
         self.tool_table_loaded = False
         self.loadToolTable()
         self.tool_table_loaded = True
-
-        self.current_row = 0
-
-        self.clicked.connect(self.get_row)
-
-    def get_row(self, item):
-        self.current_row = item.row()
 
     @pyqtSlot()
     def loadToolTable(self):
@@ -124,8 +118,6 @@ class ToolTable(QTableView):
             item = self.handleItem(comment)
             self.model.setItem(count, 4, item)
 
-
-
     @pyqtSlot()
     def saveToolTable(self):
         if not self.ask_dialog("Do you wan't to save and load this tool table into the system?"):
@@ -161,31 +153,30 @@ class ToolTable(QTableView):
     @pyqtSlot()
     def appendTool(self):
         row_num = self.model.rowCount() + 1
-        row_data = [row_num, row_num, 0.0, 0.0, 'New Tool']
-        row_items = [self.handleItem(item) for item in row_data]
-        self.model.appendRow(row_items)
+        self.model.appendRow(self.newRow(row_num))
         self.selectRow(row_num - 1)
 
     @pyqtSlot()
     def insertToolAbove(self):
-        row_num = self.current_row
-        self.model.insertRow(row_num)
-        self.selectRow(row_num - 1)
+        row_num = self.selectedRow()
+        self.model.insertRow(row_num, self.newRow(row_num))
+        self.selectRow(row_num)
 
     @pyqtSlot()
     def insertToolBelow(self):
-        row_num = self.current_row + 1
-        self.model.insertRow(row_num)
-        self.selectRow(row_num - 1)
+        row_num = self.selectedRow() + 1
+        self.model.insertRow(row_num, self.newRow(row_num))
+        self.selectRow(row_num)
 
     @pyqtSlot()
     def deleteSelectedTool(self):
-        current_tool = self.model.item(self.current_row, 0)
+        current_row = self.selectedRow()
+        current_tool = self.model.item(current_row, 0)
 
         if not self.ask_dialog("Do yo wan't to delete T{} ?".format(current_tool.text())):
             return
 
-        self.model.removeRow(self.current_row)
+        self.model.removeRow(current_row)
 
     @pyqtSlot()
     def removeAllTools(self, confirm=True):
@@ -207,6 +198,11 @@ class ToolTable(QTableView):
         else:
             return False
 
+    def newRow(self, row_num=0):
+        new_data = [row_num, row_num, 0.0, 0.0, 'New Tool']
+        row_items = [self.handleItem(item) for item in new_data]
+        return row_items
+
     def handleItem(self, value):
         item = QStandardItem()
 
@@ -218,5 +214,7 @@ class ToolTable(QTableView):
             item.setText('{:0.4f}'.format(value))
         elif value is None:
             item.setText("")
-
         return item
+
+    def selectedRow(self):
+        return self.selectionModel().currentIndex().row()
