@@ -47,8 +47,14 @@ class  GcodeBackplot(QBackPlot):
     line_selected = pyqtSignal(int)
     gcode_error = pyqtSignal(str)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, standalone=False):
         super(GcodeBackplot, self).__init__(parent)
+
+        # This prevents doing unneeded initialization
+        # when QtDesginer loads the plugin.
+        if parent is None and not standalone:
+            return
+
         self.show_overlay = False  # no DRO or DRO overlay
         self._reload_filename = None
 
@@ -214,6 +220,6 @@ if __name__ == "__main__":
     from PyQt5.QtWidgets import QApplication
 
     app = QApplication(sys.argv)
-    widget =  GcodeBackPlot()
+    widget =  GcodeBackPlot(standalone=True)
     widget.show()
     sys.exit(app.exec_())

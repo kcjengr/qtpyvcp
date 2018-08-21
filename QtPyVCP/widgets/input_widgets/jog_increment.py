@@ -35,7 +35,7 @@ WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 
 class JogIncrementWidget(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, standalone=False):
         super(JogIncrementWidget, self).__init__(parent)
 
         self._container = hBox = QBoxLayout(QBoxLayout.LeftToRight, self)
@@ -43,6 +43,11 @@ class JogIncrementWidget(QWidget):
         self._ledDiameter = 15
         self._ledColor = QColor('green')
         self._alignment = Qt.AlignTop | Qt.AlignRight
+
+        # This prevents doing unneeded initialization
+        # when QtDesginer loads the plugin.
+        if parent is None and not standalone:
+            return
 
         increments = INFO.getIncrements()
         for increment in increments:
@@ -118,6 +123,6 @@ if __name__ == "__main__":
     import sys
     from PyQt5.QtWidgets import QApplication
     app = QApplication(sys.argv)
-    w = JogIncrementWidget()
+    w = JogIncrementWidget(standalone=True)
     w.show()
     sys.exit(app.exec_())
