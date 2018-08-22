@@ -32,24 +32,17 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QPushButton,
 
 from PyQt5 import QtWidgets, QtGui
 
-from QtPyVCP.utilities import logger
+from QtPyVCP.utilities import logger, action
 LOG = logger.getLogger(__name__)
 
-from QtPyVCP.core import Status, Action, Prefs, Info
-STATUS = Status()
-ACTION = Action()
-PREFS = Prefs()
-INFO = Info()
-
-from QtPyVCP.utilities import action
 from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
-from QtPyVCP.utilities import action
 
 
 class VCPMainWindow(QMainWindow):
 
     def __init__(self, parent=None, ui_file=None):
         super(VCPMainWindow, self).__init__(parent=None)
+        self.app = QApplication.instance()
 
         # QtDesigner settable vars
         self.prompt_at_exit = True
@@ -65,11 +58,11 @@ class VCPMainWindow(QMainWindow):
         if ui_file is not None:
             uic.loadUi(ui_file, self)
 
-        STATUS.init_ui.emit()
+        self.app.status.init_ui.emit()
         self.initUi()
 
         # QShortcut(QKeySequence("t"), self, self.test)
-        qApp.focusChanged.connect(self.focusChangedEvent)
+        self.app.focusChanged.connect(self.focusChangedEvent)
 
     def initUi(self):
         print "initiating"
@@ -205,7 +198,7 @@ class VCPMainWindow(QMainWindow):
 
     @pyqtSlot(bool)
     def on_actionReport_Actual_Position_toggled(self, report_actual):
-        STATUS.setReportActualPosition(report_actual)
+        self.app.status.setReportActualPosition(report_actual)
 
 
 #==============================================================================
@@ -220,14 +213,14 @@ class VCPMainWindow(QMainWindow):
                 self.menuRecentFiles.removeAction(action)
 
             # add new actions
-            for i in range(STATUS.max_recent_files):
+            for i in range(self.app.status.max_recent_files):
                 action = QAction(self, visible=False,
                                  triggered=(lambda:ACTION.loadProgram(self.sender().data())))
                 self.recent_file_actions.append(action)
                 self.menuRecentFiles.addAction(action)
 
-            self.updateRecentFilesMenu(STATUS.recent_files)
-            STATUS.recent_files_changed.connect(self.updateRecentFilesMenu)
+            self.updateRecentFilesMenu(self.app.status.recent_files)
+            self.app.status.recent_files_changed.connect(self.updateRecentFilesMenu)
 
     def updateRecentFilesMenu(self, recent_files):
         for i, fname in enumerate(recent_files):
@@ -269,12 +262,14 @@ class VCPMainWindow(QMainWindow):
 
     def loadSplashGcode(self):
         # Load backplot splash code
-        path = os.path.realpath(os.path.join(__file__, '../../../..', 'sim/example_gcode/qtpyvcp.ngc'))
-        splash_code = INFO.getOpenFile() or path
-        if splash_code is not None:
-            # Load after startup to not cause delay
-            QTimer.singleShot(0, lambda: ACTION.loadProgram(splash_code, add_to_recents=False))
-
+        if self.app.status.stat.file != '':
+            QTimer.singleShot(0, self.app.status.reload_backplot.emit)
+        else:
+            path = os.path.realpath(os.path.join(__file__, '../../../..', 'sim/example_gcode/qtpyvcp.ngc'))
+            splash_code = INFO.getOpenFile() or path
+            if splash_code is not None:
+                # Load after startup to not cause delay
+                QTimer.singleShot(0, lambda: ACTION.loadProgram(splash_code, add_to_recents=False))
 
 #==============================================================================
 #  QtDesigner property setters/getters
@@ -289,9 +284,9 @@ class VCPMainWindow(QMainWindow):
 
     # Max number of recent files to display in menu
     def getMaxRecentFiles(self):
-        return STATUS.max_recent_files
+        return self.app.status.max_recent_files
     def setMaxRecentFiles(self, number):
-        STATUS.max_recent_files = number
+        self.app.status.max_recent_files = number
     maxNumRecentFiles = pyqtProperty(int, getMaxRecentFiles, setMaxRecentFiles)
 
 
