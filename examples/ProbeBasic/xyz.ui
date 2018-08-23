@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1896</width>
-    <height>1124</height>
+    <width>1891</width>
+    <height>1121</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -255,9 +255,9 @@
          <widget class="QFrame" name="frame_8">
           <property name="geometry">
            <rect>
-            <x>20</x>
+            <x>13</x>
             <y>11</y>
-            <width>581</width>
+            <width>580</width>
             <height>570</height>
            </rect>
           </property>
@@ -265,7 +265,7 @@
            <string notr="true">QFrame{
 border-style: solid;
 border-color: rgb(186, 189, 182);
-background-color: rgb(46, 52, 54);
+background-color: rgb(51, 57, 59);
 border-width: 2px;
 border-radius: 6px;
 }</string>
@@ -279,7 +279,7 @@ border-radius: 6px;
           <widget class="QPushButton" name="x_axis_button_10">
            <property name="geometry">
             <rect>
-             <x>227</x>
+             <x>232</x>
              <y>528</y>
              <width>120</width>
              <height>33</height>
@@ -322,7 +322,7 @@ border-radius: 6px;
           <widget class="QPushButton" name="x_axis_button_12">
            <property name="geometry">
             <rect>
-             <x>67</x>
+             <x>72</x>
              <y>528</y>
              <width>120</width>
              <height>33</height>
@@ -365,7 +365,7 @@ border-radius: 6px;
           <widget class="QPushButton" name="x_axis_button_13">
            <property name="geometry">
             <rect>
-             <x>389</x>
+             <x>394</x>
              <y>528</y>
              <width>120</width>
              <height>33</height>
@@ -408,7 +408,7 @@ border-radius: 6px;
           <widget class="QPushButton" name="x_axis_button_14">
            <property name="geometry">
             <rect>
-             <x>20</x>
+             <x>30</x>
              <y>9</y>
              <width>50</width>
              <height>30</height>
@@ -451,7 +451,7 @@ border-radius: 6px;
           <widget class="QPushButton" name="x_axis_button_15">
            <property name="geometry">
             <rect>
-             <x>420</x>
+             <x>406</x>
              <y>9</y>
              <width>140</width>
              <height>30</height>
@@ -494,7 +494,7 @@ border-radius: 6px;
           <widget class="QPushButton" name="x_axis_button_16">
            <property name="geometry">
             <rect>
-             <x>90</x>
+             <x>100</x>
              <y>9</y>
              <width>80</width>
              <height>30</height>
@@ -539,7 +539,7 @@ border-radius: 6px;
             <rect>
              <x>15</x>
              <y>47</y>
-             <width>550</width>
+             <width>549</width>
              <height>473</height>
             </rect>
            </property>
@@ -844,9 +844,9 @@ QTableView {
          <widget class="QFrame" name="frame_10">
           <property name="geometry">
            <rect>
-            <x>750</x>
+            <x>686</x>
             <y>11</y>
-            <width>581</width>
+            <width>580</width>
             <height>570</height>
            </rect>
           </property>
@@ -854,7 +854,7 @@ QTableView {
            <string notr="true">QFrame{
 border-style: solid;
 border-color: rgb(186, 189, 182);
-background-color: rgb(46, 52, 54);
+background-color: rgb(51, 57, 59);
 border-width: 2px;
 border-radius: 6px;
 }</string>
@@ -868,7 +868,7 @@ border-radius: 6px;
           <widget class="QPushButton" name="x_axis_button_17">
            <property name="geometry">
             <rect>
-             <x>225</x>
+             <x>230</x>
              <y>528</y>
              <width>120</width>
              <height>30</height>
@@ -911,7 +911,7 @@ border-radius: 6px;
           <widget class="QPushButton" name="x_axis_button_18">
            <property name="geometry">
             <rect>
-             <x>66</x>
+             <x>71</x>
              <y>528</y>
              <width>120</width>
              <height>30</height>
@@ -954,7 +954,7 @@ border-radius: 6px;
           <widget class="QPushButton" name="x_axis_button_19">
            <property name="geometry">
             <rect>
-             <x>390</x>
+             <x>395</x>
              <y>528</y>
              <width>120</width>
              <height>30</height>
@@ -997,7 +997,7 @@ border-radius: 6px;
           <widget class="QPushButton" name="x_axis_button_20">
            <property name="geometry">
             <rect>
-             <x>20</x>
+             <x>30</x>
              <y>9</y>
              <width>50</width>
              <height>30</height>
@@ -1040,7 +1040,7 @@ border-radius: 6px;
           <widget class="QPushButton" name="x_axis_button_21">
            <property name="geometry">
             <rect>
-             <x>459</x>
+             <x>447</x>
              <y>9</y>
              <width>100</width>
              <height>30</height>
@@ -1083,7 +1083,7 @@ border-radius: 6px;
           <widget class="QPushButton" name="x_axis_button_22">
            <property name="geometry">
             <rect>
-             <x>90</x>
+             <x>100</x>
              <y>9</y>
              <width>60</width>
              <height>30</height>
@@ -1128,7 +1128,7 @@ border-radius: 6px;
             <rect>
              <x>15</x>
              <y>47</y>
-             <width>550</width>
+             <width>549</width>
              <height>473</height>
             </rect>
            </property>
@@ -1428,9 +1428,9 @@ QTableView {
          <widget class="QFrame" name="frame_15">
           <property name="geometry">
            <rect>
-            <x>1410</x>
+            <x>1285</x>
             <y>11</y>
-            <width>431</width>
+            <width>620</width>
             <height>570</height>
            </rect>
           </property>
@@ -1438,7 +1438,7 @@ QTableView {
            <string notr="true">QFrame{
 border-style: solid;
 border-color: rgb(186, 189, 182);
-background-color: rgb(46, 52, 54);
+background-color: rgb(51, 57, 59);
 border-width: 2px;
 border-radius: 6px;
 }</string>
@@ -1452,7 +1452,7 @@ border-radius: 6px;
           <widget class="QPushButton" name="x_axis_button_24">
            <property name="geometry">
             <rect>
-             <x>137</x>
+             <x>225</x>
              <y>528</y>
              <width>150</width>
              <height>30</height>
@@ -1497,7 +1497,7 @@ border-radius: 6px;
             <rect>
              <x>15</x>
              <y>47</y>
-             <width>400</width>
+             <width>590</width>
              <height>473</height>
             </rect>
            </property>
@@ -1775,7 +1775,7 @@ QTableView {
            </property>
            <property name="geometry">
             <rect>
-             <x>118</x>
+             <x>199</x>
              <y>7</y>
              <width>200</width>
              <height>33</height>
@@ -1817,6 +1817,100 @@ QTableView {
             <set>Qt::AlignCenter</set>
            </property>
           </widget>
+         </widget>
+         <widget class="QPushButton" name="copy_from_usb">
+          <property name="geometry">
+           <rect>
+            <x>605</x>
+            <y>170</y>
+            <width>70</width>
+            <height>130</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>70</width>
+            <height>130</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>70</width>
+            <height>130</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Bebas Kai</family>
+            <pointsize>15</pointsize>
+           </font>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">#copy_from_usb{
+BackGround-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(122, 123, 123, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.85641 rgba(82, 82, 83, 255), stop:1 rgba(122, 123, 123, 255));
+}</string>
+          </property>
+          <property name="text">
+           <string>COPY
+FROM
+USB
+&lt;&lt;&lt;</string>
+          </property>
+         </widget>
+         <widget class="QPushButton" name="copy_to_usb">
+          <property name="geometry">
+           <rect>
+            <x>605</x>
+            <y>321</y>
+            <width>70</width>
+            <height>130</height>
+           </rect>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>70</width>
+            <height>130</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>70</width>
+            <height>130</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Bebas Kai</family>
+            <pointsize>15</pointsize>
+           </font>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
+          <property name="text">
+           <string>COPY
+TO
+USB
+&gt;&gt;&gt;</string>
+          </property>
          </widget>
         </widget>
         <widget class="QWidget" name="tab_3">
@@ -24648,7 +24742,7 @@ border-radius: 1px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1896</width>
+     <width>1891</width>
      <height>19</height>
     </rect>
    </property>
