@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1920</width>
-    <height>1074</height>
+    <height>1081</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26397,6 +26397,54 @@ border-radius: 1px;
     <hint type="destinationlabel">
      <x>1116</x>
      <y>790</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>pressed()</signal>
+   <receiver>feedrate_override_slider_3</receiver>
+   <slot>reset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>741</x>
+     <y>877</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>630</x>
+     <y>864</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_48</sender>
+   <signal>pressed()</signal>
+   <receiver>feedrate_override_slider_4</receiver>
+   <slot>reset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>736</x>
+     <y>946</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>628</x>
+     <y>940</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_49</sender>
+   <signal>pressed()</signal>
+   <receiver>feedrate_override_slider_5</receiver>
+   <slot>reset()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>728</x>
+     <y>1000</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>636</x>
+     <y>1003</y>
     </hint>
    </hints>
   </connection>
