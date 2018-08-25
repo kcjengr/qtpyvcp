@@ -96,20 +96,11 @@ def getLogFile(name):
 
     # LinuxCNC may not be running, so use get() to avoid a KeyError
     ini_file = os.environ.get('INI_FILE_NAME')
-    config_dir = os.environ.get('CONFIG_DIR')
-
     if ini_file:
+        config_dir = os.path.dirname(ini_file)
         lcnc_ini = ini(ini_file)
         path = lcnc_ini.find('DISPLAY', 'LOG_FILE')
         if path:
-            if path.startswith('~'):
-                # Path is relative to $HOME
-                log_file = os.path.expanduser(path)
-            elif not os.path.isabs(path):
-                # Assume intended path is relative to the INI file
-                log_file = os.path.join(config_dir, path)
-            else:
-                # It must be an absolute path then
-                log_file = os.path.realpath(path)
-
+            from misc import normalizePath
+            log_file = normalizePath(path, config_dir)
     return log_file

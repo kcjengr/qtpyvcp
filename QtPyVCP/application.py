@@ -10,10 +10,8 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, qApp
 
 class VCPApplication(QApplication):
 
-    def __init__(self, vcp=None, ini=None, command_line_args=[], display_args=[],
-                 perfmon=False, hide_nav_bar=False, hide_menu_bar=False,
-                 hide_status_bar=False, stylesheet_path=None,
-                 fullscreen=False):
+    def __init__(self, vcp=None, ini=None, perfmon=False, stylesheet=None,
+                command_line_args=[], window_kwargs={},):
         super(VCPApplication, self).__init__(command_line_args)
 
         qApp = QApplication.instance()
