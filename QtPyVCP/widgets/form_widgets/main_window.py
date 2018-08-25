@@ -178,23 +178,23 @@ class VCPMainWindow(QMainWindow):
 
     @pyqtSlot()
     def on_actionToggle_E_stop_triggered(self):
-        ACTION.toggleEmergencyStop()
+        self.app.action.toggleEmergencyStop()
 
     @pyqtSlot()
     def on_actionToggle_Power_triggered(self):
-        ACTION.toggleMachinePower()
+        self.app.action.toggleMachinePower()
 
     @pyqtSlot()
     def on_actionRun_Program_triggered(self):
-        ACTION.runProgram()
+        self.app.action.runProgram()
 
     @pyqtSlot()
     def on_actionHome_All_triggered(self):
-        ACTION.homeJoint(-1)
+        self.app.action.homeJoint(-1)
 
     @pyqtSlot()
     def on_actionHome_X_triggered(self):
-        ACTION.homeJoint(1)
+        self.app.action.homeJoint(1)
 
     @pyqtSlot(bool)
     def on_actionReport_Actual_Position_toggled(self, report_actual):
@@ -215,7 +215,7 @@ class VCPMainWindow(QMainWindow):
             # add new actions
             for i in range(self.app.status.max_recent_files):
                 action = QAction(self, visible=False,
-                                 triggered=(lambda:ACTION.loadProgram(self.sender().data())))
+                                 triggered=(lambda:self.app.action.loadProgram(self.sender().data())))
                 self.recent_file_actions.append(action)
                 self.menuRecentFiles.addAction(action)
 
@@ -249,7 +249,7 @@ class VCPMainWindow(QMainWindow):
             self.menuHoming.addAction(menu_action)
 
             # add homing actions for each axis
-            for aletter in INFO.AXIS_LETTER_LIST:
+            for aletter in self.app.info.AXIS_LETTER_LIST:
                 menu_action = QAction(self)
                 menu_action.setText("Home &{}".format(aletter.upper()))
                 home_action = action.Home(widget=menu_action, method='homeAxis', axis=aletter)
@@ -266,10 +266,10 @@ class VCPMainWindow(QMainWindow):
             QTimer.singleShot(0, self.app.status.reload_backplot.emit)
         else:
             path = os.path.realpath(os.path.join(__file__, '../../../..', 'sim/example_gcode/qtpyvcp.ngc'))
-            splash_code = INFO.getOpenFile() or path
+            splash_code = self.app.info.getOpenFile() or path
             if splash_code is not None:
                 # Load after startup to not cause delay
-                QTimer.singleShot(0, lambda: ACTION.loadProgram(splash_code, add_to_recents=False))
+                QTimer.singleShot(0, lambda: self.app.action.loadProgram(splash_code, add_to_recents=False))
 
 #==============================================================================
 #  QtDesigner property setters/getters
