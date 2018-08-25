@@ -1,4 +1,6 @@
-print "Loading Custom VCP QtDesigner Plug-ins"
+from QtPyVCP.utilities import logger
+LOG = logger.initBaseLogger('QpPyVCP', log_file=None)
+LOG.info("Loading VCP Designer Plug-ins")
 
 from PyQt5.QtWidgets import QApplication
 from QtPyVCP.core import Status, Action, Prefs, Info
