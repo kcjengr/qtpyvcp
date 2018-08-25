@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import sys
 import argparse
 import QtPyVCP
@@ -88,6 +89,28 @@ def main():
         )
 
     args = parser.parse_args()
+
+    ini_file = os.environ.get('INI_FILE_NAME') or args.ini
+    if ini_file is None:
+        # Check if LinuxCNC is running
+        if os.path.isfile('/tmp/linuxcnc.lock'):
+            # LinuxCNC is running, but in a different environment.
+            # TODO: find some way to get the INI file LCNC was launched with
+            print 'LinuxCNC is running, no INI file specifed on command line'
+            sys.exit()
+        else:
+            # LinuxCNC is not running
+            # TODO: Maybe launch LinuxCNC using subprocess
+            print 'LinuxCNC is not running, no INI file specified on command line'
+            sys.exit()
+
+    if not os.getenv('INI_FILE_NAME'):
+        ini_file = os.path.realpath(ini_file)
+        if not os.path.exists(ini_file):
+            print 'Specifed INI file does not exist: {}'.format(ini_file)
+            sys.exit()
+        os.environ['INI_FILE_NAME'] = ini_file
+        os.environ['CONFIG_DIR'] = os.path.dirname(ini_file)
 
     if args.chooser:
         from vcp_chooser import VCPChooser
