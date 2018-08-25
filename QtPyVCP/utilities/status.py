@@ -214,6 +214,7 @@ class _Status(QObject):
     motion_type = pyqtSignal([int], [str])  # type of the currently executing motion
     interp_state = pyqtSignal([int], [str]) # current state of RS274NGC interpreter
     interpreter_errcode = pyqtSignal([int], [str]) # current RS274NGC interpreter return code
+    jog_mode_signal = pyqtSignal(bool)             # jog mode = true
 
     # Tool
     tool_in_spindle = pyqtSignal(int)       # current tool number
@@ -255,6 +256,7 @@ class _Status(QObject):
         self.recent_files = [file for file in files if os.path.exists(file)]
 
         self.jog_increment = 0
+        self.jog_mode = True
         self.linear_jog_velocity = INFO.getJogVelocity()
         self.angular_jog_velocity = INFO.getJogVelocity()
 
@@ -340,12 +342,46 @@ class _Status(QObject):
                 getattr(self, key).emit(value)
 
 
+
     #===========================  Helper Functions  ===========================
 
+    def _from_internal_linear_unit(self, v, unit=None):
+        if unit is None:
+            unit = self.stat.linear_units
+        lu = (unit or 1) * 25.4
+        return v * lu
+
+    def _parse_increment(self, jogincr):
+        if jogincr.endswith("mm"):
+            scale = self._from_internal_linear_unit(1 / 25.4)
+        elif jogincr.endswith("cm"):
+            scale = self._from_internal_linear_unit(10 / 25.4)
+        elif jogincr.endswith("um"):
+            scale = self._from_internal_linear_unit(.001 / 25.4)
+        elif jogincr.endswith("in") or jogincr.endswith("inch"):
+            scale = self._from_internal_linear_unit(1.)
+        elif jogincr.endswith("mil"):
+            scale = self._from_internal_linear_unit(.001)
+        else:
+            scale = 1
+        jogincr = jogincr.rstrip(" inchmuil")
+        if "/" in jogincr:
+            p, q = jogincr.split("/")
+            jogincr = float(p) / float(q)
+        else:
+            jogincr = float(jogincr)
+        return jogincr * scale
+
     def setJogIncrement(self, raw_increment):
-        self.jog_increment = raw_increment
+        self.jog_increment = self._parse_increment(raw_increment)
         # print "changed increment", raw_increment
         # TODO: parse raw increment including units
+
+    def setJogMode(self, mode):
+        # insert checks around state and safety
+        self.jog_mode = mode
+        self.jog_mode_signal.emit(self.jog_mode)
+
 
     def setReportActualPosition(self, report_actual):
         # reports commanded by default

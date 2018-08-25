@@ -19,6 +19,8 @@ class Action(object):
     Flood = action.Flood.action_id
     BlockDelete = action.BlockDelete.action_id
     OptionalStop = action.OptionalStop.action_id
+    JogMode = action.JogMode.action_id
+    StepMode = action.StepMode.action_id
 
 class ActionType(object):
     Toggle = -1

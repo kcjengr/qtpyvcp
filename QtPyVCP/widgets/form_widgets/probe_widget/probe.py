@@ -39,8 +39,12 @@ class SubCaller(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(SubCaller, self).__init__(parent)
 
-        self. ui = uic.loadUi(os.path.join(PARENT_DIR, "probe.ui"), self)
+        # This prevents doing unneeded initialization
+        # when QtDesginer loads the plugin.
+        if parent is None:
+            return
 
+        self. ui = uic.loadUi(os.path.join(PARENT_DIR, "probe.ui"), self)
 
         self.notification = Notification("ProbeScreen")
         self.notification.setUrgency(Urgency.NORMAL)

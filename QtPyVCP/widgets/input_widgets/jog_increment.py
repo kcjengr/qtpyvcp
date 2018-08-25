@@ -21,7 +21,7 @@
 import os
 
 from PyQt5 import uic
-from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty
+from PyQt5.QtCore import Qt, QEvent, pyqtSlot, pyqtProperty
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QWidget, QBoxLayout, QSizePolicy
 from QtPyVCP.core import Status, Action, Info
@@ -35,7 +35,7 @@ WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 
 class JogIncrementWidget(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, standalone=False):
         super(JogIncrementWidget, self).__init__(parent)
 
         self._container = hBox = QBoxLayout(QBoxLayout.LeftToRight, self)
@@ -43,10 +43,14 @@ class JogIncrementWidget(QWidget):
         self._ledDiameter = 15
         self._ledColor = QColor('green')
         self._alignment = Qt.AlignTop | Qt.AlignRight
+        # This prevents doing unneeded initialization
+        # when QtDesginer loads the plugin.
+        if parent is None and not standalone:
+            return
 
         increments = INFO.getIncrements()
         for increment in increments:
-            button = LEDButton();
+            button = LEDButton()
             button.setCheckable(True)
             button.setAutoExclusive(True)
             button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -109,15 +113,23 @@ class JogIncrementWidget(QWidget):
             self._container.setDirection(QBoxLayout.TopToBottom)
         self.adjustSize()
 
+    def getLayoutSpacing(self):
+        return self._container.spacing()
+
+    @pyqtSlot(int)
+    def setLayoutSpacing(self, value):
+        self._container.setSpacing(value)
+
     diameter = pyqtProperty(int, getLedDiameter, setLedDiameter)
     color = pyqtProperty(QColor, getLedColor, setLedColor)
     alignment = pyqtProperty(Qt.Alignment, getAlignment, setAlignment)
     orientation = pyqtProperty(Qt.Orientation, getOrientation, setOrientation)
+    layoutSpacing = pyqtProperty(int, getLayoutSpacing, setLayoutSpacing)
 
 if __name__ == "__main__":
     import sys
     from PyQt5.QtWidgets import QApplication
     app = QApplication(sys.argv)
-    w = JogIncrementWidget()
+    w = JogIncrementWidget(standalone=True)
     w.show()
     sys.exit(app.exec_())

@@ -69,8 +69,13 @@ WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 
 class Camera(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, standalone=False):
         super(Camera, self).__init__(parent)
+
+        # This prevents doing unneeded initialization
+        # when QtDesginer loads the plugin.
+        if parent is None and not standalone:
+            return
 
         if not multimedia_available:
             return
@@ -358,7 +363,7 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
 
-    camera = Camera()
+    camera = Camera(standalone=True)
     camera.show()
 
     sys.exit(app.exec_())

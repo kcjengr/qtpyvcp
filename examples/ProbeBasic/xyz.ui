@@ -5356,7 +5356,7 @@ border-radius: 6px;
     border-color: black;
     border-width: 2px;
     border-radius: 6px;
-    color: rgb(238, 238, 236);    
+    color: rgb(238, 238, 236);
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
@@ -5489,7 +5489,7 @@ border-style: none;
     border-color: black;
     border-width: 2px;
     border-radius: 6px;
-    color: rgb(238, 238, 236);    
+    color: rgb(238, 238, 236);
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
@@ -13108,7 +13108,7 @@ padding-left: 5px;
     border-color: black;
     border-width: 2px;
     border-radius: 5px;
-    color: rgb(238, 238, 236);    
+    color: rgb(238, 238, 236);
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
@@ -13445,7 +13445,7 @@ padding-left: 5px;
     border-color: black;
     border-width: 2px;
     border-radius: 5px;
-    color: rgb(238, 238, 236);    
+    color: rgb(238, 238, 236);
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
@@ -14579,7 +14579,7 @@ color: rgb(255, 255, 255);
     border-color: black;
     border-width: 2px;
     border-radius: 5px;
-    color: rgb(238, 238, 236);    
+    color: rgb(238, 238, 236);
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
