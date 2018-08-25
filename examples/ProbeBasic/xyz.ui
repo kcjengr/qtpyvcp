@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1920</width>
-    <height>1072</height>
+    <height>1074</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -46,6 +46,9 @@
       </property>
       <property name="rightMargin">
        <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>3</number>
       </property>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_30">
@@ -128,7 +131,7 @@
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>6</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -189,7 +192,7 @@ background-color: transparent;
                </property>
                <layout class="QVBoxLayout" name="verticalLayout_2">
                 <property name="spacing">
-                 <number>0</number>
+                 <number>2</number>
                 </property>
                 <property name="leftMargin">
                  <number>0</number>
@@ -201,7 +204,7 @@ background-color: transparent;
                  <number>0</number>
                 </property>
                 <property name="bottomMargin">
-                 <number>0</number>
+                 <number>5</number>
                 </property>
                 <item>
                  <widget class="RecentFileComboBox" name="recentfilecombobox">
@@ -225,6 +228,12 @@ background-color: transparent;
                 </item>
                 <item>
                  <widget class="MDIEntry" name="mdi_entry_box">
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>40</height>
+                   </size>
+                  </property>
                   <property name="font">
                    <font>
                     <family>Bebas Kai</family>
@@ -2807,6 +2816,9 @@ padding-right: 10px;
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_49">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QFrame" name="frame_22">
                 <property name="sizePolicy">
@@ -2832,6 +2844,9 @@ padding-right: 10px;
             </item>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_19">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QFrame" name="frame_4">
                 <property name="sizePolicy">
@@ -2842,7 +2857,7 @@ padding-right: 10px;
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>883</width>
+                  <width>863</width>
                   <height>521</height>
                  </size>
                 </property>
@@ -4051,7 +4066,7 @@ border-radius: 8px;
                 <widget class="QWidget" name="widget_4" native="true">
                  <property name="geometry">
                   <rect>
-                   <x>554</x>
+                   <x>534</x>
                    <y>4</y>
                    <width>176</width>
                    <height>291</height>
@@ -4113,7 +4128,7 @@ border-radius: 8px;
                 <widget class="QLabel" name="label_38">
                  <property name="geometry">
                   <rect>
-                   <x>630</x>
+                   <x>610</x>
                    <y>317</y>
                    <width>240</width>
                    <height>200</height>
@@ -4135,6 +4150,9 @@ border-radius: 8px;
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_50">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QFrame" name="frame_21">
                 <property name="sizePolicy">
@@ -4164,7 +4182,7 @@ border-radius: 8px;
                <number>25</number>
               </property>
               <property name="rightMargin">
-               <number>25</number>
+               <number>16</number>
               </property>
               <item>
                <widget class="QFrame" name="frame_6">
@@ -5672,13 +5690,13 @@ border-style: none;
                     </property>
                     <property name="minimumSize">
                      <size>
-                      <width>603</width>
+                      <width>550</width>
                       <height>525</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
-                      <width>603</width>
+                      <width>550</width>
                       <height>525</height>
                      </size>
                     </property>
@@ -5955,13 +5973,13 @@ QHeaderView {
                           <bool>false</bool>
                          </attribute>
                          <attribute name="horizontalHeaderDefaultSectionSize">
-                          <number>95</number>
+                          <number>84</number>
                          </attribute>
                          <attribute name="horizontalHeaderHighlightSections">
                           <bool>false</bool>
                          </attribute>
                          <attribute name="horizontalHeaderMinimumSectionSize">
-                          <number>95</number>
+                          <number>84</number>
                          </attribute>
                          <attribute name="horizontalHeaderStretchLastSection">
                           <bool>true</bool>
@@ -7306,7 +7324,7 @@ border-radius: 6px;
                        </property>
                        <property name="sizeHint" stdset="0">
                         <size>
-                         <width>625</width>
+                         <width>635</width>
                          <height>12</height>
                         </size>
                        </property>
@@ -13451,17 +13469,28 @@ padding-left: 5px;
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_82">
                    <item>
-                    <spacer name="horizontalSpacer_18">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
+                    <widget class="QLabel" name="ref_coilumn_header_12">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
                      </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>1</width>
-                       <height>27</height>
-                      </size>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel{
+    border: none;
+    color: rgb(238, 238, 236);
+    background: transparent;
+	font: 16pt &quot;Bebas Kai&quot;;
+}</string>
                      </property>
-                    </spacer>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
                    </item>
                    <item>
                     <widget class="QLabel" name="label_22">
@@ -13632,17 +13661,28 @@ color: rgb(255, 255, 255);
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_80">
                    <item>
-                    <spacer name="horizontalSpacer_16">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
+                    <widget class="QLabel" name="ref_coilumn_header_11">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
                      </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>1</width>
-                       <height>27</height>
-                      </size>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel{
+    border: none;
+    color: rgb(238, 238, 236);
+    background: transparent;
+	font: 16pt &quot;Bebas Kai&quot;;
+}</string>
                      </property>
-                    </spacer>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
                    </item>
                    <item>
                     <widget class="QLabel" name="label_6">
@@ -13816,17 +13856,28 @@ color: rgb(255, 255, 255);
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_81">
                    <item>
-                    <spacer name="horizontalSpacer_15">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
+                    <widget class="QLabel" name="ref_coilumn_header_10">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
                      </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>1</width>
-                       <height>27</height>
-                      </size>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel{
+    border: none;
+    color: rgb(238, 238, 236);
+    background: transparent;
+	font: 16pt &quot;Bebas Kai&quot;;
+}</string>
                      </property>
-                    </spacer>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
                    </item>
                    <item>
                     <widget class="QLabel" name="label_11">
@@ -13997,17 +14048,28 @@ color: rgb(255, 255, 255);
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_79">
                    <item>
-                    <spacer name="horizontalSpacer_17">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
+                    <widget class="QLabel" name="ref_coilumn_header_9">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
                      </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>1</width>
-                       <height>27</height>
-                      </size>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel{
+    border: none;
+    color: rgb(238, 238, 236);
+    background: transparent;
+	font: 16pt &quot;Bebas Kai&quot;;
+}</string>
                      </property>
-                    </spacer>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
                    </item>
                    <item>
                     <widget class="QLabel" name="label_10">
@@ -14178,17 +14240,28 @@ color: rgb(255, 255, 255);
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_78">
                    <item>
-                    <spacer name="horizontalSpacer_14">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
+                    <widget class="QLabel" name="ref_coilumn_header_8">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
                      </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>1</width>
-                       <height>27</height>
-                      </size>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel{
+    border: none;
+    color: rgb(238, 238, 236);
+    background: transparent;
+	font: 16pt &quot;Bebas Kai&quot;;
+}</string>
                      </property>
-                    </spacer>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
                    </item>
                    <item>
                     <widget class="QLabel" name="label_12">
@@ -14359,17 +14432,28 @@ color: rgb(255, 255, 255);
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_102">
                    <item>
-                    <spacer name="horizontalSpacer_4">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
+                    <widget class="QLabel" name="ref_coilumn_header_7">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
                      </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>263</width>
-                       <height>27</height>
-                      </size>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel{
+    border: none;
+    color: rgb(238, 238, 236);
+    background: transparent;
+	font: 16pt &quot;Bebas Kai&quot;;
+}</string>
                      </property>
-                    </spacer>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
                    </item>
                    <item>
                     <widget class="QLabel" name="label_54">
@@ -15022,17 +15106,28 @@ color: rgb(255, 255, 255);
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_76">
                    <item>
-                    <spacer name="horizontalSpacer_3">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
+                    <widget class="QLabel" name="ref_coilumn_header">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
                      </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>166</width>
-                       <height>28</height>
-                      </size>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel{
+    border: none;
+    color: rgb(238, 238, 236);
+    background: transparent;
+	font: 16pt &quot;Bebas Kai&quot;;
+}</string>
                      </property>
-                    </spacer>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
                    </item>
                    <item>
                     <widget class="QLabel" name="label_50">
@@ -15240,7 +15335,7 @@ color: rgb(255, 255, 255);
               </property>
               <property name="minimumSize">
                <size>
-                <width>1100</width>
+                <width>1079</width>
                 <height>0</height>
                </size>
               </property>
@@ -15256,7 +15351,7 @@ color: rgb(255, 255, 255);
                <enum>QTabWidget::Rounded</enum>
               </property>
               <property name="currentIndex">
-               <number>4</number>
+               <number>7</number>
               </property>
               <property name="iconSize">
                <size>
@@ -15275,7 +15370,7 @@ color: rgb(255, 255, 255);
                    <number>0</number>
                   </property>
                   <property name="leftMargin">
-                   <number>50</number>
+                   <number>30</number>
                   </property>
                   <item>
                    <widget class="QFrame" name="frame_16">
@@ -15673,10 +15768,10 @@ color: rgb(255, 255, 255);
                    <number>0</number>
                   </property>
                   <property name="leftMargin">
-                   <number>12</number>
+                   <number>0</number>
                   </property>
                   <property name="bottomMargin">
-                   <number>200</number>
+                   <number>170</number>
                   </property>
                   <item>
                    <widget class="QLabel" name="label_36">
@@ -15718,7 +15813,7 @@ color: rgb(255, 255, 255);
               </widget>
               <widget class="QWidget" name="inside_corners_tab">
                <attribute name="title">
-                <string>        INSIDE CORNERS       </string>
+                <string>       INSIDE CORNERS       </string>
                </attribute>
                <layout class="QHBoxLayout" name="horizontalLayout_66">
                 <item>
@@ -15727,7 +15822,7 @@ color: rgb(255, 255, 255);
                    <number>0</number>
                   </property>
                   <property name="leftMargin">
-                   <number>50</number>
+                   <number>30</number>
                   </property>
                   <item>
                    <widget class="QFrame" name="frame_17">
@@ -16049,10 +16144,10 @@ color: rgb(255, 255, 255);
                    <number>0</number>
                   </property>
                   <property name="leftMargin">
-                   <number>12</number>
+                   <number>0</number>
                   </property>
                   <property name="bottomMargin">
-                   <number>200</number>
+                   <number>170</number>
                   </property>
                   <item>
                    <widget class="QLabel" name="label_35">
@@ -16094,13 +16189,13 @@ color: rgb(255, 255, 255);
               </widget>
               <widget class="QWidget" name="boss_and_pocket_tab">
                <attribute name="title">
-                <string>        BOSS AND POCKETS       </string>
+                <string>       BOSS AND POCKETS       </string>
                </attribute>
                <layout class="QHBoxLayout" name="horizontalLayout_69">
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_67">
                   <property name="leftMargin">
-                   <number>70</number>
+                   <number>50</number>
                   </property>
                   <item>
                    <widget class="QFrame" name="frame_18">
@@ -16570,10 +16665,10 @@ Background:transparent;
                    <number>0</number>
                   </property>
                   <property name="leftMargin">
-                   <number>12</number>
+                   <number>0</number>
                   </property>
                   <property name="bottomMargin">
-                   <number>180</number>
+                   <number>170</number>
                   </property>
                   <item>
                    <widget class="QLabel" name="label_31">
@@ -16615,13 +16710,13 @@ Background:transparent;
               </widget>
               <widget class="QWidget" name="valley_and_ridge_tab">
                <attribute name="title">
-                <string>        VALLEYS AND RIDGES       </string>
+                <string>       VALLEYS AND RIDGES       </string>
                </attribute>
                <layout class="QHBoxLayout" name="horizontalLayout_74">
                 <item>
                  <layout class="QHBoxLayout" name="horizontalLayout_72">
                   <property name="leftMargin">
-                   <number>90</number>
+                   <number>70</number>
                   </property>
                   <item>
                    <widget class="QFrame" name="frame_19">
@@ -17023,10 +17118,10 @@ Background:transparent;
                    <number>0</number>
                   </property>
                   <property name="leftMargin">
-                   <number>12</number>
+                   <number>0</number>
                   </property>
                   <property name="bottomMargin">
-                   <number>180</number>
+                   <number>170</number>
                   </property>
                   <item>
                    <widget class="QLabel" name="label_37">
@@ -17068,12 +17163,12 @@ Background:transparent;
               </widget>
               <widget class="QWidget" name="rotary_axis_tab">
                <attribute name="title">
-                <string>        ROTARY AXIS         </string>
+                <string>       ROTARY AXIS         </string>
                </attribute>
               </widget>
               <widget class="QWidget" name="multi_axis_tab">
                <attribute name="title">
-                <string>         MULTI-AXIS         </string>
+                <string>        MULTI-AXIS         </string>
                </attribute>
               </widget>
               <widget class="QWidget" name="tab_7">
@@ -17083,7 +17178,7 @@ Background:transparent;
               </widget>
               <widget class="QWidget" name="probe_help_tab">
                <attribute name="title">
-                <string>         PROBE HELP        </string>
+                <string>        PROBE HELP        </string>
                </attribute>
                <layout class="QHBoxLayout" name="horizontalLayout_52">
                 <item>
@@ -18181,8 +18276,14 @@ border: transparent;
           </property>
           <property name="minimumSize">
            <size>
-            <width>221</width>
+            <width>251</width>
             <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>251</width>
+            <height>16777215</height>
            </size>
           </property>
           <property name="font">
@@ -18199,62 +18300,101 @@ border: transparent;
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
-            <string>   JOG CONTROL   </string>
+            <string>     JOG CONTROL     </string>
            </attribute>
-          </widget>
-          <widget class="QWidget" name="tab_17">
-           <attribute name="title">
-            <string>     CUSTOM     </string>
-           </attribute>
-           <widget class="QLabel" name="status_output_label">
+           <widget class="QLabel" name="label_55">
             <property name="geometry">
              <rect>
-              <x>10</x>
-              <y>530</y>
-              <width>186</width>
-              <height>42</height>
+              <x>217</x>
+              <y>0</y>
+              <width>30</width>
+              <height>601</height>
              </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
             </property>
             <property name="minimumSize">
              <size>
-              <width>0</width>
-              <height>42</height>
+              <width>30</width>
+              <height>0</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>16777215</width>
-              <height>42</height>
+              <width>30</width>
+              <height>16777215</height>
              </size>
             </property>
             <property name="styleSheet">
              <string notr="true">QLabel{
-    border-style: none;
-    border-color: rgb(186, 189, 182);
-    border-width: 2px;
-    border-radius: 5px;
-    color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 14pt &quot;Bebas Kai&quot;;
+color: white;
+border: none;
+background-color: transparent;
+font: 14pt &quot;Bebas Kai&quot;;
 }</string>
             </property>
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
             <property name="text">
-             <string>G54  G90  G20  G80  G40  G94  G97</string>
-            </property>
-            <property name="scaledContents">
-             <bool>false</bool>
+             <string>G54 G90 G20 G80 G40 G94 G97</string>
             </property>
             <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
             </property>
             <property name="wordWrap">
              <bool>true</bool>
             </property>
-            <property name="margin">
-             <number>0</number>
+           </widget>
+          </widget>
+          <widget class="QWidget" name="tab_17">
+           <attribute name="title">
+            <string>       CUSTOM       </string>
+           </attribute>
+           <widget class="QLabel" name="label_51">
+            <property name="geometry">
+             <rect>
+              <x>217</x>
+              <y>0</y>
+              <width>30</width>
+              <height>631</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>1</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>30</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QLabel{
+color: white;
+border: none;
+background-color: transparent;
+font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+            </property>
+            <property name="text">
+             <string>G54 G90 G20 G80 G40 G94 G97</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignHCenter|Qt::AlignTop</set>
+            </property>
+            <property name="wordWrap">
+             <bool>true</bool>
             </property>
            </widget>
           </widget>
@@ -19132,7 +19272,7 @@ border-radius: 1px;
         </property>
         <property name="minimumSize">
          <size>
-          <width>400</width>
+          <width>370</width>
           <height>340</height>
          </size>
         </property>
@@ -21568,13 +21708,13 @@ border-radius: 1px;
         </property>
         <property name="minimumSize">
          <size>
-          <width>485</width>
+          <width>482</width>
           <height>340</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
-          <width>485</width>
+          <width>482</width>
           <height>340</height>
          </size>
         </property>
@@ -25744,30 +25884,6 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="ref_coilumn_header">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="ActionButton" name="m6_g43_button">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -26979,7 +27095,7 @@ border-radius: 1px;
   <include location="xyz.qrc"/>
   <include location="xyz.qrc"/>
   <include location="xyz.qrc"/>
-  <include location="../../../../.designer/backup/xyz.qrc"/>
+  <include location="xyz.qrc"/>
  </resources>
  <connections>
   <connection>
