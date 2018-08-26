@@ -131,7 +131,7 @@
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>8</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -5356,7 +5356,7 @@ border-radius: 6px;
     border-color: black;
     border-width: 2px;
     border-radius: 6px;
-    color: rgb(238, 238, 236);
+    color: rgb(238, 238, 236);    
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
@@ -5489,7 +5489,7 @@ border-style: none;
     border-color: black;
     border-width: 2px;
     border-radius: 6px;
-    color: rgb(238, 238, 236);
+    color: rgb(238, 238, 236);    
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
@@ -13108,7 +13108,7 @@ padding-left: 5px;
     border-color: black;
     border-width: 2px;
     border-radius: 5px;
-    color: rgb(238, 238, 236);
+    color: rgb(238, 238, 236);    
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
@@ -13445,7 +13445,7 @@ padding-left: 5px;
     border-color: black;
     border-width: 2px;
     border-radius: 5px;
-    color: rgb(238, 238, 236);
+    color: rgb(238, 238, 236);    
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
@@ -14579,7 +14579,7 @@ color: rgb(255, 255, 255);
     border-color: black;
     border-width: 2px;
     border-radius: 5px;
-    color: rgb(238, 238, 236);
+    color: rgb(238, 238, 236);    
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
@@ -17594,7 +17594,7 @@ border-radius: 6px;
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_106">
                <item>
-                <widget class="QPushButton" name="pushButton_57">
+                <widget class="JogButton" name="z_plus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -17626,6 +17626,9 @@ border-radius: 6px;
                    <height>47</height>
                   </size>
                  </property>
+                 <property name="axis">
+                  <enum>JogButton::Z</enum>
+                 </property>
                 </widget>
                </item>
               </layout>
@@ -17633,7 +17636,7 @@ border-radius: 6px;
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_107">
                <item>
-                <widget class="QPushButton" name="pushButton_58">
+                <widget class="JogButton" name="z_minus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -17665,6 +17668,9 @@ border-radius: 6px;
                    <height>47</height>
                   </size>
                  </property>
+                 <property name="axis">
+                  <enum>JogButton::Z</enum>
+                 </property>
                 </widget>
                </item>
               </layout>
@@ -17674,81 +17680,8 @@ border-radius: 6px;
                <property name="spacing">
                 <number>2</number>
                </property>
-               <item row="1" column="0">
-                <widget class="QPushButton" name="pushButton_50">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>57</width>
-                   <height>57</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>57</width>
-                   <height>57</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="xyz.qrc">
-                   <normaloff>:/images/x_minus_jog_button.png</normaloff>:/images/x_minus_jog_button.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>47</width>
-                   <height>47</height>
-                  </size>
-                 </property>
-                 <property name="checkable">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QPushButton" name="pushButton_56">
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>57</width>
-                   <height>57</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>57</width>
-                   <height>57</height>
-                  </size>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="icon">
-                  <iconset resource="xyz.qrc">
-                   <normaloff>:/images/y_minus_jog_button.png</normaloff>:/images/y_minus_jog_button.png</iconset>
-                 </property>
-                 <property name="iconSize">
-                  <size>
-                   <width>47</width>
-                   <height>47</height>
-                  </size>
-                 </property>
-                </widget>
-               </item>
                <item row="1" column="2">
-                <widget class="QPushButton" name="pushButton_51">
+                <widget class="JogButton" name="x_plus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -17782,8 +17715,43 @@ border-radius: 6px;
                  </property>
                 </widget>
                </item>
+               <item row="1" column="0">
+                <widget class="JogButton" name="x_minus_jogbutton">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>57</width>
+                   <height>57</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>57</width>
+                   <height>57</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/x_minus_jog_button.png</normaloff>:/images/x_minus_jog_button.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>47</width>
+                   <height>47</height>
+                  </size>
+                 </property>
+                </widget>
+               </item>
                <item row="0" column="1">
-                <widget class="QPushButton" name="pushButton_59">
+                <widget class="JogButton" name="y_plus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -17815,6 +17783,44 @@ border-radius: 6px;
                    <height>47</height>
                   </size>
                  </property>
+                 <property name="axis">
+                  <enum>JogButton::Y</enum>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="JogButton" name="y_minus_jogbutton">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>57</width>
+                   <height>57</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>57</width>
+                   <height>57</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="icon">
+                  <iconset resource="xyz.qrc">
+                   <normaloff>:/images/y_minus_jog_button.png</normaloff>:/images/y_minus_jog_button.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>47</width>
+                   <height>47</height>
+                  </size>
+                 </property>
                 </widget>
                </item>
               </layout>
@@ -17822,7 +17828,7 @@ border-radius: 6px;
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_112">
                <item>
-                <widget class="QPushButton" name="pushButton_60">
+                <widget class="JogButton" name="a_minus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -17857,7 +17863,7 @@ border-radius: 6px;
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButton_54">
+                <widget class="JogButton" name="a_plus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -17896,7 +17902,7 @@ border-radius: 6px;
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_111">
                <item>
-                <widget class="QPushButton" name="pushButton_55">
+                <widget class="JogButton" name="b_minus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -17931,7 +17937,7 @@ border-radius: 6px;
                 </widget>
                </item>
                <item>
-                <widget class="QPushButton" name="pushButton_61">
+                <widget class="JogButton" name="b_plus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -26788,6 +26794,11 @@ border-radius: 1px;
    <header>QtPyVCP.widgets.button_widgets.subcall_button</header>
   </customwidget>
   <customwidget>
+   <class>JogButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.jog_button</header>
+  </customwidget>
+  <customwidget>
    <class>ToolTable</class>
    <extends>QTableView</extends>
    <header>QtPyVCP.widgets.input_widgets.tool_table</header>
@@ -26829,6 +26840,7 @@ border-radius: 1px;
   <include location="xyz.qrc"/>
   <include location="xyz.qrc"/>
   <include location="xyz.qrc"/>
+  <include location="../../../../.designer/backup/xyz.qrc"/>
  </resources>
  <connections>
   <connection>
