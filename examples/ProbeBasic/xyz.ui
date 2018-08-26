@@ -19899,10 +19899,13 @@ border-radius: 6px;
               <enum>Qt::NoFocus</enum>
              </property>
              <property name="text">
-              <string>STEP</string>
+              <string>Step </string>
              </property>
              <property name="checkable">
               <bool>true</bool>
+             </property>
+             <property name="action_id" stdset="0">
+              <enum>ActionButton::StepMode</enum>
              </property>
              <property name="option" stdset="0">
               <bool>true</bool>
@@ -19910,174 +19913,43 @@ border-radius: 6px;
             </widget>
            </item>
            <item>
-            <widget class="ActionButton" name="step_inc_0001_button">
+            <widget class="JogIncrementWidget" name="jogincrement">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>60</horstretch>
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize">
               <size>
-               <width>60</width>
-               <height>42</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>60</width>
-               <height>42</height>
+               <width>0</width>
+               <height>0</height>
               </size>
              </property>
              <property name="font">
               <font>
                <family>Bebas Kai</family>
-               <pointsize>15</pointsize>
+               <pointsize>14</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
               </font>
              </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
              <property name="styleSheet">
-              <string notr="true"/>
+              <string notr="true">font: 14pt &quot;Bebas Kai&quot;;</string>
              </property>
-             <property name="text">
-              <string>.0001</string>
+             <property name="diameter" stdset="0">
+              <number>13</number>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
+             <property name="color" stdset="0">
+              <color>
+               <red>0</red>
+               <green>8</green>
+               <blue>221</blue>
+              </color>
              </property>
-             <property name="option" stdset="0">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="ActionButton" name="step_inc_0010_button">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>60</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>60</width>
-               <height>42</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>60</width>
-               <height>42</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Bebas Kai</family>
-               <pointsize>15</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string>.0010</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="option" stdset="0">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="ActionButton" name="step_inc_0100_button">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>60</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>60</width>
-               <height>42</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>60</width>
-               <height>42</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Bebas Kai</family>
-               <pointsize>15</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string>.0100</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="option" stdset="0">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="ActionButton" name="step_inc_1000_button">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>60</horstretch>
-               <verstretch>42</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>60</width>
-               <height>42</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>60</width>
-               <height>42</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Bebas Kai</family>
-               <pointsize>15</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true"/>
-             </property>
-             <property name="text">
-              <string>.1000</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="option" stdset="0">
-              <bool>true</bool>
+             <property name="layoutSpacing">
+              <number>7</number>
              </property>
             </widget>
            </item>
@@ -20124,10 +19996,13 @@ border-radius: 6px;
               <enum>Qt::NoFocus</enum>
              </property>
              <property name="text">
-              <string>JOG</string>
+              <string>Jog </string>
              </property>
              <property name="checkable">
               <bool>true</bool>
+             </property>
+             <property name="action_id" stdset="0">
+              <enum>ActionButton::JogMode</enum>
              </property>
              <property name="option" stdset="0">
               <bool>true</bool>
@@ -26755,6 +26630,11 @@ border-radius: 1px;
  </widget>
  <customwidgets>
   <customwidget>
+   <class>JogIncrementWidget</class>
+   <extends>QWidget</extends>
+   <header>QtPyVCP.widgets.input_widgets.jog_increment</header>
+  </customwidget>
+  <customwidget>
    <class>ActionButton</class>
    <extends>QPushButton</extends>
    <header>QtPyVCP.widgets.button_widgets.action_button</header>
@@ -26908,6 +26788,38 @@ border-radius: 1px;
     <hint type="destinationlabel">
      <x>636</x>
      <y>1003</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>jog_cont_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>jogincrement</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>848</x>
+     <y>810</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1031</x>
+     <y>743</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>jog_step_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>jogincrement</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>848</x>
+     <y>743</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1031</x>
+     <y>743</y>
     </hint>
    </hints>
   </connection>
