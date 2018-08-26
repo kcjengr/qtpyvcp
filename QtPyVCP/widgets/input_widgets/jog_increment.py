@@ -39,7 +39,8 @@ class JogIncrementWidget(QWidget):
         super(JogIncrementWidget, self).__init__(parent)
 
         self._container = hBox = QBoxLayout(QBoxLayout.LeftToRight, self)
-
+        
+        hBox.setContentsMargins(0, 0, 0, 0)
         self._ledDiameter = 15
         self._ledColor = QColor('green')
         self._alignment = Qt.AlignTop | Qt.AlignRight
@@ -54,6 +55,7 @@ class JogIncrementWidget(QWidget):
             button.setCheckable(True)
             button.setAutoExclusive(True)
             button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            button.setMinimumSize(50, 42)
 
             if increment != 0:
                 raw_increment = increment.strip()
