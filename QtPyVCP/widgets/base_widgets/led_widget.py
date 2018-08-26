@@ -50,13 +50,17 @@ class LEDWidget(QWidget):
         gradient.setColorAt(0, Qt.white)
 
         # ensure the border/halo is same color as gradient
-        if self._state:
-            pen_color = self._color;
-            gradient.setColorAt(0.7, self._color)
-        else:
+        draw_color = QColor(self._color)
+
+        if not self._state:
             # cut to black @ 70% for darker effect
-            gradient.setColorAt(.7, Qt.black)
-            pen_color = Qt.black
+            draw_color = QColor(Qt.black)
+
+        if not self.isEnabled():
+            draw_color.setAlpha(30)
+
+        pen_color = draw_color
+        gradient.setColorAt(0.7, draw_color)
 
         painter.begin(self)
         brush = QBrush(gradient)
@@ -93,6 +97,8 @@ class LEDWidget(QWidget):
     @pyqtSlot(QColor)
     def setColor(self, value):
         self._color = value
+        self._disabledColor = QColor(self._color)
+        self._disabledColor.setAlpha(30)
         self.update()
 
     def getAlignment(self):

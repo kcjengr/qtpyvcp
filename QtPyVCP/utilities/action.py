@@ -363,6 +363,68 @@ class BlockDelete(_BoolAction):
         else:
             cls.ON()
 
+class JogMode(_BoolAction):
+
+    action_id = 8
+    action_text = "Jog"
+
+    def __init__(self, widget=None, action_type='TOGGLE'):
+        super(JogMode, self).__init__(widget, action_type)
+
+        self.widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
+        self.widget.setChecked(STATUS.jog_mode)
+
+        STATUS.on.connect(lambda v: self.setEnabled(v))
+        STATUS.jog_mode_signal.connect(lambda s: self.setState(s))
+
+    @classmethod
+    def ON(cls):
+        LOG.debug("Jog Mode green<Jog>")
+        STATUS.setJogMode(True)
+
+    @classmethod
+    def OFF(cls):
+        LOG.debug("Jog Mode red<Step>")
+        STATUS.setJogMode(False)
+
+    @classmethod
+    def TOGGLE(cls):
+        if STATUS.jog_mode == True:
+            cls.OFF()
+        else:
+            cls.ON()            
+
+class StepMode(_BoolAction):
+
+    action_id = 9
+    action_text = "Step"
+
+    def __init__(self, widget=None, action_type='TOGGLE'):
+        super(StepMode, self).__init__(widget, action_type)
+
+        self.widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
+        self.widget.setChecked(not STATUS.jog_mode)
+
+        STATUS.on.connect(lambda v: self.setEnabled(v))
+        STATUS.jog_mode_signal.connect(lambda s: self.setState(not s))
+
+    @classmethod
+    def ON(cls):
+        LOG.debug("Step Mode green<Step>")
+        STATUS.setJogMode(False)
+
+    @classmethod
+    def OFF(cls):
+        LOG.debug("Step Mode red<Jog>")
+        STATUS.setJogMode(True)
+
+    @classmethod
+    def TOGGLE(cls):
+        if STATUS.jog_mode == False:
+            cls.OFF()
+        else:
+            cls.ON()    
+
 class OptionalStop(_BoolAction):
 
     action_id = 5
@@ -566,6 +628,7 @@ class Jogging(object):
             rate = STATUS.linear_jog_velocity / 60
 
         distance = STATUS.jog_increment
+        print axis, direction, jog_joint, distance
 
         if distance == 0:
             CMD.jog(linuxcnc.JOG_CONTINUOUS, jog_joint, axis, direction * rate)
@@ -573,8 +636,9 @@ class Jogging(object):
             CMD.jog(linuxcnc.JOG_INCREMENT, jog_joint, axis, direction * rate, distance)
 
     @classmethod
-    def jog(cls, aixs, direction, velocity, distance=0):
+    def jog(cls, axis, direction, velocity, distance=0):
         axis = getAxisNumber(axis)
+        print axis, direction, velocity, distance
         if direction == 0:
             CMD.jog(linuxcnc.JOG_STOP, cls.jog_joint, axis)
         else:
@@ -607,6 +671,8 @@ action_by_id = {
     5 : OptionalStop,
     6 : Home,
     7 : Jogging,
+    8 : JogMode,
+    9 : StepMode
 }
 
 

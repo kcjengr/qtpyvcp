@@ -42,6 +42,12 @@ class ToolTable(QTableView):
 
     def __init__(self, parent=None):
         super(ToolTable, self).__init__(parent)
+
+        # This prevents doing unneeded initialization
+        # when QtDesginer loads the plugin.
+        if parent is None:
+            return
+
         self.parent = parent
 
         self.cmd = linuxcnc.command()

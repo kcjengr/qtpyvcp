@@ -51,8 +51,14 @@ INFO = Info()
 # Simple custom lexer for Gcode
 #==============================================================================
 class GcodeLexer(QsciLexerCustom):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, standalone=False):
         super(GcodeLexer, self).__init__(parent)
+
+        # This prevents doing unneeded initialization
+        # when QtDesginer loads the plugin.
+        if parent is None and not standalone:
+            return
+
         self._styles = {
             0: 'Default',
             1: 'Comment',
@@ -351,7 +357,7 @@ class GcodeEditor(EditorBase):
 if __name__ == "__main__":
     from PyQt4.QtGui import QApplication
     app = QApplication(sys.argv)
-    editor = GcodeEditor()
+    editor = GcodeEditor(standalone=True)
     editor.show()
 
     editor.setText(open(sys.argv[0]).read())
