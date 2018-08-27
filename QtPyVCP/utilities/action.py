@@ -392,7 +392,7 @@ class JogMode(_BoolAction):
         if STATUS.jog_mode == True:
             cls.OFF()
         else:
-            cls.ON()            
+            cls.ON()
 
 class StepMode(_BoolAction):
 
@@ -423,7 +423,7 @@ class StepMode(_BoolAction):
         if STATUS.jog_mode == False:
             cls.OFF()
         else:
-            cls.ON()    
+            cls.ON()
 
 class OptionalStop(_BoolAction):
 
@@ -606,7 +606,6 @@ class Jogging(object):
 
         STATUS.on.connect(lambda s: self.widget.setEnabled(s))
         STATUS.executing.connect(lambda s: self.widget.setEnabled(not s))
-
 
     def btn_jog(self):
         self.__class__.autoJog(self._axis, self._direction)
@@ -982,4 +981,3 @@ class FilterProgram:
         diaLOG.format_secondary_text(stderr)
         diaLOG.run()
         diaLOG.destroy()
-
