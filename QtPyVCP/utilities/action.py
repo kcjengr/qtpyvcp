@@ -630,6 +630,10 @@ class Jogging(object):
         distance = STATUS.jog_increment
         print axis, direction, jog_joint, distance
 
+        if direction == 0:
+            CMD.jog(linuxcnc.JOG_STOP, jog_joint, axis)
+            return
+
         if distance == 0:
             CMD.jog(linuxcnc.JOG_CONTINUOUS, jog_joint, axis, direction * rate)
         else:
