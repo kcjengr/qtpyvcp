@@ -28,6 +28,11 @@
   <property name="toolTipDuration">
    <number>-1</number>
   </property>
+  <property name="styleSheet">
+   <string notr="true">Form {
+bottom-margin: 0px;
+}</string>
+  </property>
   <property name="documentMode">
    <bool>false</bool>
   </property>
@@ -128,7 +133,7 @@
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>8</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -195,7 +200,7 @@ background-color: transparent;
                  <number>0</number>
                 </property>
                 <property name="topMargin">
-                 <number>0</number>
+                 <number>3</number>
                 </property>
                 <property name="rightMargin">
                  <number>0</number>
@@ -208,7 +213,7 @@ background-color: transparent;
                   <property name="minimumSize">
                    <size>
                     <width>0</width>
-                    <height>0</height>
+                    <height>30</height>
                    </size>
                   </property>
                   <property name="focusPolicy">
@@ -5264,10 +5269,10 @@ ToolTable::Item
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_39">
               <property name="leftMargin">
-               <number>120</number>
+               <number>70</number>
               </property>
               <property name="rightMargin">
-               <number>120</number>
+               <number>70</number>
               </property>
               <item>
                <widget class="QFrame" name="frame_10">
@@ -5279,14 +5284,14 @@ ToolTable::Item
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>361</width>
-                  <height>491</height>
+                  <width>460</width>
+                  <height>510</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>361</width>
-                  <height>491</height>
+                  <width>460</width>
+                  <height>510</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -5302,7 +5307,7 @@ border-radius: 6px;
                  <property name="geometry">
                   <rect>
                    <x>90</x>
-                   <y>39</y>
+                   <y>78</y>
                    <width>250</width>
                    <height>403</height>
                   </rect>
@@ -5324,7 +5329,7 @@ border-radius: 6px;
                  <property name="geometry">
                   <rect>
                    <x>17</x>
-                   <y>228</y>
+                   <y>267</y>
                    <width>145</width>
                    <height>60</height>
                   </rect>
@@ -5411,13 +5416,7 @@ border-style: none;
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="y_hint_5">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
+                     <widget class="QLabel" name="label_27">
                       <property name="minimumSize">
                        <size>
                         <width>70</width>
@@ -5431,7 +5430,7 @@ border-style: none;
                        </size>
                       </property>
                       <property name="styleSheet">
-                       <string notr="true">QLineEdit {
+                       <string notr="true">QLabel {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -5457,7 +5456,7 @@ border-style: none;
                  <property name="geometry">
                   <rect>
                    <x>75</x>
-                   <y>407</y>
+                   <y>446</y>
                    <width>132</width>
                    <height>60</height>
                   </rect>
@@ -5544,13 +5543,7 @@ border-style: none;
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLineEdit" name="y_hint_6">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                        <horstretch>0</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
+                     <widget class="QLabel" name="label_28">
                       <property name="minimumSize">
                        <size>
                         <width>70</width>
@@ -5564,7 +5557,7 @@ border-style: none;
                        </size>
                       </property>
                       <property name="styleSheet">
-                       <string notr="true">QLineEdit {
+                       <string notr="true">QLabel {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -5586,13 +5579,13 @@ border-style: none;
                   </item>
                  </layout>
                 </widget>
-                <widget class="QLineEdit" name="y_hint_7">
+                <widget class="QFrame" name="frame_28">
                  <property name="geometry">
                   <rect>
-                   <x>224</x>
-                   <y>189</y>
-                   <width>50</width>
-                   <height>33</height>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>458</width>
+                   <height>60</height>
                   </rect>
                  </property>
                  <property name="sizePolicy">
@@ -5600,6 +5593,121 @@ border-style: none;
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>458</width>
+                   <height>60</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>458</width>
+                   <height>58</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QFrame{
+    border-style: solid;
+    border-color: black;
+    border-width: 2px;
+    border-radius: 6px;
+    color: rgb(238, 238, 236);    
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
+	font: 16pt &quot;Bebas Kai&quot;;
+}</string>
+                 </property>
+                 <layout class="QHBoxLayout" name="horizontalLayout_108">
+                  <property name="leftMargin">
+                   <number>5</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>5</number>
+                  </property>
+                  <item>
+                   <layout class="QHBoxLayout" name="horizontalLayout_109">
+                    <property name="spacing">
+                     <number>3</number>
+                    </property>
+                    <item>
+                     <widget class="QLabel" name="label_56">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>60</width>
+                        <height>33</height>
+                       </size>
+                      </property>
+                      <property name="maximumSize">
+                       <size>
+                        <width>60</width>
+                        <height>33</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QLabel{
+font: 75 13pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+padding-right: 0px;
+padding-left: 0px;
+border-style: none;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string>COMMENT</string>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignCenter</set>
+                      </property>
+                      <property name="wordWrap">
+                       <bool>true</bool>
+                      </property>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QLabel" name="label_29">
+                      <property name="minimumSize">
+                       <size>
+                        <width>70</width>
+                        <height>33</height>
+                       </size>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QLabel {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 14pt &quot;Bebas Kai&quot;;
+}</string>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="alignment">
+                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </item>
+                 </layout>
+                </widget>
+                <widget class="QLabel" name="label_32">
+                 <property name="geometry">
+                  <rect>
+                   <x>224</x>
+                   <y>228</y>
+                   <width>50</width>
+                   <height>33</height>
+                  </rect>
                  </property>
                  <property name="minimumSize">
                   <size>
@@ -5614,9 +5722,9 @@ border-style: none;
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QLineEdit {
+                  <string notr="true">QLabel {
     border-style: transparent;
-    border-color: rgb(156, 156, 156);
+    border-color: rgb(235, 235, 235);
     border-width: 1px;
     border-radius: 5px;
     color: black;
@@ -7315,17 +7423,19 @@ border-radius: 6px;
                       </layout>
                      </item>
                      <item>
-                      <spacer name="verticalSpacer_4">
-                       <property name="orientation">
-                        <enum>Qt::Vertical</enum>
+                      <widget class="QFrame" name="frame_29">
+                       <property name="styleSheet">
+                        <string notr="true">QFrame{
+    border: none;
+}</string>
                        </property>
-                       <property name="sizeHint" stdset="0">
-                        <size>
-                         <width>635</width>
-                         <height>12</height>
-                        </size>
+                       <property name="frameShape">
+                        <enum>QFrame::StyledPanel</enum>
                        </property>
-                      </spacer>
+                       <property name="frameShadow">
+                        <enum>QFrame::Raised</enum>
+                       </property>
+                      </widget>
                      </item>
                      <item>
                       <widget class="QFrame" name="frame">
@@ -17594,18 +17704,18 @@ border-radius: 6px;
                 <widget class="JogButton" name="z_plus_jogbutton">
                  <property name="minimumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="text">
-                  <string>Jog Z</string>
+                  <string/>
                  </property>
                  <property name="icon">
                   <iconset resource="xyz.qrc">
@@ -17630,14 +17740,14 @@ border-radius: 6px;
                 <widget class="JogButton" name="z_minus_jogbutton">
                  <property name="minimumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="text">
@@ -17652,6 +17762,9 @@ border-radius: 6px;
                    <width>48</width>
                    <height>48</height>
                   </size>
+                 </property>
+                 <property name="direction">
+                  <enum>JogButton::Negative</enum>
                  </property>
                  <property name="axis">
                   <enum>JogButton::Z</enum>
@@ -17675,14 +17788,14 @@ border-radius: 6px;
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="text">
@@ -17710,14 +17823,14 @@ border-radius: 6px;
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="text">
@@ -17733,6 +17846,9 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
+                 <property name="direction">
+                  <enum>JogButton::Negative</enum>
+                 </property>
                 </widget>
                </item>
                <item row="2" column="1">
@@ -17745,14 +17861,14 @@ border-radius: 6px;
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="text">
@@ -17768,20 +17884,26 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
+                 <property name="direction">
+                  <enum>JogButton::Negative</enum>
+                 </property>
+                 <property name="axis">
+                  <enum>JogButton::Y</enum>
+                 </property>
                 </widget>
                </item>
                <item row="0" column="1">
                 <widget class="JogButton" name="y_plus_jogbutton">
                  <property name="minimumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="text">
@@ -17816,14 +17938,14 @@ border-radius: 6px;
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="text">
@@ -17839,6 +17961,12 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
+                 <property name="direction">
+                  <enum>JogButton::Negative</enum>
+                 </property>
+                 <property name="axis">
+                  <enum>JogButton::A</enum>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -17851,14 +17979,14 @@ border-radius: 6px;
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="text">
@@ -17873,6 +18001,9 @@ border-radius: 6px;
                    <width>48</width>
                    <height>48</height>
                   </size>
+                 </property>
+                 <property name="axis">
+                  <enum>JogButton::A</enum>
                  </property>
                 </widget>
                </item>
@@ -17890,14 +18021,14 @@ border-radius: 6px;
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="text">
@@ -17913,6 +18044,12 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
+                 <property name="direction">
+                  <enum>JogButton::Negative</enum>
+                 </property>
+                 <property name="axis">
+                  <enum>JogButton::B</enum>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -17925,14 +18062,14 @@ border-radius: 6px;
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>57</width>
-                   <height>57</height>
+                   <width>56</width>
+                   <height>56</height>
                   </size>
                  </property>
                  <property name="text">
@@ -17947,6 +18084,9 @@ border-radius: 6px;
                    <width>48</width>
                    <height>48</height>
                   </size>
+                 </property>
+                 <property name="axis">
+                  <enum>JogButton::B</enum>
                  </property>
                 </widget>
                </item>
@@ -18709,13 +18849,7 @@ border-radius: 1px;
             </widget>
            </item>
            <item>
-            <widget class="QLineEdit" name="feedrate_dro_2">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+            <widget class="QLabel" name="label_26">
              <property name="minimumSize">
               <size>
                <width>80</width>
@@ -18728,195 +18862,8 @@ border-radius: 1px;
                <height>33</height>
               </size>
              </property>
-             <property name="palette">
-              <palette>
-               <active>
-                <colorrole role="WindowText">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>0</red>
-                   <green>0</green>
-                   <blue>0</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="Button">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>235</red>
-                   <green>235</green>
-                   <blue>235</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="Text">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>0</red>
-                   <green>0</green>
-                   <blue>0</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="ButtonText">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>0</red>
-                   <green>0</green>
-                   <blue>0</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="Base">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>235</red>
-                   <green>235</green>
-                   <blue>235</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="Window">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>235</red>
-                   <green>235</green>
-                   <blue>235</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-               </active>
-               <inactive>
-                <colorrole role="WindowText">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>0</red>
-                   <green>0</green>
-                   <blue>0</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="Button">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>235</red>
-                   <green>235</green>
-                   <blue>235</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="Text">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>0</red>
-                   <green>0</green>
-                   <blue>0</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="ButtonText">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>0</red>
-                   <green>0</green>
-                   <blue>0</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="Base">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>235</red>
-                   <green>235</green>
-                   <blue>235</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="Window">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>235</red>
-                   <green>235</green>
-                   <blue>235</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-               </inactive>
-               <disabled>
-                <colorrole role="WindowText">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>0</red>
-                   <green>0</green>
-                   <blue>0</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="Button">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>235</red>
-                   <green>235</green>
-                   <blue>235</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="Text">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>0</red>
-                   <green>0</green>
-                   <blue>0</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="ButtonText">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>0</red>
-                   <green>0</green>
-                   <blue>0</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="Base">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>235</red>
-                   <green>235</green>
-                   <blue>235</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-                <colorrole role="Window">
-                 <brush brushstyle="SolidPattern">
-                  <color alpha="255">
-                   <red>235</red>
-                   <green>235</green>
-                   <blue>235</blue>
-                  </color>
-                 </brush>
-                </colorrole>
-               </disabled>
-              </palette>
-             </property>
-             <property name="font">
-              <font>
-               <family>Bebas Kai</family>
-               <pointsize>17</pointsize>
-               <weight>9</weight>
-               <italic>false</italic>
-               <bold>false</bold>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="contextMenuPolicy">
-              <enum>Qt::NoContextMenu</enum>
-             </property>
              <property name="styleSheet">
-              <string notr="true">QLineEdit {
+              <string notr="true">QLabel {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -18927,23 +18874,11 @@ border-radius: 1px;
     padding-right: 2px;
 }</string>
              </property>
-             <property name="inputMask">
-              <string/>
-             </property>
              <property name="text">
               <string>0:00:00</string>
              </property>
-             <property name="frame">
-              <bool>true</bool>
-             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="readOnly">
-              <bool>false</bool>
-             </property>
-             <property name="cursorMoveStyle">
-              <enum>Qt::VisualMoveStyle</enum>
              </property>
             </widget>
            </item>
@@ -20561,7 +20496,7 @@ padding: -5px;
     border: none;
     color: rgb(238, 238, 236);
     background: transparent;
-	font: 17pt &quot;Bebas Kai&quot;;
+	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
               </property>
               <property name="text">
@@ -25537,8 +25472,8 @@ border-radius: 4px;
              <property name="font">
               <font>
                <family>Bebas Kai</family>
-               <pointsize>17</pointsize>
-               <weight>9</weight>
+               <pointsize>18</pointsize>
+               <weight>6</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -25557,7 +25492,7 @@ border-radius: 4px;
     border-radius: 5px;
     color: white;
     background: rgb(86, 86, 87);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 50 18pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
              <property name="inputMask">
@@ -25817,8 +25752,8 @@ border-radius: 4px;
              <property name="font">
               <font>
                <family>Bebas Kai</family>
-               <pointsize>17</pointsize>
-               <weight>9</weight>
+               <pointsize>18</pointsize>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -25837,7 +25772,7 @@ border-radius: 4px;
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 18pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
              <property name="inputMask">
@@ -26088,8 +26023,8 @@ border-radius: 1px;
              <property name="font">
               <font>
                <family>Bebas Kai</family>
-               <pointsize>17</pointsize>
-               <weight>9</weight>
+               <pointsize>18</pointsize>
+               <weight>6</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -26108,7 +26043,7 @@ border-radius: 1px;
     border-radius: 5px;
     color: white;
     background: rgb(86, 86, 87);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 50 18pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
              <property name="inputMask">
@@ -26368,8 +26303,8 @@ border-radius: 1px;
              <property name="font">
               <font>
                <family>Bebas Kai</family>
-               <pointsize>17</pointsize>
-               <weight>9</weight>
+               <pointsize>18</pointsize>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -26388,7 +26323,7 @@ border-radius: 1px;
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 18pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
              <property name="inputMask">
@@ -26558,6 +26493,13 @@ border-radius: 1px;
      <width>1920</width>
      <height>24</height>
     </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QMenuBar {
+color: white;
+background: rgb(118, 122, 124);
+font: 11pt bebas kai;
+}</string>
    </property>
    <widget class="QMenu" name="menuExit">
     <property name="title">
