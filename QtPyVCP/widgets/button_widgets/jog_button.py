@@ -37,7 +37,7 @@ class JogButton(QPushButton, Axis, Direction):
         print self.property('text')
         if self.property('text') is None:
             print "is none"
-            self.setText("{}{}".format(direction, axis))
+            self.setText("{}{}".format(axis, direction))
 
     def getDirection(self):
         return self._direction
