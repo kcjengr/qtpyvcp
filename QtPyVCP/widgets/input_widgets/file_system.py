@@ -1,10 +1,21 @@
 import sys
 import pyudev
 import psutil
+from shutil import copyfile
 
-from PyQt5.QtCore import QAbstractListModel, QStringListModel, QModelIndex, Qt
+
+from PyQt5.QtCore import QAbstractListModel, QStringListModel, QModelIndex, Qt, pyqtSlot, pyqtProperty, Q_ENUMS
 from PyQt5.QtWidgets import QFileSystemModel, QTreeView, QWidget, QComboBox, QVBoxLayout, QPushButton, QHBoxLayout
 from QtPyVCP.utilities.info import Info
+
+
+class TreeType(object):
+    Local = 0
+    Remote = 1
+
+    @classmethod
+    def toString(cls, tree_type):
+        return ['LOCAL', 'REMOTE'][tree_type]
 
 
 class ListModel(QAbstractListModel):
@@ -93,16 +104,37 @@ class FileSystemTree(QTreeView):
         self.setSortingEnabled(True)
 
 
-class FileSystem(QWidget):
+class FileSystem(QWidget, TreeType):
+
+    Q_ENUMS(TreeType)
 
     def __init__(self, parent=None):
         super(FileSystem, self).__init__(parent)
 
         # This prevents doing unneeded initialization
         # when QtDesginer loads the plugin.
+        self._tree_type = TreeType.Local
+
+        self.vbox = QVBoxLayout()
+        self.setLayout(self.vbox)
+
         if parent is None:
             return
 
+        self.buffer_filename = None
+
+    def initLocal(self):
+
+        self.clearLayout(self.layout())
+
+        self.fileSystemTree = FileSystemTree(self)
+
+        self.vbox.addWidget(self.fileSystemTree)
+
+    def initRemote(self):
+
+        self.clearLayout(self.layout())
+        
         self.deviceList = list()
 
         self.fileSystemCombo = QComboBox(self)
@@ -115,15 +147,13 @@ class FileSystem(QWidget):
 
         self.fileSystemTree = FileSystemTree(self)
 
-        hbox = QHBoxLayout()
-        hbox.addWidget(self.fileSystemCombo)
-        hbox.addWidget(self.refreshfileSystemButton)
+        path_h_box = QHBoxLayout()
+        path_h_box.addWidget(self.fileSystemCombo)
+        path_h_box.addWidget(self.refreshfileSystemButton)
 
-        vbox = QVBoxLayout()
-        vbox.addLayout(hbox)
-        vbox.addWidget(self.fileSystemTree)
+        self.vbox.addLayout(path_h_box)
+        self.vbox.addWidget(self.fileSystemTree)
 
-        self.setLayout(vbox)
 
         self.refreshfileSystemButton.clicked.connect(self.scanUsb)
         self.fileSystemCombo.currentIndexChanged.connect(self.changeRoot)
@@ -157,4 +187,47 @@ class FileSystem(QWidget):
         new_path = self.fileSystemCombo.itemText(value)
         self.fileSystemTree.model.setRootPath(new_path)
         self.fileSystemTree.setRootIndex(self.fileSystemTree.model.index(new_path))
-        
+
+    def clearLayout(self, layout):
+        while layout.count():
+            child = layout.takeAt(0)
+            if child.widget() is not None:
+                child.widget().deleteLater()
+            elif child.layout() is not None:
+                self.clearLayout(child.layout())
+
+    @pyqtSlot()
+    def copyFile(self):
+        self.bufferFilename = ""
+
+    @pyqtSlot()
+    def pasteFile(self):
+        pass
+
+    @pyqtSlot()
+    def cutFile(self):
+        pass
+
+    @pyqtSlot()
+    def deleteFile(self):
+        pass
+
+    @pyqtSlot()
+    def getSelected(self):
+        pass
+
+    def _setUpAction(self):
+        if self._tree_type == 0:
+            self.initLocal()
+        elif self._tree_type == 1:
+            self.initRemote()
+
+    def getType(self):
+        return self._tree_type
+
+    @pyqtSlot(TreeType)
+    def setType(self, tree_type):
+        self._tree_type = tree_type
+        self._setUpAction()
+
+    tree_type = pyqtProperty(TreeType, getType, setType)
