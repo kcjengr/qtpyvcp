@@ -1,10 +1,8 @@
 import sys
 import pyudev
 import psutil
-from shutil import copyfile
 
-from PyQt5.QtCore import QAbstractListModel, QModelIndex, Qt, pyqtSlot, pyqtProperty, Q_ENUMS, pyqtSignal, QFile, QDir, \
-    QFileInfo
+from PyQt5.QtCore import QAbstractListModel, QModelIndex, Qt, pyqtSlot, pyqtProperty, Q_ENUMS, pyqtSignal, QFile, QFileInfo
 from PyQt5.QtWidgets import QFileSystemModel, QTreeView, QWidget, QComboBox, QVBoxLayout, QPushButton, QHBoxLayout
 
 from QtPyVCP.utilities.info import Info
@@ -48,15 +46,24 @@ class FileSystemTransferButton(QPushButton):
 
     def fileTransfer(self):
 
-        source = QFile(self.sourceFilePath)
-        destination = QFile(self.destinationFilePath)
+        src_path = "{}/{}".format(self.sourceFilePath, self.sourceFileName)
+        dst_path = self.destinationFilePath
 
-        if not source.error() and not destination.error():
-            if source.copy(self.destinationFilePath):
-                print("succes")
-            else:
-                print("failed")
+        src_file = QFile()
 
+        src_file.setFileName(src_path)
+
+        # src_file.bytesWritten.connect(self.updateProgress)
+
+        if src_file.copy(dst_path):
+            print("Succes")
+        else:
+            print("Failed")
+
+    def updateProgress(self, progress):
+        """ Updates the progress bar"""
+        print("progress")
+        #self.progressBar.setValue(progress)
 
 class TreeType(object):
     Local = 0
