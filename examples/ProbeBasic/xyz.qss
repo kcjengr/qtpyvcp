@@ -43,8 +43,7 @@ QPushButton:checked[option="true"] {
 }
 
 QPushButton:checked {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #51ec35, stop: 1.0 #8acd4a)
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
 }
 /* Probe buttons */
 SubCallButton {
@@ -242,12 +241,6 @@ QWidget#buttonBox QPushButton[position='last'] {
 JogIncrementWidget {
     margin: 0px;
 }
-
-JogIncrementWidget QPushButton:checked {
-    /* this should be unnecessary but that override thing */
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
-}
-
 
 /*===========================================================================*/
 /*                            Big Buttons                                    */

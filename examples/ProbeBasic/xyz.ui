@@ -18104,6 +18104,9 @@ border-radius: 6px;
              <property name="text">
               <string>CYCLE START</string>
              </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
           </layout>
@@ -18192,6 +18195,9 @@ border-radius: 6px;
              <property name="text">
               <string>Opt Stop </string>
              </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
              <property name="action_id" stdset="0">
               <enum>ActionButton::OptionalStop</enum>
              </property>
@@ -18228,6 +18234,9 @@ border-radius: 6px;
              </property>
              <property name="text">
               <string>FEEDHOLD</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -18317,6 +18326,9 @@ border-radius: 6px;
              <property name="text">
               <string>Flood </string>
              </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
              <property name="action_id" stdset="0">
               <enum>ActionButton::Flood</enum>
              </property>
@@ -18374,6 +18386,9 @@ border-radius: 6px;
              <property name="text">
               <string>NoAction </string>
              </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
              <property name="action_id" stdset="0">
               <enum>ActionButton::NoAction</enum>
              </property>
@@ -18413,6 +18428,9 @@ border-radius: 6px;
              </property>
              <property name="text">
               <string>Mist </string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
              <property name="action_id" stdset="0">
               <enum>ActionButton::Mist</enum>
@@ -18470,6 +18488,9 @@ border-radius: 6px;
              </property>
              <property name="text">
               <string>NoAction </string>
+             </property>
+             <property name="checkable">
+              <bool>false</bool>
              </property>
              <property name="action_type" stdset="0">
               <enum>ActionButton::Toggle</enum>
@@ -18538,7 +18559,7 @@ border-radius: 1px;
 }</string>
              </property>
              <property name="text">
-              <string>Power</string>
+              <string>Power </string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -18695,7 +18716,7 @@ border-radius: 1px;
 }</string>
              </property>
              <property name="text">
-              <string>E-Stop</string>
+              <string>E-Stop </string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -19922,7 +19943,7 @@ border-radius: 1px;
               <string>GO TO ZERO</string>
              </property>
              <property name="checkable">
-              <bool>true</bool>
+              <bool>false</bool>
              </property>
              <property name="option" stdset="0">
               <bool>true</bool>
@@ -20294,9 +20315,6 @@ padding: -5px;
              </property>
              <property name="text">
               <string>X</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -21048,9 +21066,6 @@ padding: -5px;
              </property>
              <property name="text">
               <string>Y</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -23178,9 +23193,6 @@ padding: -5px;
              <property name="text">
               <string>B</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
             </widget>
            </item>
            <item>
@@ -24616,8 +24628,14 @@ border-radius: 6px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
              <property name="action_id" stdset="0">
               <enum>ActionButton::StepMode</enum>
+             </property>
+             <property name="action_type" stdset="0">
+              <enum>ActionButton::Toggle</enum>
              </property>
             </widget>
            </item>
@@ -24695,8 +24713,14 @@ border-radius: 6px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
              <property name="action_id" stdset="0">
               <enum>ActionButton::JogMode</enum>
+             </property>
+             <property name="action_type" stdset="0">
+              <enum>ActionButton::Toggle</enum>
              </property>
             </widget>
            </item>
@@ -25853,11 +25877,6 @@ font: 11pt bebas kai;
    <header>QtPyVCP.widgets.input_widgets.jog_increment</header>
   </customwidget>
   <customwidget>
-   <class>ActionButton</class>
-   <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_button</header>
-  </customwidget>
-  <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
    <header>QtPyVCP.widgets.display_widgets.gcode_backplot</header>
@@ -25906,6 +25925,11 @@ font: 11pt bebas kai;
    <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
   <customwidget>
+   <class>ActionButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.action_button</header>
+  </customwidget>
+  <customwidget>
    <class>DROWidget</class>
    <extends>QLabel</extends>
    <header>QtPyVCP.widgets.display_widgets.dro_widget</header>
@@ -25942,12 +25966,12 @@ font: 11pt bebas kai;
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1070</x>
-     <y>800</y>
+     <x>1826</x>
+     <y>834</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1138</x>
-     <y>802</y>
+     <x>1883</x>
+     <y>825</y>
     </hint>
    </hints>
   </connection>
@@ -25958,12 +25982,12 @@ font: 11pt bebas kai;
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1145</x>
-     <y>788</y>
+     <x>1883</x>
+     <y>825</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1116</x>
-     <y>790</y>
+     <x>1826</x>
+     <y>834</y>
     </hint>
    </hints>
   </connection>
@@ -25974,12 +25998,12 @@ font: 11pt bebas kai;
    <slot>reset()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>741</x>
-     <y>877</y>
+     <x>1491</x>
+     <y>894</y>
     </hint>
     <hint type="destinationlabel">
-     <x>630</x>
-     <y>864</y>
+     <x>1356</x>
+     <y>899</y>
     </hint>
    </hints>
   </connection>
@@ -25990,12 +26014,12 @@ font: 11pt bebas kai;
    <slot>reset()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>736</x>
-     <y>946</y>
+     <x>1491</x>
+     <y>962</y>
     </hint>
     <hint type="destinationlabel">
-     <x>628</x>
-     <y>940</y>
+     <x>1356</x>
+     <y>967</y>
     </hint>
    </hints>
   </connection>
@@ -26006,12 +26030,12 @@ font: 11pt bebas kai;
    <slot>reset()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>728</x>
-     <y>1000</y>
+     <x>1491</x>
+     <y>1030</y>
     </hint>
     <hint type="destinationlabel">
-     <x>636</x>
-     <y>1003</y>
+     <x>1356</x>
+     <y>1035</y>
     </hint>
    </hints>
   </connection>
