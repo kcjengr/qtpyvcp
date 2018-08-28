@@ -487,6 +487,7 @@ def getAxisLetter(axis):
     return axis.lower()
 
 def getAxisNumber(axis):
+    """Takes an axis letter or number and returns the axis number"""
     if isinstance(axis, str):
         return ['x', 'y', 'z', 'a', 'b', 'c', 'u', 'v', 'w', 'all'].index(axis.lower())
     return axis
@@ -607,6 +608,12 @@ class Jogging(object):
         self.widget = widget
         self._axis = axis
         self._direction = direction
+
+        axis = getAxisLetter(self._axis)
+        if axis not in INFO.AXIS_LETTER_LIST:
+            self.widget.setEnabled(False)
+            self.widget.setToolTip("{} axis not configured".format(axis.upper()))
+            return
 
         if self.widget is not None and method is not None:
             self.widget.pressed.connect(self.btn_jog)
