@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>532</width>
-    <height>341</height>
+    <width>971</width>
+    <height>538</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,15 +20,112 @@
      <height>624</height>
     </size>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout"/>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="1" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="pushButton_3">
+        <property name="text">
+         <string>Copy</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="text">
+         <string>Paste</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string>Cut</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_4">
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="0">
+     <widget class="FileSystem" name="filesystem">
+      <property name="tree_type" stdset="0">
+       <enum>FileSystem::Local</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4">
+     <widget class="FileSystem" name="filesystem_2">
+      <property name="tree_type" stdset="0">
+       <enum>FileSystem::Remote</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="2">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="pushButton_6">
+        <property name="text">
+         <string>-&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_5">
+        <property name="text">
+         <string>&lt;-</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="4">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPushButton" name="pushButton_9">
+        <property name="text">
+         <string>Copy</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_8">
+        <property name="text">
+         <string>Paste</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_7">
+        <property name="text">
+         <string>Cut</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_10">
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>532</width>
-     <height>20</height>
+     <width>971</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -82,7 +179,82 @@
    <header>QtPyVCP.widgets.form_widgets.main_window</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>FileSystem</class>
+   <extends>QWidget</extends>
+   <header>QtPyVCP.widgets.input_widgets.file_system</header>
+  </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>pushButton_3</tabstop>
+  <tabstop>pushButton_2</tabstop>
+  <tabstop>pushButton</tabstop>
+ </tabstops>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem</receiver>
+   <slot>copyFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>99</x>
+     <y>453</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>100</x>
+     <y>373</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem</receiver>
+   <slot>pasteFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>285</x>
+     <y>453</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>291</x>
+     <y>411</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem</receiver>
+   <slot>cutFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>475</x>
+     <y>453</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>489</x>
+     <y>414</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_4</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem</receiver>
+   <slot>deleteFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>662</x>
+     <y>453</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>674</x>
+     <y>394</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
