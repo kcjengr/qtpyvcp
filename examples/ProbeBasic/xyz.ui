@@ -18538,7 +18538,7 @@ border-radius: 1px;
 }</string>
              </property>
              <property name="text">
-              <string>Power</string>
+              <string>Power </string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -18695,7 +18695,7 @@ border-radius: 1px;
 }</string>
              </property>
              <property name="text">
-              <string>E-Stop</string>
+              <string>E-Stop </string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -24592,7 +24592,7 @@ border-radius: 6px;
             <number>16</number>
            </property>
            <item>
-            <widget class="ActionButton" name="actionbutton_11">
+            <widget class="ActionButton" name="step_select">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -24615,6 +24615,9 @@ border-radius: 6px;
               <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
              <property name="action_id" stdset="0">
               <enum>ActionButton::StepMode</enum>
@@ -24644,7 +24647,10 @@ border-radius: 6px;
              <property name="styleSheet">
               <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
+	
+}
+
+</string>
              </property>
              <property name="diameter" stdset="0">
               <number>0</number>
@@ -24671,7 +24677,7 @@ border-radius: 6px;
             <number>0</number>
            </property>
            <item>
-            <widget class="ActionButton" name="actionbutton_4">
+            <widget class="ActionButton" name="jog_select">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -24694,6 +24700,12 @@ border-radius: 6px;
               <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
+              <bool>true</bool>
              </property>
              <property name="action_id" stdset="0">
               <enum>ActionButton::JogMode</enum>
@@ -25853,11 +25865,6 @@ font: 11pt bebas kai;
    <header>QtPyVCP.widgets.input_widgets.jog_increment</header>
   </customwidget>
   <customwidget>
-   <class>ActionButton</class>
-   <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_button</header>
-  </customwidget>
-  <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
    <header>QtPyVCP.widgets.display_widgets.gcode_backplot</header>
@@ -25904,6 +25911,11 @@ font: 11pt bebas kai;
    <class>MDIEntry</class>
    <extends>QLineEdit</extends>
    <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.action_button</header>
   </customwidget>
   <customwidget>
    <class>DROWidget</class>
@@ -26012,6 +26024,38 @@ font: 11pt bebas kai;
     <hint type="destinationlabel">
      <x>636</x>
      <y>1003</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>jog_select</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>jogincrement</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1558</x>
+     <y>806</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1741</x>
+     <y>741</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>step_select</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>jogincrement</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1558</x>
+     <y>741</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1741</x>
+     <y>741</y>
     </hint>
    </hints>
   </connection>
