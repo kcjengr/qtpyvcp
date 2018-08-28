@@ -3,10 +3,59 @@ import pyudev
 import psutil
 from shutil import copyfile
 
-
-from PyQt5.QtCore import QAbstractListModel, QStringListModel, QModelIndex, Qt, pyqtSlot, pyqtProperty, Q_ENUMS
+from PyQt5.QtCore import QAbstractListModel, QModelIndex, Qt, pyqtSlot, pyqtProperty, Q_ENUMS, pyqtSignal, QFile, QDir, \
+    QFileInfo
 from PyQt5.QtWidgets import QFileSystemModel, QTreeView, QWidget, QComboBox, QVBoxLayout, QPushButton, QHBoxLayout
+
 from QtPyVCP.utilities.info import Info
+
+
+class FileSystemTransferButton(QPushButton):
+
+    def __init__(self, parent=None):
+        super(FileSystemTransferButton, self).__init__(parent)
+
+        self.sourceFilePath = None
+        self.sourceFileName = None
+        self.destinationFilePath = None
+        self.destinationFileName = None
+
+        if parent is None:
+            return
+
+        self.clicked.connect(self.fileTransfer)
+
+    @pyqtSlot(str)
+    def setSource(self, value):
+        fileInfo = QFileInfo(value)
+
+        self.sourceFilePath = fileInfo.absolutePath()
+        if fileInfo.isFile():
+            self.sourceFileName = fileInfo.fileName()
+        else:
+            self.sourceFileName = None
+
+    @pyqtSlot(str)
+    def setDestination(self, value):
+        fileInfo = QFileInfo(value)
+
+        self.destinationFilePath = fileInfo.absolutePath()
+
+        if fileInfo.isFile():
+            destination = "{}/{}".format(self.destinationFilePath, self.sourceFileName)
+
+            self.destinationFilePath = destination
+
+    def fileTransfer(self):
+
+        source = QFile(self.sourceFilePath)
+        destination = QFile(self.destinationFilePath)
+
+        if not source.error() and not destination.error():
+            if source.copy(self.destinationFilePath):
+                print("succes")
+            else:
+                print("failed")
 
 
 class TreeType(object):
@@ -118,6 +167,9 @@ class FileSystem(QWidget, TreeType):
         self.vbox = QVBoxLayout()
         self.setLayout(self.vbox)
 
+        self.fileSystemTree = FileSystemTree(self)
+        self.fileSystemTree.clicked.connect(self.on_tree_clicked)
+
         if parent is None:
             return
 
@@ -127,14 +179,12 @@ class FileSystem(QWidget, TreeType):
 
         self.clearLayout(self.layout())
 
-        self.fileSystemTree = FileSystemTree(self)
-
         self.vbox.addWidget(self.fileSystemTree)
 
     def initRemote(self):
 
         self.clearLayout(self.layout())
-        
+
         self.deviceList = list()
 
         self.fileSystemCombo = QComboBox(self)
@@ -145,15 +195,12 @@ class FileSystem(QWidget, TreeType):
         self.refreshfileSystemButton = QPushButton(self)
         self.refreshfileSystemButton.setText("Refresh Devices")
 
-        self.fileSystemTree = FileSystemTree(self)
-
         path_h_box = QHBoxLayout()
         path_h_box.addWidget(self.fileSystemCombo)
         path_h_box.addWidget(self.refreshfileSystemButton)
 
         self.vbox.addLayout(path_h_box)
         self.vbox.addWidget(self.fileSystemTree)
-
 
         self.refreshfileSystemButton.clicked.connect(self.scanUsb)
         self.fileSystemCombo.currentIndexChanged.connect(self.changeRoot)
@@ -217,9 +264,9 @@ class FileSystem(QWidget, TreeType):
         pass
 
     def _setUpAction(self):
-        if self._tree_type == 0:
+        if self._tree_type == TreeType.Local:
             self.initLocal()
-        elif self._tree_type == 1:
+        elif self._tree_type == TreeType.Remote:
             self.initRemote()
 
     def getType(self):
@@ -231,3 +278,9 @@ class FileSystem(QWidget, TreeType):
         self._setUpAction()
 
     tree_type = pyqtProperty(TreeType, getType, setType)
+
+    selection = pyqtSignal('QString')
+
+    def on_tree_clicked(self, index):
+        path = self.fileSystemTree.model.filePath(index)
+        self.selection.emit(path)

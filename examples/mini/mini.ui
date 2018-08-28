@@ -70,14 +70,14 @@
     <item row="0" column="2">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QPushButton" name="pushButton_6">
+       <widget class="FileSystemTransferButton" name="filesystemtransferbutton_2">
         <property name="text">
          <string>-&gt;</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_5">
+       <widget class="FileSystemTransferButton" name="filesystemtransferbutton">
         <property name="text">
          <string>&lt;-</string>
         </property>
@@ -184,6 +184,11 @@
    <extends>QWidget</extends>
    <header>QtPyVCP.widgets.input_widgets.file_system</header>
   </customwidget>
+  <customwidget>
+   <class>FileSystemTransferButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.input_widgets.file_system</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>pushButton_3</tabstop>
@@ -199,8 +204,8 @@
    <slot>copyFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>99</x>
-     <y>453</y>
+     <x>109</x>
+     <y>527</y>
     </hint>
     <hint type="destinationlabel">
      <x>100</x>
@@ -215,8 +220,8 @@
    <slot>pasteFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>285</x>
-     <y>453</y>
+     <x>220</x>
+     <y>527</y>
     </hint>
     <hint type="destinationlabel">
      <x>291</x>
@@ -231,12 +236,12 @@
    <slot>cutFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>475</x>
-     <y>453</y>
+     <x>329</x>
+     <y>527</y>
     </hint>
     <hint type="destinationlabel">
-     <x>489</x>
-     <y>414</y>
+     <x>438</x>
+     <y>448</y>
     </hint>
    </hints>
   </connection>
@@ -247,12 +252,140 @@
    <slot>deleteFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>662</x>
-     <y>453</y>
+     <x>437</x>
+     <y>527</y>
     </hint>
     <hint type="destinationlabel">
-     <x>674</x>
-     <y>394</y>
+     <x>438</x>
+     <y>428</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_9</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>copyFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>577</x>
+     <y>505</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>579</x>
+     <y>449</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_8</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>pasteFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>723</x>
+     <y>506</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>719</x>
+     <y>461</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_7</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>cutFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>804</x>
+     <y>510</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>795</x>
+     <y>448</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_10</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>cutFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>917</x>
+     <y>507</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>899</x>
+     <y>443</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filesystem</sender>
+   <signal>selection(QString)</signal>
+   <receiver>filesystemtransferbutton_2</receiver>
+   <slot>setSource()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>280</x>
+     <y>237</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>474</x>
+     <y>181</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filesystem_2</sender>
+   <signal>selection(QString)</signal>
+   <receiver>filesystemtransferbutton_2</receiver>
+   <slot>setDestination()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>603</x>
+     <y>108</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>506</x>
+     <y>176</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filesystem_2</sender>
+   <signal>selection(QString)</signal>
+   <receiver>filesystemtransferbutton</receiver>
+   <slot>setSource()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>592</x>
+     <y>295</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>508</x>
+     <y>344</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filesystem</sender>
+   <signal>selection(QString)</signal>
+   <receiver>filesystemtransferbutton</receiver>
+   <slot>setDestination()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>400</x>
+     <y>369</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>470</x>
+     <y>347</y>
     </hint>
    </hints>
   </connection>

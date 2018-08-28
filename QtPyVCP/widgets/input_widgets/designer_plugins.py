@@ -51,9 +51,13 @@ class JogIncrementPlugin(_DesignerPlugin):
     def pluginClass(self):
         return JogIncrementWidget
 
-from file_system import FileSystem
+from file_system import FileSystem, FileSystemTransferButton
 
 
 class FileSystemPlugin(_DesignerPlugin):
     def pluginClass(self):
         return FileSystem
+
+class FileSystemTransferButtonPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return FileSystemTransferButton
