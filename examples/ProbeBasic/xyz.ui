@@ -18538,7 +18538,7 @@ border-radius: 1px;
 }</string>
              </property>
              <property name="text">
-              <string>Power </string>
+              <string>Power</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -18695,7 +18695,7 @@ border-radius: 1px;
 }</string>
              </property>
              <property name="text">
-              <string>E-Stop </string>
+              <string>E-Stop</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -19183,7 +19183,7 @@ padding: -5px;
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_94">
            <property name="spacing">
-            <number>3</number>
+            <number>5</number>
            </property>
            <property name="rightMargin">
             <number>0</number>
@@ -19201,13 +19201,13 @@ padding: -5px;
              </property>
              <property name="minimumSize">
               <size>
-               <width>70</width>
+               <width>60</width>
                <height>33</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>70</width>
+               <width>60</width>
                <height>33</height>
               </size>
              </property>
@@ -19481,41 +19481,38 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="ref_coilumn_header_4">
+            <widget class="StatusLabel" name="statuslabel_8">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize">
               <size>
-               <width>20</width>
-               <height>33</height>
+               <width>25</width>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>20</width>
+               <width>27</width>
                <height>33</height>
               </size>
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel{
-    border-style: transparant;
-    border-color: rgb(238, 238, 236);
-    border-width: 2px;
-    border-radius: 5px;
+    border: none;
     color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 16pt &quot;Bebas Kai&quot;;
+    background: transparent;
+	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
-             <property name="text">
-              <string>IN</string>
-             </property>
              <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="label_type" stdset="0">
+              <enum>StatusLabel::program_units</enum>
              </property>
             </widget>
            </item>
@@ -19524,7 +19521,7 @@ padding: -5px;
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_93">
            <property name="spacing">
-            <number>3</number>
+            <number>5</number>
            </property>
            <item>
             <widget class="QLabel" name="work_column_header_5">
@@ -19539,13 +19536,13 @@ padding: -5px;
              </property>
              <property name="minimumSize">
               <size>
-               <width>70</width>
+               <width>60</width>
                <height>33</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>70</width>
+               <width>60</width>
                <height>33</height>
               </size>
              </property>
@@ -19567,7 +19564,7 @@ padding: -5px;
 </string>
              </property>
              <property name="text">
-              <string>DIAMETER</string>
+              <string>DIAM</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -19819,41 +19816,38 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="ref_coilumn_header_5">
+            <widget class="StatusLabel" name="statuslabel_9">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize">
               <size>
-               <width>20</width>
-               <height>33</height>
+               <width>25</width>
+               <height>25</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>20</width>
+               <width>27</width>
                <height>33</height>
               </size>
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel{
-    border-style: transparant;
-    border-color: rgb(238, 238, 236);
-    border-width: 2px;
-    border-radius: 5px;
+    border: none;
     color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 16pt &quot;Bebas Kai&quot;;
+    background: transparent;
+	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
-             <property name="text">
-              <string>IN</string>
-             </property>
              <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="label_type" stdset="0">
+              <enum>StatusLabel::program_units</enum>
              </property>
             </widget>
            </item>
@@ -24647,6 +24641,11 @@ border-radius: 6px;
                <height>42</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+             </property>
              <property name="diameter" stdset="0">
               <number>0</number>
              </property>
@@ -24852,13 +24851,13 @@ border-radius: 4px;
              </property>
              <property name="minimumSize">
               <size>
-               <width>112</width>
+               <width>115</width>
                <height>35</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>112</width>
+               <width>115</width>
                <height>35</height>
               </size>
              </property>
@@ -24879,10 +24878,13 @@ border-radius: 4px;
              <property name="label_type" stdset="0">
               <enum>StatusLabel::current_vel</enum>
              </property>
+             <property name="format_spec" stdset="0">
+              <string>{:.1f}</string>
+             </property>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="unit_per_min_label">
+            <widget class="QLabel" name="rpm_label_2">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -24892,13 +24894,13 @@ border-radius: 4px;
              <property name="minimumSize">
               <size>
                <width>111</width>
-               <height>38</height>
+               <height>35</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>111</width>
-               <height>38</height>
+               <width>120</width>
+               <height>35</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -24933,13 +24935,13 @@ border-radius: 4px;
              </property>
              <property name="minimumSize">
               <size>
-               <width>110</width>
+               <width>115</width>
                <height>35</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>16777215</width>
+               <width>115</width>
                <height>35</height>
               </size>
              </property>
@@ -25204,13 +25206,13 @@ border-radius: 1px;
              </property>
              <property name="minimumSize">
               <size>
-               <width>112</width>
+               <width>115</width>
                <height>35</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>112</width>
+               <width>115</width>
                <height>35</height>
               </size>
              </property>
@@ -25231,6 +25233,9 @@ border-radius: 1px;
              <property name="label_type" stdset="0">
               <enum>StatusLabel::spindle_speed</enum>
              </property>
+             <property name="format_spec" stdset="0">
+              <string>{:.2f}</string>
+             </property>
             </widget>
            </item>
            <item>
@@ -25249,7 +25254,7 @@ border-radius: 1px;
              </property>
              <property name="maximumSize">
               <size>
-               <width>111</width>
+               <width>120</width>
                <height>35</height>
               </size>
              </property>
@@ -25285,13 +25290,13 @@ border-radius: 1px;
              </property>
              <property name="minimumSize">
               <size>
-               <width>110</width>
+               <width>115</width>
                <height>35</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>16777215</width>
+               <width>115</width>
                <height>35</height>
               </size>
              </property>
