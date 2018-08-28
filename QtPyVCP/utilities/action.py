@@ -518,7 +518,15 @@ class Home(_JointAction):
         if self._axis == 'all':
             self._joint = -1
         else:
-            self._joint = INFO.ALETTER_JNUM_DICT[self._axis]
+            self._joint = INFO.ALETTER_JNUM_DICT.get(self._axis)
+
+        if self._joint is None:
+            # the machine does not have a joint with this number
+            self.widget.setEnabled(False)
+            self.widget.setToolTip("{} axis not configured".format(self._axis.upper()))
+            # TODO: might consider hiding the widget instead of disabling it
+            # self.widget.hide()
+            return
 
         self._homed = False
 
