@@ -133,7 +133,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>8</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -18292,7 +18292,7 @@ border-radius: 6px;
             <number>4</number>
            </property>
            <item>
-            <widget class="QPushButton" name="cycle_start_button">
+            <widget class="ActionButton" name="actionbutton_3">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18311,23 +18311,11 @@ border-radius: 6px;
                <height>52</height>
               </size>
              </property>
-             <property name="font">
-              <font>
-               <family>Bebas Kai</family>
-               <pointsize>20</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
              <property name="styleSheet">
               <string notr="true"/>
              </property>
              <property name="text">
               <string>CYCLE START</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -18336,7 +18324,7 @@ border-radius: 6px;
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_91">
            <item>
-            <widget class="AxisActionButton" name="single_block_button">
+            <widget class="ActionButton" name="actionbutton">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18354,15 +18342,6 @@ border-radius: 6px;
                <width>130</width>
                <height>42</height>
               </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Bebas Kai</family>
-               <pointsize>15</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
              </property>
              <property name="text">
               <string>SINGLE BLOCK</string>
@@ -18394,7 +18373,7 @@ border-radius: 6px;
             </widget>
            </item>
            <item>
-            <widget class="AxisActionButton" name="m01_break_button">
+            <widget class="ActionButton" name="actionbutton_2">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18413,17 +18392,11 @@ border-radius: 6px;
                <height>42</height>
               </size>
              </property>
-             <property name="font">
-              <font>
-               <family>Bebas Kai</family>
-               <pointsize>15</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
              <property name="text">
               <string>M01 BREAK</string>
+             </property>
+             <property name="action_id" stdset="0">
+              <enum>ActionButton::OptionalStop</enum>
              </property>
             </widget>
            </item>
@@ -18432,7 +18405,7 @@ border-radius: 6px;
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_90">
            <item>
-            <widget class="AxisActionButton" name="feedhold_button">
+            <widget class="ActionButton" name="actionbutton_10">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18450,15 +18423,6 @@ border-radius: 6px;
                <width>130</width>
                <height>42</height>
               </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Bebas Kai</family>
-               <pointsize>15</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
              </property>
              <property name="text">
               <string>FEEDHOLD</string>
@@ -18490,7 +18454,7 @@ border-radius: 6px;
             </widget>
            </item>
            <item>
-            <widget class="AxisActionButton" name="stop_button">
+            <widget class="ActionButton" name="actionbutton_7">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18508,15 +18472,6 @@ border-radius: 6px;
                <width>130</width>
                <height>42</height>
               </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Bebas Kai</family>
-               <pointsize>15</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
              </property>
              <property name="text">
               <string>RUN FM HERE</string>
@@ -18528,7 +18483,7 @@ border-radius: 6px;
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_75">
            <item>
-            <widget class="AxisActionButton" name="coolant_button">
+            <widget class="ActionButton" name="actionbutton_9">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18547,17 +18502,11 @@ border-radius: 6px;
                <height>42</height>
               </size>
              </property>
-             <property name="font">
-              <font>
-               <family>Bebas Kai</family>
-               <pointsize>15</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
              <property name="text">
               <string>FLOOD</string>
+             </property>
+             <property name="action_id" stdset="0">
+              <enum>ActionButton::Flood</enum>
              </property>
             </widget>
            </item>
@@ -18586,7 +18535,7 @@ border-radius: 6px;
             </widget>
            </item>
            <item>
-            <widget class="AxisActionButton" name="reset_button">
+            <widget class="ActionButton" name="actionbutton_6">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18605,17 +18554,11 @@ border-radius: 6px;
                <height>42</height>
               </size>
              </property>
-             <property name="font">
-              <font>
-               <family>Bebas Kai</family>
-               <pointsize>15</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
              <property name="text">
               <string>STOP</string>
+             </property>
+             <property name="action_id" stdset="0">
+              <enum>ActionButton::NoAction</enum>
              </property>
             </widget>
            </item>
@@ -18627,7 +18570,7 @@ border-radius: 6px;
             <number>0</number>
            </property>
            <item>
-            <widget class="AxisActionButton" name="coolant_button_2">
+            <widget class="ActionButton" name="actionbutton_8">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18646,17 +18589,11 @@ border-radius: 6px;
                <height>42</height>
               </size>
              </property>
-             <property name="font">
-              <font>
-               <family>Bebas Kai</family>
-               <pointsize>15</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
              <property name="text">
               <string>MIST</string>
+             </property>
+             <property name="action_id" stdset="0">
+              <enum>ActionButton::Mist</enum>
              </property>
             </widget>
            </item>
@@ -18685,7 +18622,7 @@ border-radius: 6px;
             </widget>
            </item>
            <item>
-            <widget class="AxisActionButton" name="coolant_button_3">
+            <widget class="ActionButton" name="actionbutton_5">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18704,17 +18641,11 @@ border-radius: 6px;
                <height>42</height>
               </size>
              </property>
-             <property name="font">
-              <font>
-               <family>Bebas Kai</family>
-               <pointsize>15</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
              <property name="text">
               <string>RESET</string>
+             </property>
+             <property name="action_type" stdset="0">
+              <enum>ActionButton::Toggle</enum>
              </property>
             </widget>
            </item>
@@ -18781,10 +18712,13 @@ border-radius: 1px;
               <enum>Qt::NoFocus</enum>
              </property>
              <property name="text">
-              <string>Power</string>
+              <string>Power </string>
              </property>
              <property name="checkable">
               <bool>true</bool>
+             </property>
+             <property name="action_id" stdset="0">
+              <enum>ActionButton::MachinePower</enum>
              </property>
             </widget>
            </item>
