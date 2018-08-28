@@ -39,7 +39,7 @@ class JogIncrementWidget(QWidget):
         super(JogIncrementWidget, self).__init__(parent)
 
         self._container = hBox = QBoxLayout(QBoxLayout.LeftToRight, self)
-
+        
         hBox.setContentsMargins(0, 0, 0, 0)
         self._ledDiameter = 15
         self._ledColor = QColor('green')

@@ -392,7 +392,7 @@ class JogMode(_BoolAction):
         if STATUS.jog_mode == True:
             cls.OFF()
         else:
-            cls.ON()            
+            cls.ON()
 
 class StepMode(_BoolAction):
 
@@ -423,7 +423,7 @@ class StepMode(_BoolAction):
         if STATUS.jog_mode == False:
             cls.OFF()
         else:
-            cls.ON()    
+            cls.ON()
 
 class OptionalStop(_BoolAction):
 
@@ -487,6 +487,7 @@ def getAxisLetter(axis):
     return axis.lower()
 
 def getAxisNumber(axis):
+    """Takes an axis letter or number and returns the axis number"""
     if isinstance(axis, str):
         return ['x', 'y', 'z', 'a', 'b', 'c', 'u', 'v', 'w', 'all'].index(axis.lower())
     return axis
@@ -518,7 +519,15 @@ class Home(_JointAction):
         if self._axis == 'all':
             self._joint = -1
         else:
-            self._joint = INFO.ALETTER_JNUM_DICT[self._axis]
+            self._joint = INFO.ALETTER_JNUM_DICT.get(self._axis)
+
+        if self._joint is None:
+            # the machine does not have a joint with this number
+            self.widget.setEnabled(False)
+            self.widget.setToolTip("{} axis not configured".format(self._axis.upper()))
+            # TODO: might consider hiding the widget instead of disabling it
+            # self.widget.hide()
+            return
 
         self._homed = False
 
@@ -600,13 +609,18 @@ class Jogging(object):
         self._axis = axis
         self._direction = direction
 
+        axis = getAxisLetter(self._axis)
+        if axis not in INFO.AXIS_LETTER_LIST:
+            self.widget.setEnabled(False)
+            self.widget.setToolTip("{} axis not configured".format(axis.upper()))
+            return
+
         if self.widget is not None and method is not None:
             self.widget.pressed.connect(self.btn_jog)
             self.widget.released.connect(self.btn_stop)
 
         STATUS.on.connect(lambda s: self.widget.setEnabled(s))
         STATUS.executing.connect(lambda s: self.widget.setEnabled(not s))
-
 
     def btn_jog(self):
         self.__class__.autoJog(self._axis, self._direction)
@@ -629,6 +643,10 @@ class Jogging(object):
 
         distance = STATUS.jog_increment
         print axis, direction, jog_joint, distance
+
+        if direction == 0:
+            CMD.jog(linuxcnc.JOG_STOP, jog_joint, axis)
+            return
 
         if distance == 0:
             CMD.jog(linuxcnc.JOG_CONTINUOUS, jog_joint, axis, direction * rate)
@@ -978,4 +996,3 @@ class FilterProgram:
         diaLOG.format_secondary_text(stderr)
         diaLOG.run()
         diaLOG.destroy()
-
