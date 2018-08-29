@@ -21,7 +21,77 @@
     </size>
    </property>
    <layout class="QGridLayout" name="gridLayout">
+    <item row="2" column="4">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPushButton" name="pushButton_9">
+        <property name="text">
+         <string>Copy</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_8">
+        <property name="text">
+         <string>Paste</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_5">
+        <property name="text">
+         <string>New Folder</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_10">
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="0">
+     <widget class="QPushButton" name="pushButton_6">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Level UP</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="FileSystemTransferButton" name="filesystemtransferbutton_2">
+        <property name="text">
+         <string>-&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="FileSystemTransferButton" name="filesystemtransferbutton">
+        <property name="text">
+         <string>&lt;-</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item row="1" column="0">
+     <widget class="FileSystem" name="filesystem">
+      <property name="tree_type" stdset="0">
+       <enum>FileSystem::Local</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="pushButton_3">
@@ -53,69 +123,25 @@
       </item>
      </layout>
     </item>
-    <item row="0" column="0">
-     <widget class="FileSystem" name="filesystem">
-      <property name="tree_type" stdset="0">
-       <enum>FileSystem::Local</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="4">
+    <item row="1" column="4">
      <widget class="FileSystem" name="filesystem_2">
       <property name="tree_type" stdset="0">
        <enum>FileSystem::Remote</enum>
       </property>
      </widget>
     </item>
-    <item row="0" column="2">
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="FileSystemTransferButton" name="filesystemtransferbutton_2">
-        <property name="text">
-         <string>-&gt;</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="FileSystemTransferButton" name="filesystemtransferbutton">
-        <property name="text">
-         <string>&lt;-</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="1" column="4">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QPushButton" name="pushButton_9">
-        <property name="text">
-         <string>Copy</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_8">
-        <property name="text">
-         <string>Paste</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_5">
-        <property name="text">
-         <string>New Folder</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_10">
-        <property name="text">
-         <string>Delete</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+    <item row="0" column="4">
+     <widget class="QPushButton" name="pushButton_7">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Level UP</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -255,8 +281,8 @@
      <y>237</y>
     </hint>
     <hint type="destinationlabel">
-     <x>474</x>
-     <y>181</y>
+     <x>525</x>
+     <y>216</y>
     </hint>
    </hints>
   </connection>
@@ -271,8 +297,8 @@
      <y>108</y>
     </hint>
     <hint type="destinationlabel">
-     <x>506</x>
-     <y>176</y>
+     <x>525</x>
+     <y>216</y>
     </hint>
    </hints>
   </connection>
@@ -385,6 +411,38 @@
     <hint type="destinationlabel">
      <x>815</x>
      <y>452</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_6</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem</receiver>
+   <slot>goUP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>73</x>
+     <y>44</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>100</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_7</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>goUP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>610</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>637</x>
+     <y>132</y>
     </hint>
    </hints>
   </connection>

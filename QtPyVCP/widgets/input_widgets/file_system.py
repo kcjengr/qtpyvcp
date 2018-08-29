@@ -5,7 +5,7 @@ import psutil
 from PyQt5.QtCore import QAbstractListModel, QModelIndex, Qt, pyqtSlot, pyqtProperty, Q_ENUMS, pyqtSignal, QFile, \
     QFileInfo, QDir
 from PyQt5.QtWidgets import QFileSystemModel, QTreeView, QWidget, QComboBox, QVBoxLayout, QPushButton, QHBoxLayout, \
-    QListView
+    QListView, QTableView
 
 from QtPyVCP.utilities.info import Info
 
@@ -136,10 +136,10 @@ class ComboBoxListModel(QAbstractListModel):
         return None
 
 
-class FileSystemList(QListView):
+class FileSystemTable(QTableView):
 
     def __init__(self, parent=None):
-        super(FileSystemList, self).__init__(parent)
+        super(FileSystemTable, self).__init__(parent)
 
         # This prevents doing unneeded initialization
         # when QtDesginer loads the plugin.
@@ -153,11 +153,12 @@ class FileSystemList(QListView):
         self.model = QFileSystemModel()
         self.model.setRootPath(nc_files)
         self.model.setReadOnly(True)
-        self.model.setFilter(QDir.AllDirs | QDir.AllEntries)
+        self.model.setFilter(QDir.AllDirs | QDir.NoDotAndDotDot | QDir.AllEntries)
 
         self.setModel(self.model)
 
         self.setRootIndex(self.model.index(nc_files))
+        self.verticalHeader().hide()
 
 
 class FileSystem(QWidget, TreeType):
@@ -173,9 +174,10 @@ class FileSystem(QWidget, TreeType):
         self.vbox = QVBoxLayout()
         self.setLayout(self.vbox)
 
-        self.fileSystemList = FileSystemList(self)
-        self.fileSystemList.clicked.connect(self.on_tree_clicked)
-        self.fileSystemList.doubleClicked.connect(self.changeRoot)
+        self.fileSystemTable = FileSystemTable(self)
+        self.fileSystemTable.clicked.connect(self.on_tree_clicked)
+        self.fileSystemTable.doubleClicked.connect(self.changeRoot)
+
 
         if parent is None:
             return
@@ -186,7 +188,7 @@ class FileSystem(QWidget, TreeType):
 
         self.clearLayout(self.layout())
 
-        self.vbox.addWidget(self.fileSystemList)
+        self.vbox.addWidget(self.fileSystemTable)
 
     def initRemote(self):
 
@@ -207,7 +209,7 @@ class FileSystem(QWidget, TreeType):
         path_h_box.addWidget(self.refreshfileSystemButton)
 
         self.vbox.addLayout(path_h_box)
-        self.vbox.addWidget(self.fileSystemList)
+        self.vbox.addWidget(self.fileSystemTable)
 
         self.refreshfileSystemButton.clicked.connect(self.scanUsb)
         self.fileSystemCombo.currentIndexChanged.connect(self.changeRootCombo)
@@ -238,26 +240,14 @@ class FileSystem(QWidget, TreeType):
                 self.fileSystemCombo.setCurrentIndex(0)
 
     def changeRoot(self, index):
-        new_path = self.fileSystemList.model.data(index)
-
-        if index.row() == 0:
-            return
-        elif index.row() == 1:
-            file_info = QFileInfo(new_path)
-            directory = file_info.dir()
-            new_path = directory.absolutePath()
-
-            currentRoot = self.fileSystemList.rootIndex()
-            self.fileSystemList.model.setRootPath(new_path)
-            self.fileSystemList.setRootIndex(currentRoot.parent())
-        else:
-            self.fileSystemList.model.setRootPath(new_path)
-            self.fileSystemList.setRootIndex(index)
+        new_path = self.fileSystemTable.model.data(index)
+        self.fileSystemTable.model.setRootPath(new_path)
+        self.fileSystemTable.setRootIndex(index)
 
     def changeRootCombo(self, value):
         new_path = self.fileSystemCombo.itemText(value)
-        self.fileSystemList.model.setRootPath(new_path)
-        self.fileSystemList.setRootIndex(self.fileSystemList.model.index(new_path))
+        self.fileSystemTable.model.setRootPath(new_path)
+        self.fileSystemTable.setRootIndex(self.fileSystemTable.model.index(new_path))
 
     def clearLayout(self, layout):
         while layout.count():
@@ -311,6 +301,16 @@ class FileSystem(QWidget, TreeType):
                 directory.mkdir("New directory")
 
     @pyqtSlot()
+    def goUP(self):
+        file_info = QFileInfo(self.selected_row)
+        directory = file_info.dir()
+        new_path = directory.absolutePath()
+
+        currentRoot = self.fileSystemTable.rootIndex()
+        self.fileSystemTable.model.setRootPath(new_path)
+        self.fileSystemTable.setRootIndex(currentRoot.parent())
+
+    @pyqtSlot()
     def getSelected(self):
         return self.selected_row
 
@@ -333,5 +333,5 @@ class FileSystem(QWidget, TreeType):
     selection = pyqtSignal('QString')
 
     def on_tree_clicked(self, index):
-        self.selected_row = self.fileSystemList.model.filePath(index)
+        self.selected_row = self.fileSystemTable.model.filePath(index)
         self.selection.emit(self.selected_row)
