@@ -56,8 +56,7 @@ class LoadMeter(QProgressBar):
         p.drawRoundedRect(rect, 2.0, 2.0)
 
         # draw the load percentage text
-        p.setPen(Qt.black)
-        p.setBrush(QBrush(Qt.black))
+        p.setPen(QColor(235, 235, 236))
         p.drawText(0,0, self.width(), self.height(), Qt.AlignCenter, str(val) + "%")
 
 if __name__ == "__main__":

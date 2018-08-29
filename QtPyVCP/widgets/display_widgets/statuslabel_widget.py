@@ -80,6 +80,10 @@ MAPPING = {
         'factor': 1,
         'tooltip': 'Current Spindle Speed'
         },
+    16: {'name': 'linear_units',
+        'format': '{units}',
+        'tooltip': 'Machine Unit System',
+        },
     }
 
 class LabelType(object):
@@ -99,6 +103,7 @@ class LabelType(object):
     max_velocity = 13
     current_vel = 14
     spindle_speed = 15
+    linear_units = 16
 
 class StatusLabel(QLabel, LabelType):
 
@@ -125,6 +130,7 @@ class StatusLabel(QLabel, LabelType):
             value = STATUS.STATE_STRING_LOOKUP[sig_name][value]
             sig = getattr(STATUS, sig_name)[str]
         except KeyError:
+            # print 'key error', sig_name, value
             sig = getattr(STATUS, sig_name)
 
         if isinstance(value, str):
