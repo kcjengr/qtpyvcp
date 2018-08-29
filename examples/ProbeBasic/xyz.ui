@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>7</number>
+           <number>4</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -4883,7 +4883,7 @@ ToolTable {
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_37">
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_2">
+                    <widget class="QPushButton" name="tool_table_delete_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -4916,7 +4916,7 @@ ToolTable {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_3">
+                    <widget class="QPushButton" name="tool_table_add_tool_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -4949,7 +4949,7 @@ ToolTable {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_4">
+                    <widget class="QPushButton" name="tool_table_reread_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -4982,7 +4982,7 @@ ToolTable {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_5">
+                    <widget class="QPushButton" name="tool_table_save_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -5015,7 +5015,7 @@ ToolTable {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_6">
+                    <widget class="QPushButton" name="tool_table_reload_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -17982,9 +17982,6 @@ font: 14pt &quot;Bebas Kai&quot;;
               </widget>
              </item>
             </layout>
-            <zorder>statuslabel_7</zorder>
-            <zorder>statuslabel_7</zorder>
-            <zorder>statuslabel_12</zorder>
            </widget>
           </widget>
           <widget class="QWidget" name="tab_17">
@@ -25895,6 +25892,86 @@ font: 11pt bebas kai;
     <hint type="destinationlabel">
      <x>1741</x>
      <y>741</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_delete_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>deleteSelectedTool()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>175</x>
+     <y>596</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>179</x>
+     <y>564</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_save_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>saveToolTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>708</x>
+     <y>598</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>708</x>
+     <y>566</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_reload_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>loadToolTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>896</x>
+     <y>591</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>896</x>
+     <y>559</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_reread_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>loadToolTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>523</x>
+     <y>599</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>531</x>
+     <y>555</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_add_tool_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>insertToolBelow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>353</x>
+     <y>591</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>351</x>
+     <y>567</y>
     </hint>
    </hints>
   </connection>
