@@ -130,6 +130,7 @@ class StatusLabel(QLabel, LabelType):
             value = STATUS.STATE_STRING_LOOKUP[sig_name][value]
             sig = getattr(STATUS, sig_name)[str]
         except KeyError:
+            # print 'key error', sig_name, value
             sig = getattr(STATUS, sig_name)
 
         if isinstance(value, str):
