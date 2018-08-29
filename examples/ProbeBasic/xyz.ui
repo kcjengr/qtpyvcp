@@ -24604,7 +24604,7 @@ border-radius: 6px;
             <number>16</number>
            </property>
            <item>
-            <widget class="ActionButton" name="actionbutton_11">
+            <widget class="ActionButton" name="step_select">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -24662,7 +24662,10 @@ border-radius: 6px;
              <property name="styleSheet">
               <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
+	
+}
+
+</string>
              </property>
              <property name="diameter" stdset="0">
               <number>0</number>
@@ -24689,7 +24692,7 @@ border-radius: 6px;
             <number>0</number>
            </property>
            <item>
-            <widget class="ActionButton" name="actionbutton_4">
+            <widget class="ActionButton" name="jog_select">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -24714,6 +24717,9 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="checked">
               <bool>true</bool>
              </property>
              <property name="action_id" stdset="0">
@@ -26036,6 +26042,38 @@ font: 11pt bebas kai;
     <hint type="destinationlabel">
      <x>1356</x>
      <y>1035</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>jog_select</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>jogincrement</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1558</x>
+     <y>806</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1741</x>
+     <y>741</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>step_select</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>jogincrement</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1558</x>
+     <y>741</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1741</x>
+     <y>741</y>
     </hint>
    </hints>
   </connection>
