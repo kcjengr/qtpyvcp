@@ -106,6 +106,7 @@ class _Status(QObject):
         },
         "g5x_index": ["G53", "G54", "G55", "G56", "G57", "G58", "G59", "G59.1", "G59.2", "G59.3"],
         "program_units": ["NA", "in", "mm", "cm"],
+        "linear_units": ["NA", "in", "mm", "cm"],
         "gcodes": GCodes(),
         "mcodes": MCodes(),
     }
@@ -215,6 +216,7 @@ class _Status(QObject):
     interp_state = pyqtSignal([int], [str]) # current state of RS274NGC interpreter
     interpreter_errcode = pyqtSignal([int], [str]) # current RS274NGC interpreter return code
     jog_mode_signal = pyqtSignal(bool)             # jog mode = true
+    linear_units = pyqtSignal(float) # one of CANON_UNITS_INCHES=1, CANON_UNITS_MM=2
 
     # Tool
     tool_in_spindle = pyqtSignal(int)       # current tool number
@@ -267,7 +269,7 @@ class _Status(QObject):
         except:
             pass
 
-        excluded_items = ['axes', 'axis', 'joint', 'cycle_time', 'linear_units',
+        excluded_items = ['axes', 'axis', 'joint', 'cycle_time',
             'angular_units', 'acceleration', 'kinematics_type',
             'joints', 'settings', 'axis_mask', 'max_acceleration', 'echo_serial_number',
             'id', 'poll', 'command', 'debug']
@@ -278,6 +280,7 @@ class _Status(QObject):
             if item.startswith('_') or item in excluded_items:
                 continue
             self.old[item] = getattr(self.stat, item)
+            print item, self.old[item]
 
         # These signals should all cause position updates
         self.position.connect(self.updateAxisPositions)
