@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>4</number>
+           <number>7</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -19374,6 +19374,9 @@ padding: -5px;
              <property name="label_type" stdset="0">
               <enum>StatusLabel::linear_units</enum>
              </property>
+             <property name="format_spec" stdset="0">
+              <string>{0}</string>
+             </property>
             </widget>
            </item>
           </layout>
@@ -19497,6 +19500,9 @@ padding: -5px;
              </property>
              <property name="label_type" stdset="0">
               <enum>StatusLabel::linear_units</enum>
+             </property>
+             <property name="format_spec" stdset="0">
+              <string>{0}</string>
              </property>
             </widget>
            </item>
@@ -24711,7 +24717,7 @@ border-radius: 4px;
                  <enum>StatusLabel::linear_units</enum>
                 </property>
                 <property name="format_spec" stdset="0">
-                 <string>{units}</string>
+                 <string>{0}</string>
                 </property>
                </widget>
               </item>
