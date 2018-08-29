@@ -40,7 +40,7 @@
       <item>
        <widget class="QPushButton" name="pushButton">
         <property name="text">
-         <string>Cut</string>
+         <string>New Folder</string>
         </property>
        </widget>
       </item>
@@ -102,9 +102,9 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_7">
+       <widget class="QPushButton" name="pushButton_5">
         <property name="text">
-         <string>Cut</string>
+         <string>New Folder</string>
         </property>
        </widget>
       </item>
@@ -193,7 +193,6 @@
  <tabstops>
   <tabstop>pushButton_3</tabstop>
   <tabstop>pushButton_2</tabstop>
-  <tabstop>pushButton</tabstop>
  </tabstops>
  <resources/>
  <connections>
@@ -230,22 +229,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>filesystem</receiver>
-   <slot>cutFile()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>329</x>
-     <y>527</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>438</x>
-     <y>448</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>pushButton_4</sender>
    <signal>clicked()</signal>
    <receiver>filesystem</receiver>
@@ -258,70 +241,6 @@
     <hint type="destinationlabel">
      <x>438</x>
      <y>428</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_9</sender>
-   <signal>clicked()</signal>
-   <receiver>filesystem_2</receiver>
-   <slot>copyFile()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>577</x>
-     <y>505</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>579</x>
-     <y>449</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_8</sender>
-   <signal>clicked()</signal>
-   <receiver>filesystem_2</receiver>
-   <slot>pasteFile()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>723</x>
-     <y>506</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>719</x>
-     <y>461</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_7</sender>
-   <signal>clicked()</signal>
-   <receiver>filesystem_2</receiver>
-   <slot>cutFile()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>804</x>
-     <y>510</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>795</x>
-     <y>448</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_10</sender>
-   <signal>clicked()</signal>
-   <receiver>filesystem_2</receiver>
-   <slot>cutFile()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>917</x>
-     <y>507</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>899</x>
-     <y>443</y>
     </hint>
    </hints>
   </connection>
@@ -386,6 +305,86 @@
     <hint type="destinationlabel">
      <x>470</x>
      <y>347</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_9</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>copyFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>577</x>
+     <y>505</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>579</x>
+     <y>449</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_8</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>pasteFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>723</x>
+     <y>506</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>719</x>
+     <y>461</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_10</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>deleteFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>881</x>
+     <y>512</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>882</x>
+     <y>446</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem</receiver>
+   <slot>createDirectory()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>251</x>
+     <y>506</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>171</x>
+     <y>425</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_5</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>createDirectory()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>799</x>
+     <y>511</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>815</x>
+     <y>452</y>
     </hint>
    </hints>
   </connection>
