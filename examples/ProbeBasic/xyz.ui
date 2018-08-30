@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>7</number>
+           <number>6</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -2234,10 +2234,10 @@ padding-right: 10px;
                       <number>2</number>
                      </property>
                      <item>
-                      <widget class="AxisActionButton" name="m01_break_button_8">
+                      <widget class="SubCallButton" name="subcallbutton_8">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                         <horstretch>100</horstretch>
+                         <horstretch>1</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
@@ -2253,19 +2253,24 @@ padding-right: 10px;
                          <height>40</height>
                         </size>
                        </property>
-                       <property name="focusPolicy">
-                        <enum>Qt::NoFocus</enum>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
                        </property>
                        <property name="text">
                         <string>&lt;&lt; CAROUSEL REV</string>
                        </property>
+                       <property name="sub_name" stdset="0">
+                        <string>m11.ngc</string>
+                       </property>
                       </widget>
                      </item>
                      <item>
-                      <widget class="AxisActionButton" name="m01_break_button_9">
+                      <widget class="SubCallButton" name="subcallbutton_2">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                         <horstretch>100</horstretch>
+                         <horstretch>1</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
@@ -2281,11 +2286,16 @@ padding-right: 10px;
                          <height>40</height>
                         </size>
                        </property>
-                       <property name="focusPolicy">
-                        <enum>Qt::NoFocus</enum>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
                        </property>
                        <property name="text">
                         <string>CAROUSEL FWD &gt;&gt;</string>
+                       </property>
+                       <property name="sub_name" stdset="0">
+                        <string>m12.ngc</string>
                        </property>
                       </widget>
                      </item>
@@ -2312,10 +2322,10 @@ padding-right: 10px;
                       <number>2</number>
                      </property>
                      <item>
-                      <widget class="QPushButton" name="cycle_start_button_2">
+                      <widget class="SubCallButton" name="subcallbutton_7">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                         <horstretch>100</horstretch>
+                         <horstretch>1</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
@@ -2331,17 +2341,16 @@ padding-right: 10px;
                          <height>40</height>
                         </size>
                        </property>
-                       <property name="focusPolicy">
-                        <enum>Qt::NoFocus</enum>
-                       </property>
                        <property name="styleSheet">
-                        <string notr="true"/>
+                        <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
                        </property>
                        <property name="text">
                         <string>GO TO CAROUSEL LOAD POSITION</string>
                        </property>
-                       <property name="checkable">
-                        <bool>true</bool>
+                       <property name="sub_name" stdset="0">
+                        <string>extendatc.ngc</string>
                        </property>
                       </widget>
                      </item>
@@ -2365,10 +2374,10 @@ padding-right: 10px;
                       <number>2</number>
                      </property>
                      <item>
-                      <widget class="QPushButton" name="cycle_start_button_3">
+                      <widget class="SubCallButton" name="subcallbutton_6">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                         <horstretch>100</horstretch>
+                         <horstretch>1</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
@@ -2384,17 +2393,16 @@ padding-right: 10px;
                          <height>40</height>
                         </size>
                        </property>
-                       <property name="focusPolicy">
-                        <enum>Qt::NoFocus</enum>
-                       </property>
                        <property name="styleSheet">
-                        <string notr="true"/>
+                        <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
                        </property>
                        <property name="text">
-                        <string>RETRACT</string>
+                        <string>RETRACT CAROUSEL</string>
                        </property>
-                       <property name="checkable">
-                        <bool>true</bool>
+                       <property name="sub_name" stdset="0">
+                        <string>retractatc.ngc</string>
                        </property>
                       </widget>
                      </item>
@@ -2418,10 +2426,10 @@ padding-right: 10px;
                       <number>2</number>
                      </property>
                      <item>
-                      <widget class="AxisActionButton" name="m01_break_button_10">
+                      <widget class="SubCallButton" name="subcallbutton_4">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                         <horstretch>100</horstretch>
+                         <horstretch>1</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
@@ -2437,19 +2445,24 @@ padding-right: 10px;
                          <height>40</height>
                         </size>
                        </property>
-                       <property name="focusPolicy">
-                        <enum>Qt::NoFocus</enum>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
                        </property>
                        <property name="text">
                         <string>DRAWBAR TIGHT</string>
                        </property>
+                       <property name="sub_name" stdset="0">
+                        <string>clamptool.ngc</string>
+                       </property>
                       </widget>
                      </item>
                      <item>
-                      <widget class="AxisActionButton" name="m01_break_button_11">
+                      <widget class="SubCallButton" name="subcallbutton_5">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                         <horstretch>100</horstretch>
+                         <horstretch>1</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
@@ -2465,11 +2478,16 @@ padding-right: 10px;
                          <height>40</height>
                         </size>
                        </property>
-                       <property name="focusPolicy">
-                        <enum>Qt::NoFocus</enum>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
                        </property>
                        <property name="text">
                         <string>DRAWBAR LOOSE</string>
+                       </property>
+                       <property name="sub_name" stdset="0">
+                        <string>unclamptool.ngc</string>
                        </property>
                       </widget>
                      </item>
@@ -2568,10 +2586,10 @@ padding-right: 10px;
                       <number>2</number>
                      </property>
                      <item>
-                      <widget class="QPushButton" name="cycle_start_button_4">
+                      <widget class="SubCallButton" name="subcallbutton">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                         <horstretch>100</horstretch>
+                         <horstretch>1</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
@@ -2587,17 +2605,16 @@ padding-right: 10px;
                          <height>40</height>
                         </size>
                        </property>
-                       <property name="focusPolicy">
-                        <enum>Qt::NoFocus</enum>
-                       </property>
                        <property name="styleSheet">
-                        <string notr="true"/>
+                        <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
                        </property>
                        <property name="text">
                         <string>REF CAROUSEL</string>
                        </property>
-                       <property name="checkable">
-                        <bool>true</bool>
+                       <property name="sub_name" stdset="0">
+                        <string>m13.ngc</string>
                        </property>
                       </widget>
                      </item>
@@ -15236,7 +15253,7 @@ color: rgb(255, 255, 255);
                <enum>QTabWidget::Rounded</enum>
               </property>
               <property name="currentIndex">
-               <number>3</number>
+               <number>6</number>
               </property>
               <property name="iconSize">
                <size>
@@ -15343,6 +15360,9 @@ color: rgb(255, 255, 255);
                           <height>130</height>
                          </size>
                         </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="1" column="0">
@@ -15380,6 +15400,9 @@ color: rgb(255, 255, 255);
                           <width>130</width>
                           <height>130</height>
                          </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
                         </property>
                        </widget>
                       </item>
@@ -15419,6 +15442,9 @@ color: rgb(255, 255, 255);
                           <height>130</height>
                          </size>
                         </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="0" column="2">
@@ -15456,6 +15482,9 @@ color: rgb(255, 255, 255);
                           <width>130</width>
                           <height>130</height>
                          </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
                         </property>
                        </widget>
                       </item>
@@ -15495,6 +15524,9 @@ color: rgb(255, 255, 255);
                           <height>130</height>
                          </size>
                         </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="1" column="1">
@@ -15533,6 +15565,9 @@ color: rgb(255, 255, 255);
                           <height>130</height>
                          </size>
                         </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="0" column="1">
@@ -15570,6 +15605,9 @@ color: rgb(255, 255, 255);
                           <width>130</width>
                           <height>130</height>
                          </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
                         </property>
                        </widget>
                       </item>
@@ -15610,6 +15648,9 @@ color: rgb(255, 255, 255);
                           <height>130</height>
                          </size>
                         </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="0" column="0">
@@ -15638,6 +15679,9 @@ color: rgb(255, 255, 255);
                         </property>
                         <property name="sub_name" stdset="0">
                          <string>probe_front_left_top_corner</string>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
                         </property>
                        </widget>
                       </item>
@@ -15783,6 +15827,9 @@ color: rgb(255, 255, 255);
                           <height>125</height>
                          </size>
                         </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="0" column="0">
@@ -15811,6 +15858,9 @@ color: rgb(255, 255, 255);
                           <width>125</width>
                           <height>125</height>
                          </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
                         </property>
                        </widget>
                       </item>
@@ -15841,6 +15891,9 @@ color: rgb(255, 255, 255);
                           <height>125</height>
                          </size>
                         </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="2" column="0">
@@ -15869,6 +15922,9 @@ color: rgb(255, 255, 255);
                           <width>125</width>
                           <height>125</height>
                          </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
                         </property>
                        </widget>
                       </item>
@@ -15899,6 +15955,9 @@ color: rgb(255, 255, 255);
                           <height>125</height>
                          </size>
                         </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="1" column="1">
@@ -15927,6 +15986,9 @@ color: rgb(255, 255, 255);
                           <width>125</width>
                           <height>125</height>
                          </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
                         </property>
                        </widget>
                       </item>
@@ -15957,6 +16019,9 @@ color: rgb(255, 255, 255);
                           <height>125</height>
                          </size>
                         </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="0" column="1">
@@ -15986,6 +16051,9 @@ color: rgb(255, 255, 255);
                           <height>125</height>
                          </size>
                         </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="1" column="2">
@@ -16014,6 +16082,9 @@ color: rgb(255, 255, 255);
                           <width>125</width>
                           <height>125</height>
                          </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
                         </property>
                        </widget>
                       </item>
@@ -16156,6 +16227,9 @@ color: rgb(255, 255, 255);
                           <height>145</height>
                          </size>
                         </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="1" column="1">
@@ -16187,6 +16261,9 @@ color: rgb(255, 255, 255);
                           <width>145</width>
                           <height>145</height>
                          </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
                         </property>
                        </widget>
                       </item>
@@ -16220,6 +16297,9 @@ color: rgb(255, 255, 255);
                           <height>170</height>
                          </size>
                         </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="1" column="0">
@@ -16251,6 +16331,9 @@ color: rgb(255, 255, 255);
                           <width>170</width>
                           <height>170</height>
                          </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
                         </property>
                        </widget>
                       </item>
@@ -16677,6 +16760,9 @@ Background:transparent;
                           <height>150</height>
                          </size>
                         </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="1" column="1">
@@ -16708,6 +16794,9 @@ Background:transparent;
                           <width>150</width>
                           <height>150</height>
                          </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
                         </property>
                        </widget>
                       </item>
@@ -16741,6 +16830,9 @@ Background:transparent;
                           <height>150</height>
                          </size>
                         </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
                        </widget>
                       </item>
                       <item row="1" column="0">
@@ -16772,6 +16864,9 @@ Background:transparent;
                           <width>150</width>
                           <height>150</height>
                          </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
                         </property>
                        </widget>
                       </item>
