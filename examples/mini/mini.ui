@@ -21,7 +21,7 @@
     </size>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="4">
+    <item row="2" column="3">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QPushButton" name="remoteCopyButton">
@@ -66,7 +66,7 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="2">
+    <item row="1" column="1">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="FileSystemTransferButton" name="filesystemtransferbutton_2">
@@ -123,14 +123,14 @@
       </item>
      </layout>
     </item>
-    <item row="1" column="4">
+    <item row="1" column="3">
      <widget class="FileSystem" name="filesystem_2">
       <property name="tree_type" stdset="0">
        <enum>FileSystem::Remote</enum>
       </property>
      </widget>
     </item>
-    <item row="0" column="4">
+    <item row="0" column="3">
      <widget class="QPushButton" name="remoteUpButton">
       <property name="maximumSize">
        <size>
@@ -151,7 +151,7 @@
      <x>0</x>
      <y>0</y>
      <width>971</width>
-     <height>25</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -229,7 +229,7 @@
    <slot>copyFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>109</x>
+     <x>101</x>
      <y>527</y>
     </hint>
     <hint type="destinationlabel">
@@ -245,7 +245,7 @@
    <slot>pasteFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>220</x>
+     <x>199</x>
      <y>527</y>
     </hint>
     <hint type="destinationlabel">
@@ -261,12 +261,12 @@
    <slot>deleteFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>437</x>
+     <x>394</x>
      <y>527</y>
     </hint>
     <hint type="destinationlabel">
-     <x>438</x>
-     <y>428</y>
+     <x>395</x>
+     <y>492</y>
     </hint>
    </hints>
   </connection>
@@ -384,65 +384,65 @@
   </connection>
   <connection>
    <sender>filesystem</sender>
-   <signal>selection(PyQt_PyObject)</signal>
-   <receiver>filesystemtransferbutton_2</receiver>
-   <slot>setSource(PyQt_PyObject)</slot>
+   <signal>transferFileRequest(QString)</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
+     <x>371</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>581</x>
+     <y>260</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filesystem_2</sender>
+   <signal>transferFileRequest(QString)</signal>
+   <receiver>filesystem</receiver>
+   <slot>transferFile(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>558</x>
+     <y>290</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>406</x>
+     <y>297</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filesystemtransferbutton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem</receiver>
+   <slot>doFileTransfer()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>476</x>
+     <y>204</y>
+    </hint>
+    <hint type="destinationlabel">
      <x>405</x>
-     <y>287</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>482</x>
-     <y>211</y>
+     <y>140</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>filesystem_2</sender>
-   <signal>selection(PyQt_PyObject)</signal>
-   <receiver>filesystemtransferbutton_2</receiver>
-   <slot>setDestination(PyQt_PyObject)</slot>
+   <sender>filesystemtransferbutton</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>doFileTransfer()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>587</x>
-     <y>165</y>
+     <x>505</x>
+     <y>363</y>
     </hint>
     <hint type="destinationlabel">
-     <x>511</x>
-     <y>194</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>filesystem_2</sender>
-   <signal>selection(PyQt_PyObject)</signal>
-   <receiver>filesystemtransferbutton</receiver>
-   <slot>setSource(PyQt_PyObject)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>563</x>
-     <y>332</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>487</x>
-     <y>356</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>filesystem</sender>
-   <signal>selection(PyQt_PyObject)</signal>
-   <receiver>filesystemtransferbutton</receiver>
-   <slot>setDestination(PyQt_PyObject)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>362</x>
-     <y>369</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>472</x>
-     <y>349</y>
+     <x>554</x>
+     <y>389</y>
     </hint>
    </hints>
   </connection>

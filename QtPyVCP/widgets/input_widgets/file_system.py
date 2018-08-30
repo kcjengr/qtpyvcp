@@ -163,6 +163,8 @@ class FileSystemTable(QTableView):
 class FileSystem(QWidget, TableType):
     Q_ENUMS(TableType)
 
+    transferFileRequest = pyqtSignal(str)
+
     def __init__(self, parent=None):
         super(FileSystem, self).__init__(parent)
 
@@ -315,6 +317,20 @@ class FileSystem(QWidget, TableType):
         currentRoot = self.fileSystemTable.rootIndex()
         self.fileSystemTable.model.setRootPath(new_path)
         self.fileSystemTable.setRootIndex(currentRoot.parent())
+
+
+    @pyqtSlot()
+    def doFileTransfer(self):
+        index = self.fileSystemTable.selectionModel().currentIndex()
+        path = self.fileSystemTable.model.filePath(index)
+        self.transferFileRequest.emit(path)
+
+    @pyqtSlot(str)
+    def transferFile(self, src_path):
+        dest_path = self.fileSystemTable.model.rootPath()
+        print "Transfer File Request Recieved"
+        print "   Source Dir: ", src_path
+        print "   Dest Dir: ", dest_path
 
     @pyqtSlot()
     def getSelected(self):
