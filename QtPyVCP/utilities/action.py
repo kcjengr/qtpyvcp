@@ -459,6 +459,41 @@ class OptionalStop(_BoolAction):
         else:
             cls.ON()
 
+class FeedHold(_BoolAction):
+
+    action_id = 10
+    action_text = "Feedhold"
+
+    def __init__(self, widget=None, action_type='TOGGLE'):
+        super(FeedHold, self).__init__(widget, action_type)
+
+        self.widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
+        self.widget.setChecked(STAT.paused)
+
+        STATUS.on.connect(lambda v: self.setEnabled(v))
+        STATUS.paused.connect(lambda s: self.setState(s))
+
+    @classmethod
+    def ON(cls):
+        if STAT.paused:
+            LOG.debug("Setting feedhold green<ON>")
+            CMD.auto(linuxcnc.AUTO_PAUSE)
+            CMD.wait_complete()
+        elif STATUS.stat.task_state == linuxcnc.STATE_ESTOP:
+            LOG.warn("Can't turn feedhold green<ON> with machine red<OFF>")
+
+    @classmethod
+    def OFF(cls):
+        LOG.debug("Setting feedhold red<OFF>")
+        CMD.auto(linuxcnc.AUTO_RESUME)
+        CMD.wait_complete()
+
+    @classmethod
+    def TOGGLE(cls):
+        if STAT.paused:
+            cls.OFF()
+        else:
+            cls.ON()
 
 #==============================================================================
 #  Axis/Joint actions
@@ -690,7 +725,8 @@ action_by_id = {
     6 : Home,
     7 : Jogging,
     8 : JogMode,
-    9 : StepMode
+    9 : StepMode,
+    10: FeedHold,
 }
 
 

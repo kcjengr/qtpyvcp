@@ -18283,10 +18283,13 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>FEEDHOLD</string>
+              <string>Feedhold </string>
              </property>
              <property name="checkable">
               <bool>true</bool>
+             </property>
+             <property name="action_id" stdset="0">
+              <enum>ActionButton::FeedHold</enum>
              </property>
             </widget>
            </item>
