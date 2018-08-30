@@ -69,14 +69,14 @@
     <item row="1" column="1">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="FileSystemTransferButton" name="filesystemtransferbutton_2">
+       <widget class="QPushButton" name="uploadButon">
         <property name="text">
          <string>-&gt;</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="FileSystemTransferButton" name="filesystemtransferbutton">
+       <widget class="QPushButton" name="downloadButton">
         <property name="text">
          <string>&lt;-</string>
         </property>
@@ -151,7 +151,7 @@
      <x>0</x>
      <y>0</y>
      <width>971</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -208,11 +208,6 @@
   <customwidget>
    <class>FileSystem</class>
    <extends>QWidget</extends>
-   <header>QtPyVCP.widgets.input_widgets.file_system</header>
-  </customwidget>
-  <customwidget>
-   <class>FileSystemTransferButton</class>
-   <extends>QPushButton</extends>
    <header>QtPyVCP.widgets.input_widgets.file_system</header>
   </customwidget>
  </customwidgets>
@@ -415,34 +410,34 @@
    </hints>
   </connection>
   <connection>
-   <sender>filesystemtransferbutton_2</sender>
+   <sender>uploadButon</sender>
    <signal>clicked()</signal>
    <receiver>filesystem</receiver>
    <slot>doFileTransfer()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>476</x>
-     <y>204</y>
+     <x>481</x>
+     <y>206</y>
     </hint>
     <hint type="destinationlabel">
-     <x>405</x>
-     <y>140</y>
+     <x>422</x>
+     <y>165</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>filesystemtransferbutton</sender>
+   <sender>downloadButton</sender>
    <signal>clicked()</signal>
    <receiver>filesystem_2</receiver>
    <slot>doFileTransfer()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>505</x>
-     <y>363</y>
+     <x>495</x>
+     <y>356</y>
     </hint>
     <hint type="destinationlabel">
-     <x>554</x>
-     <y>389</y>
+     <x>580</x>
+     <y>378</y>
     </hint>
    </hints>
   </connection>

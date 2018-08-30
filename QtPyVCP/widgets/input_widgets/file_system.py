@@ -20,62 +20,6 @@ class TableType(object):
         return ['LOCAL', 'REMOTE'][tree_type]
 
 
-class FileSystemTransferButton(QPushButton):
-
-    def __init__(self, parent=None):
-        super(FileSystemTransferButton, self).__init__(parent)
-
-        self.filesTable = dict()
-
-        if parent is None:
-            return
-
-        self.clicked.connect(self.transferFile)
-
-    @pyqtSlot(dict)
-    def setSource(self, value):
-
-        fileInfo = QFileInfo(value["file_path"])
-
-        if fileInfo.isFile():
-            self.filesTable[value["source"]] = fileInfo.filePath()
-        elif fileInfo.isSymLink() or fileInfo.isDir():
-            directory = fileInfo.dir()
-            self.filesTable[value["source"]] = directory.absolutePath()
-
-
-    @pyqtSlot(dict)
-    def setDestination(self, value):
-
-        fileInfo = QFileInfo(value["file_path"])
-
-        self.filesTable[value["source"]] = fileInfo.absoluteFilePath()
-
-    def transferFile(self):
-
-        print(self.filesTable)
-        """
-        src_file_info = QFileInfo(self.filesTable[TreeType.Local])
-
-        src_file = QFile()
-        src_file.setFileName(self.filesTable[TreeType.Local])
-
-        dst_file = "{}/{}".format(self.filesTable[TreeType.Remote], src_file_info.fileName())
-
-        # src_file.bytesWritten.connect(self.updateProgress)
-
-        if src_file.copy(dst_file):
-            print("Succes")
-        else:
-            print("Failed")
-        """
-
-    def updateProgress(self, progress):
-        """ Updates the progress bar"""
-        print("progress")
-        # self.progressBar.setValue(progress)
-
-
 class ComboBoxListModel(QAbstractListModel):
     """
     Class for list management with a QAbstractListModel.
@@ -178,14 +122,7 @@ class FileSystem(QWidget, TableType):
         self.setLayout(self.vbox)
 
         self.fileSystemTable = FileSystemTable(self)
-        self.fileSystemTable.clicked.connect(self.on_table_clicked)
         self.fileSystemTable.doubleClicked.connect(self.changeRoot)
-
-        self.path_data["source"] = self._tree_type
-        self.path_data["file_path"] = None
-        self.path_data["root_path"] = self.fileSystemTable.model.rootPath()
-
-        self.selection.emit(self.path_data)
 
         if parent is None:
             return
@@ -321,16 +258,38 @@ class FileSystem(QWidget, TableType):
 
     @pyqtSlot()
     def doFileTransfer(self):
+        print("DO")
         index = self.fileSystemTable.selectionModel().currentIndex()
         path = self.fileSystemTable.model.filePath(index)
         self.transferFileRequest.emit(path)
 
+    def updateProgress(self, progress):
+        """ Updates the progress bar"""
+        print("progress")
+        # self.progressBar.setValue(progress)
+
     @pyqtSlot(str)
     def transferFile(self, src_path):
+        print("Transfer")
         dest_path = self.fileSystemTable.model.rootPath()
-        print "Transfer File Request Recieved"
-        print "   Source Dir: ", src_path
-        print "   Dest Dir: ", dest_path
+
+        src_file = QFile()
+        src_file.setFileName(src_path)
+
+        src_file_info = QFileInfo(src_path)
+
+        dst_path = "{}/{}".format(dest_path, src_file_info.fileName())
+
+        print(src_path)
+        print(dst_path)
+
+        # src_file.bytesWritten.connect(self.updateProgress)
+
+        if src_file.copy(dst_path):
+            print("Succes")
+        else:
+            print("Failed")
+
 
     @pyqtSlot()
     def getSelected(self):
@@ -355,13 +314,3 @@ class FileSystem(QWidget, TableType):
         self._setUpAction()
 
     tree_type = pyqtProperty(TableType, getType, setType)
-
-    selection = pyqtSignal(dict)
-
-    def on_table_clicked(self, index):
-
-        self.path_data["source"] = self._tree_type
-        self.path_data["file_path"] = self.fileSystemTable.model.filePath(index)
-        self.path_data["root_path"] = self.fileSystemTable.model.rootPath()
-
-        self.selection.emit(self.path_data)
