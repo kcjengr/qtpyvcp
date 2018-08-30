@@ -81,7 +81,7 @@ MAPPING = {
         'tooltip': 'Current Spindle Speed'
         },
     16: {'name': 'linear_units',
-        'format': '{units}',
+        'format': None,
         'tooltip': 'Machine Unit System',
         },
     }
