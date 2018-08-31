@@ -3,9 +3,9 @@
 import os
 import sys
 import argparse
-import QtPyVCP
-from QtPyVCP.utilities import logger
 from PyQt5.QtWidgets import QStyleFactory
+
+import QtPyVCP
 
 def main():
     parser = argparse.ArgumentParser(description="LinuxCNC Virtual Control Panel")
@@ -137,11 +137,13 @@ def main():
             sys.exit()
         del(app)
 
+    from QtPyVCP.utilities import logger
     log_level = getattr(logger, args.log_level.upper())
     LOG = logger.initBaseLogger('QtPyVCP', log_file=args.log_file, log_level=log_level)
     print LOG
 
-    app = QtPyVCP.VCPApplication(
+    from QtPyVCP.application import VCPApplication
+    app = VCPApplication(
         vcp=args.vcp,
         ini=args.ini,
         perfmon=args.perfmon,
