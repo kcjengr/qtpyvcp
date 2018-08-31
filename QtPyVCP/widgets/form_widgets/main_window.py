@@ -27,20 +27,18 @@ import time
 from PyQt5 import uic
 from PyQt5.QtGui import QIcon, QKeySequence
 from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty, QTimer
-from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QPushButton, 
+from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QPushButton,
     QAction, QMessageBox, QFileDialog, QMenu, QLineEdit, QShortcut, qApp)
 
-from PyQt5 import QtWidgets, QtGui
-
-from QtPyVCP.utilities import logger, action
+from QtPyVCP.utilities import logger
 LOG = logger.getLogger(__name__)
 
 from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
 
-
 class VCPMainWindow(QMainWindow):
 
-    def __init__(self, parent=None, ui_file=None):
+    def __init__(self, parent=None, ui_file=None, size=None, position=None,
+            hide_menu_bar=False, hide_status_bar=False, maximize=False, fullscreen=False):
         super(VCPMainWindow, self).__init__(parent=None)
         self.app = QApplication.instance()
 
@@ -65,6 +63,7 @@ class VCPMainWindow(QMainWindow):
         self.app.focusChanged.connect(self.focusChangedEvent)
 
     def initUi(self):
+        from QtPyVCP.utilities import action
         print "initiating"
         self.loadSplashGcode()
         self.initRecentFileMenu()

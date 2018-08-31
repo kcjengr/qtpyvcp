@@ -54,6 +54,9 @@ def setGlobalLevel(level):
 def initBaseLogger(name, log_file=None, log_level=DEBUG):
 
     global BASE_LOGGER_NAME
+    if BASE_LOGGER_NAME is not None:
+        return getLogger(name)
+
     BASE_LOGGER_NAME = name
 
     if not log_file:

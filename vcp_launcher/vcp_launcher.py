@@ -5,6 +5,7 @@ import sys
 import argparse
 import QtPyVCP
 from QtPyVCP.utilities import logger
+from PyQt5.QtWidgets import QStyleFactory
 
 def main():
     parser = argparse.ArgumentParser(description="LinuxCNC Virtual Control Panel")
@@ -47,9 +48,14 @@ def main():
         help='Start with the status bar hidden.'
         )
     parser.add_argument(
+        '--maximize',
+        action='store_true',
+        help='Start with main window maximized.'
+        )
+    parser.add_argument(
         '--fullscreen',
         action='store_true',
-        help='Start in full screen mode.'
+        help='Start with main window full screen.'
         )
     parser.add_argument(
         '--position',
@@ -83,6 +89,12 @@ def main():
         default=None
         )
     parser.add_argument(
+        '--theme',
+        help='Qt theme to use, defaults to the system theme.',
+        choices=QStyleFactory.keys(),
+        default=None
+        )
+    parser.add_argument(
         'display_args',
         help='Arguments to be passed to the VCP application' +
              ' (which is a QApplication subclass).',
@@ -107,7 +119,9 @@ def main():
             sys.exit()
 
     if not os.getenv('INI_FILE_NAME'):
-        ini_file = os.path.realpath(ini_file)
+        from QtPyVCP.utilities.misc import normalizePath
+        base_path = os.path.expanduser('~/linuxcnc/configs')
+        ini_file = os.path.realpath(normalizePath(ini_file, base_path))
         if not os.path.exists(ini_file):
             print 'Specifed INI file does not exist: {}'.format(ini_file)
             sys.exit()
@@ -125,17 +139,20 @@ def main():
 
     log_level = getattr(logger, args.log_level.upper())
     LOG = logger.initBaseLogger('QtPyVCP', log_file=args.log_file, log_level=log_level)
+    print LOG
 
     app = QtPyVCP.VCPApplication(
         vcp=args.vcp,
         ini=args.ini,
         perfmon=args.perfmon,
+        theme=args.theme,
         stylesheet=args.stylesheet,
         command_line_args=args.display_args,
         window_kwargs={'size': args.size,
                 'position': args.position,
-                'menu_bar': args.hide_menu_bar,
-                'status_bar': args.hide_status_bar,
+                'hide_menu_bar': args.hide_menu_bar,
+                'hide_status_bar': args.hide_status_bar,
+                'maximize': args.maximize,
                 'fullscreen': args.fullscreen,
             }
         )
