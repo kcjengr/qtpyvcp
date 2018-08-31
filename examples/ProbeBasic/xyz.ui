@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>6</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -350,13 +350,13 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>50</width>
+                       <width>125</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>50</width>
+                       <width>125</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -369,7 +369,17 @@ border-radius: 6px;
 }</string>
                      </property>
                      <property name="text">
-                      <string>BACK</string>
+                      <string>  FOLDER UP</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/folder_up.png</normaloff>:/images/folder_up.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>30</width>
+                       <height>17</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
@@ -413,7 +423,7 @@ border-radius: 6px;
                      </property>
                      <property name="sizeHint" stdset="0">
                       <size>
-                       <width>177</width>
+                       <width>102</width>
                        <height>27</height>
                       </size>
                      </property>
@@ -770,13 +780,13 @@ QTableView {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>120</width>
+                       <width>90</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>120</width>
+                       <width>90</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -789,7 +799,17 @@ QTableView {
 }</string>
                      </property>
                      <property name="text">
-                      <string>DELETE</string>
+                      <string> DELETE</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>14</width>
+                       <height>14</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
@@ -836,13 +856,13 @@ QTableView {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>120</width>
+                       <width>130</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>120</width>
+                       <width>130</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -855,7 +875,17 @@ QTableView {
 }</string>
                      </property>
                      <property name="text">
-                      <string>NEW FOLDER</string>
+                      <string> NEW FOLDER</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/new_folder.png</normaloff>:/images/new_folder.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>28</width>
+                       <height>15</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
@@ -895,28 +925,42 @@ QTableView {
                   <property name="minimumSize">
                    <size>
                     <width>70</width>
-                    <height>130</height>
+                    <height>100</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
                     <width>70</width>
-                    <height>130</height>
+                    <height>100</height>
                    </size>
                   </property>
                   <property name="focusPolicy">
                    <enum>Qt::NoFocus</enum>
                   </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::RightToLeft</enum>
+                  </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
+    text-align: right;
+    padding-right: 10px;
+    font: 14pt &quot;Bebas Kai&quot;;
 }</string>
                   </property>
                   <property name="text">
                    <string>COPY
-TO
-USB
-&gt;&gt;&gt;</string>
+    TO
+  USB</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="xyz.qrc">
+                    <normaloff>:/images/right_arrow.png</normaloff>:/images/right_arrow.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>18</width>
+                    <height>18</height>
+                   </size>
                   </property>
                  </widget>
                 </item>
@@ -931,13 +975,13 @@ USB
                   <property name="minimumSize">
                    <size>
                     <width>70</width>
-                    <height>130</height>
+                    <height>100</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
                     <width>70</width>
-                    <height>130</height>
+                    <height>100</height>
                    </size>
                   </property>
                   <property name="focusPolicy">
@@ -951,8 +995,17 @@ USB
                   <property name="text">
                    <string>COPY
 FROM
-USB
-&lt;&lt;&lt;</string>
+USB</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="xyz.qrc">
+                    <normaloff>:/images/left_arrow.png</normaloff>:/images/left_arrow.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>18</width>
+                    <height>18</height>
+                   </size>
                   </property>
                  </widget>
                 </item>
@@ -1012,13 +1065,13 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>50</width>
+                       <width>125</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>50</width>
+                       <width>125</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1031,7 +1084,17 @@ border-radius: 6px;
 }</string>
                      </property>
                      <property name="text">
-                      <string>BACK</string>
+                      <string>  FOLDER UP</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/folder_up.png</normaloff>:/images/folder_up.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>30</width>
+                       <height>17</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
@@ -1045,13 +1108,13 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>60</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>60</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1064,7 +1127,17 @@ border-radius: 6px;
 }</string>
                      </property>
                      <property name="text">
-                      <string>USB</string>
+                      <string> USB</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/usb_icon.png</normaloff>:/images/usb_icon.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>32</width>
+                       <height>16</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
@@ -1075,7 +1148,7 @@ border-radius: 6px;
                      </property>
                      <property name="sizeHint" stdset="0">
                       <size>
-                       <width>227</width>
+                       <width>112</width>
                        <height>27</height>
                       </size>
                      </property>
@@ -1438,13 +1511,13 @@ QTableView {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>120</width>
+                       <width>90</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>120</width>
+                       <width>90</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1457,7 +1530,17 @@ QTableView {
 }</string>
                      </property>
                      <property name="text">
-                      <string>DELETE</string>
+                      <string> DELETE</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>14</width>
+                       <height>14</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
@@ -1504,13 +1587,13 @@ QTableView {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>120</width>
+                       <width>130</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>120</width>
+                       <width>130</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1523,7 +1606,17 @@ QTableView {
 }</string>
                      </property>
                      <property name="text">
-                      <string>NEW FOLDER</string>
+                      <string> NEW FOLDER</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/new_folder.png</normaloff>:/images/new_folder.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>28</width>
+                       <height>15</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
@@ -2259,7 +2352,17 @@ padding-right: 10px;
 }</string>
                        </property>
                        <property name="text">
-                        <string>&lt;&lt; CAROUSEL REV</string>
+                        <string> ATC REV</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="xyz.qrc">
+                         <normaloff>:/images/ccw_arrow.png</normaloff>:/images/ccw_arrow.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>20</width>
+                         <height>20</height>
+                        </size>
                        </property>
                        <property name="sub_name" stdset="0">
                         <string>m11.ngc</string>
@@ -2286,13 +2389,29 @@ padding-right: 10px;
                          <height>40</height>
                         </size>
                        </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::RightToLeft</enum>
+                       </property>
                        <property name="styleSheet">
-                        <string notr="true">QPushButton {
+                        <string notr="true">SubCallButton {
+    text-align: right;
+    padding-right: 28px;
    	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+}
+</string>
                        </property>
                        <property name="text">
-                        <string>CAROUSEL FWD &gt;&gt;</string>
+                        <string> ATC FWD </string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="xyz.qrc">
+                         <normaloff>:/images/cw_arrow.png</normaloff>:/images/cw_arrow.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>20</width>
+                         <height>20</height>
+                        </size>
                        </property>
                        <property name="sub_name" stdset="0">
                         <string>m12.ngc</string>
@@ -2302,64 +2421,12 @@ padding-right: 10px;
                     </layout>
                    </item>
                    <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="0">
+                    <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="0,0">
                      <property name="spacing">
-                      <number>2</number>
+                      <number>15</number>
                      </property>
                      <property name="sizeConstraint">
                       <enum>QLayout::SetFixedSize</enum>
-                     </property>
-                     <property name="leftMargin">
-                      <number>2</number>
-                     </property>
-                     <property name="topMargin">
-                      <number>2</number>
-                     </property>
-                     <property name="rightMargin">
-                      <number>2</number>
-                     </property>
-                     <property name="bottomMargin">
-                      <number>2</number>
-                     </property>
-                     <item>
-                      <widget class="SubCallButton" name="subcallbutton_7">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                         <horstretch>1</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="minimumSize">
-                        <size>
-                         <width>284</width>
-                         <height>40</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>16777215</width>
-                         <height>40</height>
-                        </size>
-                       </property>
-                       <property name="styleSheet">
-                        <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                       </property>
-                       <property name="text">
-                        <string>GO TO CAROUSEL LOAD POSITION</string>
-                       </property>
-                       <property name="sub_name" stdset="0">
-                        <string>extendatc.ngc</string>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
-                   </item>
-                   <item>
-                    <layout class="QHBoxLayout" name="horizontalLayout_11">
-                     <property name="spacing">
-                      <number>2</number>
                      </property>
                      <property name="leftMargin">
                       <number>2</number>
@@ -2383,7 +2450,7 @@ padding-right: 10px;
                        </property>
                        <property name="minimumSize">
                         <size>
-                         <width>284</width>
+                         <width>10</width>
                          <height>40</height>
                         </size>
                        </property>
@@ -2399,10 +2466,56 @@ padding-right: 10px;
 }</string>
                        </property>
                        <property name="text">
-                        <string>RETRACT CAROUSEL</string>
+                        <string> ATC RETRACT</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="xyz.qrc">
+                         <normaloff>:/images/left_arrow.png</normaloff>:/images/left_arrow.png</iconset>
                        </property>
                        <property name="sub_name" stdset="0">
                         <string>retractatc.ngc</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="SubCallButton" name="subcallbutton_7">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                         <horstretch>1</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>10</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::RightToLeft</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">SubCallButton {
+    text-align: right;
+    padding-right: 22px;
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                       </property>
+                       <property name="text">
+                        <string> ATC EXTEND </string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="xyz.qrc">
+                         <normaloff>:/images/right_arrow.png</normaloff>:/images/right_arrow.png</iconset>
+                       </property>
+                       <property name="sub_name" stdset="0">
+                        <string>extendatc.ngc</string>
                        </property>
                       </widget>
                      </item>
@@ -2425,39 +2538,6 @@ padding-right: 10px;
                      <property name="bottomMargin">
                       <number>2</number>
                      </property>
-                     <item>
-                      <widget class="SubCallButton" name="subcallbutton_4">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                         <horstretch>1</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="minimumSize">
-                        <size>
-                         <width>130</width>
-                         <height>40</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>16777215</width>
-                         <height>40</height>
-                        </size>
-                       </property>
-                       <property name="styleSheet">
-                        <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                       </property>
-                       <property name="text">
-                        <string>DRAWBAR TIGHT</string>
-                       </property>
-                       <property name="sub_name" stdset="0">
-                        <string>clamptool.ngc</string>
-                       </property>
-                      </widget>
-                     </item>
                      <item>
                       <widget class="SubCallButton" name="subcallbutton_5">
                        <property name="sizePolicy">
@@ -2488,6 +2568,39 @@ padding-right: 10px;
                        </property>
                        <property name="sub_name" stdset="0">
                         <string>unclamptool.ngc</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="SubCallButton" name="subcallbutton_4">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                         <horstretch>1</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>130</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>16777215</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>DRAWBAR TIGHT</string>
+                       </property>
+                       <property name="sub_name" stdset="0">
+                        <string>clamptool.ngc</string>
                        </property>
                       </widget>
                      </item>
@@ -4282,12 +4395,22 @@ padding-right: 10px;
                         <enum>Qt::NoFocus</enum>
                        </property>
                        <property name="text">
-                        <string>&lt;&lt; ATC REV</string>
+                        <string> ATC REV</string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="xyz.qrc">
+                         <normaloff>:/images/ccw_arrow.png</normaloff>:/images/ccw_arrow.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>20</width>
+                         <height>20</height>
+                        </size>
                        </property>
                       </widget>
                      </item>
                      <item>
-                      <widget class="AxisActionButton" name="m01_break_button_17">
+                      <widget class="AxisActionButton" name="atc_fwd">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                          <horstretch>0</horstretch>
@@ -4309,8 +4432,27 @@ padding-right: 10px;
                        <property name="focusPolicy">
                         <enum>Qt::NoFocus</enum>
                        </property>
+                       <property name="layoutDirection">
+                        <enum>Qt::RightToLeft</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">AxisActionButton {
+text-align: right;
+padding-right: 30px;
+}</string>
+                       </property>
                        <property name="text">
-                        <string>ATC FWD &gt;&gt;</string>
+                        <string>ATC FWD </string>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="xyz.qrc">
+                         <normaloff>:/images/cw_arrow.png</normaloff>:/images/cw_arrow.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>20</width>
+                         <height>20</height>
+                        </size>
                        </property>
                       </widget>
                      </item>
@@ -7681,6 +7823,9 @@ padding: -5px;
                            <property name="text">
                             <string>ZERO</string>
                            </property>
+                           <property name="checkable">
+                            <bool>true</bool>
+                           </property>
                           </widget>
                          </item>
                          <item>
@@ -8606,9 +8751,6 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
-                           <property name="reference_type" stdset="0">
-                            <enum>DROWidget::DistanceToGo</enum>
-                           </property>
                           </widget>
                          </item>
                          <item>
@@ -8702,6 +8844,9 @@ padding: -5px;
                            </property>
                            <property name="text">
                             <string>NoAction Y</string>
+                           </property>
+                           <property name="checkable">
+                            <bool>true</bool>
                            </property>
                            <property name="axis">
                             <enum>AxisActionButton::Y</enum>
@@ -9462,9 +9607,6 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
-                           <property name="reference_type" stdset="0">
-                            <enum>DROWidget::DistanceToGo</enum>
-                           </property>
                            <property name="axis">
                             <enum>DROWidget::Y</enum>
                            </property>
@@ -9561,6 +9703,9 @@ padding: -5px;
                            </property>
                            <property name="text">
                             <string>NoAction Z</string>
+                           </property>
+                           <property name="checkable">
+                            <bool>true</bool>
                            </property>
                            <property name="axis">
                             <enum>AxisActionButton::Z</enum>
@@ -10493,9 +10638,6 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
-                           <property name="reference_type" stdset="0">
-                            <enum>DROWidget::DistanceToGo</enum>
-                           </property>
                            <property name="axis">
                             <enum>DROWidget::Z</enum>
                            </property>
@@ -10719,6 +10861,12 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
+                           <property name="reference_type" stdset="0">
+                            <enum>DROWidget::Relative</enum>
+                           </property>
+                           <property name="axis">
+                            <enum>DROWidget::Z</enum>
+                           </property>
                           </widget>
                          </item>
                         </layout>
@@ -10773,6 +10921,9 @@ padding: -5px;
                            </property>
                            <property name="text">
                             <string>NoAction A</string>
+                           </property>
+                           <property name="checkable">
+                            <bool>true</bool>
                            </property>
                            <property name="axis">
                             <enum>AxisActionButton::A</enum>
@@ -11714,9 +11865,6 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
-                           <property name="reference_type" stdset="0">
-                            <enum>DROWidget::DistanceToGo</enum>
-                           </property>
                            <property name="axis">
                             <enum>DROWidget::A</enum>
                            </property>
@@ -11812,10 +11960,10 @@ padding: -5px;
 }</string>
                            </property>
                            <property name="text">
-                            <string>NoAction B</string>
+                            <string>ZERO</string>
                            </property>
-                           <property name="axis">
-                            <enum>AxisActionButton::B</enum>
+                           <property name="checkable">
+                            <bool>true</bool>
                            </property>
                           </widget>
                          </item>
@@ -12581,9 +12729,6 @@ padding: -5px;
                            </property>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                           </property>
-                           <property name="reference_type" stdset="0">
-                            <enum>DROWidget::DistanceToGo</enum>
                            </property>
                            <property name="axis">
                             <enum>DROWidget::B</enum>
@@ -17655,7 +17800,7 @@ Background:transparent;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -18012,7 +18157,7 @@ border-radius: 6px;
                   </size>
                  </property>
                  <property name="axis">
-                  <enum>JogButton::A</enum>
+                  <enum>JogButton::B</enum>
                  </property>
                 </widget>
                </item>
@@ -19790,7 +19935,7 @@ padding: -5px;
               <enum>StatusLabel::linear_units</enum>
              </property>
              <property name="format_spec" stdset="0">
-              <string>{0}</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -19917,7 +20062,7 @@ padding: -5px;
               <enum>StatusLabel::linear_units</enum>
              </property>
              <property name="format_spec" stdset="0">
-              <string>{0}</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -20379,6 +20524,9 @@ padding: -5px;
              </property>
              <property name="text">
               <string>X</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
             </widget>
            </item>
@@ -21091,9 +21239,6 @@ padding: -5px;
              <property name="action_id" stdset="0">
               <enum>AxisActionButton::Home</enum>
              </property>
-             <property name="direction">
-              <enum>AxisActionButton::Null</enum>
-             </property>
             </widget>
            </item>
           </layout>
@@ -21142,6 +21287,12 @@ padding: -5px;
              </property>
              <property name="text">
               <string>NoAction Y</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="action_id" stdset="0">
+              <enum>AxisActionButton::NoAction</enum>
              </property>
              <property name="axis">
               <enum>AxisActionButton::Y</enum>
@@ -21745,6 +21896,9 @@ padding: -5px;
              </property>
              <property name="text">
               <string>NoAction Z</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
              <property name="axis">
               <enum>AxisActionButton::Z</enum>
@@ -22520,6 +22674,9 @@ padding: -5px;
              </property>
              <property name="text">
               <string>NoAction A</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
              <property name="axis">
               <enum>AxisActionButton::A</enum>
@@ -23305,6 +23462,9 @@ padding: -5px;
              <property name="text">
               <string>NoAction B</string>
              </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
              <property name="axis">
               <enum>AxisActionButton::B</enum>
              </property>
@@ -23592,9 +23752,6 @@ padding: -5px;
              </property>
              <property name="indent">
               <number>0</number>
-             </property>
-             <property name="reference_type" stdset="0">
-              <enum>DROWidget::Absolute</enum>
              </property>
              <property name="axis">
               <enum>DROWidget::B</enum>
@@ -24788,12 +24945,6 @@ border-radius: 6px;
              <property name="diameter" stdset="0">
               <number>0</number>
              </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="layoutSpacing">
-              <number>16</number>
-             </property>
             </widget>
            </item>
           </layout>
@@ -24975,7 +25126,7 @@ border-radius: 4px;
               <enum>QAbstractSpinBox::NoButtons</enum>
              </property>
              <property name="maximum">
-              <number>200</number>
+              <number>100</number>
              </property>
              <property name="value">
               <number>100</number>
@@ -25195,7 +25346,7 @@ border-radius: 4px;
                  <enum>StatusLabel::linear_units</enum>
                 </property>
                 <property name="format_spec" stdset="0">
-                 <string>{0}</string>
+                 <string/>
                 </property>
                </widget>
               </item>
@@ -25870,13 +26021,13 @@ border-radius: 1px;
              </property>
              <property name="minimumSize">
               <size>
-               <width>90</width>
+               <width>100</width>
                <height>42</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>90</width>
+               <width>100</width>
                <height>42</height>
               </size>
              </property>
@@ -25890,6 +26041,16 @@ border-radius: 1px;
              </property>
              <property name="text">
               <string>REV</string>
+             </property>
+             <property name="icon">
+              <iconset resource="xyz.qrc">
+               <normaloff>:/images/ccw_arrow.png</normaloff>:/images/ccw_arrow.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -25960,26 +26121,41 @@ border-radius: 1px;
              </property>
              <property name="minimumSize">
               <size>
-               <width>90</width>
+               <width>100</width>
                <height>42</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>90</width>
+               <width>100</width>
                <height>42</height>
               </size>
              </property>
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="layoutDirection">
+              <enum>Qt::RightToLeft</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton {
-   	font: 17pt &quot;Bebas Kai&quot;;
+    text-align: right;
+    padding-right: 22px;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
              <property name="text">
               <string>FWD</string>
+             </property>
+             <property name="icon">
+              <iconset resource="xyz.qrc">
+               <normaloff>:/images/cw_arrow.png</normaloff>:/images/cw_arrow.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
              </property>
              <property name="checkable">
               <bool>true</bool>
