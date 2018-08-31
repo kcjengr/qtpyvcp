@@ -2,7 +2,7 @@ import sys, os
 from PyQt5 import uic
 
 from PyQt5.QtCore import Qt, pyqtSlot
-from PyQt5.QtWidgets import QMessageBox, QApplication, QDialog, QTreeWidgetItem, QStyleFactory
+from PyQt5.QtWidgets import QMessageBox, QFileDialog, QApplication, QDialog, QTreeWidgetItem, QStyleFactory
 
 from QtPyVCP import TOP_DIR
 
@@ -57,6 +57,19 @@ class VCPChooser(QDialog):
     def on_cancelButton_clicked(self):
         print "rejected"
         self.reject()
+
+    @pyqtSlot()
+    def on_fileButton_pressed(self):
+        vcp_file = QFileDialog.getOpenFileName(self,
+                              caption="Select VCP File",
+                              directory='examples',
+                              filter='VCP Files (*.ui *py)',
+                              options=QFileDialog.DontUseNativeDialog)
+
+        if vcp_file:
+            self.args.vcp = vcp_file[0]
+            self.accept()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
