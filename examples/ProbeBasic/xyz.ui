@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>7</number>
+           <number>6</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -6892,276 +6892,6 @@ border-radius: 6px;
                        <property name="verticalSpacing">
                         <number>10</number>
                        </property>
-                       <item row="1" column="2">
-                        <widget class="QPushButton" name="pushButton_29">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>110</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>120</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-                         </property>
-                         <property name="text">
-                          <string>G56</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="2" column="1">
-                        <widget class="QPushButton" name="pushButton_41">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>110</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>120</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-                         </property>
-                         <property name="text">
-                          <string>G59</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="1" column="3">
-                        <widget class="QPushButton" name="pushButton_40">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>110</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>120</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-                         </property>
-                         <property name="text">
-                          <string>G57</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="2" column="2">
-                        <widget class="QPushButton" name="pushButton_28">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>110</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>120</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-                         </property>
-                         <property name="text">
-                          <string>G59.1</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="1" column="4">
-                        <widget class="QPushButton" name="pushButton_42">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>110</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>120</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-                         </property>
-                         <property name="text">
-                          <string>G58</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="2" column="4">
-                        <widget class="QPushButton" name="pushButton_30">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>110</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>120</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-                         </property>
-                         <property name="text">
-                          <string>G59.3</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="2" column="3">
-                        <widget class="QPushButton" name="pushButton_44">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>110</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>120</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-                         </property>
-                         <property name="text">
-                          <string>G59.2</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="1" column="1">
-                        <widget class="QPushButton" name="pushButton_31">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>110</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>120</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-                         </property>
-                         <property name="text">
-                          <string>G55</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="1" column="0">
-                        <widget class="QPushButton" name="pushButton_43">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>110</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>120</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-                         </property>
-                         <property name="text">
-                          <string>G54</string>
-                         </property>
-                        </widget>
-                       </item>
                        <item row="0" column="0" colspan="5">
                         <widget class="QLabel" name="machine_column_header">
                          <property name="sizePolicy">
@@ -7198,6 +6928,330 @@ border-radius: 6px;
                          </property>
                          <property name="alignment">
                           <set>Qt::AlignCenter</set>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="0">
+                        <widget class="ActionButton" name="actionbutton_19">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>110</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>120</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                         <property name="actionID" stdset="0">
+                          <enum>ActionButton::Mist</enum>
+                         </property>
+                         <property name="customText" stdset="0">
+                          <string>G54</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="1">
+                        <widget class="ActionButton" name="actionbutton_23">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>110</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>120</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                         <property name="actionID" stdset="0">
+                          <enum>ActionButton::Mist</enum>
+                         </property>
+                         <property name="customText" stdset="0">
+                          <string>G55</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="2">
+                        <widget class="ActionButton" name="actionbutton_27">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>110</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>120</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                         <property name="actionID" stdset="0">
+                          <enum>ActionButton::Mist</enum>
+                         </property>
+                         <property name="customText" stdset="0">
+                          <string>G56</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="3">
+                        <widget class="ActionButton" name="actionbutton_24">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>110</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>120</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                         <property name="actionID" stdset="0">
+                          <enum>ActionButton::Mist</enum>
+                         </property>
+                         <property name="customText" stdset="0">
+                          <string>​G57</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="4">
+                        <widget class="ActionButton" name="actionbutton_20">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>110</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>120</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                         <property name="actionID" stdset="0">
+                          <enum>ActionButton::Mist</enum>
+                         </property>
+                         <property name="customText" stdset="0">
+                          <string>G58</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="1">
+                        <widget class="ActionButton" name="actionbutton_25">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>110</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>120</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                         <property name="actionID" stdset="0">
+                          <enum>ActionButton::Mist</enum>
+                         </property>
+                         <property name="customText" stdset="0">
+                          <string>G59</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="2">
+                        <widget class="ActionButton" name="actionbutton_22">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>110</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>120</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                         <property name="actionID" stdset="0">
+                          <enum>ActionButton::Mist</enum>
+                         </property>
+                         <property name="customText" stdset="0">
+                          <string>G59.1</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="3">
+                        <widget class="ActionButton" name="actionbutton_21">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>110</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>120</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                         <property name="actionID" stdset="0">
+                          <enum>ActionButton::Mist</enum>
+                         </property>
+                         <property name="customText" stdset="0">
+                          <string>G59.2</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="2" column="4">
+                        <widget class="ActionButton" name="actionbutton_26">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>110</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>120</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                         <property name="actionID" stdset="0">
+                          <enum>ActionButton::Mist</enum>
+                         </property>
+                         <property name="customText" stdset="0">
+                          <string>G59.3</string>
                          </property>
                         </widget>
                        </item>
@@ -7588,7 +7642,7 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="QPushButton" name="pushButton_53">
+                          <widget class="AxisActionButton" name="m01_break_button_38">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
@@ -7606,6 +7660,18 @@ padding: -5px;
                              <width>55</width>
                              <height>35</height>
                             </size>
+                           </property>
+                           <property name="font">
+                            <font>
+                             <family>Bebas Kai</family>
+                             <pointsize>15</pointsize>
+                             <weight>50</weight>
+                             <italic>false</italic>
+                             <bold>false</bold>
+                            </font>
+                           </property>
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
                            </property>
                            <property name="styleSheet">
                             <string notr="true">QPushButton {
@@ -8598,9 +8664,9 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="QPushButton" name="pushButton_47">
+                          <widget class="AxisActionButton" name="m01_break_button_37">
                            <property name="sizePolicy">
-                            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
                              <verstretch>0</verstretch>
                             </sizepolicy>
@@ -8617,13 +8683,28 @@ padding: -5px;
                              <height>35</height>
                             </size>
                            </property>
+                           <property name="font">
+                            <font>
+                             <family>Bebas Kai</family>
+                             <pointsize>15</pointsize>
+                             <weight>50</weight>
+                             <italic>false</italic>
+                             <bold>false</bold>
+                            </font>
+                           </property>
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
                            <property name="styleSheet">
                             <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                            </property>
                            <property name="text">
-                            <string>ZERO</string>
+                            <string>NoAction Y</string>
+                           </property>
+                           <property name="axis">
+                            <enum>AxisActionButton::Y</enum>
                            </property>
                           </widget>
                          </item>
@@ -9442,9 +9523,9 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="QPushButton" name="pushButton_45">
+                          <widget class="AxisActionButton" name="m01_break_button_34">
                            <property name="sizePolicy">
-                            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
                              <verstretch>0</verstretch>
                             </sizepolicy>
@@ -9461,13 +9542,28 @@ padding: -5px;
                              <height>35</height>
                             </size>
                            </property>
+                           <property name="font">
+                            <font>
+                             <family>Bebas Kai</family>
+                             <pointsize>15</pointsize>
+                             <weight>50</weight>
+                             <italic>false</italic>
+                             <bold>false</bold>
+                            </font>
+                           </property>
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
                            <property name="styleSheet">
                             <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                            </property>
                            <property name="text">
-                            <string>ZERO</string>
+                            <string>NoAction Z</string>
+                           </property>
+                           <property name="axis">
+                            <enum>AxisActionButton::Z</enum>
                            </property>
                           </widget>
                          </item>
@@ -10639,9 +10735,9 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="QPushButton" name="pushButton_52">
+                          <widget class="AxisActionButton" name="m01_break_button_36">
                            <property name="sizePolicy">
-                            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
                              <verstretch>0</verstretch>
                             </sizepolicy>
@@ -10658,13 +10754,28 @@ padding: -5px;
                              <height>35</height>
                             </size>
                            </property>
+                           <property name="font">
+                            <font>
+                             <family>Bebas Kai</family>
+                             <pointsize>15</pointsize>
+                             <weight>50</weight>
+                             <italic>false</italic>
+                             <bold>false</bold>
+                            </font>
+                           </property>
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
                            <property name="styleSheet">
                             <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                            </property>
                            <property name="text">
-                            <string>ZERO</string>
+                            <string>NoAction A</string>
+                           </property>
+                           <property name="axis">
+                            <enum>AxisActionButton::A</enum>
                            </property>
                           </widget>
                          </item>
@@ -11664,9 +11775,9 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="QPushButton" name="pushButton_46">
+                          <widget class="AxisActionButton" name="m01_break_button_35">
                            <property name="sizePolicy">
-                            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
                              <verstretch>0</verstretch>
                             </sizepolicy>
@@ -11683,13 +11794,28 @@ padding: -5px;
                              <height>35</height>
                             </size>
                            </property>
+                           <property name="font">
+                            <font>
+                             <family>Bebas Kai</family>
+                             <pointsize>15</pointsize>
+                             <weight>50</weight>
+                             <italic>false</italic>
+                             <bold>false</bold>
+                            </font>
+                           </property>
+                           <property name="focusPolicy">
+                            <enum>Qt::NoFocus</enum>
+                           </property>
                            <property name="styleSheet">
                             <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                            </property>
                            <property name="text">
-                            <string>ZERO</string>
+                            <string>NoAction B</string>
+                           </property>
+                           <property name="axis">
+                            <enum>AxisActionButton::B</enum>
                            </property>
                           </widget>
                          </item>
@@ -13039,8 +13165,8 @@ padding-left: 5px;
                  <property name="verticalSpacing">
                   <number>8</number>
                  </property>
-                 <item row="2" column="0">
-                  <widget class="QPushButton" name="pushButton_7">
+                 <item row="0" column="0">
+                  <widget class="ActionButton" name="actionbutton_11">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -13064,73 +13190,19 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="text">
-                    <string>G59.1</string>
+                   <property name="checkable">
+                    <bool>true</bool>
                    </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="2">
-                  <widget class="QPushButton" name="pushButton_3">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
+                   <property name="actionID" stdset="0">
+                    <enum>ActionButton::Mist</enum>
                    </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>120</width>
-                     <height>38</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>120</width>
-                     <height>38</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-                   </property>
-                   <property name="text">
-                    <string>G56</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="2">
-                  <widget class="QPushButton" name="pushButton_9">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>120</width>
-                     <height>38</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>120</width>
-                     <height>38</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-                   </property>
-                   <property name="text">
-                    <string>G59.3</string>
+                   <property name="customText" stdset="0">
+                    <string>G54</string>
                    </property>
                   </widget>
                  </item>
                  <item row="0" column="1">
-                  <widget class="QPushButton" name="pushButton_2">
+                  <widget class="ActionButton" name="actionbutton_14">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -13154,13 +13226,19 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="text">
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="actionID" stdset="0">
+                    <enum>ActionButton::Mist</enum>
+                   </property>
+                   <property name="customText" stdset="0">
                     <string>G55</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="0">
-                  <widget class="QPushButton" name="pushButton_5">
+                 <item row="0" column="2">
+                  <widget class="ActionButton" name="actionbutton_15">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -13184,13 +13262,19 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="text">
-                    <string>G57</string>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="actionID" stdset="0">
+                    <enum>ActionButton::Mist</enum>
+                   </property>
+                   <property name="customText" stdset="0">
+                    <string>G56</string>
                    </property>
                   </widget>
                  </item>
                  <item row="1" column="2">
-                  <widget class="QPushButton" name="pushButton_4">
+                  <widget class="ActionButton" name="actionbutton_17">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -13214,13 +13298,19 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="text">
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="actionID" stdset="0">
+                    <enum>ActionButton::Mist</enum>
+                   </property>
+                   <property name="customText" stdset="0">
                     <string>G59</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="1" column="1">
-                  <widget class="QPushButton" name="pushButton_6">
+                 <item row="2" column="2">
+                  <widget class="ActionButton" name="actionbutton_16">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -13244,13 +13334,55 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="text">
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="actionID" stdset="0">
+                    <enum>ActionButton::Mist</enum>
+                   </property>
+                   <property name="customText" stdset="0">
+                    <string>G59.3</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="ActionButton" name="actionbutton_12">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>120</width>
+                     <height>38</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>120</width>
+                     <height>38</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="actionID" stdset="0">
+                    <enum>ActionButton::Mist</enum>
+                   </property>
+                   <property name="customText" stdset="0">
                     <string>G58</string>
                    </property>
                   </widget>
                  </item>
                  <item row="2" column="1">
-                  <widget class="QPushButton" name="pushButton_8">
+                  <widget class="ActionButton" name="actionbutton_13">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -13274,13 +13406,19 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="text">
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="actionID" stdset="0">
+                    <enum>ActionButton::Mist</enum>
+                   </property>
+                   <property name="customText" stdset="0">
                     <string>G59.2</string>
                    </property>
                   </widget>
                  </item>
-                 <item row="0" column="0">
-                  <widget class="QPushButton" name="pushButton_16">
+                 <item row="1" column="0">
+                  <widget class="ActionButton" name="actionbutton_4">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -13304,8 +13442,50 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="text">
-                    <string>G54</string>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="actionID" stdset="0">
+                    <enum>ActionButton::Mist</enum>
+                   </property>
+                   <property name="customText" stdset="0">
+                    <string>​G57</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="ActionButton" name="actionbutton_18">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>120</width>
+                     <height>38</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>120</width>
+                     <height>38</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="actionID" stdset="0">
+                    <enum>ActionButton::Mist</enum>
+                   </property>
+                   <property name="customText" stdset="0">
+                    <string>G59.1</string>
                    </property>
                   </widget>
                  </item>
@@ -15253,7 +15433,7 @@ color: rgb(255, 255, 255);
                <enum>QTabWidget::Rounded</enum>
               </property>
               <property name="currentIndex">
-               <number>6</number>
+               <number>1</number>
               </property>
               <property name="iconSize">
                <size>
@@ -17475,7 +17655,7 @@ Background:transparent;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -17946,7 +18126,7 @@ border-radius: 6px;
             </property>
             <property name="maximumSize">
              <size>
-              <width>48</width>
+              <width>150</width>
               <height>20</height>
              </size>
             </property>
@@ -18086,9 +18266,9 @@ font: 14pt &quot;Bebas Kai&quot;;
            <widget class="QLabel" name="label_19">
             <property name="geometry">
              <rect>
-              <x>168</x>
+              <x>54</x>
               <y>2</y>
-              <width>48</width>
+              <width>150</width>
               <height>20</height>
              </rect>
             </property>
@@ -18100,13 +18280,13 @@ font: 14pt &quot;Bebas Kai&quot;;
             </property>
             <property name="minimumSize">
              <size>
-              <width>48</width>
+              <width>150</width>
               <height>20</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>48</width>
+              <width>150</width>
               <height>20</height>
              </size>
             </property>
@@ -18119,38 +18299,124 @@ font: 14pt &quot;Bebas Kai&quot;;
 }</string>
             </property>
             <property name="text">
-             <string>STATUS:</string>
+             <string>MACHINE STATUS:</string>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
-           <widget class="StatusLabel" name="statuslabel_11">
+           <widget class="QFrame" name="frame_32">
             <property name="geometry">
              <rect>
-              <x>217</x>
+              <x>214</x>
               <y>0</y>
-              <width>30</width>
-              <height>600</height>
+              <width>35</width>
+              <height>611</height>
              </rect>
             </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>35</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>35</width>
+              <height>16777215</height>
+             </size>
+            </property>
             <property name="styleSheet">
-             <string notr="true">QLabel{
+             <string notr="true">QFrame {
+    border: none;
+}</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Plain</enum>
+            </property>
+            <property name="lineWidth">
+             <number>2</number>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_34">
+             <property name="spacing">
+              <number>15</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="StatusLabel" name="statuslabel_13">
+               <property name="styleSheet">
+                <string notr="true">QLabel{
 color: white;
 border: none;
 background-color: transparent;
 font: 14pt &quot;Bebas Kai&quot;;
 }</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-            <property name="indent">
-             <number>0</number>
-            </property>
-            <property name="label_type" stdset="0">
-             <enum>StatusLabel::gcodes</enum>
-            </property>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="indent">
+                <number>0</number>
+               </property>
+               <property name="label_type" stdset="0">
+                <enum>StatusLabel::gcodes</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="StatusLabel" name="statuslabel_14">
+               <property name="minimumSize">
+                <size>
+                 <width>30</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QLabel{
+color: white;
+border: none;
+background-color: transparent;
+font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="indent">
+                <number>0</number>
+               </property>
+               <property name="label_type" stdset="0">
+                <enum>StatusLabel::mcodes</enum>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </widget>
          </widget>
@@ -18252,6 +18518,12 @@ border-radius: 6px;
              <property name="checkable">
               <bool>true</bool>
              </property>
+             <property name="actionID" stdset="0">
+              <enum>ActionButton::Mist</enum>
+             </property>
+             <property name="customText" stdset="0">
+              <string>CYCLE START</string>
+             </property>
             </widget>
            </item>
           </layout>
@@ -18284,10 +18556,16 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>Single Block</string>
+              <string>SINGLE BLOCK</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="actionID" stdset="0">
+              <enum>ActionButton::Mist</enum>
              </property>
              <property name="customText" stdset="0">
-              <string>Single Block</string>
+              <string>SINGLE BLOCK</string>
              </property>
             </widget>
            </item>
@@ -18341,13 +18619,16 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>Opt Stop</string>
+              <string>M01 BREAK</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
              </property>
              <property name="actionID" stdset="0">
               <enum>ActionButton::OptionalStop</enum>
+             </property>
+             <property name="customText" stdset="0">
+              <string>M01 BREAK</string>
              </property>
             </widget>
            </item>
@@ -18381,13 +18662,16 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>Feedhold</string>
+              <string>FEED HOLD</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
              </property>
              <property name="actionID" stdset="0">
               <enum>ActionButton::FeedHold</enum>
+             </property>
+             <property name="customText" stdset="0">
+              <string>FEED HOLD</string>
              </property>
             </widget>
            </item>
@@ -18441,10 +18725,16 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>Run FM Here</string>
+              <string>RUN FM HERE</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="actionID" stdset="0">
+              <enum>ActionButton::Mist</enum>
              </property>
              <property name="customText" stdset="0">
-              <string>Run FM Here</string>
+              <string>RUN FM HERE</string>
              </property>
             </widget>
            </item>
@@ -18538,10 +18828,16 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>NoAction </string>
+              <string>RESET</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
+             </property>
+             <property name="actionID" stdset="0">
+              <enum>ActionButton::Mist</enum>
+             </property>
+             <property name="customText" stdset="0">
+              <string>RESET</string>
              </property>
             </widget>
            </item>
@@ -18638,10 +18934,16 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>NoAction </string>
+              <string>STOP</string>
              </property>
              <property name="checkable">
-              <bool>false</bool>
+              <bool>true</bool>
+             </property>
+             <property name="actionID" stdset="0">
+              <enum>ActionButton::Mist</enum>
+             </property>
+             <property name="customText" stdset="0">
+              <string>STOP</string>
              </property>
             </widget>
            </item>
@@ -18707,10 +19009,13 @@ border-radius: 1px;
 }</string>
              </property>
              <property name="text">
-              <string>Power </string>
+              <string>POWER</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
+             </property>
+             <property name="customText" stdset="0">
+              <string>POWER</string>
              </property>
             </widget>
            </item>
@@ -18861,13 +19166,16 @@ border-radius: 1px;
 }</string>
              </property>
              <property name="text">
-              <string>E-Stop</string>
+              <string>E-STOP</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
              </property>
              <property name="actionID" stdset="0">
               <enum>ActionButton::EmergencyStop</enum>
+             </property>
+             <property name="customText" stdset="0">
+              <string>E-STOP</string>
              </property>
             </widget>
            </item>
@@ -19296,6 +19604,12 @@ padding: -5px;
              <property name="checkable">
               <bool>true</bool>
              </property>
+             <property name="actionID" stdset="0">
+              <enum>ActionButton::Mist</enum>
+             </property>
+             <property name="customText" stdset="0">
+              <string>M6 G43</string>
+             </property>
              <property name="option" stdset="0">
               <bool>true</bool>
              </property>
@@ -19338,6 +19652,12 @@ padding: -5px;
              </property>
              <property name="checkable">
               <bool>true</bool>
+             </property>
+             <property name="actionID" stdset="0">
+              <enum>ActionButton::Mist</enum>
+             </property>
+             <property name="customText" stdset="0">
+              <string>GO TO G30</string>
              </property>
              <property name="option" stdset="0">
               <bool>true</bool>
@@ -19672,7 +19992,13 @@ border-radius: 1px;
               <string>GO TO ZERO</string>
              </property>
              <property name="checkable">
-              <bool>false</bool>
+              <bool>true</bool>
+             </property>
+             <property name="actionID" stdset="0">
+              <enum>ActionButton::Mist</enum>
+             </property>
+             <property name="customText" stdset="0">
+              <string>GO TO ZERO</string>
              </property>
              <property name="option" stdset="0">
               <bool>true</bool>
@@ -20015,9 +20341,9 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="QPushButton" name="x_axis_button">
+            <widget class="AxisActionButton" name="m01_break_button_30">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -20033,6 +20359,15 @@ padding: -5px;
                <width>55</width>
                <height>40</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+              </font>
              </property>
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
@@ -20769,9 +21104,9 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="QPushButton" name="y_axis_button">
+            <widget class="AxisActionButton" name="m01_break_button_33">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -20788,6 +21123,15 @@ padding: -5px;
                <height>40</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+              </font>
+             </property>
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
@@ -20797,7 +21141,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>Y</string>
+              <string>NoAction Y</string>
+             </property>
+             <property name="axis">
+              <enum>AxisActionButton::Y</enum>
              </property>
             </widget>
            </item>
@@ -21360,9 +21707,9 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="QPushButton" name="z_axis_button">
+            <widget class="AxisActionButton" name="m01_break_button_29">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -21379,6 +21726,15 @@ padding: -5px;
                <height>40</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+              </font>
+             </property>
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
@@ -21388,7 +21744,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>Z</string>
+              <string>NoAction Z</string>
+             </property>
+             <property name="axis">
+              <enum>AxisActionButton::Z</enum>
              </property>
             </widget>
            </item>
@@ -22123,9 +22482,9 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="QPushButton" name="a_axis_button">
+            <widget class="AxisActionButton" name="m01_break_button_32">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -22142,6 +22501,15 @@ padding: -5px;
                <height>40</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+              </font>
+             </property>
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
@@ -22151,7 +22519,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>A</string>
+              <string>NoAction A</string>
+             </property>
+             <property name="axis">
+              <enum>AxisActionButton::A</enum>
              </property>
             </widget>
            </item>
@@ -22895,9 +23266,9 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="QPushButton" name="b_axis_button">
+            <widget class="AxisActionButton" name="m01_break_button_31">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -22914,6 +23285,15 @@ padding: -5px;
                <height>40</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+              </font>
+             </property>
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
@@ -22923,7 +23303,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>B</string>
+              <string>NoAction B</string>
+             </property>
+             <property name="axis">
+              <enum>AxisActionButton::B</enum>
              </property>
             </widget>
            </item>
@@ -24057,6 +24440,12 @@ LOAD</string>
            <property name="checkable">
             <bool>true</bool>
            </property>
+           <property name="actionID" stdset="0">
+            <enum>ActionButton::Mist</enum>
+           </property>
+           <property name="customText" stdset="0">
+            <string>MV 100%</string>
+           </property>
            <property name="option" stdset="0">
             <bool>true</bool>
            </property>
@@ -24363,6 +24752,9 @@ border-radius: 6px;
              <property name="checkable">
               <bool>true</bool>
              </property>
+             <property name="actionID" stdset="0">
+              <enum>ActionButton::StepMode</enum>
+             </property>
             </widget>
            </item>
            <item>
@@ -24447,6 +24839,9 @@ border-radius: 6px;
              </property>
              <property name="checked">
               <bool>true</bool>
+             </property>
+             <property name="actionID" stdset="0">
+              <enum>ActionButton::JogMode</enum>
              </property>
             </widget>
            </item>
@@ -25499,6 +25894,12 @@ border-radius: 1px;
              <property name="checkable">
               <bool>true</bool>
              </property>
+             <property name="actionID" stdset="0">
+              <enum>ActionButton::Mist</enum>
+             </property>
+             <property name="customText" stdset="0">
+              <string>REV</string>
+             </property>
              <property name="option" stdset="0">
               <bool>true</bool>
              </property>
@@ -25538,6 +25939,12 @@ border-radius: 1px;
              <property name="checkable">
               <bool>true</bool>
              </property>
+             <property name="actionID" stdset="0">
+              <enum>ActionButton::Mist</enum>
+             </property>
+             <property name="customText" stdset="0">
+              <string>STOP</string>
+             </property>
              <property name="option" stdset="0">
               <bool>true</bool>
              </property>
@@ -25576,6 +25983,12 @@ border-radius: 1px;
              </property>
              <property name="checkable">
               <bool>true</bool>
+             </property>
+             <property name="actionID" stdset="0">
+              <enum>ActionButton::Mist</enum>
+             </property>
+             <property name="customText" stdset="0">
+              <string>FWD</string>
              </property>
              <property name="option" stdset="0">
               <bool>true</bool>
