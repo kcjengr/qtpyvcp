@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>8</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -350,13 +350,13 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>50</width>
+                       <width>125</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>50</width>
+                       <width>125</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -369,7 +369,17 @@ border-radius: 6px;
 }</string>
                      </property>
                      <property name="text">
-                      <string>BACK</string>
+                      <string>  FOLDER UP</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/folder_up.png</normaloff>:/images/folder_up.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>30</width>
+                       <height>17</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
@@ -413,7 +423,7 @@ border-radius: 6px;
                      </property>
                      <property name="sizeHint" stdset="0">
                       <size>
-                       <width>177</width>
+                       <width>102</width>
                        <height>27</height>
                       </size>
                      </property>
@@ -770,13 +780,13 @@ QTableView {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>120</width>
+                       <width>90</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>120</width>
+                       <width>90</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -789,7 +799,17 @@ QTableView {
 }</string>
                      </property>
                      <property name="text">
-                      <string>DELETE</string>
+                      <string> DELETE</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>14</width>
+                       <height>14</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
@@ -836,13 +856,13 @@ QTableView {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>120</width>
+                       <width>130</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>120</width>
+                       <width>130</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -855,7 +875,17 @@ QTableView {
 }</string>
                      </property>
                      <property name="text">
-                      <string>NEW FOLDER</string>
+                      <string> NEW FOLDER</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/new_folder.png</normaloff>:/images/new_folder.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>28</width>
+                       <height>15</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
@@ -895,13 +925,13 @@ QTableView {
                   <property name="minimumSize">
                    <size>
                     <width>70</width>
-                    <height>130</height>
+                    <height>100</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
                     <width>70</width>
-                    <height>130</height>
+                    <height>100</height>
                    </size>
                   </property>
                   <property name="focusPolicy">
@@ -912,17 +942,25 @@ QTableView {
                   </property>
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
+    text-align: right;
+    padding-right: 10px;
+    font: 14pt &quot;Bebas Kai&quot;;
 }</string>
                   </property>
                   <property name="text">
                    <string>COPY
-TO
-USB</string>
+    TO
+  USB</string>
                   </property>
                   <property name="icon">
                    <iconset resource="xyz.qrc">
                     <normaloff>:/images/right_arrow.png</normaloff>:/images/right_arrow.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>18</width>
+                    <height>18</height>
+                   </size>
                   </property>
                  </widget>
                 </item>
@@ -937,13 +975,13 @@ USB</string>
                   <property name="minimumSize">
                    <size>
                     <width>70</width>
-                    <height>130</height>
+                    <height>100</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
                     <width>70</width>
-                    <height>130</height>
+                    <height>100</height>
                    </size>
                   </property>
                   <property name="focusPolicy">
@@ -962,6 +1000,12 @@ USB</string>
                   <property name="icon">
                    <iconset resource="xyz.qrc">
                     <normaloff>:/images/left_arrow.png</normaloff>:/images/left_arrow.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>18</width>
+                    <height>18</height>
+                   </size>
                   </property>
                  </widget>
                 </item>
@@ -1021,13 +1065,13 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>50</width>
+                       <width>125</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>50</width>
+                       <width>125</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1040,7 +1084,17 @@ border-radius: 6px;
 }</string>
                      </property>
                      <property name="text">
-                      <string>BACK</string>
+                      <string>  FOLDER UP</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/folder_up.png</normaloff>:/images/folder_up.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>30</width>
+                       <height>17</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
@@ -1054,13 +1108,13 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>60</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>60</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1073,7 +1127,17 @@ border-radius: 6px;
 }</string>
                      </property>
                      <property name="text">
-                      <string>USB</string>
+                      <string> USB</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/usb_icon.png</normaloff>:/images/usb_icon.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>32</width>
+                       <height>16</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
@@ -1084,7 +1148,7 @@ border-radius: 6px;
                      </property>
                      <property name="sizeHint" stdset="0">
                       <size>
-                       <width>227</width>
+                       <width>112</width>
                        <height>27</height>
                       </size>
                      </property>
@@ -1447,13 +1511,13 @@ QTableView {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>120</width>
+                       <width>90</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>120</width>
+                       <width>90</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1466,7 +1530,17 @@ QTableView {
 }</string>
                      </property>
                      <property name="text">
-                      <string>DELETE</string>
+                      <string> DELETE</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>14</width>
+                       <height>14</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
@@ -1513,13 +1587,13 @@ QTableView {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>120</width>
+                       <width>130</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>120</width>
+                       <width>130</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1532,7 +1606,17 @@ QTableView {
 }</string>
                      </property>
                      <property name="text">
-                      <string>NEW FOLDER</string>
+                      <string> NEW FOLDER</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/new_folder.png</normaloff>:/images/new_folder.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>28</width>
+                       <height>15</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
@@ -7739,6 +7823,9 @@ padding: -5px;
                            <property name="text">
                             <string>ZERO</string>
                            </property>
+                           <property name="checkable">
+                            <bool>true</bool>
+                           </property>
                           </widget>
                          </item>
                          <item>
@@ -7997,6 +8084,9 @@ padding: -5px;
                            </property>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                           </property>
+                           <property name="reference_type" stdset="0">
+                            <enum>DROWidget::Relative</enum>
                            </property>
                           </widget>
                          </item>
@@ -8438,6 +8528,9 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
+                           <property name="reference_type" stdset="0">
+                            <enum>DROWidget::Relative</enum>
+                           </property>
                           </widget>
                          </item>
                          <item>
@@ -8750,7 +8843,10 @@ padding: -5px;
 }</string>
                            </property>
                            <property name="text">
-                            <string>ZERO</string>
+                            <string>NoAction Y</string>
+                           </property>
+                           <property name="checkable">
+                            <bool>true</bool>
                            </property>
                            <property name="axis">
                             <enum>AxisActionButton::Y</enum>
@@ -8835,6 +8931,12 @@ padding: -5px;
                            </property>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                           </property>
+                           <property name="reference_type" stdset="0">
+                            <enum>DROWidget::Relative</enum>
+                           </property>
+                           <property name="axis">
+                            <enum>DROWidget::Y</enum>
                            </property>
                           </widget>
                          </item>
@@ -9056,6 +9158,9 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
+                           <property name="axis">
+                            <enum>DROWidget::Y</enum>
+                           </property>
                           </widget>
                          </item>
                          <item>
@@ -9275,6 +9380,12 @@ padding: -5px;
                            </property>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                           </property>
+                           <property name="reference_type" stdset="0">
+                            <enum>DROWidget::Relative</enum>
+                           </property>
+                           <property name="axis">
+                            <enum>DROWidget::Y</enum>
                            </property>
                           </widget>
                          </item>
@@ -9496,6 +9607,9 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
+                           <property name="axis">
+                            <enum>DROWidget::Y</enum>
+                           </property>
                           </widget>
                          </item>
                          <item>
@@ -9588,7 +9702,10 @@ padding: -5px;
 }</string>
                            </property>
                            <property name="text">
-                            <string>ZERO</string>
+                            <string>NoAction Z</string>
+                           </property>
+                           <property name="checkable">
+                            <bool>true</bool>
                            </property>
                            <property name="axis">
                             <enum>AxisActionButton::Z</enum>
@@ -9846,6 +9963,12 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
+                           <property name="reference_type" stdset="0">
+                            <enum>DROWidget::Relative</enum>
+                           </property>
+                           <property name="axis">
+                            <enum>DROWidget::Z</enum>
+                           </property>
                           </widget>
                          </item>
                          <item>
@@ -10065,6 +10188,9 @@ padding: -5px;
                            </property>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                           </property>
+                           <property name="axis">
+                            <enum>DROWidget::Z</enum>
                            </property>
                           </widget>
                          </item>
@@ -10286,6 +10412,12 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
+                           <property name="reference_type" stdset="0">
+                            <enum>DROWidget::Relative</enum>
+                           </property>
+                           <property name="axis">
+                            <enum>DROWidget::Z</enum>
+                           </property>
                           </widget>
                          </item>
                          <item>
@@ -10505,6 +10637,9 @@ padding: -5px;
                            </property>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                           </property>
+                           <property name="axis">
+                            <enum>DROWidget::Z</enum>
                            </property>
                           </widget>
                          </item>
@@ -10726,6 +10861,12 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
+                           <property name="reference_type" stdset="0">
+                            <enum>DROWidget::Relative</enum>
+                           </property>
+                           <property name="axis">
+                            <enum>DROWidget::Z</enum>
+                           </property>
                           </widget>
                          </item>
                         </layout>
@@ -10779,7 +10920,10 @@ padding: -5px;
 }</string>
                            </property>
                            <property name="text">
-                            <string>ZERO</string>
+                            <string>NoAction A</string>
+                           </property>
+                           <property name="checkable">
+                            <bool>true</bool>
                            </property>
                            <property name="axis">
                             <enum>AxisActionButton::A</enum>
@@ -11037,6 +11181,12 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
+                           <property name="reference_type" stdset="0">
+                            <enum>DROWidget::Relative</enum>
+                           </property>
+                           <property name="axis">
+                            <enum>DROWidget::A</enum>
+                           </property>
                            <property name="diameter_mode" stdset="0">
                             <bool>true</bool>
                            </property>
@@ -11259,6 +11409,9 @@ padding: -5px;
                            </property>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                           </property>
+                           <property name="axis">
+                            <enum>DROWidget::A</enum>
                            </property>
                            <property name="diameter_mode" stdset="0">
                             <bool>true</bool>
@@ -11483,6 +11636,12 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
+                           <property name="reference_type" stdset="0">
+                            <enum>DROWidget::Relative</enum>
+                           </property>
+                           <property name="axis">
+                            <enum>DROWidget::A</enum>
+                           </property>
                            <property name="diameter_mode" stdset="0">
                             <bool>true</bool>
                            </property>
@@ -11706,6 +11865,9 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
+                           <property name="axis">
+                            <enum>DROWidget::A</enum>
+                           </property>
                           </widget>
                          </item>
                          <item>
@@ -11800,6 +11962,9 @@ padding: -5px;
                            <property name="text">
                             <string>ZERO</string>
                            </property>
+                           <property name="checkable">
+                            <bool>true</bool>
+                           </property>
                           </widget>
                          </item>
                          <item>
@@ -11880,6 +12045,12 @@ padding: -5px;
                            </property>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                           </property>
+                           <property name="reference_type" stdset="0">
+                            <enum>DROWidget::Relative</enum>
+                           </property>
+                           <property name="axis">
+                            <enum>DROWidget::B</enum>
                            </property>
                            <property name="diameter_mode" stdset="0">
                             <bool>true</bool>
@@ -12104,6 +12275,9 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
+                           <property name="axis">
+                            <enum>DROWidget::B</enum>
+                           </property>
                            <property name="diameter_mode" stdset="0">
                             <bool>true</bool>
                            </property>
@@ -12327,6 +12501,12 @@ padding: -5px;
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
+                           <property name="reference_type" stdset="0">
+                            <enum>DROWidget::Relative</enum>
+                           </property>
+                           <property name="axis">
+                            <enum>DROWidget::B</enum>
+                           </property>
                            <property name="diameter_mode" stdset="0">
                             <bool>true</bool>
                            </property>
@@ -12549,6 +12729,9 @@ padding: -5px;
                            </property>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                           </property>
+                           <property name="axis">
+                            <enum>DROWidget::B</enum>
                            </property>
                            <property name="diameter_mode" stdset="0">
                             <bool>true</bool>
@@ -17698,6 +17881,9 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
+                 <property name="axis">
+                  <enum>JogButton::Z</enum>
+                 </property>
                 </widget>
                </item>
               </layout>
@@ -17730,6 +17916,12 @@ border-radius: 6px;
                    <width>48</width>
                    <height>48</height>
                   </size>
+                 </property>
+                 <property name="direction">
+                  <enum>JogButton::Negative</enum>
+                 </property>
+                 <property name="axis">
+                  <enum>JogButton::Z</enum>
                  </property>
                 </widget>
                </item>
@@ -17808,6 +18000,9 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
+                 <property name="direction">
+                  <enum>JogButton::Negative</enum>
+                 </property>
                 </widget>
                </item>
                <item row="2" column="1">
@@ -17843,6 +18038,12 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
+                 <property name="direction">
+                  <enum>JogButton::Negative</enum>
+                 </property>
+                 <property name="axis">
+                  <enum>JogButton::Y</enum>
+                 </property>
                 </widget>
                </item>
                <item row="0" column="1">
@@ -17871,6 +18072,9 @@ border-radius: 6px;
                    <width>48</width>
                    <height>48</height>
                   </size>
+                 </property>
+                 <property name="axis">
+                  <enum>JogButton::Y</enum>
                  </property>
                 </widget>
                </item>
@@ -17911,6 +18115,12 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
+                 <property name="direction">
+                  <enum>JogButton::Negative</enum>
+                 </property>
+                 <property name="axis">
+                  <enum>JogButton::A</enum>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -17945,6 +18155,9 @@ border-radius: 6px;
                    <width>48</width>
                    <height>48</height>
                   </size>
+                 </property>
+                 <property name="axis">
+                  <enum>JogButton::B</enum>
                  </property>
                 </widget>
                </item>
@@ -17985,6 +18198,12 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
+                 <property name="direction">
+                  <enum>JogButton::Negative</enum>
+                 </property>
+                 <property name="axis">
+                  <enum>JogButton::B</enum>
+                 </property>
                 </widget>
                </item>
                <item>
@@ -18019,6 +18238,9 @@ border-radius: 6px;
                    <width>48</width>
                    <height>48</height>
                   </size>
+                 </property>
+                 <property name="axis">
+                  <enum>JogButton::B</enum>
                  </property>
                 </widget>
                </item>
@@ -20303,6 +20525,9 @@ padding: -5px;
              <property name="text">
               <string>X</string>
              </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
             </widget>
            </item>
            <item>
@@ -20526,6 +20751,9 @@ padding: -5px;
              </property>
              <property name="indent">
               <number>0</number>
+             </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::Relative</enum>
              </property>
             </widget>
            </item>
@@ -20975,6 +21203,9 @@ padding: -5px;
              <property name="indent">
               <number>0</number>
              </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::DistanceToGo</enum>
+             </property>
             </widget>
            </item>
            <item>
@@ -21055,7 +21286,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>Y</string>
+              <string>NoAction Y</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
              <property name="action_id" stdset="0">
               <enum>AxisActionButton::NoAction</enum>
@@ -21287,6 +21521,12 @@ padding: -5px;
              <property name="indent">
               <number>0</number>
              </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::Relative</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::Y</enum>
+             </property>
             </widget>
            </item>
            <item>
@@ -21338,6 +21578,9 @@ padding: -5px;
              </property>
              <property name="indent">
               <number>0</number>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::Y</enum>
              </property>
             </widget>
            </item>
@@ -21563,6 +21806,12 @@ padding: -5px;
              <property name="indent">
               <number>0</number>
              </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::DistanceToGo</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::Y</enum>
+             </property>
             </widget>
            </item>
            <item>
@@ -21646,7 +21895,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>Z</string>
+              <string>NoAction Z</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
              <property name="axis">
               <enum>AxisActionButton::Z</enum>
@@ -21875,6 +22127,12 @@ padding: -5px;
              <property name="indent">
               <number>0</number>
              </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::Relative</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::Z</enum>
+             </property>
             </widget>
            </item>
            <item>
@@ -22098,6 +22356,9 @@ padding: -5px;
              </property>
              <property name="indent">
               <number>0</number>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::Z</enum>
              </property>
             </widget>
            </item>
@@ -22323,6 +22584,12 @@ padding: -5px;
              <property name="indent">
               <number>0</number>
              </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::DistanceToGo</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::Z</enum>
+             </property>
             </widget>
            </item>
            <item>
@@ -22406,7 +22673,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>A</string>
+              <string>NoAction A</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
              <property name="axis">
               <enum>AxisActionButton::A</enum>
@@ -22635,6 +22905,12 @@ padding: -5px;
              <property name="indent">
               <number>0</number>
              </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::Relative</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::A</enum>
+             </property>
              <property name="diameter_mode" stdset="0">
               <bool>true</bool>
              </property>
@@ -22861,6 +23137,9 @@ padding: -5px;
              </property>
              <property name="indent">
               <number>0</number>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::A</enum>
              </property>
              <property name="diameter_mode" stdset="0">
               <bool>true</bool>
@@ -23089,6 +23368,12 @@ padding: -5px;
              <property name="indent">
               <number>0</number>
              </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::DistanceToGo</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::A</enum>
+             </property>
              <property name="diameter_mode" stdset="0">
               <bool>true</bool>
              </property>
@@ -23175,7 +23460,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>B</string>
+              <string>NoAction B</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
              <property name="axis">
               <enum>AxisActionButton::B</enum>
@@ -23404,6 +23692,12 @@ padding: -5px;
              <property name="indent">
               <number>0</number>
              </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::Relative</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::B</enum>
+             </property>
              <property name="diameter_mode" stdset="0">
               <bool>true</bool>
              </property>
@@ -23458,6 +23752,9 @@ padding: -5px;
              </property>
              <property name="indent">
               <number>0</number>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::B</enum>
              </property>
              <property name="diameter_mode" stdset="0">
               <bool>true</bool>
@@ -23686,6 +23983,12 @@ padding: -5px;
              <property name="indent">
               <number>0</number>
              </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::DistanceToGo</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::B</enum>
+             </property>
              <property name="diameter_mode" stdset="0">
               <bool>true</bool>
              </property>
@@ -23848,6 +24151,9 @@ border-radius: 4px;
            </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="override_type" stdset="0">
+            <enum>OverrideSlider::rapid_override</enum>
            </property>
           </widget>
          </item>
@@ -24291,6 +24597,9 @@ LOAD</string>
            <property name="checkable">
             <bool>true</bool>
            </property>
+           <property name="actionID" stdset="0">
+            <enum>ActionButton::Mist</enum>
+           </property>
            <property name="customText" stdset="0">
             <string>MV 100%</string>
            </property>
@@ -24509,6 +24818,9 @@ border-radius: 4px;
            </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="override_type" stdset="0">
+            <enum>OverrideSlider::speed_override</enum>
            </property>
           </widget>
          </item>
@@ -24814,7 +25126,7 @@ border-radius: 4px;
               <enum>QAbstractSpinBox::NoButtons</enum>
              </property>
              <property name="maximum">
-              <number>200</number>
+              <number>100</number>
              </property>
              <property name="value">
               <number>100</number>
@@ -24866,7 +25178,7 @@ border-radius: 4px;
               <enum>StatusLabel::current_vel</enum>
              </property>
              <property name="format_spec" stdset="0">
-              <string>{:.1f} {units}/min</string>
+              <string>{:.1f}</string>
              </property>
             </widget>
            </item>
@@ -25411,7 +25723,7 @@ border-radius: 1px;
               <enum>StatusLabel::spindle_speed</enum>
              </property>
              <property name="format_spec" stdset="0">
-              <string>{:.2f} rpm</string>
+              <string>{:.2f}</string>
              </property>
             </widget>
            </item>
@@ -25709,13 +26021,13 @@ border-radius: 1px;
              </property>
              <property name="minimumSize">
               <size>
-               <width>90</width>
+               <width>100</width>
                <height>42</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>90</width>
+               <width>100</width>
                <height>42</height>
               </size>
              </property>
@@ -25729,6 +26041,16 @@ border-radius: 1px;
              </property>
              <property name="text">
               <string>REV</string>
+             </property>
+             <property name="icon">
+              <iconset resource="xyz.qrc">
+               <normaloff>:/images/ccw_arrow.png</normaloff>:/images/ccw_arrow.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -25799,26 +26121,41 @@ border-radius: 1px;
              </property>
              <property name="minimumSize">
               <size>
-               <width>90</width>
+               <width>100</width>
                <height>42</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>90</width>
+               <width>100</width>
                <height>42</height>
               </size>
              </property>
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="layoutDirection">
+              <enum>Qt::RightToLeft</enum>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton {
-   	font: 17pt &quot;Bebas Kai&quot;;
+    text-align: right;
+    padding-right: 22px;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
              <property name="text">
               <string>FWD</string>
+             </property>
+             <property name="icon">
+              <iconset resource="xyz.qrc">
+               <normaloff>:/images/cw_arrow.png</normaloff>:/images/cw_arrow.png</iconset>
+             </property>
+             <property name="iconSize">
+              <size>
+               <width>18</width>
+               <height>18</height>
+              </size>
              </property>
              <property name="checkable">
               <bool>true</bool>
