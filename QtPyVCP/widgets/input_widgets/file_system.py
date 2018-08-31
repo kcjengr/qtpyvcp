@@ -114,28 +114,28 @@ class FileSystem(QWidget, TableType):
 
         # This prevents doing unneeded initialization
         # when QtDesginer loads the plugin.
-        self._tree_type = TableType.Local
+        self._table_type = TableType.Local
 
         self.path_data = dict()
 
         self.vbox = QVBoxLayout()
+
         self.setLayout(self.vbox)
 
         self.fileSystemTable = FileSystemTable(self)
         self.fileSystemTable.doubleClicked.connect(self.changeRoot)
 
-        if parent is None:
-            return
+        # self._initWidget()
 
         self.selected_row = None
 
-    def initLocal(self):
+    def _initLocal(self):
 
         self.clearLayout(self.layout())
 
         self.vbox.addWidget(self.fileSystemTable)
 
-    def initRemote(self):
+    def _initRemote(self):
 
         self.clearLayout(self.layout())
 
@@ -204,39 +204,35 @@ class FileSystem(QWidget, TableType):
 
     @pyqtSlot()
     def copyFile(self):
-        if self.selected_row:
-            self.selected_row = None
+        raise NotImplemented
 
     @pyqtSlot()
     def pasteFile(self):
-        if self.selected_row:
-            # TODO add dialog here
-            fileInfo = QFileInfo(self.selected_row)
-            if fileInfo.isFile():
-                file = QFile(self.selected_row)
-                file.remove()
-
-            elif fileInfo.isDir():
-                directory = QDir(self.selected_row)
-                directory.remove()
+        raise NotImplemented
 
     @pyqtSlot()
     def deleteFile(self):
-        if self.selected_row:
+        index = self.fileSystemTable.selectionModel().currentIndex()
+        path = self.fileSystemTable.model.filePath(index)
+        if path:
+            print(path)
             # TODO add dialog here
-            fileInfo = QFileInfo(self.selected_row)
+            fileInfo = QFileInfo(path)
             if fileInfo.isFile():
-                file = QFile(self.selected_row)
+                file = QFile(path)
                 file.remove()
 
             elif fileInfo.isDir():
-                directory = QDir(self.selected_row)
+                directory = QDir(path)
                 directory.remove()
+
     @pyqtSlot()
     def createDirectory(self):
-        if self.selected_row:
+        index = self.fileSystemTable.selectionModel().currentIndex()
+        path = self.fileSystemTable.model.filePath(index)
+        if path:
             # TODO add dialog here
-            fileInfo = QFileInfo(self.selected_row)
+            fileInfo = QFileInfo(path)
             if fileInfo.isDir() or fileInfo.isSymLink():
                 directory = QDir()
                 directory.mkdir("New directory")
@@ -265,7 +261,7 @@ class FileSystem(QWidget, TableType):
 
     def updateProgress(self, progress):
         """ Updates the progress bar"""
-        print("progress")
+        print(progress)
         # self.progressBar.setValue(progress)
 
     @pyqtSlot(str)
@@ -299,18 +295,18 @@ class FileSystem(QWidget, TableType):
     def getCurrentDirectory(self):
         return self.fileSystemTable.model.rootPath()
 
-    def _setUpAction(self):
-        if self._tree_type == TableType.Local:
-            self.initLocal()
-        elif self._tree_type == TableType.Remote:
-            self.initRemote()
+    def _initWidget(self):
+        if self._table_type == TableType.Local:
+            self._initLocal()
+        elif self._table_type == TableType.Remote:
+            self._initRemote()
 
     def getType(self):
-        return self._tree_type
+        return self._table_type
 
     @pyqtSlot(TableType)
-    def setType(self, tree_type):
-        self._tree_type = tree_type
-        self._setUpAction()
+    def setType(self, table_type):
+        self._table_type = table_type
+        self._initWidget()
 
-    tree_type = pyqtProperty(TableType, getType, setType)
+    table_type = pyqtProperty(TableType, getType, setType)

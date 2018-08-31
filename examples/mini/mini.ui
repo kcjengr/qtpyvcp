@@ -86,7 +86,7 @@
     </item>
     <item row="1" column="0">
      <widget class="FileSystem" name="filesystem">
-      <property name="tree_type" stdset="0">
+      <property name="table_type" stdset="0">
        <enum>FileSystem::Local</enum>
       </property>
      </widget>
@@ -125,7 +125,7 @@
     </item>
     <item row="1" column="3">
      <widget class="FileSystem" name="filesystem_2">
-      <property name="tree_type" stdset="0">
+      <property name="table_type" stdset="0">
        <enum>FileSystem::Remote</enum>
       </property>
      </widget>
