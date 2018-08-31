@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>6</number>
+           <number>7</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -18284,7 +18284,10 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>SINGLE BLOCK</string>
+              <string>Single Block</string>
+             </property>
+             <property name="customText" stdset="0">
+              <string>Single Block</string>
              </property>
             </widget>
            </item>
@@ -18338,12 +18341,12 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>Opt Stop </string>
+              <string>Opt Stop</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="action_id" stdset="0">
+             <property name="actionID" stdset="0">
               <enum>ActionButton::OptionalStop</enum>
              </property>
             </widget>
@@ -18378,12 +18381,12 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>Feedhold </string>
+              <string>Feedhold</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="action_id" stdset="0">
+             <property name="actionID" stdset="0">
               <enum>ActionButton::FeedHold</enum>
              </property>
             </widget>
@@ -18438,7 +18441,10 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>RUN FM HERE</string>
+              <string>Run FM Here</string>
+             </property>
+             <property name="customText" stdset="0">
+              <string>Run FM Here</string>
              </property>
             </widget>
            </item>
@@ -18472,12 +18478,12 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>Flood </string>
+              <string>Flood</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="action_id" stdset="0">
+             <property name="actionID" stdset="0">
               <enum>ActionButton::Flood</enum>
              </property>
             </widget>
@@ -18537,9 +18543,6 @@ border-radius: 6px;
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="action_id" stdset="0">
-              <enum>ActionButton::NoAction</enum>
-             </property>
             </widget>
            </item>
           </layout>
@@ -18575,12 +18578,12 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>Mist </string>
+              <string>Mist</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="action_id" stdset="0">
+             <property name="actionID" stdset="0">
               <enum>ActionButton::Mist</enum>
              </property>
             </widget>
@@ -18639,9 +18642,6 @@ border-radius: 6px;
              </property>
              <property name="checkable">
               <bool>false</bool>
-             </property>
-             <property name="action_type" stdset="0">
-              <enum>ActionButton::Toggle</enum>
              </property>
             </widget>
            </item>
@@ -18711,9 +18711,6 @@ border-radius: 1px;
              </property>
              <property name="checkable">
               <bool>true</bool>
-             </property>
-             <property name="action_id" stdset="0">
-              <enum>ActionButton::MachinePower</enum>
              </property>
             </widget>
            </item>
@@ -18864,12 +18861,12 @@ border-radius: 1px;
 }</string>
              </property>
              <property name="text">
-              <string>E-Stop </string>
+              <string>E-Stop</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="action_id" stdset="0">
+             <property name="actionID" stdset="0">
               <enum>ActionButton::EmergencyStop</enum>
              </property>
             </widget>
@@ -24366,12 +24363,6 @@ border-radius: 6px;
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="action_id" stdset="0">
-              <enum>ActionButton::StepMode</enum>
-             </property>
-             <property name="action_type" stdset="0">
-              <enum>ActionButton::Toggle</enum>
-             </property>
             </widget>
            </item>
            <item>
@@ -24456,12 +24447,6 @@ border-radius: 6px;
              </property>
              <property name="checked">
               <bool>true</bool>
-             </property>
-             <property name="action_id" stdset="0">
-              <enum>ActionButton::JogMode</enum>
-             </property>
-             <property name="action_type" stdset="0">
-              <enum>ActionButton::Toggle</enum>
              </property>
             </widget>
            </item>
