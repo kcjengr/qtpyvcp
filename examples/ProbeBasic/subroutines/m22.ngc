@@ -1,0 +1,42 @@
+o<m22> sub
+
+; Move Carousel to the home position - IN
+
+(print, o<M22>)
+
+M19 R0 Q2
+;M66 P0 L3 Q1 
+;   O110 if [#5399 EQ 0]
+;      (abort, carousel already home) ; abort if carousel is home already
+;   O110 endif
+
+M24
+M19 R0 Q1
+G0 G53 Z-3.0000 ; rapid move to above the toolchange position
+G91 G1 Z-0.1900 F1000 ; feed move incremental to tool change position
+G90
+
+M65 P2 ; release the drawbar to clamp the tool
+M5
+M66 P5 L3 Q1 ; check the tool clamped sensor
+   O140 if [#5399 LT 0]
+      (abort, failed to reclamp tool)
+      
+   O140 endif
+;#5210= #<_current_tool> ; save the tool in the spindle
+
+M65 P0
+M64 P1 ; Move Carousel home
+
+M66 P0 L3 Q4 ;check carousel in position sensor
+   O150 if [#5399 LT 0]
+      (abort, failed to send carousel home) ; abort if the sensor does not activate in 5 seconds
+      M65 P1 ; turn off the solonoid to send atc home
+   O150 endif
+
+M65 P1
+
+
+o<m22> endsub [1]
+
+M2

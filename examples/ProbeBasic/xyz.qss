@@ -45,38 +45,37 @@ QPushButton:checked[option="true"] {
 QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
 }
-/* Probe buttons */
-SubCallButton {
+
+SubCallButton[styleClass="probeButton"] {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #eaeaea, stop: 1.0 #b8b8b8);
     border-radius: 10px;
-
 }
 
-SubCallButton:disabled {
+SubCallButton[styleClass="probeButton"] :disabled {
     border-color: gray;
 }
 
-/*SubCallButton[error="true"] {
+/*SubCallButton[styleClass="probeButton"] [error="true"] {
     border-color: red;
 }*/
 
-SubCallButton:hover {
+SubCallButton[styleClass="probeButton"] :hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #ffffff, stop: 1.0 #e1e1e1);
 }
 
-SubCallButton:pressed {
+SubCallButton[styleClass="probeButton"] :pressed {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
 }
 
-SubCallButton:checked[option="true"] {
+SubCallButton[styleClass="probeButton"] :checked[option="true"] {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
 }
 
-SubCallButton:checked {
+SubCallButton[styleClass="probeButton"] :checked {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
 }
