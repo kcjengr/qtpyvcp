@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -915,56 +915,6 @@ QTableView {
                  <number>100</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="copy_to_usb">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>70</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>70</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="focusPolicy">
-                   <enum>Qt::NoFocus</enum>
-                  </property>
-                  <property name="layoutDirection">
-                   <enum>Qt::RightToLeft</enum>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QPushButton {
-    text-align: right;
-    padding-right: 10px;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>COPY
-    TO
-  USB</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="xyz.qrc">
-                    <normaloff>:/images/tall_right_arrow.png</normaloff>:/images/tall_right_arrow.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>18</width>
-                    <height>65</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
                  <widget class="QPushButton" name="copy_from_usb">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -974,14 +924,14 @@ QTableView {
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>70</width>
-                    <height>100</height>
+                    <width>60</width>
+                    <height>90</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>70</width>
-                    <height>100</height>
+                    <width>60</width>
+                    <height>90</height>
                    </size>
                   </property>
                   <property name="focusPolicy">
@@ -990,6 +940,7 @@ QTableView {
                   <property name="styleSheet">
                    <string notr="true">QPushButton {
    	font: 14pt &quot;Bebas Kai&quot;;
+    padding-right: 4px;
 }</string>
                   </property>
                   <property name="text">
@@ -1004,7 +955,56 @@ USB</string>
                   <property name="iconSize">
                    <size>
                     <width>18</width>
-                    <height>65</height>
+                    <height>60</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="copy_to_usb">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>90</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>60</width>
+                    <height>90</height>
+                   </size>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::RightToLeft</enum>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+    padding-right: 8px;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>COPY
+    TO
+  USB</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="xyz.qrc">
+                    <normaloff>:/images/tall_right_arrow.png</normaloff>:/images/tall_right_arrow.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>28</width>
+                    <height>60</height>
                    </size>
                   </property>
                  </widget>
@@ -5846,7 +5846,7 @@ border-style: none;
                </font>
               </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>1</number>
               </property>
               <widget class="QWidget" name="tab_13">
                <attribute name="title">
