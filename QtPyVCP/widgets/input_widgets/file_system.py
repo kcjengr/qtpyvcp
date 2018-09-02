@@ -5,7 +5,7 @@ import psutil
 from PyQt5.QtCore import QAbstractListModel, QModelIndex, Qt, pyqtSlot, pyqtProperty, Q_ENUMS, pyqtSignal, QFile, \
     QFileInfo, QDir
 from PyQt5.QtWidgets import QFileSystemModel, QTreeView, QWidget, QComboBox, QVBoxLayout, QPushButton, QHBoxLayout, \
-    QListView, QTableView
+    QListView, QTableView, QMessageBox
 
 from QtPyVCP.utilities.info import Info
 
@@ -112,6 +112,8 @@ class FileSystem(QWidget, TableType):
     def __init__(self, parent=None):
         super(FileSystem, self).__init__(parent)
 
+        self.parent = parent
+
         # This prevents doing unneeded initialization
         # when QtDesginer loads the plugin.
         self._table_type = TableType.Local
@@ -215,16 +217,18 @@ class FileSystem(QWidget, TableType):
         index = self.fileSystemTable.selectionModel().currentIndex()
         path = self.fileSystemTable.model.filePath(index)
         if path:
-            print(path)
-            # TODO add dialog here
             fileInfo = QFileInfo(path)
             if fileInfo.isFile():
+                if not self.ask_dialog("Do yo wan't to delete the selected file?"):
+                    return
                 file = QFile(path)
                 file.remove()
 
             elif fileInfo.isDir():
+                if not self.ask_dialog("Do yo wan't to delete the selected directory?"):
+                    return
                 directory = QDir(path)
-                directory.remove()
+                directory.removeRecursively()
 
     @pyqtSlot()
     def createDirectory(self):
@@ -310,3 +314,14 @@ class FileSystem(QWidget, TableType):
         self._initWidget()
 
     table_type = pyqtProperty(TableType, getType, setType)
+
+    def ask_dialog(self, message):
+        box = QMessageBox.question(self.parent,
+                                   'Are you sure?',
+                                   message,
+                                   QMessageBox.Yes,
+                                   QMessageBox.No)
+        if box == QMessageBox.Yes:
+            return True
+        else:
+            return False
