@@ -232,18 +232,10 @@ class FileSystem(QWidget, TableType):
 
     @pyqtSlot()
     def createDirectory(self):
-        index = self.fileSystemTable.selectionModel().currentIndex()
-        path = self.fileSystemTable.model.filePath(index)
-        if path:
-            # TODO add dialog here
-            fileInfo = QFileInfo(path)
-            if fileInfo.isDir() or fileInfo.isSymLink():
-                directory = QDir()
-                directory.mkdir("New directory")
-            elif fileInfo.isFile():
-                directorPath = fileInfo.absolutePath()
-                directory = QDir(directorPath)
-                directory.mkdir("New directory")
+        path = self.fileSystemTable.model.filePath(self.fileSystemTable.rootIndex())
+        directory = QDir()
+        directory.setPath(path)
+        directory.mkpath("New Folder")
 
     @pyqtSlot()
     def goUP(self):
