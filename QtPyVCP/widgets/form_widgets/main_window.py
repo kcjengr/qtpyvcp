@@ -40,6 +40,9 @@ class VCPMainWindow(QMainWindow):
     def __init__(self, parent=None, ui_file=None, size=None, position=None,
             hide_menu_bar=False, hide_status_bar=False, maximize=False, fullscreen=False):
         super(VCPMainWindow, self).__init__(parent=None)
+
+        self._ui_file = ui_file
+
         self.app = QApplication.instance()
 
         # QtDesigner settable vars
@@ -54,17 +57,39 @@ class VCPMainWindow(QMainWindow):
         # Load the UI file AFTER defining variables, otherwise the values
         # set in QtDesigner get overridden by the default values
         if ui_file is not None:
-            uic.loadUi(ui_file, self)
+            self.loadUi(ui_file)
+            self.initUi()
 
-        self.app.status.init_ui.emit()
-        self.initUi()
+        if maximize:
+            QTimer.singleShot(0, self.showMaximized)
+
+        if fullscreen:
+            QTimer.singleShot(0, self.showFullScreen)
 
         # QShortcut(QKeySequence("t"), self, self.test)
         self.app.focusChanged.connect(self.focusChangedEvent)
 
+    def loadUi(self, ui_file):
+        """
+        Loads a window layout from a QtDesigner .ui file.
+
+        Parameters
+        ----------
+        ui_file : str
+            Path to the .ui file to load.
+        """
+        # TODO: Check for compiled *_ui.py files and load from that if exists
+        self._ui_file = ui_file
+        uic.loadUi(ui_file, self)
+
     def initUi(self):
+        """
+        Initializes the the menu actions, splash screen etc.
+        """
+        print "Initializing UI"
+        self.app.status.init_ui.emit()
+
         from QtPyVCP.utilities import action
-        print "initiating"
         self.loadSplashGcode()
         self.initRecentFileMenu()
         self.initHomingMenu()
@@ -161,7 +186,9 @@ class VCPMainWindow(QMainWindow):
 #  menu action slots
 #==============================================================================
 
+    #==========================================================================
     # File menu
+    #==========================================================================
 
     @pyqtSlot()
     def on_actionOpen_triggered(self):
@@ -199,6 +226,16 @@ class VCPMainWindow(QMainWindow):
     def on_actionReport_Actual_Position_toggled(self, report_actual):
         self.app.status.setReportActualPosition(report_actual)
 
+    #==========================================================================
+    # View menu
+    #==========================================================================
+
+    @pyqtSlot()
+    def on_actionFullscreen_triggered(self):
+        if self.isFullScreen():
+            self.showNormal()
+        else:
+            self.showFullScreen()
 
 #==============================================================================
 # menu functions

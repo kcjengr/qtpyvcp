@@ -7,6 +7,8 @@ import os
 import sys
 import imp
 import inspect
+from pkg_resources import load_entry_point
+from pkg_resources import iter_entry_points
 
 from PyQt5.QtCore import QTimer, pyqtSlot
 from PyQt5.QtWidgets import QApplication, QMainWindow, QStyleFactory, qApp
@@ -28,12 +30,12 @@ class VCPApplication(QApplication):
         qApp = QApplication.instance()
 
         from QtPyVCP.core import Status, Action, Prefs, Info
-        from QtPyVCP.widgets.form_widgets.main_window import VCPMainWindow
-
         self.info = Info()
         self.prefs = Prefs()
         self.status = Status()
         self.action = Action()
+
+        self.window = None
 
         if theme is not None:
             self.setStyle(QStyleFactory.create(theme))
@@ -45,7 +47,8 @@ class VCPApplication(QApplication):
 
         print vcp, command_line_args
         if vcp is not None:
-            self.loadVCP(vcp, args=[], kwargs=window_kwargs)
+            self.window = self.loadVCPMainWindow(vcp, args=[], kwargs=window_kwargs)
+            self.window.show()
 
         # Performance monitoring
         if perfmon:
@@ -58,15 +61,15 @@ class VCPApplication(QApplication):
 
         self.aboutToQuit.connect(self.status.onShutdown)
 
-    def loadVCP(self, vcp, args=[], kwargs={}):
+    def loadVCPMainWindow(self, vcp, args=[], kwargs={}):
         """
-        Load a VCP defined by a Qt .ui file, a Python .py file, or from
-        a VCP python package.
+        Loads a VCPMainWindow instance defined by a Qt .ui file, a Python .py
+        file, or from a VCP python package.
 
         Parameters
         ----------
         vcp : str
-            The path to a VCP to load.
+            The path or name of the VCP to load.
         args : list, optional
             A list of arguments to pass to the VCP.
         kwargs : dict, optional
@@ -76,26 +79,36 @@ class VCPApplication(QApplication):
         -------
         QtPyVCP.VCPMainWindow instance
         """
-        ui_file = None
-        if not os.path.exists(vcp):
-            LOG.critical("Specified VCP does not exist: yellow<{}>".format(vcp))
-            sys.exit()
-        vcp_path = os.path.realpath(vcp)
-        if os.path.isfile(vcp_path):
-            directory, filename = os.path.split(vcp_path)
-            name, ext = os.path.splitext(filename)
-            if ext == '.ui':
-                LOG.info("Loading VCP from UI file: yellow<{}>".format(vcp))
-                window = VCPMainWindow(ui_file=vcp_path)
-                window.show()
-                self.window = window
-            elif ext == '.py':
-                LOG.info("Loading VCP from PY file: yellow<{}>".format(vcp))
-                window = self.loadPyFile(vcp_path, args, kwargs)
-                window.show()
-                self.window = window
-        elif os.path.isdir(vcp_path):
-            LOG.info("VCP is a directory")
+        if os.path.exists(vcp):
+
+            vcp_path = os.path.realpath(vcp)
+            if os.path.isfile(vcp_path):
+                directory, filename = os.path.split(vcp_path)
+                name, ext = os.path.splitext(filename)
+                if ext == '.ui':
+                    LOG.info("Loading VCP from UI file: yellow<{}>".format(vcp))
+                    return VCPMainWindow(ui_file=vcp_path)
+                elif ext == '.py':
+                    LOG.info("Loading VCP from PY file: yellow<{}>".format(vcp))
+                    return self.loadPyFile(vcp_path, args, kwargs)
+            elif os.path.isdir(vcp_path):
+                LOG.info("VCP is a directory")
+                # TODO: Load from a directory
+        else:
+            try:
+                entry_points = {}
+                for entry_point in iter_entry_points(group='qtpyvcp.vcp'):
+                    entry_points[entry_point.name] = entry_point
+                print entry_points
+                window = entry_points[vcp.lower()].load()
+                print window
+                return window(*args, **kwargs)
+            except:
+                LOG.exception("Failed to load entry point")
+
+        LOG.critical("VCP could not be loaded: yellow<{}>".format(vcp))
+        sys.exit()
+
 
     def loadPyFile(self, pyfile, args, kwargs):
         """

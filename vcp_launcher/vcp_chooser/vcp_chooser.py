@@ -1,4 +1,5 @@
 import sys, os
+from pkg_resources import load_entry_point
 from PyQt5 import uic
 
 from PyQt5.QtCore import Qt, pyqtSlot
