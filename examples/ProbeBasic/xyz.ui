@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>3</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -2195,7 +2195,7 @@ padding-right: 10px;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="focusPolicy">
@@ -2250,7 +2250,7 @@ padding-right: 10px;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="focusPolicy">
@@ -2283,7 +2283,7 @@ padding-right: 10px;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="focusPolicy">
@@ -2338,7 +2338,7 @@ padding-right: 10px;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -2381,7 +2381,7 @@ padding-right: 10px;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="layoutDirection">
@@ -2452,7 +2452,7 @@ padding-right: 10px;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -2489,7 +2489,7 @@ padding-right: 10px;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="layoutDirection">
@@ -2550,7 +2550,7 @@ padding-right: 10px;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -2583,7 +2583,7 @@ padding-right: 10px;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -2635,7 +2635,7 @@ padding-right: 10px;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="focusPolicy">
@@ -2668,7 +2668,7 @@ padding-right: 10px;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="focusPolicy">
@@ -2720,7 +2720,7 @@ padding-right: 10px;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -2753,7 +2753,7 @@ padding-right: 10px;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="focusPolicy">
@@ -2786,7 +2786,7 @@ padding-right: 10px;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="focusPolicy">
@@ -4343,7 +4343,7 @@ padding-right: 10px;
                      <property name="minimumSize">
                       <size>
                        <width>130</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -4437,7 +4437,7 @@ padding-right: 10px;
                      <property name="minimumSize">
                       <size>
                        <width>130</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -4489,7 +4489,7 @@ padding-right: 10px;
                      <property name="minimumSize">
                       <size>
                        <width>130</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -4538,7 +4538,7 @@ padding-right: 10px;
                      <property name="minimumSize">
                       <size>
                        <width>130</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -4605,7 +4605,7 @@ padding-right: 10px;
                      <property name="minimumSize">
                       <size>
                        <width>250</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -4751,7 +4751,7 @@ padding-right: 10px;
                      <property name="minimumSize">
                       <size>
                        <width>250</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -4803,7 +4803,7 @@ padding-right: 10px;
                      <property name="minimumSize">
                       <size>
                        <width>250</width>
-                       <height>40</height>
+                       <height>45</height>
                       </size>
                      </property>
                      <property name="maximumSize">
