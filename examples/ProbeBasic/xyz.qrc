@@ -56,6 +56,9 @@
     <file>images/new_folder.png</file>
     <file>images/delete.png</file>
     <file>images/usb_icon.png</file>
+    <file>images/tall_left_arrow.png</file>
+    <file>images/tall_right_arrow.png</file>
+
         
 </qresource>
 </RCC>
