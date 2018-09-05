@@ -1,16 +1,14 @@
 import os
-import sys
 import pyudev
 import psutil
 
 from PyQt5.QtCore import QAbstractListModel, QModelIndex, Qt, pyqtSlot, pyqtProperty, Q_ENUMS, pyqtSignal, QFile, \
-    QFileInfo, QDir, QMimeData, QUrl, QIODevice
-from PyQt5.QtGui import QClipboard
-from PyQt5.QtWidgets import QFileSystemModel, QTreeView, QWidget, QComboBox, QVBoxLayout, QPushButton, QHBoxLayout, \
-    QListView, QTableView, QMessageBox, QApplication
+    QFileInfo, QDir, QIODevice
+
+from PyQt5.QtWidgets import QFileSystemModel, QWidget, QComboBox, QVBoxLayout, QPushButton, QHBoxLayout,\
+    QTableView, QMessageBox, QApplication
 
 from QtPyVCP.utilities.info import Info
-
 
 
 class TableType(object):
@@ -254,37 +252,22 @@ class FileSystem(QWidget, TableType):
 
     @pyqtSlot()
     def doFileTransfer(self):
-        print("DO")
         index = self.fileSystemTable.selectionModel().currentIndex()
         path = self.fileSystemTable.model.filePath(index)
         self.transferFileRequest.emit(path)
 
-    def updateProgress(self, progress):
-        """ Updates the progress bar"""
-        print(progress)
-        # self.progressBar.setValue(progress)
-
     @pyqtSlot(str)
     def transferFile(self, src_path):
-        print("Transfer")
-        dest_path = self.fileSystemTable.model.rootPath()
+        dest_path = self.fileSystemTable.model.filePath(self.fileSystemTable.rootIndex())
 
         src_file = QFile()
         src_file.setFileName(src_path)
 
         src_file_info = QFileInfo(src_path)
 
-        dst_path = "{}/{}".format(dest_path, src_file_info.fileName())
+        dst_path = os.path.join(dest_path, src_file_info.fileName())
 
-        print(src_path)
-        print(dst_path)
-
-        # src_file.bytesWritten.connect(self.updateProgress)
-
-        if src_file.copy(dst_path):
-            print("Succes")
-        else:
-            print("Failed")
+        src_file.copy(dst_path)
 
 
     @pyqtSlot()
