@@ -1,11 +1,13 @@
+import os
 import sys
 import pyudev
 import psutil
 
 from PyQt5.QtCore import QAbstractListModel, QModelIndex, Qt, pyqtSlot, pyqtProperty, Q_ENUMS, pyqtSignal, QFile, \
-    QFileInfo, QDir
+    QFileInfo, QDir, QMimeData, QUrl, QIODevice
+from PyQt5.QtGui import QClipboard
 from PyQt5.QtWidgets import QFileSystemModel, QTreeView, QWidget, QComboBox, QVBoxLayout, QPushButton, QHBoxLayout, \
-    QListView, QTableView, QMessageBox
+    QListView, QTableView, QMessageBox, QApplication
 
 from QtPyVCP.utilities.info import Info
 
@@ -131,6 +133,8 @@ class FileSystem(QWidget, TableType):
 
         self.selected_row = None
 
+        self.clipboard = QApplication.clipboard()
+
     def _initLocal(self):
 
         self.clearLayout(self.layout())
@@ -205,12 +209,12 @@ class FileSystem(QWidget, TableType):
                 self.clearLayout(child.layout())
 
     @pyqtSlot()
-    def copyFile(self):
-        raise NotImplemented
+    def newFile(self):
+        path = self.fileSystemTable.model.filePath(self.fileSystemTable.rootIndex())
+        new_file = QFile(os.path.join(path, "New File"))
+        new_file.open(QIODevice.ReadWrite)
 
-    @pyqtSlot()
-    def pasteFile(self):
-        raise NotImplemented
+
 
     @pyqtSlot()
     def deleteFile(self):
