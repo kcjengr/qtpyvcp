@@ -24,23 +24,16 @@
     <item row="2" column="3">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
-       <widget class="QPushButton" name="remoteCopyButton">
-        <property name="text">
-         <string>Copy</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="remotePasteButton">
-        <property name="text">
-         <string>Paste</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QPushButton" name="remoteNewFolderButton">
         <property name="text">
-         <string>New Folder</string>
+         <string>Create Folder</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="remoteCreateFileButton">
+        <property name="text">
+         <string>Create File</string>
         </property>
        </widget>
       </item>
@@ -94,23 +87,16 @@
     <item row="2" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QPushButton" name="localCopyButton">
+       <widget class="QPushButton" name="localCreateFolderButton">
         <property name="text">
-         <string>Copy</string>
+         <string>Create Folder</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="localPasteButton">
+       <widget class="QPushButton" name="localCreateFileButton">
         <property name="text">
-         <string>Paste</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="localNewFolderButton">
-        <property name="text">
-         <string>New Folder</string>
+         <string>Create File</string>
         </property>
        </widget>
       </item>
@@ -211,44 +197,8 @@
    <header>QtPyVCP.widgets.input_widgets.file_system</header>
   </customwidget>
  </customwidgets>
- <tabstops>
-  <tabstop>localCopyButton</tabstop>
-  <tabstop>localPasteButton</tabstop>
- </tabstops>
  <resources/>
  <connections>
-  <connection>
-   <sender>localCopyButton</sender>
-   <signal>clicked()</signal>
-   <receiver>filesystem</receiver>
-   <slot>copyFile()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>101</x>
-     <y>527</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>100</x>
-     <y>373</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>localPasteButton</sender>
-   <signal>clicked()</signal>
-   <receiver>filesystem</receiver>
-   <slot>pasteFile()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>199</x>
-     <y>527</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>291</x>
-     <y>411</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>localDeleteButton</sender>
    <signal>clicked()</signal>
@@ -262,38 +212,6 @@
     <hint type="destinationlabel">
      <x>395</x>
      <y>492</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>remoteCopyButton</sender>
-   <signal>clicked()</signal>
-   <receiver>filesystem_2</receiver>
-   <slot>copyFile()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>577</x>
-     <y>505</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>579</x>
-     <y>449</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>remotePasteButton</sender>
-   <signal>clicked()</signal>
-   <receiver>filesystem_2</receiver>
-   <slot>pasteFile()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>723</x>
-     <y>506</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>719</x>
-     <y>461</y>
     </hint>
    </hints>
   </connection>
@@ -314,14 +232,14 @@
    </hints>
   </connection>
   <connection>
-   <sender>localNewFolderButton</sender>
+   <sender>localCreateFolderButton</sender>
    <signal>clicked()</signal>
    <receiver>filesystem</receiver>
    <slot>createDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>251</x>
-     <y>506</y>
+     <x>148</x>
+     <y>527</y>
     </hint>
     <hint type="destinationlabel">
      <x>171</x>
@@ -336,8 +254,8 @@
    <slot>createDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>799</x>
-     <y>511</y>
+     <x>671</x>
+     <y>527</y>
     </hint>
     <hint type="destinationlabel">
      <x>815</x>
@@ -438,6 +356,38 @@
     <hint type="destinationlabel">
      <x>580</x>
      <y>378</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>localCreateFileButton</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem</receiver>
+   <slot>newFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>209</x>
+     <y>510</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>235</x>
+     <y>449</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>remoteCreateFileButton</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>newFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>765</x>
+     <y>512</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>753</x>
+     <y>461</y>
     </hint>
    </hints>
   </connection>
