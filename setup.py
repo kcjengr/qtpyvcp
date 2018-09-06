@@ -1,14 +1,4 @@
-from distutils.dir_util import copy_tree
 from setuptools import setup, find_packages
-
-import shutil
-from os import path, environ, listdir
-
-cur_dir = path.abspath(path.dirname(__file__))
-
-examples_src = path.join(cur_dir, 'examples')
-examples_dst = path.expanduser('~/linuxcnc/vcps/examples')
-copy_tree(examples_src, examples_dst)
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
