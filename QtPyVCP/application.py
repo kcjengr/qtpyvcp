@@ -95,6 +95,8 @@ class VCPApplication(QApplication):
         else:
             try:
                 entry_points = {}
+                for entry_point in iter_entry_points(group='qtpyvcp.example_vcp'):
+                    entry_points[entry_point.name] = entry_point
                 for entry_point in iter_entry_points(group='qtpyvcp.vcp'):
                     entry_points[entry_point.name] = entry_point
                 window = entry_points[vcp.lower()].load()

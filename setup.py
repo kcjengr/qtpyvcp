@@ -19,7 +19,7 @@ setup(
         'console_scripts': [
             'qtpyvcp=vcp_launcher.main:main',
         ],
-        'qtpyvcp.vcp': [
+        'qtpyvcp.example_vcp': [
             'mini=examples.mini.mini:MiniVCP',
             'brender=examples.Brender.brender:MainWindow'
         ],

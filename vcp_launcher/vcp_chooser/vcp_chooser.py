@@ -1,5 +1,5 @@
-import sys, os
-from pkg_resources import load_entry_point
+import os
+from pkg_resources import iter_entry_points
 from PyQt5 import uic
 
 from PyQt5.QtCore import Qt, pyqtSlot
@@ -19,6 +19,26 @@ class VCPChooser(QDialog):
 
         self.opts = opts
 
+        # example VCP section
+        category = QTreeWidgetItem(self.vcpTreeView)
+        category.setText(0, 'Example VCPs')
+        category.setFlags(Qt.ItemIsEnabled)
+
+        # add example VCPs to the treeview
+        for entry_point in iter_entry_points(group='qtpyvcp.example_vcp'):
+            child = QTreeWidgetItem(category)
+            child.setText(0, entry_point.name)
+
+        # installed VCP section
+        category = QTreeWidgetItem(self.vcpTreeView)
+        category.setText(0, 'Installed VCPs')
+        category.setFlags(Qt.ItemIsEnabled)
+
+        # add installed VCPs to the treeview
+        for entry_point in iter_entry_points(group='qtpyvcp.vcp'):
+            child = QTreeWidgetItem(category)
+            child.setText(0, entry_point.name)
+
         if os.path.exists(CUSTOM_VCP_DIR):
             category = QTreeWidgetItem(self.vcpTreeView)
             category.setText(0, 'Custom VCPs')
@@ -28,17 +48,6 @@ class VCPChooser(QDialog):
                     continue
                 child = QTreeWidgetItem(category)
                 child.setText(0, dir_name)
-
-        category = QTreeWidgetItem(self.vcpTreeView)
-        category.setText(0, 'Standard VCPs')
-        category.setFlags(Qt.ItemIsEnabled)
-        self.vcpTreeView.setFirstItemColumnSpanned(category, True)
-
-        for dir_name in os.listdir(EXAMPLE_VCP_DIR):
-            if not os.path.isdir(os.path.join(EXAMPLE_VCP_DIR, dir_name)):
-                continue
-            child = QTreeWidgetItem(category)
-            child.setText(0, dir_name)
 
         self.vcpTreeView.expandAll()
         self.vcpTreeView.activated.connect(self.on_launchVCPButton_clicked)
@@ -70,8 +79,8 @@ class VCPChooser(QDialog):
             self.opts.vcp = vcp_file[0]
             self.accept()
 
-
 if __name__ == '__main__':
+    import sys
     app = QApplication(sys.argv)
     app.setStyle(QStyleFactory.create('Windows'))
     launcher = VCPChooser()
