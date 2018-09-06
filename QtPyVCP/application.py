@@ -98,9 +98,7 @@ class VCPApplication(QApplication):
                 entry_points = {}
                 for entry_point in iter_entry_points(group='qtpyvcp.vcp'):
                     entry_points[entry_point.name] = entry_point
-                print entry_points
                 window = entry_points[vcp.lower()].load()
-                print window
                 return window(opts)
             except:
                 LOG.exception("Failed to load entry point")

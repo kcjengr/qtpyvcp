@@ -13,12 +13,11 @@ CUSTOM_VCP_DIR = os.path.expanduser('~/linuxcnc/vcps')
 EXAMPLE_VCP_DIR = os.path.join(TOP_DIR, 'examples')
 
 class VCPChooser(QDialog):
-    def __init__(self, args={}):
+    def __init__(self, opts):
         super(VCPChooser, self).__init__()
         uic.loadUi(os.path.join(CHOOSER_DIR, 'vcp_chooser.ui'), self)
 
-        self.args = args
-        print args
+        self.opts = opts
 
         if os.path.exists(CUSTOM_VCP_DIR):
             category = QTreeWidgetItem(self.vcpTreeView)
@@ -51,7 +50,7 @@ class VCPChooser(QDialog):
             return
         vcp = selection[0].data()
         print vcp
-        self.args.vcp = vcp
+        self.opts.vcp = vcp
         self.accept()
 
     @pyqtSlot()
@@ -68,7 +67,7 @@ class VCPChooser(QDialog):
                               options=QFileDialog.DontUseNativeDialog)
 
         if vcp_file:
-            self.args.vcp = vcp_file[0]
+            self.opts.vcp = vcp_file[0]
             self.accept()
 
 
