@@ -32,7 +32,7 @@ PREFS = Prefs()
 
 from QtPyVCP.utilities import logger
 log = logger.getLogger(__name__)
-log.setLevel(logger.DEBUG)
+log.setLevel("DEBUG")
 
 
 class GCodes:

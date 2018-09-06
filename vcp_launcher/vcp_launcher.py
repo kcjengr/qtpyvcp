@@ -45,12 +45,9 @@ def main():
         del(app)
 
     from QtPyVCP.utilities import logger
-    try:
-        log_level = getattr(logger, opts.log_level.upper())
-    except:
-        log_level = 'DEBUG'
-    LOG = logger.initBaseLogger('QtPyVCP', log_file=opts.log_file, log_level=log_level)
-    print LOG
+    LOG = logger.initBaseLogger('QtPyVCP',
+                                log_file=opts.log_file,
+                                log_level=opts.log_level)
 
     from QtPyVCP.application import VCPApplication
     app = VCPApplication(opts=opts)
