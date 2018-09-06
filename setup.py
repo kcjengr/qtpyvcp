@@ -21,6 +21,7 @@ setup(
         ],
         'qtpyvcp.vcp': [
             'mini=examples.mini.mini:MiniVCP',
+            'brender=examples.Brender.brender:MainWindow'
         ],
     },
 )
