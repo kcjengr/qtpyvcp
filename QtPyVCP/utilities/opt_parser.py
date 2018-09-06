@@ -57,7 +57,7 @@ def parse_opts(doc=__doc__, vcp_name=None, vcp_version=None):
     # short argument which does not support an equals sign, so we loop thru
     # and add another dash to the ini argument if needed.
     for index, item in enumerate(sys.argv):
-        if item.startswith('-ini='):
+        if item.startswith('-ini'):
             sys.argv[index] = '-' + item
             break
 
