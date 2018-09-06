@@ -37,11 +37,8 @@ from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
 
 class VCPMainWindow(QMainWindow):
 
-    def __init__(self, parent=None, ui_file=None, size=None, position=None,
-            hide_menu_bar=False, hide_status_bar=False, maximize=False, fullscreen=False):
+    def __init__(self, opts, ui_file=None):
         super(VCPMainWindow, self).__init__(parent=None)
-
-        self._ui_file = ui_file
 
         self.app = QApplication.instance()
 
@@ -60,10 +57,10 @@ class VCPMainWindow(QMainWindow):
             self.loadUi(ui_file)
             self.initUi()
 
-        if maximize:
+        if opts.maximize:
             QTimer.singleShot(0, self.showMaximized)
 
-        if fullscreen:
+        if opts.fullscreen:
             QTimer.singleShot(0, self.showFullScreen)
 
         # QShortcut(QKeySequence("t"), self, self.test)
@@ -79,7 +76,6 @@ class VCPMainWindow(QMainWindow):
             Path to the .ui file to load.
         """
         # TODO: Check for compiled *_ui.py files and load from that if exists
-        self._ui_file = ui_file
         uic.loadUi(ui_file, self)
 
     def initUi(self):

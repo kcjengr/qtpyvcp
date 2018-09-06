@@ -7,8 +7,7 @@ import os
 import sys
 import imp
 import inspect
-from pkg_resources import load_entry_point
-from pkg_resources import iter_entry_points
+from pkg_resources import load_entry_point, iter_entry_points
 
 from PyQt5.QtCore import QTimer, pyqtSlot
 from PyQt5.QtWidgets import QApplication, QMainWindow, QStyleFactory, qApp
@@ -23,9 +22,8 @@ from QtPyVCP.widgets.form_widgets.main_window import VCPMainWindow
 
 class VCPApplication(QApplication):
 
-    def __init__(self, vcp=None, ini=None, perfmon=False, stylesheet=None,
-                theme=None, command_line_args=[], window_kwargs={},):
-        super(VCPApplication, self).__init__(command_line_args)
+    def __init__(self, opts):
+        super(VCPApplication, self).__init__(opts.command_line_args or [])
 
         qApp = QApplication.instance()
 
@@ -37,21 +35,20 @@ class VCPApplication(QApplication):
 
         self.window = None
 
-        if theme is not None:
-            self.setStyle(QStyleFactory.create(theme))
+        if opts.theme is not None:
+            self.setStyle(QStyleFactory.create(opts.theme))
 
-        if stylesheet is not None and os.path.exists(stylesheet):
-            LOG.info("Using QSS stylesheet file: yellow<{}>".format(qss_file))
-            with open(qss_file, 'r') as fh:
+        if opts.stylesheet is not None and os.path.exists(opts.stylesheet):
+            LOG.info("Using QSS stylesheet file: yellow<{}>".format(opts.stylesheet))
+            with open(opts.stylesheet, 'r') as fh:
                 self.setStyleSheet(fh.read())
 
-        print vcp, command_line_args
-        if vcp is not None:
-            self.window = self.loadVCPMainWindow(vcp, args=[], kwargs=window_kwargs)
+        self.window = self.loadVCPMainWindow(opts)
+        if self.window is not None:
             self.window.show()
 
         # Performance monitoring
-        if perfmon:
+        if opts.perfmon:
             import psutil
             self.perf = psutil.Process()
             self.perf_timer = QTimer()
@@ -61,7 +58,7 @@ class VCPApplication(QApplication):
 
         self.aboutToQuit.connect(self.status.onShutdown)
 
-    def loadVCPMainWindow(self, vcp, args=[], kwargs={}):
+    def loadVCPMainWindow(self, opts):
         """
         Loads a VCPMainWindow instance defined by a Qt .ui file, a Python .py
         file, or from a VCP python package.
@@ -70,15 +67,17 @@ class VCPApplication(QApplication):
         ----------
         vcp : str
             The path or name of the VCP to load.
-        args : list, optional
-            A list of arguments to pass to the VCP.
-        kwargs : dict, optional
-            A dict of keyword arguments to pass to the VCP.
+        opts : OptDict
+            A OptDict of options to pass to the VCPMainWindow subclass.
 
         Returns
         -------
-        QtPyVCP.VCPMainWindow instance
+        VCPMainWindow instance
         """
+        vcp = opts.vcp
+        if vcp is None:
+            return
+
         if os.path.exists(vcp):
 
             vcp_path = os.path.realpath(vcp)
@@ -87,10 +86,10 @@ class VCPApplication(QApplication):
                 name, ext = os.path.splitext(filename)
                 if ext == '.ui':
                     LOG.info("Loading VCP from UI file: yellow<{}>".format(vcp))
-                    return VCPMainWindow(ui_file=vcp_path)
+                    return VCPMainWindow(opts, ui_file=vcp_path)
                 elif ext == '.py':
                     LOG.info("Loading VCP from PY file: yellow<{}>".format(vcp))
-                    return self.loadPyFile(vcp_path, args, kwargs)
+                    return self.loadPyFile(vcp_path, opts)
             elif os.path.isdir(vcp_path):
                 LOG.info("VCP is a directory")
                 # TODO: Load from a directory
@@ -102,7 +101,7 @@ class VCPApplication(QApplication):
                 print entry_points
                 window = entry_points[vcp.lower()].load()
                 print window
-                return window(*args, **kwargs)
+                return window(opts)
             except:
                 LOG.exception("Failed to load entry point")
 
@@ -110,7 +109,7 @@ class VCPApplication(QApplication):
         sys.exit()
 
 
-    def loadPyFile(self, pyfile, args, kwargs):
+    def loadPyFile(self, pyfile, opts):
         """
         Load a .py file, performs some sanity checks to try and determine
         if the file actually contains a valid VCPMainWindow subclass, and if
@@ -122,16 +121,12 @@ class VCPApplication(QApplication):
         ----------
         pyfile : str
             The path to a .py file to load.
-        args : list
-            A list of arguments to pass to the
-            loaded VCPMainWindow subclass.
-        kwargs : dict
-            A dict of keyword arguments to pass to the
-            loaded VCPMainWindow subclass.
+        opts : OptDict
+            A OptDict of options to pass to the VCPMainWindow subclass.
 
         Returns
         -------
-        QtPyVCP.VCPMainWindow instance
+        VCPMainWindow instance
         """
         # Add the pyfile module directory to the python path, so that submodules can be loaded
         module_dir = os.path.dirname(os.path.abspath(pyfile))
@@ -153,7 +148,8 @@ class VCPApplication(QApplication):
             .format(pyfile, classes[0].__name__))
         cls = classes[0]
 
-        return cls(*args, **kwargs)
+        # initialize and return the VCPMainWindow subclass
+        return cls(opts)
 
     @pyqtSlot()
     def logPerformance(self):
