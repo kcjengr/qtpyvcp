@@ -38,10 +38,9 @@ class VCPApplication(QApplication):
         if opts.theme is not None:
             self.setStyle(QStyleFactory.create(opts.theme))
 
-        if opts.stylesheet is not None and os.path.exists(opts.stylesheet):
-            LOG.info("Using QSS stylesheet file: yellow<{}>".format(opts.stylesheet))
-            with open(opts.stylesheet, 'r') as fh:
-                self.setStyleSheet(fh.read())
+        if opts.stylesheet is not None:
+            self.loadStylesheet(opts.stylesheet)
+
 
         self.window = self.loadVCPMainWindow(opts)
         if self.window is not None:
@@ -148,6 +147,20 @@ class VCPApplication(QApplication):
 
         # initialize and return the VCPMainWindow subclass
         return cls(opts)
+
+    def loadStylesheet(self, stylesheet):
+        """
+        Loads a QSS stylesheet file containing styles to be applied
+        to specific Qt and/or QtPyVCP widget classes.
+
+        Parameters
+        ----------
+        stylesheet : str
+            The path to a .qss stylesheet file to load.
+        """
+        LOG.info("Loading QSS stylesheet file: yellow<{}>".format(stylesheet))
+        with open(stylesheet, 'r') as fh:
+            self.setStyleSheet(fh.read())
 
     @pyqtSlot()
     def logPerformance(self):

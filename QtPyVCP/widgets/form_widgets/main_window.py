@@ -78,6 +78,9 @@ class VCPMainWindow(QMainWindow):
         # TODO: Check for compiled *_ui.py files and load from that if exists
         uic.loadUi(ui_file, self)
 
+    def loadStylesheet(self, stylesheet):
+        self.app.loadStylesheet(stylesheet)
+
     def initUi(self):
         """
         Initializes the the menu actions, splash screen etc.
