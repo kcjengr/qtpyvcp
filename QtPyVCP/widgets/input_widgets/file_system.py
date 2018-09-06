@@ -2,11 +2,11 @@ import os
 import pyudev
 import psutil
 
-from PyQt5.QtCore import QAbstractListModel, QModelIndex, Qt, pyqtSlot, pyqtProperty, Q_ENUMS, pyqtSignal, QFile, \
-    QFileInfo, QDir, QIODevice
+from PyQt5.QtCore import QAbstractListModel, QModelIndex, Qt, pyqtSlot, pyqtProperty, \
+    Q_ENUMS, pyqtSignal, QFile, QFileInfo, QDir, QIODevice
 
-from PyQt5.QtWidgets import QFileSystemModel, QWidget, QComboBox, QVBoxLayout, QPushButton, QHBoxLayout,\
-    QTableView, QMessageBox, QApplication
+from PyQt5.QtWidgets import QFileSystemModel, QWidget, QComboBox, QVBoxLayout, \
+    QPushButton, QHBoxLayout, QTableView, QMessageBox, QApplication, QAbstractItemView
 
 from QtPyVCP.utilities.info import Info
 
@@ -102,6 +102,9 @@ class FileSystemTable(QTableView):
 
         self.setRootIndex(self.model.index(nc_files))
         self.verticalHeader().hide()
+        self.horizontalHeader().setStretchLastSection(True)
+        self.setAlternatingRowColors(True)
+        self.setSelectionBehavior(QAbstractItemView.SelectRows)
 
 
 class FileSystem(QWidget, TableType):
