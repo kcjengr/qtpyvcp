@@ -1,4 +1,5 @@
-"""QtPyVCP - A PyQt5 based toolkit for LinuxCNC Virtual Control Panels (VCPs).
+"""
+QtPyVCP - A PyQt5 based toolkit for LinuxCNC Virtual Control Panels (VCPs).
 
 Usage:
   qtpyvcp <vcp> --ini=INI [--log-level=LEVEL] [--log-file=FILE] [--perfmon]
@@ -68,10 +69,10 @@ def parse_opts(doc=__doc__, vcp_name=None, vcp_version=None):
 
     # convert raw argument dict keys to valid python attribute names
     kwargs = {arg.strip('-<>').replace('-', '_') : value for arg, value in raw_args.items()}
-    return DotDict(kwargs)
+    return OptDict(kwargs)
 
-class DotDict(dict):
-    """dot.notation access to dictionary attributes"""
+class OptDict(dict):
+    """Simple dot.notation access for opt dictionary values"""
     __getattr__ = dict.get
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
