@@ -21,7 +21,7 @@
     </size>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="3">
+    <item row="3" column="3">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QPushButton" name="remoteNewFolderButton">
@@ -78,13 +78,13 @@
      </layout>
     </item>
     <item row="1" column="0">
-     <widget class="FileSystem" name="filesystem">
-      <property name="table_type" stdset="0">
-       <enum>FileSystem::Local</enum>
+     <widget class="FileSystemTable" name="filesystem">
+      <property name="showGrid">
+       <bool>true</bool>
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
+    <item row="3" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="localCreateFolderButton">
@@ -110,24 +110,42 @@
      </layout>
     </item>
     <item row="1" column="3">
-     <widget class="FileSystem" name="filesystem_2">
-      <property name="table_type" stdset="0">
-       <enum>FileSystem::Remote</enum>
+     <widget class="FileSystemTable" name="filesystem_2">
+      <property name="tableType" stdset="0">
+       <enum>FileSystemTable::Remote</enum>
       </property>
      </widget>
     </item>
     <item row="0" column="3">
-     <widget class="QPushButton" name="remoteUpButton">
-      <property name="maximumSize">
-       <size>
-        <width>100</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Level UP</string>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QPushButton" name="remoteUpButton">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Level UP</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="RemovableDeviceComboBox" name="removabledevicecombobox">
+        <item>
+         <property name="text">
+          <string>/</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>/media/kurt/DEBIAN LIVE</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -137,7 +155,7 @@
      <x>0</x>
      <y>0</y>
      <width>971</width>
-     <height>25</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -186,14 +204,19 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>RemovableDeviceComboBox</class>
+   <extends>QComboBox</extends>
+   <header>QtPyVCP.widgets.input_widgets.file_system</header>
+  </customwidget>
+  <customwidget>
    <class>VCPMainWindow</class>
    <extends>QMainWindow</extends>
    <header>QtPyVCP.widgets.form_widgets.main_window</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>FileSystem</class>
-   <extends>QWidget</extends>
+   <class>FileSystemTable</class>
+   <extends>QTableView</extends>
    <header>QtPyVCP.widgets.input_widgets.file_system</header>
   </customwidget>
  </customwidgets>
@@ -388,6 +411,22 @@
     <hint type="destinationlabel">
      <x>753</x>
      <y>461</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removabledevicecombobox</sender>
+   <signal>activated(QString)</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>setRootPath(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>689</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>698</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>

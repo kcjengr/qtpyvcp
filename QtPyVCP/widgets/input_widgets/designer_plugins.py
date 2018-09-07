@@ -53,9 +53,15 @@ class JogIncrementPlugin(_DesignerPlugin):
         return JogIncrementWidget
 
 
-from file_system import FileSystem
+from file_system import FileSystemTable
 
 
 class FileSystemPlugin(_DesignerPlugin):
     def pluginClass(self):
-        return FileSystem
+        return FileSystemTable
+
+from file_system import RemovableDeviceComboBox
+
+class RemovableDeviceComboBoxPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return RemovableDeviceComboBox
