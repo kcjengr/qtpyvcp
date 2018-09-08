@@ -44,7 +44,24 @@ class ToolTablePlugin(_DesignerPlugin):
     def pluginClass(self):
         return ToolTable
 
+
 from jog_increment import JogIncrementWidget
+
+
 class JogIncrementPlugin(_DesignerPlugin):
     def pluginClass(self):
         return JogIncrementWidget
+
+
+from file_system import FileSystemTable
+
+
+class FileSystemPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return FileSystemTable
+
+from file_system import RemovableDeviceComboBox
+
+class RemovableDeviceComboBoxPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return RemovableDeviceComboBox

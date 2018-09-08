@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>532</width>
-    <height>341</height>
+    <width>971</width>
+    <height>538</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,15 +20,142 @@
      <height>624</height>
     </size>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout"/>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="3" column="3">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPushButton" name="remoteNewFolderButton">
+        <property name="text">
+         <string>Create Folder</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="remoteCreateFileButton">
+        <property name="text">
+         <string>Create File</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="remoteDeleteButton">
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="0">
+     <widget class="QPushButton" name="localUpButton">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Level UP</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QPushButton" name="uploadButon">
+        <property name="text">
+         <string>-&gt;</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="downloadButton">
+        <property name="text">
+         <string>&lt;-</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="0">
+     <widget class="FileSystemTable" name="filesystem">
+      <property name="showGrid">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="localCreateFolderButton">
+        <property name="text">
+         <string>Create Folder</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="localCreateFileButton">
+        <property name="text">
+         <string>Create File</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="localDeleteButton">
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="3">
+     <widget class="FileSystemTable" name="filesystem_2">
+      <property name="tableType" stdset="0">
+       <enum>FileSystemTable::Remote</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="3">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QPushButton" name="remoteUpButton">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Level UP</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="RemovableDeviceComboBox" name="removabledevicecombobox">
+        <item>
+         <property name="text">
+          <string>/</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>/media/kurt/DEBIAN LIVE</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>532</width>
-     <height>20</height>
+     <width>971</width>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -77,12 +204,231 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>RemovableDeviceComboBox</class>
+   <extends>QComboBox</extends>
+   <header>QtPyVCP.widgets.input_widgets.file_system</header>
+  </customwidget>
+  <customwidget>
    <class>VCPMainWindow</class>
    <extends>QMainWindow</extends>
    <header>QtPyVCP.widgets.form_widgets.main_window</header>
    <container>1</container>
   </customwidget>
+  <customwidget>
+   <class>FileSystemTable</class>
+   <extends>QTableView</extends>
+   <header>QtPyVCP.widgets.input_widgets.file_system</header>
+  </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>localDeleteButton</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem</receiver>
+   <slot>deleteFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>394</x>
+     <y>527</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>395</x>
+     <y>492</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>remoteDeleteButton</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>deleteFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>881</x>
+     <y>512</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>882</x>
+     <y>446</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>localCreateFolderButton</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem</receiver>
+   <slot>createDirectory()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>148</x>
+     <y>527</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>171</x>
+     <y>425</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>remoteNewFolderButton</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>createDirectory()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>671</x>
+     <y>527</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>815</x>
+     <y>452</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>localUpButton</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem</receiver>
+   <slot>goUP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>73</x>
+     <y>44</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>100</x>
+     <y>135</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>remoteUpButton</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>goUP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>610</x>
+     <y>48</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>637</x>
+     <y>132</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filesystem</sender>
+   <signal>transferFileRequest(QString)</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>transferFile(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>371</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>581</x>
+     <y>260</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filesystem_2</sender>
+   <signal>transferFileRequest(QString)</signal>
+   <receiver>filesystem</receiver>
+   <slot>transferFile(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>558</x>
+     <y>290</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>406</x>
+     <y>297</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>uploadButon</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem</receiver>
+   <slot>doFileTransfer()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>481</x>
+     <y>206</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>422</x>
+     <y>165</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>downloadButton</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>doFileTransfer()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>495</x>
+     <y>356</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>580</x>
+     <y>378</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>localCreateFileButton</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem</receiver>
+   <slot>newFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>209</x>
+     <y>510</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>235</x>
+     <y>449</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>remoteCreateFileButton</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>newFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>765</x>
+     <y>512</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>753</x>
+     <y>461</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removabledevicecombobox</sender>
+   <signal>activated(QString)</signal>
+   <receiver>filesystem_2</receiver>
+   <slot>setRootPath(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>689</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>698</x>
+     <y>114</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
