@@ -15,7 +15,8 @@ class Action(object):
     OptionalStop = action.OptionalStop.action_id
     JogMode = action.JogMode.action_id
     StepMode = action.StepMode.action_id
-
+    FeedHold = action.FeedHold.action_id
+        
 class ActionType(object):
     Toggle = -1
     Off = 0
