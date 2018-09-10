@@ -201,8 +201,8 @@
         <widget class="QWidget" name="buttonBox" native="true">
          <property name="geometry">
           <rect>
-           <x>160</x>
-           <y>60</y>
+           <x>10</x>
+           <y>180</y>
            <width>141</width>
            <height>31</height>
           </rect>
@@ -321,8 +321,8 @@
         <widget class="QPushButton" name="power">
          <property name="geometry">
           <rect>
-           <x>210</x>
-           <y>30</y>
+           <x>200</x>
+           <y>40</y>
            <width>80</width>
            <height>23</height>
           </rect>
@@ -436,6 +436,19 @@
          </property>
          <property name="axis">
           <enum>AxisActionButton::Y</enum>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_3">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>80</y>
+           <width>80</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="actionID" stdset="0">
+          <enum>ActionButton::FeedHold</enum>
          </property>
         </widget>
        </widget>
@@ -1166,9 +1179,6 @@
          <property name="checkable">
           <bool>true</bool>
          </property>
-         <property name="action_id" stdset="0">
-          <enum>ActionButton::MachinePower</enum>
-         </property>
         </widget>
         <widget class="ActionButton" name="actionbutton">
          <property name="geometry">
@@ -1191,7 +1201,7 @@
          <property name="checkable">
           <bool>true</bool>
          </property>
-         <property name="action_id" stdset="0">
+         <property name="actionID" stdset="0">
           <enum>ActionButton::EmergencyStop</enum>
          </property>
         </widget>
@@ -1215,7 +1225,7 @@
          <property name="checkable">
           <bool>true</bool>
          </property>
-         <property name="action_id" stdset="0">
+         <property name="actionID" stdset="0">
           <enum>ActionButton::Flood</enum>
          </property>
         </widget>
@@ -1239,11 +1249,8 @@
          <property name="checkable">
           <bool>true</bool>
          </property>
-         <property name="action_id" stdset="0">
+         <property name="actionID" stdset="0">
           <enum>ActionButton::BlockDelete</enum>
-         </property>
-         <property name="action_type" stdset="0">
-          <enum>ActionButton::Toggle</enum>
          </property>
          <property name="option" stdset="0">
           <bool>true</bool>
@@ -1267,12 +1274,12 @@
           <enum>Qt::NoFocus</enum>
          </property>
          <property name="text">
-          <string>Opt Stop </string>
+          <string>Opt Stop</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
          </property>
-         <property name="action_id" stdset="0">
+         <property name="actionID" stdset="0">
           <enum>ActionButton::OptionalStop</enum>
          </property>
          <property name="option" stdset="0">
@@ -1297,16 +1304,13 @@
           <enum>Qt::NoFocus</enum>
          </property>
          <property name="text">
-          <string>Mist </string>
+          <string>Mist</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
          </property>
-         <property name="action_id" stdset="0">
+         <property name="actionID" stdset="0">
           <enum>ActionButton::Mist</enum>
-         </property>
-         <property name="action_type" stdset="0">
-          <enum>ActionButton::Toggle</enum>
          </property>
         </widget>
         <widget class="AxisActionButton" name="axisactionbutton_10">
@@ -1435,7 +1439,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>20</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
@@ -1616,11 +1620,6 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ActionButton</class>
-   <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_button</header>
-  </customwidget>
-  <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
    <header>QtPyVCP.widgets.display_widgets.gcode_backplot</header>
@@ -1643,6 +1642,16 @@
    <header>QtPyVCP.widgets.input_widgets.recent_file_combobox</header>
   </customwidget>
   <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.action_button</header>
+  </customwidget>
+  <customwidget>
    <class>Camera</class>
    <extends>QWidget</extends>
    <header>QtPyVCP.widgets.display_widgets.camera.camera</header>
@@ -1658,14 +1667,9 @@
    <extends>QPushButton</extends>
    <header>QtPyVCP.widgets.button_widgets.axis_button</header>
   </customwidget>
-  <customwidget>
-   <class>MDIEntry</class>
-   <extends>QLineEdit</extends>
-   <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
-  </customwidget>
  </customwidgets>
  <resources>
-  <include location="xyz.qrc"/>
+  <include location="../resources/brender.qrc"/>
  </resources>
  <connections/>
  <designerdata>

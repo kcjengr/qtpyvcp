@@ -45,7 +45,7 @@ QPushButton:checked {
 }
 
 /*E-Stop button*/
-ActionButton[action_id="0"]:checked {
+ActionButton[actionID="0"]:checked {
     border-radius: 50px;
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #C40100, stop: 1.0 #F22E2D)
@@ -164,7 +164,7 @@ QTabBar::tab:selected, QTabBar::tab:hover {
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QTabBar::tab:selected { 
+QTabBar::tab:selected {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
 }
