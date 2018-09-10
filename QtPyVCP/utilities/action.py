@@ -138,7 +138,6 @@ def setTaskMode(new_mode):
         return False
     else:
         CMD.mode(new_mode)
-        CMD.wait_complete()
         return True
 
 def isRunning():
@@ -239,7 +238,6 @@ class MachinePower(_BoolAction):
         if STAT.task_state == linuxcnc.STATE_ESTOP_RESET:
             LOG.debug("Setting state green<ON>")
             CMD.state(linuxcnc.STATE_ON)
-            CMD.wait_complete()
         elif STAT.task_state == linuxcnc.STATE_ESTOP:
             LOG.warn("Can't turn machine green<ON> until out of red<E-Stop>")
 
@@ -248,7 +246,6 @@ class MachinePower(_BoolAction):
         if STAT.task_state == linuxcnc.STATE_ON:
             LOG.debug("Setting state red<OFF>")
             CMD.state(linuxcnc.STATE_OFF)
-            CMD.wait_complete()
 
     @classmethod
     def TOGGLE(cls):
@@ -276,7 +273,6 @@ class Mist(_BoolAction):
         if STAT.task_state == linuxcnc.STATE_ON:
             LOG.debug("Setting mist green<ON>")
             CMD.mist(linuxcnc.MIST_ON)
-            CMD.wait_complete()
         elif STAT.task_state == linuxcnc.STATE_ESTOP:
             LOG.warn("Can't turn mist green<ON> with machine red<OFF>")
 
@@ -284,7 +280,6 @@ class Mist(_BoolAction):
     def OFF(cls):
         LOG.debug("Setting mist red<OFF>")
         CMD.mist(linuxcnc.MIST_OFF)
-        CMD.wait_complete()
 
     @classmethod
     def TOGGLE(cls):
@@ -312,7 +307,6 @@ class Flood(_BoolAction):
         if STAT.task_state == linuxcnc.STATE_ON:
             LOG.debug("Setting flood green<ON>")
             CMD.flood(linuxcnc.FLOOD_ON)
-            CMD.wait_complete()
         elif STATUS.stat.task_state == linuxcnc.STATE_ESTOP:
             LOG.warn("Can't turn flood green<ON> with machine red<OFF>")
 
@@ -320,7 +314,6 @@ class Flood(_BoolAction):
     def OFF(cls):
         LOG.debug("Setting flood red<OFF>")
         CMD.flood(linuxcnc.FLOOD_OFF)
-        CMD.wait_complete()
 
     @classmethod
     def TOGGLE(cls):
@@ -348,13 +341,11 @@ class BlockDelete(_BoolAction):
         if STAT.task_state == linuxcnc.STATE_ON:
             LOG.debug("Setting block delete green<ACTIVE>")
             CMD.set_block_delete(True)
-            CMD.wait_complete()
 
     @classmethod
     def OFF(cls):
         LOG.debug("Setting block delete red<INACTIVE>")
         CMD.set_block_delete(False)
-        CMD.wait_complete()
 
     @classmethod
     def TOGGLE(cls):
@@ -444,13 +435,11 @@ class OptionalStop(_BoolAction):
         if STAT.task_state == linuxcnc.STATE_ON:
             LOG.debug("Setting optional stop green<ACTIVE>")
             CMD.set_optional_stop(True)
-            CMD.wait_complete()
 
     @classmethod
     def Off(cls):
         LOG.debug("Setting optional stop red<INACTIVE>")
         CMD.set_optional_stop(False)
-        CMD.wait_complete()
 
     @classmethod
     def TOGGLE(cls):
@@ -478,7 +467,6 @@ class FeedHold(_BoolAction):
         if STAT.paused:
             LOG.debug("Setting feedhold green<ON>")
             CMD.auto(linuxcnc.AUTO_PAUSE)
-            CMD.wait_complete()
         elif STATUS.stat.task_state == linuxcnc.STATE_ESTOP:
             LOG.warn("Can't turn feedhold green<ON> with machine red<OFF>")
 
@@ -486,7 +474,6 @@ class FeedHold(_BoolAction):
     def OFF(cls):
         LOG.debug("Setting feedhold red<OFF>")
         CMD.auto(linuxcnc.AUTO_RESUME)
-        CMD.wait_complete()
 
     @classmethod
     def TOGGLE(cls):
