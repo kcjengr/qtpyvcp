@@ -27,7 +27,7 @@ import time
 from PyQt5 import uic
 from PyQt5.QtGui import QIcon, QKeySequence
 from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty, QTimer
-from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QPushButton, 
+from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QPushButton,
     QAction, QMessageBox, QFileDialog, QMenu, QLineEdit, QShortcut, qApp)
 
 from PyQt5 import QtWidgets, QtGui
@@ -42,9 +42,33 @@ PREFS = Prefs()
 INFO = Info()
 
 from QtPyVCP.utilities import action
+# from QtPyVCP.utilities.action import ProgramActions, Home, Flood
 from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
-from QtPyVCP.utilities import action
 
+# s = time.time()
+#
+# ACTION_METHODS = {
+#     "program": {
+#         "run": ProgramActions.runProgram,
+#         "pause": ProgramActions.pauseProgram,
+#         "resume": ProgramActions.resumeProgram,
+#         "step": ProgramActions.stepProgram,
+#     },
+#     "home": {
+#         "all": Home.homeAll,
+#         "axis": Home.homeAxis,
+#         "joint": Home.homeJoint,
+#     },
+#     "flood": {
+#         "on": Flood.ON,
+#         "off": Flood.OFF,
+#         "toggle": Flood.TOGGLE,
+#     },
+# }
+#
+# print time.time() - s
+
+# print ACTION_METHODS
 
 class VCPMainWindow(QMainWindow):
 
@@ -85,16 +109,20 @@ class VCPMainWindow(QMainWindow):
             for menu_action in menu_actions:
                 if menu_action.isSeparator():
                     continue
-                data = menu_action.objectName().split('_', 2)
+                data = menu_action.objectName().split('_')
                 if data[0] == "action" and len(data) > 1:
+                    # try:
+                    #     action_class =  getattr(action, data[1])
+                    #     action_instance = action_class(menu_action, action_type=data[2])
+                    #     # print "ACTION: ", action_instance
+                    # except:
+                    #     LOG.warn("Could not connect action", exc_info=True)
+                    #     continue
+                    # self.actions.append(action_instance)
                     try:
-                        action_class =  getattr(action, data[1])
-                        action_instance = action_class(menu_action, action_type=data[2])
-                        # print "ACTION: ", action_instance
+                        print ACTION_METHODS[data[1]][data[2]]
                     except:
-                        LOG.warn("Could not connect action", exc_info=True)
-                        continue
-                    self.actions.append(action_instance)
+                        print "error"
 
         print "action time ", time.time() - s
 
@@ -193,7 +221,7 @@ class VCPMainWindow(QMainWindow):
 
     @pyqtSlot()
     def on_actionRun_Program_triggered(self):
-        ProgramActions.runProgram()
+        action.program.run()
 
     @pyqtSlot()
     def on_actionHome_All_triggered(self):
@@ -222,7 +250,7 @@ class VCPMainWindow(QMainWindow):
             # add new actions
             for i in range(STATUS.max_recent_files):
                 action = QAction(self, visible=False,
-                                 triggered=(lambda: ProgramActions.loadProgram(self.sender().data())))
+                                 triggered=(lambda: action.program.load(self.sender().data())))
                 self.recent_file_actions.append(action)
                 self.menuRecentFiles.addAction(action)
 
@@ -273,7 +301,7 @@ class VCPMainWindow(QMainWindow):
         splash_code = INFO.getOpenFile() or path
         if splash_code is not None:
             # Load after startup to not cause delay
-            QTimer.singleShot(0, lambda: ProgramActions.loadProgram(splash_code, add_to_recents=False))
+            QTimer.singleShot(0, lambda: action.program.load(splash_code, add_to_recents=False))
 
 #==============================================================================
 #  QtDesigner property setters/getters

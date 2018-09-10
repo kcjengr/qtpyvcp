@@ -318,7 +318,7 @@
           </item>
          </layout>
         </widget>
-        <widget class="QPushButton" name="power">
+        <widget class="QPushButton" name="action_program_RUN">
          <property name="geometry">
           <rect>
            <x>200</x>
@@ -449,6 +449,32 @@
          </property>
          <property name="actionID" stdset="0">
           <enum>ActionButton::FeedHold</enum>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="feedhold">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>120</y>
+           <width>80</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Pause</string>
+         </property>
+        </widget>
+        <widget class="QPushButton" name="resume">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>150</y>
+           <width>80</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Resume</string>
          </property>
         </widget>
        </widget>

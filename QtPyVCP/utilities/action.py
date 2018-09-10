@@ -430,21 +430,35 @@ class FeedHold(_BoolAction):
 # Program actions
 #==============================================================================
 
-class ProgramActions(object):
-    """Program action class"""
-    def __init__(self, widget, action_type):
-        self.widget = widget
-        self.action_type = action_type.upper()
+class program(object):
+    """program actions group"""
+    def __init__(self, widget, action):
+        self._widget = widget
+        self._action = action
 
-        if self.widget is not None:
-            if isinstance(self.widget, QAction):
-                sig = self.widget.triggered
+        if widget is not None:
+            if isinstance(widget, QAction):
+                sig = widget.triggered
             else:
-                sig = self.widget.clicked
-            sig.connect(getattr(self, self.action_type))
+                sig = widget.clicked
+            sig.connect(getattr(self.__class__, action))
+            print 'SIG', sig
+
+        if action == 'run':
+            widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
+
+            STATUS.paused.connect(lambda paused: widget.setChecked(paused))
+            STATUS.state.connect(lambda state: widget.setChecked(state == linuxcnc.RCS_EXEC))
+        elif action == 'pause':
+            widget.setEnabled(STAT.state == linuxcnc.RCS_EXEC)
+            STATUS.state.connect(lambda state: widget.setEnabled(state == linuxcnc.RCS_EXEC))
+
+        elif action == 'resume':
+            widget.setEnabled(STAT.paused)
+            STATUS.paused.connect(lambda paused: widget.setEnabled(paused))
 
     @classmethod
-    def loadProgram(cls, fname, add_to_recents=True):
+    def load(cls, fname, add_to_recents=True):
         setTaskMode(linuxcnc.MODE_AUTO)
         filter_prog = INFO.getFilterProgram(fname)
         if not filter_prog:
@@ -456,27 +470,37 @@ class ProgramActions(object):
             cls.addProgramToRecents(fname)
 
     @classmethod
-    def runProgram(cls, start_line=0):
-        if setTaskMode(linuxcnc.MODE_AUTO):
+    def run (cls, start_line=0):
+        if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
+            CMD.auto(linuxcnc.AUTO_RESUME)
+        elif setTaskMode(linuxcnc.MODE_AUTO):
             CMD.auto(linuxcnc.AUTO_RUN, start_line)
 
     @classmethod
-    def runProgramFromLine(cls):
+    def runFromLine(cls):
         # TODO: This might should show a popup to select start line,
         #       or it could get the start line from the gcode view or
         #       even from the backplot.
         raise NotImplemented
 
     @classmethod
-    def pauseProgram(cls):
-        pass
+    def pause(cls):
+        if STAT.state == linuxcnc.RCS_EXEC and not STAT.paused:
+            LOG.debug("Pausing program execution")
+            CMD.auto(linuxcnc.AUTO_PAUSE)
+        else:
+            LOG.warn("Can't pause program, is a program executing?")
 
     @classmethod
-    def resumeProgram(cls):
-        pass
+    def resume(cls):
+        if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
+            LOG.debug("Resuming program execution")
+            CMD.auto(linuxcnc.AUTO_RESUME)
+        else:
+            LOG.warn("Can't resume program execution, is a program paused?")
 
     @classmethod
-    def stepProgram(cls):
+    def step(cls):
         pass
 
     @classmethod

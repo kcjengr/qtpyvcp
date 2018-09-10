@@ -7,7 +7,7 @@ from PyQt5.QtCore import Qt, QEvent
 from QtPyVCP.core import Status
 STATUS = Status()
 
-from QtPyVCP.utilities.action import ProgramActions
+from QtPyVCP.utilities import action
 from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
 
 class RecentFileComboBox(QComboBox):
@@ -35,4 +35,4 @@ class RecentFileComboBox(QComboBox):
         if data == 'browse_files':
             self.file_dialog.show()
         else:
-            ProgramActions.loadProgram(data)
+            action.program.load(data)
