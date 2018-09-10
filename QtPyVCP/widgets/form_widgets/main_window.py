@@ -193,7 +193,7 @@ class VCPMainWindow(QMainWindow):
 
     @pyqtSlot()
     def on_actionRun_Program_triggered(self):
-        ACTION.runProgram()
+        ProgramActions.runProgram()
 
     @pyqtSlot()
     def on_actionHome_All_triggered(self):
@@ -222,7 +222,7 @@ class VCPMainWindow(QMainWindow):
             # add new actions
             for i in range(STATUS.max_recent_files):
                 action = QAction(self, visible=False,
-                                 triggered=(lambda:ACTION.loadProgram(self.sender().data())))
+                                 triggered=(lambda: ProgramActions.loadProgram(self.sender().data())))
                 self.recent_file_actions.append(action)
                 self.menuRecentFiles.addAction(action)
 
@@ -273,8 +273,7 @@ class VCPMainWindow(QMainWindow):
         splash_code = INFO.getOpenFile() or path
         if splash_code is not None:
             # Load after startup to not cause delay
-            QTimer.singleShot(0, lambda: ACTION.loadProgram(splash_code, add_to_recents=False))
-
+            QTimer.singleShot(0, lambda: ProgramActions.loadProgram(splash_code, add_to_recents=False))
 
 #==============================================================================
 #  QtDesigner property setters/getters

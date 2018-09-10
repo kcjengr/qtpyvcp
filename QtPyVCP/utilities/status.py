@@ -234,7 +234,7 @@ class _Status(QObject):
     file_loaded = pyqtSignal(str)           # file loaded
 
     on = pyqtSignal(bool)
-    executing = pyqtSignal(bool)
+    moving = pyqtSignal(bool)
     all_homed = pyqtSignal(bool)
 
     # Gcode Backplot
@@ -297,10 +297,6 @@ class _Status(QObject):
 
         self.task_state.connect(lambda v: self.on.emit(v == linuxcnc.STATE_ON))
 
-        # self.state.connect(lambda v: self.executing.emit(v == linuxcnc.RCS_EXEC))
-        # self.interp_state.connect(lambda v:
-        #     self.executing.emit(v != linuxcnc.INTERP_IDLE
-        #         and self.stat.task_mode == linuxcnc.MODE_AUTO))
         # File
         self.file.connect(self.updateFileLoaded)
 
@@ -340,6 +336,13 @@ class _Status(QObject):
                     str_val = str_dict[new_value]
                     getattr(self, key)[str].emit(str_val)
                     log.debug("{}: {}".format(key, str_val))
+
+        # Returns TRUE if machine is moving due to MDI, program execution, etc.
+        self.moving.emit(
+            self.stat.state == linuxcnc.RCS_EXEC or
+            (self.stat.task_mode == linuxcnc.MODE_AUTO and
+            self.stat.interp_state != linuxcnc.INTERP_IDLE)
+            )
 
         self.joint._periodic()
         self.error._periodic()
