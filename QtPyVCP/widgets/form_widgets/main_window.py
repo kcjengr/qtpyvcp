@@ -120,9 +120,11 @@ class VCPMainWindow(QMainWindow):
                     #     continue
                     # self.actions.append(action_instance)
                     try:
-                        print ACTION_METHODS[data[1]][data[2]]
+                        action_instance = getattr(action, data[1])(menu_action, action=data[2])
+                        self.actions.append(action_instance)
                     except:
-                        print "error"
+                        # LOG.exception("Error loading action")
+                        pass
 
         print "action time ", time.time() - s
 

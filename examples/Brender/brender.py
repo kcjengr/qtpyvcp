@@ -24,6 +24,7 @@ class MainWindow(VCPMainWindow):
     #  Add/Override methods and slots below to customize the main window
     #==========================================================================
 
+        action.program(self.run, action='run')
         action.program(self.feedhold, action='pause')
         action.program(self.resume, action='resume')
 

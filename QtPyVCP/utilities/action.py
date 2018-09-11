@@ -432,9 +432,8 @@ class FeedHold(_BoolAction):
 
 class program(object):
     """program actions group"""
+
     def __init__(self, widget, action):
-        self._widget = widget
-        self._action = action
 
         if widget is not None:
             if isinstance(widget, QAction):
@@ -442,20 +441,24 @@ class program(object):
             else:
                 sig = widget.clicked
             sig.connect(getattr(self.__class__, action))
-            print 'SIG', sig
 
         if action == 'run':
-            widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
+            widget.setEnabled(bool(self.checkRunOk()))
 
-            STATUS.paused.connect(lambda paused: widget.setChecked(paused))
-            STATUS.state.connect(lambda state: widget.setChecked(state == linuxcnc.RCS_EXEC))
+            STATUS.estop.connect(lambda: self.checkRunOk(widget))
+            STATUS.enabled.connect(lambda: self.checkRunOk(widget))
+            STATUS.all_homed.connect(lambda: self.checkRunOk(widget))
+            STATUS.interp_state.connect(lambda: self.checkRunOk(widget))
+            STATUS.file.connect(lambda: self.checkRunOk(widget))
+
         elif action == 'pause':
             widget.setEnabled(STAT.state == linuxcnc.RCS_EXEC)
             STATUS.state.connect(lambda state: widget.setEnabled(state == linuxcnc.RCS_EXEC))
-
         elif action == 'resume':
             widget.setEnabled(STAT.paused)
             STATUS.paused.connect(lambda paused: widget.setEnabled(paused))
+        elif action == 'step':
+            widget.setEnabled(False)
 
     @classmethod
     def load(cls, fname, add_to_recents=True):
@@ -467,14 +470,39 @@ class program(object):
             openFilterProgram(fname, filter_prog)
 
         if add_to_recents:
-            cls.addProgramToRecents(fname)
+            cls.addToRecents(fname)
 
     @classmethod
     def run (cls, start_line=0):
+        error = cls.checkRunOk()
+        if error:
+            LOG.error(error)
+            return
         if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
             CMD.auto(linuxcnc.AUTO_RESUME)
         elif setTaskMode(linuxcnc.MODE_AUTO):
             CMD.auto(linuxcnc.AUTO_RUN, start_line)
+
+    @classmethod
+    def checkRunOk(cls, widget=None):
+        error = ""
+        if STAT.estop:
+            error = "Can't run program when in E-Stop"
+        elif not STAT.enabled:
+            error = "Can't run program when not enabled"
+        elif not STATUS.allHomed():
+            error = "Can't run program when not homed"
+        elif not STAT.interp_state == linuxcnc.INTERP_IDLE:
+            error = "Can't run program when interpreter is not idle"
+        elif STAT.file == "":
+            error = "Can't run program when no file loaded"
+
+        if widget is not None:
+            widget.setEnabled(error == "")
+            widget.setStatusTip(error)
+            widget.setToolTip(error)
+
+        return error
 
     @classmethod
     def runFromLine(cls):
@@ -504,7 +532,7 @@ class program(object):
         pass
 
     @classmethod
-    def addProgramToRecents(cls, fname):
+    def addToRecents(cls, fname):
         if fname in STATUS.recent_files:
             STATUS.recent_files.remove(fname)
         STATUS.recent_files.insert(0, fname)

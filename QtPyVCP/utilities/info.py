@@ -148,7 +148,7 @@ class _Info(object):
         else:
             return False
 
-    def getNoForceHoming(self):
+    def noForceHoming(self):
         temp = self.ini.find('TRAJ', 'NO_FORCE_HOMING')
         if temp and temp == '1':
             return True

@@ -442,7 +442,7 @@
          <property name="geometry">
           <rect>
            <x>200</x>
-           <y>80</y>
+           <y>70</y>
            <width>80</width>
            <height>26</height>
           </rect>
@@ -455,7 +455,7 @@
          <property name="geometry">
           <rect>
            <x>200</x>
-           <y>120</y>
+           <y>130</y>
            <width>80</width>
            <height>26</height>
           </rect>
@@ -468,7 +468,7 @@
          <property name="geometry">
           <rect>
            <x>200</x>
-           <y>150</y>
+           <y>160</y>
            <width>80</width>
            <height>26</height>
           </rect>
@@ -477,6 +477,29 @@
           <string>Resume</string>
          </property>
         </widget>
+        <widget class="QPushButton" name="run">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>100</y>
+           <width>80</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Run</string>
+         </property>
+        </widget>
+        <zorder>buttonBox</zorder>
+        <zorder>axisactionbutton_4</zorder>
+        <zorder>axisactionbutton_5</zorder>
+        <zorder>axisactionbutton_6</zorder>
+        <zorder>axisactionbutton_7</zorder>
+        <zorder>actionbutton_3</zorder>
+        <zorder>feedhold</zorder>
+        <zorder>resume</zorder>
+        <zorder>action_program_RUN</zorder>
+        <zorder>run</zorder>
        </widget>
       </item>
       <item>
@@ -1520,9 +1543,16 @@
     <addaction name="actionReport_Actual_Position"/>
     <addaction name="actionTest"/>
    </widget>
+   <widget class="QMenu" name="menuTest">
+    <property name="title">
+     <string>Test</string>
+    </property>
+    <addaction name="action_program_run"/>
+   </widget>
    <addaction name="menuExit"/>
    <addaction name="menuMachine"/>
    <addaction name="menuView"/>
+   <addaction name="menuTest"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionExit">
@@ -1641,6 +1671,11 @@
    </property>
    <property name="shortcut">
     <string>F8</string>
+   </property>
+  </action>
+  <action name="action_program_run">
+   <property name="text">
+    <string>Run Program</string>
    </property>
   </action>
  </widget>

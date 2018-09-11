@@ -256,6 +256,7 @@ class _Status(QObject):
     def __init__(self):
         super(_Status, self).__init__()
 
+        self.no_force_homing = INFO.noForceHoming()
         self._report_actual_position = False
 
         self.max_recent_files = PREFS.getPref("STATUS", "MAX_RECENT_FILES", 10, int)
@@ -293,7 +294,7 @@ class _Status(QObject):
         self.tool_offset.connect(self.updateAxisPositions)
         self.joint_position.connect(self.updateJointPositions)
 
-        self.homed.connect(self.isAllHomed)
+        self.homed.connect(self._allHomed)
 
         self.task_state.connect(lambda v: self.on.emit(v == linuxcnc.STATE_ON))
 
@@ -338,11 +339,11 @@ class _Status(QObject):
                     log.debug("{}: {}".format(key, str_val))
 
         # Returns TRUE if machine is moving due to MDI, program execution, etc.
-        self.moving.emit(
-            self.stat.state == linuxcnc.RCS_EXEC or
-            (self.stat.task_mode == linuxcnc.MODE_AUTO and
-            self.stat.interp_state != linuxcnc.INTERP_IDLE)
-            )
+        # self.moving.emit(
+        #     self.stat.state == linuxcnc.RCS_EXEC or
+        #     (self.stat.task_mode == linuxcnc.MODE_AUTO and
+        #     self.stat.interp_state != linuxcnc.INTERP_IDLE)
+        #     )
 
         self.joint._periodic()
         self.error._periodic()
@@ -462,14 +463,17 @@ class _Status(QObject):
                 and self.stat.call_level == 0:
             self.file_loaded.emit(file)
 
-    def isAllHomed(self, homed_tuple):
+    def _allHomed(self):
+        self.all_homed.emit(self.allHomed())
+
+    def allHomed(self):
         '''Returns TRUE if all joints are homed.'''
+        if self.no_force_homing:
+            return True
         for jnum in range(self.stat.joints):
             if not self.stat.joint[jnum]['homed']:
-                self.all_homed.emit(False)
-                return
-        self.all_homed.emit(True)
-
+                return False
+        return True
 
     def onShutdown(self):
         self.on_shutown.emit()
