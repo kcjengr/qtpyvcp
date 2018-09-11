@@ -16,6 +16,8 @@ LOG = logger.getLogger('QtPyVCP.' + __name__)
 
 from QtPyVCP.utilities import action
 
+from QtPyVCP.actions import program_actions
+
 class MainWindow(VCPMainWindow):
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
@@ -24,9 +26,14 @@ class MainWindow(VCPMainWindow):
     #  Add/Override methods and slots below to customize the main window
     #==========================================================================
 
-        action.program(self.run, action='run')
+        program_actions.initWidget(self.run, action='run')
         action.program(self.feedhold, action='pause')
         action.program(self.resume, action='resume')
+
+        if program_actions.runOk():
+            program_actions.run()
+        else:
+            print "RUN NOT OK: ", program_actions.runOk.msg
 
     # This slot will be automatically connected to a menu item named 'Test'
     # created in QtDesigner.

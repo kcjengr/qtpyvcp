@@ -474,6 +474,46 @@ class program(object):
 
     @classmethod
     def run (cls, start_line=0):
+        """
+        Runs the loaded program, optionally starting from a specific line.
+
+        Args:
+            start_line (int, optional) : The line to start program from. Defaults to 0.
+        """
+        def ok(cls, widget=None):
+            """
+            Checks if it is OK to run the program.
+
+            Args:
+                widget (QWidget, optional) : If a widget is supplied it will be
+                    enabled/disabled according to the result, and will have it's
+                    statusTip property set to the reason the action is disabled.
+
+            Returns:
+                str : Empty if OK, otherwise the reason it is not OK.
+
+            """
+            msg = "Run loaded program."
+            if STAT.estop:
+                msg = "Can't run program when in E-Stop"
+            elif not STAT.enabled:
+                msg = "Can't run program when not enabled"
+            elif not STATUS.allHomed():
+                msg = "Can't run program when not homed"
+            elif not STAT.interp_state == linuxcnc.INTERP_IDLE:
+                msg = "Can't run program when interpreter is not idle"
+            elif STAT.file == "":
+                msg = "Can't run program when no file loaded"
+
+            run.status_msg = msg
+
+            if widget is not None:
+                widget.setEnabled(msg == "")
+                widget.setStatusTip(msg)
+                widget.setToolTip(msg)
+
+            return error
+        # check if it is OK to run
         error = cls.runOk()
         if error:
             LOG.error(error)
@@ -485,6 +525,18 @@ class program(object):
 
     @classmethod
     def runOk(cls, widget=None):
+        """
+        Checks if it is OK to run the program.
+
+        Args:
+            widget (QWidget, optional) : If a widget is supplied it will be
+                enabled/disabled according to the result, and will have it's
+                statusTip property set to the reason the action is disabled.
+
+        Returns:
+            str : Empty if OK, otherwise the reason it is not OK.
+
+        """
         error = ""
         if STAT.estop:
             error = "Can't run program when in E-Stop"
@@ -518,6 +570,23 @@ class program(object):
             CMD.auto(linuxcnc.AUTO_PAUSE)
         else:
             LOG.warn("Can't pause program, is a program executing?")
+
+    @classmethod
+    def pauseOk(cls, widget=None):
+        error = ""
+        if STAT.state == linuxcnc.RCS_EXEC and not STAT.paused:
+            return ""
+        elif STAT.paused:
+            error = "Execution is already paused."
+
+        if widget is not None:
+            widget.setEnabled(error == "")
+            widget.setStatusTip(error)
+            widget.setToolTip(error)
+
+        return error
+
+
 
     @classmethod
     def resume(cls):
