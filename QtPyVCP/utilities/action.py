@@ -443,13 +443,13 @@ class program(object):
             sig.connect(getattr(self.__class__, action))
 
         if action == 'run':
-            widget.setEnabled(bool(self.checkRunOk()))
+            widget.setEnabled(bool(self.runOk()))
 
-            STATUS.estop.connect(lambda: self.checkRunOk(widget))
-            STATUS.enabled.connect(lambda: self.checkRunOk(widget))
-            STATUS.all_homed.connect(lambda: self.checkRunOk(widget))
-            STATUS.interp_state.connect(lambda: self.checkRunOk(widget))
-            STATUS.file.connect(lambda: self.checkRunOk(widget))
+            STATUS.estop.connect(lambda: self.runOk(widget))
+            STATUS.enabled.connect(lambda: self.runOk(widget))
+            STATUS.all_homed.connect(lambda: self.runOk(widget))
+            STATUS.interp_state.connect(lambda: self.runOk(widget))
+            STATUS.file.connect(lambda: self.runOk(widget))
 
         elif action == 'pause':
             widget.setEnabled(STAT.state == linuxcnc.RCS_EXEC)
@@ -474,7 +474,7 @@ class program(object):
 
     @classmethod
     def run (cls, start_line=0):
-        error = cls.checkRunOk()
+        error = cls.runOk()
         if error:
             LOG.error(error)
             return
@@ -484,7 +484,7 @@ class program(object):
             CMD.auto(linuxcnc.AUTO_RUN, start_line)
 
     @classmethod
-    def checkRunOk(cls, widget=None):
+    def runOk(cls, widget=None):
         error = ""
         if STAT.estop:
             error = "Can't run program when in E-Stop"
