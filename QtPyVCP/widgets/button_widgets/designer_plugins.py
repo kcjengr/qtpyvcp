@@ -36,3 +36,8 @@ class LedButtonPlugin(_DesignerPlugin):
         return LEDButton
     def toolTip(self):
         return "LED button"
+
+from action_checkbox import ActionCheckBox
+class ActionCheckBoxPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return ActionCheckBox

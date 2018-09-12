@@ -519,6 +519,22 @@
           <string>Flood</string>
          </property>
         </widget>
+        <widget class="ActionCheckBox" name="actioncheckbox">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>110</y>
+           <width>51</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Test</string>
+         </property>
+         <property name="actionID" stdset="0">
+          <string>coolant.floodToggle</string>
+         </property>
+        </widget>
         <zorder>buttonBox</zorder>
         <zorder>axisactionbutton_4</zorder>
         <zorder>axisactionbutton_5</zorder>
@@ -531,6 +547,7 @@
         <zorder>run</zorder>
         <zorder>flood</zorder>
         <zorder>floodCheckBox</zorder>
+        <zorder>actioncheckbox</zorder>
        </widget>
       </item>
       <item>
@@ -1720,6 +1737,11 @@
   </action>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>ActionCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>QtPyVCP.widgets.button_widgets.action_checkbox</header>
+  </customwidget>
   <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
