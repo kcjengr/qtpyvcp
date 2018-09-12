@@ -16,7 +16,7 @@ LOG = logger.getLogger('QtPyVCP.' + __name__)
 
 from QtPyVCP.utilities import action
 
-from QtPyVCP.actions import program_actions
+from QtPyVCP.actions import program_actions, coolant_actions
 
 class MainWindow(VCPMainWindow):
     def __init__(self, *args, **kwargs):
@@ -26,9 +26,12 @@ class MainWindow(VCPMainWindow):
     #  Add/Override methods and slots below to customize the main window
     #==========================================================================
 
-        program_actions.initWidget(self.run, action='run')
-        action.program(self.feedhold, action='pause')
+        program_actions.bindWidget(self.run, action='run')
+        program_actions.bindWidget(self.feedhold, action='pause')
         action.program(self.resume, action='resume')
+
+        coolant_actions.bindWidget(self.flood, action='floodToggle')
+        coolant_actions.bindWidget(self.floodCheckBox, action="floodToggle")
 
         if program_actions.runOk():
             program_actions.run()

@@ -16,7 +16,7 @@ class Action(object):
     JogMode = action.JogMode.action_id
     StepMode = action.StepMode.action_id
     FeedHold = action.FeedHold.action_id
-        
+
 class ActionType(object):
     Toggle = -1
     Off = 0
@@ -39,6 +39,8 @@ class ActionButton(QPushButton, Action, ActionType):
         self._action_inst = None
         self._custom_text = u'\u200b'
         self._setDefaultText()
+
+        self._button_type = ["test", "hello"]
 
         STATUS.init_ui.connect(self._setUpAction)
 
@@ -144,3 +146,34 @@ class ActionButton(QPushButton, Action, ActionType):
         Resets the custom button text property.
         """
         self._custom_text = u'\u200b'
+
+
+
+    @pyqtProperty('QStringList')
+    def buttonType(self):
+        """
+        Custom button text property.
+
+        Returns
+        -------
+        str
+        """
+        return self._button_type
+
+    @buttonType.setter
+    def customText(self, button_type):
+        """
+        Sets the custom button text property to `custom_text`.
+
+        Parameters
+        ----------
+        custom_text : str
+        """
+        self._button_type = button_type
+
+    @buttonType.reset
+    def customText(self):
+        """
+        Resets the custom button text property.
+        """
+        self._button_type = ["test", "hello"]

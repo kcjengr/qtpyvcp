@@ -490,6 +490,35 @@
           <string>Run</string>
          </property>
         </widget>
+        <widget class="QPushButton" name="flood">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>40</y>
+           <width>80</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Flood</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+        </widget>
+        <widget class="QCheckBox" name="floodCheckBox">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>80</y>
+           <width>84</width>
+           <height>24</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Flood</string>
+         </property>
+        </widget>
         <zorder>buttonBox</zorder>
         <zorder>axisactionbutton_4</zorder>
         <zorder>axisactionbutton_5</zorder>
@@ -500,6 +529,8 @@
         <zorder>resume</zorder>
         <zorder>action_program_RUN</zorder>
         <zorder>run</zorder>
+        <zorder>flood</zorder>
+        <zorder>floodCheckBox</zorder>
        </widget>
       </item>
       <item>
@@ -1548,6 +1579,7 @@
      <string>Test</string>
     </property>
     <addaction name="action_program_run"/>
+    <addaction name="action_coolant_floodToggle"/>
    </widget>
    <addaction name="menuExit"/>
    <addaction name="menuMachine"/>
@@ -1676,6 +1708,14 @@
   <action name="action_program_run">
    <property name="text">
     <string>Run Program</string>
+   </property>
+  </action>
+  <action name="action_coolant_floodToggle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Flood</string>
    </property>
   </action>
  </widget>
