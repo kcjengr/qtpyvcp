@@ -42,6 +42,7 @@ PREFS = Prefs()
 INFO = Info()
 
 from QtPyVCP.utilities import action
+from QtPyVCP import actions
 # from QtPyVCP.utilities.action import ProgramActions, Home, Flood
 from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
 
@@ -111,20 +112,11 @@ class VCPMainWindow(QMainWindow):
                     continue
                 data = menu_action.objectName().split('_')
                 if data[0] == "action" and len(data) > 1:
-                    # try:
-                    #     action_class =  getattr(action, data[1])
-                    #     action_instance = action_class(menu_action, action_type=data[2])
-                    #     # print "ACTION: ", action_instance
-                    # except:
-                    #     LOG.warn("Could not connect action", exc_info=True)
-                    #     continue
-                    # self.actions.append(action_instance)
                     try:
-                        action_instance = getattr(action, data[1])(menu_action, action=data[2])
+                        action_instance = getattr(actions, data[1]).bindWidget(menu_action, action=data[2])
                         self.actions.append(action_instance)
                     except:
-                        # LOG.exception("Error loading action")
-                        pass
+                        LOG.exception("Error loading action: actions.{}.{}".format(data[1], data[2]))
 
         print "action time ", time.time() - s
 

@@ -44,7 +44,7 @@ from QtPyVCP.actions.base_actions import setTaskMode
 # Program actions
 #==============================================================================
 
-def initWidget(widget, action):
+def bindWidget(widget, action):
 
     if isinstance(widget, QAction):
         sig = widget.triggered
@@ -53,7 +53,7 @@ def initWidget(widget, action):
     sig.connect(globals()[action])
 
     if action == 'run':
-        widget.setEnabled(runOk())
+        widget.setEnabled(runOk(widget))
 
         STATUS.estop.connect(lambda: runOk(widget))
         STATUS.enabled.connect(lambda: runOk(widget))
@@ -62,8 +62,11 @@ def initWidget(widget, action):
         STATUS.file.connect(lambda: runOk(widget))
 
     elif action == 'pause':
-        widget.setEnabled(STAT.state == linuxcnc.RCS_EXEC)
-        STATUS.state.connect(lambda state: widget.setEnabled(state == linuxcnc.RCS_EXEC))
+        widget.setEnabled(pauseOk())
+
+        STATUS.state.connect(lambda: pauseOk(widget))
+        STATUS.paused.connect(lambda: pauseOk(widget))
+
     elif action == 'resume':
         widget.setEnabled(STAT.paused)
         STATUS.paused.connect(lambda paused: widget.setEnabled(paused))
@@ -111,25 +114,33 @@ def runOk(widget=None):
         bool : True if Ok, else False.
 
     """
-    msg = "Ok"
     if STAT.estop:
+        ok = False
         msg = "Can't run program when in E-Stop"
     elif not STAT.enabled:
+        ok = False
         msg = "Can't run program when not enabled"
     elif not STATUS.allHomed():
+        ok = False
         msg = "Can't run program when not homed"
     elif not STAT.interp_state == linuxcnc.INTERP_IDLE:
+        ok = False
         msg = "Can't run program when interpreter is not idle"
     elif STAT.file == "":
+        ok = False
         msg = "Can't run program when no file loaded"
+    else:
+        ok = True
+        msg = "Run Program"
+
+    runOk.msg = msg
 
     if widget is not None:
-        widget.setEnabled(msg == "Ok")
+        widget.setEnabled(ok)
         widget.setStatusTip(msg)
         widget.setToolTip(msg)
 
-    runOk.msg = msg
-    return msg == "Ok"
+    return ok
 
 def runFromLine():
     # TODO: This might should show a popup to select start line,
@@ -138,25 +149,31 @@ def runFromLine():
     raise NotImplemented
 
 def pause():
-    if STAT.state == linuxcnc.RCS_EXEC and not STAT.paused:
-        LOG.debug("Pausing program execution")
-        CMD.auto(linuxcnc.AUTO_PAUSE)
-    else:
-        LOG.warn("Can't pause program, is a program executing?")
+    if not pauseOk():
+        LOG.error(pauseOk.msg)
+        return
+    LOG.debug("Pausing program execution")
+    CMD.auto(linuxcnc.AUTO_PAUSE)
 
 def pauseOk(widget=None):
-    error = ""
     if STAT.state == linuxcnc.RCS_EXEC and not STAT.paused:
-        return ""
+        msg = "Pause program"
+        ok = True
     elif STAT.paused:
-        error = "Execution is already paused."
+        msg = "Already paused"
+        ok = False
+    else:
+        msg = "Can't pause when not running"
+        ok = False
+
+    runOk.msg = msg
 
     if widget is not None:
-        widget.setEnabled(error == "")
-        widget.setStatusTip(error)
-        widget.setToolTip(error)
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
 
-    return error
+    return ok
 
 def resume():
     if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
