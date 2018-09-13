@@ -551,6 +551,22 @@
           <string>coolant.mist.toggle</string>
          </property>
         </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>190</y>
+           <width>81</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Mist On</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>coolant.mist.toggle</string>
+         </property>
+        </widget>
         <zorder>buttonBox</zorder>
         <zorder>axisactionbutton_4</zorder>
         <zorder>axisactionbutton_5</zorder>
@@ -565,6 +581,7 @@
         <zorder>floodCheckBox</zorder>
         <zorder>actioncheckbox</zorder>
         <zorder>actioncheckbox_2</zorder>
+        <zorder>actionbuttonnew</zorder>
        </widget>
       </item>
       <item>
@@ -1754,6 +1771,11 @@
   </action>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>ActionButtonNew</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.action_button_new</header>
+  </customwidget>
   <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>

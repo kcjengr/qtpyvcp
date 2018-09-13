@@ -41,3 +41,8 @@ from action_checkbox import ActionCheckBox
 class ActionCheckBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
         return ActionCheckBox
+
+from action_button_new import ActionButtonNew
+class ActionButtonNewPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return ActionButtonNew
