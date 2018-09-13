@@ -73,9 +73,11 @@ def bindWidget(widget, action):
     STATUS.task_state.connect(lambda: coolantOk(widget))
 
     if action == "flood.toggle":
+        widget.setCheckable(True)
         widget.setChecked(STAT.flood == linuxcnc.FLOOD_ON)
         STATUS.flood.connect(lambda s: widget.setChecked(s == linuxcnc.FLOOD_ON))
     elif action == "mist.toggle":
+        widget.setCheckable(True)
         widget.setChecked(STAT.mist == linuxcnc.MIST_ON)
         STATUS.mist.connect(lambda s: widget.setChecked(s == linuxcnc.MIST_ON))
 
