@@ -15,8 +15,7 @@ LOG = logger.getLogger('QtPyVCP.' + __name__)
 # INFO = Info()
 
 from QtPyVCP.utilities import action
-
-from QtPyVCP.actions import program_actions, coolant_actions
+from QtPyVCP.actions import program_actions, bindWidget
 
 class MainWindow(VCPMainWindow):
     def __init__(self, *args, **kwargs):
@@ -30,8 +29,8 @@ class MainWindow(VCPMainWindow):
         program_actions.bindWidget(self.feedhold, action='pause')
         action.program(self.resume, action='resume')
 
-        coolant_actions.bindWidget(self.flood, action='floodToggle')
-        coolant_actions.bindWidget(self.floodCheckBox, action="floodToggle")
+        bindWidget(self.flood, action='coolant.flood.toggle')
+        bindWidget(self.floodCheckBox, action="coolant.flood.toggle")
 
         if program_actions.runOk():
             program_actions.run()

@@ -524,15 +524,31 @@
           <rect>
            <x>110</x>
            <y>110</y>
-           <width>51</width>
+           <width>81</width>
            <height>31</height>
           </rect>
          </property>
          <property name="text">
-          <string>Test</string>
+          <string>Flood</string>
          </property>
-         <property name="actionID" stdset="0">
-          <string>coolant.floodToggle</string>
+         <property name="actionName" stdset="0">
+          <string>coolant.flood.toggle</string>
+         </property>
+        </widget>
+        <widget class="ActionCheckBox" name="actioncheckbox_2">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>140</y>
+           <width>81</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Mist</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>coolant.mist.toggle</string>
          </property>
         </widget>
         <zorder>buttonBox</zorder>
@@ -548,6 +564,7 @@
         <zorder>flood</zorder>
         <zorder>floodCheckBox</zorder>
         <zorder>actioncheckbox</zorder>
+        <zorder>actioncheckbox_2</zorder>
        </widget>
       </item>
       <item>
@@ -1536,7 +1553,7 @@
      <x>0</x>
      <y>0</y>
      <width>1000</width>
-     <height>23</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
@@ -1738,11 +1755,6 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ActionCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_checkbox</header>
-  </customwidget>
-  <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
    <header>QtPyVCP.widgets.display_widgets.gcode_backplot</header>
@@ -1763,6 +1775,11 @@
    <class>RecentFileComboBox</class>
    <extends>QComboBox</extends>
    <header>QtPyVCP.widgets.input_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>QtPyVCP.widgets.button_widgets.action_checkbox</header>
   </customwidget>
   <customwidget>
    <class>MDIEntry</class>

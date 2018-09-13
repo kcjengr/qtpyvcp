@@ -46,7 +46,7 @@ def bindWidget(widget, action):
         widget (QtWidget) : The widget to bind the action too. Typically `widget`
             would be a QPushButton, QCheckBox or a QAction.
 
-        action (string) : The string name of the coolant action method to bind
+        action (string) : The string identifier of the coolant action to bind
             the widget too.
 
     Example:
@@ -55,22 +55,27 @@ def bindWidget(widget, action):
         will update accordingly.
 
             btn = QCheckBox("Flood Coolant")
-            bindWidget(btn, action="floodToggle")
+            bindWidget(btn, action="flood.toggle")
     """
+
+    method = methodFromString(action)
+    print "Method: ", method
+    if method is None:
+        return
 
     if isinstance(widget, QAction):
         sig = widget.triggered
     else:
         sig = widget.clicked
-    sig.connect(globals()[action])
+    sig.connect(method)
 
     widget.setEnabled(coolantOk(widget))
     STATUS.task_state.connect(lambda: coolantOk(widget))
 
-    if action == "floodToggle":
+    if action == "flood.toggle":
         widget.setChecked(STAT.flood == linuxcnc.FLOOD_ON)
         STATUS.flood.connect(lambda s: widget.setChecked(s == linuxcnc.FLOOD_ON))
-    elif action == "mistToggle":
+    elif action == "mist.toggle":
         widget.setChecked(STAT.mist == linuxcnc.MIST_ON)
         STATUS.mist.connect(lambda s: widget.setChecked(s == linuxcnc.MIST_ON))
 
@@ -78,39 +83,55 @@ def bindKey(key, action):
     # TODO: Add method for binding keypress events to coolant actions.
     raise NotImplemented
 
-def floodOn():
-    """Turns Flood coolant ON"""
-    LOG.debug("Turning Flood coolant green<ON>")
-    CMD.flood(linuxcnc.FLOOD_ON)
+def methodFromString(action_string):
+    try:
+        action_class, action_name = action_string.split('.')
+        return getattr(globals()[action_class], action_name)
+    except:
+        LOG.exception("Error")
+        pass
 
-def floodOff():
-    """Turns Flood coolant OFF"""
-    LOG.debug("Turning Flood coolant red<OFF>")
-    CMD.flood(linuxcnc.FLOOD_OFF)
+class flood:
+    @staticmethod
+    def on():
+        """Turns Flood coolant ON"""
+        LOG.debug("Turning Flood coolant green<ON>")
+        CMD.flood(linuxcnc.FLOOD_ON)
 
-def floodToggle():
-    """Toggles Flood coolant ON/OFF"""
-    if STAT.flood == linuxcnc.FLOOD_ON:
-        floodOff()
-    else:
-        floodOn()
+    @staticmethod
+    def off():
+        """Turns Flood coolant OFF"""
+        LOG.debug("Turning Flood coolant red<OFF>")
+        CMD.flood(linuxcnc.FLOOD_OFF)
 
-def mistOn():
-    """Turns Mist coolant ON"""
-    LOG.debug("Turning Mist coolant green<ON>")
-    CMD.mist(linuxcnc.MIST_ON)
+    @staticmethod
+    def toggle():
+        """Toggles Flood coolant ON/OFF"""
+        if STAT.flood == linuxcnc.FLOOD_ON:
+            flood.off()
+        else:
+            flood.on()
 
-def mistOff():
-    """Turns Mist coolant OFF"""
-    LOG.debug("Turning Mist coolant red<OFF>")
-    CMD.mist(linuxcnc.MIST_OFF)
+class mist:
+    @staticmethod
+    def on():
+        """Turns Mist coolant ON"""
+        LOG.debug("Turning Mist coolant green<ON>")
+        CMD.mist(linuxcnc.MIST_ON)
 
-def mistToggle():
-    """Toggles Mist coolant ON/OFF"""
-    if STAT.flood == linuxcnc.MIST_ON:
-        mistOff()
-    else:
-        mistOn()
+    @staticmethod
+    def off():
+        """Turns Mist coolant OFF"""
+        LOG.debug("Turning Mist coolant red<OFF>")
+        CMD.mist(linuxcnc.MIST_OFF)
+
+    @staticmethod
+    def toggle():
+        """Toggles Mist coolant ON/OFF"""
+        if STAT.mist == linuxcnc.MIST_ON:
+            mist.off()
+        else:
+            mist.on()
 
 def coolantOk(widget=None):
     """Checks if it is OK to turn coolant ON.
