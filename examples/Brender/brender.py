@@ -25,10 +25,6 @@ class MainWindow(VCPMainWindow):
     #  Add/Override methods and slots below to customize the main window
     #==========================================================================
 
-        program_actions.bindWidget(self.run, action='run')
-        program_actions.bindWidget(self.feedhold, action='pause')
-        action.program(self.resume, action='resume')
-
         bindWidget(self.flood, action='coolant.flood.toggle')
         bindWidget(self.floodCheckBox, action="coolant.flood.toggle")
 

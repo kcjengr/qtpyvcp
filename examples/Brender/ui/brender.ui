@@ -438,58 +438,6 @@
           <enum>AxisActionButton::Y</enum>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_3">
-         <property name="geometry">
-          <rect>
-           <x>200</x>
-           <y>70</y>
-           <width>80</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="actionID" stdset="0">
-          <enum>ActionButton::FeedHold</enum>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="feedhold">
-         <property name="geometry">
-          <rect>
-           <x>200</x>
-           <y>130</y>
-           <width>80</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Pause</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="resume">
-         <property name="geometry">
-          <rect>
-           <x>200</x>
-           <y>160</y>
-           <width>80</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Resume</string>
-         </property>
-        </widget>
-        <widget class="QPushButton" name="run">
-         <property name="geometry">
-          <rect>
-           <x>200</x>
-           <y>100</y>
-           <width>80</width>
-           <height>26</height>
-          </rect>
-         </property>
-         <property name="text">
-          <string>Run</string>
-         </property>
-        </widget>
         <widget class="QPushButton" name="flood">
          <property name="geometry">
           <rect>
@@ -551,20 +499,68 @@
           <string>coolant.mist.toggle</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew">
+        <widget class="ActionButtonNew" name="actionbuttonnew_2">
          <property name="geometry">
           <rect>
            <x>200</x>
-           <y>190</y>
-           <width>81</width>
-           <height>31</height>
+           <y>160</y>
+           <width>80</width>
+           <height>26</height>
           </rect>
          </property>
          <property name="text">
-          <string>Mist On</string>
+          <string>Resume</string>
          </property>
          <property name="actionName" stdset="0">
-          <string>coolant.mist.toggle</string>
+          <string>program.resume</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_3">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>70</y>
+           <width>80</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Run</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>program.run</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_4">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>100</y>
+           <width>80</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Step</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>program.step</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_5">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>130</y>
+           <width>80</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Pause</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>program.pause</string>
          </property>
         </widget>
         <zorder>buttonBox</zorder>
@@ -572,16 +568,15 @@
         <zorder>axisactionbutton_5</zorder>
         <zorder>axisactionbutton_6</zorder>
         <zorder>axisactionbutton_7</zorder>
-        <zorder>actionbutton_3</zorder>
-        <zorder>feedhold</zorder>
-        <zorder>resume</zorder>
         <zorder>action_program_RUN</zorder>
-        <zorder>run</zorder>
         <zorder>flood</zorder>
         <zorder>floodCheckBox</zorder>
         <zorder>actioncheckbox</zorder>
         <zorder>actioncheckbox_2</zorder>
-        <zorder>actionbuttonnew</zorder>
+        <zorder>actionbuttonnew_2</zorder>
+        <zorder>actionbuttonnew_3</zorder>
+        <zorder>actionbuttonnew_4</zorder>
+        <zorder>actionbuttonnew_5</zorder>
        </widget>
       </item>
       <item>

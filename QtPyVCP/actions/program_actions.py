@@ -45,6 +45,22 @@ from QtPyVCP.actions.base_actions import setTaskMode
 #==============================================================================
 
 def bindWidget(widget, action):
+    """Binds a widget to a program action.
+
+    Args:
+        widget (QtWidget) : The widget to bind the action too. Typically `widget`
+            would be a QPushButton, QCheckBox or a QAction.
+
+        action (string) : The string identifier of the coolant action to bind
+            the widget too.
+    """
+
+    print "\nError: \n", action
+
+    method = methodFromString(action)
+    print method
+    if method is None:
+        return False
 
     if isinstance(widget, QAction):
         sig = widget.triggered
@@ -52,7 +68,7 @@ def bindWidget(widget, action):
         sig = widget.clicked
     sig.connect(globals()[action])
 
-    if action == 'run':
+    if action == 'run' or action == 'step':
         widget.setEnabled(runOk(widget))
 
         STATUS.estop.connect(lambda: runOk(widget))
@@ -68,10 +84,14 @@ def bindWidget(widget, action):
         STATUS.paused.connect(lambda: pauseOk(widget))
 
     elif action == 'resume':
-        widget.setEnabled(STAT.paused)
-        STATUS.paused.connect(lambda paused: widget.setEnabled(paused))
-    elif action == 'step':
-        widget.setEnabled(False)
+        widget.setEnabled(resumeOk(widget))
+        STATUS.paused.connect(lambda: resumeOk(widget))
+        STATUS.state.connect(lambda: resumeOk(widget))
+
+    return True
+
+def methodFromString(action_name):
+    return globals()[action_name]
 
 def load(fname, add_to_recents=True):
     setTaskMode(linuxcnc.MODE_AUTO)
@@ -84,6 +104,9 @@ def load(fname, add_to_recents=True):
     if add_to_recents:
         addToRecents(fname)
 
+def reload():
+    raise NotImplemented
+
 def run(start_line=0):
     """
     Runs the loaded program, optionally starting from a specific line.
@@ -93,9 +116,9 @@ def run(start_line=0):
     """
 
     # check if it is OK to run
-    if not runOk():
-        LOG.error(runOk.msg)
-        return
+    # if not runOk():
+    #     LOG.error(runOk.msg)
+    #     return
     if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
         CMD.auto(linuxcnc.AUTO_RESUME)
     elif setTaskMode(linuxcnc.MODE_AUTO):
@@ -123,15 +146,15 @@ def runOk(widget=None):
     elif not STATUS.allHomed():
         ok = False
         msg = "Can't run program when not homed"
-    elif not STAT.interp_state == linuxcnc.INTERP_IDLE:
+    elif not STAT.paused and not STAT.interp_state == linuxcnc.INTERP_IDLE:
         ok = False
-        msg = "Can't run program when interpreter is not idle"
+        msg = "Can't run program when already running"
     elif STAT.file == "":
         ok = False
         msg = "Can't run program when no file loaded"
     else:
         ok = True
-        msg = "Run Program"
+        msg = "Run program"
 
     runOk.msg = msg
 
@@ -142,6 +165,14 @@ def runOk(widget=None):
 
     return ok
 
+def step():
+    if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
+        CMD.auto(linuxcnc.AUTO_STEP)
+    elif setTaskMode(linuxcnc.MODE_AUTO):
+        CMD.auto(linuxcnc.AUTO_STEP)
+
+stepOk = runOk
+
 def runFromLine():
     # TODO: This might should show a popup to select start line,
     #       or it could get the start line from the gcode view or
@@ -149,21 +180,21 @@ def runFromLine():
     raise NotImplemented
 
 def pause():
-    if not pauseOk():
-        LOG.error(pauseOk.msg)
-        return
+    # if not pauseOk():
+    #     LOG.error(pauseOk.msg)
+    #     return
     LOG.debug("Pausing program execution")
     CMD.auto(linuxcnc.AUTO_PAUSE)
 
 def pauseOk(widget=None):
     if STAT.state == linuxcnc.RCS_EXEC and not STAT.paused:
-        msg = "Pause program"
+        msg = "Pause program execution"
         ok = True
     elif STAT.paused:
-        msg = "Already paused"
+        msg = "Program is already paused"
         ok = False
     else:
-        msg = "Can't pause when not running"
+        msg = "No program running to pause"
         ok = False
 
     runOk.msg = msg
@@ -176,14 +207,25 @@ def pauseOk(widget=None):
     return ok
 
 def resume():
-    if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
-        LOG.debug("Resuming program execution")
-        CMD.auto(linuxcnc.AUTO_RESUME)
-    else:
-        LOG.warn("Can't resume program execution, is a program paused?")
+    LOG.debug("Resuming program execution")
+    CMD.auto(linuxcnc.AUTO_RESUME)
 
-def step():
-    pass
+def resumeOk(widget):
+    if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
+        ok = True
+        msg = "Resume program execution"
+    else:
+        ok = False
+        msg = "No paused program to resume"
+
+    resumeOk.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
 
 def addToRecents(fname):
     if fname in STATUS.recent_files:

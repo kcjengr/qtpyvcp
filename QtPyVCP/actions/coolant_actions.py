@@ -59,7 +59,6 @@ def bindWidget(widget, action):
     """
 
     method = methodFromString(action)
-    print "Method: ", method
     if method is None:
         return
 
