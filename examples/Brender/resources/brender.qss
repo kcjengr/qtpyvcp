@@ -34,7 +34,7 @@ QPushButton:pressed {
                                      stop: 0 #5C5959, stop: 1.0 #A19E9E)
 }
 
-QPushButton:checked[option="true"] {
+QPushButton:checked[styleClass="option"] {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #4a6aa7, stop: 1.0 #6f96cd)
 }

@@ -563,6 +563,22 @@
           <string>program.pause</string>
          </property>
         </widget>
+        <widget class="ActionCheckBox" name="actioncheckbox_3">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>190</y>
+           <width>81</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Block Del</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>program.block-delete.toggle</string>
+         </property>
+        </widget>
         <zorder>buttonBox</zorder>
         <zorder>axisactionbutton_4</zorder>
         <zorder>axisactionbutton_5</zorder>
@@ -577,6 +593,7 @@
         <zorder>actionbuttonnew_3</zorder>
         <zorder>actionbuttonnew_4</zorder>
         <zorder>actionbuttonnew_5</zorder>
+        <zorder>actioncheckbox_3</zorder>
        </widget>
       </item>
       <item>
@@ -1331,114 +1348,6 @@
           <enum>ActionButton::EmergencyStop</enum>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_4">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>60</y>
-           <width>80</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="actionID" stdset="0">
-          <enum>ActionButton::Flood</enum>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="actionbutton_5">
-         <property name="geometry">
-          <rect>
-           <x>100</x>
-           <y>30</y>
-           <width>80</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="actionID" stdset="0">
-          <enum>ActionButton::BlockDelete</enum>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="actionbutton_6">
-         <property name="geometry">
-          <rect>
-           <x>100</x>
-           <y>60</y>
-           <width>80</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>Opt Stop</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="actionID" stdset="0">
-          <enum>ActionButton::OptionalStop</enum>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="actionbutton_9">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>30</y>
-           <width>80</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>Mist</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="actionID" stdset="0">
-          <enum>ActionButton::Mist</enum>
-         </property>
-        </widget>
         <widget class="AxisActionButton" name="axisactionbutton_10">
          <property name="geometry">
           <rect>
@@ -1551,6 +1460,76 @@
          </property>
          <property name="direction">
           <enum>AxisActionButton::Negative</enum>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>30</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Block Del</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>program.block-delete.toggle</string>
+         </property>
+         <property name="styleClass" stdset="0">
+          <string>option</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_6">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>60</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Opt Stop</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>program.optional_stop.toggle</string>
+         </property>
+         <property name="styleClass" stdset="0">
+          <string>option</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_7">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Mist</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>coolant.mist.toggle</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_8">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>30</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Flood</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>coolant.flood.toggle</string>
          </property>
         </widget>
        </widget>

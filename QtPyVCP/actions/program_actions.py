@@ -22,6 +22,7 @@
 # Description:
 #   LinuxCNC program related actions
 
+import sys
 import linuxcnc
 from PyQt5.QtWidgets import QAction
 
@@ -54,21 +55,19 @@ def bindWidget(widget, action):
         action (string) : The string identifier of the coolant action to bind
             the widget too.
     """
-
-    print "\nError: \n", action
-
-    method = methodFromString(action)
-    print method
+    action = action.replace('-', '_')
+    method = reduce(getattr, action.split('.'), sys.modules[__name__])
     if method is None:
-        return False
+        return
 
     if isinstance(widget, QAction):
         sig = widget.triggered
     else:
         sig = widget.clicked
-    sig.connect(globals()[action])
 
-    if action == 'run' or action == 'step':
+    sig.connect(method)
+
+    if action == 'run':
         widget.setEnabled(runOk(widget))
 
         STATUS.estop.connect(lambda: runOk(widget))
@@ -76,6 +75,15 @@ def bindWidget(widget, action):
         STATUS.all_homed.connect(lambda: runOk(widget))
         STATUS.interp_state.connect(lambda: runOk(widget))
         STATUS.file.connect(lambda: runOk(widget))
+
+    if action == 'step':
+        widget.setEnabled(stepOk(widget))
+
+        STATUS.estop.connect(lambda: stepOk(widget))
+        STATUS.enabled.connect(lambda: stepOk(widget))
+        STATUS.all_homed.connect(lambda: stepOk(widget))
+        STATUS.interp_state.connect(lambda: stepOk(widget))
+        STATUS.file.connect(lambda: stepOk(widget))
 
     elif action == 'pause':
         widget.setEnabled(pauseOk())
@@ -88,10 +96,23 @@ def bindWidget(widget, action):
         STATUS.paused.connect(lambda: resumeOk(widget))
         STATUS.state.connect(lambda: resumeOk(widget))
 
-    return True
+    elif action.startswith('block_delete'):
+        if action.endswith('toggle'):
+            widget.setCheckable(True)
+        widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
+        widget.setChecked(STAT.block_delete)
+        STATUS.task_state.connect(lambda v: widget.setEnabled(v == linuxcnc.STATE_ON))
+        STATUS.block_delete.connect(lambda s: widget.setChecked(s))
 
-def methodFromString(action_name):
-    return globals()[action_name]
+    elif action.startswith('optional_stop'):
+        if action.endswith('toggle'):
+            widget.setCheckable(True)
+        widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
+        widget.setChecked(STAT.optional_stop)
+        STATUS.task_state.connect(lambda v: widget.setEnabled(v == linuxcnc.STATE_ON))
+        STATUS.optional_stop.connect(lambda s: widget.setChecked(s))
+
+    return True
 
 def load(fname, add_to_recents=True):
     setTaskMode(linuxcnc.MODE_AUTO)
@@ -226,6 +247,44 @@ def resumeOk(widget):
         widget.setToolTip(msg)
 
     return ok
+
+
+class block_delete:
+    @staticmethod
+    def on():
+        LOG.debug("Setting block delete green<ON>")
+        CMD.set_block_delete(True)
+
+    @staticmethod
+    def off():
+        LOG.debug("Setting block delete red<OFF>")
+        CMD.set_block_delete(False)
+
+    @staticmethod
+    def toggle():
+        if STAT.block_delete == True:
+            block_delete.off()
+        else:
+            block_delete.on()
+
+class optional_stop:
+    @staticmethod
+    def on():
+        LOG.debug("Setting optional stop green<ON>")
+        CMD.set_optional_stop(True)
+
+    @staticmethod
+    def off():
+        LOG.debug("Setting optional stop red<OFF>")
+        CMD.set_optional_stop(False)
+
+    @staticmethod
+    def toggle():
+        if STAT.optional_stop == True:
+            optional_stop.off()
+        else:
+            optional_stop.on()
+
 
 def addToRecents(fname):
     if fname in STATUS.recent_files:
