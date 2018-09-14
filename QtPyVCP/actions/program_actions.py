@@ -67,6 +67,9 @@ def bindWidget(widget, action):
 
     sig.connect(method)
 
+    if action.endswith('toggle'):
+        widget.setCheckable(True)
+
     if action == 'run':
         widget.setEnabled(runOk(widget))
 
@@ -97,16 +100,12 @@ def bindWidget(widget, action):
         STATUS.state.connect(lambda: resumeOk(widget))
 
     elif action.startswith('block_delete'):
-        if action.endswith('toggle'):
-            widget.setCheckable(True)
         widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
         widget.setChecked(STAT.block_delete)
         STATUS.task_state.connect(lambda v: widget.setEnabled(v == linuxcnc.STATE_ON))
         STATUS.block_delete.connect(lambda s: widget.setChecked(s))
 
     elif action.startswith('optional_stop'):
-        if action.endswith('toggle'):
-            widget.setCheckable(True)
         widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
         widget.setChecked(STAT.optional_stop)
         STATUS.task_state.connect(lambda v: widget.setEnabled(v == linuxcnc.STATE_ON))
