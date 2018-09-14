@@ -45,7 +45,7 @@ QPushButton:checked {
 }
 
 /*E-Stop button*/
-ActionButton[actionID="0"]:checked {
+ActionButtonNew[actionName="machine.estop.toggle"]:checked {
     border-radius: 50px;
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #C40100, stop: 1.0 #F22E2D)

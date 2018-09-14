@@ -172,11 +172,7 @@
          <attribute name="title">
           <string>Video</string>
          </attribute>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="Camera" name="camera"/>
-          </item>
-         </layout>
+         <layout class="QGridLayout" name="gridLayout"/>
         </widget>
        </widget>
       </item>
@@ -1298,7 +1294,7 @@
         <property name="title">
          <string>GroupBox</string>
         </property>
-        <widget class="ActionButton" name="actionbutton_2">
+        <widget class="ActionButtonNew" name="actionbutton_2">
          <property name="geometry">
           <rect>
            <x>190</x>
@@ -1322,8 +1318,11 @@
          <property name="checkable">
           <bool>true</bool>
          </property>
+         <property name="actionName" stdset="0">
+          <string>machine.power.toggle</string>
+         </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton">
+        <widget class="ActionButtonNew" name="actionbutton">
          <property name="geometry">
           <rect>
            <x>190</x>
@@ -1341,11 +1340,14 @@
          <property name="focusPolicy">
           <enum>Qt::NoFocus</enum>
          </property>
+         <property name="text">
+          <string>E-Stop</string>
+         </property>
          <property name="checkable">
           <bool>true</bool>
          </property>
-         <property name="actionID" stdset="0">
-          <enum>ActionButton::EmergencyStop</enum>
+         <property name="actionName" stdset="0">
+          <string>machine.estop.toggle</string>
          </property>
         </widget>
         <widget class="AxisActionButton" name="axisactionbutton_10">
@@ -1781,17 +1783,6 @@
    <class>MDIEntry</class>
    <extends>QLineEdit</extends>
    <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
-  </customwidget>
-  <customwidget>
-   <class>ActionButton</class>
-   <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_button</header>
-  </customwidget>
-  <customwidget>
-   <class>Camera</class>
-   <extends>QWidget</extends>
-   <header>QtPyVCP.widgets.display_widgets.camera.camera</header>
-   <container>1</container>
   </customwidget>
   <customwidget>
    <class>DROWidget</class>
