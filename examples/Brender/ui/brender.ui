@@ -1612,6 +1612,9 @@
    <property name="shortcut">
     <string>F1</string>
    </property>
+   <property name="actionName" stdset="0">
+    <string>machine.estop.toggle</string>
+   </property>
   </action>
   <action name="action_MachinePower_toggle">
    <property name="text">
@@ -1620,8 +1623,8 @@
    <property name="shortcut">
     <string>F2</string>
    </property>
-   <property name="_axis" stdset="0">
-    <number>2</number>
+   <property name="actionName" stdset="0">
+    <string>machine.power.toggle</string>
    </property>
   </action>
   <action name="actionHome_All">
@@ -1635,6 +1638,9 @@
    </property>
    <property name="shortcut">
     <string>R</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.run</string>
    </property>
   </action>
   <action name="actionFile1">
@@ -1660,10 +1666,13 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Mist On</string>
+    <string>Mist</string>
    </property>
    <property name="shortcut">
     <string>F7</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>coolant.mist.toggle</string>
    </property>
   </action>
   <action name="action_Flood_toggle">
@@ -1671,10 +1680,13 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Flood On</string>
+    <string>Flood</string>
    </property>
    <property name="shortcut">
     <string>F8</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>coolant.flood.toggle</string>
    </property>
   </action>
   <action name="action_program_run">

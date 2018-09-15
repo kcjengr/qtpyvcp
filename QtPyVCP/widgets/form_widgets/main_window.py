@@ -110,13 +110,9 @@ class VCPMainWindow(QMainWindow):
             for menu_action in menu_actions:
                 if menu_action.isSeparator():
                     continue
-                data = menu_action.objectName().split('_')
-                if data[0] == "action" and len(data) > 1:
-                    try:
-                        action_instance = getattr(actions, data[1]).bindWidget(menu_action, action=data[2])
-                        self.actions.append(action_instance)
-                    except:
-                        LOG.exception("Error loading action: actions.{}.{}".format(data[1], data[2]))
+                action_name = menu_action.property('actionName')
+                if action_name:
+                    actions.bindWidget(menu_action, action_name)
 
         print "action time ", time.time() - s
 
