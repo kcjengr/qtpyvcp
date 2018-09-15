@@ -139,17 +139,17 @@ class VCPMainWindow(QMainWindow):
             return
 
         if event.key() == Qt.Key_Up:
-            action.Jogging.autoJog('Y', 1)
+            actions.machine.jog.axis('Y', 1)
         elif event.key() == Qt.Key_Down:
-            action.Jogging.autoJog('Y', -1)
+            actions.machine.jog.axis('Y', -1)
         elif event.key() == Qt.Key_Left:
-            action.Jogging.autoJog('X', -1)
+            actions.machine.jog.axis('X', -1)
         elif event.key() == Qt.Key_Right:
-            action.Jogging.autoJog('X', 1)
+            actions.machine.jog.axis('X', 1)
         elif event.key() == Qt.Key_PageUp:
-            action.Jogging.autoJog('Z', 1)
+            actions.machine.jog.axis('Z', 1)
         elif event.key() == Qt.Key_PageDown:
-            action.Jogging.autoJog('Z', -1)
+            actions.machine.jog.axis('Z', -1)
         else:
             print 'Unhandled key press event'
 
@@ -158,17 +158,17 @@ class VCPMainWindow(QMainWindow):
             return
 
         if event.key() == Qt.Key_Up:
-            action.Jogging.autoJog('Y', 0)
+            actions.machine.jog.axis('Y', 0)
         elif event.key() == Qt.Key_Down:
-            action.Jogging.autoJog('Y', 0)
+            actions.machine.jog.axis('Y', 0)
         elif event.key() == Qt.Key_Left:
-            action.Jogging.autoJog('X', 0)
+            actions.machine.jog.axis('X', 0)
         elif event.key() == Qt.Key_Right:
-            action.Jogging.autoJog('X', 0)
+            actions.machine.jog.axis('X', 0)
         elif event.key() == Qt.Key_PageUp:
-            action.Jogging.autoJog('Z', 0)
+            actions.machine.jog.axis('Z', 0)
         elif event.key() == Qt.Key_PageDown:
-            action.Jogging.autoJog('Z', 0)
+            actions.machine.jog.axis('Z', 0)
         else:
             print 'Unhandled key release event'
 
