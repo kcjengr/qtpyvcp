@@ -314,131 +314,11 @@
           </item>
          </layout>
         </widget>
-        <widget class="QPushButton" name="action_program_RUN">
-         <property name="geometry">
-          <rect>
-           <x>200</x>
-           <y>40</y>
-           <width>80</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>Power</string>
-         </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-        </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_4">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>80</y>
-           <width>80</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Home</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::X</enum>
-         </property>
-        </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_5">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>140</y>
-           <width>80</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Home</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::Z</enum>
-         </property>
-        </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_6">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>50</y>
-           <width>80</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Home</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::ALL</enum>
-         </property>
-        </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_7">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>110</y>
-           <width>80</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Home</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::Y</enum>
-         </property>
-        </widget>
         <widget class="QPushButton" name="flood">
          <property name="geometry">
           <rect>
            <x>110</x>
-           <y>40</y>
+           <y>50</y>
            <width>80</width>
            <height>26</height>
           </rect>
@@ -575,21 +455,86 @@
           <string>program.block-delete.toggle</string>
          </property>
         </widget>
-        <zorder>buttonBox</zorder>
-        <zorder>axisactionbutton_4</zorder>
-        <zorder>axisactionbutton_5</zorder>
-        <zorder>axisactionbutton_6</zorder>
-        <zorder>axisactionbutton_7</zorder>
-        <zorder>action_program_RUN</zorder>
-        <zorder>flood</zorder>
-        <zorder>floodCheckBox</zorder>
-        <zorder>actioncheckbox</zorder>
-        <zorder>actioncheckbox_2</zorder>
-        <zorder>actionbuttonnew_2</zorder>
-        <zorder>actionbuttonnew_3</zorder>
-        <zorder>actionbuttonnew_4</zorder>
-        <zorder>actionbuttonnew_5</zorder>
-        <zorder>actioncheckbox_3</zorder>
+        <widget class="ActionButtonNew" name="actionbuttonnew_9">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>50</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Home All</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.home.all</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_10">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>80</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Home X</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.home.axis:x</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_11">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Home J1</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.home.joint:0</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_12">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>110</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Home Y</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.home.axis:y</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_13">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>140</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Home Z</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.home.axis:z</string>
+         </property>
+        </widget>
        </widget>
       </item>
       <item>
