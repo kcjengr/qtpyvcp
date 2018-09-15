@@ -69,6 +69,7 @@ def bindWidget(widget, action):
     elif action.startswith('power'):
         powerOk(widget)
         STATUS.estop.connect(lambda: powerOk(widget))
+        STATUS.on.connect(lambda v: widget.setChecked(v))
 
 
 class estop:
