@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>750</height>
+    <width>995</width>
+    <height>775</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -1295,95 +1295,11 @@
           <string>machine.estop.toggle</string>
          </property>
         </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_10">
-         <property name="geometry">
-          <rect>
-           <x>110</x>
-           <y>140</y>
-           <width>40</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Jog</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::X</enum>
-         </property>
-         <property name="direction">
-          <enum>AxisActionButton::Positive</enum>
-         </property>
-        </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_8">
-         <property name="geometry">
-          <rect>
-           <x>30</x>
-           <y>140</y>
-           <width>40</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Jog</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::X</enum>
-         </property>
-         <property name="direction">
-          <enum>AxisActionButton::Negative</enum>
-         </property>
-        </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_9">
-         <property name="geometry">
-          <rect>
-           <x>70</x>
-           <y>100</y>
-           <width>40</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>Jog +Y</string>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Jog</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::Y</enum>
-         </property>
-         <property name="direction">
-          <enum>AxisActionButton::Positive</enum>
-         </property>
-        </widget>
         <widget class="AxisActionButton" name="axisactionbutton_11">
          <property name="geometry">
           <rect>
-           <x>70</x>
-           <y>180</y>
+           <x>200</x>
+           <y>20</y>
            <width>40</width>
            <height>40</height>
           </rect>
@@ -1479,6 +1395,102 @@
           <string>coolant.flood.toggle</string>
          </property>
         </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_14">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>41</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>+Z</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.jog.axis:z,pos</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_15">
+         <property name="geometry">
+          <rect>
+           <x>60</x>
+           <y>100</y>
+           <width>41</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>+Y</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.jog.axis:y,pos</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_16">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>140</y>
+           <width>41</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>+X</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.jog.axis:x,pos</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_17">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>140</y>
+           <width>41</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>−X</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.jog.axis:x,neg</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_18">
+         <property name="geometry">
+          <rect>
+           <x>60</x>
+           <y>180</y>
+           <width>41</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>−Y</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.jog.axis:y,neg</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_19">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>190</y>
+           <width>41</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>−Z</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.jog.axis:z,neg</string>
+         </property>
+        </widget>
        </widget>
       </item>
      </layout>
@@ -1490,7 +1502,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1000</width>
+     <width>995</width>
      <height>20</height>
     </rect>
    </property>

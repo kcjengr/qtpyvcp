@@ -23,6 +23,7 @@
 #   LinuxCNC coolant actions
 
 import sys
+import time
 import linuxcnc
 from PyQt5.QtWidgets import QAction
 
@@ -39,16 +40,16 @@ STAT = STATUS.stat
 CMD = linuxcnc.command()
 
 def bindWidget(widget, action):
-    """Binds a widget to a program action.
+    """Binds a widget to a machine action.
 
     Args:
         widget (QtWidget) : The widget to bind the action too. Typically `widget`
             would be a QPushButton, QCheckBox or a QAction.
 
         action (string) : The string identifier of the machine action to bind
-            the widget to in the format `action_class.action_name:arg`.
+            the widget to in the format `action_class.action_name:arg1, arg2 ...`.
     """
-    action, sep, arg = action.partition(':')
+    action, sep, args = action.partition(':')
     action = action.replace('-', '_')
     method = reduce(getattr, action.split('.'), sys.modules[__name__])
     if method is None:
@@ -59,12 +60,21 @@ def bindWidget(widget, action):
     else:
         sig = widget.clicked
 
-    if arg == '':
+    if args == '':
         sig.connect(method)
+
     else:
-        if arg.isdigit():
-            arg = int(arg)
-        sig.connect(lambda: method(arg))
+        # make a list out of comma separated args
+        args = args.replace(' ', '').split(',')
+        # convert numbers to int and unicode to str
+        args = [int(arg) if arg.isdigit() else str(arg) for arg in args]
+
+        if action.startswith('jog'):
+            widget.pressed.connect(lambda: method(*args))
+            widget.released.connect(lambda: method(*args, speed=0))
+
+        else:
+            sig.connect(lambda: method(*args))
 
     # if it is a toggle action make the widget checkable
     if action.endswith('toggle'):
@@ -93,6 +103,10 @@ def bindWidget(widget, action):
         jnum = INFO.AXIS_LETTER_LIST.index(arg.lower())
         home.ok(arg, widget)
         STATUS.on.connect(lambda: home.ok(jnum, widget))
+
+    elif action.startswith('jog'):
+        pass
+
 
 class estop:
     """E-Stop action group"""
@@ -181,6 +195,7 @@ class power:
         return okey
 
 class home:
+    """Homing actions group"""
     @staticmethod
     def all():
         """Homes all axes."""
@@ -231,6 +246,7 @@ class home:
         return okay
 
 class unhome:
+    """Unhoming actions group"""
     @staticmethod
     def all():
         pass
@@ -280,3 +296,42 @@ def getAxisNumber(axis):
     if isinstance(axis, str):
         return ['x', 'y', 'z', 'a', 'b', 'c', 'u', 'v', 'w', 'all'].index(axis.lower())
     return axis
+
+
+class jog:
+    @staticmethod
+    def axis(axis, direction=0, speed=None, distance=None):
+        """Jog an axis.
+
+        Args:
+            axis (str | int) : Either the letter or number of the axis to jog.
+            direction (str | int) : pos or +1 for positive, neg or -1 for negative.
+            speed (float, optional) : Desired jog vel in machine_units/s.
+            distance (float, optional) : Desired jog distance, continuous jog if 0.00.
+        """
+
+        if isinstance(direction, str):
+            direction = {'neg': -1, 'pos': 1}.get(direction.lower(), 0)
+
+        axis = getAxisNumber(axis)
+
+        if speed == 0 or direction == 0:
+            CMD.jog(linuxcnc.JOG_STOP, 0, axis)
+
+        else:
+
+            if speed is None:
+                if axis in (3,4,5):
+                    speed = STATUS.angular_jog_velocity / 60
+                else:
+                    speed = STATUS.linear_jog_velocity / 60
+
+            if distance is None:
+                distance = STATUS.jog_increment
+
+            velocity = float(speed) * direction
+
+            if distance == 0:
+                CMD.jog(linuxcnc.JOG_CONTINUOUS, 0, axis, velocity)
+            else:
+                CMD.jog(linuxcnc.JOG_INCREMENT, 0, axis, velocity, distance)
