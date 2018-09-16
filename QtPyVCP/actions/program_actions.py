@@ -80,8 +80,7 @@ def bindWidget(widget, action):
         STATUS.file.connect(lambda: runOk(widget))
 
     if action == 'step':
-        widget.setEnabled(stepOk(widget))
-
+        stepOk(widget)
         STATUS.estop.connect(lambda: stepOk(widget))
         STATUS.enabled.connect(lambda: stepOk(widget))
         STATUS.all_homed.connect(lambda: stepOk(widget))
@@ -95,9 +94,13 @@ def bindWidget(widget, action):
         STATUS.paused.connect(lambda: pauseOk(widget))
 
     elif action == 'resume':
-        widget.setEnabled(resumeOk(widget))
+        resumeOk(widget)
         STATUS.paused.connect(lambda: resumeOk(widget))
         STATUS.state.connect(lambda: resumeOk(widget))
+
+    elif action == 'abort':
+        abortOk(widget)
+        STATUS.state.connect(lambda: abortOk(widget))
 
     elif action.startswith('block_delete'):
         widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
@@ -247,6 +250,26 @@ def resumeOk(widget):
 
     return ok
 
+def abort():
+    LOG.debug("Aborting program")
+    CMD.abort()
+
+def abortOk(widget=None):
+    if STAT.state == linuxcnc.RCS_EXEC:
+        ok = True
+        msg = "Abort current job"
+    else:
+        ok = False
+        msg = "Nothing to abort"
+
+    abortOk.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
 
 class block_delete:
     @staticmethod
