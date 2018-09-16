@@ -21,13 +21,6 @@
     </size>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="5" column="3">
-     <widget class="FileSystemTable" name="filesystem_2">
-      <property name="tableType" stdset="0">
-       <enum>FileSystemTable::Remote</enum>
-      </property>
-     </widget>
-    </item>
     <item row="5" column="1">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -52,6 +45,31 @@
        <bool>true</bool>
       </property>
      </widget>
+    </item>
+    <item row="7" column="3">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPushButton" name="remoteNewFolderButton">
+        <property name="text">
+         <string>Create Folder</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="remoteCreateFileButton">
+        <property name="text">
+         <string>Create File</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="remoteDeleteButton">
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item row="7" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
@@ -78,28 +96,30 @@
       </item>
      </layout>
     </item>
-    <item row="7" column="3">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <item row="5" column="3">
+     <widget class="FileSystemTable" name="filesystem_2">
+      <property name="tableType" stdset="0">
+       <enum>FileSystemTable::Remote</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
-       <widget class="QPushButton" name="remoteNewFolderButton">
+       <widget class="QPushButton" name="localUpButton">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="text">
-         <string>Create Folder</string>
+         <string>Level UP</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="remoteCreateFileButton">
-        <property name="text">
-         <string>Create File</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="remoteDeleteButton">
-        <property name="text">
-         <string>Delete</string>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="lineEdit"/>
       </item>
      </layout>
     </item>
@@ -132,25 +152,31 @@
         </item>
        </widget>
       </item>
-     </layout>
-    </item>
-    <item row="0" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
-       <widget class="QPushButton" name="localUpButton">
+       <widget class="QPushButton" name="refreshButton">
         <property name="maximumSize">
          <size>
-          <width>100</width>
+          <width>54</width>
           <height>16777215</height>
          </size>
         </property>
         <property name="text">
-         <string>Level UP</string>
+         <string>Refresh</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit"/>
+       <widget class="QPushButton" name="ejectButton">
+        <property name="maximumSize">
+         <size>
+          <width>54</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Eject</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -466,6 +492,38 @@
     <hint type="destinationlabel">
      <x>290</x>
      <y>122</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ejectButton</sender>
+   <signal>clicked()</signal>
+   <receiver>removabledevicecombobox</receiver>
+   <slot>ejectDevice()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>928</x>
+     <y>46</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>840</x>
+     <y>62</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>refreshButton</sender>
+   <signal>clicked()</signal>
+   <receiver>removabledevicecombobox</receiver>
+   <slot>refreshDeviceList()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>863</x>
+     <y>47</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>794</x>
+     <y>44</y>
     </hint>
    </hints>
   </connection>

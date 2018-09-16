@@ -1,6 +1,7 @@
 import os
 import pyudev
 import psutil
+import re
 
 from PyQt5.QtCore import QAbstractListModel, QModelIndex, Qt, pyqtSlot, pyqtProperty, \
     Q_ENUMS, pyqtSignal, QFile, QFileInfo, QDir, QIODevice
@@ -34,6 +35,8 @@ class RemovableDeviceComboBox(QComboBox):
     @pyqtSlot()
     def refreshDeviceList(self):
 
+        print("REFRESH")
+
         # clear existing items
         self.clear()
 
@@ -55,6 +58,13 @@ class RemovableDeviceComboBox(QComboBox):
                     self.addItem(p.mountpoint, None)
 
         self.setCurrentIndex(0)
+
+
+    @pyqtSlot()
+    def ejectDevice(self):
+        current_text = self.currentText()
+        mount_point = re.escape(current_text)
+        os.system("umount {}".format(mount_point))
 
 
 class FileSystemTable(QTableView, TableType):
@@ -94,7 +104,6 @@ class FileSystemTable(QTableView, TableType):
         self._nc_file_dir = self.info.getProgramPrefix()
         self.setRootPath(self._nc_file_dir)
 
-
     def showEvent(self, event=None):
         self.rootChanged.emit(self._nc_file_dir)
 
@@ -111,7 +120,6 @@ class FileSystemTable(QTableView, TableType):
             self.setRootIndex(self.model.index(absolute_path))
 
             self.rootChanged.emit(absolute_path)
-
 
     @pyqtSlot()
     def newFile(self):
@@ -152,7 +160,6 @@ class FileSystemTable(QTableView, TableType):
         self.setRootIndex(self.model.index(root_path))
 
         return True
-
 
     @pyqtSlot()
     def goUP(self):
