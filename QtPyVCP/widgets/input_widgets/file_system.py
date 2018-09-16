@@ -1,14 +1,9 @@
 import os
 import pyudev
 import psutil
-import re
 
-from PyQt5.QtCore import QAbstractListModel, QModelIndex, Qt, pyqtSlot, pyqtProperty, \
-    Q_ENUMS, pyqtSignal, QFile, QFileInfo, QDir, QIODevice
-from PyQt5.QtGui import QShowEvent
-
-from PyQt5.QtWidgets import QFileSystemModel, QWidget, QComboBox, \
-    QPushButton, QTableView, QMessageBox, QApplication, QAbstractItemView
+from PyQt5.QtCore import pyqtSlot, pyqtProperty, Q_ENUMS, pyqtSignal, QFile, QFileInfo, QDir, QIODevice
+from PyQt5.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, QApplication, QAbstractItemView
 
 from QtPyVCP.utilities.info import Info
 
@@ -34,7 +29,6 @@ class RemovableDeviceComboBox(QComboBox):
 
     @pyqtSlot()
     def refreshDeviceList(self):
-
         # clear existing items
         self.clear()
 
@@ -59,8 +53,7 @@ class RemovableDeviceComboBox(QComboBox):
 
     @pyqtSlot()
     def ejectDevice(self):
-        current_text = self.currentData()
-        mount_point = re.escape(current_text)
+        mount_point = self.currentData()
 
         os.system("udisksctl unmount --block-device {}".format(mount_point))
         os.system("udisksctl power-off --block-device {}".format(mount_point))
