@@ -59,7 +59,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -152,11 +152,317 @@
          <attribute name="title">
           <string>File</string>
          </attribute>
+         <widget class="QWidget" name="buttonBox" native="true">
+          <property name="geometry">
+           <rect>
+            <x>60</x>
+            <y>349</y>
+            <width>161</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="styleClass" stdset="0">
+           <string>buttonBox</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="ActionButtonNew" name="actionbuttonnew_24">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>MAN</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.manual</string>
+             </property>
+             <property name="position" stdset="0">
+              <string>first</string>
+             </property>
+             <property name="styleClass" stdset="0">
+              <string>option</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionButtonNew" name="actionbuttonnew_25">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>AUTO</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.auto</string>
+             </property>
+             <property name="styleClass" stdset="0">
+              <string>option</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionButtonNew" name="actionbuttonnew_26">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>MDI</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.mdi</string>
+             </property>
+             <property name="position" stdset="0">
+              <string>last</string>
+             </property>
+             <property name="styleClass" stdset="0">
+              <string>option</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab_4">
          <attribute name="title">
           <string>Status</string>
          </attribute>
+         <widget class="StatusLabel" name="statuslabel_2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>400</y>
+            <width>611</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::mcodes</enum>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_3">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>370</y>
+            <width>611</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::gcodes</enum>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_4">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>270</y>
+            <width>161</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::task_state</enum>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_5">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>310</y>
+            <width>161</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::interp_state</enum>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_6">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>330</y>
+            <width>161</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::motion_mode</enum>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_7">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>290</y>
+            <width>161</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::taks_mode</enum>
+          </property>
+         </widget>
+         <widget class="QWidget" name="buttonBox_2" native="true">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>230</y>
+            <width>161</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="styleClass" stdset="0">
+           <string>buttonBox</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="ActionButtonNew" name="actionbuttonnew_27">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>MAN</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.manual</string>
+             </property>
+             <property name="position" stdset="0">
+              <string>first</string>
+             </property>
+             <property name="styleClass" stdset="0">
+              <string>option</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionButtonNew" name="actionbuttonnew_28">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>AUTO</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.auto</string>
+             </property>
+             <property name="styleClass" stdset="0">
+              <string>option</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionButtonNew" name="actionbuttonnew_29">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>MDI</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.mdi</string>
+             </property>
+             <property name="position" stdset="0">
+              <string>last</string>
+             </property>
+             <property name="styleClass" stdset="0">
+              <string>option</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -194,131 +500,11 @@
         <property name="title">
          <string>PROGRAM</string>
         </property>
-        <widget class="QWidget" name="buttonBox" native="true">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>180</y>
-           <width>141</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QPushButton" name="pushButton_2">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>Roboto Medium</family>
-             </font>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="text">
-             <string>ABS</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-            <property name="autoExclusive">
-             <bool>true</bool>
-            </property>
-            <property name="position" stdset="0">
-             <string>first</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_7">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>Roboto Medium</family>
-             </font>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="text">
-             <string>REL</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="autoExclusive">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_8">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>Roboto Medium</family>
-             </font>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="text">
-             <string>DTG</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="autoExclusive">
-             <bool>true</bool>
-            </property>
-            <property name="position" stdset="0">
-             <string>last</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
         <widget class="QPushButton" name="flood">
          <property name="geometry">
           <rect>
            <x>110</x>
-           <y>50</y>
+           <y>30</y>
            <width>80</width>
            <height>26</height>
           </rect>
@@ -334,7 +520,7 @@
          <property name="geometry">
           <rect>
            <x>110</x>
-           <y>80</y>
+           <y>60</y>
            <width>84</width>
            <height>24</height>
           </rect>
@@ -347,7 +533,7 @@
          <property name="geometry">
           <rect>
            <x>110</x>
-           <y>110</y>
+           <y>90</y>
            <width>81</width>
            <height>31</height>
           </rect>
@@ -363,7 +549,7 @@
          <property name="geometry">
           <rect>
            <x>110</x>
-           <y>140</y>
+           <y>120</y>
            <width>81</width>
            <height>31</height>
           </rect>
@@ -379,7 +565,7 @@
          <property name="geometry">
           <rect>
            <x>200</x>
-           <y>160</y>
+           <y>120</y>
            <width>80</width>
            <height>26</height>
           </rect>
@@ -395,7 +581,7 @@
          <property name="geometry">
           <rect>
            <x>200</x>
-           <y>70</y>
+           <y>30</y>
            <width>80</width>
            <height>26</height>
           </rect>
@@ -411,7 +597,7 @@
          <property name="geometry">
           <rect>
            <x>200</x>
-           <y>100</y>
+           <y>60</y>
            <width>80</width>
            <height>26</height>
           </rect>
@@ -427,7 +613,7 @@
          <property name="geometry">
           <rect>
            <x>200</x>
-           <y>130</y>
+           <y>90</y>
            <width>80</width>
            <height>26</height>
           </rect>
@@ -442,8 +628,8 @@
         <widget class="ActionCheckBox" name="actioncheckbox_3">
          <property name="geometry">
           <rect>
-           <x>200</x>
-           <y>190</y>
+           <x>110</x>
+           <y>150</y>
            <width>81</width>
            <height>21</height>
           </rect>
@@ -533,6 +719,83 @@
          </property>
          <property name="actionName" stdset="0">
           <string>machine.home.axis:z</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_20">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>199</y>
+           <width>41</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>FWD</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>spindle.forward</string>
+         </property>
+        </widget>
+        <widget class="StatusLabel" name="statuslabel">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>200</y>
+           <width>81</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="label_type" stdset="0">
+          <enum>StatusLabel::spindle_speed</enum>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_21">
+         <property name="geometry">
+          <rect>
+           <x>60</x>
+           <y>199</y>
+           <width>41</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>OFF</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>spindle.off</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_22">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>199</y>
+           <width>41</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>REV</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>spindle.reverse</string>
+         </property>
+        </widget>
+        <widget class="ActionButtonNew" name="actionbuttonnew_23">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>150</y>
+           <width>80</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Abort</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>program.abort</string>
          </property>
         </widget>
        </widget>
@@ -1727,6 +1990,11 @@
    <class>DROWidget</class>
    <extends>QLabel</extends>
    <header>QtPyVCP.widgets.display_widgets.dro_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>StatusLabel</class>
+   <extends>QLabel</extends>
+   <header>QtPyVCP.widgets.display_widgets.statuslabel_widget</header>
   </customwidget>
  </customwidgets>
  <resources>

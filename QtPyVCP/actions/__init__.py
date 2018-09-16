@@ -1,5 +1,6 @@
 import machine_actions as machine
 import program_actions as program
+import spindle_actions as spindle
 import coolant_actions as coolant
 
 def bindWidget(widget, action):
