@@ -194,6 +194,29 @@ class power:
 
         return okey
 
+class feedhold:
+
+    # FIXME For some reason these do not work
+
+    @staticmethod
+    def on():
+        print "FeedHold ON"
+        CMD.set_feed_hold(1)
+
+    @staticmethod
+    def off():
+        print "FeedHold OFF"
+        CMD.set_feed_hold(0)
+
+    @staticmethod
+    def toggle():
+        print "FeedHold TOGGLE"
+        print STAT.feed_hold_enabled
+        if STAT.feed_hold_enabled:
+            feedhold.off()
+        else:
+            feedhold.on()
+
 class home:
     """Homing actions group"""
     @staticmethod
