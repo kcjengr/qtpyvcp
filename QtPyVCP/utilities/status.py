@@ -73,6 +73,12 @@ class _Status(QObject):
             linuxcnc.STATE_ON: "On",
             linuxcnc.STATE_OFF: "Off",
         },
+        "task_mode": {
+            0: "Unknown",
+            linuxcnc.MODE_MANUAL: "Manual",
+            linuxcnc.MODE_AUTO: "Auto",
+            linuxcnc.MODE_MDI: "MDI",
+        },
         "interp_state": {
             0: "Unknown",
             linuxcnc.INTERP_IDLE: "Idle",
