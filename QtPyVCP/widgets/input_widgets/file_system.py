@@ -35,8 +35,6 @@ class RemovableDeviceComboBox(QComboBox):
     @pyqtSlot()
     def refreshDeviceList(self):
 
-        print("REFRESH")
-
         # clear existing items
         self.clear()
 
@@ -55,17 +53,19 @@ class RemovableDeviceComboBox(QComboBox):
                 if p.device in partitions:
                     # print("  {}: {}".format(p.device, p.mountpoint))
                     # self.model.append_item(p.mountpoint)
-                    self.addItem(p.mountpoint, None)
+                    self.addItem(p.mountpoint, p.device)
 
         self.setCurrentIndex(0)
 
-
     @pyqtSlot()
     def ejectDevice(self):
-        current_text = self.currentText()
+        current_text = self.currentData()
         mount_point = re.escape(current_text)
+
         os.system("umount {}".format(mount_point))
 
+        self.setCurrentIndex(0)
+        
 
 class FileSystemTable(QTableView, TableType):
     Q_ENUMS(TableType)
