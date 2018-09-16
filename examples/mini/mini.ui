@@ -21,45 +21,14 @@
     </size>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="3" column="3">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QPushButton" name="remoteNewFolderButton">
-        <property name="text">
-         <string>Create Folder</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="remoteCreateFileButton">
-        <property name="text">
-         <string>Create File</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="remoteDeleteButton">
-        <property name="text">
-         <string>Delete</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="0" column="0">
-     <widget class="QPushButton" name="localUpButton">
-      <property name="maximumSize">
-       <size>
-        <width>100</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="text">
-       <string>Level UP</string>
+    <item row="5" column="3">
+     <widget class="FileSystemTable" name="filesystem_2">
+      <property name="tableType" stdset="0">
+       <enum>FileSystemTable::Remote</enum>
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
+    <item row="5" column="1">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QPushButton" name="uploadButon">
@@ -77,14 +46,14 @@
       </item>
      </layout>
     </item>
-    <item row="1" column="0">
+    <item row="5" column="0">
      <widget class="FileSystemTable" name="filesystem">
       <property name="showGrid">
        <bool>true</bool>
       </property>
      </widget>
     </item>
-    <item row="3" column="0">
+    <item row="7" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QPushButton" name="localCreateFolderButton">
@@ -109,12 +78,30 @@
       </item>
      </layout>
     </item>
-    <item row="1" column="3">
-     <widget class="FileSystemTable" name="filesystem_2">
-      <property name="tableType" stdset="0">
-       <enum>FileSystemTable::Remote</enum>
-      </property>
-     </widget>
+    <item row="7" column="3">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QPushButton" name="remoteNewFolderButton">
+        <property name="text">
+         <string>Create Folder</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="remoteCreateFileButton">
+        <property name="text">
+         <string>Create File</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="remoteDeleteButton">
+        <property name="text">
+         <string>Delete</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
     <item row="0" column="3">
      <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -147,6 +134,26 @@
       </item>
      </layout>
     </item>
+    <item row="0" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QPushButton" name="localUpButton">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Level UP</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="lineEdit"/>
+      </item>
+     </layout>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -155,7 +162,7 @@
      <x>0</x>
      <y>0</y>
      <width>971</width>
-     <height>23</height>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -261,12 +268,12 @@
    <slot>createDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>148</x>
+     <x>84</x>
      <y>527</y>
     </hint>
     <hint type="destinationlabel">
-     <x>171</x>
-     <y>425</y>
+     <x>84</x>
+     <y>395</y>
     </hint>
    </hints>
   </connection>
@@ -277,11 +284,11 @@
    <slot>createDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>671</x>
-     <y>527</y>
+     <x>616</x>
+     <y>514</y>
     </hint>
     <hint type="destinationlabel">
-     <x>815</x>
+     <x>616</x>
      <y>452</y>
     </hint>
    </hints>
@@ -293,7 +300,7 @@
    <slot>goUP()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>73</x>
+     <x>74</x>
      <y>44</y>
     </hint>
     <hint type="destinationlabel">
@@ -427,6 +434,38 @@
     <hint type="destinationlabel">
      <x>698</x>
      <y>114</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filesystem</sender>
+   <signal>rootChanged(QString)</signal>
+   <receiver>lineEdit</receiver>
+   <slot>setText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>215</x>
+     <y>86</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>196</x>
+     <y>48</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit</sender>
+   <signal>textEdited(QString)</signal>
+   <receiver>filesystem</receiver>
+   <slot>setRootPath(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>292</x>
+     <y>49</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>290</x>
+     <y>122</y>
     </hint>
    </hints>
   </connection>
