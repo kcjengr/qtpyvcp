@@ -62,7 +62,7 @@ class RemovableDeviceComboBox(QComboBox):
         current_text = self.currentData()
         mount_point = re.escape(current_text)
 
-        os.system("uudisksctl unmount --block-device {}".format(mount_point))
+        os.system("udisksctl unmount --block-device {}".format(mount_point))
         os.system("udisksctl power-off --block-device {}".format(mount_point))
 
         self.setCurrentIndex(0)
