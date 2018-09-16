@@ -88,6 +88,18 @@ def bindWidget(widget, action):
         STATUS.estop.connect(lambda: power.ok(widget))
         STATUS.on.connect(lambda v: widget.setChecked(v))
 
+    elif action == 'mode.manual':
+        widget.setChecked(STAT.task_mode == linuxcnc.MODE_MANUAL)
+        STATUS.task_mode.connect(lambda m: widget.setChecked(m == linuxcnc.MODE_MANUAL))
+
+    elif action == 'mode.auto':
+        widget.setChecked(STAT.task_mode == linuxcnc.MODE_AUTO)
+        STATUS.task_mode.connect(lambda m: widget.setChecked(m == linuxcnc.MODE_AUTO))
+
+    elif action == 'mode.mdi':
+        widget.setChecked(STAT.task_mode == linuxcnc.MODE_MDI)
+        STATUS.task_mode.connect(lambda m: widget.setChecked(m == linuxcnc.MODE_MDI))
+
     elif action == 'home.all':
         home.ok(-1, widget)
         STATUS.on.connect(lambda: home.ok(-1, widget))
@@ -216,6 +228,32 @@ class feedhold:
             feedhold.off()
         else:
             feedhold.on()
+
+
+class mode:
+    @staticmethod
+    def manual():
+        setTaskMode(linuxcnc.MODE_MANUAL)
+
+    @staticmethod
+    def auto():
+        setTaskMode(linuxcnc.MODE_AUTO)
+
+    @staticmethod
+    def mdi():
+        setTaskMode(linuxcnc.MODE_MDI)
+
+def _modeOk(widget=None):
+
+    _modeOk.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(okay)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return okay
+
 
 class home:
     """Homing actions group"""
