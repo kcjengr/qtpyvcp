@@ -54,7 +54,12 @@ def bindWidget(widget, action):
         # convert numbers to int and unicode to str
         args = [int(arg) if arg.isdigit() else str(arg) for arg in args]
 
-        sig.connect(lambda: method(*args))
+        if action.startswith('machine.jog'):
+            widget.pressed.connect(lambda: method(*args))
+            widget.released.connect(lambda: method(*args, speed=0))
+
+        else:
+            sig.connect(lambda: method(*args))
 
     try:
         method.ok(widget, *args) # Set the initial widget states

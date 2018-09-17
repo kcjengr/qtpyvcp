@@ -432,6 +432,10 @@ def getAxisNumber(axis):
     return axis
 
 
+
+# -------------------------------------------------------------------------
+# JOG actions
+# -------------------------------------------------------------------------
 class jog:
     @staticmethod
     def axis(axis, direction=0, speed=None, distance=None):
@@ -469,3 +473,10 @@ class jog:
                 CMD.jog(linuxcnc.JOG_CONTINUOUS, 0, axis, velocity)
             else:
                 CMD.jog(linuxcnc.JOG_INCREMENT, 0, axis, velocity, distance)
+
+
+def _jog_axis_ok(widget=None, axis=-1):
+    pass
+
+def _jog_axis_bindOk(widget, axis):
+    pass
