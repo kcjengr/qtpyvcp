@@ -463,6 +463,69 @@
            </item>
           </layout>
          </widget>
+         <widget class="OverrideSlider" name="overrideslider">
+          <property name="geometry">
+           <rect>
+            <x>240</x>
+            <y>290</y>
+            <width>331</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="override_type" stdset="0">
+           <enum>OverrideSlider::speed_override</enum>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_8">
+          <property name="geometry">
+           <rect>
+            <x>580</x>
+            <y>290</y>
+            <width>161</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::speed_override</enum>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="lineEdit_5">
+          <property name="geometry">
+           <rect>
+            <x>380</x>
+            <y>140</y>
+            <width>111</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QLineEdit {
+border-color: red;
+border-style: solid;
+border-width: 1px;
+border-radius: 3px;
+}</string>
+          </property>
+          <property name="text">
+           <string>hello</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="lineEdit_6">
+          <property name="geometry">
+           <rect>
+            <x>380</x>
+            <y>170</y>
+            <width>113</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="cursor">
+           <cursorShape>BlankCursor</cursorShape>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -1798,10 +1861,20 @@
     <addaction name="action_program_run"/>
     <addaction name="action_coolant_floodToggle"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionHalmeter"/>
+    <addaction name="actionHalshow"/>
+    <addaction name="actionHAL_Scope"/>
+    <addaction name="actionCalibration"/>
+   </widget>
    <addaction name="menuExit"/>
    <addaction name="menuMachine"/>
    <addaction name="menuView"/>
    <addaction name="menuTest"/>
+   <addaction name="menuTools"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionExit">
@@ -1947,6 +2020,38 @@
     <string>Flood</string>
    </property>
   </action>
+  <action name="actionHalshow">
+   <property name="text">
+    <string>HAL Show</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>tool.halshow</string>
+   </property>
+  </action>
+  <action name="actionHalmeter">
+   <property name="text">
+    <string>HAL Meter</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>tool.halmeter</string>
+   </property>
+  </action>
+  <action name="actionHAL_Scope">
+   <property name="text">
+    <string>HAL Scope</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>tool.halscope</string>
+   </property>
+  </action>
+  <action name="actionCalibration">
+   <property name="text">
+    <string>Calibration</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>tool.calibration</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -1995,6 +2100,11 @@
    <class>StatusLabel</class>
    <extends>QLabel</extends>
    <header>QtPyVCP.widgets.display_widgets.statuslabel_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>OverrideSlider</class>
+   <extends>QSlider</extends>
+   <header>QtPyVCP.widgets.input_widgets.override_slider</header>
   </customwidget>
  </customwidgets>
  <resources>
