@@ -225,6 +225,8 @@ class _Status(QObject):
     motion_type = pyqtSignal([int], [str])  # type of the currently executing motion
     interp_state = pyqtSignal([int], [str]) # current state of RS274NGC interpreter
     interpreter_errcode = pyqtSignal([int], [str]) # current RS274NGC interpreter return code
+    settings = pyqtSignal(tuple)            # interpreter settings. (sequence_number, feed_rate, speed)
+
     jog_mode_signal = pyqtSignal(bool)             # jog mode = true
     linear_units = pyqtSignal([float], [str])
     angular_units = pyqtSignal([float], [str])
@@ -238,6 +240,10 @@ class _Status(QObject):
     axis_positions = pyqtSignal(tuple)      # ABS, REL and DTG axis values
     joint_positions = pyqtSignal(tuple)     # joint pos respecting INI settings
     file_loaded = pyqtSignal(str)           # file loaded
+
+    # interpreter settings
+    feed = pyqtSignal(float)                # Current requested feed
+    speed = pyqtSignal(float)               # Current requested speed
 
     on = pyqtSignal(bool)
     moving = pyqtSignal(bool)
@@ -283,7 +289,7 @@ class _Status(QObject):
 
         excluded_items = ['axes', 'axis', 'joint', 'cycle_time',
             'acceleration', 'kinematics_type',
-            'joints', 'settings', 'axis_mask', 'max_acceleration', 'echo_serial_number',
+            'joints', 'axis_mask', 'max_acceleration', 'echo_serial_number',
             'id', 'poll', 'command', 'debug']
 
         self.old = {}
@@ -306,6 +312,10 @@ class _Status(QObject):
 
         # File
         self.file.connect(self.updateFileLoaded)
+
+        # feed and speed signals
+        self.settings.connect(lambda s: self.feed.emit(s[1]))
+        self.settings.connect(lambda s: self.feed.emit(s[2]))
 
         # Initialize Joint status class
         self.joint = _Joint(self.stat)
@@ -335,7 +345,6 @@ class _Status(QObject):
         for key, old_value in self.old.iteritems():
             new_value = getattr(self.stat, key)
             if old_value != new_value:
-                self.old[key] = new_value
                 getattr(self, key).emit(new_value)
 
                 str_dict = self.STATE_STRING_LOOKUP.get(key)
@@ -344,12 +353,8 @@ class _Status(QObject):
                     getattr(self, key)[str].emit(str_val)
                     log.debug("{}: {}".format(key, str_val))
 
-        # Returns TRUE if machine is moving due to MDI, program execution, etc.
-        # self.moving.emit(
-        #     self.stat.state == linuxcnc.RCS_EXEC or
-        #     (self.stat.task_mode == linuxcnc.MODE_AUTO and
-        #     self.stat.interp_state != linuxcnc.INTERP_IDLE)
-        #     )
+                # update old values dict
+                self.old[key] = new_value
 
         self.joint._periodic()
         self.error._periodic()
