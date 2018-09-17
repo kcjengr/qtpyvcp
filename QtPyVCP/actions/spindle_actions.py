@@ -24,7 +24,6 @@
 
 import sys
 import linuxcnc
-from PyQt5.QtWidgets import QAction
 
 # Set up logging
 from QtPyVCP.utilities import logger
@@ -40,70 +39,8 @@ CMD = linuxcnc.command()
 
 from QtPyVCP.actions.base_actions import setTaskMode
 
-def bindWidget(widget, action):
-    """Binds a widget to an action.
 
-    Args:
-        widget (QtWidget) : The widget to bind the action too. Typically `widget`
-            would be a QPushButton, QCheckBox or a QAction instance.
-
-        action (string) : The string identifier of the action to bind the widget
-            to in the format `action_class.action_name:arg1, arg2 ...`.
-    """
-    action, sep, args = action.partition(':')
-    action = action.replace('-', '_')
-    method = reduce(getattr, action.split('.'), sys.modules[__name__])
-    if method is None:
-        return
-
-    if isinstance(widget, QAction):
-        sig = widget.triggered
-    else:
-        sig = widget.clicked
-
-    if args == '':
-        sig.connect(lambda: method())
-
-    else:
-        # make a list out of comma separated args
-        args = args.replace(' ', '').split(',')
-        # convert numbers to int and unicode to str
-        args = [int(arg) if arg.isdigit() else str(arg) for arg in args]
-
-        sig.connect(lambda: method(*args))
-
-    # if it is a toggle action make the widget checkable
-    if action.endswith('toggle'):
-        widget.setCheckable(True)
-
-    if action in ['forward', 'reverse', 'off']:
-        _spindleOk(widget)
-        STATUS.on.connect(lambda: _spindleOk(widget))
-        STATUS.task_mode.connect(lambda: _spindleOk(widget))
-
-def forward(speed=223.23):
-    CMD.spindle(linuxcnc.SPINDLE_FORWARD, speed)
-
-def reverse(speed=224.23):
-    CMD.spindle(linuxcnc.SPINDLE_REVERSE, speed)
-
-def off():
-    CMD.spindle(linuxcnc.SPINDLE_OFF)
-
-def faster():
-    """Increase spindle speed by 100rpm"""
-    CMD.spindle(linuxcnc.SPINDLE_INCREASE)
-
-def slower():
-    """Decreases spindle speed by 100rpm"""
-    CMD.spindle(linuxcnc.SPINDLE_DECREASE)
-
-def constant():
-    """Unclear"""
-    CMD.spindle(linuxcnc.SPINDLE_CONSTANT)
-
-def _spindleOk(widget=None):
-    print "###################"
+def _spindle_ok(widget=None):
     if STAT.task_state != linuxcnc.STATE_ON:
         ok = False
         msg = "Can't run spindle until machine it ON"
@@ -114,7 +51,7 @@ def _spindleOk(widget=None):
         ok = True
         msg = ""
 
-    _spindleOk.msg = msg
+    _spindle_ok.msg = msg
 
     if widget is not None:
         widget.setEnabled(ok)
@@ -123,11 +60,72 @@ def _spindleOk(widget=None):
 
     return ok
 
-forward.ok = _spindleOk
-reverse.ok = _spindleOk
-off.ok = _spindleOk
-faster.ok = _spindleOk
-slower.ok = _spindleOk
+def _spindle_bindOk(widget):
+    STATUS.on.connect(lambda: _spindle_ok(widget))
+    STATUS.task_mode.connect(lambda: _spindle_ok(widget))
+
+def forward(speed=None):
+    if speed is None:
+        speed = getSpeed()
+    print speed
+    CMD.spindle(linuxcnc.SPINDLE_FORWARD, speed)
+
+forward.ok = _spindle_ok
+forward.bindOk = _spindle_bindOk
+
+def reverse(speed=None):
+    if speed is None:
+        speed = getSpeed()
+    print speed
+    CMD.spindle(linuxcnc.SPINDLE_REVERSE, speed)
+
+reverse.ok = _spindle_ok
+reverse.bindOk = _spindle_bindOk
+
+def off():
+    CMD.spindle(linuxcnc.SPINDLE_OFF)
+
+off.ok = _spindle_ok
+off.bindOk = _spindle_bindOk
+
+def faster():
+    """Increase spindle speed by 100rpm"""
+    CMD.spindle(linuxcnc.SPINDLE_INCREASE)
+
+faster.ok = _spindle_ok
+faster.bindOk = _spindle_bindOk
+
+def slower():
+    """Decreases spindle speed by 100rpm"""
+    CMD.spindle(linuxcnc.SPINDLE_DECREASE)
+
+slower.ok = _spindle_ok
+slower.bindOk = _spindle_bindOk
+
+def constant():
+    """Unclear"""
+    CMD.spindle(linuxcnc.SPINDLE_CONSTANT)
+
+constant.ok = _spindle_ok
+constant.bindOk = _spindle_bindOk
+
+def getSpeed():
+    raw_speed = STAT.settings[2]
+    if raw_speed == 0:
+        raw_speed = abs(INFO.defaultSpindleSpeed())
+
+    print INFO.defaultSpindleSpeed()
+
+    if STAT.spindle_override_enabled:
+        STAT.spindlerate
+
+    speed = raw_speed * STAT.spindlerate
+
+    # if real_spindle_speed > self.max_spindle_rev:
+    #     real_spindle_speed = self.max_spindle_rev
+    # elif real_spindle_speed < self.min_spindle_rev:
+    #     real_spindle_speed = self.min_spindle_rev
+    return speed
 
 
 class override:

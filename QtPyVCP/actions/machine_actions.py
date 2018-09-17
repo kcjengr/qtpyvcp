@@ -119,7 +119,9 @@ def bindWidget(widget, action):
     elif action.startswith('jog'):
         pass
 
-
+# -------------------------------------------------------------------------
+# E-STOP action
+# -------------------------------------------------------------------------
 class estop:
     """E-Stop action group"""
     @staticmethod
@@ -151,12 +153,21 @@ class estop:
         """
         return bool(STAT.estop)
 
-    @staticmethod
-    def ok(widget=None):
-        # E-Stop is ALWAYS ok, but provide this method for consistency
-        estop.ok.msg = ""
-        return True
+def _estop_ok(widget=None):
+    # E-Stop is ALWAYS ok, but provide this method for consistency
+    _estop_ok.msg = ""
+    return True
 
+def _estop_bindOk(widget):
+    widget.setChecked(STAT.estop != linuxcnc.STATE_ESTOP)
+    STATUS.estop.connect(lambda v: widget.setChecked(not v))
+
+estop.activate.ok = estop.reset.ok = estop.toggle.ok = _estop_ok
+estop.activate.bindOk = estop.reset.bindOk = estop.toggle.bindOk = _estop_bindOk
+
+# -------------------------------------------------------------------------
+# POWER action
+# -------------------------------------------------------------------------
 class power:
     """Power action group"""
     @staticmethod
@@ -188,24 +199,35 @@ class power:
         """
         return STAT.task_state == linuxcnc.STATE_ON
 
-    @staticmethod
-    def ok(widget=None):
-        if STAT.task_state == linuxcnc.STATE_ESTOP_RESET:
-            okey = True
-            msg = "Turn machine on"
-        else:
-            okey = False
-            msg = "Can't turn machine ON until out of E-Stop"
+def _power_ok(widget=None):
+    if STAT.task_state == linuxcnc.STATE_ESTOP_RESET:
+        ok = True
+        msg = ""
+    else:
+        ok = False
+        msg = "Can't turn machine ON until out of E-Stop"
 
-        power.ok.msg = msg
+    _power_ok.msg = msg
 
-        if widget is not None:
-            widget.setEnabled(okey)
-            widget.setStatusTip(msg)
-            widget.setToolTip(msg)
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
 
-        return okey
+    return ok
 
+def _power_bindOk(widget):
+    _power_ok(widget)
+    widget.setChecked(STAT.task_state == linuxcnc.STATE_ON)
+    STATUS.estop.connect(lambda: _power_ok(widget))
+    STATUS.on.connect(lambda v: widget.setChecked(v))
+
+power.on.ok = power.off.ok = power.toggle.ok = _power_ok
+power.on.bindOk = power.off.bindOk = power.toggle.bindOk = _power_bindOk
+
+# -------------------------------------------------------------------------
+# FEED HOLD action
+# -------------------------------------------------------------------------
 class feedhold:
 
     # FIXME For some reason these do not work
@@ -230,6 +252,9 @@ class feedhold:
             feedhold.on()
 
 
+# -------------------------------------------------------------------------
+# set MODE actions
+# -------------------------------------------------------------------------
 class mode:
     @staticmethod
     def manual():
@@ -243,18 +268,44 @@ class mode:
     def mdi():
         setTaskMode(linuxcnc.MODE_MDI)
 
-def _modeOk(widget=None):
+def _mode_ok(widget=None):
 
-    _modeOk.msg = msg
+    ok = True
+    msg = ''
+
+    _mode_ok.msg = msg
 
     if widget is not None:
-        widget.setEnabled(okay)
+        widget.setEnabled(ok)
         widget.setStatusTip(msg)
         widget.setToolTip(msg)
 
-    return okay
+    return ok
 
+def _manual_bindOk(widget):
+    widget.setChecked(STAT.task_mode == linuxcnc.MODE_MANUAL)
+    STATUS.task_mode.connect(lambda m: widget.setChecked(m == linuxcnc.MODE_MANUAL))
 
+mode.manual.ok = _mode_ok
+mode.manual.bindOk = _manual_bindOk
+
+def _auto_bindOk(widget):
+    widget.setChecked(STAT.task_mode == linuxcnc.MODE_AUTO)
+    STATUS.task_mode.connect(lambda m: widget.setChecked(m == linuxcnc.MODE_AUTO))
+
+mode.auto.ok = _mode_ok
+mode.auto.bindOk = _auto_bindOk
+
+def _mdi_bindOk(widget):
+    widget.setChecked(STAT.task_mode == linuxcnc.MODE_MDI)
+    STATUS.task_mode.connect(lambda m: widget.setChecked(m == linuxcnc.MODE_MDI))
+
+mode.mdi.ok = _mode_ok
+mode.mdi.bindOk = _mdi_bindOk
+
+# -------------------------------------------------------------------------
+# HOME actions
+# -------------------------------------------------------------------------
 class home:
     """Homing actions group"""
     @staticmethod
@@ -288,23 +339,45 @@ class home:
         LOG.info("Homing joint: {}".format(jnum))
         _home_joint(jnum)
 
-    @staticmethod
-    def ok(jnum, widget=None):
-        if power.is_on(): # and not STAT.homed[jnum]:
-            okay = True
-            msg = ""
-        else:
-            okay = False
-            msg = "Machine must be on to home"
+def _home_ok(widget=None, jnum=-1):
+    if power.is_on(): # and not STAT.homed[jnum]:
+        ok = True
+        msg = ""
+    else:
+        ok = False
+        msg = "Machine must be on to home"
 
-        home.ok.msg = msg
+    _home_ok.msg = msg
 
-        if widget is not None:
-            widget.setEnabled(okay)
-            widget.setStatusTip(msg)
-            widget.setToolTip(msg)
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
 
-        return okay
+    return ok
+
+def _home_all_bindOk(widget):
+    STATUS.on.connect(lambda: _home_ok(widget))
+    STATUS.homed.connect(lambda: _home_ok(widget))
+
+home.all.ok = _home_ok
+home.all.bindOk = _home_all_bindOk
+
+def _home_joint_bindOk(widget, jnum):
+    STATUS.on.connect(lambda: _home_ok(widget, jnum))
+    STATUS.homed.connect(lambda: _home_ok(widget, jnum))
+
+home.joint.ok = _home_ok
+home.joint.bindOk = _home_joint_bindOk
+
+def _home_axis_bindOk(widget, axis):
+    axis = getAxisLetter(axis)
+    jnum = INFO.AXIS_LETTER_LIST.index(axis)
+    STATUS.on.connect(lambda: _home_ok(widget, jnum))
+
+home.axis.ok = _home_ok
+home.axis.bindOk = _home_axis_bindOk
+
 
 class unhome:
     """Unhoming actions group"""

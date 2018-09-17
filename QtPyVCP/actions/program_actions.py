@@ -24,7 +24,6 @@
 
 import sys
 import linuxcnc
-from PyQt5.QtWidgets import QAction
 
 # Set up logging
 from QtPyVCP.utilities import logger
@@ -45,77 +44,6 @@ from QtPyVCP.actions.base_actions import setTaskMode
 # Program actions
 #==============================================================================
 
-def bindWidget(widget, action):
-    """Binds a widget to a program action.
-
-    Args:
-        widget (QtWidget) : The widget to bind the action too. Typically `widget`
-            would be a QPushButton, QCheckBox or a QAction.
-
-        action (string) : The string identifier of the coolant action to bind
-            the widget too.
-    """
-    action = action.replace('-', '_')
-    method = reduce(getattr, action.split('.'), sys.modules[__name__])
-    if method is None:
-        return
-
-    if isinstance(widget, QAction):
-        sig = widget.triggered
-    else:
-        sig = widget.clicked
-
-    sig.connect(method)
-
-    if action.endswith('toggle'):
-        widget.setCheckable(True)
-
-    if action == 'run':
-        widget.setEnabled(runOk(widget))
-
-        STATUS.estop.connect(lambda: runOk(widget))
-        STATUS.enabled.connect(lambda: runOk(widget))
-        STATUS.all_homed.connect(lambda: runOk(widget))
-        STATUS.interp_state.connect(lambda: runOk(widget))
-        STATUS.file.connect(lambda: runOk(widget))
-
-    if action == 'step':
-        stepOk(widget)
-        STATUS.estop.connect(lambda: stepOk(widget))
-        STATUS.enabled.connect(lambda: stepOk(widget))
-        STATUS.all_homed.connect(lambda: stepOk(widget))
-        STATUS.interp_state.connect(lambda: stepOk(widget))
-        STATUS.file.connect(lambda: stepOk(widget))
-
-    elif action == 'pause':
-        widget.setEnabled(pauseOk())
-
-        STATUS.state.connect(lambda: pauseOk(widget))
-        STATUS.paused.connect(lambda: pauseOk(widget))
-
-    elif action == 'resume':
-        resumeOk(widget)
-        STATUS.paused.connect(lambda: resumeOk(widget))
-        STATUS.state.connect(lambda: resumeOk(widget))
-
-    elif action == 'abort':
-        abortOk(widget)
-        STATUS.state.connect(lambda: abortOk(widget))
-
-    elif action.startswith('block_delete'):
-        widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
-        widget.setChecked(STAT.block_delete)
-        STATUS.task_state.connect(lambda v: widget.setEnabled(v == linuxcnc.STATE_ON))
-        STATUS.block_delete.connect(lambda s: widget.setChecked(s))
-
-    elif action.startswith('optional_stop'):
-        widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
-        widget.setChecked(STAT.optional_stop)
-        STATUS.task_state.connect(lambda v: widget.setEnabled(v == linuxcnc.STATE_ON))
-        STATUS.optional_stop.connect(lambda s: widget.setChecked(s))
-
-    return True
-
 def load(fname, add_to_recents=True):
     setTaskMode(linuxcnc.MODE_AUTO)
     filter_prog = INFO.getFilterProgram(fname)
@@ -130,26 +58,29 @@ def load(fname, add_to_recents=True):
 def reload():
     raise NotImplemented
 
+def addToRecents(fname):
+    if fname in STATUS.recent_files:
+        STATUS.recent_files.remove(fname)
+    STATUS.recent_files.insert(0, fname)
+    STATUS.recent_files = STATUS.recent_files[:STATUS.max_recent_files]
+    STATUS.recent_files_changed.emit(tuple(STATUS.recent_files))
+
+# -------------------------------------------------------------------------
+# program RUN action
+# -------------------------------------------------------------------------
 def run(start_line=0):
-    """
-    Runs the loaded program, optionally starting from a specific line.
+    """Runs the loaded program, optionally starting from a specific line.
 
     Args:
         start_line (int, optional) : The line to start program from. Defaults to 0.
     """
-
-    # check if it is OK to run
-    # if not runOk():
-    #     LOG.error(runOk.msg)
-    #     return
     if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
         CMD.auto(linuxcnc.AUTO_RESUME)
     elif setTaskMode(linuxcnc.MODE_AUTO):
         CMD.auto(linuxcnc.AUTO_RUN, start_line)
 
-def runOk(widget=None):
-    """
-    Checks if it is OK to run a program.
+def _run_ok(widget=None):
+    """Checks if it is OK to run a program.
 
     Args:
         widget (QWidget, optional) : If a widget is supplied it will be
@@ -158,7 +89,6 @@ def runOk(widget=None):
 
     Returns:
         bool : True if Ok, else False.
-
     """
     if STAT.estop:
         ok = False
@@ -179,7 +109,7 @@ def runOk(widget=None):
         ok = True
         msg = "Run program"
 
-    runOk.msg = msg
+    _run_ok.msg = msg
 
     if widget is not None:
         widget.setEnabled(ok)
@@ -188,28 +118,59 @@ def runOk(widget=None):
 
     return ok
 
+def _run_bindOk(widget):
+    STATUS.estop.connect(lambda: _run_ok(widget))
+    STATUS.enabled.connect(lambda: _run_ok(widget))
+    STATUS.all_homed.connect(lambda: _run_ok(widget))
+    STATUS.interp_state.connect(lambda: _run_ok(widget))
+    STATUS.file.connect(lambda: _run_ok(widget))
+
+run.ok = _run_ok
+run.bindOk = _run_bindOk
+
+# -------------------------------------------------------------------------
+# program STEP action
+# -------------------------------------------------------------------------
 def step():
+    """Steps program line by line"""
     if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
         CMD.auto(linuxcnc.AUTO_STEP)
     elif setTaskMode(linuxcnc.MODE_AUTO):
         CMD.auto(linuxcnc.AUTO_STEP)
 
-stepOk = runOk
+step.ok = _run_ok
+step.bindOk = _run_bindOk
 
-def runFromLine():
+# -------------------------------------------------------------------------
+# program RUN from HERE action
+# -------------------------------------------------------------------------
+def runFromLine(line):
     # TODO: This might should show a popup to select start line,
     #       or it could get the start line from the gcode view or
     #       even from the backplot.
     raise NotImplemented
 
+runFromLine.ok = _run_ok
+runFromLine.bindOk = _run_bindOk
+# -------------------------------------------------------------------------
+# program PAUSE action
+# -------------------------------------------------------------------------
 def pause():
-    # if not pauseOk():
-    #     LOG.error(pauseOk.msg)
-    #     return
+    """Pause executing program"""
     LOG.debug("Pausing program execution")
     CMD.auto(linuxcnc.AUTO_PAUSE)
 
-def pauseOk(widget=None):
+def _pause_ok(widget=None):
+    """Checks if it is OK to pause the program.
+
+    Args:
+        widget (QWidget, optional) : If a widget is supplied it will be
+            enabled/disabled according to the result, and will have it's
+            statusTip property set to the reason the action is disabled.
+
+    Returns:
+        bool : True if Ok, else False.
+    """
     if STAT.state == linuxcnc.RCS_EXEC and not STAT.paused:
         msg = "Pause program execution"
         ok = True
@@ -220,7 +181,7 @@ def pauseOk(widget=None):
         msg = "No program running to pause"
         ok = False
 
-    runOk.msg = msg
+    _pause_ok.msg = msg
 
     if widget is not None:
         widget.setEnabled(ok)
@@ -229,11 +190,32 @@ def pauseOk(widget=None):
 
     return ok
 
+def _pause_bindOk(widget):
+    STATUS.state.connect(lambda: _pause_ok(widget))
+    STATUS.paused.connect(lambda: _pause_ok(widget))
+
+pause.ok = _pause_ok
+pause.bindOk = _pause_bindOk
+
+# -------------------------------------------------------------------------
+# program RESUME action
+# -------------------------------------------------------------------------
 def resume():
+    """Resume a previously paused program"""
     LOG.debug("Resuming program execution")
     CMD.auto(linuxcnc.AUTO_RESUME)
 
-def resumeOk(widget):
+def _resume_ok(widget):
+    """Checks if it is OK to resume a paused program.
+
+    Args:
+        widget (QWidget, optional) : If a widget is supplied it will be
+            enabled/disabled according to the result, and will have it's
+            statusTip property set to the reason the action is disabled.
+
+    Returns:
+        bool : True if Ok, else False.
+    """
     if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
         ok = True
         msg = "Resume program execution"
@@ -241,7 +223,7 @@ def resumeOk(widget):
         ok = False
         msg = "No paused program to resume"
 
-    resumeOk.msg = msg
+    _resume_ok.msg = msg
 
     if widget is not None:
         widget.setEnabled(ok)
@@ -250,19 +232,40 @@ def resumeOk(widget):
 
     return ok
 
+def _resume_bindOk(widget):
+    STATUS.paused.connect(lambda: _resume_ok(widget))
+    STATUS.state.connect(lambda: _resume_ok(widget))
+
+resume.ok = _resume_ok
+resume.bindOk = _resume_bindOk
+
+# -------------------------------------------------------------------------
+# program ABORT action
+# -------------------------------------------------------------------------
 def abort():
+    """Aborts any currently executing program, MDI command or homing operation."""
     LOG.debug("Aborting program")
     CMD.abort()
 
-def abortOk(widget=None):
+def _abort_ok(widget=None):
+    """Checks if it is OK to abort current operation.
+
+    Args:
+        widget (QWidget, optional) : If a widget is supplied it will be
+            enabled/disabled according to the result, and will have it's
+            statusTip property set to the reason the action is disabled.
+
+    Returns:
+        bool : True if Ok, else False.
+    """
     if STAT.state == linuxcnc.RCS_EXEC:
         ok = True
-        msg = "Abort current job"
+        msg = ""
     else:
         ok = False
         msg = "Nothing to abort"
 
-    abortOk.msg = msg
+    _abort_ok.msg = msg
 
     if widget is not None:
         widget.setEnabled(ok)
@@ -271,50 +274,129 @@ def abortOk(widget=None):
 
     return ok
 
+def _abort_bindOk(widget):
+    STATUS.state.connect(lambda: _abort_ok(widget))
+
+abort.ok = _abort_ok
+abort.bindOk = _abort_bindOk
+
+# -------------------------------------------------------------------------
+# BLOCK DELETE actions
+# -------------------------------------------------------------------------
 class block_delete:
     @staticmethod
     def on():
+        """Start ignoring lines beginning with '/'."""
         LOG.debug("Setting block delete green<ON>")
         CMD.set_block_delete(True)
 
     @staticmethod
     def off():
+        """Stop ignoring lines beginning with '/'."""
         LOG.debug("Setting block delete red<OFF>")
         CMD.set_block_delete(False)
 
     @staticmethod
     def toggle():
+        """Toggle ignoring lines beginning with '/'."""
         if STAT.block_delete == True:
             block_delete.off()
         else:
             block_delete.on()
 
+def _block_delete_ok(widget=None):
+    """Checks if it is OK to set block_delete.
+
+    Args:
+        widget (QWidget, optional) : If a widget is supplied it will be
+            enabled/disabled according to the result, and will have it's
+            statusTip property set to the reason the action is disabled.
+
+    Returns:
+        bool : True if Ok, else False.
+    """
+    if STAT.task_state == linuxcnc.STATE_ON:
+        ok = True
+        msg = ""
+    else:
+        ok = False
+        msg = "Machine must be ON to set Block Del"
+
+    _block_delete_ok.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
+
+def _block_delete_bindOk(widget):
+    widget.setChecked(STAT.block_delete)
+    STATUS.task_state.connect(lambda: _block_delete_ok(widget))
+    STATUS.block_delete.connect(lambda s: widget.setChecked(s))
+
+block_delete.on.ok = block_delete.off.ok = block_delete.toggle.ok = _block_delete_ok
+block_delete.on.bindOk = block_delete.off.bindOk = block_delete.toggle.bindOk = _block_delete_bindOk
+
+# -------------------------------------------------------------------------
+# OPTIONAL STOP actions
+# -------------------------------------------------------------------------
 class optional_stop:
     @staticmethod
     def on():
+        """Pause when a line beginning with M1 is encountered"""
         LOG.debug("Setting optional stop green<ON>")
         CMD.set_optional_stop(True)
 
     @staticmethod
     def off():
+        """Don't pause when a line beginning with M1 is encountered"""
         LOG.debug("Setting optional stop red<OFF>")
         CMD.set_optional_stop(False)
 
     @staticmethod
     def toggle():
+        """Toggle pause when a line beginning with M1 is encountered"""
         if STAT.optional_stop == True:
             optional_stop.off()
         else:
             optional_stop.on()
 
+def _optional_stop_ok(widget=None):
+    """Checks if it is OK to set optional_stop.
 
-def addToRecents(fname):
-    if fname in STATUS.recent_files:
-        STATUS.recent_files.remove(fname)
-    STATUS.recent_files.insert(0, fname)
-    STATUS.recent_files = STATUS.recent_files[:STATUS.max_recent_files]
-    STATUS.recent_files_changed.emit(tuple(STATUS.recent_files))
+    Args:
+        widget (QWidget, optional) : If a widget is supplied it will be
+            enabled/disabled according to the result, and will have it's
+            statusTip property set to the reason the action is disabled.
 
+    Returns:
+        bool : True if Ok, else False.
+    """
+    if STAT.task_state == linuxcnc.STATE_ON:
+        ok = True
+        msg = ""
+    else:
+        ok = False
+        msg = "Machine must be ON to set Opt Stop"
+
+    _optional_stop_ok.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
+
+def _optional_stop_bindOk(widget):
+    widget.setChecked(STAT.block_delete)
+    STATUS.task_state.connect(lambda: _optional_stop_ok(widget))
+    STATUS.optional_stop.connect(lambda s: widget.setChecked(s))
+
+optional_stop.on.ok = optional_stop.off.ok = optional_stop.toggle.ok = _optional_stop_ok
+optional_stop.on.bindOk = optional_stop.off.bindOk = optional_stop.toggle.bindOk  = _optional_stop_bindOk
 
 #==============================================================================
 # Program preprocessing handlers
