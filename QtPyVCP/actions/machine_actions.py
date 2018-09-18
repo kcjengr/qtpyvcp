@@ -151,26 +151,24 @@ power.on.bindOk = power.off.bindOk = power.toggle.bindOk = _power_bindOk
 # -------------------------------------------------------------------------
 class feedhold:
 
-    # FIXME For some reason these do not work
+    # FIXME: Not sure what feedhold does, or how do set it ON/OFF
 
     @staticmethod
-    def on():
-        print "FeedHold ON"
+    def enable():
+        LOG.info("Setting feedhold ENABLED")
         CMD.set_feed_hold(1)
 
     @staticmethod
-    def off():
-        print "FeedHold OFF"
+    def disable():
+        LOG.info("Setting feedhold DISABLED")
         CMD.set_feed_hold(0)
 
     @staticmethod
     def toggle():
-        print "FeedHold TOGGLE"
-        print STAT.feed_hold_enabled
         if STAT.feed_hold_enabled:
-            feedhold.off()
+            feedhold.disable()
         else:
-            feedhold.on()
+            feedhold.enable()
 
 def _feed_hold_ok(widget=None):
     return True
@@ -178,8 +176,8 @@ def _feed_hold_ok(widget=None):
 def _feed_hold_bindOk(widget):
     pass
 
-feedhold.on.ok = feedhold.off.ok = feedhold.toggle.ok = _feed_hold_ok
-feedhold.on.bindOk = feedhold.off.bindOk = feedhold.toggle.bindOk = _feed_hold_bindOk
+feedhold.enable.ok = feedhold.disable.ok = feedhold.toggle.ok = _feed_hold_ok
+feedhold.enable.bindOk = feedhold.disable.bindOk = feedhold.toggle.bindOk = _feed_hold_bindOk
 
 # -------------------------------------------------------------------------
 # set MODE actions
