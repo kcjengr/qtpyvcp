@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import QAction, QPushButton, QCheckBox, QSlider
 
 import machine_actions as machine
 import program_actions as program
@@ -28,41 +28,48 @@ def bindWidget(widget, action):
     """
     action, sep, args = action.partition(':')
     action = action.replace('-', '_')
-    method = reduce(getattr, action.split('.'), sys.modules[__name__])
+    try:
+        method = reduce(getattr, action.split('.'), sys.modules[__name__])
+    except:
+        return
+
     if method is None:
         return
+
+    if args != '':
+        # make a list out of comma separated args
+        args = args.replace(' ', '').split(',')
+        # convert numbers to int and unicode to str
+        args = [int(arg) if arg.isdigit() else str(arg) for arg in args]
+
 
     # if it is a toggle action make the widget checkable
     if action.endswith('toggle'):
         widget.setCheckable(True)
 
     if isinstance(widget, QAction):
-        sig = widget.triggered
-    else:
-        sig = widget.clicked
+        widget.triggered.connect(lambda: method(*args)) # should be able to do widget.triggered[()]
 
-    if args == '':
-        sig.connect(lambda: method())
-
-    elif args == 'checked':
-        sig.connect(method)
-
-    else:
-        # make a list out of comma separated args
-        args = args.replace(' ', '').split(',')
-        # convert numbers to int and unicode to str
-        args = [int(arg) if arg.isdigit() else str(arg) for arg in args]
+    elif isinstance(widget, QPushButton) or isinstance(widget, QCheckBox):
 
         if action.startswith('machine.jog'):
             widget.pressed.connect(lambda: method(*args))
             widget.released.connect(lambda: method(*args, speed=0))
 
         else:
-            sig.connect(lambda: method(*args))
+            widget.clicked.connect(lambda: method(*args))
+
+    elif isinstance(widget, QSlider):
+        widget.valueChanged.connect(method)
+
+    else:
+        LOG.error('Can\'t bind action "{}" to unsupported widget type "{}"'\
+            .format(action, widget.__class__.__name__))
 
     try:
         method.ok(*args, widget=widget) # Set the initial widget state
         method.bindOk(*args, widget=widget)
+
     except:
         LOG.exception("Error in bindWidget")
         pass
