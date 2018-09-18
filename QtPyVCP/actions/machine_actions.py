@@ -339,7 +339,8 @@ class home:
         LOG.info("Homing joint: {}".format(jnum))
         _home_joint(jnum)
 
-def _home_ok(widget=None, jnum=-1):
+def _home_ok(jnum=-1, widget=None):
+    # TODO: Check if homing a specific joint is OK
     if power.is_on(): # and not STAT.homed[jnum]:
         ok = True
         msg = ""
@@ -357,23 +358,23 @@ def _home_ok(widget=None, jnum=-1):
     return ok
 
 def _home_all_bindOk(widget):
-    STATUS.on.connect(lambda: _home_ok(widget))
-    STATUS.homed.connect(lambda: _home_ok(widget))
+    STATUS.on.connect(lambda: _home_ok(widget=widget))
+    STATUS.homed.connect(lambda: _home_ok(widget=widget))
 
 home.all.ok = _home_ok
 home.all.bindOk = _home_all_bindOk
 
-def _home_joint_bindOk(widget, jnum):
-    STATUS.on.connect(lambda: _home_ok(widget, jnum))
-    STATUS.homed.connect(lambda: _home_ok(widget, jnum))
+def _home_joint_bindOk(jnum, widget):
+    STATUS.on.connect(lambda: _home_ok(jnum, widget=widget))
+    STATUS.homed.connect(lambda: _home_ok(jnum, widget=widget))
 
 home.joint.ok = _home_ok
 home.joint.bindOk = _home_joint_bindOk
 
-def _home_axis_bindOk(widget, axis):
+def _home_axis_bindOk(axis, widget):
     axis = getAxisLetter(axis)
     jnum = INFO.AXIS_LETTER_LIST.index(axis)
-    STATUS.on.connect(lambda: _home_ok(widget, jnum))
+    STATUS.on.connect(lambda: _home_ok(jnum, widget=widget))
 
 home.axis.ok = _home_ok
 home.axis.bindOk = _home_axis_bindOk
@@ -507,10 +508,10 @@ class jog:
                 CMD.jog(linuxcnc.JOG_INCREMENT, 0, axis, velocity, distance)
 
 
-def _jog_axis_ok(widget=None, axis=-1, direction=0):
+def _jog_axis_ok(axis, direction=0, widget=None):
     pass
 
-def _jog_axis_bindOk(widget, axis, direction):
+def _jog_axis_bindOk(axis, direction, widget):
     pass
 
 jog.axis.ok = _jog_axis_ok

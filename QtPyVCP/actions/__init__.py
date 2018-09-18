@@ -62,8 +62,8 @@ def bindWidget(widget, action):
             sig.connect(lambda: method(*args))
 
     try:
-        method.ok(widget, *args) # Set the initial widget states
-        method.bindOk(widget, *args)
+        method.ok(*args, widget=widget) # Set the initial widget state
+        method.bindOk(*args, widget=widget)
     except:
         LOG.exception("Error in bindWidget")
         pass

@@ -20,6 +20,7 @@ def halscope():
     p = os.popen("halscope  > /dev/null &", "w")
 
 def classicladder():
+    # TODO: classicladder.bindOk should check for classicladder comp
     if hal.component_exists("classicladder_rt"):
         p = os.popen("classicladder  &", "w")
     else:
@@ -27,5 +28,5 @@ def classicladder():
         print text
         # self.error_dialog.run(text)
 
-halshow.ok = calibration.ok = halmeter.ok = status.ok = halscope.ok = classicladder.ok = lambda w: True
-halshow.bindOk = calibration.bindOk = halmeter.bindOk = status.bindOk = halscope.bindOk = classicladder.bindOk = lambda w: None
+halshow.ok = calibration.ok = halmeter.ok = status.ok = halscope.ok = classicladder.ok = lambda widget: True
+halshow.bindOk = calibration.bindOk = halmeter.bindOk = status.bindOk = halscope.bindOk = classicladder.bindOk = lambda widget: None
