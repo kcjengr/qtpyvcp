@@ -482,11 +482,14 @@
          <widget class="StatusLabel" name="statuslabel_8">
           <property name="geometry">
            <rect>
-            <x>580</x>
-            <y>290</y>
+            <x>310</x>
+            <y>210</y>
             <width>161</width>
             <height>21</height>
            </rect>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
           <property name="label_type" stdset="0">
            <enum>StatusLabel::speed_override</enum>
@@ -506,6 +509,54 @@
           </property>
           <property name="actionName" stdset="0">
            <string>machine.feedhold.toggle</string>
+          </property>
+         </widget>
+         <widget class="ActionSlider" name="actionslider">
+          <property name="geometry">
+           <rect>
+            <x>240</x>
+            <y>230</y>
+            <width>271</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>spindle.override.set</string>
+          </property>
+         </widget>
+         <widget class="ActionCheckBox" name="actioncheckbox_4">
+          <property name="geometry">
+           <rect>
+            <x>540</x>
+            <y>230</y>
+            <width>181</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Spindle OR Enabled</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>spindle.override.toggle-enable</string>
+          </property>
+         </widget>
+         <widget class="ActionButtonNew" name="actionbuttonnew_31">
+          <property name="geometry">
+           <rect>
+            <x>240</x>
+            <y>190</y>
+            <width>81</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Reset</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>spindle.override.reset</string>
           </property>
          </widget>
         </widget>
@@ -2081,6 +2132,11 @@
    <class>MDIEntry</class>
    <extends>QLineEdit</extends>
    <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionSlider</class>
+   <extends>QSlider</extends>
+   <header>QtPyVCP.widgets.input_widgets.action_slider</header>
   </customwidget>
   <customwidget>
    <class>DROWidget</class>

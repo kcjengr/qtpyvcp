@@ -129,18 +129,90 @@ def getSpeed():
 
 
 class override:
+    @staticmethod
     def enable():
-        CMD.set_spindle_override(1)
+        CMD.set_spindle_override(True)
 
+    @staticmethod
     def disable():
-        CMD.set_spindle_override(0)
+        CMD.set_spindle_override(False)
 
+    @staticmethod
+    def toggle_enable():
+        if STAT.spindle_override_enabled:
+            override.disable()
+        else:
+            override.enable()
+
+    @staticmethod
     def set(value):
-        CMD.spindleoverride(value)
+        CMD.spindleoverride(float(value) / 100)
 
+    @staticmethod
     def reset():
         CMD.spindleoverride(1.0)
 
+def _enable_ok(widget=None):
+    if STAT.task_state == linuxcnc.STATE_ON:
+        ok = True
+        msg = ""
+    else:
+        ok = False
+        msg = "Machine must be ON to enable/disable spindle override"
+
+    _spindle_override_ok.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
+
+def _enable_bindOk(widget):
+    STATUS.task_state.connect(lambda: _enable_ok(widget))
+    STATUS.spindle_override_enabled.connect(widget.setChecked)
+
+def _spindle_override_ok(widget=None):
+    if STAT.task_state == linuxcnc.STATE_ON and STAT.spindle_override_enabled == 1:
+        ok = True
+        msg = ""
+    elif STAT.task_state != linuxcnc.STATE_ON:
+        ok = False
+        msg = "Machine must be ON to set spindle override"
+    elif STAT.spindle_override_enabled == 0:
+        ok = False
+        msg = "Spindle override is not enabled"
+    else:
+        ok = False
+        msg = "Spindle override can not be changed"
+
+    _spindle_override_ok.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
+
+def _spindle_override_bindOk(widget):
+
+    widget.setMinimum(INFO.minSpindleOverride() * 100)
+    widget.setMaximum(INFO.maxSpindleOverride() * 100)
+    widget.setValue(100)
+    override.set(100)
+
+    STATUS.task_state.connect(lambda: _spindle_override_ok(widget))
+    STATUS.spindle_override_enabled.connect(lambda: _spindle_override_ok(widget))
+    STATUS.spindlerate.connect(lambda v: widget.setValue(v * 100))
+
+override.set.ok = _spindle_override_ok
+override.set.bindOk = _spindle_override_bindOk
+override.reset.ok = _enable_ok
+override.reset.bindOk = _enable_bindOk
+override.enable.ok = override.disable.ok = override.toggle_enable.ok = _enable_ok
+override.enable.bindOk = override.disable.bindOk = override.toggle_enable.bindOk = _enable_bindOk
 
 class brake:
     @staticmethod
