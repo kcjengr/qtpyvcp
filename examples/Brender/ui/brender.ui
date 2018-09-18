@@ -492,38 +492,20 @@
            <enum>StatusLabel::speed_override</enum>
           </property>
          </widget>
-         <widget class="QLineEdit" name="lineEdit_5">
+         <widget class="ActionButtonNew" name="actionbuttonnew_30">
           <property name="geometry">
            <rect>
-            <x>380</x>
-            <y>140</y>
-            <width>111</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QLineEdit {
-border-color: red;
-border-style: solid;
-border-width: 1px;
-border-radius: 3px;
-}</string>
-          </property>
-          <property name="text">
-           <string>hello</string>
-          </property>
-         </widget>
-         <widget class="QLineEdit" name="lineEdit_6">
-          <property name="geometry">
-           <rect>
-            <x>380</x>
-            <y>170</y>
-            <width>113</width>
+            <x>580</x>
+            <y>330</y>
+            <width>131</width>
             <height>23</height>
            </rect>
           </property>
-          <property name="cursor">
-           <cursorShape>BlankCursor</cursorShape>
+          <property name="text">
+           <string>Feedhold</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.feedhold.toggle</string>
           </property>
          </widget>
         </widget>

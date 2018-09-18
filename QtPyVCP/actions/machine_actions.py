@@ -172,6 +172,14 @@ class feedhold:
         else:
             feedhold.on()
 
+def _feed_hold_ok(widget=None):
+    return True
+
+def _feed_hold_bindOk(widget):
+    pass
+
+feedhold.on.ok = feedhold.off.ok = feedhold.toggle.ok = _feed_hold_ok
+feedhold.on.bindOk = feedhold.off.bindOk = feedhold.toggle.bindOk = _feed_hold_bindOk
 
 # -------------------------------------------------------------------------
 # set MODE actions
