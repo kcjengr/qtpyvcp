@@ -475,9 +475,9 @@ class jog:
 
         Args:
             axis (str | int) : Either the letter or number of the axis to jog.
-            direction (str | int) : pos or +1 for positive, neg or -1 for negative.
+                direction (str | int) : pos or +1 for positive, neg or -1 for negative.
             speed (float, optional) : Desired jog vel in machine_units/s.
-            distance (float, optional) : Desired jog distance, continuous jog if 0.00.
+                distance (float, optional) : Desired jog distance, continuous jog if 0.00.
         """
 
         if isinstance(direction, str):
@@ -507,8 +507,11 @@ class jog:
                 CMD.jog(linuxcnc.JOG_INCREMENT, 0, axis, velocity, distance)
 
 
-def _jog_axis_ok(widget=None, axis=-1):
+def _jog_axis_ok(widget=None, axis=-1, direction=0):
     pass
 
-def _jog_axis_bindOk(widget, axis):
+def _jog_axis_bindOk(widget, axis, direction):
     pass
+
+jog.axis.ok = _jog_axis_ok
+jog.axis.bindOk = _jog_axis_bindOk
