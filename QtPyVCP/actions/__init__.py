@@ -29,7 +29,6 @@ def bindWidget(widget, action):
     action, sep, args = action.partition(':')
     action = action.replace('-', '_')
     method = reduce(getattr, action.split('.'), sys.modules[__name__])
-    print '\n', action, method
     if method is None:
         return
 
