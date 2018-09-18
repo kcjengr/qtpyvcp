@@ -1845,6 +1845,7 @@ border-radius: 3px;
     <addaction name="separator"/>
     <addaction name="actionRun_Program"/>
     <addaction name="menuHoming"/>
+    <addaction name="actionOverride_Limits"/>
     <addaction name="menuCooling"/>
    </widget>
    <widget class="QMenu" name="menuView">
@@ -2050,6 +2051,14 @@ border-radius: 3px;
    </property>
    <property name="actionName" stdset="0">
     <string>tool.calibration</string>
+   </property>
+  </action>
+  <action name="actionOverride_Limits">
+   <property name="text">
+    <string>Override Limits</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>machine.override-limits</string>
    </property>
   </action>
  </widget>

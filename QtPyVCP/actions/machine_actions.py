@@ -432,6 +432,38 @@ def getAxisNumber(axis):
     return axis
 
 
+# -------------------------------------------------------------------------
+# OVERRIDE LIMITS action
+# -------------------------------------------------------------------------
+def override_limits():
+    LOG.info("Setting override limits")
+    CMD.override_limits()
+
+def _override_limits_ok(widget=None):
+    ok = False
+    for anum in INFO.AXIS_NUMBER_LIST:
+        if STAT.limit[anum] != 0:
+            aletter = 'XYZABCUVW'.index(anum)
+            ok = True
+            msg = "Axis {} on limit".format(aletter)
+
+    if not ok:
+        msg = "Axis must be on limit to override"
+
+    _override_limits_ok.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
+
+def _override_limits_bindOk(widget):
+    STATUS.limit.connect(lambda: _override_limits_ok(widget))
+
+override_limits.ok = _override_limits_ok
+override_limits.bindOk = _override_limits_bindOk
 
 # -------------------------------------------------------------------------
 # JOG actions
