@@ -341,6 +341,57 @@ rapid_override.set.ok = rapid_override.reset.ok = _rapid_override_ok
 rapid_override.set.bindOk = rapid_override.reset.bindOk = _rapid_override_bindOk
 
 # -------------------------------------------------------------------------
+# MAX VEL OVERRIDE actions
+# -------------------------------------------------------------------------
+
+class max_velocity:
+    @staticmethod
+    def set(value):
+        CMD.maxvel(float(value) / 60)
+
+    @staticmethod
+    def reset():
+        CMD.maxvel(INFO.maxVelocity() / 60)
+
+def _max_velocity_ok(value=100, widget=None):
+    if STAT.task_state == linuxcnc.STATE_ON:
+        ok = True
+        msg = ""
+    else:
+        ok = False
+        msg = "Machine must be ON to set max velocity"
+
+    _max_velocity_ok.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
+
+def _max_velocity_bindOk(value=100, widget=None):
+
+    # This will work for any widget
+    STATUS.task_state.connect(lambda: _max_velocity_ok(widget=widget))
+
+    try:
+        # these will only work for QSlider or QSpinBox
+        widget.setMinimum(0)
+        widget.setMaximum(INFO.maxVelocity())
+        widget.setValue(INFO.maxVelocity())
+
+        STATUS.max_velocity.connect(lambda v: widget.setValue(v * 60))
+    except AttributeError:
+        pass
+    except:
+        LOG.exception('Error in max_velocity bindOk')
+
+max_velocity.set.ok = max_velocity.reset.ok = _max_velocity_ok
+max_velocity.set.bindOk = max_velocity.reset.bindOk = _max_velocity_bindOk
+
+
+# -------------------------------------------------------------------------
 # set MODE actions
 # -------------------------------------------------------------------------
 class mode:

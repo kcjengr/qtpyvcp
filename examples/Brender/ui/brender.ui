@@ -684,6 +684,76 @@
            <string>machine.rapid-override.reset</string>
           </property>
          </widget>
+         <widget class="StatusLabel" name="statuslabel_12">
+          <property name="geometry">
+           <rect>
+            <x>740</x>
+            <y>60</y>
+            <width>161</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::max_velocity</enum>
+          </property>
+         </widget>
+         <widget class="ActionButton" name="actionbutton_34">
+          <property name="geometry">
+           <rect>
+            <x>670</x>
+            <y>40</y>
+            <width>81</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Reset</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.max-velocity.reset</string>
+          </property>
+         </widget>
+         <widget class="ActionSlider" name="actionslider_4">
+          <property name="geometry">
+           <rect>
+            <x>670</x>
+            <y>80</y>
+            <width>271</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="maximum">
+           <number>300</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.max-velocity.set</string>
+          </property>
+         </widget>
+         <widget class="ActionSlider" name="actionslider_5">
+          <property name="geometry">
+           <rect>
+            <x>670</x>
+            <y>110</y>
+            <width>271</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="maximum">
+           <number>300</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.max-velocity.set</string>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab">
          <attribute name="title">
