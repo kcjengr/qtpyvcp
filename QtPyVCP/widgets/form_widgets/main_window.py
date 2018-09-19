@@ -46,30 +46,6 @@ from QtPyVCP import actions
 # from QtPyVCP.utilities.action import ProgramActions, Home, Flood
 from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
 
-# s = time.time()
-#
-# ACTION_METHODS = {
-#     "program": {
-#         "run": ProgramActions.runProgram,
-#         "pause": ProgramActions.pauseProgram,
-#         "resume": ProgramActions.resumeProgram,
-#         "step": ProgramActions.stepProgram,
-#     },
-#     "home": {
-#         "all": Home.homeAll,
-#         "axis": Home.homeAxis,
-#         "joint": Home.homeJoint,
-#     },
-#     "flood": {
-#         "on": Flood.ON,
-#         "off": Flood.OFF,
-#         "toggle": Flood.TOGGLE,
-#     },
-# }
-#
-# print time.time() - s
-
-# print ACTION_METHODS
 
 class VCPMainWindow(QMainWindow):
 
