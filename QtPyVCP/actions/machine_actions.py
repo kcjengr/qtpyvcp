@@ -192,6 +192,104 @@ feedhold.enable.ok = feedhold.disable.ok = feedhold.toggle_enable.ok = _feed_hol
 feedhold.enable.bindOk = feedhold.disable.bindOk = feedhold.toggle_enable.bindOk = _feed_hold_bindOk
 
 # -------------------------------------------------------------------------
+# FEED OVERRIDE actions
+# -------------------------------------------------------------------------
+
+class feed_override:
+    @staticmethod
+    def enable():
+        CMD.set_feed_override(True)
+
+    @staticmethod
+    def disable():
+        CMD.set_feed_override(False)
+
+    @staticmethod
+    def toggle_enable():
+        if STAT.feed_override_enabled:
+            feed_override.disable()
+        else:
+            feed_override.enable()
+
+    @staticmethod
+    def set(value):
+        CMD.feedrate(float(value) / 100)
+
+    @staticmethod
+    def reset():
+        CMD.feedrate(1.0)
+
+def _feed_override_enable_ok(widget=None):
+    if STAT.task_state == linuxcnc.STATE_ON \
+        and STAT.interp_state == linuxcnc.INTERP_IDLE:
+        ok = True
+        msg = ""
+    else:
+        ok = False
+        msg = "Machine must be ON and IDLE to enable/disable feed override"
+
+    _feed_override_enable_ok.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
+
+def _feed_override_enable_bindOk(widget):
+    STATUS.task_state.connect(lambda: _feed_override_enable_ok(widget))
+    STATUS.interp_state.connect(lambda: _feed_override_enable_ok(widget))
+    STATUS.feed_override_enabled.connect(widget.setChecked)
+
+def _feed_override_ok(value=100, widget=None):
+    if STAT.task_state == linuxcnc.STATE_ON and STAT.feed_override_enabled == 1:
+        ok = True
+        msg = ""
+    elif STAT.task_state != linuxcnc.STATE_ON:
+        ok = False
+        msg = "Machine must be ON to set feed override"
+    elif STAT.feed_override_enabled == 0:
+        ok = False
+        msg = "Feed override is not enabled"
+    else:
+        ok = False
+        msg = "Feed override can not be changed"
+
+    _feed_override_ok.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
+
+def _feed_override_bindOk(value=100, widget=None):
+
+    # This will work for any widget
+    STATUS.task_state.connect(lambda: _feed_override_ok(widget=widget))
+    STATUS.feed_override_enabled.connect(lambda: _feed_override_ok(widget=widget))
+
+    try:
+        # these will only work for QSlider or QSpinBox
+        widget.setMinimum(0)
+        widget.setMaximum(100)
+        widget.setValue(100)
+        feed_override.set(100)
+
+        STATUS.feedrate.connect(lambda v: widget.setValue(v * 100))
+    except AttributeError:
+        pass
+    except:
+        LOG.exception('Error in feed_override bindOk')
+
+feed_override.set.ok = feed_override.reset.ok = _feed_override_ok
+feed_override.set.bindOk = feed_override.reset.bindOk = _feed_override_bindOk
+feed_override.enable.ok = feed_override.disable.ok = feed_override.toggle_enable.ok = _feed_override_enable_ok
+feed_override.enable.bindOk = feed_override.disable.bindOk = feed_override.toggle_enable.bindOk = _feed_override_enable_bindOk
+
+# -------------------------------------------------------------------------
 # set MODE actions
 # -------------------------------------------------------------------------
 class mode:
