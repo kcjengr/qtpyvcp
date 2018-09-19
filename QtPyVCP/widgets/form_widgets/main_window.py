@@ -43,7 +43,7 @@ INFO = Info()
 
 from QtPyVCP.utilities import action
 from QtPyVCP import actions
-# from QtPyVCP.utilities.action import ProgramActions, Home, Flood
+
 from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
 
 
@@ -73,7 +73,6 @@ class VCPMainWindow(QMainWindow):
         qApp.focusChanged.connect(self.focusChangedEvent)
 
     def initUi(self):
-        print "initiating"
         self.loadSplashGcode()
         self.initRecentFileMenu()
         self.initHomingMenu()
@@ -91,10 +90,6 @@ class VCPMainWindow(QMainWindow):
                     actions.bindWidget(menu_action, action_name)
 
         print "action time ", time.time() - s
-
-    @pyqtSlot()
-    def on_power_clicked(self):
-        action.Home.unhomeAxis('x')
 
     def closeEvent(self, event):
         """Catch close event and show confirmation dialog if set to"""
@@ -148,7 +143,6 @@ class VCPMainWindow(QMainWindow):
         else:
             print 'Unhandled key release event'
 
-
     def mousePressEvent(self, event):
         print 'Button press'
         focused_widget = self.focusWidget()
@@ -164,7 +158,6 @@ class VCPMainWindow(QMainWindow):
 #==============================================================================
 
     # File menu
-
     @pyqtSlot()
     def on_actionOpen_triggered(self):
         self.open_file_dialog.show()
@@ -172,35 +165,6 @@ class VCPMainWindow(QMainWindow):
     @pyqtSlot()
     def on_actionExit_triggered(self):
         self.close()
-
-    #==========================================================================
-    # Machine menu
-    #==========================================================================
-
-    @pyqtSlot()
-    def on_actionToggle_E_stop_triggered(self):
-        ACTION.toggleEmergencyStop()
-
-    @pyqtSlot()
-    def on_actionToggle_Power_triggered(self):
-        ACTION.toggleMachinePower()
-
-    @pyqtSlot()
-    def on_actionRun_Program_triggered(self):
-        action.program.run()
-
-    @pyqtSlot()
-    def on_actionHome_All_triggered(self):
-        ACTION.homeJoint(-1)
-
-    @pyqtSlot()
-    def on_actionHome_X_triggered(self):
-        ACTION.homeJoint(1)
-
-    @pyqtSlot(bool)
-    def on_actionReport_Actual_Position_toggled(self, report_actual):
-        STATUS.setReportActualPosition(report_actual)
-
 
 #==============================================================================
 # menu functions
@@ -231,7 +195,6 @@ class VCPMainWindow(QMainWindow):
             action.setText(text)
             action.setData(fname)
             action.setVisible(True)
-
 
     def initHomingMenu(self):
         if hasattr(self, 'menuHoming'):
