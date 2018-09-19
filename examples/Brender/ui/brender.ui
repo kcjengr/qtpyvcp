@@ -508,7 +508,7 @@
            <string>Feedhold</string>
           </property>
           <property name="actionName" stdset="0">
-           <string>machine.feedhold.toggle</string>
+           <string>machine.feedhold.toggle-enable</string>
           </property>
          </widget>
          <widget class="ActionSlider" name="actionslider">
@@ -1923,6 +1923,9 @@
    <property name="shortcut">
     <string>O</string>
    </property>
+   <property name="actionName" stdset="0">
+    <string>program.open</string>
+   </property>
   </action>
   <action name="actionClose">
    <property name="text">
@@ -2097,9 +2100,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ActionButton</class>
-   <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_button</header>
+   <class>ActionCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>QtPyVCP.widgets.button_widgets.action_checkbox</header>
   </customwidget>
   <customwidget>
    <class>GcodeBackplot</class>
@@ -2124,11 +2127,6 @@
    <header>QtPyVCP.widgets.input_widgets.recent_file_combobox</header>
   </customwidget>
   <customwidget>
-   <class>ActionCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_checkbox</header>
-  </customwidget>
-  <customwidget>
    <class>MDIEntry</class>
    <extends>QLineEdit</extends>
    <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
@@ -2137,6 +2135,11 @@
    <class>ActionSlider</class>
    <extends>QSlider</extends>
    <header>QtPyVCP.widgets.input_widgets.action_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.action_button</header>
   </customwidget>
   <customwidget>
    <class>DROWidget</class>
