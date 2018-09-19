@@ -148,7 +148,7 @@ class _Info(object):
         else:
             return False
 
-    def getNoForceHoming(self):
+    def noForceHoming(self):
         temp = self.ini.find('TRAJ', 'NO_FORCE_HOMING')
         if temp and temp == '1':
             return True
@@ -192,7 +192,7 @@ class _Info(object):
         return float(temp) * 60
 
     # ToDo : This may not be needed, as it could be recieved from linuxcnc.stat
-    def getMaxVelocity(self):
+    def maxVelocity(self):
         # max velocity settings: more then one place to check
         # This is the maximum velocity of the machine
         temp = self.ini.find('TRAJ', 'MAX_VELOCITY')
@@ -201,34 +201,34 @@ class _Info(object):
             temp = 15.0
         return float(temp) * 60
 
-    def getDefaultSpindleSpeed(self):
+    def defaultSpindleSpeed(self):
         # check for default spindle speed settings
         temp = self.ini.find('DISPLAY', 'DEFAULT_SPINDLE_SPEED')
         if not temp:
             temp = 300
-            log.warning("No DEFAULT_SPINDLE_SPEED entry found in [DISPLAY] of self.ini file. Using 300rpm")
+            log.warning("No [DISPLAY] DEFAULT_SPINDLE_SPEED entry found in INI, using 300rpm")
         return float(temp)
 
-    def getMaxSpindleOverride(self):
+    def maxSpindleOverride(self):
         # check for override settings
         temp = self.ini.find('DISPLAY', 'MAX_SPINDLE_OVERRIDE')
         if not temp:
             temp = 1.0
-            log.warning("No MAX_SPINDLE_OVERRIDE entry found in [DISPLAY] of self.ini file. Using 1.0")
+            log.warning("No [DISPLAY] MAX_SPINDLE_OVERRIDE found in INI, using 1.0")
         return float(temp)
 
-    def getMinSpindleOverride(self):
+    def minSpindleOverride(self):
         temp = self.ini.find('DISPLAY', 'MIN_SPINDLE_OVERRIDE')
         if not temp:
             temp = 0.1
-            log.warning("No MIN_SPINDLE_OVERRIDE entry found in [DISPLAY] of self.ini file. Using 0.1")
+            log.warning("No [DISPLAY] MIN_SPINDLE_OVERRIDE entry found INI, using 0.1")
         return float(temp)
 
-    def getMaxFeedOverride(self):
+    def maxFeedOverride(self):
         temp = self.ini.find('DISPLAY', 'MAX_FEED_OVERRIDE')
         if not temp:
             temp = 1.0
-            log.warning("No MAX_FEED_OVERRIDE entry found in [DISPLAY] of self.ini file. Using 1.0")
+            log.warning("No [DISPLAY] MAX_FEED_OVERRIDE entry found in INI, using 1.0")
         return float(temp)
 
     def getParameterFile(self):
