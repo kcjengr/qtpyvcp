@@ -458,10 +458,33 @@ class jog:
 
 
 def _jog_axis_ok(axis, direction=0, widget=None):
-    pass
+    axisnum = 'xyzabcuvw'.index(axis)
+    if STAT.task_state == linuxcnc.STATE_ON \
+        and STAT.interp_state == linuxcnc.INTERP_IDLE \
+        and STAT.homed[axisnum] == 1 \
+        and STAT.limit[axisnum] == 0 \
+        and axisnum in INFO.AXIS_NUMBER_LIST:
+        ok = True
+        msg = ""
+    else:
+        ok = False
+        msg = "Machine must be ON and in IDLE to jog"
+
+    _jog_axis_ok.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
+
 
 def _jog_axis_bindOk(axis, direction, widget):
-    pass
+    STATUS.limit.connect(lambda: _jog_axis_ok(axis, direction, widget))
+    STATUS.homed.connect(lambda: _jog_axis_ok(axis, direction, widget))
+    STATUS.task_state.connect(lambda: _jog_axis_ok(axis, direction, widget))
+    STATUS.interp_state.connect(lambda: _jog_axis_ok(axis, direction, widget))
 
 jog.axis.ok = _jog_axis_ok
 jog.axis.bindOk = _jog_axis_bindOk
