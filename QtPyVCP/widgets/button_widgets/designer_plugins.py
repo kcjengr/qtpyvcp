@@ -7,6 +7,11 @@ class ActionButtonPlugin(_DesignerPlugin):
     def pluginClass(self):
         return ActionButton
 
+from action_checkbox import ActionCheckBox
+class ActionCheckBoxPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return ActionCheckBox
+
 from subcall_button import SubCallButton
 class MacroButtonPlugin(_DesignerPlugin):
     def pluginClass(self):
@@ -14,21 +19,9 @@ class MacroButtonPlugin(_DesignerPlugin):
     def toolTip(self):
         return "Execute a macro"
 
-from jog_button import JogButton
-class JogButtonPlugin(_DesignerPlugin):
-    def pluginClass(self):
-        return JogButton
-    def toolTip(self):
-        return "Axis/Joint jog button"
-
 from led_button import LEDButton
 class LedButtonPlugin(_DesignerPlugin):
     def pluginClass(self):
         return LEDButton
     def toolTip(self):
         return "LED button"
-
-from action_checkbox import ActionCheckBox
-class ActionCheckBoxPlugin(_DesignerPlugin):
-    def pluginClass(self):
-        return ActionCheckBox
