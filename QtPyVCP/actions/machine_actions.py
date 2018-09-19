@@ -147,6 +147,44 @@ power.on.ok = power.off.ok = power.toggle.ok = _power_ok
 power.on.bindOk = power.off.bindOk = power.toggle.bindOk = _power_bindOk
 
 # -------------------------------------------------------------------------
+# MDI action
+# -------------------------------------------------------------------------
+def issue_mdi(mdi_command):
+    LOG.info("Issuind MDI command: {}".format(mdi_command))
+    prev_mode = STAT.task_mode
+    mode.mdi()
+    CMD.mdi(mdi_command)
+    CMD.wait_complete()
+    setTaskMode(prev_mode)
+
+def _mdi_ok(mdi_cmd='', widget=None):
+    return True
+
+def _mdi_bindOk(mdi_cmd='', widget=None):
+    return True
+
+issue_mdi.ok = _mdi_ok
+issue_mdi.bindOk = _mdi_bindOk
+
+# -------------------------------------------------------------------------
+# WORK COORDINATES action
+# -------------------------------------------------------------------------
+
+def set_work_coord(coord):
+    issue_mdi(coord)
+
+def _set_work_coord_ok(coord='', widget=None):
+    return _mdi_ok(widget)
+
+def _set_work_coord_bindOk(coord='', widget=None):
+    widget.setCheckable(True)
+    index = ["G53", "G54", "G55", "G56", "G57", "G58", "G59", "G59.1", "G59.2", "G59.3"].index(coord.upper())
+    STATUS.g5x_index.connect(lambda i: widget.setChecked(i == index))
+
+set_work_coord.ok = _set_work_coord_ok
+set_work_coord.bindOk = _set_work_coord_bindOk
+
+# -------------------------------------------------------------------------
 # FEED HOLD action
 # -------------------------------------------------------------------------
 class feedhold:
