@@ -58,6 +58,7 @@
     <file>images/usb_icon.png</file>
     <file>images/tall_left_arrow.png</file>
     <file>images/tall_right_arrow.png</file>
+    <file>images/new_file.png</file>
 
         
 </qresource>

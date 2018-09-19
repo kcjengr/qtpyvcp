@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>3</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -271,13 +271,13 @@ background-color: transparent;
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="file_tab">
+          <widget class="QWidget" name="tab_15">
            <attribute name="title">
             <string>          FILE          </string>
            </attribute>
-           <layout class="QHBoxLayout" name="horizontalLayout_51">
+           <layout class="QVBoxLayout" name="verticalLayout_5">
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_35">
+             <layout class="QHBoxLayout" name="horizontalLayout_120">
               <property name="spacing">
                <number>15</number>
               </property>
@@ -297,7 +297,7 @@ background-color: transparent;
                <number>20</number>
               </property>
               <item>
-               <widget class="QFrame" name="frame_8">
+               <widget class="QFrame" name="frame_34">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -331,9 +331,9 @@ border-radius: 6px;
                 <property name="frameShadow">
                  <enum>QFrame::Raised</enum>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_12">
+                <layout class="QVBoxLayout" name="verticalLayout_35">
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_28">
+                  <layout class="QHBoxLayout" name="horizontalLayout_121">
                    <property name="leftMargin">
                     <number>5</number>
                    </property>
@@ -341,7 +341,7 @@ border-radius: 6px;
                     <number>5</number>
                    </property>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_14">
+                    <widget class="QPushButton" name="x_axis_button_23">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -350,13 +350,13 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>125</width>
+                       <width>110</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>125</width>
+                       <width>110</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -384,53 +384,29 @@ border-radius: 6px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_16">
+                    <widget class="RecentFileComboBox" name="recentfilecombobox_2">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                       <horstretch>1</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>80</width>
+                       <width>0</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>80</width>
+                       <width>16777215</width>
                        <height>30</height>
                       </size>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>HOME</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <spacer name="horizontalSpacer">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>102</width>
-                       <height>27</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="x_axis_button_15">
+                    <widget class="QPushButton" name="x_axis_button_26">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -439,13 +415,13 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>140</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>140</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -465,313 +441,36 @@ border-radius: 6px;
                   </layout>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_27">
+                  <layout class="QHBoxLayout" name="horizontalLayout_122">
                    <item>
-                    <widget class="QTableWidget" name="tableWidget_3">
-                     <property name="palette">
-                      <palette>
-                       <active>
-                        <colorrole role="WindowText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Button">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Text">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="ButtonText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Base">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Window">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="AlternateBase">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>90</red>
-                           <green>90</green>
-                           <blue>90</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                       </active>
-                       <inactive>
-                        <colorrole role="WindowText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Button">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Text">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="ButtonText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Base">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Window">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="AlternateBase">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>90</red>
-                           <green>90</green>
-                           <blue>90</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                       </inactive>
-                       <disabled>
-                        <colorrole role="WindowText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Button">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Text">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="ButtonText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Base">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Window">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="AlternateBase">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>90</red>
-                           <green>90</green>
-                           <blue>90</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                       </disabled>
-                      </palette>
-                     </property>
+                    <widget class="FileSystemTable" name="filesystemtable">
                      <property name="styleSheet">
-                      <string notr="true">QHeaderView {
+                      <string notr="true">FileSystemTable {
+	color: black;
+   	border: 4px;
+	border-color: rgb(120, 120, 120);
+	border-style: solid;
+	background-color: rgb(238, 238, 236);
+    font: 12pt &quot;Bebas Kai&quot;;
+}
+
+QHeaderView {
     background-color: rgb(220, 220, 220);
 	color: black;
     border: none;
 	border-radius:none;
 	border-style: none;
 	font: 13pt &quot;Bebas Kai&quot;;
-}
-
-QTableView {
-	color: rgb(235, 235, 237);
-   	border: 4px;
-	border-color: rgb(120, 120, 120);
-	border-style: solid;
-	background-color: rgb(238, 238, 236);
-    font: 13pt &quot;Bebas Kai&quot;;
-}
-</string>
+}</string>
                      </property>
-                     <property name="frameShape">
-                      <enum>QFrame::StyledPanel</enum>
-                     </property>
-                     <property name="frameShadow">
-                      <enum>QFrame::Sunken</enum>
-                     </property>
-                     <property name="lineWidth">
-                      <number>6</number>
-                     </property>
-                     <property name="midLineWidth">
-                      <number>4</number>
-                     </property>
-                     <property name="alternatingRowColors">
-                      <bool>true</bool>
-                     </property>
-                     <property name="sortingEnabled">
-                      <bool>false</bool>
-                     </property>
-                     <attribute name="horizontalHeaderCascadingSectionResizes">
-                      <bool>false</bool>
-                     </attribute>
-                     <attribute name="horizontalHeaderDefaultSectionSize">
-                      <number>155</number>
-                     </attribute>
-                     <attribute name="horizontalHeaderHighlightSections">
-                      <bool>false</bool>
-                     </attribute>
-                     <attribute name="horizontalHeaderMinimumSectionSize">
-                      <number>95</number>
-                     </attribute>
-                     <attribute name="horizontalHeaderStretchLastSection">
-                      <bool>true</bool>
-                     </attribute>
-                     <attribute name="verticalHeaderVisible">
-                      <bool>false</bool>
-                     </attribute>
-                     <attribute name="verticalHeaderDefaultSectionSize">
-                      <number>41</number>
-                     </attribute>
-                     <attribute name="verticalHeaderHighlightSections">
-                      <bool>false</bool>
-                     </attribute>
-                     <attribute name="verticalHeaderMinimumSectionSize">
-                      <number>41</number>
-                     </attribute>
-                     <attribute name="verticalHeaderStretchLastSection">
-                      <bool>false</bool>
-                     </attribute>
-                     <column>
-                      <property name="text">
-                       <string>NAME</string>
-                      </property>
-                      <property name="font">
-                       <font>
-                        <family>Bebas Kai</family>
-                       </font>
-                      </property>
-                      <property name="textAlignment">
-                       <set>AlignCenter</set>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>SIZE</string>
-                      </property>
-                      <property name="textAlignment">
-                       <set>AlignCenter</set>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>MODIFIED</string>
-                      </property>
-                      <property name="textAlignment">
-                       <set>AlignCenter</set>
-                      </property>
-                     </column>
                     </widget>
                    </item>
                   </layout>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_22">
+                  <layout class="QHBoxLayout" name="horizontalLayout_123">
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_13">
+                    <widget class="QPushButton" name="x_axis_button_27">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -814,7 +513,7 @@ QTableView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_10">
+                    <widget class="QPushButton" name="x_axis_button_31">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -823,13 +522,13 @@ QTableView {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>120</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>120</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -842,12 +541,22 @@ QTableView {
 }</string>
                      </property>
                      <property name="text">
-                      <string>RENAME</string>
+                      <string> NEW FILE</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/new_file.png</normaloff>:/images/new_file.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>12</width>
+                       <height>16</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_12">
+                    <widget class="QPushButton" name="x_axis_button_29">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -856,13 +565,13 @@ QTableView {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>130</width>
+                       <width>125</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>130</width>
+                       <width>125</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -889,13 +598,46 @@ QTableView {
                      </property>
                     </widget>
                    </item>
+                   <item>
+                    <widget class="QPushButton" name="x_axis_button_28">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>90</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>90</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>RENAME</string>
+                     </property>
+                    </widget>
+                   </item>
                   </layout>
                  </item>
                 </layout>
                </widget>
               </item>
               <item>
-               <layout class="QVBoxLayout" name="verticalLayout_15">
+               <layout class="QVBoxLayout" name="verticalLayout_36">
                 <property name="spacing">
                  <number>15</number>
                 </property>
@@ -915,7 +657,7 @@ QTableView {
                  <number>100</number>
                 </property>
                 <item>
-                 <widget class="QPushButton" name="copy_from_usb">
+                 <widget class="QPushButton" name="copy_from_usb_2">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -961,7 +703,7 @@ USB</string>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="copy_to_usb">
+                 <widget class="QPushButton" name="copy_to_usb_2">
                   <property name="sizePolicy">
                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                     <horstretch>0</horstretch>
@@ -1012,7 +754,7 @@ USB</string>
                </layout>
               </item>
               <item>
-               <widget class="QFrame" name="frame_10">
+               <widget class="QFrame" name="frame_35">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -1046,9 +788,9 @@ border-radius: 6px;
                 <property name="frameShadow">
                  <enum>QFrame::Raised</enum>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_13">
+                <layout class="QVBoxLayout" name="verticalLayout_37">
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_29">
+                  <layout class="QHBoxLayout" name="horizontalLayout_124">
                    <property name="leftMargin">
                     <number>5</number>
                    </property>
@@ -1056,7 +798,7 @@ border-radius: 6px;
                     <number>5</number>
                    </property>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_17">
+                    <widget class="QPushButton" name="x_axis_button_30">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -1065,13 +807,13 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>125</width>
+                       <width>110</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>125</width>
+                       <width>110</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1099,63 +841,29 @@ border-radius: 6px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_18">
+                    <widget class="RemovableDeviceComboBox" name="removabledevicecombobox">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                       <horstretch>1</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>100</width>
+                       <width>0</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>100</width>
+                       <width>16777215</width>
                        <height>30</height>
-                      </size>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string> USB</string>
-                     </property>
-                     <property name="icon">
-                      <iconset resource="xyz.qrc">
-                       <normaloff>:/images/usb_icon.png</normaloff>:/images/usb_icon.png</iconset>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>32</width>
-                       <height>16</height>
                       </size>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <spacer name="horizontalSpacer_2">
-                     <property name="orientation">
-                      <enum>Qt::Horizontal</enum>
-                     </property>
-                     <property name="sizeHint" stdset="0">
-                      <size>
-                       <width>112</width>
-                       <height>27</height>
-                      </size>
-                     </property>
-                    </spacer>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="x_axis_button_19">
+                    <widget class="QPushButton" name="x_axis_button_32">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -1164,13 +872,13 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>110</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>110</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1190,319 +898,36 @@ border-radius: 6px;
                   </layout>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_30">
+                  <layout class="QHBoxLayout" name="horizontalLayout_125">
                    <item>
-                    <widget class="QTableWidget" name="tableWidget_4">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="palette">
-                      <palette>
-                       <active>
-                        <colorrole role="WindowText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Button">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Text">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="ButtonText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Base">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Window">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="AlternateBase">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>90</red>
-                           <green>90</green>
-                           <blue>90</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                       </active>
-                       <inactive>
-                        <colorrole role="WindowText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Button">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Text">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="ButtonText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Base">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Window">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="AlternateBase">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>90</red>
-                           <green>90</green>
-                           <blue>90</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                       </inactive>
-                       <disabled>
-                        <colorrole role="WindowText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Button">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Text">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="ButtonText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>237</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Base">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Window">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>238</red>
-                           <green>238</green>
-                           <blue>236</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="AlternateBase">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>90</red>
-                           <green>90</green>
-                           <blue>90</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                       </disabled>
-                      </palette>
-                     </property>
+                    <widget class="FileSystemTable" name="filesystemtable_2">
                      <property name="styleSheet">
-                      <string notr="true">QHeaderView {
+                      <string notr="true">FileSystemTable {
+	color: black;
+   	border: 4px;
+	border-color: rgb(120, 120, 120);
+	border-style: solid;
+	background-color: rgb(238, 238, 236);
+    font: 12pt &quot;Bebas Kai&quot;;
+}
+
+QHeaderView {
     background-color: rgb(220, 220, 220);
 	color: black;
     border: none;
 	border-radius:none;
 	border-style: none;
 	font: 13pt &quot;Bebas Kai&quot;;
-}
-
-QTableView {
-	color: rgb(235, 235, 237);
-   	border: 4px;
-	border-color: rgb(120, 120, 120);
-	border-style: solid;
-	background-color: rgb(238, 238, 236);
-    font: 13pt &quot;Bebas Kai&quot;;
-}
-</string>
+}</string>
                      </property>
-                     <property name="frameShape">
-                      <enum>QFrame::StyledPanel</enum>
-                     </property>
-                     <property name="frameShadow">
-                      <enum>QFrame::Sunken</enum>
-                     </property>
-                     <property name="lineWidth">
-                      <number>6</number>
-                     </property>
-                     <property name="midLineWidth">
-                      <number>4</number>
-                     </property>
-                     <property name="alternatingRowColors">
-                      <bool>true</bool>
-                     </property>
-                     <property name="sortingEnabled">
-                      <bool>false</bool>
-                     </property>
-                     <attribute name="horizontalHeaderCascadingSectionResizes">
-                      <bool>false</bool>
-                     </attribute>
-                     <attribute name="horizontalHeaderDefaultSectionSize">
-                      <number>155</number>
-                     </attribute>
-                     <attribute name="horizontalHeaderHighlightSections">
-                      <bool>false</bool>
-                     </attribute>
-                     <attribute name="horizontalHeaderMinimumSectionSize">
-                      <number>95</number>
-                     </attribute>
-                     <attribute name="horizontalHeaderStretchLastSection">
-                      <bool>true</bool>
-                     </attribute>
-                     <attribute name="verticalHeaderVisible">
-                      <bool>false</bool>
-                     </attribute>
-                     <attribute name="verticalHeaderDefaultSectionSize">
-                      <number>41</number>
-                     </attribute>
-                     <attribute name="verticalHeaderHighlightSections">
-                      <bool>false</bool>
-                     </attribute>
-                     <attribute name="verticalHeaderMinimumSectionSize">
-                      <number>41</number>
-                     </attribute>
-                     <attribute name="verticalHeaderStretchLastSection">
-                      <bool>false</bool>
-                     </attribute>
-                     <column>
-                      <property name="text">
-                       <string>NAME</string>
-                      </property>
-                      <property name="font">
-                       <font>
-                        <family>Bebas Kai</family>
-                       </font>
-                      </property>
-                      <property name="textAlignment">
-                       <set>AlignCenter</set>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>SIZE</string>
-                      </property>
-                      <property name="textAlignment">
-                       <set>AlignCenter</set>
-                      </property>
-                     </column>
-                     <column>
-                      <property name="text">
-                       <string>MODIFIED</string>
-                      </property>
-                      <property name="textAlignment">
-                       <set>AlignCenter</set>
-                      </property>
-                     </column>
                     </widget>
                    </item>
                   </layout>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_31">
+                  <layout class="QHBoxLayout" name="horizontalLayout_126">
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_20">
+                    <widget class="QPushButton" name="x_axis_button_33">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -1545,7 +970,7 @@ QTableView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_21">
+                    <widget class="QPushButton" name="x_axis_button_37">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -1554,13 +979,13 @@ QTableView {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>120</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>120</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1573,12 +998,22 @@ QTableView {
 }</string>
                      </property>
                      <property name="text">
-                      <string>RENAME</string>
+                      <string> NEW FILE</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="xyz.qrc">
+                       <normaloff>:/images/new_file.png</normaloff>:/images/new_file.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>12</width>
+                       <height>16</height>
+                      </size>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_22">
+                    <widget class="QPushButton" name="x_axis_button_35">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -1587,13 +1022,13 @@ QTableView {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>130</width>
+                       <width>125</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>130</width>
+                       <width>125</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1620,13 +1055,46 @@ QTableView {
                      </property>
                     </widget>
                    </item>
+                   <item>
+                    <widget class="QPushButton" name="x_axis_button_34">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>90</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>90</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>RENAME</string>
+                     </property>
+                    </widget>
+                   </item>
                   </layout>
                  </item>
                 </layout>
                </widget>
               </item>
               <item>
-               <widget class="QFrame" name="frame_15">
+               <widget class="QFrame" name="frame_36">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                   <horstretch>0</horstretch>
@@ -1648,11 +1116,11 @@ border-radius: 6px;
                 <property name="frameShadow">
                  <enum>QFrame::Raised</enum>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_14">
+                <layout class="QVBoxLayout" name="verticalLayout_38">
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_34">
+                  <layout class="QHBoxLayout" name="horizontalLayout_127">
                    <item>
-                    <widget class="QLabel" name="work_column_header_6">
+                    <widget class="QLabel" name="work_column_header_8">
                      <property name="enabled">
                       <bool>true</bool>
                      </property>
@@ -1696,9 +1164,9 @@ border-radius: 6px;
                   </layout>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_33">
+                  <layout class="QHBoxLayout" name="horizontalLayout_128">
                    <item>
-                    <widget class="QTableWidget" name="tableWidget_5">
+                    <widget class="QTableWidget" name="tableWidget_8">
                      <property name="palette">
                       <palette>
                        <active>
@@ -1971,9 +1439,9 @@ QTableView {
                   </layout>
                  </item>
                  <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_32">
+                  <layout class="QHBoxLayout" name="horizontalLayout_129">
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_24">
+                    <widget class="QPushButton" name="x_axis_button_36">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -2179,7 +1647,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_4">
+                    <widget class="ActionButton" name="m01_break_button_4">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -2234,7 +1702,7 @@ padding-right: 10px;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_8">
+                    <widget class="ActionButton" name="m01_break_button_8">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -2267,7 +1735,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_9">
+                    <widget class="ActionButton" name="m01_break_button_9">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -2619,7 +2087,7 @@ padding-right: 10px;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_10">
+                    <widget class="ActionButton" name="m01_break_button_10">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -2652,7 +2120,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_27">
+                    <widget class="ActionButton" name="m01_break_button_27">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -2737,7 +2205,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_14">
+                    <widget class="ActionButton" name="m01_break_button_14">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -2770,7 +2238,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_15">
+                    <widget class="ActionButton" name="m01_break_button_15">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -4333,7 +3801,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_5">
+                    <widget class="ActionButton" name="m01_break_button_5">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>200</horstretch>
@@ -4427,7 +3895,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_3">
+                    <widget class="ActionButton" name="m01_break_button_3">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>200</horstretch>
@@ -4479,7 +3947,7 @@ padding-right: 10px;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_16">
+                    <widget class="ActionButton" name="m01_break_button_16">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>0</horstretch>
@@ -4528,7 +3996,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="atc_fwd">
+                    <widget class="ActionButton" name="atc_fwd">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>0</horstretch>
@@ -4554,7 +4022,7 @@ padding-right: 10px;
                       <enum>Qt::RightToLeft</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">AxisActionButton {
+                      <string notr="true">ActionButton {
     text-align: right;
     padding-right: 30px;
     font: 16pt &quot;Bebas Kai&quot;;
@@ -4595,7 +4063,7 @@ padding-right: 10px;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_21">
+                    <widget class="ActionButton" name="m01_break_button_21">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>0</horstretch>
@@ -4741,7 +4209,7 @@ padding-right: 10px;
                     <number>0</number>
                    </property>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_24">
+                    <widget class="ActionButton" name="m01_break_button_24">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>30</horstretch>
@@ -4793,7 +4261,7 @@ padding-right: 10px;
                     <number>5</number>
                    </property>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_25">
+                    <widget class="ActionButton" name="m01_break_button_25">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>30</horstretch>
@@ -5846,7 +5314,7 @@ border-style: none;
                </font>
               </property>
               <property name="currentIndex">
-               <number>1</number>
+               <number>0</number>
               </property>
               <widget class="QWidget" name="tab_13">
                <attribute name="title">
@@ -7229,9 +6697,6 @@ border-radius: 6px;
                          <property name="checkable">
                           <bool>true</bool>
                          </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
-                         </property>
                          <property name="customText" stdset="0">
                           <string>G54</string>
                          </property>
@@ -7264,9 +6729,6 @@ border-radius: 6px;
                          </property>
                          <property name="checkable">
                           <bool>true</bool>
-                         </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
                          </property>
                          <property name="customText" stdset="0">
                           <string>G55</string>
@@ -7301,9 +6763,6 @@ border-radius: 6px;
                          <property name="checkable">
                           <bool>true</bool>
                          </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
-                         </property>
                          <property name="customText" stdset="0">
                           <string>G56</string>
                          </property>
@@ -7336,9 +6795,6 @@ border-radius: 6px;
                          </property>
                          <property name="checkable">
                           <bool>true</bool>
-                         </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
                          </property>
                          <property name="customText" stdset="0">
                           <string>​G57</string>
@@ -7373,9 +6829,6 @@ border-radius: 6px;
                          <property name="checkable">
                           <bool>true</bool>
                          </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
-                         </property>
                          <property name="customText" stdset="0">
                           <string>G58</string>
                          </property>
@@ -7408,9 +6861,6 @@ border-radius: 6px;
                          </property>
                          <property name="checkable">
                           <bool>true</bool>
-                         </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
                          </property>
                          <property name="customText" stdset="0">
                           <string>G59</string>
@@ -7445,9 +6895,6 @@ border-radius: 6px;
                          <property name="checkable">
                           <bool>true</bool>
                          </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
-                         </property>
                          <property name="customText" stdset="0">
                           <string>G59.1</string>
                          </property>
@@ -7481,9 +6928,6 @@ border-radius: 6px;
                          <property name="checkable">
                           <bool>true</bool>
                          </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
-                         </property>
                          <property name="customText" stdset="0">
                           <string>G59.2</string>
                          </property>
@@ -7516,9 +6960,6 @@ border-radius: 6px;
                          </property>
                          <property name="checkable">
                           <bool>true</bool>
-                         </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
                          </property>
                          <property name="customText" stdset="0">
                           <string>G59.3</string>
@@ -7912,7 +7353,7 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="AxisActionButton" name="m01_break_button_38">
+                          <widget class="ActionButton" name="m01_break_button_38">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
@@ -8934,7 +8375,7 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="AxisActionButton" name="m01_break_button_37">
+                          <widget class="ActionButton" name="m01_break_button_37">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
@@ -8975,9 +8416,6 @@ padding: -5px;
                            </property>
                            <property name="checkable">
                             <bool>true</bool>
-                           </property>
-                           <property name="axis">
-                            <enum>AxisActionButton::Y</enum>
                            </property>
                           </widget>
                          </item>
@@ -9793,7 +9231,7 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="AxisActionButton" name="m01_break_button_34">
+                          <widget class="ActionButton" name="m01_break_button_34">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
@@ -9834,9 +9272,6 @@ padding: -5px;
                            </property>
                            <property name="checkable">
                             <bool>true</bool>
-                           </property>
-                           <property name="axis">
-                            <enum>AxisActionButton::Z</enum>
                            </property>
                           </widget>
                          </item>
@@ -11011,7 +10446,7 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="AxisActionButton" name="m01_break_button_36">
+                          <widget class="ActionButton" name="m01_break_button_36">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
@@ -11052,9 +10487,6 @@ padding: -5px;
                            </property>
                            <property name="checkable">
                             <bool>true</bool>
-                           </property>
-                           <property name="axis">
-                            <enum>AxisActionButton::A</enum>
                            </property>
                           </widget>
                          </item>
@@ -12051,7 +11483,7 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="AxisActionButton" name="m01_break_button_35">
+                          <widget class="ActionButton" name="m01_break_button_35">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
@@ -13048,7 +12480,7 @@ border-radius: 6px;
                           <number>2</number>
                          </property>
                          <item>
-                          <widget class="AxisActionButton" name="m01_break_button_28">
+                          <widget class="ActionButton" name="m01_break_button_28">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                              <horstretch>0</horstretch>
@@ -13466,9 +12898,6 @@ padding-left: 5px;
                    <property name="checkable">
                     <bool>true</bool>
                    </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
-                   </property>
                    <property name="customText" stdset="0">
                     <string>G54</string>
                    </property>
@@ -13501,9 +12930,6 @@ padding-left: 5px;
                    </property>
                    <property name="checkable">
                     <bool>true</bool>
-                   </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
                    </property>
                    <property name="customText" stdset="0">
                     <string>G55</string>
@@ -13538,9 +12964,6 @@ padding-left: 5px;
                    <property name="checkable">
                     <bool>true</bool>
                    </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
-                   </property>
                    <property name="customText" stdset="0">
                     <string>G56</string>
                    </property>
@@ -13573,9 +12996,6 @@ padding-left: 5px;
                    </property>
                    <property name="checkable">
                     <bool>true</bool>
-                   </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
                    </property>
                    <property name="customText" stdset="0">
                     <string>G59</string>
@@ -13610,9 +13030,6 @@ padding-left: 5px;
                    <property name="checkable">
                     <bool>true</bool>
                    </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
-                   </property>
                    <property name="customText" stdset="0">
                     <string>G59.3</string>
                    </property>
@@ -13645,9 +13062,6 @@ padding-left: 5px;
                    </property>
                    <property name="checkable">
                     <bool>true</bool>
-                   </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
                    </property>
                    <property name="customText" stdset="0">
                     <string>G58</string>
@@ -13682,9 +13096,6 @@ padding-left: 5px;
                    <property name="checkable">
                     <bool>true</bool>
                    </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
-                   </property>
                    <property name="customText" stdset="0">
                     <string>G59.2</string>
                    </property>
@@ -13718,9 +13129,6 @@ padding-left: 5px;
                    <property name="checkable">
                     <bool>true</bool>
                    </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
-                   </property>
                    <property name="customText" stdset="0">
                     <string>​G57</string>
                    </property>
@@ -13753,9 +13161,6 @@ padding-left: 5px;
                    </property>
                    <property name="checkable">
                     <bool>true</bool>
-                   </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
                    </property>
                    <property name="customText" stdset="0">
                     <string>G59.1</string>
@@ -17874,6 +17279,35 @@ Background:transparent;
            <attribute name="title">
             <string>          CONVERSATIONAL          </string>
            </attribute>
+           <widget class="FileSystemTable" name="filesystemtable_3">
+            <property name="geometry">
+             <rect>
+              <x>310</x>
+              <y>30</y>
+              <width>476</width>
+              <height>465</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">FileSystemTable {
+	color: rgb(235, 235, 237);
+   	border: 4px;
+	border-color: rgb(120, 120, 120);
+	border-style: solid;
+	background-color: rgb(238, 238, 236);
+    font: 13pt &quot;Bebas Kai&quot;;
+}
+
+QHeaderView {
+    background-color: rgb(220, 220, 220);
+	color: black;
+    border: none;
+	border-radius:none;
+	border-style: none;
+	font: 13pt &quot;Bebas Kai&quot;;
+}</string>
+            </property>
+           </widget>
           </widget>
           <widget class="QWidget" name="tab_10">
            <attribute name="title">
@@ -17983,7 +17417,7 @@ border-radius: 6px;
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_106">
                <item>
-                <widget class="JogButton" name="z_plus_jogbutton">
+                <widget class="ActionButton" name="z_plus_jogbutton">
                  <property name="minimumSize">
                   <size>
                    <width>56</width>
@@ -18009,8 +17443,8 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="axis">
-                  <enum>JogButton::Z</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:z,pos</string>
                  </property>
                 </widget>
                </item>
@@ -18019,7 +17453,7 @@ border-radius: 6px;
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_107">
                <item>
-                <widget class="JogButton" name="z_minus_jogbutton">
+                <widget class="ActionButton" name="z_minus_jogbutton">
                  <property name="minimumSize">
                   <size>
                    <width>56</width>
@@ -18045,11 +17479,8 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="direction">
-                  <enum>JogButton::Negative</enum>
-                 </property>
-                 <property name="axis">
-                  <enum>JogButton::Z</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:z,neg</string>
                  </property>
                 </widget>
                </item>
@@ -18061,7 +17492,7 @@ border-radius: 6px;
                 <number>2</number>
                </property>
                <item row="1" column="2">
-                <widget class="JogButton" name="x_plus_jogbutton">
+                <widget class="ActionButton" name="x_plus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -18093,10 +17524,13 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:x,pos</string>
+                 </property>
                 </widget>
                </item>
                <item row="1" column="0">
-                <widget class="JogButton" name="x_minus_jogbutton">
+                <widget class="ActionButton" name="x_minus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -18128,13 +17562,13 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="direction">
-                  <enum>JogButton::Negative</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:x,neg</string>
                  </property>
                 </widget>
                </item>
                <item row="2" column="1">
-                <widget class="JogButton" name="y_minus_jogbutton">
+                <widget class="ActionButton" name="y_minus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -18166,16 +17600,13 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="direction">
-                  <enum>JogButton::Negative</enum>
-                 </property>
-                 <property name="axis">
-                  <enum>JogButton::Y</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:y,neg</string>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="JogButton" name="y_plus_jogbutton">
+                <widget class="ActionButton" name="y_plus_jogbutton">
                  <property name="minimumSize">
                   <size>
                    <width>56</width>
@@ -18201,8 +17632,8 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="axis">
-                  <enum>JogButton::Y</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:y,pos</string>
                  </property>
                 </widget>
                </item>
@@ -18211,7 +17642,7 @@ border-radius: 6px;
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_112">
                <item>
-                <widget class="JogButton" name="a_minus_jogbutton">
+                <widget class="ActionButton" name="a_minus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -18243,16 +17674,13 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="direction">
-                  <enum>JogButton::Negative</enum>
-                 </property>
-                 <property name="axis">
-                  <enum>JogButton::A</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:a,neg</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="JogButton" name="a_plus_jogbutton">
+                <widget class="ActionButton" name="a_plus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -18284,8 +17712,8 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="axis">
-                  <enum>JogButton::B</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:a,pos</string>
                  </property>
                 </widget>
                </item>
@@ -18294,7 +17722,7 @@ border-radius: 6px;
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_111">
                <item>
-                <widget class="JogButton" name="b_minus_jogbutton">
+                <widget class="ActionButton" name="b_minus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -18326,16 +17754,13 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="direction">
-                  <enum>JogButton::Negative</enum>
-                 </property>
-                 <property name="axis">
-                  <enum>JogButton::B</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:b,neg</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="JogButton" name="b_plus_jogbutton">
+                <widget class="ActionButton" name="b_plus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -18367,8 +17792,8 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="axis">
-                  <enum>JogButton::B</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:b,pos</string>
                  </property>
                 </widget>
                </item>
@@ -18788,14 +18213,8 @@ border-radius: 6px;
              <property name="text">
               <string>CYCLE START</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>CYCLE START</string>
+             <property name="actionName" stdset="0">
+              <string>program.run</string>
              </property>
             </widget>
            </item>
@@ -18831,14 +18250,8 @@ border-radius: 6px;
              <property name="text">
               <string>SINGLE BLOCK</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>SINGLE BLOCK</string>
+             <property name="actionName" stdset="0">
+              <string>program.step</string>
              </property>
             </widget>
            </item>
@@ -18894,14 +18307,8 @@ border-radius: 6px;
              <property name="text">
               <string>M01 BREAK</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::OptionalStop</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>M01 BREAK</string>
+             <property name="actionName" stdset="0">
+              <string>program.optional-stop.toggle</string>
              </property>
             </widget>
            </item>
@@ -18937,14 +18344,8 @@ border-radius: 6px;
              <property name="text">
               <string>FEED HOLD</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::FeedHold</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>FEED HOLD</string>
+             <property name="actionName" stdset="0">
+              <string>program.pause</string>
              </property>
             </widget>
            </item>
@@ -19000,14 +18401,8 @@ border-radius: 6px;
              <property name="text">
               <string>RUN FM HERE</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>RUN FM HERE</string>
+             <property name="actionName" stdset="0">
+              <string>program.run-from-line</string>
              </property>
             </widget>
            </item>
@@ -19043,11 +18438,8 @@ border-radius: 6px;
              <property name="text">
               <string>Flood</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Flood</enum>
+             <property name="actionName" stdset="0">
+              <string>coolant.flood.toggle</string>
              </property>
             </widget>
            </item>
@@ -19103,14 +18495,8 @@ border-radius: 6px;
              <property name="text">
               <string>RESET</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>RESET</string>
+             <property name="actionName" stdset="0">
+              <string>program.rewind</string>
              </property>
             </widget>
            </item>
@@ -19149,11 +18535,8 @@ border-radius: 6px;
              <property name="text">
               <string>Mist</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
+             <property name="actionName" stdset="0">
+              <string>coolant.mist.toggle</string>
              </property>
             </widget>
            </item>
@@ -19209,14 +18592,8 @@ border-radius: 6px;
              <property name="text">
               <string>STOP</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>STOP</string>
+             <property name="actionName" stdset="0">
+              <string>program.abort</string>
              </property>
             </widget>
            </item>
@@ -19284,11 +18661,8 @@ border-radius: 1px;
              <property name="text">
               <string>POWER</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="customText" stdset="0">
-              <string>POWER</string>
+             <property name="actionName" stdset="0">
+              <string>machine.power.toggle</string>
              </property>
             </widget>
            </item>
@@ -19441,14 +18815,8 @@ border-radius: 1px;
              <property name="text">
               <string>E-STOP</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::EmergencyStop</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>E-STOP</string>
+             <property name="actionName" stdset="0">
+              <string>machine.estop.toggle</string>
              </property>
             </widget>
            </item>
@@ -19877,9 +19245,6 @@ padding: -5px;
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
              <property name="customText" stdset="0">
               <string>M6 G43</string>
              </property>
@@ -19925,9 +19290,6 @@ padding: -5px;
              </property>
              <property name="checkable">
               <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
              </property>
              <property name="customText" stdset="0">
               <string>GO TO G30</string>
@@ -20267,9 +19629,6 @@ border-radius: 1px;
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
              <property name="customText" stdset="0">
               <string>GO TO ZERO</string>
              </property>
@@ -20286,7 +19645,7 @@ border-radius: 1px;
             <number>1</number>
            </property>
            <item>
-            <widget class="AxisActionButton" name="axisactionbutton_5">
+            <widget class="ActionButton" name="axisactionbutton_5">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -20313,11 +19672,8 @@ border-radius: 1px;
              <property name="text">
               <string>Home All</string>
              </property>
-             <property name="action_id" stdset="0">
-              <enum>AxisActionButton::Home</enum>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::ALL</enum>
+             <property name="actionName" stdset="0">
+              <string>machine.home.all</string>
              </property>
             </widget>
            </item>
@@ -20614,7 +19970,7 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="AxisActionButton" name="m01_break_button_30">
+            <widget class="ActionButton" name="m01_break_button_30">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -21337,7 +20693,7 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="AxisActionButton" name="axisactionbutton_6">
+            <widget class="ActionButton" name="axisactionbutton_6">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -21364,8 +20720,8 @@ padding: -5px;
              <property name="text">
               <string>Home X</string>
              </property>
-             <property name="action_id" stdset="0">
-              <enum>AxisActionButton::Home</enum>
+             <property name="actionName" stdset="0">
+              <string>machine.home.axis:x</string>
              </property>
             </widget>
            </item>
@@ -21377,7 +20733,7 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="AxisActionButton" name="m01_break_button_33">
+            <widget class="ActionButton" name="m01_break_button_33">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -21414,16 +20770,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>NoAction Y</string>
+              <string>Y</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
-             </property>
-             <property name="action_id" stdset="0">
-              <enum>AxisActionButton::NoAction</enum>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::Y</enum>
              </property>
             </widget>
            </item>
@@ -21943,7 +21293,7 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="AxisActionButton" name="axisactionbutton_3">
+            <widget class="ActionButton" name="axisactionbutton_3">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -21970,11 +21320,8 @@ padding: -5px;
              <property name="text">
               <string>Home Y</string>
              </property>
-             <property name="action_id" stdset="0">
-              <enum>AxisActionButton::Home</enum>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::Y</enum>
+             <property name="actionName" stdset="0">
+              <string>machine.home.axis:y</string>
              </property>
             </widget>
            </item>
@@ -21986,7 +21333,7 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="AxisActionButton" name="m01_break_button_29">
+            <widget class="ActionButton" name="m01_break_button_29">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -22023,13 +21370,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>NoAction Z</string>
+              <string>Z</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::Z</enum>
              </property>
             </widget>
            </item>
@@ -22721,7 +22065,7 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="AxisActionButton" name="axisactionbutton">
+            <widget class="ActionButton" name="axisactionbutton">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -22748,11 +22092,8 @@ padding: -5px;
              <property name="text">
               <string>Home Z</string>
              </property>
-             <property name="action_id" stdset="0">
-              <enum>AxisActionButton::Home</enum>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::Z</enum>
+             <property name="actionName" stdset="0">
+              <string>machine.home.axis:z</string>
              </property>
             </widget>
            </item>
@@ -22764,7 +22105,7 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="AxisActionButton" name="m01_break_button_32">
+            <widget class="ActionButton" name="m01_break_button_32">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -22801,13 +22142,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>NoAction A</string>
+              <string>A</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::A</enum>
              </property>
             </widget>
            </item>
@@ -23508,7 +22846,7 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="AxisActionButton" name="axisactionbutton_2">
+            <widget class="ActionButton" name="axisactionbutton_2">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -23535,11 +22873,8 @@ padding: -5px;
              <property name="text">
               <string>Home A</string>
              </property>
-             <property name="action_id" stdset="0">
-              <enum>AxisActionButton::Home</enum>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::A</enum>
+             <property name="actionName" stdset="0">
+              <string>machine.home.axis:a</string>
              </property>
             </widget>
            </item>
@@ -23551,7 +22886,7 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="AxisActionButton" name="m01_break_button_31">
+            <widget class="ActionButton" name="m01_break_button_31">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -23588,13 +22923,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>NoAction B</string>
+              <string>B</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::B</enum>
              </property>
             </widget>
            </item>
@@ -24123,7 +23455,7 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="AxisActionButton" name="axisactionbutton_4">
+            <widget class="ActionButton" name="axisactionbutton_4">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -24150,11 +23482,8 @@ padding: -5px;
              <property name="text">
               <string>Home B</string>
              </property>
-             <property name="action_id" stdset="0">
-              <enum>AxisActionButton::Home</enum>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::B</enum>
+             <property name="actionName" stdset="0">
+              <string>machine.home.axis:b</string>
              </property>
             </widget>
            </item>
@@ -24205,7 +23534,40 @@ padding-right: 7px;
          <property name="verticalSpacing">
           <number>12</number>
          </property>
-         <item row="4" column="0">
+         <item row="5" column="2">
+          <widget class="QPushButton" name="pushButton_49">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+           </property>
+           <property name="text">
+            <string>R 100%</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
           <widget class="OverrideSlider" name="feedrate_override_slider_5">
            <property name="minimumSize">
             <size>
@@ -24395,7 +23757,7 @@ border-radius: 4px;
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
+         <item row="4" column="1">
           <widget class="StatusLabel" name="statuslabel_2">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -24442,7 +23804,7 @@ border-radius: 4px;
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
+         <item row="5" column="1">
           <widget class="StatusLabel" name="statuslabel_3">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -24486,72 +23848,6 @@ border-radius: 4px;
            </property>
            <property name="label_type" stdset="0">
             <enum>StatusLabel::rapid_override</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2">
-          <widget class="QPushButton" name="pushButton_48">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>65</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>65</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-           </property>
-           <property name="text">
-            <string>S 100%</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="2">
-          <widget class="QPushButton" name="pushButton_49">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>65</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>65</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-           </property>
-           <property name="text">
-            <string>R 100%</string>
            </property>
           </widget>
          </item>
@@ -24722,14 +24018,8 @@ LOAD</string>
            <property name="text">
             <string>MV 100%</string>
            </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="actionID" stdset="0">
-            <enum>ActionButton::Mist</enum>
-           </property>
-           <property name="customText" stdset="0">
-            <string>MV 100%</string>
+           <property name="actionName" stdset="0">
+            <string>machine.maxvel.reset</string>
            </property>
            <property name="option" stdset="0">
             <bool>true</bool>
@@ -24872,16 +24162,13 @@ border-radius: 4px;
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="OverrideSlider" name="feedrate_override_slider_4">
+         <item row="4" column="0">
+          <widget class="ActionSlider" name="actionslider">
            <property name="minimumSize">
             <size>
              <width>0</width>
              <height>50</height>
             </size>
-           </property>
-           <property name="cursor">
-            <cursorShape>OpenHandCursor</cursorShape>
            </property>
            <property name="styleSheet">
             <string notr="true">QSlider::groove:horizontal {
@@ -24941,14 +24228,38 @@ border: 1px solid #aaa;
 border-radius: 4px;
 }</string>
            </property>
-           <property name="maximum">
-            <number>199</number>
-           </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="override_type" stdset="0">
-            <enum>OverrideSlider::speed_override</enum>
+           <property name="actionName" stdset="0">
+            <string>spindle.override.set</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="ActionButton" name="actionbutton_28">
+           <property name="minimumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+           </property>
+           <property name="text">
+            <string>S 100%</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.override.reset</string>
            </property>
           </widget>
          </item>
@@ -25037,9 +24348,6 @@ border-radius: 6px;
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::StepMode</enum>
-             </property>
             </widget>
            </item>
            <item>
@@ -25065,7 +24373,7 @@ border-radius: 6px;
              <property name="styleSheet">
               <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
-	
+
 }
 
 </string>
@@ -25118,9 +24426,6 @@ border-radius: 6px;
              </property>
              <property name="checked">
               <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::JogMode</enum>
              </property>
             </widget>
            </item>
@@ -26183,11 +25488,8 @@ border-radius: 1px;
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>REV</string>
+             <property name="actionName" stdset="0">
+              <string>spindle.reverse</string>
              </property>
              <property name="option" stdset="0">
               <bool>true</bool>
@@ -26228,11 +25530,8 @@ border-radius: 1px;
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>STOP</string>
+             <property name="actionName" stdset="0">
+              <string>spindle.off</string>
              </property>
              <property name="option" stdset="0">
               <bool>true</bool>
@@ -26288,11 +25587,8 @@ border-radius: 1px;
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>FWD</string>
+             <property name="actionName" stdset="0">
+              <string>spindle.forward</string>
              </property>
              <property name="option" stdset="0">
               <bool>true</bool>
@@ -26507,6 +25803,11 @@ font: 11pt bebas kai;
    <header>QtPyVCP.widgets.input_widgets.jog_increment</header>
   </customwidget>
   <customwidget>
+   <class>RemovableDeviceComboBox</class>
+   <extends>QComboBox</extends>
+   <header>QtPyVCP.widgets.input_widgets.file_system</header>
+  </customwidget>
+  <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
    <header>QtPyVCP.widgets.display_widgets.gcode_backplot</header>
@@ -26535,9 +25836,9 @@ font: 11pt bebas kai;
    <header>QtPyVCP.widgets.button_widgets.subcall_button</header>
   </customwidget>
   <customwidget>
-   <class>JogButton</class>
-   <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.jog_button</header>
+   <class>FileSystemTable</class>
+   <extends>QTableView</extends>
+   <header>QtPyVCP.widgets.input_widgets.file_system</header>
   </customwidget>
   <customwidget>
    <class>ToolTable</class>
@@ -26555,6 +25856,11 @@ font: 11pt bebas kai;
    <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
   <customwidget>
+   <class>ActionSlider</class>
+   <extends>QSlider</extends>
+   <header>QtPyVCP.widgets.input_widgets.action_slider</header>
+  </customwidget>
+  <customwidget>
    <class>ActionButton</class>
    <extends>QPushButton</extends>
    <header>QtPyVCP.widgets.button_widgets.action_button</header>
@@ -26563,11 +25869,6 @@ font: 11pt bebas kai;
    <class>DROWidget</class>
    <extends>QLabel</extends>
    <header>QtPyVCP.widgets.display_widgets.dro_widget</header>
-  </customwidget>
-  <customwidget>
-   <class>AxisActionButton</class>
-   <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.axis_button</header>
   </customwidget>
   <customwidget>
    <class>StatusLabel</class>
@@ -26597,11 +25898,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>1826</x>
-     <y>834</y>
+     <y>833</y>
     </hint>
     <hint type="destinationlabel">
      <x>1883</x>
-     <y>825</y>
+     <y>824</y>
     </hint>
    </hints>
   </connection>
@@ -26613,11 +25914,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>1883</x>
-     <y>825</y>
+     <y>824</y>
     </hint>
     <hint type="destinationlabel">
      <x>1826</x>
-     <y>834</y>
+     <y>833</y>
     </hint>
    </hints>
   </connection>
@@ -26629,27 +25930,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>1491</x>
-     <y>894</y>
+     <y>893</y>
     </hint>
     <hint type="destinationlabel">
      <x>1356</x>
-     <y>899</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_48</sender>
-   <signal>pressed()</signal>
-   <receiver>feedrate_override_slider_4</receiver>
-   <slot>reset()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1491</x>
-     <y>962</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1356</x>
-     <y>967</y>
+     <y>898</y>
     </hint>
    </hints>
   </connection>
@@ -26661,11 +25946,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>1491</x>
-     <y>1030</y>
+     <y>1029</y>
     </hint>
     <hint type="destinationlabel">
      <x>1356</x>
-     <y>1035</y>
+     <y>1034</y>
     </hint>
    </hints>
   </connection>
@@ -26708,28 +25993,12 @@ font: 11pt bebas kai;
    <slot>deleteSelectedTool()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>175</x>
-     <y>596</y>
+     <x>223</x>
+     <y>613</y>
     </hint>
     <hint type="destinationlabel">
-     <x>179</x>
-     <y>564</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tool_table_save_button</sender>
-   <signal>clicked()</signal>
-   <receiver>tableWidget_2</receiver>
-   <slot>saveToolTable()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>708</x>
-     <y>598</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>708</x>
-     <y>566</y>
+     <x>152</x>
+     <y>116</y>
     </hint>
    </hints>
   </connection>
@@ -26740,12 +26009,28 @@ font: 11pt bebas kai;
    <slot>loadToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>896</x>
-     <y>591</y>
+     <x>967</x>
+     <y>613</y>
     </hint>
     <hint type="destinationlabel">
-     <x>896</x>
-     <y>559</y>
+     <x>152</x>
+     <y>116</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_save_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>saveToolTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>766</x>
+     <y>613</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>152</x>
+     <y>116</y>
     </hint>
    </hints>
   </connection>
@@ -26756,12 +26041,12 @@ font: 11pt bebas kai;
    <slot>loadToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>523</x>
-     <y>599</y>
+     <x>585</x>
+     <y>613</y>
     </hint>
     <hint type="destinationlabel">
-     <x>531</x>
-     <y>555</y>
+     <x>152</x>
+     <y>116</y>
     </hint>
    </hints>
   </connection>
@@ -26772,12 +26057,220 @@ font: 11pt bebas kai;
    <slot>insertToolBelow()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>353</x>
-     <y>591</y>
+     <x>404</x>
+     <y>613</y>
     </hint>
     <hint type="destinationlabel">
-     <x>351</x>
-     <y>567</y>
+     <x>152</x>
+     <y>116</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_axis_button_27</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable</receiver>
+   <slot>deleteFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>138</x>
+     <y>607</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>142</x>
+     <y>554</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_axis_button_23</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable</receiver>
+   <slot>goUP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>155</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>153</x>
+     <y>122</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_axis_button_29</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable</receiver>
+   <slot>createDirectory()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>352</x>
+     <y>598</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>429</x>
+     <y>560</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_axis_button_33</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable_2</receiver>
+   <slot>deleteFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>732</x>
+     <y>597</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>734</x>
+     <y>576</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_axis_button_35</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable_2</receiver>
+   <slot>createDirectory()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>927</x>
+     <y>598</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1009</x>
+     <y>571</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_axis_button_30</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable_2</receiver>
+   <slot>goUP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>736</x>
+     <y>98</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>736</x>
+     <y>122</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>copy_from_usb_2</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable_2</receiver>
+   <slot>doFileTransfer()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>601</x>
+     <y>284</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>642</x>
+     <y>289</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>copy_to_usb_2</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable</receiver>
+   <slot>doFileTransfer()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>559</x>
+     <y>433</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>515</x>
+     <y>430</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filesystemtable_2</sender>
+   <signal>transferFileRequest(QString)</signal>
+   <receiver>filesystemtable</receiver>
+   <slot>transferFile(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>664</x>
+     <y>347</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>500</x>
+     <y>356</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filesystemtable</sender>
+   <signal>transferFileRequest(QString)</signal>
+   <receiver>filesystemtable_2</receiver>
+   <slot>transferFile(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>495</x>
+     <y>378</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>694</x>
+     <y>379</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>removabledevicecombobox</sender>
+   <signal>activated(QString)</signal>
+   <receiver>filesystemtable_2</receiver>
+   <slot>setRootPath(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>884</x>
+     <y>98</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>884</x>
+     <y>127</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_axis_button_31</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable</receiver>
+   <slot>newFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>231</x>
+     <y>598</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>236</x>
+     <y>570</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_axis_button_37</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable_2</receiver>
+   <slot>newFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>807</x>
+     <y>593</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>809</x>
+     <y>561</y>
     </hint>
    </hints>
   </connection>

@@ -107,13 +107,13 @@ class FileSystemTable(QTableView, TableType):
         if path:
             fileInfo = QFileInfo(path)
             if fileInfo.isFile():
-                if not self.ask_dialog("Do yo wan't to delete the selected file?"):
+                if not self.ask_dialog("Do you wan't to delete the selected file?"):
                     return
                 file = QFile(path)
                 file.remove()
 
             elif fileInfo.isDir():
-                if not self.ask_dialog("Do yo wan't to delete the selected directory?"):
+                if not self.ask_dialog("Do you wan't to delete the selected directory?"):
                     return
                 directory = QDir(path)
                 directory.removeRecursively()
