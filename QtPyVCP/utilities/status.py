@@ -73,6 +73,12 @@ class _Status(QObject):
             linuxcnc.STATE_ON: "On",
             linuxcnc.STATE_OFF: "Off",
         },
+        "task_mode": {
+            0: "Unknown",
+            linuxcnc.MODE_MANUAL: "Manual",
+            linuxcnc.MODE_AUTO: "Auto",
+            linuxcnc.MODE_MDI: "MDI",
+        },
         "interp_state": {
             0: "Unknown",
             linuxcnc.INTERP_IDLE: "Idle",
@@ -219,6 +225,8 @@ class _Status(QObject):
     motion_type = pyqtSignal([int], [str])  # type of the currently executing motion
     interp_state = pyqtSignal([int], [str]) # current state of RS274NGC interpreter
     interpreter_errcode = pyqtSignal([int], [str]) # current RS274NGC interpreter return code
+    settings = pyqtSignal(tuple)            # interpreter settings. (sequence_number, feed_rate, speed)
+
     jog_mode_signal = pyqtSignal(bool)             # jog mode = true
     linear_units = pyqtSignal([float], [str])
     angular_units = pyqtSignal([float], [str])
@@ -233,8 +241,12 @@ class _Status(QObject):
     joint_positions = pyqtSignal(tuple)     # joint pos respecting INI settings
     file_loaded = pyqtSignal(str)           # file loaded
 
+    # interpreter settings
+    feed = pyqtSignal(float)                # Current requested feed
+    speed = pyqtSignal(float)               # Current requested speed
+
     on = pyqtSignal(bool)
-    executing = pyqtSignal(bool)
+    moving = pyqtSignal(bool)
     all_homed = pyqtSignal(bool)
 
     # Gcode Backplot
@@ -256,6 +268,7 @@ class _Status(QObject):
     def __init__(self):
         super(_Status, self).__init__()
 
+        self.no_force_homing = INFO.noForceHoming()
         self._report_actual_position = False
 
         self.max_recent_files = PREFS.getPref("STATUS", "MAX_RECENT_FILES", 10, int)
@@ -276,7 +289,7 @@ class _Status(QObject):
 
         excluded_items = ['axes', 'axis', 'joint', 'cycle_time',
             'acceleration', 'kinematics_type',
-            'joints', 'settings', 'axis_mask', 'max_acceleration', 'echo_serial_number',
+            'joints', 'axis_mask', 'max_acceleration', 'echo_serial_number',
             'id', 'poll', 'command', 'debug']
 
         self.old = {}
@@ -293,16 +306,16 @@ class _Status(QObject):
         self.tool_offset.connect(self.updateAxisPositions)
         self.joint_position.connect(self.updateJointPositions)
 
-        self.homed.connect(self.isAllHomed)
+        self.homed.connect(self._allHomed)
 
         self.task_state.connect(lambda v: self.on.emit(v == linuxcnc.STATE_ON))
 
-        # self.state.connect(lambda v: self.executing.emit(v == linuxcnc.RCS_EXEC))
-        # self.interp_state.connect(lambda v:
-        #     self.executing.emit(v != linuxcnc.INTERP_IDLE
-        #         and self.stat.task_mode == linuxcnc.MODE_AUTO))
         # File
         self.file.connect(self.updateFileLoaded)
+
+        # feed and speed signals
+        self.settings.connect(lambda s: self.feed.emit(s[1]))
+        self.settings.connect(lambda s: self.feed.emit(s[2]))
 
         # Initialize Joint status class
         self.joint = _Joint(self.stat)
@@ -332,7 +345,6 @@ class _Status(QObject):
         for key, old_value in self.old.iteritems():
             new_value = getattr(self.stat, key)
             if old_value != new_value:
-                self.old[key] = new_value
                 getattr(self, key).emit(new_value)
 
                 str_dict = self.STATE_STRING_LOOKUP.get(key)
@@ -340,6 +352,9 @@ class _Status(QObject):
                     str_val = str_dict[new_value]
                     getattr(self, key)[str].emit(str_val)
                     log.debug("{}: {}".format(key, str_val))
+
+                # update old values dict
+                self.old[key] = new_value
 
         self.joint._periodic()
         self.error._periodic()
@@ -459,14 +474,17 @@ class _Status(QObject):
                 and self.stat.call_level == 0:
             self.file_loaded.emit(file)
 
-    def isAllHomed(self, homed_tuple):
+    def _allHomed(self):
+        self.all_homed.emit(self.allHomed())
+
+    def allHomed(self):
         '''Returns TRUE if all joints are homed.'''
+        if self.no_force_homing:
+            return True
         for jnum in range(self.stat.joints):
             if not self.stat.joint[jnum]['homed']:
-                self.all_homed.emit(False)
-                return
-        self.all_homed.emit(True)
-
+                return False
+        return True
 
     def onShutdown(self):
         self.on_shutown.emit()

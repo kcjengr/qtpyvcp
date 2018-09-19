@@ -12,11 +12,10 @@ from PyQt5.QtWidgets import QMessageBox, QFileDialog
 from QtPyVCP.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from QtPyVCP.core import Status, Action, Prefs, Info
-STATUS = Status()
-ACTION = Action()
-PREFS = Prefs()
+from QtPyVCP.core import Info
 INFO = Info()
+
+from QtPyVCP.actions.program_actions import load as loadProgram
 
 class _OpenFileDialog(QFileDialog):
     """docstring for OpenFileDialog"""
@@ -43,7 +42,7 @@ class _OpenFileDialog(QFileDialog):
             return
         if not stats.exists():
             return
-        ACTION.loadProgram(path)
+        loadProgram(path)
         self.hide()
 
 class OpenFileDialog(_OpenFileDialog):
