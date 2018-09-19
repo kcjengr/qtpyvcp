@@ -23534,8 +23534,8 @@ padding-right: 7px;
          <property name="verticalSpacing">
           <number>12</number>
          </property>
-         <item row="5" column="2">
-          <widget class="QPushButton" name="pushButton_49">
+         <item row="2" column="1">
+          <widget class="StatusLabel" name="statuslabel">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -23544,39 +23544,53 @@ padding-right: 7px;
            </property>
            <property name="minimumSize">
             <size>
-             <width>65</width>
-             <height>40</height>
+             <width>50</width>
+             <height>33</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
-             <width>65</width>
-             <height>40</height>
+             <width>50</width>
+             <height>33</height>
             </size>
            </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
+           <property name="toolTipDuration">
+            <number>-3</number>
            </property>
            <property name="styleSheet">
-            <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
+            <string notr="true">QLabel {
+    border-style: transparent;
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 75 14pt &quot;Bebas Kai&quot;;
 }</string>
            </property>
-           <property name="text">
-            <string>R 100%</string>
+           <property name="lineWidth">
+            <number>0</number>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="margin">
+            <number>-6</number>
+           </property>
+           <property name="indent">
+            <number>0</number>
+           </property>
+           <property name="label_type" stdset="0">
+            <enum>StatusLabel::feed_override</enum>
            </property>
           </widget>
          </item>
          <item row="5" column="0">
-          <widget class="OverrideSlider" name="feedrate_override_slider_5">
+          <widget class="ActionSlider" name="actionslider_4">
            <property name="minimumSize">
             <size>
              <width>0</width>
              <height>50</height>
             </size>
-           </property>
-           <property name="cursor">
-            <cursorShape>OpenHandCursor</cursorShape>
            </property>
            <property name="styleSheet">
             <string notr="true">QSlider::groove:horizontal {
@@ -23636,124 +23650,11 @@ border: 1px solid #aaa;
 border-radius: 4px;
 }</string>
            </property>
-           <property name="maximum">
-            <number>99</number>
-           </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="override_type" stdset="0">
-            <enum>OverrideSlider::rapid_override</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="OverrideSlider" name="feedrate_override_slider_3">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>50</height>
-            </size>
-           </property>
-           <property name="cursor">
-            <cursorShape>OpenHandCursor</cursorShape>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QSlider::groove:horizontal {
-border: 1px solid #bbb;
-background: white;
-height: 20px;
-border-radius: 3px;
-}
-
-QSlider::sub-page:horizontal {
-background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
-    stop: 0 #66e, stop: 1 #bbf);
-background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
-    stop: 0 #bbf, stop: 1 #55f);
-border: 1px solid #777;
-height: 20px;
-border-radius: 3px;
-}
-
-QSlider::add-page:horizontal {
-background: rgb(235, 235, 235);
-border: 1px solid #777;
-height: 20px;
-border-radius: 3px;
-}
-
-QSlider::handle:horizontal {
-background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.1 rgba(60, 60, 60, 255), stop:0.21 rgba(60, 60, 60, 255), stop:0.25 rgba(255, 255, 255, 255), stop:0.29 rgba(60, 60, 60, 255), stop:0.46 rgba(60, 60, 60, 255), stop:0.5 rgba(255, 255, 255, 255), stop:0.54 rgba(60, 60, 60, 255), stop:0.71 rgba(60, 60, 60, 255), stop:0.75 rgba(255, 255, 255, 255), stop:0.79 rgba(60, 60, 60, 255), stop:0.9 rgba(60, 60, 60, 255), stop:1 rgba(255, 255, 255, 255));
-border: 1px solid #777;
-border-color: rgba(40, 40, 40, 255);
-width: 40px;
-margin-top: -13px;
-margin-bottom: -13px;
-border-radius: 4px;
-}
-
-QSlider::handle:horizontal:hover {
-background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.1 rgba(60, 60, 60, 255), stop:0.21 rgba(60, 60, 60, 255), stop:0.25 rgba(255, 255, 255, 255), stop:0.29 rgba(60, 60, 60, 255), stop:0.46 rgba(60, 60, 60, 255), stop:0.5 rgba(255, 255, 255, 255), stop:0.54 rgba(60, 60, 60, 255), stop:0.71 rgba(60, 60, 60, 255), stop:0.75 rgba(255, 255, 255, 255), stop:0.79 rgba(60, 60, 60, 255), stop:0.9 rgba(60, 60, 60, 255), stop:1 rgba(255, 255, 255, 255));
-border: 1px solid #444;
-border-color: rgb(241, 239, 237);
-border-radius: 4px;
-}
-
-QSlider::sub-page:horizontal:disabled {
-background: #bbb;
-border-color: #999;
-}
-
-QSlider::add-page:horizontal:disabled {
-background: #eee;
-border-color: #999;
-}
-
-QSlider::handle:horizontal:disabled {
-background: #eee;
-border: 1px solid #aaa;
-border-radius: 4px;
-}</string>
-           </property>
-           <property name="maximum">
-            <number>199</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QPushButton" name="pushButton">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>65</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>65</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-           </property>
-           <property name="text">
-            <string>F 100%</string>
+           <property name="actionName" stdset="0">
+            <string>machine.rapid-override.set</string>
            </property>
           </widget>
          </item>
@@ -23851,56 +23752,6 @@ border-radius: 4px;
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
-          <widget class="StatusLabel" name="statuslabel">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>50</width>
-             <height>33</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>50</width>
-             <height>33</height>
-            </size>
-           </property>
-           <property name="toolTipDuration">
-            <number>-3</number>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QLabel {
-    border-style: transparent;
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 14pt &quot;Bebas Kai&quot;;
-}</string>
-           </property>
-           <property name="lineWidth">
-            <number>0</number>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignCenter</set>
-           </property>
-           <property name="margin">
-            <number>-6</number>
-           </property>
-           <property name="indent">
-            <number>0</number>
-           </property>
-           <property name="label_type" stdset="0">
-            <enum>StatusLabel::feed_override</enum>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="2">
           <widget class="QLabel" name="work_column_header_3">
            <property name="enabled">
@@ -23987,131 +23838,6 @@ LOAD</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="2">
-          <widget class="ActionButton" name="max_velocity_100_button">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>65</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>65</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-           </property>
-           <property name="text">
-            <string>MV 100%</string>
-           </property>
-           <property name="actionName" stdset="0">
-            <string>machine.maxvel.reset</string>
-           </property>
-           <property name="option" stdset="0">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0">
-          <widget class="QSlider" name="max_velocity_override_slider">
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>50</height>
-            </size>
-           </property>
-           <property name="cursor">
-            <cursorShape>OpenHandCursor</cursorShape>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QSlider::groove:horizontal {
-border: 1px solid #bbb;
-background: white;
-height: 20px;
-border-radius: 3px;
-}
-
-QSlider::sub-page:horizontal {
-background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
-    stop: 0 #66e, stop: 1 #bbf);
-background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
-    stop: 0 #bbf, stop: 1 #55f);
-border: 1px solid #777;
-height: 20px;
-border-radius: 3px;
-}
-
-QSlider::add-page:horizontal {
-background: rgb(235, 235, 235);
-border: 1px solid #777;
-height: 20px;
-border-radius: 3px;
-}
-
-QSlider::handle:horizontal {
-background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.1 rgba(60, 60, 60, 255), stop:0.21 rgba(60, 60, 60, 255), stop:0.25 rgba(255, 255, 255, 255), stop:0.29 rgba(60, 60, 60, 255), stop:0.46 rgba(60, 60, 60, 255), stop:0.5 rgba(255, 255, 255, 255), stop:0.54 rgba(60, 60, 60, 255), stop:0.71 rgba(60, 60, 60, 255), stop:0.75 rgba(255, 255, 255, 255), stop:0.79 rgba(60, 60, 60, 255), stop:0.9 rgba(60, 60, 60, 255), stop:1 rgba(255, 255, 255, 255));
-border: 1px solid #777;
-border-color: rgba(40, 40, 40, 255);
-width: 40px;
-margin-top: -13px;
-margin-bottom: -13px;
-border-radius: 4px;
-}
-
-QSlider::handle:horizontal:hover {
-background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.1 rgba(60, 60, 60, 255), stop:0.21 rgba(60, 60, 60, 255), stop:0.25 rgba(255, 255, 255, 255), stop:0.29 rgba(60, 60, 60, 255), stop:0.46 rgba(60, 60, 60, 255), stop:0.5 rgba(255, 255, 255, 255), stop:0.54 rgba(60, 60, 60, 255), stop:0.71 rgba(60, 60, 60, 255), stop:0.75 rgba(255, 255, 255, 255), stop:0.79 rgba(60, 60, 60, 255), stop:0.9 rgba(60, 60, 60, 255), stop:1 rgba(255, 255, 255, 255));
-border: 1px solid #444;
-border-color: rgb(241, 239, 237);
-border-radius: 4px;
-}
-
-QSlider::sub-page:horizontal:disabled {
-background: #bbb;
-border-color: #999;
-}
-
-QSlider::add-page:horizontal:disabled {
-background: #eee;
-border-color: #999;
-}
-
-QSlider::handle:horizontal:disabled {
-background: #eee;
-border: 1px solid #aaa;
-border-radius: 4px;
-}</string>
-           </property>
-           <property name="maximum">
-            <number>100</number>
-           </property>
-           <property name="value">
-            <number>100</number>
-           </property>
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="invertedAppearance">
-            <bool>false</bool>
-           </property>
-           <property name="invertedControls">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
          <item row="1" column="1">
           <widget class="StatusLabel" name="statuslabel_4">
            <property name="sizePolicy">
@@ -24156,6 +23882,9 @@ border-radius: 4px;
            </property>
            <property name="label_type" stdset="0">
             <enum>StatusLabel::max_velocity</enum>
+           </property>
+           <property name="format_spec" stdset="0">
+            <string>{:.0f}</string>
            </property>
            <property name="conv_factor" stdset="0">
             <double>60.000000000000000</double>
@@ -24263,6 +23992,235 @@ border-radius: 4px;
            </property>
           </widget>
          </item>
+         <item row="2" column="0">
+          <widget class="ActionSlider" name="actionslider_2">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QSlider::groove:horizontal {
+border: 1px solid #bbb;
+background: white;
+height: 20px;
+border-radius: 3px;
+}
+
+QSlider::sub-page:horizontal {
+background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
+    stop: 0 #66e, stop: 1 #bbf);
+background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
+    stop: 0 #bbf, stop: 1 #55f);
+border: 1px solid #777;
+height: 20px;
+border-radius: 3px;
+}
+
+QSlider::add-page:horizontal {
+background: rgb(235, 235, 235);
+border: 1px solid #777;
+height: 20px;
+border-radius: 3px;
+}
+
+QSlider::handle:horizontal {
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.1 rgba(60, 60, 60, 255), stop:0.21 rgba(60, 60, 60, 255), stop:0.25 rgba(255, 255, 255, 255), stop:0.29 rgba(60, 60, 60, 255), stop:0.46 rgba(60, 60, 60, 255), stop:0.5 rgba(255, 255, 255, 255), stop:0.54 rgba(60, 60, 60, 255), stop:0.71 rgba(60, 60, 60, 255), stop:0.75 rgba(255, 255, 255, 255), stop:0.79 rgba(60, 60, 60, 255), stop:0.9 rgba(60, 60, 60, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid #777;
+border-color: rgba(40, 40, 40, 255);
+width: 40px;
+margin-top: -13px;
+margin-bottom: -13px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal:hover {
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.1 rgba(60, 60, 60, 255), stop:0.21 rgba(60, 60, 60, 255), stop:0.25 rgba(255, 255, 255, 255), stop:0.29 rgba(60, 60, 60, 255), stop:0.46 rgba(60, 60, 60, 255), stop:0.5 rgba(255, 255, 255, 255), stop:0.54 rgba(60, 60, 60, 255), stop:0.71 rgba(60, 60, 60, 255), stop:0.75 rgba(255, 255, 255, 255), stop:0.79 rgba(60, 60, 60, 255), stop:0.9 rgba(60, 60, 60, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid #444;
+border-color: rgb(241, 239, 237);
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal:disabled {
+background: #bbb;
+border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+background: #eee;
+border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+background: #eee;
+border: 1px solid #aaa;
+border-radius: 4px;
+}</string>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>machine.feed-override.set</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="ActionSlider" name="actionslider_3">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>50</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QSlider::groove:horizontal {
+border: 1px solid #bbb;
+background: white;
+height: 20px;
+border-radius: 3px;
+}
+
+QSlider::sub-page:horizontal {
+background: qlineargradient(x1: 0, y1: 0,    x2: 0, y2: 1,
+    stop: 0 #66e, stop: 1 #bbf);
+background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
+    stop: 0 #bbf, stop: 1 #55f);
+border: 1px solid #777;
+height: 20px;
+border-radius: 3px;
+}
+
+QSlider::add-page:horizontal {
+background: rgb(235, 235, 235);
+border: 1px solid #777;
+height: 20px;
+border-radius: 3px;
+}
+
+QSlider::handle:horizontal {
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.1 rgba(60, 60, 60, 255), stop:0.21 rgba(60, 60, 60, 255), stop:0.25 rgba(255, 255, 255, 255), stop:0.29 rgba(60, 60, 60, 255), stop:0.46 rgba(60, 60, 60, 255), stop:0.5 rgba(255, 255, 255, 255), stop:0.54 rgba(60, 60, 60, 255), stop:0.71 rgba(60, 60, 60, 255), stop:0.75 rgba(255, 255, 255, 255), stop:0.79 rgba(60, 60, 60, 255), stop:0.9 rgba(60, 60, 60, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid #777;
+border-color: rgba(40, 40, 40, 255);
+width: 40px;
+margin-top: -13px;
+margin-bottom: -13px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal:hover {
+background: qlineargradient(spread:reflect, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.1 rgba(60, 60, 60, 255), stop:0.21 rgba(60, 60, 60, 255), stop:0.25 rgba(255, 255, 255, 255), stop:0.29 rgba(60, 60, 60, 255), stop:0.46 rgba(60, 60, 60, 255), stop:0.5 rgba(255, 255, 255, 255), stop:0.54 rgba(60, 60, 60, 255), stop:0.71 rgba(60, 60, 60, 255), stop:0.75 rgba(255, 255, 255, 255), stop:0.79 rgba(60, 60, 60, 255), stop:0.9 rgba(60, 60, 60, 255), stop:1 rgba(255, 255, 255, 255));
+border: 1px solid #444;
+border-color: rgb(241, 239, 237);
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal:disabled {
+background: #bbb;
+border-color: #999;
+}
+
+QSlider::add-page:horizontal:disabled {
+background: #eee;
+border-color: #999;
+}
+
+QSlider::handle:horizontal:disabled {
+background: #eee;
+border: 1px solid #aaa;
+border-radius: 4px;
+}</string>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>machine.max-velocity.set</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="ActionButton" name="actionbutton_29">
+           <property name="minimumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+           </property>
+           <property name="text">
+            <string>F 100%</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>machine.feed-override.reset</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="ActionButton" name="actionbutton_30">
+           <property name="minimumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+           </property>
+           <property name="text">
+            <string>MV 100%</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>machine.max-velocity.reset</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="2">
+          <widget class="ActionButton" name="actionbutton_31">
+           <property name="minimumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+           </property>
+           <property name="text">
+            <string>R 100%</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>machine.rapid-override.reset</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </item>
@@ -24345,6 +24303,9 @@ border-radius: 6px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
+             <property name="text">
+              <string>STEP</string>
+             </property>
              <property name="checkable">
               <bool>true</bool>
              </property>
@@ -24420,6 +24381,9 @@ border-radius: 6px;
               <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
+             </property>
+             <property name="text">
+              <string>JOG</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
@@ -25875,11 +25839,6 @@ font: 11pt bebas kai;
    <extends>QLabel</extends>
    <header>QtPyVCP.widgets.display_widgets.statuslabel_widget</header>
   </customwidget>
-  <customwidget>
-   <class>OverrideSlider</class>
-   <extends>QSlider</extends>
-   <header>QtPyVCP.widgets.input_widgets.override_slider</header>
-  </customwidget>
  </customwidgets>
  <resources>
   <include location="xyz.qrc"/>
@@ -25919,38 +25878,6 @@ font: 11pt bebas kai;
     <hint type="destinationlabel">
      <x>1826</x>
      <y>833</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>pressed()</signal>
-   <receiver>feedrate_override_slider_3</receiver>
-   <slot>reset()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1491</x>
-     <y>893</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1356</x>
-     <y>898</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_49</sender>
-   <signal>pressed()</signal>
-   <receiver>feedrate_override_slider_5</receiver>
-   <slot>reset()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1491</x>
-     <y>1029</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1356</x>
-     <y>1034</y>
     </hint>
    </hints>
   </connection>
