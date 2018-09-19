@@ -208,9 +208,13 @@ class mode:
         setTaskMode(linuxcnc.MODE_MDI)
 
 def _mode_ok(widget=None):
+    if STAT.task_state == linuxcnc.STATE_ON and STAT.interp_state == linuxcnc.INTERP_IDLE:
+        ok = True
+        msg = ""
 
-    ok = True
-    msg = ''
+    else:
+        ok = False
+        msg = "Can't set mode when not ON and IDLE"
 
     _mode_ok.msg = msg
 
@@ -223,6 +227,8 @@ def _mode_ok(widget=None):
 
 def _manual_bindOk(widget):
     widget.setChecked(STAT.task_mode == linuxcnc.MODE_MANUAL)
+    STATUS.task_state.connect(lambda: _mode_ok(widget))
+    STATUS.interp_state.connect(lambda: _mode_ok(widget))
     STATUS.task_mode.connect(lambda m: widget.setChecked(m == linuxcnc.MODE_MANUAL))
 
 mode.manual.ok = _mode_ok
@@ -230,6 +236,8 @@ mode.manual.bindOk = _manual_bindOk
 
 def _auto_bindOk(widget):
     widget.setChecked(STAT.task_mode == linuxcnc.MODE_AUTO)
+    STATUS.task_state.connect(lambda: _mode_ok(widget))
+    STATUS.interp_state.connect(lambda: _mode_ok(widget))
     STATUS.task_mode.connect(lambda m: widget.setChecked(m == linuxcnc.MODE_AUTO))
 
 mode.auto.ok = _mode_ok
@@ -237,6 +245,8 @@ mode.auto.bindOk = _auto_bindOk
 
 def _mdi_bindOk(widget):
     widget.setChecked(STAT.task_mode == linuxcnc.MODE_MDI)
+    STATUS.task_state.connect(lambda: _mode_ok(widget))
+    STATUS.interp_state.connect(lambda: _mode_ok(widget))
     STATUS.task_mode.connect(lambda m: widget.setChecked(m == linuxcnc.MODE_MDI))
 
 mode.mdi.ok = _mode_ok
