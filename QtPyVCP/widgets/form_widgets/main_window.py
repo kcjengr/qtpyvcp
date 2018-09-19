@@ -35,9 +35,8 @@ from PyQt5 import QtWidgets, QtGui
 from QtPyVCP.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from QtPyVCP.core import Status, Action, Prefs, Info
+from QtPyVCP.core import Status, Prefs, Info
 STATUS = Status()
-ACTION = Action()
 PREFS = Prefs()
 INFO = Info()
 
