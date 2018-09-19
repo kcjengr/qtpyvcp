@@ -70,8 +70,14 @@ def forward(speed=None):
     print speed
     CMD.spindle(linuxcnc.SPINDLE_FORWARD, speed)
 
+def _spindle_forward_bindOk(widget):
+    widget.setCheckable(True)
+    STATUS.on.connect(lambda: _spindle_ok(widget))
+    STATUS.task_mode.connect(lambda: _spindle_ok(widget))
+    STATUS.spindle_direction.connect(lambda d: widget.setChecked(d == 1))
+
 forward.ok = _spindle_ok
-forward.bindOk = _spindle_bindOk
+forward.bindOk = _spindle_forward_bindOk
 
 def reverse(speed=None):
     if speed is None:
@@ -79,8 +85,14 @@ def reverse(speed=None):
     print speed
     CMD.spindle(linuxcnc.SPINDLE_REVERSE, speed)
 
+def _spindle_reverse_bindOk(widget):
+    widget.setCheckable(True)
+    STATUS.on.connect(lambda: _spindle_ok(widget))
+    STATUS.task_mode.connect(lambda: _spindle_ok(widget))
+    STATUS.spindle_direction.connect(lambda d: widget.setChecked(d == -1))
+
 reverse.ok = _spindle_ok
-reverse.bindOk = _spindle_bindOk
+reverse.bindOk = _spindle_reverse_bindOk
 
 def off():
     CMD.spindle(linuxcnc.SPINDLE_OFF)
