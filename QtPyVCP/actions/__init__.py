@@ -33,7 +33,7 @@ def bindWidget(widget, action):
     except:
         return
 
-    if method is None:
+    if method is None or not callable(method):
         return
 
     if args != '':

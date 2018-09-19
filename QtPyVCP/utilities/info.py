@@ -195,9 +195,9 @@ class _Info(object):
     def maxVelocity(self):
         # max velocity settings: more then one place to check
         # This is the maximum velocity of the machine
-        temp = self.ini.find('TRAJ', 'MAX_VELOCITY')
+        temp = self.ini.find('TRAJ', 'MAX_LINEAR_VELOCITY') or self.ini.find('TRAJ', 'MAX_VELOCITY')
         if  temp == None:
-            log.warning("No MAX_VELOCITY found in [TRAJ] of self.ini file. Using 15ipm")
+            log.warning("No entry [TRAJ] MAX_VELOCITY found in INI, using 15ipm")
             temp = 15.0
         return float(temp) * 60
 

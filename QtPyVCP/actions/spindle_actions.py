@@ -175,7 +175,7 @@ def _enable_bindOk(widget):
     STATUS.interp_state.connect(lambda: _enable_ok(widget))
     STATUS.spindle_override_enabled.connect(widget.setChecked)
 
-def _spindle_override_ok(widget=None):
+def _spindle_override_ok(value=100, widget=None):
     if STAT.task_state == linuxcnc.STATE_ON and STAT.spindle_override_enabled == 1:
         ok = True
         msg = ""
@@ -198,21 +198,27 @@ def _spindle_override_ok(widget=None):
 
     return ok
 
-def _spindle_override_bindOk(widget):
+def _spindle_override_bindOk(value=100, widget=None):
 
-    widget.setMinimum(INFO.minSpindleOverride() * 100)
-    widget.setMaximum(INFO.maxSpindleOverride() * 100)
-    widget.setValue(100)
-    override.set(100)
+    # This will work for any widget
+    STATUS.task_state.connect(lambda: _spindle_override_ok(widget=widget))
+    STATUS.spindle_override_enabled.connect(lambda: _spindle_override_ok(widget=widget))
 
-    STATUS.task_state.connect(lambda: _spindle_override_ok(widget))
-    STATUS.spindle_override_enabled.connect(lambda: _spindle_override_ok(widget))
-    STATUS.spindlerate.connect(lambda v: widget.setValue(v * 100))
+    try:
+        # these will only work for QSlider or QSpinBox
+        widget.setMinimum(INFO.minSpindleOverride() * 100)
+        widget.setMaximum(INFO.maxSpindleOverride() * 100)
+        widget.setValue(100)
+        override.set(100)
 
-override.set.ok = _spindle_override_ok
-override.set.bindOk = _spindle_override_bindOk
-override.reset.ok = _enable_ok
-override.reset.bindOk = _enable_bindOk
+        STATUS.spindlerate.connect(lambda v: widget.setValue(v * 100))
+    except AttributeError:
+        pass
+    except:
+        LOG.exception('Error in spindle.override bindOk')
+
+override.set.ok = override.reset.ok = _spindle_override_ok
+override.set.bindOk = override.reset.bindOk = _spindle_override_bindOk
 override.enable.ok = override.disable.ok = override.toggle_enable.ok = _enable_ok
 override.enable.bindOk = override.disable.bindOk = override.toggle_enable.bindOk = _enable_bindOk
 
