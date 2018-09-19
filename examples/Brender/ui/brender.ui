@@ -754,6 +754,67 @@
            <string>machine.max-velocity.set</string>
           </property>
          </widget>
+         <widget class="StatusLabel" name="statuslabel_13">
+          <property name="geometry">
+           <rect>
+            <x>870</x>
+            <y>281</y>
+            <width>81</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::spindle_speed</enum>
+          </property>
+         </widget>
+         <widget class="ActionButton" name="actionbutton_35">
+          <property name="geometry">
+           <rect>
+            <x>720</x>
+            <y>280</y>
+            <width>41</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>REV</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>spindle.reverse</string>
+          </property>
+         </widget>
+         <widget class="ActionButton" name="actionbutton_36">
+          <property name="geometry">
+           <rect>
+            <x>820</x>
+            <y>280</y>
+            <width>41</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>FWD</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>spindle.forward</string>
+          </property>
+         </widget>
+         <widget class="ActionButton" name="actionbutton_37">
+          <property name="geometry">
+           <rect>
+            <x>770</x>
+            <y>280</y>
+            <width>41</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>OFF</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>spindle.off</string>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -2412,6 +2473,7 @@
    <class>GcodeEditor</class>
    <extends>QFrame</extends>
    <header>QtPyVCP.widgets.input_widgets.gcode_editor</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>VCPMainWindow</class>
