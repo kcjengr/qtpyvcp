@@ -153,12 +153,13 @@ class override:
         CMD.spindleoverride(1.0)
 
 def _enable_ok(widget=None):
-    if STAT.task_state == linuxcnc.STATE_ON:
+    if STAT.task_state == linuxcnc.STATE_ON \
+        and STAT.interp_state == linuxcnc.INTERP_IDLE:
         ok = True
         msg = ""
     else:
         ok = False
-        msg = "Machine must be ON to enable/disable spindle override"
+        msg = "Machine must be ON and IDLE to enable/disable spindle override"
 
     _spindle_override_ok.msg = msg
 
@@ -171,6 +172,7 @@ def _enable_ok(widget=None):
 
 def _enable_bindOk(widget):
     STATUS.task_state.connect(lambda: _enable_ok(widget))
+    STATUS.interp_state.connect(lambda: _enable_ok(widget))
     STATUS.spindle_override_enabled.connect(widget.setChecked)
 
 def _spindle_override_ok(widget=None):

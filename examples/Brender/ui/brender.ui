@@ -559,6 +559,19 @@
            <string>spindle.override.reset</string>
           </property>
          </widget>
+         <widget class="StatusLabel" name="statuslabel_9">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>350</y>
+            <width>161</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::motion_type</enum>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab">
          <attribute name="title">
