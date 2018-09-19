@@ -23,12 +23,6 @@ class RecentFileComboBoxPlugin(_DesignerPlugin):
         return RecentFileComboBox
 
 
-from override_slider import OverrideSlider
-class OverrideSliderPlugin(_DesignerPlugin):
-    def pluginClass(self):
-        return OverrideSlider
-
-
 from tool_table import ToolTable
 class ToolTablePlugin(_DesignerPlugin):
     def pluginClass(self):
