@@ -16,15 +16,15 @@ def bindWidget(widget, action):
 
     Args:
         widget (QtWidget) : The widget to bind the action too. Typically `widget`
-            would be a QPushButton, QCheckBox or a QAction instance.
+            would be a QPushButton, QCheckBox, QAction or QSlider instance.
 
         action (string) : The string identifier of the action to bind the widget
             to, in the format `action_class.action_name:arg1, arg2 ...`.
 
     Example:
+        bindWidget(widget, 'machine.power.toggle')
         bindWidget(widget, 'machine.home.axis:x')
         bindWidget(widget, 'spindle.forward:200')
-        bindWidget(widget, 'spindle.off')
     """
     action, sep, args = action.partition(':')
     action = action.replace('-', '_')
@@ -65,6 +65,7 @@ def bindWidget(widget, action):
     else:
         LOG.error('Can\'t bind action "{}" to unsupported widget type "{}"'\
             .format(action, widget.__class__.__name__))
+        return
 
     try:
         method.ok(*args, widget=widget) # Set the initial widget state
@@ -72,4 +73,3 @@ def bindWidget(widget, action):
 
     except:
         LOG.exception("Error in bindWidget")
-        pass
