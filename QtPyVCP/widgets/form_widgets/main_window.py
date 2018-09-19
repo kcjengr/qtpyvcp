@@ -246,16 +246,15 @@ class VCPMainWindow(QMainWindow):
 
             menu_action = QAction(self)
             menu_action.setText("Home &All")
-            home_action = action.Home(widget=menu_action, method='homeAll', axis='all')
+            actions.bindWidget(menu_action, 'machine.home.all')
             self.menuHoming.addAction(menu_action)
 
             # add homing actions for each axis
             for aletter in INFO.AXIS_LETTER_LIST:
                 menu_action = QAction(self)
                 menu_action.setText("Home &{}".format(aletter.upper()))
-                home_action = action.Home(widget=menu_action, method='homeAxis', axis=aletter)
+                actions.bindWidget(menu_action, 'machine.home.axis:{}'.format(aletter))
                 self.menuHoming.addAction(menu_action)
-                self.actions.append(menu_action)
 
 #==============================================================================
 # helper functions
