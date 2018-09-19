@@ -14,13 +14,6 @@ class MacroButtonPlugin(_DesignerPlugin):
     def toolTip(self):
         return "Execute a macro"
 
-from axis_button import AxisActionButton
-class AxisActionButtonPlugin(_DesignerPlugin):
-    def pluginClass(self):
-        return AxisActionButton
-    def toolTip(self):
-        return "Axis/Joint action button"
-
 from jog_button import JogButton
 class JogButtonPlugin(_DesignerPlugin):
     def pluginClass(self):
