@@ -59,7 +59,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -463,22 +463,6 @@
            </item>
           </layout>
          </widget>
-         <widget class="OverrideSlider" name="overrideslider">
-          <property name="geometry">
-           <rect>
-            <x>240</x>
-            <y>290</y>
-            <width>331</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="override_type" stdset="0">
-           <enum>OverrideSlider::speed_override</enum>
-          </property>
-         </widget>
          <widget class="StatusLabel" name="statuslabel_8">
           <property name="geometry">
            <rect>
@@ -813,6 +797,22 @@
           </property>
           <property name="actionName" stdset="0">
            <string>spindle.off</string>
+          </property>
+         </widget>
+         <widget class="ActionSpinBox" name="actionspinbox">
+          <property name="geometry">
+           <rect>
+            <x>240</x>
+            <y>270</y>
+            <width>151</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="singleStep">
+           <number>5</number>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>spindle.override.set</string>
           </property>
          </widget>
         </widget>
@@ -2487,6 +2487,11 @@
    <header>QtPyVCP.widgets.input_widgets.recent_file_combobox</header>
   </customwidget>
   <customwidget>
+   <class>ActionSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>QtPyVCP.widgets.button_widgets.action_spinbox</header>
+  </customwidget>
+  <customwidget>
    <class>MDIEntry</class>
    <extends>QLineEdit</extends>
    <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
@@ -2510,11 +2515,6 @@
    <class>StatusLabel</class>
    <extends>QLabel</extends>
    <header>QtPyVCP.widgets.display_widgets.statuslabel_widget</header>
-  </customwidget>
-  <customwidget>
-   <class>OverrideSlider</class>
-   <extends>QSlider</extends>
-   <header>QtPyVCP.widgets.input_widgets.override_slider</header>
   </customwidget>
  </customwidgets>
  <resources>
