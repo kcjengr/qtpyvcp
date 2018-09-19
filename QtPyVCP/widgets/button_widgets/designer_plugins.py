@@ -6,8 +6,6 @@ from action_button import ActionButton
 class ActionButtonPlugin(_DesignerPlugin):
     def pluginClass(self):
         return ActionButton
-    def toolTip(self):
-        return "MDI command entry"
 
 from subcall_button import SubCallButton
 class MacroButtonPlugin(_DesignerPlugin):
@@ -41,8 +39,3 @@ from action_checkbox import ActionCheckBox
 class ActionCheckBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
         return ActionCheckBox
-
-from action_button_new import ActionButtonNew
-class ActionButtonNewPlugin(_DesignerPlugin):
-    def pluginClass(self):
-        return ActionButtonNew

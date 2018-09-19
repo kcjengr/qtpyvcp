@@ -184,7 +184,7 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="ActionButtonNew" name="actionbuttonnew_24">
+            <widget class="ActionButton" name="actionbutton_24">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                <horstretch>0</horstretch>
@@ -212,7 +212,7 @@
             </widget>
            </item>
            <item>
-            <widget class="ActionButtonNew" name="actionbuttonnew_25">
+            <widget class="ActionButton" name="actionbutton_25">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                <horstretch>0</horstretch>
@@ -237,7 +237,7 @@
             </widget>
            </item>
            <item>
-            <widget class="ActionButtonNew" name="actionbuttonnew_26">
+            <widget class="ActionButton" name="actionbutton_26">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                <horstretch>0</horstretch>
@@ -381,7 +381,7 @@
             <number>0</number>
            </property>
            <item>
-            <widget class="ActionButtonNew" name="actionbuttonnew_27">
+            <widget class="ActionButton" name="actionbutton_27">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                <horstretch>0</horstretch>
@@ -409,7 +409,7 @@
             </widget>
            </item>
            <item>
-            <widget class="ActionButtonNew" name="actionbuttonnew_28">
+            <widget class="ActionButton" name="actionbutton_28">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                <horstretch>0</horstretch>
@@ -434,7 +434,7 @@
             </widget>
            </item>
            <item>
-            <widget class="ActionButtonNew" name="actionbuttonnew_29">
+            <widget class="ActionButton" name="actionbutton_29">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                <horstretch>0</horstretch>
@@ -495,7 +495,7 @@
            <enum>StatusLabel::speed_override</enum>
           </property>
          </widget>
-         <widget class="ActionButtonNew" name="actionbuttonnew_30">
+         <widget class="ActionButton" name="actionbutton_30">
           <property name="geometry">
            <rect>
             <x>580</x>
@@ -543,7 +543,7 @@
            <string>spindle.override.toggle-enable</string>
           </property>
          </widget>
-         <widget class="ActionButtonNew" name="actionbuttonnew_31">
+         <widget class="ActionButton" name="actionbutton_31">
           <property name="geometry">
            <rect>
             <x>240</x>
@@ -657,7 +657,7 @@
           <string>coolant.mist.toggle</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_2">
+        <widget class="ActionButton" name="actionbutton_2">
          <property name="geometry">
           <rect>
            <x>200</x>
@@ -673,7 +673,7 @@
           <string>program.resume</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_3">
+        <widget class="ActionButton" name="actionbutton_3">
          <property name="geometry">
           <rect>
            <x>200</x>
@@ -689,7 +689,7 @@
           <string>program.run</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_4">
+        <widget class="ActionButton" name="actionbutton_4">
          <property name="geometry">
           <rect>
            <x>200</x>
@@ -705,7 +705,7 @@
           <string>program.step</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_5">
+        <widget class="ActionButton" name="actionbutton_5">
          <property name="geometry">
           <rect>
            <x>200</x>
@@ -737,7 +737,7 @@
           <string>program.block-delete.toggle</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_9">
+        <widget class="ActionButton" name="actionbutton_9">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -753,7 +753,7 @@
           <string>machine.home.all</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_10">
+        <widget class="ActionButton" name="actionbutton_10">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -769,7 +769,7 @@
           <string>machine.home.axis:x</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_11">
+        <widget class="ActionButton" name="actionbutton_11">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -785,7 +785,7 @@
           <string>machine.home.joint:0</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_12">
+        <widget class="ActionButton" name="actionbutton_12">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -801,7 +801,7 @@
           <string>machine.home.axis:y</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_13">
+        <widget class="ActionButton" name="actionbutton_13">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -817,7 +817,7 @@
           <string>machine.home.axis:z</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_20">
+        <widget class="ActionButton" name="actionbutton_20">
          <property name="geometry">
           <rect>
            <x>110</x>
@@ -846,7 +846,7 @@
           <enum>StatusLabel::spindle_speed</enum>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_21">
+        <widget class="ActionButton" name="actionbutton_21">
          <property name="geometry">
           <rect>
            <x>60</x>
@@ -862,7 +862,7 @@
           <string>spindle.off</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_22">
+        <widget class="ActionButton" name="actionbutton_22">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -878,7 +878,7 @@
           <string>spindle.reverse</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_23">
+        <widget class="ActionButton" name="actionbutton_23">
          <property name="geometry">
           <rect>
            <x>200</x>
@@ -1598,7 +1598,7 @@
         <property name="title">
          <string>GroupBox</string>
         </property>
-        <widget class="ActionButtonNew" name="actionbutton_2">
+        <widget class="ActionButton" name="actionbutton_2">
          <property name="geometry">
           <rect>
            <x>190</x>
@@ -1626,7 +1626,7 @@
           <string>machine.power.toggle</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbutton">
+        <widget class="ActionButton" name="actionbutton">
          <property name="geometry">
           <rect>
            <x>190</x>
@@ -1654,7 +1654,7 @@
           <string>machine.estop.toggle</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew">
+        <widget class="ActionButton" name="actionbutton">
          <property name="geometry">
           <rect>
            <x>100</x>
@@ -1673,7 +1673,7 @@
           <string>option</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_6">
+        <widget class="ActionButton" name="actionbutton_6">
          <property name="geometry">
           <rect>
            <x>100</x>
@@ -1692,7 +1692,7 @@
           <string>option</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_7">
+        <widget class="ActionButton" name="actionbutton_7">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1708,7 +1708,7 @@
           <string>coolant.mist.toggle</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_8">
+        <widget class="ActionButton" name="actionbutton_8">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1724,7 +1724,7 @@
           <string>coolant.flood.toggle</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_14">
+        <widget class="ActionButton" name="actionbutton_14">
          <property name="geometry">
           <rect>
            <x>10</x>
@@ -1740,7 +1740,7 @@
           <string>machine.jog.axis:z,pos</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_15">
+        <widget class="ActionButton" name="actionbutton_15">
          <property name="geometry">
           <rect>
            <x>60</x>
@@ -1756,7 +1756,7 @@
           <string>machine.jog.axis:y,pos</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_16">
+        <widget class="ActionButton" name="actionbutton_16">
          <property name="geometry">
           <rect>
            <x>100</x>
@@ -1772,7 +1772,7 @@
           <string>machine.jog.axis:x,pos</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_17">
+        <widget class="ActionButton" name="actionbutton_17">
          <property name="geometry">
           <rect>
            <x>20</x>
@@ -1788,7 +1788,7 @@
           <string>machine.jog.axis:x,neg</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_18">
+        <widget class="ActionButton" name="actionbutton_18">
          <property name="geometry">
           <rect>
            <x>60</x>
@@ -1804,7 +1804,7 @@
           <string>machine.jog.axis:y,neg</string>
          </property>
         </widget>
-        <widget class="ActionButtonNew" name="actionbuttonnew_19">
+        <widget class="ActionButton" name="actionbutton_19">
          <property name="geometry">
           <rect>
            <x>110</x>
@@ -2097,9 +2097,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ActionButtonNew</class>
+   <class>ActionButton</class>
    <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_button_new</header>
+   <header>QtPyVCP.widgets.button_widgets.action_button</header>
   </customwidget>
   <customwidget>
    <class>GcodeBackplot</class>
