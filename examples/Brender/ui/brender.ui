@@ -1916,9 +1916,18 @@
     <addaction name="action_MachinePower_toggle"/>
     <addaction name="separator"/>
     <addaction name="actionRun_Program"/>
+    <addaction name="actionRun_From_Line"/>
+    <addaction name="actionStep"/>
+    <addaction name="actionPause"/>
+    <addaction name="actionResume"/>
+    <addaction name="actionStop"/>
+    <addaction name="actionPause_at_M1"/>
+    <addaction name="actionSkip_lines_with"/>
+    <addaction name="separator"/>
     <addaction name="menuHoming"/>
-    <addaction name="actionOverride_Limits"/>
     <addaction name="menuCooling"/>
+    <addaction name="separator"/>
+    <addaction name="actionOverride_Limits"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -2126,6 +2135,82 @@
    </property>
    <property name="actionName" stdset="0">
     <string>machine.override-limits</string>
+   </property>
+  </action>
+  <action name="actionOverride_Limits_2">
+   <property name="text">
+    <string>Override Limits</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>machine.override-limits</string>
+   </property>
+  </action>
+  <action name="actionRun_From_Line">
+   <property name="text">
+    <string>Run From Line</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.run-from-line</string>
+   </property>
+  </action>
+  <action name="actionStep">
+   <property name="text">
+    <string>Step</string>
+   </property>
+   <property name="shortcut">
+    <string>T</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.step</string>
+   </property>
+  </action>
+  <action name="actionPause">
+   <property name="text">
+    <string>Pause</string>
+   </property>
+   <property name="shortcut">
+    <string>P</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.pause</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="text">
+    <string>Stop</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.abort</string>
+   </property>
+  </action>
+  <action name="actionResume">
+   <property name="text">
+    <string>Resume</string>
+   </property>
+   <property name="shortcut">
+    <string>S</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.resume</string>
+   </property>
+  </action>
+  <action name="actionPause_at_M1">
+   <property name="text">
+    <string>Pause at 'M1'</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.optional-stop.toggle</string>
+   </property>
+  </action>
+  <action name="actionSkip_lines_with">
+   <property name="text">
+    <string>Skip lines with '/'</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.block-delete.toggle</string>
    </property>
   </action>
  </widget>
