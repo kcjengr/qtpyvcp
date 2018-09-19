@@ -212,13 +212,13 @@ def _spindle_override_bindOk(value=100, widget=None):
         override.set(100)
 
         STATUS.spindlerate.connect(lambda v: widget.setValue(v * 100))
-    except:
+    except AttributeError:
         pass
+    except:
+        LOG.exception('Error in spindle.override bindOk')
 
-override.set.ok = _spindle_override_ok
-override.set.bindOk = _spindle_override_bindOk
-override.reset.ok = _enable_ok
-override.reset.bindOk = _enable_bindOk
+override.set.ok = override.reset.ok = _spindle_override_ok
+override.set.bindOk = override.reset.bindOk = _spindle_override_bindOk
 override.enable.ok = override.disable.ok = override.toggle_enable.ok = _enable_ok
 override.enable.bindOk = override.disable.bindOk = override.toggle_enable.bindOk = _enable_bindOk
 
