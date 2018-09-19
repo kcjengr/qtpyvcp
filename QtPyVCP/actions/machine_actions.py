@@ -321,7 +321,14 @@ home.joint.ok = _home_ok
 home.joint.bindOk = _home_joint_bindOk
 
 def _home_axis_bindOk(axis, widget):
-    axis = getAxisLetter(axis)
+    aletter = getAxisLetter(axis)
+    if aletter not in INFO.AXIS_LETTER_LIST:
+        msg = 'Machine has no {} axis'.format(aletter.upper())
+        widget.setEnabled(False)
+        widget.setToolTip(msg)
+        widget.setStatusTip(msg)
+        return
+
     jnum = INFO.AXIS_LETTER_LIST.index(axis)
     STATUS.on.connect(lambda: _home_ok(jnum, widget=widget))
 
@@ -458,12 +465,11 @@ class jog:
 
 
 def _jog_axis_ok(axis, direction=0, widget=None):
-    axisnum = 'xyzabcuvw'.index(axis)
+    axisnum = getAxisNumber(axis)
     if STAT.task_state == linuxcnc.STATE_ON \
         and STAT.interp_state == linuxcnc.INTERP_IDLE \
         and STAT.homed[axisnum] == 1 \
-        and STAT.limit[axisnum] == 0 \
-        and axisnum in INFO.AXIS_NUMBER_LIST:
+        and STAT.limit[axisnum] == 0:
         ok = True
         msg = ""
     else:
@@ -481,10 +487,18 @@ def _jog_axis_ok(axis, direction=0, widget=None):
 
 
 def _jog_axis_bindOk(axis, direction, widget):
-    STATUS.limit.connect(lambda: _jog_axis_ok(axis, direction, widget))
-    STATUS.homed.connect(lambda: _jog_axis_ok(axis, direction, widget))
-    STATUS.task_state.connect(lambda: _jog_axis_ok(axis, direction, widget))
-    STATUS.interp_state.connect(lambda: _jog_axis_ok(axis, direction, widget))
+    aletter = getAxisLetter(axis)
+    if aletter not in INFO.AXIS_LETTER_LIST:
+        msg = 'Machine has no {} axis'.format(aletter.upper())
+        widget.setEnabled(False)
+        widget.setToolTip(msg)
+        widget.setStatusTip(msg)
+        return
+
+    STATUS.limit.connect(lambda: _jog_axis_ok(aletter, direction, widget))
+    STATUS.homed.connect(lambda: _jog_axis_ok(aletter, direction, widget))
+    STATUS.task_state.connect(lambda: _jog_axis_ok(aletter, direction, widget))
+    STATUS.interp_state.connect(lambda: _jog_axis_ok(aletter, direction, widget))
 
 jog.axis.ok = _jog_axis_ok
 jog.axis.bindOk = _jog_axis_bindOk
