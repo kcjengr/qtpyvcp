@@ -27,7 +27,7 @@ import time
 from PyQt5 import uic
 from PyQt5.QtGui import QIcon, QKeySequence
 from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty, QTimer
-from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QPushButton, 
+from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QPushButton,
     QAction, QMessageBox, QFileDialog, QMenu, QLineEdit, QShortcut, qApp)
 
 from PyQt5 import QtWidgets, QtGui
@@ -35,15 +35,15 @@ from PyQt5 import QtWidgets, QtGui
 from QtPyVCP.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from QtPyVCP.core import Status, Action, Prefs, Info
+from QtPyVCP.core import Status, Prefs, Info
 STATUS = Status()
-ACTION = Action()
 PREFS = Prefs()
 INFO = Info()
 
 from QtPyVCP.utilities import action
+from QtPyVCP import actions
+
 from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
-from QtPyVCP.utilities import action
 
 
 class VCPMainWindow(QMainWindow):
@@ -72,7 +72,6 @@ class VCPMainWindow(QMainWindow):
         qApp.focusChanged.connect(self.focusChangedEvent)
 
     def initUi(self):
-        print "initiating"
         self.loadSplashGcode()
         self.initRecentFileMenu()
         self.initHomingMenu()
@@ -85,22 +84,11 @@ class VCPMainWindow(QMainWindow):
             for menu_action in menu_actions:
                 if menu_action.isSeparator():
                     continue
-                data = menu_action.objectName().split('_', 2)
-                if data[0] == "action" and len(data) > 1:
-                    try:
-                        action_class =  getattr(action, data[1])
-                        action_instance = action_class(menu_action, action_type=data[2])
-                        # print "ACTION: ", action_instance
-                    except:
-                        LOG.warn("Could not connect action", exc_info=True)
-                        continue
-                    self.actions.append(action_instance)
+                action_name = menu_action.property('actionName')
+                if action_name:
+                    actions.bindWidget(menu_action, action_name)
 
         print "action time ", time.time() - s
-
-    @pyqtSlot()
-    def on_power_clicked(self):
-        action.Home.unhomeAxis('x')
 
     def closeEvent(self, event):
         """Catch close event and show confirmation dialog if set to"""
@@ -121,17 +109,17 @@ class VCPMainWindow(QMainWindow):
             return
 
         if event.key() == Qt.Key_Up:
-            action.Jogging.autoJog('Y', 1)
+            actions.machine.jog.axis('Y', 1)
         elif event.key() == Qt.Key_Down:
-            action.Jogging.autoJog('Y', -1)
+            actions.machine.jog.axis('Y', -1)
         elif event.key() == Qt.Key_Left:
-            action.Jogging.autoJog('X', -1)
+            actions.machine.jog.axis('X', -1)
         elif event.key() == Qt.Key_Right:
-            action.Jogging.autoJog('X', 1)
+            actions.machine.jog.axis('X', 1)
         elif event.key() == Qt.Key_PageUp:
-            action.Jogging.autoJog('Z', 1)
+            actions.machine.jog.axis('Z', 1)
         elif event.key() == Qt.Key_PageDown:
-            action.Jogging.autoJog('Z', -1)
+            actions.machine.jog.axis('Z', -1)
         else:
             print 'Unhandled key press event'
 
@@ -140,20 +128,19 @@ class VCPMainWindow(QMainWindow):
             return
 
         if event.key() == Qt.Key_Up:
-            action.Jogging.autoJog('Y', 0)
+            actions.machine.jog.axis('Y', 0)
         elif event.key() == Qt.Key_Down:
-            action.Jogging.autoJog('Y', 0)
+            actions.machine.jog.axis('Y', 0)
         elif event.key() == Qt.Key_Left:
-            action.Jogging.autoJog('X', 0)
+            actions.machine.jog.axis('X', 0)
         elif event.key() == Qt.Key_Right:
-            action.Jogging.autoJog('X', 0)
+            actions.machine.jog.axis('X', 0)
         elif event.key() == Qt.Key_PageUp:
-            action.Jogging.autoJog('Z', 0)
+            actions.machine.jog.axis('Z', 0)
         elif event.key() == Qt.Key_PageDown:
-            action.Jogging.autoJog('Z', 0)
+            actions.machine.jog.axis('Z', 0)
         else:
             print 'Unhandled key release event'
-
 
     def mousePressEvent(self, event):
         print 'Button press'
@@ -170,7 +157,6 @@ class VCPMainWindow(QMainWindow):
 #==============================================================================
 
     # File menu
-
     @pyqtSlot()
     def on_actionOpen_triggered(self):
         self.open_file_dialog.show()
@@ -178,35 +164,6 @@ class VCPMainWindow(QMainWindow):
     @pyqtSlot()
     def on_actionExit_triggered(self):
         self.close()
-
-    #==========================================================================
-    # Machine menu
-    #==========================================================================
-
-    @pyqtSlot()
-    def on_actionToggle_E_stop_triggered(self):
-        ACTION.toggleEmergencyStop()
-
-    @pyqtSlot()
-    def on_actionToggle_Power_triggered(self):
-        ACTION.toggleMachinePower()
-
-    @pyqtSlot()
-    def on_actionRun_Program_triggered(self):
-        ACTION.runProgram()
-
-    @pyqtSlot()
-    def on_actionHome_All_triggered(self):
-        ACTION.homeJoint(-1)
-
-    @pyqtSlot()
-    def on_actionHome_X_triggered(self):
-        ACTION.homeJoint(1)
-
-    @pyqtSlot(bool)
-    def on_actionReport_Actual_Position_toggled(self, report_actual):
-        STATUS.setReportActualPosition(report_actual)
-
 
 #==============================================================================
 # menu functions
@@ -222,7 +179,7 @@ class VCPMainWindow(QMainWindow):
             # add new actions
             for i in range(STATUS.max_recent_files):
                 action = QAction(self, visible=False,
-                                 triggered=(lambda:ACTION.loadProgram(self.sender().data())))
+                                 triggered=(lambda: action.program.load(self.sender().data())))
                 self.recent_file_actions.append(action)
                 self.menuRecentFiles.addAction(action)
 
@@ -238,7 +195,6 @@ class VCPMainWindow(QMainWindow):
             action.setData(fname)
             action.setVisible(True)
 
-
     def initHomingMenu(self):
         if hasattr(self, 'menuHoming'):
 
@@ -252,16 +208,15 @@ class VCPMainWindow(QMainWindow):
 
             menu_action = QAction(self)
             menu_action.setText("Home &All")
-            home_action = action.Home(widget=menu_action, method='homeAll', axis='all')
+            actions.bindWidget(menu_action, 'machine.home.all')
             self.menuHoming.addAction(menu_action)
 
             # add homing actions for each axis
             for aletter in INFO.AXIS_LETTER_LIST:
                 menu_action = QAction(self)
                 menu_action.setText("Home &{}".format(aletter.upper()))
-                home_action = action.Home(widget=menu_action, method='homeAxis', axis=aletter)
+                actions.bindWidget(menu_action, 'machine.home.axis:{}'.format(aletter))
                 self.menuHoming.addAction(menu_action)
-                self.actions.append(menu_action)
 
 #==============================================================================
 # helper functions
@@ -273,8 +228,7 @@ class VCPMainWindow(QMainWindow):
         splash_code = INFO.getOpenFile() or path
         if splash_code is not None:
             # Load after startup to not cause delay
-            QTimer.singleShot(0, lambda: ACTION.loadProgram(splash_code, add_to_recents=False))
-
+            QTimer.singleShot(0, lambda: action.program.load(splash_code, add_to_recents=False))
 
 #==============================================================================
 #  QtDesigner property setters/getters

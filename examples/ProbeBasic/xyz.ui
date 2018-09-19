@@ -1647,7 +1647,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_4">
+                    <widget class="ActionButton" name="m01_break_button_4">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -1702,7 +1702,7 @@ padding-right: 10px;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_8">
+                    <widget class="ActionButton" name="m01_break_button_8">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -1735,7 +1735,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_9">
+                    <widget class="ActionButton" name="m01_break_button_9">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -2087,7 +2087,7 @@ padding-right: 10px;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_10">
+                    <widget class="ActionButton" name="m01_break_button_10">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -2120,7 +2120,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_27">
+                    <widget class="ActionButton" name="m01_break_button_27">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -2205,7 +2205,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_14">
+                    <widget class="ActionButton" name="m01_break_button_14">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -2238,7 +2238,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_15">
+                    <widget class="ActionButton" name="m01_break_button_15">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -3801,7 +3801,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_5">
+                    <widget class="ActionButton" name="m01_break_button_5">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>200</horstretch>
@@ -3895,7 +3895,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_3">
+                    <widget class="ActionButton" name="m01_break_button_3">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>200</horstretch>
@@ -3947,7 +3947,7 @@ padding-right: 10px;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_16">
+                    <widget class="ActionButton" name="m01_break_button_16">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>0</horstretch>
@@ -3996,7 +3996,7 @@ padding-right: 10px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="AxisActionButton" name="atc_fwd">
+                    <widget class="ActionButton" name="atc_fwd">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>0</horstretch>
@@ -4022,7 +4022,7 @@ padding-right: 10px;
                       <enum>Qt::RightToLeft</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">AxisActionButton {
+                      <string notr="true">ActionButton {
     text-align: right;
     padding-right: 30px;
     font: 16pt &quot;Bebas Kai&quot;;
@@ -4063,7 +4063,7 @@ padding-right: 10px;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_21">
+                    <widget class="ActionButton" name="m01_break_button_21">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>0</horstretch>
@@ -4209,7 +4209,7 @@ padding-right: 10px;
                     <number>0</number>
                    </property>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_24">
+                    <widget class="ActionButton" name="m01_break_button_24">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>30</horstretch>
@@ -4261,7 +4261,7 @@ padding-right: 10px;
                     <number>5</number>
                    </property>
                    <item>
-                    <widget class="AxisActionButton" name="m01_break_button_25">
+                    <widget class="ActionButton" name="m01_break_button_25">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>30</horstretch>
@@ -6697,9 +6697,6 @@ border-radius: 6px;
                          <property name="checkable">
                           <bool>true</bool>
                          </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
-                         </property>
                          <property name="customText" stdset="0">
                           <string>G54</string>
                          </property>
@@ -6732,9 +6729,6 @@ border-radius: 6px;
                          </property>
                          <property name="checkable">
                           <bool>true</bool>
-                         </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
                          </property>
                          <property name="customText" stdset="0">
                           <string>G55</string>
@@ -6769,9 +6763,6 @@ border-radius: 6px;
                          <property name="checkable">
                           <bool>true</bool>
                          </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
-                         </property>
                          <property name="customText" stdset="0">
                           <string>G56</string>
                          </property>
@@ -6804,9 +6795,6 @@ border-radius: 6px;
                          </property>
                          <property name="checkable">
                           <bool>true</bool>
-                         </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
                          </property>
                          <property name="customText" stdset="0">
                           <string>​G57</string>
@@ -6841,9 +6829,6 @@ border-radius: 6px;
                          <property name="checkable">
                           <bool>true</bool>
                          </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
-                         </property>
                          <property name="customText" stdset="0">
                           <string>G58</string>
                          </property>
@@ -6876,9 +6861,6 @@ border-radius: 6px;
                          </property>
                          <property name="checkable">
                           <bool>true</bool>
-                         </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
                          </property>
                          <property name="customText" stdset="0">
                           <string>G59</string>
@@ -6913,9 +6895,6 @@ border-radius: 6px;
                          <property name="checkable">
                           <bool>true</bool>
                          </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
-                         </property>
                          <property name="customText" stdset="0">
                           <string>G59.1</string>
                          </property>
@@ -6949,9 +6928,6 @@ border-radius: 6px;
                          <property name="checkable">
                           <bool>true</bool>
                          </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
-                         </property>
                          <property name="customText" stdset="0">
                           <string>G59.2</string>
                          </property>
@@ -6984,9 +6960,6 @@ border-radius: 6px;
                          </property>
                          <property name="checkable">
                           <bool>true</bool>
-                         </property>
-                         <property name="actionID" stdset="0">
-                          <enum>ActionButton::Mist</enum>
                          </property>
                          <property name="customText" stdset="0">
                           <string>G59.3</string>
@@ -7380,7 +7353,7 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="AxisActionButton" name="m01_break_button_38">
+                          <widget class="ActionButton" name="m01_break_button_38">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
@@ -8402,7 +8375,7 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="AxisActionButton" name="m01_break_button_37">
+                          <widget class="ActionButton" name="m01_break_button_37">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
@@ -8443,9 +8416,6 @@ padding: -5px;
                            </property>
                            <property name="checkable">
                             <bool>true</bool>
-                           </property>
-                           <property name="axis">
-                            <enum>AxisActionButton::Y</enum>
                            </property>
                           </widget>
                          </item>
@@ -9261,7 +9231,7 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="AxisActionButton" name="m01_break_button_34">
+                          <widget class="ActionButton" name="m01_break_button_34">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
@@ -9302,9 +9272,6 @@ padding: -5px;
                            </property>
                            <property name="checkable">
                             <bool>true</bool>
-                           </property>
-                           <property name="axis">
-                            <enum>AxisActionButton::Z</enum>
                            </property>
                           </widget>
                          </item>
@@ -10479,7 +10446,7 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="AxisActionButton" name="m01_break_button_36">
+                          <widget class="ActionButton" name="m01_break_button_36">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
@@ -10520,9 +10487,6 @@ padding: -5px;
                            </property>
                            <property name="checkable">
                             <bool>true</bool>
-                           </property>
-                           <property name="axis">
-                            <enum>AxisActionButton::A</enum>
                            </property>
                           </widget>
                          </item>
@@ -11519,7 +11483,7 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="AxisActionButton" name="m01_break_button_35">
+                          <widget class="ActionButton" name="m01_break_button_35">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                              <horstretch>0</horstretch>
@@ -12516,7 +12480,7 @@ border-radius: 6px;
                           <number>2</number>
                          </property>
                          <item>
-                          <widget class="AxisActionButton" name="m01_break_button_28">
+                          <widget class="ActionButton" name="m01_break_button_28">
                            <property name="sizePolicy">
                             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                              <horstretch>0</horstretch>
@@ -12934,9 +12898,6 @@ padding-left: 5px;
                    <property name="checkable">
                     <bool>true</bool>
                    </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
-                   </property>
                    <property name="customText" stdset="0">
                     <string>G54</string>
                    </property>
@@ -12969,9 +12930,6 @@ padding-left: 5px;
                    </property>
                    <property name="checkable">
                     <bool>true</bool>
-                   </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
                    </property>
                    <property name="customText" stdset="0">
                     <string>G55</string>
@@ -13006,9 +12964,6 @@ padding-left: 5px;
                    <property name="checkable">
                     <bool>true</bool>
                    </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
-                   </property>
                    <property name="customText" stdset="0">
                     <string>G56</string>
                    </property>
@@ -13041,9 +12996,6 @@ padding-left: 5px;
                    </property>
                    <property name="checkable">
                     <bool>true</bool>
-                   </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
                    </property>
                    <property name="customText" stdset="0">
                     <string>G59</string>
@@ -13078,9 +13030,6 @@ padding-left: 5px;
                    <property name="checkable">
                     <bool>true</bool>
                    </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
-                   </property>
                    <property name="customText" stdset="0">
                     <string>G59.3</string>
                    </property>
@@ -13113,9 +13062,6 @@ padding-left: 5px;
                    </property>
                    <property name="checkable">
                     <bool>true</bool>
-                   </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
                    </property>
                    <property name="customText" stdset="0">
                     <string>G58</string>
@@ -13150,9 +13096,6 @@ padding-left: 5px;
                    <property name="checkable">
                     <bool>true</bool>
                    </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
-                   </property>
                    <property name="customText" stdset="0">
                     <string>G59.2</string>
                    </property>
@@ -13186,9 +13129,6 @@ padding-left: 5px;
                    <property name="checkable">
                     <bool>true</bool>
                    </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
-                   </property>
                    <property name="customText" stdset="0">
                     <string>​G57</string>
                    </property>
@@ -13221,9 +13161,6 @@ padding-left: 5px;
                    </property>
                    <property name="checkable">
                     <bool>true</bool>
-                   </property>
-                   <property name="actionID" stdset="0">
-                    <enum>ActionButton::Mist</enum>
                    </property>
                    <property name="customText" stdset="0">
                     <string>G59.1</string>
@@ -17425,7 +17362,7 @@ QHeaderView {
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -17480,7 +17417,7 @@ border-radius: 6px;
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_106">
                <item>
-                <widget class="JogButton" name="z_plus_jogbutton">
+                <widget class="ActionButton" name="z_plus_jogbutton">
                  <property name="minimumSize">
                   <size>
                    <width>56</width>
@@ -17506,8 +17443,8 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="axis">
-                  <enum>JogButton::Z</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:z,pos</string>
                  </property>
                 </widget>
                </item>
@@ -17516,7 +17453,7 @@ border-radius: 6px;
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_107">
                <item>
-                <widget class="JogButton" name="z_minus_jogbutton">
+                <widget class="ActionButton" name="z_minus_jogbutton">
                  <property name="minimumSize">
                   <size>
                    <width>56</width>
@@ -17542,11 +17479,8 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="direction">
-                  <enum>JogButton::Negative</enum>
-                 </property>
-                 <property name="axis">
-                  <enum>JogButton::Z</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:z,neg</string>
                  </property>
                 </widget>
                </item>
@@ -17558,7 +17492,7 @@ border-radius: 6px;
                 <number>2</number>
                </property>
                <item row="1" column="2">
-                <widget class="JogButton" name="x_plus_jogbutton">
+                <widget class="ActionButton" name="x_plus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -17590,10 +17524,13 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:x,pos</string>
+                 </property>
                 </widget>
                </item>
                <item row="1" column="0">
-                <widget class="JogButton" name="x_minus_jogbutton">
+                <widget class="ActionButton" name="x_minus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -17625,13 +17562,13 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="direction">
-                  <enum>JogButton::Negative</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:x,neg</string>
                  </property>
                 </widget>
                </item>
                <item row="2" column="1">
-                <widget class="JogButton" name="y_minus_jogbutton">
+                <widget class="ActionButton" name="y_minus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -17663,16 +17600,13 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="direction">
-                  <enum>JogButton::Negative</enum>
-                 </property>
-                 <property name="axis">
-                  <enum>JogButton::Y</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:y,neg</string>
                  </property>
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="JogButton" name="y_plus_jogbutton">
+                <widget class="ActionButton" name="y_plus_jogbutton">
                  <property name="minimumSize">
                   <size>
                    <width>56</width>
@@ -17698,8 +17632,8 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="axis">
-                  <enum>JogButton::Y</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:y,pos</string>
                  </property>
                 </widget>
                </item>
@@ -17708,7 +17642,7 @@ border-radius: 6px;
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_112">
                <item>
-                <widget class="JogButton" name="a_minus_jogbutton">
+                <widget class="ActionButton" name="a_minus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -17740,16 +17674,13 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="direction">
-                  <enum>JogButton::Negative</enum>
-                 </property>
-                 <property name="axis">
-                  <enum>JogButton::A</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:a,neg</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="JogButton" name="a_plus_jogbutton">
+                <widget class="ActionButton" name="a_plus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -17781,8 +17712,8 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="axis">
-                  <enum>JogButton::B</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:a,pos</string>
                  </property>
                 </widget>
                </item>
@@ -17791,7 +17722,7 @@ border-radius: 6px;
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_111">
                <item>
-                <widget class="JogButton" name="b_minus_jogbutton">
+                <widget class="ActionButton" name="b_minus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -17823,16 +17754,13 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="direction">
-                  <enum>JogButton::Negative</enum>
-                 </property>
-                 <property name="axis">
-                  <enum>JogButton::B</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:b,neg</string>
                  </property>
                 </widget>
                </item>
                <item>
-                <widget class="JogButton" name="b_plus_jogbutton">
+                <widget class="ActionButton" name="b_plus_jogbutton">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -17864,8 +17792,8 @@ border-radius: 6px;
                    <height>48</height>
                   </size>
                  </property>
-                 <property name="axis">
-                  <enum>JogButton::B</enum>
+                 <property name="actionName" stdset="0">
+                  <string>machine.jog.axis:b,pos</string>
                  </property>
                 </widget>
                </item>
@@ -18285,14 +18213,8 @@ border-radius: 6px;
              <property name="text">
               <string>CYCLE START</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>CYCLE START</string>
+             <property name="actionName" stdset="0">
+              <string>program.run</string>
              </property>
             </widget>
            </item>
@@ -18328,14 +18250,8 @@ border-radius: 6px;
              <property name="text">
               <string>SINGLE BLOCK</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>SINGLE BLOCK</string>
+             <property name="actionName" stdset="0">
+              <string>program.step</string>
              </property>
             </widget>
            </item>
@@ -18391,14 +18307,8 @@ border-radius: 6px;
              <property name="text">
               <string>M01 BREAK</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::OptionalStop</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>M01 BREAK</string>
+             <property name="actionName" stdset="0">
+              <string>program.optional-stop.toggle</string>
              </property>
             </widget>
            </item>
@@ -18434,14 +18344,8 @@ border-radius: 6px;
              <property name="text">
               <string>FEED HOLD</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::FeedHold</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>FEED HOLD</string>
+             <property name="actionName" stdset="0">
+              <string>program.pause</string>
              </property>
             </widget>
            </item>
@@ -18497,14 +18401,8 @@ border-radius: 6px;
              <property name="text">
               <string>RUN FM HERE</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>RUN FM HERE</string>
+             <property name="actionName" stdset="0">
+              <string>program.run-from-line</string>
              </property>
             </widget>
            </item>
@@ -18540,11 +18438,8 @@ border-radius: 6px;
              <property name="text">
               <string>Flood</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Flood</enum>
+             <property name="actionName" stdset="0">
+              <string>coolant.flood.toggle</string>
              </property>
             </widget>
            </item>
@@ -18600,14 +18495,8 @@ border-radius: 6px;
              <property name="text">
               <string>RESET</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>RESET</string>
+             <property name="actionName" stdset="0">
+              <string>program.rewind</string>
              </property>
             </widget>
            </item>
@@ -18646,11 +18535,8 @@ border-radius: 6px;
              <property name="text">
               <string>Mist</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
+             <property name="actionName" stdset="0">
+              <string>coolant.mist.toggle</string>
              </property>
             </widget>
            </item>
@@ -18706,14 +18592,8 @@ border-radius: 6px;
              <property name="text">
               <string>STOP</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>STOP</string>
+             <property name="actionName" stdset="0">
+              <string>program.abort</string>
              </property>
             </widget>
            </item>
@@ -18781,11 +18661,8 @@ border-radius: 1px;
              <property name="text">
               <string>POWER</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="customText" stdset="0">
-              <string>POWER</string>
+             <property name="actionName" stdset="0">
+              <string>machine.power.toggle</string>
              </property>
             </widget>
            </item>
@@ -18938,14 +18815,8 @@ border-radius: 1px;
              <property name="text">
               <string>E-STOP</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::EmergencyStop</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>E-STOP</string>
+             <property name="actionName" stdset="0">
+              <string>machine.estop.toggle</string>
              </property>
             </widget>
            </item>
@@ -19374,9 +19245,6 @@ padding: -5px;
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
              <property name="customText" stdset="0">
               <string>M6 G43</string>
              </property>
@@ -19422,9 +19290,6 @@ padding: -5px;
              </property>
              <property name="checkable">
               <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
              </property>
              <property name="customText" stdset="0">
               <string>GO TO G30</string>
@@ -19764,9 +19629,6 @@ border-radius: 1px;
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
              <property name="customText" stdset="0">
               <string>GO TO ZERO</string>
              </property>
@@ -19783,7 +19645,7 @@ border-radius: 1px;
             <number>1</number>
            </property>
            <item>
-            <widget class="AxisActionButton" name="axisactionbutton_5">
+            <widget class="ActionButton" name="axisactionbutton_5">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -19810,11 +19672,8 @@ border-radius: 1px;
              <property name="text">
               <string>Home All</string>
              </property>
-             <property name="action_id" stdset="0">
-              <enum>AxisActionButton::Home</enum>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::ALL</enum>
+             <property name="actionName" stdset="0">
+              <string>machine.home.all</string>
              </property>
             </widget>
            </item>
@@ -20111,7 +19970,7 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="AxisActionButton" name="m01_break_button_30">
+            <widget class="ActionButton" name="m01_break_button_30">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -20834,7 +20693,7 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="AxisActionButton" name="axisactionbutton_6">
+            <widget class="ActionButton" name="axisactionbutton_6">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -20861,8 +20720,8 @@ padding: -5px;
              <property name="text">
               <string>Home X</string>
              </property>
-             <property name="action_id" stdset="0">
-              <enum>AxisActionButton::Home</enum>
+             <property name="actionName" stdset="0">
+              <string>machine.home.axis:x</string>
              </property>
             </widget>
            </item>
@@ -20874,7 +20733,7 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="AxisActionButton" name="m01_break_button_33">
+            <widget class="ActionButton" name="m01_break_button_33">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -20911,16 +20770,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>NoAction Y</string>
+              <string>Y</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
-             </property>
-             <property name="action_id" stdset="0">
-              <enum>AxisActionButton::NoAction</enum>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::Y</enum>
              </property>
             </widget>
            </item>
@@ -21440,7 +21293,7 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="AxisActionButton" name="axisactionbutton_3">
+            <widget class="ActionButton" name="axisactionbutton_3">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -21467,11 +21320,8 @@ padding: -5px;
              <property name="text">
               <string>Home Y</string>
              </property>
-             <property name="action_id" stdset="0">
-              <enum>AxisActionButton::Home</enum>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::Y</enum>
+             <property name="actionName" stdset="0">
+              <string>machine.home.axis:y</string>
              </property>
             </widget>
            </item>
@@ -21483,7 +21333,7 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="AxisActionButton" name="m01_break_button_29">
+            <widget class="ActionButton" name="m01_break_button_29">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -21520,13 +21370,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>NoAction Z</string>
+              <string>Z</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::Z</enum>
              </property>
             </widget>
            </item>
@@ -22218,7 +22065,7 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="AxisActionButton" name="axisactionbutton">
+            <widget class="ActionButton" name="axisactionbutton">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -22245,11 +22092,8 @@ padding: -5px;
              <property name="text">
               <string>Home Z</string>
              </property>
-             <property name="action_id" stdset="0">
-              <enum>AxisActionButton::Home</enum>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::Z</enum>
+             <property name="actionName" stdset="0">
+              <string>machine.home.axis:z</string>
              </property>
             </widget>
            </item>
@@ -22261,7 +22105,7 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="AxisActionButton" name="m01_break_button_32">
+            <widget class="ActionButton" name="m01_break_button_32">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -22298,13 +22142,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>NoAction A</string>
+              <string>A</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::A</enum>
              </property>
             </widget>
            </item>
@@ -23005,7 +22846,7 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="AxisActionButton" name="axisactionbutton_2">
+            <widget class="ActionButton" name="axisactionbutton_2">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -23032,11 +22873,8 @@ padding: -5px;
              <property name="text">
               <string>Home A</string>
              </property>
-             <property name="action_id" stdset="0">
-              <enum>AxisActionButton::Home</enum>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::A</enum>
+             <property name="actionName" stdset="0">
+              <string>machine.home.axis:a</string>
              </property>
             </widget>
            </item>
@@ -23048,7 +22886,7 @@ padding: -5px;
             <number>8</number>
            </property>
            <item>
-            <widget class="AxisActionButton" name="m01_break_button_31">
+            <widget class="ActionButton" name="m01_break_button_31">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -23085,13 +22923,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>NoAction B</string>
+              <string>B</string>
              </property>
              <property name="checkable">
               <bool>true</bool>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::B</enum>
              </property>
             </widget>
            </item>
@@ -23620,7 +23455,7 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="AxisActionButton" name="axisactionbutton_4">
+            <widget class="ActionButton" name="axisactionbutton_4">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -23647,11 +23482,8 @@ padding: -5px;
              <property name="text">
               <string>Home B</string>
              </property>
-             <property name="action_id" stdset="0">
-              <enum>AxisActionButton::Home</enum>
-             </property>
-             <property name="axis">
-              <enum>AxisActionButton::B</enum>
+             <property name="actionName" stdset="0">
+              <string>machine.home.axis:b</string>
              </property>
             </widget>
            </item>
@@ -23702,7 +23534,40 @@ padding-right: 7px;
          <property name="verticalSpacing">
           <number>12</number>
          </property>
-         <item row="4" column="0">
+         <item row="5" column="2">
+          <widget class="QPushButton" name="pushButton_49">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+           </property>
+           <property name="text">
+            <string>R 100%</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
           <widget class="OverrideSlider" name="feedrate_override_slider_5">
            <property name="minimumSize">
             <size>
@@ -23892,7 +23757,7 @@ border-radius: 4px;
            </property>
           </widget>
          </item>
-         <item row="3" column="1">
+         <item row="4" column="1">
           <widget class="StatusLabel" name="statuslabel_2">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -23939,7 +23804,7 @@ border-radius: 4px;
            </property>
           </widget>
          </item>
-         <item row="4" column="1">
+         <item row="5" column="1">
           <widget class="StatusLabel" name="statuslabel_3">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -23983,72 +23848,6 @@ border-radius: 4px;
            </property>
            <property name="label_type" stdset="0">
             <enum>StatusLabel::rapid_override</enum>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="2">
-          <widget class="QPushButton" name="pushButton_48">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>65</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>65</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-           </property>
-           <property name="text">
-            <string>S 100%</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="2">
-          <widget class="QPushButton" name="pushButton_49">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>65</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="maximumSize">
-            <size>
-             <width>65</width>
-             <height>40</height>
-            </size>
-           </property>
-           <property name="focusPolicy">
-            <enum>Qt::NoFocus</enum>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-           </property>
-           <property name="text">
-            <string>R 100%</string>
            </property>
           </widget>
          </item>
@@ -24219,14 +24018,8 @@ LOAD</string>
            <property name="text">
             <string>MV 100%</string>
            </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="actionID" stdset="0">
-            <enum>ActionButton::Mist</enum>
-           </property>
-           <property name="customText" stdset="0">
-            <string>MV 100%</string>
+           <property name="actionName" stdset="0">
+            <string>machine.maxvel.reset</string>
            </property>
            <property name="option" stdset="0">
             <bool>true</bool>
@@ -24369,16 +24162,13 @@ border-radius: 4px;
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
-          <widget class="OverrideSlider" name="feedrate_override_slider_4">
+         <item row="4" column="0">
+          <widget class="ActionSlider" name="actionslider">
            <property name="minimumSize">
             <size>
              <width>0</width>
              <height>50</height>
             </size>
-           </property>
-           <property name="cursor">
-            <cursorShape>OpenHandCursor</cursorShape>
            </property>
            <property name="styleSheet">
             <string notr="true">QSlider::groove:horizontal {
@@ -24438,14 +24228,38 @@ border: 1px solid #aaa;
 border-radius: 4px;
 }</string>
            </property>
-           <property name="maximum">
-            <number>199</number>
-           </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
-           <property name="override_type" stdset="0">
-            <enum>OverrideSlider::speed_override</enum>
+           <property name="actionName" stdset="0">
+            <string>spindle.override.set</string>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="2">
+          <widget class="ActionButton" name="actionbutton_28">
+           <property name="minimumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>65</width>
+             <height>40</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+           </property>
+           <property name="text">
+            <string>S 100%</string>
+           </property>
+           <property name="actionName" stdset="0">
+            <string>spindle.override.reset</string>
            </property>
           </widget>
          </item>
@@ -24534,9 +24348,6 @@ border-radius: 6px;
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::StepMode</enum>
-             </property>
             </widget>
            </item>
            <item>
@@ -24562,7 +24373,7 @@ border-radius: 6px;
              <property name="styleSheet">
               <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
-	
+
 }
 
 </string>
@@ -24615,9 +24426,6 @@ border-radius: 6px;
              </property>
              <property name="checked">
               <bool>true</bool>
-             </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::JogMode</enum>
              </property>
             </widget>
            </item>
@@ -25680,11 +25488,8 @@ border-radius: 1px;
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>REV</string>
+             <property name="actionName" stdset="0">
+              <string>spindle.reverse</string>
              </property>
              <property name="option" stdset="0">
               <bool>true</bool>
@@ -25725,11 +25530,8 @@ border-radius: 1px;
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>STOP</string>
+             <property name="actionName" stdset="0">
+              <string>spindle.off</string>
              </property>
              <property name="option" stdset="0">
               <bool>true</bool>
@@ -25785,11 +25587,8 @@ border-radius: 1px;
              <property name="checkable">
               <bool>true</bool>
              </property>
-             <property name="actionID" stdset="0">
-              <enum>ActionButton::Mist</enum>
-             </property>
-             <property name="customText" stdset="0">
-              <string>FWD</string>
+             <property name="actionName" stdset="0">
+              <string>spindle.forward</string>
              </property>
              <property name="option" stdset="0">
               <bool>true</bool>
@@ -26042,11 +25841,6 @@ font: 11pt bebas kai;
    <header>QtPyVCP.widgets.input_widgets.file_system</header>
   </customwidget>
   <customwidget>
-   <class>JogButton</class>
-   <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.jog_button</header>
-  </customwidget>
-  <customwidget>
    <class>ToolTable</class>
    <extends>QTableView</extends>
    <header>QtPyVCP.widgets.input_widgets.tool_table</header>
@@ -26062,6 +25856,11 @@ font: 11pt bebas kai;
    <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
   <customwidget>
+   <class>ActionSlider</class>
+   <extends>QSlider</extends>
+   <header>QtPyVCP.widgets.input_widgets.action_slider</header>
+  </customwidget>
+  <customwidget>
    <class>ActionButton</class>
    <extends>QPushButton</extends>
    <header>QtPyVCP.widgets.button_widgets.action_button</header>
@@ -26070,11 +25869,6 @@ font: 11pt bebas kai;
    <class>DROWidget</class>
    <extends>QLabel</extends>
    <header>QtPyVCP.widgets.display_widgets.dro_widget</header>
-  </customwidget>
-  <customwidget>
-   <class>AxisActionButton</class>
-   <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.axis_button</header>
   </customwidget>
   <customwidget>
    <class>StatusLabel</class>
@@ -26141,22 +25935,6 @@ font: 11pt bebas kai;
     <hint type="destinationlabel">
      <x>1356</x>
      <y>898</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_48</sender>
-   <signal>pressed()</signal>
-   <receiver>feedrate_override_slider_4</receiver>
-   <slot>reset()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1491</x>
-     <y>961</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1356</x>
-     <y>966</y>
     </hint>
    </hints>
   </connection>
