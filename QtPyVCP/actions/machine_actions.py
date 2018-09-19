@@ -290,6 +290,57 @@ feed_override.enable.ok = feed_override.disable.ok = feed_override.toggle_enable
 feed_override.enable.bindOk = feed_override.disable.bindOk = feed_override.toggle_enable.bindOk = _feed_override_enable_bindOk
 
 # -------------------------------------------------------------------------
+# RAPID OVERRIDE actions
+# -------------------------------------------------------------------------
+
+class rapid_override:
+    @staticmethod
+    def set(value):
+        CMD.rapidrate(float(value) / 100)
+
+    @staticmethod
+    def reset():
+        CMD.rapidrate(1.0)
+
+def _rapid_override_ok(value=100, widget=None):
+    if STAT.task_state == linuxcnc.STATE_ON:
+        ok = True
+        msg = ""
+    else:
+        ok = False
+        msg = "Machine must be ON to set rapid override"
+
+    _rapid_override_ok.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
+
+def _rapid_override_bindOk(value=100, widget=None):
+
+    # This will work for any widget
+    STATUS.task_state.connect(lambda: _rapid_override_ok(widget=widget))
+
+    try:
+        # these will only work for QSlider or QSpinBox
+        widget.setMinimum(0)
+        widget.setMaximum(100)
+        widget.setValue(100)
+        rapid_override.set(100)
+
+        STATUS.rapidrate.connect(lambda v: widget.setValue(v * 100))
+    except AttributeError:
+        pass
+    except:
+        LOG.exception('Error in rapid_override bindOk')
+
+rapid_override.set.ok = rapid_override.reset.ok = _rapid_override_ok
+rapid_override.set.bindOk = rapid_override.reset.bindOk = _rapid_override_bindOk
+
+# -------------------------------------------------------------------------
 # set MODE actions
 # -------------------------------------------------------------------------
 class mode:
