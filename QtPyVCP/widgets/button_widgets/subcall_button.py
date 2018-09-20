@@ -62,6 +62,9 @@ class SubCallButton(QPushButton):
 
         args = []
         for line in lines:
+            line = line.strip()
+            if not line.startswith('#'):
+                continue
             result_list = PARSE_POSITIONAL_ARGS.findall(line)
             if len(result_list) == 0:
                 continue

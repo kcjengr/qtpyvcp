@@ -927,6 +927,22 @@
            <string>machine.issue-mdi:G0 X0 Y0 Z0</string>
           </property>
          </widget>
+         <widget class="SubCallButton" name="subcallbutton">
+          <property name="geometry">
+           <rect>
+            <x>460</x>
+            <y>320</y>
+            <width>71</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Circle</string>
+          </property>
+          <property name="sub_name" stdset="0">
+           <string>circle</string>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -2597,6 +2613,11 @@
    <class>RecentFileComboBox</class>
    <extends>QComboBox</extends>
    <header>QtPyVCP.widgets.input_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>SubCallButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.subcall_button</header>
   </customwidget>
   <customwidget>
    <class>ActionSpinBox</class>
