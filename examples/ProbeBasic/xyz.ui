@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>6</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -12895,11 +12895,14 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="checkable">
+                   <property name="text">
+                    <string>G54</string>
+                   </property>
+                   <property name="autoExclusive">
                     <bool>true</bool>
                    </property>
-                   <property name="customText" stdset="0">
-                    <string>G54</string>
+                   <property name="actionName" stdset="0">
+                    <string>machine.set-work-coord:G54</string>
                    </property>
                   </widget>
                  </item>
@@ -12928,11 +12931,14 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="checkable">
+                   <property name="text">
+                    <string>G55</string>
+                   </property>
+                   <property name="autoExclusive">
                     <bool>true</bool>
                    </property>
-                   <property name="customText" stdset="0">
-                    <string>G55</string>
+                   <property name="actionName" stdset="0">
+                    <string>machine.set-work-coord:G55</string>
                    </property>
                   </widget>
                  </item>
@@ -12961,11 +12967,14 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="checkable">
+                   <property name="text">
+                    <string>G56</string>
+                   </property>
+                   <property name="autoExclusive">
                     <bool>true</bool>
                    </property>
-                   <property name="customText" stdset="0">
-                    <string>G56</string>
+                   <property name="actionName" stdset="0">
+                    <string>machine.set-work-coord:G56</string>
                    </property>
                   </widget>
                  </item>
@@ -12994,11 +13003,14 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="checkable">
+                   <property name="text">
+                    <string>G59</string>
+                   </property>
+                   <property name="autoExclusive">
                     <bool>true</bool>
                    </property>
-                   <property name="customText" stdset="0">
-                    <string>G59</string>
+                   <property name="actionName" stdset="0">
+                    <string>machine.set-work-coord:G59</string>
                    </property>
                   </widget>
                  </item>
@@ -13027,11 +13039,14 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="checkable">
+                   <property name="text">
+                    <string>G59.3</string>
+                   </property>
+                   <property name="autoExclusive">
                     <bool>true</bool>
                    </property>
-                   <property name="customText" stdset="0">
-                    <string>G59.3</string>
+                   <property name="actionName" stdset="0">
+                    <string>machine.set-work-coord:G59.3</string>
                    </property>
                   </widget>
                  </item>
@@ -13060,11 +13075,14 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="checkable">
+                   <property name="text">
+                    <string>G58</string>
+                   </property>
+                   <property name="autoExclusive">
                     <bool>true</bool>
                    </property>
-                   <property name="customText" stdset="0">
-                    <string>G58</string>
+                   <property name="actionName" stdset="0">
+                    <string>machine.set-work-coord:G58</string>
                    </property>
                   </widget>
                  </item>
@@ -13093,11 +13111,14 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="checkable">
+                   <property name="text">
+                    <string>G59.2</string>
+                   </property>
+                   <property name="autoExclusive">
                     <bool>true</bool>
                    </property>
-                   <property name="customText" stdset="0">
-                    <string>G59.2</string>
+                   <property name="actionName" stdset="0">
+                    <string>machine.set-work-coord:G59.2</string>
                    </property>
                   </widget>
                  </item>
@@ -13126,11 +13147,14 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="checkable">
+                   <property name="text">
+                    <string>G57</string>
+                   </property>
+                   <property name="autoExclusive">
                     <bool>true</bool>
                    </property>
-                   <property name="customText" stdset="0">
-                    <string>​G57</string>
+                   <property name="actionName" stdset="0">
+                    <string>machine.set-work-coord:G57</string>
                    </property>
                   </widget>
                  </item>
@@ -13159,11 +13183,14 @@ padding-left: 5px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                    </property>
-                   <property name="checkable">
+                   <property name="text">
+                    <string>G59.1</string>
+                   </property>
+                   <property name="autoExclusive">
                     <bool>true</bool>
                    </property>
-                   <property name="customText" stdset="0">
-                    <string>G59.1</string>
+                   <property name="actionName" stdset="0">
+                    <string>machine.set-work-coord:G59.1</string>
                    </property>
                   </widget>
                  </item>
