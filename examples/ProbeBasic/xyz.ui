@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>6</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -19653,14 +19653,8 @@ border-radius: 1px;
              <property name="text">
               <string>GO TO ZERO</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="customText" stdset="0">
-              <string>GO TO ZERO</string>
-             </property>
-             <property name="option" stdset="0">
-              <bool>true</bool>
+             <property name="actionName" stdset="0">
+              <string>machine.issue-mdi:G0 X0 Y0 Z0</string>
              </property>
             </widget>
            </item>
