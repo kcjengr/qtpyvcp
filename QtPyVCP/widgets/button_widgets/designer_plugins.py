@@ -12,6 +12,11 @@ class ActionCheckBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
         return ActionCheckBox
 
+from action_spinbox import ActionSpinBox
+class ActionSpinBoxPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return ActionSpinBox
+
 from subcall_button import SubCallButton
 class MacroButtonPlugin(_DesignerPlugin):
     def pluginClass(self):

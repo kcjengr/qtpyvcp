@@ -67,7 +67,6 @@ def _spindle_bindOk(widget):
 def forward(speed=None):
     if speed is None:
         speed = getSpeed()
-    print speed
     CMD.spindle(linuxcnc.SPINDLE_FORWARD, speed)
 
 def _spindle_forward_bindOk(widget):
@@ -82,7 +81,6 @@ forward.bindOk = _spindle_forward_bindOk
 def reverse(speed=None):
     if speed is None:
         speed = getSpeed()
-    print speed
     CMD.spindle(linuxcnc.SPINDLE_REVERSE, speed)
 
 def _spindle_reverse_bindOk(widget):
@@ -126,19 +124,10 @@ def getSpeed():
     if raw_speed == 0:
         raw_speed = abs(INFO.defaultSpindleSpeed())
 
-    print INFO.defaultSpindleSpeed()
-
     if STAT.spindle_override_enabled:
         STAT.spindlerate
 
-    speed = raw_speed * STAT.spindlerate
-
-    # if real_spindle_speed > self.max_spindle_rev:
-    #     real_spindle_speed = self.max_spindle_rev
-    # elif real_spindle_speed < self.min_spindle_rev:
-    #     real_spindle_speed = self.min_spindle_rev
-    return speed
-
+    return raw_speed * STAT.spindlerate
 
 class override:
     @staticmethod

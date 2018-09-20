@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QAction, QPushButton, QCheckBox, QSlider
+from PyQt5.QtWidgets import QAction, QPushButton, QCheckBox, QSlider, QSpinBox
 
 import machine_actions as machine
 import program_actions as program
@@ -59,7 +59,7 @@ def bindWidget(widget, action):
         else:
             widget.clicked.connect(lambda: method(*args))
 
-    elif isinstance(widget, QSlider):
+    elif isinstance(widget, QSlider) or isinstance(widget, QSpinBox):
         widget.valueChanged.connect(method)
 
     else:
