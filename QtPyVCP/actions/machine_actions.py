@@ -147,6 +147,83 @@ power.on.ok = power.off.ok = power.toggle.ok = _power_ok
 power.on.bindOk = power.off.bindOk = power.toggle.bindOk = _power_bindOk
 
 # -------------------------------------------------------------------------
+# MDI action
+# -------------------------------------------------------------------------
+
+PREVIOUS_MODE = None
+
+def _resetMode(interp_state):
+    if  PREVIOUS_MODE is not None and interp_state == linuxcnc.INTERP_IDLE:
+        if setTaskMode(PREVIOUS_MODE):
+            LOG.debug("Successfully reset task_mode after MDI")
+        global PREVIOUS_MODE
+        PREVIOUS_MODE = None
+
+STATUS.interp_state.connect(_resetMode)
+
+def issue_mdi(mdi_command, reset=True):
+    if reset:
+        # save the previous mode
+        global PREVIOUS_MODE
+        PREVIOUS_MODE = STAT.task_mode
+        # Force `interp_state` update on next status cycle. This is needed because
+        # some commands might take less than `cycle_time` (50ms) to complete,
+        # so status would not even notice that the interp_state had changed and the
+        # reset mode method would not be called.
+        STATUS.old['interp_state'] = -1
+
+    if setTaskMode(linuxcnc.MODE_MDI):
+        LOG.info("Issuind MDI command: {}".format(mdi_command))
+        CMD.mdi(mdi_command)
+    else:
+        LOG.error("Failed to issue MDI command: {}".format(mdi_command))
+
+def _issue_mdi_ok(mdi_cmd='', widget=None):
+    if STAT.task_state == linuxcnc.STATE_ON \
+        and STATUS.allHomed() \
+        and STAT.interp_state == linuxcnc.INTERP_IDLE:
+
+        ok = True
+        msg = ""
+
+    else:
+        ok = False
+        msg = "Machine must be ON, HOMED and IDLE to issue MDI"
+
+    _issue_mdi_ok.msg = msg
+
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
+
+def _issue_mdi_bindOk(mdi_cmd='', widget=None):
+    STATUS.task_state.connect(lambda: _issue_mdi_ok(widget=widget))
+    STATUS.interp_state.connect(lambda: _issue_mdi_ok(widget=widget))
+    STATUS.homed.connect(lambda: _issue_mdi_ok(widget=widget))
+
+issue_mdi.ok = _issue_mdi_ok
+issue_mdi.bindOk = _issue_mdi_bindOk
+
+# -------------------------------------------------------------------------
+# WORK COORDINATES action
+# -------------------------------------------------------------------------
+
+def set_work_coord(coord):
+    issue_mdi(coord)
+
+def _set_work_coord_bindOk(coord='', widget=None):
+    widget.setCheckable(True)
+    _issue_mdi_bindOk(coord, widget=widget)
+    index = ["G53", "G54", "G55", "G56", "G57", "G58", "G59", "G59.1", "G59.2", "G59.3"].index(coord.upper())
+    STATUS.g5x_index.connect(lambda i: widget.setChecked(i == index))
+
+set_work_coord.ok = _issue_mdi_ok
+set_work_coord.bindOk = _set_work_coord_bindOk
+
+# -------------------------------------------------------------------------
 # FEED HOLD action
 # -------------------------------------------------------------------------
 class feedhold:
