@@ -25449,9 +25449,6 @@ border-radius: 1px;
                <height>18</height>
               </size>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
              <property name="actionName" stdset="0">
               <string>spindle.reverse</string>
              </property>
@@ -25490,9 +25487,6 @@ border-radius: 1px;
              </property>
              <property name="text">
               <string>STOP</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
              </property>
              <property name="actionName" stdset="0">
               <string>spindle.off</string>
@@ -25547,9 +25541,6 @@ border-radius: 1px;
                <width>18</width>
                <height>18</height>
               </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
              </property>
              <property name="actionName" stdset="0">
               <string>spindle.forward</string>
