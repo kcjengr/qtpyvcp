@@ -479,6 +479,22 @@
            <enum>StatusLabel::speed_override</enum>
           </property>
          </widget>
+         <widget class="ActionButton" name="actionbutton_30">
+          <property name="geometry">
+           <rect>
+            <x>580</x>
+            <y>330</y>
+            <width>131</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Feedhold</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.feedhold.toggle-enable</string>
+          </property>
+         </widget>
          <widget class="ActionSlider" name="actionslider">
           <property name="geometry">
            <rect>
@@ -802,16 +818,19 @@
          <widget class="QGroupBox" name="groupBox">
           <property name="geometry">
            <rect>
-            <x>10</x>
+            <x>20</x>
             <y>10</y>
-            <width>81</width>
-            <height>171</height>
+            <width>111</width>
+            <height>211</height>
            </rect>
           </property>
           <property name="title">
            <string>WCS</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="spacing">
+            <number>0</number>
+           </property>
            <item>
             <widget class="ActionButton" name="actionbutton_38">
              <property name="text">
@@ -864,14 +883,40 @@
              </property>
             </widget>
            </item>
+           <item>
+            <widget class="ActionButton" name="actionbutton_43">
+             <property name="text">
+              <string>G58</string>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.set-work-coord:G58</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionButton" name="actionbutton_44">
+             <property name="text">
+              <string>G59</string>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.set-work-coord:G59</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
          <widget class="ActionButton" name="actionbutton_42">
           <property name="geometry">
            <rect>
-            <x>110</x>
+            <x>140</x>
             <y>30</y>
-            <width>91</width>
+            <width>81</width>
             <height>41</height>
            </rect>
           </property>
@@ -880,6 +925,22 @@
           </property>
           <property name="actionName" stdset="0">
            <string>machine.issue-mdi:G0 X0 Y0 Z0</string>
+          </property>
+         </widget>
+         <widget class="SubCallButton" name="subcallbutton">
+          <property name="geometry">
+           <rect>
+            <x>460</x>
+            <y>320</y>
+            <width>71</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Circle</string>
+          </property>
+          <property name="sub_name" stdset="0">
+           <string>circle</string>
           </property>
          </widget>
         </widget>
@@ -1930,7 +1991,7 @@
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>467</width>
+             <width>345</width>
              <height>41</height>
             </size>
            </property>
@@ -2552,6 +2613,11 @@
    <class>RecentFileComboBox</class>
    <extends>QComboBox</extends>
    <header>QtPyVCP.widgets.input_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>SubCallButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.subcall_button</header>
   </customwidget>
   <customwidget>
    <class>ActionSpinBox</class>
