@@ -22,6 +22,9 @@ class RemovableDeviceComboBox(QComboBox):
         super(RemovableDeviceComboBox, self).__init__(parent)
         # self.refreshDeviceList()
 
+    def showEvent(self, event=None):
+        self.refreshDeviceList()
+
     def showPopup(self):
         # refresh the device list just before showing popup
         self.refreshDeviceList()
@@ -49,14 +52,22 @@ class RemovableDeviceComboBox(QComboBox):
                     # self.model.append_item(p.mountpoint)
                     self.addItem(p.mountpoint, p.device)
 
+        if not self.count():
+            self.addItem("No Devide Found", "NONONONONO")
+
         self.setCurrentIndex(0)
 
     @pyqtSlot()
     def ejectDevice(self):
         mount_point = self.currentData()
 
+        if mount_point == "NONONONONO":
+            return
+
         os.system("udisksctl unmount --block-device {}".format(mount_point))
         os.system("udisksctl power-off --block-device {}".format(mount_point))
+
+        self.refreshDeviceList()
 
         self.setCurrentIndex(0)
         
