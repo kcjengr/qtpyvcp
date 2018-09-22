@@ -2,11 +2,8 @@ import os
 import pyudev
 import psutil
 
-from PyQt5.QtCore import QAbstractListModel, QModelIndex, Qt, pyqtSlot, pyqtProperty, \
-    Q_ENUMS, pyqtSignal, QFile, QFileInfo, QDir, QIODevice
-
-from PyQt5.QtWidgets import QFileSystemModel, QWidget, QComboBox, \
-    QPushButton, QTableView, QMessageBox, QApplication, QAbstractItemView
+from PyQt5.QtCore import pyqtSlot, pyqtProperty, Q_ENUMS, pyqtSignal, QFile, QFileInfo, QDir, QIODevice
+from PyQt5.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, QApplication, QAbstractItemView
 
 from QtPyVCP.utilities.info import Info
 
@@ -15,13 +12,18 @@ class TableType(object):
     Local = 0
     Remote = 1
 
+
 class RemovableDeviceComboBox(QComboBox):
     """
     ComboBox for choosing from a list of removable devices.
     """
+
     def __init__(self, parent=None):
         super(RemovableDeviceComboBox, self).__init__(parent)
         # self.refreshDeviceList()
+
+    def showEvent(self, event=None):
+        self.refreshDeviceList()
 
     def showPopup(self):
         # refresh the device list just before showing popup
@@ -30,7 +32,6 @@ class RemovableDeviceComboBox(QComboBox):
 
     @pyqtSlot()
     def refreshDeviceList(self):
-
         # clear existing items
         self.clear()
 
@@ -49,14 +50,33 @@ class RemovableDeviceComboBox(QComboBox):
                 if p.device in partitions:
                     # print("  {}: {}".format(p.device, p.mountpoint))
                     # self.model.append_item(p.mountpoint)
-                    self.addItem(p.mountpoint, None)
+                    self.addItem(p.mountpoint, p.device)
+
+        if not self.count():
+            self.addItem("No Devide Found", "NONONONONO")
 
         self.setCurrentIndex(0)
+
+    @pyqtSlot()
+    def ejectDevice(self):
+        mount_point = self.currentData()
+
+        if mount_point == "NONONONONO":
+            return
+
+        os.system("udisksctl unmount --block-device {}".format(mount_point))
+        os.system("udisksctl power-off --block-device {}".format(mount_point))
+
+        self.refreshDeviceList()
+
+        self.setCurrentIndex(0)
+        
 
 class FileSystemTable(QTableView, TableType):
     Q_ENUMS(TableType)
 
     transferFileRequest = pyqtSignal(str)
+    rootChanged = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(FileSystemTable, self).__init__(parent)
@@ -89,10 +109,22 @@ class FileSystemTable(QTableView, TableType):
         self._nc_file_dir = self.info.getProgramPrefix()
         self.setRootPath(self._nc_file_dir)
 
+    def showEvent(self, event=None):
+        self.rootChanged.emit(self._nc_file_dir)
+
     def changeRoot(self, index):
-        new_path = self.model.data(index)
-        self.model.setRootPath(new_path)
-        self.setRootIndex(index)
+
+        path = self.model.filePath(self.rootIndex())
+        new_path = self.model.filePath(index)
+
+        absolute_path = os.path.join(path, new_path)
+
+        file_info = QFileInfo(absolute_path)
+        if file_info.isDir():
+            self.model.setRootPath(absolute_path)
+            self.setRootIndex(self.model.index(absolute_path))
+
+            self.rootChanged.emit(absolute_path)
 
     @pyqtSlot()
     def newFile(self):
@@ -127,18 +159,27 @@ class FileSystemTable(QTableView, TableType):
 
     @pyqtSlot(str)
     def setRootPath(self, root_path):
+
+        self.rootChanged.emit(root_path)
         self.model.setRootPath(root_path)
         self.setRootIndex(self.model.index(root_path))
 
+        return True
+
     @pyqtSlot()
     def goUP(self):
-        file_info = QFileInfo(self.selected_row)
+
+        path = self.model.filePath(self.rootIndex())
+
+        file_info = QFileInfo(path)
         directory = file_info.dir()
         new_path = directory.absolutePath()
 
         currentRoot = self.rootIndex()
+
         self.model.setRootPath(new_path)
         self.setRootIndex(currentRoot.parent())
+        self.rootChanged.emit(new_path)
 
     @pyqtSlot()
     def doFileTransfer(self):
@@ -178,7 +219,6 @@ class FileSystemTable(QTableView, TableType):
             self.setRootPath(self._nc_file_dir)
         else:
             self.setRootPath('/media/')
-
 
     def ask_dialog(self, message):
         box = QMessageBox.question(self.parent,
