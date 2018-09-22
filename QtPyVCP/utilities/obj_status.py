@@ -243,18 +243,18 @@ class HALPin(QObject):
 
     def connect(self, slot, log_change=False):
         log.debug("Connecting '{}' valueChanged signal to {}".format(self.pin_name, slot))
-        self.valueChanged.connect(slot)
+        self.valueChanged[self.type].connect(slot)
         self.log_change = log_change
 
     def disconnect(self, slot=''):
         if slot is not None:
             try:
-                self.valueChanged.disconnect(slot)
+                self.valueChanged[self.type].disconnect(slot)
             except Exception as e:
                 log.warning("Failed to disconnect slot: {}".format(slot), exc_info=e)
         elif slot == '':
             # remove all slots from signal it not slot given
-            self.valueChanged.disconnect()
+            self.valueChanged[self.type].disconnect()
 
     def getValue(self):
         data = subprocess.check_output(['halcmd', '-s', 'show', 'pin', self.pin_name]).split()
@@ -308,7 +308,7 @@ class HALPoller(QObject):
     def hal_poll_thread(self):
 
         while True:
-            s = time.time()
+            # s = time.time()
 
             # first, check if linuxcnc is running at all
             if not os.path.isfile( '/tmp/linuxcnc.lock' ):
