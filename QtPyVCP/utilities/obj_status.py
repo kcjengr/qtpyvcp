@@ -452,7 +452,7 @@ if __name__ == '__main__':
     # retrieve/initialize HALPin objects
     hal_pos_pin = hal_stat.getHALPin('joint.0.pos-cmd')
     hal_pos_pin.setLogChange(True)
-    hal_pos_pin.valueChanged.connect((lambda v: hal_pos_dro.setNum(v)))
+    hal_pos_pin.connect((lambda v: hal_pos_dro.setNum(v)))
 
     #==========================================================================
     # HAL setting and reading values Status example usage
@@ -473,7 +473,7 @@ if __name__ == '__main__':
     flood_toggle.setChecked(flood_is_on_pin.getValue())
 
     # keep checkbox in sync with HALs value, e.g. if flood was turned on from a UI
-    flood_is_on_pin.valueChanged.connect((lambda v: flood_toggle.setChecked(v)))
+    flood_is_on_pin.connect((lambda v: flood_toggle.setChecked(v)))
 
     # connect button toggled signal to our method
     flood_toggle.toggled.connect(setFloodOn)
@@ -485,7 +485,7 @@ if __name__ == '__main__':
     flood_state_label = QLabel(str(flood_is_on_pin.getValue()))
 
     # connect the `halui.flood.is-on` state changes signal to our label
-    flood_is_on_pin.valueChanged.connect((lambda v: flood_state_label.setText(str(v))))
+    flood_is_on_pin.connect((lambda v: flood_state_label.setText(str(v))))
 
 
     # setup the window
