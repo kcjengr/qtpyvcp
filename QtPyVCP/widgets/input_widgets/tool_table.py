@@ -404,7 +404,7 @@ class ToolTable(QTableView):
             return
         current_tool = self.model.tool_list[current_row][0]
 
-        if not self.ask_dialog("Do yo wan't to delete T{} ?".format(current_tool)):
+        if not self.ask_dialog("Do you wan't to delete T{} ?".format(current_tool)):
             return
 
         self.model.removeTool(current_row)
@@ -412,7 +412,7 @@ class ToolTable(QTableView):
     @pyqtSlot()
     def removeAllTools(self, confirm=True):
         if confirm:
-            if not self.ask_dialog("Do yo wan't to delete the whole tool table?"):
+            if not self.ask_dialog("Do you wan't to delete the whole tool table?"):
                 return
 
         for i in reversed(range(self.model.rowCount())):
