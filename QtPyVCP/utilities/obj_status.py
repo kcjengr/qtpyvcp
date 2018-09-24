@@ -243,18 +243,18 @@ class HALPin(QObject):
 
     def connect(self, slot, log_change=False):
         log.debug("Connecting '{}' valueChanged signal to {}".format(self.pin_name, slot))
-        self.valueChanged.connect(slot)
+        self.valueChanged[self.type].connect(slot)
         self.log_change = log_change
 
     def disconnect(self, slot=''):
         if slot is not None:
             try:
-                self.valueChanged.disconnect(slot)
+                self.valueChanged[self.type].disconnect(slot)
             except Exception as e:
                 log.warning("Failed to disconnect slot: {}".format(slot), exc_info=e)
         elif slot == '':
             # remove all slots from signal it not slot given
-            self.valueChanged.disconnect()
+            self.valueChanged[self.type].disconnect()
 
     def getValue(self):
         data = subprocess.check_output(['halcmd', '-s', 'show', 'pin', self.pin_name]).split()
@@ -308,7 +308,7 @@ class HALPoller(QObject):
     def hal_poll_thread(self):
 
         while True:
-            s = time.time()
+            # s = time.time()
 
             # first, check if linuxcnc is running at all
             if not os.path.isfile( '/tmp/linuxcnc.lock' ):
@@ -452,7 +452,7 @@ if __name__ == '__main__':
     # retrieve/initialize HALPin objects
     hal_pos_pin = hal_stat.getHALPin('joint.0.pos-cmd')
     hal_pos_pin.setLogChange(True)
-    hal_pos_pin.valueChanged.connect((lambda v: hal_pos_dro.setNum(v)))
+    hal_pos_pin.connect((lambda v: hal_pos_dro.setNum(v)))
 
     #==========================================================================
     # HAL setting and reading values Status example usage
@@ -473,7 +473,7 @@ if __name__ == '__main__':
     flood_toggle.setChecked(flood_is_on_pin.getValue())
 
     # keep checkbox in sync with HALs value, e.g. if flood was turned on from a UI
-    flood_is_on_pin.valueChanged.connect((lambda v: flood_toggle.setChecked(v)))
+    flood_is_on_pin.connect((lambda v: flood_toggle.setChecked(v)))
 
     # connect button toggled signal to our method
     flood_toggle.toggled.connect(setFloodOn)
@@ -485,7 +485,7 @@ if __name__ == '__main__':
     flood_state_label = QLabel(str(flood_is_on_pin.getValue()))
 
     # connect the `halui.flood.is-on` state changes signal to our label
-    flood_is_on_pin.valueChanged.connect((lambda v: flood_state_label.setText(str(v))))
+    flood_is_on_pin.connect((lambda v: flood_state_label.setText(str(v))))
 
 
     # setup the window
