@@ -1,28 +1,28 @@
 #!/usr/bin/env python
 
-from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtWidgets import QComboBox
 from PyQt5.QtCore import pyqtProperty
 
 from QtPyVCP.actions import bindWidget
 
-class ActionButton(QPushButton):
-    """General purpose button for triggering QtPyVCP actions.
+class ActionComboBox(QComboBox):
+    """General purpose combobox for triggering QtPyVCP actions.
 
     Args:
-        parent (QWidget) : The parent widget of the button, or None.
+        parent (QWidget) : The parent widget of the combobox, or None.
 
     Attributes:
         _action_name (str) : The fully qualified name of the action the
-            button triggers:
+            combobox triggers when the selection is changed.
     """
     def __init__(self, parent=None):
-        super(ActionButton, self).__init__(parent)
+        super(ActionComboBox, self).__init__(parent)
 
         self._action_name = ''
 
     @pyqtProperty(str)
     def actionName(self):
-        """The `actionName` property for setting the action the button
+        """The `actionName` property for setting the action the combobox
             should trigger from within QtDesigner.
 
         Returns:
