@@ -16,7 +16,8 @@ QComboBox[editable="true"]::drop-down {
                                      stop: 0 #b6b6b6, stop: 1.0 #626262);
 }
 
-QPushButton:disabled {
+QPushButton:disabled,
+QComboBox:disabled {
     border-color: gray;
 }
 

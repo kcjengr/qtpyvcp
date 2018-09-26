@@ -25,7 +25,7 @@
 import sys
 import time
 import linuxcnc
-from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import QComboBox
 
 # Set up logging
 from QtPyVCP.utilities import logger
@@ -162,6 +162,7 @@ def _resetMode(interp_state):
 STATUS.interp_state.connect(_resetMode)
 
 def issue_mdi(mdi_command, reset=True):
+    print "reset", reset
     if reset:
         # save the previous mode
         global PREVIOUS_MODE
@@ -188,7 +189,7 @@ def _issue_mdi_ok(mdi_cmd='', widget=None):
 
     else:
         ok = False
-        msg = "Machine must be ON, HOMED and IDLE to issue MDI"
+        msg = "Can't issue MDI unless machine is ON, HOMED and IDLE"
 
     _issue_mdi_ok.msg = msg
 
@@ -200,9 +201,9 @@ def _issue_mdi_ok(mdi_cmd='', widget=None):
     return ok
 
 def _issue_mdi_bindOk(mdi_cmd='', widget=None):
-    STATUS.task_state.connect(lambda: _issue_mdi_ok(widget=widget))
-    STATUS.interp_state.connect(lambda: _issue_mdi_ok(widget=widget))
-    STATUS.homed.connect(lambda: _issue_mdi_ok(widget=widget))
+    STATUS.task_state.connect(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
+    STATUS.interp_state.connect(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
+    STATUS.homed.connect(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
 
 issue_mdi.ok = _issue_mdi_ok
 issue_mdi.bindOk = _issue_mdi_bindOk
@@ -215,10 +216,14 @@ def set_work_coord(coord):
     issue_mdi(coord)
 
 def _set_work_coord_bindOk(coord='', widget=None):
-    widget.setCheckable(True)
+    coord = coord.upper()
     _issue_mdi_bindOk(coord, widget=widget)
-    index = ["G53", "G54", "G55", "G56", "G57", "G58", "G59", "G59.1", "G59.2", "G59.3"].index(coord.upper())
-    STATUS.g5x_index.connect(lambda i: widget.setChecked(i == index))
+    if isinstance(widget, QComboBox):
+        widget.setCurrentText(coord)
+        STATUS.g5x_index[str].connect(lambda wc: widget.setCurrentText(wc))
+    else:
+        widget.setCheckable(True)
+        STATUS.g5x_index[str].connect(lambda wc: widget.setChecked(wc == coord))
 
 set_work_coord.ok = _issue_mdi_ok
 set_work_coord.bindOk = _set_work_coord_bindOk
@@ -351,7 +356,7 @@ def _feed_override_bindOk(value=100, widget=None):
     try:
         # these will only work for QSlider or QSpinBox
         widget.setMinimum(0)
-        widget.setMaximum(100)
+        widget.setMaximum(INFO.maxFeedOverride() * 100)
         widget.setValue(100)
         feed_override.set(100)
 

@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QAction, QPushButton, QCheckBox, QSlider, QSpinBox
+from PyQt5.QtWidgets import QAction, QPushButton, QCheckBox, QSlider, QSpinBox, QComboBox
 
 import machine_actions as machine
 import program_actions as program
@@ -16,7 +16,7 @@ def bindWidget(widget, action):
 
     Args:
         widget (QtWidget) : The widget to bind the action too. Typically `widget`
-            would be a QPushButton, QCheckBox, QAction or QSlider instance.
+            is a QPushButton, QCheckBox, QComboBox, QSlider or QAction instance.
 
         action (string) : The string identifier of the action to bind the widget
             to, in the format `action_class.action_name:arg1, arg2 ...`.
@@ -61,6 +61,9 @@ def bindWidget(widget, action):
 
     elif isinstance(widget, QSlider) or isinstance(widget, QSpinBox):
         widget.valueChanged.connect(method)
+
+    elif isinstance(widget, QComboBox):
+        widget.activated[str].connect(method)
 
     else:
         LOG.error('Can\'t bind action "{}" to unsupported widget type "{}"'\

@@ -909,6 +909,65 @@
              </property>
             </widget>
            </item>
+           <item>
+            <widget class="Line" name="line">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionComboBox" name="actioncombobox">
+             <property name="actionName" stdset="0">
+              <string>machine.set-work-coord</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>G54</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G55</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G56</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G57</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G58</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G59</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G59.1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G59.2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G59.3</string>
+              </property>
+             </item>
+            </widget>
+           </item>
           </layout>
          </widget>
          <widget class="ActionButton" name="actionbutton_42">
@@ -2618,6 +2677,11 @@
    <class>SubCallButton</class>
    <extends>QPushButton</extends>
    <header>QtPyVCP.widgets.button_widgets.subcall_button</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionComboBox</class>
+   <extends>QComboBox</extends>
+   <header>QtPyVCP.widgets.input_widgets.action_combobox</header>
   </customwidget>
   <customwidget>
    <class>ActionSpinBox</class>
