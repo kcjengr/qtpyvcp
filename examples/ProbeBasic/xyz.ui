@@ -18406,43 +18406,6 @@ border-radius: 6px;
             </widget>
            </item>
            <item>
-            <widget class="ActionButton" name="actionbutton_2">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>130</width>
-               <height>42</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>130</width>
-               <height>42</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-             </property>
-             <property name="text">
-              <string>M01 BREAK</string>
-             </property>
-             <property name="actionName" stdset="0">
-              <string>program.optional-stop.toggle</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_90">
-           <item>
             <widget class="ActionButton" name="actionbutton_10">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -18475,6 +18438,43 @@ border-radius: 6px;
              </property>
             </widget>
            </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_90">
+           <item>
+            <widget class="ActionButton" name="actionbutton_6">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>130</width>
+               <height>42</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>130</width>
+               <height>42</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+             </property>
+             <property name="text">
+              <string>BLOCK DELETE</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>program.delete</string>
+             </property>
+            </widget>
+           </item>
            <item>
             <widget class="QLabel" name="ref_coilumn_header_14">
              <property name="sizePolicy">
@@ -18500,7 +18500,7 @@ border-radius: 6px;
             </widget>
            </item>
            <item>
-            <widget class="ActionButton" name="actionbutton_7">
+            <widget class="ActionButton" name="actionbutton_2">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18525,10 +18525,10 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>RUN FM HERE</string>
+              <string>M01 BREAK</string>
              </property>
              <property name="actionName" stdset="0">
-              <string>program.run-from-line</string>
+              <string>program.optional-stop.toggle</string>
              </property>
             </widget>
            </item>
@@ -18594,7 +18594,7 @@ border-radius: 6px;
             </widget>
            </item>
            <item>
-            <widget class="ActionButton" name="actionbutton_6">
+            <widget class="ActionButton" name="actionbutton_7">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18619,10 +18619,10 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>RESET</string>
+              <string>RUN FM HERE</string>
              </property>
              <property name="actionName" stdset="0">
-              <string>program.rewind</string>
+              <string>program.run-from-line</string>
              </property>
             </widget>
            </item>
@@ -24179,7 +24179,7 @@ border-radius: 4px;
 }</string>
            </property>
            <property name="maximum">
-            <number>100</number>
+            <number>200</number>
            </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
