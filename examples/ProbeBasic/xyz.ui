@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -6670,7 +6670,7 @@ border-radius: 6px;
                         </widget>
                        </item>
                        <item row="1" column="0">
-                        <widget class="ActionButton" name="actionbutton_19">
+                        <widget class="ActionButton" name="actionbutton_33">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -6685,7 +6685,7 @@ border-radius: 6px;
                          </property>
                          <property name="maximumSize">
                           <size>
-                           <width>120</width>
+                           <width>110</width>
                            <height>38</height>
                           </size>
                          </property>
@@ -6694,48 +6694,18 @@ border-radius: 6px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                          </property>
-                         <property name="checkable">
+                         <property name="text">
+                          <string>G54</string>
+                         </property>
+                         <property name="autoExclusive">
                           <bool>true</bool>
                          </property>
-                         <property name="customText" stdset="0">
-                          <string>G54</string>
+                         <property name="actionName" stdset="0">
+                          <string>machine.set-work-coord:G54</string>
                          </property>
                         </widget>
                        </item>
                        <item row="1" column="1">
-                        <widget class="ActionButton" name="actionbutton_23">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>110</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>120</width>
-                           <height>38</height>
-                          </size>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-                         </property>
-                         <property name="checkable">
-                          <bool>true</bool>
-                         </property>
-                         <property name="customText" stdset="0">
-                          <string>G55</string>
-                         </property>
-                        </widget>
-                       </item>
-                       <item row="1" column="2">
                         <widget class="ActionButton" name="actionbutton_27">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6751,7 +6721,7 @@ border-radius: 6px;
                          </property>
                          <property name="maximumSize">
                           <size>
-                           <width>120</width>
+                           <width>110</width>
                            <height>38</height>
                           </size>
                          </property>
@@ -6760,11 +6730,50 @@ border-radius: 6px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                          </property>
-                         <property name="checkable">
+                         <property name="text">
+                          <string>G55</string>
+                         </property>
+                         <property name="autoExclusive">
                           <bool>true</bool>
                          </property>
-                         <property name="customText" stdset="0">
+                         <property name="actionName" stdset="0">
+                          <string>machine.set-work-coord:G55</string>
+                         </property>
+                        </widget>
+                       </item>
+                       <item row="1" column="2">
+                        <widget class="ActionButton" name="actionbutton_34">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>110</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>110</width>
+                           <height>38</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                         </property>
+                         <property name="text">
                           <string>G56</string>
+                         </property>
+                         <property name="autoExclusive">
+                          <bool>true</bool>
+                         </property>
+                         <property name="actionName" stdset="0">
+                          <string>machine.set-work-coord:G56</string>
                          </property>
                         </widget>
                        </item>
@@ -6784,7 +6793,7 @@ border-radius: 6px;
                          </property>
                          <property name="maximumSize">
                           <size>
-                           <width>120</width>
+                           <width>110</width>
                            <height>38</height>
                           </size>
                          </property>
@@ -6793,16 +6802,19 @@ border-radius: 6px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                          </property>
-                         <property name="checkable">
+                         <property name="text">
+                          <string>G57</string>
+                         </property>
+                         <property name="autoExclusive">
                           <bool>true</bool>
                          </property>
-                         <property name="customText" stdset="0">
-                          <string>​G57</string>
+                         <property name="actionName" stdset="0">
+                          <string>machine.set-work-coord:G57</string>
                          </property>
                         </widget>
                        </item>
                        <item row="1" column="4">
-                        <widget class="ActionButton" name="actionbutton_20">
+                        <widget class="ActionButton" name="actionbutton_32">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -6817,7 +6829,7 @@ border-radius: 6px;
                          </property>
                          <property name="maximumSize">
                           <size>
-                           <width>120</width>
+                           <width>110</width>
                            <height>38</height>
                           </size>
                          </property>
@@ -6826,16 +6838,19 @@ border-radius: 6px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                          </property>
-                         <property name="checkable">
+                         <property name="text">
+                          <string>G58</string>
+                         </property>
+                         <property name="autoExclusive">
                           <bool>true</bool>
                          </property>
-                         <property name="customText" stdset="0">
-                          <string>G58</string>
+                         <property name="actionName" stdset="0">
+                          <string>machine.set-work-coord:G58</string>
                          </property>
                         </widget>
                        </item>
                        <item row="2" column="1">
-                        <widget class="ActionButton" name="actionbutton_25">
+                        <widget class="ActionButton" name="actionbutton_35">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -6850,7 +6865,7 @@ border-radius: 6px;
                          </property>
                          <property name="maximumSize">
                           <size>
-                           <width>120</width>
+                           <width>110</width>
                            <height>38</height>
                           </size>
                          </property>
@@ -6859,16 +6874,19 @@ border-radius: 6px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                          </property>
-                         <property name="checkable">
+                         <property name="text">
+                          <string>G59</string>
+                         </property>
+                         <property name="autoExclusive">
                           <bool>true</bool>
                          </property>
-                         <property name="customText" stdset="0">
-                          <string>G59</string>
+                         <property name="actionName" stdset="0">
+                          <string>machine.set-work-coord:G59</string>
                          </property>
                         </widget>
                        </item>
                        <item row="2" column="2">
-                        <widget class="ActionButton" name="actionbutton_22">
+                        <widget class="ActionButton" name="actionbutton_19">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -6883,7 +6901,7 @@ border-radius: 6px;
                          </property>
                          <property name="maximumSize">
                           <size>
-                           <width>120</width>
+                           <width>110</width>
                            <height>38</height>
                           </size>
                          </property>
@@ -6892,16 +6910,19 @@ border-radius: 6px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                          </property>
-                         <property name="checkable">
+                         <property name="text">
+                          <string>G59.1</string>
+                         </property>
+                         <property name="autoExclusive">
                           <bool>true</bool>
                          </property>
-                         <property name="customText" stdset="0">
-                          <string>G59.1</string>
+                         <property name="actionName" stdset="0">
+                          <string>machine.set-work-coord:G59.1</string>
                          </property>
                         </widget>
                        </item>
                        <item row="2" column="3">
-                        <widget class="ActionButton" name="actionbutton_21">
+                        <widget class="ActionButton" name="actionbutton_23">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -6916,7 +6937,7 @@ border-radius: 6px;
                          </property>
                          <property name="maximumSize">
                           <size>
-                           <width>120</width>
+                           <width>110</width>
                            <height>38</height>
                           </size>
                          </property>
@@ -6925,16 +6946,19 @@ border-radius: 6px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                          </property>
-                         <property name="checkable">
+                         <property name="text">
+                          <string>G59.2</string>
+                         </property>
+                         <property name="autoExclusive">
                           <bool>true</bool>
                          </property>
-                         <property name="customText" stdset="0">
-                          <string>G59.2</string>
+                         <property name="actionName" stdset="0">
+                          <string>machine.set-work-coord:G59.2</string>
                          </property>
                         </widget>
                        </item>
                        <item row="2" column="4">
-                        <widget class="ActionButton" name="actionbutton_26">
+                        <widget class="ActionButton" name="actionbutton_36">
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -6949,7 +6973,7 @@ border-radius: 6px;
                          </property>
                          <property name="maximumSize">
                           <size>
-                           <width>120</width>
+                           <width>110</width>
                            <height>38</height>
                           </size>
                          </property>
@@ -6958,11 +6982,14 @@ border-radius: 6px;
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                          </property>
-                         <property name="checkable">
+                         <property name="text">
+                          <string>G59.3</string>
+                         </property>
+                         <property name="autoExclusive">
                           <bool>true</bool>
                          </property>
-                         <property name="customText" stdset="0">
-                          <string>G59.3</string>
+                         <property name="actionName" stdset="0">
+                          <string>machine.set-work-coord:G59.3</string>
                          </property>
                         </widget>
                        </item>
@@ -17389,7 +17416,7 @@ QHeaderView {
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
