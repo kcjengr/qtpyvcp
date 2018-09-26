@@ -8439,7 +8439,7 @@ padding: -5px;
 }</string>
                            </property>
                            <property name="text">
-                            <string>NoAction Y</string>
+                            <string>ZERO</string>
                            </property>
                            <property name="checkable">
                             <bool>true</bool>
@@ -9295,7 +9295,7 @@ padding: -5px;
 }</string>
                            </property>
                            <property name="text">
-                            <string>NoAction Z</string>
+                            <string>ZERO</string>
                            </property>
                            <property name="checkable">
                             <bool>true</bool>
@@ -10510,7 +10510,7 @@ padding: -5px;
 }</string>
                            </property>
                            <property name="text">
-                            <string>NoAction A</string>
+                            <string>ZERO</string>
                            </property>
                            <property name="checkable">
                             <bool>true</bool>
@@ -17367,6 +17367,78 @@ QHeaderView {
            <attribute name="title">
             <string>          STATUS           </string>
            </attribute>
+           <widget class="QToolButton" name="toolButton">
+            <property name="geometry">
+             <rect>
+              <x>760</x>
+              <y>170</y>
+              <width>281</width>
+              <height>131</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QToolButton{
+Background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(226, 139, 139, 255), stop:0.446154 rgba(249, 142, 142, 255), stop:0.764103 rgba(225, 134, 134, 255), stop:1 rgba(249, 142, 142, 255));
+}</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+           </widget>
+           <widget class="QToolButton" name="toolButton_2">
+            <property name="geometry">
+             <rect>
+              <x>760</x>
+              <y>330</y>
+              <width>281</width>
+              <height>131</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QToolButton{
+Background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(208, 231, 207, 255), stop:0.0974359 rgba(189, 243, 185, 255), stop:0.446154 rgba(190, 251, 184, 255), stop:1 rgba(195, 231, 194, 255));
+}</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+           </widget>
+           <widget class="QToolButton" name="toolButton_3">
+            <property name="geometry">
+             <rect>
+              <x>1060</x>
+              <y>170</y>
+              <width>281</width>
+              <height>131</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QToolButton{
+Background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(226, 64, 64, 255), stop:0.446154 rgba(204, 0, 0, 255), stop:0.764103 rgba(225, 67, 67, 255), stop:1 rgba(249, 142, 142, 255));
+}</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+           </widget>
+           <widget class="QToolButton" name="toolButton_4">
+            <property name="geometry">
+             <rect>
+              <x>1060</x>
+              <y>330</y>
+              <width>281</width>
+              <height>131</height>
+             </rect>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QToolButton{
+Background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(154, 231, 153, 255), stop:0.0974359 rgba(92, 243, 81, 255), stop:0.446154 rgba(52, 251, 35, 255), stop:1 rgba(154, 231, 153, 255));
+}</string>
+            </property>
+            <property name="text">
+             <string>...</string>
+            </property>
+           </widget>
           </widget>
          </widget>
         </item>
@@ -18695,13 +18767,13 @@ border-radius: 1px;
              <property name="minimumSize">
               <size>
                <width>65</width>
-               <height>30</height>
+               <height>33</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>65</width>
-               <height>30</height>
+               <height>33</height>
               </size>
              </property>
              <property name="focusPolicy">
@@ -18849,13 +18921,13 @@ border-radius: 1px;
              <property name="minimumSize">
               <size>
                <width>65</width>
-               <height>30</height>
+               <height>33</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>65</width>
-               <height>30</height>
+               <height>33</height>
               </size>
              </property>
              <property name="focusPolicy">
@@ -19718,7 +19790,7 @@ border-radius: 1px;
 }</string>
              </property>
              <property name="text">
-              <string>Home All</string>
+              <string>REFERENCE ALL</string>
              </property>
              <property name="actionName" stdset="0">
               <string>machine.home.all</string>
@@ -20766,7 +20838,7 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>Home X</string>
+              <string>REF X</string>
              </property>
              <property name="actionName" stdset="0">
               <string>machine.home.axis:x</string>
@@ -21366,7 +21438,7 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>Home Y</string>
+              <string>REF Y</string>
              </property>
              <property name="actionName" stdset="0">
               <string>machine.home.axis:y</string>
@@ -22138,7 +22210,7 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>Home Z</string>
+              <string>REF Z</string>
              </property>
              <property name="actionName" stdset="0">
               <string>machine.home.axis:z</string>
@@ -22919,7 +22991,7 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>Home A</string>
+              <string>REF A</string>
              </property>
              <property name="actionName" stdset="0">
               <string>machine.home.axis:a</string>
@@ -23528,7 +23600,7 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>Home B</string>
+              <string>REF B</string>
              </property>
              <property name="actionName" stdset="0">
               <string>machine.home.axis:b</string>
@@ -24105,6 +24177,9 @@ background: #eee;
 border: 1px solid #aaa;
 border-radius: 4px;
 }</string>
+           </property>
+           <property name="maximum">
+            <number>100</number>
            </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
