@@ -356,7 +356,7 @@ def _feed_override_bindOk(value=100, widget=None):
     try:
         # these will only work for QSlider or QSpinBox
         widget.setMinimum(0)
-        widget.setMaximum(100)
+        widget.setMaximum(INFO.maxFeedOverride() * 100)
         widget.setValue(100)
         feed_override.set(100)
 
