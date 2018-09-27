@@ -1002,6 +1002,38 @@
            <string>circle</string>
           </property>
          </widget>
+         <widget class="MDIButton" name="mdibutton">
+          <property name="geometry">
+           <rect>
+            <x>860</x>
+            <y>150</y>
+            <width>91</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Load Tool</string>
+          </property>
+          <property name="MDICommand" stdset="0">
+           <string>T#&lt;tool_number&gt; M6 G43</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="tool_number">
+          <property name="geometry">
+           <rect>
+            <x>802</x>
+            <y>150</y>
+            <width>51</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>2</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -2687,6 +2719,11 @@
    <class>ActionSpinBox</class>
    <extends>QSpinBox</extends>
    <header>QtPyVCP.widgets.button_widgets.action_spinbox</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.mdi_button</header>
   </customwidget>
   <customwidget>
    <class>MDIEntry</class>
