@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -19298,7 +19298,7 @@ padding: -5px;
                  </font>
                 </property>
                 <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
+                 <enum>Qt::ClickFocus</enum>
                 </property>
                 <property name="contextMenuPolicy">
                  <enum>Qt::NoContextMenu</enum>
@@ -19314,9 +19314,6 @@ padding: -5px;
 	font: 75 17pt &quot;Bebas Kai&quot;;
 }</string>
                 </property>
-                <property name="inputMask">
-                 <string/>
-                </property>
                 <property name="text">
                  <string>0</string>
                 </property>
@@ -19326,39 +19323,18 @@ padding: -5px;
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
                 </property>
-                <property name="readOnly">
-                 <bool>false</bool>
-                </property>
-                <property name="cursorMoveStyle">
-                 <enum>Qt::VisualMoveStyle</enum>
-                </property>
                </widget>
               </item>
              </layout>
             </widget>
            </item>
            <item>
-            <widget class="ActionButton" name="m6_g43_button">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+            <widget class="MDIButton" name="m6_g43_button">
              <property name="minimumSize">
               <size>
                <width>70</width>
                <height>40</height>
               </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>40</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
              </property>
              <property name="styleSheet">
               <string notr="true">QPushButton {
@@ -19368,14 +19344,8 @@ padding: -5px;
              <property name="text">
               <string>M6 G43</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="customText" stdset="0">
-              <string>M6 G43</string>
-             </property>
-             <property name="option" stdset="0">
-              <bool>true</bool>
+             <property name="MDICommand" stdset="0">
+              <string>T#&lt;tool_number_entry_box&gt; M6 G43</string>
              </property>
             </widget>
            </item>
@@ -25922,6 +25892,11 @@ font: 11pt bebas kai;
    <class>ToolTable</class>
    <extends>QTableView</extends>
    <header>QtPyVCP.widgets.input_widgets.tool_table</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.mdi_button</header>
   </customwidget>
   <customwidget>
    <class>LoadMeter</class>
