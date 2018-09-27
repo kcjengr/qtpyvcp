@@ -30,3 +30,8 @@ class LedButtonPlugin(_DesignerPlugin):
         return LEDButton
     def toolTip(self):
         return "LED button"
+
+from mdi_button import MDIButton
+class MDIButtonPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return MDIButton
