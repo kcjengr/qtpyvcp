@@ -47,7 +47,7 @@ class SubCallButton(QPushButton):
 
         self._sub_name = ''
         self._sub_path = ''
-
+        issue_mdi.bindOk(widget=self)
         self.clicked.connect(self.onClick)
 
     def onClick(self):
