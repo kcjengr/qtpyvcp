@@ -9,7 +9,7 @@ QPushButton, QComboBox[editable="false"],
 QComboBox[editable="true"]::drop-down {
     color: white;
     border-image: url(:/images/pp_border.png);
-    border-color: black; 
+    border-color: black;
     border-style: solid;
     border-radius: 5px;
     border-width: 2px;
@@ -60,6 +60,18 @@ QPushButton[actionName="machine.estop.toggle"]:checked {
 
 QPushButton[actionName="machine.estop.toggle"]:pressed {
     background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(226, 139, 139, 255), stop:0.446154 rgba(249, 142, 142, 255), stop:0.764103 rgba(225, 134, 134, 255), stop:1 rgba(249, 142, 142, 255));
+}
+
+QPushButton[actionName="program.abort"]:enabled {
+    border-color: red;
+}
+
+QPushButton[actionName="program.pause"]:enabled {
+    border-color: yellow;
+}
+
+QPushButton[actionName="program.run"]:enabled {
+    border-color: green;
 }
 
 SubCallButton[styleClass="probeButton"] {
@@ -211,7 +223,7 @@ QTabBar::tab:selected, QTabBar::tab:hover {
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QTabBar::tab:selected { 
+QTabBar::tab:selected {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }
 
