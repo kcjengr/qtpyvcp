@@ -17488,7 +17488,7 @@ Background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -18349,7 +18349,7 @@ border-radius: 6px;
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_91">
            <item>
-            <widget class="ActionButton" name="actionbutton">
+            <widget class="ActionButton" name="actionbutton_7">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18374,10 +18374,10 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>SINGLE BLOCK</string>
+              <string>RUN FM HERE</string>
              </property>
              <property name="actionName" stdset="0">
-              <string>program.step</string>
+              <string>program.run-from-line</string>
              </property>
             </widget>
            </item>
@@ -18443,7 +18443,7 @@ border-radius: 6px;
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_90">
            <item>
-            <widget class="ActionButton" name="actionbutton_6">
+            <widget class="ActionButton" name="actionbutton">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18468,10 +18468,10 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>BLOCK DELETE</string>
+              <string>SINGLE BLOCK</string>
              </property>
              <property name="actionName" stdset="0">
-              <string>program.delete</string>
+              <string>program.step</string>
              </property>
             </widget>
            </item>
@@ -18500,7 +18500,7 @@ border-radius: 6px;
             </widget>
            </item>
            <item>
-            <widget class="ActionButton" name="actionbutton_2">
+            <widget class="ActionButton" name="actionbutton_5">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18525,10 +18525,10 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>M01 BREAK</string>
+              <string>STOP</string>
              </property>
              <property name="actionName" stdset="0">
-              <string>program.optional-stop.toggle</string>
+              <string>program.abort</string>
              </property>
             </widget>
            </item>
@@ -18594,7 +18594,7 @@ border-radius: 6px;
             </widget>
            </item>
            <item>
-            <widget class="ActionButton" name="actionbutton_7">
+            <widget class="ActionButton" name="actionbutton_6">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18619,10 +18619,10 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>RUN FM HERE</string>
+              <string>BLOCK DELETE</string>
              </property>
              <property name="actionName" stdset="0">
-              <string>program.run-from-line</string>
+              <string>program.block-delete.toggle</string>
              </property>
             </widget>
            </item>
@@ -18691,7 +18691,7 @@ border-radius: 6px;
             </widget>
            </item>
            <item>
-            <widget class="ActionButton" name="actionbutton_5">
+            <widget class="ActionButton" name="actionbutton_2">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -18716,10 +18716,10 @@ border-radius: 6px;
 }</string>
              </property>
              <property name="text">
-              <string>STOP</string>
+              <string>M01 BREAK</string>
              </property>
              <property name="actionName" stdset="0">
-              <string>program.abort</string>
+              <string>program.optional-stop.toggle</string>
              </property>
             </widget>
            </item>
