@@ -41,10 +41,6 @@ systems.
 These are required for the camera widget to work:  
 `sudo apt-get install python-pyqt5.qtmultimedia`  
 `sudo apt-get install gstreamer1.0-plugins-bad`  
-
-These _might_ be needed for the Camera widget, please confirm if needed:  
-`sudo apt-get install libqt5multimedia5`  
-`sudo apt-get install libqt5multimediawidgets5`  
 `sudo apt-get install libqt5multimedia5-plugins`  
 
 Required for the FileSytem widget:  
