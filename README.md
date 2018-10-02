@@ -48,17 +48,27 @@ These also might be needed for the camera, please confirm if needed:
 `sudo apt-get install libqt5multimedia5-plugins`  
 
 
-## Installing using setup.py
+## Development install using setup.py
 
-You need to have the python setuptools installed:
+**Note:** At this point only `setup.py develop` is supported. `setup.py install`
+and virtual environments are untested.
+
+Make sure you have the python setuptools installed:  
 `sudo apt-get install python-setuptools`
 
-Then for development install run:
-`python setup.py install --user develop`
+Then install with:
+`python setup.py develop --user`
 
 This will install all the python dependences automatically.
 
-At this point other install methods (venv, non develop etc.) are not supported.
+This will also generate console scripts in `~/.local/bin/`. This location is
+not on the PATH by default on Debian 9, so you will need to add it:  
+`export PATH=$PATH:~/.local/bin/`
+
+Them you can launch QtPyVCP simply by saying:  
+`qtpyvcp -h` to show the help  
+`qtpyvcp --ini=/path/to/ini` to launch a VCP for a running LCNC session  
+
 
 ### Run the development sim
 
