@@ -53,6 +53,7 @@ Note:
 
 """
 import sys
+from linuxcnc import ini
 from docopt import docopt
 
 from QtPyVCP import __version__
@@ -73,8 +74,28 @@ def parse_opts(doc=__doc__, vcp_name=None, vcp_version=None):
     raw_args = docopt(doc, version=version_str)
 
     # convert raw argument dict keys to valid python attribute names
-    kwargs = {arg.strip('-<>').replace('-', '_') : value for arg, value in raw_args.items()}
-    return OptDict(kwargs)
+    opts = OptDict({arg.strip('-<>').replace('-', '_') : value for arg, value in raw_args.items()})
+
+    # read options from INI file and merge with cmd line options
+    ini_file = ini(opts.ini)
+    for k, v in opts.iteritems():
+        ini_val = ini_file.find('DISPLAY', k.upper())
+        if ini_val is None:
+            continue
+
+        # convert str values to bool
+        if type(v) == bool:
+            # TODO: Find a way to prefer cmd line values over INI values
+            ini_val = ini_val.lower() in ['true', '1', 'on']
+
+        # if its a non bool value and it was specified on the cmd line
+        # then prefer the cmd line value
+        elif v is not None:
+            continue
+
+        opts[k] = ini_val
+
+    return opts
 
 class OptDict(dict):
     """Simple dot.notation access for opt dictionary values"""
