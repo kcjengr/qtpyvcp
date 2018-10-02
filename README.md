@@ -8,7 +8,7 @@ python framework for building complex VCPs.
 QtPyVCP is designed with the philosophy that it is impossible to predict and
 satisfy everyones needs, but it _is_ possible to make it easy(er) for people to
 satisfy their own needs. Hence QtPyVCP's goal is to pride a rich set of utilities
-and basic widgets that can easily be built on, extended and combined, with 
+and basic widgets that can easily be built on, extended and combined, with
 minimal (if any) python code to create a fully custom VCP.
 
 
@@ -46,6 +46,19 @@ These also might be needed for the camera, please confirm if needed:
 `sudo apt-get install libqt5multimedia5`  
 `sudo apt-get install libqt5multimediawidgets5`  
 `sudo apt-get install libqt5multimedia5-plugins`  
+
+
+## Installing using setup.py
+
+You need to have the python setuptools installed:
+`sudo apt-get install python-setuptools`
+
+Then for development install run:
+`python setup.py install --user develop`
+
+This will install all the python dependences automatically.
+
+At this point other install methods (venv, non develop etc.) are not supported.
 
 ### Run the development sim
 
