@@ -3,7 +3,7 @@ QtPyVCP - A PyQt5 based toolkit for LinuxCNC Virtual Control Panels (VCPs).
 
 Usage:
   qtpyvcp [<vcp>] --ini=INI [--log-level=LEVEL] [--log-file=FILE] [--perfmon]
-            [--theme=THEME] [--stylesheet=SYTLESHEET]
+            [--theme=THEME] [--stylesheet=SYTLESHEET] [--pref-file=FILE]
             [--size=WIDTHxHEIGHT] [--position=XPOSxYPOS]
             [--fullscreen] [--maximize] [--hide-menu-bar] [--hide-status-bar]
             [--chooser]
@@ -11,7 +11,7 @@ Usage:
   qtpyvcp (-v | --version)
 
 Required Arguments:
-    --ini INI        Path to INI file, relative to ~/linuxcnc/configs.
+  --ini INI        Path to INI file, relative to ~/linuxcnc/configs.
 
 Display  Options:
   --vcp VCP          The name of the VCP to launch. If not specified a
@@ -34,7 +34,8 @@ Display  Options:
 Application Options:
   --log-level=(DEBUG | INFO | WARN | ERROR | CRITICAL)
                      Sets the log level. [default: INFO]
-  --log-file=FILE    Specifies the log file. Overrides setting in INI.
+  --log-file=FILE    Specifies the log file. Overrides INI setting.
+  --pref-file=FILE   Specifies the preference file. Overrides INI setting.
   --perfmon          Monitor and log system performance.
   --command_line_args <args>...
 
