@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'qtpyvcp=vcp_launcher.vcp_launcher:main',
+            'mini=examples.mini.mini:main'
         ],
         'qtpyvcp.example_vcp': [
             'mini=examples.mini.mini:MiniVCP',
