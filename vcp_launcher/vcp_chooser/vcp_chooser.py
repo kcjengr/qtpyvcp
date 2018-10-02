@@ -33,11 +33,13 @@ class VCPChooser(QDialog):
         category = QTreeWidgetItem(self.vcpTreeView)
         category.setText(0, 'Installed VCPs')
         category.setFlags(Qt.ItemIsEnabled)
+        category.setHidden(True)
 
         # add installed VCPs to the treeview
         for entry_point in iter_entry_points(group='qtpyvcp.vcp'):
             child = QTreeWidgetItem(category)
             child.setText(0, entry_point.name)
+            category.setHidden(False)
 
         if os.path.exists(CUSTOM_VCP_DIR):
             category = QTreeWidgetItem(self.vcpTreeView)
