@@ -3,7 +3,7 @@
 import os
 
 def normalizePath(path, base):
-    if path is None:
+    if path is None or base is None:
         return
     path = os.path.expandvars(path)
     if path.startswith('~'):
