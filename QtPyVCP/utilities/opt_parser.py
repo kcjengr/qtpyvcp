@@ -122,9 +122,6 @@ def parse_opts(doc=__doc__, vcp_name=None, vcp_version=None):
         os.environ['INI_FILE_NAME'] = ini_file
         os.environ['CONFIG_DIR'] = os.path.dirname(ini_file)
 
-    print "INI", ini_file
-
-
     # show the chooser if the --chooser flag was specified
     if opts.chooser or not opts.get('vcp', True):
         from vcp_launcher.vcp_chooser import VCPChooser
