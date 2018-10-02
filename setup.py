@@ -15,6 +15,9 @@ setup(
     download_url="https://gitlab.com/Hazzy/qtpyvcp/-/archive/master/qtpyvcp-master.tar.gz",
     packages=find_packages(),
     include_package_data=True,
+    install_requires=[
+    'docopt',
+    ],
     entry_points={
         'console_scripts': [
             'qtpyvcp=vcp_launcher.main:main',
