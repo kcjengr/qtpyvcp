@@ -52,11 +52,13 @@ Note:
   not need to be specified.
 
 """
+import os
 import sys
 from linuxcnc import ini
 from docopt import docopt
 
 from QtPyVCP import __version__
+from QtPyVCP.utilities.misc import normalizePath
 
 def parse_opts(doc=__doc__, vcp_name=None, vcp_version=None):
     # LinuxCNC passes the INI file as `-ini=inifile` which docopt sees as a
@@ -77,7 +79,7 @@ def parse_opts(doc=__doc__, vcp_name=None, vcp_version=None):
     opts = OptDict({arg.strip('-<>').replace('-', '_') : value for arg, value in raw_args.items()})
 
     # read options from INI file and merge with cmd line options
-    ini_file = ini(opts.ini)
+    ini_file = ini(normalizePath(opts.ini, os.path.expanduser('~/linuxcnc/configs')))
     for k, v in opts.iteritems():
         ini_val = ini_file.find('DISPLAY', k.upper())
         if ini_val is None:
