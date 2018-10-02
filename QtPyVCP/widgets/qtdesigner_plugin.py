@@ -1,15 +1,11 @@
-from QtPyVCP.utilities import logger
-LOG = logger.initBaseLogger('QpPyVCP', log_file=None)
-LOG.info("Loading VCP Designer Plug-ins")
-
-from PyQt5.QtWidgets import QApplication
-from QtPyVCP.core import Status, Action, Prefs, Info
-
-app = QApplication.instance()
-app.status = Status()
-app.action = Action()
-app.prefs = Prefs()
-app.info = Info()
+import sys
+if (sys.version_info > (3, 0)):
+    print("ERROR: It appears QtDesigner is trying to load the QtPyVCP widgets \n"
+            "using a python version greater than 2.7, this is not supported. \n"
+            "Make sure that you have the correct version of the libpyqt5.so \n"
+            "file in /usr/lib/x86_64-linux-gnu/qt5/plugins/designer/, see the \n"
+            "QtDesigner Plugins section of the QtPyVCP README for more info.")
+    sys.exit()
 
 from QtPyVCP.widgets.form_widgets.designer_plugins import *
 from QtPyVCP.widgets.button_widgets.designer_plugins import *

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>532</width>
-    <height>341</height>
+    <width>648</width>
+    <height>480</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,15 +20,15 @@
      <height>624</height>
     </size>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout"/>
+   <layout class="QGridLayout" name="gridLayout"/>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>532</width>
-     <height>20</height>
+     <width>648</width>
+     <height>25</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

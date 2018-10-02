@@ -58,11 +58,14 @@ from QtPyVCP.widgets.form_widgets.main_window import VCPMainWindow
 from QtPyVCP.utilities import logger
 LOG = logger.getLogger('QtPyVCP.' + __name__)
 
-from QtPyVCP.core import Status, Action, Prefs, Info
-STATUS = Status()
-ACTION = Action()
-PREFS = Prefs()
-INFO = Info()
+# from QtPyVCP.core import Status, Action, Prefs, Info
+# STATUS = Status()
+# ACTION = Action()
+# PREFS = Prefs()
+# INFO = Info()
+
+from QtPyVCP.utilities import action
+from QtPyVCP import actions
 
 VCP_DIR = os.path.dirname(os.path.abspath(__file__))
 UI_FILE = os.path.join(VCP_DIR, 'ui/brender.ui')
@@ -78,6 +81,14 @@ class MainWindow(VCPMainWindow):
     #==========================================================================
     #  Add/Override methods and slots below to customize the main window
     #==========================================================================
+
+        actions.bindWidget(self.flood, action='coolant.flood.toggle')
+        actions.bindWidget(self.floodCheckBox, action="coolant.flood.toggle")
+
+        if actions.program.run.ok():
+            actions.program.run()
+        else:
+            print "RUN NOT OK: ", actions.program.run.ok.msg
 
     # This slot will be automatically connected to a menu item named 'Test'
     # created in QtDesigner.

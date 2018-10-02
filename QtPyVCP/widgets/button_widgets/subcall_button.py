@@ -26,10 +26,10 @@ import re
 from PyQt5.QtWidgets import QPushButton, qApp
 from PyQt5.QtCore import Qt, QEvent, pyqtSlot, pyqtProperty
 
-from QtPyVCP.core import Status, Action, Info
-STATUS = Status()
-ACTION = Action()
+from QtPyVCP.core import Info
 INFO = Info()
+
+from QtPyVCP.actions.machine_actions import issue_mdi
 
 from QtPyVCP.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -47,13 +47,8 @@ class SubCallButton(QPushButton):
 
         self._sub_name = ''
         self._sub_path = ''
-
+        issue_mdi.bindOk(widget=self)
         self.clicked.connect(self.onClick)
-
-    def submit(self):
-        cmd = str(self.text()).strip()
-        ACTION.issueMDI(cmd)
-        self.setText('')
 
     def onClick(self):
         window = qApp.activeWindow()
@@ -67,6 +62,9 @@ class SubCallButton(QPushButton):
 
         args = []
         for line in lines:
+            line = line.strip()
+            if not line.startswith('#'):
+                continue
             result_list = PARSE_POSITIONAL_ARGS.findall(line)
             if len(result_list) == 0:
                 continue
@@ -105,7 +103,7 @@ class SubCallButton(QPushButton):
         cmd_str = "o<{}> call {}".format(self._sub_name, arg_str)
 
         LOG.debug('Calling sub file: yellow<{}> with args blue<{}>'.format(self._sub_path, arg_str))
-        ACTION.issueMDI(cmd_str)
+        issue_mdi(cmd_str)
 
     def getSubName(self):
         return self._sub_name

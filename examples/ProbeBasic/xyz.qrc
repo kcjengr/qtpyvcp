@@ -38,7 +38,28 @@
     <file>images/ridge_and_valley_group.png</file>
     <file>images/tool_probe.png</file>
     <file>images/atc_spindle_tool_dimensioned.png</file>
- 
-    
+    <file>images/x_minus_jog_button.png</file>
+    <file>images/y_minus_jog_button.png</file>
+    <file>images/z_minus_jog_button.png</file>
+    <file>images/a_minus_jog_button.png</file>
+    <file>images/b_minus_jog_button.png</file>
+    <file>images/x_plus_jog_button.png</file>
+    <file>images/y_plus_jog_button.png</file>
+    <file>images/z_plus_jog_button.png</file>
+    <file>images/a_plus_jog_button.png</file>
+    <file>images/b_plus_jog_button.png</file>
+    <file>images/left_arrow.png</file>
+    <file>images/right_arrow.png</file>
+    <file>images/ccw_arrow.png</file>
+    <file>images/cw_arrow.png</file>
+    <file>images/folder_up.png</file>
+    <file>images/new_folder.png</file>
+    <file>images/delete.png</file>
+    <file>images/usb_icon.png</file>
+    <file>images/tall_left_arrow.png</file>
+    <file>images/tall_right_arrow.png</file>
+    <file>images/new_file.png</file>
+
+        
 </qresource>
 </RCC>

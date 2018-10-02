@@ -73,6 +73,12 @@ class _Status(QObject):
             linuxcnc.STATE_ON: "On",
             linuxcnc.STATE_OFF: "Off",
         },
+        "task_mode": {
+            0: "Unknown",
+            linuxcnc.MODE_MANUAL: "Manual",
+            linuxcnc.MODE_AUTO: "Auto",
+            linuxcnc.MODE_MDI: "MDI",
+        },
         "interp_state": {
             0: "Unknown",
             linuxcnc.INTERP_IDLE: "Idle",
@@ -106,6 +112,11 @@ class _Status(QObject):
         },
         "g5x_index": ["G53", "G54", "G55", "G56", "G57", "G58", "G59", "G59.1", "G59.2", "G59.3"],
         "program_units": ["NA", "in", "mm", "cm"],
+        "linear_units": {
+            0.0: "N/A",
+            1.0: "mm",
+            1/25.4: "in",
+        },
         "gcodes": GCodes(),
         "mcodes": MCodes(),
     }
@@ -214,6 +225,11 @@ class _Status(QObject):
     motion_type = pyqtSignal([int], [str])  # type of the currently executing motion
     interp_state = pyqtSignal([int], [str]) # current state of RS274NGC interpreter
     interpreter_errcode = pyqtSignal([int], [str]) # current RS274NGC interpreter return code
+    settings = pyqtSignal(tuple)            # interpreter settings. (sequence_number, feed_rate, speed)
+
+    jog_mode_signal = pyqtSignal(bool)             # jog mode = true
+    linear_units = pyqtSignal([float], [str])
+    angular_units = pyqtSignal([float], [str])
 
     # Tool
     tool_in_spindle = pyqtSignal(int)       # current tool number
@@ -225,8 +241,12 @@ class _Status(QObject):
     joint_positions = pyqtSignal(tuple)     # joint pos respecting INI settings
     file_loaded = pyqtSignal(str)           # file loaded
 
+    # interpreter settings
+    feed = pyqtSignal(float)                # Current requested feed
+    speed = pyqtSignal(float)               # Current requested speed
+
     on = pyqtSignal(bool)
-    executing = pyqtSignal(bool)
+    moving = pyqtSignal(bool)
     all_homed = pyqtSignal(bool)
 
     # Gcode Backplot
@@ -248,13 +268,16 @@ class _Status(QObject):
     def __init__(self):
         super(_Status, self).__init__()
 
+        self.no_force_homing = INFO.noForceHoming()
         self._report_actual_position = False
 
         self.max_recent_files = PREFS.getPref("STATUS", "MAX_RECENT_FILES", 10, int)
         files = PREFS.getPref("STATUS", "RECENT_FILES", [], list)
         self.recent_files = [file for file in files if os.path.exists(file)]
 
-        self.jog_increment = 0
+        self.jog_increment = 0 # jog
+        self.step_jog_increment = INFO.getIncrements()[0]
+        self.jog_mode = True
         self.linear_jog_velocity = INFO.getJogVelocity()
         self.angular_jog_velocity = INFO.getJogVelocity()
 
@@ -264,9 +287,9 @@ class _Status(QObject):
         except:
             pass
 
-        excluded_items = ['axes', 'axis', 'joint', 'cycle_time', 'linear_units',
-            'angular_units', 'acceleration', 'kinematics_type',
-            'joints', 'settings', 'axis_mask', 'max_acceleration', 'echo_serial_number',
+        excluded_items = ['axes', 'axis', 'joint', 'cycle_time',
+            'acceleration', 'kinematics_type',
+            'joints', 'axis_mask', 'max_acceleration', 'echo_serial_number',
             'id', 'poll', 'command', 'debug']
 
         self.old = {}
@@ -283,16 +306,16 @@ class _Status(QObject):
         self.tool_offset.connect(self.updateAxisPositions)
         self.joint_position.connect(self.updateJointPositions)
 
-        self.homed.connect(self.isAllHomed)
+        self.homed.connect(self._allHomed)
 
         self.task_state.connect(lambda v: self.on.emit(v == linuxcnc.STATE_ON))
 
-        # self.state.connect(lambda v: self.executing.emit(v == linuxcnc.RCS_EXEC))
-        # self.interp_state.connect(lambda v:
-        #     self.executing.emit(v != linuxcnc.INTERP_IDLE
-        #         and self.stat.task_mode == linuxcnc.MODE_AUTO))
         # File
         self.file.connect(self.updateFileLoaded)
+
+        # feed and speed signals
+        self.settings.connect(lambda s: self.feed.emit(s[1]))
+        self.settings.connect(lambda s: self.feed.emit(s[2]))
 
         # Initialize Joint status class
         self.joint = _Joint(self.stat)
@@ -322,7 +345,6 @@ class _Status(QObject):
         for key, old_value in self.old.iteritems():
             new_value = getattr(self.stat, key)
             if old_value != new_value:
-                self.old[key] = new_value
                 getattr(self, key).emit(new_value)
 
                 str_dict = self.STATE_STRING_LOOKUP.get(key)
@@ -330,6 +352,9 @@ class _Status(QObject):
                     str_val = str_dict[new_value]
                     getattr(self, key)[str].emit(str_val)
                     log.debug("{}: {}".format(key, str_val))
+
+                # update old values dict
+                self.old[key] = new_value
 
         self.joint._periodic()
         self.error._periodic()
@@ -340,12 +365,52 @@ class _Status(QObject):
                 getattr(self, key).emit(value)
 
 
+
     #===========================  Helper Functions  ===========================
 
+    def _from_internal_linear_unit(self, v, unit=None):
+        if unit is None:
+            unit = self.stat.linear_units
+        lu = (unit or 1) * 25.4
+        return v * lu
+
+    def _parse_increment(self, jogincr):
+        scale = 1;
+        if isinstance(jogincr, basestring):
+            if jogincr.endswith("mm"):
+                scale = self._from_internal_linear_unit(1 / 25.4)
+            elif jogincr.endswith("cm"):
+                scale = self._from_internal_linear_unit(10 / 25.4)
+            elif jogincr.endswith("um"):
+                scale = self._from_internal_linear_unit(.001 / 25.4)
+            elif jogincr.endswith("in") or jogincr.endswith("inch"):
+                scale = self._from_internal_linear_unit(1.)
+            elif jogincr.endswith("mil"):
+                scale = self._from_internal_linear_unit(.001)
+            else:
+                scale = 1
+            jogincr = jogincr.rstrip(" inchmuil")
+            if "/" in jogincr:
+                p, q = jogincr.split("/")
+                jogincr = float(p) / float(q)
+            else:
+                jogincr = float(jogincr)
+        return jogincr * scale
+
     def setJogIncrement(self, raw_increment):
-        self.jog_increment = raw_increment
-        # print "changed increment", raw_increment
-        # TODO: parse raw increment including units
+        if not self.jog_mode:
+            self.step_jog_increment = raw_increment # save current step increment
+        self.jog_increment = self._parse_increment(raw_increment)
+
+    def setJogMode(self, mode):
+        # insert checks around state and safety
+        self.jog_mode = mode
+        if mode == True:
+            self.setJogIncrement(0)
+        else:
+            self.setJogIncrement(self.step_jog_increment)
+        self.jog_mode_signal.emit(self.jog_mode)
+
 
     def setReportActualPosition(self, report_actual):
         # reports commanded by default
@@ -409,14 +474,17 @@ class _Status(QObject):
                 and self.stat.call_level == 0:
             self.file_loaded.emit(file)
 
-    def isAllHomed(self, homed_tuple):
+    def _allHomed(self):
+        self.all_homed.emit(self.allHomed())
+
+    def allHomed(self):
         '''Returns TRUE if all joints are homed.'''
+        if self.no_force_homing:
+            return True
         for jnum in range(self.stat.joints):
             if not self.stat.joint[jnum]['homed']:
-                self.all_homed.emit(False)
-                return
-        self.all_homed.emit(True)
-
+                return False
+        return True
 
     def onShutdown(self):
         self.on_shutown.emit()

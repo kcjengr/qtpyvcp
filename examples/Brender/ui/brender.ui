@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>750</height>
+    <width>1024</width>
+    <height>768</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -59,7 +59,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -152,11 +152,888 @@
          <attribute name="title">
           <string>File</string>
          </attribute>
+         <widget class="QWidget" name="buttonBox" native="true">
+          <property name="geometry">
+           <rect>
+            <x>60</x>
+            <y>349</y>
+            <width>161</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="styleClass" stdset="0">
+           <string>buttonBox</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_4">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="ActionButton" name="actionbutton_24">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>MAN</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.manual</string>
+             </property>
+             <property name="position" stdset="0">
+              <string>first</string>
+             </property>
+             <property name="styleClass" stdset="0">
+              <string>option</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionButton" name="actionbutton_25">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>AUTO</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.auto</string>
+             </property>
+             <property name="styleClass" stdset="0">
+              <string>option</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionButton" name="actionbutton_26">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>MDI</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.mdi</string>
+             </property>
+             <property name="position" stdset="0">
+              <string>last</string>
+             </property>
+             <property name="styleClass" stdset="0">
+              <string>option</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab_4">
          <attribute name="title">
           <string>Status</string>
          </attribute>
+         <widget class="StatusLabel" name="statuslabel_2">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>400</y>
+            <width>611</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::mcodes</enum>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_3">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>370</y>
+            <width>611</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::gcodes</enum>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_4">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>270</y>
+            <width>161</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::task_state</enum>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_5">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>310</y>
+            <width>161</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::interp_state</enum>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_6">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>330</y>
+            <width>161</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::motion_mode</enum>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_7">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>290</y>
+            <width>161</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::taks_mode</enum>
+          </property>
+         </widget>
+         <widget class="QWidget" name="buttonBox_2" native="true">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>230</y>
+            <width>161</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="styleClass" stdset="0">
+           <string>buttonBox</string>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_5">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="ActionButton" name="actionbutton_27">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>MAN</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.manual</string>
+             </property>
+             <property name="position" stdset="0">
+              <string>first</string>
+             </property>
+             <property name="styleClass" stdset="0">
+              <string>option</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionButton" name="actionbutton_28">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>AUTO</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.auto</string>
+             </property>
+             <property name="styleClass" stdset="0">
+              <string>option</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionButton" name="actionbutton_29">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>MDI</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.mode.mdi</string>
+             </property>
+             <property name="position" stdset="0">
+              <string>last</string>
+             </property>
+             <property name="styleClass" stdset="0">
+              <string>option</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_8">
+          <property name="geometry">
+           <rect>
+            <x>310</x>
+            <y>210</y>
+            <width>161</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::speed_override</enum>
+          </property>
+         </widget>
+         <widget class="ActionButton" name="actionbutton_30">
+          <property name="geometry">
+           <rect>
+            <x>580</x>
+            <y>330</y>
+            <width>131</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Feedhold</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.feedhold.toggle-enable</string>
+          </property>
+         </widget>
+         <widget class="ActionSlider" name="actionslider">
+          <property name="geometry">
+           <rect>
+            <x>240</x>
+            <y>230</y>
+            <width>271</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>spindle.override.set</string>
+          </property>
+         </widget>
+         <widget class="ActionCheckBox" name="actioncheckbox_4">
+          <property name="geometry">
+           <rect>
+            <x>530</x>
+            <y>230</y>
+            <width>181</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Enable Speed OR</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>spindle.override.toggle-enable</string>
+          </property>
+         </widget>
+         <widget class="ActionButton" name="actionbutton_31">
+          <property name="geometry">
+           <rect>
+            <x>240</x>
+            <y>190</y>
+            <width>81</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Reset</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>spindle.override.reset</string>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_9">
+          <property name="geometry">
+           <rect>
+            <x>10</x>
+            <y>350</y>
+            <width>161</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::motion_type</enum>
+          </property>
+         </widget>
+         <widget class="ActionSlider" name="actionslider_2">
+          <property name="geometry">
+           <rect>
+            <x>240</x>
+            <y>150</y>
+            <width>271</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.feed-override.set</string>
+          </property>
+         </widget>
+         <widget class="ActionCheckBox" name="actioncheckbox_5">
+          <property name="geometry">
+           <rect>
+            <x>530</x>
+            <y>150</y>
+            <width>181</width>
+            <height>16</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Enable Feed OR</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.feed-override.toggle-enable</string>
+          </property>
+         </widget>
+         <widget class="ActionButton" name="actionbutton_32">
+          <property name="geometry">
+           <rect>
+            <x>240</x>
+            <y>110</y>
+            <width>81</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Reset</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.feed-override.reset</string>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_10">
+          <property name="geometry">
+           <rect>
+            <x>310</x>
+            <y>130</y>
+            <width>161</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::feed_override</enum>
+          </property>
+         </widget>
+         <widget class="ActionSlider" name="actionslider_3">
+          <property name="geometry">
+           <rect>
+            <x>240</x>
+            <y>70</y>
+            <width>271</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.rapid-override.set</string>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_11">
+          <property name="geometry">
+           <rect>
+            <x>310</x>
+            <y>50</y>
+            <width>161</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::rapid_override</enum>
+          </property>
+         </widget>
+         <widget class="ActionButton" name="actionbutton_33">
+          <property name="geometry">
+           <rect>
+            <x>240</x>
+            <y>30</y>
+            <width>81</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Reset</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.rapid-override.reset</string>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_12">
+          <property name="geometry">
+           <rect>
+            <x>740</x>
+            <y>60</y>
+            <width>161</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::max_velocity</enum>
+          </property>
+         </widget>
+         <widget class="ActionButton" name="actionbutton_34">
+          <property name="geometry">
+           <rect>
+            <x>670</x>
+            <y>40</y>
+            <width>81</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Reset</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.max-velocity.reset</string>
+          </property>
+         </widget>
+         <widget class="ActionSlider" name="actionslider_4">
+          <property name="geometry">
+           <rect>
+            <x>670</x>
+            <y>80</y>
+            <width>271</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="maximum">
+           <number>300</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.max-velocity.set</string>
+          </property>
+         </widget>
+         <widget class="ActionSlider" name="actionslider_5">
+          <property name="geometry">
+           <rect>
+            <x>670</x>
+            <y>110</y>
+            <width>271</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="maximum">
+           <number>300</number>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.max-velocity.set</string>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_13">
+          <property name="geometry">
+           <rect>
+            <x>870</x>
+            <y>281</y>
+            <width>81</width>
+            <height>20</height>
+           </rect>
+          </property>
+          <property name="label_type" stdset="0">
+           <enum>StatusLabel::spindle_speed</enum>
+          </property>
+         </widget>
+         <widget class="ActionButton" name="actionbutton_35">
+          <property name="geometry">
+           <rect>
+            <x>720</x>
+            <y>280</y>
+            <width>41</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>REV</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>spindle.reverse</string>
+          </property>
+         </widget>
+         <widget class="ActionButton" name="actionbutton_36">
+          <property name="geometry">
+           <rect>
+            <x>820</x>
+            <y>280</y>
+            <width>41</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>FWD</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>spindle.forward</string>
+          </property>
+         </widget>
+         <widget class="ActionButton" name="actionbutton_37">
+          <property name="geometry">
+           <rect>
+            <x>770</x>
+            <y>280</y>
+            <width>41</width>
+            <height>23</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>OFF</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>spindle.off</string>
+          </property>
+         </widget>
+         <widget class="ActionSpinBox" name="actionspinbox">
+          <property name="geometry">
+           <rect>
+            <x>240</x>
+            <y>270</y>
+            <width>151</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="singleStep">
+           <number>5</number>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>spindle.override.set</string>
+          </property>
+         </widget>
+         <widget class="QGroupBox" name="groupBox">
+          <property name="geometry">
+           <rect>
+            <x>20</x>
+            <y>10</y>
+            <width>111</width>
+            <height>211</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>WCS</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="ActionButton" name="actionbutton_38">
+             <property name="text">
+              <string>G54</string>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.set-work-coord:G54</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionButton" name="actionbutton_39">
+             <property name="text">
+              <string>G55</string>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.set-work-coord:G55</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionButton" name="actionbutton_40">
+             <property name="text">
+              <string>G56</string>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.set-work-coord:G56</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionButton" name="actionbutton_41">
+             <property name="text">
+              <string>G57</string>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.set-work-coord:G57</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionButton" name="actionbutton_43">
+             <property name="text">
+              <string>G58</string>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.set-work-coord:G58</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionButton" name="actionbutton_44">
+             <property name="text">
+              <string>G59</string>
+             </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.set-work-coord:G59</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="Line" name="line">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="ActionComboBox" name="actioncombobox">
+             <property name="actionName" stdset="0">
+              <string>machine.set-work-coord</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>G54</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G55</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G56</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G57</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G58</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G59</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G59.1</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G59.2</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>G59.3</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="ActionButton" name="actionbutton_42">
+          <property name="geometry">
+           <rect>
+            <x>140</x>
+            <y>30</y>
+            <width>81</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Go Home</string>
+          </property>
+          <property name="actionName" stdset="0">
+           <string>machine.issue-mdi:G0 X0 Y0 Z0</string>
+          </property>
+         </widget>
+         <widget class="SubCallButton" name="subcallbutton">
+          <property name="geometry">
+           <rect>
+            <x>460</x>
+            <y>320</y>
+            <width>71</width>
+            <height>41</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Circle</string>
+          </property>
+          <property name="sub_name" stdset="0">
+           <string>circle</string>
+          </property>
+         </widget>
+         <widget class="MDIButton" name="mdibutton">
+          <property name="geometry">
+           <rect>
+            <x>860</x>
+            <y>150</y>
+            <width>91</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>Load Tool</string>
+          </property>
+          <property name="MDICommand" stdset="0">
+           <string>T#&lt;tool_number&gt; M6 G43</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="tool_number">
+          <property name="geometry">
+           <rect>
+            <x>802</x>
+            <y>150</y>
+            <width>51</width>
+            <height>31</height>
+           </rect>
+          </property>
+          <property name="text">
+           <string>2</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
         </widget>
         <widget class="QWidget" name="tab">
          <attribute name="title">
@@ -172,11 +1049,7 @@
          <attribute name="title">
           <string>Video</string>
          </attribute>
-         <layout class="QGridLayout" name="gridLayout">
-          <item row="0" column="0">
-           <widget class="Camera" name="camera"/>
-          </item>
-         </layout>
+         <layout class="QGridLayout" name="gridLayout"/>
         </widget>
        </widget>
       </item>
@@ -198,244 +1071,302 @@
         <property name="title">
          <string>PROGRAM</string>
         </property>
-        <widget class="QWidget" name="buttonBox" native="true">
+        <widget class="QPushButton" name="flood">
          <property name="geometry">
           <rect>
-           <x>160</x>
-           <y>60</y>
-           <width>141</width>
-           <height>31</height>
-          </rect>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_4">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-          <property name="leftMargin">
-           <number>0</number>
-          </property>
-          <property name="topMargin">
-           <number>0</number>
-          </property>
-          <property name="rightMargin">
-           <number>0</number>
-          </property>
-          <property name="bottomMargin">
-           <number>0</number>
-          </property>
-          <item>
-           <widget class="QPushButton" name="pushButton_2">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>Roboto Medium</family>
-             </font>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="text">
-             <string>ABS</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-            <property name="autoExclusive">
-             <bool>true</bool>
-            </property>
-            <property name="position" stdset="0">
-             <string>first</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_7">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>Roboto Medium</family>
-             </font>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="text">
-             <string>REL</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="autoExclusive">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton_8">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="font">
-             <font>
-              <family>Roboto Medium</family>
-             </font>
-            </property>
-            <property name="focusPolicy">
-             <enum>Qt::NoFocus</enum>
-            </property>
-            <property name="text">
-             <string>DTG</string>
-            </property>
-            <property name="checkable">
-             <bool>true</bool>
-            </property>
-            <property name="autoExclusive">
-             <bool>true</bool>
-            </property>
-            <property name="position" stdset="0">
-             <string>last</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QPushButton" name="power">
-         <property name="geometry">
-          <rect>
-           <x>210</x>
+           <x>110</x>
            <y>30</y>
            <width>80</width>
-           <height>23</height>
+           <height>26</height>
           </rect>
          </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
          <property name="text">
-          <string>Power</string>
+          <string>Flood</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
          </property>
         </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_4">
+        <widget class="QCheckBox" name="floodCheckBox">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>80</y>
-           <width>80</width>
-           <height>23</height>
+           <x>110</x>
+           <y>60</y>
+           <width>84</width>
+           <height>24</height>
           </rect>
          </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Home</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::X</enum>
+         <property name="text">
+          <string>Flood</string>
          </property>
         </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_5">
+        <widget class="ActionCheckBox" name="actioncheckbox">
          <property name="geometry">
           <rect>
-           <x>10</x>
-           <y>140</y>
-           <width>80</width>
-           <height>23</height>
+           <x>110</x>
+           <y>90</y>
+           <width>81</width>
+           <height>31</height>
           </rect>
          </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
+         <property name="text">
+          <string>Flood</string>
          </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Home</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::Z</enum>
+         <property name="actionName" stdset="0">
+          <string>coolant.flood.toggle</string>
          </property>
         </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_6">
+        <widget class="ActionCheckBox" name="actioncheckbox_2">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>120</y>
+           <width>81</width>
+           <height>31</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Mist</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>coolant.mist.toggle</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_2">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>120</y>
+           <width>80</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Resume</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>program.resume</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_3">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>30</y>
+           <width>80</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Run</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>program.run</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_4">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>60</y>
+           <width>80</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Step</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>program.step</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_5">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>90</y>
+           <width>80</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Pause</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>program.pause</string>
+         </property>
+        </widget>
+        <widget class="ActionCheckBox" name="actioncheckbox_3">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>150</y>
+           <width>81</width>
+           <height>21</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Block Del</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>program.block-delete.toggle</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_9">
          <property name="geometry">
           <rect>
            <x>10</x>
            <y>50</y>
-           <width>80</width>
+           <width>81</width>
            <height>23</height>
           </rect>
          </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
+         <property name="text">
+          <string>Home All</string>
          </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Home</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::ALL</enum>
+         <property name="actionName" stdset="0">
+          <string>machine.home.all</string>
          </property>
         </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_7">
+        <widget class="ActionButton" name="actionbutton_10">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>80</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Home X</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.home.axis:x</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_11">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>20</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Home J1</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.home.joint:0</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_12">
          <property name="geometry">
           <rect>
            <x>10</x>
            <y>110</y>
-           <width>80</width>
+           <width>81</width>
            <height>23</height>
           </rect>
          </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
+         <property name="text">
+          <string>Home Y</string>
          </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+         <property name="actionName" stdset="0">
+          <string>machine.home.axis:y</string>
          </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Home</enum>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_13">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>140</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
          </property>
-         <property name="axis">
-          <enum>AxisActionButton::Y</enum>
+         <property name="text">
+          <string>Home Z</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.home.axis:z</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_20">
+         <property name="geometry">
+          <rect>
+           <x>110</x>
+           <y>199</y>
+           <width>41</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>FWD</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>spindle.forward</string>
+         </property>
+        </widget>
+        <widget class="StatusLabel" name="statuslabel">
+         <property name="geometry">
+          <rect>
+           <x>160</x>
+           <y>200</y>
+           <width>81</width>
+           <height>20</height>
+          </rect>
+         </property>
+         <property name="label_type" stdset="0">
+          <enum>StatusLabel::spindle_speed</enum>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_21">
+         <property name="geometry">
+          <rect>
+           <x>60</x>
+           <y>199</y>
+           <width>41</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>OFF</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>spindle.off</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_22">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>199</y>
+           <width>41</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>REV</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>spindle.reverse</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_23">
+         <property name="geometry">
+          <rect>
+           <x>200</x>
+           <y>150</y>
+           <width>80</width>
+           <height>26</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Abort</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>program.abort</string>
          </property>
         </widget>
        </widget>
@@ -448,7 +1379,7 @@
         <property name="frameShape">
          <enum>QFrame::StyledPanel</enum>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_5">
+        <layout class="QVBoxLayout" name="verticalLayout_3">
          <property name="spacing">
           <number>4</number>
          </property>
@@ -459,96 +1390,42 @@
           <number>0</number>
          </property>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_3">
-           <property name="spacing">
+          <layout class="QGridLayout" name="gridLayout_2">
+           <property name="topMargin">
             <number>6</number>
            </property>
-           <item>
-            <spacer name="horizontalSpacer">
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Fixed</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>30</width>
-               <height>52</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QLabel" name="label">
+           <item row="4" column="3">
+            <widget class="DROWidget" name="dro_8">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
              <property name="font">
               <font>
                <family>Roboto</family>
-               <pointsize>12</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
+               <pointsize>16</pointsize>
               </font>
              </property>
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
-             <property name="text">
-              <string>ABS</string>
-             </property>
              <property name="alignment">
-              <set>Qt::AlignCenter</set>
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::DistanceToGo</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::A</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="QLabel" name="label_2">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>12</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="text">
-              <string>REL</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
+           <item row="0" column="3">
             <widget class="QLabel" name="label_3">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
@@ -581,11 +1458,270 @@
              </property>
             </widget>
            </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_10">
-           <item>
+           <item row="4" column="1">
+            <widget class="QLineEdit" name="lineEdit_4">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>110</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>110</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Roboto</family>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::NoContextMenu</enum>
+             </property>
+             <property name="inputMask">
+              <string/>
+             </property>
+             <property name="text">
+              <string>0.1234</string>
+             </property>
+             <property name="frame">
+              <bool>true</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="readOnly">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="DROWidget" name="dro">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>Roboto</family>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::Relative</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="DROWidget" name="dro_3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>Roboto</family>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::Relative</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::Z</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="3">
+            <widget class="DROWidget" name="dro_7">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>Roboto</family>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::DistanceToGo</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::Z</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QPushButton" name="pushButton_6">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Roboto</family>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="text">
+              <string>A</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2">
+            <widget class="DROWidget" name="dro_4">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>Roboto</family>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::Relative</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::A</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="DROWidget" name="dro_5">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>Roboto</family>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::DistanceToGo</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="DROWidget" name="dro_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>Roboto</family>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="reference_type" stdset="0">
+              <enum>DROWidget::Relative</enum>
+             </property>
+             <property name="axis">
+              <enum>DROWidget::Y</enum>
+             </property>
+             <property name="units">
+              <enum>DROWidget::Program</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
             <widget class="QPushButton" name="pushButton_3">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -622,10 +1758,59 @@
              </property>
             </widget>
            </item>
-           <item>
+           <item row="2" column="1">
+            <widget class="QLineEdit" name="lineEdit_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>110</width>
+               <height>0</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>110</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Roboto</family>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="contextMenuPolicy">
+              <enum>Qt::NoContextMenu</enum>
+             </property>
+             <property name="inputMask">
+              <string/>
+             </property>
+             <property name="text">
+              <string>0.1234</string>
+             </property>
+             <property name="frame">
+              <bool>true</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="readOnly">
+              <bool>false</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
             <widget class="QLineEdit" name="lineEdit">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -674,55 +1859,73 @@
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="DROWidget" name="dro">
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <family>Roboto</family>
-               <pointsize>16</pointsize>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
               </font>
              </property>
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="text">
+              <string>REL</string>
+             </property>
              <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="reference_type" stdset="0">
-              <enum>DROWidget::Relative</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="DROWidget" name="dro_5">
+           <item row="0" column="1">
+            <widget class="QLabel" name="label">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <family>Roboto</family>
-               <pointsize>16</pointsize>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
               </font>
              </property>
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="text">
+              <string>ABS</string>
+             </property>
              <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="reference_type" stdset="0">
-              <enum>DROWidget::DistanceToGo</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
+              <set>Qt::AlignCenter</set>
              </property>
             </widget>
            </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_11">
-           <item>
+           <item row="2" column="0">
             <widget class="QPushButton" name="pushButton_4">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -756,82 +1959,14 @@
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="QLineEdit" name="lineEdit_2">
+           <item row="2" column="3">
+            <widget class="DROWidget" name="dro_6">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
-             <property name="minimumSize">
-              <size>
-               <width>110</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>110</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="contextMenuPolicy">
-              <enum>Qt::NoContextMenu</enum>
-             </property>
-             <property name="inputMask">
-              <string/>
-             </property>
-             <property name="text">
-              <string>0.1234</string>
-             </property>
-             <property name="frame">
-              <bool>true</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="readOnly">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="DROWidget" name="dro_2">
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="reference_type" stdset="0">
-              <enum>DROWidget::Relative</enum>
-             </property>
-             <property name="axis">
-              <enum>DROWidget::Y</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="DROWidget" name="dro_6">
              <property name="font">
               <font>
                <family>Roboto</family>
@@ -855,11 +1990,7 @@
              </property>
             </widget>
            </item>
-          </layout>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_12">
-           <item>
+           <item row="3" column="0">
             <widget class="QPushButton" name="pushButton_5">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -893,10 +2024,10 @@
              </property>
             </widget>
            </item>
-           <item>
+           <item row="3" column="1">
             <widget class="QLineEdit" name="lineEdit_3">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -939,197 +2070,23 @@
              </property>
              <property name="readOnly">
               <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="DROWidget" name="dro_3">
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="reference_type" stdset="0">
-              <enum>DROWidget::Relative</enum>
-             </property>
-             <property name="axis">
-              <enum>DROWidget::Z</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="DROWidget" name="dro_7">
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="reference_type" stdset="0">
-              <enum>DROWidget::DistanceToGo</enum>
-             </property>
-             <property name="axis">
-              <enum>DROWidget::Z</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
           </layout>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_13">
-           <item>
-            <widget class="QPushButton" name="pushButton_6">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>12</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="text">
-              <string>A</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="lineEdit_4">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>110</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>110</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="contextMenuPolicy">
-              <enum>Qt::NoContextMenu</enum>
-             </property>
-             <property name="inputMask">
-              <string/>
-             </property>
-             <property name="text">
-              <string>0.1234</string>
-             </property>
-             <property name="frame">
-              <bool>true</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="DROWidget" name="dro_4">
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="reference_type" stdset="0">
-              <enum>DROWidget::Relative</enum>
-             </property>
-             <property name="axis">
-              <enum>DROWidget::A</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="DROWidget" name="dro_8">
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="reference_type" stdset="0">
-              <enum>DROWidget::DistanceToGo</enum>
-             </property>
-             <property name="axis">
-              <enum>DROWidget::A</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>345</width>
+             <height>41</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </widget>
@@ -1166,8 +2123,8 @@
          <property name="checkable">
           <bool>true</bool>
          </property>
-         <property name="action_id" stdset="0">
-          <enum>ActionButton::MachinePower</enum>
+         <property name="actionName" stdset="0">
+          <string>machine.power.toggle</string>
          </property>
         </widget>
         <widget class="ActionButton" name="actionbutton">
@@ -1188,65 +2145,33 @@
          <property name="focusPolicy">
           <enum>Qt::NoFocus</enum>
          </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>ActionButton::EmergencyStop</enum>
-         </property>
-        </widget>
-        <widget class="ActionButton" name="actionbutton_4">
-         <property name="geometry">
-          <rect>
-           <x>10</x>
-           <y>60</y>
-           <width>80</width>
-           <height>23</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+         <property name="text">
+          <string>E-Stop</string>
          </property>
          <property name="checkable">
           <bool>true</bool>
          </property>
-         <property name="action_id" stdset="0">
-          <enum>ActionButton::Flood</enum>
+         <property name="actionName" stdset="0">
+          <string>machine.estop.toggle</string>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_5">
+        <widget class="ActionButton" name="actionbutton">
          <property name="geometry">
           <rect>
            <x>100</x>
            <y>30</y>
-           <width>80</width>
+           <width>81</width>
            <height>23</height>
           </rect>
          </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
+         <property name="text">
+          <string>Block Del</string>
          </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+         <property name="actionName" stdset="0">
+          <string>program.block-delete.toggle</string>
          </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>ActionButton::BlockDelete</enum>
-         </property>
-         <property name="action_type" stdset="0">
-          <enum>ActionButton::Toggle</enum>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
+         <property name="styleClass" stdset="0">
+          <string>option</string>
          </property>
         </widget>
         <widget class="ActionButton" name="actionbutton_6">
@@ -1254,173 +2179,146 @@
           <rect>
            <x>100</x>
            <y>60</y>
-           <width>80</width>
+           <width>81</width>
            <height>23</height>
           </rect>
          </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
          <property name="text">
-          <string>Opt Stop </string>
+          <string>Opt Stop</string>
          </property>
-         <property name="checkable">
-          <bool>true</bool>
+         <property name="actionName" stdset="0">
+          <string>program.optional_stop.toggle</string>
          </property>
-         <property name="action_id" stdset="0">
-          <enum>ActionButton::OptionalStop</enum>
-         </property>
-         <property name="option" stdset="0">
-          <bool>true</bool>
+         <property name="styleClass" stdset="0">
+          <string>option</string>
          </property>
         </widget>
-        <widget class="ActionButton" name="actionbutton_9">
+        <widget class="ActionButton" name="actionbutton_7">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>60</y>
+           <width>81</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Mist</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>coolant.mist.toggle</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_8">
          <property name="geometry">
           <rect>
            <x>10</x>
            <y>30</y>
-           <width>80</width>
+           <width>81</width>
            <height>23</height>
           </rect>
          </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
          <property name="text">
-          <string>Mist </string>
+          <string>Flood</string>
          </property>
-         <property name="checkable">
-          <bool>true</bool>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>ActionButton::Mist</enum>
-         </property>
-         <property name="action_type" stdset="0">
-          <enum>ActionButton::Toggle</enum>
+         <property name="actionName" stdset="0">
+          <string>coolant.flood.toggle</string>
          </property>
         </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_10">
+        <widget class="ActionButton" name="actionbutton_14">
+         <property name="geometry">
+          <rect>
+           <x>10</x>
+           <y>90</y>
+           <width>41</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>+Z</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.jog.axis:z,pos</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_15">
+         <property name="geometry">
+          <rect>
+           <x>60</x>
+           <y>100</y>
+           <width>41</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>+Y</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.jog.axis:y,pos</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_16">
+         <property name="geometry">
+          <rect>
+           <x>100</x>
+           <y>140</y>
+           <width>41</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>+X</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.jog.axis:x,pos</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_17">
+         <property name="geometry">
+          <rect>
+           <x>20</x>
+           <y>140</y>
+           <width>41</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>−X</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.jog.axis:x,neg</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_18">
+         <property name="geometry">
+          <rect>
+           <x>60</x>
+           <y>180</y>
+           <width>41</width>
+           <height>41</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>−Y</string>
+         </property>
+         <property name="actionName" stdset="0">
+          <string>machine.jog.axis:y,neg</string>
+         </property>
+        </widget>
+        <widget class="ActionButton" name="actionbutton_19">
          <property name="geometry">
           <rect>
            <x>110</x>
-           <y>140</y>
-           <width>40</width>
-           <height>40</height>
+           <y>190</y>
+           <width>41</width>
+           <height>41</height>
           </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Jog</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::X</enum>
-         </property>
-         <property name="direction">
-          <enum>AxisActionButton::Positive</enum>
-         </property>
-        </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_8">
-         <property name="geometry">
-          <rect>
-           <x>30</x>
-           <y>140</y>
-           <width>40</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Jog</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::X</enum>
-         </property>
-         <property name="direction">
-          <enum>AxisActionButton::Negative</enum>
-         </property>
-        </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_9">
-         <property name="geometry">
-          <rect>
-           <x>70</x>
-           <y>100</y>
-           <width>40</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
          </property>
          <property name="text">
-          <string>Jog +Y</string>
+          <string>−Z</string>
          </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Jog</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::Y</enum>
-         </property>
-         <property name="direction">
-          <enum>AxisActionButton::Positive</enum>
-         </property>
-        </widget>
-        <widget class="AxisActionButton" name="axisactionbutton_11">
-         <property name="geometry">
-          <rect>
-           <x>70</x>
-           <y>180</y>
-           <width>40</width>
-           <height>40</height>
-          </rect>
-         </property>
-         <property name="font">
-          <font>
-           <family>Roboto</family>
-          </font>
-         </property>
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="text">
-          <string>Jog −Y</string>
-         </property>
-         <property name="action_id" stdset="0">
-          <enum>AxisActionButton::Jog</enum>
-         </property>
-         <property name="axis">
-          <enum>AxisActionButton::Y</enum>
-         </property>
-         <property name="direction">
-          <enum>AxisActionButton::Negative</enum>
+         <property name="actionName" stdset="0">
+          <string>machine.jog.axis:z,neg</string>
          </property>
         </widget>
        </widget>
@@ -1434,7 +2332,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1000</width>
+     <width>1024</width>
      <height>20</height>
     </rect>
    </property>
@@ -1480,8 +2378,18 @@
     <addaction name="action_MachinePower_toggle"/>
     <addaction name="separator"/>
     <addaction name="actionRun_Program"/>
+    <addaction name="actionRun_From_Line"/>
+    <addaction name="actionStep"/>
+    <addaction name="actionPause"/>
+    <addaction name="actionResume"/>
+    <addaction name="actionStop"/>
+    <addaction name="actionPause_at_M1"/>
+    <addaction name="actionSkip_lines_with"/>
+    <addaction name="separator"/>
     <addaction name="menuHoming"/>
     <addaction name="menuCooling"/>
+    <addaction name="separator"/>
+    <addaction name="actionOverride_Limits"/>
    </widget>
    <widget class="QMenu" name="menuView">
     <property name="title">
@@ -1490,9 +2398,19 @@
     <addaction name="actionReport_Actual_Position"/>
     <addaction name="actionTest"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="actionHalmeter"/>
+    <addaction name="actionHalshow"/>
+    <addaction name="actionHAL_Scope"/>
+    <addaction name="actionCalibration"/>
+   </widget>
    <addaction name="menuExit"/>
    <addaction name="menuMachine"/>
    <addaction name="menuView"/>
+   <addaction name="menuTools"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionExit">
@@ -1506,6 +2424,9 @@
    </property>
    <property name="shortcut">
     <string>O</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.open</string>
    </property>
   </action>
   <action name="actionClose">
@@ -1548,6 +2469,9 @@
    <property name="shortcut">
     <string>F1</string>
    </property>
+   <property name="actionName" stdset="0">
+    <string>machine.estop.toggle</string>
+   </property>
   </action>
   <action name="action_MachinePower_toggle">
    <property name="text">
@@ -1556,8 +2480,8 @@
    <property name="shortcut">
     <string>F2</string>
    </property>
-   <property name="_axis" stdset="0">
-    <number>2</number>
+   <property name="actionName" stdset="0">
+    <string>machine.power.toggle</string>
    </property>
   </action>
   <action name="actionHome_All">
@@ -1571,6 +2495,9 @@
    </property>
    <property name="shortcut">
     <string>R</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.run</string>
    </property>
   </action>
   <action name="actionFile1">
@@ -1596,10 +2523,13 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Mist On</string>
+    <string>Mist</string>
    </property>
    <property name="shortcut">
     <string>F7</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>coolant.mist.toggle</string>
    </property>
   </action>
   <action name="action_Flood_toggle">
@@ -1607,18 +2537,150 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Flood On</string>
+    <string>Flood</string>
    </property>
    <property name="shortcut">
     <string>F8</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>coolant.flood.toggle</string>
+   </property>
+  </action>
+  <action name="action_program_run">
+   <property name="text">
+    <string>Run Program</string>
+   </property>
+  </action>
+  <action name="action_coolant_floodToggle">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Flood</string>
+   </property>
+  </action>
+  <action name="actionHalshow">
+   <property name="text">
+    <string>HAL Show</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>tool.halshow</string>
+   </property>
+  </action>
+  <action name="actionHalmeter">
+   <property name="text">
+    <string>HAL Meter</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>tool.halmeter</string>
+   </property>
+  </action>
+  <action name="actionHAL_Scope">
+   <property name="text">
+    <string>HAL Scope</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>tool.halscope</string>
+   </property>
+  </action>
+  <action name="actionCalibration">
+   <property name="text">
+    <string>Calibration</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>tool.calibration</string>
+   </property>
+  </action>
+  <action name="actionOverride_Limits">
+   <property name="text">
+    <string>Override Limits</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>machine.override-limits</string>
+   </property>
+  </action>
+  <action name="actionOverride_Limits_2">
+   <property name="text">
+    <string>Override Limits</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>machine.override-limits</string>
+   </property>
+  </action>
+  <action name="actionRun_From_Line">
+   <property name="text">
+    <string>Run From Line</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.run-from-line</string>
+   </property>
+  </action>
+  <action name="actionStep">
+   <property name="text">
+    <string>Step</string>
+   </property>
+   <property name="shortcut">
+    <string>T</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.step</string>
+   </property>
+  </action>
+  <action name="actionPause">
+   <property name="text">
+    <string>Pause</string>
+   </property>
+   <property name="shortcut">
+    <string>P</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.pause</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="text">
+    <string>Stop</string>
+   </property>
+   <property name="shortcut">
+    <string>Esc</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.abort</string>
+   </property>
+  </action>
+  <action name="actionResume">
+   <property name="text">
+    <string>Resume</string>
+   </property>
+   <property name="shortcut">
+    <string>S</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.resume</string>
+   </property>
+  </action>
+  <action name="actionPause_at_M1">
+   <property name="text">
+    <string>Pause at 'M1'</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.optional-stop.toggle</string>
+   </property>
+  </action>
+  <action name="actionSkip_lines_with">
+   <property name="text">
+    <string>Skip lines with '/'</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>program.block-delete.toggle</string>
    </property>
   </action>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ActionButton</class>
-   <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_button</header>
+   <class>ActionCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>QtPyVCP.widgets.button_widgets.action_checkbox</header>
   </customwidget>
   <customwidget>
    <class>GcodeBackplot</class>
@@ -1630,6 +2692,7 @@
    <class>GcodeEditor</class>
    <extends>QFrame</extends>
    <header>QtPyVCP.widgets.input_widgets.gcode_editor</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>VCPMainWindow</class>
@@ -1643,10 +2706,39 @@
    <header>QtPyVCP.widgets.input_widgets.recent_file_combobox</header>
   </customwidget>
   <customwidget>
-   <class>Camera</class>
-   <extends>QWidget</extends>
-   <header>QtPyVCP.widgets.display_widgets.camera.camera</header>
-   <container>1</container>
+   <class>SubCallButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.subcall_button</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionComboBox</class>
+   <extends>QComboBox</extends>
+   <header>QtPyVCP.widgets.input_widgets.action_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>QtPyVCP.widgets.button_widgets.action_spinbox</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.mdi_button</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionSlider</class>
+   <extends>QSlider</extends>
+   <header>QtPyVCP.widgets.input_widgets.action_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionButton</class>
+   <extends>QPushButton</extends>
+   <header>QtPyVCP.widgets.button_widgets.action_button</header>
   </customwidget>
   <customwidget>
    <class>DROWidget</class>
@@ -1654,18 +2746,13 @@
    <header>QtPyVCP.widgets.display_widgets.dro_widget</header>
   </customwidget>
   <customwidget>
-   <class>AxisActionButton</class>
-   <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.axis_button</header>
-  </customwidget>
-  <customwidget>
-   <class>MDIEntry</class>
-   <extends>QLineEdit</extends>
-   <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
+   <class>StatusLabel</class>
+   <extends>QLabel</extends>
+   <header>QtPyVCP.widgets.display_widgets.statuslabel_widget</header>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="xyz.qrc"/>
+  <include location="../resources/brender.qrc"/>
  </resources>
  <connections/>
  <designerdata>

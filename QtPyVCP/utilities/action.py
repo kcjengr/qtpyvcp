@@ -57,72 +57,12 @@ class _Action(object):
         super(_Action, self).__init__()
 
         self.cmd = linuxcnc.command()
-        self.stat = linuxcnc.stat()
-
-        self.coordinates = INFO.getCoordinates()
-
-        self.tmp = None
-
-    def safePoll(self):
-        try:
-            self.stat.poll()
-        except:
-            pass
-
-    def loadProgram(self, fname, add_to_recents=True):
-        setTaskMode(linuxcnc.MODE_AUTO)
-        filter_prog = INFO.getFilterProgram(fname)
-        if not filter_prog:
-            CMD.program_open(fname.encode('utf-8'))
-        else:
-            self.open_filter_program(fname, filter_prog)
-
-        if add_to_recents:
-            self.addToRecentFiles(fname)
-
-    def addToRecentFiles(self, fname):
-        if fname in STATUS.recent_files:
-            STATUS.recent_files.remove(fname)
-        STATUS.recent_files.insert(0, fname)
-        STATUS.recent_files = STATUS.recent_files[:STATUS.max_recent_files]
-
-        # if len(STATUS.recent_files) > STATUS.max_recent_files:
-        #     STATUS.recent_files.pop()
-        STATUS.recent_files_changed.emit(tuple(STATUS.recent_files))
-
-    def runProgram(self, start_line=0):
-        if setTaskMode(linuxcnc.MODE_AUTO):
-            self.cmd.auto(linuxcnc.AUTO_RUN, start_line)
 
     def issueMDI(self, command):
         if setTaskMode(linuxcnc.MODE_MDI):
             self.cmd.mdi(command)
         else:
             LOG.error("Can't issue MDI, machine must be ON, HOMED and IDLE")
-
-
-    #==========================================================================
-    #  Helper functions
-    #==========================================================================
-
-
-    def open_filter_program(self,fname, flt):
-        if not self.tmp:
-            self._mktemp()
-        tmp = os.path.join(self.tmp, os.path.basename(fname))
-        print 'temp',tmp
-        flt = FilterProgram(flt, fname, tmp, lambda r: r or self._load_filter_result(tmp))
-
-    def _load_filter_result(self, fname):
-        if fname:
-            self.cmd.program_open(fname)
-
-    def _mktemp(self):
-        if self.tmp:
-            return
-        self.tmp = tempfile.mkdtemp(prefix='emcflt-', suffix='.d')
-        atexit.register(lambda: shutil.rmtree(self.tmp))
-
 
 def setTaskMode(new_mode):
     """Sets task mode, if possible
@@ -138,7 +78,6 @@ def setTaskMode(new_mode):
         return False
     else:
         CMD.mode(new_mode)
-        CMD.wait_complete()
         return True
 
 def isRunning():
@@ -239,7 +178,6 @@ class MachinePower(_BoolAction):
         if STAT.task_state == linuxcnc.STATE_ESTOP_RESET:
             LOG.debug("Setting state green<ON>")
             CMD.state(linuxcnc.STATE_ON)
-            CMD.wait_complete()
         elif STAT.task_state == linuxcnc.STATE_ESTOP:
             LOG.warn("Can't turn machine green<ON> until out of red<E-Stop>")
 
@@ -248,7 +186,6 @@ class MachinePower(_BoolAction):
         if STAT.task_state == linuxcnc.STATE_ON:
             LOG.debug("Setting state red<OFF>")
             CMD.state(linuxcnc.STATE_OFF)
-            CMD.wait_complete()
 
     @classmethod
     def TOGGLE(cls):
@@ -276,7 +213,6 @@ class Mist(_BoolAction):
         if STAT.task_state == linuxcnc.STATE_ON:
             LOG.debug("Setting mist green<ON>")
             CMD.mist(linuxcnc.MIST_ON)
-            CMD.wait_complete()
         elif STAT.task_state == linuxcnc.STATE_ESTOP:
             LOG.warn("Can't turn mist green<ON> with machine red<OFF>")
 
@@ -284,7 +220,6 @@ class Mist(_BoolAction):
     def OFF(cls):
         LOG.debug("Setting mist red<OFF>")
         CMD.mist(linuxcnc.MIST_OFF)
-        CMD.wait_complete()
 
     @classmethod
     def TOGGLE(cls):
@@ -312,7 +247,6 @@ class Flood(_BoolAction):
         if STAT.task_state == linuxcnc.STATE_ON:
             LOG.debug("Setting flood green<ON>")
             CMD.flood(linuxcnc.FLOOD_ON)
-            CMD.wait_complete()
         elif STATUS.stat.task_state == linuxcnc.STATE_ESTOP:
             LOG.warn("Can't turn flood green<ON> with machine red<OFF>")
 
@@ -320,7 +254,6 @@ class Flood(_BoolAction):
     def OFF(cls):
         LOG.debug("Setting flood red<OFF>")
         CMD.flood(linuxcnc.FLOOD_OFF)
-        CMD.wait_complete()
 
     @classmethod
     def TOGGLE(cls):
@@ -348,17 +281,77 @@ class BlockDelete(_BoolAction):
         if STAT.task_state == linuxcnc.STATE_ON:
             LOG.debug("Setting block delete green<ACTIVE>")
             CMD.set_block_delete(True)
-            CMD.wait_complete()
 
     @classmethod
     def OFF(cls):
         LOG.debug("Setting block delete red<INACTIVE>")
         CMD.set_block_delete(False)
-        CMD.wait_complete()
 
     @classmethod
     def TOGGLE(cls):
         if STAT.block_delete == True:
+            cls.OFF()
+        else:
+            cls.ON()
+
+class JogMode(_BoolAction):
+
+    action_id = 8
+    action_text = "Jog"
+
+    def __init__(self, widget=None, action_type='TOGGLE'):
+        super(JogMode, self).__init__(widget, action_type)
+
+        self.widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
+        self.widget.setChecked(STATUS.jog_mode)
+
+        STATUS.on.connect(lambda v: self.setEnabled(v))
+        STATUS.jog_mode_signal.connect(lambda s: self.setState(s))
+
+    @classmethod
+    def ON(cls):
+        LOG.debug("Jog Mode green<Jog>")
+        STATUS.setJogMode(True)
+
+    @classmethod
+    def OFF(cls):
+        LOG.debug("Jog Mode red<Step>")
+        STATUS.setJogMode(False)
+
+    @classmethod
+    def TOGGLE(cls):
+        if STATUS.jog_mode == True:
+            cls.OFF()
+        else:
+            cls.ON()
+
+class StepMode(_BoolAction):
+
+    action_id = 9
+    action_text = "Step"
+
+    def __init__(self, widget=None, action_type='TOGGLE'):
+        super(StepMode, self).__init__(widget, action_type)
+
+        self.widget.setEnabled(STAT.state == linuxcnc.STATE_ON)
+        self.widget.setChecked(not STATUS.jog_mode)
+
+        STATUS.on.connect(lambda v: self.setEnabled(v))
+        STATUS.jog_mode_signal.connect(lambda s: self.setState(not s))
+
+    @classmethod
+    def ON(cls):
+        LOG.debug("Step Mode green<Step>")
+        STATUS.setJogMode(False)
+
+    @classmethod
+    def OFF(cls):
+        LOG.debug("Step Mode red<Jog>")
+        STATUS.setJogMode(True)
+
+    @classmethod
+    def TOGGLE(cls):
+        if STATUS.jog_mode == False:
             cls.OFF()
         else:
             cls.ON()
@@ -382,13 +375,11 @@ class OptionalStop(_BoolAction):
         if STAT.task_state == linuxcnc.STATE_ON:
             LOG.debug("Setting optional stop green<ACTIVE>")
             CMD.set_optional_stop(True)
-            CMD.wait_complete()
 
     @classmethod
     def Off(cls):
         LOG.debug("Setting optional stop red<INACTIVE>")
         CMD.set_optional_stop(False)
-        CMD.wait_complete()
 
     @classmethod
     def TOGGLE(cls):
@@ -397,6 +388,225 @@ class OptionalStop(_BoolAction):
         else:
             cls.ON()
 
+class FeedHold(_BoolAction):
+
+    action_id = 10
+    action_text = "Feedhold"
+
+    def __init__(self, widget=None, action_type='TOGGLE'):
+        super(FeedHold, self).__init__(widget, action_type)
+
+        self.widget.setEnabled(STAT.state == linuxcnc.RCS_EXEC)
+        self.widget.setChecked(STAT.paused)
+
+        STATUS.state.connect(lambda state: self.setEnabled(state == linuxcnc.RCS_EXEC))
+        STATUS.paused.connect(lambda paused: self.setState(paused))
+
+    @classmethod
+    def ON(cls):
+        if STAT.state == linuxcnc.RCS_EXEC and not STAT.paused:
+            LOG.debug("Setting feedhold green<ON>")
+            CMD.auto(linuxcnc.AUTO_PAUSE)
+        else:
+            LOG.warn("Can't pause .")
+
+    @classmethod
+    def OFF(cls):
+        if STAT.paused:
+            LOG.debug("Setting feedhold red<OFF>")
+            CMD.auto(linuxcnc.AUTO_RESUME)
+        else:
+            LOG.warn("Can't set feedhold.")
+
+
+    @classmethod
+    def TOGGLE(cls):
+        if STAT.paused:
+            cls.OFF()
+        else:
+            cls.ON()
+
+#==============================================================================
+# Program actions
+#==============================================================================
+
+class program(object):
+    """program actions group"""
+
+    def __init__(self, widget, action):
+
+        if widget is not None:
+            if isinstance(widget, QAction):
+                sig = widget.triggered
+            else:
+                sig = widget.clicked
+            sig.connect(getattr(self.__class__, action))
+
+        if action == 'run':
+            widget.setEnabled(bool(self.runOk()))
+
+            STATUS.estop.connect(lambda: self.runOk(widget))
+            STATUS.enabled.connect(lambda: self.runOk(widget))
+            STATUS.all_homed.connect(lambda: self.runOk(widget))
+            STATUS.interp_state.connect(lambda: self.runOk(widget))
+            STATUS.file.connect(lambda: self.runOk(widget))
+
+        elif action == 'pause':
+            widget.setEnabled(STAT.state == linuxcnc.RCS_EXEC)
+            STATUS.state.connect(lambda state: widget.setEnabled(state == linuxcnc.RCS_EXEC))
+        elif action == 'resume':
+            widget.setEnabled(STAT.paused)
+            STATUS.paused.connect(lambda paused: widget.setEnabled(paused))
+        elif action == 'step':
+            widget.setEnabled(False)
+
+    @classmethod
+    def load(cls, fname, add_to_recents=True):
+        setTaskMode(linuxcnc.MODE_AUTO)
+        filter_prog = INFO.getFilterProgram(fname)
+        if not filter_prog:
+            CMD.program_open(fname.encode('utf-8'))
+        else:
+            openFilterProgram(fname, filter_prog)
+
+        if add_to_recents:
+            cls.addToRecents(fname)
+
+    @classmethod
+    def run (cls, start_line=0):
+        """
+        Runs the loaded program, optionally starting from a specific line.
+
+        Args:
+            start_line (int, optional) : The line to start program from. Defaults to 0.
+        """
+        def ok(cls, widget=None):
+            """
+            Checks if it is OK to run the program.
+
+            Args:
+                widget (QWidget, optional) : If a widget is supplied it will be
+                    enabled/disabled according to the result, and will have it's
+                    statusTip property set to the reason the action is disabled.
+
+            Returns:
+                str : Empty if OK, otherwise the reason it is not OK.
+
+            """
+            msg = "Run loaded program."
+            if STAT.estop:
+                msg = "Can't run program when in E-Stop"
+            elif not STAT.enabled:
+                msg = "Can't run program when not enabled"
+            elif not STATUS.allHomed():
+                msg = "Can't run program when not homed"
+            elif not STAT.interp_state == linuxcnc.INTERP_IDLE:
+                msg = "Can't run program when interpreter is not idle"
+            elif STAT.file == "":
+                msg = "Can't run program when no file loaded"
+
+            run.status_msg = msg
+
+            if widget is not None:
+                widget.setEnabled(msg == "")
+                widget.setStatusTip(msg)
+                widget.setToolTip(msg)
+
+            return error
+        # check if it is OK to run
+        error = cls.runOk()
+        if error:
+            LOG.error(error)
+            return
+        if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
+            CMD.auto(linuxcnc.AUTO_RESUME)
+        elif setTaskMode(linuxcnc.MODE_AUTO):
+            CMD.auto(linuxcnc.AUTO_RUN, start_line)
+
+    @classmethod
+    def runOk(cls, widget=None):
+        """
+        Checks if it is OK to run the program.
+
+        Args:
+            widget (QWidget, optional) : If a widget is supplied it will be
+                enabled/disabled according to the result, and will have it's
+                statusTip property set to the reason the action is disabled.
+
+        Returns:
+            str : Empty if OK, otherwise the reason it is not OK.
+
+        """
+        error = ""
+        if STAT.estop:
+            error = "Can't run program when in E-Stop"
+        elif not STAT.enabled:
+            error = "Can't run program when not enabled"
+        elif not STATUS.allHomed():
+            error = "Can't run program when not homed"
+        elif not STAT.interp_state == linuxcnc.INTERP_IDLE:
+            error = "Can't run program when interpreter is not idle"
+        elif STAT.file == "":
+            error = "Can't run program when no file loaded"
+
+        if widget is not None:
+            widget.setEnabled(error == "")
+            widget.setStatusTip(error)
+            widget.setToolTip(error)
+
+        return error
+
+    @classmethod
+    def runFromLine(cls):
+        # TODO: This might should show a popup to select start line,
+        #       or it could get the start line from the gcode view or
+        #       even from the backplot.
+        raise NotImplemented
+
+    @classmethod
+    def pause(cls):
+        if STAT.state == linuxcnc.RCS_EXEC and not STAT.paused:
+            LOG.debug("Pausing program execution")
+            CMD.auto(linuxcnc.AUTO_PAUSE)
+        else:
+            LOG.warn("Can't pause program, is a program executing?")
+
+    @classmethod
+    def pauseOk(cls, widget=None):
+        error = ""
+        if STAT.state == linuxcnc.RCS_EXEC and not STAT.paused:
+            return ""
+        elif STAT.paused:
+            error = "Execution is already paused."
+
+        if widget is not None:
+            widget.setEnabled(error == "")
+            widget.setStatusTip(error)
+            widget.setToolTip(error)
+
+        return error
+
+
+
+    @classmethod
+    def resume(cls):
+        if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
+            LOG.debug("Resuming program execution")
+            CMD.auto(linuxcnc.AUTO_RESUME)
+        else:
+            LOG.warn("Can't resume program execution, is a program paused?")
+
+    @classmethod
+    def step(cls):
+        pass
+
+    @classmethod
+    def addToRecents(cls, fname):
+        if fname in STATUS.recent_files:
+            STATUS.recent_files.remove(fname)
+        STATUS.recent_files.insert(0, fname)
+        STATUS.recent_files = STATUS.recent_files[:STATUS.max_recent_files]
+        STATUS.recent_files_changed.emit(tuple(STATUS.recent_files))
 
 #==============================================================================
 #  Axis/Joint actions
@@ -425,6 +635,7 @@ def getAxisLetter(axis):
     return axis.lower()
 
 def getAxisNumber(axis):
+    """Takes an axis letter or number and returns the axis number"""
     if isinstance(axis, str):
         return ['x', 'y', 'z', 'a', 'b', 'c', 'u', 'v', 'w', 'all'].index(axis.lower())
     return axis
@@ -456,12 +667,20 @@ class Home(_JointAction):
         if self._axis == 'all':
             self._joint = -1
         else:
-            self._joint = INFO.ALETTER_JNUM_DICT[self._axis]
+            self._joint = INFO.ALETTER_JNUM_DICT.get(self._axis)
+
+        if self._joint is None:
+            # the machine does not have a joint with this number
+            self.widget.setEnabled(False)
+            self.widget.setToolTip("{} axis not configured".format(self._axis.upper()))
+            # TODO: might consider hiding the widget instead of disabling it
+            # self.widget.hide()
+            return
 
         self._homed = False
 
         STATUS.on.connect(lambda s: self.widget.setEnabled(s))
-        STATUS.executing.connect(lambda s: self.wigget.setEnabled(not s))
+        STATUS.moving.connect(lambda s: self.widget.setEnabled(not s))
 
         if method is not None:
             STATUS.joint.homed.connect(self.onHomed)
@@ -538,13 +757,18 @@ class Jogging(object):
         self._axis = axis
         self._direction = direction
 
+        axis = getAxisLetter(self._axis)
+        if axis not in INFO.AXIS_LETTER_LIST:
+            self.widget.setEnabled(False)
+            self.widget.setToolTip("{} axis not configured".format(axis.upper()))
+            return
+
         if self.widget is not None and method is not None:
             self.widget.pressed.connect(self.btn_jog)
             self.widget.released.connect(self.btn_stop)
 
         STATUS.on.connect(lambda s: self.widget.setEnabled(s))
-        STATUS.executing.connect(lambda s: self.widget.setEnabled(not s))
-
+        STATUS.moving.connect(lambda s: self.widget.setEnabled(not s))
 
     def btn_jog(self):
         self.__class__.autoJog(self._axis, self._direction)
@@ -566,6 +790,11 @@ class Jogging(object):
             rate = STATUS.linear_jog_velocity / 60
 
         distance = STATUS.jog_increment
+        print axis, direction, jog_joint, distance
+
+        if direction == 0:
+            CMD.jog(linuxcnc.JOG_STOP, jog_joint, axis)
+            return
 
         if distance == 0:
             CMD.jog(linuxcnc.JOG_CONTINUOUS, jog_joint, axis, direction * rate)
@@ -573,8 +802,9 @@ class Jogging(object):
             CMD.jog(linuxcnc.JOG_INCREMENT, jog_joint, axis, direction * rate, distance)
 
     @classmethod
-    def jog(cls, aixs, direction, velocity, distance=0):
+    def jog(cls, axis, direction, velocity, distance=0):
         axis = getAxisNumber(axis)
+        print axis, direction, velocity, distance
         if direction == 0:
             CMD.jog(linuxcnc.JOG_STOP, cls.jog_joint, axis)
         else:
@@ -607,6 +837,9 @@ action_by_id = {
     5 : OptionalStop,
     6 : Home,
     7 : Jogging,
+    8 : JogMode,
+    9 : StepMode,
+    10: FeedHold,
 }
 
 
@@ -843,11 +1076,30 @@ action_by_id = {
 #         self.tmp = tempfile.mkdtemp(prefix='emcflt-', suffix='.d')
 #         atexit.register(lambda: shutil.rmtree(self.tmp))
 
-########################################################################
-# Filter Class
-########################################################################
+#==============================================================================
+# Filter program handlers
+#==============================================================================
 import os, sys, time, select, re
 import tempfile, atexit, shutil
+
+FILTER_TEMP = None
+
+def openFilterProgram(self, fname, flt):
+    temp_dir = _mktemp()
+    tmp = os.path.join(temp_dir, os.path.basename(fname))
+    print 'temp', temp_dir
+    flt = FilterProgram(flt, fname, tmp, lambda r: r or self._loadFilterResult(tmp))
+
+def _loadFilterResult(self, fname):
+    if fname:
+        CMD.program_open(fname)
+
+def _mktemp(self):
+    global FILTER_TEMP
+    if FILTER_TEMP is not None:
+        return FILTER_TEMP
+    FILTER_TEMP = tempfile.mkdtemp(prefix='emcflt-', suffix='.d')
+    atexit.register(lambda: shutil.rmtree(FILTER_TEMP))
 
 # slightly reworked code from gladevcp
 # loads a filter program and collects the result
@@ -905,11 +1157,11 @@ class FilterProgram:
             self.callback(r)
 
     def error(self, exitcode, stderr):
-        dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_ERROR, gtk.BUTTONS_CLOSE,
-                _("The program %(program)r exited with code %(code)d.  "
-                "Any error messages it produced are shown below:")
-                    % {'program': self.program_filter, 'code': exitcode})
-        diaLOG.format_secondary_text(stderr)
-        diaLOG.run()
-        diaLOG.destroy()
-
+        LOG.error("Error loading filter program!")
+        # dialog = gtk.MessageDialog(None, 0, gtk.MESSAGE_ERROR, gtk.BUTTONS_CLOSE,
+        #         _("The program %(program)r exited with code %(code)d.  "
+        #         "Any error messages it produced are shown below:")
+        #             % {'program': self.program_filter, 'code': exitcode})
+        # diaLOG.format_secondary_text(stderr)
+        # diaLOG.run()
+        # diaLOG.destroy()

@@ -21,7 +21,7 @@
 import os
 
 from PyQt5 import uic
-from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty
+from PyQt5.QtCore import Qt, QEvent, pyqtSlot, pyqtProperty
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QWidget, QBoxLayout, QSizePolicy
 from QtPyVCP.core import Status, Action, Info
@@ -39,11 +39,11 @@ class JogIncrementWidget(QWidget):
         super(JogIncrementWidget, self).__init__(parent)
 
         self._container = hBox = QBoxLayout(QBoxLayout.LeftToRight, self)
-
+        
+        hBox.setContentsMargins(0, 0, 0, 0)
         self._ledDiameter = 15
         self._ledColor = QColor('green')
         self._alignment = Qt.AlignTop | Qt.AlignRight
-
         # This prevents doing unneeded initialization
         # when QtDesginer loads the plugin.
         if parent is None and not standalone:
@@ -51,10 +51,11 @@ class JogIncrementWidget(QWidget):
 
         increments = INFO.getIncrements()
         for increment in increments:
-            button = LEDButton();
+            button = LEDButton()
             button.setCheckable(True)
             button.setAutoExclusive(True)
             button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+            button.setMinimumSize(50, 42)
 
             if increment != 0:
                 raw_increment = increment.strip()
@@ -114,10 +115,18 @@ class JogIncrementWidget(QWidget):
             self._container.setDirection(QBoxLayout.TopToBottom)
         self.adjustSize()
 
+    def getLayoutSpacing(self):
+        return self._container.spacing()
+
+    @pyqtSlot(int)
+    def setLayoutSpacing(self, value):
+        self._container.setSpacing(value)
+
     diameter = pyqtProperty(int, getLedDiameter, setLedDiameter)
     color = pyqtProperty(QColor, getLedColor, setLedColor)
     alignment = pyqtProperty(Qt.Alignment, getAlignment, setAlignment)
     orientation = pyqtProperty(Qt.Orientation, getOrientation, setOrientation)
+    layoutSpacing = pyqtProperty(int, getLayoutSpacing, setLayoutSpacing)
 
 if __name__ == "__main__":
     import sys
