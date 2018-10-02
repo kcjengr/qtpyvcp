@@ -35,7 +35,7 @@ def main():
         os.environ['INI_FILE_NAME'] = ini_file
         os.environ['CONFIG_DIR'] = os.path.dirname(ini_file)
 
-    if opts.chooser:
+    if opts.chooser or not opts.vcp:
         from vcp_chooser import VCPChooser
         from PyQt5.QtWidgets import QApplication
         app = QApplication([])

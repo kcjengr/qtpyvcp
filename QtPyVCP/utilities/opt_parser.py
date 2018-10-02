@@ -2,19 +2,20 @@
 QtPyVCP - A PyQt5 based toolkit for LinuxCNC Virtual Control Panels (VCPs).
 
 Usage:
-  qtpyvcp <vcp> --ini=INI [--log-level=LEVEL] [--log-file=FILE] [--perfmon]
+  qtpyvcp [<vcp>] --ini=INI [--log-level=LEVEL] [--log-file=FILE] [--perfmon]
             [--theme=THEME] [--stylesheet=SYTLESHEET]
             [--size WIDTHxHEIGHT] [--position XPOSxYPOS]
             [--fullscreen] [--maximize] [--hide-menu-bar] [--hide-status-bar]
-  qtpyvcp --ini=INI --chooser
+            [--chooser]
   qtpyvcp (-h | --help)
   qtpyvcp (-v | --version)
 
 Required Arguments:
-    --ini INI        Path to INI file, relative to ~/linuxcnc/configs
+    --ini INI        Path to INI file, relative to ~/linuxcnc/configs.
 
 Display  Options:
-  --vcp VCP   The name of the VCP o
+  --vcp VCP          The name of the VCP to launch. If not specified a
+                     graphical chooser dialog will be shown.
   --theme THEME      The Qt theme to use, defaults to system theme.
   --stylesheet STYLESHEET
                      Path to QSS file containing styles to be applied
@@ -22,9 +23,9 @@ Display  Options:
   --size WIDTHxHEIGHT
                      Initial size of the window in pixels.
   --position XPOSxYPOS
-                     Initial position of the window, specified as the coordinates
-                     of the top left corner of the window relative to the top left
-                     corner of the screen.
+                     Initial position of the window, specified as the
+                     coordinates of the top left corner of the window
+                     relative to the top left corner of the screen.
   -f --fullscreen    Flag to start with window fullscreen.
   -m --maximize      Flag to start with window maximized.
   --hide-menu-bar    Hides the menu bar, if present.
@@ -38,13 +39,16 @@ Application Options:
   --command_line_args <args>...
 
 General Options:
-  --chooser          Launches the VCP chooser dialog.
+  --chooser          Forces the graphical VCP chooser to be shown. If a VCP
+                     was also specified it will be ignored. This is very useful
+                     for choosing a VCP other than that specified in the INI.
   -h --help          Show this help and exit.
   -v --version       Show version.
 
 Note:
-  If you have specified [DISPLAY]DISPLAY = qtpyvcp [...] in the INI file the --ini
-  parameter will automatically be passed by the linuxcnc startup script.
+  If you have specified [DISPLAY]DISPLAY=qtpyvcp [...] in the INI file
+  the --ini parameter will automatically be passed by the linuxcnc startup
+  script so it does not need to be explicitly specified.
 
 """
 import sys
