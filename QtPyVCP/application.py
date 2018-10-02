@@ -22,7 +22,7 @@ from QtPyVCP.widgets.form_widgets.main_window import VCPMainWindow
 
 class VCPApplication(QApplication):
 
-    def __init__(self, opts):
+    def __init__(self, opts, vcp_file=None):
         super(VCPApplication, self).__init__(opts.command_line_args or [])
 
         qApp = QApplication.instance()
@@ -39,8 +39,7 @@ class VCPApplication(QApplication):
         if opts.stylesheet is not None:
             self.loadStylesheet(opts.stylesheet)
 
-
-        self.window = self.loadVCPMainWindow(opts)
+        self.window = self.loadVCPMainWindow(opts, vcp_file)
         if self.window is not None:
             self.window.show()
 
@@ -55,7 +54,7 @@ class VCPApplication(QApplication):
 
         self.aboutToQuit.connect(self.status.onShutdown)
 
-    def loadVCPMainWindow(self, opts):
+    def loadVCPMainWindow(self, opts, vcp_file=None):
         """
         Loads a VCPMainWindow instance defined by a Qt .ui file, a Python .py
         file, or from a VCP python package.
@@ -71,7 +70,7 @@ class VCPApplication(QApplication):
         -------
         VCPMainWindow instance
         """
-        vcp = opts.vcp
+        vcp = opts.vcp or vcp_file
         if vcp is None:
             return
 
