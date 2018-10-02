@@ -85,7 +85,7 @@ class VCPApplication(QApplication):
                 name, ext = os.path.splitext(filename)
                 if ext == '.ui':
                     LOG.info("Loading VCP from UI file: yellow<{}>".format(vcp))
-                    return VCPMainWindow(opts, ui_file=vcp_path)
+                    return VCPMainWindow(opts=opts, ui_file=vcp_path)
                 elif ext == '.py':
                     LOG.info("Loading VCP from PY file: yellow<{}>".format(vcp))
                     return self.loadPyFile(vcp_path, opts)
@@ -148,7 +148,7 @@ class VCPApplication(QApplication):
         cls = classes[0]
 
         # initialize and return the VCPMainWindow subclass
-        return cls(opts)
+        return cls(opts=opts)
 
     def loadStylesheet(self, stylesheet):
         """
