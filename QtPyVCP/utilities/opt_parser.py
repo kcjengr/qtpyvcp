@@ -4,7 +4,7 @@ QtPyVCP - A PyQt5 based toolkit for LinuxCNC Virtual Control Panels (VCPs).
 Usage:
   qtpyvcp [<vcp>] --ini=INI [--log-level=LEVEL] [--log-file=FILE] [--perfmon]
             [--theme=THEME] [--stylesheet=SYTLESHEET]
-            [--size WIDTHxHEIGHT] [--position XPOSxYPOS]
+            [--size=WIDTHxHEIGHT] [--position=XPOSxYPOS]
             [--fullscreen] [--maximize] [--hide-menu-bar] [--hide-status-bar]
             [--chooser]
   qtpyvcp (-h | --help)
@@ -40,15 +40,15 @@ Application Options:
 
 General Options:
   --chooser          Forces the graphical VCP chooser to be shown. If a VCP
-                     was also specified it will be ignored. This is very useful
-                     for choosing a VCP other than that specified in the INI.
+                     was specified it will be ignored. Useful for overriding
+                     a VCP specified in an INI file.
   -h --help          Show this help and exit.
   -v --version       Show version.
 
 Note:
-  If you have specified [DISPLAY]DISPLAY=qtpyvcp [...] in the INI file
-  the --ini parameter will automatically be passed by the linuxcnc startup
-  script so it does not need to be explicitly specified.
+  When specifying QtPyVCP in the INI using [DISPLAY]DISPLAY=qtpyvcp [...]
+  the --ini parameter will be passed by the linuxcnc startup script so does
+  not need to be specified.
 
 """
 import sys
