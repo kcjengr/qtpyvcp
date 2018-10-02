@@ -91,6 +91,7 @@ class VCPMainWindow(QMainWindow):
         self.app.loadStylesheet(stylesheet)
 
     def initUi(self):
+        STATUS.init_ui.emit()
         self.loadSplashGcode()
         self.initRecentFileMenu()
         self.initHomingMenu()
