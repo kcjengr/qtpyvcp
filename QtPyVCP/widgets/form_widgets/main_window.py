@@ -197,14 +197,14 @@ class VCPMainWindow(QMainWindow):
                 self.menuRecentFiles.removeAction(action)
 
             # add new actions
-            for i in range(self.app.status.max_recent_files):
+            for i in range(STATUS.max_recent_files):
                 action = QAction(self, visible=False,
                                  triggered=(lambda: action.program.load(self.sender().data())))
                 self.recent_file_actions.append(action)
                 self.menuRecentFiles.addAction(action)
 
-            self.updateRecentFilesMenu(self.app.status.recent_files)
-            self.app.status.recent_files_changed.connect(self.updateRecentFilesMenu)
+            self.updateRecentFilesMenu(STATUS.recent_files)
+            STATUS.recent_files_changed.connect(self.updateRecentFilesMenu)
 
     def updateRecentFilesMenu(self, recent_files):
         for i, fname in enumerate(recent_files):
@@ -232,7 +232,7 @@ class VCPMainWindow(QMainWindow):
             self.menuHoming.addAction(menu_action)
 
             # add homing actions for each axis
-            for aletter in self.app.info.AXIS_LETTER_LIST:
+            for aletter in INFO.AXIS_LETTER_LIST:
                 menu_action = QAction(self)
                 menu_action.setText("Home &{}".format(aletter.upper()))
                 actions.bindWidget(menu_action, 'machine.home.axis:{}'.format(aletter))
@@ -263,9 +263,9 @@ class VCPMainWindow(QMainWindow):
 
     # Max number of recent files to display in menu
     def getMaxRecentFiles(self):
-        return self.app.status.max_recent_files
+        return STATUS.max_recent_files
     def setMaxRecentFiles(self, number):
-        self.app.status.max_recent_files = number
+        STATUS.max_recent_files = number
     maxNumRecentFiles = pyqtProperty(int, getMaxRecentFiles, setMaxRecentFiles)
 
 
