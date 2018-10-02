@@ -73,8 +73,8 @@ class VCPChooser(QDialog):
     def on_fileButton_pressed(self):
         vcp_file = QFileDialog.getOpenFileName(self,
                               caption="Select VCP File",
-                              directory='examples',
-                              filter='VCP Files (*.ui *py)',
+                              directory=EXAMPLE_VCP_DIR,
+                              filter='VCP Files (*.ui *.py)',
                               options=QFileDialog.DontUseNativeDialog)
 
         if vcp_file:
