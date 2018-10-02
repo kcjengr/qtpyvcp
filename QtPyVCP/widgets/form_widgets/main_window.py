@@ -38,7 +38,6 @@ STATUS = Status()
 PREFS = Prefs()
 INFO = Info()
 
-from QtPyVCP.utilities import action
 from QtPyVCP import actions
 
 from QtPyVCP.utilities.opt_parser import OptDict
@@ -225,7 +224,9 @@ class VCPMainWindow(QMainWindow):
 
             # Register the submenu with the action (so it will be disabled
             # if the actions are not valid), but don't connect it to method
-            home_action = action.Home(widget=self.menuHoming, method=None)
+            # home_action = action.Home(widget=self.menuHoming, method=None)
+            # FIXME:
+            # home_action = actions.bindWidget(self.menuHoming, 'machine.home.all.ok')
 
             menu_action = QAction(self)
             menu_action.setText("Home &All")
@@ -249,7 +250,7 @@ class VCPMainWindow(QMainWindow):
         splash_code = INFO.getOpenFile() or path
         if splash_code is not None:
             # Load after startup to not cause delay
-            QTimer.singleShot(0, lambda: action.program.load(splash_code, add_to_recents=False))
+            QTimer.singleShot(0, lambda: actions.program.load(splash_code, add_to_recents=False))
 
 #==============================================================================
 #  QtDesigner property setters/getters
