@@ -97,21 +97,20 @@ def parse_opts(doc=__doc__, vcp_name=None, vcp_version=None):
 
         opts[k] = ini_val
 
+    # Check if LinuxCNC is running
+    if not os.path.isfile('/tmp/linuxcnc.lock'):
+        # LinuxCNC is running, but in a different environment.
+        # TODO: find some way to get the INI file LCNC was launched with
+        print 'LinuxCNC must be running to launch a VCP'
+        sys.exit()
 
     # setup the environment variables
     ini_file = os.environ.get('INI_FILE_NAME') or opts.ini
     if ini_file is None:
-        # Check if LinuxCNC is running
-        if os.path.isfile('/tmp/linuxcnc.lock'):
-            # LinuxCNC is running, but in a different environment.
-            # TODO: find some way to get the INI file LCNC was launched with
-            print 'LinuxCNC is running, no INI file specifed on command line'
-            sys.exit()
-        else:
-            # LinuxCNC is not running
-            # TODO: Maybe launch LinuxCNC using subprocess
-            print 'LinuxCNC is not running, no INI file specified on command line'
-            sys.exit()
+        # LinuxCNC is not running
+        # TODO: Maybe launch LinuxCNC using subprocess
+        print 'LinuxCNC is not running, no INI file specified on command line'
+        sys.exit()
 
     if not os.getenv('INI_FILE_NAME'):
         base_path = os.path.expanduser('~/linuxcnc/configs')
