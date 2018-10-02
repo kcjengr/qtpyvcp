@@ -33,8 +33,6 @@ class VCPApplication(QApplication):
         self.status = Status()
         self.action = Action()
 
-        self.window = None
-
         if opts.theme is not None:
             self.setStyle(QStyleFactory.create(opts.theme))
 
@@ -100,7 +98,7 @@ class VCPApplication(QApplication):
                 for entry_point in iter_entry_points(group='qtpyvcp.vcp'):
                     entry_points[entry_point.name] = entry_point
                 window = entry_points[vcp.lower()].load()
-                return window(opts)
+                return window(opts=opts)
             except:
                 LOG.exception("Failed to load entry point")
 
