@@ -1,28 +1,25 @@
 """
-QtPyVCP - A PyQt5 based toolkit for LinuxCNC Virtual Control Panels (VCPs).
+{vcp_name} - A QtPyVCP based Virtual Control Panel for LinuxCNC.
 
 Usage:
-  qtpyvcp [<vcp>] --ini=INI [--log-level=LEVEL] [--log-file=FILE] [--perfmon]
+  {vcp_cmd} --ini=INI [--log-level=LEVEL] [--log-file=FILE] [--perfmon]
             [--theme=THEME] [--stylesheet=SYTLESHEET] [--pref-file=FILE]
             [--size=WIDTHxHEIGHT] [--position=XPOSxYPOS]
             [--fullscreen] [--maximize] [--hide-menu-bar] [--hide-status-bar]
-            [--chooser]
-  qtpyvcp (-h | --help)
-  qtpyvcp (-v | --version)
+  {vcp_cmd} (-h | --help)
+  {vcp_cmd} (-v | --version)
 
 Required Arguments:
-  --ini INI        Path to INI file, relative to ~/linuxcnc/configs.
+  --ini INI          Path to INI file, relative to ~/linuxcnc/configs.
 
 Display  Options:
-  --vcp VCP          The name of the VCP to launch. If not specified a
-                     graphical chooser dialog will be shown.
-  --theme THEME      The Qt theme to use, defaults to system theme.
-  --stylesheet STYLESHEET
+  --theme=THEME      The Qt theme to use, defaults to system theme.
+  --stylesheet=STYLESHEET
                      Path to QSS file containing styles to be applied
                      to specific Qt and/or QtPyVCP widget classes.
-  --size WIDTHxHEIGHT
+  --size=WIDTHxHEIGHT
                      Initial size of the window in pixels.
-  --position XPOSxYPOS
+  --position=XPOSxYPOS
                      Initial position of the window, specified as the
                      coordinates of the top left corner of the window
                      relative to the top left corner of the screen.
@@ -40,14 +37,11 @@ Application Options:
   --command_line_args <args>...
 
 General Options:
-  --chooser          Forces the graphical VCP chooser to be shown. If a VCP
-                     was specified it will be ignored. Useful for overriding
-                     a VCP specified in an INI file.
   -h --help          Show this help and exit.
   -v --version       Show version.
 
 Note:
-  When specifying QtPyVCP in the INI using [DISPLAY]DISPLAY=qtpyvcp [...]
+  When specifying {vcp_name} in the INI using [DISPLAY]DISPLAY={vcp_cmd} [...]
   the --ini parameter will be passed by the linuxcnc startup script so does
   not need to be specified.
 
@@ -60,7 +54,7 @@ from docopt import docopt
 from QtPyVCP import __version__
 from QtPyVCP.utilities.misc import normalizePath
 
-def parse_opts(doc=__doc__, vcp_name=None, vcp_version=None):
+def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp_version=None):
     # LinuxCNC passes the INI file as `-ini=inifile` which docopt sees as a
     # short argument which does not support an equals sign, so we loop thru
     # and add another dash to the ini argument if needed.
@@ -72,6 +66,8 @@ def parse_opts(doc=__doc__, vcp_name=None, vcp_version=None):
     version_str = 'QtPyVCP v{}'.format(__version__)
     if vcp_version is not None:
         version_str += ', {} v{}'.format(vcp_name, vcp_version)
+
+    doc = doc.format(vcp_name=vcp_name, vcp_cmd=vcp_cmd)
 
     raw_args = docopt(doc, version=version_str)
 
@@ -131,14 +127,11 @@ def parse_opts(doc=__doc__, vcp_name=None, vcp_version=None):
             sys.exit()
         del(app)
 
-
     # init the logger
     from QtPyVCP.utilities import logger
     LOG = logger.initBaseLogger('QtPyVCP',
                                 log_file=opts.log_file,
                                 log_level=opts.log_level)
-
-
 
     return opts
 
