@@ -10,4 +10,5 @@ def normalizePath(path, base):
         path = os.path.expanduser(path)
     elif not os.path.isabs(path):
         path = os.path.join(base, path)
-    return os.path.realpath(path)
+    if os.path.exists(path):
+        return os.path.realpath(path)

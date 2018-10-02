@@ -32,10 +32,13 @@ LOG_LEVEL_MAPPING = {
 
 # Our custom colorizing formatter for the terminal handler
 from QtPyVCP.lib.colored_formatter import ColoredFormatter
-
+from QtPyVCP.utilities.misc import normalizePath
 
 # Global name of the base logger
 BASE_LOGGER_NAME = None
+
+CONFIG_DIR = os.getenv('CONFIG_DIR')
+DEFAULT_LOG_FILE = os.path.expanduser('~/qtpyvcp.log')
 
 # Define the log message formats
 TERM_FORMAT = '[%(name)s][%(levelname)s]  %(message)s (%(filename)s:%(lineno)d)'
@@ -67,8 +70,7 @@ def initBaseLogger(name, log_file=None, log_level="DEBUG"):
 
     BASE_LOGGER_NAME = name
 
-    if not log_file:
-        log_file = getLogFile(name)
+    log_file = normalizePath(log_file, CONFIG_DIR) or DEFAULT_LOG_FILE
 
     # Clear the previous sessions log file
     with open(log_file, 'w') as fh:
@@ -101,21 +103,3 @@ def initBaseLogger(name, log_file=None, log_level="DEBUG"):
     base_log.info('Logging to yellow<{}>'.format(log_file))
 
     return base_log
-
-# Attempt to find the log file specified INI [DISPLAY] LOG_FILE,
-# failing that log to $HOME/<base_log_name>.log
-def getLogFile(name):
-
-    # Default log file to use if not specified in INI
-    log_file = os.path.expanduser('~/{}.log').format(name)
-
-    # LinuxCNC may not be running, so use get() to avoid a KeyError
-    ini_file = os.environ.get('INI_FILE_NAME')
-    if ini_file:
-        config_dir = os.path.dirname(ini_file)
-        lcnc_ini = ini(ini_file)
-        path = lcnc_ini.find('DISPLAY', 'LOG_FILE')
-        if path:
-            from misc import normalizePath
-            log_file = normalizePath(path, config_dir)
-    return log_file
