@@ -20,7 +20,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'qtpyvcp=vcp_launcher.main:main',
+            'qtpyvcp=vcp_launcher.vcp_launcher:main',
         ],
         'qtpyvcp.example_vcp': [
             'mini=examples.mini.mini:MiniVCP',
