@@ -1,14 +1,17 @@
 #!/usr/bin/env python
 
-"""Compile Qt UI and resource files.
+"""QCompile - compile .ui and .qrc files to Python
+
+    Recursively compiles all Qt .ui and .qrc files in the
+    specified package(s).
 
 Usage:
-    To recursively compile all .ui and .qrc files in the current working
-    directory and its children run::
-        $ ./compile_qt.py .
+  qcompile <package> ...
+  qcompile -h
 
-    You can also specify specific packages to compile::
-        $ ./compile_qt.py package1 package2/sub-package ...
+Example:
+  $ qcompile .
+  $ qcompile package1 package2/subpackage
 """
 
 import os
@@ -34,7 +37,7 @@ def compile(packages=['.',]):
             for f in files if f.endswith('.ui')]
 
         if len(files) > 0:
-            print "Compiling Qt UI files in package '{}':".format(package)
+            print "Compiling .ui files in package '{}':".format(package)
 
             for infile in files:
                 outfile = infile.replace('.ui', '_ui.py')
@@ -57,7 +60,7 @@ def compile(packages=['.',]):
             for f in files if f.endswith('.qrc')]
 
         if len(files) > 0:
-            print "\nCompiling Qt resource files in package '{}':".format(package)
+            print "\nCompiling .qrc files in package '{}':".format(package)
 
             for infile in files:
                 outfile = infile.replace('.qrc', '_rc.py')
@@ -72,9 +75,13 @@ def compile(packages=['.',]):
                 if ret == 0:
                     print ok
 
-if __name__ == '__main__':
+
+def main():
     packages = sys.argv[1:]
     if len(packages) == 0 or '-h' in packages:
         print __doc__
     else:
         compile(packages=sys.argv[1:])
+
+if __name__ == '__main__':
+    main()

@@ -9,8 +9,12 @@ from QtPyVCP.utilities import logger
 from QtPyVCP.core import Status, Action, Prefs, Info
 from QtPyVCP.widgets.form_widgets.main_window import VCPMainWindow
 
-# import probe_basic_ui
-import probe_basic_rc
+try:
+    import probe_basic_ui
+except ImportError:
+    from QtPyVCP.tools.qcompile import compile
+    compile(packages=[os.path.dirname(__file__),])
+    import probe_basic_ui
 
 LOG = logger.getLogger('QtPyVCP.' + __name__)
 STATUS = Status()
@@ -32,14 +36,7 @@ class ProbeBasic(VCPMainWindow):
         self.setWindowTitle("ProbeBasic")
 
         s = time.time()
-        try:
-            import xyz_ui
-            print time.time() - s
-            xyz_ui.Ui_Form().setupUi(self)
-        except ImportError:
-            self.loadUi(UI_FILE)
-            print 'Loaded form'
-
+        probe_basic_ui.Ui_Form().setupUi(self)
         print time.time() - s
 
         self.initUi()

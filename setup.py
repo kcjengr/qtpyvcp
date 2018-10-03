@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'qtpyvcp=main',
+            'qcompile=QtPyVCP.tools.qcompile:main',
             'mini=examples.mini.__main__',
             'brender=examples.brender.__main__',
             'probebasic=examples.probe_basic.__main__'

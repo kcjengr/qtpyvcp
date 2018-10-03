@@ -88,7 +88,7 @@ class VCPApplication(QApplication):
                     return self.loadPyFile(vcp_path, opts)
             elif os.path.isdir(vcp_path):
                 LOG.info("VCP is a directory")
-                # TODO: Load from a directory
+                # TODO: Load from a directory if it has a __main__.py entry point
         else:
             try:
                 entry_points = {}
