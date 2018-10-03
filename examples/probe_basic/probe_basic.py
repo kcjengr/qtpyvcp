@@ -31,14 +31,15 @@ class ProbeBasic(VCPMainWindow):
     def __init__(self, *args, **kwargs):
         super(ProbeBasic, self).__init__(*args, **kwargs)
 
+        s = time.time()
+
         app = QApplication.instance()
 
-        self.setWindowTitle("ProbeBasic")
-
-        s = time.time()
         probe_basic_ui.Ui_Form().setupUi(self)
-        print time.time() - s
 
         self.initUi()
 
         app.loadStylesheet(QSS_FILE)
+        self.setWindowTitle("ProbeBasic")
+
+        LOG.debug('UI load time: {}s'.format(time.time() - s))
