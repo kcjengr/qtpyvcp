@@ -24,6 +24,8 @@ class MainWindow(VCPMainWindow):
         self.initUi()
         self.loadStylesheet(STYLESHEET)
 
+        self.setWindowTitle("Brender VCP")
+
     #==========================================================================
     #  Add/Override methods and slots below to customize the main window
     #==========================================================================
