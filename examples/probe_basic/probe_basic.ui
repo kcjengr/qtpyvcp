@@ -372,7 +372,7 @@ border-radius: 6px;
                       <string>  FOLDER UP</string>
                      </property>
                      <property name="icon">
-                      <iconset resource="xyz.qrc">
+                      <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/folder_up.png</normaloff>:/images/folder_up.png</iconset>
                      </property>
                      <property name="iconSize">
@@ -501,7 +501,7 @@ QHeaderView {
                       <string> DELETE</string>
                      </property>
                      <property name="icon">
-                      <iconset resource="xyz.qrc">
+                      <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
                      </property>
                      <property name="iconSize">
@@ -544,7 +544,7 @@ QHeaderView {
                       <string> NEW FILE</string>
                      </property>
                      <property name="icon">
-                      <iconset resource="xyz.qrc">
+                      <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/new_file.png</normaloff>:/images/new_file.png</iconset>
                      </property>
                      <property name="iconSize">
@@ -587,7 +587,7 @@ QHeaderView {
                       <string> NEW FOLDER</string>
                      </property>
                      <property name="icon">
-                      <iconset resource="xyz.qrc">
+                      <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/new_folder.png</normaloff>:/images/new_folder.png</iconset>
                      </property>
                      <property name="iconSize">
@@ -691,7 +691,7 @@ FROM
 USB</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="xyz.qrc">
+                   <iconset resource="probe_basic.qrc">
                     <normaloff>:/images/tall_left_arrow.png</normaloff>:/images/tall_left_arrow.png</iconset>
                   </property>
                   <property name="iconSize">
@@ -740,7 +740,7 @@ USB</string>
   USB</string>
                   </property>
                   <property name="icon">
-                   <iconset resource="xyz.qrc">
+                   <iconset resource="probe_basic.qrc">
                     <normaloff>:/images/tall_right_arrow.png</normaloff>:/images/tall_right_arrow.png</iconset>
                   </property>
                   <property name="iconSize">
@@ -829,7 +829,7 @@ border-radius: 6px;
                       <string>  FOLDER UP</string>
                      </property>
                      <property name="icon">
-                      <iconset resource="xyz.qrc">
+                      <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/folder_up.png</normaloff>:/images/folder_up.png</iconset>
                      </property>
                      <property name="iconSize">
@@ -958,7 +958,7 @@ QHeaderView {
                       <string> DELETE</string>
                      </property>
                      <property name="icon">
-                      <iconset resource="xyz.qrc">
+                      <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
                      </property>
                      <property name="iconSize">
@@ -1001,7 +1001,7 @@ QHeaderView {
                       <string> NEW FILE</string>
                      </property>
                      <property name="icon">
-                      <iconset resource="xyz.qrc">
+                      <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/new_file.png</normaloff>:/images/new_file.png</iconset>
                      </property>
                      <property name="iconSize">
@@ -1044,7 +1044,7 @@ QHeaderView {
                       <string> NEW FOLDER</string>
                      </property>
                      <property name="icon">
-                      <iconset resource="xyz.qrc">
+                      <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/new_folder.png</normaloff>:/images/new_folder.png</iconset>
                      </property>
                      <property name="iconSize">
@@ -1818,7 +1818,7 @@ padding-right: 10px;
                       <string> ATC REV</string>
                      </property>
                      <property name="icon">
-                      <iconset resource="xyz.qrc">
+                      <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/ccw_arrow.png</normaloff>:/images/ccw_arrow.png</iconset>
                      </property>
                      <property name="iconSize">
@@ -1867,7 +1867,7 @@ padding-right: 10px;
                       <string> ATC FWD </string>
                      </property>
                      <property name="icon">
-                      <iconset resource="xyz.qrc">
+                      <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/cw_arrow.png</normaloff>:/images/cw_arrow.png</iconset>
                      </property>
                      <property name="iconSize">
@@ -1932,7 +1932,7 @@ padding-right: 10px;
                       <string> ATC RETRACT</string>
                      </property>
                      <property name="icon">
-                      <iconset resource="xyz.qrc">
+                      <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/left_arrow.png</normaloff>:/images/left_arrow.png</iconset>
                      </property>
                      <property name="sub_name" stdset="0">
@@ -1974,7 +1974,7 @@ padding-right: 10px;
                       <string> ATC EXTEND </string>
                      </property>
                      <property name="icon">
-                      <iconset resource="xyz.qrc">
+                      <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/right_arrow.png</normaloff>:/images/right_arrow.png</iconset>
                      </property>
                      <property name="sub_name" stdset="0">
@@ -2368,9 +2368,6 @@ border-radius: 8px;
                   </property>
                   <property name="indent">
                    <number>0</number>
-                  </property>
-                  <property name="buddy">
-                   <cstring>yo9u</cstring>
                   </property>
                  </widget>
                  <widget class="QLabel" name="label_60">
@@ -3984,7 +3981,7 @@ padding-right: 10px;
                       <string> ATC REV</string>
                      </property>
                      <property name="icon">
-                      <iconset resource="xyz.qrc">
+                      <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/ccw_arrow.png</normaloff>:/images/ccw_arrow.png</iconset>
                      </property>
                      <property name="iconSize">
@@ -4032,7 +4029,7 @@ padding-right: 10px;
                       <string>ATC FWD </string>
                      </property>
                      <property name="icon">
-                      <iconset resource="xyz.qrc">
+                      <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/cw_arrow.png</normaloff>:/images/cw_arrow.png</iconset>
                      </property>
                      <property name="iconSize">
@@ -4862,7 +4859,7 @@ border-radius: 6px;
                   <string/>
                  </property>
                  <property name="pixmap">
-                  <pixmap resource="xyz.qrc">:/images/atc_spindle_tool_dimensioned.png</pixmap>
+                  <pixmap resource="probe_basic.qrc">:/images/atc_spindle_tool_dimensioned.png</pixmap>
                  </property>
                  <property name="scaledContents">
                   <bool>true</bool>
@@ -15263,7 +15260,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/front_middle_edge.png</normaloff>:/images/front_middle_edge.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15304,7 +15301,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/left_side_edge.png</normaloff>:/images/left_side_edge.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15345,7 +15342,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/front_left_outside_corner.png</normaloff>:/images/front_left_outside_corner.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15386,7 +15383,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/back_right_outside_corner.png</normaloff>:/images/back_right_outside_corner.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15427,7 +15424,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/front_right_outside_corner.png</normaloff>:/images/front_right_outside_corner.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15468,7 +15465,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/z_top.png</normaloff>:/images/z_top.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15509,7 +15506,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/back_middle_outside_edge.png</normaloff>:/images/back_middle_outside_edge.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15550,7 +15547,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/right_side_edge.png</normaloff>
                           <normalon>:/images/right_side_edge.png</normalon>:/images/right_side_edge.png</iconset>
                         </property>
@@ -15580,7 +15577,7 @@ color: rgb(255, 255, 255);
                          </size>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/back_left_outside_corner.png</normaloff>:/images/back_left_outside_corner.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15730,7 +15727,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/y_minus.png</normaloff>:/images/y_minus.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15762,7 +15759,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/inside_back_left_corner.png</normaloff>:/images/inside_back_left_corner.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15794,7 +15791,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/inside_back_right_corner.png</normaloff>:/images/inside_back_right_corner.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15826,7 +15823,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/inside_front_left_corner.png</normaloff>:/images/inside_front_left_corner.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15858,7 +15855,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/inside_front_right_corner.png</normaloff>:/images/inside_front_right_corner.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15890,7 +15887,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/z_top.png</normaloff>:/images/z_top.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15922,7 +15919,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/x_minus.png</normaloff>:/images/x_minus.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15954,7 +15951,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/y_plus.png</normaloff>:/images/y_plus.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -15986,7 +15983,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/x_plus.png</normaloff>:/images/x_plus.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -16130,7 +16127,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/round_pocket.png</normaloff>:/images/round_pocket.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -16165,7 +16162,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/rect_pocket.png</normaloff>:/images/rect_pocket.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -16200,7 +16197,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/boss_round.png</normaloff>:/images/boss_round.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -16235,7 +16232,7 @@ color: rgb(255, 255, 255);
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/rect_boss.png</normaloff>:/images/rect_boss.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -16663,7 +16660,7 @@ Background:transparent;
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/probe_y_valley.png</normaloff>:/images/probe_y_valley.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -16698,7 +16695,7 @@ Background:transparent;
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/probe_y_ridge.png</normaloff>:/images/probe_y_ridge.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -16733,7 +16730,7 @@ Background:transparent;
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/probe_x_valley.png</normaloff>:/images/probe_x_valley.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -16768,7 +16765,7 @@ Background:transparent;
                          <string/>
                         </property>
                         <property name="icon">
-                         <iconset resource="xyz.qrc">
+                         <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/probe_x_ridge.png</normaloff>:/images/probe_x_ridge.png</iconset>
                         </property>
                         <property name="iconSize">
@@ -17560,7 +17557,7 @@ border-radius: 6px;
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="xyz.qrc">
+                  <iconset resource="probe_basic.qrc">
                    <normaloff>:/images/z_plus_jog_button.png</normaloff>:/images/z_plus_jog_button.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -17596,7 +17593,7 @@ border-radius: 6px;
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="xyz.qrc">
+                  <iconset resource="probe_basic.qrc">
                    <normaloff>:/images/z_minus_jog_button.png</normaloff>:/images/z_minus_jog_button.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -17641,7 +17638,7 @@ border-radius: 6px;
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="xyz.qrc">
+                  <iconset resource="probe_basic.qrc">
                    <normaloff>:/images/x_plus_jog_button.png</normaloff>:/images/x_plus_jog_button.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -17679,7 +17676,7 @@ border-radius: 6px;
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="xyz.qrc">
+                  <iconset resource="probe_basic.qrc">
                    <normaloff>:/images/x_minus_jog_button.png</normaloff>:/images/x_minus_jog_button.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -17717,7 +17714,7 @@ border-radius: 6px;
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="xyz.qrc">
+                  <iconset resource="probe_basic.qrc">
                    <normaloff>:/images/y_minus_jog_button.png</normaloff>:/images/y_minus_jog_button.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -17749,7 +17746,7 @@ border-radius: 6px;
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="xyz.qrc">
+                  <iconset resource="probe_basic.qrc">
                    <normaloff>:/images/y_plus_jog_button.png</normaloff>:/images/y_plus_jog_button.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -17791,7 +17788,7 @@ border-radius: 6px;
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="xyz.qrc">
+                  <iconset resource="probe_basic.qrc">
                    <normaloff>:/images/a_minus_jog_button.png</normaloff>:/images/a_minus_jog_button.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -17829,7 +17826,7 @@ border-radius: 6px;
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="xyz.qrc">
+                  <iconset resource="probe_basic.qrc">
                    <normaloff>:/images/a_plus_jog_button.png</normaloff>:/images/a_plus_jog_button.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -17871,7 +17868,7 @@ border-radius: 6px;
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="xyz.qrc">
+                  <iconset resource="probe_basic.qrc">
                    <normaloff>:/images/b_minus_jog_button.png</normaloff>:/images/b_minus_jog_button.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -17909,7 +17906,7 @@ border-radius: 6px;
                   <string/>
                  </property>
                  <property name="icon">
-                  <iconset resource="xyz.qrc">
+                  <iconset resource="probe_basic.qrc">
                    <normaloff>:/images/b_plus_jog_button.png</normaloff>:/images/b_plus_jog_button.png</iconset>
                  </property>
                  <property name="iconSize">
@@ -25533,7 +25530,7 @@ border-radius: 1px;
               <string>REV</string>
              </property>
              <property name="icon">
-              <iconset resource="xyz.qrc">
+              <iconset resource="probe_basic.qrc">
                <normaloff>:/images/ccw_arrow.png</normaloff>:/images/ccw_arrow.png</iconset>
              </property>
              <property name="iconSize">
@@ -25626,7 +25623,7 @@ border-radius: 1px;
               <string>FWD</string>
              </property>
              <property name="icon">
-              <iconset resource="xyz.qrc">
+              <iconset resource="probe_basic.qrc">
                <normaloff>:/images/cw_arrow.png</normaloff>:/images/cw_arrow.png</iconset>
              </property>
              <property name="iconSize">
@@ -25658,7 +25655,7 @@ border-radius: 1px;
      <x>0</x>
      <y>0</y>
      <width>1920</width>
-     <height>24</height>
+     <height>23</height>
     </rect>
    </property>
    <property name="styleSheet">
@@ -25930,12 +25927,13 @@ font: 11pt bebas kai;
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="xyz.qrc"/>
-  <include location="xyz.qrc"/>
-  <include location="xyz.qrc"/>
-  <include location="xyz.qrc"/>
-  <include location="xyz.qrc"/>
-  <include location="xyz.qrc"/>
+  <include location="probe_basic.qrc"/>
+  <include location="probe_basic.qrc"/>
+  <include location="probe_basic.qrc"/>
+  <include location="probe_basic.qrc"/>
+  <include location="probe_basic.qrc"/>
+  <include location="probe_basic.qrc"/>
+  <include location="probe_basic.qrc"/>
  </resources>
  <connections>
   <connection>

@@ -22,11 +22,13 @@ setup(
         'console_scripts': [
             'qtpyvcp=main',
             'mini=examples.mini.__main__',
-            'brender=examples.brender.__main__'
+            'brender=examples.brender.__main__',
+            'probebasic=examples.probe_basic.__main__'
         ],
         'qtpyvcp.example_vcp': [
             'mini=examples.mini.mini:MiniVCP',
-            'brender=examples.brender.brender:MainWindow'
+            'brender=examples.brender.brender:MainWindow',
+            'probebasic=examples.probe_basic.probe_basic:ProbeBasic'
         ],
     },
 )
