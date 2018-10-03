@@ -19,6 +19,8 @@ import subprocess
 pyrcc = 'pyrcc5'
 pyuic = 'pyuic5'
 
+ok = "\033[32mok\033[0m"
+
 def compile(packages=['.',]):
     for package in packages:
         package_path = os.path.abspath(package)
@@ -45,7 +47,7 @@ def compile(packages=['.',]):
 
                 ret = subprocess.call([pyuic, '-o', outfile, infile])
                 if ret == 0:
-                    print 'OK'
+                    print ok
 
 
         # Compile Qt resource files
@@ -68,7 +70,7 @@ def compile(packages=['.',]):
 
                 ret = subprocess.call([pyrcc, '-o', outfile, infile])
                 if ret == 0:
-                    print 'OK'
+                    print ok
 
 if __name__ == '__main__':
     packages = sys.argv[1:]
