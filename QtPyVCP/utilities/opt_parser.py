@@ -119,7 +119,7 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
 
     # show the chooser if the --chooser flag was specified
     if opts.chooser or not opts.get('vcp', True):
-        from vcp_launcher.vcp_chooser import VCPChooser
+        from QtPyVCP.vcp_chooser import VCPChooser
         from PyQt5.QtWidgets import QApplication
         app = QApplication([])
         result = VCPChooser(opts).exec_()
