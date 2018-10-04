@@ -20,7 +20,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'qtpyvcp=main',
+            'qtpyvcp=main:main',
             'qcompile=QtPyVCP.tools.qcompile:main',
             'mini=examples.mini.__main__',
             'brender=examples.brender.__main__',
