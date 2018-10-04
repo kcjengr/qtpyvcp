@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# QTVcp Logging Module
+# QtPyVCP Logging Module
 # Provides a consistent and easy to use logging facility.  Log messages printed
 # to the terminal will be colorized for easy identification of log level.
 #
@@ -21,21 +21,28 @@ import os
 import logging
 from linuxcnc import ini
 
-# For convenience import log levels so we don't need to import
-# logging to set the log level within other modules.
-from logging import DEBUG, INFO, WARNING, ERROR, CRITICAL
+LOG_LEVEL_MAPPING = {
+    "DEBUG": logging.DEBUG,
+    "INFO": logging.INFO,
+    "WARNING": logging.WARNING,
+    "WARN": logging.WARNING, # alias, to be consistent with log.warn
+    "ERROR": logging.ERROR,
+    "CRITICAL": logging.CRITICAL
+}
 
 # Our custom colorizing formatter for the terminal handler
 from QtPyVCP.lib.colored_formatter import ColoredFormatter
-
+from QtPyVCP.utilities.misc import normalizePath
 
 # Global name of the base logger
 BASE_LOGGER_NAME = None
 
+CONFIG_DIR = os.getenv('CONFIG_DIR')
+DEFAULT_LOG_FILE = os.path.expanduser('~/qtpyvcp.log')
+
 # Define the log message formats
 TERM_FORMAT = '[%(name)s][%(levelname)s]  %(message)s (%(filename)s:%(lineno)d)'
 FILE_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-
 
 # Get logger for module based on module.__name__
 def getLogger(name):
@@ -45,19 +52,25 @@ def getLogger(name):
     return logging.getLogger(name)
 
 # Set global logging level
-def setGlobalLevel(level):
+def setGlobalLevel(level_str):
     base_log = logging.getLogger(BASE_LOGGER_NAME)
-    base_log.setLevel(level)
-    base_log.info('Base log level set to {}'.format(level))
+    try:
+        base_log.setLevel(LOG_LEVEL_MAPPING[level_str.upper()])
+        base_log.info('Base log level set to {}'.format(level_str))
+    except KeyError:
+        base_log.error("Log level '{}' is not valid, base log level not changed." \
+            .format(level_str))
 
 # Initialize the base logger
-def initBaseLogger(name, log_file=None, log_level=DEBUG):
+def initBaseLogger(name, log_file=None, log_level="DEBUG"):
 
     global BASE_LOGGER_NAME
+    if BASE_LOGGER_NAME is not None:
+        return getLogger(name)
+
     BASE_LOGGER_NAME = name
 
-    if not log_file:
-        log_file = getLogFile(name)
+    log_file = normalizePath(log_file, CONFIG_DIR) or DEFAULT_LOG_FILE
 
     # Clear the previous sessions log file
     with open(log_file, 'w') as fh:
@@ -65,7 +78,11 @@ def initBaseLogger(name, log_file=None, log_level=DEBUG):
 
     # Create base logger
     base_log = logging.getLogger(BASE_LOGGER_NAME)
-    base_log.setLevel(log_level)
+
+    try:
+        base_log.setLevel(LOG_LEVEL_MAPPING[log_level.upper()])
+    except KeyError:
+        raise ValueError("Log level '{}' is not valid.".format(log_level))
 
     # Add console handler
     ch = logging.StreamHandler()
@@ -86,30 +103,3 @@ def initBaseLogger(name, log_file=None, log_level=DEBUG):
     base_log.info('Logging to yellow<{}>'.format(log_file))
 
     return base_log
-
-# Attempt to find the log file specified INI [DISPLAY] LOG_FILE,
-# failing that log to $HOME/<base_log_name>.log
-def getLogFile(name):
-
-    # Default log file to use if not specified in INI
-    log_file = os.path.expanduser('~/{}.log').format(name)
-
-    # LinuxCNC may not be running, so use get() to avoid a KeyError
-    ini_file = os.environ.get('INI_FILE_NAME')
-    config_dir = os.environ.get('CONFIG_DIR')
-
-    if ini_file:
-        lcnc_ini = ini(ini_file)
-        path = lcnc_ini.find('DISPLAY', 'LOG_FILE')
-        if path:
-            if path.startswith('~'):
-                # Path is relative to $HOME
-                log_file = os.path.expanduser(path)
-            elif not os.path.isabs(path):
-                # Assume intended path is relative to the INI file
-                log_file = os.path.join(config_dir, path)
-            else:
-                # It must be an absolute path then
-                log_file = os.path.realpath(path)
-
-    return log_file

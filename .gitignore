@@ -1,4 +1,7 @@
 /site
+/build
+/dist
+*.egg-info
 *.pyc
 *.pdf
 *.log

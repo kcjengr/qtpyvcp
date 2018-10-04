@@ -28,7 +28,7 @@
      <x>0</x>
      <y>0</y>
      <width>648</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -42,15 +42,15 @@
     <property name="title">
      <string>Machine</string>
     </property>
-    <addaction name="action_EmergencyStop_toggle"/>
-    <addaction name="action_MachinePower_toggle"/>
+    <addaction name="actionEstop"/>
+    <addaction name="actionPower"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuMachine"/>
   </widget>
   <action name="actionOpen">
    <property name="text">
-    <string>Open</string>
+    <string>Open ...</string>
    </property>
    <property name="shortcut">
     <string>0</string>
@@ -64,14 +64,20 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="action_EmergencyStop_toggle">
+  <action name="actionEstop">
    <property name="text">
-    <string>Toggle Estop</string>
+    <string>E-Stop</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>machine.estop.toggle</string>
    </property>
   </action>
-  <action name="action_MachinePower_toggle">
+  <action name="actionPower">
    <property name="text">
-    <string>Toggle Power</string>
+    <string>Power</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>machine.power.toggle</string>
    </property>
   </action>
  </widget>

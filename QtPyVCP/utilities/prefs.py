@@ -36,18 +36,21 @@ import ast
 import ConfigParser
 
 from QtPyVCP.utilities.info import Info
+from QtPyVCP.utilities.misc import normalizePath
 
 # Set up logging
 from QtPyVCP.utilities import logger
 log = logger.getLogger(__name__)
 
 INFO = Info()
-
+CONFIG_DIR = os.getenv('CONFIG_DIR')
 
 class _Preferences(ConfigParser.RawConfigParser):
 
-    def __init__(self):
+    def __init__(self, pref_file='~/.qtpyvcp.pref'):
         ConfigParser.RawConfigParser.__init__(self)
+
+        self.pref_file = normalizePath(pref_file, CONFIG_DIR) or '/dev/null'
 
         self.getters = {
             bool: self.getBool,
@@ -60,11 +63,10 @@ class _Preferences(ConfigParser.RawConfigParser):
 
         self.optionxform = str  # Needed to maintain options case
 
-        self.fn = os.environ.get('VCP_PREF_FILE') or '/dev/null'
-        if not os.path.isfile(self.fn):
-            log.info("No preference file exists, creating: {}".format(self.fn))
+        if not os.path.isfile(self.pref_file):
+            log.info("No preference file exists, creating: {}".format(self.pref_file))
 
-        self.read(self.fn)
+        self.read(self.pref_file)
 
     def getPref(self, section, option, default_val=None, opt_type=bool):
         try:
@@ -82,7 +84,7 @@ class _Preferences(ConfigParser.RawConfigParser):
             log.debug('Adding missing option [{0}] "{1}"'.format(section, option))
             self.set(section, option, default_val)
 
-        with open(self.fn, "w") as fh:
+        with open(self.pref_file, "w") as fh:
             self.write(fh)
 
         return default_val
@@ -96,7 +98,7 @@ class _Preferences(ConfigParser.RawConfigParser):
             self.add_section(section)
             self.set(section, option, str(value))
 
-        with open(self.fn, "w") as fh:
+        with open(self.pref_file, "w") as fh:
             self.write(fh)
 
     def getStr(self, section, option, default):

@@ -30,8 +30,6 @@ from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty, QTimer
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QPushButton,
     QAction, QMessageBox, QFileDialog, QMenu, QLineEdit, QShortcut, qApp)
 
-from PyQt5 import QtWidgets, QtGui
-
 from QtPyVCP.utilities import logger
 LOG = logger.getLogger(__name__)
 
@@ -40,16 +38,17 @@ STATUS = Status()
 PREFS = Prefs()
 INFO = Info()
 
-from QtPyVCP.utilities import action
 from QtPyVCP import actions
 
+from QtPyVCP.utilities.opt_parser import OptDict
 from QtPyVCP.widgets.dialogs.open_file_dialog import OpenFileDialog
-
 
 class VCPMainWindow(QMainWindow):
 
-    def __init__(self, parent=None, ui_file=None):
-        super(VCPMainWindow, self).__init__(parent=None)
+    def __init__(self, parent=None, opts=OptDict(), ui_file=None):
+        super(VCPMainWindow, self).__init__(parent)
+
+        self.app = QApplication.instance()
 
         # QtDesigner settable vars
         self.prompt_at_exit = True
@@ -63,15 +62,35 @@ class VCPMainWindow(QMainWindow):
         # Load the UI file AFTER defining variables, otherwise the values
         # set in QtDesigner get overridden by the default values
         if ui_file is not None:
-            uic.loadUi(ui_file, self)
+            self.loadUi(ui_file)
+            self.initUi()
 
-        STATUS.init_ui.emit()
-        self.initUi()
+        if opts.maximize:
+            QTimer.singleShot(0, self.showMaximized)
+
+        if opts.fullscreen:
+            QTimer.singleShot(0, self.showFullScreen)
 
         # QShortcut(QKeySequence("t"), self, self.test)
-        qApp.focusChanged.connect(self.focusChangedEvent)
+        self.app.focusChanged.connect(self.focusChangedEvent)
+
+    def loadUi(self, ui_file):
+        """
+        Loads a window layout from a QtDesigner .ui file.
+
+        Parameters
+        ----------
+        ui_file : str
+            Path to the .ui file to load.
+        """
+        # TODO: Check for compiled *_ui.py files and load from that if exists
+        uic.loadUi(ui_file, self)
+
+    def loadStylesheet(self, stylesheet):
+        self.app.loadStylesheet(stylesheet)
 
     def initUi(self):
+        STATUS.init_ui.emit()
         self.loadSplashGcode()
         self.initRecentFileMenu()
         self.initHomingMenu()
@@ -156,6 +175,7 @@ class VCPMainWindow(QMainWindow):
 #  menu action slots
 #==============================================================================
 
+    #==========================================================================
     # File menu
     @pyqtSlot()
     def on_actionOpen_triggered(self):
@@ -204,7 +224,9 @@ class VCPMainWindow(QMainWindow):
 
             # Register the submenu with the action (so it will be disabled
             # if the actions are not valid), but don't connect it to method
-            home_action = action.Home(widget=self.menuHoming, method=None)
+            # home_action = action.Home(widget=self.menuHoming, method=None)
+            # FIXME:
+            # home_action = actions.bindWidget(self.menuHoming, 'machine.home.all.ok')
 
             menu_action = QAction(self)
             menu_action.setText("Home &All")
@@ -228,7 +250,7 @@ class VCPMainWindow(QMainWindow):
         splash_code = INFO.getOpenFile() or path
         if splash_code is not None:
             # Load after startup to not cause delay
-            QTimer.singleShot(0, lambda: action.program.load(splash_code, add_to_recents=False))
+            QTimer.singleShot(0, lambda: actions.program.load(splash_code, add_to_recents=False))
 
 #==============================================================================
 #  QtDesigner property setters/getters

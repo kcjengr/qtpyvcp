@@ -47,6 +47,29 @@ Required for the FileSytem widget:
 `sudo apt install python-pyudev`  
 `sudo apt install python-psutil`  
 
+
+## Development install using setup.py
+
+**Note:** At this point only `setup.py develop` is supported. `setup.py install`
+and virtual environments are untested.
+
+Make sure you have the python setuptools installed:  
+`sudo apt-get install python-setuptools`
+
+Then install with:
+`python setup.py develop --user`
+
+This will install all the python dependences automatically.
+
+This will also generate console scripts in `~/.local/bin/`. This location is
+not on the PATH by default on Debian 9, so you will need to add it:  
+`export PATH=$PATH:~/.local/bin/`
+
+Them you can launch QtPyVCP simply by saying:  
+`qtpyvcp -h` to show the help  
+`qtpyvcp --ini=/path/to/ini` to launch a VCP for a running LCNC session  
+
+
 ### Run the development sim
 
 `linuxcnc sim/probe_basic.ini`

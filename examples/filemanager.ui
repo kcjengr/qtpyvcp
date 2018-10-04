@@ -139,18 +139,7 @@
        </widget>
       </item>
       <item>
-       <widget class="RemovableDeviceComboBox" name="removabledevicecombobox">
-        <item>
-         <property name="text">
-          <string>/</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>/media/kurt/DEBIAN LIVE</string>
-         </property>
-        </item>
-       </widget>
+       <widget class="RemovableDeviceComboBox" name="removabledevicecombobox"/>
       </item>
       <item>
        <widget class="QPushButton" name="refreshButton">
@@ -188,7 +177,7 @@
      <x>0</x>
      <y>0</y>
      <width>971</width>
-     <height>25</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -226,15 +215,28 @@
   </action>
   <action name="action_EmergencyStop_toggle">
    <property name="text">
-    <string>Toggle Estop</string>
+    <string>E-Stop</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>machine.estop.toggle</string>
    </property>
   </action>
   <action name="action_MachinePower_toggle">
    <property name="text">
-    <string>Toggle Power</string>
+    <string>Power</string>
+   </property>
+   <property name="shortcut">
+    <string>F2</string>
+   </property>
+   <property name="actionName" stdset="0">
+    <string>machine.power.toggle</string>
    </property>
   </action>
  </widget>
+ <layoutdefault spacing="6" margin="9"/>
  <customwidgets>
   <customwidget>
    <class>RemovableDeviceComboBox</class>
