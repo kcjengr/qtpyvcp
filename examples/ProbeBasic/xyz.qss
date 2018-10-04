@@ -5,6 +5,12 @@ QMainWindow {
     /*background-image: url(:/images/pp_border.png);*/
 }
 
+QStatusBar {
+	color: white;
+	font-family: "Bebas Kai";
+    font-size: 12pt;
+}
+
 QPushButton, QComboBox[editable="false"],
 QComboBox[editable="true"]::drop-down {
     color: white;
