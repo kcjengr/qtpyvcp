@@ -14,27 +14,13 @@ edit_uri: ""
 
 # Configuration
 theme:
-  name: material
-  palette:
-    primary: grey
-    accent: indigo
-  feature:
-    tabs: true
-  # Don't include MkDocs' JavaScript
-  include_search_page: false
-  search_index_only: true
-
-# Customization
-extra:
-  social:
-    - type: github
-      link: https://github.com/kcjengr
+  name: readthedocs
 
 # Extensions
 markdown_extensions:
   - markdown.extensions.admonition
   - markdown.extensions.codehilite:
-      guess_lang: false
+      guess_lang: true
   - markdown.extensions.def_list
   - markdown.extensions.footnotes
   - markdown.extensions.meta
