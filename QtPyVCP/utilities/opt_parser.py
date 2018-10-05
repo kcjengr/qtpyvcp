@@ -77,7 +77,7 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
     # read options from INI file and merge with cmd line options
     ini_file = ini(normalizePath(opts.ini, os.path.expanduser('~/linuxcnc/configs')))
     for k, v in opts.iteritems():
-        ini_val = ini_file.find('DISPLAY', k.upper())
+        ini_val = ini_file.find('DISPLAY', k.upper().replace('-', '_'))
         if ini_val is None:
             continue
 
