@@ -30,8 +30,8 @@ available VCPs.
 `setup.py` per the instillation instructions._
 
 To skip the VCP chooser and launch a VCP directly you can specify the name of
-the desired VCP on the command line. For example to launch the Brender VCP:  
-`linuxcnc sim/xyz.ini brender`
+the desired VCP on the command line. For example to launch the Mini VCP:  
+`linuxcnc sim/xyz.ini mini`
 
 
 ## INI Configuration
@@ -51,7 +51,7 @@ do the same thing in the INI:
 
 ```ini
 [DISPLAY]
-DISPLAY = qtpyvcp brender
+DISPLAY = qtpyvcp mini
 ...
 ```
 
@@ -64,7 +64,7 @@ So a better INI config would look like this:
 ```ini
 [DISPLAY]
 DISPLAY = qtpyvcp
-VCP = brender
+VCP = mini
 ...
 ```
 
