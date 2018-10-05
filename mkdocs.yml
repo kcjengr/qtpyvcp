@@ -47,8 +47,8 @@ markdown_extensions:
 # Page tree
 nav:
 - Home: index.md
-- Installing: installing.md
 - Dependencies: dependencies.md
+- Installing: installing.md
 - Tools:
   - QCompile: tools/qcompile.md
 - Widgets:
