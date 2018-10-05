@@ -41,7 +41,7 @@ GUI simply edit the INIs DISPLAY entry.
 
 ```ini
 [DISPLAY]
-DISPLAY=qtpyvcp
+DISPLAY = qtpyvcp
 ...
 ```
 
@@ -51,7 +51,7 @@ do the same thing in the INI:
 
 ```ini
 [DISPLAY]
-DISPLAY=qtpyvcp brender
+DISPLAY = qtpyvcp brender
 ...
 ```
 
@@ -63,8 +63,8 @@ line options, and merges them with any options specified on the command line.
 So a better INI config would look like this:
 ```ini
 [DISPLAY]
-DISPLAY=qtpyvcp
-VCP=brender
+DISPLAY = qtpyvcp
+VCP = brender
 ...
 ```
 
