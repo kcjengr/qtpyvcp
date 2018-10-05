@@ -13,7 +13,7 @@ minimal (if any) python code to create a fully custom VCP.
 
 ## Screenshot
 
-![screenshot](screenshots/demo.png)
+![screenshot](images/demo.png)
 
 ## Prerequisites
 

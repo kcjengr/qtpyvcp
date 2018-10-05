@@ -12,9 +12,9 @@ and basic widgets that can easily be built on, extended and combined, with
 minimal (if any) python code to create a fully custom VCP.
 
 
-![](docs/screenshots/demo.png)
+![](docs/images/demo.png)
 
-## Prerequisites
+## Requires
   * LinuxCNC ~2.8pre (master)
   * Python 2.7
   * Qt 5

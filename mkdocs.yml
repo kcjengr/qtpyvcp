@@ -49,6 +49,7 @@ nav:
 - Home: index.md
 - Dependencies: dependencies.md
 - Installing: installing.md
+- Basic Usage: basic_usage.md
 - Tools:
   - QCompile: tools/qcompile.md
 - Widgets:

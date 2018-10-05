@@ -1,7 +1,10 @@
 # Dependencies
 
-List of dependencies needed to run QyPyVCP or a VCP built with
+These are the dependencies needed to run QyPyVCP or a VCP built with
 it on Debian 9 (Stretch) systems.
+
+In addition you will need to have LinuxCNC ~2.8pre (master) installed, either
+system wide or as a Run In Place (RIP) built from source.  
 
 ## For production use (non development)
 
