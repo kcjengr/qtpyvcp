@@ -1,28 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-#   Copyright (c) 2018 Kurt Jacobson
-#      <kurtcjacobson@gmail.com>
-#
-#   This file is part of QtPyVCP.
-#
-#   QtPyVCP is free software: you can redistribute it and/or modify
-#   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation, either version 2 of the License, or
-#   (at your option) any later version.
-#
-#   QtPyVCP is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU General Public License for more details.
-#
-#   You should have received a copy of the GNU General Public License
-#   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
-
-# Description:
-#   LinuxCNC spindle related actions
-
-import sys
 import linuxcnc
 
 # Set up logging
@@ -39,8 +17,7 @@ CMD = linuxcnc.command()
 
 from QtPyVCP.actions.base_actions import setTaskMode
 
-
-def _spindle_ok(widget=None):
+def _spindle_ok(speed=None, spindle=0, widget=None):
     if STAT.task_state != linuxcnc.STATE_ON:
         ok = False
         msg = "Can't run spindle until machine it ON"
@@ -60,100 +37,114 @@ def _spindle_ok(widget=None):
 
     return ok
 
-def _spindle_bindOk(widget):
-    STATUS.on.connect(lambda: _spindle_ok(widget))
-    STATUS.task_mode.connect(lambda: _spindle_ok(widget))
+def _spindle_bindOk(speed=None, spindle=0, widget=None):
+    STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.task_mode.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
 
-def forward(speed=None):
+
+# Spindle FORWARD
+def forward(speed=None, spindle=0):
     if speed is None:
         speed = getSpeed()
-    CMD.spindle(linuxcnc.SPINDLE_FORWARD, speed)
+    CMD.spindle(linuxcnc.SPINDLE_FORWARD, speed, spindle)
 
-def _spindle_forward_bindOk(widget):
+def _spindle_forward_bindOk(speed=None, spindle=0, widget=None):
     widget.setCheckable(True)
-    STATUS.on.connect(lambda: _spindle_ok(widget))
-    STATUS.task_mode.connect(lambda: _spindle_ok(widget))
-    STATUS.spindle_direction.connect(lambda d: widget.setChecked(d == 1))
+    STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.task_mode.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.spindle[spindle].direction.connect(lambda d: widget.setChecked(d == 1))
 
 forward.ok = _spindle_ok
 forward.bindOk = _spindle_forward_bindOk
 
-def reverse(speed=None):
+
+# Spindle REVERSE
+def reverse(speed=None, spindle=0):
     if speed is None:
         speed = getSpeed()
-    CMD.spindle(linuxcnc.SPINDLE_REVERSE, speed)
+    CMD.spindle(linuxcnc.SPINDLE_REVERSE, speed, spindle)
 
-def _spindle_reverse_bindOk(widget):
+def _spindle_reverse_bindOk(speed=None, spindle=0, widget=None):
     widget.setCheckable(True)
-    STATUS.on.connect(lambda: _spindle_ok(widget))
-    STATUS.task_mode.connect(lambda: _spindle_ok(widget))
-    STATUS.spindle_direction.connect(lambda d: widget.setChecked(d == -1))
+    STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.task_mode.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.spindle[spindle].direction.connect(lambda d: widget.setChecked(d == -1))
 
 reverse.ok = _spindle_ok
 reverse.bindOk = _spindle_reverse_bindOk
 
-def off():
-    CMD.spindle(linuxcnc.SPINDLE_OFF)
+
+# Spindle OFF
+def off(spindle=0):
+    CMD.spindle(linuxcnc.SPINDLE_OFF, spindle)
 
 off.ok = _spindle_ok
 off.bindOk = _spindle_bindOk
 
-def faster():
+
+# Spindle FASTER
+def faster(spindle=0):
     """Increase spindle speed by 100rpm"""
     CMD.spindle(linuxcnc.SPINDLE_INCREASE)
 
 faster.ok = _spindle_ok
 faster.bindOk = _spindle_bindOk
 
-def slower():
+
+# Spindle SLOWER
+def slower(spindle=0):
     """Decreases spindle speed by 100rpm"""
     CMD.spindle(linuxcnc.SPINDLE_DECREASE)
 
 slower.ok = _spindle_ok
 slower.bindOk = _spindle_bindOk
 
-def constant():
+
+# Spindle CONSTANT
+def constant(spindle=0):
     """Unclear"""
     CMD.spindle(linuxcnc.SPINDLE_CONSTANT)
 
 constant.ok = _spindle_ok
 constant.bindOk = _spindle_bindOk
 
-def getSpeed():
+
+def getSpeed(spindle=0):
     raw_speed = STAT.settings[2]
     if raw_speed == 0:
         raw_speed = abs(INFO.defaultSpindleSpeed())
 
-    if STAT.spindle_override_enabled:
-        STAT.spindlerate
+    if STAT.spindle[spindle]['override_enabled']:
+        return raw_speed * STAT.spindle[spindle]['override']
 
-    return raw_speed * STAT.spindlerate
+    return raw_speed
+
 
 class override:
     @staticmethod
-    def enable():
-        CMD.set_spindle_override(True)
+    def enable(spindle=0):
+        CMD.set_spindle_override(1, spindle)
 
     @staticmethod
-    def disable():
-        CMD.set_spindle_override(False)
+    def disable(spindle=0):
+        CMD.set_spindle_override(0, spindle)
 
     @staticmethod
-    def toggle_enable():
-        if STAT.spindle_override_enabled:
+    def toggle_enable(spindle=0):
+        if STAT.spindle[spindle]['override_enabled']:
             override.disable()
         else:
             override.enable()
 
     @staticmethod
-    def set(value):
-        CMD.spindleoverride(float(value) / 100)
+    def set(value, spindle=0):
+        CMD.spindleoverride(float(value) / 100, spindle)
 
     @staticmethod
-    def reset():
-        CMD.spindleoverride(1.0)
+    def reset(spindle=0):
+        CMD.spindleoverride(1.0, spindle)
 
-def _enable_ok(widget=None):
+def _enable_ok(spindle=0, widget=None):
     if STAT.task_state == linuxcnc.STATE_ON \
         and STAT.interp_state == linuxcnc.INTERP_IDLE:
         ok = True
@@ -171,19 +162,19 @@ def _enable_ok(widget=None):
 
     return ok
 
-def _enable_bindOk(widget):
+def _enable_bindOk(spindle=0, widget=None):
     STATUS.task_state.connect(lambda: _enable_ok(widget))
     STATUS.interp_state.connect(lambda: _enable_ok(widget))
-    STATUS.spindle_override_enabled.connect(widget.setChecked)
+    STATUS.spindle[spindle].override_enabled.connect(widget.setChecked)
 
-def _spindle_override_ok(value=100, widget=None):
-    if STAT.task_state == linuxcnc.STATE_ON and STAT.spindle_override_enabled == 1:
+def _spindle_override_ok(value=100, spindle=0, widget=None):
+    if STAT.task_state == linuxcnc.STATE_ON and STAT.spindle[0]['override_enabled'] == 1:
         ok = True
         msg = ""
     elif STAT.task_state != linuxcnc.STATE_ON:
         ok = False
         msg = "Machine must be ON to set spindle override"
-    elif STAT.spindle_override_enabled == 0:
+    elif STAT.spindle[spindle]['override_enabled'] == 0:
         ok = False
         msg = "Spindle override is not enabled"
     else:
@@ -199,11 +190,11 @@ def _spindle_override_ok(value=100, widget=None):
 
     return ok
 
-def _spindle_override_bindOk(value=100, widget=None):
+def _spindle_override_bindOk(value=100, spindle=0, widget=None):
 
     # This will work for any widget
     STATUS.task_state.connect(lambda: _spindle_override_ok(widget=widget))
-    STATUS.spindle_override_enabled.connect(lambda: _spindle_override_ok(widget=widget))
+    STATUS.spindle[spindle].override_enabled.connect(lambda: _spindle_override_ok(widget=widget))
 
     try:
         # these will only work for QSlider or QSpinBox
@@ -212,7 +203,7 @@ def _spindle_override_bindOk(value=100, widget=None):
         widget.setValue(100)
         override.set(100)
 
-        STATUS.spindlerate.connect(lambda v: widget.setValue(v * 100))
+        STATUS.spindle[spindle].override.connect(lambda v: widget.setValue(v * 100))
     except AttributeError:
         pass
     except:
