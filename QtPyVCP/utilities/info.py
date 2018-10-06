@@ -117,15 +117,22 @@ class _Info(object):
     def getOpenFile(self, default=None):
         return self.getFilePath('DISPLAY', 'OPEN_FILE', self.CONFIG_DIR, default)
 
-
     def getCoordinates(self):
         '''Returns [TRAJ] COORDINATES or xyz'''
-        temp = self.ini.find('TRAJ', 'COORDINATES') or 'XYZ'
+        temp = self.ini.find('TRAJ', 'COORDINATES')
         temp = temp.replace(' ','')
         if not temp:
             log.warning("No [TRAJ] COORDINATES entry in self.ini, using XYZ")
             temp = "xyz"
         return temp.lower()
+
+    def spindles(self):
+        '''Returns [TRAJ] SPINDLES or 1'''
+        temp = self.ini.find('TRAJ', 'SPINDLES')
+        if not temp:
+            log.warning("No [TRAJ] SPINDLES entry in INI, using 1")
+            return 1
+        return int(temp)
 
     def getNumberJoints(self):
         '''Returns value of [KINS] JOINTS or 3'''

@@ -203,18 +203,9 @@ class _Status(QObject):
     read_line = pyqtSignal(int)             # line the RS274NGC interpreter is currently reading
     call_level = pyqtSignal(int)            #
 
-    # Spindle
-    spindle_brake = pyqtSignal(bool)        # value of the spindle brake flag
-    spindle_direction = pyqtSignal(int)     # spindle rotational, forward=1, reverse=-1
-    spindle_enabled = pyqtSignal(bool)      # value of the spindle enabled flag
-    spindle_override_enabled = pyqtSignal(bool) # spindle override enabled flag
-    spindle_speed = pyqtSignal(float)       # spindle speed
-    spindle_increasing = pyqtSignal(bool)   # if the spindle speed it increasing
-
     # Overrides
     feedrate = pyqtSignal(float)            # feed-rate override, 0-1
     rapidrate = pyqtSignal(float)           # rapid-rate override, 0-1
-    spindlerate = pyqtSignal(float)         # spindle-rate override, 0-1
     max_velocity = pyqtSignal(float)        # max velocity in machine units/s
     feed_override_enabled = pyqtSignal(bool)# enable flag for feed override
     adaptive_feed_enabled = pyqtSignal(bool)# self.status of adaptive feedrate override
@@ -293,10 +284,9 @@ class _Status(QObject):
         except:
             pass
 
-        excluded_items = ['axes', 'axis', 'joint', 'cycle_time',
-            'acceleration', 'kinematics_type',
-            'joints', 'axis_mask', 'max_acceleration', 'echo_serial_number',
-            'id', 'poll', 'command', 'debug']
+        excluded_items = ['axes', 'joints', 'axis', 'joint', 'spindle',
+            'acceleration', 'max_acceleration', 'kinematics_type', 'axis_mask',
+            'cycle_time', 'echo_serial_number', 'id', 'poll', 'command', 'debug']
 
         self.old = {}
         # initialize the old values dict
@@ -325,6 +315,10 @@ class _Status(QObject):
 
         # Initialize Joint status class
         self.joint = _Joint(self.stat)
+
+        # Initialize Spindle status classes
+        self.spindle = tuple(_Spindle(self.stat.spindle[i], i) for i in range(INFO.spindles()))
+
         # Initialize Error status class
         self.error = _Error()
 
@@ -363,6 +357,11 @@ class _Status(QObject):
                 self.old[key] = new_value
 
         self.joint._periodic()
+
+        # spindle status updates
+        for spindle in self.spindle:
+            spindle._update(self.stat.spindle[spindle.number])
+
         self.error._periodic()
         # print time.time() - s
 
@@ -554,6 +553,38 @@ class _Joint(QObject):
         self.stat.poll()
         return self.stat.joint[jnum][attribute]
 
+class _Spindle(QObject):
+    """Spindle status class.
+        An instance of this class is created for each spindle.
+    """
+
+    # `linuxcnc.stat.spindle[n]` attribute signals
+    brake = pyqtSignal(bool)            # value of the spindle brake flag
+    direction = pyqtSignal(int)         # spindle rotational, forward=1, reverse=-1
+    enabled = pyqtSignal(bool)          # value of the spindle enabled flag
+    override_enabled = pyqtSignal(bool) # spindle override enabled flag
+    override = pyqtSignal(float)        # spindle override value, 0-1
+    speed = pyqtSignal(float)           # spindle speed
+    increasing = pyqtSignal(bool)       # spindle speed increasing flag, unclear
+    orient_state = pyqtSignal(int)      # orient state
+    orient_fault = pyqtSignal(bool)     # orient fault
+    homed = pyqtSignal(bool)            # not implemented
+
+    def __init__(self, status, number):
+        super(_Spindle, self).__init__()
+
+        self.number = number
+        self.status = status
+
+    def _update(self, new_status):
+        """Periodic spindle item updates."""
+
+        changed_items = tuple(set(new_status.items()) - set(self.status.items()))
+        for item in changed_items:
+            log.debug('SPINDLE_{0} {1}: {2}'.format(self.number, item[0], item[1]))
+            getattr(self, item[0]).emit(item[1])
+
+        self.status = new_status
 
 #==============================================================================
 # Error status class
