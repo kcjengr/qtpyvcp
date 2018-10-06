@@ -475,9 +475,6 @@
           <property name="alignment">
            <set>Qt::AlignCenter</set>
           </property>
-          <property name="label_type" stdset="0">
-           <enum>StatusLabel::speed_override</enum>
-          </property>
          </widget>
          <widget class="ActionButton" name="actionbutton_30">
           <property name="geometry">
@@ -746,9 +743,6 @@
             <width>81</width>
             <height>20</height>
            </rect>
-          </property>
-          <property name="label_type" stdset="0">
-           <enum>StatusLabel::spindle_speed</enum>
           </property>
          </widget>
          <widget class="ActionButton" name="actionbutton_35">
@@ -1316,9 +1310,6 @@
            <width>81</width>
            <height>20</height>
           </rect>
-         </property>
-         <property name="label_type" stdset="0">
-          <enum>StatusLabel::spindle_speed</enum>
          </property>
         </widget>
         <widget class="ActionButton" name="actionbutton_21">

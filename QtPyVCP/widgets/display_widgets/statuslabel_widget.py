@@ -55,11 +55,11 @@ MAPPING = {
         'factor': 1,
         'tooltip': 'Feed Override',
         },
-    11: {'name': 'spindlerate',
-        'format': '{:.0%}',
-        'factor': 1,
-        'tooltip': 'Speed Override',
-        },
+    # 11: {'name': 'spindlerate',
+    #     'format': '{:.0%}',
+    #     'factor': 1,
+    #     'tooltip': 'Speed Override',
+    #     },
     12: {'name': 'rapidrate',
         'format': '{:.0%}',
         'factor': 1,
@@ -75,11 +75,11 @@ MAPPING = {
         'factor': 60,
         'tooltip': 'Current Velocity',
         },
-    15: {'name': 'spindle_speed',
-        'format': '{:.2f} rpm',
-        'factor': 1,
-        'tooltip': 'Current Spindle Speed'
-        },
+    # 15: {'name': 'spindle_speed',
+    #     'format': '{:.2f} rpm',
+    #     'factor': 1,
+    #     'tooltip': 'Current Spindle Speed'
+    #     },
     16: {'name': 'linear_units',
         'format': None,
         'tooltip': 'Machine Unit System',
@@ -102,11 +102,11 @@ class LabelType(object):
     interpreter_errcode = 8
     file = 9
     feed_override = 10
-    speed_override = 11
+    # speed_override = 11
     rapid_override = 12
     max_velocity = 13
     current_vel = 14
-    spindle_speed = 15
+    # spindle_speed = 15
     linear_units = 16
     taks_mode = 17
 
