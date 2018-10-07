@@ -20,10 +20,10 @@ from QtPyVCP.actions.base_actions import setTaskMode
 def _spindle_ok(speed=None, spindle=0, widget=None):
     if STAT.task_state != linuxcnc.STATE_ON:
         ok = False
-        msg = "Can't run spindle until machine it ON"
+        msg = "Power is not ON"
     elif STAT.task_mode == linuxcnc.MODE_AUTO:
         ok = False
-        msg = "Machine must be in Manuel mode"
+        msg = "Mode is not MAN or MDI"
     else:
         ok = True
         msg = ""
@@ -119,55 +119,34 @@ def getSpeed(spindle=0):
 
     return raw_speed
 
+#==============================================================================
+# Spindle Override
+#==============================================================================
 
-class override:
-    @staticmethod
-    def enable(spindle=0):
-        CMD.set_spindle_override(1, spindle)
+def override(value, spindle=0):
+    CMD.spindleoverride(float(value) / 100, spindle)
 
-    @staticmethod
-    def disable(spindle=0):
-        CMD.set_spindle_override(0, spindle)
+def _or_reset(spindle=0):
+    CMD.spindleoverride(1.0, spindle)
 
-    @staticmethod
-    def toggle_enable(spindle=0):
-        if STAT.spindle[spindle]['override_enabled']:
-            override.disable()
-        else:
-            override.enable()
+def _or_enable(spindle=0):
+    CMD.set_spindle_override(1, spindle)
 
-    @staticmethod
-    def set(value, spindle=0):
-        CMD.spindleoverride(float(value) / 100, spindle)
+def _or_disable(spindle=0):
+    CMD.set_spindle_override(0, spindle)
 
-    @staticmethod
-    def reset(spindle=0):
-        CMD.spindleoverride(1.0, spindle)
-
-def _enable_ok(spindle=0, widget=None):
-    if STAT.task_state == linuxcnc.STATE_ON \
-        and STAT.interp_state == linuxcnc.INTERP_IDLE:
-        ok = True
-        msg = ""
+def _or_toggle_enable(spindle=0):
+    if STAT.spindle[spindle]['override_enabled']:
+        override.disable()
     else:
-        ok = False
-        msg = "Machine must be ON and IDLE to enable/disable spindle override"
+        override.enable()
 
-    _spindle_override_ok.msg = msg
+override.reset = _or_reset
+override.enable = _or_enable
+override.disable = _or_disable
+override.toggle_enable = _or_toggle_enable
 
-    if widget is not None:
-        widget.setEnabled(ok)
-        widget.setStatusTip(msg)
-        widget.setToolTip(msg)
-
-    return ok
-
-def _enable_bindOk(spindle=0, widget=None):
-    STATUS.task_state.connect(lambda: _enable_ok(widget))
-    STATUS.interp_state.connect(lambda: _enable_ok(widget))
-    STATUS.spindle[spindle].override_enabled.connect(widget.setChecked)
-
-def _spindle_override_ok(value=100, spindle=0, widget=None):
+def _or_ok(value=100, spindle=0, widget=None):
     if STAT.task_state == linuxcnc.STATE_ON and STAT.spindle[0]['override_enabled'] == 1:
         ok = True
         msg = ""
@@ -181,7 +160,7 @@ def _spindle_override_ok(value=100, spindle=0, widget=None):
         ok = False
         msg = "Spindle override can not be changed"
 
-    _spindle_override_ok.msg = msg
+    _or_ok.msg = msg
 
     if widget is not None:
         widget.setEnabled(ok)
@@ -190,18 +169,18 @@ def _spindle_override_ok(value=100, spindle=0, widget=None):
 
     return ok
 
-def _spindle_override_bindOk(value=100, spindle=0, widget=None):
+def _or_bindOk(value=100, spindle=0, widget=None):
 
     # This will work for any widget
-    STATUS.task_state.connect(lambda: _spindle_override_ok(widget=widget))
-    STATUS.spindle[spindle].override_enabled.connect(lambda: _spindle_override_ok(widget=widget))
+    STATUS.task_state.connect(lambda: _or_ok(widget=widget))
+    STATUS.spindle[spindle].override_enabled.connect(lambda: _or_ok(widget=widget))
 
     try:
         # these will only work for QSlider or QSpinBox
         widget.setMinimum(INFO.minSpindleOverride() * 100)
         widget.setMaximum(INFO.maxSpindleOverride() * 100)
         widget.setValue(100)
-        override.set(100)
+        override(100)
 
         STATUS.spindle[spindle].override.connect(lambda v: widget.setValue(v * 100))
     except AttributeError:
@@ -209,27 +188,52 @@ def _spindle_override_bindOk(value=100, spindle=0, widget=None):
     except:
         LOG.exception('Error in spindle.override bindOk')
 
-override.set.ok = override.reset.ok = _spindle_override_ok
-override.set.bindOk = override.reset.bindOk = _spindle_override_bindOk
-override.enable.ok = override.disable.ok = override.toggle_enable.ok = _enable_ok
-override.enable.bindOk = override.disable.bindOk = override.toggle_enable.bindOk = _enable_bindOk
+override.ok = override.reset.ok = _or_ok
+override.bindOk = override.reset.bindOk = _or_bindOk
 
-class brake:
-    @staticmethod
-    def on():
-        CMD.brake(linuxcnc.BRAKE_ENGAGE)
+def _or_enable_ok(spindle=0, widget=None):
+    if STAT.task_state == linuxcnc.STATE_ON \
+        and STAT.interp_state == linuxcnc.INTERP_IDLE:
+        ok = True
+        msg = ""
+    else:
+        ok = False
+        msg = "Machine must be ON and IDLE to enable/disable spindle override"
 
-    @staticmethod
-    def off():
-        CMD.brake(linuxcnc.BRAKE_RELEASE)
+    _or_enable_ok.msg = msg
 
-    @staticmethod
-    def toggle():
-        if brake.it_on():
-            brake.off()
+    if widget is not None:
+        widget.setEnabled(ok)
+        widget.setStatusTip(msg)
+        widget.setToolTip(msg)
+
+    return ok
+
+def _or_enable_bindOk(spindle=0, widget=None):
+    STATUS.task_state.connect(lambda: _or_enable_ok(widget))
+    STATUS.interp_state.connect(lambda: _or_enable_ok(widget))
+    STATUS.spindle[spindle].override_enabled.connect(widget.setChecked)
+
+override.enable.ok = override.disable.ok = override.toggle_enable.ok = _or_enable_ok
+override.enable.bindOk = override.disable.bindOk = override.toggle_enable.bindOk = _or_enable_bindOk
+
+#==============================================================================
+# Spindle Brake
+#==============================================================================
+
+def brake(setting, spindle=0):
+    if setting.lower() == 'off':
+        CMD.brake(linuxcnc.BRAKE_RELEASE, spindle)
+    elif setting.lower() =='toggle':
+        if _brake_is_on():
+            CMD.brake(linuxcnc.BRAKE_RELEASE, spindle)
         else:
-            brake.on()
+            CMD.brake(linuxcnc.BRAKE_ENGAGE, spindle)
+    else:
+        CMD.brake(linuxcnc.BRAKE_ENGAGE, spindle)
 
-    @staticmethod
-    def is_on():
-        return STAT.spindle_brake == linuxcnc.BRAKE_ENGAGE
+def _brake_is_on(spindle=0):
+    return STAT.spindle[spindle]['brake'] == linuxcnc.BRAKE_ENGAGE
+
+brake.ok = _spindle_ok
+brake.bindOk = _spindle_bindOk
