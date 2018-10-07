@@ -221,19 +221,33 @@ override.enable.bindOk = override.disable.bindOk = override.toggle_enable.bindOk
 # Spindle Brake
 #==============================================================================
 
-def brake(setting, spindle=0):
-    if setting.lower() == 'off':
-        CMD.brake(linuxcnc.BRAKE_RELEASE, spindle)
-    elif setting.lower() =='toggle':
-        if _brake_is_on():
-            CMD.brake(linuxcnc.BRAKE_RELEASE, spindle)
-        else:
-            CMD.brake(linuxcnc.BRAKE_ENGAGE, spindle)
-    else:
+class brake:
+    @staticmethod
+    def on(spindle=0):
         CMD.brake(linuxcnc.BRAKE_ENGAGE, spindle)
+
+    @staticmethod
+    def off(spindle=0):
+        CMD.brake(linuxcnc.BRAKE_RELEASE, spindle)
+
+    @staticmethod
+    def toggle(spindle=0):
+        if brake.is_on():
+            brake.off()
+        else:
+            brake.on()
+
+    @staticmethod
+    def is_on(spindle=0):
+        return STAT.spindle[spindle]['brake'] == linuxcnc.BRAKE_ENGAGE
 
 def _brake_is_on(spindle=0):
     return STAT.spindle[spindle]['brake'] == linuxcnc.BRAKE_ENGAGE
 
-brake.ok = _spindle_ok
-brake.bindOk = _spindle_bindOk
+def _brake_bind_ok(spindle=0, widget=None):
+    STATUS.on.connect(lambda: _spindle_ok(widget=widget))
+    STATUS.task_mode.connect(lambda: _spindle_ok(widget=widget))
+    STATUS.spindle[spindle].brake.connect(widget.setChecked)
+
+brake.on.ok = brake.off.ok = brake.toggle.ok = _spindle_ok
+brake.on.bindOk = brake.off.bindOk = brake.toggle.bindOk = _brake_bind_ok
