@@ -73,6 +73,12 @@ class _Status(QObject):
             linuxcnc.STATE_ON: "On",
             linuxcnc.STATE_OFF: "Off",
         },
+        "state": {
+            0: "Unknown",
+            linuxcnc.RCS_DONE: "Done",
+            linuxcnc.RCS_EXEC: "Exec",
+            linuxcnc.RCS_ERROR: "Error",
+        },
         "task_mode": {
             0: "Unknown",
             linuxcnc.MODE_MANUAL: "Manual",
@@ -216,7 +222,7 @@ class _Status(QObject):
     # State
     enabled = pyqtSignal(bool)              # trajectory planner enabled
     estop = pyqtSignal([int], [bool])       # linuxcnc.STATE_ESTOP or not
-    state = pyqtSignal([int], [str])        # current command execution status
+    state = pyqtSignal([int], [str])        # current command execution status. One of RCS_DONE, RCS_EXEC, RCS_ERROR.
     exec_state = pyqtSignal([int], [str])   # task execution state
     task_mode = pyqtSignal([int], [str])    # current task mode
     task_paused = pyqtSignal(bool)          # task paused flag
