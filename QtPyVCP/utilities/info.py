@@ -378,7 +378,7 @@ class _Info(object):
             log.info("It is highly recommended that you update your config.")
             log.info("Reverting to old style. This could result in incorrect behavior...")
             log.info("\nGuessing Axes/Joints mapping:")
-            for jnum, aletter in enumerate(AXIS_LETTERS):
+            for jnum, aletter in enumerate(self.AXIS_LETTERS):
                 if aletter in self.COORDINATES:
                     self.ALETTER_JNUM_DICT[aletter] = jnum
                     log.info("Axis {0} --> Joint {1}".format(aletter, jnum))
