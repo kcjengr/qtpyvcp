@@ -193,15 +193,15 @@ class VCPMainWindow(QMainWindow):
         if hasattr(self, 'menuRecentFiles'):
 
             # remove any actions that were added in QtDesigner
-            for action in self.menuRecentFiles.actions():
-                self.menuRecentFiles.removeAction(action)
+            for act in self.menuRecentFiles.actions():
+                self.menuRecentFiles.removeAction(act)
 
             # add new actions
             for i in range(STATUS.max_recent_files):
-                action = QAction(self, visible=False,
+                act = QAction(self, visible=False,
                                  triggered=(lambda: action.program.load(self.sender().data())))
-                self.recent_file_actions.append(action)
-                self.menuRecentFiles.addAction(action)
+                self.recent_file_actions.append(act)
+                self.menuRecentFiles.addAction(act)
 
             self.updateRecentFilesMenu(STATUS.recent_files)
             STATUS.recent_files_changed.connect(self.updateRecentFilesMenu)
