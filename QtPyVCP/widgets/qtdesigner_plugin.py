@@ -1,3 +1,4 @@
+import os
 import sys
 if (sys.version_info > (3, 0)):
     print("ERROR: It appears QtDesigner is trying to load the QtPyVCP widgets \n"
@@ -6,6 +7,8 @@ if (sys.version_info > (3, 0)):
             "file in /usr/lib/x86_64-linux-gnu/qt5/plugins/designer/, see the \n"
             "QtDesigner Plugins section of the QtPyVCP README for more info.")
     sys.exit()
+
+os.environ['DESIGNER'] = 'true'
 
 from QtPyVCP.widgets.form_widgets.designer_plugins import *
 from QtPyVCP.widgets.button_widgets.designer_plugins import *
