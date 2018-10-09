@@ -171,13 +171,10 @@ class StatusLabelNew(QLabel):
             action_name (str) : A fully qualified action name.
         """
         self._status_item = status_item
-        print status_item
 
         items = status_item.split('.')
         item = items[0]
         index = None
-
-        print items
 
         try:
             if len(items) == 1:
@@ -200,9 +197,6 @@ class StatusLabelNew(QLabel):
             LOG.exception("")
             self.setText('N/A')
             return
-
-        print value
-        print sig
 
         try:
             value = STATUS.STATE_STRING_LOOKUP[item][value]
