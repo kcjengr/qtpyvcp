@@ -779,9 +779,6 @@
    <property name="shortcut">
     <string>O</string>
    </property>
-   <property name="actionName" stdset="0">
-    <string>program.open</string>
-   </property>
   </action>
   <action name="actionClose">
    <property name="text">
