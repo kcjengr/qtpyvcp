@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>527</width>
-    <height>362</height>
+    <width>740</width>
+    <height>693</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -179,31 +179,6 @@
      <cstring></cstring>
     </property>
    </widget>
-   <widget class="StatusLabelNew" name="statuslabelnew_12">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>300</y>
-      <width>191</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>&lt;b&gt;Joint 0 Pos:&lt;/b&gt; 0.0</string>
-    </property>
-    <property name="factor" stdset="0">
-     <double>1.000000000000000</double>
-    </property>
-    <property name="format" stdset="0">
-     <string>&lt;b&gt;Joint 0 Pos:&lt;/b&gt; {}</string>
-    </property>
-    <property name="statusItem" stdset="0">
-     <string>position.0</string>
-    </property>
-    <property name="buddy">
-     <cstring></cstring>
-    </property>
-   </widget>
    <widget class="StatusLabelNew" name="statuslabelnew_3">
     <property name="geometry">
      <rect>
@@ -265,6 +240,9 @@
     </property>
     <property name="text">
      <string>&lt;b&gt;File:&lt;/b&gt; </string>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
     </property>
     <property name="factor" stdset="0">
      <double>1.000000000000000</double>
@@ -345,13 +323,370 @@
      <cstring></cstring>
     </property>
    </widget>
+   <widget class="QGroupBox" name="groupBox">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>320</y>
+      <width>261</width>
+      <height>251</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Joint No. 0</string>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_13">
+       <property name="text">
+        <string>&lt;b&gt;enabled:&lt;/b&gt; 0</string>
+       </property>
+       <property name="factor" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;enabled:&lt;/b&gt; {}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>joint.0.enabled</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_14">
+       <property name="text">
+        <string>&lt;b&gt;fault:&lt;/b&gt; 0</string>
+       </property>
+       <property name="factor" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;fault:&lt;/b&gt; {}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>joint.0.fault</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_15">
+       <property name="text">
+        <string>&lt;b&gt;ferror:&lt;/b&gt; 0.00000e+00</string>
+       </property>
+       <property name="factor" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;ferror:&lt;/b&gt; {:.5e}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>joint.0.ferror_current</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_21">
+       <property name="text">
+        <string>&lt;b&gt;ferror highmark:&lt;/b&gt; 0.00000e+00</string>
+       </property>
+       <property name="factor" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;ferror highmark:&lt;/b&gt; {:.5e}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>joint.0.ferror_highmark</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_22">
+       <property name="text">
+        <string>&lt;b&gt;inpos:&lt;/b&gt; 0</string>
+       </property>
+       <property name="factor" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;inpos:&lt;/b&gt; {}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>joint.0.inpos</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_16">
+       <property name="text">
+        <string>&lt;b&gt;homed:&lt;/b&gt; 0</string>
+       </property>
+       <property name="factor" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;homed:&lt;/b&gt; {}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>joint.0.homed</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_17">
+       <property name="text">
+        <string>&lt;b&gt;on max limit:&lt;/b&gt; 0</string>
+       </property>
+       <property name="factor" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;on max limit:&lt;/b&gt; {}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>joint.0.max_hard_limit</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_18">
+       <property name="text">
+        <string>&lt;b&gt;input:&lt;/b&gt; 0.00000e+00</string>
+       </property>
+       <property name="factor" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;input:&lt;/b&gt; {:.5e}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>joint.0.input</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_20">
+       <property name="text">
+        <string>&lt;b&gt;output:&lt;/b&gt; 0.00000e+00</string>
+       </property>
+       <property name="factor" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;output:&lt;/b&gt; {:.5e}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>joint.0.output</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_19">
+       <property name="text">
+        <string>&lt;b&gt;units:&lt;/b&gt; 0.00000e+00</string>
+       </property>
+       <property name="factor" stdset="0">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;units:&lt;/b&gt; {:.5e}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>joint.0.units</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="StatusLabelNew" name="statuslabelnew_12">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>580</y>
+      <width>711</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="statusItem" stdset="0">
+     <string>tool_offset</string>
+    </property>
+   </widget>
+   <widget class="MDIEntry" name="mdientry">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>610</y>
+      <width>125</width>
+      <height>23</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_2">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>20</y>
+      <width>211</width>
+      <height>221</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Spindle</string>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_23">
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;tool:&lt;/b&gt; {}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>tool_in_spindle</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_28">
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;enabled:&lt;/b&gt; {}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>spindle.0.enabled</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_29">
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;speed:&lt;/b&gt; {:.1f} rpm</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>spindle.0.speed</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_24">
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;prog speed:&lt;/b&gt; {:.1f} rpm</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>settings.2</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_25">
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;direction:&lt;/b&gt; {}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>spindle.0.direction</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_26">
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;override:&lt;/b&gt; {:.0%}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>spindle.0.override</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_27">
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;override enabled:&lt;/b&gt; {}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>spindle.0.override_enabled</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabelNew" name="statuslabelnew_30">
+       <property name="format" stdset="0">
+        <string>&lt;b&gt;orient fault:&lt;/b&gt; {}</string>
+       </property>
+       <property name="statusItem" stdset="0">
+        <string>spindle.0.orient_fault</string>
+       </property>
+       <property name="buddy">
+        <cstring></cstring>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="GcodeBackplot" name="gcodebackplot">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>300</y>
+      <width>411</width>
+      <height>351</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>527</width>
+     <width>740</width>
      <height>20</height>
     </rect>
    </property>
@@ -697,10 +1032,21 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>GcodeBackplot</class>
+   <extends>QWidget</extends>
+   <header>QtPyVCP.widgets.display_widgets.gcode_backplot</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
    <class>VCPMainWindow</class>
    <extends>QMainWindow</extends>
    <header>QtPyVCP.widgets.form_widgets.main_window</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
   <customwidget>
    <class>ActionSlider</class>
