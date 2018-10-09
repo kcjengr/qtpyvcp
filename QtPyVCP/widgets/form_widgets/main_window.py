@@ -199,7 +199,7 @@ class VCPMainWindow(QMainWindow):
             # add new actions
             for i in range(STATUS.max_recent_files):
                 action = QAction(self, visible=False,
-                                 triggered=(lambda: action.program.load(self.sender().data())))
+                                 triggered=(lambda: actions.program.load(self.sender().data())))
                 self.recent_file_actions.append(action)
                 self.menuRecentFiles.addAction(action)
 
