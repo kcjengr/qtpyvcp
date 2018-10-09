@@ -13,17 +13,29 @@ INFO = Info()
 STATUS = Status()
 STAT = STATUS.stat
 
+SPINDLES = range(INFO.spindles())
+DEFAULT_SPEED = INFO.defaultSpindleSpeed()
+
 CMD = linuxcnc.command()
 
 from QtPyVCP.actions.base_actions import setTaskMode
 
+
+def _spindle_exists(spindle):
+    if spindle in SPINDLES:
+        return True
+    return False
+
 def _spindle_ok(speed=None, spindle=0, widget=None):
-    if STAT.task_state != linuxcnc.STATE_ON:
+    if spindle not in SPINDLES:
+            ok = False
+            msg = "No spindle No. {}".format(spindle)
+    elif STAT.task_state != linuxcnc.STATE_ON:
         ok = False
-        msg = "Power is not ON"
+        msg = "Power must be ON"
     elif STAT.task_mode == linuxcnc.MODE_AUTO:
         ok = False
-        msg = "Mode is not MAN or MDI"
+        msg = "Mode must be MAN or MDI"
     else:
         ok = True
         msg = ""
@@ -38,6 +50,8 @@ def _spindle_ok(speed=None, spindle=0, widget=None):
     return ok
 
 def _spindle_bindOk(speed=None, spindle=0, widget=None):
+    if not _spindle_exists(spindle):
+        return
     STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
     STATUS.task_mode.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
 
@@ -49,6 +63,8 @@ def forward(speed=None, spindle=0):
     CMD.spindle(linuxcnc.SPINDLE_FORWARD, speed, spindle)
 
 def _spindle_forward_bindOk(speed=None, spindle=0, widget=None):
+    if not _spindle_exists(spindle):
+        return
     widget.setCheckable(True)
     STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
     STATUS.task_mode.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
@@ -65,6 +81,8 @@ def reverse(speed=None, spindle=0):
     CMD.spindle(linuxcnc.SPINDLE_REVERSE, speed, spindle)
 
 def _spindle_reverse_bindOk(speed=None, spindle=0, widget=None):
+    if not _spindle_exists(spindle):
+        return
     widget.setCheckable(True)
     STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
     STATUS.task_mode.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
@@ -112,7 +130,7 @@ constant.bindOk = _spindle_bindOk
 def getSpeed(spindle=0):
     raw_speed = STAT.settings[2]
     if raw_speed == 0:
-        raw_speed = abs(INFO.defaultSpindleSpeed())
+        raw_speed = abs(DEFAULT_SPEED)
 
     if STAT.spindle[spindle]['override_enabled']:
         return raw_speed * STAT.spindle[spindle]['override']
@@ -147,18 +165,18 @@ override.disable = _or_disable
 override.toggle_enable = _or_toggle_enable
 
 def _or_ok(value=100, spindle=0, widget=None):
-    if STAT.task_state == linuxcnc.STATE_ON and STAT.spindle[0]['override_enabled'] == 1:
-        ok = True
-        msg = ""
+    if spindle not in SPINDLES:
+            ok = False
+            msg = "No spindle No. {}".format(spindle)
     elif STAT.task_state != linuxcnc.STATE_ON:
         ok = False
-        msg = "Machine must be ON to set spindle override"
-    elif STAT.spindle[spindle]['override_enabled'] == 0:
+        msg = "Machine must be ON"
+    elif STAT.spindle[0]['override_enabled'] != 1:
         ok = False
-        msg = "Spindle override is not enabled"
+        msg = "Override not enabled"
     else:
-        ok = False
-        msg = "Spindle override can not be changed"
+        ok = True
+        msg = ""
 
     _or_ok.msg = msg
 
@@ -170,6 +188,8 @@ def _or_ok(value=100, spindle=0, widget=None):
     return ok
 
 def _or_bindOk(value=100, spindle=0, widget=None):
+    if not _spindle_exists(spindle):
+        return
 
     # This will work for any widget
     STATUS.task_state.connect(lambda: _or_ok(widget=widget))
@@ -192,13 +212,18 @@ override.ok = override.reset.ok = _or_ok
 override.bindOk = override.reset.bindOk = _or_bindOk
 
 def _or_enable_ok(spindle=0, widget=None):
-    if STAT.task_state == linuxcnc.STATE_ON \
-        and STAT.interp_state == linuxcnc.INTERP_IDLE:
+    if spindle not in SPINDLES:
+        ok = False
+        msg = "No spindle No. {}".format(spindle)
+    elif STAT.task_state != linuxcnc.STATE_ON:
+        ok = False
+        msg = "Machine must be ON"
+    elif STAT.interp_state != linuxcnc.INTERP_IDLE:
+        ok = False
+        msg = "Machine must be IDLE"
+    else:
         ok = True
         msg = ""
-    else:
-        ok = False
-        msg = "Machine must be ON and IDLE to enable/disable spindle override"
 
     _or_enable_ok.msg = msg
 
@@ -210,8 +235,11 @@ def _or_enable_ok(spindle=0, widget=None):
     return ok
 
 def _or_enable_bindOk(spindle=0, widget=None):
-    STATUS.task_state.connect(lambda: _or_enable_ok(widget))
-    STATUS.interp_state.connect(lambda: _or_enable_ok(widget))
+    if not _spindle_exists(spindle):
+        return
+
+    STATUS.task_state.connect(lambda: _or_enable_ok(spindle, widget))
+    STATUS.interp_state.connect(lambda: _or_enable_ok(spindle, widget))
     STATUS.spindle[spindle].override_enabled.connect(widget.setChecked)
 
 override.enable.ok = override.disable.ok = override.toggle_enable.ok = _or_enable_ok
@@ -245,8 +273,11 @@ def _brake_is_on(spindle=0):
     return STAT.spindle[spindle]['brake'] == linuxcnc.BRAKE_ENGAGE
 
 def _brake_bind_ok(spindle=0, widget=None):
-    STATUS.on.connect(lambda: _spindle_ok(widget=widget))
-    STATUS.task_mode.connect(lambda: _spindle_ok(widget=widget))
+    if not _spindle_exists(spindle):
+        return
+
+    STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.task_mode.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
     STATUS.spindle[spindle].brake.connect(widget.setChecked)
 
 brake.on.ok = brake.off.ok = brake.toggle.ok = _spindle_ok
