@@ -75,10 +75,10 @@ class VCPChooser(QDialog):
                               caption="Select VCP File",
                               directory=EXAMPLE_VCP_DIR,
                               filter='VCP Files (*.ui *.py)',
-                              options=QFileDialog.DontUseNativeDialog)
+                              options=QFileDialog.DontUseNativeDialog)[0]
 
-        if vcp_file:
-            self.opts.vcp = vcp_file[0]
+        if vcp_file != '':
+            self.opts.vcp = vcp_file
             self.accept()
 
 if __name__ == '__main__':
