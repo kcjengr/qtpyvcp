@@ -118,7 +118,7 @@ class StatusLabelNew(QLabel):
                 raise ValueError('Not a valid signal')
 
         except:
-            LOG.exception("")
+            LOG.exception("Invalid status item '{}'".format(status_item))
             try:
                 self.setText(self._format.format('n/a'))
             except ValueError:
@@ -163,4 +163,4 @@ class StatusLabelNew(QLabel):
                     self.setText('FRMT error')
 
         except:
-            LOG.exception('')
+            LOG.exception("Problem connecting update signal for status item '{}'".format(status_item))
