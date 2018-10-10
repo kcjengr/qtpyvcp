@@ -143,6 +143,41 @@
                <blue>54</blue>
               </color>
              </property>
+             <widget class="QComboBox" name="comboBox">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>10</y>
+                <width>79</width>
+                <height>23</height>
+               </rect>
+              </property>
+              <item>
+               <property name="text">
+                <string>p</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>x</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>y</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>z</string>
+               </property>
+              </item>
+              <item>
+               <property name="text">
+                <string>z2</string>
+               </property>
+              </item>
+             </widget>
             </widget>
            </widget>
           </item>
@@ -2754,7 +2789,24 @@
  <resources>
   <include location="../resources/brender.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>comboBox</sender>
+   <signal>currentIndexChanged(QString)</signal>
+   <receiver>gcodebackplot</receiver>
+   <slot>setView(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>472</x>
+     <y>64</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>474</x>
+     <y>112</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <designerdata>
   <property name="gridDeltaX">
    <number>10</number>
