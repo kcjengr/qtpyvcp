@@ -3,19 +3,17 @@
 import os
 
 from PyQt5.QtWidgets import QLabel
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtBoundSignal
+from PyQt5.QtCore import pyqtProperty, pyqtBoundSignal
 
 # Set up logging
 from QtPyVCP.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from QtPyVCP.utilities.info import Info
 from QtPyVCP.utilities.status import Status
-INFO = Info()
 STATUS = Status()
 STAT = STATUS.stat
 
-IN_DESIGNER = os.getenv('DESIGNER') == 'true'
+IN_DESIGNER = os.getenv('DESIGNER') != None
 
 FORMATS = {
     'motion_type': {
@@ -87,14 +85,10 @@ FORMATS = {
     }
 
 class StatusLabelNew(QLabel):
-    """General purpose button for triggering QtPyVCP actions.
+    """General purpose label for displaying status values.
 
     Args:
-        parent (QWidget) : The parent widget of the button, or None.
-
-    Attributes:
-        _action_name (str) : The fully qualified name of the action the
-            button triggers:
+        parent (QWidget) : The parent widget, or None.
     """
     def __init__(self, parent=None):
         super(StatusLabelNew, self).__init__(parent)
@@ -105,71 +99,70 @@ class StatusLabelNew(QLabel):
 
     @pyqtProperty(float)
     def factor(self):
-        """The `actionName` property for setting the action the button
-            should trigger from within QtDesigner.
+        """The multiplication factor to apply to numeric status values.
 
         Returns:
-            str : The action name.
+            float: The current multiplication factor.
         """
         return self._factor
 
     @factor.setter
     def factor(self, factor):
-        """Sets the name of the action the button should trigger and
-            binds the widget to that action.
+        """Sets the multiplication factor to apply to numeric status values.
 
         Args:
-            action_name (str) : A fully qualified action name.
+            factor (float): The desired multiplication factor.
         """
         self._factor = factor
 
-        # force update of value when in designer
+        # force update of label when in designer
         if IN_DESIGNER:
             self.statusItem = self._status_item
 
     @pyqtProperty(str)
     def format(self):
-        """The `actionName` property for setting the action the button
-            should trigger from within QtDesigner.
+        """The str format specification to use for displaying the value.
 
         Returns:
-            str : The action name.
+            str : The current format specification.
         """
         return self._format
 
     @format.setter
     def format(self, format):
-        """Sets the name of the action the button should trigger and
-            binds the widget to that action.
+        """Sets the desired format specification.
 
         Args:
-            action_name (str) : A fully qualified action name.
+            format (str): A valid str format specification.
         """
 
         self._format = format
 
-        # force update of value when in designer
+        # force update of label when in designer
         if IN_DESIGNER:
             self.statusItem = self._status_item
 
     @pyqtProperty(str)
     def statusItem(self):
-        """The `actionName` property for setting the action the button
-            should trigger from within QtDesigner.
+        """The name of the linuxcnc.stat item that the label should
+            display the value of.
 
         Returns:
-            str : The action name.
+            str : The linuxcnc.stat item.
         """
         return self._status_item
 
     @statusItem.setter
     def statusItem(self, status_item):
-        """Sets the name of the action the button should trigger and
-            binds the widget to that action.
+        """Sets the linuxcnc.stat item the label should display the value
+            of and binds the label to the items value changed signal.
 
         Args:
-            action_name (str) : A fully qualified action name.
+            status_item (str): A linuxcnc.status item.
         """
+        if status_item == '' and self._status_item == '':
+            return
+
         self._status_item = status_item
 
         items = status_item.split('.')
@@ -195,7 +188,12 @@ class StatusLabelNew(QLabel):
 
         except:
             LOG.exception("")
-            self.setText('N/A')
+            try:
+                self.setText(self._format.format('n/a'))
+            except ValueError:
+                self.setText(self._format.format(float('nan')))
+            except:
+                self.setText('n/a')
             return
 
         try:
