@@ -221,6 +221,8 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         self.use_default_controls = True
         self.mouse_btn_mode = 0
 
+        self.mouse_moving = False
+
         self.a_axis_wrapped = self.inifile.find("AXIS_A", "WRAPPED_ROTARY")
         self.b_axis_wrapped = self.inifile.find("AXIS_B", "WRAPPED_ROTARY")
         self.c_axis_wrapped = self.inifile.find("AXIS_C", "WRAPPED_ROTARY")
@@ -444,7 +446,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
 
     # redraws the screen aprox every 100ms
     def paintGL(self):
-        # GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
+        GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
         # GL.glLoadIdentity() # reset the model-view matrix
         # GL.glTranslated(0.0, 0.0, -10.0)
         # GL.glRotated(self.xRot / 16.0, 1.0, 0.0, 0.0) # rotate on x
@@ -507,23 +509,29 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         _event.accept()
 
     def mousePressEvent(self, event):
+        self.end_of_move_mouse_release = False
         if (event.buttons() & Qt.LeftButton):
             self.select_prime(event.pos().x(), event.pos().y())
             #print self.winfo_width()/2 - event.pos().x(), self.winfo_height()/2 - event.pos().y()
         self.recordMouse(event.pos().x(), event.pos().y())
         self.startZoom(event.pos().y())
 
-    # event.buttons = current button state
-    # event_button  = event causing button
     def mouseReleaseEvent(self, event):
         if event.button() & Qt.LeftButton:
-            self.select_fire()
+            if self.mouse_moving:
+                # reset mouse moving
+                self.mouse_moving = False
+            else:
+                # assume user wanted to select a line
+                self.select_fire()
+
 
     def mouseDoubleClickEvent(self, event):
         if event.button() & Qt.RightButton:
             self.clear_live_plotter()
 
     def mouseMoveEvent(self, event):
+        self.mouse_moving = True
         # move
         if event.buttons() & Qt.LeftButton:
             self.translateOrRotate(event.pos().x(), event.pos().y())
