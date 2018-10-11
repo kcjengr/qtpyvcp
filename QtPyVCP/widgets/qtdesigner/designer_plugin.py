@@ -3,16 +3,22 @@
 from PyQt5.QtGui import QIcon
 from PyQt5.QtDesigner import QPyDesignerCustomWidgetPlugin
 
+from plugin_extension import ExtensionFactory
+from designer_hooks import DesignerHooks
+
 class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 
     def __init__(self, parent=None):
         super(_DesignerPlugin, self).__init__(parent=parent)
         self.initialized = False
-        # print(self.name(), self.includeFile(), self.objectName())
+        self.manager = None
 
     # This MUST be overridden to return the widget class
     def pluginClass(self):
         raise NotImplementedError()
+
+    def extensions(self):
+        return []
 
     # Override to set the default widget name used in QtDesinger
     def objectName(self):
@@ -47,14 +53,30 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 #  These methods should not need to be overridden
 #==============================================================================
 
-    def initialize(self, form_editor):
+    def initialize(self, core):
+        if self.initialized:
+            return
+
+        # designer_hooks = DesignerHooks()
+        # designer_hooks.form_editor = core
+
+        if len(self.extensions()) > 0:
+            self.manager = core.extensionManager()
+            if self.manager:
+                factory = ExtensionFactory(parent=self.manager)
+                self.manager.registerExtensions(
+                    factory,
+                    'org.qt-project.Qt.Designer.TaskMenu')
+
         self.initialized = True
 
     def isInitialized(self):
         return self.initialized
 
     def createWidget(self, parent):
-        return self.pluginClass()(parent)
+        w = self.pluginClass()(parent)
+        w.extensions = self.extensions()
+        return w
 
     def name(self):
         return self.pluginClass().__name__

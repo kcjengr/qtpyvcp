@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from QtPyVCP.widgets.base_widgets.designer_plugin import _DesignerPlugin
+from QtPyVCP.widgets.qtdesigner import _DesignerPlugin
 
 from status_label import StatusLabel
 class StatusLabelPlugin(_DesignerPlugin):
