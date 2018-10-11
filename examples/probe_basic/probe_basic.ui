@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1920</width>
-    <height>1079</height>
+    <height>1080</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -17485,7 +17485,7 @@ Background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -18042,8 +18042,8 @@ font: 14pt &quot;Bebas Kai&quot;;
                <property name="indent">
                 <number>0</number>
                </property>
-               <property name="label_type" stdset="0">
-                <enum>StatusLabel::gcodes</enum>
+               <property name="statusItem" stdset="0">
+                <string>gcodes</string>
                </property>
               </widget>
              </item>
@@ -18072,8 +18072,8 @@ font: 14pt &quot;Bebas Kai&quot;;
                <property name="indent">
                 <number>0</number>
                </property>
-               <property name="label_type" stdset="0">
-                <enum>StatusLabel::mcodes</enum>
+               <property name="statusItem" stdset="0">
+                <string>mcodes</string>
                </property>
               </widget>
              </item>
@@ -18202,8 +18202,8 @@ font: 14pt &quot;Bebas Kai&quot;;
                <property name="indent">
                 <number>0</number>
                </property>
-               <property name="label_type" stdset="0">
-                <enum>StatusLabel::gcodes</enum>
+               <property name="statusItem" stdset="0">
+                <string>gcodes</string>
                </property>
               </widget>
              </item>
@@ -18232,8 +18232,8 @@ font: 14pt &quot;Bebas Kai&quot;;
                <property name="indent">
                 <number>0</number>
                </property>
-               <property name="label_type" stdset="0">
-                <enum>StatusLabel::mcodes</enum>
+               <property name="statusItem" stdset="0">
+                <string>mcodes</string>
                </property>
               </widget>
              </item>
@@ -19457,7 +19457,7 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_58">
+            <widget class="StatusLabel" name="tool_length">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                <horstretch>1</horstretch>
@@ -19488,10 +19488,16 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>0.0000</string>
+              <string>0.000</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="format" stdset="0">
+              <string>{:.3f}</string>
+             </property>
+             <property name="statusItem" stdset="0">
+              <string>tool_offset.3</string>
              </property>
             </widget>
            </item>
@@ -19514,11 +19520,8 @@ padding: -5px;
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="label_type" stdset="0">
-              <enum>StatusLabel::linear_units</enum>
-             </property>
-             <property name="format_spec" stdset="0">
-              <string/>
+             <property name="statusItem" stdset="0">
+              <string>program_units</string>
              </property>
             </widget>
            </item>
@@ -19562,11 +19565,6 @@ padding: -5px;
     background: rgb(46, 52, 54);
 	font: 16pt &quot;Bebas Kai&quot;;
 }
-
-
-
-
-
 </string>
              </property>
              <property name="text">
@@ -19584,7 +19582,7 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_59">
+            <widget class="StatusLabel" name="tool_diameter">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                <horstretch>1</horstretch>
@@ -19615,10 +19613,13 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>0.0000</string>
+              <string>n/a</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="statusItem" stdset="0">
+              <string/>
              </property>
             </widget>
            </item>
@@ -19641,11 +19642,8 @@ padding: -5px;
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="label_type" stdset="0">
-              <enum>StatusLabel::linear_units</enum>
-             </property>
-             <property name="format_spec" stdset="0">
-              <string/>
+             <property name="statusItem" stdset="0">
+              <string>program_units</string>
              </property>
             </widget>
            </item>
@@ -23666,8 +23664,8 @@ padding-right: 7px;
            <property name="indent">
             <number>0</number>
            </property>
-           <property name="label_type" stdset="0">
-            <enum>StatusLabel::feed_override</enum>
+           <property name="statusItem" stdset="0">
+            <string>feedrate</string>
            </property>
           </widget>
          </item>
@@ -23787,8 +23785,8 @@ border-radius: 4px;
            <property name="indent">
             <number>0</number>
            </property>
-           <property name="label_type" stdset="0">
-            <enum>StatusLabel::speed_override</enum>
+           <property name="statusItem" stdset="0">
+            <string>spindle.0.override</string>
            </property>
           </widget>
          </item>
@@ -23834,8 +23832,8 @@ border-radius: 4px;
            <property name="indent">
             <number>0</number>
            </property>
-           <property name="label_type" stdset="0">
-            <enum>StatusLabel::rapid_override</enum>
+           <property name="statusItem" stdset="0">
+            <string>rapidrate</string>
            </property>
           </widget>
          </item>
@@ -23967,10 +23965,10 @@ LOAD</string>
            <property name="margin">
             <number>-6</number>
            </property>
-           <property name="label_type" stdset="0">
-            <enum>StatusLabel::max_velocity</enum>
+           <property name="statusItem" stdset="0">
+            <string>max_velocity</string>
            </property>
-           <property name="format_spec" stdset="0">
+           <property name="fromat" stdset="0">
             <string>{:.0f}</string>
            </property>
            <property name="conv_factor" stdset="0">
@@ -24048,7 +24046,7 @@ border-radius: 4px;
             <enum>Qt::Horizontal</enum>
            </property>
            <property name="actionName" stdset="0">
-            <string>spindle.override.set</string>
+            <string>spindle.override</string>
            </property>
           </widget>
          </item>
@@ -24661,11 +24659,11 @@ border-radius: 4px;
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="label_type" stdset="0">
-              <enum>StatusLabel::current_vel</enum>
-             </property>
-             <property name="format_spec" stdset="0">
+             <property name="format" stdset="0">
               <string>{:.1f}</string>
+             </property>
+             <property name="statusItem" stdset="0">
+              <string>current_vel</string>
              </property>
             </widget>
            </item>
@@ -24829,10 +24827,10 @@ border-radius: 4px;
                 <property name="indent">
                  <number>0</number>
                 </property>
-                <property name="label_type" stdset="0">
-                 <enum>StatusLabel::linear_units</enum>
+                <property name="statusItem" stdset="0">
+                 <string>linear_units</string>
                 </property>
-                <property name="format_spec" stdset="0">
+                <property name="fromat" stdset="0">
                  <string/>
                 </property>
                </widget>
@@ -25206,11 +25204,11 @@ border-radius: 1px;
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="label_type" stdset="0">
-              <enum>StatusLabel::spindle_speed</enum>
-             </property>
-             <property name="format_spec" stdset="0">
+             <property name="format" stdset="0">
               <string>{:.2f}</string>
+             </property>
+             <property name="statusItem" stdset="0">
+              <string>spindle.0.speed</string>
              </property>
             </widget>
            </item>
@@ -25929,16 +25927,10 @@ font: 11pt bebas kai;
   <customwidget>
    <class>StatusLabel</class>
    <extends>QLabel</extends>
-   <header>QtPyVCP.widgets.display_widgets.statuslabel_widget</header>
+   <header>QtPyVCP.widgets.display_widgets.status_label</header>
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="probe_basic.qrc"/>
-  <include location="probe_basic.qrc"/>
-  <include location="probe_basic.qrc"/>
-  <include location="probe_basic.qrc"/>
-  <include location="probe_basic.qrc"/>
-  <include location="probe_basic.qrc"/>
   <include location="probe_basic.qrc"/>
  </resources>
  <connections>
