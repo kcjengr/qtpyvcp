@@ -15,18 +15,20 @@ STAT = STATUS.stat
 
 IN_DESIGNER = os.getenv('DESIGNER') != None
 
-class StatusLabelNew(QLabel):
+class StatusLabel(QLabel):
     """General purpose label for displaying status values.
 
     Args:
         parent (QWidget) : The parent widget, or None.
     """
     def __init__(self, parent=None):
-        super(StatusLabelNew, self).__init__(parent)
+        super(StatusLabel, self).__init__(parent)
 
         self._factor = 1
         self._format = '{}'
         self._status_item = ''
+
+        self.setText('n/a')
 
     @pyqtProperty(float)
     def factor(self):
