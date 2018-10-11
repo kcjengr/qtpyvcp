@@ -59,7 +59,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -310,13 +310,16 @@
           <property name="geometry">
            <rect>
             <x>10</x>
-            <y>400</y>
-            <width>611</width>
+            <y>390</y>
+            <width>691</width>
             <height>16</height>
            </rect>
           </property>
-          <property name="label_type" stdset="0">
-           <enum>StatusLabel::mcodes</enum>
+          <property name="format" stdset="0">
+           <string>&lt;b&gt;Active M-Codes:&lt;/b&gt; {}</string>
+          </property>
+          <property name="statusItem" stdset="0">
+           <string>mcodes</string>
           </property>
          </widget>
          <widget class="StatusLabel" name="statuslabel_3">
@@ -324,12 +327,15 @@
            <rect>
             <x>10</x>
             <y>370</y>
-            <width>611</width>
+            <width>691</width>
             <height>20</height>
            </rect>
           </property>
-          <property name="label_type" stdset="0">
-           <enum>StatusLabel::gcodes</enum>
+          <property name="format" stdset="0">
+           <string>&lt;b&gt;Active G-Codes:&lt;/b&gt; {}</string>
+          </property>
+          <property name="statusItem" stdset="0">
+           <string>gcodes</string>
           </property>
          </widget>
          <widget class="StatusLabel" name="statuslabel_4">
@@ -337,12 +343,15 @@
            <rect>
             <x>10</x>
             <y>270</y>
-            <width>161</width>
+            <width>201</width>
             <height>16</height>
            </rect>
           </property>
-          <property name="label_type" stdset="0">
-           <enum>StatusLabel::task_state</enum>
+          <property name="format" stdset="0">
+           <string>&lt;b&gt;Task State:&lt;/b&gt; {}</string>
+          </property>
+          <property name="statusItem" stdset="0">
+           <string>task_state</string>
           </property>
          </widget>
          <widget class="StatusLabel" name="statuslabel_5">
@@ -350,12 +359,15 @@
            <rect>
             <x>10</x>
             <y>310</y>
-            <width>161</width>
+            <width>201</width>
             <height>16</height>
            </rect>
           </property>
-          <property name="label_type" stdset="0">
-           <enum>StatusLabel::interp_state</enum>
+          <property name="format" stdset="0">
+           <string>&lt;b&gt;Interp State:&lt;/b&gt; {}</string>
+          </property>
+          <property name="statusItem" stdset="0">
+           <string>interp_state</string>
           </property>
          </widget>
          <widget class="StatusLabel" name="statuslabel_6">
@@ -363,12 +375,15 @@
            <rect>
             <x>10</x>
             <y>330</y>
-            <width>161</width>
+            <width>201</width>
             <height>16</height>
            </rect>
           </property>
-          <property name="label_type" stdset="0">
-           <enum>StatusLabel::motion_mode</enum>
+          <property name="format" stdset="0">
+           <string>&lt;b&gt;Motion Mode:&lt;/b&gt; {}</string>
+          </property>
+          <property name="statusItem" stdset="0">
+           <string>motion_mode</string>
           </property>
          </widget>
          <widget class="StatusLabel" name="statuslabel_7">
@@ -376,12 +391,15 @@
            <rect>
             <x>10</x>
             <y>290</y>
-            <width>161</width>
+            <width>201</width>
             <height>16</height>
            </rect>
           </property>
-          <property name="label_type" stdset="0">
-           <enum>StatusLabel::taks_mode</enum>
+          <property name="format" stdset="0">
+           <string>&lt;b&gt;Task Mode:&lt;/b&gt; {}</string>
+          </property>
+          <property name="statusItem" stdset="0">
+           <string>task_mode</string>
           </property>
          </widget>
          <widget class="QWidget" name="buttonBox_2" native="true">
@@ -498,19 +516,6 @@
            </item>
           </layout>
          </widget>
-         <widget class="StatusLabel" name="statuslabel_8">
-          <property name="geometry">
-           <rect>
-            <x>310</x>
-            <y>210</y>
-            <width>161</width>
-            <height>21</height>
-           </rect>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignCenter</set>
-          </property>
-         </widget>
          <widget class="ActionButton" name="actionbutton_30">
           <property name="geometry">
            <rect>
@@ -540,7 +545,7 @@
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="actionName" stdset="0">
-           <string>spindle.override.set</string>
+           <string>spindle.override</string>
           </property>
          </widget>
          <widget class="ActionCheckBox" name="actioncheckbox_4">
@@ -580,12 +585,15 @@
            <rect>
             <x>10</x>
             <y>350</y>
-            <width>161</width>
+            <width>201</width>
             <height>16</height>
            </rect>
           </property>
-          <property name="label_type" stdset="0">
-           <enum>StatusLabel::motion_type</enum>
+          <property name="format" stdset="0">
+           <string>&lt;b&gt;Motion Type:&lt;/b&gt; {}</string>
+          </property>
+          <property name="statusItem" stdset="0">
+           <string>motion_type</string>
           </property>
          </widget>
          <widget class="ActionSlider" name="actionslider_2">
@@ -639,17 +647,20 @@
          <widget class="StatusLabel" name="statuslabel_10">
           <property name="geometry">
            <rect>
-            <x>310</x>
+            <x>240</x>
             <y>130</y>
-            <width>161</width>
+            <width>271</width>
             <height>21</height>
            </rect>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
           </property>
-          <property name="label_type" stdset="0">
-           <enum>StatusLabel::feed_override</enum>
+          <property name="format" stdset="0">
+           <string>&lt;b&gt;Feed Override:&lt;/b&gt; {:.0%}</string>
+          </property>
+          <property name="statusItem" stdset="0">
+           <string>feedrate</string>
           </property>
          </widget>
          <widget class="ActionSlider" name="actionslider_3">
@@ -671,17 +682,20 @@
          <widget class="StatusLabel" name="statuslabel_11">
           <property name="geometry">
            <rect>
-            <x>310</x>
-            <y>50</y>
-            <width>161</width>
-            <height>21</height>
+            <x>240</x>
+            <y>51</y>
+            <width>271</width>
+            <height>20</height>
            </rect>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
           </property>
-          <property name="label_type" stdset="0">
-           <enum>StatusLabel::rapid_override</enum>
+          <property name="format" stdset="0">
+           <string>&lt;b&gt;Rapid Override:&lt;/b&gt; {:.0%}</string>
+          </property>
+          <property name="statusItem" stdset="0">
+           <string>rapidrate</string>
           </property>
          </widget>
          <widget class="ActionButton" name="actionbutton_33">
@@ -703,17 +717,23 @@
          <widget class="StatusLabel" name="statuslabel_12">
           <property name="geometry">
            <rect>
-            <x>740</x>
+            <x>670</x>
             <y>60</y>
-            <width>161</width>
+            <width>271</width>
             <height>21</height>
            </rect>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
           </property>
-          <property name="label_type" stdset="0">
-           <enum>StatusLabel::max_velocity</enum>
+          <property name="factor" stdset="0">
+           <double>60.000000000000000</double>
+          </property>
+          <property name="format" stdset="0">
+           <string>&lt;b&gt;Max Vel:&lt;/b&gt; {:.1f} in/min</string>
+          </property>
+          <property name="statusItem" stdset="0">
+           <string>max_velocity</string>
           </property>
          </widget>
          <widget class="ActionButton" name="actionbutton_34">
@@ -779,6 +799,12 @@
             <height>20</height>
            </rect>
           </property>
+          <property name="format" stdset="0">
+           <string>{:.1f} rpm</string>
+          </property>
+          <property name="statusItem" stdset="0">
+           <string>spindle.0.speed</string>
+          </property>
          </widget>
          <widget class="ActionButton" name="actionbutton_35">
           <property name="geometry">
@@ -841,7 +867,7 @@
            <number>5</number>
           </property>
           <property name="actionName" stdset="0">
-           <string>spindle.override.set</string>
+           <string>spindle.override</string>
           </property>
          </widget>
          <widget class="QGroupBox" name="groupBox">
@@ -1061,6 +1087,25 @@
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+         <widget class="StatusLabel" name="statuslabel_14">
+          <property name="geometry">
+           <rect>
+            <x>240</x>
+            <y>210</y>
+            <width>271</width>
+            <height>21</height>
+           </rect>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+          <property name="format" stdset="0">
+           <string>&lt;b&gt;Spindle Override:&lt;/b&gt; {:.0%}</string>
+          </property>
+          <property name="statusItem" stdset="0">
+           <string>spindle.0.override</string>
           </property>
          </widget>
         </widget>
@@ -1345,6 +1390,9 @@
            <width>81</width>
            <height>20</height>
           </rect>
+         </property>
+         <property name="statusItem" stdset="0">
+          <string>task_state</string>
          </property>
         </widget>
         <widget class="ActionButton" name="actionbutton_21">
@@ -2774,7 +2822,7 @@
   <customwidget>
    <class>StatusLabel</class>
    <extends>QLabel</extends>
-   <header>QtPyVCP.widgets.display_widgets.statuslabel_widget</header>
+   <header>QtPyVCP.widgets.display_widgets.status_label</header>
   </customwidget>
  </customwidgets>
  <resources>
