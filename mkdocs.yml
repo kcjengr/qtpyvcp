@@ -50,6 +50,8 @@ nav:
 - Dependencies: dependencies.md
 - Installing: installing.md
 - Basic Usage: basic_usage.md
+- Actions:
+  - Spindle: actions/spindle_actions.md
 - Tools:
   - QCompile: tools/qcompile.md
 - Widgets:

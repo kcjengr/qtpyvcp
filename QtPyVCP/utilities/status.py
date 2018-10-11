@@ -34,6 +34,8 @@ from QtPyVCP.utilities import logger
 log = logger.getLogger(__name__)
 log.setLevel("DEBUG")
 
+NUM_SPINDLES = INFO.spindles()
+
 
 class GCodes:
     def __getitem__(self, gcodes):
@@ -203,18 +205,9 @@ class _Status(QObject):
     read_line = pyqtSignal(int)             # line the RS274NGC interpreter is currently reading
     call_level = pyqtSignal(int)            #
 
-    # Spindle
-    spindle_brake = pyqtSignal(bool)        # value of the spindle brake flag
-    spindle_direction = pyqtSignal(int)     # spindle rotational, forward=1, reverse=-1
-    spindle_enabled = pyqtSignal(bool)      # value of the spindle enabled flag
-    spindle_override_enabled = pyqtSignal(bool) # spindle override enabled flag
-    spindle_speed = pyqtSignal(float)       # spindle speed
-    spindle_increasing = pyqtSignal(bool)   # if the spindle speed it increasing
-
     # Overrides
     feedrate = pyqtSignal(float)            # feed-rate override, 0-1
     rapidrate = pyqtSignal(float)           # rapid-rate override, 0-1
-    spindlerate = pyqtSignal(float)         # spindle-rate override, 0-1
     max_velocity = pyqtSignal(float)        # max velocity in machine units/s
     feed_override_enabled = pyqtSignal(bool)# enable flag for feed override
     adaptive_feed_enabled = pyqtSignal(bool)# self.status of adaptive feedrate override
@@ -293,10 +286,9 @@ class _Status(QObject):
         except:
             pass
 
-        excluded_items = ['axes', 'axis', 'joint', 'cycle_time',
-            'acceleration', 'kinematics_type',
-            'joints', 'axis_mask', 'max_acceleration', 'echo_serial_number',
-            'id', 'poll', 'command', 'debug']
+        excluded_items = ['axes', 'joints', 'axis', 'joint', 'spindle',
+            'acceleration', 'max_acceleration', 'kinematics_type', 'axis_mask',
+            'cycle_time', 'echo_serial_number', 'id', 'poll', 'command', 'debug']
 
         self.old = {}
         # initialize the old values dict
@@ -324,7 +316,11 @@ class _Status(QObject):
         self.settings.connect(lambda s: self.feed.emit(s[2]))
 
         # Initialize Joint status class
-        self.joint = _Joint(self.stat)
+        self.joint = tuple(_Joint(self.stat.joint[i], i) for i in range(INFO.NUM_JOINTS))
+
+        # Initialize Spindle status classes
+        self.spindle = tuple(_Spindle(self.stat.spindle[i], i) for i in range(NUM_SPINDLES))
+
         # Initialize Error status class
         self.error = _Error()
 
@@ -362,7 +358,14 @@ class _Status(QObject):
                 # update old values dict
                 self.old[key] = new_value
 
-        self.joint._periodic()
+        # joint status updates
+        for joint in self.joint:
+            joint._update(self.stat.joint[joint.number])
+
+        # spindle status updates
+        for spindle in self.spindle:
+            spindle._update(self.stat.spindle[spindle.number])
+
         self.error._periodic()
         # print time.time() - s
 
@@ -503,57 +506,83 @@ class _Status(QObject):
 #==============================================================================
 
 class _Joint(QObject):
+    """Joint status class.
+        An instance of this class is created for each joint.
+    """
 
     # `linuxcnc.stat.join[n]` attribute signals
-    jointType = pyqtSignal(int, int)         # reflects [JOINT_n]TYPE
-    backlash = pyqtSignal(int, float)        # backlash in machine units
-    enabled = pyqtSignal(int, bool)          # enabled flag
-    fault = pyqtSignal(int, bool)            # active fault flag
-    ferror_current = pyqtSignal(int, float)  # current following error
-    ferror_highmark = pyqtSignal(int, float) # magnitude of max following error
-    homed = pyqtSignal(int, bool)            # homed flag
-    homing = pyqtSignal(int, bool)           # currently homing flag
-    inpos = pyqtSignal(int, bool)            # in position flag
-    input = pyqtSignal(int, bool)            # current input position
-    max_ferror = pyqtSignal(int, float)      # reflects [JOINT_n]FERROR
-    max_hard_limit = pyqtSignal(int, bool)   # max hard limit exceeded flag
-    max_soft_limit = pyqtSignal(int, bool)   # max soft limit exceeded flag
-    min_hard_limit = pyqtSignal(int, bool)   # min hard limit exceeded flag
-    min_soft_limit = pyqtSignal(int, bool)   # max soft limit exceeded flag
-    output = pyqtSignal(int, float)          # commanded output position
-    override_limits = pyqtSignal(int, bool)  # override limits flag
-    velocity = pyqtSignal(int, float)        # current velocity
+    jointType = pyqtSignal(int)         # reflects [JOINT_n]TYPE
+    backlash = pyqtSignal(float)        # backlash in machine units
+    enabled = pyqtSignal(bool)          # enabled flag
+    fault = pyqtSignal(bool)            # active fault flag
+    ferror_current = pyqtSignal(float)  # current following error
+    ferror_highmark = pyqtSignal(float) # magnitude of max following error
+    homed = pyqtSignal(bool)            # homed flag
+    homing = pyqtSignal(bool)           # currently homing flag
+    inpos = pyqtSignal(bool)            # in position flag
+    input = pyqtSignal(bool)            # current input position
+    max_ferror = pyqtSignal(float)      # reflects [JOINT_n]FERROR
+    max_hard_limit = pyqtSignal(bool)   # max hard limit exceeded flag
+    max_soft_limit = pyqtSignal(bool)   # max soft limit exceeded flag
+    min_hard_limit = pyqtSignal(bool)   # min hard limit exceeded flag
+    min_soft_limit = pyqtSignal(bool)   # max soft limit exceeded flag
+    output = pyqtSignal(float)          # commanded output position
+    override_limits = pyqtSignal(bool)  # override limits flag
+    velocity = pyqtSignal(float)        # current velocity
 
-    units = pyqtSignal(int, float)
-    min_ferror= pyqtSignal(int, float)
-    max_position_limit = pyqtSignal(int, float)
-    min_position_limit = pyqtSignal(int, float)
+    units = pyqtSignal(float)
+    min_ferror= pyqtSignal(float)
+    max_position_limit = pyqtSignal(float)
+    min_position_limit = pyqtSignal(float)
 
-    def __init__(self, stat):
+    def __init__(self, status, number):
         super(_Joint, self).__init__()
 
-        self.stat = stat
-        self.old = self.stat.joint
+        self.number = number
+        self.status = status
 
-    def _periodic(self):
-        # Joint updates
-        new = self.stat.joint
-        old = self.old
-        self.old = new
+    def _update(self, new_status):
+        """Periodic joint item updates."""
 
-        # start = time.time()
-        for jnum in range(self.stat.joints):
-            if new[jnum] != old[jnum]:
-                # print '\nJoint {}'.format(jnum)
-                changed_items = tuple(set(new[jnum].items())-set(old[jnum].items()))
-                for item in changed_items:
-                    # print 'JOINT_{0} {1}: {2}'.format(jnum, item[0], item[1])
-                    getattr(self, item[0]).emit(jnum, item[1])
+        changed_items = tuple(set(new_status.items()) - set(self.status.items()))
+        for item in changed_items:
+            log.debug('JOINT_{0} {1}: {2}'.format(self.number, item[0], item[1]))
+            getattr(self, item[0]).emit(item[1])
 
-    def getValue(self, jnum, attribute):
-        self.stat.poll()
-        return self.stat.joint[jnum][attribute]
+        self.status = new_status
 
+class _Spindle(QObject):
+    """Spindle status class.
+        An instance of this class is created for each spindle.
+    """
+
+    # `linuxcnc.stat.spindle[n]` attribute signals
+    brake = pyqtSignal(bool)            # value of the spindle brake flag
+    direction = pyqtSignal(int)         # spindle rotational, forward=1, reverse=-1
+    enabled = pyqtSignal(bool)          # value of the spindle enabled flag
+    override_enabled = pyqtSignal(bool) # spindle override enabled flag
+    override = pyqtSignal(float)        # spindle override value, 0-1
+    speed = pyqtSignal(float)           # spindle speed
+    increasing = pyqtSignal(bool)       # spindle speed increasing flag, unclear
+    orient_state = pyqtSignal(int)      # orient state
+    orient_fault = pyqtSignal(bool)     # orient fault
+    homed = pyqtSignal(bool)            # not implemented
+
+    def __init__(self, status, number):
+        super(_Spindle, self).__init__()
+
+        self.number = number
+        self.status = status
+
+    def _update(self, new_status):
+        """Periodic spindle item updates."""
+
+        changed_items = tuple(set(new_status.items()) - set(self.status.items()))
+        for item in changed_items:
+            log.debug('SPINDLE_{0} {1}: {2}'.format(self.number, item[0], item[1]))
+            getattr(self, item[0]).emit(item[1])
+
+        self.status = new_status
 
 #==============================================================================
 # Error status class

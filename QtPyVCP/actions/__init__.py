@@ -26,12 +26,23 @@ def bindWidget(widget, action):
         bindWidget(widget, 'machine.home.axis:x')
         bindWidget(widget, 'spindle.forward:200')
     """
-    action, sep, args = action.partition(':')
+    action, sep, args = str(action).partition(':')
     action = action.replace('-', '_')
-    try:
-        method = reduce(getattr, action.split('.'), sys.modules[__name__])
-    except:
-        return
+
+    kwargs = {}
+
+    prev_item = ''
+    method = sys.modules[__name__]
+    for item in action.split('.'):
+        if item.isdigit():
+            kwargs[prev_item] = int(item)
+            continue
+        try:
+            method = getattr(method, item)
+        except:
+            LOG.exception("Invalid action: {}".format(action))
+            return
+        prev_item = item
 
     if method is None or not callable(method):
         return
@@ -42,22 +53,24 @@ def bindWidget(widget, action):
         # convert numbers to int and unicode to str
         args = [int(arg) if arg.isdigit() else str(arg) for arg in args]
 
+    # print method
+    # print args, kwargs
 
     # if it is a toggle action make the widget checkable
     if action.endswith('toggle'):
         widget.setCheckable(True)
 
     if isinstance(widget, QAction):
-        widget.triggered.connect(lambda: method(*args)) # should be able to do widget.triggered[()]
+        widget.triggered.connect(lambda: method(*args, **kwargs)) # should be able to do widget.triggered[()]
 
     elif isinstance(widget, QPushButton) or isinstance(widget, QCheckBox):
 
         if action.startswith('machine.jog'):
-            widget.pressed.connect(lambda: method(*args))
-            widget.released.connect(lambda: method(*args, speed=0))
+            widget.pressed.connect(lambda: method(*args, **kwargs))
+            widget.released.connect(lambda: method(*args, speed=0, **kwargs))
 
         else:
-            widget.clicked.connect(lambda: method(*args))
+            widget.clicked.connect(lambda: method(*args, **kwargs))
 
     elif isinstance(widget, QSlider) or isinstance(widget, QSpinBox):
         widget.valueChanged.connect(method)
@@ -71,8 +84,8 @@ def bindWidget(widget, action):
         return
 
     try:
-        method.ok(*args, widget=widget) # Set the initial widget state
-        method.bindOk(*args, widget=widget)
+        method.ok(*args, widget=widget, **kwargs) # Set the initial widget state
+        method.bindOk(*args, widget=widget, **kwargs)
 
     except:
         LOG.exception("Error in bindWidget")

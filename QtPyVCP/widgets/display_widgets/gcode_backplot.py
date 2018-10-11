@@ -107,17 +107,6 @@ class  GcodeBackplot(QBackPlot):
     #  Override QBackPlot methods
     #==========================================================================
 
-    def set_view(self, value):
-        view = str(value).lower()
-        if self.lathe_option:
-            if view not in ['p', 'y', 'y2']:
-                return False
-        elif view not in ['p', 'x', 'y', 'z', 'z2']:
-            return False
-        self.current_view = view
-        if self.initialised:
-            self.set_current_view()
-
     def report_loading_started(self):
         self.progressBar.show()
         self.abortButton.show()
@@ -154,8 +143,8 @@ class  GcodeBackplot(QBackPlot):
 #==============================================================================
 
     def setView(self, view):
-        view = str(value).lower()
-        if self.lathe_option:
+        view = view.lower()
+        if self.is_lathe:
             if view not in ['p', 'y', 'y2']:
                 return False
         elif view not in ['p', 'x', 'y', 'z', 'z2']:

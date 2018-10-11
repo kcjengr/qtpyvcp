@@ -249,8 +249,8 @@ class VCPMainWindow(QMainWindow):
         path = os.path.realpath(os.path.join(__file__, '../../../..', 'sim/example_gcode/qtpyvcp.ngc'))
         splash_code = INFO.getOpenFile() or path
         if splash_code is not None:
-            # Load after startup to not cause delay
-            QTimer.singleShot(0, lambda: actions.program.load(splash_code, add_to_recents=False))
+            # Load after startup to not cause hang and 'Can't set mode while machine is running' error
+            QTimer.singleShot(200, lambda: actions.program.load(splash_code, add_to_recents=False))
 
 #==============================================================================
 #  QtDesigner property setters/getters
