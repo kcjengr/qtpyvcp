@@ -2,7 +2,7 @@
 
 from QtPyVCP.widgets.base_widgets.designer_plugin import _DesignerPlugin
 
-from statuslabel_widget import StatusLabel
+from status_label import StatusLabel
 class StatusLabelPlugin(_DesignerPlugin):
     def pluginClass(self):
         return StatusLabel
@@ -34,8 +34,3 @@ from load_meter import LoadMeter
 class LoadMeterPlugin(_DesignerPlugin):
     def pluginClass(self):
         return LoadMeter
-
-from status_label import StatusLabelNew
-class StatusLabelPluginNew(_DesignerPlugin):
-    def pluginClass(self):
-        return(StatusLabelNew)
