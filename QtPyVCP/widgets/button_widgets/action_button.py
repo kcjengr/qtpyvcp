@@ -1,7 +1,5 @@
 #!/usr/bin/env python
 
-"""Testing """
-
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtCore import pyqtProperty
 
@@ -13,22 +11,22 @@ class ActionButton(QPushButton):
     """General purpose button for triggering QtPyVCP actions.
 
     Args:
-        parent (QWidget) : The parent widget of the button, or None.
+        action (str, optional) : The name of the action the button should trigger.
+        parent (QWidget, optional) : The parent widget of the button, or None.
     """
-    def __init__(self, parent=None):
+    def __init__(self, action=None, parent=None):
         super(ActionButton, self).__init__(parent)
 
         self._action_name = ''
+        if action is not None:
+            self.actionName = action
 
     @pyqtProperty(str)
     def actionName(self):
-        """The actionName property defines the name of the action the
-        button should trigger.  When the actionName property is set it
-        calls :meth:`QtPyVCP.actions.bindWidget` to bind the widget to
-        the action.
+        """Property for the name of the action the button triggers (str).
 
-        Args:
-            action_name (str) : A fully qualified action name.
+        When this property is set it calls :meth:`QtPyVCP.actions.bindWidget`
+        to bind the widget to the action.
         """
         return self._action_name
 

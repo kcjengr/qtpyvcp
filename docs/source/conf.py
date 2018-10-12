@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# QtPyVCP documentation build configuration file, created by
-# sphinx-quickstart on Thu Oct 11 15:26:18 2018.
+# QtPyVCP documentation build configuration file.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -21,7 +20,6 @@ import sys
 import mock
 
 qtpyvcp_dir = os.path.join(os.path.abspath('.'), '..', '..')
-print os.path.abspath(qtpyvcp_dir)
 sys.path.insert(0, os.path.abspath(qtpyvcp_dir))
 
 # -- General configuration ------------------------------------------------
@@ -47,7 +45,7 @@ extensions = [
 templates_path = ['_templates']
 
 # The suffix(es) of source filenames.
-# You can specify multiple suffix as a list of string:
+# You can specify multiple suffix as a list of strings:
 #
 # source_suffix = ['.rst', '.md']
 source_suffix = '.rst'
@@ -120,7 +118,7 @@ pygments_style = 'sphinx'
 # modindex_common_prefix = []
 
 # If true, keep warnings as "system message" paragraphs in the built documents.
-# keep_warnings = False
+keep_warnings = True
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
@@ -330,7 +328,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'QtPyVCP', u'QtPyVCP Documentation',
-     author, 'QtPyVCP', 'One line description of project.',
+     author, 'QtPyVCP', 'Virtual Control Panel toolkit for LinuxCNC.',
      'Miscellaneous'),
 ]
 
@@ -350,14 +348,14 @@ texinfo_documents = [
 #
 # texinfo_no_detailmenu = False
 
-# mock linuxcnc module
+
+# mock linuxcnc modules
 for module in ['linuxcnc', 'hal']:
     sys.modules[module] = mock.MagicMock()
 
 # MagicMock does not work for inheriting, so use our out Mock for PyQt5
 class Mock(object):
-    """
-    Mock modules.
+    """Mock modules.
     Taken from: https://github.com/pyudev/pyudev/blob/develop-0.22/doc/conf.py
     """
 
@@ -383,11 +381,15 @@ class Mock(object):
             # meaningless
             return self.__class__
 
+    # mock pyqtProperty with python property
+    def pyqtProperty(*args, **kwargs):
+        return property
+
     @classmethod
     def connect(cls, *args, **kwargs):
-        return cls
-
+        pass
 
 Mock.mock_modules('PyQt5', 'PyQt5.QtCore', 'PyQt5.QtWidgets')
 
+# mock the status module
 sys.modules['QtPyVCP.utilities.status'] = Mock()

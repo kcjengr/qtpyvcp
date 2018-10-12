@@ -15,10 +15,10 @@ def bindWidget(widget, action):
     """Binds a widget to an action.
 
     Args:
-        widget (QtWidget) : The widget to bind the action too. Typically `widget`
+        widget (QWidget) : The widget to bind the action too. Typically `widget`
             is a QPushButton, QCheckBox, QComboBox, QSlider or QAction instance.
 
-        action (string) : The string identifier of the action to bind the widget
+        action (str) : The string identifier of the action to bind the widget
             to, in the format ``action_class.action_name:arg1, arg2 ...``.
 
     Example:
