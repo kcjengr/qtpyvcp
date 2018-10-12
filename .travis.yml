@@ -2,7 +2,7 @@ language: python
 install:
 - pip install sphinx sphinx_rtd_theme sphinxcontrib-napoleon mock
 script:
-- sphinx-build docs/source docs/html
+- sphinx-build -W docs/source docs/html
 deploy:
  provider: pages
  skip_cleanup: true
