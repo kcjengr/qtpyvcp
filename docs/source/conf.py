@@ -389,7 +389,7 @@ class Mock(object):
     def connect(cls, *args, **kwargs):
         pass
 
-Mock.mock_modules('PyQt5', 'PyQt5.QtCore', 'PyQt5.QtWidgets')
+Mock.mock_modules('PyQt5', 'PyQt5.QtCore', 'PyQt5.QtGui', 'PyQt5.QtWidgets')
 
 # mock the status module
 sys.modules['QtPyVCP.utilities.status'] = Mock()
