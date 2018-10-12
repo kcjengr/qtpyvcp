@@ -1,6 +1,6 @@
-=======================
+===========
 Basic Usage
-=======================
+===========
 
 At this point you should have the dependencies satisfied and QtPyVCP installed.
 
@@ -27,7 +27,8 @@ This should start LinuxCNC and show the VCP chooser with a list of
 available VCPs.
 
 .. figure:: /_static/vcp-chooser.png
-.. ![vcp-chooser.png](images/vcp-chooser.png)
+
+    VCP Chooser dialog window
 
 **Note:** _If there are no VCPs listed, most likely you did not run
 `setup.py` per the installation instructions.
@@ -37,52 +38,37 @@ the desired VCP on the command line. For example to launch the Mini VCP:
 `linuxcnc sim/xyz.ini mini`
 
 
-## INI Configuration
+INI Configuration
+^^^^^^^^^^^^^^^^^
 
 QtPyVCP does not require any special INI settings. To set qtpyvcp as the
-GUI simply edit the INIs DISPLAY entry.
+GUI simply edit the INI DISPLAY entry to read::
 
-```ini
-[DISPLAY]
-DISPLAY = qtpyvcp
-...
-```
+    [DISPLAY]
+    DISPLAY = qtpyvcp
+    ...
 
 This will show the VCP chooser every time you start LinuxCNC, but as we saw
 above it is possible to specify a specific VCP on the command line. We can
-do the same thing in the INI:
+do the same in the INI::
 
-.. code:: cfg
+    [DISPLAY]
+    DISPLAY = qtpyvcp mini
+    ...
 
-   [DISPLAY]
-   DISPLAY = qtpyvcp mini
+But since QtPyVCP supports a bunch of command line options, this can get messy.
+We can take advantage of the fact that when QtPyVCP starts up it scans the INI
+[DISPLAY] section for any items that match the names of the command line options,
+and merges them with any options specified on the command line.
 
-.. code:: sh
+So a better INI config would look like this::
 
-   $ git clone https://YOUR-USERNAME@github.com/YOUR-USERNAME/REPOSITORY.git
-
-.. code:: py
-
-    import ini
-
-    def test(self):
-        return "Hurray!"
-
-But QtPyVCP supports a bunch of command line options, so this can get messy.
-However we can take advantage of the fact that when QtPyVCP starts up it scans
-the INI's [DISPLAY] section for any items that match the names of the command
-line options, and merges them with any options specified on the command line.
-
-So a better INI config would look like this:
-```ini
-[DISPLAY]
-DISPLAY = qtpyvcp
-VCP = mini
-...
-```
-
+    [DISPLAY]
+    DISPLAY = qtpyvcp
+    VCP = mini
+    ...
 
 In general the command line options take precedence, meaning they will override
 options set in the INI. The exception to this are any flags, such as the
-`--fullscreen` option, which if specified in the INI can not be overridden on
+``--fullscreen`` option, which if specified in the INI can not be overridden on
 the command line.
