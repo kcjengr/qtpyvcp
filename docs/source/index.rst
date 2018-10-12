@@ -37,13 +37,11 @@ complex VCPs.
    actions/index.rst
    widgets/index.rst
 
-.. .. toctree::
-..    :maxdepth: 1
-..    :caption: Developers Corner
-..
-..    development/development.rst
-..    widgets/widget_rules/customizing.rst
-..    development/resources.rst
+.. toctree::
+   :maxdepth: 1
+   :caption: Developers Corner
+
+   tools/index
 
 .. toctree::
    :maxdepth: 1
