@@ -1,6 +1,6 @@
 language: python
 install:
-- pip install sphinx sphinx_rtd_theme sphinxcontrib-napoleon mock
+- pip install sphinx sphinx_rtd_theme mock
 script:
 - sphinx-build -W docs/source docs/html
 deploy:
