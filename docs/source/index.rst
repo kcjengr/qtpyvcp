@@ -25,7 +25,7 @@ complex VCPs.
    :maxdepth: 1
    :caption: Tutorials
 
-   tutorials/index
+   tutorials/getting_started
 
 .. toctree::
    :maxdepth: 1
