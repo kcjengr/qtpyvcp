@@ -1,6 +1,6 @@
-=======
-Actions
-=======
+===============
+QtPyVCP Actions
+===============
 
 .. toctree::
    :maxdepth: 1
