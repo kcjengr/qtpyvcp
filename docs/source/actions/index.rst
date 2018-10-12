@@ -2,17 +2,8 @@
 Actions
 =======
 
-Actions Module
---------------
 .. toctree::
-    :maxdepth: 1
-    :hidden:
+   :maxdepth: 1
 
-    actions.rst
-
-Spindle Actions
----------------
-.. toctree::
-    :maxdepth: 2
-
-    spindle_actions.rst
+   action_helpers
+   spindle_actions

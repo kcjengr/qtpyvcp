@@ -31,11 +31,11 @@ complex VCPs.
 ..    tutorials/macros.rst
 
 .. toctree::
-   :maxdepth: 2
-   :caption: User & API Documentation
+   :maxdepth: 1
+   :caption: Module & API Documentation
 
-   widgets/index.rst
    actions/index.rst
+   widgets/index.rst
 
 .. .. toctree::
 ..    :maxdepth: 1
