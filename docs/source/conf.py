@@ -20,7 +20,8 @@ import os
 import sys
 import mock
 
-qtpyvcp_dir = os.path.join(os.path.abspath('.'), '..', '..', '..')
+qtpyvcp_dir = os.path.join(os.path.abspath('.'), '..', '..')
+print os.path.abspath(qtpyvcp_dir)
 sys.path.insert(0, os.path.abspath(qtpyvcp_dir))
 
 # -- General configuration ------------------------------------------------
