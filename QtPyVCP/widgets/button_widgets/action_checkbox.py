@@ -6,27 +6,29 @@ from PyQt5.QtCore import pyqtSlot, pyqtProperty, Q_ENUMS
 from QtPyVCP.actions import bindWidget
 
 class ActionCheckBox(QCheckBox):
-    """docstring for ActionCheckBox."""
-    def __init__(self, parent=None):
+    """General purpose checkbox for triggering QtPyVCP actions.
+
+    Args:
+        parent (QWidget, optional) : The parent widget of the checkbox, or None.
+        action (str, optional) : The name of the action the checkbox should trigger.
+    """
+    def __init__(self, parent=None, action=None):
         super(ActionCheckBox, self).__init__(parent)
 
         self._action_name = ''
+        if action is not None:
+            self.actionName = action
 
     @pyqtProperty(str)
     def actionName(self):
-        """The fully qualified name of the action the checkbox should trigger.
+        """Property for the name of the action the checkbox triggers (str).
 
-        Returns:
-            str : The action name.
+        When this property is set it calls :meth:`QtPyVCP.actions.bindWidget`
+        to bind the widget to the action.
         """
         return self._action_name
 
     @actionName.setter
     def actionName(self, action_name):
-        """Sets the name of the action the checkbox should trigger.
-
-        Args:
-            action_name (str) : A fully qualified action name.
-        """
         self._action_name = action_name
         bindWidget(self, action_name)

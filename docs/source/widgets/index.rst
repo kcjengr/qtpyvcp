@@ -10,4 +10,8 @@ Button Widgets
 .. toctree::
    :maxdepth: 1
 
-   action_button.rst
+   action_button
+   action_checkbox
+   action_spinbox
+   mdi_button
+   subcall_button
