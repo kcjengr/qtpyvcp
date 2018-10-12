@@ -9,7 +9,7 @@ as well as a straightforward and flexible python framework to aid in building
 complex VCPs.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Getting Started
 
    installation
@@ -22,13 +22,13 @@ complex VCPs.
    configuration.rst
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Tutorials
 
    tutorials/getting_started
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Module & API Documentation
 
    actions/index.rst
@@ -36,7 +36,7 @@ complex VCPs.
    application
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :caption: Developers Corner
 
    tools/index
