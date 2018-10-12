@@ -22,7 +22,6 @@ import mock
 
 qtpyvcp_dir = os.path.join(os.path.abspath('.'), '..', '..', '..')
 sys.path.insert(0, os.path.abspath(qtpyvcp_dir))
-print sys.path
 
 # -- General configuration ------------------------------------------------
 
@@ -350,8 +349,44 @@ texinfo_documents = [
 #
 # texinfo_no_detailmenu = False
 
-# Packages / modules to mock so that build does not fail.
-for module in [
-    'linuxcnc', 'QtPyVCP', 'docopt', 'pyudev', 'psutil',
-]:
+# mock linuxcnc module
+for module in ['linuxcnc']:
     sys.modules[module] = mock.MagicMock()
+
+# MagicMock does not work for inheriting, so use our out Mock for PyQt5
+class Mock(object):
+    """
+    Mock modules.
+    Taken from: https://github.com/pyudev/pyudev/blob/develop-0.22/doc/conf.py
+    """
+
+    @classmethod
+    def mock_modules(cls, *modules):
+        for module in modules:
+            sys.modules[module] = cls()
+
+    def __init__(self, *args, **kwargs):
+        pass
+
+    def __call__(self, *args, **kwargs):
+        return self.__class__()
+
+    def __getattr__(self, attribute):
+        if attribute in ('__file__', '__path__'):
+            return os.devnull
+        else:
+            # return the *class* object here.  Mocked attributes may be used as
+            # base class in pyudev code, thus the returned mock object must
+            # behave as class, or else Sphinx autodoc will fail to recognize
+            # the mocked base class as such, and "autoclass" will become
+            # meaningless
+            return self.__class__
+
+    @classmethod
+    def connect(cls, *args, **kwargs):
+        return cls
+
+
+Mock.mock_modules('PyQt5', 'PyQt5.QtCore', 'PyQt5.QtWidgets')
+
+sys.modules['QtPyVCP.utilities.status'] = Mock()

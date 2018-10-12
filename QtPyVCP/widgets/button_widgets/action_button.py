@@ -1,9 +1,13 @@
 #!/usr/bin/env python
 
+"""Testing """
+
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtCore import pyqtProperty
 
 from QtPyVCP.actions import bindWidget
+
+print QPushButton
 
 class ActionButton(QPushButton):
     """General purpose button for triggering QtPyVCP actions.
