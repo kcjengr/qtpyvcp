@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Installation &mdash; QtPyVCP v0.0.1-beta documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Basic Usage" href="basic_usage.html" />
+    <link rel="prev" title="QtPyVCP - QtPy Virtual Control Panel" href="index.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> QtPyVCP
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#installing-dependencies">Installing Dependencies</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#for-production-use-non-dev">For production use (non dev)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#development-dependencies">Development dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#getting-qtpyvcp">Getting QtPyVCP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-using-setup-py">Install using setup.py</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-the-install">Testing the install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#qtdesigner-plug-ins-development-only">QtDesigner Plug-ins (development only)</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Basic Usage</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="widgets/index.html">QtPyVCP Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actions/index.html">Actions</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">QtPyVCP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Installation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation">
+<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>There are a few different ways to install QtPyVCP.  The easiest way is to use
+<code class="docutils literal notranslate"><span class="pre">setup.py</span></code>.</p>
+<div class="section" id="installing-dependencies">
+<h2>Installing Dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>These are the dependencies needed to run QyPyVCP on Debian 9 (Stretch) systems.</p>
+<p>In addition you will need to have LinuxCNC ~2.8pre (master) installed, either
+system wide or as a Run In Place (RIP) built from source.</p>
+<div class="section" id="for-production-use-non-dev">
+<h3>For production use (non dev)<a class="headerlink" href="#for-production-use-non-dev" title="Permalink to this headline">¶</a></h3>
+<p>These dependencies are needed for running QtPyVCP, individual VCPs may have
+additional dependencies.</p>
+<p>Core dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">pyqt5</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">dbus</span><span class="o">.</span><span class="n">mainloop</span><span class="o">.</span><span class="n">pyqt5</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">pyqt5</span><span class="o">.</span><span class="n">qtopengl</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">pyqt5</span><span class="o">.</span><span class="n">qsci</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">docopt</span>
+</pre></div>
+</div>
+<p>Required for Camera widget:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sudo apt-get install python-pyqt5.qtmultimedia`
+sudo apt-get install gstreamer1.0-plugins-bad`
+sudo apt-get install libqt5multimedia5-plugins`
+</pre></div>
+</div>
+<p>Required for FileSytem widget:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">pyudev</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">psutil</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="development-dependencies">
+<h3>Development dependencies<a class="headerlink" href="#development-dependencies" title="Permalink to this headline">¶</a></h3>
+<p>Required for QtPyVCP and VCP development:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">qttools5</span><span class="o">-</span><span class="n">dev</span><span class="o">-</span><span class="n">tools</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">qttools5</span><span class="o">.</span><span class="n">dev</span>
+<span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">pyqt5</span><span class="o">-</span><span class="n">dev</span><span class="o">-</span><span class="n">tools</span>
+</pre></div>
+</div>
+<p>Required for building documentation:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">sphinx</span>
+<span class="n">pip</span> <span class="n">install</span> <span class="n">sphinx_rtd_theme</span>
+</pre></div>
+</div>
+<p>From the docs dir run <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">html</span></code> to build the HTML documentation.</p>
+<p><strong>Note:</strong> <em>We try to keep this up to date, but if additional
+dependencies are needed please notify one of the developers
+so it can be added.</em></p>
+</div>
+</div>
+<div class="section" id="getting-qtpyvcp">
+<h2>Getting QtPyVCP<a class="headerlink" href="#getting-qtpyvcp" title="Permalink to this headline">¶</a></h2>
+<p>The easiest way to get QtPyVCP is to clone the
+<a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP repository</a> with git.
+If you don’t have git you can simply download the QtPyVCP .zip file
+using the green <em>Clone or download</em> button, but this will make it harder
+to update in the future.</p>
+<p>To clone the repository open a terminal at the desired location and run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">kcjengr</span><span class="o">/</span><span class="n">qtpyvcp</span> <span class="n">qtpyvcp</span>
+</pre></div>
+</div>
+<p>Enter the newly cloned directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">qtpyvcp</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-using-setup-py">
+<h2>Install using setup.py<a class="headerlink" href="#install-using-setup-py" title="Permalink to this headline">¶</a></h2>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">At this point only <code class="docutils literal notranslate"><span class="pre">setup.py</span> <span class="pre">develop</span></code> is supported. <code class="docutils literal notranslate"><span class="pre">setup.py</span> <span class="pre">install</span></code>
+and virtual environments may work but are untested.</p>
+</div>
+<p>You need to have the python 2.7 setup tools installed, if you don’t or are
+not sure run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sudo</span> <span class="n">apt</span><span class="o">-</span><span class="n">get</span> <span class="n">install</span> <span class="n">python</span><span class="o">-</span><span class="n">setuptools</span>
+</pre></div>
+</div>
+<p>Then install by running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">develop</span> <span class="o">--</span><span class="n">user</span>
+</pre></div>
+</div>
+<p>This will install QtPyVCP on your PYTHONPATH and will generate command line
+scripts for launching QtPyVCP, the example VCPs and the command line tools.</p>
+<p>If you used the <code class="docutils literal notranslate"><span class="pre">--user</span></code> flag the scripts will be placed in <code class="docutils literal notranslate"><span class="pre">~/.local/bin/</span></code>,
+which is not on the PATH on Debian 9 (Stretch). You can add <code class="docutils literal notranslate"><span class="pre">~/.local/bin/</span></code>
+to the current PATH by running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export PATH=$PATH:~/.local/bin/
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="first admonition-title">Tip</p>
+<p class="last">You will have to run the above commend for every terminal you wish to launch
+QtPyVCP from, a more convenient solution is to append the following line
+to your bash <code class="docutils literal notranslate"><span class="pre">~/.profile</span></code>:
+<code class="docutils literal notranslate"><span class="pre">PATH=$PATH:~/.local/bin/</span></code></p>
+</div>
+</div>
+<div class="section" id="testing-the-install">
+<h2>Testing the install<a class="headerlink" href="#testing-the-install" title="Permalink to this headline">¶</a></h2>
+<p>Confirm that QtPyVCP installed correctly and is available by running:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">qtpyvcp</span> <span class="o">-</span><span class="n">h</span>
+</pre></div>
+</div>
+<p>This will print a list of command line options it the installation was
+successful.</p>
+</div>
+<div class="section" id="qtdesigner-plug-ins-development-only">
+<h2>QtDesigner Plug-ins (development only)<a class="headerlink" href="#qtdesigner-plug-ins-development-only" title="Permalink to this headline">¶</a></h2>
+<p>In order for the QtDesigner plugins to load, you must have the correct version
+of <code class="docutils literal notranslate"><span class="pre">libpyqt5.so</span></code> in <code class="docutils literal notranslate"><span class="pre">/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/</span></code>. This library
+must be compiled for the specific architecture, Qt version and Python version you
+are using. One way to get this file is to build PyQt5 from source, following the
+procedure <a class="reference external" href="https://gist.github.com/KurtJacobson/34a2e45ea2227ba58702fc1cb0372c40">here</a>.</p>
+<p>If you can find a pre-compiled version, then you should be able simply place it
+in <code class="docutils literal notranslate"><span class="pre">/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/</span></code> and be good to go. A
+compiled version of <code class="docutils literal notranslate"><span class="pre">libpyqt5.so</span></code> suitable for use on a 64bit Debian stretch
+system with Python2.7 and Qt 5.7.1 is included in the QtDesigner directory.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="basic_usage.html" class="btn btn-neutral float-right" title="Basic Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="QtPyVCP - QtPy Virtual Control Panel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Kurt Jacobson
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

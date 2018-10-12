@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Basic Usage &mdash; QtPyVCP v0.0.1-beta documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Configuration" href="configuration.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> QtPyVCP
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                v0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Basic Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#launching-a-sim-config">Launching a sim config</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Configuration</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">User &amp; API Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="widgets/index.html">QtPyVCP Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="actions/index.html">Actions</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">QtPyVCP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Basic Usage</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/basic_usage.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="basic-usage">
+<h1>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this headline">¶</a></h1>
+<p>At this point you should have the dependencies satisfied and QtPyVCP installed.</p>
+<div class="section" id="launching-a-sim-config">
+<h2>Launching a sim config<a class="headerlink" href="#launching-a-sim-config" title="Permalink to this headline">¶</a></h2>
+<p>Several sim configurations are included with QtPyVCP, they are located
+in the project’s <cite>sim/</cite> directory. These are intended to be run from a
+terminal with the working directory as the project root.</p>
+<p><strong>Included sim configs</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>sim
+├── xyzb.ini
+├── xyzcw.ini
+├── xyz.ini
+├── xyz-metric.ini
+└── xyzy-gantry.ini
+</pre></div>
+</div>
+<p>To launch the basic XYZ sim machine run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">linuxcnc</span> <span class="n">sim</span><span class="o">/</span><span class="n">xyz</span><span class="o">.</span><span class="n">ini</span>
+</pre></div>
+</div>
+<p>This should start LinuxCNC and show the VCP chooser with a list of
+available VCPs.</p>
+<div class="figure">
+<img alt="_images/vcp-chooser.png" src="_images/vcp-chooser.png" />
+</div>
+<p><strong>Note:</strong> _If there are no VCPs listed, most likely you did not run
+<cite>setup.py</cite> per the installation instructions.</p>
+<p>To skip the VCP chooser and launch a VCP directly you can specify the name of
+the desired VCP on the command line. For example to launch the Mini VCP:
+<cite>linuxcnc sim/xyz.ini mini</cite></p>
+<p>## INI Configuration</p>
+<p>QtPyVCP does not require any special INI settings. To set qtpyvcp as the
+GUI simply edit the INIs DISPLAY entry.</p>
+<p><code class="docutils literal notranslate"><span class="pre">`ini</span>
+<span class="pre">[DISPLAY]</span>
+<span class="pre">DISPLAY</span> <span class="pre">=</span> <span class="pre">qtpyvcp</span>
+<span class="pre">...</span>
+<span class="pre">`</span></code></p>
+<p>This will show the VCP chooser every time you start LinuxCNC, but as we saw
+above it is possible to specify a specific VCP on the command line. We can
+do the same thing in the INI:</p>
+<div class="code cfg highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">DISPLAY</span><span class="p">]</span>
+<span class="n">DISPLAY</span> <span class="o">=</span> <span class="n">qtpyvcp</span> <span class="n">mini</span>
+</pre></div>
+</div>
+<div class="code sh highlight-default notranslate"><div class="highlight"><pre><span></span>$ git clone https://YOUR-USERNAME@github.com/YOUR-USERNAME/REPOSITORY.git
+</pre></div>
+</div>
+<div class="code py highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ini</span>
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s2">&quot;Hurray!&quot;</span>
+</pre></div>
+</div>
+<p>But QtPyVCP supports a bunch of command line options, so this can get messy.
+However we can take advantage of the fact that when QtPyVCP starts up it scans
+the INI’s [DISPLAY] section for any items that match the names of the command
+line options, and merges them with any options specified on the command line.</p>
+<p>So a better INI config would look like this:
+<code class="docutils literal notranslate"><span class="pre">`ini</span>
+<span class="pre">[DISPLAY]</span>
+<span class="pre">DISPLAY</span> <span class="pre">=</span> <span class="pre">qtpyvcp</span>
+<span class="pre">VCP</span> <span class="pre">=</span> <span class="pre">mini</span>
+<span class="pre">...</span>
+<span class="pre">`</span></code></p>
+<p>In general the command line options take precedence, meaning they will override
+options set in the INI. The exception to this are any flags, such as the
+<cite>–fullscreen</cite> option, which if specified in the INI can not be overridden on
+the command line.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="configuration.html" class="btn btn-neutral float-right" title="Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="installation.html" class="btn btn-neutral" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Kurt Jacobson
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
