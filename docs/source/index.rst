@@ -21,14 +21,11 @@ complex VCPs.
 
    configuration.rst
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Tutorials
 
-.. .. toctree::
-..    :maxdepth: 1
-..    :caption: Tutorials
-..
-..    tutorials/first_display.rst
-..    tutorials/scripted_displays.rst
-..    tutorials/macros.rst
+   tutorials/index
 
 .. toctree::
    :maxdepth: 1
