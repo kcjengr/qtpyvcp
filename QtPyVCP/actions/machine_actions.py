@@ -161,8 +161,20 @@ def _resetMode(interp_state):
 
 STATUS.interp_state.connect(_resetMode)
 
-def issue_mdi(mdi_command, reset=True):
-    print "reset", reset
+def issue_mdi(command, reset=True):
+    """Issue an MDI command.
+
+        An MDI command can be issued any time the machine is homed (if not
+        NOT_FORCE_HOMING in the INI) and the interpreter is IDLE.  The task
+        mode will automatically be switched to MDI prior to issuing the command
+        and will be returned to the previous mode when the interpreter becomes IDLE.
+
+    Args:
+        command (str) : A valid RS274 gcode command string.
+        rest (bool, optional): Whether to reset the Task Mode to the state
+            the machine was in prior to issuing the MDI command.
+
+    """
     if reset:
         # save the previous mode
         global PREVIOUS_MODE
@@ -174,10 +186,10 @@ def issue_mdi(mdi_command, reset=True):
         STATUS.old['interp_state'] = -1
 
     if setTaskMode(linuxcnc.MODE_MDI):
-        LOG.info("Issuind MDI command: {}".format(mdi_command))
-        CMD.mdi(mdi_command)
+        LOG.info("Issuind MDI command: {}".format(command))
+        CMD.mdi(command)
     else:
-        LOG.error("Failed to issue MDI command: {}".format(mdi_command))
+        LOG.error("Failed to issue MDI command: {}".format(command))
 
 def _issue_mdi_ok(mdi_cmd='', widget=None):
     if STAT.task_state == linuxcnc.STATE_ON \
