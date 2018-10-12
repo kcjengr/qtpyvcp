@@ -10,6 +10,8 @@ Usage:
   qcompile -h
 
 Example:
+::
+
   $ qcompile .
   $ qcompile package1 package2/subpackage
 """

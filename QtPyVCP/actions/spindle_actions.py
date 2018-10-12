@@ -56,8 +56,17 @@ def _spindle_bindOk(speed=None, spindle=0, widget=None):
     STATUS.task_mode.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
 
 
-# Spindle FORWARD
 def forward(speed=None, spindle=0):
+    """Turn a spindle ON in the *FORWARD* direction.
+
+    Args:
+        speed (float, optional) : The requested speed to spin the spindle at.
+            If ``speed`` is not specified the current interpreter speed setting
+            (as set by the last S word) is used, taking into account the
+            value of the spindle override if it is enabled.
+        spindle (int, optional) : The number of the spindle to turn ON. If
+            ``spindle`` is not specified spindle 0 is assumed.
+    """
     if speed is None:
         speed = getSpeed()
     CMD.spindle(linuxcnc.SPINDLE_FORWARD, speed, spindle)
@@ -74,8 +83,17 @@ forward.ok = _spindle_ok
 forward.bindOk = _spindle_forward_bindOk
 
 
-# Spindle REVERSE
 def reverse(speed=None, spindle=0):
+    """Turn a spindle ON in the *REVERSE* direction.
+
+    Args:
+        speed (float, optional) : The requested speed to spin the spindle at.
+            If ``speed`` is not specified the current interpreter speed setting
+            (as set by the last S word) is used, taking into account the
+            value of the spindle override if it is enabled.
+        spindle (int, optional) : The number of the spindle to turn ON. If
+            ``spindle`` is not specified spindle 0 is assumed.
+    """
     if speed is None:
         speed = getSpeed()
     CMD.spindle(linuxcnc.SPINDLE_REVERSE, speed, spindle)
@@ -92,26 +110,39 @@ reverse.ok = _spindle_ok
 reverse.bindOk = _spindle_reverse_bindOk
 
 
-# Spindle OFF
 def off(spindle=0):
+    """Turn a spindle OFF.
+
+    Args:
+        spindle (int, optional) : The number of the spindle to turn OFF. If
+            ``spindle`` is not specified spindle 0 is assumed.
+    """
     CMD.spindle(linuxcnc.SPINDLE_OFF, spindle)
 
 off.ok = _spindle_ok
 off.bindOk = _spindle_bindOk
 
 
-# Spindle FASTER
 def faster(spindle=0):
-    """Increase spindle speed by 100rpm"""
+    """Increase spindle speed by 100rpm.
+
+    Args:
+        spindle (int, optional) : The number of the spindle to increase the
+            speed of. If ``spindle`` is not specified spindle 0 is assumed.
+    """
     CMD.spindle(linuxcnc.SPINDLE_INCREASE)
 
 faster.ok = _spindle_ok
 faster.bindOk = _spindle_bindOk
 
 
-# Spindle SLOWER
 def slower(spindle=0):
-    """Decreases spindle speed by 100rpm"""
+    """Decrease spindle speed by 100rpm.
+
+    Args:
+        spindle (int, optional) : The number of the spindle to decrease the
+            speed of. If ``spindle`` is not specified spindle 0 is assumed.
+    """
     CMD.spindle(linuxcnc.SPINDLE_DECREASE)
 
 slower.ok = _spindle_ok
@@ -128,6 +159,16 @@ constant.bindOk = _spindle_bindOk
 
 
 def getSpeed(spindle=0):
+    """Gets the interpreter's speed setting for the specified spindle.
+
+    Args:
+        spindle (int, optional) : The number of the spindle to get the speed
+            of. If ``spindle`` is not specified spindle 0 is assumed.
+
+    Returns:
+        float: The interpreter speed setting, with any override applied if
+        override enabled.
+    """
     raw_speed = STAT.settings[2]
     if raw_speed == 0:
         raw_speed = abs(DEFAULT_SPEED)
@@ -141,8 +182,15 @@ def getSpeed(spindle=0):
 # Spindle Override
 #==============================================================================
 
-def override(value, spindle=0):
-    CMD.spindleoverride(float(value) / 100, spindle)
+def override(override, spindle=0):
+    """Set spindle override percentage.
+
+    Args:
+        override (int) : The desired spindle override in percent.
+        spindle (int, optional) : The number of the spindle to apply the
+            override to. If ``spindle`` is not specified spindle 0 is assumed.
+    """
+    CMD.spindleoverride(float(override) / 100, spindle)
 
 def _or_reset(spindle=0):
     CMD.spindleoverride(1.0, spindle)
@@ -250,16 +298,36 @@ override.enable.bindOk = override.disable.bindOk = override.toggle_enable.bindOk
 #==============================================================================
 
 class brake:
+    """Spindle brake actions class.
+    """
     @staticmethod
     def on(spindle=0):
+        """Set spindle brake ON.
+
+        Args:
+            spindle (int, optional) : The number of the spindle to apply the
+                override to. If ``spindle`` is not specified spindle 0 is assumed.
+        """
         CMD.brake(linuxcnc.BRAKE_ENGAGE, spindle)
 
     @staticmethod
     def off(spindle=0):
+        """Set spindle brake OFF.
+
+        Args:
+            spindle (int, optional) : The number of the spindle to apply the
+                override to. If ``spindle`` is not specified spindle 0 is assumed.
+        """
         CMD.brake(linuxcnc.BRAKE_RELEASE, spindle)
 
     @staticmethod
     def toggle(spindle=0):
+        """Toggle spindle brake ON/OFF.
+
+        Args:
+            spindle (int, optional) : The number of the spindle to apply the
+                override to. If ``spindle`` is not specified spindle 0 is assumed.
+        """
         if brake.is_on():
             brake.off()
         else:

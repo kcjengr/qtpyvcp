@@ -1,30 +1,9 @@
 #!/usr/bin/env python
 
-#   Copyright (c) 2018 Kurt Jacobson
-#
-#   This file is part of QtPyVCP.
-#
-#   QtPyVCP is free software: you can redistribute it and/or modify
-#   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation, either version 2 of the License, or
-#   (at your option) any later version.
-#
-#   QtPyVCP is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU General Public License for more details.
-#
-#   You should have received a copy of the GNU General Public License
-#   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
-
-# Description:
-#   Generic button for calling a NGCGUI style subroutines. Useful for probing
-#   quill-up, go home, goto etc functionality.
-
 import os
 import re
 from PyQt5.QtWidgets import QPushButton, qApp
-from PyQt5.QtCore import Qt, QEvent, pyqtSlot, pyqtProperty
+from PyQt5.QtCore import Qt, QEvent, pyqtProperty
 
 from QtPyVCP.core import Info
 INFO = Info()
@@ -42,22 +21,34 @@ PARSE_POSITIONAL_ARGS = re.compile(r' *# *<([a-z0-9_-]+)> *= *#([0-9]+) *(?:\(= 
 SUBROUTINE_PATH = INFO.getSubroutinePath()
 
 class SubCallButton(QPushButton):
-    def __init__(self, parent=None):
+    """Button for calling ngc subroutines.
+
+    Args:
+        parent (QWidget, optional) : The parent widget of the button, or None.
+        filename (str, optional) : The filename of the NGCGUI style subroutine
+            the button should call, including any extension. The subroutine must
+            be on the subroutine path specified in the INI.
+
+    Todo:
+        Add NGCGUI subroutine file format example.
+    """
+    def __init__(self, parent=None, filename=''):
         super(SubCallButton, self).__init__(parent)
 
-        self._sub_name = ''
-        self._sub_path = ''
-        issue_mdi.bindOk(widget=self)
-        self.clicked.connect(self.onClick)
+        self._filename = filename
 
-    def onClick(self):
+        issue_mdi.bindOk(widget=self)
+        self.clicked.connect(self.callSub)
+
+    def callSub(self):
         window = qApp.activeWindow()
 
-        if not os.path.exists(self._sub_path):
-            LOG.error('Subroutine file does not exist: yellow<{}>'.format(self._sub_path))
+        subfile = os.path.join(SUBROUTINE_PATH, self._filename)
+        if not os.path.exists(subfile):
+            LOG.error('Subroutine file does not exist: yellow<{}>'.format(subfile))
             return False
 
-        with open(self._sub_path, 'r') as fh:
+        with open(subfile, 'r') as fh:
             lines = fh.readlines()
 
         args = []
@@ -102,17 +93,20 @@ class SubCallButton(QPushButton):
 
         cmd_str = "o<{}> call {}".format(self._sub_name, arg_str)
 
-        LOG.debug('Calling sub file: yellow<{}> with args blue<{}>'.format(self._sub_path, arg_str))
+        LOG.debug('Calling sub file: yellow<{}> with args blue<{}>'.format(subfile, arg_str))
         issue_mdi(cmd_str)
 
-    def getSubName(self):
-        return self._sub_name
-    @pyqtSlot(str)
-    def setSubName(self, sub_name):
-        self._sub_name = sub_name
-        self._sub_path = os.path.join(SUBROUTINE_PATH, sub_name + '.ngc')
-    sub_name = pyqtProperty(str, getSubName, setSubName)
+    @pyqtProperty(str)
+    def filename(self):
+        """Gets or sets the filename of the subroutine the button should call (str).
 
+        The subroutine file must be on the subroutine path as specified in the INI.
+        """
+        return self._filename
+
+    @filename.setter
+    def filename(self, filename):
+        self._filename = filename
 
 if __name__ == "__main__":
     import sys

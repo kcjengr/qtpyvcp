@@ -1,15 +1,14 @@
 language: python
 install:
-- pip install mkdocs
-- pip install mkdocs-material
+- pip install sphinx sphinx_rtd_theme mock
 script:
-- mkdocs build --verbose --clean --strict
+- sphinx-build -W docs/source docs/html
 deploy:
  provider: pages
  skip_cleanup: true
  keep-history: false
  github_token: $GH_TOKEN
- local_dir: site
+ local_dir: docs/html
  on:
    branch: master
 

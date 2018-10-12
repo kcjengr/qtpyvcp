@@ -15,16 +15,30 @@ def bindWidget(widget, action):
     """Binds a widget to an action.
 
     Args:
-        widget (QtWidget) : The widget to bind the action too. Typically `widget`
+        widget (QWidget) : The widget to bind the action too. Typically `widget`
             is a QPushButton, QCheckBox, QComboBox, QSlider or QAction instance.
 
-        action (string) : The string identifier of the action to bind the widget
-            to, in the format `action_class.action_name:arg1, arg2 ...`.
+        action (str) : The string identifier of the action to bind the widget
+            to, in the format ``action_class.action_name:arg1, arg2 ...``.
 
     Example:
-        bindWidget(widget, 'machine.power.toggle')
-        bindWidget(widget, 'machine.home.axis:x')
-        bindWidget(widget, 'spindle.forward:200')
+        A QPushButton or QCheckBox would typically be bound to an action
+        that does not take an argument, for example ``machine.power.toggle``::
+
+            bindWidget(widget, 'machine.power.toggle')
+
+        But it is possible to specify an argument by appending an ':' followed
+        by the argument value. For example we can bind a QPushButton so that it
+        homes the X axis when the button is pressed::
+
+            bindWidget(widget, 'machine.home.axis:x')
+
+        Widgets such as QSliders and QComboBoxs that have a value associated
+        with them can also be bound to a action, and the value will
+        automatically be passed to the action. For example we can bind
+        a QSLider to the ``spindle.0.override`` action::
+
+            bindWidget(widget, 'spindle.0.override')
     """
     action, sep, args = str(action).partition(':')
     action = action.replace('-', '_')

@@ -119,7 +119,7 @@ class _Info(object):
 
     def getCoordinates(self):
         '''Returns [TRAJ] COORDINATES or xyz'''
-        temp = self.ini.find('TRAJ', 'COORDINATES')
+        temp = self.ini.find('TRAJ', 'COORDINATES') or 'xyz'
         temp = temp.replace(' ','')
         if not temp:
             log.warning("No [TRAJ] COORDINATES entry in self.ini, using XYZ")

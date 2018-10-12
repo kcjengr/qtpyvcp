@@ -20,3 +20,6 @@
 
 # update INI backups
 sim/*.old
+
+# sphinx
+/docs/build

@@ -9,34 +9,26 @@ class ActionButton(QPushButton):
     """General purpose button for triggering QtPyVCP actions.
 
     Args:
-        parent (QWidget) : The parent widget of the button, or None.
-
-    Attributes:
-        _action_name (str) : The fully qualified name of the action the
-            button triggers:
+        parent (QWidget, optional) : The parent widget of the button, or None.
+        action (str, optional) : The name of the action the button should trigger.
     """
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, action=None):
         super(ActionButton, self).__init__(parent)
 
         self._action_name = ''
+        if action is not None:
+            self.actionName = action
 
     @pyqtProperty(str)
     def actionName(self):
-        """The `actionName` property for setting the action the button
-            should trigger from within QtDesigner.
+        """Property for the name of the action the button triggers (str).
 
-        Returns:
-            str : The action name.
+        When this property is set it calls :meth:`QtPyVCP.actions.bindWidget`
+        to bind the widget to the action.
         """
         return self._action_name
 
     @actionName.setter
     def actionName(self, action_name):
-        """Sets the name of the action the button should trigger and
-            binds the widget to that action.
-
-        Args:
-            action_name (str) : A fully qualified action name.
-        """
         self._action_name = action_name
         bindWidget(self, action_name)

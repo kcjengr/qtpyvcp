@@ -16,19 +16,17 @@ LOG = logger.getLogger(__name__)
 PARSE_VARS = re.compile(r'(\w)#<([^>]+)>', re.I)
 
 class MDIButton(QPushButton):
-    """MDI button.
+    """Button for issuing MDI commands.
 
     Args:
-        parent (QWidget) : The parent widget of the button, or None.
-
-    Attributes:
-        _mdi_cmd (str) :  A valid MDI command, with optional variables to be
-            expanded from UI widgets present in the active window.
+        parent (QWidget, optional) : The parent widget of the button, or None.
+        command (str, optional) : A gcode command string for the button to trigger.
     """
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, command=''):
         super(MDIButton, self).__init__(parent)
 
-        self._mdi_cmd = ''
+        self._mdi_cmd = command
+
         issue_mdi.bindOk(widget=self)
         self.clicked.connect(self.issueMDI)
 
@@ -50,19 +48,21 @@ class MDIButton(QPushButton):
 
     @pyqtProperty(str)
     def MDICommand(self):
-        """The `MDICommand` property.
+        """Sets the MDI command property (str).
 
-        Returns:
-            str : The MDI command.
+            A valid RS274 gcode command string. It can include variables to be
+            expanded from UI widgets present in the active window.
+
+        Example:
+            Assuming there is a QLineEdit in the active window with the
+            objectName ``tool_number_entry``, the ``#<tool_number_entry>``
+            variable would be substituted with the current text in the QLineEdit::
+
+                T#<tool_number_entry> M6 G43
+
         """
         return self._mdi_cmd
 
     @MDICommand.setter
     def MDICommand(self, mdi_cmd):
-        """Sets the MDI command property.
-
-        Args:
-            mdi_cmd (str) : A valid MDI command, with optional variables to be
-                expanded from UI widgets present in the active window.
-        """
         self._mdi_cmd = mdi_cmd
