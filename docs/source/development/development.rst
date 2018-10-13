@@ -1,54 +1,48 @@
-======================
-Development Guidelines
-======================
-We don't have any strict development guidlines, basically you can contribute
-in whatever way you are capable of, and as long as your code does not break
-too many things and adds value it will be accepted. But here are a few
-recommendations that should make it easier if this is your first time
-contributing to a project like this.
+=======================
+Contributing to QtPyVCP
+=======================
 
-In general we use a development workflow similar to `GitHub Flow
-<https://guides.github.com/introduction/flow>`_. If you are not
-familiar with that don't worry, it is very straightforward.
+There are many ways to contribute to QtPyVCP, and all are encouraged and
+greatly appreciated:
 
-Creating a Local Checkout
-=========================
-If you want to make changes to QtPyVCP the first step is to create your own fork
-of the repository. This allows you to create feature branches and push changes
-to your personal fork so that others can view and test them, without you having
-to worry about messing anything up in the main repository. It is easy to fork,
-but here is a `quick tutorial <https://help.github.com/articles/fork-a-repo>`_.
+- contributing bug reports and feature requests
 
-Once your fork is created you can clone it to your local machine.
+- contributing documentation (and yes that includes this document)
 
-.. code:: sh
+- reviewing and triaging any bugs and merge requests
 
-   $ git clone https://github.com/YOUR-USERNAME/REPOSITORY.git
+- testing and providing feedback on problems / bugs
 
-Now that you have a copy of the repository, create a branch for the feature or
-bug you would like to work on.
+Before you go any further, be reassured that your contribution, however slight,
+*is* valuable. Even if it is something as simple as fixing a spelling error,
+or clarifying a sentence in the docs.
 
-.. code:: sh
 
-   $ git checkout -b my-feature
+Contribution Guidelines
+^^^^^^^^^^^^^^^^^^^^^^^
 
-   $ git status
-   On branch my-feature
-   nothing to commit, working tree clean
+We don't have any strict guidlines, you are encouraged to contribute
+in whatever way you are capable of, and most importantly, have fun
+and hopefully learn something in the process. That being said, here are
+a few recommendations that should make it easier for all evolved.
 
-.. admonition:: ProTip
 
-    Shhhh, don't tell, but we like to use a GUI git client called `GitKraken
-    <https://www.gitkraken.com/>`_. It makes even complicated git tasks as
-    simple as a few clicks, and the visual commit history alone is worth
-    every penny! Best part, it's free (for non commercial use).
+Development Workflow
+====================
 
-Commit Guidelines
-=================
-Now you are ready to start working! Make changes to files and commit them to
-your new branch. I like to preface my commit messages with a descriptor code.
-This makes it easier for someone reviewing the commit history to see what type
-of changes were made in each commit.
+In general we use the *Feature Branch and Merge requests* workflow. If you are
+not familiar with git workflows don't worry, it is straightforward and should
+make since once you have read the rest of this page.
+
+
+Commit Prefixes
+===============
+
+When committing changes I like to preface my commit messages with a descriptor
+code indicative of the type of change. This makes it easy for anyone reviewing
+the commit history to see what type of change was made at a glance. This is by
+no means required, and I admit to being lax about it myself. Feel free to make
+up a TLA (Three Letter Acronym) if you do not see a fitting one in the list below.
 
 ====  ===
 Code  Description
@@ -70,13 +64,58 @@ SIM   change related to linuxcnc sim configs
 VCP   work on example VCPs
 ====  ===
 
-It is also recommended to write docstrings for all python classes and functions.
-These are automatically converted by Sphinx into HTML documentation. Docstrings
-should follow the Google style guidelines, a complete example of which is `here
+
+Python Docstrings
+=================
+
+It is appreciated if you document your code by writing docstrings for all python
+modules, classes and functions. These are automatically converted by Sphinx into
+HTML documentation. Docstrings should follow the Google style guidelines, example
+of which can be found `here
 <https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_google.html>`__.
+
+
+Setting Up A Development Environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+
+Creating a Local Checkout
+=========================
+
+If you want to make changes to QtPyVCP the first step is to create your own fork
+of the repository. This allows you to create feature branches and push changes
+to your personal fork so that others can view and test them, without you having
+to worry about messing anything up in the main repository. It is easy to fork,
+but here is a `quick tutorial <https://help.github.com/articles/fork-a-repo>`_
+if needed.
+
+Once your fork is created you can clone it to your local machine.
+
+.. code:: sh
+
+   $ git clone https://github.com/YOUR-USERNAME/REPOSITORY.git
+
+Now that you have a copy of the repository, create a branch for the feature or
+bug you would like to work on.
+
+.. code:: sh
+
+   $ git checkout -b my-feature
+
+   $ git status
+   On branch my-feature
+   nothing to commit, working tree clean
+
+.. admonition:: ProTip
+
+    I highly recommended a GUI git client called `GitKraken <https://www.gitkraken.com/>`_.
+    It makes even complicated git tasks as simple as a few clicks, and the
+    visual commit history is very helpful. Best part, it's free!
+
 
 Merging Changes
 ===============
+
 Once you are happy with your code, ``push`` it back to your fork on GitHub.
 
 .. code:: sh
@@ -86,8 +125,10 @@ Once you are happy with your code, ``push`` it back to your fork on GitHub.
 You should now be able to create a Pull Request back to the original repository.
 Once the changes are checked and reviewed the Pull Request can be merged.
 
+
 Syncing your Local Checkout
 ===========================
+
 Inevitably, changes to the upstream repository will occur and you will need to
 update your local checkout to reflect those. The first step is to make your
 local checkout aware of the upstream repository. If this is done correctly, you
