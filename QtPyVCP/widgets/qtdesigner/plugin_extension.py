@@ -53,8 +53,8 @@ class _PluginExtension(object):
         self._actions = []
 
     def addTaskMenuAction(self, action_name, callback):
-        action = QAction("Edit Action...", self.widget)
-        action.triggered.connect(self.editAction)
+        action = QAction(action_name, self.widget)
+        action.triggered.connect(callback)
         self._actions.append(action)
 
     def actions(self):
