@@ -23,7 +23,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>QtPyVCP</string>
+   <string>Probe Basic</string>
   </property>
   <property name="toolTipDuration">
    <number>-1</number>
@@ -25849,85 +25849,85 @@ font: 11pt bebas kai;
   <customwidget>
    <class>JogIncrementWidget</class>
    <extends>QWidget</extends>
-   <header>QtPyVCP.widgets.input_widgets.jog_increment</header>
+   <header>qtpyvcp.widgets.input_widgets.jog_increment</header>
   </customwidget>
   <customwidget>
    <class>RemovableDeviceComboBox</class>
    <extends>QComboBox</extends>
-   <header>QtPyVCP.widgets.input_widgets.file_system</header>
+   <header>qtpyvcp.widgets.input_widgets.file_system</header>
   </customwidget>
   <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
-   <header>QtPyVCP.widgets.display_widgets.gcode_backplot</header>
+   <header>qtpyvcp.widgets.display_widgets.gcode_backplot</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>GcodeEditor</class>
    <extends>QFrame</extends>
-   <header>QtPyVCP.widgets.input_widgets.gcode_editor</header>
+   <header>qtpyvcp.widgets.input_widgets.gcode_editor</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>VCPMainWindow</class>
    <extends>QMainWindow</extends>
-   <header>QtPyVCP.widgets.form_widgets.main_window</header>
+   <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>RecentFileComboBox</class>
    <extends>QComboBox</extends>
-   <header>QtPyVCP.widgets.input_widgets.recent_file_combobox</header>
+   <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
   </customwidget>
   <customwidget>
    <class>SubCallButton</class>
    <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.subcall_button</header>
+   <header>qtpyvcp.widgets.button_widgets.subcall_button</header>
   </customwidget>
   <customwidget>
    <class>FileSystemTable</class>
    <extends>QTableView</extends>
-   <header>QtPyVCP.widgets.input_widgets.file_system</header>
+   <header>qtpyvcp.widgets.input_widgets.file_system</header>
   </customwidget>
   <customwidget>
    <class>ToolTable</class>
    <extends>QTableView</extends>
-   <header>QtPyVCP.widgets.input_widgets.tool_table</header>
+   <header>qtpyvcp.widgets.input_widgets.tool_table</header>
   </customwidget>
   <customwidget>
    <class>MDIButton</class>
    <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.mdi_button</header>
+   <header>qtpyvcp.widgets.button_widgets.mdi_button</header>
   </customwidget>
   <customwidget>
    <class>LoadMeter</class>
    <extends>QProgressBar</extends>
-   <header>QtPyVCP.widgets.display_widgets.load_meter</header>
+   <header>qtpyvcp.widgets.display_widgets.load_meter</header>
   </customwidget>
   <customwidget>
    <class>MDIEntry</class>
    <extends>QLineEdit</extends>
-   <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
+   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
   <customwidget>
    <class>ActionSlider</class>
    <extends>QSlider</extends>
-   <header>QtPyVCP.widgets.input_widgets.action_slider</header>
+   <header>qtpyvcp.widgets.input_widgets.action_slider</header>
   </customwidget>
   <customwidget>
    <class>ActionButton</class>
    <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_button</header>
+   <header>qtpyvcp.widgets.button_widgets.action_button</header>
   </customwidget>
   <customwidget>
    <class>DROWidget</class>
    <extends>QLabel</extends>
-   <header>QtPyVCP.widgets.display_widgets.dro_widget</header>
+   <header>qtpyvcp.widgets.display_widgets.dro_widget</header>
   </customwidget>
   <customwidget>
    <class>StatusLabel</class>
    <extends>QLabel</extends>
-   <header>QtPyVCP.widgets.display_widgets.status_label</header>
+   <header>qtpyvcp.widgets.display_widgets.status_label</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -2,13 +2,13 @@
 
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSlot
-from QtPyVCP.widgets.form_widgets.main_window import VCPMainWindow
+from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
 # Setup logging
-from QtPyVCP.utilities import logger
+from qtpyvcp.utilities import logger
 LOG = logger.getLogger('QtPyVCP.' + __name__)
 
-from QtPyVCP.core import Status, Action, Prefs, Info
+from qtpyvcp.core import Status, Action, Prefs, Info
 STATUS = Status()
 ACTION = Action()
 PREFS = Prefs()

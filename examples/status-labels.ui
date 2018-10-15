@@ -1031,24 +1031,24 @@
   <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
-   <header>QtPyVCP.widgets.display_widgets.gcode_backplot</header>
+   <header>qtpyvcp.widgets.display_widgets.gcode_backplot</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>VCPMainWindow</class>
    <extends>QMainWindow</extends>
-   <header>QtPyVCP.widgets.form_widgets.main_window</header>
+   <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>MDIEntry</class>
    <extends>QLineEdit</extends>
-   <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
+   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
   <customwidget>
    <class>ActionSlider</class>
    <extends>QSlider</extends>
-   <header>QtPyVCP.widgets.input_widgets.action_slider</header>
+   <header>qtpyvcp.widgets.input_widgets.action_slider</header>
   </customwidget>
   <customwidget>
    <class>StatusLabelNew</class>

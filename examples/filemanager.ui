@@ -241,18 +241,18 @@
   <customwidget>
    <class>RemovableDeviceComboBox</class>
    <extends>QComboBox</extends>
-   <header>QtPyVCP.widgets.input_widgets.file_system</header>
+   <header>qtpyvcp.widgets.input_widgets.file_system</header>
   </customwidget>
   <customwidget>
    <class>VCPMainWindow</class>
    <extends>QMainWindow</extends>
-   <header>QtPyVCP.widgets.form_widgets.main_window</header>
+   <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>FileSystemTable</class>
    <extends>QTableView</extends>
-   <header>QtPyVCP.widgets.input_widgets.file_system</header>
+   <header>qtpyvcp.widgets.input_widgets.file_system</header>
   </customwidget>
  </customwidgets>
  <resources/>

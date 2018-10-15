@@ -85,7 +85,7 @@
   <customwidget>
    <class>VCPMainWindow</class>
    <extends>QMainWindow</extends>
-   <header>QtPyVCP.widgets.form_widgets.main_window</header>
+   <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

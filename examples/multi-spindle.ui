@@ -683,28 +683,28 @@
   <customwidget>
    <class>ActionCheckBox</class>
    <extends>QCheckBox</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_checkbox</header>
+   <header>qtpyvcp.widgets.button_widgets.action_checkbox</header>
   </customwidget>
   <customwidget>
    <class>VCPMainWindow</class>
    <extends>QMainWindow</extends>
-   <header>QtPyVCP.widgets.form_widgets.main_window</header>
+   <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>ActionSlider</class>
    <extends>QSlider</extends>
-   <header>QtPyVCP.widgets.input_widgets.action_slider</header>
+   <header>qtpyvcp.widgets.input_widgets.action_slider</header>
   </customwidget>
   <customwidget>
    <class>ActionButton</class>
    <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_button</header>
+   <header>qtpyvcp.widgets.button_widgets.action_button</header>
   </customwidget>
   <customwidget>
    <class>StatusLabelNew</class>
    <extends>QLabel</extends>
-   <header>QtPyVCP.widgets.display_widgets.status_label</header>
+   <header>qtpyvcp.widgets.display_widgets.status_label</header>
   </customwidget>
  </customwidgets>
  <resources>

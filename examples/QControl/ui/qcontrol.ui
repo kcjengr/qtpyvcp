@@ -240,13 +240,13 @@ color: white;
   <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
-   <header>QtPyVCP.widgets.display_widgets.gcode_backplot</header>
+   <header>qtpyvcp.widgets.display_widgets.gcode_backplot</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>DROWidget</class>
    <extends>QLabel</extends>
-   <header>QtPyVCP.widgets.display_widgets.dro_widget</header>
+   <header>qtpyvcp.widgets.display_widgets.dro_widget</header>
   </customwidget>
  </customwidgets>
  <resources/>

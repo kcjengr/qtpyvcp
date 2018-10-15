@@ -2751,75 +2751,75 @@
   <customwidget>
    <class>ActionCheckBox</class>
    <extends>QCheckBox</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_checkbox</header>
+   <header>qtpyvcp.widgets.button_widgets.action_checkbox</header>
   </customwidget>
   <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
-   <header>QtPyVCP.widgets.display_widgets.gcode_backplot</header>
+   <header>qtpyvcp.widgets.display_widgets.gcode_backplot</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>GcodeEditor</class>
    <extends>QFrame</extends>
-   <header>QtPyVCP.widgets.input_widgets.gcode_editor</header>
+   <header>qtpyvcp.widgets.input_widgets.gcode_editor</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>VCPMainWindow</class>
    <extends>QMainWindow</extends>
-   <header>QtPyVCP.widgets.form_widgets.main_window</header>
+   <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>RecentFileComboBox</class>
    <extends>QComboBox</extends>
-   <header>QtPyVCP.widgets.input_widgets.recent_file_combobox</header>
+   <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
   </customwidget>
   <customwidget>
    <class>SubCallButton</class>
    <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.subcall_button</header>
+   <header>qtpyvcp.widgets.button_widgets.subcall_button</header>
   </customwidget>
   <customwidget>
    <class>ActionComboBox</class>
    <extends>QComboBox</extends>
-   <header>QtPyVCP.widgets.input_widgets.action_combobox</header>
+   <header>qtpyvcp.widgets.input_widgets.action_combobox</header>
   </customwidget>
   <customwidget>
    <class>ActionSpinBox</class>
    <extends>QSpinBox</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_spinbox</header>
+   <header>qtpyvcp.widgets.button_widgets.action_spinbox</header>
   </customwidget>
   <customwidget>
    <class>MDIButton</class>
    <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.mdi_button</header>
+   <header>qtpyvcp.widgets.button_widgets.mdi_button</header>
   </customwidget>
   <customwidget>
    <class>MDIEntry</class>
    <extends>QLineEdit</extends>
-   <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
+   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
   <customwidget>
    <class>ActionSlider</class>
    <extends>QSlider</extends>
-   <header>QtPyVCP.widgets.input_widgets.action_slider</header>
+   <header>qtpyvcp.widgets.input_widgets.action_slider</header>
   </customwidget>
   <customwidget>
    <class>ActionButton</class>
    <extends>QPushButton</extends>
-   <header>QtPyVCP.widgets.button_widgets.action_button</header>
+   <header>qtpyvcp.widgets.button_widgets.action_button</header>
   </customwidget>
   <customwidget>
    <class>DROWidget</class>
    <extends>QLabel</extends>
-   <header>QtPyVCP.widgets.display_widgets.dro_widget</header>
+   <header>qtpyvcp.widgets.display_widgets.dro_widget</header>
   </customwidget>
   <customwidget>
    <class>StatusLabel</class>
    <extends>QLabel</extends>
-   <header>QtPyVCP.widgets.display_widgets.status_label</header>
+   <header>qtpyvcp.widgets.display_widgets.status_label</header>
   </customwidget>
  </customwidgets>
  <resources>
