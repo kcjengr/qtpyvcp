@@ -1,11 +1,23 @@
 #!/usr/bin/env python
 
-from QtPyVCP.widgets.base_widgets.designer_plugin import _DesignerPlugin
+from QtPyVCP.widgets.qtdesigner import _DesignerPlugin, _PluginExtension
 
 from status_label import StatusLabel
 class StatusLabelPlugin(_DesignerPlugin):
     def pluginClass(self):
         return StatusLabel
+    def extensions(self):
+        return [StatusLablePluginExtension,]
+
+from QtPyVCP.widgets.qtdesigner.widget_rules_editor import RulesEditor
+class StatusLablePluginExtension(_PluginExtension):
+    def __init__(self, widget):
+        super(StatusLablePluginExtension, self).__init__(widget)
+        self.widget = widget
+        self.addTaskMenuAction("Edit Widget Rules...", self.editAction)
+
+    def editAction(self, state):
+        RulesEditor(self.widget, parent=None).exec_()
 
 from dro_widget import DROWidget
 class DROPlugin(_DesignerPlugin):

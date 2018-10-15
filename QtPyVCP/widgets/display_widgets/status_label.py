@@ -28,6 +28,8 @@ class StatusLabel(QLabel):
         self._format = '{}'
         self._status_item = ''
 
+        self._rules = ''
+
         self.setText('n/a')
 
     @pyqtProperty(float)
@@ -74,6 +76,19 @@ class StatusLabel(QLabel):
         # force update of label when in designer
         if IN_DESIGNER:
             self.statusItem = self._status_item
+
+    @pyqtProperty(str)
+    def rules(self):
+        """The rules property of the widget.
+
+        Returns:
+            str : JSON format of the current rules.
+        """
+        return self._rules
+
+    @rules.setter
+    def rules(self, rules):
+        self._rules = rules
 
     @pyqtProperty(str)
     def statusItem(self):

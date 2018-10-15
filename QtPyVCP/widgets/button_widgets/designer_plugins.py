@@ -1,11 +1,23 @@
 #!/usr/bin/env python
 
-from QtPyVCP.widgets.base_widgets.designer_plugin import _DesignerPlugin
+from QtPyVCP.widgets.qtdesigner import _DesignerPlugin, _PluginExtension
 
 from action_button import ActionButton
 class ActionButtonPlugin(_DesignerPlugin):
     def pluginClass(self):
         return ActionButton
+    def extensions(self):
+        return [ActionButtonPluginExtension,]
+
+from QtPyVCP.widgets.qtdesigner.widget_rules_editor import RulesEditor
+class ActionButtonPluginExtension(_PluginExtension):
+    def __init__(self, widget):
+        super(ActionButtonPluginExtension, self).__init__(widget)
+        self.widget = widget
+        self.addTaskMenuAction("Edit Widget Rules...", self.editAction)
+
+    def editAction(self, state):
+        RulesEditor(self.widget, parent=None).exec_()
 
 from action_checkbox import ActionCheckBox
 class ActionCheckBoxPlugin(_DesignerPlugin):
