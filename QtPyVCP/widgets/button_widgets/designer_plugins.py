@@ -9,16 +9,15 @@ class ActionButtonPlugin(_DesignerPlugin):
     def extensions(self):
         return [ActionButtonPluginExtension,]
 
-from PyQt5.QtWidgets import QDialog
+from QtPyVCP.widgets.qtdesigner.widget_rules_editor import RulesEditor
 class ActionButtonPluginExtension(_PluginExtension):
     def __init__(self, widget):
         super(ActionButtonPluginExtension, self).__init__(widget)
         self.widget = widget
-        self.addTaskMenuAction("Edit Action...", self.editAction)
+        self.addTaskMenuAction("Edit Widget Rules...", self.editAction)
 
     def editAction(self, state):
-        edit_rules_dialog = QDialog(parent=None)
-        edit_rules_dialog.exec_()
+        RulesEditor(self.widget, parent=None).exec_()
 
 from action_checkbox import ActionCheckBox
 class ActionCheckBoxPlugin(_DesignerPlugin):
