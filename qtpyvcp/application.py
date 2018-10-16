@@ -27,11 +27,11 @@ class VCPApplication(QApplication):
 
         qApp = QApplication.instance()
 
-        from qtpyvcp.core import Status, Action, Prefs, Info
+        from qtpyvcp.core import Status, Prefs, Info
         self.info = Info()
         self.prefs = Prefs()
         self.status = Status()
-        self.action = Action()
+        self.status.startPeriodic()
 
         if opts.theme is not None:
             self.setStyle(QStyleFactory.create(opts.theme))

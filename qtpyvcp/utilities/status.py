@@ -131,7 +131,6 @@ class _Status(QObject):
 
 
     stat = linuxcnc.stat()
-    timer = QTimer()
 
     # Queues
     active_queue = Signal(int)          # number of motions blending
@@ -325,12 +324,14 @@ class _Status(QObject):
         self.error = _Error()
 
         # Set up the periodic update timer
+        self.timer = QTimer()
         self._cycle_time = 75
         self.timer.timeout.connect(self._periodic)
 
-        # Use a single shot to stat the main periodic timer, this ensures it
+        # Use a single shot to start the main periodic timer, this ensures it
         # starts after the main Qt event loop to prevent errors
-        QTimer.singleShot(0, self.startPeriodic)
+        # QTimer.singleShot(0, self.startPeriodic)
+        # self.startPeriodic()
 
     def startPeriodic(self):
         self.timer.start(self._cycle_time)
