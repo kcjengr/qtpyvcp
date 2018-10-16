@@ -17,7 +17,7 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
-# PyQt5 widget for plotting gcode.
+# qtpy widget for plotting gcode.
 
 
 import sys
@@ -25,11 +25,11 @@ import os
 import gcode
 import time
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from qtpy import QtCore, QtGui, QtWidgets
 
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import pyqtProperty, pyqtSignal, pyqtSlot
-from PyQt5.QtGui import QColor
+from qtpy.QtWidgets import QApplication
+from qtpy.QtCore import Property, Signal, Slot
+from qtpy.QtGui import QColor
 
 from qtpyvcp.widgets.base_widgets.qbackplot import QBackPlot
 
@@ -44,8 +44,8 @@ INFO = Info()
 
 class  GcodeBackplot(QBackPlot):
 
-    line_selected = pyqtSignal(int)
-    gcode_error = pyqtSignal(str)
+    line_selected = Signal(int)
+    gcode_error = Signal(str)
 
     def __init__(self, parent=None, standalone=False):
         super(GcodeBackplot, self).__init__(parent)
@@ -154,7 +154,7 @@ class  GcodeBackplot(QBackPlot):
             self.set_current_view()
     def getView(self):
         return self.current_view
-    defaultView = pyqtProperty(str, getView, setView)
+    defaultView = Property(str, getView, setView)
 
     # DRO
     def setdro(self, state):
@@ -162,7 +162,7 @@ class  GcodeBackplot(QBackPlot):
         self.updateGL()
     def getdro(self):
         return self.enable_dro
-    _dro = pyqtProperty(bool, getdro, setdro)
+    _dro = Property(bool, getdro, setdro)
 
     # DTG
     def setdtg(self, state):
@@ -170,7 +170,7 @@ class  GcodeBackplot(QBackPlot):
         self.updateGL()
     def getdtg(self):
         return self.show_dtg
-    _dtg = pyqtProperty(bool, getdtg, setdtg)
+    _dtg = Property(bool, getdtg, setdtg)
 
     # METRIC
     def setMetricUnits(self, metric):
@@ -178,7 +178,7 @@ class  GcodeBackplot(QBackPlot):
         self.updateGL()
     def getMetricUnits(self):
         return self.metric_units
-    metricUnits = pyqtProperty(bool, getMetricUnits, setMetricUnits)
+    metricUnits = Property(bool, getMetricUnits, setMetricUnits)
 
 
 
@@ -187,7 +187,7 @@ class  GcodeBackplot(QBackPlot):
         self.updateGL()
     def getProgramAlpha(self):
         return self.program_alpha
-    renderProgramAlpha = pyqtProperty(bool, getProgramAlpha, setProgramAlpha)
+    renderProgramAlpha = Property(bool, getProgramAlpha, setProgramAlpha)
 
 
     def setBackgroundColor(self, color):
@@ -198,7 +198,7 @@ class  GcodeBackplot(QBackPlot):
         color = QColor()
         color.setRgbF(r, g, b, 1.0)
         return color
-    backgroundColor = pyqtProperty(QColor, getBackgroundColor, setBackgroundColor)
+    backgroundColor = Property(QColor, getBackgroundColor, setBackgroundColor)
 
 
 
@@ -206,7 +206,7 @@ class  GcodeBackplot(QBackPlot):
 # if this file is run.
 if __name__ == "__main__":
     import sys
-    from PyQt5.QtWidgets import QApplication
+    from qtpy.QtWidgets import QApplication
 
     app = QApplication(sys.argv)
     widget =  GcodeBackPlot(standalone=True)
