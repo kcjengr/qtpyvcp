@@ -86,7 +86,7 @@
           </widget>
          </item>
          <item row="2" column="3">
-          <widget class="StatusLabelNew" name="statuslabelnew_4">
+          <widget class="StatusLabel" name="statuslabelnew_4">
            <property name="factor" stdset="0">
             <double>1.000000000000000</double>
            </property>
@@ -99,7 +99,7 @@
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="StatusLabelNew" name="statuslabelnew_6">
+          <widget class="StatusLabel" name="statuslabelnew_6">
            <property name="text">
             <string>      0 rpm</string>
            </property>
@@ -188,7 +188,7 @@
           </widget>
          </item>
          <item row="2" column="3">
-          <widget class="StatusLabelNew" name="statuslabelnew_5">
+          <widget class="StatusLabel" name="statuslabelnew_5">
            <property name="factor" stdset="0">
             <double>1.000000000000000</double>
            </property>
@@ -201,7 +201,7 @@
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="StatusLabelNew" name="statuslabelnew_7">
+          <widget class="StatusLabel" name="statuslabelnew_7">
            <property name="text">
             <string>N/A</string>
            </property>
@@ -293,7 +293,7 @@
           </widget>
          </item>
          <item row="2" column="3">
-          <widget class="StatusLabelNew" name="statuslabelnew_8">
+          <widget class="StatusLabel" name="statuslabelnew_8">
            <property name="factor" stdset="0">
             <double>1.000000000000000</double>
            </property>
@@ -306,7 +306,7 @@
           </widget>
          </item>
          <item row="0" column="3">
-          <widget class="StatusLabelNew" name="statuslabelnew_9">
+          <widget class="StatusLabel" name="statuslabelnew_9">
            <property name="text">
             <string>N/A</string>
            </property>
@@ -702,7 +702,7 @@
    <header>QtPyVCP.widgets.button_widgets.action_button</header>
   </customwidget>
   <customwidget>
-   <class>StatusLabelNew</class>
+   <class>StatusLabel</class>
    <extends>QLabel</extends>
    <header>QtPyVCP.widgets.display_widgets.status_label</header>
   </customwidget>
