@@ -153,6 +153,7 @@ power.on.bindOk = power.off.bindOk = power.toggle.bindOk = _power_bindOk
 PREVIOUS_MODE = None
 
 def _resetMode(interp_state):
+    global PREVIOUS_MODE
     if  PREVIOUS_MODE is not None and interp_state == linuxcnc.INTERP_IDLE:
         if setTaskMode(PREVIOUS_MODE):
             LOG.debug("Successfully reset task_mode after MDI")
