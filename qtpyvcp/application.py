@@ -9,6 +9,7 @@ import imp
 import inspect
 from pkg_resources import load_entry_point, iter_entry_points
 
+from qtpy import API
 from qtpy.QtCore import QTimer, Slot
 from qtpy.QtWidgets import QApplication, QMainWindow, QStyleFactory, qApp
 
@@ -19,6 +20,14 @@ from qtpyvcp.utilities import logger
 LOG = logger.initBaseLogger('qtpyvcp')
 
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
+
+# Needed to silence this PySide2 warning:
+#    Qt WebEngine seems to be initialized from a plugin. Please set
+#    Qt::AA_ShareOpenGLContexts using QCoreApplication::setAttribute
+#    before constructing QGuiApplication.
+if API == 'pyside2':
+    from qtpy.QtCore import Qt
+    QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
 
 class VCPApplication(QApplication):
 
