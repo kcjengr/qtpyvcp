@@ -286,7 +286,7 @@ class _Status(QObject):
         except:
             pass
 
-        excluded_items = ['axes', 'joints', 'axis', 'joint', 'spindle',
+        excluded_items = ['axis', 'joint', 'spindle', 'axes', 'joints', 'spindles',
             'acceleration', 'max_acceleration', 'kinematics_type', 'axis_mask',
             'cycle_time', 'echo_serial_number', 'id', 'poll', 'command', 'debug']
 
