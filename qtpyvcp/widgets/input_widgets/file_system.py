@@ -2,8 +2,8 @@ import os
 import pyudev
 import psutil
 
-from PyQt5.QtCore import pyqtSlot, pyqtProperty, Q_ENUMS, pyqtSignal, QFile, QFileInfo, QDir, QIODevice
-from PyQt5.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, QApplication, QAbstractItemView
+from qtpy.QtCore import Slot, Property, Q_ENUMS, Signal, QFile, QFileInfo, QDir, QIODevice
+from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, QApplication, QAbstractItemView
 
 from qtpyvcp.utilities.info import Info
 
@@ -30,7 +30,7 @@ class RemovableDeviceComboBox(QComboBox):
         self.refreshDeviceList()
         super(RemovableDeviceComboBox, self).showPopup()
 
-    @pyqtSlot()
+    @Slot()
     def refreshDeviceList(self):
         # clear existing items
         self.clear()
@@ -57,7 +57,7 @@ class RemovableDeviceComboBox(QComboBox):
 
         self.setCurrentIndex(0)
 
-    @pyqtSlot()
+    @Slot()
     def ejectDevice(self):
         mount_point = self.currentData()
 
@@ -75,8 +75,8 @@ class RemovableDeviceComboBox(QComboBox):
 class FileSystemTable(QTableView, TableType):
     Q_ENUMS(TableType)
 
-    transferFileRequest = pyqtSignal(str)
-    rootChanged = pyqtSignal(str)
+    transferFileRequest = Signal(str)
+    rootChanged = Signal(str)
 
     def __init__(self, parent=None):
         super(FileSystemTable, self).__init__(parent)
@@ -126,13 +126,13 @@ class FileSystemTable(QTableView, TableType):
 
             self.rootChanged.emit(absolute_path)
 
-    @pyqtSlot()
+    @Slot()
     def newFile(self):
         path = self.model.filePath(self.rootIndex())
         new_file = QFile(os.path.join(path, "New File"))
         new_file.open(QIODevice.ReadWrite)
 
-    @pyqtSlot()
+    @Slot()
     def deleteFile(self):
         index = self.selectionModel().currentIndex()
         path = self.model.filePath(index)
@@ -150,14 +150,14 @@ class FileSystemTable(QTableView, TableType):
                 directory = QDir(path)
                 directory.removeRecursively()
 
-    @pyqtSlot()
+    @Slot()
     def createDirectory(self):
         path = self.model.filePath(self.rootIndex())
         directory = QDir()
         directory.setPath(path)
         directory.mkpath("New Folder")
 
-    @pyqtSlot(str)
+    @Slot(str)
     def setRootPath(self, root_path):
 
         self.rootChanged.emit(root_path)
@@ -166,7 +166,7 @@ class FileSystemTable(QTableView, TableType):
 
         return True
 
-    @pyqtSlot()
+    @Slot()
     def goUP(self):
 
         path = self.model.filePath(self.rootIndex())
@@ -181,13 +181,13 @@ class FileSystemTable(QTableView, TableType):
         self.setRootIndex(currentRoot.parent())
         self.rootChanged.emit(new_path)
 
-    @pyqtSlot()
+    @Slot()
     def doFileTransfer(self):
         index = self.selectionModel().currentIndex()
         path = self.model.filePath(index)
         self.transferFileRequest.emit(path)
 
-    @pyqtSlot(str)
+    @Slot(str)
     def transferFile(self, src_path):
         dest_path = self.model.filePath(self.rootIndex())
 
@@ -200,15 +200,15 @@ class FileSystemTable(QTableView, TableType):
 
         src_file.copy(dst_path)
 
-    @pyqtSlot()
+    @Slot()
     def getSelected(self):
         return self.selected_row
 
-    @pyqtSlot()
+    @Slot()
     def getCurrentDirectory(self):
         return self.model.rootPath()
 
-    @pyqtProperty(TableType)
+    @Property(TableType)
     def tableType(self):
         return self._table_type
 

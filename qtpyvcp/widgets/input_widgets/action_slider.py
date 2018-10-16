@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import linuxcnc
-from PyQt5.QtWidgets import QSlider
-from PyQt5.QtCore import pyqtSlot, pyqtProperty
+from qtpy.QtWidgets import QSlider
+from qtpy.QtCore import Slot, Property
 
 from qtpyvcp.actions import bindWidget
 
@@ -13,7 +13,7 @@ class ActionSlider(QSlider):
 
         self._action_name = ''
 
-    @pyqtProperty(str)
+    @Property(str)
     def actionName(self):
         """The fully qualified name of the action the slider should trigger.
 

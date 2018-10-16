@@ -16,7 +16,7 @@ from qtpy.QtWidgets import QApplication, QMainWindow, QStyleFactory, qApp
 # script (e.g. vcp_launcher.py), then that logger will be returned, otherwise
 # this will initialise a base logger with default log level of DEBUG
 from qtpyvcp.utilities import logger
-LOG = logger.initBaseLogger('QtPyVCP')
+LOG = logger.initBaseLogger('qtpyvcp')
 
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 

@@ -29,8 +29,8 @@
 import sys
 import os
 
-from PyQt5.QtCore import pyqtProperty
-from PyQt5.QtGui import QFont, QFontMetrics, QColor
+from qtpy.QtCore import Property
+from qtpy.QtGui import QFont, QFontMetrics, QColor
 
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -349,7 +349,7 @@ class GcodeEditor(EditorBase):
         return self.auto_show_mdi
     def reset_auto_show_mdi(self):
         self.auto_show_mdi = True
-    auto_show_mdi_status = pyqtProperty(bool, get_auto_show_mdi, set_auto_show_mdi, reset_auto_show_mdi)
+    auto_show_mdi_status = Property(bool, get_auto_show_mdi, set_auto_show_mdi, reset_auto_show_mdi)
 
 #==============================================================================
 # For testing

@@ -21,7 +21,7 @@ import linuxcnc # For commanding linuxcnc
 
 from qtpyvcp.lib.notify import Notification, Urgency, init
 
-from PyQt5 import uic, QtWidgets
+from qtpy import uic, QtWidgets
 from qtpyvcp.utilities.info import Info
 
 PARENT_DIR = os.path.dirname(os.path.realpath(__file__))

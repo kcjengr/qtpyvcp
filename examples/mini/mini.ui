@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
-    <height>200</height>
+    <width>725</width>
+    <height>617</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -25,13 +25,26 @@
   <property name="promot_on_exit" stdset="0">
    <bool>false</bool>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="GcodeBackplot" name="gcodebackplot">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>320</width>
+     <width>725</width>
      <height>20</height>
     </rect>
    </property>
@@ -365,6 +378,12 @@
   </action>
  </widget>
  <customwidgets>
+  <customwidget>
+   <class>GcodeBackplot</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.display_widgets.gcode_backplot</header>
+   <container>1</container>
+  </customwidget>
   <customwidget>
    <class>VCPMainWindow</class>
    <extends>QMainWindow</extends>

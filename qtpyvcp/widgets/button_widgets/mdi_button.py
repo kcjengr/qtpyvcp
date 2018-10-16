@@ -2,8 +2,8 @@
 
 import re
 
-from PyQt5.QtWidgets import QPushButton, QApplication
-from PyQt5.QtCore import pyqtProperty
+from qtpy.QtWidgets import QPushButton, QApplication
+from qtpy.QtCore import Property
 
 from qtpyvcp.actions.machine_actions import issue_mdi
 
@@ -46,7 +46,7 @@ class MDIButton(QPushButton):
 
         issue_mdi(cmd)
 
-    @pyqtProperty(str)
+    @Property(str)
     def MDICommand(self):
         """Sets the MDI command property (str).
 

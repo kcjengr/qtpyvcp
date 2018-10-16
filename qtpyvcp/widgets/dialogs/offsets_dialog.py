@@ -18,8 +18,8 @@
 
 from collections import OrderedDict
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QComboBox, QDialog, QHBoxLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout
+from qtpy.QtCore import Qt
+from qtpy.QtWidgets import QComboBox, QDialog, QHBoxLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities import logger

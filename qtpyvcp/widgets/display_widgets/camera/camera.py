@@ -43,11 +43,11 @@
 
 import os
 
-from PyQt5 import uic
+from qtpy import uic
 
-from PyQt5.QtCore import QByteArray, Qt, QTimer
-from PyQt5.QtGui import QPalette, QPixmap
-from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication,
+from qtpy.QtCore import QByteArray, Qt, QTimer
+from qtpy.QtGui import QPalette, QPixmap
+from qtpy.QtWidgets import (QAction, QActionGroup, QApplication,
                              QWidget, QMessageBox)
 
 # Set up logging
@@ -56,9 +56,12 @@ LOG = logger.getLogger(__name__)
 
 multimedia_available = True
 try:
-    from PyQt5.QtMultimedia import (QAudioEncoderSettings, QCamera,
+    from qtpy.QtMultimedia import (QAudioEncoderSettings, QCamera,
                                     QCameraImageCapture, QImageEncoderSettings, QMediaMetaData,
                                     QMediaRecorder, QVideoEncoderSettings)
+
+    # FixMe: PySide2 is missing QMediaMetaData bingings.
+    #        https://wiki.qt.io/Qt_for_Python_Missing_Bindings
 
     from settings import Settings
 except ImportError:

@@ -1,9 +1,9 @@
 import os
 from pkg_resources import iter_entry_points
-from PyQt5 import uic
+from qtpy import uic
 
-from PyQt5.QtCore import Qt, pyqtSlot
-from PyQt5.QtWidgets import QMessageBox, QFileDialog, QApplication, QDialog, QTreeWidgetItem, QStyleFactory
+from qtpy.QtCore import Qt, Slot
+from qtpy.QtWidgets import QMessageBox, QFileDialog, QApplication, QDialog, QTreeWidgetItem, QStyleFactory
 
 from qtpyvcp import TOP_DIR
 
@@ -54,7 +54,7 @@ class VCPChooser(QDialog):
         self.vcpTreeView.expandAll()
         self.vcpTreeView.activated.connect(self.on_launchVCPButton_clicked)
 
-    @pyqtSlot()
+    @Slot()
     def on_launchVCPButton_clicked(self):
         selection = self.vcpTreeView.selectionModel().selectedRows()
         if selection == []:
@@ -64,12 +64,12 @@ class VCPChooser(QDialog):
         self.opts.vcp = vcp
         self.accept()
 
-    @pyqtSlot()
+    @Slot()
     def on_cancelButton_clicked(self):
         print "rejected"
         self.reject()
 
-    @pyqtSlot()
+    @Slot()
     def on_fileButton_pressed(self):
         vcp_file = QFileDialog.getOpenFileName(self,
                               caption="Select VCP File",

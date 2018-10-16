@@ -20,8 +20,9 @@
 
 import os
 
-from PyQt5.QtWidgets import QLabel
-from PyQt5.QtCore import pyqtSlot, pyqtProperty, Q_ENUMS
+from qtpy.QtWidgets import QLabel
+from qtpy.QtCore import Slot, Property, Q_ENUMS
+# FixMe: PySide2 does not seem to have Q_ENUMS, but we should not uses then anyway ..
 
 from qtpyvcp.core import Status, Action, Info
 STATUS = Status()
@@ -73,7 +74,7 @@ class DROWidget(QLabel, Axis, ReferenceType, Units):
         STATUS.updateAxisPositions()
         self.updateUnits(STATUS.stat.program_units)
 
-    @pyqtSlot(tuple)
+    @Slot(tuple)
     def setPosition(self, positions):
         pos = positions[self._type][self._axis] * self._factor
         try:
@@ -120,62 +121,62 @@ class DROWidget(QLabel, Axis, ReferenceType, Units):
 
     def getReferenceType(self):
         return self._type
-    @pyqtSlot(ReferenceType)
+    @Slot(ReferenceType)
     def setReferenceType(self, ref_type):
         self._type = ref_type
         STATUS.updateAxisPositions()
-    reference_type = pyqtProperty(ReferenceType, getReferenceType, setReferenceType)
+    reference_type = Property(ReferenceType, getReferenceType, setReferenceType)
 
     def getAxis(self):
         return self._axis
-    @pyqtSlot(Axis)
+    @Slot(Axis)
     def setAxis(self, axis):
         self._axis = axis
         STATUS.updateAxisPositions()
-    axis = pyqtProperty(Axis, getAxis, setAxis)
+    axis = Property(Axis, getAxis, setAxis)
 
     def getUnits(self):
         return self._units
-    @pyqtSlot(Units)
+    @Slot(Units)
     def setUnits(self, units):
         self._units = units
         self.updateUnits(STATUS.stat.program_units)
-    units = pyqtProperty(Units, getUnits, setUnits)
+    units = Property(Units, getUnits, setUnits)
 
     def getDiamterMode(self):
         return self._diameter_mode
-    @pyqtSlot(bool)
+    @Slot(bool)
     def setDiamterMode(self, diameter_mode):
         self._diameter_mode = diameter_mode
         self.updateUnits(STATUS.stat.program_units)
-    diameter_mode = pyqtProperty(bool, getDiamterMode, setDiamterMode)
+    diameter_mode = Property(bool, getDiamterMode, setDiamterMode)
 
     def getMetricTemplate(self):
         return self._metric_template
-    @pyqtSlot(str)
+    @Slot(str)
     def setMetricTemplate(self, value):
         self._metric_template = value
         STATUS.updateAxisPositions()
-    metric_template = pyqtProperty(str, getMetricTemplate, setMetricTemplate)
+    metric_template = Property(str, getMetricTemplate, setMetricTemplate)
 
     def getImperialTemplate(self):
         return self._imperial_template
-    @pyqtSlot(str)
+    @Slot(str)
     def setImperialTemplate(self, value):
         self._imperial_template = value
         STATUS.updateAxisPositions()
-    imperial_template = pyqtProperty(str, getImperialTemplate, setImperialTemplate)
+    imperial_template = Property(str, getImperialTemplate, setImperialTemplate)
 
-    @pyqtSlot(float)
+    @Slot(float)
     def setTest(self, value):
         print value
     def getTest(self):
         return 2.0
-    test = pyqtProperty(float, getTest, setTest)
+    test = Property(float, getTest, setTest)
 
 if __name__ == "__main__":
     import sys
-    from PyQt5.QtWidgets import QApplication
+    from qtpy.QtWidgets import QApplication
     app = QApplication(sys.argv)
     w = DROWidget()
     w.show()

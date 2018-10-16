@@ -1,6 +1,6 @@
 import sys, os
-from PyQt5 import uic
-from PyQt5.QtWidgets import QMainWindow, QApplication, QDialog
+from qtpy import uic
+from qtpy.QtWidgets import QDialog
 
 class ErrorDialog(QDialog):
     def __init__(self, traceback='', error_type=None, error_value=None):
@@ -16,6 +16,7 @@ class ErrorDialog(QDialog):
         self.tracebackText.setText(text)
 
 if __name__ == '__main__':
+    from qtpy.QtWidgets import QMainWindow, QApplication
     app = QApplication(sys.argv)
     window = ErrorDialog()
     sys.exit(app.exec_())

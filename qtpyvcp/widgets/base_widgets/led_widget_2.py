@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from qtpy.QtCore import Qt, Slot, Property, QTimer, QSize
+from qtpy.QtGui import QColor, QPainter, QRadialGradient, QBrush
+from qtpy.QtWidgets import QWidget
 
 
 class LEDWidget(QWidget):
@@ -77,7 +77,7 @@ class LEDWidget(QWidget):
     def getDiameter(self):
         return self._diameter
 
-    @pyqtSlot(int)
+    @Slot(int)
     def setDiameter(self, value):
         self._diameter = value
         self.update()
@@ -85,7 +85,7 @@ class LEDWidget(QWidget):
     def getColor(self):
         return self._color
 
-    @pyqtSlot(QColor)
+    @Slot(QColor)
     def setColor(self, value):
         self._color = value
         self.update()
@@ -93,7 +93,7 @@ class LEDWidget(QWidget):
     def getAlignment(self):
         return self._alignment
 
-    @pyqtSlot(Qt.Alignment)
+    @Slot(Qt.Alignment)
     def setAlignment(self, value):
         self._alignment = value
         self.update()
@@ -101,12 +101,12 @@ class LEDWidget(QWidget):
     def getState(self):
         return self._state
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def setState(self, value):
         self._state = value
         self.update()
 
-    @pyqtSlot()
+    @Slot()
     def toggleState(self):
         self._state = not self._state
         self.update()
@@ -114,7 +114,7 @@ class LEDWidget(QWidget):
     def isFlashing(self):
         return self._flashing
 
-    @pyqtSlot(bool)
+    @Slot(bool)
     def setFlashing(self, value):
         self._flashing = value
         self.update()
@@ -122,25 +122,25 @@ class LEDWidget(QWidget):
     def getFlashRate(self):
         return self._flashRate
 
-    @pyqtSlot(int)
+    @Slot(int)
     def setFlashRate(self, value):
         self._flashRate = value
         self.update()
 
-    @pyqtSlot()
+    @Slot()
     def startFlashing(self):
         self.setFlashing(True)
 
-    @pyqtSlot()
+    @Slot()
     def stopFlashing(self):
         self.setFlashing(False)
 
-    diameter = pyqtProperty(int, getDiameter, setDiameter)
-    color = pyqtProperty(QColor, getColor, setColor)
-    alignment = pyqtProperty(Qt.Alignment, getAlignment, setAlignment)
-    state = pyqtProperty(bool, getState, setState)
-    flashing = pyqtProperty(bool, isFlashing, setFlashing)
-    flashRate = pyqtProperty(int, getFlashRate, setFlashRate)
+    diameter = Property(int, getDiameter, setDiameter)
+    color = Property(QColor, getColor, setColor)
+    alignment = Property(Qt.Alignment, getAlignment, setAlignment)
+    state = Property(bool, getState, setState)
+    flashing = Property(bool, isFlashing, setFlashing)
+    flashRate = Property(int, getFlashRate, setFlashRate)
 
 if __name__ == "__main__":
 

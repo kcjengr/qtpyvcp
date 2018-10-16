@@ -26,8 +26,8 @@
 import time
 import linuxcnc
 
-from PyQt5.QtCore import QTimer, pyqtSlot
-from PyQt5.QtWidgets import QAction, QPushButton
+from qtpy.QtCore import QTimer, Slot
+from qtpy.QtWidgets import QAction, QPushButton
 
 # Set up logging
 from qtpyvcp.utilities import logger

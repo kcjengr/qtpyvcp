@@ -1,8 +1,8 @@
 #!/usr/bin/python
 
-from PyQt5.QtCore import Qt, pyqtProperty, QRectF
-from PyQt5.QtGui import QColor, QLinearGradient, QPainter, QPen
-from PyQt5.QtWidgets import QProgressBar, QStyle
+from qtpy.QtCore import Qt, Property, QRectF
+from qtpy.QtGui import QColor, QLinearGradient, QPainter, QPen
+from qtpy.QtWidgets import QProgressBar, QStyle
 
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -70,7 +70,7 @@ class LoadMeter(QProgressBar):
             self.gradient.setFinalStop(0, 0)
 
     # border width
-    @pyqtProperty('QStringList')
+    @Property('QStringList')
     def barGradient(self):
         return self._gradient_def
 
@@ -92,7 +92,7 @@ class LoadMeter(QProgressBar):
         self.update()
 
     # text color
-    @pyqtProperty(QColor)
+    @Property(QColor)
     def textColor(self):
         return self._text_color
 
@@ -102,7 +102,7 @@ class LoadMeter(QProgressBar):
         self.update()
 
     # border color
-    @pyqtProperty(QColor)
+    @Property(QColor)
     def borderColor(self):
         return self._border_color
 
@@ -112,7 +112,7 @@ class LoadMeter(QProgressBar):
         self.update()
 
     # border radius
-    @pyqtProperty(int)
+    @Property(int)
     def borderRadius(self):
         return self._border_radius
 
@@ -122,7 +122,7 @@ class LoadMeter(QProgressBar):
         self.update()
 
     # border width
-    @pyqtProperty(int)
+    @Property(int)
     def borderWidth(self):
         return self._border_width
 

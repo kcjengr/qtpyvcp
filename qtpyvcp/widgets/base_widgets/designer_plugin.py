@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from PyQt5.QtGui import QIcon
-from PyQt5.QtDesigner import QPyDesignerCustomWidgetPlugin
+from qtpy.QtGui import QIcon
+from qtpy.QtDesigner import QPyDesignerCustomWidgetPlugin
 
 class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 

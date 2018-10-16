@@ -2,8 +2,8 @@
 
 import os
 import re
-from PyQt5.QtWidgets import QPushButton, qApp
-from PyQt5.QtCore import Qt, QEvent, pyqtProperty
+from qtpy.QtWidgets import QPushButton, qApp
+from qtpy.QtCore import Qt, QEvent, Property
 
 from qtpyvcp.core import Info
 INFO = Info()
@@ -96,7 +96,7 @@ class SubCallButton(QPushButton):
         LOG.debug('Calling sub file: yellow<{}> with args blue<{}>'.format(subfile, arg_str))
         issue_mdi(cmd_str)
 
-    @pyqtProperty(str)
+    @Property(str)
     def filename(self):
         """Gets or sets the filename of the subroutine the button should call (str).
 
@@ -110,7 +110,7 @@ class SubCallButton(QPushButton):
 
 if __name__ == "__main__":
     import sys
-    from PyQt5.QtWidgets import QApplication
+    from qtpy.QtWidgets import QApplication
     app = QApplication(sys.argv)
     w = SubCallButton()
     w.show()

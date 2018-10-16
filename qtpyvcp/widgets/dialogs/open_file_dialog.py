@@ -4,10 +4,10 @@ import os
 import sys
 
 
-from PyQt5 import QtCore
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import Qt, pyqtSlot
-from PyQt5.QtWidgets import QMessageBox, QFileDialog
+from qtpy import QtCore
+from qtpy.QtGui import QIcon
+from qtpy.QtCore import Qt
+from qtpy.QtWidgets import QMessageBox, QFileDialog
 
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)

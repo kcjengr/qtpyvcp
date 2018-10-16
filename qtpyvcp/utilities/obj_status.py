@@ -19,7 +19,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import linuxcnc, time, threading, subprocess, os, json
-from PyQt5.QtCore import QObject, QTimer, pyqtSignal, pyqtSlot
+from qtpy.QtCore import QObject, QTimer, Signal
 
 # Setup logging
 try:
@@ -40,7 +40,7 @@ except Exception as e:
 class StatusItem(QObject):
     """docstring for StatusItem"""
 
-    valueChanged = pyqtSignal('PyQt_PyObject')
+    valueChanged = Signal('PyQt_PyObject')
 
     def __init__(self, attr_name, index=None, key=None, stat=None):
         super(StatusItem, self).__init__()
@@ -204,7 +204,7 @@ class HALPin(QObject):
         valueChanged (QtSignal): signal emitted when the HAL pin value changes
     """
 
-    valueChanged = pyqtSignal([bool], [float], [int])
+    valueChanged = Signal([bool], [float], [int])
 
     def __init__(self, pin_name, pin_type, pin_direction, pin_value):
         super(HALPin, self).__init__()

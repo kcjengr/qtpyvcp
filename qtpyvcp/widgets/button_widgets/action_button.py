@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtCore import pyqtProperty
+from qtpy.QtWidgets import QPushButton
+from qtpy.QtCore import Property
 
 from qtpyvcp.actions import bindWidget
 
@@ -19,7 +19,7 @@ class ActionButton(QPushButton):
         if action is not None:
             self.actionName = action
 
-    @pyqtProperty(str)
+    @Property(str)
     def actionName(self):
         """Property for the name of the action the button triggers (str).
 

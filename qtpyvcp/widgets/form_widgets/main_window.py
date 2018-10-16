@@ -5,10 +5,10 @@ import os
 import sys
 import time
 
-from PyQt5 import uic
-from PyQt5.QtGui import QIcon, QKeySequence
-from PyQt5.QtCore import Qt, pyqtSlot, pyqtProperty, QTimer
-from PyQt5.QtWidgets import (QMainWindow, QApplication, QWidget, QPushButton,
+from qtpy import uic
+from qtpy.QtGui import QIcon, QKeySequence
+from qtpy.QtCore import Qt, Slot, Property, QTimer
+from qtpy.QtWidgets import (QMainWindow, QApplication, QWidget, QPushButton,
     QAction, QMessageBox, QFileDialog, QMenu, QLineEdit, QShortcut, qApp)
 
 from qtpyvcp.utilities import logger
@@ -158,11 +158,11 @@ class VCPMainWindow(QMainWindow):
 
     #==========================================================================
     # File menu
-    @pyqtSlot()
+    @Slot()
     def on_actionOpen_triggered(self):
         self.open_file_dialog.show()
 
-    @pyqtSlot()
+    @Slot()
     def on_actionExit_triggered(self):
         self.close()
 
@@ -242,14 +242,14 @@ class VCPMainWindow(QMainWindow):
         return self.prompt_at_exit
     def setPromptBeforeExit(self, value):
         self.prompt_at_exit = value
-    promptAtExit = pyqtProperty(bool, getPromptBeforeExit, setPromptBeforeExit)
+    promptAtExit = Property(bool, getPromptBeforeExit, setPromptBeforeExit)
 
     # Max number of recent files to display in menu
     def getMaxRecentFiles(self):
         return STATUS.max_recent_files
     def setMaxRecentFiles(self, number):
         STATUS.max_recent_files = number
-    maxNumRecentFiles = pyqtProperty(int, getMaxRecentFiles, setMaxRecentFiles)
+    maxNumRecentFiles = Property(int, getMaxRecentFiles, setMaxRecentFiles)
 
 
 if __name__ == '__main__':

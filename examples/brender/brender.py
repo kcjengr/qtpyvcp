@@ -2,8 +2,8 @@
 
 import os
 
-from PyQt5 import uic
-from PyQt5.QtCore import pyqtSlot
+from qtpy import uic
+from qtpy.QtCore import Slot
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
 # Setup logging
@@ -40,7 +40,7 @@ class MainWindow(VCPMainWindow):
 
     # This slot will be automatically connected to a menu item named 'Test'
     # created in QtDesigner.
-    @pyqtSlot()
+    @Slot()
     def on_actionTest_triggered(self):
         print 'Test action triggered'
         # implement the action here

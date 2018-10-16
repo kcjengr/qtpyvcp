@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from PyQt5.QtWidgets import QComboBox
-from PyQt5.QtCore import pyqtProperty
+from qtpy.QtWidgets import QComboBox
+from qtpy.QtCore import Property
 
 from qtpyvcp.actions import bindWidget
 
@@ -20,7 +20,7 @@ class ActionComboBox(QComboBox):
 
         self._action_name = ''
 
-    @pyqtProperty(str)
+    @Property(str)
     def actionName(self):
         """The `actionName` property for setting the action the combobox
             should trigger from within QtDesigner.

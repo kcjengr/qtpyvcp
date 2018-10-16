@@ -2,8 +2,8 @@
 
 import os
 
-from PyQt5.QtWidgets import QLabel
-from PyQt5.QtCore import pyqtProperty, pyqtBoundSignal
+from qtpy.QtWidgets import QLabel
+from qtpy.QtCore import Property, pyqtBoundSignal
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -30,7 +30,7 @@ class StatusLabel(QLabel):
 
         self.setText('n/a')
 
-    @pyqtProperty(float)
+    @Property(float)
     def factor(self):
         """The multiplication factor to apply to numeric status values.
 
@@ -52,7 +52,7 @@ class StatusLabel(QLabel):
         if IN_DESIGNER:
             self.statusItem = self._status_item
 
-    @pyqtProperty(str)
+    @Property(str)
     def format(self):
         """The str format specification to use for displaying the value.
 
@@ -75,7 +75,7 @@ class StatusLabel(QLabel):
         if IN_DESIGNER:
             self.statusItem = self._status_item
 
-    @pyqtProperty(str)
+    @Property(str)
     def statusItem(self):
         """The name of the linuxcnc.stat item that the label should
             display the value of.

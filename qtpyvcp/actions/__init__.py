@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QAction, QPushButton, QCheckBox, QSlider, QSpinBox, QComboBox
+from qtpy.QtWidgets import QAction, QPushButton, QCheckBox, QSlider, QSpinBox, QComboBox
 
 import machine_actions as machine
 import program_actions as program

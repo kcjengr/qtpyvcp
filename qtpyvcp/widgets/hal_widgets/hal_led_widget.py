@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from PyQt5.QtCore import pyqtSlot, pyqtProperty
+from qtpy.QtCore import Slot, Property
 
 from qtpyvcp.widgets.base_widgets.led_widget import LEDWidget
 from qtpyvcp.utilities.obj_status import HALStatus
@@ -23,7 +23,7 @@ class HalLedWidget(LEDWidget):
     def getHalPin(self):
         return self._hal_pin
 
-    @pyqtSlot(str)
+    @Slot(str)
     def setHalPin(self, hal_pin):
         self._hal_pin = hal_pin
         try:
@@ -35,7 +35,7 @@ class HalLedWidget(LEDWidget):
         self.setState(pin.getValue())
         log.debug("HAL LED connected to yellow<{}>".format(hal_pin))
 
-    hal_pin_name = pyqtProperty(str, getHalPin, setHalPin)
+    hal_pin_name = Property(str, getHalPin, setHalPin)
 
 
 if __name__ == "__main__":

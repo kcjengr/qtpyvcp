@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 
-from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtCore import *
-# pyqtSlot, pyqtProperty, Q_ENUMS
-from PyQt5.QtGui import *
+from qtpy.QtWidgets import QPushButton
+from qtpy.QtCore import Qt, Slot, Property, QSize
+from qtpy.QtGui import QColor
 
 from qtpyvcp.utilities import action
 from qtpyvcp.widgets.base_widgets.led_widget import LEDWidget
@@ -65,7 +64,7 @@ class LEDButton(QPushButton):
     def getLedDiameter(self):
         return self.led.getDiameter()
 
-    @pyqtSlot(int)
+    @Slot(int)
     def setLedDiameter(self, value):
         self.led.setDiameter(value)
         self.placeLed()
@@ -73,18 +72,18 @@ class LEDButton(QPushButton):
     def getLedColor(self):
         return self.led.getColor()
 
-    @pyqtSlot(QColor)
+    @Slot(QColor)
     def setLedColor(self, value):
         self.led.setColor(value)
 
     def getAlignment(self):
         return self._alignment
 
-    @pyqtSlot(Qt.Alignment)
+    @Slot(Qt.Alignment)
     def setAlignment(self, value):
         self._alignment = Qt.Alignment(value)
         self.update()
 
-    diameter = pyqtProperty(int, getLedDiameter, setLedDiameter)
-    color = pyqtProperty(QColor, getLedColor, setLedColor)
-    alignment = pyqtProperty(Qt.Alignment, getAlignment, setAlignment)
+    diameter = Property(int, getLedDiameter, setLedDiameter)
+    color = Property(QColor, getLedColor, setLedColor)
+    alignment = Property(Qt.Alignment, getAlignment, setAlignment)

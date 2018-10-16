@@ -3,7 +3,7 @@
 import os
 import time
 
-from PyQt5.QtWidgets import QApplication
+from qtpy.QtWidgets import QApplication
 
 from qtpyvcp.utilities import logger
 from qtpyvcp.core import Status, Action, Prefs, Info

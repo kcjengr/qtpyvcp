@@ -18,8 +18,8 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5.QtWidgets import QDialog, QLabel, QHBoxLayout, QWidget
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtBoundSignal, pyqtSlot, QTimer, QThread
+from qtpy.QtWidgets import QDialog, QLabel, QHBoxLayout, QWidget
+from qtpy.QtCore import QObject, Signal, Slot, QTimer, QThread
 
 import os
 import time
@@ -134,135 +134,135 @@ class _Status(QObject):
     timer = QTimer()
 
     # Queues
-    active_queue = pyqtSignal(int)          # number of motions blending
-    queue = pyqtSignal(int)                 # current size of the trajectory planner queue
-    queue_full = pyqtSignal(bool)           # the trajectory planner queue full flag
-    queued_mdi_commands = pyqtSignal(int)   #
+    active_queue = Signal(int)          # number of motions blending
+    queue = Signal(int)                 # current size of the trajectory planner queue
+    queue_full = Signal(bool)           # the trajectory planner queue full flag
+    queued_mdi_commands = Signal(int)   #
 
     # Positions
-    position = pyqtSignal(tuple)            # trajectory position
-    actual_position = pyqtSignal(tuple)     # current position, in machine units
-    joint_position = pyqtSignal(tuple)      # joint commanded positions
-    joint_actual_position = pyqtSignal(tuple) # joint actual positions
-    dtg = pyqtSignal(tuple)                 # DTG per axis, as reported by trajectory planner
-    distance_to_go = pyqtSignal(float)      # vector DTG, as reported by trajectory planner
+    position = Signal(tuple)            # trajectory position
+    actual_position = Signal(tuple)     # current position, in machine units
+    joint_position = Signal(tuple)      # joint commanded positions
+    joint_actual_position = Signal(tuple) # joint actual positions
+    dtg = Signal(tuple)                 # DTG per axis, as reported by trajectory planner
+    distance_to_go = Signal(float)      # vector DTG, as reported by trajectory planner
 
     # Velocities
-    current_vel = pyqtSignal(float)         # current velocity in user units per second
-    velocity = pyqtSignal(float)            # unclear
+    current_vel = Signal(float)         # current velocity in user units per second
+    velocity = Signal(float)            # unclear
 
     # Offsets
-    g5x_index = pyqtSignal([int], [str])    # active coordinate system index, G54=1, G55=2 etc
-    g5x_offset = pyqtSignal(tuple)          # offset of the currently active coordinate system
-    g92_offset = pyqtSignal(tuple)          # values of the current g92 offset
-    tool_offset = pyqtSignal(tuple)         # offset values of the current tool
-    rotation_xy = pyqtSignal(float)         # current XY rotation angle around Z axis
+    g5x_index = Signal([int], [str])    # active coordinate system index, G54=1, G55=2 etc
+    g5x_offset = Signal(tuple)          # offset of the currently active coordinate system
+    g92_offset = Signal(tuple)          # values of the current g92 offset
+    tool_offset = Signal(tuple)         # offset values of the current tool
+    rotation_xy = Signal(float)         # current XY rotation angle around Z axis
 
     # I/O
-    ain = pyqtSignal(tuple)                 # current value of the analog input pins
-    aout = pyqtSignal(tuple)                # current value of the analog output pins
-    din = pyqtSignal(tuple)                 # current value of the digital input pins
-    dout = pyqtSignal(tuple)                # current value of the digital output pins
+    ain = Signal(tuple)                 # current value of the analog input pins
+    aout = Signal(tuple)                # current value of the analog output pins
+    din = Signal(tuple)                 # current value of the digital input pins
+    dout = Signal(tuple)                # current value of the digital output pins
 
     # Cooling
-    mist = pyqtSignal(bool)                 # mist self.status
-    flood = pyqtSignal(bool)                # flood self.status, either FLOOD_OFF or FLOOD_ON
+    mist = Signal(bool)                 # mist self.status
+    flood = Signal(bool)                # flood self.status, either FLOOD_OFF or FLOOD_ON
 
     # M-codes and G-codes
-    mcodes = pyqtSignal([tuple], [str])     # currently active M-codes
-    gcodes = pyqtSignal([tuple], [str])     # active G-codes for each modal group
+    mcodes = Signal([tuple], [str])     # currently active M-codes
+    gcodes = Signal([tuple], [str])     # active G-codes for each modal group
 
     # Home and Limit
-    homed = pyqtSignal(tuple)               # homed flag for each joint
-    inpos = pyqtSignal(bool)                # machine-in-position flag
-    limit = pyqtSignal(tuple)               # axis limit self.status masks
+    homed = Signal(tuple)               # homed flag for each joint
+    inpos = Signal(bool)                # machine-in-position flag
+    limit = Signal(tuple)               # axis limit self.status masks
 
     # Delays
-    delay_left = pyqtSignal(float)          # remaining time on dwell (G4) command, seconds
-    input_timeout = pyqtSignal(bool)        # flag for M66 timer in progress
+    delay_left = Signal(float)          # remaining time on dwell (G4) command, seconds
+    input_timeout = Signal(bool)        # flag for M66 timer in progress
 
     # Lube
-    lube = pyqtSignal(bool)                 # lube on flag
-    lube_level = pyqtSignal(int)            # lube level, reflects iocontrol.0.lube_level.
+    lube = Signal(bool)                 # lube on flag
+    lube_level = Signal(int)            # lube level, reflects iocontrol.0.lube_level.
 
     # Program control
-    optional_stop = pyqtSignal(bool)        # option stop enables flag
-    block_delete = pyqtSignal(bool)         # block delete current self.status
-    paused = pyqtSignal(bool)               # motion paused flag
-    feed_hold_enabled = pyqtSignal(bool)    # enable flag for feed hold
+    optional_stop = Signal(bool)        # option stop enables flag
+    block_delete = Signal(bool)         # block delete current self.status
+    paused = Signal(bool)               # motion paused flag
+    feed_hold_enabled = Signal(bool)    # enable flag for feed hold
 
     # Probe
-    probe_tripped = pyqtSignal(bool)        # probe tripped flag (latched)
-    probe_val = pyqtSignal(bool)            # reflects value of the motion.probe-input pin
-    probed_position = pyqtSignal(tuple)     # position where probe tripped
-    probing = pyqtSignal(bool)              # probing in progress flag
+    probe_tripped = Signal(bool)        # probe tripped flag (latched)
+    probe_val = Signal(bool)            # reflects value of the motion.probe-input pin
+    probed_position = Signal(tuple)     # position where probe tripped
+    probing = Signal(bool)              # probing in progress flag
 
     # Program File
-    file = pyqtSignal(str)                  # path of currently loaded gcode file
-    program_units = pyqtSignal([int], [str])# one of CANON_UNITS_INCHES=1, CANON_UNITS_MM=2
-    motion_line = pyqtSignal(int)           # source line number motion is currently executing
-    current_line = pyqtSignal(int)          # currently executing line
-    read_line = pyqtSignal(int)             # line the RS274NGC interpreter is currently reading
-    call_level = pyqtSignal(int)            #
+    file = Signal(str)                  # path of currently loaded gcode file
+    program_units = Signal([int], [str])# one of CANON_UNITS_INCHES=1, CANON_UNITS_MM=2
+    motion_line = Signal(int)           # source line number motion is currently executing
+    current_line = Signal(int)          # currently executing line
+    read_line = Signal(int)             # line the RS274NGC interpreter is currently reading
+    call_level = Signal(int)            #
 
     # Overrides
-    feedrate = pyqtSignal(float)            # feed-rate override, 0-1
-    rapidrate = pyqtSignal(float)           # rapid-rate override, 0-1
-    max_velocity = pyqtSignal(float)        # max velocity in machine units/s
-    feed_override_enabled = pyqtSignal(bool)# enable flag for feed override
-    adaptive_feed_enabled = pyqtSignal(bool)# self.status of adaptive feedrate override
+    feedrate = Signal(float)            # feed-rate override, 0-1
+    rapidrate = Signal(float)           # rapid-rate override, 0-1
+    max_velocity = Signal(float)        # max velocity in machine units/s
+    feed_override_enabled = Signal(bool)# enable flag for feed override
+    adaptive_feed_enabled = Signal(bool)# self.status of adaptive feedrate override
 
     # State
-    enabled = pyqtSignal(bool)              # trajectory planner enabled
-    estop = pyqtSignal([int], [bool])       # linuxcnc.STATE_ESTOP or not
-    state = pyqtSignal([int], [str])        # current command execution status. One of RCS_DONE, RCS_EXEC, RCS_ERROR.
-    exec_state = pyqtSignal([int], [str])   # task execution state
-    task_mode = pyqtSignal([int], [str])    # current task mode
-    task_paused = pyqtSignal(bool)          # task paused flag
-    task_state = pyqtSignal([int], [str])   # current task state
-    motion_mode = pyqtSignal([int], [str])  # mode of the motion controller
-    motion_type = pyqtSignal([int], [str])  # type of the currently executing motion
-    interp_state = pyqtSignal([int], [str]) # current state of RS274NGC interpreter
-    interpreter_errcode = pyqtSignal([int], [str]) # current RS274NGC interpreter return code
-    settings = pyqtSignal(tuple)            # interpreter settings. (sequence_number, feed_rate, speed)
+    enabled = Signal(bool)              # trajectory planner enabled
+    estop = Signal([int], [bool])       # linuxcnc.STATE_ESTOP or not
+    state = Signal([int], [str])        # current command execution status. One of RCS_DONE, RCS_EXEC, RCS_ERROR.
+    exec_state = Signal([int], [str])   # task execution state
+    task_mode = Signal([int], [str])    # current task mode
+    task_paused = Signal(bool)          # task paused flag
+    task_state = Signal([int], [str])   # current task state
+    motion_mode = Signal([int], [str])  # mode of the motion controller
+    motion_type = Signal([int], [str])  # type of the currently executing motion
+    interp_state = Signal([int], [str]) # current state of RS274NGC interpreter
+    interpreter_errcode = Signal([int], [str]) # current RS274NGC interpreter return code
+    settings = Signal(tuple)            # interpreter settings. (sequence_number, feed_rate, speed)
 
-    jog_mode_signal = pyqtSignal(bool)             # jog mode = true
-    linear_units = pyqtSignal([float], [str])
-    angular_units = pyqtSignal([float], [str])
+    jog_mode_signal = Signal(bool)             # jog mode = true
+    linear_units = Signal([float], [str])
+    angular_units = Signal([float], [str])
 
     # Tool
-    tool_in_spindle = pyqtSignal(int)       # current tool number
-    pocket_prepped = pyqtSignal(int)        # Tx command completed, and this pocket is prepared
-    tool_table = pyqtSignal(tuple)          # list of tool entries
+    tool_in_spindle = Signal(int)       # current tool number
+    pocket_prepped = Signal(int)        # Tx command completed, and this pocket is prepared
+    tool_table = Signal(tuple)          # list of tool entries
 
     # Extended status signals
-    axis_positions = pyqtSignal(tuple)      # ABS, REL and DTG axis values
-    joint_positions = pyqtSignal(tuple)     # joint pos respecting INI settings
-    file_loaded = pyqtSignal(str)           # file loaded
+    axis_positions = Signal(tuple)      # ABS, REL and DTG axis values
+    joint_positions = Signal(tuple)     # joint pos respecting INI settings
+    file_loaded = Signal(str)           # file loaded
 
     # interpreter settings
-    feed = pyqtSignal(float)                # Current requested feed
-    speed = pyqtSignal(float)               # Current requested speed
+    feed = Signal(float)                # Current requested feed
+    speed = Signal(float)               # Current requested speed
 
-    on = pyqtSignal(bool)
-    moving = pyqtSignal(bool)
-    all_homed = pyqtSignal(bool)
+    on = Signal(bool)
+    moving = Signal(bool)
+    all_homed = Signal(bool)
 
     # Gcode Backplot
-    backplot_line_selected = pyqtSignal(int)
-    backplot_loading_started = pyqtSignal()
-    backplot_loading_progress = pyqtSignal(int)
-    backplot_loading_finished = pyqtSignal()
-    backplot_gcode_error = pyqtSignal(str)
-    reload_backplot = pyqtSignal()
+    backplot_line_selected = Signal(int)
+    backplot_loading_started = Signal()
+    backplot_loading_progress = Signal(int)
+    backplot_loading_finished = Signal()
+    backplot_gcode_error = Signal(str)
+    reload_backplot = Signal()
 
-    recent_files_changed = pyqtSignal(tuple)
+    recent_files_changed = Signal(tuple)
 
     # Emitted when the UI is loaded
-    init_ui = pyqtSignal()
+    init_ui = Signal()
 
     # Emitted on app shutdown
-    on_shutown = pyqtSignal()
+    on_shutown = Signal()
 
     def __init__(self):
         super(_Status, self).__init__()
@@ -511,29 +511,29 @@ class _Joint(QObject):
     """
 
     # `linuxcnc.stat.join[n]` attribute signals
-    jointType = pyqtSignal(int)         # reflects [JOINT_n]TYPE
-    backlash = pyqtSignal(float)        # backlash in machine units
-    enabled = pyqtSignal(bool)          # enabled flag
-    fault = pyqtSignal(bool)            # active fault flag
-    ferror_current = pyqtSignal(float)  # current following error
-    ferror_highmark = pyqtSignal(float) # magnitude of max following error
-    homed = pyqtSignal(bool)            # homed flag
-    homing = pyqtSignal(bool)           # currently homing flag
-    inpos = pyqtSignal(bool)            # in position flag
-    input = pyqtSignal(bool)            # current input position
-    max_ferror = pyqtSignal(float)      # reflects [JOINT_n]FERROR
-    max_hard_limit = pyqtSignal(bool)   # max hard limit exceeded flag
-    max_soft_limit = pyqtSignal(bool)   # max soft limit exceeded flag
-    min_hard_limit = pyqtSignal(bool)   # min hard limit exceeded flag
-    min_soft_limit = pyqtSignal(bool)   # max soft limit exceeded flag
-    output = pyqtSignal(float)          # commanded output position
-    override_limits = pyqtSignal(bool)  # override limits flag
-    velocity = pyqtSignal(float)        # current velocity
+    jointType = Signal(int)         # reflects [JOINT_n]TYPE
+    backlash = Signal(float)        # backlash in machine units
+    enabled = Signal(bool)          # enabled flag
+    fault = Signal(bool)            # active fault flag
+    ferror_current = Signal(float)  # current following error
+    ferror_highmark = Signal(float) # magnitude of max following error
+    homed = Signal(bool)            # homed flag
+    homing = Signal(bool)           # currently homing flag
+    inpos = Signal(bool)            # in position flag
+    input = Signal(bool)            # current input position
+    max_ferror = Signal(float)      # reflects [JOINT_n]FERROR
+    max_hard_limit = Signal(bool)   # max hard limit exceeded flag
+    max_soft_limit = Signal(bool)   # max soft limit exceeded flag
+    min_hard_limit = Signal(bool)   # min hard limit exceeded flag
+    min_soft_limit = Signal(bool)   # max soft limit exceeded flag
+    output = Signal(float)          # commanded output position
+    override_limits = Signal(bool)  # override limits flag
+    velocity = Signal(float)        # current velocity
 
-    units = pyqtSignal(float)
-    min_ferror= pyqtSignal(float)
-    max_position_limit = pyqtSignal(float)
-    min_position_limit = pyqtSignal(float)
+    units = Signal(float)
+    min_ferror= Signal(float)
+    max_position_limit = Signal(float)
+    min_position_limit = Signal(float)
 
     def __init__(self, status, number):
         super(_Joint, self).__init__()
@@ -557,16 +557,16 @@ class _Spindle(QObject):
     """
 
     # `linuxcnc.stat.spindle[n]` attribute signals
-    brake = pyqtSignal(bool)            # value of the spindle brake flag
-    direction = pyqtSignal(int)         # spindle rotational, forward=1, reverse=-1
-    enabled = pyqtSignal(bool)          # value of the spindle enabled flag
-    override_enabled = pyqtSignal(bool) # spindle override enabled flag
-    override = pyqtSignal(float)        # spindle override value, 0-1
-    speed = pyqtSignal(float)           # spindle speed
-    increasing = pyqtSignal(bool)       # spindle speed increasing flag, unclear
-    orient_state = pyqtSignal(int)      # orient state
-    orient_fault = pyqtSignal(bool)     # orient fault
-    homed = pyqtSignal(bool)            # not implemented
+    brake = Signal(bool)            # value of the spindle brake flag
+    direction = Signal(int)         # spindle rotational, forward=1, reverse=-1
+    enabled = Signal(bool)          # value of the spindle enabled flag
+    override_enabled = Signal(bool) # spindle override enabled flag
+    override = Signal(float)        # spindle override value, 0-1
+    speed = Signal(float)           # spindle speed
+    increasing = Signal(bool)       # spindle speed increasing flag, unclear
+    orient_state = Signal(int)      # orient state
+    orient_fault = Signal(bool)     # orient fault
+    homed = Signal(bool)            # not implemented
 
     def __init__(self, status, number):
         super(_Spindle, self).__init__()
@@ -592,8 +592,8 @@ class _Error(QObject):
 
     error = linuxcnc.error_channel()
 
-    new_error = pyqtSignal(str)
-    new_message = pyqtSignal(str)
+    new_error = Signal(str)
+    new_message = Signal(str)
 
     def __init__(self, parent=None):
         super(_Error, self).__init__(parent)

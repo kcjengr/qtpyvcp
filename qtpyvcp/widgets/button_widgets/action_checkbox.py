@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from PyQt5.QtWidgets import QCheckBox
-from PyQt5.QtCore import pyqtSlot, pyqtProperty, Q_ENUMS
+from qtpy.QtWidgets import QCheckBox
+from qtpy.QtCore import Property
 
 from qtpyvcp.actions import bindWidget
 
@@ -19,7 +19,7 @@ class ActionCheckBox(QCheckBox):
         if action is not None:
             self.actionName = action
 
-    @pyqtProperty(str)
+    @Property(str)
     def actionName(self):
         """Property for the name of the action the checkbox triggers (str).
 
