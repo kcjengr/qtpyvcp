@@ -21,7 +21,7 @@
 import os
 
 from qtpy import uic
-from qtpy.QtCore import Qt, QEvent, pyqtSlot, pyqtProperty
+from qtpy.QtCore import Qt, QEvent, Slot, Property
 from qtpy.QtGui import QColor
 from qtpy.QtWidgets import QWidget, QBoxLayout, QSizePolicy
 from qtpyvcp.core import Status, Action, Info
@@ -80,7 +80,7 @@ class JogIncrementWidget(QWidget):
     def getLedDiameter(self):
         return self._ledDiameter
 
-    @pyqtSlot(int)
+    @Slot(int)
     def setLedDiameter(self, value):
         self._ledDiameter = value
         self.placeLed()
@@ -88,7 +88,7 @@ class JogIncrementWidget(QWidget):
     def getLedColor(self):
         return self._ledColor
 
-    @pyqtSlot(QColor)
+    @Slot(QColor)
     def setLedColor(self, value):
         self._ledColor = value
         self.placeLed()
@@ -96,7 +96,7 @@ class JogIncrementWidget(QWidget):
     def getAlignment(self):
         return self._alignment
 
-    @pyqtSlot(Qt.Alignment)
+    @Slot(Qt.Alignment)
     def setAlignment(self, value):
         self._alignment = Qt.Alignment(value)
         self.placeLed()
@@ -107,7 +107,7 @@ class JogIncrementWidget(QWidget):
         else:
             return Qt.Vertical
 
-    @pyqtSlot(Qt.Orientation)
+    @Slot(Qt.Orientation)
     def setOrientation(self, value):
         if value == Qt.Horizontal:
             self._container.setDirection(QBoxLayout.LeftToRight)
@@ -118,15 +118,15 @@ class JogIncrementWidget(QWidget):
     def getLayoutSpacing(self):
         return self._container.spacing()
 
-    @pyqtSlot(int)
+    @Slot(int)
     def setLayoutSpacing(self, value):
         self._container.setSpacing(value)
 
-    diameter = pyqtProperty(int, getLedDiameter, setLedDiameter)
-    color = pyqtProperty(QColor, getLedColor, setLedColor)
-    alignment = pyqtProperty(Qt.Alignment, getAlignment, setAlignment)
-    orientation = pyqtProperty(Qt.Orientation, getOrientation, setOrientation)
-    layoutSpacing = pyqtProperty(int, getLayoutSpacing, setLayoutSpacing)
+    diameter = Property(int, getLedDiameter, setLedDiameter)
+    color = Property(QColor, getLedColor, setLedColor)
+    alignment = Property(Qt.Alignment, getAlignment, setAlignment)
+    orientation = Property(Qt.Orientation, getOrientation, setOrientation)
+    layoutSpacing = Property(int, getLayoutSpacing, setLayoutSpacing)
 
 if __name__ == "__main__":
     import sys

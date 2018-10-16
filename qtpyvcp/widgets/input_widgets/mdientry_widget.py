@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 import os
-from PyQt5.QtWidgets import QLineEdit, QCompleter
-from PyQt5.QtCore import Qt, QEvent, QStringListModel
-from PyQt5.QtGui import QKeySequence, QValidator
+from qtpy.QtWidgets import QLineEdit, QCompleter
+from qtpy.QtCore import Qt, QEvent, QStringListModel
+from qtpy.QtGui import QKeySequence, QValidator
 
 from qtpyvcp.core import Status, Action, Info
 STATUS = Status()
@@ -76,7 +76,7 @@ class MDIEntry(QLineEdit):
 
 if __name__ == "__main__":
     import sys
-    from PyQt5.QtWidgets import QApplication
+    from qtpy.QtWidgets import QApplication
     app = QApplication(sys.argv)
     w = MDIEntry()
     w.show()
