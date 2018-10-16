@@ -21,8 +21,7 @@
 import os
 
 from qtpy.QtWidgets import QLabel
-from qtpy.QtCore import Slot, Property, Q_ENUMS
-# FixMe: PySide2 does not seem to have Q_ENUMS, but we should not uses then anyway ..
+from qtpy.QtCore import Slot, Property
 
 from qtpyvcp.core import Status, Action, Info
 STATUS = Status()
@@ -31,11 +30,15 @@ INFO = Info()
 
 from qtpyvcp.enums import Axis, ReferenceType, Units
 
+IN_DESIGNER = os.getenv('DESIGNER') != None
+
 class DROWidget(QLabel, Axis, ReferenceType, Units):
 
-    Q_ENUMS(Axis)
-    Q_ENUMS(ReferenceType)
-    Q_ENUMS(Units)
+    if IN_DESIGNER:
+        from PyQt5.QtCore import Q_ENUMS
+        Q_ENUMS(Axis)
+        Q_ENUMS(ReferenceType)
+        Q_ENUMS(Units)
 
     coords = INFO.getCoordinates()
     machine_metric = INFO.getIsMachineMetric()

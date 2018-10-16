@@ -2,11 +2,12 @@ import os
 import pyudev
 import psutil
 
-from qtpy.QtCore import Slot, Property, Q_ENUMS, Signal, QFile, QFileInfo, QDir, QIODevice
+from qtpy.QtCore import Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevice
 from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, QApplication, QAbstractItemView
 
 from qtpyvcp.utilities.info import Info
 
+IN_DESIGNER = os.getenv('DESIGNER') != None
 
 class TableType(object):
     Local = 0
@@ -73,7 +74,10 @@ class RemovableDeviceComboBox(QComboBox):
 
 
 class FileSystemTable(QTableView, TableType):
-    Q_ENUMS(TableType)
+
+    if IN_DESIGNER:
+        from PyQt5.QtCore import Q_ENUMS
+        Q_ENUMS(TableType)
 
     transferFileRequest = Signal(str)
     rootChanged = Signal(str)
