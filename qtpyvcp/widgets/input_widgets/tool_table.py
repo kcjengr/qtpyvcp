@@ -26,9 +26,9 @@ import sys
 
 import linuxcnc
 
-from PyQt5.QtCore import pyqtSlot, pyqtProperty, Qt, QModelIndex, QAbstractTableModel, QRegExp
-from PyQt5.QtGui import QValidator, QRegExpValidator, QStandardItemModel
-from PyQt5.QtWidgets import QTableView, QMessageBox, QAbstractItemView, QSpinBox, QDoubleSpinBox, \
+from qtpy.QtCore import Slot, Property, Qt, QModelIndex, QAbstractTableModel, QRegExp
+from qtpy.QtGui import QValidator, QRegExpValidator, QStandardItemModel
+from qtpy.QtWidgets import QTableView, QMessageBox, QAbstractItemView, QSpinBox, QDoubleSpinBox, \
     QLineEdit, QStyledItemDelegate
 
 # Set up logging
@@ -345,7 +345,7 @@ class ToolTable(QTableView):
         self.loadToolTable()
         self.tool_table_loaded = True
 
-    @pyqtSlot()
+    @Slot()
     def loadToolTable(self):
         if self.tool_table_loaded and not self.ask_dialog(
                 "Do you wan't to re-load the tool table?\n all unsaved changes will be lost."):
@@ -367,7 +367,7 @@ class ToolTable(QTableView):
 
         self.selectRow(0)
 
-    @pyqtSlot()
+    @Slot()
     def saveToolTable(self):
         if not self.ask_dialog("Do you wan't to save and load this tool table into the system?"):
             return
@@ -384,19 +384,19 @@ class ToolTable(QTableView):
 
         self.cmd.load_tool_table()
 
-    @pyqtSlot()
+    @Slot()
     def insertToolAbove(self):
         selected = self.selectedRow()
         self.model.newTool(selected, -1)
         self.selectRow(selected)
 
-    @pyqtSlot()
+    @Slot()
     def insertToolBelow(self):
         selected = self.selectedRow()
         self.model.newTool(selected, +1)
         self.selectRow(selected)
 
-    @pyqtSlot()
+    @Slot()
     def deleteSelectedTool(self):
         current_row = self.selectedRow()
         if current_row == -1:
@@ -409,7 +409,7 @@ class ToolTable(QTableView):
 
         self.model.removeTool(current_row)
 
-    @pyqtSlot()
+    @Slot()
     def removeAllTools(self, confirm=True):
         if confirm:
             if not self.ask_dialog("Do you wan't to delete the whole tool table?"):

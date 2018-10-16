@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import os
-from PyQt5.QtWidgets import QComboBox
-from PyQt5.QtCore import Qt, QEvent
+from qtpy.QtWidgets import QComboBox
+from qtpy.QtCore import Qt, QEvent
 
 from qtpyvcp.core import Status
 STATUS = Status()

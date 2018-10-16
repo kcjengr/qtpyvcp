@@ -20,10 +20,10 @@
 
 import os
 
-from PyQt5 import uic
-from PyQt5.QtCore import Qt, QEvent, pyqtSlot, pyqtProperty
-from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QWidget, QBoxLayout, QSizePolicy
+from qtpy import uic
+from qtpy.QtCore import Qt, QEvent, pyqtSlot, pyqtProperty
+from qtpy.QtGui import QColor
+from qtpy.QtWidgets import QWidget, QBoxLayout, QSizePolicy
 from qtpyvcp.core import Status, Action, Info
 from qtpyvcp.widgets.button_widgets.led_button import LEDButton
 
@@ -130,7 +130,7 @@ class JogIncrementWidget(QWidget):
 
 if __name__ == "__main__":
     import sys
-    from PyQt5.QtWidgets import QApplication
+    from qtpy.QtWidgets import QApplication
     app = QApplication(sys.argv)
     w = JogIncrementWidget(standalone=True)
     w.show()
