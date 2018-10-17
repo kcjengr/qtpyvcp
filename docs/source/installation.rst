@@ -28,6 +28,7 @@ Core dependencies::
   sudo apt-get install python-pyqt5.qtopengl
   sudo apt-get install python-pyqt5.qsci
   sudo apt-get install python-docopt
+  sudo apt-get install python-qtpy
 
 Required for Camera widget::
 

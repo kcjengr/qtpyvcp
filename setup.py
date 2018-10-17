@@ -17,6 +17,9 @@ setup(
     include_package_data=True,
     install_requires=[
     'docopt',
+    'qtpy',
+    'pyudev',
+    'psutil',
     ],
     entry_points={
         'console_scripts': [
