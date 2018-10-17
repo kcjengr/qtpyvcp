@@ -4,7 +4,7 @@
 import sys
 import time
 import linuxcnc
-from PyQt5.QtWidgets import QComboBox
+from qtpy.QtWidgets import QComboBox
 
 # Set up logging
 from qtpyvcp.utilities import logger
