@@ -65,6 +65,27 @@ class Status(QObject):
             cls._instance = _Status()
         return cls._instance
 
+
+class StatusItem(QObject):
+
+    valueChanged = Signal([bool], [int], [str], [tuple])
+
+    def __init__(self, stat_item, value_type=None, description=''):
+        super(StatusItem, self).__init__()
+        self.stat_item = stat_item
+        self.value_type = value_type
+
+    def connect(self, *args, **kwargs):
+        self.valueChanged.connect(*args, **kwargs)
+
+    def disconnect(self, *args, **kwargs):
+        self.valueChanged.disconnect(*args, **kwargs)
+
+    def update(self):
+        print "Updating", self.stat_item
+        self.valueChanged[self.value_type].emit(self.stat_item)
+
+
 class _Status(QObject):
 
     STATE_STRING_LOOKUP = {
@@ -247,6 +268,9 @@ class _Status(QObject):
     moving = Signal(bool)
     all_homed = Signal(bool)
 
+
+    test_sig = StatusItem(stat.joint, int)
+
     # Gcode Backplot
     backplot_line_selected = Signal(int)
     backplot_loading_started = Signal()
@@ -358,6 +382,9 @@ class _Status(QObject):
 
                 # update old values dict
                 self.old[key] = new_value
+
+
+        self.test_sig.update()
 
         # joint status updates
         for joint in self.joint:
