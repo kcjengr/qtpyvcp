@@ -7,12 +7,14 @@
 [irc-badge]: https://img.shields.io/badge/Chat%20on%20IRC-%23hazzy-green.svg
 
 
-# QtPyVCP: A VCP toolkit for LinuxCNC
+# QtPyVCP - QtPy Virtual Control Panel
 
-QtPyVCP is a Virtual Control Panel toolkit for LinuxCNC based on PyQt5
-and coded in Python. It leverages QtDesigner and it's custom widget
-support to make develop of no-code custom VCPs easy and advanced
-VCPs possible.
+QtPyVCP is a Qt and Python based framework for building virtual control panels
+for the LinuxCNC machine control.
+
+The goal is to provide a no-code, drag-and-drop system for making simple VCPs,
+as well as a straightforward, flexible and extensible framework to aid in
+building complex VCPs.
 
 
 ## Installation and Usage
@@ -32,7 +34,7 @@ See the [documentation](https://kcjengr.github.io/qtpyvcp/).
 
 * LinuxCNC master (2.8~pre)
 * Python 2.7
-* PyQt5
+* PyQt5 or PySide2
 
 QtPyVCP is developed and tested using the LinuxCNC Debian 9 (stretch)
 [Live ISO](http://www.linuxcnc.org/testing-stretch-rtpreempt/). It should run
