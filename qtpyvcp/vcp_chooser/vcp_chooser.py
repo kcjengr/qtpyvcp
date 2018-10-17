@@ -17,6 +17,8 @@ class VCPChooser(QDialog):
         super(VCPChooser, self).__init__()
         uic.loadUi(os.path.join(CHOOSER_DIR, 'vcp_chooser.ui'), self)
 
+        self.setAttribute(Qt.WA_DeleteOnClose, True)
+
         self.opts = opts
 
         # example VCP section

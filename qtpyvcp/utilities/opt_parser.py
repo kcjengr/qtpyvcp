@@ -120,11 +120,14 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
     # show the chooser if the --chooser flag was specified
     if opts.chooser or not opts.get('vcp', True):
         from qtpyvcp.vcp_chooser import VCPChooser
-        from qtpy.QtWidgets import QApplication
+        from qtpy.QtWidgets import QApplication, qApp
         app = QApplication([])
         result = VCPChooser(opts).exec_()
         if result == VCPChooser.Rejected:
             sys.exit()
+
+        # destroy the evidence
+        qApp.deleteLater()
         del(app)
 
     # init the logger
