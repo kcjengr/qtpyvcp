@@ -3,16 +3,16 @@
 import os
 import time
 
-from PyQt5.QtWidgets import QApplication
+from qtpy.QtWidgets import QApplication
 
-from QtPyVCP.utilities import logger
-from QtPyVCP.core import Status, Action, Prefs, Info
-from QtPyVCP.widgets.form_widgets.main_window import VCPMainWindow
+from qtpyvcp.utilities import logger
+from qtpyvcp.core import Status, Action, Prefs, Info
+from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
 # try:
 #     import probe_basic_ui
 # except ImportError:
-#     from QtPyVCP.tools.qcompile import compile
+#     from qtpyvcp.tools.qcompile import compile
 #     compile(packages=[os.path.dirname(__file__),])
 #     import probe_basic_ui
 

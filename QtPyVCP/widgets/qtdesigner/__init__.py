@@ -1,2 +1,0 @@
-from QtPyVCP.widgets.qtdesigner.designer_plugin import _DesignerPlugin
-from QtPyVCP.widgets.qtdesigner.plugin_extension import _PluginExtension

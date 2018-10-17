@@ -1,5 +1,5 @@
 import os
-from QtPyVCP.widgets.form_widgets.main_window import VCPMainWindow
+from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
 VCP_DIR = os.path.abspath(os.path.dirname(__file__))
 UI_FILE = os.path.join(VCP_DIR, 'mini.ui')

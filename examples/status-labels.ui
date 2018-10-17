@@ -26,7 +26,7 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="StatusLabelNew" name="statuslabelnew_4">
+   <widget class="StatusLabel" name="statuslabelnew_4">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -51,7 +51,7 @@
      <cstring></cstring>
     </property>
    </widget>
-   <widget class="StatusLabelNew" name="statuslabelnew_7">
+   <widget class="StatusLabel" name="statuslabelnew_7">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -76,7 +76,7 @@
      <cstring></cstring>
     </property>
    </widget>
-   <widget class="StatusLabelNew" name="statuslabelnew_5">
+   <widget class="StatusLabel" name="statuslabelnew_5">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -101,7 +101,7 @@
      <cstring></cstring>
     </property>
    </widget>
-   <widget class="StatusLabelNew" name="statuslabelnew_6">
+   <widget class="StatusLabel" name="statuslabelnew_6">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -126,7 +126,7 @@
      <cstring></cstring>
     </property>
    </widget>
-   <widget class="StatusLabelNew" name="statuslabelnew_8">
+   <widget class="StatusLabel" name="statuslabelnew_8">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -151,7 +151,7 @@
      <cstring></cstring>
     </property>
    </widget>
-   <widget class="StatusLabelNew" name="statuslabelnew">
+   <widget class="StatusLabel" name="statuslabelnew">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -179,7 +179,7 @@
      <cstring></cstring>
     </property>
    </widget>
-   <widget class="StatusLabelNew" name="statuslabelnew_3">
+   <widget class="StatusLabel" name="statuslabelnew_3">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -204,7 +204,7 @@
      <cstring></cstring>
     </property>
    </widget>
-   <widget class="StatusLabelNew" name="statuslabelnew_9">
+   <widget class="StatusLabel" name="statuslabelnew_9">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -229,7 +229,7 @@
      <cstring></cstring>
     </property>
    </widget>
-   <widget class="StatusLabelNew" name="statuslabelnew_11">
+   <widget class="StatusLabel" name="statuslabelnew_11">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -273,7 +273,7 @@
      <string>spindle.0.override</string>
     </property>
    </widget>
-   <widget class="StatusLabelNew" name="statuslabelnew_2">
+   <widget class="StatusLabel" name="statuslabelnew_2">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -298,7 +298,7 @@
      <cstring></cstring>
     </property>
    </widget>
-   <widget class="StatusLabelNew" name="statuslabelnew_10">
+   <widget class="StatusLabel" name="statuslabelnew_10">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -337,7 +337,7 @@
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_13">
+      <widget class="StatusLabel" name="statuslabelnew_13">
        <property name="text">
         <string>&lt;b&gt;enabled:&lt;/b&gt; 0</string>
        </property>
@@ -356,7 +356,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_14">
+      <widget class="StatusLabel" name="statuslabelnew_14">
        <property name="text">
         <string>&lt;b&gt;fault:&lt;/b&gt; 0</string>
        </property>
@@ -375,7 +375,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_15">
+      <widget class="StatusLabel" name="statuslabelnew_15">
        <property name="text">
         <string>&lt;b&gt;ferror:&lt;/b&gt; 0.00000e+00</string>
        </property>
@@ -394,7 +394,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_21">
+      <widget class="StatusLabel" name="statuslabelnew_21">
        <property name="text">
         <string>&lt;b&gt;ferror highmark:&lt;/b&gt; 0.00000e+00</string>
        </property>
@@ -413,7 +413,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_22">
+      <widget class="StatusLabel" name="statuslabelnew_22">
        <property name="text">
         <string>&lt;b&gt;inpos:&lt;/b&gt; 0</string>
        </property>
@@ -432,7 +432,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_16">
+      <widget class="StatusLabel" name="statuslabelnew_16">
        <property name="text">
         <string>&lt;b&gt;homed:&lt;/b&gt; 0</string>
        </property>
@@ -451,7 +451,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_17">
+      <widget class="StatusLabel" name="statuslabelnew_17">
        <property name="text">
         <string>&lt;b&gt;on max limit:&lt;/b&gt; 0</string>
        </property>
@@ -470,7 +470,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_18">
+      <widget class="StatusLabel" name="statuslabelnew_18">
        <property name="text">
         <string>&lt;b&gt;input:&lt;/b&gt; 0.00000e+00</string>
        </property>
@@ -489,7 +489,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_20">
+      <widget class="StatusLabel" name="statuslabelnew_20">
        <property name="text">
         <string>&lt;b&gt;output:&lt;/b&gt; 0.00000e+00</string>
        </property>
@@ -508,7 +508,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_19">
+      <widget class="StatusLabel" name="statuslabelnew_19">
        <property name="text">
         <string>&lt;b&gt;units:&lt;/b&gt; 0.00000e+00</string>
        </property>
@@ -528,7 +528,7 @@
      </item>
     </layout>
    </widget>
-   <widget class="StatusLabelNew" name="statuslabelnew_12">
+   <widget class="StatusLabel" name="statuslabelnew_12">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -565,7 +565,7 @@
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_23">
+      <widget class="StatusLabel" name="statuslabelnew_23">
        <property name="format" stdset="0">
         <string>&lt;b&gt;tool:&lt;/b&gt; {}</string>
        </property>
@@ -578,7 +578,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_28">
+      <widget class="StatusLabel" name="statuslabelnew_28">
        <property name="format" stdset="0">
         <string>&lt;b&gt;enabled:&lt;/b&gt; {}</string>
        </property>
@@ -591,7 +591,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_29">
+      <widget class="StatusLabel" name="statuslabelnew_29">
        <property name="format" stdset="0">
         <string>&lt;b&gt;speed:&lt;/b&gt; {:.1f} rpm</string>
        </property>
@@ -604,7 +604,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_24">
+      <widget class="StatusLabel" name="statuslabelnew_24">
        <property name="format" stdset="0">
         <string>&lt;b&gt;prog speed:&lt;/b&gt; {:.1f} rpm</string>
        </property>
@@ -617,7 +617,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_25">
+      <widget class="StatusLabel" name="statuslabelnew_25">
        <property name="format" stdset="0">
         <string>&lt;b&gt;direction:&lt;/b&gt; {}</string>
        </property>
@@ -630,7 +630,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_26">
+      <widget class="StatusLabel" name="statuslabelnew_26">
        <property name="format" stdset="0">
         <string>&lt;b&gt;override:&lt;/b&gt; {:.0%}</string>
        </property>
@@ -643,7 +643,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_27">
+      <widget class="StatusLabel" name="statuslabelnew_27">
        <property name="format" stdset="0">
         <string>&lt;b&gt;override enabled:&lt;/b&gt; {}</string>
        </property>
@@ -656,7 +656,7 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabelNew" name="statuslabelnew_30">
+      <widget class="StatusLabel" name="statuslabelnew_30">
        <property name="format" stdset="0">
         <string>&lt;b&gt;orient fault:&lt;/b&gt; {}</string>
        </property>
@@ -1031,29 +1031,29 @@
   <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
-   <header>QtPyVCP.widgets.display_widgets.gcode_backplot</header>
+   <header>qtpyvcp.widgets.display_widgets.gcode_backplot</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>VCPMainWindow</class>
    <extends>QMainWindow</extends>
-   <header>QtPyVCP.widgets.form_widgets.main_window</header>
+   <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
   </customwidget>
   <customwidget>
    <class>MDIEntry</class>
    <extends>QLineEdit</extends>
-   <header>QtPyVCP.widgets.input_widgets.mdientry_widget</header>
+   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
   <customwidget>
    <class>ActionSlider</class>
    <extends>QSlider</extends>
-   <header>QtPyVCP.widgets.input_widgets.action_slider</header>
+   <header>qtpyvcp.widgets.input_widgets.action_slider</header>
   </customwidget>
   <customwidget>
-   <class>StatusLabelNew</class>
+   <class>StatusLabel</class>
    <extends>QLabel</extends>
-   <header>QtPyVCP.widgets.display_widgets.status_label</header>
+   <header>qtpyvcp.widgets.display_widgets.status_label</header>
   </customwidget>
  </customwidgets>
  <resources>

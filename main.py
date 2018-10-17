@@ -56,13 +56,13 @@ Note:
 """
 
 import sys
-from QtPyVCP.utilities.opt_parser import parse_opts
+from qtpyvcp.utilities.opt_parser import parse_opts
 
 def main():
     opts = parse_opts(__doc__)
     # We must import the application after the args have been parsed and the
     # environment set up.
-    from QtPyVCP.application import VCPApplication
+    from qtpyvcp.application import VCPApplication
     app = VCPApplication(opts=opts)
     sys.exit(app.exec_())
 

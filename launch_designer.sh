@@ -24,7 +24,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 INI_FILE=$PWD/sim/xyz.ini
-UI_FILE=$DIR/sim/xyz.ui
+UI_FILE=$DIR/examples/mini/mini.ui
 PLUGIN=
 
 usage()
@@ -69,7 +69,7 @@ done
 export INI_FILE_NAME=$INI_FILE
 export CONFIG_DIR=$(dirname -- "$INI_FILE")
 export PYTHONPATH=$DIR:$PYTHONPATH
-export PYQTDESIGNERPATH=$DIR/QtPyVCP/widgets:$PLUGIN
+export PYQTDESIGNERPATH=$DIR/qtpyvcp/widgets:$PLUGIN
 export QT_SELECT=qt5
 
 # QtDesigner sometimes reads old .pyc files, this ensures that it always recompiles

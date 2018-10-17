@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import sys
-from QtPyVCP.utilities.opt_parser import parse_opts
+from qtpyvcp.utilities.opt_parser import parse_opts
 
 __version__ = '0.0.1'
 
@@ -9,7 +9,7 @@ __version__ = '0.0.1'
 opts = parse_opts(vcp_name='Brender', vcp_cmd='brender', vcp_version=__version__)
 
 from brender import MainWindow
-from QtPyVCP.application import VCPApplication
+from qtpyvcp.application import VCPApplication
 
 # initialize the app
 app = VCPApplication(opts=opts)

@@ -3,7 +3,7 @@
 """Main entry point for ProbeBasic.
 
 This module contains the code necessary to be able to launch ProbeBasic
-directly from the command line, without using QtPyVCP. It handles
+directly from the command line, without using qtpyvcp. It handles
 parsing command line args and starting the main application.
 
 Example:
@@ -19,7 +19,7 @@ Example:
 import os
 import sys
 
-from QtPyVCP.utilities.opt_parser import parse_opts
+from qtpyvcp.utilities.opt_parser import parse_opts
 
 # import version number from __init__.py
 from . import __version__
@@ -29,7 +29,7 @@ opts = parse_opts(vcp_name='ProbeBasic', vcp_cmd='probebasic', vcp_version=__ver
 
 # import window and app AFTER the environment has been set
 from probe_basic import ProbeBasic
-from QtPyVCP.application import VCPApplication
+from qtpyvcp.application import VCPApplication
 
 # initialize the app
 app = VCPApplication(opts=opts)
