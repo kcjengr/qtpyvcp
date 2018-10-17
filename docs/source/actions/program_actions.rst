@@ -2,5 +2,5 @@
 Program Actions
 ===============
 
-.. automodule:: QtPyVCP.actions.program_actions
+.. automodule:: qtpyvcp.actions.program_actions
     :members:

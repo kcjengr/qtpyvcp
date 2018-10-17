@@ -2,5 +2,5 @@
 Spindle Actions
 ===============
 
-.. automodule:: QtPyVCP.actions.spindle_actions
+.. automodule:: qtpyvcp.actions.spindle_actions
     :members:

@@ -2,5 +2,5 @@
 Coolant Actions
 ===============
 
-.. automodule:: QtPyVCP.actions.coolant_actions
+.. automodule:: qtpyvcp.actions.coolant_actions
     :members:

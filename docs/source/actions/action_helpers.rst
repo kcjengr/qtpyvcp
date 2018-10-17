@@ -2,8 +2,8 @@
 Action Helpers
 ==============
 
-.. automodule:: QtPyVCP.actions
+.. automodule:: qtpyvcp.actions
     :members:
 
-.. automodule:: QtPyVCP.actions.base_actions
+.. automodule:: qtpyvcp.actions.base_actions
     :members:

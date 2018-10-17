@@ -390,12 +390,12 @@ class Mock(object):
         pass
 
 Mock.mock_modules(
-'PyQt5',
-'PyQt5.QtCore',
-'PyQt5.QtGui',
-'PyQt5.QtWidgets',
+'qtpy',
+'qtpy.QtCore',
+'qtpy.QtGui',
+'qtpy.QtWidgets',
 'docopt'
 )
 
 # mock the status module
-sys.modules['QtPyVCP.utilities.status'] = Mock()
+sys.modules['qtpyvcp.utilities.status'] = Mock()

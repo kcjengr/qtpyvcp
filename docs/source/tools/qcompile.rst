@@ -2,5 +2,5 @@
 QCompile
 ========
 
-.. automodule:: QtPyVCP.tools.qcompile
+.. automodule:: qtpyvcp.tools.qcompile
     :members:

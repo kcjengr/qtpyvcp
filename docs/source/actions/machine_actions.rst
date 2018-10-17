@@ -2,5 +2,5 @@
 Machine Actions
 ===============
 
-.. automodule:: QtPyVCP.actions.machine_actions
+.. automodule:: qtpyvcp.actions.machine_actions
     :members:

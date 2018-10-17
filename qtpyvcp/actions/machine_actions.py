@@ -136,7 +136,6 @@ def _resetMode(interp_state):
     if  PREVIOUS_MODE is not None and interp_state == linuxcnc.INTERP_IDLE:
         if setTaskMode(PREVIOUS_MODE):
             LOG.debug("Successfully reset task_mode after MDI")
-        global PREVIOUS_MODE
         PREVIOUS_MODE = None
 
 STATUS.interp_state.connect(_resetMode)

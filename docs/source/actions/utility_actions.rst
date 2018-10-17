@@ -2,5 +2,5 @@
 Utility Actions
 ===============
 
-.. automodule:: QtPyVCP.actions.tool_actions
+.. automodule:: qtpyvcp.actions.tool_actions
     :members:

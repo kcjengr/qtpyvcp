@@ -2,5 +2,5 @@
 ActionSpinBox
 ==============
 
-.. automodule:: QtPyVCP.widgets.button_widgets.action_spinbox
+.. automodule:: qtpyvcp.widgets.button_widgets.action_spinbox
     :members:

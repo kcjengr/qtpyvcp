@@ -2,5 +2,5 @@
 SubCallButton
 ==============
 
-.. automodule:: QtPyVCP.widgets.button_widgets.subcall_button
+.. automodule:: qtpyvcp.widgets.button_widgets.subcall_button
     :members:
