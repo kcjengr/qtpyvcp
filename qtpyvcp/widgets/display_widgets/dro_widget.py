@@ -73,7 +73,7 @@ class DROWidget(QLabel, Axis, ReferenceType, Units):
         self.setNum(0.1234)
 
         STATUS.axis_positions.connect(self.setPosition)
-        STATUS.program_units.connect(self.updateUnits)
+        STATUS.program_units.onValueChanged(self.updateUnits)
         STATUS.updateAxisPositions()
         self.updateUnits(STATUS.stat.program_units)
 

@@ -60,7 +60,7 @@ def _estop_ok(widget=None):
 
 def _estop_bindOk(widget):
     widget.setChecked(STAT.estop != linuxcnc.STATE_ESTOP)
-    STATUS.estop.connect(lambda v: widget.setChecked(not v))
+    STATUS.estop.onValueChanged(lambda v: widget.setChecked(not v))
 
 estop.activate.ok = estop.reset.ok = estop.toggle.ok = _estop_ok
 estop.activate.bindOk = estop.reset.bindOk = estop.toggle.bindOk = _estop_bindOk
@@ -119,7 +119,7 @@ def _power_ok(widget=None):
 def _power_bindOk(widget):
     _power_ok(widget)
     widget.setChecked(STAT.task_state == linuxcnc.STATE_ON)
-    STATUS.estop.connect(lambda: _power_ok(widget))
+    STATUS.estop.onValueChanged(lambda: _power_ok(widget))
     STATUS.on.connect(lambda v: widget.setChecked(v))
 
 power.on.ok = power.off.ok = power.toggle.ok = _power_ok
@@ -138,7 +138,7 @@ def _resetMode(interp_state):
             LOG.debug("Successfully reset task_mode after MDI")
         PREVIOUS_MODE = None
 
-STATUS.interp_state.connect(_resetMode)
+STATUS.interp_state.onValueChanged(_resetMode)
 
 def issue_mdi(command, reset=True):
     """Issue an MDI command.
@@ -192,9 +192,9 @@ def _issue_mdi_ok(mdi_cmd='', widget=None):
     return ok
 
 def _issue_mdi_bindOk(mdi_cmd='', widget=None):
-    STATUS.task_state.connect(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
-    STATUS.interp_state.connect(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
-    STATUS.homed.connect(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
+    STATUS.task_state.onValueChanged(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
+    STATUS.interp_state.onValueChanged(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
+    STATUS.homed.onValueChanged(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
 
 issue_mdi.ok = _issue_mdi_ok
 issue_mdi.bindOk = _issue_mdi_bindOk
@@ -211,10 +211,10 @@ def _set_work_coord_bindOk(coord='', widget=None):
     _issue_mdi_bindOk(coord, widget=widget)
     if isinstance(widget, QComboBox):
         widget.setCurrentText(coord)
-        STATUS.g5x_index[str].connect(lambda wc: widget.setCurrentText(wc))
+        STATUS.g5x_index.onTextChanged(lambda wc: widget.setCurrentText(wc))
     else:
         widget.setCheckable(True)
-        STATUS.g5x_index[str].connect(lambda wc: widget.setChecked(wc == coord))
+        STATUS.g5x_index.onTextChanged(lambda wc: widget.setChecked(wc == coord))
 
 set_work_coord.ok = _issue_mdi_ok
 set_work_coord.bindOk = _set_work_coord_bindOk
@@ -311,9 +311,9 @@ def _feed_override_enable_ok(widget=None):
     return ok
 
 def _feed_override_enable_bindOk(widget):
-    STATUS.task_state.connect(lambda: _feed_override_enable_ok(widget))
-    STATUS.interp_state.connect(lambda: _feed_override_enable_ok(widget))
-    STATUS.feed_override_enabled.connect(widget.setChecked)
+    STATUS.task_state.onValueChanged(lambda: _feed_override_enable_ok(widget))
+    STATUS.interp_state.onValueChanged(lambda: _feed_override_enable_ok(widget))
+    STATUS.feed_override_enabled.onValueChanged(widget.setChecked)
 
 def _feed_override_ok(value=100, widget=None):
     if STAT.task_state == linuxcnc.STATE_ON and STAT.feed_override_enabled == 1:
@@ -341,8 +341,8 @@ def _feed_override_ok(value=100, widget=None):
 def _feed_override_bindOk(value=100, widget=None):
 
     # This will work for any widget
-    STATUS.task_state.connect(lambda: _feed_override_ok(widget=widget))
-    STATUS.feed_override_enabled.connect(lambda: _feed_override_ok(widget=widget))
+    STATUS.task_state.onValueChanged(lambda: _feed_override_ok(widget=widget))
+    STATUS.feed_override_enabled.onValueChanged(lambda: _feed_override_ok(widget=widget))
 
     try:
         # these will only work for QSlider or QSpinBox
@@ -351,7 +351,7 @@ def _feed_override_bindOk(value=100, widget=None):
         widget.setValue(100)
         feed_override.set(100)
 
-        STATUS.feedrate.connect(lambda v: widget.setValue(v * 100))
+        STATUS.feedrate.onValueChanged(lambda v: widget.setValue(v * 100))
     except AttributeError:
         pass
     except:
@@ -395,7 +395,7 @@ def _rapid_override_ok(value=100, widget=None):
 def _rapid_override_bindOk(value=100, widget=None):
 
     # This will work for any widget
-    STATUS.task_state.connect(lambda: _rapid_override_ok(widget=widget))
+    STATUS.task_state.onValueChanged(lambda: _rapid_override_ok(widget=widget))
 
     try:
         # these will only work for QSlider or QSpinBox
@@ -404,7 +404,7 @@ def _rapid_override_bindOk(value=100, widget=None):
         widget.setValue(100)
         rapid_override.set(100)
 
-        STATUS.rapidrate.connect(lambda v: widget.setValue(v * 100))
+        STATUS.rapidrate.onValueChanged(lambda v: widget.setValue(v * 100))
     except AttributeError:
         pass
     except:
@@ -446,7 +446,7 @@ def _max_velocity_ok(value=100, widget=None):
 def _max_velocity_bindOk(value=100, widget=None):
 
     # This will work for any widget
-    STATUS.task_state.connect(lambda: _max_velocity_ok(widget=widget))
+    STATUS.task_state.onValueChanged(lambda: _max_velocity_ok(widget=widget))
 
     try:
         # these will only work for QSlider or QSpinBox
@@ -454,7 +454,7 @@ def _max_velocity_bindOk(value=100, widget=None):
         widget.setMaximum(INFO.maxVelocity())
         widget.setValue(INFO.maxVelocity())
 
-        STATUS.max_velocity.connect(lambda v: widget.setValue(v * 60))
+        STATUS.max_velocity.onValueChanged(lambda v: widget.setValue(v * 60))
     except AttributeError:
         pass
     except:
@@ -500,27 +500,27 @@ def _mode_ok(widget=None):
 
 def _manual_bindOk(widget):
     widget.setChecked(STAT.task_mode == linuxcnc.MODE_MANUAL)
-    STATUS.task_state.connect(lambda: _mode_ok(widget))
-    STATUS.interp_state.connect(lambda: _mode_ok(widget))
-    STATUS.task_mode.connect(lambda m: widget.setChecked(m == linuxcnc.MODE_MANUAL))
+    STATUS.task_state.onValueChanged(lambda: _mode_ok(widget))
+    STATUS.interp_state.onValueChanged(lambda: _mode_ok(widget))
+    STATUS.task_mode.onValueChanged(lambda m: widget.setChecked(m == linuxcnc.MODE_MANUAL))
 
 mode.manual.ok = _mode_ok
 mode.manual.bindOk = _manual_bindOk
 
 def _auto_bindOk(widget):
     widget.setChecked(STAT.task_mode == linuxcnc.MODE_AUTO)
-    STATUS.task_state.connect(lambda: _mode_ok(widget))
-    STATUS.interp_state.connect(lambda: _mode_ok(widget))
-    STATUS.task_mode.connect(lambda m: widget.setChecked(m == linuxcnc.MODE_AUTO))
+    STATUS.task_state.onValueChanged(lambda: _mode_ok(widget))
+    STATUS.interp_state.onValueChanged(lambda: _mode_ok(widget))
+    STATUS.task_mode.onValueChanged(lambda m: widget.setChecked(m == linuxcnc.MODE_AUTO))
 
 mode.auto.ok = _mode_ok
 mode.auto.bindOk = _auto_bindOk
 
 def _mdi_bindOk(widget):
     widget.setChecked(STAT.task_mode == linuxcnc.MODE_MDI)
-    STATUS.task_state.connect(lambda: _mode_ok(widget))
-    STATUS.interp_state.connect(lambda: _mode_ok(widget))
-    STATUS.task_mode.connect(lambda m: widget.setChecked(m == linuxcnc.MODE_MDI))
+    STATUS.task_state.onValueChanged(lambda: _mode_ok(widget))
+    STATUS.interp_state.onValueChanged(lambda: _mode_ok(widget))
+    STATUS.task_mode.onValueChanged(lambda m: widget.setChecked(m == linuxcnc.MODE_MDI))
 
 mode.mdi.ok = _mode_ok
 mode.mdi.bindOk = _mdi_bindOk
@@ -581,14 +581,14 @@ def _home_ok(jnum=-1, widget=None):
 
 def _home_all_bindOk(widget):
     STATUS.on.connect(lambda: _home_ok(widget=widget))
-    STATUS.homed.connect(lambda: _home_ok(widget=widget))
+    STATUS.homed.onValueChanged(lambda: _home_ok(widget=widget))
 
 home.all.ok = _home_ok
 home.all.bindOk = _home_all_bindOk
 
 def _home_joint_bindOk(jnum, widget):
     STATUS.on.connect(lambda: _home_ok(jnum, widget=widget))
-    STATUS.homed.connect(lambda: _home_ok(jnum, widget=widget))
+    STATUS.homed.onValueChanged(lambda: _home_ok(jnum, widget=widget))
 
 home.joint.ok = _home_ok
 home.joint.bindOk = _home_joint_bindOk
@@ -690,7 +690,7 @@ def _override_limits_ok(widget=None):
     return ok
 
 def _override_limits_bindOk(widget):
-    STATUS.limit.connect(lambda: _override_limits_ok(widget))
+    STATUS.limit.onValueChanged(lambda: _override_limits_ok(widget))
 
 override_limits.ok = _override_limits_ok
 override_limits.bindOk = _override_limits_bindOk
@@ -768,10 +768,10 @@ def _jog_axis_bindOk(axis, direction, widget):
         widget.setStatusTip(msg)
         return
 
-    STATUS.limit.connect(lambda: _jog_axis_ok(aletter, direction, widget))
-    STATUS.homed.connect(lambda: _jog_axis_ok(aletter, direction, widget))
-    STATUS.task_state.connect(lambda: _jog_axis_ok(aletter, direction, widget))
-    STATUS.interp_state.connect(lambda: _jog_axis_ok(aletter, direction, widget))
+    STATUS.limit.onValueChanged(lambda: _jog_axis_ok(aletter, direction, widget))
+    STATUS.homed.onValueChanged(lambda: _jog_axis_ok(aletter, direction, widget))
+    STATUS.task_state.onValueChanged(lambda: _jog_axis_ok(aletter, direction, widget))
+    STATUS.interp_state.onValueChanged(lambda: _jog_axis_ok(aletter, direction, widget))
 
 jog.axis.ok = _jog_axis_ok
 jog.axis.bindOk = _jog_axis_bindOk

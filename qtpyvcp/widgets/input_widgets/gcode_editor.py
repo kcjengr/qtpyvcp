@@ -257,7 +257,7 @@ class GcodeEditor(EditorBase):
         #self.setEolVisibility(True)
 
         STATUS.file_loaded.connect(self.load_program)
-        STATUS.motion_line.connect(self.highlight_line)
+        STATUS.motion_line.onValueChanged(self.highlight_line)
         # STATUS.connect('line-changed', self.highlight_line)
         # if self.idle_line_reset:
         #     STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))

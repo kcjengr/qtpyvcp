@@ -53,7 +53,7 @@ def _spindle_bindOk(speed=None, spindle=0, widget=None):
     if not _spindle_exists(spindle):
         return
     STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
-    STATUS.task_mode.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.task_mode.onValueChanged(lambda: _spindle_ok(spindle=spindle, widget=widget))
 
 
 def forward(speed=None, spindle=0):
@@ -76,8 +76,8 @@ def _spindle_forward_bindOk(speed=None, spindle=0, widget=None):
         return
     widget.setCheckable(True)
     STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
-    STATUS.task_mode.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
-    STATUS.spindle[spindle].direction.connect(lambda d: widget.setChecked(d == 1))
+    STATUS.task_mode.onValueChanged(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.spindle[spindle].direction.onValueChanged(lambda d: widget.setChecked(d == 1))
 
 forward.ok = _spindle_ok
 forward.bindOk = _spindle_forward_bindOk
@@ -103,8 +103,8 @@ def _spindle_reverse_bindOk(speed=None, spindle=0, widget=None):
         return
     widget.setCheckable(True)
     STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
-    STATUS.task_mode.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
-    STATUS.spindle[spindle].direction.connect(lambda d: widget.setChecked(d == -1))
+    STATUS.task_mode.onValueChanged(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.spindle[spindle].direction.onValueChanged(lambda d: widget.setChecked(d == -1))
 
 reverse.ok = _spindle_ok
 reverse.bindOk = _spindle_reverse_bindOk
@@ -240,8 +240,8 @@ def _or_bindOk(value=100, spindle=0, widget=None):
         return
 
     # This will work for any widget
-    STATUS.task_state.connect(lambda: _or_ok(widget=widget))
-    STATUS.spindle[spindle].override_enabled.connect(lambda: _or_ok(widget=widget))
+    STATUS.task_state.onValueChanged(lambda: _or_ok(widget=widget))
+    STATUS.spindle[spindle].override_enabled.onValueChanged(lambda: _or_ok(widget=widget))
 
     try:
         # these will only work for QSlider or QSpinBox
@@ -250,7 +250,7 @@ def _or_bindOk(value=100, spindle=0, widget=None):
         widget.setValue(100)
         override(100)
 
-        STATUS.spindle[spindle].override.connect(lambda v: widget.setValue(v * 100))
+        STATUS.spindle[spindle].override.onValueChanged(lambda v: widget.setValue(v * 100))
     except AttributeError:
         pass
     except:
@@ -286,9 +286,9 @@ def _or_enable_bindOk(spindle=0, widget=None):
     if not _spindle_exists(spindle):
         return
 
-    STATUS.task_state.connect(lambda: _or_enable_ok(spindle, widget))
-    STATUS.interp_state.connect(lambda: _or_enable_ok(spindle, widget))
-    STATUS.spindle[spindle].override_enabled.connect(widget.setChecked)
+    STATUS.task_state.onValueChanged(lambda: _or_enable_ok(spindle, widget))
+    STATUS.interp_state.onValueChanged(lambda: _or_enable_ok(spindle, widget))
+    STATUS.spindle[spindle].override_enabled.onValueChanged(widget.setChecked)
 
 override.enable.ok = override.disable.ok = override.toggle_enable.ok = _or_enable_ok
 override.enable.bindOk = override.disable.bindOk = override.toggle_enable.bindOk = _or_enable_bindOk
@@ -345,8 +345,8 @@ def _brake_bind_ok(spindle=0, widget=None):
         return
 
     STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
-    STATUS.task_mode.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
-    STATUS.spindle[spindle].brake.connect(widget.setChecked)
+    STATUS.task_mode.onValueChanged(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.spindle[spindle].brake.onValueChanged(widget.setChecked)
 
 brake.on.ok = brake.off.ok = brake.toggle.ok = _spindle_ok
 brake.on.bindOk = brake.off.bindOk = brake.toggle.bindOk = _brake_bind_ok

@@ -98,11 +98,11 @@ def _run_ok(widget=None):
     return ok
 
 def _run_bindOk(widget):
-    STATUS.estop.connect(lambda: _run_ok(widget))
-    STATUS.enabled.connect(lambda: _run_ok(widget))
+    STATUS.estop.onValueChanged(lambda: _run_ok(widget))
+    STATUS.enabled.onValueChanged(lambda: _run_ok(widget))
     STATUS.all_homed.connect(lambda: _run_ok(widget))
-    STATUS.interp_state.connect(lambda: _run_ok(widget))
-    STATUS.file.connect(lambda: _run_ok(widget))
+    STATUS.interp_state.onValueChanged(lambda: _run_ok(widget))
+    STATUS.file.onValueChanged(lambda: _run_ok(widget))
 
 run.ok = _run_ok
 run.bindOk = _run_bindOk
@@ -171,8 +171,8 @@ def _pause_ok(widget=None):
     return ok
 
 def _pause_bindOk(widget):
-    STATUS.state.connect(lambda: _pause_ok(widget))
-    STATUS.paused.connect(lambda: _pause_ok(widget))
+    STATUS.state.onValueChanged(lambda: _pause_ok(widget))
+    STATUS.paused.onValueChanged(lambda: _pause_ok(widget))
 
 pause.ok = _pause_ok
 pause.bindOk = _pause_bindOk
@@ -213,8 +213,8 @@ def _resume_ok(widget):
     return ok
 
 def _resume_bindOk(widget):
-    STATUS.paused.connect(lambda: _resume_ok(widget))
-    STATUS.state.connect(lambda: _resume_ok(widget))
+    STATUS.paused.onValueChanged(lambda: _resume_ok(widget))
+    STATUS.state.onValueChanged(lambda: _resume_ok(widget))
 
 resume.ok = _resume_ok
 resume.bindOk = _resume_bindOk
@@ -255,7 +255,7 @@ def _abort_ok(widget=None):
     return ok
 
 def _abort_bindOk(widget):
-    STATUS.state.connect(lambda: _abort_ok(widget))
+    STATUS.state.onValueChanged(lambda: _abort_ok(widget))
 
 abort.ok = _abort_ok
 abort.bindOk = _abort_bindOk
@@ -313,8 +313,8 @@ def _block_delete_ok(widget=None):
 
 def _block_delete_bindOk(widget):
     widget.setChecked(STAT.block_delete)
-    STATUS.task_state.connect(lambda: _block_delete_ok(widget))
-    STATUS.block_delete.connect(lambda s: widget.setChecked(s))
+    STATUS.task_state.onValueChanged(lambda: _block_delete_ok(widget))
+    STATUS.block_delete.onValueChanged(lambda s: widget.setChecked(s))
 
 block_delete.on.ok = block_delete.off.ok = block_delete.toggle.ok = _block_delete_ok
 block_delete.on.bindOk = block_delete.off.bindOk = block_delete.toggle.bindOk = _block_delete_bindOk
@@ -372,8 +372,8 @@ def _optional_stop_ok(widget=None):
 
 def _optional_stop_bindOk(widget):
     widget.setChecked(STAT.block_delete)
-    STATUS.task_state.connect(lambda: _optional_stop_ok(widget))
-    STATUS.optional_stop.connect(lambda s: widget.setChecked(s))
+    STATUS.task_state.onValueChanged(lambda: _optional_stop_ok(widget))
+    STATUS.optional_stop.onValueChanged(lambda s: widget.setChecked(s))
 
 optional_stop.on.ok = optional_stop.off.ok = optional_stop.toggle.ok = _optional_stop_ok
 optional_stop.on.bindOk = optional_stop.off.bindOk = optional_stop.toggle.bindOk  = _optional_stop_bindOk
@@ -423,7 +423,7 @@ class FilterProgram:
         self.stderr_text = []
         self.program_filter = program_filter
         self.callback = callback
-        self.gid = STATUS.connect('periodic', self.update)
+        self.gid = STATUS.onValueChanged('periodic', self.update)
         #progress = Progress(1, 100)
         #progress.set_text(_("Filtering..."))
 

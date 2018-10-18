@@ -9,7 +9,7 @@ from qtpy.QtCore import Property, pyqtBoundSignal
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from qtpyvcp.utilities.status import Status
+from qtpyvcp.utilities.status import Status, StatusItem
 STATUS = Status()
 STAT = STATUS.stat
 
@@ -131,7 +131,7 @@ class StatusLabel(QLabel):
                 value = getattr(STAT, item)[ind][key]
                 sig = getattr(getattr(STATUS, item)[ind], key)
 
-            if type(sig) != pyqtBoundSignal:
+            if not isinstance(sig, StatusItem):
                 raise ValueError('Not a valid signal')
 
         except:
@@ -145,9 +145,13 @@ class StatusLabel(QLabel):
             return
 
         try:
-            value = STATUS.STATE_STRING_LOOKUP[item][value]
-            sig[str].connect(lambda v: self.setText(self._format.format(v)))
-            self.setText(self._format.format(value))
+            # value = STATUS.STATE_STRING_LOOKUP[item][value]
+            if sig.to_str == str:
+                sig.onValueChanged(lambda v: self.setText(self._format.format(v)))
+                self.setText(self._format.format(sig.value()))
+            else:
+                sig.onTextChanged(lambda v: self.setText(self._format.format(v)))
+                self.setText(self._format.format(sig.text()))
 
         except KeyError:
 
