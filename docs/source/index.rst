@@ -32,6 +32,7 @@ building complex VCPs.
    :maxdepth: 2
    :caption: Module & API Documentation
 
+   utilities/index.rst
    actions/index.rst
    widgets/index.rst
    application

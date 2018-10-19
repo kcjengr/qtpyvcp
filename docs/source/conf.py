@@ -389,6 +389,9 @@ class Mock(object):
     def connect(cls, *args, **kwargs):
         pass
 
+    def __getitem__(self, key):
+        return Mock()
+
 Mock.mock_modules(
 'qtpy',
 'qtpy.QtCore',
@@ -398,4 +401,4 @@ Mock.mock_modules(
 )
 
 # mock the status module
-sys.modules['qtpyvcp.utilities.status'] = Mock()
+# sys.modules['qtpyvcp.utilities.status'] = Mock()
