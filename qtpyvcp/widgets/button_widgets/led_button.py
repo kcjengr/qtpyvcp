@@ -6,18 +6,26 @@ from qtpy.QtGui import QColor
 
 from qtpyvcp.utilities import action
 from qtpyvcp.widgets.base_widgets.led_widget import LEDWidget
+from qtpyvcp.widgets.base_widgets.base_widget import QtPyVCPBaseWidget
 
-class LEDButton(QPushButton):
+
+class LEDButton(QPushButton, QtPyVCPBaseWidget):
+
+    RULE_PROPERTIES = {
+        'Enable': ['setEnabled', bool],
+        'Visible': ['setVisible', bool],
+        'Opacity': ['setOpacity', float],
+        'Text': ['setText', str],
+        'LED On': ['setLedState', bool],
+        'LED Flashing': ['setLedFlashing', bool]
+    }
 
     def __init__(self, parent=None):
         super(LEDButton, self).__init__(parent)
 
         self._alignment = Qt.AlignRight | Qt.AlignTop
-        self.setCheckable(True)
         self.led = LEDWidget(self)
-        self.led.setDiameter(16)
-        self.toggled.connect(self.updateState)
-        self.updateState()
+        self.led.setDiameter(14)
         self.placeLed()
 
     def placeLed(self):
@@ -26,7 +34,7 @@ class LEDButton(QPushButton):
         alignment = self._alignment
         ledDiameter = self.led.getDiameter()
         halfLed = ledDiameter / 2
-        quarterLed = ledDiameter /4 # cheap hueristic to avoid borders
+        quarterLed = ledDiameter / 4 # cheap hueristic to avoid borders
 
         if alignment & Qt.AlignLeft:
             x = quarterLed
@@ -50,16 +58,21 @@ class LEDButton(QPushButton):
     def resizeEvent(self, event):
         self.placeLed()
 
-
     def update(self):
-        self.placeLed()
-        super(LEDButton, self).update()
-
-    def updateState(self):
-        self.led.setState(self.isChecked())
+        # self.placeLed()
+        # super(LEDButton, self).update()
+        pass
 
     def sizeHint( self ):
         return QSize(80, 30)
+
+    @Slot(bool)
+    def setLedState(self, state):
+        self.led.setState(state)
+
+    @Slot(bool)
+    def setLedFlashing(self, flashing):
+        self.led.setFlashing(flashing)
 
     def getLedDiameter(self):
         return self.led.getDiameter()

@@ -6,6 +6,8 @@ from qtpy.QtDesigner import QPyDesignerCustomWidgetPlugin
 from plugin_extension import ExtensionFactory
 from designer_hooks import DesignerHooks
 
+from rules_editor import RulesEditorExtension
+
 class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 
     def __init__(self, parent=None):
@@ -18,7 +20,7 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
         raise NotImplementedError()
 
     def extensions(self):
-        return []
+        return [RulesEditorExtension,]
 
     # Override to set the default widget name used in QtDesinger
     def objectName(self):

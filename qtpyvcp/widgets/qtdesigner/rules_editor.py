@@ -5,11 +5,36 @@ import webbrowser
 
 from qtpy import QtWidgets, QtCore, QtDesigner
 
+from plugin_extension import _PluginExtension
+
 RULE_PROPERTIES = {
     'Enable': ['setEnabled', bool],
     'Visible': ['setVisible', bool],
     'Opacity': ['set_opacity', float]
 }
+
+class RulesEditorExtension(_PluginExtension):
+    def __init__(self, widget):
+        super(RulesEditorExtension, self).__init__(widget)
+        self.widget = widget
+        self.addTaskMenuAction("Edit Widget Rules...", self.editAction)
+
+    def editAction(self, state):
+        RulesEditor(self.widget, parent=None).exec_()
+
+class TableCheckButton(QtWidgets.QWidget):
+    def __init__(self, checked=False):
+        super(TableCheckButton, self).__init__()
+        self.chk_bx = QtWidgets.QCheckBox()
+        self.chk_bx.setChecked(checked)
+        lay_out = QtWidgets.QHBoxLayout(self)
+        lay_out.addWidget(self.chk_bx)
+        lay_out.setAlignment(QtCore.Qt.AlignCenter)
+        lay_out.setContentsMargins(0,0,0,0)
+        self.setLayout(lay_out)
+
+    def __getattr__(self, attr):
+        return getattr(self.chk_bx, attr)
 
 class RulesEditor(QtWidgets.QDialog):
     """QDialog for user-friendly editing of widget Rules in Qt Designer.
@@ -26,7 +51,7 @@ class RulesEditor(QtWidgets.QDialog):
         self.lst_rule_item = None
         self.loading_data = True
 
-        self.available_properties = RULE_PROPERTIES
+        self.available_properties = widget.RULE_PROPERTIES
         self.default_property = "Visible"
 
         self.setup_ui()
@@ -157,12 +182,14 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.setShowGrid(True)
         self.tbl_channels.setCornerButtonEnabled(False)
         self.tbl_channels.model().dataChanged.connect(self.tbl_channels_changed)
-        headers = ["Channel", "Trigger?"]
+        headers = ["Channel", "Trigger?", "Type"]
         self.tbl_channels.setColumnCount(len(headers))
         self.tbl_channels.setHorizontalHeaderLabels(headers)
         header = self.tbl_channels.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+
 
         frm_edit_layout.addWidget(self.tbl_channels)
 
@@ -229,14 +256,18 @@ class RulesEditor(QtWidgets.QDialog):
         for row, ch in enumerate(channels):
             ch_name = ch.get('channel', '')
             ch_tr = ch.get('trigger', False)
+            ch_typ = ch.get('type', '')
             self.tbl_channels.setItem(row, 0,
                                       QtWidgets.QTableWidgetItem(str(ch_name)))
-            checkBoxItem = QtWidgets.QTableWidgetItem()
-            if ch_tr:
-                checkBoxItem.setCheckState(QtCore.Qt.Checked)
-            else:
-                checkBoxItem.setCheckState(QtCore.Qt.Unchecked)
-            self.tbl_channels.setItem(row, 1, checkBoxItem)
+
+            triggerCheckBox = TableCheckButton(checked=ch_tr)
+            self.tbl_channels.setCellWidget(row, 1, triggerCheckBox)
+
+            typeCombo = QtWidgets.QComboBox()
+            typeCombo.addItems(['int', 'str'])
+            typeCombo.setCurrentText(ch_typ)
+            self.tbl_channels.setCellWidget(row, 2, typeCombo)
+
         self.frm_edit.setEnabled(True)
         self.loading_data = False
 
@@ -312,10 +343,11 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.insertRow(self.tbl_channels.rowCount())
         row = self.tbl_channels.rowCount() - 1
         self.tbl_channels.setItem(row, 0, QtWidgets.QTableWidgetItem(""))
-        checkBoxItem = QtWidgets.QTableWidgetItem()
-        checkBoxItem.setCheckState(state)
-        checkBoxItem.setFlags(QtCore.Qt.ItemIsEnabled|QtCore.Qt.ItemIsSelectable|QtCore.Qt.ItemIsUserCheckable)
-        self.tbl_channels.setItem(row, 1, checkBoxItem)
+        checkBoxItem = TableCheckButton(checked=state)
+        self.tbl_channels.setCellWidget(row, 1, checkBoxItem)
+        typeCombo = QtWidgets.QComboBox()
+        typeCombo.addItem('')
+        self.tbl_channels.setCellWidget(row, 2, typeCombo)
         vlabel = [str(i) for i in range(self.tbl_channels.rowCount())]
         self.tbl_channels.setVerticalHeaderLabels(vlabel)
         self.loading_data = False
@@ -385,9 +417,9 @@ class RulesEditor(QtWidgets.QDialog):
 
         for row in range(self.tbl_channels.rowCount()):
             ch = self.tbl_channels.item(row, 0).text()
-            tr = self.tbl_channels.item(row,
-                                        1).checkState() == QtCore.Qt.Checked
-            new_channels.append({"channel": ch, "trigger": tr})
+            tr = self.tbl_channels.cellWidget(row, 1).isChecked()
+            ty = self.tbl_channels.cellWidget(row, 2).currentText()
+            new_channels.append({"channel": ch, "trigger": tr, "type": ty})
 
         self.change_entry("channels", new_channels)
 

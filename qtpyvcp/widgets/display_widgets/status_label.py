@@ -1,34 +1,36 @@
 #!/usr/bin/env python
 
-import os
-
 from qtpy.QtWidgets import QLabel
 from qtpy.QtCore import Property, pyqtBoundSignal
+
+from qtpyvcp.widgets import QtPyVCPWidget
 
 # Set up logging
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from qtpyvcp.utilities.status import Status, StatusItem
-STATUS = Status()
-STAT = STATUS.stat
-
-IN_DESIGNER = os.getenv('DESIGNER') != None
-
-class StatusLabel(QLabel):
+class StatusLabel(QLabel, QtPyVCPWidget):
     """General purpose label for displaying status values.
 
     Args:
         parent (QWidget) : The parent widget, or None.
     """
+
+    RULE_PROPERTIES = {
+        'Enable': ['setEnabled', bool],
+        'Visible': ['setVisible', bool],
+        'Opacity': ['setOpacity', float],
+        'Text': ['setText', str]
+    }
+
     def __init__(self, parent=None):
         super(StatusLabel, self).__init__(parent)
+        # QLabel.__init__(self, parent)
+        # QtPyVCPBaseWidget.__init__(self)
 
         self._factor = 1
         self._format = '{}'
         self._status_item = ''
-
-        self._rules = ''
 
         self.setText('n/a')
 
@@ -51,7 +53,7 @@ class StatusLabel(QLabel):
         self._factor = factor
 
         # force update of label when in designer
-        if IN_DESIGNER:
+        if self.IN_DESIGNER:
             self.statusItem = self._status_item
 
     @Property(str)
@@ -74,21 +76,8 @@ class StatusLabel(QLabel):
         self._format = format
 
         # force update of label when in designer
-        if IN_DESIGNER:
+        if self.IN_DESIGNER:
             self.statusItem = self._status_item
-
-    @Property(str)
-    def rules(self):
-        """The rules property of the widget.
-
-        Returns:
-            str : JSON format of the current rules.
-        """
-        return self._rules
-
-    @rules.setter
-    def rules(self, rules):
-        self._rules = rules
 
     @Property(str)
     def statusItem(self):
@@ -110,6 +99,8 @@ class StatusLabel(QLabel):
         """
         if status_item == '' and self._status_item == '':
             return
+
+        return
 
         self._status_item = status_item
 

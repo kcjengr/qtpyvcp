@@ -6,18 +6,6 @@ from status_label import StatusLabel
 class StatusLabelPlugin(_DesignerPlugin):
     def pluginClass(self):
         return StatusLabel
-    def extensions(self):
-        return [StatusLablePluginExtension,]
-
-from qtpyvcp.widgets.qtdesigner.widget_rules_editor import RulesEditor
-class StatusLablePluginExtension(_PluginExtension):
-    def __init__(self, widget):
-        super(StatusLablePluginExtension, self).__init__(widget)
-        self.widget = widget
-        self.addTaskMenuAction("Edit Widget Rules...", self.editAction)
-
-    def editAction(self, state):
-        RulesEditor(self.widget, parent=None).exec_()
 
 from dro_widget import DROWidget
 class DROPlugin(_DesignerPlugin):
