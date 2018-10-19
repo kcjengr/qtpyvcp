@@ -74,20 +74,20 @@ class  GcodeBackplot(QBackPlot):
         self.abortButton.clicked.connect(self.abort)
 
 
-        STATUS.actual_position.connect(self.update)
-        STATUS.joint_actual_position.connect(self.update)
-        STATUS.homed.connect(self.update)
-        STATUS.g5x_offset.connect(self.update)
-        STATUS.g92_offset.connect(self.update)
-        STATUS.limit.connect(self.update)
-        STATUS.tool_in_spindle.connect(self.update)
-        STATUS.motion_mode.connect(self.update)
-        STATUS.current_vel.connect(self.update)
+        STATUS.actual_position.onValueChanged(self.update)
+        STATUS.joint_actual_position.onValueChanged(self.update)
+        STATUS.homed.onValueChanged(self.update)
+        STATUS.g5x_offset.onValueChanged(self.update)
+        STATUS.g92_offset.onValueChanged(self.update)
+        STATUS.limit.onValueChanged(self.update)
+        STATUS.tool_in_spindle.onValueChanged(self.update)
+        STATUS.motion_mode.onValueChanged(self.update)
+        STATUS.current_vel.onValueChanged(self.update)
 
         # Connect status signals
         STATUS.file_loaded.connect(self.loadBackplot)
         STATUS.reload_backplot.connect(self.reloadBackplot)
-        STATUS.program_units.connect(lambda v: self.setMetricUnits(v==2))
+        STATUS.program_units.onValueChanged(lambda v: self.setMetricUnits(v==2))
 
     def loadBackplot(self, fname):
         LOG.debug('load the display: {}'.format(fname.encode('utf-8')))
