@@ -7,6 +7,10 @@ from qtpy import QtWidgets, QtCore, QtDesigner
 
 from plugin_extension import _PluginExtension
 
+# Set up logging
+from qtpyvcp.utilities import logger
+LOG = logger.getLogger(__name__)
+
 RULE_PROPERTIES = {
     'Enable': ['setEnabled', bool],
     'Visible': ['setVisible', bool],
@@ -49,10 +53,10 @@ class RulesEditor(QtWidgets.QDialog):
 
         self.widget = widget
         self.lst_rule_item = None
-        self.loading_data = True
+        self.loading_data = False
 
         self.available_properties = widget.RULE_PROPERTIES
-        self.default_property = "Visible"
+        self.default_property = widget.DEFAULT_RULE_PROPERTY
 
         self.setup_ui()
 
@@ -182,14 +186,14 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.setShowGrid(True)
         self.tbl_channels.setCornerButtonEnabled(False)
         self.tbl_channels.model().dataChanged.connect(self.tbl_channels_changed)
-        headers = ["Channel", "Trigger?", "Type"]
+        headers = ["Channel", "Trigger", "Type"]
         self.tbl_channels.setColumnCount(len(headers))
         self.tbl_channels.setHorizontalHeaderLabels(headers)
         header = self.tbl_channels.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
-        header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
-
+        # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+        self.tbl_channels.setColumnWidth(2, 60)
 
         frm_edit_layout.addWidget(self.tbl_channels)
 
@@ -257,16 +261,17 @@ class RulesEditor(QtWidgets.QDialog):
             ch_name = ch.get('channel', '')
             ch_tr = ch.get('trigger', False)
             ch_typ = ch.get('type', '')
+            ch_obj, ch_typs, ch_desc = self.get_channel_data(ch_name)
             self.tbl_channels.setItem(row, 0,
                                       QtWidgets.QTableWidgetItem(str(ch_name)))
 
-            triggerCheckBox = TableCheckButton(checked=ch_tr)
-            self.tbl_channels.setCellWidget(row, 1, triggerCheckBox)
+            tr_chk = TableCheckButton(checked=ch_tr)
+            self.tbl_channels.setCellWidget(row, 1, tr_chk)
 
-            typeCombo = QtWidgets.QComboBox()
-            typeCombo.addItems(['int', 'str'])
-            typeCombo.setCurrentText(ch_typ)
-            self.tbl_channels.setCellWidget(row, 2, typeCombo)
+            typ_combo = QtWidgets.QComboBox()
+            typ_combo.addItems(ch_typs)
+            typ_combo.setCurrentText(ch_typ)
+            self.tbl_channels.setCellWidget(row, 2, typ_combo)
 
         self.frm_edit.setEnabled(True)
         self.loading_data = False
@@ -345,13 +350,12 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.setItem(row, 0, QtWidgets.QTableWidgetItem(""))
         checkBoxItem = TableCheckButton(checked=state)
         self.tbl_channels.setCellWidget(row, 1, checkBoxItem)
-        typeCombo = QtWidgets.QComboBox()
-        typeCombo.addItem('')
-        self.tbl_channels.setCellWidget(row, 2, typeCombo)
+        typ_combo = QtWidgets.QComboBox()
+        self.tbl_channels.setCellWidget(row, 2, typ_combo)
         vlabel = [str(i) for i in range(self.tbl_channels.rowCount())]
         self.tbl_channels.setVerticalHeaderLabels(vlabel)
         self.loading_data = False
-        self.tbl_channels_changed()
+        self.update_channels()
 
     def del_channel(self):
         """Delete the selected channel at the table."""
@@ -371,7 +375,7 @@ class RulesEditor(QtWidgets.QDialog):
                 row = itm.row()
                 self.tbl_channels.removeRow(row)
 
-        self.tbl_channels_changed()
+        self.update_channels()
 
     def open_help(self, open=True):
         """Open the Help context for Rules.
@@ -408,10 +412,24 @@ class RulesEditor(QtWidgets.QDialog):
         except:
             self.lbl_expected_type.setText("")
 
-    def tbl_channels_changed(self, *args, **kwargs):
+    def tbl_channels_changed(self, table_item):
         """Callback executed when the channels in the table are modified."""
         if self.loading_data:
+            print 'Loaidng data'
             return
+
+        row = table_item.row()
+        ch_name = table_item.data()
+
+        ch_obj, ch_typs, ch_desc = self.get_channel_data(ch_name)
+        typ_combo = self.tbl_channels.cellWidget(row, 2)
+        typ_combo.clear()
+        typ_combo.addItems(ch_typs)
+
+        self.update_channels()
+
+    def update_channels(self):
+        """Update the JSON format chanels to match the data in the table."""
 
         new_channels = []
 
@@ -422,6 +440,19 @@ class RulesEditor(QtWidgets.QDialog):
             new_channels.append({"channel": ch, "trigger": tr, "type": ty})
 
         self.change_entry("channels", new_channels)
+
+    def get_channel_data(self, channel):
+        chan = None
+        chan_types = []
+        chan_description = ''
+        try:
+            print channel
+            chan = eval(channel, {'status': self.widget.STATUS})
+            chan_types = chan.dataTypes()
+        except:
+            LOG.exception("Error in eval")
+
+        return (chan, chan_types, chan_description)
 
     def expression_changed(self):
         """Callback executed when the expression is modified."""
@@ -459,7 +490,7 @@ class RulesEditor(QtWidgets.QDialog):
 
                 if not found_trigger:
                     errors.append(
-                        "Rule #{} has no channel for trigger.".format(idx + 1))
+                        "Rule #{} has no trigger channel.".format(idx + 1))
 
         if len(errors) > 0:
             error_msg = os.linesep.join(errors)
@@ -478,7 +509,7 @@ class RulesEditor(QtWidgets.QDialog):
         if self.frm_edit.isEnabled():
             self.expression_changed()
             self.name_changed()
-            self.tbl_channels_changed()
+            self.update_channels()
         status, message = self.is_data_valid()
         if status:
             data = json.dumps(self.rules, sort_keys=True, indent=4)

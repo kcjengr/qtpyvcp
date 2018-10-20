@@ -104,6 +104,10 @@ class StatusItem(QObject):
         self._valueChanged[self.typ].emit(value)
         self._valueChanged[str].emit(self.to_str(value))
 
+    def dataTypes(self):
+        return [self.typ.__name__, 'str']
+
+
 
 class _Status(QObject):
 
