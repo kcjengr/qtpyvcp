@@ -67,15 +67,12 @@ def bindWidget(widget, action):
         # convert numbers to int and unicode to str
         args = [int(arg) if arg.isdigit() else str(arg) for arg in args]
 
-    # print method
-    # print args, kwargs
-
-    # if it is a toggle action make the widget checkable
-    if action.endswith('toggle'):
-        widget.setCheckable(True)
-
     if isinstance(widget, QAction):
         widget.triggered.connect(lambda: method(*args, **kwargs)) # should be able to do widget.triggered[()]
+
+        # if it is a toggle action make the menu item checkable
+        if action.endswith('toggle'):
+            widget.setCheckable(True)
 
     elif isinstance(widget, QPushButton) or isinstance(widget, QCheckBox):
 
