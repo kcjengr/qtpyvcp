@@ -23751,6 +23751,22 @@ padding-right: 7px;
            <property name="indent">
             <number>0</number>
            </property>
+           <property name="rules" stdset="0">
+            <string>[
+    {
+        &quot;channels&quot;: [
+            {
+                &quot;channel&quot;: &quot;status.feedrate&quot;, 
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;float&quot;
+            }
+        ], 
+        &quot;expression&quot;: &quot;'{:.0%}'.format(ch[0])&quot;, 
+        &quot;name&quot;: &quot;New Rule&quot;, 
+        &quot;property&quot;: &quot;Text&quot;
+    }
+]</string>
+           </property>
            <property name="statusItem" stdset="0">
             <string>feedrate</string>
            </property>
@@ -23872,6 +23888,22 @@ border-radius: 4px;
            <property name="indent">
             <number>0</number>
            </property>
+           <property name="rules" stdset="0">
+            <string>[
+    {
+        &quot;channels&quot;: [
+            {
+                &quot;channel&quot;: &quot;status.spindle[0].override&quot;, 
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;float&quot;
+            }
+        ], 
+        &quot;expression&quot;: &quot;'{:.0%}'.format(ch[0])&quot;, 
+        &quot;name&quot;: &quot;New Rule&quot;, 
+        &quot;property&quot;: &quot;Text&quot;
+    }
+]</string>
+           </property>
            <property name="statusItem" stdset="0">
             <string>spindle.0.override</string>
            </property>
@@ -23918,6 +23950,22 @@ border-radius: 4px;
            </property>
            <property name="indent">
             <number>0</number>
+           </property>
+           <property name="rules" stdset="0">
+            <string>[
+    {
+        &quot;channels&quot;: [
+            {
+                &quot;channel&quot;: &quot;status.rapidrate&quot;, 
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;float&quot;
+            }
+        ], 
+        &quot;expression&quot;: &quot;'{:.0%}'.format(ch[0])&quot;, 
+        &quot;name&quot;: &quot;New Rule&quot;, 
+        &quot;property&quot;: &quot;Text&quot;
+    }
+]</string>
            </property>
            <property name="statusItem" stdset="0">
             <string>rapidrate</string>
@@ -24051,6 +24099,22 @@ LOAD</string>
            </property>
            <property name="margin">
             <number>-6</number>
+           </property>
+           <property name="rules" stdset="0">
+            <string>[
+    {
+        &quot;channels&quot;: [
+            {
+                &quot;channel&quot;: &quot;status.max_velocity&quot;, 
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;float&quot;
+            }
+        ], 
+        &quot;expression&quot;: &quot;'{:.0f}'.format(ch[0] * 60)&quot;, 
+        &quot;name&quot;: &quot;New Rule&quot;, 
+        &quot;property&quot;: &quot;Text&quot;
+    }
+]</string>
            </property>
            <property name="statusItem" stdset="0">
             <string>max_velocity</string>
