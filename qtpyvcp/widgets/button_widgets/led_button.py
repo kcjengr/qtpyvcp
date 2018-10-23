@@ -61,7 +61,7 @@ class LEDButton(ActionButton):
 
     def update(self):
         # self.placeLed()
-        # super(LEDButton, self).update()
+        # super(LedButton, self).update()
         pass
 
     def sizeHint( self ):
@@ -75,7 +75,7 @@ class LEDButton(ActionButton):
     def setLedFlashing(self, flashing):
         self.led.setFlashing(flashing)
 
-    def getLedDiameter(self):
+    def LedDiameter(self):
         return self.led.getDiameter()
 
     @Slot(int)
@@ -83,21 +83,21 @@ class LEDButton(ActionButton):
         self.led.setDiameter(value)
         self.placeLed()
 
-    def getLedColor(self):
+    def LedColor(self):
         return self.led.getColor()
 
     @Slot(QColor)
     def setLedColor(self, value):
         self.led.setColor(value)
 
-    def getAlignment(self):
+    def LedAlignment(self):
         return self._alignment
 
     @Slot(Qt.Alignment)
-    def setAlignment(self, value):
+    def setLedAlignment(self, value):
         self._alignment = Qt.Alignment(value)
         self.update()
 
-    diameter = Property(int, getLedDiameter, setLedDiameter)
-    color = Property(QColor, getLedColor, setLedColor)
-    alignment = Property(Qt.Alignment, getAlignment, setAlignment)
+    diameter = Property(int, LedDiameter, setLedDiameter)
+    color = Property(QColor, LedColor, setLedColor)
+    alignment = Property(Qt.Alignment, LedAlignment, setLedAlignment)
