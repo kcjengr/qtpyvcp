@@ -25,36 +25,12 @@ class StatusLabel(QLabel, QtPyVCPWidget):
 
     def __init__(self, parent=None):
         super(StatusLabel, self).__init__(parent)
-        # QLabel.__init__(self, parent)
-        # QtPyVCPBaseWidget.__init__(self)
 
-        self._factor = 1
         self._format = '{}'
-        self._status_item = ''
+        self._expression = 'val'
+        self._compiled_exp = lambda val: val
 
-        self.setText('n/a')
-
-    @Property(float)
-    def factor(self):
-        """The multiplication factor to apply to numeric status values.
-
-        Returns:
-            float: The current multiplication factor.
-        """
-        return self._factor
-
-    @factor.setter
-    def factor(self, factor):
-        """Sets the multiplication factor to apply to numeric status values.
-
-        Args:
-            factor (float): The desired multiplication factor.
-        """
-        self._factor = factor
-
-        # force update of label when in designer
-        if self.IN_DESIGNER:
-            self.statusItem = self._status_item
+        self.setText('<color=red>Not Set</color>')
 
     @Property(str)
     def format(self):
@@ -67,112 +43,29 @@ class StatusLabel(QLabel, QtPyVCPWidget):
 
     @format.setter
     def format(self, format):
-        """Sets the desired format specification.
-
-        Args:
-            format (str): A valid str format specification.
-        """
-
         self._format = format
 
-        # force update of label when in designer
-        if self.IN_DESIGNER:
-            self.statusItem = self._status_item
-
     @Property(str)
-    def statusItem(self):
-        """The name of the linuxcnc.stat item that the label should
-            display the value of.
+    def expression(self):
+        """A Python expression to process the data .
 
         Returns:
-            str : The linuxcnc.stat item.
+            str : The value of the `expression` property.
         """
-        return self._status_item
+        return self._expression
 
-    @statusItem.setter
-    def statusItem(self, status_item):
-        """Sets the linuxcnc.stat item the label should display the value
-            of and binds the label to the items value changed signal.
-
-        Args:
-            status_item (str): A linuxcnc.status item.
-        """
-        if status_item == '' and self._status_item == '':
-            return
-
-        return
-
-        self._status_item = status_item
-
-        items = status_item.split('.')
-        item = items[0]
-        index = None
-
+    @expression.setter
+    def expression(self, expression):
+        self._expression = expression
         try:
-            if len(items) == 1:
-                value = getattr(STAT, item)
-                sig = getattr(STATUS, item)
-            elif len(items) == 2:
-                index = int(items[1])
-                value = getattr(STAT, item)
-                sig = getattr(STATUS, item)
-            elif len(items) == 3:
-                ind = int(items[1])
-                key = items[2]
-                value = getattr(STAT, item)[ind][key]
-                sig = getattr(getattr(STATUS, item)[ind], key)
-
-            if not isinstance(sig, StatusItem):
-                raise ValueError('Not a valid signal')
-
+            self._exp = eval('lambda val: ' + self._expression, {})
         except:
-            LOG.exception("Invalid status item '{}'".format(status_item))
-            try:
-                self.setText(self._format.format('n/a'))
-            except ValueError:
-                self.setText(self._format.format(float('nan')))
-            except:
-                self.setText('n/a')
-            return
+            LOG.exception("Python expression is not valid: {}"
+                                            .format(self._expression))
 
-        try:
-            # value = STATUS.STATE_STRING_LOOKUP[item][value]
-            if sig.to_str == str:
-                sig.onValueChanged(lambda v: self.setText(self._format.format(v)))
-                self.setText(self._format.format(sig.value()))
-            else:
-                sig.onTextChanged(lambda v: self.setText(self._format.format(v)))
-                self.setText(self._format.format(sig.text()))
-
-        except KeyError:
-
-            if isinstance(value, (int, float)) and self._factor != 1:
-                try:
-                    if index is not None:
-                        self.setText(self._format.format(value[index] * self._factor))
-                        sig.connect(lambda v: self.setText(self._format.format(v[index] * self._factor)))
-                    else:
-                        self.setText(self._format.format(value * self._factor))
-                        sig.connect(lambda v: self.setText(self._format.format(v * self._factor)))
-
-                except:
-                    LOG.warning("Invalid format '{}' for data of type '{}'" \
-                        .format(format, value.__class__.__name__))
-                    self.setText('FRMT error')
-
-            else:
-                try:
-                    if index is not None:
-                        self.setText(self._format.format(value[index]))
-                        sig.connect(lambda v: self.setText(self._format.format(v[index])))
-                    else:
-                        self.setText(self._format.format(value))
-                        sig.connect(lambda v: self.setText(self._format.format(v)))
-
-                except:
-                    LOG.warning("Invalid format '{}' for data of type '{}'" \
-                        .format(format, value.__class__.__name__))
-                    self.setText('FRMT error')
-
-        except:
-            LOG.exception("Problem connecting update signal for status item '{}'".format(status_item))
+    @Slot(str)
+    @Slot(int)
+    @Slot(bool)
+    @Slot(float)
+    def setFormatedValue(self, value):
+        self.setText(self._format.format(self._exp(value)))
