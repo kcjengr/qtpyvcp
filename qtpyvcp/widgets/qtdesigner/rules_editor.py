@@ -469,8 +469,11 @@ class RulesEditor(QtWidgets.QDialog):
         errors = []
         for idx, rule in enumerate(self.rules):
             name = rule.get("name")
+            prop = rule.get("property")
             expression = rule.get("expression")
             channels = rule.get("channels", [])
+
+            channel_values = []
 
             if name is None or name == "":
                 errors.append("Rule #{} has no name.".format(idx + 1))
@@ -488,9 +491,35 @@ class RulesEditor(QtWidgets.QDialog):
                     if ch.get("trigger", False) and not found_trigger:
                         found_trigger = True
 
+                    # get chan values for use when checking expression
+                    ch_obj = self.get_channel_data(ch.get('channel', ''))[0]
+                    if ch.get('type') == 'str':
+                        channel_values.append(ch_obj.text())
+                    else:
+                        channel_values.append(ch_obj.value())
+
                 if not found_trigger:
                     errors.append(
                         "Rule #{} has no trigger channel.".format(idx + 1))
+
+
+            try:
+                # check python expression
+                value = eval(expression, {'ch': channel_values})
+
+                # check return type
+                exp_typ = self.available_properties[prop][1]
+                act_typ = type(value)
+                if act_typ != exp_typ:
+                    errors.append(
+                        "Rule #{} expression returned '{}', but expected '{}'."
+                            .format(idx + 1, act_typ.__name__, exp_typ.__name__))
+
+            except:
+                LOG.exception("Error evaluating Rule #{} expression."
+                    .format(idx + 1))
+                errors.append(
+                    "Rule #{} expression is not valid.".format(idx + 1))
 
         if len(errors) > 0:
             error_msg = os.linesep.join(errors)
