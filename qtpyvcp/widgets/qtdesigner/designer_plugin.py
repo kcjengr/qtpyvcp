@@ -20,7 +20,10 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
         raise NotImplementedError()
 
     def extensions(self):
-        return [RulesEditorExtension,]
+        if hasattr(self.pluginClass(), 'RULE_PROPERTIES'):
+            return [RulesEditorExtension,]
+        else:
+            return []
 
     # Override to set the default widget name used in QtDesinger
     def objectName(self):
