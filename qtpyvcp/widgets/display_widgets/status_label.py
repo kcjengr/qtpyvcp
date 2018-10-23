@@ -16,6 +16,7 @@ class StatusLabel(QLabel, VCPWidget):
         parent (QWidget) : The parent widget, or None.
     """
 
+    DEFAULT_RULE_PROPERTY = "Text"
     RULE_PROPERTIES = {
         'Enable': ['setEnabled', bool],
         'Visible': ['setVisible', bool],
