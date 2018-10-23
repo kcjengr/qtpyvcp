@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
 from qtpy.QtWidgets import QLabel
-from qtpy.QtCore import Property, pyqtBoundSignal
+from qtpy.QtCore import Property, Slot
 
-from qtpyvcp.widgets import QtPyVCPWidget
+from qtpyvcp.widgets import VCPWidget
 
 # Set up logging
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
-class StatusLabel(QLabel, QtPyVCPWidget):
+class StatusLabel(QLabel, VCPWidget):
     """General purpose label for displaying status values.
 
     Args:

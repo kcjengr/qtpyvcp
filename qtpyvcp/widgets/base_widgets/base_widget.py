@@ -41,7 +41,14 @@ class QtPyVCPBaseWidget(object):
         self._rules = rules
         registerRules(self, rules)
 
-
-class QtPyVCPWidget(QtPyVCPBaseWidget):
+class VCPWidget(QtPyVCPBaseWidget):
     def __init__(self, parent=None):
-        super(QtPyVCPWidget, self).__init__()
+        super(VCPWidget, self).__init__()
+
+class CMDWidget(QtPyVCPBaseWidget):
+    def __init__(self, parent=None):
+        super(CMDWidget, self).__init__()
+
+class HALWidget(QtPyVCPBaseWidget):
+    def __init__(self, parent=None):
+        super(HALWidget, self).__init__()

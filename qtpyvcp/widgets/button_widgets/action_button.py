@@ -3,9 +3,10 @@
 from qtpy.QtWidgets import QPushButton
 from qtpy.QtCore import Property
 
+from qtpyvcp.widgets import CMDWidget
 from qtpyvcp.actions import bindWidget
 
-class ActionButton(QPushButton):
+class ActionButton(QPushButton, CMDWidget):
     """General purpose button for triggering QtPyVCP actions.
 
     Args:

@@ -5,11 +5,12 @@ from qtpy.QtCore import Qt, Slot, Property, QSize
 from qtpy.QtGui import QColor
 
 from qtpyvcp.utilities import action
+from qtpyvcp.widgets.button_widgets.action_button import ActionButton
+
 from qtpyvcp.widgets.base_widgets.led_widget import LEDWidget
-from qtpyvcp.widgets.base_widgets.base_widget import QtPyVCPBaseWidget
 
 
-class LEDButton(QPushButton, QtPyVCPBaseWidget):
+class LEDButton(ActionButton):
 
     RULE_PROPERTIES = {
         'Enable': ['setEnabled', bool],
