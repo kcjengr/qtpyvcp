@@ -19488,7 +19488,7 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>0.000</string>
+              <string>0.00</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -19506,9 +19506,14 @@ padding: -5px;
                 &quot;channel&quot;: &quot;status.tool_in_spindle&quot;, 
                 &quot;trigger&quot;: true, 
                 &quot;type&quot;: &quot;int&quot;
+            }, 
+            {
+                &quot;channel&quot;: &quot;status.linear_units&quot;, 
+                &quot;trigger&quot;: false, 
+                &quot;type&quot;: &quot;str&quot;
             }
         ], 
-        &quot;expression&quot;: &quot;\&quot;{:.3f}\&quot;.format(ch[0][ ch[1] ].zoffset)&quot;, 
+        &quot;expression&quot;: &quot;\&quot;{:.3f}\&quot;.format(ch[0][ ch[1] ].zoffset) if ch[2] == 'in' else \&quot;{:.2f}\&quot;.format(ch[0][ ch[1] ].zoffset)&quot;, 
         &quot;name&quot;: &quot;Tool Length&quot;, 
         &quot;property&quot;: &quot;Text&quot;
     }
@@ -19546,7 +19551,7 @@ padding: -5px;
     {
         &quot;channels&quot;: [
             {
-                &quot;channel&quot;: &quot;status.program_units&quot;, 
+                &quot;channel&quot;: &quot;status.linear_units&quot;, 
                 &quot;trigger&quot;: true, 
                 &quot;type&quot;: &quot;str&quot;
             }
@@ -19650,7 +19655,7 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>0.0000</string>
+              <string>0.000</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -19668,9 +19673,14 @@ padding: -5px;
                 &quot;channel&quot;: &quot;status.tool_in_spindle&quot;, 
                 &quot;trigger&quot;: true, 
                 &quot;type&quot;: &quot;int&quot;
+            }, 
+            {
+                &quot;channel&quot;: &quot;status.linear_units&quot;, 
+                &quot;trigger&quot;: false, 
+                &quot;type&quot;: &quot;str&quot;
             }
         ], 
-        &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][ ch[1] ].diameter)&quot;, 
+        &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][ ch[1] ].diameter) if ch[2] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][ ch[1] ].diameter)&quot;, 
         &quot;name&quot;: &quot;Tool Diameter&quot;, 
         &quot;property&quot;: &quot;Text&quot;
     }
@@ -19708,7 +19718,7 @@ padding: -5px;
     {
         &quot;channels&quot;: [
             {
-                &quot;channel&quot;: &quot;status.program_units&quot;, 
+                &quot;channel&quot;: &quot;status.linear_units&quot;, 
                 &quot;trigger&quot;: true, 
                 &quot;type&quot;: &quot;str&quot;
             }
