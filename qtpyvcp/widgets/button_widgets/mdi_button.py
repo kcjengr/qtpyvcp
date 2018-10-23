@@ -5,6 +5,7 @@ import re
 from qtpy.QtWidgets import QPushButton, QApplication
 from qtpy.QtCore import Property
 
+from qtpyvcp.widgets import CMDWidget
 from qtpyvcp.actions.machine_actions import issue_mdi
 
 from qtpyvcp.utilities import logger
@@ -15,7 +16,7 @@ LOG = logger.getLogger(__name__)
 # if a group is not present it will be an empty string
 PARSE_VARS = re.compile(r'(\w)#<([^>]+)>', re.I)
 
-class MDIButton(QPushButton):
+class MDIButton(QPushButton, CMDWidget):
     """Button for issuing MDI commands.
 
     Args:

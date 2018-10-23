@@ -3,9 +3,10 @@
 from qtpy.QtWidgets import QSpinBox
 from qtpy.QtCore import Property
 
+from qtpyvcp.widgets import CMDWidget
 from qtpyvcp.actions import bindWidget
 
-class ActionSpinBox(QSpinBox):
+class ActionSpinBox(QSpinBox, CMDWidget):
     """Action spinbox for triggering QtPyVCP actions that take a numeric argument.
 
     On spinbox valueChange the action will be triggered with the spinbox

@@ -4,10 +4,12 @@ from qtpy.QtCore import Qt, Property, QRectF
 from qtpy.QtGui import QColor, QLinearGradient, QPainter, QPen
 from qtpy.QtWidgets import QProgressBar, QStyle
 
+from qtpyvcp.widgets import VCPWidget
+
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
-class LoadMeter(QProgressBar):
+class LoadMeter(QProgressBar, VCPWidget):
     """docstring for LoadMeter"""
     def __init__(self, parent=None):
         super(LoadMeter, self).__init__(parent)
