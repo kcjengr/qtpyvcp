@@ -30,7 +30,7 @@ class StatusLabel(QLabel, VCPWidget):
         self._expression = 'val'
         self._compiled_exp = lambda val: val
 
-        self.setText('<color=red>Not Set</color>')
+        self.setText('Not Set')
 
     @Property(str)
     def format(self):
