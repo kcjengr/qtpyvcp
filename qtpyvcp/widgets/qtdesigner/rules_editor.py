@@ -7,6 +7,8 @@ from qtpy import QtWidgets, QtCore, QtDesigner
 
 from plugin_extension import _PluginExtension
 
+from qtpyvcp.utilities.channel import QtPyVCPChannel
+
 # Set up logging
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -54,6 +56,8 @@ class RulesEditor(QtWidgets.QDialog):
         super(RulesEditor, self).__init__(parent)
 
         self.widget = widget
+        self.app = QtWidgets.QApplication.instance()
+
         self.lst_rule_item = None
         self.loading_data = False
 
@@ -263,7 +267,7 @@ class RulesEditor(QtWidgets.QDialog):
         vlabel = [str(i) for i in range(len(channels))]
         self.tbl_channels.setVerticalHeaderLabels(vlabel)
         for row, ch in enumerate(channels):
-            ch_name = ch.get('channel', '')
+            ch_name = ch.get('url', '')
             ch_tr = ch.get('trigger', False)
             ch_typ = ch.get('type', '')
             ch_obj, ch_typs, ch_desc = self.get_channel_data(ch_name)
@@ -450,7 +454,7 @@ class RulesEditor(QtWidgets.QDialog):
             ch = self.tbl_channels.item(row, 0).text()
             tr = self.tbl_channels.cellWidget(row, 1).isChecked()
             ty = self.tbl_channels.cellWidget(row, 2).currentText()
-            new_channels.append({"channel": ch, "trigger": tr, "type": ty})
+            new_channels.append({"url": ch, "trigger": tr, "type": ty})
 
         self.change_entry("channels", new_channels)
 
@@ -460,7 +464,7 @@ class RulesEditor(QtWidgets.QDialog):
         chan_description = ''
         try:
             print channel
-            chan = eval(channel, {'status': self.widget.STATUS})
+            chan = eval(channel, {'status': self.widget.app.status})
             chan_types = chan.dataTypes()
         except:
             LOG.exception("Error in eval")
@@ -511,11 +515,19 @@ class RulesEditor(QtWidgets.QDialog):
                         found_trigger = True
 
                     # get chan values for use when checking expression
-                    ch_obj = self.get_channel_data(ch.get('channel', ''))[0]
-                    if ch.get('type') == 'str':
-                        channel_values.append(ch_obj.text())
+                    ch_obj = self.get_channel_data(ch.get("url", ""))[0]
+
+                    print ch_obj
+
+                    if isinstance(ch_obj, QtPyVCPChannel):
+                        if ch.get('type') == 'str':
+                            channel_values.append(ch_obj.text())
+                        else:
+                            channel_values.append(ch_obj.value())
                     else:
-                        channel_values.append(ch_obj.value())
+                        errors.append(
+                            "Rule #{} is not a valid channel.".format(idx + 1))
+                        continue
 
                 if not found_trigger:
                     errors.append(
