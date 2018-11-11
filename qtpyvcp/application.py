@@ -67,7 +67,7 @@ class VCPApplication(QApplication):
             self.perf_timer.start()
 
         self.aboutToQuit.connect(self.status.onShutdown)
-        self.aboutToQuit.connect(self.terminateDataPlygins)
+        self.aboutToQuit.connect(self.terminateDataPlugins)
 
     def loadVCPMainWindow(self, opts, vcp_file=None):
         """
@@ -192,6 +192,6 @@ class VCPApplication(QApplication):
         for plugin in DATA_PLUGIN_REGISTRY.itervalues():
             plugin.initialise()
 
-    def terminateDataPlygins(self):
+    def terminateDataPlugins(self):
         for plugin in DATA_PLUGIN_REGISTRY.itervalues():
             plugin.terminate()
