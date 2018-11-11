@@ -376,7 +376,7 @@ class Status(QtPyVCPDataPlugin):
         # QTimer.singleShot(0, self.startPeriodic)
         # self.startPeriodic()
 
-    def startPeriodic(self):
+    def initialise(self):
         """Start the periodic update timer."""
         self.timer.start(self._cycle_time)
 

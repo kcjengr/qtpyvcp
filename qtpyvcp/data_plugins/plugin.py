@@ -1,13 +1,30 @@
 
 from qtpy.QtCore import QObject, Signal
 
-class QtPyVCPDataPlugin(object):
-    """QtPyVCPDataServer."""
+class QtPyVCPDataPlugin(QObject):
+    """QtPyVCPDataPlugin."""
 
     protocol = None
 
     def __init__(self):
         super(QtPyVCPDataPlugin, self).__init__()
+
+    def initialise(self):
+        """Initialize the data plugin.
+
+        This method is called after the main event loop has started. Any timers
+        or threads used by the plugin should be started here.
+        """
+        pass
+
+    def terminate(self):
+        """Terminate the data plugin.
+
+        This is called right before the main event loop exits. Any cleanup
+        of the plugin should be done here, such as saving data to a file.
+        """
+        pass
+
 
 class QtPyVCPDataChannel(QObject):
     """QtPyVCPChannel.
