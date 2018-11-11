@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>321</width>
-    <height>212</height>
+    <height>230</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -40,25 +40,25 @@
     {
         &quot;channels&quot;: [
             {
-                &quot;url&quot;: &quot;status.task_state&quot;,
-                &quot;trigger&quot;: true,
-                &quot;type&quot;: &quot;int&quot;
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;int&quot;, 
+                &quot;url&quot;: &quot;status:task_state&quot;
             }
-        ],
-        &quot;expression&quot;: &quot;\&quot;Reset Machine\&quot; if ch[0] == 1 else \&quot;E-Stop Machine\&quot;&quot;,
-        &quot;name&quot;: &quot;Set button text for estop SET/RESET&quot;,
+        ], 
+        &quot;expression&quot;: &quot;\&quot;Reset Machine\&quot; if ch[0] == 1 else \&quot;E-Stop Machine\&quot;&quot;, 
+        &quot;name&quot;: &quot;Set button text for estop SET/RESET&quot;, 
         &quot;property&quot;: &quot;Text&quot;
-    },
+    }, 
     {
         &quot;channels&quot;: [
             {
-                &quot;url&quot;: &quot;status.task_state&quot;,
-                &quot;trigger&quot;: true,
-                &quot;type&quot;: &quot;int&quot;
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;int&quot;, 
+                &quot;url&quot;: &quot;status:task_state&quot;
             }
-        ],
-        &quot;expression&quot;: &quot;ch[0] == 1&quot;,
-        &quot;name&quot;: &quot;Flash LED when Estoped&quot;,
+        ], 
+        &quot;expression&quot;: &quot;ch[0] == 1&quot;, 
+        &quot;name&quot;: &quot;Flash LED when Estoped&quot;, 
         &quot;property&quot;: &quot;LED Flashing&quot;
     }
 ]</string>
@@ -85,37 +85,37 @@
     {
         &quot;channels&quot;: [
             {
-                &quot;trigger&quot;: true,
-                &quot;type&quot;: &quot;int&quot;,
-                &quot;url&quot;: &quot;status.task_state&quot;
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;int&quot;, 
+                &quot;url&quot;: &quot;status:task_state&quot;
             }
-        ],
-        &quot;expression&quot;: &quot;\&quot;Turn Machine OFF\&quot; if ch[0] == 4 else \&quot;Turn Machine ON\&quot;&quot;,
-        &quot;name&quot;: &quot;Set button text for power ON/OFF&quot;,
+        ], 
+        &quot;expression&quot;: &quot;\&quot;Turn Machine OFF\&quot; if ch[0] == 4 else \&quot;Turn Machine ON\&quot;&quot;, 
+        &quot;name&quot;: &quot;Set button text for power ON/OFF&quot;, 
         &quot;property&quot;: &quot;Text&quot;
-    },
+    }, 
     {
         &quot;channels&quot;: [
             {
-                &quot;trigger&quot;: true,
-                &quot;type&quot;: &quot;int&quot;,
-                &quot;url&quot;: &quot;status.task_state&quot;
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;int&quot;, 
+                &quot;url&quot;: &quot;status:task_state&quot;
             }
-        ],
-        &quot;expression&quot;: &quot;ch[0] == 4&quot;,
-        &quot;name&quot;: &quot;Turn LED on with machine power&quot;,
+        ], 
+        &quot;expression&quot;: &quot;ch[0] == 4&quot;, 
+        &quot;name&quot;: &quot;Turn LED on with machine power&quot;, 
         &quot;property&quot;: &quot;LED On&quot;
-    },
+    }, 
     {
         &quot;channels&quot;: [
             {
-                &quot;trigger&quot;: true,
-                &quot;type&quot;: &quot;int&quot;,
-                &quot;url&quot;: &quot;status.task_state&quot;
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;int&quot;, 
+                &quot;url&quot;: &quot;status:task_state&quot;
             }
-        ],
-        &quot;expression&quot;: &quot;ch[0] &gt; 1&quot;,
-        &quot;name&quot;: &quot;Enable when OK to turn power ON/OFF&quot;,
+        ], 
+        &quot;expression&quot;: &quot;ch[0] &gt; 1&quot;, 
+        &quot;name&quot;: &quot;Enable when OK to turn power ON/OFF&quot;, 
         &quot;property&quot;: &quot;Enable&quot;
     }
 ]</string>
@@ -139,13 +139,13 @@
     {
         &quot;channels&quot;: [
             {
-                &quot;url&quot;: &quot;status.task_state&quot;,
-                &quot;trigger&quot;: true,
-                &quot;type&quot;: &quot;str&quot;
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;str&quot;, 
+                &quot;url&quot;: &quot;status:task_state&quot;
             }
-        ],
-        &quot;expression&quot;: &quot;ch[0]&quot;,
-        &quot;name&quot;: &quot;New Rule&quot;,
+        ], 
+        &quot;expression&quot;: &quot;ch[0]&quot;, 
+        &quot;name&quot;: &quot;New Rule&quot;, 
         &quot;property&quot;: &quot;Text&quot;
     }
 ]</string>
@@ -159,25 +159,25 @@
     {
         &quot;channels&quot;: [
             {
-                &quot;url&quot;: &quot;status.joint[0].enabled&quot;,
-                &quot;trigger&quot;: true,
-                &quot;type&quot;: &quot;int&quot;
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;bool&quot;, 
+                &quot;url&quot;: &quot;status:joint[0].enabled&quot;
             }
-        ],
-        &quot;expression&quot;: &quot;ch[0]&quot;,
-        &quot;name&quot;: &quot;enabled&quot;,
+        ], 
+        &quot;expression&quot;: &quot;ch[0]&quot;, 
+        &quot;name&quot;: &quot;enabled&quot;, 
         &quot;property&quot;: &quot;Enable&quot;
-    },
+    }, 
     {
         &quot;channels&quot;: [
             {
-                &quot;url&quot;: &quot;status.spindle[0].override&quot;,
-                &quot;trigger&quot;: true,
-                &quot;type&quot;: &quot;float&quot;
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;float&quot;, 
+                &quot;url&quot;: &quot;status:spindle[0].override&quot;
             }
-        ],
-        &quot;expression&quot;: &quot;\&quot;{:.0%}\&quot;.format(ch[0])&quot;,
-        &quot;name&quot;: &quot;text&quot;,
+        ], 
+        &quot;expression&quot;: &quot;\&quot;{:.0%}\&quot;.format(ch[0])&quot;, 
+        &quot;name&quot;: &quot;text&quot;, 
         &quot;property&quot;: &quot;Text&quot;
     }
 ]</string>
@@ -207,18 +207,18 @@
     {
         &quot;channels&quot;: [
             {
-                &quot;url&quot;: &quot;status:spindle[0].speed&quot;,
-                &quot;trigger&quot;: true,
-                &quot;type&quot;: &quot;int&quot;
-            },
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;float&quot;, 
+                &quot;url&quot;: &quot;status:spindle[0].speed?&quot;
+            }, 
             {
-                &quot;url&quot;: &quot;status:program_units?hello&quot;,
-                &quot;trigger&quot;: false,
-                &quot;type&quot;: &quot;str&quot;
+                &quot;trigger&quot;: false, 
+                &quot;type&quot;: &quot;str&quot;, 
+                &quot;url&quot;: &quot;status:program_units&quot;
             }
-        ],
-        &quot;expression&quot;: &quot;\&quot;{} {}\&quot;.format(ch[0], ch[1])&quot;,
-        &quot;name&quot;: &quot;speed&quot;,
+        ], 
+        &quot;expression&quot;: &quot;\&quot;{} {}\&quot;.format(ch[0], ch[1])&quot;, 
+        &quot;name&quot;: &quot;speed&quot;, 
         &quot;property&quot;: &quot;Text&quot;
     }
 ]</string>
@@ -252,13 +252,13 @@
     {
         &quot;channels&quot;: [
             {
-                &quot;trigger&quot;: true,
-                &quot;type&quot;: &quot;float&quot;,
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;&quot;, 
                 &quot;url&quot;: &quot;tooltable:current_tool?d&quot;
             }
-        ],
-        &quot;expression&quot;: &quot;str(ch[0])&quot;,
-        &quot;name&quot;: &quot;speed&quot;,
+        ], 
+        &quot;expression&quot;: &quot;str(ch[0])&quot;, 
+        &quot;name&quot;: &quot;speed&quot;, 
         &quot;property&quot;: &quot;Text&quot;
     }
 ]</string>
