@@ -7,7 +7,7 @@ from qtpy import QtWidgets, QtCore, QtDesigner
 
 from plugin_extension import _PluginExtension
 
-from qtpyvcp.utilities.channel import QtPyVCPChannel
+from qtpyvcp.data_plugins import QtPyVCPDataChannel, channelFromURL
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -458,13 +458,12 @@ class RulesEditor(QtWidgets.QDialog):
 
         self.change_entry("channels", new_channels)
 
-    def get_channel_data(self, channel):
+    def get_channel_data(self, url):
         chan = None
         chan_types = []
         chan_description = ''
         try:
-            print channel
-            chan = eval(channel, {'status': self.widget.app.status})
+            chan = channelFromURL(url)
             chan_types = chan.dataTypes()
         except:
             LOG.exception("Error in eval")
@@ -519,7 +518,7 @@ class RulesEditor(QtWidgets.QDialog):
 
                     print ch_obj
 
-                    if isinstance(ch_obj, QtPyVCPChannel):
+                    if isinstance(ch_obj, QtPyVCPDataChannel):
                         if ch.get('type') == 'str':
                             channel_values.append(ch_obj.text())
                         else:

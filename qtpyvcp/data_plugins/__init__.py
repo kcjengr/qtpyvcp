@@ -5,13 +5,15 @@ and maintains a global registry of plugin protocols vs. plugin instances.
 
 Custom plugins are loaded from locations specified in the `VCP_DATA_PLUGIN_PATH`
 environment variable. Valid plugin files have a name ending in `*_plugin.py`
-and must contain exactly one class inheriting from `QtPyVCPDataPlugin`.
+and must contain at least one `QtPyVCPDataPlugin` subclass with the plugin
+implementation.
 """
 import os
 import sys
 import inspect
 import imp
 import uuid
+
 from plugin import QtPyVCPDataPlugin, QtPyVCPDataChannel
 
 # Set up logging
@@ -75,7 +77,7 @@ def loadDataPluginsFromPath(locations, suffix):
                                if inspect.isclass(obj)
                                and issubclass(obj, QtPyVCPDataPlugin)
                                and obj is not QtPyVCPDataPlugin]
-                    print classes
+
                     # De-duplicate classes.
                     classes = list(set(classes))
                     for plugin in classes:
@@ -90,6 +92,14 @@ def loadDataPluginsFromPath(locations, suffix):
                         added_plugins[plugin.protocol] = plugin()
     return added_plugins
 
+def channelFromURL(url):
+    protocol, sep, rest = url.partition(':')
+    address, sep, query = rest.partition('?')
+
+    eval_env = {protocol: DATA_PLUGIN_REGISTRY[protocol]}
+    chan_obj = eval(protocol + "." + address, eval_env)
+
+    return chan_obj
 
 # Load the data plugins from VCP_DATA_PLUGINS_PATH
 LOG.info("Loading QtPyVCP Data Plugins")

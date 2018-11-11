@@ -9,7 +9,7 @@ import json
 
 from qtpy.QtCore import Property
 
-from qtpyvcp.data_plugins import DATA_PLUGIN_REGISTRY
+from qtpyvcp.data_plugins import channelFromURL
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -107,17 +107,7 @@ class QtPyVCPBaseWidget(object):
             for chan in rule['channels']:
                 # print chan['channel']
                 try:
-                    protocol, sep, rest = chan['url'].partition(':')
-                    address, sep, query = rest.partition('?')
-
-                    print protocol, address, query
-                    print DATA_PLUGIN_REGISTRY
-
-                    eval_env = {protocol: DATA_PLUGIN_REGISTRY[protocol]}
-                    chan_obj = eval(protocol + "." + address, eval_env)
-
-                    print chan_obj
-
+                    chan_obj = channelFromURL(chan['url'])
                     trigger = chan.get('trigger', False)
                     chan_type = chan.get('type', chan_obj.typ.__name__)
 
