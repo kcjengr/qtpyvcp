@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-QtPyVCP - A PyQt5 based toolkit for LinuxCNC Virtual Control Panels (VCPs).
+QtPyVCP - Qt and Python based Virtual Control Panel framework for LinuxCNC.
 
 Usage:
   qtpyvcp [<vcp>] --ini=INI [--log-level=LEVEL] [--log-file=FILE] [--perfmon]
@@ -58,13 +58,9 @@ Note:
 import sys
 from qtpyvcp.utilities.opt_parser import parse_opts
 
-def main():
-    opts = parse_opts(__doc__)
-    # We must import the application after the args have been parsed and the
-    # environment set up.
-    from qtpyvcp.application import VCPApplication
-    app = VCPApplication(opts=opts)
-    sys.exit(app.exec_())
-
-if __name__ == "__main__":
-    main()
+opts = parse_opts(__doc__)
+# We must import the application after the args have been parsed and the
+# environment set up.
+from qtpyvcp.application import VCPApplication
+app = VCPApplication(opts=opts)
+sys.exit(app.exec_())

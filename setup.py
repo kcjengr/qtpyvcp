@@ -8,7 +8,7 @@ setup(
     version="0.0.1",
     author="Kurt Jacobson",
     author_email="kcjengr@gmail.com",
-    description="QtPy based Virtual Control Panel (VCP) toolkit for LinuxCNC",
+    description="Qt and Python based Virtual Control Panel framework for LinuxCNC.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://gitlab.com/Hazzy/qtpyvcp",
@@ -23,7 +23,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'qtpyvcp=main:main',
+            'qtpyvcp=qtpyvcp.__main__',
             'qcompile=qtpyvcp.tools.qcompile:main',
             'mini=examples.mini.__main__',
             'brender=examples.brender.__main__',
