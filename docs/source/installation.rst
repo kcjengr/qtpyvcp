@@ -1,6 +1,6 @@
-=======================
+=============
 Installation
-=======================
+=============
 
 There are a few different ways to install QtPyVCP.  The easiest way is to use
 ``setup.py``.
@@ -58,9 +58,9 @@ Required for building documentation::
 
 From the docs dir run ``make html`` to build the HTML documentation.
 
-**Note:** *We try to keep this up to date, but if additional
-dependencies are needed please notify one of the developers
-so it can be added.*
+**Note:** *We try to keep this up to date, but if you find additional
+dependencies are needed please notify one of the developers so they
+can be added.*
 
 
 Getting QtPyVCP
