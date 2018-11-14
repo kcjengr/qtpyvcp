@@ -8,7 +8,7 @@ Install dependencies::
 
   sudo apt install python-pyqt5 python-dbus.mainloop.pyqt5 python-pyqt5.qtopengl
   python-pyqt5.qsci python-pyqt5.qtmultimedia gstreamer1.0-plugins-bad
-  libqt5multimedia5-plugins
+  libqt5multimedia5-plugins python-pip
 
 Install QtPyVCP with PIP::
 
