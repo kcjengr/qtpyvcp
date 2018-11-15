@@ -2,28 +2,32 @@
 Quick Start
 ===========
 
-If you are impatient like me, this is for you!
+If you are impatient, this is for you!
 
-Install dependencies::
+**Install dependencies**
+::
 
   sudo apt install python-pyqt5 python-dbus.mainloop.pyqt5 python-pyqt5.qtopengl python-pyqt5.qsci python-pyqt5.qtmultimedia gstreamer1.0-plugins-bad libqt5multimedia5-plugins pyqt5-dev-tools python-pip git
 
-Install QtPyVCP with PIP::
+**Install QtPyVCP**
+::
 
-  pip install git+https://github.com/kcjengr/qtpyvcp.git
+  sudo pip install git+https://github.com/kcjengr/qtpyvcp.git
 
-Edit the INI file::
+This will install QtPyVCP along with the examples, and will add
+QtPyVCP specific sim configs to ``~/linuxcnc/configs/sim.qtpyvcp``.
 
-  [DISPLAY]
-  DISPLAY = qtpyvcp
+**Launch a SIM config**
 
-Launch LinuxCNC as usual.
+Launch LinuxCNC as usual and select one of the QtPyVCP sims. You should see a
+dialog from which you can select one of the example VCPs. Chose one and click
+"Launch VCP".
 
-Hopefully this works (it should on Debian 9). If not it doesn't make you a bad
-person, it just means you should read the full installation document to find
-out how to do it right!
+This installation method is tested to work on Debian 9 (Stretch), it will
+probably work on other distros as well. If you intend to make your own VCPs
+or contribute to QtPyVCP you will need to set up a development environment.
 
 .. Note::
 
-    You should un-install using ``pip uninstall qtpyvcp``
-    before trying another installation method.
+    You should un-install using ``sudo pip uninstall qtpyvcp``
+    before using one of the other installation methods to avoid conflicts.
