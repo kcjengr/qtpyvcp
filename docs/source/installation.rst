@@ -2,69 +2,70 @@
 Installation
 =============
 
-There are a few different ways to install QtPyVCP.  The easiest way is to use
-``setup.py``.
+.. Note ::
+    In order to use QtPyVCP you will need to have LinuxCNC ~2.8pre (master)
+    installed, either system wide or as a Run In Place (RIP) built from source.
+
+The are multiply ways to install QtPyVCP, which one is best depends on how
+you intend to use QtPyVCP. If all you intend to do is try the examples,
+your best bet is to install with pip per the :doc:`Quick Start <quick_start>` guide.
+
+Installing with PIP
+^^^^^^^^^^^^^^^^^^^
+
+See the :doc:`Quick Start <quick_start>` guide.
 
 
-Installing Dependencies
-^^^^^^^^^^^^^^^^^^^^^^^
+Installing from Debian package
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Download the latest release here: https://github.com/kcjengr/qtpyvcp/releases
+
+Install by saying::
+
+    sudo apt instal /path/to/download.deb
+
+All dependencies should be automatically installed.
+
+
+Installing from Source
+^^^^^^^^^^^^^^^^^^^^^^
+
+This is best if you intend to contribute to QtPyVCP or make your own VCPs.
+
+
+Install Dependencies
+++++++++++++++++++++
 
 These are the dependencies needed to run QyPyVCP on Debian 9 (Stretch) systems.
 
-In addition you will need to have LinuxCNC ~2.8pre (master) installed, either
-system wide or as a Run In Place (RIP) built from source.
-
-
-For production use (non dev)
-++++++++++++++++++++++++++++
-
-These dependencies are needed for running QtPyVCP, individual VCPs may have
-additional dependencies.
-
 Core dependencies::
 
-  sudo apt-get install python-pyqt5
-  sudo apt-get install python-dbus.mainloop.pyqt5
-  sudo apt-get install python-pyqt5.qtopengl
-  sudo apt-get install python-pyqt5.qsci
-  sudo apt-get install python-docopt
-  sudo apt-get install python-qtpy
+  sudo apt install python-pyqt5 python-pyqt5.qtopengl python-pyqt5.qsci python-dbus.mainloop.pyqt5
 
 Required for Camera widget::
 
-  sudo apt-get install python-pyqt5.qtmultimedia`
-  sudo apt-get install gstreamer1.0-plugins-bad`
-  sudo apt-get install libqt5multimedia5-plugins`
+  sudo apt install python-pyqt5.qtmultimedia gstreamer1.0-plugins-bad libqt5multimedia5-plugins
 
-Required for FileSytem widget::
-
-  sudo apt-get install python-pyudev
-  sudo apt-get install python-psutil
-
-
-Development dependencies
-++++++++++++++++++++++++
 
 Required for QtPyVCP and VCP development::
 
-  sudo apt-get install qttools5-dev-tools
-  sudo apt-get install qttools5.dev
-  sudo apt-get install pyqt5-dev-tools
+  sudo apt install qttools5-dev-tools qttools5.dev pyqt5-dev-tools
 
 Required for building documentation::
 
-  sudo apt-get install python-sphinx
-  pip install sphinx_rtd_theme
+  sudo apt install python-sphinx
+  pip install sphinx_rtd_theme mock
 
 From the docs dir run ``make html`` to build the HTML documentation.
 
 **Note:** *We try to keep this up to date, but if you find additional
-dependencies are needed please notify one of the developers so they
+dependencies are needed please notify one of the developers so it
 can be added.*
 
 
-Getting QtPyVCP
-^^^^^^^^^^^^^^^
+Getting the QtPyVCP Source Code
++++++++++++++++++++++++++++++++
 
 The easiest way to get QtPyVCP is to clone the
 `QtPyVCP repository <https://github.com/kcjengr/qtpyvcp>`_ with git.
@@ -81,21 +82,16 @@ Enter the newly cloned directory::
   cd qtpyvcp
 
 
-Install using setup.py
-^^^^^^^^^^^^^^^^^^^^^^
+Install with setup.py
++++++++++++++++++++++
 
-.. Note::
-    At this point only ``setup.py develop`` is supported. ``setup.py install``
-    and virtual environments may work but are untested.
+You need to have the python 2.7 setup tools installed::
 
-You need to have the python 2.7 setup tools installed, if you don't or are
-not sure run::
+  sudo apt install python-setuptools
 
-  sudo apt-get install python-setuptools
+Install QtPyVCP by running::
 
-Then install by running::
-
-  python setup.py develop --user
+  sudo python setup.py develop
 
 This will install QtPyVCP on your PYTHONPATH and will generate command line
 scripts for launching QtPyVCP, the example VCPs and the command line tools.
@@ -113,7 +109,7 @@ to the current PATH by running::
     ``PATH=$PATH:~/.local/bin/``
 
 
-Testing the install
+Testing the Install
 ^^^^^^^^^^^^^^^^^^^
 
 Confirm that QtPyVCP installed correctly and is available by running::

@@ -6,9 +6,11 @@ At this point you should have the dependencies satisfied and QtPyVCP installed.
 
 Launching a sim config
 ^^^^^^^^^^^^^^^^^^^^^^
-Several sim configurations are included with QtPyVCP, they are located
-in the project's `sim/` directory. These are intended to be run from a
-terminal with the working directory as the project root.
+Several sim configurations are included with QtPyVCP, they should have been
+copied to your `~/linuxcnc/configs` directory when you installed QtPyVCP.
+
+.. These are intended to be run from a
+.. terminal with the working directory as the project root.
 
 **Included sim configs**::
 
