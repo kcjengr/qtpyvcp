@@ -19,7 +19,6 @@ def data_files_from_dirs(data_dirs):
         for root, dirs, files in os.walk(source_dir):
             root_files = [os.path.join(root, i) for i in files]
             dest = os.path.join(dest_dir, os.path.relpath(root, source_dir))
-            print dest
             data_files.append((dest, root_files))
     return data_files
 
