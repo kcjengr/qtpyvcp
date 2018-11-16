@@ -39,7 +39,7 @@ class MDIButton(QPushButton, CMDWidget):
             try:
                 # get the value from the GUI input widget
                 val = getattr(window, object_name).text()
-                cmd = cmd.replace("{}#<{}>".format(cmd_word, object_name), \
+                cmd = cmd.replace("{}#<{}>".format(cmd_word, object_name),
                                   "{}{}".format(cmd_word, val))
             except:
                 LOG.exception("Couldn't expand '{}' variable.".format(object_name))

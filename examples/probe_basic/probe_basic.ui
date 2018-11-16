@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1920</width>
-    <height>1080</height>
+    <height>1083</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -6667,7 +6667,10 @@ border-radius: 6px;
                         </widget>
                        </item>
                        <item row="1" column="0">
-                        <widget class="ActionButton" name="actionbutton_33">
+                        <widget class="ActionButton" name="actionbutton_g54">
+                         <property name="enabled">
+                          <bool>false</bool>
+                         </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -6703,7 +6706,10 @@ border-radius: 6px;
                         </widget>
                        </item>
                        <item row="1" column="1">
-                        <widget class="ActionButton" name="actionbutton_27">
+                        <widget class="ActionButton" name="actionbutton_g55">
+                         <property name="enabled">
+                          <bool>false</bool>
+                         </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -6739,7 +6745,10 @@ border-radius: 6px;
                         </widget>
                        </item>
                        <item row="1" column="2">
-                        <widget class="ActionButton" name="actionbutton_34">
+                        <widget class="ActionButton" name="actionbutton_g56">
+                         <property name="enabled">
+                          <bool>false</bool>
+                         </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -6775,7 +6784,10 @@ border-radius: 6px;
                         </widget>
                        </item>
                        <item row="1" column="3">
-                        <widget class="ActionButton" name="actionbutton_24">
+                        <widget class="ActionButton" name="actionbutton_g57">
+                         <property name="enabled">
+                          <bool>false</bool>
+                         </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -6811,7 +6823,10 @@ border-radius: 6px;
                         </widget>
                        </item>
                        <item row="1" column="4">
-                        <widget class="ActionButton" name="actionbutton_32">
+                        <widget class="ActionButton" name="actionbutton_g58">
+                         <property name="enabled">
+                          <bool>false</bool>
+                         </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -6847,7 +6862,10 @@ border-radius: 6px;
                         </widget>
                        </item>
                        <item row="2" column="1">
-                        <widget class="ActionButton" name="actionbutton_35">
+                        <widget class="ActionButton" name="actionbutton_g59">
+                         <property name="enabled">
+                          <bool>false</bool>
+                         </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -6883,7 +6901,10 @@ border-radius: 6px;
                         </widget>
                        </item>
                        <item row="2" column="2">
-                        <widget class="ActionButton" name="actionbutton_19">
+                        <widget class="ActionButton" name="actionbutton_g59_1">
+                         <property name="enabled">
+                          <bool>false</bool>
+                         </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -6919,7 +6940,10 @@ border-radius: 6px;
                         </widget>
                        </item>
                        <item row="2" column="3">
-                        <widget class="ActionButton" name="actionbutton_23">
+                        <widget class="ActionButton" name="actionbutton_g59_2">
+                         <property name="enabled">
+                          <bool>false</bool>
+                         </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -6955,7 +6979,10 @@ border-radius: 6px;
                         </widget>
                        </item>
                        <item row="2" column="4">
-                        <widget class="ActionButton" name="actionbutton_36">
+                        <widget class="ActionButton" name="actionbutton_g59_3">
+                         <property name="enabled">
+                          <bool>false</bool>
+                         </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                            <horstretch>0</horstretch>
@@ -7377,18 +7404,9 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="ActionButton" name="m01_break_button_38">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>55</width>
-                             <height>35</height>
-                            </size>
+                          <widget class="MDIButton" name="zero_x_button">
+                           <property name="enabled">
+                            <bool>false</bool>
                            </property>
                            <property name="maximumSize">
                             <size>
@@ -7396,28 +7414,19 @@ padding: -5px;
                              <height>35</height>
                             </size>
                            </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>15</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
                            <property name="styleSheet">
-                            <string notr="true">QPushButton {
+                            <string notr="true">MDIButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                            </property>
                            <property name="text">
                             <string>ZERO</string>
                            </property>
-                           <property name="checkable">
-                            <bool>true</bool>
+                           <property name="rules" stdset="0">
+                            <string>[]</string>
+                           </property>
+                           <property name="MDICommand" stdset="0">
+                            <string>G10 L20 P1 X0.0</string>
                            </property>
                           </widget>
                          </item>
@@ -8399,18 +8408,9 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="ActionButton" name="m01_break_button_37">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>55</width>
-                             <height>35</height>
-                            </size>
+                          <widget class="MDIButton" name="zero_y_button">
+                           <property name="enabled">
+                            <bool>false</bool>
                            </property>
                            <property name="maximumSize">
                             <size>
@@ -8418,28 +8418,17 @@ padding: -5px;
                              <height>35</height>
                             </size>
                            </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>15</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
                            <property name="styleSheet">
-                            <string notr="true">QPushButton {
+                            <string notr="true">MDIButton {
    	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
+}
+</string>
                            </property>
                            <property name="text">
                             <string>ZERO</string>
                            </property>
-                           <property name="checkable">
-                            <bool>true</bool>
+                           <property name="MDICommand" stdset="0">
+                            <string>G10 L20 P1 Y0.0 </string>
                            </property>
                           </widget>
                          </item>
@@ -9255,18 +9244,9 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="ActionButton" name="m01_break_button_34">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>55</width>
-                             <height>35</height>
-                            </size>
+                          <widget class="MDIButton" name="zero_z_button">
+                           <property name="enabled">
+                            <bool>false</bool>
                            </property>
                            <property name="maximumSize">
                             <size>
@@ -9274,28 +9254,16 @@ padding: -5px;
                              <height>35</height>
                             </size>
                            </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>15</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
                            <property name="styleSheet">
-                            <string notr="true">QPushButton {
+                            <string notr="true">MDIButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                            </property>
                            <property name="text">
                             <string>ZERO</string>
                            </property>
-                           <property name="checkable">
-                            <bool>true</bool>
+                           <property name="MDICommand" stdset="0">
+                            <string>G10 L20 P1 Z0.0 </string>
                            </property>
                           </widget>
                          </item>
@@ -10470,18 +10438,9 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="ActionButton" name="m01_break_button_36">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>55</width>
-                             <height>35</height>
-                            </size>
+                          <widget class="MDIButton" name="zero_a_button">
+                           <property name="enabled">
+                            <bool>false</bool>
                            </property>
                            <property name="maximumSize">
                             <size>
@@ -10489,28 +10448,16 @@ padding: -5px;
                              <height>35</height>
                             </size>
                            </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>15</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
                            <property name="styleSheet">
-                            <string notr="true">QPushButton {
+                            <string notr="true">MDIButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                            </property>
                            <property name="text">
                             <string>ZERO</string>
                            </property>
-                           <property name="checkable">
-                            <bool>true</bool>
+                           <property name="MDICommand" stdset="0">
+                            <string>G10 L20 P1 A0.0 </string>
                            </property>
                           </widget>
                          </item>
@@ -11507,18 +11454,9 @@ padding: -5px;
                           <number>1</number>
                          </property>
                          <item>
-                          <widget class="ActionButton" name="m01_break_button_35">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>55</width>
-                             <height>35</height>
-                            </size>
+                          <widget class="MDIButton" name="zero_b_button">
+                           <property name="enabled">
+                            <bool>false</bool>
                            </property>
                            <property name="maximumSize">
                             <size>
@@ -11526,28 +11464,16 @@ padding: -5px;
                              <height>35</height>
                             </size>
                            </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>15</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
                            <property name="styleSheet">
-                            <string notr="true">QPushButton {
+                            <string notr="true">MDIButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                            </property>
                            <property name="text">
                             <string>ZERO</string>
                            </property>
-                           <property name="checkable">
-                            <bool>true</bool>
+                           <property name="MDICommand" stdset="0">
+                            <string>G10 L20 P1 B0.0 </string>
                            </property>
                           </widget>
                          </item>
@@ -17485,7 +17411,7 @@ Background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -19488,7 +19414,7 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>0.00</string>
+              <string>0.000</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -19655,7 +19581,7 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>0.000</string>
+              <string>0.0000</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -26156,12 +26082,12 @@ font: 11pt bebas kai;
    <slot>deleteSelectedTool()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>223</x>
-     <y>613</y>
+     <x>141</x>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel">
-     <x>152</x>
-     <y>116</y>
+     <x>121</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -26172,12 +26098,12 @@ font: 11pt bebas kai;
    <slot>loadToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>967</x>
-     <y>613</y>
+     <x>161</x>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel">
-     <x>152</x>
-     <y>116</y>
+     <x>121</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -26188,12 +26114,12 @@ font: 11pt bebas kai;
    <slot>saveToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>766</x>
-     <y>613</y>
+     <x>141</x>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel">
-     <x>152</x>
-     <y>116</y>
+     <x>121</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -26204,12 +26130,12 @@ font: 11pt bebas kai;
    <slot>loadToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>585</x>
-     <y>613</y>
+     <x>141</x>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel">
-     <x>152</x>
-     <y>116</y>
+     <x>121</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -26220,12 +26146,12 @@ font: 11pt bebas kai;
    <slot>insertToolBelow()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>404</x>
-     <y>613</y>
+     <x>141</x>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel">
-     <x>152</x>
-     <y>116</y>
+     <x>121</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
