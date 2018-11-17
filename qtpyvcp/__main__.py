@@ -8,7 +8,7 @@ Usage:
             [--theme=THEME] [--stylesheet=SYTLESHEET] [--pref-file=FILE]
             [--size=WIDTHxHEIGHT] [--position=XPOSxYPOS]
             [--fullscreen] [--maximize] [--hide-menu-bar] [--hide-status-bar]
-            [--chooser]
+            [--chooser] [--qt-api=QT_API]
   qtpyvcp (-h | --help)
   qtpyvcp (-v | --version)
 
@@ -38,6 +38,8 @@ Application Options:
                      Sets the log level. [default: INFO]
   --log-file=FILE    Specifies the log file. Overrides INI setting.
   --pref-file=FILE   Specifies the preference file. Overrides INI setting.
+  --qt-api=(pyqt5 | pyqt | pyside2 | pyside)
+                     Specify the Qt Python binding to use.
   --perfmon          Monitor and log system performance.
   --command_line_args <args>...
 

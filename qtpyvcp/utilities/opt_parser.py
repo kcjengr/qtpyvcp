@@ -6,6 +6,7 @@ Usage:
             [--theme=THEME] [--stylesheet=SYTLESHEET] [--pref-file=FILE]
             [--size=WIDTHxHEIGHT] [--position=XPOSxYPOS]
             [--fullscreen] [--maximize] [--hide-menu-bar] [--hide-status-bar]
+            [--qt-api=QT_API]
   {vcp_cmd} (-h | --help)
   {vcp_cmd} (-v | --version)
 
@@ -33,6 +34,8 @@ Application Options:
                      Sets the log level. [default: INFO]
   --log-file=FILE    Specifies the log file. Overrides INI setting.
   --pref-file=FILE   Specifies the preference file. Overrides INI setting.
+  --qt-api=(pyqt5 | pyqt | pyside2 | pyside)
+                     Specify the Qt Python binding to use.
   --perfmon          Monitor and log system performance.
   --command_line_args <args>...
 
@@ -116,6 +119,10 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
             sys.exit()
         os.environ['INI_FILE_NAME'] = ini_file
         os.environ['CONFIG_DIR'] = os.path.dirname(ini_file)
+
+    print "######", opts.qt_api
+    if opts.qt_api:
+        os.environ['QT_API'] = opts.qt_api
 
     # show the chooser if the --chooser flag was specified
     if opts.chooser or not opts.get('vcp', True):
