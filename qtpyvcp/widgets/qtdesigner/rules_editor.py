@@ -539,10 +539,10 @@ class RulesEditor(QtWidgets.QDialog):
             self.expression_changed()
             self.name_changed()
             self.update_channels()
-        status, message = self.is_data_valid()
-        if status:
-            data = json.dumps(self.rules, sort_keys=True, indent=4)
-            print data
+        is_valid, message = self.is_data_valid()
+        if is_valid:
+            data = json.dumps(self.rules)
+            print json.dumps(self.rules, sort_keys=True, indent=4)
             formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self.widget)
             if formWindow:
                 formWindow.cursor().setProperty("rules", data)
