@@ -656,6 +656,22 @@
           <property name="alignment">
            <set>Qt::AlignCenter</set>
           </property>
+          <property name="rules" stdset="0">
+           <string>[
+    {
+        &quot;channels&quot;: [
+            {
+                &quot;channel&quot;: &quot;status.feedrate&quot;, 
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;float&quot;
+            }
+        ], 
+        &quot;expression&quot;: &quot;\&quot;Feed Override: {:.0%}\&quot;.format(ch[0])&quot;, 
+        &quot;name&quot;: &quot;New Rule&quot;, 
+        &quot;property&quot;: &quot;Text&quot;
+    }
+]</string>
+          </property>
           <property name="format" stdset="0">
            <string>&lt;b&gt;Feed Override:&lt;/b&gt; {:.0%}</string>
           </property>
@@ -690,6 +706,22 @@
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
+          </property>
+          <property name="rules" stdset="0">
+           <string>[
+    {
+        &quot;channels&quot;: [
+            {
+                &quot;channel&quot;: &quot;status.rapidrate&quot;, 
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;float&quot;
+            }
+        ], 
+        &quot;expression&quot;: &quot;\&quot;Rapid Override: {:.0%}\&quot;.format(ch[0])&quot;, 
+        &quot;name&quot;: &quot;New Rule&quot;, 
+        &quot;property&quot;: &quot;Text&quot;
+    }
+]</string>
           </property>
           <property name="format" stdset="0">
            <string>&lt;b&gt;Rapid Override:&lt;/b&gt; {:.0%}</string>
@@ -726,11 +758,14 @@
           <property name="alignment">
            <set>Qt::AlignCenter</set>
           </property>
-          <property name="factor" stdset="0">
-           <double>60.000000000000000</double>
+          <property name="rules" stdset="0">
+           <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;float&quot;, &quot;channel&quot;: &quot;status.max_velocity&quot;}, {&quot;trigger&quot;: false, &quot;type&quot;: &quot;str&quot;, &quot;channel&quot;: &quot;status.linear_units&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Max Vel: {:.0f} {}/min\&quot;.format(ch[0] * 60, ch[1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
           </property>
           <property name="format" stdset="0">
            <string>&lt;b&gt;Max Vel:&lt;/b&gt; {:.1f} in/min</string>
+          </property>
+          <property name="factor" stdset="0">
+           <double>60.000000000000000</double>
           </property>
           <property name="statusItem" stdset="0">
            <string>max_velocity</string>
@@ -1100,6 +1135,22 @@
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
+          </property>
+          <property name="rules" stdset="0">
+           <string>[
+    {
+        &quot;channels&quot;: [
+            {
+                &quot;channel&quot;: &quot;status.spindle[0].override&quot;, 
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;float&quot;
+            }
+        ], 
+        &quot;expression&quot;: &quot;\&quot;Spindle Override: {:.0%}\&quot;.format(ch[0])&quot;, 
+        &quot;name&quot;: &quot;New Rule&quot;, 
+        &quot;property&quot;: &quot;Text&quot;
+    }
+]</string>
           </property>
           <property name="format" stdset="0">
            <string>&lt;b&gt;Spindle Override:&lt;/b&gt; {:.0%}</string>
