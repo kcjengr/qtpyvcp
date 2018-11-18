@@ -6,6 +6,7 @@
 [linuxcnc-badge]: https://img.shields.io/badge/LinuxCNC-%202.8-blue.svg
 [irc-badge]: https://img.shields.io/badge/Chat%20on%20IRC-%23hazzy-green.svg
 
+![](docs/source/_static/qtpyvcp_logo_small.png)
 
 # QtPyVCP - QtPy Virtual Control Panel
 
