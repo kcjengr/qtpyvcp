@@ -29,6 +29,7 @@ if API == 'pyside2':
     from qtpy.QtCore import Qt
     QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
 
+
 class VCPApplication(QApplication):
 
     def __init__(self, opts, vcp_file=None):
@@ -70,7 +71,7 @@ class VCPApplication(QApplication):
 
         Parameters
         ----------
-        vcp : str
+        vcp_file : str
             The path or name of the VCP to load.
         opts : OptDict
             A OptDict of options to pass to the VCPMainWindow subclass.
@@ -113,7 +114,6 @@ class VCPApplication(QApplication):
         LOG.critical("VCP could not be loaded: yellow<{}>".format(vcp))
         sys.exit()
 
-
     def loadPyFile(self, pyfile, opts):
         """
         Load a .py file, performs some sanity checks to try and determine
@@ -140,16 +140,16 @@ class VCPApplication(QApplication):
         # Load the module. It's attributes can be accessed via `python_vcp.attr`
         module = imp.load_source('python_vcp', pyfile)
 
-        classes = [obj for name, obj in inspect.getmembers(module) \
-                if inspect.isclass(obj) \
-                and issubclass(obj, VCPMainWindow) \
-                and obj != VCPMainWindow]
+        classes = [obj for name, obj in inspect.getmembers(module)
+                   if inspect.isclass(obj)
+                   and issubclass(obj, VCPMainWindow)
+                   and obj != VCPMainWindow]
         if len(classes) == 0:
-            raise ValueError("Invalid File Format." \
-            " {} has no class inheriting from VCPMainWindow.".format(pyfile))
+            raise ValueError("Invalid File Format."
+                             " {} has no class inheriting from VCPMainWindow.".format(pyfile))
         if len(classes) > 1:
-            LOG.warn("More than one VCPMainWindow class in file yellow<{}>." \
-            " The first occurrence (in alphabetical order) will be used: {}" \
+            LOG.warn("More than one VCPMainWindow class in file yellow<{}>."
+                     " The first occurrence (in alphabetical order) will be used: {}"
             .format(pyfile, classes[0].__name__))
         cls = classes[0]
 
@@ -179,5 +179,5 @@ class VCPApplication(QApplication):
             total_percent = self.perf.cpu_percent(interval=None)
             total_time = sum(self.perf.cpu_times())
             usage = [total_percent * ((t.system_time + t.user_time) / total_time) for t in self.perf.threads()]
-        LOG.info("Performance:\n    Total CPU usage: {tot}\n    Per Thread: {percpu}" \
-            .format(tot=total_percent, percpu=usage))
+        LOG.info("Performance:\n    Total CPU usage: {tot}\n    Per Thread: {percpu}"
+                 .format(tot=total_percent, percpu=usage))
