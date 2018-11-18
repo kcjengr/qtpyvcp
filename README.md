@@ -1,10 +1,13 @@
 [![Travis CI][Travis-badge]](https://travis-ci.org/kcjengr/qtpyvcp)
 [![LinuxCNC 2.8][linuxcnc-badge]](https://github.com/LinuxCNC/linuxcnc)
 [![Chat on IRC ][irc-badge]](https://kiwiirc.com/client/irc.kiwiirc.com/hazzy)
+[![Chat on Matrix ][matrix-badge]](https://riot.im/app/#/room/#qtpyvcp:matrix.org)
+
 
 [Travis-badge]: https://img.shields.io/travis/kcjengr/qtpyvcp/master.svg?label=docs
 [linuxcnc-badge]: https://img.shields.io/badge/LinuxCNC-%202.8-blue.svg
 [irc-badge]: https://img.shields.io/badge/Chat%20on%20IRC-%23hazzy-green.svg
+[matrix-badge]: https://img.shields.io/badge/Chat%20on%20Matrix-%23qtpyvcp%3Amatrix.org-green.svg
 
 ![](docs/source/_static/qtpyvcp_logo_small.png)
 
