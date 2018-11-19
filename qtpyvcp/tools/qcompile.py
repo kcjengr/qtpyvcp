@@ -9,8 +9,7 @@ Usage:
   qcompile <package> ...
   qcompile -h
 
-Example:
-::
+Example::
 
   $ qcompile .
   $ qcompile package1 package2/subpackage
@@ -25,6 +24,8 @@ pyrcc = 'pyrcc5'
 pyuic = 'pyuic5'
 
 ok = "\033[32mok\033[0m"
+error = "\033[31mERROR - unable to call {}\033[0m"
+
 
 def compile(packages=['.',]):
     for package in packages:
@@ -44,22 +45,24 @@ def compile(packages=['.',]):
             for infile in files:
                 outfile = infile.replace('.ui', '_ui.py')
 
-                sys.stdout.write("  {} => {} ... " \
-                                .format(os.path.basename(infile),
-                                os.path.basename(outfile))
-                                )
+                sys.stdout.write("  {} => {} ... "
+                                 .format(os.path.basename(infile),
+                                         os.path.basename(outfile))
+                                 )
                 sys.stdout.flush()
 
-                ret = subprocess.call([pyuic, '-o', outfile, infile])
+                try:
+                    ret = subprocess.call([pyuic, '-o', outfile, infile])
+                except OSError:
+                    print error.format(pyuic)
+                    break
                 if ret == 0:
                     print ok
 
-
         # Compile Qt resource files
-
         files = [os.path.join(dirpath, f)
-            for dirpath, dirnames, files in os.walk(package_path)
-            for f in files if f.endswith('.qrc')]
+                 for dirpath, dirnames, files in os.walk(package_path)
+                 for f in files if f.endswith('.qrc')]
 
         if len(files) > 0:
             print "\nCompiling .qrc files in package '{}':".format(package)
@@ -68,12 +71,16 @@ def compile(packages=['.',]):
                 outfile = infile.replace('.qrc', '_rc.py')
 
                 sys.stdout.write("  {} => {} ... " \
-                                .format(os.path.basename(infile),
-                                os.path.basename(outfile))
-                                )
+                                 .format(os.path.basename(infile),
+                                         os.path.basename(outfile))
+                                 )
                 sys.stdout.flush()
 
-                ret = subprocess.call([pyrcc, '-o', outfile, infile])
+                try:
+                    ret = subprocess.call([pyrcc, '-o', outfile, infile])
+                except OSError:
+                    print error.format(pyrcc)
+                    break
                 if ret == 0:
                     print ok
 
@@ -84,6 +91,7 @@ def main():
         print __doc__
     else:
         compile(packages=sys.argv[1:])
+
 
 if __name__ == '__main__':
     main()
