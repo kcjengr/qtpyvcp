@@ -34,6 +34,8 @@ See the [documentation](https://kcjengr.github.io/qtpyvcp/).
 * [Development](https://github.com/kcjengr/qtpyvcp/)
 * [Documentation](https://kcjengr.github.io/qtpyvcp/)
 * [Freenode IRC](http://webchat.freenode.net/?channels=%23hazzy) (#hazzy)
+* [The Matrix](https://riot.im/app/#/room/#qtpyvcp:matrix.org) (#qtpyvcp:matrix.org)
+* [Gitter](https://gitter.im/KurtJacobson/hazzy)
 * [Issue Tracker](https://github.com/kcjengr/qtpyvcp/issues)
 
 
