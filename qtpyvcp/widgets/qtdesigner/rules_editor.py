@@ -12,9 +12,10 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 RULE_PROPERTIES = {
+    'No Opp': ['None', None],
     'Enable': ['setEnabled', bool],
     'Visible': ['setVisible', bool],
-    'Opacity': ['set_opacity', float]
+    # 'Opacity': ['setOpacity', float]
 }
 
 class RulesEditorExtension(_PluginExtension):
@@ -477,10 +478,15 @@ class RulesEditor(QtWidgets.QDialog):
 
             if name is None or name == "":
                 errors.append("Rule #{} has no name.".format(idx + 1))
-            if expression is None or expression == "":
-                errors.append("Rule #{} has no expression.".format(idx + 1))
             if len(channels) == 0:
                 errors.append("Rule #{} has no channel.".format(idx + 1))
+
+            if prop is not None:
+                print "Breaking out"
+                break
+
+            if expression is None or expression == "":
+                errors.append("Rule #{} has no expression.".format(idx + 1))
             else:
                 found_trigger = False
                 for ch_idx, ch in enumerate(channels):
