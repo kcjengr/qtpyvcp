@@ -3,6 +3,7 @@ install:
 - pip install sphinx sphinx_rtd_theme mock
 script:
 - sphinx-build -W docs/source docs/html
+
 deploy:
  provider: pages
  skip_cleanup: true
@@ -11,6 +12,20 @@ deploy:
  local_dir: docs/html
  on:
    branch: master
+
+before_deploy:
+- "echo 'ready?'"
+- gem install fpm
+- ./scripts/build_deb.sh
+
+deploy:
+  provider: releases
+  api_key: $GH_TOKEN
+  file_glob: true
+  file: python-qtpyvcp_*.deb
+  skip_cleanup: true
+  on:
+    tags: true
 
 # notifications:
 #   irc:
