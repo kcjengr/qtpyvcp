@@ -18202,8 +18202,11 @@ font: 14pt &quot;Bebas Kai&quot;;
                <property name="indent">
                 <number>0</number>
                </property>
+               <property name="rules" stdset="0">
+                <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;channel&quot;: &quot;status.gcodes&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Active Codes&quot;}]</string>
+               </property>
                <property name="statusItem" stdset="0">
-                <string>gcodes</string>
+                <string/>
                </property>
               </widget>
              </item>
@@ -18232,8 +18235,11 @@ font: 14pt &quot;Bebas Kai&quot;;
                <property name="indent">
                 <number>0</number>
                </property>
+               <property name="rules" stdset="0">
+                <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;channel&quot;: &quot;status.mcodes&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Active Mcodes&quot;}]</string>
+               </property>
                <property name="statusItem" stdset="0">
-                <string>mcodes</string>
+                <string/>
                </property>
               </widget>
              </item>
