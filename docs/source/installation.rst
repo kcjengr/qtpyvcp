@@ -6,7 +6,7 @@ Installation
     In order to use QtPyVCP you will need to have LinuxCNC ~2.8pre (master)
     installed, either system wide or as a Run In Place (RIP) built from source.
 
-The are multiply ways to install QtPyVCP, which one is best depends on how
+The are multiple ways to install QtPyVCP, which one is best depends on how
 you intend to use QtPyVCP. If all you intend to do is try the examples,
 your best bet is to install with pip per the :doc:`Quick Start <quick_start>` guide.
 
@@ -23,7 +23,11 @@ Download the latest release here: https://github.com/kcjengr/qtpyvcp/releases
 
 Install by saying::
 
-    sudo apt instal /path/to/download.deb
+  sudo apt instal /path/to/download.deb
+
+or::
+
+  sudo dpkg -i /path/to/download.deb
 
 All dependencies should be automatically installed.
 
