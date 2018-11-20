@@ -16,7 +16,7 @@ deploy:
 before_deploy:
 - "echo 'ready?'"
 - gem install fpm
-- bash scripts/build_deb.sh
+- ./scripts/build_deb.sh
 
 deploy:
   provider: releases
