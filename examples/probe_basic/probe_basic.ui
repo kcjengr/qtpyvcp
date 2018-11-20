@@ -24816,11 +24816,14 @@ border-radius: 4px;
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;float&quot;, &quot;channel&quot;: &quot;status.current_vel&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.1f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;cur vel&quot;}]</string>
+             </property>
              <property name="format" stdset="0">
               <string>{:.1f}</string>
              </property>
              <property name="statusItem" stdset="0">
-              <string>current_vel</string>
+              <string/>
              </property>
             </widget>
            </item>
@@ -24983,6 +24986,9 @@ border-radius: 4px;
                 </property>
                 <property name="indent">
                  <number>0</number>
+                </property>
+                <property name="rules" stdset="0">
+                 <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;channel&quot;: &quot;status.linear_units&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Linear Units&quot;}]</string>
                 </property>
                 <property name="statusItem" stdset="0">
                  <string>linear_units</string>
@@ -25361,11 +25367,14 @@ border-radius: 1px;
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;float&quot;, &quot;channel&quot;: &quot;status.spindle[0].speed&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.2f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;Speed&quot;}]</string>
+             </property>
              <property name="format" stdset="0">
               <string>{:.2f}</string>
              </property>
              <property name="statusItem" stdset="0">
-              <string>spindle.0.speed</string>
+              <string/>
              </property>
             </widget>
            </item>
