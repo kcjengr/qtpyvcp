@@ -21,6 +21,7 @@ before_deploy:
 deploy:
   provider: releases
   api_key: $GH_TOKEN
+  file_glob: true
   file: python-qtpyvcp_*.deb
   skip_cleanup: true
   on:
