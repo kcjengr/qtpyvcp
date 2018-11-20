@@ -24062,6 +24062,16 @@ LOAD</string>
            <property name="value">
             <number>150</number>
            </property>
+           <property name="barGradient" stdset="0">
+            <stringlist>
+             <string>0.0, 170, 170, 236</string>
+             <string>0.63, 85, 85, 238</string>
+             <string>0.65, 171, 171, 158</string>
+             <string>0.79, 227, 237, 106</string>
+             <string>0.84, 219, 124, 55</string>
+             <string>1.0, 209, 0, 0</string>
+            </stringlist>
+           </property>
           </widget>
          </item>
          <item row="1" column="1">
