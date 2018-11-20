@@ -7423,10 +7423,23 @@ padding: -5px;
                             <string>ZERO</string>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[]</string>
+                            <string>[
+    {
+        &quot;channels&quot;: [
+            {
+                &quot;channel&quot;: &quot;status.g5x_index&quot;, 
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;int&quot;
+            }
+        ], 
+        &quot;expression&quot;: &quot;&quot;, 
+        &quot;name&quot;: &quot;G5x Index&quot;, 
+        &quot;property&quot;: &quot;None&quot;
+    }
+]</string>
                            </property>
                            <property name="MDICommand" stdset="0">
-                            <string>G10 L20 P1 X0.0</string>
+                            <string>G10 L20 P{ch[0]} X0.0</string>
                            </property>
                           </widget>
                          </item>
@@ -8421,14 +8434,29 @@ padding: -5px;
                            <property name="styleSheet">
                             <string notr="true">MDIButton {
    	font: 15pt &quot;Bebas Kai&quot;;
-}
-</string>
+}</string>
                            </property>
                            <property name="text">
                             <string>ZERO</string>
                            </property>
+                           <property name="rules" stdset="0">
+                            <string>[
+    {
+        &quot;channels&quot;: [
+            {
+                &quot;channel&quot;: &quot;status.g5x_index&quot;, 
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;int&quot;
+            }
+        ], 
+        &quot;expression&quot;: &quot;&quot;, 
+        &quot;name&quot;: &quot;G5x Index&quot;, 
+        &quot;property&quot;: &quot;None&quot;
+    }
+]</string>
+                           </property>
                            <property name="MDICommand" stdset="0">
-                            <string>G10 L20 P1 Y0.0 </string>
+                            <string>G10 L20 P{ch[0]} Y0.0</string>
                            </property>
                           </widget>
                          </item>
@@ -9262,8 +9290,24 @@ padding: -5px;
                            <property name="text">
                             <string>ZERO</string>
                            </property>
+                           <property name="rules" stdset="0">
+                            <string>[
+    {
+        &quot;channels&quot;: [
+            {
+                &quot;channel&quot;: &quot;status.g5x_index&quot;, 
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;int&quot;
+            }
+        ], 
+        &quot;expression&quot;: &quot;&quot;, 
+        &quot;name&quot;: &quot;G5x Index&quot;, 
+        &quot;property&quot;: &quot;None&quot;
+    }
+]</string>
+                           </property>
                            <property name="MDICommand" stdset="0">
-                            <string>G10 L20 P1 Z0.0 </string>
+                            <string>G10 L20 P{ch[0]} Z0.0</string>
                            </property>
                           </widget>
                          </item>
@@ -10456,8 +10500,24 @@ padding: -5px;
                            <property name="text">
                             <string>ZERO</string>
                            </property>
+                           <property name="rules" stdset="0">
+                            <string>[
+    {
+        &quot;channels&quot;: [
+            {
+                &quot;channel&quot;: &quot;status.g5x_index&quot;, 
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;int&quot;
+            }
+        ], 
+        &quot;expression&quot;: &quot;&quot;, 
+        &quot;name&quot;: &quot;G5x Index&quot;, 
+        &quot;property&quot;: &quot;None&quot;
+    }
+]</string>
+                           </property>
                            <property name="MDICommand" stdset="0">
-                            <string>G10 L20 P1 A0.0 </string>
+                            <string>G10 L20 P{ch[0]} A0.0</string>
                            </property>
                           </widget>
                          </item>
@@ -11472,8 +11532,24 @@ padding: -5px;
                            <property name="text">
                             <string>ZERO</string>
                            </property>
+                           <property name="rules" stdset="0">
+                            <string>[
+    {
+        &quot;channels&quot;: [
+            {
+                &quot;channel&quot;: &quot;status.g5x_index&quot;, 
+                &quot;trigger&quot;: true, 
+                &quot;type&quot;: &quot;int&quot;
+            }
+        ], 
+        &quot;expression&quot;: &quot;&quot;, 
+        &quot;name&quot;: &quot;G5x Index&quot;, 
+        &quot;property&quot;: &quot;None&quot;
+    }
+]</string>
+                           </property>
                            <property name="MDICommand" stdset="0">
-                            <string>G10 L20 P1 B0.0 </string>
+                            <string>G10 L20 P{ch[0]} B0.0</string>
                            </property>
                           </widget>
                          </item>
@@ -19414,7 +19490,7 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>0.000</string>
+              <string>0.00</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -19581,7 +19657,7 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>0.0000</string>
+              <string>0.000</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
