@@ -23,7 +23,7 @@ Download the latest release here: https://github.com/kcjengr/qtpyvcp/releases
 
 Install by saying::
 
-  sudo apt instal /path/to/download.deb
+  sudo apt install /path/to/download.deb
 
 or::
 
