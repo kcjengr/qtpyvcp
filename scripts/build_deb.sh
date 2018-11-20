@@ -9,4 +9,4 @@ fpm -s python \
     -d pyqt5-dev-tools \
     -f \
     -m "Kurt Jacobson" \
-    -t deb /home/kurt/dev/cnc/QtPyVCP/setup.py
+    -t deb setup.py
