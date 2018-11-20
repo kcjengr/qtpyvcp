@@ -16,16 +16,18 @@ class QtPyVCPBaseWidget(object):
 
     IN_DESIGNER = os.getenv('DESIGNER') != None
 
-    DEFAULT_RULE_PROPERTY = "Enable"
+    DEFAULT_RULE_PROPERTY = 'None'
     RULE_PROPERTIES = {
+        'None': ['None', None],
         'Enable': ['setEnabled', bool],
         'Visible': ['setVisible', bool],
-        'Opacity': ['setOpacity', float],
+        # 'Opacity': ['setOpacity', float]
     }
 
     def __init__(self, parent=None):
         super(QtPyVCPBaseWidget, self).__init__()
         self._rules = ''
+        self._data_channels = []
 
     @Property(str, designable=False)
     def rules(self):

@@ -34,11 +34,17 @@ def registerRules(widget, rules):
                     if trigger:
                         triggers.append(item.onValueChanged)
 
+                widget._data_channels = ch
+
             except:
                 LOG.exception("Error evaluating rule: {}".format(chan['channel']))
                 return
 
         prop = widget.RULE_PROPERTIES[rule['property']]
+
+        # Don't register rules if no property
+        if prop[0] is "None":
+            return
 
         evil_env = {'ch': ch, 'widget': widget}
         exp_str = 'lambda: widget.{}({})'.format(prop[0], rule['expression'])
