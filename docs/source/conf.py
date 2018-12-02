@@ -382,7 +382,7 @@ class Mock(object):
             return self.__class__
 
     # mock pyqtProperty with python property
-    def pyqtProperty(*args, **kwargs):
+    def Property(*args, **kwargs):
         return property
 
     @classmethod
