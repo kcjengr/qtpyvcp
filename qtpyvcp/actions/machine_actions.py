@@ -715,6 +715,11 @@ class jog:
 
         axis = getAxisNumber(axis)
 
+        # must be in teleoperating mode to jog.
+        # ToDo: probably need to do some checks to make sure it is OK to jog
+        if STAT.motion_mode != linuxcnc.TRAJ_MODE_TELEOP:
+            CMD.teleop_enable(1)
+
         if speed == 0 or direction == 0:
             CMD.jog(linuxcnc.JOG_STOP, 0, axis)
 
