@@ -21,7 +21,8 @@ class StatusLabel(QLabel, VCPWidget):
         'Enable': ['setEnabled', bool],
         'Visible': ['setVisible', bool],
         'Opacity': ['setOpacity', float],
-        'Text': ['setText', str]
+        'Text': ['setText', str],
+        'Style Class': ['setStyleClass', str],
     }
 
     def __init__(self, parent=None):

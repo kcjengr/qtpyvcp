@@ -21,13 +21,49 @@ class QtPyVCPBaseWidget(object):
         'None': ['None', None],
         'Enable': ['setEnabled', bool],
         'Visible': ['setVisible', bool],
+        'Style Class': ['setStyleClass', str],
         # 'Opacity': ['setOpacity', float]
     }
 
     def __init__(self, parent=None):
         super(QtPyVCPBaseWidget, self).__init__()
         self._rules = ''
+        self._style = ''
         self._data_channels = []
+
+
+    def setStyleClass(self, style_class):
+        """Set the QSS style class for the widget"""
+        self.setProperty('style', style_class)
+
+    @Property(str, designable=True)
+    def style(self):
+        """QSS style class property for the widget.
+
+        This property can be changed to dynamically update the QSS style class
+        applied to the widget.
+
+        Example::
+
+            WidgetClass[style="error"] {
+                color: red;
+            }
+
+            WidgetClass {
+                color: black;
+            }
+
+        Returns:
+            str
+        """
+        return self._style
+
+    @style.setter
+    def style(self, style):
+        print style
+        self._style = style
+        self.style().unpolish(self)
+        self.style().polish(self)
 
     @Property(str, designable=False)
     def rules(self):
