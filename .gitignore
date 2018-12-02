@@ -1,6 +1,7 @@
 /site
 /build
 /dist
+/venv
 *.egg-info
 *.pyc
 *.pdf
