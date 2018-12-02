@@ -12,9 +12,10 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 RULE_PROPERTIES = {
-    'No Opp': ['None', None],
+    'None': ['None', None],
     'Enable': ['setEnabled', bool],
     'Visible': ['setVisible', bool],
+    'Style Class': ['setStyleClass', str],
     # 'Opacity': ['setOpacity', float]
 }
 
@@ -249,9 +250,12 @@ class RulesEditor(QtWidgets.QDialog):
         self.lst_rule_item = item
         data = self.rules[idx]
         self.txt_name.setText(data.get('name', ''))
-        self.cmb_property.setCurrentText(data.get('property', ''))
+        prop = data.get('property', '')
+        self.cmb_property.setCurrentText(prop)
         self.property_changed(0)
         self.txt_expression.setText(data.get('expression', ''))
+        self.txt_expression.setEnabled(self.available_properties[prop][1] is not None)
+
 
         channels = data.get('channels', [])
         self.tbl_channels.clearContents()
@@ -405,12 +409,20 @@ class RulesEditor(QtWidgets.QDialog):
 
     def property_changed(self, index):
         """Callback executed when the property is selected."""
+        print "prop changed"
         try:
             prop = self.cmb_property.currentData()
-            self.lbl_expected_type.setText(prop[1].__name__)
+            if prop[1] is None:
+                self.lbl_expected_type.setText("None")
+                self.txt_expression.setEnabled(False)
+                self.txt_expression.setToolTip("Expression not used with the 'None' property rule.")
+            else:
+                self.lbl_expected_type.setText(prop[1].__name__)
+                self.txt_expression.setEnabled(True)
             idx = self.get_current_index()
             self.change_entry("property", self.cmb_property.currentText())
-        except:
+        except Exception as e:
+            print "error", e
             self.lbl_expected_type.setText("")
 
     def tbl_channels_changed(self, table_item):
@@ -478,11 +490,12 @@ class RulesEditor(QtWidgets.QDialog):
 
             if name is None or name == "":
                 errors.append("Rule #{} has no name.".format(idx + 1))
+
             if len(channels) == 0:
                 errors.append("Rule #{} has no channel.".format(idx + 1))
 
-            if prop is not None:
-                print "Breaking out"
+            if self.available_properties[prop][1] is None:
+                # No need to check anything else.
                 break
 
             if expression is None or expression == "":
@@ -490,10 +503,10 @@ class RulesEditor(QtWidgets.QDialog):
             else:
                 found_trigger = False
                 for ch_idx, ch in enumerate(channels):
+
                     if not ch.get("channel", ""):
-                        errors.append(
-                            "Rule #{} - Ch. #{} has no channel.".format(idx + 1,
-                                                                        ch_idx))
+                        errors.append("Rule #{} - Ch. #{} has no channel.".format(idx + 1, ch_idx))
+
                     if ch.get("trigger", False) and not found_trigger:
                         found_trigger = True
 
@@ -508,7 +521,6 @@ class RulesEditor(QtWidgets.QDialog):
                     errors.append(
                         "Rule #{} has no trigger channel.".format(idx + 1))
 
-
             try:
                 # check python expression
                 value = eval(expression, {'ch': channel_values})
@@ -517,15 +529,12 @@ class RulesEditor(QtWidgets.QDialog):
                 exp_typ = self.available_properties[prop][1]
                 act_typ = type(value)
                 if act_typ != exp_typ:
-                    errors.append(
-                        "Rule #{} expression returned '{}', but expected '{}'."
-                            .format(idx + 1, act_typ.__name__, exp_typ.__name__))
+                    errors.append("Rule #{} expression returned '{}', but expected '{}'."
+                                  .format(idx + 1, act_typ.__name__, exp_typ.__name__))
 
             except:
-                LOG.exception("Error evaluating Rule #{} expression."
-                    .format(idx + 1))
-                errors.append(
-                    "Rule #{} expression is not valid.".format(idx + 1))
+                LOG.exception("Error evaluating Rule #{} expression.".format(idx + 1))
+                errors.append("Rule #{} expression is not valid.".format(idx + 1))
 
         if len(errors) > 0:
             error_msg = os.linesep.join(errors)
