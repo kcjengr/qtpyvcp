@@ -28,11 +28,12 @@ STATUS = Status()
 ACTION = Action()
 INFO = Info()
 
+from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.enums import Axis, ReferenceType, Units
 
 IN_DESIGNER = os.getenv('DESIGNER') != None
 
-class DROWidget(QLabel, Axis, ReferenceType, Units):
+class DROWidget(QLabel, VCPWidget, Axis, ReferenceType, Units):
 
     if IN_DESIGNER:
         from PyQt5.QtCore import Q_ENUMS
