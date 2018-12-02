@@ -4,22 +4,19 @@ install:
 script:
 - sphinx-build -W docs/source docs/html
 
-deploy:
- provider: pages
- skip_cleanup: true
- keep-history: false
- github_token: $GH_TOKEN
- local_dir: docs/html
- on:
-   branch: master
-
 before_deploy:
-- "echo 'ready?'"
 - gem install fpm
 - ./scripts/build_deb.sh
 
 deploy:
-  provider: releases
+- provider: pages
+  skip_cleanup: true
+  keep-history: false
+  github_token: $GH_TOKEN
+  local_dir: docs/html
+  on:
+    branch: master
+- provider: releases
   api_key: $GH_TOKEN
   file_glob: true
   file: python-qtpyvcp_*.deb
