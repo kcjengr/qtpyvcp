@@ -1,3 +1,9 @@
+"""QtPyVCP Base Widgets
+
+This file contains the definitions of the fundamental widgets upon which all other QtPyVCP
+widgets are based.
+"""
+
 import os
 
 from qtpy.QtCore import Property
@@ -9,7 +15,9 @@ from qtpyvcp.utilities.status import Status, StatusItem
 class QtPyVCPBaseWidget(object):
     """QtPyVCP Base Widget.
 
-    Base class on which all QtPyVCP widgets are based.
+    Class on which all other QtPyVCP widgets are based.
+    This class handles the rules and other things that should
+    apply to all QtPyVCP widgets regardles of use.
     """
 
     STATUS = Status()
@@ -38,20 +46,27 @@ class QtPyVCPBaseWidget(object):
 
     @Property(str, designable=True)
     def style(self):
-        """QSS style class property for the widget.
+        """QSS style class selector property.
 
-        This property can be changed to dynamically update the QSS style class
+        This property can be changed dynamically to update the QSS style
         applied to the widget.
 
-        Example::
+        Example:
 
-            WidgetClass[style="error"] {
-                color: red;
-            }
+            The ``style`` property can be used as a selector in QSS to
+            apply different styles depending on the value.
 
-            WidgetClass {
-                color: black;
-            }
+            ::
+
+                /* This will be applied when the `style` is set to "error" */
+                WidgetClass[style="error"] {
+                    color: red;
+                }
+
+                /* This will be applied when the `style` is not set */
+                WidgetClass {
+                    color: black;
+                }
 
         Returns:
             str
@@ -80,13 +95,29 @@ class QtPyVCPBaseWidget(object):
         registerRules(self, rules)
 
 class VCPWidget(QtPyVCPBaseWidget):
+    """VCP Widget
+
+    This is a general purpose widget for displaying data
+    and other uses that do not involve user interaction.
+    """
     def __init__(self, parent=None):
         super(VCPWidget, self).__init__()
 
 class CMDWidget(QtPyVCPBaseWidget):
+    """Command Widget
+
+    This widget should be used as the base class for all widgets
+    that control the machine. Eventualy additional functionality
+    will be added to this class.
+    """
     def __init__(self, parent=None):
         super(CMDWidget, self).__init__()
 
 class HALWidget(QtPyVCPBaseWidget):
+    """HAL Widget
+
+    This widget should be used as the base class for HAL widgets.
+    ToDo: Implement HAL functionality.
+    """
     def __init__(self, parent=None):
         super(HALWidget, self).__init__()
