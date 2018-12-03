@@ -29,7 +29,7 @@
 import sys
 import os
 
-from qtpy.QtCore import Property
+from qtpy.QtCore import Property, QObject
 from qtpy.QtGui import QFont, QFontMetrics, QColor
 
 from qtpyvcp.utilities import logger
@@ -237,6 +237,9 @@ class EditorBase(QsciScintilla):
         self.SendScintilla(QsciScintilla.SCI_STYLESETBACK, QsciScintilla.STYLE_DEFAULT, QColor(color))
         self.lexer.setPaperBackground(QColor(color))
 
+    def set_margin_background_color(self, color):
+        self.setMarginsBackgroundColor(QColor(color))
+
     def on_margin_clicked(self, nmargin, nline, modifiers):
         # Toggle marker for the line the margin was clicked on
         if self.markersAtLine(nline) != 0:
@@ -248,7 +251,7 @@ class EditorBase(QsciScintilla):
 # ==============================================================================
 # Gcode widget
 # ==============================================================================
-class GcodeEditor(EditorBase):
+class GcodeEditor(EditorBase, QObject):
     ARROW_MARKER_NUM = 8
 
     def __init__(self, parent=None):
@@ -264,6 +267,42 @@ class GcodeEditor(EditorBase):
         # STATUS.connect('line-changed', self.highlight_line)
         # if self.idle_line_reset:
         #     STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))
+
+        # QSS Hack
+
+        self._backgroundcolor = ''
+        self.backgroundcolor = self._backgroundcolor
+
+        self._marginbackgroundcolor = ''
+        self.marginbackgroundcolor = self._marginbackgroundcolor
+
+
+    @Property(str)
+    def backgroundcolor(self):
+        """Property to set the background color of the GCodeEditor (str).
+
+        sets the background color of the GCodeEditor
+        """
+        return self._backgroundcolor
+
+    @backgroundcolor.setter
+    def backgroundcolor(self, color):
+        self._backgroundcolor = color
+        self.set_background_color(color)
+
+
+    @Property(str)
+    def marginbackgroundcolor(self):
+        """Property to set the background color of the GCodeEditor margin (str).
+
+        sets the background color of the GCodeEditor margin
+        """
+        return self._marginbackgroundcolor
+
+    @marginbackgroundcolor.setter
+    def marginbackgroundcolor(self, color):
+        self._marginbackgroundcolor = color
+        self.set_margin_background_color(color)
 
     def load_program(self, fname=None):
         if fname is None:
