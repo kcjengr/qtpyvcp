@@ -5,10 +5,13 @@ from qtpy.QtWidgets import QLineEdit, QCompleter
 from qtpy.QtCore import Qt, QEvent, QStringListModel
 from qtpy.QtGui import QKeySequence, QValidator
 
-from qtpyvcp.core import Status, Action, Info
-STATUS = Status()
-ACTION = Action()
+from qtpyvcp.plugins import getDataPlugin
+STATUS = getDataPlugin('status')
+
+from qtpyvcp.core import Info
 INFO = Info()
+
+from qtpyvcp.actions.machine_actions import issue_mdi
 
 MDI_HISTORY_FILE = INFO.getMDIHistoryFile()
 
@@ -39,7 +42,7 @@ class MDIEntry(QLineEdit):
 
     def submit(self):
         cmd = str(self.text()).strip()
-        ACTION.issueMDI(cmd)
+        issue_mdi(cmd)
         self.setText('')
         cmds = self.model.stringList()
         if cmd not in cmds:

@@ -23,8 +23,10 @@ import os
 from qtpy.QtWidgets import QLabel
 from qtpy.QtCore import Slot, Property
 
-from qtpyvcp.core import Status, Action, Info
-STATUS = Status()
+from qtpyvcp.plugins import getDataPlugin
+STATUS = getDataPlugin('status')
+
+from qtpyvcp.core import Action, Info
 ACTION = Action()
 INFO = Info()
 

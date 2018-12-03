@@ -20,15 +20,16 @@
 
 import os
 
-from qtpy import uic
-from qtpy.QtCore import Qt, QEvent, Slot, Property
+from qtpy.QtCore import Qt, Slot, Property
 from qtpy.QtGui import QColor
 from qtpy.QtWidgets import QWidget, QBoxLayout, QSizePolicy
-from qtpyvcp.core import Status, Action, Info
+
+from qtpyvcp.core import Info
 from qtpyvcp.widgets.button_widgets.led_button import LEDButton
 
-STATUS = Status()
-ACTION = Action()
+from qtpyvcp.plugins import getDataPlugin
+STATUS = getDataPlugin('status')
+
 INFO = Info()
 
 WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))

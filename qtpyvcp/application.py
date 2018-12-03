@@ -38,7 +38,7 @@ class VCPApplication(QApplication):
 
         qApp = QApplication.instance()
 
-        from qtpyvcp.core import Status, Prefs, Info
+        from qtpyvcp.core import Prefs, Info
         self.info = Info()
         self.prefs = Prefs()
         self.status = getDataPlugin('status')

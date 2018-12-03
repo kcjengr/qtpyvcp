@@ -34,11 +34,7 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 from qtpyvcp.utilities.info import Info
-from qtpyvcp.utilities.status import Status
 INFO = Info()
-STATUS = Status()
-STAT = STATUS.stat
-
 CMD = linuxcnc.command()
 
 
