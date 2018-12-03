@@ -33,6 +33,7 @@ from qtpy.QtCore import Property
 from qtpy.QtGui import QFont, QFontMetrics, QColor
 
 from qtpyvcp.utilities import logger
+
 LOG = logger.getLogger(__name__)
 
 try:
@@ -42,14 +43,15 @@ except ImportError as e:
     sys.exit(1)
 
 from qtpyvcp.core import Status, Action, Info
+
 STATUS = Status()
 ACTION = Action()
 INFO = Info()
 
 
-#==============================================================================
+# ==============================================================================
 # Simple custom lexer for Gcode
-#==============================================================================
+# ==============================================================================
 class GcodeLexer(QsciLexerCustom):
     def __init__(self, parent=None, standalone=False):
         super(GcodeLexer, self).__init__(parent)
@@ -65,7 +67,7 @@ class GcodeLexer(QsciLexerCustom):
             2: 'Key',
             3: 'Assignment',
             4: 'Value',
-            }
+        }
         for key, value in self._styles.iteritems():
             setattr(self, value, key)
         font = QFont()
@@ -126,7 +128,7 @@ class GcodeLexer(QsciLexerCustom):
         if index > 0:
             # the previous state may be needed for multi-line styling
             pos = editor.SendScintilla(
-                      editor.SCI_GETLINEENDPOSITION, index - 1)
+                editor.SCI_GETLINEENDPOSITION, index - 1)
             state = editor.SendScintilla(editor.SCI_GETSTYLEAT, pos)
         else:
             state = self.Default
@@ -136,22 +138,22 @@ class GcodeLexer(QsciLexerCustom):
 
         # scintilla always asks to style whole lines
         for line in source.splitlines(True):
-            #print line
+            # print line
             length = len(line)
             graymode = False
             msg = ('msg' in line.lower() or 'debug' in line.lower())
             for char in str(line):
-                #print char
-                if char == ('('):
+                # print char
+                if char == '(':
                     graymode = True
                     set_style(1, self.Comment)
                     continue
-                elif char == (')'):
+                elif char == ')':
                     graymode = False
                     set_style(1, self.Comment)
                     continue
                 elif graymode:
-                    if (msg and char.lower() in ('m', 's', 'g', ',', 'd', 'e', 'b', 'u')):
+                    if msg and char.lower() in ('m', 's', 'g', ',', 'd', 'e', 'b', 'u'):
                         set_style(1, self.Assignment)
                         if char == ',': msg = False
                     else:
@@ -173,9 +175,9 @@ class GcodeLexer(QsciLexerCustom):
             index += 1
 
 
-#==============================================================================
+# ==============================================================================
 # Base editor class
-#==============================================================================
+# ==============================================================================
 class EditorBase(QsciScintilla):
     ARROW_MARKER_NUM = 8
 
@@ -243,18 +245,19 @@ class EditorBase(QsciScintilla):
             self.markerAdd(nline, self.ARROW_MARKER_NUM)
 
 
-#==============================================================================
+# ==============================================================================
 # Gcode widget
-#==============================================================================
+# ==============================================================================
 class GcodeEditor(EditorBase):
     ARROW_MARKER_NUM = 8
 
     def __init__(self, parent=None):
         super(GcodeEditor, self).__init__(parent)
+
         self._last_filename = None
         self.auto_show_mdi = True
         self.last_line = None
-        #self.setEolVisibility(True)
+        # self.setEolVisibility(True)
 
         STATUS.file_loaded.connect(self.load_program)
         STATUS.motion_line.onValueChanged(self.highlight_line)
@@ -268,7 +271,7 @@ class GcodeEditor(EditorBase):
         else:
             self._last_filename = fname
         self.load_text(fname)
-        #self.zoomTo(6)
+        # self.zoomTo(6)
         self.setCursorPosition(0, 0)
 
     # when switching from MDI to AUTO we need to reload the
@@ -281,9 +284,9 @@ class GcodeEditor(EditorBase):
     def load_mdi(self):
         self.load_text(INFO.MDI_HISTORY_PATH)
         self._last_filename = INFO.MDI_HISTORY_PATH
-        #print 'font point size', self.font().pointSize()
-        #self.zoomTo(10)
-        #print 'font point size', self.font().pointSize()
+        # print 'font point size', self.font().pointSize()
+        # self.zoomTo(10)
+        # print 'font point size', self.font().pointSize()
         self.setCursorPosition(self.lines(), 0)
 
     # With the auto_show__mdi option, MDI history is shown
@@ -323,7 +326,7 @@ class GcodeEditor(EditorBase):
         pass
 
     def line_changed(self, line, index):
-        #LOG.debug('Line changed: {}'.format(STATUS.is_auto_mode()))
+        # LOG.debug('Line changed: {}'.format(STATUS.is_auto_mode()))
         self.line_text = str(self.text(line)).strip()
         self.line = line
         if STATUS.is_mdi_mode() and STATUS.is_auto_running() is False:
@@ -332,30 +335,35 @@ class GcodeEditor(EditorBase):
     def select_lineup(self):
         line, col = self.getCursorPosition()
         LOG.debug(line)
-        self.setCursorPosition(line-1, 0)
-        self.highlight_line(line-1)
+        self.setCursorPosition(line - 1, 0)
+        self.highlight_line(line - 1)
 
     def select_linedown(self):
         line, col = self.getCursorPosition()
         LOG.debug(line)
-        self.setCursorPosition(line+1, 0)
-        self.highlight_line(line+1)
+        self.setCursorPosition(line + 1, 0)
+        self.highlight_line(line + 1)
 
     # designer recognized getter/setters
     # auto_show_mdi status
     def set_auto_show_mdi(self, data):
         self.auto_show_mdi = data
+
     def get_auto_show_mdi(self):
         return self.auto_show_mdi
+
     def reset_auto_show_mdi(self):
         self.auto_show_mdi = True
+
     auto_show_mdi_status = Property(bool, get_auto_show_mdi, set_auto_show_mdi, reset_auto_show_mdi)
 
-#==============================================================================
+
+# ==============================================================================
 # For testing
-#==============================================================================
+# ==============================================================================
 if __name__ == "__main__":
     from PyQt4.QtGui import QApplication
+
     app = QApplication(sys.argv)
     editor = GcodeEditor(standalone=True)
     editor.show()
