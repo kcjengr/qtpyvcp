@@ -63,6 +63,7 @@ def loadDataPluginsFromPath(locations, suffix):
                         LOG.info("Trying to load {} ...".format(name))
                         sys.path.append(root)
                         temp_name = str(uuid.uuid4())
+                        temp_name = 'qtpyvcp.plugins.' + os.path.splitext(name)[0]
                         module = imp.load_source(temp_name,
                                                  os.path.join(root, name))
 
@@ -92,6 +93,14 @@ def loadDataPluginsFromPath(locations, suffix):
                         added_plugins[plugin.protocol] = plugin()
     return added_plugins
 
+
+def getDataPlugin(plugin_name):
+    try:
+        return DATA_PLUGIN_REGISTRY[plugin_name]
+    except KeyError:
+        return None
+
+
 def channelFromURL(url):
     protocol, sep, rest = url.partition(':')
     address, sep, query = rest.partition('?')
@@ -111,7 +120,7 @@ if path is None:
 else:
     locations = path.split(os.pathsep)
 
-# Ensure that we first visit the local data_plugins location
+# Ensure that we first visit the local plugins location
 plugin_dir = os.path.dirname(os.path.realpath(__file__))
 locations.insert(0, plugin_dir)
 

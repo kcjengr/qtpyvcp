@@ -3,19 +3,35 @@ import json
 
 from qtpy.QtCore import QFileSystemWatcher
 
-from qtpyvcp.data_plugins import QtPyVCPDataPlugin, QtPyVCPDataChannel
+from qtpyvcp.plugins import QtPyVCPDataPlugin, QtPyVCPDataChannel, getDataPlugin
 
-DEFAULT_TOOL =  {
-        "T": -1,
-        "P": -1,
-        "Z": 0.0,
-        "comment": ""
-    }
+print getDataPlugin('status')
 
-DEFAULT_TOOL.update({d:0.0 for d in 'XYZABCUVWDIJQ'})
+# Set up logging
+from qtpyvcp.utilities import logger
+LOG = logger.getLogger(__name__)
+
+DEFAULT_TOOL = {
+    'A': 0.0,
+    'B': 0.0,
+    'C': 0.0,
+    'D': 0.0,
+    'I': 0.0,
+    'J': 0.0,
+    'P': -1,
+    'Q': 0.0,
+    'T': -1,
+    'U': 0.0,
+    'V': 0.0,
+    'W': 0.0,
+    'X': 0.0,
+    'Y': 0.0,
+    'Z': 0.0,
+    'comment': '',
+}
 
 # example interface
-# tooltable:current_tool?       # will return the current tool number
+# tooltable:current_tool?            # will return the current tool number
 # tooltable:current_tool?diameter    # will return the current tool diameter
 
 # toollife:current_tool?hours
@@ -36,7 +52,7 @@ class ToolTable(QtPyVCPDataPlugin):
     def __init__(self):
         super(ToolTable, self).__init__()
 
-        file = '/home/kurt/dev/cnc/QtPyVCP/sim/tool.tbl'
+        file = '/home/kurt/dev/cnc/qtpyvcp/sim/tool.tb'
 
         self.tool_table_file = file
 
@@ -49,6 +65,7 @@ class ToolTable(QtPyVCPDataPlugin):
             file = self.tool_table_file
 
         if not os.path.exists(file):
+            LOG.critical("Tool table file does not exist")
             return
 
         with open(file, 'r') as fh:

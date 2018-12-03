@@ -9,7 +9,7 @@ import json
 
 from qtpy.QtCore import Property
 
-from qtpyvcp.data_plugins import channelFromURL
+from qtpyvcp.plugins import channelFromURL
 
 # Set up logging
 from qtpyvcp.utilities import logger

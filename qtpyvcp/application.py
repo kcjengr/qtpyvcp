@@ -19,7 +19,7 @@ from qtpy.QtWidgets import QApplication, QMainWindow, QStyleFactory, qApp
 from qtpyvcp.utilities import logger
 LOG = logger.initBaseLogger('qtpyvcp')
 
-from qtpyvcp.data_plugins import DATA_PLUGIN_REGISTRY
+from qtpyvcp.plugins import DATA_PLUGIN_REGISTRY, getDataPlugin
 
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
@@ -31,7 +31,6 @@ if API == 'pyside2':
     from qtpy.QtCore import Qt
     QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
 
-
 class VCPApplication(QApplication):
 
     def __init__(self, opts, vcp_file=None):
@@ -42,8 +41,8 @@ class VCPApplication(QApplication):
         from qtpyvcp.core import Status, Prefs, Info
         self.info = Info()
         self.prefs = Prefs()
-        self.status = Status()
-        self.status.startPeriodic()
+        self.status = getDataPlugin('status')
+        print self.status
 
         self.initialiseDataPlugins()
 

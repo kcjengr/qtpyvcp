@@ -27,7 +27,7 @@ import linuxcnc
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.prefs import Prefs
-from qtpyvcp.data_plugins.plugin import QtPyVCPDataPlugin, QtPyVCPDataChannel
+from qtpyvcp.plugins.plugin import QtPyVCPDataPlugin, QtPyVCPDataChannel
 
 from qtpyvcp.utilities import logger
 

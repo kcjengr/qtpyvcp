@@ -7,7 +7,7 @@ from qtpy import QtWidgets, QtCore, QtDesigner
 
 from plugin_extension import _PluginExtension
 
-from qtpyvcp.data_plugins import QtPyVCPDataChannel, channelFromURL
+from qtpyvcp.plugins import QtPyVCPDataChannel, channelFromURL
 
 # Set up logging
 from qtpyvcp.utilities import logger

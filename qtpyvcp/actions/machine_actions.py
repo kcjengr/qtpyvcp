@@ -10,12 +10,15 @@ from qtpy.QtWidgets import QComboBox
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from qtpyvcp.utilities.status import Status, Info
+from qtpyvcp.utilities.status import Info
 from qtpyvcp.actions.base_actions import setTaskMode
 
-STATUS = Status()
-INFO = Info()
+from qtpyvcp.plugins import getDataPlugin
+
+STATUS = getDataPlugin('status')
 STAT = STATUS.stat
+
+INFO = Info()
 CMD = linuxcnc.command()
 
 

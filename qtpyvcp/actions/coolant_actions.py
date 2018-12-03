@@ -7,8 +7,9 @@ import linuxcnc
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from qtpyvcp.utilities.status import Status
-STATUS = Status()
+from qtpyvcp.plugins import getDataPlugin
+
+STATUS = getDataPlugin('status')
 STAT = STATUS.stat
 
 CMD = linuxcnc.command()
