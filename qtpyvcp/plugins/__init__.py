@@ -50,7 +50,7 @@ def loadDataPluginsFromPath(locations, suffix):
     Returns:
         Dictionary of protocol names vs. plugin instances that were added.
     """
-    added_plugins = {}
+    added_plugins = []
     for loc in locations:
         for root, _, files in os.walk(loc):
             if root.split(os.path.sep)[-1].startswith("__"):
@@ -85,12 +85,13 @@ def loadDataPluginsFromPath(locations, suffix):
                         if plugin.protocol is None:
                             LOG.warning("No protocol specified for {} plugin "
                                         "defined in file {}. Skipping plugin."
-                                        .format(plugin.__name__, name)
-                                        )
-                        # Add to global plugin list
+                                        .format(plugin.__name__, name))
+                            continue
+
+                        # register the plugin
                         registerDataPlugin(plugin)
-                        # Add to return dictionary of added plugins
-                        added_plugins[plugin.protocol] = plugin()
+                        added_plugins.append(plugin.protocol)
+
     return added_plugins
 
 
