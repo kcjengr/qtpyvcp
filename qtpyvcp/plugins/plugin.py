@@ -49,15 +49,12 @@ class QtPyVCPDataChannel(QObject):
         self.settable = settable
 
     def handleQuery(self, query):
-        item = getattr(self, query)
-        if item.iscallable:
-            return item()
-        else:
-            return item
+        return getattr(self, query or 'value')
 
     def handleAssigment(self, attr, value):
-        pass
+        setattr(self, attr, value)
 
+    @property
     def value(self):
         """Channel value getter method.
 
@@ -69,14 +66,6 @@ class QtPyVCPDataChannel(QObject):
         """
         pass
 
-    def text(self):
-        """Channel text getter method.
-
-        In a channel implementation this method can be used to return a
-        textual representation of the channel's value.
-        """
-        pass
-
     def onValueChanged(self, slot):
         """Connect a slot to the value changed signal.
 
@@ -85,16 +74,3 @@ class QtPyVCPDataChannel(QObject):
         """
         self.valueChanged.connect(slot)
 
-    def onTextChanged(self, slot):
-        """Connect a slot to the text changed signal.
-
-        Args:
-            slot : The callback to call when the text changes.
-        """
-        self.valueChanged.connect(slot)
-
-    def dataTypes(self):
-        if self.to_str == str:
-            return [self.typ.__name__]
-        else:
-            return [self.typ.__name__, 'str']

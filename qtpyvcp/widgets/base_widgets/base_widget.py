@@ -16,6 +16,12 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 class ChanList(list):
+    """Channel value list.
+
+    This list is intended to hold lambda functions for retrieving the current
+    data channel values. When the list is indexed the function is called and
+    the resulting value is returned.
+    """
     def __getitem__(self, index):
         return super(ChanList, self).__getitem__(index)()
 
@@ -100,7 +106,7 @@ class QtPyVCPBaseWidget(object):
     def registerRules(self, rules):
         rules = json.loads(rules)
         for rule in rules:
-            print rule
+            # print rule
             ch = ChanList()
             triggers = []
             for chan in rule['channels']:
@@ -109,17 +115,16 @@ class QtPyVCPBaseWidget(object):
                     protocol, sep, rest = chan['url'].partition(':')
                     item, sep, query = rest.partition('?')
 
-                    if query == '':
-                        query = 'value'
-
                     plugin = DATA_PLUGIN_REGISTRY[protocol]
+                    eval_env = {'plugin': plugin}
 
-                    chan_val = eval("lambda: plugin.{}.{}".format(item, query), {'plugin': plugin})
-                    chan_obj = eval("plugin.{}".format(item), {'plugin': plugin})
-
+                    # fast lambda function to get the current value of the channel
+                    chan_val = eval("lambda: plugin.{}.handleQuery('{}')".format(item, query), eval_env)
                     ch.append(chan_val)
+
                     if chan.get('trigger', False):
-                        triggers.append(chan_obj.onValueChanged)
+                        chan_obj = eval("plugin.{}".format(item), eval_env)
+                        triggers.append(chan_obj.valueChanged.connect)
 
                 except:
                     LOG.exception("Error evaluating rule: {}".format(chan.get('url', '')))
@@ -128,8 +133,8 @@ class QtPyVCPBaseWidget(object):
             prop = self.RULE_PROPERTIES[rule['property']]
 
             evil_env = {'ch': ch, 'widget': self}
-            exp_str = 'lambda: widget.{}({})'.format(prop[0], rule['expression'])
-            exp = eval(exp_str, evil_env)
+            evil_exp = 'lambda: widget.{}({})'.format(prop[0], rule['expression'])
+            exp = eval(evil_exp, evil_env)
 
             # initial call to update
             exp()

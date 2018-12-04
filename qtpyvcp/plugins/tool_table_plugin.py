@@ -31,7 +31,7 @@ DEFAULT_TOOL = {
 }
 
 # example interface
-# tooltable:current_tool?            # will return the current tool number
+# tooltable:current_tool?            # will return the current tool data dictionary
 # tooltable:current_tool?diameter    # will return the current tool diameter
 
 # toollife:current_tool?hours
@@ -46,7 +46,7 @@ class CurrentTool(QtPyVCPDataChannel):
     def __init__(self):
         super(CurrentTool, self).__init__(value_type=dict)
 
-        self._value = {}
+        self._value = DEFAULT_TOOL
 
     @property
     def value(self):
@@ -64,11 +64,13 @@ class CurrentTool(QtPyVCPDataChannel):
     def diameter(self):
         return self._value['D']
 
+    @property
+    def comment(self):
+        return self._value['comment']
+
     def _update(self, value):
         self._value = value
         self.valueChanged.emit(value)
-
-
 
 class ToolTable(QtPyVCPDataPlugin):
 
@@ -137,7 +139,7 @@ class ToolTable(QtPyVCPDataPlugin):
 
         self.__class__.TOOL_TABLE = table
 
-        print json.dumps(table, sort_keys=True, indent=4)
+        # print json.dumps(table, sort_keys=True, indent=4)
 
 
 

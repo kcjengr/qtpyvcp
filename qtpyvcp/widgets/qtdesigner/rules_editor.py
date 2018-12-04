@@ -38,7 +38,7 @@ class TableCheckButton(QtWidgets.QWidget):
         lay_out = QtWidgets.QHBoxLayout(self)
         lay_out.addWidget(self.chk_bx)
         lay_out.setAlignment(QtCore.Qt.AlignCenter)
-        lay_out.setContentsMargins(0,0,0,0)
+        lay_out.setContentsMargins(0, 0, 0, 0)
         self.setLayout(lay_out)
 
     def __getattr__(self, attr):
@@ -198,8 +198,8 @@ class RulesEditor(QtWidgets.QDialog):
         header = self.tbl_channels.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
-        # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
-        self.tbl_channels.setColumnWidth(2, 60)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+        # self.tbl_channels.setColumnWidth(2, 60)
 
         frm_edit_layout.addWidget(self.tbl_channels)
 
@@ -269,18 +269,22 @@ class RulesEditor(QtWidgets.QDialog):
         for row, ch in enumerate(channels):
             ch_name = ch.get('url', '')
             ch_tr = ch.get('trigger', False)
-            ch_typ = ch.get('type', '')
-            ch_obj, ch_val, ch_typs, ch_desc = self.get_channel_data(ch_name)
+            ch_obj, ch_val, ch_desc = self.get_channel_data(ch_name)
             self.tbl_channels.setItem(row, 0,
                                       QtWidgets.QTableWidgetItem(str(ch_name)))
 
             tr_chk = TableCheckButton(checked=ch_tr)
             self.tbl_channels.setCellWidget(row, 1, tr_chk)
 
-            typ_combo = QtWidgets.QComboBox()
-            typ_combo.addItems(ch_typs)
-            typ_combo.setCurrentText(ch_typ)
-            self.tbl_channels.setCellWidget(row, 2, typ_combo)
+            typ_lbl = QtWidgets.QLabel()
+            typ_lbl.setAlignment(QtCore.Qt.AlignCenter)
+            if ch_val is None:
+                typ_lbl.setText("<font color='red'>error</font>")
+            else:
+                typ_lbl.setText("<font color='green'>{}</font>".format(type(ch_val).__name__))
+            self.tbl_channels.setCellWidget(row, 2, typ_lbl)
+
+            # self.tbl_channels.setItem(row, 2, QtWidgets.QTableWidgetItem(type(ch_val).__name__))
 
         self.frm_edit.setEnabled(True)
         self.loading_data = False
@@ -359,8 +363,9 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.setItem(row, 0, QtWidgets.QTableWidgetItem(""))
         checkBoxItem = TableCheckButton(checked=state)
         self.tbl_channels.setCellWidget(row, 1, checkBoxItem)
-        typ_combo = QtWidgets.QComboBox()
-        self.tbl_channels.setCellWidget(row, 2, typ_combo)
+        typ_lbl = QtWidgets.QLabel()
+        typ_lbl.setAlignment(QtCore.Qt.AlignCenter)
+        self.tbl_channels.setCellWidget(row, 2, typ_lbl)
         vlabel = [str(i) for i in range(self.tbl_channels.rowCount())]
         self.tbl_channels.setVerticalHeaderLabels(vlabel)
         self.loading_data = False
@@ -432,16 +437,17 @@ class RulesEditor(QtWidgets.QDialog):
     def tbl_channels_changed(self, table_item):
         """Callback executed when the channels in the table are modified."""
         if self.loading_data:
-            print 'Loaidng data'
             return
 
         row = table_item.row()
         ch_name = table_item.data()
+        ch_obj, ch_val, ch_desc = self.get_channel_data(ch_name)
 
-        ch_obj, ch_val, ch_typs, ch_desc = self.get_channel_data(ch_name)
-        typ_combo = self.tbl_channels.cellWidget(row, 2)
-        typ_combo.clear()
-        typ_combo.addItems(ch_typs)
+        typ_lbl = self.tbl_channels.cellWidget(row, 2)
+        if ch_val is None:
+            typ_lbl.setText("<font color='red'>error</font>")
+        else:
+            typ_lbl.setText("<font color='green'>{}</font>".format(type(ch_val).__name__))
 
         self.update_channels()
 
@@ -453,16 +459,14 @@ class RulesEditor(QtWidgets.QDialog):
         for row in range(self.tbl_channels.rowCount()):
             ch = self.tbl_channels.item(row, 0).text()
             tr = self.tbl_channels.cellWidget(row, 1).isChecked()
-            ty = self.tbl_channels.cellWidget(row, 2).currentText()
-            new_channels.append({"url": ch, "trigger": tr, "type": ty})
+            new_channels.append({"url": ch, "trigger": tr})
 
         self.change_entry("channels", new_channels)
 
     def get_channel_data(self, url):
         chan_obj = None
         chan_val = None
-        chan_types = []
-        chan_description = ''
+        chan_desc = ''
 
         try:
             protocol, sep, rest = url.partition(':')
@@ -472,15 +476,15 @@ class RulesEditor(QtWidgets.QDialog):
                 query = 'value'
 
             plugin = DATA_PLUGIN_REGISTRY[protocol]
+            eval_env = {'plugin': plugin}
 
-            chan_val = eval("plugin.{}.{}".format(item, query), {'plugin': plugin})
-            chan_obj = eval("plugin.{}".format(item), {'plugin': plugin})
+            chan_obj = eval("plugin.{}".format(item), eval_env)
+            chan_val = chan_obj.handleQuery(query)
 
-            chan_types = chan.dataTypes()
         except:
             LOG.exception("Error in eval")
 
-        return chan_obj, chan_val, chan_types, chan_description
+        return chan_obj, chan_val, chan_desc
 
     def expression_changed(self):
         """Callback executed when the expression is modified."""
@@ -526,7 +530,7 @@ class RulesEditor(QtWidgets.QDialog):
                         found_trigger = True
 
                     # get chan values for use when checking expression
-                    ch_obj, ch_val, _, _ = self.get_channel_data(ch.get("url", ""))
+                    ch_obj, ch_val, ch_desc = self.get_channel_data(ch.get("url", ""))
                     print ch_obj
 
                     if isinstance(ch_obj, QtPyVCPDataChannel):
