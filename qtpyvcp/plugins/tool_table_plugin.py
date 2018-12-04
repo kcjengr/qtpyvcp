@@ -1,15 +1,27 @@
+"""Tool Table data plugin.
+
+Exposes all the info available in the tool table. Watches the
+tool table file for changes and re-loads as needed.
+"""
+
 import os
-import json
 
-from qtpy.QtCore import QFileSystemWatcher, Signal
+from qtpy.QtCore import QFileSystemWatcher, QTimer
 
-from qtpyvcp.plugins import QtPyVCPDataPlugin, QtPyVCPDataChannel, getDataPlugin
+from qtpyvcp.utilities.info import Info
+from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.plugins import QtPyVCPDataPlugin, QtPyVCPDataChannel, getPluginFromProtocol
 
-print getDataPlugin('status')
+STATUS = getPluginFromProtocol('status')
+INFO = Info()
 
 # Set up logging
-from qtpyvcp.utilities import logger
-LOG = logger.getLogger(__name__)
+LOG = getLogger(__name__)
+
+#                          E X A M P L E   I N T E R F A C E
+# tooltable:current_tool?            # will return the current tool data dictionary
+# tooltable:current_tool?diameter    # will return the current tool diameter
+# toollife:current_tool?hours
 
 DEFAULT_TOOL = {
     'A': 0.0,
@@ -30,18 +42,18 @@ DEFAULT_TOOL = {
     'comment': '',
 }
 
-#                          E X A M P L E   I N T E R F A C E
-# tooltable:current_tool?            # will return the current tool data dictionary
-# tooltable:current_tool?diameter    # will return the current tool diameter
-# toollife:current_tool?hours
-
+NO_TOOL = DEFAULT_TOOL.copy()
+NO_TOOL.update({'T': 0,
+                'comment': 'No Tool Loaded'})
 
 class CurrentTool(QtPyVCPDataChannel):
+    """Current tool data channel.
+    """
 
     def __init__(self):
         super(CurrentTool, self).__init__()
 
-        self._value = DEFAULT_TOOL
+        self._value = NO_TOOL
 
     @property
     def value(self):
@@ -60,6 +72,54 @@ class CurrentTool(QtPyVCPDataChannel):
         return self._value['D']
 
     @property
+    def x_offset(self):
+        return self._value['X']
+
+    @property
+    def y_offset(self):
+        return self._value['X']
+
+    @property
+    def z_offset(self):
+        return self._value['X']
+
+    @property
+    def a_offset(self):
+        return self._value['X']
+
+    @property
+    def b_offset(self):
+        return self._value['X']
+
+    @property
+    def c_offset(self):
+        return self._value['X']
+
+    @property
+    def u_offset(self):
+        return self._value['X']
+
+    @property
+    def v_offset(self):
+        return self._value['X']
+
+    @property
+    def w_offset(self):
+        return self._value['X']
+
+    @property
+    def front_angle(self):
+        return self._value['X']
+
+    @property
+    def back_angle(self):
+        return self._value['X']
+
+    @property
+    def orientation(self):
+        return self._value['X']
+
+    @property
     def comment(self):
         return self._value['comment']
 
@@ -70,6 +130,8 @@ class CurrentTool(QtPyVCPDataChannel):
 class ToolTable(QtPyVCPDataPlugin):
 
     protocol = 'tooltable'
+
+    # data channels
     current_tool = CurrentTool()
 
     TOOL_TABLE = {}
@@ -77,28 +139,50 @@ class ToolTable(QtPyVCPDataPlugin):
     def __init__(self):
         super(ToolTable, self).__init__()
 
-        file = '/home/kurt/dev/cnc/qtpyvcp/sim/tool.tbl'
+        self.fs_watcher = None
 
-        self.tool_table_file = file
+        self.tool_table_file = INFO.getToolTableFile()
 
         if self.TOOL_TABLE == {}:
-            self.loadToolTable(file)
+            self.loadToolTable()
 
-        self.current_tool._update(self.TOOL_TABLE[0])
+        self.current_tool._update(self.TOOL_TABLE[STATUS.tool_in_spindle.value])
 
-    def loadToolTable(self, file=None):
+        # update signals
+        STATUS.tool_in_spindle.onValueChanged(self.onToolChanged)
 
-        if file is None:
-            file = self.tool_table_file
+    def initialise(self):
+        self.fs_watcher = QFileSystemWatcher()
+        self.fs_watcher.addPath(self.tool_table_file)
+        self.fs_watcher.fileChanged.connect(self.onToolTableFileChanged)
 
-        if not os.path.exists(file):
-            LOG.critical("Tool table file does not exist")
+    def onToolTableFileChanged(self, path):
+        LOG.debug('Tool Table file changed: {}'.format(path))
+        # ToolEdit deletes the file and then rewrites it, so wait
+        # a bit to ensure the new data has been writen out.
+        QTimer.singleShot(50, self.reloadToolTable)
+
+    def onToolChanged(self, tool_num):
+        self.current_tool._update(self.TOOL_TABLE[tool_num])
+
+    def reloadToolTable(self):
+        # rewatch the file if it stop being watched because it was deleted
+        if self.tool_table_file not in self.fs_watcher.files():
+            self.fs_watcher.addPath(self.tool_table_file)
+
+        # reload with the new data
+        self.loadToolTable()
+
+    def loadToolTable(self):
+
+        if not os.path.exists(self.tool_table_file):
+            LOG.critical("Tool table file does not exist: {}".format(self.tool_table_file))
             return
 
-        with open(file, 'r') as fh:
+        with open(self.tool_table_file, 'r') as fh:
             lines = fh.readlines()
 
-        table = {}
+        table = {0: NO_TOOL,}
 
         for line in lines:
 
@@ -114,13 +198,13 @@ class ToolTable(QtPyVCPDataPlugin):
                         try:
                             tool[descriptor] = int(value)
                         except:
-                            print 'Error converting value to int'
+                            LOG.error('Error converting value to int: {}'.format(value))
                             break
                     else:
                         try:
                             tool[descriptor] = float(value)
                         except:
-                            print 'Error converting value to float'
+                            LOG.error('Error converting value to float: {}'.format(value))
                             break
 
             tool['comment'] = comment.strip()
@@ -132,33 +216,10 @@ class ToolTable(QtPyVCPDataPlugin):
             # add the tool to the table
             table[tnum] = tool
 
+        # update tooltable
         self.__class__.TOOL_TABLE = table
 
+        self.current_tool._update(self.TOOL_TABLE[STATUS.tool_in_spindle.value])
+
+        # import json
         # print json.dumps(table, sort_keys=True, indent=4)
-
-
-
-def main():
-
-    tool_table_file = '/home/kurt/dev/cnc/QtPyVCP/sim/tool.tbl'
-
-    import sys
-    from qtpy.QtCore import QCoreApplication
-
-
-    tool_table = ToolTable(tool_table_file)
-
-    def file_changed(path):
-        print('File Changed: %s' % path)
-        tool_table.loadToolTable(tool_table_file)
-
-    app = QCoreApplication(sys.argv)
-
-    fs_watcher = QFileSystemWatcher([tool_table_file,])
-    fs_watcher.fileChanged.connect(file_changed)
-
-    sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()
