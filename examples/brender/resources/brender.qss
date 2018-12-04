@@ -1,3 +1,8 @@
+QsciScintilla {
+    qproperty-backgroundcolor: #ffbb0e;
+    qproperty-marginbackgroundcolor: #5c5c5c;
+}
+
 QMainWindow, QDialog {
     background: #707070
     /*border-image: url(:/images/dark_background.jpg);*/
