@@ -66,7 +66,8 @@ class QtPyVCPDataChannel(QObject):
             return None
 
     def handleAssigment(self, attr, value):
-        setattr(self, attr, value)
+        raise NotImplemented
+        # setattr(self, attr, value)
 
     @property
     def value(self):
