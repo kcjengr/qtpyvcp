@@ -56,7 +56,10 @@ class StatusItem(QtPyVCPDataChannel):
     """
 
     def __init__(self, item, typ=None, to_str=str, description=''):
-        super(StatusItem, self).__init__(address=item, value_type=typ)
+        super(StatusItem, self).__init__(description=description)
+
+        self.item = item
+        self.typ = typ or type(self.value)
         self.to_str = to_str
 
     @property
@@ -66,7 +69,7 @@ class StatusItem(QtPyVCPDataChannel):
         Returns:
             any : The value of the item as of the last `stat.poll()`.
         """
-        return getattr(STAT, self.address)
+        return getattr(STAT, self.item)
 
     @property
     def text(self):
@@ -79,8 +82,6 @@ class StatusItem(QtPyVCPDataChannel):
 
     def _update(self, value):
         self.valueChanged.emit(value)
-        # self.valueChanged[self.typ].emit(value)
-        # self.valueChanged[str].emit(self.to_str(value))
 
 
 class Status(QtPyVCPDataPlugin):
@@ -567,7 +568,7 @@ class JointStatusItem(StatusItem):
 
     @property
     def value(self):
-        return self.typ(STAT.joint[self.jnum][self.address])
+        return self.typ(STAT.joint[self.jnum][self.item])
 
 
 class JointStatus(QObject):
@@ -629,7 +630,7 @@ class SpindleStatusItem(StatusItem):
 
     @property
     def value(self):
-        return self.typ(STAT.spindle[self.snum][self.address])
+        return self.typ(STAT.spindle[self.snum][self.item])
 
 class SpindleStatus(QObject):
     """Spindle status class.

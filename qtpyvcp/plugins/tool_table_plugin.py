@@ -30,21 +30,16 @@ DEFAULT_TOOL = {
     'comment': '',
 }
 
-# example interface
+#                          E X A M P L E   I N T E R F A C E
 # tooltable:current_tool?            # will return the current tool data dictionary
 # tooltable:current_tool?diameter    # will return the current tool diameter
-
 # toollife:current_tool?hours
 
-# stat:tool_in_spindle?
-# stat:spindle[0].override?     # will return current override of spindle 0
-# cmd:spindle[0].override=100   # set spindle override
-# hal:halui.machine.is-on?      # get the value of a HAL pin
 
 class CurrentTool(QtPyVCPDataChannel):
 
     def __init__(self):
-        super(CurrentTool, self).__init__(value_type=dict)
+        super(CurrentTool, self).__init__()
 
         self._value = DEFAULT_TOOL
 

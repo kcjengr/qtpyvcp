@@ -32,23 +32,15 @@ class QtPyVCPDataChannel(QObject):
     """QtPyVCPChannel.
 
     Args:
-        address (str) : The address/identifier of the channel.
-        value_type (type) : The python type of the item's value. If no type is specified
-            the type returned by `type(self.value())` will be used.
-        to_str (method) : A method which returns a textual version of the
-            item's value. If not specified defaults to the values `__str__` method.
         description (str) : A human readable description of the item.
     """
 
     valueChanged = Signal(object)
 
-    def __init__(self, address=None, value_type=None, triggerable=True, settable=False):
+    def __init__(self, description=''):
         super(QtPyVCPDataChannel, self).__init__()
 
-        self.address = address
-        self.typ = value_type or type(self.value)
-        self.triggerable = triggerable
-        self.settable = settable
+        self.description = description
 
     def handleQuery(self, query):
         """Query channel value.
@@ -73,9 +65,9 @@ class QtPyVCPDataChannel(QObject):
 
     @property
     def value(self):
-        """Channel value getter method.
+        """Channel value property.
 
-        In a channel implementation the `value` method should return the
+        In a channel implementation the `value` property should return the
         current value of the channel. If getting the value is reasonably
         fast and light (e.g. dict lookup) then that can be done here, but if
         it may take some time (e.g. over a network), then this method should
@@ -84,10 +76,10 @@ class QtPyVCPDataChannel(QObject):
         pass
 
     def onValueChanged(self, slot):
-        """Connect a slot to the value changed signal.
+        """Connect a callback to the valueChanged signal.
 
         Args:
-            slot : The callback to call when the value changes.
+            slot : The method to call when the value changes.
         """
         self.valueChanged.connect(slot)
 
