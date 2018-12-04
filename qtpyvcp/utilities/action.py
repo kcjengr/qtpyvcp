@@ -37,6 +37,10 @@ from qtpyvcp.utilities.info import Info
 INFO = Info()
 CMD = linuxcnc.command()
 
+from qtpyvcp.plugins import getPluginFromProtocol
+STATUS = getPluginFromProtocol('status')
+STAT = STATUS.stat
+
 
 class Action(object):
     """Ensures only one instance of StatusPoller exists per python interpretor.
