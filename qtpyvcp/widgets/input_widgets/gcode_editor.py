@@ -276,7 +276,6 @@ class GcodeEditor(EditorBase, QObject):
         self._marginbackgroundcolor = ''
         self.marginbackgroundcolor = self._marginbackgroundcolor
 
-
     @Property(str)
     def backgroundcolor(self):
         """Property to set the background color of the GCodeEditor (str).
@@ -289,7 +288,6 @@ class GcodeEditor(EditorBase, QObject):
     def backgroundcolor(self, color):
         self._backgroundcolor = color
         self.set_background_color(color)
-
 
     @Property(str)
     def marginbackgroundcolor(self):
