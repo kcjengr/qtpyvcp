@@ -1,5 +1,7 @@
-
 from qtpy.QtCore import QObject, Signal
+from qtpyvcp.utilities.logger import getLogger
+
+LOG = getLogger(__name__)
 
 class QtPyVCPDataPlugin(QObject):
     """QtPyVCPDataPlugin."""
