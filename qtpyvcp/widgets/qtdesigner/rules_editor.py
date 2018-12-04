@@ -7,7 +7,7 @@ from qtpy import QtWidgets, QtCore, QtDesigner
 
 from plugin_extension import _PluginExtension
 
-from qtpyvcp.plugins import QtPyVCPDataChannel, channelFromURL
+from qtpyvcp.plugins import QtPyVCPDataChannel, DATA_PLUGIN_REGISTRY
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -270,7 +270,7 @@ class RulesEditor(QtWidgets.QDialog):
             ch_name = ch.get('url', '')
             ch_tr = ch.get('trigger', False)
             ch_typ = ch.get('type', '')
-            ch_obj, ch_typs, ch_desc = self.get_channel_data(ch_name)
+            ch_obj, ch_val, ch_typs, ch_desc = self.get_channel_data(ch_name)
             self.tbl_channels.setItem(row, 0,
                                       QtWidgets.QTableWidgetItem(str(ch_name)))
 
@@ -438,7 +438,7 @@ class RulesEditor(QtWidgets.QDialog):
         row = table_item.row()
         ch_name = table_item.data()
 
-        ch_obj, ch_typs, ch_desc = self.get_channel_data(ch_name)
+        ch_obj, ch_val, ch_typs, ch_desc = self.get_channel_data(ch_name)
         typ_combo = self.tbl_channels.cellWidget(row, 2)
         typ_combo.clear()
         typ_combo.addItems(ch_typs)
@@ -459,16 +459,28 @@ class RulesEditor(QtWidgets.QDialog):
         self.change_entry("channels", new_channels)
 
     def get_channel_data(self, url):
-        chan = None
+        chan_obj = None
+        chan_val = None
         chan_types = []
         chan_description = ''
+
         try:
-            chan = channelFromURL(url)
+            protocol, sep, rest = url.partition(':')
+            item, sep, query = rest.partition('?')
+
+            if query == '':
+                query = 'value'
+
+            plugin = DATA_PLUGIN_REGISTRY[protocol]
+
+            chan_val = eval("plugin.{}.{}".format(item, query), {'plugin': plugin})
+            chan_obj = eval("plugin.{}".format(item), {'plugin': plugin})
+
             chan_types = chan.dataTypes()
         except:
             LOG.exception("Error in eval")
 
-        return (chan, chan_types, chan_description)
+        return chan_obj, chan_val, chan_types, chan_description
 
     def expression_changed(self):
         """Callback executed when the expression is modified."""
@@ -492,45 +504,40 @@ class RulesEditor(QtWidgets.QDialog):
             channel_values = []
 
             if name is None or name == "":
-                errors.append("Rule #{} has no name.".format(idx + 1))
+                errors.append("Rule #{} has no name.".format(idx))
 
             if len(channels) == 0:
-                errors.append("Rule #{} has no channel.".format(idx + 1))
+                errors.append("Rule #{} has no channel.".format(idx))
 
             if self.available_properties[prop][1] is None:
                 # No need to check anything else.
                 break
 
             if expression is None or expression == "":
-                errors.append("Rule #{} has no expression.".format(idx + 1))
+                errors.append("Rule #{} has no expression.".format(idx))
             else:
                 found_trigger = False
                 for ch_idx, ch in enumerate(channels):
 
-                    if not ch.get("channel", ""):
-                        errors.append("Rule #{} - Ch. #{} has no channel.".format(idx + 1, ch_idx))
+                    if not ch.get("url", ""):
+                        errors.append("Rule #{} - Ch. #{} has no channel.".format(idx, ch_idx))
 
                     if ch.get("trigger", False) and not found_trigger:
                         found_trigger = True
 
                     # get chan values for use when checking expression
-                    ch_obj = self.get_channel_data(ch.get("url", ""))[0]
-
+                    ch_obj, ch_val, _, _ = self.get_channel_data(ch.get("url", ""))
                     print ch_obj
 
                     if isinstance(ch_obj, QtPyVCPDataChannel):
-                        if ch.get('type') == 'str':
-                            channel_values.append(ch_obj.text())
-                        else:
-                            channel_values.append(ch_obj.value())
+                        channel_values.append(ch_val)
                     else:
-                        errors.append(
-                            "Rule #{} is not a valid channel.".format(idx + 1))
+                        errors.append("Rule #{} is not a valid channel.".format(idx))
                         continue
 
                 if not found_trigger:
                     errors.append(
-                        "Rule #{} has no trigger channel.".format(idx + 1))
+                        "Rule #{} has no trigger channel.".format(idx))
 
             try:
                 # check python expression
@@ -544,8 +551,8 @@ class RulesEditor(QtWidgets.QDialog):
                                   .format(idx + 1, act_typ.__name__, exp_typ.__name__))
 
             except:
-                LOG.exception("Error evaluating Rule #{} expression.".format(idx + 1))
-                errors.append("Rule #{} expression is not valid.".format(idx + 1))
+                LOG.exception("Error evaluating Rule #{} expression.".format(idx))
+                errors.append("Rule #{} expression is not valid.".format(idx))
 
         if len(errors) > 0:
             error_msg = os.linesep.join(errors)
