@@ -9,7 +9,7 @@ import json
 
 from qtpy.QtCore import Property
 
-from qtpyvcp.plugins import channelFromURL
+from qtpyvcp.plugins import DATA_PLUGIN_REGISTRY
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -24,7 +24,7 @@ class QtPyVCPBaseWidget(object):
 
     Class on which all other QtPyVCP widgets are based.
     This class handles the rules and other things that should
-    apply to all QtPyVCP widgets regardles of use.
+    apply to all QtPyVCP widgets regardless of use.
     """
     IN_DESIGNER = os.getenv('DESIGNER') != None
 
@@ -42,7 +42,6 @@ class QtPyVCPBaseWidget(object):
         self._rules = ''
         self._style = ''
         self._data_channels = []
-
 
     def setStyleClass(self, style_class):
         """Set the QSS style class for the widget"""
@@ -101,27 +100,29 @@ class QtPyVCPBaseWidget(object):
     def registerRules(self, rules):
         rules = json.loads(rules)
         for rule in rules:
-            # print rule
+            print rule
             ch = ChanList()
             triggers = []
             for chan in rule['channels']:
-                # print chan['channel']
-                try:
-                    chan_obj = channelFromURL(chan['url'])
-                    trigger = chan.get('trigger', False)
-                    chan_type = chan.get('type', chan_obj.typ.__name__)
 
-                    if chan_type == 'str':
-                        ch.append(chan_obj.text)
-                        if trigger:
-                            triggers.append(chan_obj.onTextChanged)
-                    else:
-                        ch.append(chan_obj.value)
-                        if trigger:
-                            triggers.append(chan_obj.onValueChanged)
+                try:
+                    protocol, sep, rest = chan['url'].partition(':')
+                    item, sep, query = rest.partition('?')
+
+                    if query == '':
+                        query = 'value'
+
+                    plugin = DATA_PLUGIN_REGISTRY[protocol]
+
+                    chan_val = eval("lambda: plugin.{}.{}".format(item, query), {'plugin': plugin})
+                    chan_obj = eval("plugin.{}".format(item), {'plugin': plugin})
+
+                    ch.append(chan_val)
+                    if chan.get('trigger', False):
+                        triggers.append(chan_obj.onValueChanged)
 
                 except:
-                    LOG.exception("Error evaluating rule: {}".format(chan['url']))
+                    LOG.exception("Error evaluating rule: {}".format(chan.get('url', '')))
                     return
 
             prop = self.RULE_PROPERTIES[rule['property']]

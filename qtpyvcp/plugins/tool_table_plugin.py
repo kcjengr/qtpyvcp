@@ -1,7 +1,7 @@
 import os
 import json
 
-from qtpy.QtCore import QFileSystemWatcher
+from qtpy.QtCore import QFileSystemWatcher, Signal
 
 from qtpyvcp.plugins import QtPyVCPDataPlugin, QtPyVCPDataChannel, getDataPlugin
 
@@ -41,23 +41,53 @@ DEFAULT_TOOL = {
 # cmd:spindle[0].override=100   # set spindle override
 # hal:halui.machine.is-on?      # get the value of a HAL pin
 
+class CurrentTool(QtPyVCPDataChannel):
+
+    def __init__(self):
+        super(CurrentTool, self).__init__(value_type=dict)
+
+        self._value = {}
+
+    @property
+    def value(self):
+        return self._value
+
+    @property
+    def number(self):
+        return self._value['T']
+
+    @property
+    def pocket(self):
+        return self._value['P']
+
+    @property
+    def diameter(self):
+        return self._value['D']
+
+    def _update(self, value):
+        self._value = value
+        self.valueChanged.emit(value)
+
+
+
 class ToolTable(QtPyVCPDataPlugin):
 
     protocol = 'tooltable'
-
-    current_tool = QtPyVCPDataChannel()
+    current_tool = CurrentTool()
 
     TOOL_TABLE = {}
 
     def __init__(self):
         super(ToolTable, self).__init__()
 
-        file = '/home/kurt/dev/cnc/qtpyvcp/sim/tool.tb'
+        file = '/home/kurt/dev/cnc/qtpyvcp/sim/tool.tbl'
 
         self.tool_table_file = file
 
         if self.TOOL_TABLE == {}:
             self.loadToolTable(file)
+
+        self.current_tool._update(self.TOOL_TABLE[0])
 
     def loadToolTable(self, file=None):
 

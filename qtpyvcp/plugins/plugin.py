@@ -38,14 +38,15 @@ class QtPyVCPDataChannel(QObject):
         description (str) : A human readable description of the item.
     """
 
-    valueChanged = Signal([bool], [int], [float], [str], [tuple], [dict])
+    valueChanged = Signal(object)
 
-    def __init__(self, address=None, value_type=None, triggerable=True):
+    def __init__(self, address=None, value_type=None, triggerable=True, settable=False):
         super(QtPyVCPDataChannel, self).__init__()
 
         self.address = address
-        self.typ = value_type or type(self.value())
+        self.typ = value_type or type(self.value)
         self.triggerable = triggerable
+        self.settable = settable
 
     def handleQuery(self, query):
         item = getattr(self, query)
@@ -82,7 +83,7 @@ class QtPyVCPDataChannel(QObject):
         Args:
             slot : The callback to call when the value changes.
         """
-        self.valueChanged[self.typ].connect(slot)
+        self.valueChanged.connect(slot)
 
     def onTextChanged(self, slot):
         """Connect a slot to the text changed signal.
@@ -90,7 +91,7 @@ class QtPyVCPDataChannel(QObject):
         Args:
             slot : The callback to call when the text changes.
         """
-        self.valueChanged[str].connect(slot)
+        self.valueChanged.connect(slot)
 
     def dataTypes(self):
         if self.to_str == str:

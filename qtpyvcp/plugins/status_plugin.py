@@ -49,7 +49,7 @@ class StatusItem(QtPyVCPDataChannel):
     Args:
         item (str) : The name of the `linuxcnc.stat` item.
         typ (type) : The python type of the item's value. If no type is specified
-            the type returned by `type(self.value())` will be used.
+            the type returned by `type(self.value)` will be used.
         to_str (method) : A method which returns a textual version of the
             item's value. If not specified defaults to the values `__str__` method.
         description (str) : A human readable description of the item.
@@ -59,6 +59,7 @@ class StatusItem(QtPyVCPDataChannel):
         super(StatusItem, self).__init__(address=item, value_type=typ)
         self.to_str = to_str
 
+    @property
     def value(self):
         """The items current value.
 
@@ -67,17 +68,19 @@ class StatusItem(QtPyVCPDataChannel):
         """
         return getattr(STAT, self.address)
 
+    @property
     def text(self):
         """The items current text.
 
         Returns:
             str : The text of the item as of the last `stat.poll()`.
         """
-        return self.to_str(self.value())
+        return self.to_str(self.value)
 
     def _update(self, value):
-        self.valueChanged[self.typ].emit(value)
-        self.valueChanged[str].emit(self.to_str(value))
+        self.valueChanged.emit(value)
+        # self.valueChanged[self.typ].emit(value)
+        # self.valueChanged[str].emit(self.to_str(value))
 
 
 class Status(QtPyVCPDataPlugin):
@@ -562,6 +565,7 @@ class JointStatusItem(StatusItem):
         self.jnum = jnum
         super(JointStatusItem, self).__init__(item, typ, to_str, description)
 
+    @property
     def value(self):
         return self.typ(STAT.joint[self.jnum][self.address])
 
@@ -623,6 +627,7 @@ class SpindleStatusItem(StatusItem):
         self.snum = snum
         super(SpindleStatusItem, self).__init__(item, typ, to_str, description)
 
+    @property
     def value(self):
         return self.typ(STAT.spindle[self.snum][self.address])
 
