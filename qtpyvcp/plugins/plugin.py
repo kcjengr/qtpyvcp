@@ -49,7 +49,21 @@ class QtPyVCPDataChannel(QObject):
         self.settable = settable
 
     def handleQuery(self, query):
-        return getattr(self, query or 'value')
+        """Query channel value.
+
+        Args:
+            query (str) : The name of the value to query. If no query
+                is passed or it is an empty string the current value of
+                the ``value`` property will be returned.
+
+        Returns:
+            The queried value, or None.
+        """
+        try:
+            return getattr(self, query or 'value')
+        except AttributeError:
+            LOG.exception("Failed to handle query: {}".format(query))
+            return None
 
     def handleAssigment(self, attr, value):
         setattr(self, attr, value)
