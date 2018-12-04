@@ -19,7 +19,7 @@ from qtpy.QtWidgets import QApplication, QMainWindow, QStyleFactory, qApp
 from qtpyvcp.utilities import logger
 LOG = logger.initBaseLogger('qtpyvcp')
 
-from qtpyvcp.plugins import DATA_PLUGIN_REGISTRY, getDataPlugin
+from qtpyvcp.plugins import DATA_PLUGIN_REGISTRY, getPluginFromProtocol
 
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
@@ -41,7 +41,7 @@ class VCPApplication(QApplication):
         from qtpyvcp.core import Prefs, Info
         self.info = Info()
         self.prefs = Prefs()
-        self.status = getDataPlugin('status')
+        self.status = getPluginFromProtocol('status')
         print self.status
 
         self.initialiseDataPlugins()

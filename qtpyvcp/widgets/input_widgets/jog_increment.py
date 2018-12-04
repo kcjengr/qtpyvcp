@@ -27,8 +27,8 @@ from qtpy.QtWidgets import QWidget, QBoxLayout, QSizePolicy
 from qtpyvcp.core import Info
 from qtpyvcp.widgets.button_widgets.led_button import LEDButton
 
-from qtpyvcp.plugins import getDataPlugin
-STATUS = getDataPlugin('status')
+from qtpyvcp.plugins import getPluginFromProtocol
+STATUS = getPluginFromProtocol('status')
 
 INFO = Info()
 

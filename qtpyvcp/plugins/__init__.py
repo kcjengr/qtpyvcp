@@ -95,34 +95,44 @@ def loadDataPluginsFromPath(locations, suffix):
     return added_plugins
 
 
-def getDataPlugin(plugin_name):
+class NoSuchPlugin(Exception):
+    pass
+
+
+def getPluginFromProtocol(protocol):
+    """Get data plugin instance from a protocol name.
+
+    Args:
+        protocol (str) : The protocol of the plugin to retrieve.
+
+    Returns:
+        A plugin instance, or None.
+
+    Raises:
+        NoSuchPlugin if the no plugin for ``protocol`` is found.
+    """
     try:
-        return DATA_PLUGIN_REGISTRY[plugin_name]
+        return DATA_PLUGIN_REGISTRY[protocol]
     except KeyError:
-        return None
+        raise NoSuchPlugin("Failed to find plugin for '{}' protocol.".format(protocol))
 
-
-def channelFromURL(url):
-    protocol, sep, rest = url.partition(':')
-    address, sep, query = rest.partition('?')
-
-    eval_env = {protocol: DATA_PLUGIN_REGISTRY[protocol]}
-    chan_obj = eval(protocol + "." + address, eval_env)
-
-    return chan_obj
 
 # Load the data plugins from VCP_DATA_PLUGINS_PATH
 LOG.info("Loading QtPyVCP Data Plugins")
 
+# initialize default plugins
+from status_plugin import Status
+DATA_PLUGIN_REGISTRY[Status.protocol] = Status()
+
+from tool_table_plugin import ToolTable
+DATA_PLUGIN_REGISTRY[ToolTable.protocol] = ToolTable()
+
+# load other plugins
 DATA_PLUGIN_SUFFIX = "_plugin.py"
 path = os.getenv("VCP_DATA_PLUGIN_PATH", None)
 if path is None:
     locations = []
 else:
     locations = path.split(os.pathsep)
-
-# Ensure that we first visit the local plugins location
-plugin_dir = os.path.dirname(os.path.realpath(__file__))
-locations.insert(0, plugin_dir)
 
 loadDataPluginsFromPath(locations, DATA_PLUGIN_SUFFIX)

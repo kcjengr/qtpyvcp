@@ -14,8 +14,8 @@ from qtpy.QtWidgets import (QMainWindow, QApplication, QWidget, QPushButton,
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from qtpyvcp.plugins import getDataPlugin
-STATUS = getDataPlugin('status')
+from qtpyvcp.plugins import getPluginFromProtocol
+STATUS = getPluginFromProtocol('status')
 
 from qtpyvcp.core import Prefs, Info
 PREFS = Prefs()

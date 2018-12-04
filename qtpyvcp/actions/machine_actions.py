@@ -11,9 +11,9 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 from qtpyvcp.actions.base_actions import setTaskMode
-from qtpyvcp.plugins import getDataPlugin
+from qtpyvcp.plugins import getPluginFromProtocol
 
-STATUS = getDataPlugin('status')
+STATUS = getPluginFromProtocol('status')
 STAT = STATUS.stat
 
 from qtpyvcp.utilities.info import Info

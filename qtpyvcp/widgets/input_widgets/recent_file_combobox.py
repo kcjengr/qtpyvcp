@@ -4,8 +4,8 @@ import os
 from qtpy.QtWidgets import QComboBox
 from qtpy.QtCore import Qt, QEvent
 
-from qtpyvcp.plugins import getDataPlugin
-STATUS = getDataPlugin('status')
+from qtpyvcp.plugins import getPluginFromProtocol
+STATUS = getPluginFromProtocol('status')
 
 from qtpyvcp.utilities import action
 from qtpyvcp.widgets.dialogs.open_file_dialog import OpenFileDialog
