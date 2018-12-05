@@ -281,6 +281,10 @@ class Status(QtPyVCPDataPlugin):
 
     tool_data = StatusItem('tool_in_spindle', dict)
 
+    spindles = StatusItem('spindles', int)
+    axes = StatusItem('axes', int)
+    joints = StatusItem('joints', int)
+
     # Extended status signals
     axis_positions = Signal(tuple)      # ABS, REL and DTG axis values
     joint_positions = Signal(tuple)     # joint pos respecting INI settings
@@ -332,7 +336,7 @@ class Status(QtPyVCPDataPlugin):
         except:
             pass
 
-        excluded_items = ['axis', 'joint', 'spindle', 'axes', 'joints', 'spindles',
+        excluded_items = ['axis', 'joint', 'spindle',
             'acceleration', 'max_acceleration', 'kinematics_type', 'axis_mask',
             'cycle_time', 'echo_serial_number', 'id', 'poll', 'command', 'debug']
 
