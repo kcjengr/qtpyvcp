@@ -141,7 +141,10 @@ class QtPyVCPBaseWidget(object):
             exp = eval(evil_exp, evil_env)
 
             # initial call to update
-            exp()
+            try:
+                exp()
+            except:
+                continue
 
             for trigger in triggers:
                 trigger(exp)
