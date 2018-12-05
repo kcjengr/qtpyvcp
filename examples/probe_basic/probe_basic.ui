@@ -6669,7 +6669,7 @@ border-radius: 6px;
                        <item row="1" column="0">
                         <widget class="ActionButton" name="actionbutton_g54">
                          <property name="enabled">
-                          <bool>false</bool>
+                          <bool>true</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6708,7 +6708,7 @@ border-radius: 6px;
                        <item row="1" column="1">
                         <widget class="ActionButton" name="actionbutton_g55">
                          <property name="enabled">
-                          <bool>false</bool>
+                          <bool>true</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6747,7 +6747,7 @@ border-radius: 6px;
                        <item row="1" column="2">
                         <widget class="ActionButton" name="actionbutton_g56">
                          <property name="enabled">
-                          <bool>false</bool>
+                          <bool>true</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6786,7 +6786,7 @@ border-radius: 6px;
                        <item row="1" column="3">
                         <widget class="ActionButton" name="actionbutton_g57">
                          <property name="enabled">
-                          <bool>false</bool>
+                          <bool>true</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6825,7 +6825,7 @@ border-radius: 6px;
                        <item row="1" column="4">
                         <widget class="ActionButton" name="actionbutton_g58">
                          <property name="enabled">
-                          <bool>false</bool>
+                          <bool>true</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6864,7 +6864,7 @@ border-radius: 6px;
                        <item row="2" column="1">
                         <widget class="ActionButton" name="actionbutton_g59">
                          <property name="enabled">
-                          <bool>false</bool>
+                          <bool>true</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6903,7 +6903,7 @@ border-radius: 6px;
                        <item row="2" column="2">
                         <widget class="ActionButton" name="actionbutton_g59_1">
                          <property name="enabled">
-                          <bool>false</bool>
+                          <bool>true</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6942,7 +6942,7 @@ border-radius: 6px;
                        <item row="2" column="3">
                         <widget class="ActionButton" name="actionbutton_g59_2">
                          <property name="enabled">
-                          <bool>false</bool>
+                          <bool>true</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6981,7 +6981,7 @@ border-radius: 6px;
                        <item row="2" column="4">
                         <widget class="ActionButton" name="actionbutton_g59_3">
                          <property name="enabled">
-                          <bool>false</bool>
+                          <bool>true</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -7431,13 +7431,13 @@ OFFSET</string>
     {
         &quot;channels&quot;: [
             {
-                &quot;channel&quot;: &quot;status.g5x_index&quot;, 
-                &quot;trigger&quot;: true, 
+                &quot;url&quot;: &quot;status:g5x_index&quot;,
+                &quot;trigger&quot;: true,
                 &quot;type&quot;: &quot;int&quot;
             }
-        ], 
-        &quot;expression&quot;: &quot;&quot;, 
-        &quot;name&quot;: &quot;G5x Index&quot;, 
+        ],
+        &quot;expression&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;G5x Index&quot;,
         &quot;property&quot;: &quot;None&quot;
     }
 ]</string>
@@ -7946,7 +7946,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.g5x_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g5x_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -7967,7 +7967,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -7988,7 +7988,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.tool_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:tool_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -8029,13 +8029,13 @@ OFFSET</string>
     {
         &quot;channels&quot;: [
             {
-                &quot;channel&quot;: &quot;status.g5x_index&quot;, 
-                &quot;trigger&quot;: true, 
+                &quot;url&quot;: &quot;status:g5x_index&quot;,
+                &quot;trigger&quot;: true,
                 &quot;type&quot;: &quot;int&quot;
             }
-        ], 
-        &quot;expression&quot;: &quot;&quot;, 
-        &quot;name&quot;: &quot;G5x Index&quot;, 
+        ],
+        &quot;expression&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;G5x Index&quot;,
         &quot;property&quot;: &quot;None&quot;
     }
 ]</string>
@@ -8372,7 +8372,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.g5x_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g5x_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -8393,7 +8393,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -8414,7 +8414,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.tool_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:tool_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -8455,13 +8455,13 @@ OFFSET</string>
     {
         &quot;channels&quot;: [
             {
-                &quot;channel&quot;: &quot;status.g5x_index&quot;, 
-                &quot;trigger&quot;: true, 
+                &quot;url&quot;: &quot;status:g5x_index&quot;,
+                &quot;trigger&quot;: true,
                 &quot;type&quot;: &quot;int&quot;
             }
-        ], 
-        &quot;expression&quot;: &quot;&quot;, 
-        &quot;name&quot;: &quot;G5x Index&quot;, 
+        ],
+        &quot;expression&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;G5x Index&quot;,
         &quot;property&quot;: &quot;None&quot;
     }
 ]</string>
@@ -8970,7 +8970,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.g5x_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g5x_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -8991,7 +8991,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -9012,7 +9012,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.tool_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:tool_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -9053,13 +9053,12 @@ OFFSET</string>
     {
         &quot;channels&quot;: [
             {
-                &quot;channel&quot;: &quot;status.g5x_index&quot;, 
-                &quot;trigger&quot;: true, 
-                &quot;type&quot;: &quot;int&quot;
+                &quot;url&quot;: &quot;status:g5x_index&quot;,
+                &quot;trigger&quot;: true
             }
-        ], 
-        &quot;expression&quot;: &quot;&quot;, 
-        &quot;name&quot;: &quot;G5x Index&quot;, 
+        ],
+        &quot;expression&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;G5x Index&quot;,
         &quot;property&quot;: &quot;None&quot;
     }
 ]</string>
@@ -9574,7 +9573,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -9595,7 +9594,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.g5x_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g5x_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -9616,7 +9615,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.tool_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:tool_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -9657,13 +9656,13 @@ OFFSET</string>
     {
         &quot;channels&quot;: [
             {
-                &quot;channel&quot;: &quot;status.g5x_index&quot;, 
-                &quot;trigger&quot;: true, 
+                &quot;url&quot;: &quot;status:g5x_index&quot;,
+                &quot;trigger&quot;: true,
                 &quot;type&quot;: &quot;int&quot;
             }
-        ], 
-        &quot;expression&quot;: &quot;&quot;, 
-        &quot;name&quot;: &quot;G5x Index&quot;, 
+        ],
+        &quot;expression&quot;: &quot;&quot;,
+        &quot;name&quot;: &quot;G5x Index&quot;,
         &quot;property&quot;: &quot;None&quot;
     }
 ]</string>
@@ -10006,7 +10005,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -10027,7 +10026,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.g5x_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g5x_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -10048,7 +10047,7 @@ OFFSET</string>
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
                            <property name="rules" stdset="0">
-                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;channel&quot;: &quot;status.tool_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                            <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:tool_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -15684,7 +15683,7 @@ font: 14pt &quot;Bebas Kai&quot;;
              <number>0</number>
             </property>
             <property name="rules" stdset="0">
-             <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;channel&quot;: &quot;status.gcodes&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Active Codes&quot;}]</string>
+             <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;url&quot;: &quot;status:gcodes?text&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Active Codes&quot;}]</string>
             </property>
             <property name="statusItem" stdset="0">
              <string/>
@@ -15723,7 +15722,7 @@ font: 14pt &quot;Bebas Kai&quot;;
              <number>0</number>
             </property>
             <property name="rules" stdset="0">
-             <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;channel&quot;: &quot;status.mcodes&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Active Mcodes&quot;}]</string>
+             <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;url&quot;: &quot;status:mcodes?text&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Active Mcodes&quot;}]</string>
             </property>
             <property name="statusItem" stdset="0">
              <string/>
@@ -15779,7 +15778,7 @@ font: 14pt &quot;Bebas Kai&quot;;
                 <number>0</number>
                </property>
                <property name="rules" stdset="0">
-                <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;channel&quot;: &quot;status.gcodes&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Active Codes&quot;}]</string>
+                <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;url&quot;: &quot;status:gcodes?text&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Active Codes&quot;}]</string>
                </property>
                <property name="statusItem" stdset="0">
                 <string/>
@@ -15818,7 +15817,7 @@ font: 14pt &quot;Bebas Kai&quot;;
                 <number>0</number>
                </property>
                <property name="rules" stdset="0">
-                <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;channel&quot;: &quot;status.mcodes&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Active Mcodes&quot;}]</string>
+                <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;url&quot;: &quot;status:mcodes?text&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Active Mcodes&quot;}]</string>
                </property>
                <property name="statusItem" stdset="0">
                 <string/>
@@ -17109,36 +17108,13 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>0.00</string>
+              <string>0.000</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[
-    {
-        &quot;channels&quot;: [
-            {
-                &quot;channel&quot;: &quot;status.tool_table&quot;, 
-                &quot;trigger&quot;: true, 
-                &quot;type&quot;: &quot;tuple&quot;
-            }, 
-            {
-                &quot;channel&quot;: &quot;status.tool_in_spindle&quot;, 
-                &quot;trigger&quot;: true, 
-                &quot;type&quot;: &quot;int&quot;
-            }, 
-            {
-                &quot;channel&quot;: &quot;status.linear_units&quot;, 
-                &quot;trigger&quot;: false, 
-                &quot;type&quot;: &quot;str&quot;
-            }
-        ], 
-        &quot;expression&quot;: &quot;\&quot;{:.3f}\&quot;.format(ch[0][ ch[1] ].zoffset) if ch[2] == 'in' else \&quot;{:.2f}\&quot;.format(ch[0][ ch[1] ].zoffset)&quot;, 
-        &quot;name&quot;: &quot;Tool Length&quot;, 
-        &quot;property&quot;: &quot;Text&quot;
-    }
-]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?z_offset&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.3f}\&quot;.format(ch[0]) if ch[1] == 'in' else \&quot;{:.2f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;Tool Length&quot;}]</string>
              </property>
              <property name="format" stdset="0">
               <string>{:.3f}</string>
@@ -17172,13 +17148,13 @@ padding: -5px;
     {
         &quot;channels&quot;: [
             {
-                &quot;channel&quot;: &quot;status.linear_units&quot;, 
-                &quot;trigger&quot;: true, 
+                &quot;url&quot;: &quot;status:linear_units?text&quot;,
+                &quot;trigger&quot;: true,
                 &quot;type&quot;: &quot;str&quot;
             }
-        ], 
-        &quot;expression&quot;: &quot;ch[0]&quot;, 
-        &quot;name&quot;: &quot;Units&quot;, 
+        ],
+        &quot;expression&quot;: &quot;ch[0]&quot;,
+        &quot;name&quot;: &quot;Units&quot;,
         &quot;property&quot;: &quot;Text&quot;
     }
 ]</string>
@@ -17276,36 +17252,13 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>0.000</string>
+              <string>0.1250</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[
-    {
-        &quot;channels&quot;: [
-            {
-                &quot;channel&quot;: &quot;status.tool_table&quot;, 
-                &quot;trigger&quot;: true, 
-                &quot;type&quot;: &quot;tuple&quot;
-            }, 
-            {
-                &quot;channel&quot;: &quot;status.tool_in_spindle&quot;, 
-                &quot;trigger&quot;: true, 
-                &quot;type&quot;: &quot;int&quot;
-            }, 
-            {
-                &quot;channel&quot;: &quot;status.linear_units&quot;, 
-                &quot;trigger&quot;: false, 
-                &quot;type&quot;: &quot;str&quot;
-            }
-        ], 
-        &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][ ch[1] ].diameter) if ch[2] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][ ch[1] ].diameter)&quot;, 
-        &quot;name&quot;: &quot;Tool Diameter&quot;, 
-        &quot;property&quot;: &quot;Text&quot;
-    }
-]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?diameter&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;Tool Diameter&quot;}]</string>
              </property>
              <property name="format" stdset="0">
               <string>{:.3f}</string>
@@ -17339,13 +17292,13 @@ padding: -5px;
     {
         &quot;channels&quot;: [
             {
-                &quot;channel&quot;: &quot;status.linear_units&quot;, 
-                &quot;trigger&quot;: true, 
+                &quot;url&quot;: &quot;status:linear_units?text&quot;,
+                &quot;trigger&quot;: true,
                 &quot;type&quot;: &quot;str&quot;
             }
-        ], 
-        &quot;expression&quot;: &quot;ch[0]&quot;, 
-        &quot;name&quot;: &quot;Units&quot;, 
+        ],
+        &quot;expression&quot;: &quot;ch[0]&quot;,
+        &quot;name&quot;: &quot;Units&quot;,
         &quot;property&quot;: &quot;Text&quot;
     }
 ]</string>
@@ -18060,7 +18013,7 @@ padding: -5px;
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18078,7 +18031,7 @@ padding: -5px;
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18087,7 +18040,7 @@ padding: -5px;
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18116,7 +18069,7 @@ padding: -5px;
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18134,7 +18087,7 @@ padding: -5px;
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18143,7 +18096,7 @@ padding: -5px;
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18172,7 +18125,7 @@ padding: -5px;
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18190,7 +18143,7 @@ padding: -5px;
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18199,7 +18152,7 @@ padding: -5px;
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18265,7 +18218,7 @@ DROWidget[style=&quot;homing&quot;]{
               <number>0</number>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;bool&quot;, &quot;channel&quot;: &quot;status.joint[0].homed&quot;}, {&quot;trigger&quot;: true, &quot;type&quot;: &quot;bool&quot;, &quot;channel&quot;: &quot;status.joint[0].homing&quot;}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homed indicator&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;bool&quot;, &quot;url&quot;: &quot;status:joint[0].homed&quot;}, {&quot;trigger&quot;: true, &quot;type&quot;: &quot;bool&quot;, &quot;url&quot;: &quot;status:joint[0].homing&quot;}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homed indicator&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -18837,7 +18790,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18855,7 +18808,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18864,7 +18817,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18893,7 +18846,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18911,7 +18864,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18920,7 +18873,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18949,7 +18902,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18967,7 +18920,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18976,7 +18929,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19042,7 +18995,7 @@ DROWidget[style=&quot;homing&quot;]{
               <number>0</number>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;bool&quot;, &quot;channel&quot;: &quot;status.joint[1].homed&quot;}, {&quot;trigger&quot;: true, &quot;type&quot;: &quot;bool&quot;, &quot;channel&quot;: &quot;status.joint[1].homing&quot;}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homed indicator&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;bool&quot;, &quot;url&quot;: &quot;status:joint[1].homed&quot;}, {&quot;trigger&quot;: true, &quot;type&quot;: &quot;bool&quot;, &quot;url&quot;: &quot;status:joint[1].homing&quot;}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homed indicator&quot;}]</string>
              </property>
              <property name="axis">
               <enum>DROWidget::Y</enum>
@@ -19620,7 +19573,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19638,7 +19591,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19647,7 +19600,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19676,7 +19629,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19694,7 +19647,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19703,7 +19656,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19732,7 +19685,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19750,7 +19703,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19759,7 +19712,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19825,7 +19778,7 @@ DROWidget[style=&quot;homing&quot;]{
               <number>0</number>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;bool&quot;, &quot;channel&quot;: &quot;status.joint[2].homed&quot;}, {&quot;trigger&quot;: true, &quot;type&quot;: &quot;bool&quot;, &quot;channel&quot;: &quot;status.joint[2].homing&quot;}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homed indicator&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;bool&quot;, &quot;url&quot;: &quot;status:joint[2].homed&quot;}, {&quot;trigger&quot;: true, &quot;type&quot;: &quot;bool&quot;, &quot;url&quot;: &quot;status:joint[2].homing&quot;}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homed indicator&quot;}]</string>
              </property>
              <property name="axis">
               <enum>DROWidget::Z</enum>
@@ -20406,7 +20359,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -20424,7 +20377,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -20433,7 +20386,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -20462,7 +20415,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -20480,7 +20433,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -20489,7 +20442,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -20518,7 +20471,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -20536,7 +20489,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -20545,7 +20498,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -20611,7 +20564,7 @@ DROWidget[style=&quot;homing&quot;]{
               <number>0</number>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;&quot;, &quot;channel&quot;: &quot;status.joint[3].homed&quot;}, {&quot;trigger&quot;: true, &quot;type&quot;: &quot;&quot;, &quot;channel&quot;: &quot;status.joint[3].homing&quot;}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homed indicator&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;&quot;, &quot;url&quot;: &quot;status:joint[3].homed&quot;}, {&quot;trigger&quot;: true, &quot;type&quot;: &quot;&quot;, &quot;url&quot;: &quot;status:joint[3].homing&quot;}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homed indicator&quot;}]</string>
              </property>
              <property name="axis">
               <enum>DROWidget::A</enum>
@@ -21195,7 +21148,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -21213,7 +21166,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -21222,7 +21175,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -21251,7 +21204,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -21269,7 +21222,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -21278,7 +21231,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -21307,7 +21260,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -21325,7 +21278,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -21334,7 +21287,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>255</red>
+                   <red>0</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -21400,7 +21353,7 @@ DROWidget[style=&quot;homing&quot;]{
               <number>0</number>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;&quot;, &quot;channel&quot;: &quot;status.joint[4].homed&quot;}, {&quot;trigger&quot;: true, &quot;type&quot;: &quot;&quot;, &quot;channel&quot;: &quot;status.joint[4].homing&quot;}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homed indicator&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;&quot;, &quot;url&quot;: &quot;status:joint[4].homed&quot;}, {&quot;trigger&quot;: true, &quot;type&quot;: &quot;&quot;, &quot;url&quot;: &quot;status:joint[4].homing&quot;}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homed indicator&quot;}]</string>
              </property>
              <property name="axis">
               <enum>DROWidget::B</enum>
@@ -21770,13 +21723,13 @@ padding-right: 7px;
     {
         &quot;channels&quot;: [
             {
-                &quot;channel&quot;: &quot;status.feedrate&quot;, 
-                &quot;trigger&quot;: true, 
+                &quot;url&quot;: &quot;status:feedrate&quot;,
+                &quot;trigger&quot;: true,
                 &quot;type&quot;: &quot;float&quot;
             }
-        ], 
-        &quot;expression&quot;: &quot;'{:.0%}'.format(ch[0])&quot;, 
-        &quot;name&quot;: &quot;New Rule&quot;, 
+        ],
+        &quot;expression&quot;: &quot;'{:.0%}'.format(ch[0])&quot;,
+        &quot;name&quot;: &quot;New Rule&quot;,
         &quot;property&quot;: &quot;Text&quot;
     }
 ]</string>
@@ -21907,13 +21860,13 @@ border-radius: 4px;
     {
         &quot;channels&quot;: [
             {
-                &quot;channel&quot;: &quot;status.spindle[0].override&quot;, 
-                &quot;trigger&quot;: true, 
+                &quot;url&quot;: &quot;status:spindle[0].override&quot;,
+                &quot;trigger&quot;: true,
                 &quot;type&quot;: &quot;float&quot;
             }
-        ], 
-        &quot;expression&quot;: &quot;'{:.0%}'.format(ch[0])&quot;, 
-        &quot;name&quot;: &quot;New Rule&quot;, 
+        ],
+        &quot;expression&quot;: &quot;'{:.0%}'.format(ch[0])&quot;,
+        &quot;name&quot;: &quot;New Rule&quot;,
         &quot;property&quot;: &quot;Text&quot;
     }
 ]</string>
@@ -21970,13 +21923,13 @@ border-radius: 4px;
     {
         &quot;channels&quot;: [
             {
-                &quot;channel&quot;: &quot;status.rapidrate&quot;, 
-                &quot;trigger&quot;: true, 
+                &quot;url&quot;: &quot;status:rapidrate&quot;,
+                &quot;trigger&quot;: true,
                 &quot;type&quot;: &quot;float&quot;
             }
-        ], 
-        &quot;expression&quot;: &quot;'{:.0%}'.format(ch[0])&quot;, 
-        &quot;name&quot;: &quot;New Rule&quot;, 
+        ],
+        &quot;expression&quot;: &quot;'{:.0%}'.format(ch[0])&quot;,
+        &quot;name&quot;: &quot;New Rule&quot;,
         &quot;property&quot;: &quot;Text&quot;
     }
 ]</string>
@@ -22129,13 +22082,13 @@ LOAD</string>
     {
         &quot;channels&quot;: [
             {
-                &quot;channel&quot;: &quot;status.max_velocity&quot;, 
-                &quot;trigger&quot;: true, 
+                &quot;url&quot;: &quot;status:max_velocity&quot;,
+                &quot;trigger&quot;: true,
                 &quot;type&quot;: &quot;float&quot;
             }
-        ], 
-        &quot;expression&quot;: &quot;'{:.0f}'.format(ch[0] * 60)&quot;, 
-        &quot;name&quot;: &quot;New Rule&quot;, 
+        ],
+        &quot;expression&quot;: &quot;'{:.0f}'.format(ch[0] * 60)&quot;,
+        &quot;name&quot;: &quot;New Rule&quot;,
         &quot;property&quot;: &quot;Text&quot;
     }
 ]</string>
@@ -22835,7 +22788,7 @@ border-radius: 4px;
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;float&quot;, &quot;channel&quot;: &quot;status.current_vel&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.1f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;cur vel&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;float&quot;, &quot;url&quot;: &quot;status:current_vel&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.1f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;cur vel&quot;}]</string>
              </property>
              <property name="format" stdset="0">
               <string>{:.1f}</string>
@@ -23006,7 +22959,7 @@ border-radius: 4px;
                  <number>0</number>
                 </property>
                 <property name="rules" stdset="0">
-                 <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;channel&quot;: &quot;status.linear_units&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Linear Units&quot;}]</string>
+                 <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;url&quot;: &quot;status:linear_units?text&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Linear Units&quot;}]</string>
                 </property>
                 <property name="statusItem" stdset="0">
                  <string>linear_units</string>
@@ -23386,7 +23339,7 @@ border-radius: 1px;
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;float&quot;, &quot;channel&quot;: &quot;status.spindle[0].speed&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.2f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;Speed&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;float&quot;, &quot;url&quot;: &quot;status:spindle[0].speed&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.2f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;Speed&quot;}]</string>
              </property>
              <property name="format" stdset="0">
               <string>{:.2f}</string>

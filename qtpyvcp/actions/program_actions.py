@@ -9,11 +9,11 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 from qtpyvcp.utilities.info import Info
-from qtpyvcp.utilities.status import Status
-INFO = Info()
-STATUS = Status()
-STAT = STATUS.stat
+from qtpyvcp.plugins import getPluginFromProtocol
 
+STATUS = getPluginFromProtocol('status')
+STAT = STATUS.stat
+INFO = Info()
 CMD = linuxcnc.command()
 
 from qtpyvcp.actions.base_actions import setTaskMode

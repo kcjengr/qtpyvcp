@@ -4,7 +4,6 @@ from qtpy.QtWidgets import QPushButton
 from qtpy.QtCore import Qt, Slot, Property, QSize
 from qtpy.QtGui import QColor
 
-from qtpyvcp.utilities import action
 from qtpyvcp.widgets.button_widgets.action_button import ActionButton
 
 from qtpyvcp.widgets.base_widgets.led_widget import LEDWidget

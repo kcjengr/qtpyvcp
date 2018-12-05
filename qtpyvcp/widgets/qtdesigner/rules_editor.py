@@ -7,6 +7,8 @@ from qtpy import QtWidgets, QtCore, QtDesigner
 
 from plugin_extension import _PluginExtension
 
+from qtpyvcp.plugins import QtPyVCPDataChannel, DATA_PLUGIN_REGISTRY
+
 # Set up logging
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -36,7 +38,7 @@ class TableCheckButton(QtWidgets.QWidget):
         lay_out = QtWidgets.QHBoxLayout(self)
         lay_out.addWidget(self.chk_bx)
         lay_out.setAlignment(QtCore.Qt.AlignCenter)
-        lay_out.setContentsMargins(0,0,0,0)
+        lay_out.setContentsMargins(0, 0, 0, 0)
         self.setLayout(lay_out)
 
     def __getattr__(self, attr):
@@ -54,6 +56,8 @@ class RulesEditor(QtWidgets.QDialog):
         super(RulesEditor, self).__init__(parent)
 
         self.widget = widget
+        self.app = QtWidgets.QApplication.instance()
+
         self.lst_rule_item = None
         self.loading_data = False
 
@@ -194,8 +198,8 @@ class RulesEditor(QtWidgets.QDialog):
         header = self.tbl_channels.horizontalHeader()
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
-        # header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
-        self.tbl_channels.setColumnWidth(2, 60)
+        header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
+        # self.tbl_channels.setColumnWidth(2, 60)
 
         frm_edit_layout.addWidget(self.tbl_channels)
 
@@ -263,20 +267,24 @@ class RulesEditor(QtWidgets.QDialog):
         vlabel = [str(i) for i in range(len(channels))]
         self.tbl_channels.setVerticalHeaderLabels(vlabel)
         for row, ch in enumerate(channels):
-            ch_name = ch.get('channel', '')
+            ch_name = ch.get('url', '')
             ch_tr = ch.get('trigger', False)
-            ch_typ = ch.get('type', '')
-            ch_obj, ch_typs, ch_desc = self.get_channel_data(ch_name)
+            ch_obj, ch_val, ch_desc = self.get_channel_data(ch_name)
             self.tbl_channels.setItem(row, 0,
                                       QtWidgets.QTableWidgetItem(str(ch_name)))
 
             tr_chk = TableCheckButton(checked=ch_tr)
             self.tbl_channels.setCellWidget(row, 1, tr_chk)
 
-            typ_combo = QtWidgets.QComboBox()
-            typ_combo.addItems(ch_typs)
-            typ_combo.setCurrentText(ch_typ)
-            self.tbl_channels.setCellWidget(row, 2, typ_combo)
+            typ_lbl = QtWidgets.QLabel()
+            typ_lbl.setAlignment(QtCore.Qt.AlignCenter)
+            if ch_val is None:
+                typ_lbl.setText("<font color='red'>error</font>")
+            else:
+                typ_lbl.setText("<font color='green'>{}</font>".format(type(ch_val).__name__))
+            self.tbl_channels.setCellWidget(row, 2, typ_lbl)
+
+            # self.tbl_channels.setItem(row, 2, QtWidgets.QTableWidgetItem(type(ch_val).__name__))
 
         self.frm_edit.setEnabled(True)
         self.loading_data = False
@@ -355,8 +363,9 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.setItem(row, 0, QtWidgets.QTableWidgetItem(""))
         checkBoxItem = TableCheckButton(checked=state)
         self.tbl_channels.setCellWidget(row, 1, checkBoxItem)
-        typ_combo = QtWidgets.QComboBox()
-        self.tbl_channels.setCellWidget(row, 2, typ_combo)
+        typ_lbl = QtWidgets.QLabel()
+        typ_lbl.setAlignment(QtCore.Qt.AlignCenter)
+        self.tbl_channels.setCellWidget(row, 2, typ_lbl)
         vlabel = [str(i) for i in range(self.tbl_channels.rowCount())]
         self.tbl_channels.setVerticalHeaderLabels(vlabel)
         self.loading_data = False
@@ -428,16 +437,17 @@ class RulesEditor(QtWidgets.QDialog):
     def tbl_channels_changed(self, table_item):
         """Callback executed when the channels in the table are modified."""
         if self.loading_data:
-            print 'Loaidng data'
             return
 
         row = table_item.row()
         ch_name = table_item.data()
+        ch_obj, ch_val, ch_desc = self.get_channel_data(ch_name)
 
-        ch_obj, ch_typs, ch_desc = self.get_channel_data(ch_name)
-        typ_combo = self.tbl_channels.cellWidget(row, 2)
-        typ_combo.clear()
-        typ_combo.addItems(ch_typs)
+        typ_lbl = self.tbl_channels.cellWidget(row, 2)
+        if ch_val is None:
+            typ_lbl.setText("<font color='red'>error</font>")
+        else:
+            typ_lbl.setText("<font color='green'>{}</font>".format(type(ch_val).__name__))
 
         self.update_channels()
 
@@ -449,23 +459,32 @@ class RulesEditor(QtWidgets.QDialog):
         for row in range(self.tbl_channels.rowCount()):
             ch = self.tbl_channels.item(row, 0).text()
             tr = self.tbl_channels.cellWidget(row, 1).isChecked()
-            ty = self.tbl_channels.cellWidget(row, 2).currentText()
-            new_channels.append({"channel": ch, "trigger": tr, "type": ty})
+            new_channels.append({"url": ch, "trigger": tr})
 
         self.change_entry("channels", new_channels)
 
-    def get_channel_data(self, channel):
-        chan = None
-        chan_types = []
-        chan_description = ''
+    def get_channel_data(self, url):
+        chan_obj = None
+        chan_val = None
+        chan_desc = ''
+
         try:
-            print channel
-            chan = eval(channel, {'status': self.widget.STATUS})
-            chan_types = chan.dataTypes()
+            protocol, sep, rest = url.partition(':')
+            item, sep, query = rest.partition('?')
+
+            if query == '':
+                query = 'value'
+
+            plugin = DATA_PLUGIN_REGISTRY[protocol]
+            eval_env = {'plugin': plugin}
+
+            chan_obj = eval("plugin.{}".format(item), eval_env)
+            chan_val = chan_obj.handleQuery(query)
+
         except:
             LOG.exception("Error in eval")
 
-        return (chan, chan_types, chan_description)
+        return chan_obj, chan_val, chan_desc
 
     def expression_changed(self):
         """Callback executed when the expression is modified."""
@@ -489,37 +508,40 @@ class RulesEditor(QtWidgets.QDialog):
             channel_values = []
 
             if name is None or name == "":
-                errors.append("Rule #{} has no name.".format(idx + 1))
+                errors.append("Rule #{} has no name.".format(idx))
 
             if len(channels) == 0:
-                errors.append("Rule #{} has no channel.".format(idx + 1))
+                errors.append("Rule #{} has no channel.".format(idx))
 
             if self.available_properties[prop][1] is None:
                 # No need to check anything else.
                 break
 
             if expression is None or expression == "":
-                errors.append("Rule #{} has no expression.".format(idx + 1))
+                errors.append("Rule #{} has no expression.".format(idx))
             else:
                 found_trigger = False
                 for ch_idx, ch in enumerate(channels):
 
-                    if not ch.get("channel", ""):
-                        errors.append("Rule #{} - Ch. #{} has no channel.".format(idx + 1, ch_idx))
+                    if not ch.get("url", ""):
+                        errors.append("Rule #{} - Ch. #{} has no channel.".format(idx, ch_idx))
 
                     if ch.get("trigger", False) and not found_trigger:
                         found_trigger = True
 
                     # get chan values for use when checking expression
-                    ch_obj = self.get_channel_data(ch.get('channel', ''))[0]
-                    if ch.get('type') == 'str':
-                        channel_values.append(ch_obj.text())
+                    ch_obj, ch_val, ch_desc = self.get_channel_data(ch.get("url", ""))
+                    print ch_obj
+
+                    if isinstance(ch_obj, QtPyVCPDataChannel):
+                        channel_values.append(ch_val)
                     else:
-                        channel_values.append(ch_obj.value())
+                        errors.append("Rule #{} is not a valid channel.".format(idx))
+                        continue
 
                 if not found_trigger:
                     errors.append(
-                        "Rule #{} has no trigger channel.".format(idx + 1))
+                        "Rule #{} has no trigger channel.".format(idx))
 
             try:
                 # check python expression
@@ -533,8 +555,8 @@ class RulesEditor(QtWidgets.QDialog):
                                   .format(idx + 1, act_typ.__name__, exp_typ.__name__))
 
             except:
-                LOG.exception("Error evaluating Rule #{} expression.".format(idx + 1))
-                errors.append("Rule #{} expression is not valid.".format(idx + 1))
+                LOG.exception("Error evaluating Rule #{} expression.".format(idx))
+                errors.append("Rule #{} expression is not valid.".format(idx))
 
         if len(errors) > 0:
             error_msg = os.linesep.join(errors)

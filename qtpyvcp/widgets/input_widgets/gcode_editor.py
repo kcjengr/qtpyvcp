@@ -42,10 +42,10 @@ except ImportError as e:
     LOG.critical("Can't import QsciScintilla - is package python-pyqt5.qsci installed?", exc_info=e)
     sys.exit(1)
 
-from qtpyvcp.core import Status, Action, Info
+from qtpyvcp.plugins import getPluginFromProtocol
+STATUS = getPluginFromProtocol('status')
 
-STATUS = Status()
-ACTION = Action()
+from qtpyvcp.core import Info
 INFO = Info()
 
 

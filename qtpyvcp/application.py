@@ -19,6 +19,8 @@ from qtpy.QtWidgets import QApplication, QMainWindow, QStyleFactory, qApp
 from qtpyvcp.utilities import logger
 LOG = logger.initBaseLogger('qtpyvcp')
 
+from qtpyvcp.plugins import DATA_PLUGIN_REGISTRY, getPluginFromProtocol
+
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
 # Needed to silence this PySide2 warning:
@@ -29,7 +31,6 @@ if API == 'pyside2':
     from qtpy.QtCore import Qt
     QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
 
-
 class VCPApplication(QApplication):
 
     def __init__(self, opts, vcp_file=None):
@@ -37,11 +38,13 @@ class VCPApplication(QApplication):
 
         qApp = QApplication.instance()
 
-        from qtpyvcp.core import Status, Prefs, Info
+        from qtpyvcp.core import Prefs, Info
         self.info = Info()
         self.prefs = Prefs()
-        self.status = Status()
-        self.status.startPeriodic()
+        self.status = getPluginFromProtocol('status')
+        print self.status
+
+        self.initialiseDataPlugins()
 
         if opts.theme is not None:
             self.setStyle(QStyleFactory.create(opts.theme))
@@ -63,6 +66,7 @@ class VCPApplication(QApplication):
             self.perf_timer.start()
 
         self.aboutToQuit.connect(self.status.onShutdown)
+        self.aboutToQuit.connect(self.terminateDataPlugins)
 
     def loadVCPMainWindow(self, opts, vcp_file=None):
         """
@@ -181,3 +185,12 @@ class VCPApplication(QApplication):
             usage = [total_percent * ((t.system_time + t.user_time) / total_time) for t in self.perf.threads()]
         LOG.info("Performance:\n    Total CPU usage: {tot}\n    Per Thread: {percpu}"
                  .format(tot=total_percent, percpu=usage))
+
+
+    def initialiseDataPlugins(self):
+        for plugin in DATA_PLUGIN_REGISTRY.itervalues():
+            plugin.initialise()
+
+    def terminateDataPlugins(self):
+        for plugin in DATA_PLUGIN_REGISTRY.itervalues():
+            plugin.terminate()

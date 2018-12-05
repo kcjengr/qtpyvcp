@@ -10,12 +10,14 @@ from qtpy.QtWidgets import QComboBox
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from qtpyvcp.utilities.status import Status, Info
 from qtpyvcp.actions.base_actions import setTaskMode
+from qtpyvcp.plugins import getPluginFromProtocol
 
-STATUS = Status()
-INFO = Info()
+STATUS = getPluginFromProtocol('status')
 STAT = STATUS.stat
+
+from qtpyvcp.utilities.info import Info
+INFO = Info()
 CMD = linuxcnc.command()
 
 
@@ -211,10 +213,10 @@ def _set_work_coord_bindOk(coord='', widget=None):
     _issue_mdi_bindOk(coord, widget=widget)
     if isinstance(widget, QComboBox):
         widget.setCurrentText(coord)
-        STATUS.g5x_index.onTextChanged(lambda wc: widget.setCurrentText(wc))
+        STATUS.g5x_index.onValueChanged(lambda wc: widget.setCurrentText(STATUS.g5x_index.to_str(wc)))
     else:
         widget.setCheckable(True)
-        STATUS.g5x_index.onTextChanged(lambda wc: widget.setChecked(wc == coord))
+        STATUS.g5x_index.onValueChanged(lambda wc: widget.setChecked(STATUS.g5x_index.to_str(wc) == coord))
 
 set_work_coord.ok = _issue_mdi_ok
 set_work_coord.bindOk = _set_work_coord_bindOk

@@ -36,9 +36,10 @@ from qtpyvcp.widgets.base_widgets.qbackplot import QBackPlot
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from qtpyvcp.core import Status, Action, Info
-STATUS = Status()
-ACTION = Action()
+from qtpyvcp.plugins import getPluginFromProtocol
+STATUS = getPluginFromProtocol('status')
+
+from qtpyvcp.core import Info
 INFO = Info()
 
 

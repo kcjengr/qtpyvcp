@@ -27,10 +27,13 @@ import linuxcnc
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.prefs import Prefs
+from qtpyvcp.plugins.plugin import QtPyVCPDataPlugin, QtPyVCPDataChannel
+
+from qtpyvcp.utilities import logger
+
 INFO = Info()
 PREFS = Prefs()
 
-from qtpyvcp.utilities import logger
 log = logger.getLogger(__name__)
 log.setLevel("DEBUG")
 
@@ -38,15 +41,7 @@ NUM_SPINDLES = INFO.spindles()
 
 STAT = linuxcnc.stat()
 
-class Status(QObject):
-    _instance = None
-    def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = _Status()
-        return cls._instance
-
-
-class StatusItem(QObject):
+class StatusItem(QtPyVCPDataChannel):
     """StatusItem object.
 
     Each of the `linuxcnc.stat` attributes is represented by a StatusItem.
@@ -54,20 +49,20 @@ class StatusItem(QObject):
     Args:
         item (str) : The name of the `linuxcnc.stat` item.
         typ (type) : The python type of the item's value. If no type is specified
-            the type returned by `type(self.value())` will be used.
+            the type returned by `type(self.value)` will be used.
         to_str (method) : A method which returns a textual version of the
             item's value. If not specified defaults to the values `__str__` method.
         description (str) : A human readable description of the item.
     """
 
-    _valueChanged = Signal([bool], [int], [float], [str], [tuple])
-
     def __init__(self, item, typ=None, to_str=str, description=''):
-        super(StatusItem, self).__init__()
+        super(StatusItem, self).__init__(description=description)
+
         self.item = item
-        self.typ = typ or type(self.value())
+        self.typ = typ or type(self.value)
         self.to_str = to_str
 
+    @property
     def value(self):
         """The items current value.
 
@@ -76,40 +71,22 @@ class StatusItem(QObject):
         """
         return getattr(STAT, self.item)
 
+    @property
     def text(self):
         """The items current text.
 
         Returns:
             str : The text of the item as of the last `stat.poll()`.
         """
-        return self.to_str(self.value())
-
-    def onValueChanged(self, slot):
-        """Connect a slot to the value changed signal.
-
-        Args:
-            slot : The callback to call when the value changes.
-        """
-        self._valueChanged[self.typ].connect(slot)
-
-    def onTextChanged(self, slot):
-        """Connect a slot to the text changed signal.
-
-        Args:
-            slot : The callback to call when the text changes.
-        """
-        self._valueChanged[str].connect(slot)
+        return self.to_str(self.value)
 
     def _update(self, value):
-        self._valueChanged[self.typ].emit(value)
-        self._valueChanged[str].emit(self.to_str(value))
-
-    def dataTypes(self):
-        return [self.typ.__name__, 'str']
+        self.valueChanged.emit(value)
 
 
+class Status(QtPyVCPDataPlugin):
 
-class _Status(QObject):
+    protocol = 'status'
 
     stat = STAT
 
@@ -302,6 +279,12 @@ class _Status(QObject):
     pocket_prepped = StatusItem('pocket_prepped', int)        # Tx command completed, and this pocket is prepared
     tool_table = StatusItem('tool_table', tuple)          # list of tool entries
 
+    tool_data = StatusItem('tool_in_spindle', dict)
+
+    spindles = StatusItem('spindles', int)
+    axes = StatusItem('axes', int)
+    joints = StatusItem('joints', int)
+
     # Extended status signals
     axis_positions = Signal(tuple)      # ABS, REL and DTG axis values
     joint_positions = Signal(tuple)     # joint pos respecting INI settings
@@ -332,7 +315,7 @@ class _Status(QObject):
     on_shutown = Signal()
 
     def __init__(self):
-        super(_Status, self).__init__()
+        super(Status, self).__init__()
 
         self.no_force_homing = INFO.noForceHoming()
         self._report_actual_position = False
@@ -353,7 +336,7 @@ class _Status(QObject):
         except:
             pass
 
-        excluded_items = ['axis', 'joint', 'spindle', 'axes', 'joints', 'spindles',
+        excluded_items = ['axis', 'joint', 'spindle',
             'acceleration', 'max_acceleration', 'kinematics_type', 'axis_mask',
             'cycle_time', 'echo_serial_number', 'id', 'poll', 'command', 'debug']
 
@@ -383,10 +366,10 @@ class _Status(QObject):
         self.settings.onValueChanged(lambda s: self.feed.emit(s[2]))
 
         # Initialize Joint status class
-        self.joint = tuple(_Joint(STAT.joint[i], i) for i in range(INFO.NUM_JOINTS))
+        self.joint = tuple(JointStatus(STAT.joint[i], i) for i in range(INFO.NUM_JOINTS))
 
         # Initialize Spindle status classes
-        self.spindle = tuple(_Spindle(STAT.spindle[i], i) for i in range(NUM_SPINDLES))
+        self.spindle = tuple(SpindleStatus(STAT.spindle[i], i) for i in range(NUM_SPINDLES))
 
         # Initialize Error status class
         self.error = _Error()
@@ -401,7 +384,7 @@ class _Status(QObject):
         # QTimer.singleShot(0, self.startPeriodic)
         # self.startPeriodic()
 
-    def startPeriodic(self):
+    def initialise(self):
         """Start the periodic update timer."""
         self.timer.start(self._cycle_time)
 
@@ -587,17 +570,18 @@ class JointStatusItem(StatusItem):
         self.jnum = jnum
         super(JointStatusItem, self).__init__(item, typ, to_str, description)
 
+    @property
     def value(self):
         return self.typ(STAT.joint[self.jnum][self.item])
 
 
-class _Joint(QObject):
+class JointStatus(QObject):
     """Joint status class.
         An instance of this class is created for each joint.
     """
 
     def __init__(self, jstat, jnum):
-        super(_Joint, self).__init__()
+        super(JointStatus, self).__init__()
 
         self.jstat = jstat
         self.jnum = jnum
@@ -612,7 +596,7 @@ class _Joint(QObject):
         self.homed = JointStatusItem(jnum, 'homed', bool)                      # homed flag
         self.homing =JointStatusItem(jnum, 'homing', bool)                     # currently homing flag
         self.inpos = JointStatusItem(jnum, 'inpos', bool)                      # in position flag
-        self.input = JointStatusItem(jnum, 'input', bool)                      # current input position
+        self.input = JointStatusItem(jnum, 'input', float)                      # current input position
         self.max_ferror = JointStatusItem(jnum, 'max_ferror', bool)            # reflects [JOINT_n]FERROR
         self.max_hard_limit = JointStatusItem(jnum, 'max_hard_limit', bool)    # max hard limit exceeded flag
         self.max_soft_limit = JointStatusItem(jnum, 'max_soft_limit', bool)    # max soft limit exceeded flag
@@ -648,16 +632,17 @@ class SpindleStatusItem(StatusItem):
         self.snum = snum
         super(SpindleStatusItem, self).__init__(item, typ, to_str, description)
 
+    @property
     def value(self):
         return self.typ(STAT.spindle[self.snum][self.item])
 
-class _Spindle(QObject):
+class SpindleStatus(QObject):
     """Spindle status class.
         An instance of this class is created for each spindle.
     """
 
     def __init__(self, status, snum):
-        super(_Spindle, self).__init__()
+        super(SpindleStatus, self).__init__()
 
         self.snum = snum
         self.status = status
@@ -688,6 +673,7 @@ class _Spindle(QObject):
 # Error status class
 #==============================================================================
 
+# ToDo: Move error and message handling into its own data plugin
 class _Error(QObject):
 
     error = linuxcnc.error_channel()

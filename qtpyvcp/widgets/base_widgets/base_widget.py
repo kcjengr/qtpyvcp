@@ -5,23 +5,33 @@ widgets are based.
 """
 
 import os
+import json
 
 from qtpy.QtCore import Property
 
-from qtpyvcp.widgets.rules import registerRules
-from qtpyvcp.utilities.status import Status, StatusItem
+from qtpyvcp.plugins import DATA_PLUGIN_REGISTRY
 
+# Set up logging
+from qtpyvcp.utilities import logger
+LOG = logger.getLogger(__name__)
+
+class ChanList(list):
+    """Channel value list.
+
+    This list is intended to hold lambda functions for retrieving the current
+    data channel values. When the list is indexed the function is called and
+    the resulting value is returned.
+    """
+    def __getitem__(self, index):
+        return super(ChanList, self).__getitem__(index)()
 
 class QtPyVCPBaseWidget(object):
     """QtPyVCP Base Widget.
 
     Class on which all other QtPyVCP widgets are based.
     This class handles the rules and other things that should
-    apply to all QtPyVCP widgets regardles of use.
+    apply to all QtPyVCP widgets regardless of use.
     """
-
-    STATUS = Status()
-
     IN_DESIGNER = os.getenv('DESIGNER') != None
 
     DEFAULT_RULE_PROPERTY = 'None'
@@ -38,7 +48,6 @@ class QtPyVCPBaseWidget(object):
         self._rules = ''
         self._style = ''
         self._data_channels = []
-
 
     def setStyleClass(self, style_class):
         """Set the QSS style class for the widget"""
@@ -92,7 +101,50 @@ class QtPyVCPBaseWidget(object):
     @rules.setter
     def rules(self, rules):
         self._rules = rules
-        registerRules(self, rules)
+        self.registerRules(rules)
+
+    def registerRules(self, rules):
+        rules = json.loads(rules)
+        for rule in rules:
+            # print rule
+            ch = ChanList()
+            triggers = []
+            for chan in rule['channels']:
+
+                try:
+                    protocol, sep, rest = chan['url'].partition(':')
+                    item, sep, query = rest.partition('?')
+
+                    plugin = DATA_PLUGIN_REGISTRY[protocol]
+                    eval_env = {'plugin': plugin}
+
+                    # fast lambda function to get the current value of the channel
+                    chan_val = eval("lambda: plugin.{}.handleQuery('{}')".format(item, query), eval_env)
+                    ch.append(chan_val)
+
+                    if chan.get('trigger', False):
+                        chan_obj = eval("plugin.{}".format(item), eval_env)
+                        triggers.append(chan_obj.valueChanged.connect)
+
+                except:
+                    LOG.exception("Error evaluating rule: {}".format(chan.get('url', '')))
+                    return
+
+            prop = self.RULE_PROPERTIES[rule['property']]
+
+            if prop[1] is None:
+                # donothing
+                continue
+
+            evil_env = {'ch': ch, 'widget': self}
+            evil_exp = 'lambda: widget.{}({})'.format(prop[0], rule['expression'])
+            exp = eval(evil_exp, evil_env)
+
+            # initial call to update
+            exp()
+
+            for trigger in triggers:
+                trigger(exp)
 
 class VCPWidget(QtPyVCPBaseWidget):
     """VCP Widget
