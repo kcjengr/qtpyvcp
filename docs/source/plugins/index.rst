@@ -7,4 +7,5 @@ QtPyVCP Data Plugins
 
    plugin
    status
+   positions
    tool_table

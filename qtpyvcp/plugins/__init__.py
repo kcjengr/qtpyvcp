@@ -15,6 +15,7 @@ DATA_PLUGIN_REGISTRY = {}
 DEFAULT_PLUGINS = (
     'qtpyvcp.plugins.status:Status',
     # 'qtpyvcp.plugins.hal_status:HALStatus',
+    'qtpyvcp.plugins.positions:Position',
     'qtpyvcp.plugins.tool_table:ToolTable',
 )
 

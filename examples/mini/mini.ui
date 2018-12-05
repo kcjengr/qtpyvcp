@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>321</width>
-    <height>251</height>
+    <height>329</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -200,6 +200,42 @@
      <widget class="StatusLabel" name="statuslabel_6">
       <property name="rules" stdset="0">
        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?comment&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;tool comment&quot;}]</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="StatusLabel" name="statuslabel_7">
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+       </font>
+      </property>
+      <property name="rules" stdset="0">
+       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?abs&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;X {:.4f} in\&quot;.format(ch[0][0]) if ch[1] == 'in' else \&quot;X {:.3f} mm\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;abs pos&quot;}]</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="StatusLabel" name="statuslabel_8">
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+       </font>
+      </property>
+      <property name="rules" stdset="0">
+       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;X {:.4f} in\&quot;.format(ch[0][0]) if ch[1] == 'in' else \&quot;X {:.3f} mm\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;rel pos&quot;}]</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="StatusLabel" name="statuslabel_9">
+      <property name="font">
+       <font>
+        <pointsize>13</pointsize>
+       </font>
+      </property>
+      <property name="rules" stdset="0">
+       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?dtg&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;X {:.4f} in\&quot;.format(ch[0][0]) if ch[1] == 'in' else \&quot;X {:.3f} mm\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;dtg&quot;}]</string>
       </property>
      </widget>
     </item>
