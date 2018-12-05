@@ -34,11 +34,14 @@ def loadDataPlugins(plugins):
         LOG.debug("Loading data plugin: {}".format(object_ref))
 
         modname, sep, clsname = object_ref.partition(':')
-        plugin = getattr(importlib.import_module(modname), clsname)
 
-        if not issubclass(plugin, QtPyVCPDataPlugin):
-            LOG.error("Not a valid data plugin: {}".format(object_ref))
-            continue
+        try:
+            plugin = getattr(importlib.import_module(modname), clsname)
+        except Exception:
+            LOG.critical("Failed to import data plugin.")
+            raise
+
+        assert issubclass(plugin, QtPyVCPDataPlugin), "Not a valid plugin, must be a QtPyVCPDataPlugin subclass."
 
         if plugin.protocol in DATA_PLUGIN_REGISTRY:
             LOG.warning("Replacing {} with {} for use with protocol {}"
