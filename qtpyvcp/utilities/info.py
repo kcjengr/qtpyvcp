@@ -67,8 +67,8 @@ class _Info(object):
 
     def getFilePath(self, section, option, base, default):
         path = self.ini.find(section, option) or default
-        if path is None:
-            return
+        if path is None or not isinstance(path, str):
+            return ""
         elif path.startswith('~'):
             path = os.path.expanduser(path)
         elif not os.path.isabs(path):

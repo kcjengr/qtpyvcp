@@ -353,7 +353,7 @@ texinfo_documents = [
 for module in ['linuxcnc', 'hal']:
     sys.modules[module] = mock.MagicMock()
 
-# MagicMock does not work for inheriting, so use our out Mock for PyQt5
+# MagicMock does not work for inheriting, so use our own Mock for PyQt5
 class Mock(object):
     """Mock modules.
     Taken from: https://github.com/pyudev/pyudev/blob/develop-0.22/doc/conf.py

@@ -142,6 +142,8 @@ class ToolTable(QtPyVCPDataPlugin):
         self.fs_watcher = None
 
         self.tool_table_file = INFO.getToolTableFile()
+        if not os.path.exists(self.tool_table_file):
+            return
 
         if self.TOOL_TABLE == {}:
             self.loadToolTable()
