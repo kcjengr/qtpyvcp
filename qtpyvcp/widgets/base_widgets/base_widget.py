@@ -132,6 +132,10 @@ class QtPyVCPBaseWidget(object):
 
             prop = self.RULE_PROPERTIES[rule['property']]
 
+            if prop[1] is None:
+                # donothing
+                continue
+
             evil_env = {'ch': ch, 'widget': self}
             evil_exp = 'lambda: widget.{}({})'.format(prop[0], rule['expression'])
             exp = eval(evil_exp, evil_env)
