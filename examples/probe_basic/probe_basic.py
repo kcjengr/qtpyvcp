@@ -6,7 +6,6 @@ import time
 from qtpy.QtWidgets import QApplication
 
 from qtpyvcp.utilities import logger
-from qtpyvcp.core import Status, Action, Prefs, Info
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
 # try:
@@ -19,10 +18,6 @@ from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 import probe_basic_rc
 
 LOG = logger.getLogger('QtPyVCP.' + __name__)
-STATUS = Status()
-ACTION = Action()
-PREFS = Prefs()
-INFO = Info()
 
 VCP_DIR = os.path.abspath(os.path.dirname(__file__))
 UI_FILE = os.path.join(VCP_DIR, 'probe_basic.ui')
