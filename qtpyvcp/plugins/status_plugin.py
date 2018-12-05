@@ -596,7 +596,7 @@ class JointStatus(QObject):
         self.homed = JointStatusItem(jnum, 'homed', bool)                      # homed flag
         self.homing =JointStatusItem(jnum, 'homing', bool)                     # currently homing flag
         self.inpos = JointStatusItem(jnum, 'inpos', bool)                      # in position flag
-        self.input = JointStatusItem(jnum, 'input', bool)                      # current input position
+        self.input = JointStatusItem(jnum, 'input', float)                      # current input position
         self.max_ferror = JointStatusItem(jnum, 'max_ferror', bool)            # reflects [JOINT_n]FERROR
         self.max_hard_limit = JointStatusItem(jnum, 'max_hard_limit', bool)    # max hard limit exceeded flag
         self.max_soft_limit = JointStatusItem(jnum, 'max_soft_limit', bool)    # max soft limit exceeded flag
