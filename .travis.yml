@@ -2,7 +2,7 @@ language: python
 install:
 - pip install sphinx sphinx_rtd_theme mock
 script:
-- sphinx-build -W docs/source docs/html
+- sphinx-build -Wv docs/source docs/html
 
 before_deploy:
 - gem install fpm

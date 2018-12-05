@@ -399,6 +399,3 @@ Mock.mock_modules(
 'qtpy.QtWidgets',
 'docopt'
 )
-
-# mock the status module
-# sys.modules['qtpyvcp.utilities.status'] = Mock()
