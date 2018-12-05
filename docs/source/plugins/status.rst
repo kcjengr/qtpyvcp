@@ -2,5 +2,5 @@
 Status
 ======
 
-.. automodule:: qtpyvcp.plugins.status_plugin
+.. automodule:: qtpyvcp.plugins.status
     :members:
