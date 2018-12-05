@@ -26,8 +26,7 @@ from qtpy.QtCore import Slot, Property
 from qtpyvcp.plugins import getPluginFromProtocol
 STATUS = getPluginFromProtocol('status')
 
-from qtpyvcp.core import Action, Info
-ACTION = Action()
+from qtpyvcp.core import Info
 INFO = Info()
 
 from qtpyvcp.widgets import VCPWidget

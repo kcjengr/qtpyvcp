@@ -2,12 +2,12 @@
 
 import os
 from qtpy.QtWidgets import QComboBox
-from qtpy.QtCore import Qt, QEvent
 
 from qtpyvcp.plugins import getPluginFromProtocol
 STATUS = getPluginFromProtocol('status')
 
-from qtpyvcp.utilities import action
+# from qtpyvcp.utilities import action
+from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.widgets.dialogs.open_file_dialog import OpenFileDialog
 
 class RecentFileComboBox(QComboBox):
@@ -35,4 +35,4 @@ class RecentFileComboBox(QComboBox):
         if data == 'browse_files':
             self.file_dialog.show()
         else:
-            action.program.load(data)
+            loadProgram(data)
