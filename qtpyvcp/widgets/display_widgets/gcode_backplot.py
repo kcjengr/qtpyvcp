@@ -34,17 +34,19 @@ from qtpy.QtGui import QColor
 from qtpyvcp.widgets.base_widgets.qbackplot import QBackPlot
 
 from qtpyvcp.utilities import logger
+
 LOG = logger.getLogger(__name__)
 
 from qtpyvcp.plugins import getPluginFromProtocol
+
 STATUS = getPluginFromProtocol('status')
 
 from qtpyvcp.core import Info
+
 INFO = Info()
 
 
-class  GcodeBackplot(QBackPlot):
-
+class GcodeBackplot(QBackPlot):
     line_selected = Signal(int)
     gcode_error = Signal(str)
 
@@ -74,7 +76,6 @@ class  GcodeBackplot(QBackPlot):
 
         self.abortButton.clicked.connect(self.abort)
 
-
         STATUS.actual_position.onValueChanged(self.update)
         STATUS.joint_actual_position.onValueChanged(self.update)
         STATUS.homed.onValueChanged(self.update)
@@ -88,7 +89,7 @@ class  GcodeBackplot(QBackPlot):
         # Connect status signals
         STATUS.file_loaded.connect(self.loadBackplot)
         STATUS.reload_backplot.connect(self.reloadBackplot)
-        STATUS.program_units.onValueChanged(lambda v: self.setMetricUnits(v==2))
+        STATUS.program_units.onValueChanged(lambda v: self.setMetricUnits(v == 2))
 
     def loadBackplot(self, fname):
         LOG.debug('load the display: {}'.format(fname.encode('utf-8')))
@@ -104,9 +105,9 @@ class  GcodeBackplot(QBackPlot):
         except:
             LOG.warning("Problem reloading backplot file: {}".format(self._reload_filename), exc_info=True)
 
-    #==========================================================================
+    # ==========================================================================
     #  Override QBackPlot methods
-    #==========================================================================
+    # ==========================================================================
 
     def report_loading_started(self):
         self.progressBar.show()
@@ -138,11 +139,11 @@ class  GcodeBackplot(QBackPlot):
             line = -1
         STATUS.backplot_line_selected.emit(line)
 
+    # ==============================================================================
+    #  QtDesigner property setters/getters
+    # ==============================================================================
 
-#==============================================================================
-#  QtDesigner property setters/getters
-#==============================================================================
-
+    @Slot(str)
     def setView(self, view):
         view = view.lower()
         if self.is_lathe:
@@ -153,54 +154,70 @@ class  GcodeBackplot(QBackPlot):
         self.current_view = view
         if self.initialised:
             self.set_current_view()
+
     def getView(self):
         return self.current_view
+
     defaultView = Property(str, getView, setView)
 
     # DRO
+
+    # @Slot(str) Fixme check for the correct data type
     def setdro(self, state):
         self.enable_dro = state
         self.updateGL()
+
     def getdro(self):
         return self.enable_dro
+
     _dro = Property(bool, getdro, setdro)
 
     # DTG
+
+    # @Slot(str) Fixme check for the correct data type
     def setdtg(self, state):
         self.show_dtg = state
         self.updateGL()
+
     def getdtg(self):
         return self.show_dtg
+
     _dtg = Property(bool, getdtg, setdtg)
 
     # METRIC
+
+    # @Slot(str) Fixme check for the correct data type
     def setMetricUnits(self, metric):
         self.metric_units = metric
         self.updateGL()
+
     def getMetricUnits(self):
         return self.metric_units
+
     metricUnits = Property(bool, getMetricUnits, setMetricUnits)
 
-
-
+    # @Slot(str) Fixme check for the correct data type
     def setProgramAlpha(self, alpha):
         self.program_alpha = alpha
         self.updateGL()
+
     def getProgramAlpha(self):
         return self.program_alpha
+
     renderProgramAlpha = Property(bool, getProgramAlpha, setProgramAlpha)
 
-
+    # @Slot(str) Fixme check for the correct data type
     def setBackgroundColor(self, color):
         self.colors['back'] = color.getRgbF()[:3]
         self.updateGL()
+
     def getBackgroundColor(self):
         r, g, b = self.colors['back']
         color = QColor()
         color.setRgbF(r, g, b, 1.0)
         return color
-    backgroundColor = Property(QColor, getBackgroundColor, setBackgroundColor)
 
+    backgroundColor = Property(QColor, getBackgroundColor, setBackgroundColor)
 
 
 # For testing purposes, include code to allow a widget to be created and shown
@@ -210,6 +227,6 @@ if __name__ == "__main__":
     from qtpy.QtWidgets import QApplication
 
     app = QApplication(sys.argv)
-    widget =  GcodeBackPlot(standalone=True)
+    widget = GcodeBackPlot(standalone=True)
     widget.show()
     sys.exit(app.exec_())
