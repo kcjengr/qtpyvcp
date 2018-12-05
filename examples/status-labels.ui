@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>740</width>
-    <height>693</height>
+    <height>638</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -30,125 +30,80 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>110</y>
+      <y>120</y>
       <width>191</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Interp State:&lt;/b&gt; Unknown</string>
+     <string>&lt;b&gt;Interp State: &lt;/b&gt;Idle</string>
     </property>
-    <property name="factor" stdset="0">
-     <double>1.000000000000000</double>
-    </property>
-    <property name="format" stdset="0">
-     <string>&lt;b&gt;Interp State:&lt;/b&gt; {}</string>
-    </property>
-    <property name="statusItem" stdset="0">
-     <string>interp_state</string>
-    </property>
-    <property name="buddy">
-     <cstring></cstring>
+    <property name="rules" stdset="0">
+     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:interp_state?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Interp State: &lt;/b&gt;\&quot; + ch[0]&quot;, &quot;name&quot;: &quot;interp state&quot;}]</string>
     </property>
    </widget>
    <widget class="StatusLabel" name="statuslabelnew_7">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>190</y>
+      <y>180</y>
       <width>191</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Paused:&lt;/b&gt; False</string>
+     <string>&lt;b&gt;Paused: &lt;/b&gt;False</string>
     </property>
-    <property name="factor" stdset="0">
-     <double>1.000000000000000</double>
-    </property>
-    <property name="format" stdset="0">
-     <string>&lt;b&gt;Paused:&lt;/b&gt; {}</string>
-    </property>
-    <property name="statusItem" stdset="0">
-     <string>paused</string>
-    </property>
-    <property name="buddy">
-     <cstring></cstring>
+    <property name="rules" stdset="0">
+     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:paused?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Paused: &lt;/b&gt;\&quot; + ch[0]&quot;, &quot;name&quot;: &quot;paused&quot;}]</string>
     </property>
    </widget>
    <widget class="StatusLabel" name="statuslabelnew_5">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>130</y>
+      <y>140</y>
       <width>191</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;State:&lt;/b&gt; Unknown</string>
+     <string>&lt;b&gt;State: &lt;/b&gt;Done</string>
     </property>
-    <property name="factor" stdset="0">
-     <double>1.000000000000000</double>
-    </property>
-    <property name="format" stdset="0">
-     <string>&lt;b&gt;State:&lt;/b&gt; {}</string>
-    </property>
-    <property name="statusItem" stdset="0">
-     <string>state</string>
-    </property>
-    <property name="buddy">
-     <cstring></cstring>
+    <property name="rules" stdset="0">
+     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:state?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;State: &lt;/b&gt;\&quot; + ch[0]&quot;, &quot;name&quot;: &quot;state&quot;}]</string>
     </property>
    </widget>
    <widget class="StatusLabel" name="statuslabelnew_6">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>150</y>
+      <y>160</y>
       <width>191</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Motion Mode:&lt;/b&gt; Unknown</string>
+     <string>&lt;b&gt;Motion Mode: &lt;/b&gt;Teleop</string>
     </property>
-    <property name="factor" stdset="0">
-     <double>1.000000000000000</double>
-    </property>
-    <property name="format" stdset="0">
-     <string>&lt;b&gt;Motion Mode:&lt;/b&gt; {}</string>
-    </property>
-    <property name="statusItem" stdset="0">
-     <string>motion_mode</string>
-    </property>
-    <property name="buddy">
-     <cstring></cstring>
+    <property name="rules" stdset="0">
+     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:motion_mode?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Motion Mode: &lt;/b&gt;\&quot; + ch[0]&quot;, &quot;name&quot;: &quot;motion mode&quot;}]</string>
     </property>
    </widget>
    <widget class="StatusLabel" name="statuslabelnew_8">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>210</y>
+      <y>200</y>
       <width>191</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Program Units:&lt;/b&gt; NA</string>
+     <string>&lt;b&gt;Program Units: &lt;/b&gt;in</string>
     </property>
-    <property name="factor" stdset="0">
-     <double>1.000000000000000</double>
-    </property>
-    <property name="format" stdset="0">
-     <string>&lt;b&gt;Program Units:&lt;/b&gt; {}</string>
-    </property>
-    <property name="statusItem" stdset="0">
-     <string>program_units</string>
-    </property>
-    <property name="buddy">
-     <cstring></cstring>
+    <property name="rules" stdset="0">
+     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Program Units: &lt;/b&gt;\&quot; + ch[0]&quot;, &quot;name&quot;: &quot;prog units&quot;}]</string>
     </property>
    </widget>
    <widget class="StatusLabel" name="statuslabelnew">
@@ -161,100 +116,64 @@
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Spindle Override:&lt;/b&gt;     0%</string>
+     <string>&lt;b&gt;Spindle Override:&lt;/b&gt;    81%</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
-    <property name="factor" stdset="0">
-     <double>1.000000000000000</double>
-    </property>
-    <property name="format" stdset="0">
-     <string>&lt;b&gt;Spindle Override:&lt;/b&gt; {:6.0%}</string>
-    </property>
-    <property name="statusItem" stdset="0">
-     <string>spindle.0.override</string>
-    </property>
-    <property name="buddy">
-     <cstring></cstring>
+    <property name="rules" stdset="0">
+     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Spindle Override:&lt;/b&gt; {:6.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;override&quot;}]</string>
     </property>
    </widget>
    <widget class="StatusLabel" name="statuslabelnew_3">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>90</y>
+      <y>100</y>
       <width>191</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Task Mode:&lt;/b&gt; Unknown</string>
+     <string>&lt;b&gt;Task Mode:&lt;/b&gt; Manual</string>
     </property>
-    <property name="factor" stdset="0">
-     <double>1.000000000000000</double>
-    </property>
-    <property name="format" stdset="0">
-     <string>&lt;b&gt;Task Mode:&lt;/b&gt; {}</string>
-    </property>
-    <property name="statusItem" stdset="0">
-     <string>task_mode</string>
-    </property>
-    <property name="buddy">
-     <cstring></cstring>
+    <property name="rules" stdset="0">
+     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_mode?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Task Mode:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;Task Mode&quot;}]</string>
     </property>
    </widget>
    <widget class="StatusLabel" name="statuslabelnew_9">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>230</y>
+      <y>220</y>
       <width>191</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Program Line:&lt;/b&gt; 0</string>
+     <string>&lt;b&gt;Motion Line:&lt;/b&gt; 559</string>
     </property>
-    <property name="factor" stdset="0">
-     <double>1.000000000000000</double>
-    </property>
-    <property name="format" stdset="0">
-     <string>&lt;b&gt;Program Line:&lt;/b&gt; {}</string>
-    </property>
-    <property name="statusItem" stdset="0">
-     <string>current_line</string>
-    </property>
-    <property name="buddy">
-     <cstring></cstring>
+    <property name="rules" stdset="0">
+     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:motion_line&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Motion Line:&lt;/b&gt; {}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;motion line&quot;}]</string>
     </property>
    </widget>
    <widget class="StatusLabel" name="statuslabelnew_11">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>270</y>
+      <y>60</y>
       <width>601</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;File:&lt;/b&gt; </string>
+     <string>&lt;b&gt;File: &lt;/b&gt;/media/data/dev/cnc/qtpyvcp/sim/example_gcode/qtpyvcp.ngc</string>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
     </property>
-    <property name="factor" stdset="0">
-     <double>1.000000000000000</double>
-    </property>
-    <property name="format" stdset="0">
-     <string>&lt;b&gt;File:&lt;/b&gt; {}</string>
-    </property>
-    <property name="statusItem" stdset="0">
-     <string>file</string>
-    </property>
-    <property name="buddy">
-     <cstring></cstring>
+    <property name="rules" stdset="0">
+     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:file&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;File: &lt;/b&gt;\&quot; + ch[0]&quot;, &quot;name&quot;: &quot;file&quot;}]</string>
     </property>
    </widget>
    <widget class="ActionSlider" name="actionslider">
@@ -277,32 +196,23 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>70</y>
+      <y>80</y>
       <width>191</width>
       <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Task State:&lt;/b&gt; Unknown</string>
+     <string>&lt;b&gt;Task State:&lt;/b&gt; On</string>
     </property>
-    <property name="factor" stdset="0">
-     <double>1.000000000000000</double>
-    </property>
-    <property name="format" stdset="0">
-     <string>&lt;b&gt;Task State:&lt;/b&gt; {}</string>
-    </property>
-    <property name="statusItem" stdset="0">
-     <string>task_state</string>
-    </property>
-    <property name="buddy">
-     <cstring></cstring>
+    <property name="rules" stdset="0">
+     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_state?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Task State:&lt;/b&gt; {}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;Task State&quot;}]</string>
     </property>
    </widget>
    <widget class="StatusLabel" name="statuslabelnew_10">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>250</y>
+      <y>260</y>
       <width>191</width>
       <height>16</height>
      </rect>
@@ -310,25 +220,16 @@
     <property name="text">
      <string>&lt;b&gt;Read Line:&lt;/b&gt; 0</string>
     </property>
-    <property name="factor" stdset="0">
-     <double>1.000000000000000</double>
-    </property>
-    <property name="format" stdset="0">
-     <string>&lt;b&gt;Read Line:&lt;/b&gt; {}</string>
-    </property>
-    <property name="statusItem" stdset="0">
-     <string>read_line</string>
-    </property>
-    <property name="buddy">
-     <cstring></cstring>
+    <property name="rules" stdset="0">
+     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:read_line&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Read Line:&lt;/b&gt; {}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;read line&quot;}]</string>
     </property>
    </widget>
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>320</y>
-      <width>261</width>
+      <y>290</y>
+      <width>211</width>
       <height>251</height>
      </rect>
     </property>
@@ -339,168 +240,148 @@
      <item>
       <widget class="StatusLabel" name="statuslabelnew_13">
        <property name="text">
-        <string>&lt;b&gt;enabled:&lt;/b&gt; 0</string>
+        <string>&lt;b&gt;Enabled: &lt;/b&gt;True</string>
        </property>
-       <property name="factor" stdset="0">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;enabled:&lt;/b&gt; {}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>joint.0.enabled</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].enabled?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Enabled: &lt;/b&gt;\&quot; + ch[0]&quot;, &quot;name&quot;: &quot;enabled&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_14">
        <property name="text">
-        <string>&lt;b&gt;fault:&lt;/b&gt; 0</string>
+        <string>&lt;b&gt;Fault: &lt;/b&gt;False</string>
        </property>
-       <property name="factor" stdset="0">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;fault:&lt;/b&gt; {}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>joint.0.fault</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].fault?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Fault: &lt;/b&gt;\&quot; + ch[0]&quot;, &quot;name&quot;: &quot;fault&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_15">
        <property name="text">
-        <string>&lt;b&gt;ferror:&lt;/b&gt; 0.00000e+00</string>
+        <string>&lt;b&gt;Ferror:&lt;/b&gt; 0.0000 in</string>
        </property>
-       <property name="factor" stdset="0">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;ferror:&lt;/b&gt; {:.5e}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>joint.0.ferror_current</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].ferror_current&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Ferror:&lt;/b&gt; {:0.4f} {}\&quot;.format(ch[0], ch[1])&quot;, &quot;name&quot;: &quot;ferror&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_21">
        <property name="text">
-        <string>&lt;b&gt;ferror highmark:&lt;/b&gt; 0.00000e+00</string>
+        <string>&lt;b&gt;Max Ferror:&lt;/b&gt; 2.0472 in</string>
        </property>
-       <property name="factor" stdset="0">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;ferror highmark:&lt;/b&gt; {:.5e}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>joint.0.ferror_highmark</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].ferror_highmark&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Max Ferror:&lt;/b&gt; {:0.4f} {}\&quot;.format(ch[0], ch[1])&quot;, &quot;name&quot;: &quot;max ferror&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_22">
        <property name="text">
-        <string>&lt;b&gt;inpos:&lt;/b&gt; 0</string>
+        <string>&lt;b&gt;Inpos:&lt;/b&gt; True</string>
        </property>
-       <property name="factor" stdset="0">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;inpos:&lt;/b&gt; {}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>joint.0.inpos</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].inpos?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Inpos:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;in pos&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_16">
        <property name="text">
-        <string>&lt;b&gt;homed:&lt;/b&gt; 0</string>
+        <string>&lt;b&gt;Homed:&lt;/b&gt; True</string>
        </property>
-       <property name="factor" stdset="0">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;homed:&lt;/b&gt; {}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>joint.0.homed</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].homed?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Homed:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;homed&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_17">
        <property name="text">
-        <string>&lt;b&gt;on max limit:&lt;/b&gt; 0</string>
+        <string>&lt;b&gt;On Max Limit:&lt;/b&gt; False</string>
        </property>
-       <property name="factor" stdset="0">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;on max limit:&lt;/b&gt; {}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>joint.0.max_hard_limit</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].max_hard_limit?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;On Max Limit:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="StatusLabel" name="statuslabelnew_18">
+      <widget class="StatusLabel" name="statuslabelnew_23">
        <property name="text">
-        <string>&lt;b&gt;input:&lt;/b&gt; 0.00000e+00</string>
+        <string>&lt;b&gt;Input:&lt;/b&gt; 1.08673e+01 in</string>
        </property>
-       <property name="factor" stdset="0">
-        <double>1.000000000000000</double>
-       </property>
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;input:&lt;/b&gt; {:.5e}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>joint.0.input</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].input&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Input:&lt;/b&gt; {:0.5e} {}\&quot;.format(ch[0], ch[1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_20">
        <property name="text">
-        <string>&lt;b&gt;output:&lt;/b&gt; 0.00000e+00</string>
+        <string>&lt;b&gt;Output:&lt;/b&gt; 1.08673e+01 in</string>
        </property>
-       <property name="factor" stdset="0">
-        <double>1.000000000000000</double>
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].output&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Output:&lt;/b&gt; {:0.5e} {}\&quot;.format(ch[0], ch[1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabel" name="statuslabelnew_19">
+       <property name="text">
+        <string>&lt;b&gt;Units:&lt;/b&gt; 0.0394</string>
+       </property>
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].units&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Units:&lt;/b&gt; {:0.4f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="MDIEntry" name="mdientry">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>560</y>
+      <width>211</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::ClickFocus</enum>
+    </property>
+    <property name="placeholderText">
+     <string>MDI</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_2">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>80</y>
+      <width>211</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Spindle</string>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="StatusLabel" name="statuslabelnew_28">
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].enabled?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Enabled:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabel" name="statuslabelnew_29">
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Act Speed:&lt;/b&gt; {:.0f} rpm\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;speed&quot;}]</string>
        </property>
        <property name="format" stdset="0">
-        <string>&lt;b&gt;output:&lt;/b&gt; {:.5e}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>joint.0.output</string>
+        <string>&lt;b&gt;speed:&lt;/b&gt; {:.1f} rpm</string>
        </property>
        <property name="buddy">
         <cstring></cstring>
@@ -508,21 +389,114 @@
       </widget>
      </item>
      <item>
-      <widget class="StatusLabel" name="statuslabelnew_19">
-       <property name="text">
-        <string>&lt;b&gt;units:&lt;/b&gt; 0.00000e+00</string>
+      <widget class="StatusLabel" name="statuslabelnew_24">
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:settings&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Prog Speed:&lt;/b&gt; {:.0f} rpm\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
-       <property name="factor" stdset="0">
-        <double>1.000000000000000</double>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabel" name="statuslabelnew_25">
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].direction?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Direction:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;units:&lt;/b&gt; {:.5e}</string>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabel" name="statuslabelnew_26">
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Override:&lt;/b&gt; {:.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
-       <property name="statusItem" stdset="0">
-        <string>joint.0.units</string>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabel" name="statuslabelnew_27">
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].override_enabled?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Override Enabled:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
-       <property name="buddy">
-        <cstring></cstring>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabel" name="statuslabelnew_30">
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].orient_fault?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Orient Fault:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="GcodeBackplot" name="gcodebackplot">
+    <property name="geometry">
+     <rect>
+      <x>240</x>
+      <y>290</y>
+      <width>491</width>
+      <height>301</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_3">
+    <property name="geometry">
+     <rect>
+      <x>350</x>
+      <y>120</y>
+      <width>161</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Current Tool</string>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="StatusLabel" name="statuslabelnew_34">
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?number&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Tool No.:&lt;/b&gt; {}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabel" name="statuslabelnew_31">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?comment&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;comment&quot;}]</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabel" name="statuslabelnew_32">
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?diameter&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Diameter:&lt;/b&gt; {:0.4} {}\&quot;.format(ch[0], ch[1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabel" name="statuslabelnew_33">
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?z_offset&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Length:&lt;/b&gt; {:0.3f} {}\&quot;.format(ch[0], ch[1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="StatusLabel" name="statuslabelnew_35">
+       <property name="rules" stdset="0">
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?pocket&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Pocket:&lt;/b&gt; {}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
       </widget>
      </item>
@@ -532,152 +506,16 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>580</y>
-      <width>711</width>
+      <y>240</y>
+      <width>191</width>
       <height>16</height>
      </rect>
     </property>
-    <property name="statusItem" stdset="0">
-     <string>tool_offset</string>
+    <property name="text">
+     <string>&lt;b&gt;Program Line:&lt;/b&gt; 559</string>
     </property>
-   </widget>
-   <widget class="MDIEntry" name="mdientry">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>610</y>
-      <width>125</width>
-      <height>23</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QGroupBox" name="groupBox_2">
-    <property name="geometry">
-     <rect>
-      <x>520</x>
-      <y>20</y>
-      <width>211</width>
-      <height>221</height>
-     </rect>
-    </property>
-    <property name="title">
-     <string>Spindle</string>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="StatusLabel" name="statuslabelnew_23">
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;tool:&lt;/b&gt; {}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>tool_in_spindle</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="StatusLabel" name="statuslabelnew_28">
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;enabled:&lt;/b&gt; {}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>spindle.0.enabled</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="StatusLabel" name="statuslabelnew_29">
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;speed:&lt;/b&gt; {:.1f} rpm</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>spindle.0.speed</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="StatusLabel" name="statuslabelnew_24">
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;prog speed:&lt;/b&gt; {:.1f} rpm</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>settings.2</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="StatusLabel" name="statuslabelnew_25">
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;direction:&lt;/b&gt; {}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>spindle.0.direction</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="StatusLabel" name="statuslabelnew_26">
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;override:&lt;/b&gt; {:.0%}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>spindle.0.override</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="StatusLabel" name="statuslabelnew_27">
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;override enabled:&lt;/b&gt; {}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>spindle.0.override_enabled</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="StatusLabel" name="statuslabelnew_30">
-       <property name="format" stdset="0">
-        <string>&lt;b&gt;orient fault:&lt;/b&gt; {}</string>
-       </property>
-       <property name="statusItem" stdset="0">
-        <string>spindle.0.orient_fault</string>
-       </property>
-       <property name="buddy">
-        <cstring></cstring>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="GcodeBackplot" name="gcodebackplot">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>300</y>
-      <width>411</width>
-      <height>351</height>
-     </rect>
+    <property name="rules" stdset="0">
+     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:current_line&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Program Line:&lt;/b&gt; {}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;prog line&quot;}]</string>
     </property>
    </widget>
   </widget>
