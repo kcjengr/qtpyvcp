@@ -4,7 +4,6 @@
 import linuxcnc
 from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.info import Info
-# from qtpyvcp.utilities.status import Status
 from qtpyvcp.plugins import getPluginFromProtocol
 
 STATUS = getPluginFromProtocol('status')
