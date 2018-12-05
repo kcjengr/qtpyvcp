@@ -1,4 +1,4 @@
-"""Data Plugins
+"""Data Plugins.
 
 This module handles the initialization of standard and custom data plugins,
 and maintains a global registry of plugin protocols vs. plugin instances.
@@ -13,9 +13,9 @@ LOG = getLogger(__name__)
 DATA_PLUGIN_REGISTRY = {}
 
 DEFAULT_PLUGINS = (
-    'qtpyvcp.plugins.status_plugin:Status',
-    'qtpyvcp.plugins.hal_status_plugin:HALStatus',
-    'qtpyvcp.plugins.tool_table_plugin:ToolTable',
+    'qtpyvcp.plugins.status:Status',
+    # 'qtpyvcp.plugins.hal_status:HALStatus',
+    'qtpyvcp.plugins.tool_table:ToolTable',
 )
 
 
