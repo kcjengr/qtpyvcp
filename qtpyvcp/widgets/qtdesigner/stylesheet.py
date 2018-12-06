@@ -95,8 +95,5 @@ def _get_style_data(stylesheet_file_path=None):
                 __style_data = default_stylesheet.read()
         except Exception as ex:
             __style_data = None
-            LOG.error(
-                "Cannot find the default stylesheet file '{0}'. Exception: {1}".format(
-                    GLOBAL_STYLESHEET,
-                    str(ex)))
+            LOG.exception("Cannot find the default stylesheet file '{0}'.".format(GLOBAL_STYLESHEET))
     return __style_data

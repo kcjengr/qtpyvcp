@@ -62,8 +62,8 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
         if self.initialized:
             return
 
-        # designer_hooks = DesignerHooks()
-        # designer_hooks.form_editor = core
+        designer_hooks = DesignerHooks()
+        designer_hooks.form_editor = core
 
         if len(self.extensions()) > 0:
             self.manager = core.extensionManager()
