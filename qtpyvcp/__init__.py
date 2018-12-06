@@ -1,6 +1,5 @@
 import os
 from ruamel import yaml
-import json
 
 QTPYVCP_DIR = os.path.abspath(os.path.dirname(__file__))
 TOP_DIR = os.path.dirname(QTPYVCP_DIR)
@@ -16,7 +15,7 @@ CONFIG_DICT = {}
 
 def _load_config_data(config_file):
     with open(config_file, "r") as fh:
-        return yaml.load(fh)
+        return yaml.load(fh, Loader=yaml.Loader)
 
 
 def load_default_config():
@@ -35,8 +34,9 @@ def load_vcp_config(config_file=None):
         print "ERROR - no such file"
         return
 
-    with open(config_file, "r") as fh:
-        new_cfg = yaml.load(fh)
+    new_cfg = _load_config_data(config_file)
+
+    print new_cfg
 
     global CONFIG_DICT
     CONFIG_DICT.update(new_cfg)
@@ -47,4 +47,6 @@ def show_config(self):
     print yaml.dump(CONFIG_DICT, Dumper=yaml.RoundTripDumper)
 
 load_default_config()
+
+import json
 print json.dumps(CONFIG_DICT, sort_keys=True, indent=4)
