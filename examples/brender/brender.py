@@ -33,11 +33,6 @@ class MainWindow(VCPMainWindow):
         actions.bindWidget(self.flood, action='coolant.flood.toggle')
         actions.bindWidget(self.floodCheckBox, action="coolant.flood.toggle")
 
-        if actions.program.run.ok():
-            actions.program.run()
-        else:
-            print "RUN NOT OK: ", actions.program.run.ok.msg
-
     # This slot will be automatically connected to a menu item named 'Test'
     # created in QtDesigner.
     @Slot()
