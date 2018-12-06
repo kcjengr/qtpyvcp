@@ -366,10 +366,10 @@ class Status(QtPyVCPDataPlugin):
         self.settings.onValueChanged(lambda s: self.feed.emit(s[2]))
 
         # Initialize Joint status class
-        self.joint = tuple(JointStatus(STAT.joint[i], i) for i in range(INFO.NUM_JOINTS))
+        self.joint = tuple(JointStatus(STAT.joint[i], i) for i in range(9))  #range(INFO.NUM_JOINTS))
 
         # Initialize Spindle status classes
-        self.spindle = tuple(SpindleStatus(STAT.spindle[i], i) for i in range(NUM_SPINDLES))
+        self.spindle = tuple(SpindleStatus(STAT.spindle[i], i) for i in range(8))  # range(NUM_SPINDLES))
 
         # Initialize Error status class
         self.error = _Error()
