@@ -4,6 +4,8 @@ This module handles the initialization of standard and custom data plugins,
 and maintains a global registry of plugin protocols vs. plugin instances.
 """
 import importlib
+
+from qtpyvcp import CONFIG_DICT
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins.plugin import QtPyVCPDataPlugin, QtPyVCPDataChannel
 
@@ -11,13 +13,6 @@ LOG = getLogger(__name__)
 
 # Global registry of plugin protocols vs. plugin instances
 DATA_PLUGIN_REGISTRY = {}
-
-DEFAULT_PLUGINS = (
-    'qtpyvcp.plugins.status:Status',
-    # 'qtpyvcp.plugins.hal_status:HALStatus',
-    'qtpyvcp.plugins.positions:Position',
-    'qtpyvcp.plugins.tool_table:ToolTable',
-)
 
 
 class NoSuchPlugin(Exception):
@@ -28,10 +23,16 @@ def loadDataPlugins(plugins):
     """Load data plugins from list of object references.
 
     Args:
-        plugins (list) : List of string references to QtPyVCPDataPlugin subclasses
-            in the format ``package.plugin_module:PluginClass``.
+        plugins (list) : List of dictionaries.
     """
-    for object_ref in plugins:
+
+    for plugin_dict in plugins:
+
+        protocol = plugin_dict['role']
+        object_ref = plugin_dict['provider']
+        args = plugin_dict.get('args', [])
+        kwargs = plugin_dict.get('kwargs', {})
+
         LOG.debug("Loading data plugin: {}".format(object_ref))
 
         modname, sep, clsname = object_ref.partition(':')
@@ -44,14 +45,18 @@ def loadDataPlugins(plugins):
 
         assert issubclass(plugin, QtPyVCPDataPlugin), "Not a valid plugin, must be a QtPyVCPDataPlugin subclass."
 
-        if plugin.protocol in DATA_PLUGIN_REGISTRY:
+        if protocol in DATA_PLUGIN_REGISTRY:
             LOG.warning("Replacing {} with {} for use with protocol {}"
-                        .format(plugin,
-                                DATA_PLUGIN_REGISTRY[plugin.protocol].__class__,
-                                plugin.protocol)
+                        .format(DATA_PLUGIN_REGISTRY[protocol].__class__,
+                                plugin,
+                                protocol)
                         )
 
-        DATA_PLUGIN_REGISTRY[plugin.protocol] = plugin()
+        try:
+            DATA_PLUGIN_REGISTRY[protocol] = plugin(*args, **kwargs)
+        except TypeError:
+            LOG.critical("Error initializing plugin: {}(*{}, **{})".format(object_ref, args, kwargs))
+            raise
 
 
 def getPluginFromProtocol(protocol):
@@ -72,4 +77,4 @@ def getPluginFromProtocol(protocol):
         raise NoSuchPlugin("Failed to find plugin for '{}' protocol.".format(protocol))
 
 
-loadDataPlugins(DEFAULT_PLUGINS)
+loadDataPlugins(CONFIG_DICT['data_plugins'])

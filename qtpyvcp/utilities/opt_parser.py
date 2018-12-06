@@ -32,6 +32,7 @@ Display  Options:
 Application Options:
   --log-level=(DEBUG | INFO | WARN | ERROR | CRITICAL)
                      Sets the log level. [default: INFO]
+  --config-file=FILE Specifies the YML config file.
   --log-file=FILE    Specifies the log file. Overrides INI setting.
   --pref-file=FILE   Specifies the preference file. Overrides INI setting.
   --qt-api=(pyqt5 | pyqt | pyside2 | pyside)
@@ -98,17 +99,15 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
 
     # Check if LinuxCNC is running
     if not os.path.isfile('/tmp/linuxcnc.lock'):
-        # LinuxCNC is running, but in a different environment.
-        # TODO: find some way to get the INI file LCNC was launched with
+        # LinuxCNC is not running.
+        # TODO: maybe launch LinuxCNC using subprocess?
         print 'LinuxCNC must be running to launch a VCP'
         sys.exit()
 
     # setup the environment variables
     ini_file = os.environ.get('INI_FILE_NAME') or opts.ini
     if ini_file is None:
-        # LinuxCNC is not running
-        # TODO: Maybe launch LinuxCNC using subprocess
-        print 'LinuxCNC is not running, no INI file specified on command line'
+        print 'LinuxCNC is running, but you must specify the INI file'
         sys.exit()
 
     if not os.getenv('INI_FILE_NAME'):
@@ -120,7 +119,6 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
         os.environ['INI_FILE_NAME'] = ini_file
         os.environ['CONFIG_DIR'] = os.path.dirname(ini_file)
 
-    print "######", opts.qt_api
     if opts.qt_api:
         os.environ['QT_API'] = opts.qt_api
 

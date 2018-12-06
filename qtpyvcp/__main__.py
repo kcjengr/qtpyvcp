@@ -36,6 +36,7 @@ Display  Options:
 Application Options:
   --log-level=(DEBUG | INFO | WARN | ERROR | CRITICAL)
                      Sets the log level. [default: INFO]
+  --config-file=FILE Specifies the YML config file.
   --log-file=FILE    Specifies the log file. Overrides INI setting.
   --pref-file=FILE   Specifies the preference file. Overrides INI setting.
   --qt-api=(pyqt5 | pyqt | pyside2 | pyside)

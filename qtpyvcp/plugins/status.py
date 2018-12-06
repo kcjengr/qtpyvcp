@@ -314,7 +314,7 @@ class Status(QtPyVCPDataPlugin):
     # Emitted on app shutdown
     on_shutown = Signal()
 
-    def __init__(self):
+    def __init__(self, cycle_time=75):
         super(Status, self).__init__()
 
         self.no_force_homing = INFO.noForceHoming()
@@ -376,13 +376,8 @@ class Status(QtPyVCPDataPlugin):
 
         # Set up the periodic update timer
         self.timer = QTimer()
-        self._cycle_time = 75
+        self._cycle_time = cycle_time
         self.timer.timeout.connect(self._periodic)
-
-        # Use a single shot to start the main periodic timer, this ensures it
-        # starts after the main Qt event loop to prevent errors
-        # QTimer.singleShot(0, self.startPeriodic)
-        # self.startPeriodic()
 
     def initialise(self):
         """Start the periodic update timer."""
