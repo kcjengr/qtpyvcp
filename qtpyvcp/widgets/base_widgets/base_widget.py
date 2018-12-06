@@ -134,6 +134,7 @@ class QtPyVCPBaseWidget(object):
 
             if prop[1] is None:
                 # donothing
+                self._data_channels = ch
                 continue
 
             evil_env = {'ch': ch, 'widget': self}
