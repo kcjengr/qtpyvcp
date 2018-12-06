@@ -28,6 +28,7 @@ building complex VCPs.
    :caption: Tutorials
 
    tutorials/getting_started
+   tutorials/widget_rules
 
 .. toctree::
    :maxdepth: 2

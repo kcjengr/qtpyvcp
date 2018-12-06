@@ -127,15 +127,29 @@ class RulesEditor(QtWidgets.QDialog):
 
         hlayout.addWidget(list_frame)
 
-        buttons_layout = QtWidgets.QHBoxLayout()
+        # open help button
+        btn_help = QtWidgets.QPushButton()
+        btn_help.setAutoDefault(False)
+        btn_help.setDefault(False)
+        btn_help.setText("Help")
+        btn_help.setStyleSheet("background-color: rgb(176, 227, 255);")
+        btn_help.clicked.connect(functools.partial(self.open_help, open=True))
+
+        # save button
         save_btn = QtWidgets.QPushButton("Save", parent=self)
         save_btn.setAutoDefault(False)
         save_btn.setDefault(False)
         save_btn.clicked.connect(self.saveChanges)
+
+        # cancel button
         cancel_btn = QtWidgets.QPushButton("Cancel", parent=self)
         cancel_btn.setAutoDefault(False)
         cancel_btn.setDefault(False)
         cancel_btn.clicked.connect(self.cancelChanges)
+
+        # add buttons to layout
+        buttons_layout = QtWidgets.QHBoxLayout()
+        buttons_layout.addWidget(btn_help)
         buttons_layout.addStretch()
         buttons_layout.addWidget(cancel_btn)
         buttons_layout.addWidget(save_btn)
@@ -205,11 +219,10 @@ class RulesEditor(QtWidgets.QDialog):
 
         expression_layout = QtWidgets.QFormLayout()
         expression_layout.setFieldGrowthPolicy(QtWidgets.QFormLayout.ExpandingFieldsGrow)
-        lbl_expected = QtWidgets.QLabel("Expected Type:")
+        lbl_expected = QtWidgets.QLabel("Exp Type:")
         self.lbl_expected_type = QtWidgets.QLabel(parent=self)
         # self.lbl_expected_type.setText("")
-        self.lbl_expected_type.setStyleSheet(
-            "color: rgb(0, 128, 255); font-weight: bold;")
+        self.lbl_expected_type.setStyleSheet("color: rgb(0, 128, 255); font-weight: bold;")
         expression_layout.addRow(lbl_expected, self.lbl_expected_type)
 
         lbl_expression = QtWidgets.QLabel("Expression:")
@@ -217,13 +230,6 @@ class RulesEditor(QtWidgets.QDialog):
         self.txt_expression = QtWidgets.QLineEdit()
         self.txt_expression.editingFinished.connect(self.expression_changed)
         expr_help_layout.addWidget(self.txt_expression)
-        self.btn_help = QtWidgets.QPushButton()
-        self.btn_help.setAutoDefault(False)
-        self.btn_help.setDefault(False)
-        self.btn_help.setText("Help")
-        self.btn_help.setStyleSheet("background-color: rgb(176, 227, 255);")
-        self.btn_help.clicked.connect(functools.partial(self.open_help, open=True))
-        expr_help_layout.addWidget(self.btn_help)
         expression_layout.addRow(lbl_expression, expr_help_layout)
 
         self.cmb_property.currentIndexChanged.connect(self.property_changed)
@@ -404,7 +410,7 @@ class RulesEditor(QtWidgets.QDialog):
         docs_url = os.getenv("QTPYVCP_DOCS_URL", None)
         if docs_url is None:
             docs_url = "https://kcjengr.github.io/qtpyvcp"
-        expression_url = "widgets/widget_rules/index.html"
+        expression_url = "tutorials/widget_rules.html"
         help_url = "{}/{}".format(docs_url, expression_url)
         if open:
             webbrowser.open(help_url, new=2, autoraise=True)
