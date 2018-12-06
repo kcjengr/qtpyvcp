@@ -32,10 +32,14 @@ class MDIButton(QPushButton, CMDWidget):
         self.clicked.connect(self.issueMDI)
 
     def issueMDI(self):
-        print self._data_channels
         window = QApplication.instance().activeWindow()
-        cmd = self._mdi_cmd.format(ch=self._data_channels)
-        print cmd
+
+        try:
+            cmd = self._mdi_cmd.format(ch=self._data_channels)
+        except IndexError:
+            LOG.exception("Failed to format MDI command.")
+            return
+
         vars = PARSE_VARS.findall(self._mdi_cmd)
         for cmd_word, object_name in vars:
             try:
