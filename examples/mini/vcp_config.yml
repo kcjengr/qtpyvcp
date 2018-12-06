@@ -1,0 +1,33 @@
+qtdesigner:
+  # these are used when editing the VCP in QtDesigner
+  ui_file: &UI_FILE
+    mini.ui
+  qss_file: &QSS_FILE
+    mini.qss
+
+vcp:
+  name: Mini
+  version: $VERSION_FROM_GIT$
+  author: Kurt Jacobson
+  description: |
+    Mini is minimal example VCP mostly used
+    for development and testing purposes.
+
+    Featues:
+      * Very tiny
+      * Does not do much
+      * Not very functioinal
+      * Full of bugs
+      * Sometimes works
+
+windows:
+  - role: mainwindow
+    # provider: mini:MiniVCP
+    provider: qtpyvcp.widgets.form_widgets.main_window:VCPMainWindow
+    kwargs:
+      ui_file: *UI_FILE      # ui file to load the window from
+      stylesheet: *QSS_FILE  # window specific stylesheet
+
+application:
+  kwargs:
+    stylesheet: *QSS_FILE    # application wide stylesheet
