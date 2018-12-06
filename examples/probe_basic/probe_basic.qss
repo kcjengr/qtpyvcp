@@ -5,6 +5,11 @@ QMainWindow {
     /*background-image: url(:/images/pp_border.png);*/
 }
 
+QsciScintilla {
+    qproperty-backgroundcolor: gray;
+    qproperty-marginbackgroundcolor: darkgray;
+}
+
 QStatusBar {
 	color: white;
 	font-family: "Bebas Kai";
