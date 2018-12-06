@@ -6669,7 +6669,7 @@ border-radius: 6px;
                        <item row="1" column="0">
                         <widget class="ActionButton" name="actionbutton_g54">
                          <property name="enabled">
-                          <bool>true</bool>
+                          <bool>false</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6708,7 +6708,7 @@ border-radius: 6px;
                        <item row="1" column="1">
                         <widget class="ActionButton" name="actionbutton_g55">
                          <property name="enabled">
-                          <bool>true</bool>
+                          <bool>false</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6747,7 +6747,7 @@ border-radius: 6px;
                        <item row="1" column="2">
                         <widget class="ActionButton" name="actionbutton_g56">
                          <property name="enabled">
-                          <bool>true</bool>
+                          <bool>false</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6786,7 +6786,7 @@ border-radius: 6px;
                        <item row="1" column="3">
                         <widget class="ActionButton" name="actionbutton_g57">
                          <property name="enabled">
-                          <bool>true</bool>
+                          <bool>false</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6825,7 +6825,7 @@ border-radius: 6px;
                        <item row="1" column="4">
                         <widget class="ActionButton" name="actionbutton_g58">
                          <property name="enabled">
-                          <bool>true</bool>
+                          <bool>false</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6864,7 +6864,7 @@ border-radius: 6px;
                        <item row="2" column="1">
                         <widget class="ActionButton" name="actionbutton_g59">
                          <property name="enabled">
-                          <bool>true</bool>
+                          <bool>false</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6903,7 +6903,7 @@ border-radius: 6px;
                        <item row="2" column="2">
                         <widget class="ActionButton" name="actionbutton_g59_1">
                          <property name="enabled">
-                          <bool>true</bool>
+                          <bool>false</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6942,7 +6942,7 @@ border-radius: 6px;
                        <item row="2" column="3">
                         <widget class="ActionButton" name="actionbutton_g59_2">
                          <property name="enabled">
-                          <bool>true</bool>
+                          <bool>false</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6981,7 +6981,7 @@ border-radius: 6px;
                        <item row="2" column="4">
                         <widget class="ActionButton" name="actionbutton_g59_3">
                          <property name="enabled">
-                          <bool>true</bool>
+                          <bool>false</bool>
                          </property>
                          <property name="sizePolicy">
                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -7487,211 +7487,9 @@ OFFSET</string>
                           </widget>
                          </item>
                          <item>
-                          <widget class="DROWidget" name="x_axis_rel_dro_2">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>85</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>16777215</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="palette">
-                            <palette>
-                             <active>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </active>
-                             <inactive>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </inactive>
-                             <disabled>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </disabled>
-                            </palette>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>17</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
+                          <widget class="StatusLabel" name="statuslabel_31">
                            <property name="styleSheet">
-                            <string notr="true">DROWidget{
+                            <string notr="true">StatusLabel{
     border-style: transparant;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -7704,217 +7502,15 @@ OFFSET</string>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
-                           <property name="reference_type" stdset="0">
-                            <enum>DROWidget::Relative</enum>
+                           <property name="rules" stdset="0">
+                            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
                          <item>
-                          <widget class="DROWidget" name="x_axis_dtg_dro_2">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>85</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>16777215</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="palette">
-                            <palette>
-                             <active>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </active>
-                             <inactive>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </inactive>
-                             <disabled>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </disabled>
-                            </palette>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>17</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
+                          <widget class="StatusLabel" name="statuslabel_12">
                            <property name="styleSheet">
-                            <string notr="true">DROWidget{
+                            <string notr="true">StatusLabel{
     border-style: transparant;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -7926,6 +7522,9 @@ OFFSET</string>
                            </property>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                           </property>
+                           <property name="rules" stdset="0">
+                            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:position&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -8079,39 +7678,9 @@ OFFSET</string>
                           </widget>
                          </item>
                          <item>
-                          <widget class="DROWidget" name="y_axis_rel_dro_2">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>85</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>16777215</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>17</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
+                          <widget class="StatusLabel" name="statuslabel_33">
                            <property name="styleSheet">
-                            <string notr="true">DROWidget{
+                            <string notr="true">StatusLabel{
     border-style: transparant;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -8124,220 +7693,15 @@ OFFSET</string>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
-                           <property name="reference_type" stdset="0">
-                            <enum>DROWidget::Relative</enum>
-                           </property>
-                           <property name="axis">
-                            <enum>DROWidget::Y</enum>
+                           <property name="rules" stdset="0">
+                            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
                          <item>
-                          <widget class="DROWidget" name="y_axis_dtg_dro_4">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>85</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>16777215</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="palette">
-                            <palette>
-                             <active>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </active>
-                             <inactive>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </inactive>
-                             <disabled>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </disabled>
-                            </palette>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>17</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
+                          <widget class="StatusLabel" name="statuslabel_32">
                            <property name="styleSheet">
-                            <string notr="true">DROWidget{
+                            <string notr="true">StatusLabel{
     border-style: transparant;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -8350,8 +7714,8 @@ OFFSET</string>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
-                           <property name="axis">
-                            <enum>DROWidget::Y</enum>
+                           <property name="rules" stdset="0">
+                            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:position&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -8467,7 +7831,7 @@ OFFSET</string>
 ]</string>
                            </property>
                            <property name="MDICommand" stdset="0">
-                            <string>G10 L20 P{ch[0]} Z0.0</string>
+                            <string>G10 L2 P{ch[0]} Z0.0</string>
                            </property>
                           </widget>
                          </item>
@@ -8505,211 +7869,9 @@ OFFSET</string>
                           </widget>
                          </item>
                          <item>
-                          <widget class="DROWidget" name="z_axis_rel_dro_2">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>85</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>16777215</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="palette">
-                            <palette>
-                             <active>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </active>
-                             <inactive>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </inactive>
-                             <disabled>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </disabled>
-                            </palette>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>17</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
+                          <widget class="StatusLabel" name="statuslabel_35">
                            <property name="styleSheet">
-                            <string notr="true">DROWidget{
+                            <string notr="true">StatusLabel{
     border-style: transparant;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -8722,220 +7884,15 @@ OFFSET</string>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
-                           <property name="reference_type" stdset="0">
-                            <enum>DROWidget::Relative</enum>
-                           </property>
-                           <property name="axis">
-                            <enum>DROWidget::Z</enum>
+                           <property name="rules" stdset="0">
+                            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
                          <item>
-                          <widget class="DROWidget" name="z_axis_dtg_dro_3">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>85</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>16777215</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="palette">
-                            <palette>
-                             <active>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </active>
-                             <inactive>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </inactive>
-                             <disabled>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </disabled>
-                            </palette>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>17</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
+                          <widget class="StatusLabel" name="statuslabel_34">
                            <property name="styleSheet">
-                            <string notr="true">DROWidget{
+                            <string notr="true">StatusLabel{
     border-style: transparant;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -8948,8 +7905,8 @@ OFFSET</string>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
-                           <property name="axis">
-                            <enum>DROWidget::Z</enum>
+                           <property name="rules" stdset="0">
+                            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:position&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -9064,7 +8021,7 @@ OFFSET</string>
 ]</string>
                            </property>
                            <property name="MDICommand" stdset="0">
-                            <string>G10 L20 P{ch[0]} A0.0</string>
+                            <string>G10 L2 P{ch[0]} A0.0</string>
                            </property>
                           </widget>
                          </item>
@@ -9102,211 +8059,9 @@ OFFSET</string>
                           </widget>
                          </item>
                          <item>
-                          <widget class="DROWidget" name="a_axis_rel_dro_2">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>85</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>16777215</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="palette">
-                            <palette>
-                             <active>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </active>
-                             <inactive>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </inactive>
-                             <disabled>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </disabled>
-                            </palette>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>17</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
+                          <widget class="StatusLabel" name="statuslabel_39">
                            <property name="styleSheet">
-                            <string notr="true">DROWidget{
+                            <string notr="true">StatusLabel{
     border-style: transparant;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -9319,223 +8074,15 @@ OFFSET</string>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
-                           <property name="reference_type" stdset="0">
-                            <enum>DROWidget::Relative</enum>
-                           </property>
-                           <property name="axis">
-                            <enum>DROWidget::A</enum>
-                           </property>
-                           <property name="diameter_mode" stdset="0">
-                            <bool>true</bool>
+                           <property name="rules" stdset="0">
+                            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
                          <item>
-                          <widget class="DROWidget" name="a_axis_dtg_dro_3">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>85</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>16777215</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="palette">
-                            <palette>
-                             <active>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </active>
-                             <inactive>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </inactive>
-                             <disabled>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </disabled>
-                            </palette>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>17</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
+                          <widget class="StatusLabel" name="statuslabel_38">
                            <property name="styleSheet">
-                            <string notr="true">DROWidget{
+                            <string notr="true">StatusLabel{
     border-style: transparant;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -9548,11 +8095,8 @@ OFFSET</string>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
-                           <property name="axis">
-                            <enum>DROWidget::A</enum>
-                           </property>
-                           <property name="diameter_mode" stdset="0">
-                            <bool>true</bool>
+                           <property name="rules" stdset="0">
+                            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:position&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -9668,7 +8212,7 @@ OFFSET</string>
 ]</string>
                            </property>
                            <property name="MDICommand" stdset="0">
-                            <string>G10 L20 P{ch[0]} B0.0</string>
+                            <string>G10 L2 P{ch[0]} B0.0</string>
                            </property>
                           </widget>
                          </item>
@@ -9706,39 +8250,9 @@ OFFSET</string>
                           </widget>
                          </item>
                          <item>
-                          <widget class="DROWidget" name="b_axis_rel_dro_2">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>85</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>16777215</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>17</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
+                          <widget class="StatusLabel" name="statuslabel_36">
                            <property name="styleSheet">
-                            <string notr="true">DROWidget{
+                            <string notr="true">StatusLabel{
     border-style: transparant;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -9751,223 +8265,15 @@ OFFSET</string>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
-                           <property name="reference_type" stdset="0">
-                            <enum>DROWidget::Relative</enum>
-                           </property>
-                           <property name="axis">
-                            <enum>DROWidget::B</enum>
-                           </property>
-                           <property name="diameter_mode" stdset="0">
-                            <bool>true</bool>
+                           <property name="rules" stdset="0">
+                            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
                          <item>
-                          <widget class="DROWidget" name="b_axis_dtg_dro_3">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>85</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>16777215</width>
-                             <height>33</height>
-                            </size>
-                           </property>
-                           <property name="palette">
-                            <palette>
-                             <active>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </active>
-                             <inactive>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </inactive>
-                             <disabled>
-                              <colorrole role="WindowText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Button">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Text">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="ButtonText">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>0</red>
-                                 <green>0</green>
-                                 <blue>0</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Base">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                              <colorrole role="Window">
-                               <brush brushstyle="SolidPattern">
-                                <color alpha="255">
-                                 <red>235</red>
-                                 <green>235</green>
-                                 <blue>235</blue>
-                                </color>
-                               </brush>
-                              </colorrole>
-                             </disabled>
-                            </palette>
-                           </property>
-                           <property name="font">
-                            <font>
-                             <family>Bebas Kai</family>
-                             <pointsize>17</pointsize>
-                             <weight>50</weight>
-                             <italic>false</italic>
-                             <bold>false</bold>
-                            </font>
-                           </property>
-                           <property name="focusPolicy">
-                            <enum>Qt::NoFocus</enum>
-                           </property>
+                          <widget class="StatusLabel" name="statuslabel_37">
                            <property name="styleSheet">
-                            <string notr="true">DROWidget{
+                            <string notr="true">StatusLabel{
     border-style: transparant;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -9980,11 +8286,8 @@ OFFSET</string>
                            <property name="alignment">
                             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                            </property>
-                           <property name="axis">
-                            <enum>DROWidget::B</enum>
-                           </property>
-                           <property name="diameter_mode" stdset="0">
-                            <bool>true</bool>
+                           <property name="rules" stdset="0">
+                            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:position&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                            </property>
                           </widget>
                          </item>
@@ -17108,7 +15411,7 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>0.000</string>
+              <string>0.00</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -17252,7 +15555,7 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>0.1250</string>
+              <string>0.000</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -18013,7 +16316,7 @@ padding: -5px;
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18031,7 +16334,7 @@ padding: -5px;
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18040,7 +16343,7 @@ padding: -5px;
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18069,7 +16372,7 @@ padding: -5px;
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18087,7 +16390,7 @@ padding: -5px;
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18096,7 +16399,7 @@ padding: -5px;
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18125,7 +16428,7 @@ padding: -5px;
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18143,7 +16446,7 @@ padding: -5px;
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18152,7 +16455,7 @@ padding: -5px;
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18790,7 +17093,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18808,7 +17111,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18817,7 +17120,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18846,7 +17149,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18864,7 +17167,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18873,7 +17176,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18902,7 +17205,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18920,7 +17223,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -18929,7 +17232,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19573,7 +17876,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19591,7 +17894,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19600,7 +17903,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19629,7 +17932,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19647,7 +17950,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19656,7 +17959,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19685,7 +17988,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="WindowText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19703,7 +18006,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="Text">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
@@ -19712,7 +18015,7 @@ DROWidget[style=&quot;homing&quot;]{
                 <colorrole role="ButtonText">
                  <brush brushstyle="SolidPattern">
                   <color alpha="255">
-                   <red>0</red>
+                   <red>255</red>
                    <green>0</green>
                    <blue>0</blue>
                   </color>
