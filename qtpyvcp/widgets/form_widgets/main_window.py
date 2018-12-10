@@ -26,7 +26,9 @@ from qtpyvcp.widgets.dialogs.open_file_dialog import OpenFileDialog
 
 class VCPMainWindow(QMainWindow):
 
-    def __init__(self, parent=None, opts=DotDict(), ui_file=None, stylesheet=None, confirm_exit=True,):
+    def __init__(self, parent=None, opts=DotDict(), ui_file=None, stylesheet=None, confirm_exit=True,
+                 position=None, size=None):
+
         super(VCPMainWindow, self).__init__(parent)
 
         self.app = QApplication.instance()
