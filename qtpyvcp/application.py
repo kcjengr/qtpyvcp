@@ -7,21 +7,22 @@ import os
 import sys
 import imp
 import inspect
-from pkg_resources import load_entry_point, iter_entry_points
+from pkg_resources import iter_entry_points
 
 from qtpy import API
 from qtpy.QtCore import QTimer, Slot
-from qtpy.QtWidgets import QApplication, QMainWindow, QStyleFactory, qApp
+from qtpy.QtWidgets import QApplication, QStyleFactory
+
+import qtpyvcp
+
+from qtpyvcp.utilities.logger import initBaseLogger
+from qtpyvcp.plugins import getPluginFromProtocol
+from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
 # initialize logging. If a base logger was already initialized in a startup
 # script (e.g. vcp_launcher.py), then that logger will be returned, otherwise
 # this will initialise a base logger with default log level of DEBUG
-from qtpyvcp.utilities import logger
-LOG = logger.initBaseLogger('qtpyvcp')
-
-from qtpyvcp.plugins import DATA_PLUGIN_REGISTRY, getPluginFromProtocol
-
-from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
+LOG = initBaseLogger('qtpyvcp')
 
 # Needed to silence this PySide2 warning:
 #    Qt WebEngine seems to be initialized from a plugin. Please set
@@ -31,10 +32,13 @@ if API == 'pyside2':
     from qtpy.QtCore import Qt
     QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
 
+
 class VCPApplication(QApplication):
 
-    def __init__(self, opts, vcp_file=None):
-        super(VCPApplication, self).__init__(opts.command_line_args or [])
+    def __init__(self, vcp_file=None, stylesheet=None):
+        super(VCPApplication, self).__init__(qtpyvcp.OPTIONS.command_line_args or [])
+
+        opts = qtpyvcp.OPTIONS
 
         qApp = QApplication.instance()
 
@@ -49,12 +53,13 @@ class VCPApplication(QApplication):
         if opts.theme is not None:
             self.setStyle(QStyleFactory.create(opts.theme))
 
-        if opts.stylesheet is not None:
-            self.loadStylesheet(opts.stylesheet)
+        stylesheet = opts.stylesheet or stylesheet
+        if stylesheet is not None:
+            self.loadStylesheet(stylesheet)
 
-        self.window = self.loadVCPMainWindow(opts, vcp_file)
-        if self.window is not None:
-            self.window.show()
+        # self.window = self.loadVCPMainWindow(opts, vcp_file)
+        # if self.window is not None:
+        #     self.window.show()
 
         # Performance monitoring
         if opts.perfmon:
@@ -65,7 +70,6 @@ class VCPApplication(QApplication):
             self.perf_timer.timeout.connect(self.logPerformance)
             self.perf_timer.start()
 
-        self.aboutToQuit.connect(self.status.onShutdown)
         self.aboutToQuit.connect(self.terminateDataPlugins)
 
     def loadVCPMainWindow(self, opts, vcp_file=None):
@@ -183,14 +187,14 @@ class VCPApplication(QApplication):
             total_percent = self.perf.cpu_percent(interval=None)
             total_time = sum(self.perf.cpu_times())
             usage = [total_percent * ((t.system_time + t.user_time) / total_time) for t in self.perf.threads()]
-        LOG.info("Performance:\n    Total CPU usage: {tot}\n    Per Thread: {percpu}"
+        LOG.info("Performance:\n    Total CPU usage (%): {tot}\n    Per Thread: {percpu}"
                  .format(tot=total_percent, percpu=usage))
 
 
     def initialiseDataPlugins(self):
-        for plugin in DATA_PLUGIN_REGISTRY.itervalues():
+        for plugin in qtpyvcp.PLUGINS.itervalues():
             plugin.initialise()
 
     def terminateDataPlugins(self):
-        for plugin in DATA_PLUGIN_REGISTRY.itervalues():
+        for plugin in qtpyvcp.PLUGINS.itervalues():
             plugin.terminate()

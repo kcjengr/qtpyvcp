@@ -3,6 +3,7 @@
 
 Usage:
   {vcp_cmd} --ini=INI [--log-level=LEVEL] [--log-file=FILE] [--perfmon]
+            [--config-file=FILE]
             [--theme=THEME] [--stylesheet=SYTLESHEET] [--pref-file=FILE]
             [--size=WIDTHxHEIGHT] [--position=XPOSxYPOS]
             [--fullscreen] [--maximize] [--hide-menu-bar] [--hide-status-bar]
@@ -56,6 +57,7 @@ from linuxcnc import ini
 from docopt import docopt
 
 from qtpyvcp import __version__
+from qtpyvcp.lib.types import DotDict
 from qtpyvcp.utilities.misc import normalizePath
 
 def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp_version=None):
@@ -76,7 +78,7 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
     raw_args = docopt(doc, version=version_str)
 
     # convert raw argument dict keys to valid python attribute names
-    opts = OptDict({arg.strip('-<>').replace('-', '_') : value for arg, value in raw_args.items()})
+    opts = DotDict({arg.strip('-<>').replace('-', '_') : value for arg, value in raw_args.items()})
 
     # read options from INI file and merge with cmd line options
     ini_file = ini(normalizePath(opts.ini, os.path.expanduser('~/linuxcnc/configs')))
@@ -113,14 +115,23 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
     if not os.getenv('INI_FILE_NAME'):
         base_path = os.path.expanduser('~/linuxcnc/configs')
         ini_file = os.path.realpath(normalizePath(ini_file, base_path))
-        if not os.path.exists(ini_file):
-            print 'Specifed INI file does not exist: {}'.format(ini_file)
+        if not os.path.isfile(ini_file):
+            print 'Specified INI file does not exist: {}'.format(ini_file)
             sys.exit()
         os.environ['INI_FILE_NAME'] = ini_file
         os.environ['CONFIG_DIR'] = os.path.dirname(ini_file)
 
     if opts.qt_api:
         os.environ['QT_API'] = opts.qt_api
+
+    if opts.config_file is not None:
+        # cmd line config file should be relative to INI file
+        config_dir = os.getenv('CONFIG_DIR', '')
+        config_file = normalizePath(opts.config_file, config_dir)
+        if not os.path.isfile(config_file):
+            print 'Specified YAML file does not exist: {}'.format(config_file)
+            sys.exit()
+        os.environ['VCP_CONFIG_FILES'] = opts.config_file + ':' + os.environ.get('VCP_CONFIG_FILES', '')
 
     # show the chooser if the --chooser flag was specified
     if opts.chooser or not opts.get('vcp', True):
@@ -133,7 +144,7 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
 
         # destroy the evidence
         qApp.deleteLater()
-        del(app)
+        del app
 
     # init the logger
     from qtpyvcp.utilities import logger
@@ -142,9 +153,3 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
                                 log_level=opts.log_level)
 
     return opts
-
-class OptDict(dict):
-    """Simple dot.notation access for opt dictionary values"""
-    __getattr__ = dict.get
-    __setattr__ = dict.__setitem__
-    __delattr__ = dict.__delitem__

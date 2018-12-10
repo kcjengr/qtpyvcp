@@ -4,9 +4,9 @@ import os
 import sys
 import subprocess
 
-from qtpy.QtWidgets import QApplication, QMessageBox, QFileDialog
+from qtpy.QtWidgets import QApplication, QFileDialog
 
-from qtpyvcp import _load_config_data
+from qtpyvcp.utilities.config_loader import load_config_files
 
 
 app = QApplication(sys.argv)
@@ -22,7 +22,7 @@ if file_name:
 ui_file = ''
 ext = os.path.splitext(file_name)[1]
 if ext == '.yml':
-    data = _load_config_data(file_name).get('qtdesigner')
+    data = load_config_files(file_name).get('qtdesigner')
 
     if data is not None:
         yml_dir = os.path.dirname(file_name)

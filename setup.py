@@ -51,6 +51,7 @@ setup(
     'qtpy',
     'pyudev',
     'psutil',
+    'ruamel.yaml'
     ],
     entry_points={
         'console_scripts': [
@@ -61,9 +62,9 @@ setup(
             'probebasic=examples.probe_basic.__main__'
         ],
         'qtpyvcp.example_vcp': [
-            'mini=examples.mini.mini:MiniVCP',
-            'brender=examples.brender.brender:MainWindow',
-            'probebasic=examples.probe_basic.probe_basic:ProbeBasic'
+            'mini=examples.mini',
+            'brender=examples.brender',
+            'probebasic=examples.probe_basic'
         ],
     },
 )

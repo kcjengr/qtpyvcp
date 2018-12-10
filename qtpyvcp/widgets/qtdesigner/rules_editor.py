@@ -5,9 +5,10 @@ import webbrowser
 
 from qtpy import QtWidgets, QtCore, QtDesigner
 
+import qtpyvcp
+from qtpyvcp.plugins import QtPyVCPDataChannel
 from plugin_extension import _PluginExtension
 
-from qtpyvcp.plugins import QtPyVCPDataChannel, DATA_PLUGIN_REGISTRY
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -481,7 +482,7 @@ class RulesEditor(QtWidgets.QDialog):
             if query == '':
                 query = 'value'
 
-            plugin = DATA_PLUGIN_REGISTRY[protocol]
+            plugin = qtpyvcp.PLUGINS[protocol]
             eval_env = {'plugin': plugin}
 
             chan_obj = eval("plugin.{}".format(item), eval_env)

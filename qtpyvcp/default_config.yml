@@ -1,63 +1,56 @@
-vcp:
-    name: Not Set
-    version: Not Set
-    author: Not Set
-    description: No description provided.
+qtdesigner:
+  qss_file: "{{ application['kwargs']['stylesheet'] }}"
+  ui_file: "{{ application['kwargs']['stylesheet'] }}"
 
-main_window:
-    ui_file: ui/probe_basic.ui
-    stylesheet: resources/probebasic.qss
+vcp:
+  name: Not Set
+  version: Not Set
+  author: Not Set
+  description: No description provided.
+
+windows:
+  mainwindow:
+    provider: qtpyvcp.widgets.form_widgets.main_window:VCPMainWindow
 
 # This sections defines the Data Sources
 data_plugins:
-  - role: status
+  status:
     provider: qtpyvcp.plugins.status:Status
     kwargs:
       cycle_time: 75
 
-#  - role: halstat
-#    provider: qtpyvcp.plugins.hal_status:HALStatus
-#    kwards:
-#      cycle_time: 150
-
-  - role: position
+  position:
     provider: qtpyvcp.plugins.positions:Position
     kwargs:
       report_actual_pos: True
       use_program_units: True
 
-  - role: tooltable
+  tooltable:
     provider: qtpyvcp.plugins.tool_table:ToolTable
-    args: []
-    kwargs: {}
 
 dialogs:
-    - role: openfile
-      provider: qtpyvcp.dialogs.ui_dialog_loader:UIDialogLoader
-      args: []
-      kwargs:
-          ui_file: dialogs/open_file.ui
-          modal: True
+  openfile:
+    provider: qtpyvcp.widgets.dialogs.open_file_dialog:_OpenFileDialog
 
-    - role: setworkoffset
-      provider: qtpyvcp.dialogs.offsets_dialog:OffsetsDialog
-      args: []
-      kwargs:
-          modal: True
-
-    - qtpyvcp.plugins.dialogs.set_works_offsets:SetWorkOffset
+  setworkoffset:
+    provider: qtpyvcp.widgets.dialogs.offsets_dialog:OffsetsDialog
 
 virtual_keyboards:
-    - role: default
-      provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
-      args: []
-      kwargs:
-          ui_file: keyboards/default_vkb.ui
+  default:
+    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
+    args: []
+    kwargs:
+      ui_file: keyboards/default_vkb.ui
 
-    - role: integer
-      provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
-      args: []
-      kwargs:
-          ui_file: keyboards/integer_vkb.ui
-          frameless: True
-          stylesheet: hello
+  integer:
+    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
+    args: []
+    kwargs:
+      ui_file: keyboards/integer_vkb.ui
+      frameless: True
+      stylesheet: hello
+
+application:
+  provider: qtpyvcp.application:VCPApplication
+  kwargs:
+    stylesheet: $YAML_DIR$/widgets/default_stylesheet.qss    # application wide stylesheet
