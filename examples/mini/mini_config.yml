@@ -32,6 +32,10 @@ data_plugins:
 #  test5:
 #    provider: qtpyvcp.plugins:QtPyVCPDataPlugin
 
+dialogs:
+  test_dialog:
+    provider: qtpy.QtWidgets:QDialog
+
 windows:
   mainwindow:
     provider: mini:MiniVCP

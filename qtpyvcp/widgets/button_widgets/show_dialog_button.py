@@ -21,8 +21,13 @@ class ShowDialogButton(QPushButton, VCPWidget):
 
     def showDialog(self):
         dialog = qtpyvcp.DIALOGS.get(self._dialog_name)
+
         if dialog is not None:
             dialog.show()
+
+            win = QApplication.instance().activeWindow()
+            win_pos = win.mapToGlobal(win.rect().center())
+            dialog.move(win_pos.x() - dialog.width() / 2, win_pos.y() - dialog.height() / 2)
 
     @Property(str)
     def dialogName(self):
