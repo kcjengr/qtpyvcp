@@ -35,11 +35,9 @@ data_plugins:
 windows:
   mainwindow:
     provider: mini:MiniVCP
-#    provider: qtpyvcp.widgets.form_widgets.main_window:VCPMainWindow
     kwargs:
-      ui_file: /home/kurt/dev/cnc/qtpyvcp/examples/mini/mini.ui  # ui file to load the window from
+      ui_file: $YAML_DIR$/mini.ui  # ui file to load the window from
 
 #  secondarywindow:
-##    provider: examples.mini.mini:MiniVCP
 #    provider: qtpy.QtWidgets:QWidget
 #    show: True
