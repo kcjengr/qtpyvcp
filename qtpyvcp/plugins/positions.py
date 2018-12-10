@@ -115,11 +115,11 @@ class Position(QtPyVCPDataPlugin):
 
     axis = AxisPositions()
 
-    def __init__(self, act_pos=True, prog_units=True):
+    def __init__(self, report_actual_pos=True, use_program_units=True):
         super(Position, self).__init__()
 
-        self._report_actual_pos = act_pos
-        self._use_program_units = prog_units
+        self._report_actual_pos = report_actual_pos
+        self._use_program_units = use_program_units
 
         self.axis._update()
 

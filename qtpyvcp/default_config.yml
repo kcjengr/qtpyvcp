@@ -1,0 +1,56 @@
+qtdesigner:
+  qss_file: "{{ application['kwargs']['stylesheet'] }}"
+  ui_file: "{{ application['kwargs']['stylesheet'] }}"
+
+vcp:
+  name: Not Set
+  version: Not Set
+  author: Not Set
+  description: No description provided.
+
+windows:
+  mainwindow:
+    provider: qtpyvcp.widgets.form_widgets.main_window:VCPMainWindow
+
+# This sections defines the Data Sources
+data_plugins:
+  status:
+    provider: qtpyvcp.plugins.status:Status
+    kwargs:
+      cycle_time: 75
+
+  position:
+    provider: qtpyvcp.plugins.positions:Position
+    kwargs:
+      report_actual_pos: True
+      use_program_units: True
+
+  tooltable:
+    provider: qtpyvcp.plugins.tool_table:ToolTable
+
+dialogs:
+  openfile:
+    provider: qtpyvcp.widgets.dialogs.open_file_dialog:_OpenFileDialog
+
+  setworkoffset:
+    provider: qtpyvcp.widgets.dialogs.offsets_dialog:OffsetsDialog
+
+virtual_keyboards:
+  default:
+    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
+    args: []
+    kwargs:
+      ui_file: keyboards/default_vkb.ui
+
+  integer:
+    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
+    args: []
+    kwargs:
+      ui_file: keyboards/integer_vkb.ui
+      frameless: True
+      stylesheet: hello
+
+application:
+  provider: qtpyvcp.application:VCPApplication
+  kwargs:
+    stylesheet: $YAML_DIR$/widgets/default_stylesheet.qss    # application wide stylesheet

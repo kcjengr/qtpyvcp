@@ -1,0 +1,29 @@
+qtdesigner:
+  ui_file: "{{ windows['mainwindow']['kwargs']['ui_file'] }}"
+  qss_file: "{{ application['kwargs']['stylesheet'] }}"
+
+vcp:
+  name: Brender
+  version: v0.0.1
+  author: Kurt Jacobson
+  description: |
+    Brender is minimal example VCP mostly used
+    for development and testing purposes.
+
+    Design and colors influenced by Brenda EM's LinuxCNC
+    GUI proposal.
+
+data_plugins:
+  status:
+    kwargs:
+      cycle_time: 75
+
+windows:
+  mainwindow:
+    provider: brender:MainWindow
+    kwargs:
+      ui_file: $YAML_DIR$/ui/brender.ui
+
+application:
+  kwargs:
+    stylesheet: $YAML_DIR$/resources/brender.qss

@@ -1,0 +1,43 @@
+qtdesigner:
+  ui_file: "{{ windows['mainwindow']['kwargs']['ui_file'] }}"
+  qss_file: "{{ application['kwargs']['stylesheet'] }}"
+
+vcp:
+  name: Mini
+  version: $VERSION_FROM_GIT$
+  author: Kurt Jacobson
+  description: |
+    Mini is minimal example VCP mostly used
+    for development and testing purposes.
+
+    Featues:
+      * Very tiny
+      * Does not do much
+      * Not very functioinal
+      * Full of bugs
+      * Sometimes works
+
+data_plugins:
+  status:
+    kwargs:
+      cycle_time: 75
+#  test1:
+#    provider: qtpyvcp.plugins:QtPyVCPDataPlugin
+#  test2:
+#    provider: qtpyvcp.plugins:QtPyVCPDataPlugin
+#  test3:
+#    provider: qtpyvcp.plugins:QtPyVCPDataPlugin
+#  test4:
+#    provider: qtpyvcp.plugins:QtPyVCPDataPlugin
+#  test5:
+#    provider: qtpyvcp.plugins:QtPyVCPDataPlugin
+
+windows:
+  mainwindow:
+    provider: mini:MiniVCP
+    kwargs:
+      ui_file: $YAML_DIR$/mini.ui  # ui file to load the window from
+
+#  secondarywindow:
+#    provider: qtpy.QtWidgets:QWidget
+#    show: True

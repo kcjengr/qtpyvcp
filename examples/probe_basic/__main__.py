@@ -16,27 +16,12 @@ Example:
 
 """
 
-import os
-import sys
+from . import __version__, run
 
+# parse cmd line args
 from qtpyvcp.utilities.opt_parser import parse_opts
+opts = parse_opts(vcp_name='Probe Basic', vcp_cmd='probebasic', vcp_version=__version__)
 
-# import version number from __init__.py
-from . import __version__
+# run
+run(opts)
 
-# parse cmd line args and set up environment
-opts = parse_opts(vcp_name='ProbeBasic', vcp_cmd='probebasic', vcp_version=__version__)
-
-# import window and app AFTER the environment has been set
-from probe_basic import ProbeBasic
-from qtpyvcp.application import VCPApplication
-
-# initialize the app
-app = VCPApplication(opts=opts)
-
-# set up the window
-app.window = ProbeBasic(opts=opts)
-app.window.show()
-
-# execute the application
-sys.exit(app.exec_())

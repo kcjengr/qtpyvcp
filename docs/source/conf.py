@@ -392,10 +392,14 @@ class Mock(object):
     def __getitem__(self, key):
         return Mock()
 
-Mock.mock_modules(
-'qtpy',
-'qtpy.QtCore',
-'qtpy.QtGui',
-'qtpy.QtWidgets',
-'docopt'
-)
+Mock.mock_modules('qtpy',
+                  'qtpy.QtCore',
+                  'qtpy.QtGui',
+                  'qtpy.QtWidgets',
+                  'docopt')
+
+import qtpyvcp
+qtpyvcp.PLUGINS = mock.MagicMock()
+qtpyvcp.WINDOWS = mock.MagicMock()
+qtpyvcp.OPTIONS = mock.MagicMock()
+qtpyvcp.DIALOGS = mock.MagicMock()

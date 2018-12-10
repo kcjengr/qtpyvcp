@@ -18,8 +18,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-from qtpy.QtWidgets import QDialog, QLabel, QHBoxLayout, QWidget
-from qtpy.QtCore import QObject, Signal, Slot, QTimer, QThread
+from qtpy.QtCore import QObject, Signal, Slot, QTimer
 
 import os
 import time
@@ -29,13 +28,13 @@ from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.prefs import Prefs
 from qtpyvcp.plugins.plugin import QtPyVCPDataPlugin, QtPyVCPDataChannel
 
-from qtpyvcp.utilities import logger
+from qtpyvcp.utilities.logger import getLogger
 
 INFO = Info()
 PREFS = Prefs()
 
-log = logger.getLogger(__name__)
-log.setLevel("DEBUG")
+LOG = getLogger(__name__)
+LOG.setLevel("DEBUG")
 
 NUM_SPINDLES = INFO.spindles()
 
@@ -314,7 +313,7 @@ class Status(QtPyVCPDataPlugin):
     # Emitted on app shutdown
     on_shutown = Signal()
 
-    def __init__(self):
+    def __init__(self, cycle_time=75):
         super(Status, self).__init__()
 
         self.no_force_homing = INFO.noForceHoming()
@@ -376,24 +375,26 @@ class Status(QtPyVCPDataPlugin):
 
         # Set up the periodic update timer
         self.timer = QTimer()
-        self._cycle_time = 75
+        self._cycle_time = cycle_time
         self.timer.timeout.connect(self._periodic)
-
-        # Use a single shot to start the main periodic timer, this ensures it
-        # starts after the main Qt event loop to prevent errors
-        # QTimer.singleShot(0, self.startPeriodic)
-        # self.startPeriodic()
 
     def initialise(self):
         """Start the periodic update timer."""
+        LOG.debug("Starting periodic updates with {}ms cycle time.".format(self._cycle_time))
         self.timer.start(self._cycle_time)
+
+    def terminate(self):
+        """Save persistent settings on terminate."""
+        self.on_shutown.emit()
+        PREFS.setPref("STATUS", "RECENT_FILES", self.recent_files)
+        PREFS.setPref("STATUS", "MAX_RECENT_FILES", self.max_recent_files)
 
     def _periodic(self):
         # s = time.time()
         try:
             STAT.poll()
         except Exception as e:
-            log.warning("Status polling failed, is LinuxCNC running?", exc_info=e)
+            LOG.warning("Status polling failed, is LinuxCNC running?", exc_info=e)
             self.timer.stop()
             return
 
@@ -555,15 +556,10 @@ class Status(QtPyVCPDataPlugin):
                 return False
         return True
 
-    def onShutdown(self):
-        self.on_shutown.emit()
-        PREFS.setPref("STATUS", "RECENT_FILES", self.recent_files)
-        PREFS.setPref("STATUS", "MAX_RECENT_FILES", self.max_recent_files)
 
-
-#==============================================================================
+# ==============================================================================
 # Joint status class
-#==============================================================================
+# ==============================================================================
 
 class JointStatusItem(StatusItem):
     def __init__(self, jnum, item='', typ=None, to_str=str, description=''):
@@ -617,7 +613,7 @@ class JointStatus(QObject):
 
         changed_items = tuple(set(jstat.items()) - set(self.jstat.items()))
         for item in changed_items:
-            log.debug('JOINT_{0} {1}: {2}'.format(self.jnum, item[0], item[1]))
+            LOG.debug('JOINT_{0} {1}: {2}'.format(self.jnum, item[0], item[1]))
             getattr(self, item[0])._update(item[1])
 
         self.jstat.update(jstat)
@@ -664,7 +660,7 @@ class SpindleStatus(QObject):
 
         changed_items = tuple(set(new_status.items()) - set(self.status.items()))
         for item in changed_items:
-            log.debug('SPINDLE_{0} {1}: {2}'.format(self.snum, item[0], item[1]))
+            LOG.debug('SPINDLE_{0} {1}: {2}'.format(self.snum, item[0], item[1]))
             getattr(self, item[0])._update(item[1])
 
         self.status = new_status
@@ -696,11 +692,11 @@ class _Error(QObject):
 
         if kind in [linuxcnc.NML_ERROR, linuxcnc.OPERATOR_ERROR]:
             self.new_error.emit(msg)
-            log.error(msg)
+            LOG.error(msg)
         elif kind in [linuxcnc.NML_TEXT, linuxcnc.OPERATOR_TEXT,
             linuxcnc.NML_DISPLAY, linuxcnc.OPERATOR_DISPLAY]:
             self.new_message.emit(msg)
-            log.info(msg)
+            LOG.info(msg)
         else:
             # notifications.show_error("UNKNOWN ERROR!", msg)
-            log.error(msg)
+            LOG.error(msg)

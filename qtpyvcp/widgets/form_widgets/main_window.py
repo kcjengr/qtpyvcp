@@ -6,10 +6,8 @@ import sys
 import time
 
 from qtpy import uic
-from qtpy.QtGui import QIcon, QKeySequence
 from qtpy.QtCore import Qt, Slot, Property, QTimer
-from qtpy.QtWidgets import (QMainWindow, QApplication, QWidget, QPushButton,
-    QAction, QMessageBox, QFileDialog, QMenu, QLineEdit, QShortcut, qApp)
+from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, QMenu, QLineEdit
 
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -23,18 +21,18 @@ INFO = Info()
 
 from qtpyvcp import actions
 
-from qtpyvcp.utilities.opt_parser import OptDict
+from qtpyvcp.lib.types import DotDict
 from qtpyvcp.widgets.dialogs.open_file_dialog import OpenFileDialog
 
 class VCPMainWindow(QMainWindow):
 
-    def __init__(self, parent=None, opts=OptDict(), ui_file=None):
+    def __init__(self, parent=None, opts=DotDict(), ui_file=None, stylesheet=None, confirm_exit=True,):
         super(VCPMainWindow, self).__init__(parent)
 
         self.app = QApplication.instance()
 
         # QtDesigner settable vars
-        self.prompt_at_exit = True
+        self.prompt_at_exit = confirm_exit
 
         # Variables
         self.recent_file_actions = []
@@ -48,6 +46,9 @@ class VCPMainWindow(QMainWindow):
             self.loadUi(ui_file)
             self.initUi()
 
+        if stylesheet is not None:
+            self.loadStylesheet(stylesheet)
+
         if opts.maximize:
             QTimer.singleShot(0, self.showMaximized)
 
@@ -58,19 +59,24 @@ class VCPMainWindow(QMainWindow):
         self.app.focusChanged.connect(self.focusChangedEvent)
 
     def loadUi(self, ui_file):
-        """
-        Loads a window layout from a QtDesigner .ui file.
+        """Loads a window layout from a QtDesigner .ui file.
 
-        Parameters
-        ----------
-        ui_file : str
-            Path to the .ui file to load.
+        Args:
+            ui_file (str) : Path to a .ui file to load.
         """
         # TODO: Check for compiled *_ui.py files and load from that if exists
         uic.loadUi(ui_file, self)
 
     def loadStylesheet(self, stylesheet):
-        self.app.loadStylesheet(stylesheet)
+        """Loads a QSS stylesheet containing styles to be applied
+        to specific Qt and/or QtPyVCP widget classes.
+
+        Args:
+            stylesheet (str) : Path to a .qss stylesheet
+        """
+        LOG.info("Loading QSS stylesheet file: yellow<{}>".format(stylesheet))
+        with open(stylesheet, 'r') as fh:
+            self.setStyleSheet(fh.read())
 
     def initUi(self):
         STATUS.init_ui.emit()
@@ -93,11 +99,11 @@ class VCPMainWindow(QMainWindow):
         print "action time ", time.time() - s
 
     def closeEvent(self, event):
-        """Catch close event and show confirmation dialog if set to"""
+        """Catch close event and show confirmation dialog."""
         if self.prompt_at_exit:
             quit_msg = "Are you sure you want to exit LinuxCNC?"
             reply = QMessageBox.question(self, 'Exit LinuxCNC?',
-                             quit_msg, QMessageBox.Yes, QMessageBox.No)
+                                         quit_msg, QMessageBox.Yes, QMessageBox.No)
             if reply == QMessageBox.Yes:
                 event.accept()
             else:

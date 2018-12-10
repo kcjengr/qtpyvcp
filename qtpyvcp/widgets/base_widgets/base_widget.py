@@ -9,11 +9,10 @@ import json
 
 from qtpy.QtCore import Property
 
-from qtpyvcp.plugins import DATA_PLUGIN_REGISTRY
+import qtpyvcp
+from qtpyvcp.utilities.logger import getLogger
 
-# Set up logging
-from qtpyvcp.utilities import logger
-LOG = logger.getLogger(__name__)
+LOG = getLogger(__name__)
 
 class ChanList(list):
     """Channel value list.
@@ -115,7 +114,7 @@ class QtPyVCPBaseWidget(object):
                     protocol, sep, rest = chan['url'].partition(':')
                     item, sep, query = rest.partition('?')
 
-                    plugin = DATA_PLUGIN_REGISTRY[protocol]
+                    plugin = qtpyvcp.PLUGINS[protocol]
                     eval_env = {'plugin': plugin}
 
                     # fast lambda function to get the current value of the channel

@@ -5,6 +5,7 @@ QtPyVCP - Qt and Python based Virtual Control Panel framework for LinuxCNC.
 
 Usage:
   qtpyvcp [<vcp>] --ini=INI [--log-level=LEVEL] [--log-file=FILE] [--perfmon]
+            [--config-file=FILE]
             [--theme=THEME] [--stylesheet=SYTLESHEET] [--pref-file=FILE]
             [--size=WIDTHxHEIGHT] [--position=XPOSxYPOS]
             [--fullscreen] [--maximize] [--hide-menu-bar] [--hide-status-bar]
@@ -36,6 +37,7 @@ Display  Options:
 Application Options:
   --log-level=(DEBUG | INFO | WARN | ERROR | CRITICAL)
                      Sets the log level. [default: INFO]
+  --config-file=FILE Specifies the YML config file.
   --log-file=FILE    Specifies the log file. Overrides INI setting.
   --pref-file=FILE   Specifies the preference file. Overrides INI setting.
   --qt-api=(pyqt5 | pyqt | pyside2 | pyside)
@@ -57,12 +59,10 @@ Note:
 
 """
 
-import sys
+# parse cmd line args
 from qtpyvcp.utilities.opt_parser import parse_opts
-
 opts = parse_opts(__doc__)
-# We must import the application after the args have been parsed and the
-# environment set up.
-from qtpyvcp.application import VCPApplication
-app = VCPApplication(opts=opts)
-sys.exit(app.exec_())
+
+# load vcp
+from qtpyvcp.vcp_launcher import load_vcp
+load_vcp(opts)
