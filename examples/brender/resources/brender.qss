@@ -3,7 +3,7 @@ QsciScintilla {
     qproperty-marginbackgroundcolor: #5c5c5c;
 }
 
-QMainWindow, QDialog {
+QMainWindow, QDialog, VCPMainWindow {
     background: #707070
     /*border-image: url(:/images/dark_background.jpg);*/
     /*background-image: url(:/images/dark_background.jpg);*/

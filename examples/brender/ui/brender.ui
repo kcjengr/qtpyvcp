@@ -818,7 +818,7 @@
            </rect>
           </property>
           <property name="maximum">
-           <number>300</number>
+           <number>900</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -837,7 +837,7 @@
            </rect>
           </property>
           <property name="maximum">
-           <number>300</number>
+           <number>900</number>
           </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -1771,8 +1771,10 @@
              </property>
              <property name="font">
               <font>
-               <family>Roboto</family>
-               <pointsize>12</pointsize>
+               <pointsize>-1</pointsize>
+               <weight>75</weight>
+               <italic>false</italic>
+               <bold>true</bold>
               </font>
              </property>
              <property name="focusPolicy">
@@ -1895,8 +1897,10 @@
              </property>
              <property name="font">
               <font>
-               <family>Roboto</family>
-               <pointsize>12</pointsize>
+               <pointsize>-1</pointsize>
+               <weight>75</weight>
+               <italic>false</italic>
+               <bold>true</bold>
               </font>
              </property>
              <property name="focusPolicy">
@@ -2099,8 +2103,10 @@
              </property>
              <property name="font">
               <font>
-               <family>Roboto</family>
-               <pointsize>12</pointsize>
+               <pointsize>-1</pointsize>
+               <weight>75</weight>
+               <italic>false</italic>
+               <bold>true</bold>
               </font>
              </property>
              <property name="focusPolicy">
@@ -2164,8 +2170,10 @@
              </property>
              <property name="font">
               <font>
-               <family>Roboto</family>
-               <pointsize>12</pointsize>
+               <pointsize>-1</pointsize>
+               <weight>75</weight>
+               <italic>false</italic>
+               <bold>true</bold>
               </font>
              </property>
              <property name="focusPolicy">
@@ -2262,8 +2270,10 @@
          </property>
          <property name="font">
           <font>
-           <family>Roboto</family>
-           <pointsize>14</pointsize>
+           <pointsize>-1</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="focusPolicy">
@@ -2290,8 +2300,10 @@
          </property>
          <property name="font">
           <font>
-           <family>Roboto</family>
-           <pointsize>16</pointsize>
+           <pointsize>-1</pointsize>
+           <weight>75</weight>
+           <italic>false</italic>
+           <bold>true</bold>
           </font>
          </property>
          <property name="focusPolicy">
@@ -2485,7 +2497,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>20</height>
+     <height>29</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
