@@ -47,11 +47,11 @@ setup(
     data_files=data_files_from_dirs(data_dirs),
     include_package_data=True,
     install_requires=[
-    'docopt',
-    'qtpy',
-    'pyudev',
-    'psutil',
-    'ruamel.yaml'
+        'docopt',
+        'qtpy',
+        'pyudev',
+        'psutil',
+        'HiYaPyCo'
     ],
     entry_points={
         'console_scripts': [
