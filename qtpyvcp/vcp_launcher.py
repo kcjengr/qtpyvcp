@@ -64,9 +64,9 @@ def load_vcp(opts):
             elif ext == '.ui':
                 _load_vcp_from_ui_file(vcp_path, opts)
 
-            elif ext == '.py':
-                LOG.info("Loading VCP from PY file: yellow<{}>".format(vcp))
-                # return self.loadPyFile(vcp_path, opts)
+            # elif ext == '.py':
+            #     LOG.info("Loading VCP from PY file: yellow<{}>".format(vcp))
+            #     raise NotImplemented
 
         elif os.path.isdir(vcp_path):
             LOG.info("VCP is a directory")
@@ -150,5 +150,3 @@ def loadDialogs(dialogs):
 
         inst = _initialize_object_from_dict(dialogs_dict)
         qtpyvcp.DIALOGS[dialogs_id] = inst
-
-
