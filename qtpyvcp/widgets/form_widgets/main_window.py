@@ -7,8 +7,7 @@ import time
 
 from qtpy import uic
 from qtpy.QtCore import Qt, Slot, Property, QTimer
-from qtpy.QtGui import QKeySequence
-from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, QMenu, QLineEdit
+from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, QMenu, QMenuBar, QLineEdit
 
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -90,29 +89,30 @@ class VCPMainWindow(QMainWindow):
 
     def buildMenu(self, menus):
 
-        menu_bar = self.menuBar()
+        menu_bar = QMenuBar(self)
+        self.setMenuBar(menu_bar)
 
         def addItems(menu, items):
             # print "In addItems to menu ", menu.title(), type(items)
             for item in items:
-                print item
+                # print item
                 if item == 'separator':
                     menu.addSeparator()
 
                 elif item.get('items') is not None:
-                    print "Adding sub menu: ", item['title']
+                    # print "Adding sub menu: ", item['title']
                     new_menu = QMenu(parent=self, title=item.get('title'))
                     addItems(new_menu, item['items'])
                     menu.addMenu(new_menu)
 
                 elif item.get('provider') is not None:
-                    print "Adding menu from provider: ", item
+                    # print "Adding menu from provider: ", item
                     from qtpyvcp.vcp_launcher import _initialize_object_from_dict
                     new_menu = _initialize_object_from_dict(item)
                     new_menu.setTitle(item.get('title'))
                     menu.addMenu(new_menu)
                 else:
-                    print "Adding action: ", item['title']
+                    # print "Adding action: ", item['title']
                     act = QAction(parent=self, text=item.get('title', 'Not Set'))
                     act.setShortcut(item.get('shortcut', ''))
                     menu.addAction(act)
@@ -122,7 +122,6 @@ class VCPMainWindow(QMainWindow):
     def initUi(self):
         STATUS.init_ui.emit()
         self.loadSplashGcode()
-        self.initRecentFileMenu()
         self.initHomingMenu()
 
         s = time.time()
@@ -218,32 +217,6 @@ class VCPMainWindow(QMainWindow):
 #==============================================================================
 # menu functions
 #==============================================================================
-
-    def initRecentFileMenu(self):
-        if hasattr(self, 'menuRecentFiles'):
-
-            # remove any actions that were added in QtDesigner
-            for action in self.menuRecentFiles.actions():
-                self.menuRecentFiles.removeAction(action)
-
-            # add new actions
-            for i in range(STATUS.max_recent_files):
-                action = QAction(self, visible=False,
-                                 triggered=(lambda: actions.program.load(self.sender().data())))
-                self.recent_file_actions.append(action)
-                self.menuRecentFiles.addAction(action)
-
-            self.updateRecentFilesMenu(STATUS.recent_files)
-            STATUS.recent_files_changed.connect(self.updateRecentFilesMenu)
-
-    def updateRecentFilesMenu(self, recent_files):
-        for i, fname in enumerate(recent_files):
-            fname = fname.encode('utf-8')
-            text = "&{} {}".format(i + 1, os.path.split(fname)[1])
-            action = self.recent_file_actions[i]
-            action.setText(text)
-            action.setData(fname)
-            action.setVisible(True)
 
     def initHomingMenu(self):
         if hasattr(self, 'menuHoming'):

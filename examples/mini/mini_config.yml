@@ -1,6 +1,6 @@
 qtdesigner:
-  ui_file: "{{ windows.mainwindow.kwargs.ui_file }}"
-  qss_file: "{{ application.kwargs.stylesheet }}"
+  ui_file: ( windows.mainwindow.kwargs.ui_file )
+  qss_file: ( application.kwargs.stylesheet )
 
 vcp:
   name: Mini
@@ -20,17 +20,7 @@ vcp:
 data_plugins:
   status:
     kwargs:
-      cycle_time: 75
-#  test1:
-#    provider: qtpyvcp.plugins:QtPyVCPDataPlugin
-#  test2:
-#    provider: qtpyvcp.plugins:QtPyVCPDataPlugin
-#  test3:
-#    provider: qtpyvcp.plugins:QtPyVCPDataPlugin
-#  test4:
-#    provider: qtpyvcp.plugins:QtPyVCPDataPlugin
-#  test5:
-#    provider: qtpyvcp.plugins:QtPyVCPDataPlugin
+      cycle_time: {{ ini.display.cycle_time }}
 
 dialogs:
   test_dialog:
@@ -40,8 +30,8 @@ windows:
   mainwindow:
     provider: mini:MiniVCP
     kwargs:
-#      ui_file: $YAML_DIR$/mini.ui  # ui file to load the window from
-      title: "{{ vcp.name }} Example VCP - {{ vcp.version }}"
+      ui_file: {{ file.dir }}/mini.ui  # ui file to load the window from
+      title: ( vcp.name ) ( vcp.version ) on {{ ini.machine.name }}
 
     menu:
       - title: File

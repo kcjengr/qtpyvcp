@@ -1,6 +1,6 @@
 qtdesigner:
-  qss_file: "{{ application['kwargs']['stylesheet'] }}"
-  ui_file: "{{ application['kwargs']['stylesheet'] }}"
+  qss_file: ( application.kwargs.stylesheet )
+  ui_file:  ( windows.mainwindow.kwargs.ui_file )
 
 vcp:
   name: Not Set
@@ -53,4 +53,4 @@ virtual_keyboards:
 application:
   provider: qtpyvcp.application:VCPApplication
   kwargs:
-    stylesheet: $YAML_DIR$/widgets/default_stylesheet.qss    # application wide stylesheet
+    stylesheet: {{ file.dir }}/widgets/default_stylesheet.qss   # application wide stylesheet

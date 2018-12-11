@@ -1,11 +1,15 @@
-import os
+
 import sys
 import hiyapyco
-from qtpyvcp import DEFAULT_CONFIG_FILE
+from jinja2 import Environment, FileSystemLoader, StrictUndefined, Undefined, make_logging_undefined
+from jinja2.nativetypes import NativeEnvironment
 
+from qtpyvcp import DEFAULT_CONFIG_FILE
 from qtpyvcp.utilities.logger import getLogger
 
 LOG = getLogger(__name__)
+
+# LogUndefined = make_logging_undefined(logger=None, base=Undefined)
 
 def load_config_files(*files):
     """Load and merge YAML config files.
@@ -32,7 +36,11 @@ def load_config_files(*files):
     # hiyapyco merges in order least important to most important
     files.reverse()
 
-    expanded_files = [expand_vars(file) for file in files]
+    expanded_files = process_templates(files)
+
+    hiyapyco.jinja2env = NativeEnvironment(variable_start_string='(',
+                                           variable_end_string=')',
+                                           undefined=Undefined)
 
     cfg_dict = hiyapyco.load(expanded_files,
                              method=hiyapyco.METHOD_MERGE,
@@ -45,18 +53,31 @@ def load_config_files(*files):
     return cfg_dict
 
 
-def expand_vars(fname):
+def expand_vars(file):
+def process_templates(files):
+    env = Environment(loader=FileSystemLoader(searchpath=[os.path.dirname(file) for file in files]),
+                      undefined=StrictUndefined,
+                      )
 
-    file_dir = os.path.dirname(os.path.abspath(fname))
+    file_dir = os.path.dirname(file)
+    expanded_templates = []
+    for file in files:
+        file_dir, file_name = os.path.split(file)
+        template = env.get_template(file_name)
+        result = template.render({'file': {'path': file, 'dir': file_dir, 'name': file_name},
+                                  'env': os.environ,
+                                  'ini': {'traj': {'coordinates': 'XYZ'},
+                                          'machine': {'name': 'My Machine'},
+                                          'display': {'cycle_time': 100},
+                                          },
+                                  })
 
     # Read in the file
-    with open(fname, 'r') as fh:
+    with open(file, 'r') as fh:
         filedata = fh.read()
+        expanded_templates.append(result)
 
-    # Replace the target string
-    filedata = filedata.replace('$YAML_DIR$', file_dir)
-
-    return filedata
+    return expanded_templates
 
 
 def load_config_files_from_env():
