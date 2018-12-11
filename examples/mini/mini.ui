@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>321</width>
-    <height>350</height>
+    <height>378</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -255,7 +255,17 @@
        <string>Show Test Dialog</string>
       </property>
       <property name="dialogName" stdset="0">
-       <string>test_dialog</string>
+       <string>open_file</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="ShowDialogButton" name="showdialogbutton_3">
+      <property name="text">
+       <string>Show Bad Dialog</string>
+      </property>
+      <property name="dialogName" stdset="0">
+       <string>xcv</string>
       </property>
      </widget>
     </item>

@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
-from qtpy.QtCore import Property
+from qtpy.QtCore import Property, Slot
 from qtpy.QtWidgets import QPushButton, QApplication
 
-import qtpyvcp
 from qtpyvcp.widgets import VCPWidget
+from qtpyvcp.widgets.dialogs import showDialog
 
 
 class ShowDialogButton(QPushButton, VCPWidget):
@@ -12,22 +12,13 @@ class ShowDialogButton(QPushButton, VCPWidget):
     def __init__(self, parent=None, dialog_name=''):
         super(ShowDialogButton, self).__init__(parent)
 
-        self.app = QApplication.instance().activeWindow()
-
         self._dialog_name = dialog_name
 
         self.clicked.connect(self.showDialog)
 
-
+    @Slot()
     def showDialog(self):
-        dialog = qtpyvcp.DIALOGS.get(self._dialog_name)
-
-        if dialog is not None:
-            dialog.show()
-
-            win = QApplication.instance().activeWindow()
-            win_pos = win.mapToGlobal(win.rect().center())
-            dialog.move(win_pos.x() - dialog.width() / 2, win_pos.y() - dialog.height() / 2)
+        showDialog(self._dialog_name)
 
     @Property(str)
     def dialogName(self):

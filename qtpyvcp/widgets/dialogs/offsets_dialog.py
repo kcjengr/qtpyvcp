@@ -30,8 +30,6 @@ Log = logger.getLogger(__name__)
 
 class OffsetsDialog(QDialog):
 
-    id = 'work_offsets'
-
     def __init__(self, parent=None):
         super(OffsetsDialog, self).__init__(parent=parent, flags=Qt.Popup)
 
