@@ -98,10 +98,18 @@ class VCPMainWindow(QMainWindow):
                 print item
                 if item == 'separator':
                     menu.addSeparator()
+
                 elif item.get('items') is not None:
                     print "Adding sub menu: ", item['title']
                     new_menu = QMenu(parent=self, title=item.get('title'))
                     addItems(new_menu, item['items'])
+                    menu.addMenu(new_menu)
+
+                elif item.get('provider') is not None:
+                    print "Adding menu from provider: ", item
+                    from qtpyvcp.vcp_launcher import _initialize_object_from_dict
+                    new_menu = _initialize_object_from_dict(item)
+                    new_menu.setTitle(item.get('title'))
                     menu.addMenu(new_menu)
                 else:
                     print "Adding action: ", item['title']
@@ -110,13 +118,6 @@ class VCPMainWindow(QMainWindow):
                     menu.addAction(act)
 
         addItems(menu_bar, menus)
-
-        # for menu in menus:
-        #     print menu
-            # qmenu = QMenu(parent=self, title=menu['title'])
-            # addItems(qmenu, menu['items'])
-            # menu_bar.addMenu(qmenu)
-
 
     def initUi(self):
         STATUS.init_ui.emit()
