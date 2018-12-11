@@ -50,15 +50,8 @@ windows:
           action: file.open
           shortcut: ctrl+o
 
-        - title: "&Recent"
-          items:
-            - title: File 1
-              action: action 1
-            - title: File 2
-              action: action 2
-            - title: Sub Sub Menu
-              items:
-                - title: Item 1.1
+        - title: "&Recent Files"
+          provider: qtpyvcp.widgets.recent_file_menu:RecentFilesMenu
 
         - title: "&Reload"
           action: file.reload
