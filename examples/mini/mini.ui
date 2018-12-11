@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>321</width>
-    <height>329</height>
+    <height>378</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -239,6 +239,36 @@
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="DialogButton" name="dialogbutton">
+      <property name="text">
+       <string>Show Offsets Dialog</string>
+      </property>
+      <property name="dialogName" stdset="0">
+       <string>set_work_offsets</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="DialogButton" name="dialogbutton_2">
+      <property name="text">
+       <string>Show Test Dialog</string>
+      </property>
+      <property name="dialogName" stdset="0">
+       <string>open_file</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="DialogButton" name="dialogbutton_3">
+      <property name="text">
+       <string>Show Bad Dialog</string>
+      </property>
+      <property name="dialogName" stdset="0">
+       <string>xcv</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -247,7 +277,7 @@
      <x>0</x>
      <y>0</y>
      <width>321</width>
-     <height>20</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
@@ -605,6 +635,11 @@
    <class>StatusLabel</class>
    <extends>QLabel</extends>
    <header>qtpyvcp.widgets.display_widgets.status_label</header>
+  </customwidget>
+  <customwidget>
+   <class>DialogButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.dialog_button</header>
   </customwidget>
  </customwidgets>
  <resources>

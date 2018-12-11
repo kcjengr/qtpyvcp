@@ -35,3 +35,8 @@ from mdi_button import MDIButton
 class MDIButtonPlugin(_DesignerPlugin):
     def pluginClass(self):
         return MDIButton
+
+from dialog_button import DialogButton
+class DialogButtonPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return DialogButton

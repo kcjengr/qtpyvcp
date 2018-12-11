@@ -29,10 +29,10 @@ data_plugins:
     provider: qtpyvcp.plugins.tool_table:ToolTable
 
 dialogs:
-  openfile:
+  open_file:
     provider: qtpyvcp.widgets.dialogs.open_file_dialog:_OpenFileDialog
 
-  setworkoffset:
+  set_work_offsets:
     provider: qtpyvcp.widgets.dialogs.offsets_dialog:OffsetsDialog
 
 virtual_keyboards:

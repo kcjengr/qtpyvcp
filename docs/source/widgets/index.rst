@@ -22,3 +22,4 @@ Button Widgets
    action_spinbox
    mdi_button
    subcall_button
+   dialog_button
