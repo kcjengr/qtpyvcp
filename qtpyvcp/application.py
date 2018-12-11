@@ -1,5 +1,4 @@
-"""
-Main QtPyVCP Application Module
+"""Main QtPyVCP Application Module
 
 Contains the VCPApplication class with core function and VCP loading logic.
 """
@@ -46,7 +45,6 @@ class VCPApplication(QApplication):
         self.info = Info()
         self.prefs = Prefs()
         self.status = getPluginFromProtocol('status')
-        print self.status
 
         self.initialiseDataPlugins()
 
@@ -165,14 +163,11 @@ class VCPApplication(QApplication):
         return cls(opts=opts)
 
     def loadStylesheet(self, stylesheet):
-        """
-        Loads a QSS stylesheet file containing styles to be applied
+        """Loads a QSS stylesheet file containing styles to be applied
         to specific Qt and/or QtPyVCP widget classes.
 
-        Parameters
-        ----------
-        stylesheet : str
-            The path to a .qss stylesheet file to load.
+        Args:
+            stylesheet (str) : Path to the .qss stylesheet to load.
         """
         LOG.info("Loading QSS stylesheet file: yellow<{}>".format(stylesheet))
         with open(stylesheet, 'r') as fh:
@@ -180,15 +175,17 @@ class VCPApplication(QApplication):
 
     @Slot()
     def logPerformance(self):
-        """
-        Logs total CPU usage (in percent), as well as per-thread usage.
+        """Logs total CPU usage (in percent), as well as per-thread usage.
         """
         with self.perf.oneshot():
             total_percent = self.perf.cpu_percent(interval=None)
             total_time = sum(self.perf.cpu_times())
-            usage = [total_percent * ((t.system_time + t.user_time) / total_time) for t in self.perf.threads()]
-        LOG.info("Performance:\n    Total CPU usage (%): {tot}\n    Per Thread: {percpu}"
-                 .format(tot=total_percent, percpu=usage))
+            usage = ["{:.3f}".format(total_percent * ((t.system_time + t.user_time) / total_time)) for t in self.perf.threads()]
+
+        LOG.info("Performance:\n"
+                 "    Total CPU usage (%): {}\n"
+                 "    Per Thread: {}\n"
+                 .format(total_percent, ' '.join(usage)))
 
 
     def initialiseDataPlugins(self):
