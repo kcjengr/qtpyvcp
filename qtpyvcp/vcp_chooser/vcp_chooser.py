@@ -76,7 +76,7 @@ class VCPChooser(QDialog):
         vcp_file = QFileDialog.getOpenFileName(self,
                               caption="Select VCP File",
                               directory=EXAMPLE_VCP_DIR,
-                              filter='VCP Files (*.yaml)',
+                              filter='VCP Files (*.yml *.yaml)',
                               options=QFileDialog.DontUseNativeDialog)[0]
 
         if vcp_file != '':
