@@ -51,7 +51,7 @@ windows:
           shortcut: ctrl+o
 
         - title: "&Recent Files"
-          provider: qtpyvcp.widgets.recent_file_menu:RecentFilesMenu
+          provider: qtpyvcp.widgets.recent_files_menu:RecentFilesMenu
 
         - title: "&Reload"
           action: file.reload
