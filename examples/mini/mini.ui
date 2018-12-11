@@ -240,7 +240,7 @@
      </widget>
     </item>
     <item>
-     <widget class="ShowDialogButton" name="showdialogbutton">
+     <widget class="DialogButton" name="dialogbutton">
       <property name="text">
        <string>Show Offsets Dialog</string>
       </property>
@@ -250,7 +250,7 @@
      </widget>
     </item>
     <item>
-     <widget class="ShowDialogButton" name="showdialogbutton_2">
+     <widget class="DialogButton" name="dialogbutton_2">
       <property name="text">
        <string>Show Test Dialog</string>
       </property>
@@ -260,7 +260,7 @@
      </widget>
     </item>
     <item>
-     <widget class="ShowDialogButton" name="showdialogbutton_3">
+     <widget class="DialogButton" name="dialogbutton_3">
       <property name="text">
        <string>Show Bad Dialog</string>
       </property>
@@ -637,9 +637,9 @@
    <header>qtpyvcp.widgets.display_widgets.status_label</header>
   </customwidget>
   <customwidget>
-   <class>ShowDialogButton</class>
+   <class>DialogButton</class>
    <extends>QPushButton</extends>
-   <header>qtpyvcp.widgets.button_widgets.show_dialog_button</header>
+   <header>qtpyvcp.widgets.button_widgets.dialog_button</header>
   </customwidget>
  </customwidgets>
  <resources>

@@ -36,7 +36,7 @@ class MDIButtonPlugin(_DesignerPlugin):
     def pluginClass(self):
         return MDIButton
 
-from show_dialog_button import ShowDialogButton
-class ShowDialogButtonPlugin(_DesignerPlugin):
+from dialog_button import DialogButton
+class DialogButtonPlugin(_DesignerPlugin):
     def pluginClass(self):
-        return ShowDialogButton
+        return DialogButton
