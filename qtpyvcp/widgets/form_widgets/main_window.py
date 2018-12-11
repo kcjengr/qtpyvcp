@@ -7,6 +7,7 @@ import time
 
 from qtpy import uic
 from qtpy.QtCore import Qt, Slot, Property, QTimer
+from qtpy.QtGui import QKeySequence
 from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, QMenu, QLineEdit
 
 from qtpyvcp.utilities import logger
@@ -26,10 +27,12 @@ from qtpyvcp.widgets.dialogs.open_file_dialog import OpenFileDialog
 
 class VCPMainWindow(QMainWindow):
 
-    def __init__(self, parent=None, opts=DotDict(), ui_file=None, stylesheet=None, confirm_exit=True,
-                 position=None, size=None):
+    def __init__(self, parent=None, opts=DotDict(), ui_file=None, stylesheet=None,
+                 position=None, size=None, confirm_exit=True, title=None, menu=None):
 
         super(VCPMainWindow, self).__init__(parent)
+
+        self.setWindowTitle(title)
 
         self.app = QApplication.instance()
 
@@ -38,7 +41,6 @@ class VCPMainWindow(QMainWindow):
 
         # Variables
         self.recent_file_actions = []
-        self.log_file_path = ''
         self.actions = []
         self.open_file_dialog = OpenFileDialog(self)
 
@@ -48,6 +50,9 @@ class VCPMainWindow(QMainWindow):
             self.loadUi(ui_file)
             self.initUi()
 
+        if title is not None:
+            self.setWindowTitle(title)
+
         if stylesheet is not None:
             self.loadStylesheet(stylesheet)
 
@@ -56,6 +61,8 @@ class VCPMainWindow(QMainWindow):
 
         if opts.fullscreen:
             QTimer.singleShot(0, self.showFullScreen)
+
+        # self.buildMenu(menu)
 
         # QShortcut(QKeySequence("t"), self, self.test)
         self.app.focusChanged.connect(self.focusChangedEvent)
@@ -80,6 +87,37 @@ class VCPMainWindow(QMainWindow):
         with open(stylesheet, 'r') as fh:
             self.setStyleSheet(fh.read())
 
+
+    def buildMenu(self, menus):
+
+        menu_bar = self.menuBar()
+
+        def addItems(menu, items):
+            # print "In addItems to menu ", menu.title(), type(items)
+            for item in items:
+                print item
+                if item == 'separator':
+                    menu.addSeparator()
+                elif item.get('items') is not None:
+                    print "Adding sub menu: ", item['title']
+                    new_menu = QMenu(parent=self, title=item.get('title'))
+                    addItems(new_menu, item['items'])
+                    menu.addMenu(new_menu)
+                else:
+                    print "Adding action: ", item['title']
+                    act = QAction(parent=self, text=item.get('title', 'Not Set'))
+                    act.setShortcut(item.get('shortcut', ''))
+                    menu.addAction(act)
+
+        addItems(menu_bar, menus)
+
+        # for menu in menus:
+        #     print menu
+            # qmenu = QMenu(parent=self, title=menu['title'])
+            # addItems(qmenu, menu['items'])
+            # menu_bar.addMenu(qmenu)
+
+
     def initUi(self):
         STATUS.init_ui.emit()
         self.loadSplashGcode()
@@ -88,15 +126,15 @@ class VCPMainWindow(QMainWindow):
 
         s = time.time()
 
-        menus = self.findChildren(QMenu)
-        for menu in menus:
-            menu_actions = menu.actions()
-            for menu_action in menu_actions:
-                if menu_action.isSeparator():
-                    continue
-                action_name = menu_action.property('actionName')
-                if action_name:
-                    actions.bindWidget(menu_action, action_name)
+        # menus = self.findChildren(QMenu)
+        # for menu in menus:
+        #     menu_actions = menu.actions()
+        #     for menu_action in menu_actions:
+        #         if menu_action.isSeparator():
+        #             continue
+        #         action_name = menu_action.property('actionName')
+        #         if action_name:
+        #             actions.bindWidget(menu_action, action_name)
 
         print "action time ", time.time() - s
 
@@ -107,11 +145,11 @@ class VCPMainWindow(QMainWindow):
             reply = QMessageBox.question(self, 'Exit LinuxCNC?',
                                          quit_msg, QMessageBox.Yes, QMessageBox.No)
             if reply == QMessageBox.Yes:
-                event.accept()
+                QApplication.instance().quit()
             else:
                 event.ignore()
         else:
-            event.accept()
+            QApplication.instance().quit()
 
     def keyPressEvent(self, event):
         # super(VCPMainWindow, self).keyPressEvent(event)

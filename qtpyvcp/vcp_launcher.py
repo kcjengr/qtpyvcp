@@ -140,6 +140,8 @@ def loadWindows(windows):
         inst = _initialize_object_from_dict(window_dict)
         qtpyvcp.WINDOWS[window_id] = inst
 
+        inst.buildMenu(window_dict.get('menu'))
+
         # show the window by default
         if window_dict.get('show', True):
             inst.show()

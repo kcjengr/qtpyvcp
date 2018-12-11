@@ -1,10 +1,10 @@
 qtdesigner:
-  ui_file: "{{ windows['mainwindow']['kwargs']['ui_file'] }}"
-  qss_file: "{{ application['kwargs']['stylesheet'] }}"
+  ui_file: "{{ windows.mainwindow.kwargs.ui_file }}"
+  qss_file: "{{ application.kwargs.stylesheet }}"
 
 vcp:
   name: Mini
-  version: $VERSION_FROM_GIT$
+  version: v0.0.1
   author: Kurt Jacobson
   description: |
     Mini is minimal example VCP mostly used
@@ -40,7 +40,49 @@ windows:
   mainwindow:
     provider: mini:MiniVCP
     kwargs:
-      ui_file: $YAML_DIR$/mini.ui  # ui file to load the window from
+#      ui_file: $YAML_DIR$/mini.ui  # ui file to load the window from
+      title: "{{ vcp.name }} Example VCP - {{ vcp.version }}"
+
+    menu:
+      - title: File
+        items:
+        - title: "&Open ..."
+          action: file.open
+          shortcut: ctrl+o
+
+        - title: "&Recent"
+          items:
+            - title: File 1
+              action: action 1
+            - title: File 2
+              action: action 2
+            - title: Sub Sub Menu
+              items:
+                - title: Item 1.1
+
+        - title: "&Reload"
+          action: file.reload
+
+        - title: "&Close"
+          action: file.close
+
+        - title: "Save &As"
+          action: file.save_as
+          shortcut: esc
+
+        - separator
+
+        - title: Exit
+          action: app.exit
+          shortcut: ctrl+q
+
+      - title: Machine
+        items:
+        - title: Home &All
+          action: qtpyvcp.actions.machine:home
+          args: all
+
+
 
 #  secondarywindow:
 #    provider: qtpy.QtWidgets:QWidget
