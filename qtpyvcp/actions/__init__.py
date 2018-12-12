@@ -11,6 +11,9 @@ import tool_actions as tool
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
+class InvalidAction(Exception):
+    pass
+
 def bindWidget(widget, action):
     """Binds a widget to an action.
 
@@ -53,13 +56,13 @@ def bindWidget(widget, action):
             continue
         try:
             method = getattr(method, item)
-        except:
-            LOG.exception("Invalid action: {}".format(action))
-            return
+        except(AttributeError, KeyError):
+            raise InvalidAction("Could not get action method: %s" % item)
+
         prev_item = item
 
     if method is None or not callable(method):
-        return
+        raise InvalidAction('Method is not callable: %s' % method)
 
     if args != '':
         # make a list out of comma separated args
@@ -90,13 +93,11 @@ def bindWidget(widget, action):
         widget.activated[str].connect(method)
 
     else:
-        LOG.error('Can\'t bind action "{}" to unsupported widget type "{}"'\
-            .format(action, widget.__class__.__name__))
-        return
+        raise InvalidAction('Can\'t bind action "{}" to unsupported widget type "{}"'
+                            .format(action, widget.__class__.__name__))
 
     try:
-        method.ok(*args, widget=widget, **kwargs) # Set the initial widget state
-        method.bindOk(*args, widget=widget, **kwargs)
-
+        method.ok(*args, widget=widget, **kwargs)      # Set the initial widget OK state
+        method.bindOk(*args, widget=widget, **kwargs)  # Update widget on OK status changes
     except:
-        LOG.exception("Error in bindWidget")
+        raise InvalidAction("Could not bind OK status to widget.")

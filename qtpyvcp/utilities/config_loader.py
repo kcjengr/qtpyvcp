@@ -1,8 +1,8 @@
 
 import sys
 import hiyapyco
-from jinja2 import Environment, FileSystemLoader, StrictUndefined, Undefined, make_logging_undefined
 from jinja2.nativetypes import NativeEnvironment
+from jinja2 import Environment, FileSystemLoader, StrictUndefined, Undefined, make_logging_undefined
 
 from qtpyvcp import DEFAULT_CONFIG_FILE
 from qtpyvcp.utilities.logger import getLogger
@@ -83,4 +83,3 @@ def process_templates(files):
 def load_config_files_from_env():
     files = os.getenv('VCP_CONFIG_FILES', '').split(':')
     return load_config_files(*files)
-

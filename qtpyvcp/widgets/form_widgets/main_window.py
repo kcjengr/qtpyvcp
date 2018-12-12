@@ -5,7 +5,7 @@ import os
 import sys
 
 from qtpy import uic
-from qtpy.QtCore import Qt, Slot, Property, QTimer
+from qtpy.QtCore import Qt, Slot, QTimer
 from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, QMenu, QMenuBar, QLineEdit
 
 from qtpyvcp import actions
@@ -17,7 +17,6 @@ from qtpyvcp.plugins import getPluginFromProtocol
 from qtpyvcp.vcp_launcher import _initialize_object_from_dict
 
 LOG = logger.getLogger(__name__)
-STATUS = getPluginFromProtocol('status')
 PREFS = Prefs()
 INFO = Info()
 
@@ -32,13 +31,10 @@ class VCPMainWindow(QMainWindow):
         self.setWindowTitle(title)
 
         self.app = QApplication.instance()
+        self.status = getPluginFromProtocol('status')
 
         # QtDesigner settable vars
         self.prompt_at_exit = confirm_exit
-
-        # Variables
-        self.recent_file_actions = []
-        self.actions = []
 
         # Load the UI file AFTER defining variables, otherwise the values
         # set in QtDesigner get overridden by the default values
@@ -84,6 +80,33 @@ class VCPMainWindow(QMainWindow):
         with open(stylesheet, 'r') as fh:
             self.setStyleSheet(fh.read())
 
+    def getMenuAction(self, menu_action, title='notitle', action_name='noaction'):
+        # ToDo: Clean this up, it is very hacky
+        env = {'app': QApplication.instance(),
+               'win': self,
+               'action': actions
+               }
+
+        try:
+            mod, action = action_name.split('.', 1)
+            method = getattr(env.get(mod, self), action)
+            menu_action.triggered.connect(method)
+            return
+        except:
+            pass
+
+        try:
+            actions.bindWidget(menu_action, action_name)
+            return
+        except actions.InvalidAction:
+            pass
+
+        msg = "The <b>{}</b> action specified for the " \
+              "<b>{}</b> menu item could not be triggered. " \
+              "Check the YAML config file for errors." \
+              .format(action_name or '', title.replace('&', ''))
+        menu_action.triggered.connect(lambda: QMessageBox.critical(self, "Menu Action Error!", msg))
+
     def buildMenuBar(self, menus):
         """Recursively build menu bar.
 
@@ -118,8 +141,8 @@ class VCPMainWindow(QMainWindow):
                     menu.addMenu(new_menu)
 
                 else:
-                    # print "Adding action: ", item['title']
-                    act = QAction(parent=self, text=item.get('title', 'Not Set'))
+                    act = QAction(parent=self, text=title)
+                    self.getMenuAction(act, title, item.get('action'))
                     act.setShortcut(item.get('shortcut', ''))
                     menu.addAction(act)
 
@@ -128,7 +151,7 @@ class VCPMainWindow(QMainWindow):
         return menu_bar
 
     def initUi(self):
-        STATUS.init_ui.emit()
+        self.status.init_ui.emit()
         self.loadSplashGcode()
         self.initHomingMenu()
 
@@ -143,7 +166,7 @@ class VCPMainWindow(QMainWindow):
             else:
                 event.ignore()
         else:
-            QApplication.instance().quit()
+            self.app.quit()
 
     def keyPressEvent(self, event):
         # super(VCPMainWindow, self).keyPressEvent(event)
@@ -194,19 +217,17 @@ class VCPMainWindow(QMainWindow):
         if issubclass(new_w.__class__, QLineEdit):
             print "QLineEdit got focus: ", new_w
 
-#==============================================================================
+# ==============================================================================
 #  menu action slots
-#==============================================================================
+# ==============================================================================
 
-    #==========================================================================
-    # File menu
     @Slot()
     def openFile(self):
         showDialog('open_file')
 
-#==============================================================================
+# ==============================================================================
 # menu functions
-#==============================================================================
+# ==============================================================================
 
     def initHomingMenu(self):
         if hasattr(self, 'menuHoming'):
@@ -233,9 +254,9 @@ class VCPMainWindow(QMainWindow):
                 actions.bindWidget(menu_action, 'machine.home.axis:{}'.format(aletter))
                 self.menuHoming.addAction(menu_action)
 
-#==============================================================================
+# ==============================================================================
 # helper functions
-#==============================================================================
+# ==============================================================================
 
     def loadSplashGcode(self):
         # Load backplot splash code
@@ -244,24 +265,6 @@ class VCPMainWindow(QMainWindow):
         if splash_code is not None:
             # Load after startup to not cause hang and 'Can't set mode while machine is running' error
             QTimer.singleShot(200, lambda: actions.program.load(splash_code, add_to_recents=False))
-
-#==============================================================================
-#  QtDesigner property setters/getters
-#==============================================================================
-
-    # Whether to show a confirmation prompt when closing the main window
-    def getPromptBeforeExit(self):
-        return self.prompt_at_exit
-    def setPromptBeforeExit(self, value):
-        self.prompt_at_exit = value
-    promptAtExit = Property(bool, getPromptBeforeExit, setPromptBeforeExit)
-
-    # Max number of recent files to display in menu
-    def getMaxRecentFiles(self):
-        return STATUS.max_recent_files
-    def setMaxRecentFiles(self, number):
-        STATUS.max_recent_files = number
-    maxNumRecentFiles = Property(int, getMaxRecentFiles, setMaxRecentFiles)
 
 
 if __name__ == '__main__':
