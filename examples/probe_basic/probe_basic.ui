@@ -1482,11 +1482,6 @@ QTableView {
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_3">
-           <attribute name="title">
-            <string>          SETTINGS           </string>
-           </attribute>
-          </widget>
           <widget class="QWidget" name="status_tab">
            <attribute name="title">
             <string>          ATC          </string>
@@ -4330,15 +4325,21 @@ padding-right: 10px;
            </attribute>
            <layout class="QHBoxLayout" name="horizontalLayout_8">
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_12">
+             <layout class="QVBoxLayout" name="verticalLayout_11">
               <property name="spacing">
                <number>0</number>
               </property>
               <property name="leftMargin">
                <number>0</number>
               </property>
+              <property name="topMargin">
+               <number>15</number>
+              </property>
               <property name="rightMargin">
-               <number>6</number>
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>15</number>
               </property>
               <item>
                <widget class="QFrame" name="frame_37">
@@ -4370,6 +4371,9 @@ border-radius: 6px;
 }</string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_39">
+                 <property name="spacing">
+                  <number>6</number>
+                 </property>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_47">
                    <property name="topMargin">
@@ -5647,13 +5651,13 @@ QHeaderView {
                 <property name="minimumSize">
                  <size>
                   <width>650</width>
-                  <height>550</height>
+                  <height>560</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
                   <width>650</width>
-                  <height>550</height>
+                  <height>560</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -5668,7 +5672,7 @@ border-radius: 6px;
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_33">
                  <property name="spacing">
-                  <number>10</number>
+                  <number>15</number>
                  </property>
                  <item>
                   <layout class="QGridLayout" name="gridLayout_12">
@@ -5678,11 +5682,8 @@ border-radius: 6px;
                    <property name="topMargin">
                     <number>5</number>
                    </property>
-                   <property name="horizontalSpacing">
+                   <property name="spacing">
                     <number>15</number>
-                   </property>
-                   <property name="verticalSpacing">
-                    <number>10</number>
                    </property>
                    <item row="0" column="0" colspan="5">
                     <widget class="QLabel" name="machine_column_header_4">
@@ -7436,13 +7437,13 @@ OFFSET</string>
                 <property name="minimumSize">
                  <size>
                   <width>345</width>
-                  <height>525</height>
+                  <height>560</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
                   <width>345</width>
-                  <height>525</height>
+                  <height>560</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -7458,7 +7459,7 @@ border-radius: 6px;
                  <property name="geometry">
                   <rect>
                    <x>120</x>
-                   <y>238</y>
+                   <y>270</y>
                    <width>200</width>
                    <height>167</height>
                   </rect>
@@ -7477,7 +7478,7 @@ border-radius: 6px;
                  <property name="geometry">
                   <rect>
                    <x>61</x>
-                   <y>0</y>
+                   <y>30</y>
                    <width>140</width>
                    <height>231</height>
                   </rect>
@@ -7496,7 +7497,7 @@ border-radius: 6px;
                  <property name="geometry">
                   <rect>
                    <x>2</x>
-                   <y>413</y>
+                   <y>450</y>
                    <width>340</width>
                    <height>110</height>
                   </rect>
@@ -8355,14 +8356,14 @@ ToolTable {
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>460</width>
-                  <height>570</height>
+                  <width>462</width>
+                  <height>590</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
                   <width>460</width>
-                  <height>560</height>
+                  <height>590</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -8653,7 +8654,7 @@ border-style: none;
                 <widget class="QFrame" name="frame_28">
                  <property name="geometry">
                   <rect>
-                   <x>0</x>
+                   <x>2</x>
                    <y>0</y>
                    <width>458</width>
                    <height>60</height>
@@ -8813,8 +8814,8 @@ border-style: none;
                 <widget class="MDIEntry" name="mdi_entry_box_4">
                  <property name="geometry">
                   <rect>
-                   <x>0</x>
-                   <y>527</y>
+                   <x>2</x>
+                   <y>550</y>
                    <width>458</width>
                    <height>40</height>
                   </rect>
@@ -13425,112 +13426,16 @@ Background:transparent;
            <attribute name="title">
             <string>          CONVERSATIONAL          </string>
            </attribute>
-           <widget class="FileSystemTable" name="filesystemtable_3">
-            <property name="geometry">
-             <rect>
-              <x>310</x>
-              <y>30</y>
-              <width>476</width>
-              <height>465</height>
-             </rect>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">FileSystemTable {
-	color: rgb(235, 235, 237);
-   	border: 4px;
-	border-color: rgb(120, 120, 120);
-	border-style: solid;
-	background-color: rgb(238, 238, 236);
-    font: 13pt &quot;Bebas Kai&quot;;
-}
-
-QHeaderView {
-    background-color: rgb(220, 220, 220);
-	color: black;
-    border: none;
-	border-radius:none;
-	border-style: none;
-	font: 13pt &quot;Bebas Kai&quot;;
-}</string>
-            </property>
-           </widget>
+          </widget>
+          <widget class="QWidget" name="tab_3">
+           <attribute name="title">
+            <string>          SETTINGS           </string>
+           </attribute>
           </widget>
           <widget class="QWidget" name="tab_10">
            <attribute name="title">
             <string>          STATUS           </string>
            </attribute>
-           <widget class="QToolButton" name="toolButton">
-            <property name="geometry">
-             <rect>
-              <x>760</x>
-              <y>170</y>
-              <width>281</width>
-              <height>131</height>
-             </rect>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QToolButton{
-Background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(226, 139, 139, 255), stop:0.446154 rgba(249, 142, 142, 255), stop:0.764103 rgba(225, 134, 134, 255), stop:1 rgba(249, 142, 142, 255));
-}</string>
-            </property>
-            <property name="text">
-             <string>...</string>
-            </property>
-           </widget>
-           <widget class="QToolButton" name="toolButton_2">
-            <property name="geometry">
-             <rect>
-              <x>760</x>
-              <y>330</y>
-              <width>281</width>
-              <height>131</height>
-             </rect>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QToolButton{
-Background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(208, 231, 207, 255), stop:0.0974359 rgba(189, 243, 185, 255), stop:0.446154 rgba(190, 251, 184, 255), stop:1 rgba(195, 231, 194, 255));
-}</string>
-            </property>
-            <property name="text">
-             <string>...</string>
-            </property>
-           </widget>
-           <widget class="QToolButton" name="toolButton_3">
-            <property name="geometry">
-             <rect>
-              <x>1060</x>
-              <y>170</y>
-              <width>281</width>
-              <height>131</height>
-             </rect>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QToolButton{
-Background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(226, 64, 64, 255), stop:0.446154 rgba(204, 0, 0, 255), stop:0.764103 rgba(225, 67, 67, 255), stop:1 rgba(249, 142, 142, 255));
-}</string>
-            </property>
-            <property name="text">
-             <string>...</string>
-            </property>
-           </widget>
-           <widget class="QToolButton" name="toolButton_4">
-            <property name="geometry">
-             <rect>
-              <x>1060</x>
-              <y>330</y>
-              <width>281</width>
-              <height>131</height>
-             </rect>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QToolButton{
-Background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(154, 231, 153, 255), stop:0.0974359 rgba(92, 243, 81, 255), stop:0.446154 rgba(52, 251, 35, 255), stop:1 rgba(154, 231, 153, 255));
-}</string>
-            </property>
-            <property name="text">
-             <string>...</string>
-            </property>
-           </widget>
           </widget>
          </widget>
         </item>
@@ -13580,7 +13485,7 @@ Background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -13590,9 +13495,9 @@ Background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb
             <property name="geometry">
              <rect>
               <x>7</x>
-              <y>27</y>
+              <y>31</y>
               <width>201</width>
-              <height>550</height>
+              <height>600</height>
              </rect>
             </property>
             <property name="sizePolicy">
@@ -13706,8 +13611,11 @@ border-radius: 6px;
              </item>
              <item>
               <layout class="QGridLayout" name="gridLayout_6">
-               <property name="spacing">
-                <number>2</number>
+               <property name="horizontalSpacing">
+                <number>0</number>
+               </property>
+               <property name="verticalSpacing">
+                <number>15</number>
                </property>
                <item row="1" column="2">
                 <widget class="ActionButton" name="x_plus_jogbutton">
@@ -14022,8 +13930,8 @@ border-radius: 6px;
            <widget class="QLabel" name="label_20">
             <property name="geometry">
              <rect>
-              <x>54</x>
-              <y>2</y>
+              <x>55</x>
+              <y>3</y>
               <width>150</width>
               <height>20</height>
              </rect>
@@ -14064,7 +13972,7 @@ font: 14pt &quot;Bebas Kai&quot;;
            <widget class="StatusLabel" name="statuslabel_29">
             <property name="geometry">
              <rect>
-              <x>210</x>
+              <x>215</x>
               <y>0</y>
               <width>35</width>
               <height>346</height>
@@ -14097,7 +14005,7 @@ font: 14pt &quot;Bebas Kai&quot;;
            <widget class="StatusLabel" name="statuslabel_30">
             <property name="geometry">
              <rect>
-              <x>210</x>
+              <x>214</x>
               <y>361</y>
               <width>35</width>
               <height>250</height>
@@ -14153,6 +14061,15 @@ font: 14pt &quot;Bebas Kai&quot;;
              </property>
              <item>
               <widget class="StatusLabel" name="statuslabel_13">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
                <property name="minimumSize">
                 <size>
                  <width>30</width>
@@ -14237,9 +14154,9 @@ font: 14pt &quot;Bebas Kai&quot;;
             </property>
             <property name="geometry">
              <rect>
-              <x>1</x>
+              <x>-3</x>
               <y>1</y>
-              <width>211</width>
+              <width>208</width>
               <height>24</height>
              </rect>
             </property>
