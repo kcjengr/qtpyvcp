@@ -127,7 +127,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>3</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -4333,13 +4333,13 @@ padding-right: 10px;
                <number>0</number>
               </property>
               <property name="topMargin">
-               <number>15</number>
+               <number>18</number>
               </property>
               <property name="rightMargin">
                <number>0</number>
               </property>
               <property name="bottomMargin">
-               <number>15</number>
+               <number>18</number>
               </property>
               <item>
                <widget class="QFrame" name="frame_37">
@@ -4351,13 +4351,13 @@ padding-right: 10px;
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>550</width>
+                  <width>520</width>
                   <height>500</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>550</width>
+                  <width>520</width>
                   <height>500</height>
                  </size>
                 </property>
@@ -4373,6 +4373,12 @@ border-radius: 6px;
                 <layout class="QVBoxLayout" name="verticalLayout_39">
                  <property name="spacing">
                   <number>6</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>5</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>5</number>
                  </property>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_47">
@@ -4637,13 +4643,13 @@ QHeaderView {
                       <bool>false</bool>
                      </attribute>
                      <attribute name="horizontalHeaderDefaultSectionSize">
-                      <number>84</number>
+                      <number>80</number>
                      </attribute>
                      <attribute name="horizontalHeaderHighlightSections">
                       <bool>false</bool>
                      </attribute>
                      <attribute name="horizontalHeaderMinimumSectionSize">
-                      <number>84</number>
+                      <number>81</number>
                      </attribute>
                      <attribute name="horizontalHeaderStretchLastSection">
                       <bool>true</bool>
@@ -4652,13 +4658,13 @@ QHeaderView {
                       <bool>false</bool>
                      </attribute>
                      <attribute name="verticalHeaderDefaultSectionSize">
-                      <number>41</number>
+                      <number>42</number>
                      </attribute>
                      <attribute name="verticalHeaderHighlightSections">
                       <bool>false</bool>
                      </attribute>
                      <attribute name="verticalHeaderMinimumSectionSize">
-                      <number>41</number>
+                      <number>42</number>
                      </attribute>
                      <attribute name="verticalHeaderStretchLastSection">
                       <bool>false</bool>
@@ -5600,13 +5606,13 @@ QHeaderView {
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>550</width>
+                  <width>520</width>
                   <height>40</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>550</width>
+                  <width>520</width>
                   <height>40</height>
                  </size>
                 </property>
@@ -5632,10 +5638,10 @@ QHeaderView {
                <number>0</number>
               </property>
               <property name="leftMargin">
-               <number>6</number>
+               <number>0</number>
               </property>
               <property name="rightMargin">
-               <number>6</number>
+               <number>0</number>
               </property>
               <property name="bottomMargin">
                <number>0</number>
@@ -5650,7 +5656,7 @@ QHeaderView {
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>650</width>
+                  <width>730</width>
                   <height>560</height>
                  </size>
                 </property>
@@ -5674,6 +5680,12 @@ border-radius: 6px;
                  <property name="spacing">
                   <number>15</number>
                  </property>
+                 <property name="topMargin">
+                  <number>5</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>9</number>
+                 </property>
                  <item>
                   <layout class="QGridLayout" name="gridLayout_12">
                    <property name="sizeConstraint">
@@ -5682,8 +5694,11 @@ border-radius: 6px;
                    <property name="topMargin">
                     <number>5</number>
                    </property>
-                   <property name="spacing">
-                    <number>15</number>
+                   <property name="horizontalSpacing">
+                    <number>40</number>
+                   </property>
+                   <property name="verticalSpacing">
+                    <number>12</number>
                    </property>
                    <item row="0" column="0" colspan="5">
                     <widget class="QLabel" name="machine_column_header_4">
@@ -5695,7 +5710,7 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>0</width>
+                       <width>705</width>
                        <height>55</height>
                       </size>
                      </property>
@@ -6123,16 +6138,25 @@ padding: -5px;
                     <enum>QFrame::Raised</enum>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_34">
+                    <property name="spacing">
+                     <number>5</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>10</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>11</number>
+                    </property>
                     <item>
                      <layout class="QHBoxLayout" name="horizontalLayout_7">
                       <property name="spacing">
-                       <number>14</number>
+                       <number>13</number>
                       </property>
                       <property name="leftMargin">
-                       <number>1</number>
+                       <number>0</number>
                       </property>
                       <property name="rightMargin">
-                       <number>1</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <widget class="QLabel" name="axis_column_header_9">
@@ -6144,13 +6168,13 @@ padding: -5px;
                         </property>
                         <property name="minimumSize">
                          <size>
-                          <width>55</width>
+                          <width>50</width>
                           <height>50</height>
                          </size>
                         </property>
                         <property name="maximumSize">
                          <size>
-                          <width>55</width>
+                          <width>50</width>
                           <height>50</height>
                          </size>
                         </property>
@@ -6186,13 +6210,13 @@ padding: -5px;
                         </property>
                         <property name="minimumSize">
                          <size>
-                          <width>50</width>
+                          <width>40</width>
                           <height>50</height>
                          </size>
                         </property>
                         <property name="maximumSize">
                          <size>
-                          <width>50</width>
+                          <width>40</width>
                           <height>50</height>
                          </size>
                         </property>
@@ -6228,7 +6252,7 @@ padding: -5px;
                         </property>
                         <property name="minimumSize">
                          <size>
-                          <width>85</width>
+                          <width>88</width>
                           <height>50</height>
                          </size>
                         </property>
@@ -6313,7 +6337,7 @@ COORDS</string>
                         </property>
                         <property name="minimumSize">
                          <size>
-                          <width>85</width>
+                          <width>60</width>
                           <height>50</height>
                          </size>
                         </property>
@@ -6347,6 +6371,49 @@ OFFSET</string>
                        </widget>
                       </item>
                       <item>
+                       <widget class="QLabel" name="ref_coilumn_header_5">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>65</width>
+                          <height>50</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>16777215</width>
+                          <height>50</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
+    border-style: none;
+    border-color: none;
+    border-width: 0px;
+    border-radius: 0px;
+    color: rgb(238, 238, 236);
+    background: transparent;
+	font: 16pt &quot;Bebas Kai&quot;;
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>G52
+OFFSET</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
                        <widget class="QLabel" name="ref_coilumn_header_4">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -6356,7 +6423,7 @@ OFFSET</string>
                         </property>
                         <property name="minimumSize">
                          <size>
-                          <width>85</width>
+                          <width>65</width>
                           <height>50</height>
                          </size>
                         </property>
@@ -6399,7 +6466,7 @@ OFFSET</string>
                         </property>
                         <property name="minimumSize">
                          <size>
-                          <width>85</width>
+                          <width>65</width>
                           <height>50</height>
                          </size>
                         </property>
@@ -6470,10 +6537,16 @@ OFFSET</string>
                        <property name="enabled">
                         <bool>false</bool>
                        </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>50</width>
+                         <height>38</height>
+                        </size>
+                       </property>
                        <property name="maximumSize">
                         <size>
-                         <width>55</width>
-                         <height>35</height>
+                         <width>50</width>
+                         <height>38</height>
                         </size>
                        </property>
                        <property name="styleSheet">
@@ -6515,13 +6588,13 @@ OFFSET</string>
                        </property>
                        <property name="minimumSize">
                         <size>
-                         <width>50</width>
+                         <width>40</width>
                          <height>35</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>50</width>
+                         <width>40</width>
                          <height>35</height>
                         </size>
                        </property>
@@ -6608,6 +6681,27 @@ OFFSET</string>
                       </widget>
                      </item>
                      <item>
+                      <widget class="StatusLabel" name="statuslabel_75">
+                       <property name="styleSheet">
+                        <string notr="true">StatusLabel{
+    border-style: transparant;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                       <property name="rules" stdset="0">
+                        <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
                       <widget class="StatusLabel" name="statuslabel_53">
                        <property name="styleSheet">
                         <string notr="true">StatusLabel{
@@ -6667,10 +6761,16 @@ OFFSET</string>
                        <property name="enabled">
                         <bool>false</bool>
                        </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>50</width>
+                         <height>38</height>
+                        </size>
+                       </property>
                        <property name="maximumSize">
                         <size>
-                         <width>55</width>
-                         <height>35</height>
+                         <width>50</width>
+                         <height>38</height>
                         </size>
                        </property>
                        <property name="styleSheet">
@@ -6706,13 +6806,13 @@ OFFSET</string>
                       <widget class="QLabel" name="axis_column_header_12">
                        <property name="minimumSize">
                         <size>
-                         <width>50</width>
+                         <width>40</width>
                          <height>35</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>50</width>
+                         <width>40</width>
                          <height>35</height>
                         </size>
                        </property>
@@ -6799,6 +6899,27 @@ OFFSET</string>
                       </widget>
                      </item>
                      <item>
+                      <widget class="StatusLabel" name="statuslabel_76">
+                       <property name="styleSheet">
+                        <string notr="true">StatusLabel{
+    border-style: transparant;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                       <property name="rules" stdset="0">
+                        <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
                       <widget class="StatusLabel" name="statuslabel_58">
                        <property name="styleSheet">
                         <string notr="true">StatusLabel{
@@ -6858,10 +6979,16 @@ OFFSET</string>
                        <property name="enabled">
                         <bool>false</bool>
                        </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>50</width>
+                         <height>38</height>
+                        </size>
+                       </property>
                        <property name="maximumSize">
                         <size>
-                         <width>55</width>
-                         <height>35</height>
+                         <width>50</width>
+                         <height>38</height>
                         </size>
                        </property>
                        <property name="styleSheet">
@@ -6897,13 +7024,13 @@ OFFSET</string>
                       <widget class="QLabel" name="axis_column_header_13">
                        <property name="minimumSize">
                         <size>
-                         <width>50</width>
+                         <width>40</width>
                          <height>35</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>50</width>
+                         <width>40</width>
                          <height>35</height>
                         </size>
                        </property>
@@ -6990,6 +7117,27 @@ OFFSET</string>
                       </widget>
                      </item>
                      <item>
+                      <widget class="StatusLabel" name="statuslabel_77">
+                       <property name="styleSheet">
+                        <string notr="true">StatusLabel{
+    border-style: transparant;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                       <property name="rules" stdset="0">
+                        <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
                       <widget class="StatusLabel" name="statuslabel_63">
                        <property name="styleSheet">
                         <string notr="true">StatusLabel{
@@ -7049,10 +7197,16 @@ OFFSET</string>
                        <property name="enabled">
                         <bool>false</bool>
                        </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>50</width>
+                         <height>38</height>
+                        </size>
+                       </property>
                        <property name="maximumSize">
                         <size>
-                         <width>55</width>
-                         <height>35</height>
+                         <width>50</width>
+                         <height>38</height>
                         </size>
                        </property>
                        <property name="styleSheet">
@@ -7087,13 +7241,13 @@ OFFSET</string>
                       <widget class="QLabel" name="axis_column_header_14">
                        <property name="minimumSize">
                         <size>
-                         <width>50</width>
+                         <width>40</width>
                          <height>35</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>50</width>
+                         <width>40</width>
                          <height>35</height>
                         </size>
                        </property>
@@ -7180,6 +7334,27 @@ OFFSET</string>
                       </widget>
                      </item>
                      <item>
+                      <widget class="StatusLabel" name="statuslabel_78">
+                       <property name="styleSheet">
+                        <string notr="true">StatusLabel{
+    border-style: transparant;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                       <property name="rules" stdset="0">
+                        <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
                       <widget class="StatusLabel" name="statuslabel_68">
                        <property name="styleSheet">
                         <string notr="true">StatusLabel{
@@ -7239,10 +7414,16 @@ OFFSET</string>
                        <property name="enabled">
                         <bool>false</bool>
                        </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>50</width>
+                         <height>38</height>
+                        </size>
+                       </property>
                        <property name="maximumSize">
                         <size>
-                         <width>55</width>
-                         <height>35</height>
+                         <width>50</width>
+                         <height>38</height>
                         </size>
                        </property>
                        <property name="styleSheet">
@@ -7278,13 +7459,13 @@ OFFSET</string>
                       <widget class="QLabel" name="axis_column_header_15">
                        <property name="minimumSize">
                         <size>
-                         <width>50</width>
+                         <width>40</width>
                          <height>35</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>50</width>
+                         <width>40</width>
                          <height>35</height>
                         </size>
                        </property>
@@ -7367,6 +7548,27 @@ OFFSET</string>
                        </property>
                        <property name="rules" stdset="0">
                         <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="StatusLabel" name="statuslabel_79">
+                       <property name="styleSheet">
+                        <string notr="true">StatusLabel{
+    border-style: transparant;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: rgb(235, 235, 235);
+	font: 17pt &quot;Bebas Kai&quot;;
+}</string>
+                       </property>
+                       <property name="alignment">
+                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                       <property name="rules" stdset="0">
+                        <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                        </property>
                       </widget>
                      </item>
@@ -7459,7 +7661,7 @@ border-radius: 6px;
                  <property name="geometry">
                   <rect>
                    <x>120</x>
-                   <y>270</y>
+                   <y>250</y>
                    <width>200</width>
                    <height>167</height>
                   </rect>
@@ -7478,7 +7680,7 @@ border-radius: 6px;
                  <property name="geometry">
                   <rect>
                    <x>61</x>
-                   <y>30</y>
+                   <y>0</y>
                    <width>140</width>
                    <height>231</height>
                   </rect>
@@ -7497,21 +7699,21 @@ border-radius: 6px;
                  <property name="geometry">
                   <rect>
                    <x>2</x>
-                   <y>450</y>
+                   <y>440</y>
                    <width>340</width>
-                   <height>110</height>
+                   <height>120</height>
                   </rect>
                  </property>
                  <property name="minimumSize">
                   <size>
                    <width>340</width>
-                   <height>110</height>
+                   <height>120</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
                    <width>330</width>
-                   <height>110</height>
+                   <height>120</height>
                   </size>
                  </property>
                  <property name="styleSheet">
@@ -7530,12 +7732,12 @@ border-radius: 6px;
                     <x>10</x>
                     <y>12</y>
                     <width>321</width>
-                    <height>89</height>
+                    <height>93</height>
                    </rect>
                   </property>
                   <layout class="QVBoxLayout" name="verticalLayout_13">
                    <property name="spacing">
-                    <number>8</number>
+                    <number>12</number>
                    </property>
                    <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_22">
@@ -13485,7 +13687,7 @@ Background:transparent;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
