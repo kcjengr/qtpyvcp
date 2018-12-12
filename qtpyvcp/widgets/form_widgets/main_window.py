@@ -3,26 +3,24 @@
 
 import os
 import sys
-import time
 
 from qtpy import uic
 from qtpy.QtCore import Qt, Slot, Property, QTimer
 from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, QMenu, QMenuBar, QLineEdit
 
+from qtpyvcp import actions
 from qtpyvcp.utilities import logger
-LOG = logger.getLogger(__name__)
-
-from qtpyvcp.plugins import getPlugin
-STATUS = getPlugin('status')
-
 from qtpyvcp.core import Prefs, Info
+from qtpyvcp.lib.types import DotDict
+from qtpyvcp.widgets.dialogs import showDialog
+from qtpyvcp.plugins import getPluginFromProtocol
+from qtpyvcp.vcp_launcher import _initialize_object_from_dict
+
+LOG = logger.getLogger(__name__)
+STATUS = getPluginFromProtocol('status')
 PREFS = Prefs()
 INFO = Info()
 
-from qtpyvcp import actions
-
-from qtpyvcp.lib.types import DotDict
-from qtpyvcp.widgets.dialogs.open_file_dialog import OpenFileDialog
 
 class VCPMainWindow(QMainWindow):
 
@@ -41,7 +39,6 @@ class VCPMainWindow(QMainWindow):
         # Variables
         self.recent_file_actions = []
         self.actions = []
-        self.open_file_dialog = OpenFileDialog(self)
 
         # Load the UI file AFTER defining variables, otherwise the values
         # set in QtDesigner get overridden by the default values
@@ -61,7 +58,8 @@ class VCPMainWindow(QMainWindow):
         if opts.fullscreen:
             QTimer.singleShot(0, self.showFullScreen)
 
-        # self.buildMenu(menu)
+        if menu is not None:
+            self.setMenuBar(self.buildMenuBar(menu))
 
         # QShortcut(QKeySequence("t"), self, self.test)
         self.app.focusChanged.connect(self.focusChangedEvent)
@@ -86,57 +84,53 @@ class VCPMainWindow(QMainWindow):
         with open(stylesheet, 'r') as fh:
             self.setStyleSheet(fh.read())
 
+    def buildMenuBar(self, menus):
+        """Recursively build menu bar.
 
-    def buildMenu(self, menus):
+        Args:
+            menus (list) : List of dicts and lists containing the
+                items to add to the menu.
 
-        menu_bar = QMenuBar(self)
-        self.setMenuBar(menu_bar)
+        Returns:
+            QMenuBar
+        """
 
-        def addItems(menu, items):
-            # print "In addItems to menu ", menu.title(), type(items)
+        def recursiveAddItems(menu, items):
+
             for item in items:
-                # print item
+
                 if item == 'separator':
                     menu.addSeparator()
+                    continue
 
-                elif item.get('items') is not None:
-                    # print "Adding sub menu: ", item['title']
-                    new_menu = QMenu(parent=self, title=item.get('title'))
-                    addItems(new_menu, item['items'])
+                title = item.get('title')
+                items = item.get('items')
+                provider = item.get('provider')
+
+                if items is not None:
+                    new_menu = QMenu(parent=self, title=title)
+                    recursiveAddItems(new_menu, items)
                     menu.addMenu(new_menu)
 
-                elif item.get('provider') is not None:
-                    # print "Adding menu from provider: ", item
-                    from qtpyvcp.vcp_launcher import _initialize_object_from_dict
+                elif provider is not None:
                     new_menu = _initialize_object_from_dict(item)
-                    new_menu.setTitle(item.get('title'))
+                    new_menu.setTitle(title)
                     menu.addMenu(new_menu)
+
                 else:
                     # print "Adding action: ", item['title']
                     act = QAction(parent=self, text=item.get('title', 'Not Set'))
                     act.setShortcut(item.get('shortcut', ''))
                     menu.addAction(act)
 
-        addItems(menu_bar, menus)
+        menu_bar = QMenuBar(self)
+        recursiveAddItems(menu_bar, menus)
+        return menu_bar
 
     def initUi(self):
         STATUS.init_ui.emit()
         self.loadSplashGcode()
         self.initHomingMenu()
-
-        s = time.time()
-
-        # menus = self.findChildren(QMenu)
-        # for menu in menus:
-        #     menu_actions = menu.actions()
-        #     for menu_action in menu_actions:
-        #         if menu_action.isSeparator():
-        #             continue
-        #         action_name = menu_action.property('actionName')
-        #         if action_name:
-        #             actions.bindWidget(menu_action, action_name)
-
-        print "action time ", time.time() - s
 
     def closeEvent(self, event):
         """Catch close event and show confirmation dialog."""
@@ -207,12 +201,8 @@ class VCPMainWindow(QMainWindow):
     #==========================================================================
     # File menu
     @Slot()
-    def on_actionOpen_triggered(self):
-        self.open_file_dialog.show()
-
-    @Slot()
-    def on_actionExit_triggered(self):
-        self.close()
+    def openFile(self):
+        showDialog('open_file')
 
 #==============================================================================
 # menu functions

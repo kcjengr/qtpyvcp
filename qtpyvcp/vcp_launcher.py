@@ -64,10 +64,6 @@ def load_vcp(opts):
             elif ext == '.ui':
                 _load_vcp_from_ui_file(vcp_path, opts)
 
-            # elif ext == '.py':
-            #     LOG.info("Loading VCP from PY file: yellow<{}>".format(vcp))
-            #     raise NotImplemented
-
         elif os.path.isdir(vcp_path):
             LOG.info("VCP is a directory")
             # TODO: Load from a directory if it has a __main__.py entry point
@@ -137,14 +133,12 @@ def _initialize_object_from_dict(object_dict):
 def loadWindows(windows):
     for window_id, window_dict in windows.items():
 
-        inst = _initialize_object_from_dict(window_dict)
-        qtpyvcp.WINDOWS[window_id] = inst
-
-        inst.buildMenu(window_dict.get('menu'))
+        window = _initialize_object_from_dict(window_dict)
+        qtpyvcp.WINDOWS[window_id] = window
 
         # show the window by default
         if window_dict.get('show', True):
-            inst.show()
+            window.show()
 
 
 def loadDialogs(dialogs):

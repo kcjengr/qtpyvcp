@@ -32,38 +32,37 @@ windows:
     kwargs:
       ui_file: {{ file.dir }}/mini.ui  # ui file to load the window from
       title: ( vcp.name ) ( vcp.version ) on {{ ini.machine.name }}
+      menu:
+        - title: File
+          items:
+          - title: "&Open ..."
+            action: file.open
+            shortcut: ctrl+o
 
-    menu:
-      - title: File
-        items:
-        - title: "&Open ..."
-          action: file.open
-          shortcut: ctrl+o
+          - title: "&Recent Files"
+            provider: qtpyvcp.widgets.recent_files_menu:RecentFilesMenu
 
-        - title: "&Recent Files"
-          provider: qtpyvcp.widgets.recent_files_menu:RecentFilesMenu
+          - title: "&Reload"
+            action: file.reload
 
-        - title: "&Reload"
-          action: file.reload
+          - title: "&Close"
+            action: file.close
 
-        - title: "&Close"
-          action: file.close
+          - title: "Save &As"
+            action: file.save_as
+            shortcut: esc
 
-        - title: "Save &As"
-          action: file.save_as
-          shortcut: esc
+          - separator
 
-        - separator
+          - title: Exit
+            action: app.exit
+            shortcut: ctrl+q
 
-        - title: Exit
-          action: app.exit
-          shortcut: ctrl+q
-
-      - title: Machine
-        items:
-        - title: Home &All
-          action: qtpyvcp.actions.machine:home
-          args: all
+        - title: Machine
+          items:
+          - title: Home &All
+            action: qtpyvcp.actions.machine:home
+            args: all
 
 
 
