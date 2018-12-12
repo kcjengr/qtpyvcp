@@ -56,10 +56,11 @@ setup(
     entry_points={
         'console_scripts': [
             'qtpyvcp=qtpyvcp.__main__',
-            'qcompile=qtpyvcp.tools.qcompile:main',
             'mini=examples.mini.__main__',
             'brender=examples.brender.__main__',
-            'probebasic=examples.probe_basic.__main__'
+            'probebasic=examples.probe_basic.__main__',
+            'qcompile=qtpyvcp.tools.qcompile:main',
+            'editvcp=qtpyvcp.tools.editvcp:main',
         ],
         'qtpyvcp.example_vcp': [
             'mini=examples.mini',

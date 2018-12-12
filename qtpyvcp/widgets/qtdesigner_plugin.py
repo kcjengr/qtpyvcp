@@ -16,13 +16,18 @@ if qtpy.API != 'pyqt5':
 
 os.environ['DESIGNER'] = 'true'
 
-from qtpyvcp.utilities.config_loader import load_config_files_from_env
-config = load_config_files_from_env()
+from qtpyvcp.utilities.logger import initBaseLogger
+LOG = initBaseLogger("qtpyvcp-designer",
+                     log_level=os.getenv('QTPYVCP_LOG_LEVEL'),
+                     log_file=os.getenv('QTPYVCP_LOG_FILE') or
+                              os.path.expanduser('~/qtpyvcp-designer.log'))
 
-print config
+from qtpyvcp import CONFIG
+from qtpyvcp.utilities.config_loader import load_config_files_from_env
+CONFIG.update(load_config_files_from_env())
 
 from qtpyvcp.plugins import loadDataPlugins
-loadDataPlugins(config['data_plugins'])
+loadDataPlugins(CONFIG['data_plugins'])
 
 from qtpyvcp.widgets.form_widgets.designer_plugins import *
 from qtpyvcp.widgets.button_widgets.designer_plugins import *
