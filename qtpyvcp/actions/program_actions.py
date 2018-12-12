@@ -34,6 +34,9 @@ def load(fname, add_to_recents=True):
     if add_to_recents:
         addToRecents(fname)
 
+load.ok = lambda *args, **kwargs: True
+load.bindOk = lambda *args, **kwargs: True
+
 def reload():
     LOG.error('Reload not implemented yet.')
 
