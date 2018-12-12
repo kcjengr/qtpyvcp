@@ -49,7 +49,7 @@ def getLogger(name):
     if BASE_LOGGER_NAME is None:
         initBaseLogger('qtpyvcp')
     name = '{1}'.format(BASE_LOGGER_NAME, name)
-    return logging.getLogger(name)
+    return logging.getLogger(name.replace('qtpyvcp', BASE_LOGGER_NAME))
 
 # Set global logging level
 def setGlobalLevel(level_str):
@@ -70,7 +70,7 @@ def initBaseLogger(name, log_file=None, log_level="DEBUG"):
 
     BASE_LOGGER_NAME = name
 
-    log_file = normalizePath(log_file, CONFIG_DIR) or DEFAULT_LOG_FILE
+    log_file = normalizePath(log_file, CONFIG_DIR or os.getenv('HOME')) or DEFAULT_LOG_FILE
 
     # Clear the previous sessions log file
     with open(log_file, 'w') as fh:
