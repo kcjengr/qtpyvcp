@@ -1,6 +1,6 @@
 qtdesigner:
-  ui_file: "{{ windows['mainwindow']['kwargs']['ui_file'] }}"
-  qss_file: "{{ application['kwargs']['stylesheet'] }}"
+  ui_file: ( windows.mainwindow.kwargs.ui_file )
+  qss_file: ( windows.mainwindow.kwargs.stylesheet )
 
 vcp:
   name: Brender
@@ -22,8 +22,5 @@ windows:
   mainwindow:
     provider: brender:MainWindow
     kwargs:
-      ui_file: $YAML_DIR$/ui/brender.ui
-
-application:
-  kwargs:
-    stylesheet: $YAML_DIR$/resources/brender.qss
+      ui_file: {{ file.dir }}/ui/brender.ui
+      stylesheet: {{ file.dir }}/resources/brender.qss

@@ -1,6 +1,6 @@
 qtdesigner:
   ui_file: ( windows.mainwindow.kwargs.ui_file )
-  qss_file: ( application.kwargs.stylesheet )
+#  qss_file: ( application.kwargs.stylesheet )
 
 vcp:
   name: Mini
@@ -30,27 +30,31 @@ windows:
   mainwindow:
     provider: mini:MiniVCP
     kwargs:
-      ui_file: {{ file.dir }}/mini.ui  # ui file to load the window from
       title: ( vcp.name ) ( vcp.version ) on {{ ini.machine.name }}
+      ui_file: {{ file.dir }}/mini.ui  # ui file to load the window from
+      confirm_exit: no
+
+      # Window Menu Bar items
       menu:
+
+        # File Menu
         - title: File
           items:
           - title: "&Open ..."
-            action: file.open
+            action: win.openFile
             shortcut: ctrl+o
 
           - title: "&Recent Files"
             provider: qtpyvcp.widgets.recent_files_menu:RecentFilesMenu
 
           - title: "&Reload"
-            action: file.reload
+            action:
 
           - title: "&Close"
-            action: file.close
+            action: program.load:/home/kurt/dev/cnc/qtpyvcp/sim/example_gcode/blank.ngc
 
           - title: "Save &As"
-            action: file.save_as
-            shortcut: esc
+            action:
 
           - separator
 
@@ -58,13 +62,17 @@ windows:
             action: app.exit
             shortcut: ctrl+q
 
+        # Machine Menu
         - title: Machine
           items:
+          - title: Toggle E-Stop
+            action: machine.estop.toggle
+
+          - title: Toggle Power
+            action: machine.power.toggle
+
           - title: Home &All
-            action: qtpyvcp.actions.machine:home
-            args: all
-
-
+            action: machine.home.all
 
 #  secondarywindow:
 #    provider: qtpy.QtWidgets:QWidget
