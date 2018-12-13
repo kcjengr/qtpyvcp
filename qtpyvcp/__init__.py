@@ -1,7 +1,9 @@
 import os
+from ._version import get_versions
 from qtpyvcp.lib.types import DotDict
 
-__version__ = '0.0.1'
+__version__ = get_versions()['version']
+del get_versions
 
 QTPYVCP_DIR = os.path.abspath(os.path.dirname(__file__))
 TOP_DIR = os.path.dirname(QTPYVCP_DIR)
