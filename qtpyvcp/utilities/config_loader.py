@@ -45,12 +45,12 @@ def load_config_files(*files):
     return cfg_dict
 
 
-def expand_vars(file):
+def expand_vars(fname):
 
-    file_dir = os.path.dirname(file)
+    file_dir = os.path.dirname(os.path.abspath(fname))
 
     # Read in the file
-    with open(file, 'r') as fh:
+    with open(fname, 'r') as fh:
         filedata = fh.read()
 
     # Replace the target string
