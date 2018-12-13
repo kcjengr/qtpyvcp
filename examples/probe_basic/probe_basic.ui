@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1920</width>
-    <height>1080</height>
+    <height>1083</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -77,6 +77,33 @@ bottom-margin: 0px;
           <property name="palette">
            <palette>
             <active>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>129</red>
+                <green>133</green>
+                <blue>132</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>129</red>
+                <green>133</green>
+                <blue>132</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>129</red>
+                <green>133</green>
+                <blue>132</blue>
+               </color>
+              </brush>
+             </colorrole>
              <colorrole role="Highlight">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
@@ -88,6 +115,33 @@ bottom-margin: 0px;
              </colorrole>
             </active>
             <inactive>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>129</red>
+                <green>133</green>
+                <blue>132</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>129</red>
+                <green>133</green>
+                <blue>132</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>129</red>
+                <green>133</green>
+                <blue>132</blue>
+               </color>
+              </brush>
+             </colorrole>
              <colorrole role="Highlight">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
@@ -99,6 +153,33 @@ bottom-margin: 0px;
              </colorrole>
             </inactive>
             <disabled>
+             <colorrole role="Button">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>129</red>
+                <green>133</green>
+                <blue>132</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Base">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>129</red>
+                <green>133</green>
+                <blue>132</blue>
+               </color>
+              </brush>
+             </colorrole>
+             <colorrole role="Window">
+              <brush brushstyle="SolidPattern">
+               <color alpha="255">
+                <red>129</red>
+                <green>133</green>
+                <blue>132</blue>
+               </color>
+              </brush>
+             </colorrole>
              <colorrole role="Highlight">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
@@ -6371,49 +6452,6 @@ OFFSET</string>
                        </widget>
                       </item>
                       <item>
-                       <widget class="QLabel" name="ref_coilumn_header_5">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>65</width>
-                          <height>50</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>16777215</width>
-                          <height>50</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">QLabel{
-    border-style: none;
-    border-color: none;
-    border-width: 0px;
-    border-radius: 0px;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
-                        </property>
-                        <property name="text">
-                         <string>G52
-OFFSET</string>
-                        </property>
-                        <property name="alignment">
-                         <set>Qt::AlignCenter</set>
-                        </property>
-                        <property name="wordWrap">
-                         <bool>true</bool>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
                        <widget class="QLabel" name="ref_coilumn_header_4">
                         <property name="sizePolicy">
                          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -6445,7 +6483,7 @@ OFFSET</string>
 }</string>
                         </property>
                         <property name="text">
-                         <string>G92
+                         <string>G52/G92
 OFFSET</string>
                         </property>
                         <property name="alignment">
@@ -6681,27 +6719,6 @@ OFFSET</string>
                       </widget>
                      </item>
                      <item>
-                      <widget class="StatusLabel" name="statuslabel_75">
-                       <property name="styleSheet">
-                        <string notr="true">StatusLabel{
-    border-style: transparant;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="rules" stdset="0">
-                        <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
                       <widget class="StatusLabel" name="statuslabel_53">
                        <property name="styleSheet">
                         <string notr="true">StatusLabel{
@@ -6895,27 +6912,6 @@ OFFSET</string>
                        </property>
                        <property name="rules" stdset="0">
                         <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g5x_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="StatusLabel" name="statuslabel_76">
-                       <property name="styleSheet">
-                        <string notr="true">StatusLabel{
-    border-style: transparant;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="rules" stdset="0">
-                        <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                        </property>
                       </widget>
                      </item>
@@ -7117,27 +7113,6 @@ OFFSET</string>
                       </widget>
                      </item>
                      <item>
-                      <widget class="StatusLabel" name="statuslabel_77">
-                       <property name="styleSheet">
-                        <string notr="true">StatusLabel{
-    border-style: transparant;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="rules" stdset="0">
-                        <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
                       <widget class="StatusLabel" name="statuslabel_63">
                        <property name="styleSheet">
                         <string notr="true">StatusLabel{
@@ -7330,27 +7305,6 @@ OFFSET</string>
                        </property>
                        <property name="rules" stdset="0">
                         <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="StatusLabel" name="statuslabel_78">
-                       <property name="styleSheet">
-                        <string notr="true">StatusLabel{
-    border-style: transparant;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="rules" stdset="0">
-                        <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                        </property>
                       </widget>
                      </item>
@@ -7548,27 +7502,6 @@ OFFSET</string>
                        </property>
                        <property name="rules" stdset="0">
                         <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="StatusLabel" name="statuslabel_79">
-                       <property name="styleSheet">
-                        <string notr="true">StatusLabel{
-    border-style: transparant;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                       </property>
-                       <property name="alignment">
-                        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                       </property>
-                       <property name="rules" stdset="0">
-                        <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;tuple&quot;, &quot;url&quot;: &quot;status:g92_offset&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                        </property>
                       </widget>
                      </item>
@@ -18911,7 +18844,7 @@ border-radius: 4px;
 }</string>
            </property>
            <property name="maximum">
-            <number>200</number>
+            <number>100</number>
            </property>
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
