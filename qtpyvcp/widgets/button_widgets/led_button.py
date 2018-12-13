@@ -11,6 +11,8 @@ from qtpyvcp.widgets.base_widgets.led_widget import LEDWidget
 
 class LEDButton(ActionButton):
 
+    DEFAULT_RULE_PROPERTY = 'Enable'
+
     RULE_PROPERTIES = {
         'Enable': ['setEnabled', bool],
         'Visible': ['setVisible', bool],
