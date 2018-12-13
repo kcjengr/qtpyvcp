@@ -213,9 +213,11 @@ def _set_work_coord_bindOk(coord='', widget=None):
     _issue_mdi_bindOk(coord, widget=widget)
     if isinstance(widget, QComboBox):
         widget.setCurrentText(coord)
+        widget.setCurrentText(STATUS.g5x_index.to_str(STATUS.g5x_index.value))
         STATUS.g5x_index.onValueChanged(lambda wc: widget.setCurrentText(STATUS.g5x_index.to_str(wc)))
     else:
         widget.setCheckable(True)
+        widget.setChecked(STATUS.g5x_index.to_str(STATUS.g5x_index.value) == coord)
         STATUS.g5x_index.onValueChanged(lambda wc: widget.setChecked(STATUS.g5x_index.to_str(wc) == coord))
 
 set_work_coord.ok = _issue_mdi_ok
