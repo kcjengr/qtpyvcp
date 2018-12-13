@@ -14861,6 +14861,9 @@ border-radius: 1px;
              <property name="text">
               <string>POWER</string>
              </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
              <property name="actionName" stdset="0">
               <string>machine.power.toggle</string>
              </property>
@@ -15014,6 +15017,9 @@ border-radius: 1px;
              </property>
              <property name="text">
               <string>E-STOP</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
              <property name="actionName" stdset="0">
               <string>machine.estop.toggle</string>
