@@ -1,4 +1,5 @@
 import os
+import versioneer
 from setuptools import setup, find_packages
 
 with open("README.md", "r") as fh:
@@ -24,7 +25,7 @@ def data_files_from_dirs(data_dirs):
 
 setup(
     name="qtpyvcp",
-    version="0.0.1",
+    version=versioneer.get_version(),
     author="Kurt Jacobson",
     author_email="kcjengr@gmail.com",
     description="Qt and Python based Virtual Control Panel framework for LinuxCNC.",
