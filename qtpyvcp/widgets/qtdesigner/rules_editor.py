@@ -265,7 +265,8 @@ class RulesEditor(QtWidgets.QDialog):
         self.cmb_property.setCurrentText(prop)
         self.property_changed(0)
         self.txt_expression.setText(data.get('expression', ''))
-        self.txt_expression.setEnabled(self.available_properties[prop][1] is not None)
+        self.txt_expression.setEnabled(
+            self.available_properties.get(prop, ['None', None])[1] is not None)
 
 
         channels = data.get('channels', [])
