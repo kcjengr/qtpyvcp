@@ -7662,9 +7662,9 @@ border-radius: 6px;
                  <widget class="QWidget" name="verticalLayoutWidget_6">
                   <property name="geometry">
                    <rect>
-                    <x>10</x>
+                    <x>3</x>
                     <y>10</y>
-                    <width>321</width>
+                    <width>334</width>
                     <height>93</height>
                    </rect>
                   </property>
@@ -7727,7 +7727,7 @@ border-radius: 6px;
                    <item>
                     <layout class="QHBoxLayout" name="horizontalLayout_27">
                      <property name="spacing">
-                      <number>3</number>
+                      <number>2</number>
                      </property>
                      <item>
                       <widget class="QLabel" name="label_55">
@@ -7739,13 +7739,13 @@ border-radius: 6px;
                        </property>
                        <property name="minimumSize">
                         <size>
-                         <width>30</width>
+                         <width>23</width>
                          <height>33</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>30</width>
+                         <width>23</width>
                          <height>33</height>
                         </size>
                        </property>
@@ -7768,16 +7768,16 @@ padding-left: 5px;
                       </widget>
                      </item>
                      <item>
-                      <widget class="QLineEdit" name="diameter_hint_4">
+                      <widget class="StatusLabel" name="tool_length_2">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
+                         <horstretch>1</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
                        <property name="minimumSize">
                         <size>
-                         <width>70</width>
+                         <width>75</width>
                          <height>33</height>
                         </size>
                        </property>
@@ -7788,14 +7788,14 @@ padding-left: 5px;
                         </size>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">QLineEdit {
+                        <string notr="true">QLabel {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
     border-radius: 5px;
     color: black;
-    background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+    background: rgb(235, 235, 235);
+	font: 75 15pt &quot;Bebas Kai&quot;;
 }</string>
                        </property>
                        <property name="text">
@@ -7803,6 +7803,15 @@ padding-left: 5px;
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                       <property name="rules" stdset="0">
+                        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?z_offset&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.3f}\&quot;.format(ch[0]) if ch[1] == 'in' else \&quot;{:.4f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;Tool Length&quot;}]</string>
+                       </property>
+                       <property name="format" stdset="0">
+                        <string>{:.3f}</string>
+                       </property>
+                       <property name="statusItem" stdset="0">
+                        <string>tool_offset.3</string>
                        </property>
                       </widget>
                      </item>
@@ -7816,13 +7825,13 @@ padding-left: 5px;
                        </property>
                        <property name="minimumSize">
                         <size>
-                         <width>30</width>
+                         <width>23</width>
                          <height>33</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>30</width>
+                         <width>23</width>
                          <height>33</height>
                         </size>
                        </property>
@@ -7845,16 +7854,16 @@ padding-left: 5px;
                       </widget>
                      </item>
                      <item>
-                      <widget class="QLineEdit" name="x_hint_5">
+                      <widget class="StatusLabel" name="tool_length_4">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
+                         <horstretch>1</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
                        <property name="minimumSize">
                         <size>
-                         <width>70</width>
+                         <width>75</width>
                          <height>33</height>
                         </size>
                        </property>
@@ -7865,14 +7874,14 @@ padding-left: 5px;
                         </size>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">QLineEdit {
+                        <string notr="true">QLabel {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
     border-radius: 5px;
     color: black;
-    background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+    background: rgb(235, 235, 235);
+	font: 75 15pt &quot;Bebas Kai&quot;;
 }</string>
                        </property>
                        <property name="text">
@@ -7880,6 +7889,15 @@ padding-left: 5px;
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                       <property name="rules" stdset="0">
+                        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?z_offset&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.3f}\&quot;.format(ch[0]) if ch[1] == 'in' else \&quot;{:.4f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;Tool Length&quot;}]</string>
+                       </property>
+                       <property name="format" stdset="0">
+                        <string>{:.3f}</string>
+                       </property>
+                       <property name="statusItem" stdset="0">
+                        <string>tool_offset.3</string>
                        </property>
                       </widget>
                      </item>
@@ -7893,13 +7911,13 @@ padding-left: 5px;
                        </property>
                        <property name="minimumSize">
                         <size>
-                         <width>30</width>
+                         <width>23</width>
                          <height>33</height>
                         </size>
                        </property>
                        <property name="maximumSize">
                         <size>
-                         <width>30</width>
+                         <width>23</width>
                          <height>33</height>
                         </size>
                        </property>
@@ -7922,16 +7940,16 @@ padding-left: 5px;
                       </widget>
                      </item>
                      <item>
-                      <widget class="QLineEdit" name="y_hint_5">
+                      <widget class="StatusLabel" name="tool_length_3">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
+                         <horstretch>1</horstretch>
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
                        <property name="minimumSize">
                         <size>
-                         <width>70</width>
+                         <width>75</width>
                          <height>33</height>
                         </size>
                        </property>
@@ -7942,14 +7960,14 @@ padding-left: 5px;
                         </size>
                        </property>
                        <property name="styleSheet">
-                        <string notr="true">QLineEdit {
+                        <string notr="true">QLabel {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
     border-radius: 5px;
     color: black;
-    background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+    background: rgb(235, 235, 235);
+	font: 75 15pt &quot;Bebas Kai&quot;;
 }</string>
                        </property>
                        <property name="text">
@@ -7957,6 +7975,15 @@ padding-left: 5px;
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                       </property>
+                       <property name="rules" stdset="0">
+                        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?z_offset&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.3f}\&quot;.format(ch[0]) if ch[1] == 'in' else \&quot;{:.4f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;Tool Length&quot;}]</string>
+                       </property>
+                       <property name="format" stdset="0">
+                        <string>{:.3f}</string>
+                       </property>
+                       <property name="statusItem" stdset="0">
+                        <string>tool_offset.3</string>
                        </property>
                       </widget>
                      </item>
@@ -13619,7 +13646,7 @@ Background:transparent;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -15561,13 +15588,13 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>0.00</string>
+              <string>0.000</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?z_offset&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.3f}\&quot;.format(ch[0]) if ch[1] == 'in' else \&quot;{:.2f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;Tool Length&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?z_offset&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.3f}\&quot;.format(ch[0]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;Tool Length&quot;}]</string>
              </property>
              <property name="format" stdset="0">
               <string>{:.3f}</string>
