@@ -31,18 +31,25 @@ Command line tool to set up and launch QtDesigner for editing VCPs::
 
 import os
 import sys
+import linuxcnc
 import subprocess
 from pkg_resources import iter_entry_points
 
 from docopt import docopt
-
 from qtpy.QtWidgets import QApplication, QFileDialog
 
 from qtpyvcp.lib.types import DotDict
 from qtpyvcp.utilities.logger import initBaseLogger
 
-LOG = initBaseLogger('qtpyvcp', log_file=os.devnull, log_level='CRITICAL')
 
+if not linuxcnc.version.startswith('2.8'):
+    print "QtPyVCP only supports LinuxCNC 2.8, current version is", linuxcnc.version
+    print "If you have LinuxCNC installed as a RIP make sure you have\n" \
+          "activated the run-in-place environment by running:\n"
+    print "    $ . <linuxcnc-rip-dir>/scripts/rip-environment\n"
+    sys.exit()
+
+LOG = initBaseLogger('qtpyvcp', log_file=os.devnull, log_level='WARNING')
 
 def launch_designer(opts=DotDict()):
 
