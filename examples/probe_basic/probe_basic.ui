@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1920</width>
+    <width>1924</width>
     <height>1083</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+   <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
@@ -7663,7 +7663,7 @@ border-radius: 6px;
                   <property name="geometry">
                    <rect>
                     <x>10</x>
-                    <y>12</y>
+                    <y>10</y>
                     <width>321</width>
                     <height>93</height>
                    </rect>
@@ -7690,7 +7690,10 @@ border-radius: 6px;
                       <number>2</number>
                      </property>
                      <item>
-                      <widget class="ActionButton" name="m01_break_button_34">
+                      <widget class="MDIButton" name="set_tool_touch_off_position_button_2">
+                       <property name="enabled">
+                        <bool>false</bool>
+                       </property>
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                          <horstretch>0</horstretch>
@@ -7703,17 +7706,19 @@ border-radius: 6px;
                          <height>40</height>
                         </size>
                        </property>
-                       <property name="font">
-                        <font>
-                         <family>Bebas Kai</family>
-                         <pointsize>15</pointsize>
-                        </font>
-                       </property>
-                       <property name="focusPolicy">
-                        <enum>Qt::NoFocus</enum>
+                       <property name="styleSheet">
+                        <string notr="true">MDIButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
                        </property>
                        <property name="text">
-                        <string>SET TOOL TOUCH OFF POSITION </string>
+                        <string>SET TOOL TOUCH OFF POSITION</string>
+                       </property>
+                       <property name="rules" stdset="0">
+                        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:gcodes&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;None&quot;, &quot;expression&quot;: &quot;&quot;, &quot;name&quot;: &quot;set tool touch off position&quot;}]</string>
+                       </property>
+                       <property name="MDICommand" stdset="0">
+                        <string>G30.1</string>
                        </property>
                       </widget>
                      </item>
@@ -15428,9 +15433,12 @@ padding: -5px;
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_95">
            <item>
-            <widget class="ActionButton" name="go_to_g30_button">
+            <widget class="MDIButton" name="go_to_g30">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -15438,34 +15446,22 @@ padding: -5px;
              <property name="minimumSize">
               <size>
                <width>78</width>
-               <height>38</height>
+               <height>39</height>
               </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>38</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
              </property>
              <property name="styleSheet">
-              <string notr="true">QPushButton {
+              <string notr="true">MDIButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
              <property name="text">
               <string>GO TO G30</string>
              </property>
-             <property name="checkable">
-              <bool>true</bool>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:gcodes&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;None&quot;, &quot;expression&quot;: &quot;&quot;, &quot;name&quot;: &quot;go to g30&quot;}]</string>
              </property>
-             <property name="customText" stdset="0">
-              <string>GO TO G30</string>
-             </property>
-             <property name="option" stdset="0">
-              <bool>true</bool>
+             <property name="MDICommand" stdset="0">
+              <string>G30</string>
              </property>
             </widget>
            </item>
@@ -19972,7 +19968,7 @@ border-radius: 1px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1920</width>
+     <width>1924</width>
      <height>25</height>
     </rect>
    </property>
