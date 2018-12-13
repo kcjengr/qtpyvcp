@@ -207,9 +207,6 @@ bottom-margin: 0px;
           <property name="tabPosition">
            <enum>QTabWidget::South</enum>
           </property>
-          <property name="currentIndex">
-           <number>3</number>
-          </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
             <string>          MAIN          </string>
@@ -11392,9 +11389,6 @@ color: rgb(255, 255, 255);
               <property name="tabShape">
                <enum>QTabWidget::Rounded</enum>
               </property>
-              <property name="currentIndex">
-               <number>1</number>
-              </property>
               <property name="iconSize">
                <size>
                 <width>25</width>
@@ -13323,9 +13317,6 @@ Background:transparent;
                     <property name="tabPosition">
                      <enum>QTabWidget::South</enum>
                     </property>
-                    <property name="currentIndex">
-                     <number>5</number>
-                    </property>
                     <widget class="QWidget" name="tab_5">
                      <attribute name="title">
                       <string>     STEP OFF WIDTH     </string>
@@ -13618,9 +13609,6 @@ Background:transparent;
           </property>
           <property name="tabPosition">
            <enum>QTabWidget::South</enum>
-          </property>
-          <property name="currentIndex">
-           <number>1</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
