@@ -77,47 +77,47 @@ class CurrentTool(QtPyVCPDataChannel):
 
     @property
     def y_offset(self):
-        return self._value['X']
+        return self._value['Y']
 
     @property
     def z_offset(self):
-        return self._value['X']
+        return self._value['Z']
 
     @property
     def a_offset(self):
-        return self._value['X']
+        return self._value['A']
 
     @property
     def b_offset(self):
-        return self._value['X']
+        return self._value['B']
 
     @property
     def c_offset(self):
-        return self._value['X']
+        return self._value['C']
 
     @property
     def u_offset(self):
-        return self._value['X']
+        return self._value['U']
 
     @property
     def v_offset(self):
-        return self._value['X']
+        return self._value['V']
 
     @property
     def w_offset(self):
-        return self._value['X']
+        return self._value['W']
 
     @property
     def front_angle(self):
-        return self._value['X']
+        return self._value['I']
 
     @property
     def back_angle(self):
-        return self._value['X']
+        return self._value['J']
 
     @property
     def orientation(self):
-        return self._value['X']
+        return self._value['Q']
 
     @property
     def comment(self):
