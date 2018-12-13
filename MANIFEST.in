@@ -1,5 +1,2 @@
-recursive-include examples *.ui
-recursive-include qtpyvcp *.ui
-
-recursive-include examples *.qss
-recursive-include qtpyvcp *.qss
+recursive-include examples *.yml *.yaml *.ui *.qss *qrc
+recursive-include qtpyvcp *.yml *.yaml *.ui *.qss *qrc
