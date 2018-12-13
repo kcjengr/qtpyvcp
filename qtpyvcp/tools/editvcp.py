@@ -4,14 +4,14 @@
 Command line tool to set up and launch QtDesigner for editing VCPs::
 
  Usage:
-   editvcp [<file>] [--ui-file=PATH] [--qss-file=PATH] [--yaml-file=PATH]
+   editvcp [<vcp>] [--ui-file=PATH] [--qss-file=PATH] [--yaml-file=PATH]
            [--log-level=LEVEL] [--log-file=PATH]
    editvcp (-h | --help)
 
  File Options:
-   --file PATH        Path to either a YAML or UI file. If a YAML file
-                      will load any UI and QSS files specified in the
-                      qtdesigner section.
+   --vcp VCP          Name of an installed VCP, or a path to either a
+                      YAML or UI file. If a YAML file will load any UI
+                      and QSS files specified in the qtdesigner section.
    --ui-file PATH     Path to a UI file. Overrides any file specified in
                       the YAML config file.
    --qss-file PATH    Path to a QSS file. Overrides any file specified in
@@ -32,6 +32,7 @@ Command line tool to set up and launch QtDesigner for editing VCPs::
 import os
 import sys
 import subprocess
+from pkg_resources import iter_entry_points
 
 from docopt import docopt
 
@@ -45,7 +46,7 @@ LOG = initBaseLogger('qtpyvcp', log_file=os.devnull, log_level='CRITICAL')
 
 def launch_designer(opts=DotDict()):
 
-    if not opts.file and not opts.ui_file:
+    if not opts.vcp and not opts.ui_file:
         fname, _ = QFileDialog.getOpenFileName(
             parent=None,
             caption="Choose VCP to Edit in QtDesigner",
@@ -56,8 +57,21 @@ def launch_designer(opts=DotDict()):
             sys.exit()
 
     else:
-        fname = opts.file or opts.ui_file
+        fname = opts.vcp or opts.ui_file
 
+
+    if not '.' in fname or not '/' in fname:
+        entry_points = {}
+        for entry_point in iter_entry_points(group='qtpyvcp.example_vcp'):
+            entry_points[entry_point.name] = entry_point
+        for entry_point in iter_entry_points(group='qtpyvcp.vcp'):
+            entry_points[entry_point.name] = entry_point
+
+        try:
+            vcp = entry_points[fname.lower()].load()
+            fname = vcp.VCP_CONFIG_FILE
+        except KeyError:
+            pass
 
     cmd = ['designer']
     ext = os.path.splitext(fname)[1]
