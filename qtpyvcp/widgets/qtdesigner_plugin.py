@@ -18,9 +18,10 @@ os.environ['DESIGNER'] = 'true'
 
 from qtpyvcp.utilities.logger import initBaseLogger
 LOG = initBaseLogger("qtpyvcp-designer",
-                     log_level=os.getenv('QTPYVCP_LOG_LEVEL'),
-                     log_file=os.getenv('QTPYVCP_LOG_FILE') or
+                     log_level=os.getenv('QTPYVCP_LOG_LEVEL', 'ERROR'),
+                     log_file=os.getenv('QTPYVCP_LOG_FILE',
                               os.path.expanduser('~/qtpyvcp-designer.log'))
+                     )
 
 from qtpyvcp import CONFIG
 from qtpyvcp.utilities.config_loader import load_config_files_from_env
