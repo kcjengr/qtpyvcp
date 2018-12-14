@@ -55,12 +55,12 @@ O120 endif
 
 ;now we know which pocket the next tool is sitting in
 ;we need to know if we need to put a tool away
-;or if there is not tool in the spindle
+;or if there is no tool in the spindle
 
 
 O180 IF [#110 GT 0] ; checks if there is a valid tool in the spindle
     	O190 if [#<open_pocket> EQ 0] ;If there is a tool in the spindle, checks if there is an open pocket
-		(abort, carousel is full, cant put away tool in into carousel)
+		(abort, carousel is full, cant put away tool into carousel)
 	O190 endif
 
 	M10 P[#<open_pocket>] ; move carousel to an open pocket 

@@ -208,7 +208,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>4</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -3884,7 +3884,7 @@ padding-right: 10px;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="QLineEdit" name="lineEdit_4">
+                    <widget class="QLineEdit" name="load_spindle_tool_number">
                      <property name="enabled">
                       <bool>true</bool>
                      </property>
@@ -3920,10 +3920,16 @@ padding-right: 10px;
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
                      </property>
+                     <property name="placeholderText">
+                      <string>0</string>
+                     </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="ActionButton" name="m01_break_button_5">
+                    <widget class="MDIButton" name="load_current_tool">
+                     <property name="enabled">
+                      <bool>false</bool>
+                     </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>200</horstretch>
@@ -3942,16 +3948,25 @@ padding-right: 10px;
                        <height>45</height>
                       </size>
                      </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton {
+                      <string notr="true">MDIButton {
    	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
                       <string>LOAD SPINDLE</string>
+                     </property>
+                     <property name="checkable">
+                      <bool>false</bool>
+                     </property>
+                     <property name="autoExclusive">
+                      <bool>true</bool>
+                     </property>
+                     <property name="rules" stdset="0">
+                      <string>[]</string>
+                     </property>
+                     <property name="MDICommand" stdset="0">
+                      <string>M61 Q#&lt;load_spindle_tool_number&gt;</string>
                      </property>
                     </widget>
                    </item>
@@ -3978,46 +3993,10 @@ padding-right: 10px;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="QLineEdit" name="lineEdit_2">
+                    <widget class="MDIButton" name="remove_current_tool">
                      <property name="enabled">
-                      <bool>true</bool>
+                      <bool>false</bool>
                      </property>
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>200</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>130</width>
-                       <height>40</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>40</height>
-                      </size>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="ActionButton" name="m01_break_button_3">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                        <horstretch>200</horstretch>
@@ -4036,16 +4015,25 @@ padding-right: 10px;
                        <height>45</height>
                       </size>
                      </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton {
+                      <string notr="true">MDIButton {
    	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
-                      <string>REMOVE</string>
+                      <string>UNLOAD SPINDLE</string>
+                     </property>
+                     <property name="checkable">
+                      <bool>false</bool>
+                     </property>
+                     <property name="autoExclusive">
+                      <bool>true</bool>
+                     </property>
+                     <property name="rules" stdset="0">
+                      <string>[]</string>
+                     </property>
+                     <property name="MDICommand" stdset="0">
+                      <string>M61 Q0</string>
                      </property>
                     </widget>
                    </item>
@@ -4069,10 +4057,10 @@ padding-right: 10px;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="ActionButton" name="m01_break_button_16">
+                    <widget class="SubCallButton" name="subcallbutton_15">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                       <horstretch>1</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
@@ -4087,15 +4075,6 @@ padding-right: 10px;
                        <width>16777215</width>
                        <height>45</height>
                       </size>
-                     </property>
-                     <property name="sizeIncrement">
-                      <size>
-                       <width>0</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
                      </property>
                      <property name="styleSheet">
                       <string notr="true">QPushButton {
@@ -4115,13 +4094,16 @@ padding-right: 10px;
                        <height>20</height>
                       </size>
                      </property>
+                     <property name="sub_name" stdset="0">
+                      <string>m11.ngc</string>
+                     </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="ActionButton" name="atc_fwd">
+                    <widget class="SubCallButton" name="subcallbutton_4">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                       <horstretch>1</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
@@ -4137,21 +4119,19 @@ padding-right: 10px;
                        <height>45</height>
                       </size>
                      </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
                      <property name="layoutDirection">
                       <enum>Qt::RightToLeft</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">ActionButton {
+                      <string notr="true">SubCallButton {
     text-align: right;
-    padding-right: 30px;
-    font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+    padding-right: 28px;
+   	font: 16pt &quot;Bebas Kai&quot;;
+}
+</string>
                      </property>
                      <property name="text">
-                      <string>ATC FWD </string>
+                      <string> ATC FWD </string>
                      </property>
                      <property name="icon">
                       <iconset resource="probe_basic.qrc">
@@ -4162,6 +4142,9 @@ padding-right: 10px;
                        <width>20</width>
                        <height>20</height>
                       </size>
+                     </property>
+                     <property name="sub_name" stdset="0">
+                      <string>m12.ngc</string>
                      </property>
                     </widget>
                    </item>
@@ -4185,16 +4168,19 @@ padding-right: 10px;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="ActionButton" name="m01_break_button_21">
+                    <widget class="MDIButton" name="store_current_tool">
+                     <property name="enabled">
+                      <bool>false</bool>
+                     </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
+                       <horstretch>200</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>250</width>
+                       <width>130</width>
                        <height>45</height>
                       </size>
                      </property>
@@ -4204,16 +4190,25 @@ padding-right: 10px;
                        <height>45</height>
                       </size>
                      </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 16pt &quot;Bebas Kai&quot;;
+                      <string notr="true">MDIButton {
+   	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
                       <string>STORE CURRENT TOOL</string>
+                     </property>
+                     <property name="checkable">
+                      <bool>false</bool>
+                     </property>
+                     <property name="autoExclusive">
+                      <bool>true</bool>
+                     </property>
+                     <property name="rules" stdset="0">
+                      <string>[]</string>
+                     </property>
+                     <property name="MDICommand" stdset="0">
+                      <string>M6 T0</string>
                      </property>
                     </widget>
                    </item>
@@ -15236,13 +15231,13 @@ border-radius: 6px;
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>40</height>
+               <height>38</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>16777215</width>
-               <height>40</height>
+               <height>38</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -15256,26 +15251,23 @@ padding: -5px;
 }</string>
              </property>
              <property name="frameShape">
-              <enum>QFrame::NoFrame</enum>
+              <enum>QFrame::StyledPanel</enum>
              </property>
              <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
-             </property>
-             <property name="lineWidth">
-              <number>0</number>
+              <enum>QFrame::Raised</enum>
              </property>
              <layout class="QHBoxLayout" name="horizontalLayout_105">
               <property name="spacing">
-               <number>3</number>
+               <number>0</number>
               </property>
               <property name="leftMargin">
-               <number>7</number>
+               <number>0</number>
               </property>
               <property name="topMargin">
                <number>0</number>
               </property>
               <property name="rightMargin">
-               <number>7</number>
+               <number>1</number>
               </property>
               <property name="bottomMargin">
                <number>0</number>
@@ -15290,14 +15282,14 @@ padding: -5px;
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>30</width>
-                  <height>35</height>
+                  <width>15</width>
+                  <height>36</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>30</width>
-                  <height>35</height>
+                  <width>15</width>
+                  <height>36</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -15309,7 +15301,7 @@ padding: -5px;
 }</string>
                 </property>
                 <property name="text">
-                 <string>T#</string>
+                 <string>  T</string>
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
@@ -15329,14 +15321,14 @@ padding: -5px;
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>50</width>
-                  <height>32</height>
+                  <width>62</width>
+                  <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>50</width>
-                  <height>32</height>
+                  <width>62</width>
+                  <height>16777215</height>
                  </size>
                 </property>
                 <property name="palette">
@@ -15552,7 +15544,7 @@ padding: -5px;
             </widget>
            </item>
            <item>
-            <widget class="MDIButton" name="m6_g43_button">
+            <widget class="MDIButton" name="m6_button">
              <property name="minimumSize">
               <size>
                <width>70</width>
@@ -15571,10 +15563,10 @@ padding: -5px;
 }</string>
              </property>
              <property name="text">
-              <string>M6 G43</string>
+              <string>M6</string>
              </property>
              <property name="MDICommand" stdset="0">
-              <string>T#&lt;tool_number_entry_box&gt; M6 G43</string>
+              <string>T#&lt;tool_number_entry_box&gt; M6</string>
              </property>
             </widget>
            </item>
@@ -20414,6 +20406,7 @@ font: 11pt bebas kai;
  <resources>
   <include location="probe_basic.qrc"/>
   <include location="probe_basic.qrc"/>
+  <include location="../../../../.designer/backup/probe_basic.qrc"/>
  </resources>
  <connections>
   <connection>
