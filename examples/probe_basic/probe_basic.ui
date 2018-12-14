@@ -15550,6 +15550,9 @@ padding: -5px;
              <property name="checkable">
               <bool>true</bool>
              </property>
+             <property name="autoExclusive">
+              <bool>true</bool>
+             </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:gcodes&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;None&quot;, &quot;expression&quot;: &quot;&quot;, &quot;name&quot;: &quot;G43&quot;}]</string>
              </property>
@@ -15584,6 +15587,9 @@ padding: -5px;
               <string>G49</string>
              </property>
              <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="autoExclusive">
               <bool>true</bool>
              </property>
              <property name="rules" stdset="0">
@@ -20403,12 +20409,12 @@ font: 11pt bebas kai;
    <slot>deleteFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>109</x>
-     <y>74</y>
+     <x>146</x>
+     <y>619</y>
     </hint>
     <hint type="destinationlabel">
-     <x>119</x>
-     <y>74</y>
+     <x>146</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>
@@ -20419,12 +20425,12 @@ font: 11pt bebas kai;
    <slot>goUP()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>129</x>
-     <y>74</y>
+     <x>160</x>
+     <y>106</y>
     </hint>
     <hint type="destinationlabel">
-     <x>119</x>
-     <y>74</y>
+     <x>146</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>
@@ -20435,12 +20441,12 @@ font: 11pt bebas kai;
    <slot>createDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>144</x>
-     <y>74</y>
+     <x>403</x>
+     <y>619</y>
     </hint>
     <hint type="destinationlabel">
-     <x>119</x>
-     <y>74</y>
+     <x>146</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>
@@ -20467,12 +20473,12 @@ font: 11pt bebas kai;
    <slot>createDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>144</x>
-     <y>74</y>
+     <x>995</x>
+     <y>619</y>
     </hint>
     <hint type="destinationlabel">
-     <x>119</x>
-     <y>74</y>
+     <x>738</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>
@@ -20483,12 +20489,12 @@ font: 11pt bebas kai;
    <slot>deleteFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>109</x>
-     <y>74</y>
+     <x>738</x>
+     <y>619</y>
     </hint>
     <hint type="destinationlabel">
-     <x>119</x>
-     <y>74</y>
+     <x>738</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>
@@ -20499,12 +20505,12 @@ font: 11pt bebas kai;
    <slot>doFileTransfer()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>79</x>
-     <y>134</y>
+     <x>610</x>
+     <y>477</y>
     </hint>
     <hint type="destinationlabel">
-     <x>119</x>
-     <y>74</y>
+     <x>146</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>
@@ -20515,12 +20521,12 @@ font: 11pt bebas kai;
    <slot>doFileTransfer()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>79</x>
-     <y>134</y>
+     <x>610</x>
+     <y>318</y>
     </hint>
     <hint type="destinationlabel">
-     <x>119</x>
-     <y>74</y>
+     <x>738</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>
@@ -20531,12 +20537,12 @@ font: 11pt bebas kai;
    <slot>goUP()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>129</x>
-     <y>74</y>
+     <x>752</x>
+     <y>106</y>
     </hint>
     <hint type="destinationlabel">
-     <x>119</x>
-     <y>74</y>
+     <x>738</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>
@@ -20547,12 +20553,12 @@ font: 11pt bebas kai;
    <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>119</x>
-     <y>74</y>
+     <x>146</x>
+     <y>144</y>
     </hint>
     <hint type="destinationlabel">
-     <x>119</x>
-     <y>74</y>
+     <x>738</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>
@@ -20563,28 +20569,12 @@ font: 11pt bebas kai;
    <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>119</x>
-     <y>74</y>
+     <x>738</x>
+     <y>144</y>
     </hint>
     <hint type="destinationlabel">
-     <x>119</x>
-     <y>74</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>removabledevicecombobox</sender>
-   <signal>activated(QString)</signal>
-   <receiver>filesystemtable_2</receiver>
-   <slot>setRootPath(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>119</x>
-     <y>74</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>119</x>
-     <y>74</y>
+     <x>146</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>
@@ -20595,12 +20585,12 @@ font: 11pt bebas kai;
    <slot>newFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>119</x>
-     <y>74</y>
+     <x>262</x>
+     <y>619</y>
     </hint>
     <hint type="destinationlabel">
-     <x>119</x>
-     <y>74</y>
+     <x>146</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>
@@ -20611,12 +20601,12 @@ font: 11pt bebas kai;
    <slot>newFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>119</x>
-     <y>74</y>
+     <x>854</x>
+     <y>619</y>
     </hint>
     <hint type="destinationlabel">
-     <x>119</x>
-     <y>74</y>
+     <x>738</x>
+     <y>144</y>
     </hint>
    </hints>
   </connection>
@@ -20638,49 +20628,65 @@ font: 11pt bebas kai;
   </connection>
   <connection>
    <sender>G43</sender>
-   <signal>clicked()</signal>
+   <signal>toggled(bool)</signal>
    <receiver>G49</receiver>
-   <slot>toggle()</slot>
+   <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>447</x>
-     <y>795</y>
+     <x>460</x>
+     <y>782</y>
     </hint>
     <hint type="destinationlabel">
-     <x>500</x>
-     <y>795</y>
+     <x>516</x>
+     <y>790</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>G43</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>G43</receiver>
+   <slot>setChecked(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>467</x>
+     <y>806</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>479</x>
+     <y>789</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>G49</sender>
-   <signal>clicked()</signal>
+   <signal>toggled(bool)</signal>
    <receiver>G43</receiver>
-   <slot>toggle()</slot>
+   <slot>setDisabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>508</x>
-     <y>780</y>
+     <x>527</x>
+     <y>808</y>
     </hint>
     <hint type="destinationlabel">
-     <x>452</x>
-     <y>777</y>
+     <x>444</x>
+     <y>808</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>m6_g43_button</sender>
-   <signal>clicked()</signal>
+   <sender>G49</sender>
+   <signal>clicked(bool)</signal>
    <receiver>G49</receiver>
-   <slot>toggle()</slot>
+   <slot>setChecked(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>552</x>
-     <y>750</y>
+     <x>525</x>
+     <y>778</y>
     </hint>
     <hint type="destinationlabel">
-     <x>552</x>
-     <y>785</y>
+     <x>492</x>
+     <y>807</y>
     </hint>
    </hints>
   </connection>
