@@ -6,8 +6,8 @@ QMainWindow {
 }
 
 QsciScintilla {
-    qproperty-backgroundcolor: gray;
-    qproperty-marginbackgroundcolor: darkgray;
+    qproperty-backgroundcolor: #D9DADB;
+    qproperty-marginbackgroundcolor: #D9DADB;
 }
 
 QStatusBar {

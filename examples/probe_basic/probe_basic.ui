@@ -8508,10 +8508,10 @@ ToolTable {
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_6">
               <property name="leftMargin">
-               <number>70</number>
+               <number>40</number>
               </property>
               <property name="rightMargin">
-               <number>70</number>
+               <number>40</number>
               </property>
               <item>
                <widget class="QFrame" name="frame_10">
@@ -8523,13 +8523,13 @@ ToolTable {
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>462</width>
+                  <width>520</width>
                   <height>590</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>460</width>
+                  <width>520</width>
                   <height>590</height>
                  </size>
                 </property>
@@ -8545,7 +8545,7 @@ border-radius: 6px;
                 <widget class="QLabel" name="label_43">
                  <property name="geometry">
                   <rect>
-                   <x>90</x>
+                   <x>140</x>
                    <y>78</y>
                    <width>250</width>
                    <height>403</height>
@@ -8567,7 +8567,7 @@ border-radius: 6px;
                 <widget class="QFrame" name="frame_11">
                  <property name="geometry">
                   <rect>
-                   <x>17</x>
+                   <x>67</x>
                    <y>267</y>
                    <width>145</width>
                    <height>60</height>
@@ -8709,7 +8709,7 @@ border-style: none;
                 <widget class="QFrame" name="frame_12">
                  <property name="geometry">
                   <rect>
-                   <x>75</x>
+                   <x>125</x>
                    <y>446</y>
                    <width>132</width>
                    <height>60</height>
@@ -8851,9 +8851,9 @@ border-style: none;
                 <widget class="QFrame" name="frame_28">
                  <property name="geometry">
                   <rect>
-                   <x>2</x>
+                   <x>4</x>
                    <y>0</y>
-                   <width>458</width>
+                   <width>510</width>
                    <height>60</height>
                   </rect>
                  </property>
@@ -8865,13 +8865,13 @@ border-style: none;
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>458</width>
+                   <width>510</width>
                    <height>60</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>458</width>
+                   <width>510</width>
                    <height>58</height>
                   </size>
                  </property>
@@ -8990,9 +8990,9 @@ border-style: none;
                 <widget class="MDIEntry" name="mdi_entry_box_4">
                  <property name="geometry">
                   <rect>
-                   <x>2</x>
+                   <x>4</x>
                    <y>550</y>
-                   <width>458</width>
+                   <width>510</width>
                    <height>40</height>
                   </rect>
                  </property>
@@ -9004,13 +9004,13 @@ border-style: none;
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>458</width>
+                   <width>510</width>
                    <height>40</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>458</width>
+                   <width>510</width>
                    <height>40</height>
                   </size>
                  </property>
@@ -9030,7 +9030,7 @@ border-style: none;
                 <widget class="StatusLabel" name="tool_length_6">
                  <property name="geometry">
                   <rect>
-                   <x>225</x>
+                   <x>275</x>
                    <y>227</y>
                    <width>50</width>
                    <height>33</height>
@@ -14193,77 +14193,107 @@ font: 14pt &quot;Bebas Kai&quot;;
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
            </widget>
-           <widget class="StatusLabel" name="statuslabel_29">
-            <property name="geometry">
-             <rect>
-              <x>215</x>
-              <y>0</y>
-              <width>35</width>
-              <height>346</height>
-             </rect>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QLabel{
-color: white;
-border: none;
-background-color: transparent;
-font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-            <property name="indent">
-             <number>0</number>
-            </property>
-            <property name="rules" stdset="0">
-             <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;url&quot;: &quot;status:gcodes?text&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Active Codes&quot;}]</string>
-            </property>
-            <property name="statusItem" stdset="0">
-             <string/>
-            </property>
-           </widget>
-           <widget class="StatusLabel" name="statuslabel_30">
+           <widget class="QWidget" name="layoutWidget_2">
             <property name="geometry">
              <rect>
               <x>214</x>
-              <y>361</y>
-              <width>35</width>
-              <height>250</height>
+              <y>0</y>
+              <width>31</width>
+              <height>621</height>
              </rect>
             </property>
-            <property name="minimumSize">
-             <size>
-              <width>30</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QLabel{
+            <layout class="QVBoxLayout" name="verticalLayout_12">
+             <property name="sizeConstraint">
+              <enum>QLayout::SetFixedSize</enum>
+             </property>
+             <item>
+              <widget class="StatusLabel" name="statuslabel_15">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>30</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>30</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QLabel{
 color: white;
 border: none;
 background-color: transparent;
 font: 14pt &quot;Bebas Kai&quot;;
 }</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-            <property name="indent">
-             <number>0</number>
-            </property>
-            <property name="rules" stdset="0">
-             <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;url&quot;: &quot;status:mcodes?text&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Active Mcodes&quot;}]</string>
-            </property>
-            <property name="statusItem" stdset="0">
-             <string/>
-            </property>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="indent">
+                <number>0</number>
+               </property>
+               <property name="rules" stdset="0">
+                <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;url&quot;: &quot;status:gcodes?text&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Active Codes&quot;}]</string>
+               </property>
+               <property name="statusItem" stdset="0">
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="StatusLabel" name="statuslabel_16">
+               <property name="minimumSize">
+                <size>
+                 <width>30</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>30</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">QLabel{
+color: white;
+border: none;
+background-color: transparent;
+font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+               <property name="indent">
+                <number>0</number>
+               </property>
+               <property name="rules" stdset="0">
+                <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;str&quot;, &quot;url&quot;: &quot;status:mcodes?text&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Active Mcodes&quot;}]</string>
+               </property>
+               <property name="statusItem" stdset="0">
+                <string/>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </widget>
           <widget class="QWidget" name="tab_17">
@@ -14273,9 +14303,9 @@ font: 14pt &quot;Bebas Kai&quot;;
            <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
              <rect>
-              <x>215</x>
+              <x>214</x>
               <y>0</y>
-              <width>32</width>
+              <width>31</width>
               <height>621</height>
              </rect>
             </property>
@@ -14354,7 +14384,7 @@ font: 14pt &quot;Bebas Kai&quot;;
 }</string>
                </property>
                <property name="alignment">
-                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+                <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
                </property>
                <property name="wordWrap">
                 <bool>true</bool>
@@ -14930,13 +14960,13 @@ border-radius: 1px;
              <property name="minimumSize">
               <size>
                <width>65</width>
-               <height>33</height>
+               <height>35</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>65</width>
-               <height>33</height>
+               <height>35</height>
               </size>
              </property>
              <property name="focusPolicy">
@@ -15087,13 +15117,13 @@ border-radius: 1px;
              <property name="minimumSize">
               <size>
                <width>65</width>
-               <height>33</height>
+               <height>35</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>65</width>
-               <height>33</height>
+               <height>35</height>
               </size>
              </property>
              <property name="focusPolicy">
@@ -15167,7 +15197,7 @@ border-radius: 6px;
           <number>12</number>
          </property>
          <property name="bottomMargin">
-          <number>7</number>
+          <number>6</number>
          </property>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_96">
@@ -15505,6 +15535,12 @@ padding: -5px;
                <height>40</height>
               </size>
              </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>40</height>
+              </size>
+             </property>
              <property name="styleSheet">
               <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
@@ -15536,7 +15572,13 @@ padding: -5px;
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>39</height>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>40</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -15575,7 +15617,13 @@ padding: -5px;
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>39</height>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>40</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -15615,13 +15663,13 @@ padding: -5px;
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>39</height>
+               <height>40</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>16777215</width>
-               <height>39</height>
+               <height>40</height>
               </size>
              </property>
              <property name="focusPolicy">
@@ -15654,7 +15702,13 @@ padding: -5px;
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>39</height>
+               <height>40</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>40</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -16022,13 +16076,13 @@ border-radius: 1px;
              <property name="minimumSize">
               <size>
                <width>60</width>
-               <height>39</height>
+               <height>42</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>16777215</width>
-               <height>39</height>
+               <height>42</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -16094,7 +16148,7 @@ padding-bottom:-1px;
           <number>15</number>
          </property>
          <property name="bottomMargin">
-          <number>12</number>
+          <number>11</number>
          </property>
          <item>
           <widget class="QFrame" name="frame_25">
@@ -19208,19 +19262,19 @@ border-radius: 6px;
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_27">
          <property name="spacing">
-          <number>8</number>
+          <number>10</number>
          </property>
          <property name="leftMargin">
-          <number>12</number>
+          <number>15</number>
          </property>
          <property name="topMargin">
-          <number>4</number>
+          <number>5</number>
          </property>
          <property name="rightMargin">
-          <number>12</number>
+          <number>15</number>
          </property>
          <property name="bottomMargin">
-          <number>6</number>
+          <number>5</number>
          </property>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_83">
