@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>321</width>
-    <height>378</height>
+    <height>437</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -78,7 +78,7 @@
     <item>
      <widget class="LEDButton" name="ledbutton_2">
       <property name="text">
-       <string>Turn Machine OFF</string>
+       <string>Turn Machine ON</string>
       </property>
       <property name="rules" stdset="0">
        <string>[
@@ -269,6 +269,20 @@
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="StatusLabel" name="statuslabel_10">
+      <property name="rules" stdset="0">
+       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;var:parameters&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;str( ch[0] )&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="MDIEntry" name="mdientry">
+      <property name="focusPolicy">
+       <enum>Qt::ClickFocus</enum>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -277,7 +291,7 @@
      <x>0</x>
      <y>0</y>
      <width>321</width>
-     <height>19</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
@@ -617,9 +631,19 @@
    <container>1</container>
   </customwidget>
   <customwidget>
+   <class>DialogButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.dialog_button</header>
+  </customwidget>
+  <customwidget>
    <class>LEDButton</class>
    <extends>ActionButton</extends>
    <header>qtpyvcp.widgets.button_widgets.led_button</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
   <customwidget>
    <class>ActionSlider</class>
@@ -635,11 +659,6 @@
    <class>StatusLabel</class>
    <extends>QLabel</extends>
    <header>qtpyvcp.widgets.display_widgets.status_label</header>
-  </customwidget>
-  <customwidget>
-   <class>DialogButton</class>
-   <extends>QPushButton</extends>
-   <header>qtpyvcp.widgets.button_widgets.dialog_button</header>
   </customwidget>
  </customwidgets>
  <resources>

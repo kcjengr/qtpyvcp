@@ -224,8 +224,8 @@ class _Info(object):
     def getParameterFile(self):
         temp = self.ini.find('RS274NGC', 'PARAMETER_FILE')
         if not temp:
-            return False
-        return temp
+            return os.devnull
+        return os.path.join(os.environ['CONFIG_DIR'], temp)
 
     def getProgramPrefix(self):
         path = self.ini.find('DISPLAY', 'PROGRAM_PREFIX')

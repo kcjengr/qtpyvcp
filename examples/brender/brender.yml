@@ -18,6 +18,9 @@ data_plugins:
     kwargs:
       cycle_time: 75
 
+  var:
+    provider: qtpyvcp.plugins.interp_param:ToolTable
+
 windows:
   mainwindow:
     provider: brender:MainWindow

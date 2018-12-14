@@ -169,6 +169,7 @@ def issue_mdi(command, reset=True):
     if setTaskMode(linuxcnc.MODE_MDI):
         LOG.info("Issuind MDI command: {}".format(command))
         CMD.mdi(command)
+        CMD.reset_interpreter()
     else:
         LOG.error("Failed to issue MDI command: {}".format(command))
 
