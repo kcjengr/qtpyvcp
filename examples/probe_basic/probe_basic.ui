@@ -15521,21 +15521,133 @@ padding: -5px;
           </layout>
          </item>
          <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_104">
+           <item>
+            <widget class="MDIButton" name="G43">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>39</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">MDIButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+             </property>
+             <property name="text">
+              <string>G43</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:gcodes&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;None&quot;, &quot;expression&quot;: &quot;&quot;, &quot;name&quot;: &quot;G43&quot;}]</string>
+             </property>
+             <property name="MDICommand" stdset="0">
+              <string>G43</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="MDIButton" name="G49">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>39</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">MDIButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+             </property>
+             <property name="text">
+              <string>G49</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:gcodes&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;None&quot;, &quot;expression&quot;: &quot;&quot;, &quot;name&quot;: &quot;G49&quot;}]</string>
+             </property>
+             <property name="MDICommand" stdset="0">
+              <string>G49</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
           <layout class="QHBoxLayout" name="horizontalLayout_95">
+           <item>
+            <widget class="ActionButton" name="go_to_g30_button_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>1</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>39</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>39</height>
+              </size>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+             </property>
+             <property name="text">
+              <string>GO TO ZERO</string>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.issue-mdi:G0 X0 Y0 Z0</string>
+             </property>
+            </widget>
+           </item>
            <item>
             <widget class="MDIButton" name="go_to_g30">
              <property name="enabled">
               <bool>false</bool>
              </property>
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-               <horstretch>0</horstretch>
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>1</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
              <property name="minimumSize">
               <size>
-               <width>78</width>
+               <width>0</width>
                <height>39</height>
               </size>
              </property>
@@ -15887,46 +15999,6 @@ border-radius: 1px;
             <enum>Qt::Horizontal</enum>
            </property>
           </widget>
-         </item>
-         <item>
-          <layout class="QHBoxLayout" name="horizontalLayout_104">
-           <item>
-            <widget class="ActionButton" name="go_to_g30_button_2">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>1</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>0</width>
-               <height>39</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>39</height>
-              </size>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-             </property>
-             <property name="text">
-              <string>GO TO ZERO</string>
-             </property>
-             <property name="actionName" stdset="0">
-              <string>machine.issue-mdi:G0 X0 Y0 Z0</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_97">
@@ -20561,6 +20633,54 @@ font: 11pt bebas kai;
     <hint type="destinationlabel">
      <x>1870</x>
      <y>809</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>G43</sender>
+   <signal>clicked()</signal>
+   <receiver>G49</receiver>
+   <slot>toggle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>447</x>
+     <y>795</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>500</x>
+     <y>795</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>G49</sender>
+   <signal>clicked()</signal>
+   <receiver>G43</receiver>
+   <slot>toggle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>508</x>
+     <y>780</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>452</x>
+     <y>777</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>m6_g43_button</sender>
+   <signal>clicked()</signal>
+   <receiver>G49</receiver>
+   <slot>toggle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>552</x>
+     <y>750</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>552</x>
+     <y>785</y>
     </hint>
    </hints>
   </connection>
