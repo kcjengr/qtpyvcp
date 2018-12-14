@@ -702,7 +702,14 @@ override_limits.bindOk = _override_limits_bindOk
 # -------------------------------------------------------------------------
 # JOG actions
 # -------------------------------------------------------------------------
+
 class jog:
+
+    linear_speed = INFO.getJogVelocity()
+    angular_speed = INFO.getJogVelocity()
+    continuous = False
+    increment = INFO.getIncrements()[0]
+
     @staticmethod
     def axis(axis, direction=0, speed=None, distance=None):
         """Jog an axis.
@@ -730,13 +737,13 @@ class jog:
         else:
 
             if speed is None:
-                if axis in (3,4,5):
-                    speed = STATUS.angular_jog_velocity / 60
+                if axis in (3, 4, 5):
+                    speed = jog.angular_speed / 60
                 else:
-                    speed = STATUS.linear_jog_velocity / 60
+                    speed = jog.linear_speed / 60
 
             if distance is None:
-                distance = STATUS.jog_increment
+                distance = jog.increment
 
             velocity = float(speed) * direction
 
@@ -744,6 +751,63 @@ class jog:
                 CMD.jog(linuxcnc.JOG_CONTINUOUS, 0, axis, velocity)
             else:
                 CMD.jog(linuxcnc.JOG_INCREMENT, 0, axis, velocity, distance)
+
+    @staticmethod
+    def set_jog_continuous(continuous):
+        if continuous:
+            LOG.debug("Setting jog mode to continuous")
+        else:
+            LOG.debug("Setting jog mode to incremental")
+        jog.continuous = continuous
+
+    @staticmethod
+    def set_increment(raw_increment):
+        jog.increment = _parse_jog_increment(raw_increment)
+
+    @staticmethod
+    def set_linear_speed(speed):
+        jog.linear_speed = float(speed)
+
+    @staticmethod
+    def set_angular_speed(speed):
+        jog.angular_speed = float(speed)
+
+jog.set_linear_speed.ok = jog.set_angular_speed.ok = lambda *a, **k: True
+jog.set_linear_speed.bindOk = jog.set_angular_speed.bindOk = lambda *a, **k: True
+
+
+def _from_internal_linear_unit(v, unit=None):
+    if unit is None:
+        unit = STAT.linear_units
+    lu = (unit or 1) * 25.4
+    return v * lu
+
+def _parse_jog_increment(jogincr):
+    scale = 1
+    if isinstance(jogincr, basestring):
+        jogincr = jogincr.lower()
+        if jogincr.endswith("mm"):
+            scale = _from_internal_linear_unit(1 / 25.4)
+        elif jogincr.endswith("cm"):
+            scale = _from_internal_linear_unit(10 / 25.4)
+        elif jogincr.endswith("um"):
+            scale = _from_internal_linear_unit(.001 / 25.4)
+        elif jogincr.endswith("in") or jogincr.endswith("inch") or jogincr.endswith('"'):
+            scale = _from_internal_linear_unit(1.)
+        elif jogincr.endswith("mil"):
+            scale = _from_internal_linear_unit(.001)
+        else:
+            scale = 1
+        jogincr = jogincr.rstrip(" inchmuil")
+        try:
+            if "/" in jogincr:
+                p, q = jogincr.split("/")
+                jogincr = float(p) / float(q)
+            else:
+                jogincr = float(jogincr)
+        except ValueError:
+            jogincr = 0
+    return jogincr * scale
 
 
 def _jog_axis_ok(axis, direction=0, widget=None):
@@ -784,3 +848,25 @@ def _jog_axis_bindOk(axis, direction, widget):
 
 jog.axis.ok = _jog_axis_ok
 jog.axis.bindOk = _jog_axis_bindOk
+
+
+class jog_mode:
+
+    mode = 'continuous'
+
+    @staticmethod
+    def continuous():
+        LOG.debug("Setting jog mode continuous")
+        STATUS.setJogMode(True)
+
+    @staticmethod
+    def incremental():
+        LOG.debug("Setting jog mode incremental")
+        STATUS.setJogMode(False)
+
+    @staticmethod
+    def toggle():
+        if STATUS.jog_mode == True:
+            jog_mode.continuous()
+        else:
+            jog_mode.incremental()

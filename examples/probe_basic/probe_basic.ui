@@ -19150,39 +19150,6 @@ border-radius: 6px;
             <number>16</number>
            </property>
            <item>
-            <widget class="ActionButton" name="step_select">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>50</width>
-               <height>42</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>50</width>
-               <height>42</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-             </property>
-             <property name="text">
-              <string>STEP</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
             <widget class="JogIncrementWidget" name="jogincrement">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -19229,63 +19196,12 @@ border-radius: 6px;
             <number>0</number>
            </property>
            <item>
-            <widget class="ActionButton" name="jog_select">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>50</width>
-               <height>42</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>50</width>
-               <height>42</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton {
-   	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-             </property>
-             <property name="text">
-              <string>JOG</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSlider" name="jog_fr_slider">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+            <widget class="ActionSlider" name="actionslider_5">
              <property name="minimumSize">
               <size>
                <width>0</width>
-               <height>55</height>
+               <height>50</height>
               </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>55</height>
-              </size>
-             </property>
-             <property name="cursor">
-              <cursorShape>OpenHandCursor</cursorShape>
              </property>
              <property name="styleSheet">
               <string notr="true">QSlider::groove:horizontal {
@@ -19353,6 +19269,9 @@ border-radius: 4px;
              </property>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="actionName" stdset="0">
+              <string>machine.jog.set-linear-speed</string>
              </property>
             </widget>
            </item>
@@ -20342,82 +20261,18 @@ font: 11pt bebas kai;
  </resources>
  <connections>
   <connection>
-   <sender>jog_fr_slider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>fr_override_dro_2</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1826</x>
-     <y>833</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1883</x>
-     <y>824</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>fr_override_dro_2</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>jog_fr_slider</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1883</x>
-     <y>824</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1826</x>
-     <y>833</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>jog_select</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>jogincrement</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1558</x>
-     <y>806</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1741</x>
-     <y>741</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>step_select</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>jogincrement</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1558</x>
-     <y>741</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1741</x>
-     <y>741</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>tool_table_delete_button</sender>
    <signal>clicked()</signal>
    <receiver>tableWidget_2</receiver>
    <slot>deleteSelectedTool()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>141</x>
-     <y>79</y>
+     <x>222</x>
+     <y>614</y>
     </hint>
     <hint type="destinationlabel">
-     <x>121</x>
-     <y>76</y>
+     <x>163</x>
+     <y>153</y>
     </hint>
    </hints>
   </connection>
@@ -20428,12 +20283,12 @@ font: 11pt bebas kai;
    <slot>loadToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>141</x>
-     <y>79</y>
+     <x>586</x>
+     <y>614</y>
     </hint>
     <hint type="destinationlabel">
-     <x>121</x>
-     <y>76</y>
+     <x>163</x>
+     <y>153</y>
     </hint>
    </hints>
   </connection>
@@ -20444,12 +20299,12 @@ font: 11pt bebas kai;
    <slot>loadToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>161</x>
-     <y>79</y>
+     <x>970</x>
+     <y>614</y>
     </hint>
     <hint type="destinationlabel">
-     <x>121</x>
-     <y>76</y>
+     <x>163</x>
+     <y>153</y>
     </hint>
    </hints>
   </connection>
@@ -20460,12 +20315,12 @@ font: 11pt bebas kai;
    <slot>insertToolBelow()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>141</x>
-     <y>79</y>
+     <x>404</x>
+     <y>614</y>
     </hint>
     <hint type="destinationlabel">
-     <x>121</x>
-     <y>76</y>
+     <x>163</x>
+     <y>153</y>
     </hint>
    </hints>
   </connection>
@@ -20476,12 +20331,12 @@ font: 11pt bebas kai;
    <slot>deleteFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>138</x>
-     <y>607</y>
+     <x>109</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
-     <x>142</x>
-     <y>554</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -20492,12 +20347,12 @@ font: 11pt bebas kai;
    <slot>goUP()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>155</x>
-     <y>94</y>
+     <x>129</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
-     <x>153</x>
-     <y>122</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -20508,12 +20363,12 @@ font: 11pt bebas kai;
    <slot>createDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>352</x>
-     <y>598</y>
+     <x>144</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
-     <x>429</x>
-     <y>560</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -20524,12 +20379,12 @@ font: 11pt bebas kai;
    <slot>saveToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>141</x>
-     <y>79</y>
+     <x>768</x>
+     <y>614</y>
     </hint>
     <hint type="destinationlabel">
-     <x>121</x>
-     <y>76</y>
+     <x>163</x>
+     <y>153</y>
     </hint>
    </hints>
   </connection>
@@ -20540,12 +20395,12 @@ font: 11pt bebas kai;
    <slot>createDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>927</x>
-     <y>598</y>
+     <x>144</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1009</x>
-     <y>571</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -20556,12 +20411,12 @@ font: 11pt bebas kai;
    <slot>deleteFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>732</x>
-     <y>597</y>
+     <x>109</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
-     <x>734</x>
-     <y>576</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -20572,12 +20427,12 @@ font: 11pt bebas kai;
    <slot>doFileTransfer()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>559</x>
-     <y>433</y>
+     <x>79</x>
+     <y>134</y>
     </hint>
     <hint type="destinationlabel">
-     <x>515</x>
-     <y>430</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -20588,12 +20443,12 @@ font: 11pt bebas kai;
    <slot>doFileTransfer()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>601</x>
-     <y>284</y>
+     <x>79</x>
+     <y>134</y>
     </hint>
     <hint type="destinationlabel">
-     <x>642</x>
-     <y>289</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -20604,12 +20459,12 @@ font: 11pt bebas kai;
    <slot>goUP()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>736</x>
-     <y>98</y>
+     <x>129</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
-     <x>736</x>
-     <y>122</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -20620,12 +20475,12 @@ font: 11pt bebas kai;
    <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>495</x>
-     <y>378</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
-     <x>694</x>
-     <y>379</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -20636,12 +20491,12 @@ font: 11pt bebas kai;
    <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>664</x>
-     <y>347</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
-     <x>500</x>
-     <y>356</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -20652,12 +20507,12 @@ font: 11pt bebas kai;
    <slot>setRootPath(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>884</x>
-     <y>98</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
-     <x>884</x>
-     <y>127</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -20668,12 +20523,12 @@ font: 11pt bebas kai;
    <slot>newFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>231</x>
-     <y>598</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
-     <x>236</x>
-     <y>570</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
    </hints>
   </connection>
@@ -20684,12 +20539,28 @@ font: 11pt bebas kai;
    <slot>newFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>807</x>
-     <y>593</y>
+     <x>119</x>
+     <y>74</y>
     </hint>
     <hint type="destinationlabel">
-     <x>809</x>
-     <y>561</y>
+     <x>119</x>
+     <y>74</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionslider_5</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>fr_override_dro_2</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1632</x>
+     <y>806</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1870</x>
+     <y>809</y>
     </hint>
    </hints>
   </connection>
