@@ -208,7 +208,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>4</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -3652,34 +3652,58 @@ border-radius: 8px;
                    <number>0</number>
                   </property>
                  </widget>
-                 <widget class="QLabel" name="label_90">
+                 <widget class="StatusLabel" name="tool_length_8">
                   <property name="geometry">
                    <rect>
-                    <x>63</x>
-                    <y>140</y>
-                    <width>53</width>
-                    <height>30</height>
+                    <x>64</x>
+                    <y>139</y>
+                    <width>50</width>
+                    <height>33</height>
                    </rect>
                   </property>
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>1</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>50</width>
+                    <height>33</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>50</width>
+                    <height>33</height>
+                   </size>
+                  </property>
                   <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(217, 217, 217);
+                   <string notr="true">QLabel {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
     border-width: 1px;
-    border-radius: 6px;
+    border-radius: 5px;
     color: black;
     background: white;
-	font: 18pt &quot;Bebas Kai&quot;;
+	font: 75 16pt &quot;Bebas Kai&quot;;
 }</string>
                   </property>
                   <property name="text">
-                   <string>T99</string>
+                   <string>T0</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
                   </property>
-                  <property name="indent">
-                   <number>0</number>
+                  <property name="rules" stdset="0">
+                   <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:tool_in_spindle?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'T' + ch[0]&quot;, &quot;name&quot;: &quot;current tool&quot;}]</string>
+                  </property>
+                  <property name="format" stdset="0">
+                   <string>{:.3f}</string>
+                  </property>
+                  <property name="statusItem" stdset="0">
+                   <string>tool_offset.3</string>
                   </property>
                  </widget>
                 </widget>
@@ -8508,10 +8532,10 @@ ToolTable {
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_6">
               <property name="leftMargin">
-               <number>40</number>
+               <number>10</number>
               </property>
               <property name="rightMargin">
-               <number>40</number>
+               <number>10</number>
               </property>
               <item>
                <widget class="QFrame" name="frame_10">
@@ -8523,13 +8547,13 @@ ToolTable {
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>520</width>
+                  <width>580</width>
                   <height>590</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>520</width>
+                  <width>580</width>
                   <height>590</height>
                  </size>
                 </property>
@@ -8545,7 +8569,7 @@ border-radius: 6px;
                 <widget class="QLabel" name="label_43">
                  <property name="geometry">
                   <rect>
-                   <x>140</x>
+                   <x>195</x>
                    <y>78</y>
                    <width>250</width>
                    <height>403</height>
@@ -8567,7 +8591,7 @@ border-radius: 6px;
                 <widget class="QFrame" name="frame_11">
                  <property name="geometry">
                   <rect>
-                   <x>67</x>
+                   <x>122</x>
                    <y>267</y>
                    <width>145</width>
                    <height>60</height>
@@ -8709,7 +8733,7 @@ border-style: none;
                 <widget class="QFrame" name="frame_12">
                  <property name="geometry">
                   <rect>
-                   <x>125</x>
+                   <x>180</x>
                    <y>446</y>
                    <width>132</width>
                    <height>60</height>
@@ -8853,7 +8877,7 @@ border-style: none;
                   <rect>
                    <x>4</x>
                    <y>0</y>
-                   <width>510</width>
+                   <width>570</width>
                    <height>60</height>
                   </rect>
                  </property>
@@ -8865,13 +8889,13 @@ border-style: none;
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>510</width>
+                   <width>570</width>
                    <height>60</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>510</width>
+                   <width>570</width>
                    <height>58</height>
                   </size>
                  </property>
@@ -8992,7 +9016,7 @@ border-style: none;
                   <rect>
                    <x>4</x>
                    <y>550</y>
-                   <width>510</width>
+                   <width>570</width>
                    <height>40</height>
                   </rect>
                  </property>
@@ -9004,13 +9028,13 @@ border-style: none;
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>510</width>
+                   <width>570</width>
                    <height>40</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>510</width>
+                   <width>570</width>
                    <height>40</height>
                   </size>
                  </property>
@@ -9030,7 +9054,7 @@ border-style: none;
                 <widget class="StatusLabel" name="tool_length_6">
                  <property name="geometry">
                   <rect>
-                   <x>275</x>
+                   <x>330</x>
                    <y>227</y>
                    <width>50</width>
                    <height>33</height>
@@ -14198,7 +14222,7 @@ font: 14pt &quot;Bebas Kai&quot;;
              <rect>
               <x>214</x>
               <y>0</y>
-              <width>31</width>
+              <width>32</width>
               <height>621</height>
              </rect>
             </property>
@@ -14305,7 +14329,7 @@ font: 14pt &quot;Bebas Kai&quot;;
              <rect>
               <x>214</x>
               <y>0</y>
-              <width>31</width>
+              <width>32</width>
               <height>621</height>
              </rect>
             </property>
@@ -15185,7 +15209,7 @@ border-radius: 6px;
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_29">
          <property name="spacing">
-          <number>7</number>
+          <number>10</number>
          </property>
          <property name="leftMargin">
           <number>12</number>
@@ -15197,7 +15221,7 @@ border-radius: 6px;
           <number>12</number>
          </property>
          <property name="bottomMargin">
-          <number>6</number>
+          <number>3</number>
          </property>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_96">
@@ -16063,7 +16087,7 @@ border-radius: 1px;
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_97">
            <property name="bottomMargin">
-            <number>1</number>
+            <number>0</number>
            </property>
            <item>
             <widget class="ActionButton" name="axisactionbutton_5">
@@ -16076,13 +16100,13 @@ border-radius: 1px;
              <property name="minimumSize">
               <size>
                <width>60</width>
-               <height>42</height>
+               <height>40</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
                <width>16777215</width>
-               <height>42</height>
+               <height>40</height>
               </size>
              </property>
              <property name="styleSheet">
@@ -18449,16 +18473,16 @@ padding-right: 7px;
         </property>
         <layout class="QGridLayout" name="gridLayout">
          <property name="topMargin">
-          <number>8</number>
+          <number>11</number>
          </property>
          <property name="bottomMargin">
-          <number>3</number>
+          <number>2</number>
          </property>
          <property name="horizontalSpacing">
           <number>10</number>
          </property>
          <property name="verticalSpacing">
-          <number>12</number>
+          <number>13</number>
          </property>
          <item row="2" column="1">
           <widget class="StatusLabel" name="statuslabel">
@@ -19262,19 +19286,19 @@ border-radius: 6px;
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_27">
          <property name="spacing">
-          <number>10</number>
+          <number>12</number>
          </property>
          <property name="leftMargin">
           <number>15</number>
          </property>
          <property name="topMargin">
-          <number>5</number>
+          <number>10</number>
          </property>
          <property name="rightMargin">
           <number>15</number>
          </property>
          <property name="bottomMargin">
-          <number>5</number>
+          <number>3</number>
          </property>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_83">
