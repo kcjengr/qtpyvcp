@@ -56,7 +56,7 @@ def loadDataPlugins(plugins):
             raise
 
 
-def getPluginFromProtocol(protocol):
+def getPlugin(protocol):
     """Get data plugin instance from a protocol name.
 
     Args:

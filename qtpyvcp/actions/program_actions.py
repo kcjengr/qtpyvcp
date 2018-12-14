@@ -9,9 +9,9 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 from qtpyvcp.utilities.info import Info
-from qtpyvcp.plugins import getPluginFromProtocol
+from qtpyvcp.plugins import getPlugin
 
-STATUS = getPluginFromProtocol('status')
+STATUS = getPlugin('status')
 STAT = STATUS.stat
 INFO = Info()
 CMD = linuxcnc.command()

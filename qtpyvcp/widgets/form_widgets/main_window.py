@@ -12,8 +12,8 @@ from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, QMen
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from qtpyvcp.plugins import getPluginFromProtocol
-STATUS = getPluginFromProtocol('status')
+from qtpyvcp.plugins import getPlugin
+STATUS = getPlugin('status')
 
 from qtpyvcp.core import Prefs, Info
 PREFS = Prefs()

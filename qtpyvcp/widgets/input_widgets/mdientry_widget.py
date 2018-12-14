@@ -5,8 +5,8 @@ from qtpy.QtWidgets import QLineEdit, QCompleter
 from qtpy.QtCore import Qt, QEvent, QStringListModel
 from qtpy.QtGui import QKeySequence, QValidator
 
-from qtpyvcp.plugins import getPluginFromProtocol
-STATUS = getPluginFromProtocol('status')
+from qtpyvcp.plugins import getPlugin
+STATUS = getPlugin('status')
 
 from qtpyvcp.core import Info
 INFO = Info()

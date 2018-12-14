@@ -37,9 +37,9 @@ from qtpyvcp.utilities import logger
 
 LOG = logger.getLogger(__name__)
 
-from qtpyvcp.plugins import getPluginFromProtocol
+from qtpyvcp.plugins import getPlugin
 
-STATUS = getPluginFromProtocol('status')
+STATUS = getPlugin('status')
 
 from qtpyvcp.core import Info
 

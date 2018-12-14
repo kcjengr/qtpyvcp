@@ -3,8 +3,8 @@
 import os
 from qtpy.QtWidgets import QComboBox
 
-from qtpyvcp.plugins import getPluginFromProtocol
-STATUS = getPluginFromProtocol('status')
+from qtpyvcp.plugins import getPlugin
+STATUS = getPlugin('status')
 
 # from qtpyvcp.utilities import action
 from qtpyvcp.actions.program_actions import load as loadProgram

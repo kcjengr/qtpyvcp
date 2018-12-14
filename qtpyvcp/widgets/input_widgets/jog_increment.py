@@ -26,10 +26,10 @@ from qtpy.QtWidgets import QWidget, QBoxLayout, QSizePolicy
 
 from qtpyvcp.core import Info
 from qtpyvcp.actions.machine_actions import jog
-from qtpyvcp.plugins import getPluginFromProtocol
+from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets.button_widgets.led_button import LEDButton
 
-STATUS = getPluginFromProtocol('status')
+STATUS = getPlugin('status')
 INFO = Info()
 
 

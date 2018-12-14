@@ -15,7 +15,7 @@ from qtpy.QtWidgets import QApplication, QStyleFactory
 import qtpyvcp
 
 from qtpyvcp.utilities.logger import initBaseLogger
-from qtpyvcp.plugins import getPluginFromProtocol
+from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
 # initialize logging. If a base logger was already initialized in a startup
@@ -44,7 +44,7 @@ class VCPApplication(QApplication):
         from qtpyvcp.core import Prefs, Info
         self.info = Info()
         self.prefs = Prefs()
-        self.status = getPluginFromProtocol('status')
+        self.status = getPlugin('status')
 
         self.initialiseDataPlugins()
 

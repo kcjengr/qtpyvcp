@@ -10,9 +10,9 @@ from qtpy.QtCore import QFileSystemWatcher, QTimer
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.plugins import QtPyVCPDataPlugin, QtPyVCPDataChannel, getPluginFromProtocol
+from qtpyvcp.plugins import QtPyVCPDataPlugin, QtPyVCPDataChannel, getPlugin
 
-STATUS = getPluginFromProtocol('status')
+STATUS = getPlugin('status')
 INFO = Info()
 
 # Set up logging
