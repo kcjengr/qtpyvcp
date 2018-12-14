@@ -4,7 +4,7 @@ __version__ = '0.0.1'
 import os
 
 VCP_DIR = os.path.realpath(os.path.dirname(__file__))
-VCP_CONFIG_FILE = os.path.join(VCP_DIR, 'mini_config.yml')
+VCP_CONFIG_FILE = os.path.join(VCP_DIR, 'mini.yml')
 
 os.environ['VCP_CONFIG_FILES'] = VCP_CONFIG_FILE + ':' + os.environ.get('VCP_CONFIG_FILES', '')
 
