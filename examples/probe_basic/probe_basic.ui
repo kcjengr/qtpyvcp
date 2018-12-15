@@ -20172,8 +20172,8 @@ font: 11pt bebas kai;
      <y>614</y>
     </hint>
     <hint type="destinationlabel">
-     <x>163</x>
-     <y>153</y>
+     <x>150</x>
+     <y>115</y>
     </hint>
    </hints>
   </connection>
@@ -20188,8 +20188,8 @@ font: 11pt bebas kai;
      <y>614</y>
     </hint>
     <hint type="destinationlabel">
-     <x>163</x>
-     <y>153</y>
+     <x>150</x>
+     <y>115</y>
     </hint>
    </hints>
   </connection>
@@ -20204,8 +20204,8 @@ font: 11pt bebas kai;
      <y>614</y>
     </hint>
     <hint type="destinationlabel">
-     <x>163</x>
-     <y>153</y>
+     <x>150</x>
+     <y>115</y>
     </hint>
    </hints>
   </connection>
@@ -20220,8 +20220,8 @@ font: 11pt bebas kai;
      <y>614</y>
     </hint>
     <hint type="destinationlabel">
-     <x>163</x>
-     <y>153</y>
+     <x>150</x>
+     <y>115</y>
     </hint>
    </hints>
   </connection>
@@ -20284,8 +20284,8 @@ font: 11pt bebas kai;
      <y>614</y>
     </hint>
     <hint type="destinationlabel">
-     <x>163</x>
-     <y>153</y>
+     <x>150</x>
+     <y>115</y>
     </hint>
    </hints>
   </connection>
@@ -20450,18 +20450,66 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
+   <sender>x_axis_button_26</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable</receiver>
+   <slot>loadSelectedFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>473</x>
+     <y>94</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>464</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>filesystemtable</sender>
-   <signal>fileSelectionChanged(QString)</signal>
+   <signal>gcodeFileSelected(bool)</signal>
+   <receiver>x_axis_button_26</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>496</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>491</x>
+     <y>97</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filesystemtable</sender>
+   <signal>filePreviewText(QString)</signal>
    <receiver>plainTextEdit</receiver>
    <slot>setPlainText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>496</x>
-     <y>414</y>
+     <x>492</x>
+     <y>381</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1229</x>
-     <y>467</y>
+     <x>1207</x>
+     <y>379</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>filesystemtable_2</sender>
+   <signal>filePreviewText(QString)</signal>
+   <receiver>plainTextEdit</receiver>
+   <slot>setPlainText(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1050</x>
+     <y>459</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1210</x>
+     <y>451</y>
     </hint>
    </hints>
   </connection>
