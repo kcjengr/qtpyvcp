@@ -81,7 +81,9 @@ class FileSystemTable(QTableView, TableType):
         from PyQt5.QtCore import Q_ENUMS
         Q_ENUMS(TableType)
 
-    fileSelectionChanged = Signal(str)
+
+    gcodeFileSelected = Signal(bool)
+    filePreviewText = Signal(str)
     transferFileRequest = Signal(str)
     rootChanged = Signal(str)
 
@@ -124,19 +126,21 @@ class FileSystemTable(QTableView, TableType):
         self.rootChanged.emit(self._nc_file_dir)
 
     def onSelectionChanged(self, selected, deselected):
+
+        if len(selected) == 0:
+            return
+
         index = selected.indexes()[0]
-        path = self.model.filePath(self.rootIndex())
-        new_path = self.model.filePath(index)
+        path = self.model.filePath(index)
 
-        print path, new_path
-
-        if os.path.isfile(new_path):
-            with open(new_path, 'r') as fh:
+        if os.path.isfile(path):
+            self.gcodeFileSelected.emit(True)
+            with open(path, 'r') as fh:
                 content = fh.read()
-            self.fileSelectionChanged.emit(content)
+            self.filePreviewText.emit(content)
         else:
-            self.fileSelectionChanged.emit('')
-
+            self.gcodeFileSelected.emit(False)
+            self.filePreviewText.emit('')
 
     def changeRoot(self, index):
 
@@ -159,6 +163,14 @@ class FileSystemTable(QTableView, TableType):
             #     print absolute_path
             loadProgram(absolute_path)
 
+    @Slot()
+    def loadSelectedFile(self):
+        selection = self.selection_model.selectedIndexes()
+        if len(selection) == 0:
+            return
+
+        path = self.model.filePath(selection[0])
+        loadProgram(path)
 
     @Slot()
     def newFile(self):
