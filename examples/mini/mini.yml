@@ -59,7 +59,7 @@ windows:
           - separator
 
           - title: Exit
-            action: app.exit
+            action: app.exit # or win.close
             shortcut: ctrl+q
 
         # Machine Menu
@@ -67,12 +67,14 @@ windows:
           items:
           - title: Toggle E-Stop
             action: machine.estop.toggle
+            shortcut: F1
 
           - title: Toggle Power
             action: machine.power.toggle
+            shortcut: F2
 
-          - title: Home &All
-            action: machine.home.all
+          - title: Homing
+            provider: qtpyvcp.widgets.menus.homing_menu:HomingMenu
 
 #  secondarywindow:
 #    provider: qtpy.QtWidgets:QWidget
