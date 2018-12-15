@@ -135,11 +135,6 @@ class ToolItem(object):
         return 0
 
 
-class ProxyModel(QSortFilterProxyModel):
-    def __init__(self, parent=None):
-        super(ProxyModel, self).__init__(parent)
-
-
 class ToolModel(QStandardItemModel):
     def __init__(self, parent=None):
         super(ToolModel, self).__init__(parent)
@@ -317,6 +312,11 @@ class ToolModel(QStandardItemModel):
         return True
 
 
+class ProxyModel(QSortFilterProxyModel):
+    def __init__(self, parent=None):
+        super(ProxyModel, self).__init__(parent)
+
+
 class ToolTable(QTableView):
 
     def __init__(self, parent=None):
@@ -332,12 +332,6 @@ class ToolTable(QTableView):
         self.cmd = linuxcnc.command()
 
         self.tool_model = ToolModel(self)
-
-        self.proxy_model = ProxyModel()
-        self.proxy_model.setFilterKeyColumn(0)
-        self.proxy_model.setSourceModel(self.tool_model)
-
-        self.setModel(self.proxy_model)
 
         delegate = ItemDelegate()
 
@@ -356,15 +350,14 @@ class ToolTable(QTableView):
         self.loadToolTable()
         self.tool_table_loaded = True
 
-    def sort(self):
+        self.proxy_model = ProxyModel()
+        self.proxy_model.setFilterKeyColumn(0)
+        self.proxy_model.setSourceModel(self.tool_model)
 
-        index = self.currentIndex()
-        key = self.tool_model.data(index, Qt.DisplayRole)
-        value = self.tool_model.data(index, Qt.ItemDataRole)
-        self.proxy_model.setFilterRegExp('%s' % key)
-        print 'onClick(): key: %s' % type('%s' % key)
+        self.setModel(self.proxy_model)
 
-        print("BLAH")
+    def sort(self, *args, **kwargs):
+        self.tool_model.sort(-1, Qt.AscendingOrder)
 
     @Slot()
     def loadToolTable(self):
