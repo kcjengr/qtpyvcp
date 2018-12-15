@@ -433,50 +433,7 @@ class Status(QtPyVCPDataPlugin):
         for snum, spindle in enumerate(self.spindle):
             spindle._update(STAT.spindle[snum])
 
-    #===========================  Helper Functions  ===========================
-
-    def _from_internal_linear_unit(self, v, unit=None):
-        if unit is None:
-            unit = STAT.linear_units
-        lu = (unit or 1) * 25.4
-        return v * lu
-
-    def _parse_increment(self, jogincr):
-        scale = 1;
-        if isinstance(jogincr, basestring):
-            if jogincr.endswith("mm"):
-                scale = self._from_internal_linear_unit(1 / 25.4)
-            elif jogincr.endswith("cm"):
-                scale = self._from_internal_linear_unit(10 / 25.4)
-            elif jogincr.endswith("um"):
-                scale = self._from_internal_linear_unit(.001 / 25.4)
-            elif jogincr.endswith("in") or jogincr.endswith("inch"):
-                scale = self._from_internal_linear_unit(1.)
-            elif jogincr.endswith("mil"):
-                scale = self._from_internal_linear_unit(.001)
-            else:
-                scale = 1
-            jogincr = jogincr.rstrip(" inchmuil")
-            if "/" in jogincr:
-                p, q = jogincr.split("/")
-                jogincr = float(p) / float(q)
-            else:
-                jogincr = float(jogincr)
-        return jogincr * scale
-
-    def setJogIncrement(self, raw_increment):
-        if not self.jog_mode:
-            self.step_jog_increment = raw_increment # save current step increment
-        self.jog_increment = self._parse_increment(raw_increment)
-
-    def setJogMode(self, mode):
-        # insert checks around state and safety
-        self.jog_mode = mode
-        if mode == True:
-            self.setJogIncrement(0)
-        else:
-            self.setJogIncrement(self.step_jog_increment)
-        self.jog_mode_signal.emit(self.jog_mode)
+    # ===========================  Helper Functions  ==========================
 
     def setReportActualPosition(self, report_actual):
         """

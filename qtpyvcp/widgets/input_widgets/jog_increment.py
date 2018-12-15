@@ -20,19 +20,18 @@
 
 import os
 
-from qtpy.QtCore import Qt, Slot, Property
 from qtpy.QtGui import QColor
+from qtpy.QtCore import Qt, Slot, Property
 from qtpy.QtWidgets import QWidget, QBoxLayout, QSizePolicy
 
 from qtpyvcp.core import Info
+from qtpyvcp.actions.machine_actions import jog
+from qtpyvcp.plugins import getPluginFromProtocol
 from qtpyvcp.widgets.button_widgets.led_button import LEDButton
 
-from qtpyvcp.plugins import getPluginFromProtocol
 STATUS = getPluginFromProtocol('status')
-
 INFO = Info()
 
-WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 
 class JogIncrementWidget(QWidget):
 
@@ -67,7 +66,7 @@ class JogIncrementWidget(QWidget):
         self.placeLed()
 
     def setJogIncrement(self):
-        STATUS.setJogIncrement(self.sender().text())
+        jog.set_increment(self.sender().text())
 
     def layout_widgets(self, layout):
         return (layout.itemAt(i) for i in range(layout.count()))
