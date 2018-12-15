@@ -3,8 +3,10 @@ import pyudev
 import psutil
 
 from qtpy.QtCore import Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevice
-from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, QApplication, QAbstractItemView
+from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, \
+    QApplication, QAbstractItemView
 
+from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.utilities.info import Info
 
 IN_DESIGNER = os.getenv('DESIGNER') != None
@@ -111,6 +113,7 @@ class FileSystemTable(QTableView, TableType):
 
         self.info = Info()
         self._nc_file_dir = self.info.getProgramPrefix()
+        self.nc_file_exts = self.info.getProgramExtentions()
         self.setRootPath(self._nc_file_dir)
 
     def showEvent(self, event=None):
@@ -129,6 +132,14 @@ class FileSystemTable(QTableView, TableType):
             self.setRootIndex(self.model.index(absolute_path))
 
             self.rootChanged.emit(absolute_path)
+
+        elif file_info.isFile():
+            print self.nc_file_exts
+            print absolute_path
+            # if os.path.splitext(new_path)[1] in self.nc_file_exts:
+            #     print absolute_path
+            loadProgram(absolute_path)
+
 
     @Slot()
     def newFile(self):
