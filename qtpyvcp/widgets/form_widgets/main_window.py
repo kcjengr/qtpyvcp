@@ -13,7 +13,7 @@ from qtpyvcp.utilities import logger
 from qtpyvcp.core import Prefs, Info
 from qtpyvcp.lib.types import DotDict
 from qtpyvcp.widgets.dialogs import showDialog
-from qtpyvcp.plugins import getPluginFromProtocol
+from qtpyvcp.plugins import getPlugin
 from qtpyvcp.vcp_launcher import _initialize_object_from_dict
 
 LOG = logger.getLogger(__name__)
@@ -31,7 +31,7 @@ class VCPMainWindow(QMainWindow):
         self.setWindowTitle(title)
 
         self.app = QApplication.instance()
-        self.status = getPluginFromProtocol('status')
+        self.status = getPlugin('status')
 
         # QtDesigner settable vars
         self.prompt_at_exit = confirm_exit

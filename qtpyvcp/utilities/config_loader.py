@@ -1,4 +1,4 @@
-
+import os
 import sys
 import hiyapyco
 from jinja2.nativetypes import NativeEnvironment
@@ -53,13 +53,11 @@ def load_config_files(*files):
     return cfg_dict
 
 
-def expand_vars(file):
 def process_templates(files):
     env = Environment(loader=FileSystemLoader(searchpath=[os.path.dirname(file) for file in files]),
                       undefined=StrictUndefined,
                       )
 
-    file_dir = os.path.dirname(file)
     expanded_templates = []
     for file in files:
         file_dir, file_name = os.path.split(file)
@@ -72,9 +70,6 @@ def process_templates(files):
                                           },
                                   })
 
-    # Read in the file
-    with open(file, 'r') as fh:
-        filedata = fh.read()
         expanded_templates.append(result)
 
     return expanded_templates

@@ -25,7 +25,6 @@ def loadDataPlugins(plugins):
 
     for protocol, plugin_dict in plugins.items():
 
-        # protocol = plugin_dict['role']
         object_ref = plugin_dict['provider']
         args = plugin_dict.get('args', [])
         kwargs = plugin_dict.get('kwargs', {})

@@ -3,7 +3,7 @@ import os
 from qtpy.QtWidgets import QMenu, QAction
 
 from qtpyvcp import actions
-from qtpyvcp.plugins import getPluginFromProtocol
+from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets.dialogs import showDialog
 
 class RecentFilesMenu(QMenu):
@@ -34,7 +34,7 @@ class RecentFilesMenu(QMenu):
 
         self._actions = []
 
-        self.status = getPluginFromProtocol('status')
+        self.status = getPlugin('status')
 
         for i in range(max_files):
             action = QAction(parent=self,
