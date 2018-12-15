@@ -81,6 +81,7 @@ class FileSystemTable(QTableView, TableType):
         from PyQt5.QtCore import Q_ENUMS
         Q_ENUMS(TableType)
 
+    fileSelectionChanged = Signal(str)
     transferFileRequest = Signal(str)
     rootChanged = Signal(str)
 
@@ -111,6 +112,9 @@ class FileSystemTable(QTableView, TableType):
         self.setAlternatingRowColors(True)
         self.setSelectionBehavior(QAbstractItemView.SelectRows)
 
+        self.selection_model = self.selectionModel()
+        self.selection_model.selectionChanged.connect(self.onSelectionChanged)
+
         self.info = Info()
         self._nc_file_dir = self.info.getProgramPrefix()
         self.nc_file_exts = self.info.getProgramExtentions()
@@ -118,6 +122,21 @@ class FileSystemTable(QTableView, TableType):
 
     def showEvent(self, event=None):
         self.rootChanged.emit(self._nc_file_dir)
+
+    def onSelectionChanged(self, selected, deselected):
+        index = selected.indexes()[0]
+        path = self.model.filePath(self.rootIndex())
+        new_path = self.model.filePath(index)
+
+        print path, new_path
+
+        if os.path.isfile(new_path):
+            with open(new_path, 'r') as fh:
+                content = fh.read()
+            self.fileSelectionChanged.emit(content)
+        else:
+            self.fileSelectionChanged.emit('')
+
 
     def changeRoot(self, index):
 
