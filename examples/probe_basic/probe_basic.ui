@@ -378,463 +378,6 @@ background-color: transparent;
                <number>20</number>
               </property>
               <item>
-               <widget class="QFrame" name="frame_34">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>500</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>500</width>
-                  <height>16777215</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
-}</string>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_35">
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_121">
-                   <property name="leftMargin">
-                    <number>5</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>5</number>
-                   </property>
-                   <item>
-                    <widget class="QPushButton" name="x_axis_button_23">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>110</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>110</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>  FOLDER UP</string>
-                     </property>
-                     <property name="icon">
-                      <iconset resource="probe_basic.qrc">
-                       <normaloff>:/images/folder_up.png</normaloff>:/images/folder_up.png</iconset>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>30</width>
-                       <height>17</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="RecentFileComboBox" name="recentfilecombobox_2">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>1</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="x_axis_button_26">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>100</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>100</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>LOAD G-CODE</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_122">
-                   <item>
-                    <widget class="FileSystemTable" name="filesystemtable">
-                     <property name="styleSheet">
-                      <string notr="true">FileSystemTable {
-	color: black;
-   	border: 4px;
-	border-color: rgb(120, 120, 120);
-	border-style: solid;
-	background-color: rgb(238, 238, 236);
-    font: 12pt &quot;Bebas Kai&quot;;
-}
-
-QHeaderView {
-    background-color: rgb(220, 220, 220);
-	color: black;
-    border: none;
-	border-radius:none;
-	border-style: none;
-	font: 13pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_123">
-                   <item>
-                    <widget class="QPushButton" name="x_axis_button_27">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>90</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>90</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string> DELETE</string>
-                     </property>
-                     <property name="icon">
-                      <iconset resource="probe_basic.qrc">
-                       <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>14</width>
-                       <height>14</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="x_axis_button_31">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>100</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>100</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string> NEW FILE</string>
-                     </property>
-                     <property name="icon">
-                      <iconset resource="probe_basic.qrc">
-                       <normaloff>:/images/new_file.png</normaloff>:/images/new_file.png</iconset>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>12</width>
-                       <height>16</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="x_axis_button_29">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>125</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>125</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string> NEW FOLDER</string>
-                     </property>
-                     <property name="icon">
-                      <iconset resource="probe_basic.qrc">
-                       <normaloff>:/images/new_folder.png</normaloff>:/images/new_folder.png</iconset>
-                     </property>
-                     <property name="iconSize">
-                      <size>
-                       <width>28</width>
-                       <height>15</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="x_axis_button_28">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>90</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>90</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>RENAME</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <layout class="QVBoxLayout" name="verticalLayout_36">
-                <property name="spacing">
-                 <number>15</number>
-                </property>
-                <property name="sizeConstraint">
-                 <enum>QLayout::SetDefaultConstraint</enum>
-                </property>
-                <property name="leftMargin">
-                 <number>0</number>
-                </property>
-                <property name="topMargin">
-                 <number>110</number>
-                </property>
-                <property name="rightMargin">
-                 <number>0</number>
-                </property>
-                <property name="bottomMargin">
-                 <number>100</number>
-                </property>
-                <item>
-                 <widget class="QPushButton" name="copy_from_usb_2">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>60</width>
-                    <height>90</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>60</width>
-                    <height>90</height>
-                   </size>
-                  </property>
-                  <property name="focusPolicy">
-                   <enum>Qt::NoFocus</enum>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-    padding-right: 4px;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>COPY
-FROM
-USB</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="probe_basic.qrc">
-                    <normaloff>:/images/tall_left_arrow.png</normaloff>:/images/tall_left_arrow.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>18</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="copy_to_usb_2">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>60</width>
-                    <height>90</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>60</width>
-                    <height>90</height>
-                   </size>
-                  </property>
-                  <property name="focusPolicy">
-                   <enum>Qt::NoFocus</enum>
-                  </property>
-                  <property name="layoutDirection">
-                   <enum>Qt::RightToLeft</enum>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-    padding-right: 8px;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>COPY
-    TO
-  USB</string>
-                  </property>
-                  <property name="icon">
-                   <iconset resource="probe_basic.qrc">
-                    <normaloff>:/images/tall_right_arrow.png</normaloff>:/images/tall_right_arrow.png</iconset>
-                  </property>
-                  <property name="iconSize">
-                   <size>
-                    <width>28</width>
-                    <height>60</height>
-                   </size>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
                <widget class="QFrame" name="frame_35">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
@@ -1138,6 +681,466 @@ QHeaderView {
                    </item>
                    <item>
                     <widget class="QPushButton" name="x_axis_button_34">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>90</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>90</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>RENAME</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+              <item>
+               <layout class="QVBoxLayout" name="verticalLayout_36">
+                <property name="spacing">
+                 <number>15</number>
+                </property>
+                <property name="sizeConstraint">
+                 <enum>QLayout::SetDefaultConstraint</enum>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>110</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>100</number>
+                </property>
+                <item>
+                 <widget class="QPushButton" name="copy_from_usb_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>90</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>60</width>
+                    <height>90</height>
+                   </size>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::RightToLeft</enum>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+    padding-right: 4px;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>COPY
+FROM
+  USB</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="probe_basic.qrc">
+                    <normaloff>:/images/tall_right_arrow.png</normaloff>:/images/tall_right_arrow.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>18</width>
+                    <height>60</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="copy_to_usb_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>60</width>
+                    <height>90</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>60</width>
+                    <height>90</height>
+                   </size>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="layoutDirection">
+                   <enum>Qt::LeftToRight</enum>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+    padding-right: 8px;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>COPY
+TO
+USB</string>
+                  </property>
+                  <property name="icon">
+                   <iconset resource="probe_basic.qrc">
+                    <normaloff>:/images/tall_left_arrow.png</normaloff>:/images/tall_left_arrow.png</iconset>
+                  </property>
+                  <property name="iconSize">
+                   <size>
+                    <width>28</width>
+                    <height>60</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QFrame" name="frame_34">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>500</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>500</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QFrame{
+border-style: solid;
+border-color: rgb(186, 189, 182);
+background-color: rgb(51, 57, 59);
+border-width: 2px;
+border-radius: 6px;
+}</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_35">
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_121">
+                   <property name="leftMargin">
+                    <number>5</number>
+                   </property>
+                   <property name="rightMargin">
+                    <number>5</number>
+                   </property>
+                   <item>
+                    <widget class="QPushButton" name="x_axis_button_23">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>110</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>110</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>  FOLDER UP</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="probe_basic.qrc">
+                       <normaloff>:/images/folder_up.png</normaloff>:/images/folder_up.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>30</width>
+                       <height>17</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="RecentFileComboBox" name="recentfilecombobox_2">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                       <horstretch>1</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="x_axis_button_26">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>LOAD G-CODE</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_122">
+                   <item>
+                    <widget class="FileSystemTable" name="filesystemtable">
+                     <property name="styleSheet">
+                      <string notr="true">FileSystemTable {
+	color: black;
+   	border: 4px;
+	border-color: rgb(120, 120, 120);
+	border-style: solid;
+	background-color: rgb(238, 238, 236);
+    font: 12pt &quot;Bebas Kai&quot;;
+}
+
+QHeaderView {
+    background-color: rgb(220, 220, 220);
+	color: black;
+    border: none;
+	border-radius:none;
+	border-style: none;
+	font: 13pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_123">
+                   <item>
+                    <widget class="QPushButton" name="x_axis_button_27">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>90</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>90</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string> DELETE</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="probe_basic.qrc">
+                       <normaloff>:/images/delete.png</normaloff>:/images/delete.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>14</width>
+                       <height>14</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="x_axis_button_31">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string> NEW FILE</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="probe_basic.qrc">
+                       <normaloff>:/images/new_file.png</normaloff>:/images/new_file.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>12</width>
+                       <height>16</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="x_axis_button_29">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>125</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>125</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string> NEW FOLDER</string>
+                     </property>
+                     <property name="icon">
+                      <iconset resource="probe_basic.qrc">
+                       <normaloff>:/images/new_folder.png</normaloff>:/images/new_folder.png</iconset>
+                     </property>
+                     <property name="iconSize">
+                      <size>
+                       <width>28</width>
+                       <height>15</height>
+                      </size>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="x_axis_button_28">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -20158,7 +20161,7 @@ font: 11pt bebas kai;
  <resources>
   <include location="probe_basic.qrc"/>
   <include location="probe_basic.qrc"/>
-  <include location="../../../../.designer/backup/probe_basic.qrc"/>
+  <include location="probe_basic.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -20232,12 +20235,12 @@ font: 11pt bebas kai;
    <slot>deleteFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>146</x>
+     <x>738</x>
      <y>619</y>
     </hint>
     <hint type="destinationlabel">
-     <x>146</x>
-     <y>144</y>
+     <x>776</x>
+     <y>250</y>
     </hint>
    </hints>
   </connection>
@@ -20248,12 +20251,12 @@ font: 11pt bebas kai;
    <slot>goUP()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>160</x>
+     <x>752</x>
      <y>106</y>
     </hint>
     <hint type="destinationlabel">
-     <x>146</x>
-     <y>144</y>
+     <x>776</x>
+     <y>250</y>
     </hint>
    </hints>
   </connection>
@@ -20264,12 +20267,12 @@ font: 11pt bebas kai;
    <slot>createDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>403</x>
+     <x>995</x>
      <y>619</y>
     </hint>
     <hint type="destinationlabel">
-     <x>146</x>
-     <y>144</y>
+     <x>776</x>
+     <y>250</y>
     </hint>
    </hints>
   </connection>
@@ -20296,12 +20299,12 @@ font: 11pt bebas kai;
    <slot>createDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>995</x>
+     <x>403</x>
      <y>619</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
-     <y>144</y>
+     <x>522</x>
+     <y>250</y>
     </hint>
    </hints>
   </connection>
@@ -20312,12 +20315,12 @@ font: 11pt bebas kai;
    <slot>deleteFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>738</x>
+     <x>146</x>
      <y>619</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
-     <y>144</y>
+     <x>522</x>
+     <y>250</y>
     </hint>
    </hints>
   </connection>
@@ -20332,8 +20335,8 @@ font: 11pt bebas kai;
      <y>477</y>
     </hint>
     <hint type="destinationlabel">
-     <x>146</x>
-     <y>144</y>
+     <x>776</x>
+     <y>250</y>
     </hint>
    </hints>
   </connection>
@@ -20348,8 +20351,8 @@ font: 11pt bebas kai;
      <y>318</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
-     <y>144</y>
+     <x>522</x>
+     <y>250</y>
     </hint>
    </hints>
   </connection>
@@ -20360,12 +20363,12 @@ font: 11pt bebas kai;
    <slot>goUP()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>752</x>
+     <x>160</x>
      <y>106</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
-     <y>144</y>
+     <x>522</x>
+     <y>250</y>
     </hint>
    </hints>
   </connection>
@@ -20376,12 +20379,12 @@ font: 11pt bebas kai;
    <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>146</x>
-     <y>144</y>
+     <x>776</x>
+     <y>250</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
-     <y>144</y>
+     <x>522</x>
+     <y>250</y>
     </hint>
    </hints>
   </connection>
@@ -20392,12 +20395,12 @@ font: 11pt bebas kai;
    <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>738</x>
-     <y>144</y>
+     <x>522</x>
+     <y>250</y>
     </hint>
     <hint type="destinationlabel">
-     <x>146</x>
-     <y>144</y>
+     <x>776</x>
+     <y>250</y>
     </hint>
    </hints>
   </connection>
@@ -20408,12 +20411,12 @@ font: 11pt bebas kai;
    <slot>newFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>262</x>
+     <x>854</x>
      <y>619</y>
     </hint>
     <hint type="destinationlabel">
-     <x>146</x>
-     <y>144</y>
+     <x>776</x>
+     <y>250</y>
     </hint>
    </hints>
   </connection>
@@ -20424,12 +20427,12 @@ font: 11pt bebas kai;
    <slot>newFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>854</x>
+     <x>262</x>
      <y>619</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
-     <y>144</y>
+     <x>522</x>
+     <y>250</y>
     </hint>
    </hints>
   </connection>
@@ -20456,8 +20459,8 @@ font: 11pt bebas kai;
    <slot>setPlainText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>496</x>
-     <y>414</y>
+     <x>1114</x>
+     <y>520</y>
     </hint>
     <hint type="destinationlabel">
      <x>1229</x>
