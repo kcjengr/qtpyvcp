@@ -82,8 +82,7 @@ class ColoredFormatter(Formatter):
         colored_record.levelname = COLORIZE(levelname, color)
 
         # Add colors to tagged message text
-        msg = colored_record.getMessage()
-        plain_msg, color_msg = self.color_words(msg)
+        plain_msg, color_msg = self.color_words(colored_record.msg)
         record.msg = plain_msg
         colored_record.msg = color_msg
 
