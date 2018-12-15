@@ -15612,7 +15612,7 @@ padding: -5px;
               <bool>true</bool>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:gcodes?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Checked&quot;, &quot;expression&quot;: &quot;'G43' in ch[0]&quot;, &quot;name&quot;: &quot;G43&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:tool_in_spindle&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;ch[0] != 0&quot;, &quot;name&quot;: &quot;disable if no tool loaded&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:gcodes?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Checked&quot;, &quot;expression&quot;: &quot;'G43' in ch[0]&quot;, &quot;name&quot;: &quot;G43&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:tool_in_spindle&quot;, &quot;trigger&quot;: false}, {&quot;url&quot;: &quot;status:interp_state&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:homed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;ch[0] != 0&quot;, &quot;name&quot;: &quot;disable if no tool loaded&quot;}]</string>
              </property>
              <property name="MDICommand" stdset="0">
               <string>G43</string>
@@ -20694,70 +20694,6 @@ font: 11pt bebas kai;
     <hint type="destinationlabel">
      <x>1870</x>
      <y>809</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>G43</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>G49</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>460</x>
-     <y>782</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>516</x>
-     <y>790</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>G43</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>G43</receiver>
-   <slot>setChecked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>467</x>
-     <y>806</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>479</x>
-     <y>789</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>G49</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>G43</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>527</x>
-     <y>808</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>444</x>
-     <y>808</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>G49</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>G49</receiver>
-   <slot>setChecked(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>525</x>
-     <y>778</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>492</x>
-     <y>807</y>
     </hint>
    </hints>
   </connection>
