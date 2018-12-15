@@ -26,7 +26,7 @@ import sys
 
 import linuxcnc
 
-from qtpy.QtCore import Slot, Property, Qt, QModelIndex, QAbstractTableModel, QRegExp
+from qtpy.QtCore import Slot, Property, Qt, QModelIndex, QAbstractTableModel, QRegExp, QSortFilterProxyModel
 from qtpy.QtGui import QValidator, QRegExpValidator, QStandardItemModel
 from qtpy.QtWidgets import QTableView, QMessageBox, QAbstractItemView, QSpinBox, QDoubleSpinBox, \
     QLineEdit, QStyledItemDelegate
@@ -312,6 +312,11 @@ class ToolModel(QStandardItemModel):
         return True
 
 
+class ProxyModel(QSortFilterProxyModel):
+    def __init__(self, parent=None):
+        super(ProxyModel, self).__init__(parent)
+
+
 class ToolTable(QTableView):
 
     def __init__(self, parent=None):
@@ -326,13 +331,12 @@ class ToolTable(QTableView):
 
         self.cmd = linuxcnc.command()
 
-        self.model = ToolModel(self)
+        self.tool_model = ToolModel(self)
 
         delegate = ItemDelegate()
 
         self.setItemDelegate(delegate)
 
-        self.setModel(self.model)
         self.horizontalHeader().setStretchLastSection(True)
         self.setAlternatingRowColors(True)
         self.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -344,6 +348,14 @@ class ToolTable(QTableView):
         self.tool_table_loaded = False
         self.loadToolTable()
         self.tool_table_loaded = True
+
+        self.proxy_model = ProxyModel()
+        self.proxy_model.setFilterKeyColumn(0)
+        self.proxy_model.setSourceModel(self.tool_model)
+
+        self.setModel(self.proxy_model)
+
+        self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
 
     @Slot()
     def loadToolTable(self):
@@ -363,7 +375,7 @@ class ToolTable(QTableView):
         LOG.debug("Loading tool table: {0}".format(fn))
 
         with open(fn, "r") as f:
-            self.model.loadToolTable(f)
+            self.tool_model.loadToolTable(f)
 
         self.selectRow(0)
 
@@ -380,20 +392,20 @@ class ToolTable(QTableView):
         LOG.debug("Saving tool table as: {0}".format(fn))
 
         with open(fn, "w") as f:
-            self.model.saveToolTable(f)
+            self.tool_model.saveToolTable(f)
 
         self.cmd.load_tool_table()
 
     @Slot()
     def insertToolAbove(self):
         selected = self.selectedRow()
-        self.model.newTool(selected, -1)
+        self.tool_model.newTool(selected, -1)
         self.selectRow(selected)
 
     @Slot()
     def insertToolBelow(self):
         selected = self.selectedRow()
-        self.model.newTool(selected, +1)
+        self.tool_model.newTool(selected, +1)
         self.selectRow(selected)
 
     @Slot()
@@ -402,12 +414,12 @@ class ToolTable(QTableView):
         if current_row == -1:
             # no row selcted
             return
-        current_tool = self.model.tool_list[current_row][0]
+        current_tool = self.tool_model.tool_list[current_row][0]
 
         if not self.ask_dialog("Do you wan't to delete T{} ?".format(current_tool)):
             return
 
-        self.model.removeTool(current_row)
+        self.tool_model.removeTool(current_row)
 
     @Slot()
     def removeAllTools(self, confirm=True):
@@ -415,8 +427,8 @@ class ToolTable(QTableView):
             if not self.ask_dialog("Do you wan't to delete the whole tool table?"):
                 return
 
-        for i in reversed(range(self.model.rowCount())):
-            self.model.removeTool(i)
+        for i in reversed(range(self.tool_model.rowCount())):
+            self.tool_model.removeTool(i)
 
     def ask_dialog(self, message):
         box = QMessageBox.question(self.parent,
