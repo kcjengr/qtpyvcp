@@ -136,7 +136,7 @@ class VCPMainWindow(QMainWindow):
                     menu.addMenu(new_menu)
 
                 elif provider is not None:
-                    new_menu = _initialize_object_from_dict(item)
+                    new_menu = _initialize_object_from_dict(item, parent=menu)
                     new_menu.setTitle(title)
                     menu.addMenu(new_menu)
 

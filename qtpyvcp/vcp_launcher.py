@@ -119,13 +119,16 @@ def _get_object_by_referance(object_ref):
         raise
 
 
-def _initialize_object_from_dict(object_dict):
+def _initialize_object_from_dict(object_dict, parent=None):
     """Initialize a python object from dict."""
     provider = object_dict['provider']
     args = object_dict.get('args') or []
     kwargs = object_dict.get('kwargs') or {}
 
     obj = _get_object_by_referance(provider)
+
+    if parent is not None:
+        kwargs.update({'parent': parent})
 
     return obj(*args, **kwargs)
 
