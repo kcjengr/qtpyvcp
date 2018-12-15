@@ -9,7 +9,7 @@ from qtpyvcp.utilities.logger import getLogger
 
 LOG = getLogger(__name__)
 
-# LogUndefined = make_logging_undefined(logger=None, base=Undefined)
+LogUndefined = make_logging_undefined(logger=LOG, base=Undefined)
 
 def load_config_files(*files):
     """Load and merge YAML config files.
@@ -40,7 +40,7 @@ def load_config_files(*files):
 
     hiyapyco.jinja2env = NativeEnvironment(variable_start_string='(',
                                            variable_end_string=')',
-                                           undefined=Undefined)
+                                           undefined=LogUndefined)
 
     cfg_dict = hiyapyco.load(expanded_files,
                              method=hiyapyco.METHOD_MERGE,
@@ -55,7 +55,7 @@ def load_config_files(*files):
 
 def process_templates(files):
     env = Environment(loader=FileSystemLoader(searchpath=[os.path.dirname(file) for file in files]),
-                      undefined=StrictUndefined,
+                      undefined=LogUndefined,
                       )
 
     expanded_templates = []
