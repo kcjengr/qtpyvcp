@@ -525,6 +525,9 @@ border-radius: 6px;
                   <layout class="QHBoxLayout" name="horizontalLayout_125">
                    <item>
                     <widget class="FileSystemTable" name="filesystemtable_2">
+                     <property name="focusPolicy">
+                      <enum>Qt::ClickFocus</enum>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">FileSystemTable {
 	color: black;
@@ -543,6 +546,12 @@ QHeaderView {
 	border-style: none;
 	font: 13pt &quot;Bebas Kai&quot;;
 }</string>
+                     </property>
+                     <property name="selectionMode">
+                      <enum>QAbstractItemView::SingleSelection</enum>
+                     </property>
+                     <property name="showGrid">
+                      <bool>false</bool>
                      </property>
                     </widget>
                    </item>
@@ -985,6 +994,9 @@ border-radius: 6px;
                   <layout class="QHBoxLayout" name="horizontalLayout_122">
                    <item>
                     <widget class="FileSystemTable" name="filesystemtable">
+                     <property name="focusPolicy">
+                      <enum>Qt::ClickFocus</enum>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">FileSystemTable {
 	color: black;
@@ -1003,6 +1015,12 @@ QHeaderView {
 	border-style: none;
 	font: 13pt &quot;Bebas Kai&quot;;
 }</string>
+                     </property>
+                     <property name="selectionMode">
+                      <enum>QAbstractItemView::SingleSelection</enum>
+                     </property>
+                     <property name="showGrid">
+                      <bool>false</bool>
                      </property>
                     </widget>
                    </item>
