@@ -1288,6 +1288,9 @@ border-radius: 6px;
     font: 12pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
+                     <property name="placeholderText">
+                      <string>Select a text file to preview</string>
+                     </property>
                     </widget>
                    </item>
                   </layout>
