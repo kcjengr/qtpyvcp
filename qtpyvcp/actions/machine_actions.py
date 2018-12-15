@@ -170,6 +170,12 @@ def issue_mdi(command, reset=True):
         LOG.info("Issuind MDI command: {}".format(command))
         CMD.mdi(command)
         CMD.reset_interpreter()
+
+        setTaskMode(linuxcnc.MODE_MANUAL)
+        setTaskMode(linuxcnc.MODE_MDI)
+        # self.cmd.mode(self.linuxcnc.MODE_MANUAL)
+        # self.cmd.wait_complete()
+        # self.cmd.mode(self.linuxcnc.MODE_MDI)
     else:
         LOG.error("Failed to issue MDI command: {}".format(command))
 
