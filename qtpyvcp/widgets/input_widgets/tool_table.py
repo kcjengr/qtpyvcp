@@ -338,7 +338,6 @@ class ToolTable(QTableView):
         self.setItemDelegate(delegate)
 
         self.horizontalHeader().setStretchLastSection(True)
-        self.horizontalHeader().sectionClicked.connect(self.sort)
         self.setAlternatingRowColors(True)
         self.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -356,8 +355,7 @@ class ToolTable(QTableView):
 
         self.setModel(self.proxy_model)
 
-    def sort(self, *args, **kwargs):
-        self.tool_model.sort(-1, Qt.AscendingOrder)
+        self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
 
     @Slot()
     def loadToolTable(self):
