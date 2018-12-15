@@ -63,16 +63,17 @@ class JogIncrementWidget(QWidget):
                 button.setText(raw_increment)
                 button.clicked.connect(self.setJogIncrement)
                 hBox.addWidget(button)
+
         self.placeLed()
 
     def setJogIncrement(self):
         jog.set_increment(self.sender().text())
 
-    def layout_widgets(self, layout):
+    def layoutWidgets(self, layout):
         return (layout.itemAt(i) for i in range(layout.count()))
 
     def placeLed(self):
-        for w in self.layout_widgets(self._container):
+        for w in self.layoutWidgets(self._container):
             w.widget().setLedDiameter(self._ledDiameter)
             w.widget().setLedColor(self._ledColor)
             w.widget().setAlignment(self._alignment)
