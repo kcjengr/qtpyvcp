@@ -288,7 +288,7 @@ background-color: transparent;
                   <property name="minimumSize">
                    <size>
                     <width>148</width>
-                    <height>33</height>
+                    <height>30</height>
                    </size>
                   </property>
                   <property name="focusPolicy">
@@ -298,7 +298,7 @@ background-color: transparent;
                    <string notr="true">QComboBox {
 	border: 1px solid black;
 	border-radius: 3px;
-	background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+	background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 	padding: 1px 23px 1px 3px;
 	min-width: 6em;
 	color: #ffffff;
