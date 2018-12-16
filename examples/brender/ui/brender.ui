@@ -1771,7 +1771,6 @@
              </property>
              <property name="font">
               <font>
-               <pointsize>-1</pointsize>
                <weight>75</weight>
                <italic>false</italic>
                <bold>true</bold>
@@ -1897,7 +1896,6 @@
              </property>
              <property name="font">
               <font>
-               <pointsize>-1</pointsize>
                <weight>75</weight>
                <italic>false</italic>
                <bold>true</bold>
@@ -2103,7 +2101,6 @@
              </property>
              <property name="font">
               <font>
-               <pointsize>-1</pointsize>
                <weight>75</weight>
                <italic>false</italic>
                <bold>true</bold>
@@ -2170,7 +2167,6 @@
              </property>
              <property name="font">
               <font>
-               <pointsize>-1</pointsize>
                <weight>75</weight>
                <italic>false</italic>
                <bold>true</bold>
@@ -2270,7 +2266,6 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>-1</pointsize>
            <weight>75</weight>
            <italic>false</italic>
            <bold>true</bold>
@@ -2300,7 +2295,6 @@
          </property>
          <property name="font">
           <font>
-           <pointsize>-1</pointsize>
            <weight>75</weight>
            <italic>false</italic>
            <bold>true</bold>
@@ -2331,6 +2325,9 @@
          <property name="text">
           <string>Block Del</string>
          </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
          <property name="actionName" stdset="0">
           <string>program.block-delete.toggle</string>
          </property>
@@ -2349,6 +2346,9 @@
          </property>
          <property name="text">
           <string>Opt Stop</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
          </property>
          <property name="actionName" stdset="0">
           <string>program.optional_stop.toggle</string>
@@ -2369,6 +2369,9 @@
          <property name="text">
           <string>Mist</string>
          </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
          <property name="actionName" stdset="0">
           <string>coolant.mist.toggle</string>
          </property>
@@ -2384,6 +2387,9 @@
          </property>
          <property name="text">
           <string>Flood</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
          </property>
          <property name="actionName" stdset="0">
           <string>coolant.flood.toggle</string>
@@ -2497,7 +2503,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>29</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">

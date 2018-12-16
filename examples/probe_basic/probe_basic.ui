@@ -14591,6 +14591,9 @@ border-radius: 6px;
              <property name="text">
               <string>Flood</string>
              </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
              <property name="actionName" stdset="0">
               <string>coolant.flood.toggle</string>
              </property>
@@ -14648,6 +14651,9 @@ border-radius: 6px;
              <property name="text">
               <string>BLOCK DELETE</string>
              </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
              <property name="actionName" stdset="0">
               <string>program.block-delete.toggle</string>
              </property>
@@ -14687,6 +14693,9 @@ border-radius: 6px;
              </property>
              <property name="text">
               <string>Mist</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
              <property name="actionName" stdset="0">
               <string>coolant.mist.toggle</string>
@@ -14744,6 +14753,9 @@ border-radius: 6px;
              </property>
              <property name="text">
               <string>M01 BREAK</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
              </property>
              <property name="actionName" stdset="0">
               <string>program.optional-stop.toggle</string>
