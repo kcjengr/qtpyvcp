@@ -3,8 +3,10 @@ import pyudev
 import psutil
 
 from qtpy.QtCore import Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevice
-from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, QApplication, QAbstractItemView
+from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, \
+    QApplication, QAbstractItemView
 
+from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.utilities.info import Info
 
 IN_DESIGNER = os.getenv('DESIGNER') != None
@@ -79,6 +81,9 @@ class FileSystemTable(QTableView, TableType):
         from PyQt5.QtCore import Q_ENUMS
         Q_ENUMS(TableType)
 
+
+    gcodeFileSelected = Signal(bool)
+    filePreviewText = Signal(str)
     transferFileRequest = Signal(str)
     rootChanged = Signal(str)
 
@@ -109,12 +114,33 @@ class FileSystemTable(QTableView, TableType):
         self.setAlternatingRowColors(True)
         self.setSelectionBehavior(QAbstractItemView.SelectRows)
 
+        self.selection_model = self.selectionModel()
+        self.selection_model.selectionChanged.connect(self.onSelectionChanged)
+
         self.info = Info()
         self._nc_file_dir = self.info.getProgramPrefix()
+        self.nc_file_exts = self.info.getProgramExtentions()
         self.setRootPath(self._nc_file_dir)
 
     def showEvent(self, event=None):
         self.rootChanged.emit(self._nc_file_dir)
+
+    def onSelectionChanged(self, selected, deselected):
+
+        if len(selected) == 0:
+            return
+
+        index = selected.indexes()[0]
+        path = self.model.filePath(index)
+
+        if os.path.isfile(path):
+            self.gcodeFileSelected.emit(True)
+            with open(path, 'r') as fh:
+                content = fh.read()
+            self.filePreviewText.emit(content)
+        else:
+            self.gcodeFileSelected.emit(False)
+            self.filePreviewText.emit('')
 
     def changeRoot(self, index):
 
@@ -129,6 +155,22 @@ class FileSystemTable(QTableView, TableType):
             self.setRootIndex(self.model.index(absolute_path))
 
             self.rootChanged.emit(absolute_path)
+
+        elif file_info.isFile():
+            print self.nc_file_exts
+            print absolute_path
+            # if os.path.splitext(new_path)[1] in self.nc_file_exts:
+            #     print absolute_path
+            loadProgram(absolute_path)
+
+    @Slot()
+    def loadSelectedFile(self):
+        selection = self.selection_model.selectedIndexes()
+        if len(selection) == 0:
+            return
+
+        path = self.model.filePath(selection[0])
+        loadProgram(path)
 
     @Slot()
     def newFile(self):
