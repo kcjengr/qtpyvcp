@@ -208,7 +208,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -3809,7 +3809,7 @@ padding-right: 10px;
                       <string>[]</string>
                      </property>
                      <property name="MDICommand" stdset="0">
-                      <string>M61 Q0</string>
+                      <string>M61 Q0 G49</string>
                      </property>
                     </widget>
                    </item>
@@ -15097,13 +15097,13 @@ padding: -5px;
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>62</width>
+                  <width>55</width>
                   <height>0</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>62</width>
+                  <width>55</width>
                   <height>16777215</height>
                  </size>
                 </property>
@@ -18263,13 +18263,13 @@ padding-right: 7px;
            <property name="minimumSize">
             <size>
              <width>50</width>
-             <height>33</height>
+             <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>50</width>
-             <height>33</height>
+             <height>36</height>
             </size>
            </property>
            <property name="toolTipDuration">
@@ -18403,13 +18403,13 @@ border-radius: 4px;
            <property name="minimumSize">
             <size>
              <width>50</width>
-             <height>33</height>
+             <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>50</width>
-             <height>33</height>
+             <height>36</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -18466,13 +18466,13 @@ border-radius: 4px;
            <property name="minimumSize">
             <size>
              <width>50</width>
-             <height>33</height>
+             <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>50</width>
-             <height>33</height>
+             <height>36</height>
             </size>
            </property>
            <property name="styleSheet">
@@ -18625,13 +18625,13 @@ LOAD</string>
            <property name="minimumSize">
             <size>
              <width>50</width>
-             <height>33</height>
+             <height>36</height>
             </size>
            </property>
            <property name="maximumSize">
             <size>
              <width>50</width>
-             <height>33</height>
+             <height>36</height>
             </size>
            </property>
            <property name="toolTipDuration">
@@ -19209,7 +19209,7 @@ border-radius: 4px;
              </property>
              <property name="minimumSize">
               <size>
-               <width>42</width>
+               <width>48</width>
                <height>38</height>
               </size>
              </property>
