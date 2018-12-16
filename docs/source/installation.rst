@@ -7,17 +7,16 @@ Installation
     installed, either system wide or as a Run In Place (RIP) built from source.
 
 The are multiple ways to install QtPyVCP, which one is best depends on how
-you intend to use QtPyVCP. If all you intend to do is try the examples,
-your best bet is to install with pip per the :doc:`Quick Start <quick_start>` guide.
-
-Installing with PIP
-^^^^^^^^^^^^^^^^^^^
-
-See the :doc:`Quick Start <quick_start>` guide.
+you intend to use QtPyVCP. If you are not interested in development then
+it is best is to install with pip per the :doc:`Quick Start <quick_start>` guide.
 
 
 Installing from Debian package
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. warning ::
+    The QtPyVCP Debian packages are experimental, and may be missing some
+    dependencies. Installing via pip is the preferred installation method.
 
 Download the latest release here: https://github.com/kcjengr/qtpyvcp/releases
 
@@ -29,88 +28,73 @@ or::
 
   sudo dpkg -i /path/to/download.deb
 
-All dependencies should be automatically installed.
+
+Development Install
+^^^^^^^^^^^^^^^^^^^
+
+If you intend to contribute to QtPyVCP or make your own VCPs
+then you will need a development install. This type of installation
+is editable, meaning you can make changes to the source files and the
+changes will take effect when QtPyVCP is next run, without the need to
+reinstall.
 
 
-Installing from Source
-^^^^^^^^^^^^^^^^^^^^^^
+Getting the QtPyVCP Source Code
++++++++++++++++++++++++++++++++
 
-This is best if you intend to contribute to QtPyVCP or make your own VCPs.
+If you intend to contribute to QtPyVCP you should clone the
+`QtPyVCP repository <https://github.com/kcjengr/qtpyvcp>`_ with git::
 
+  git clone https://github.com/kcjengr/qtpyvcp qtpyvcp
 
-Install Dependencies
-++++++++++++++++++++
-
-These are the dependencies needed to run QyPyVCP on Debian 9 (Stretch) systems.
-
-Core dependencies::
-
-  sudo apt install python-pyqt5 python-pyqt5.qtopengl python-pyqt5.qsci python-dbus.mainloop.pyqt5
-
-Required for Camera widget::
-
-  sudo apt install python-pyqt5.qtmultimedia gstreamer1.0-plugins-bad libqt5multimedia5-plugins
+Otherwise you can simply download the source code archive:
+:download:`qtpyvcp-master.tar.gz <https://github.com/kcjengr/qtpyvcp/tarball/master>`
 
 
-Required for QtPyVCP and VCP development::
+Install Dev Dependencies
+++++++++++++++++++++++++
 
-  sudo apt install qttools5-dev-tools qttools5.dev pyqt5-dev-tools
+Development dependencies::
 
-Required for building documentation::
+  sudo apt install python-pyqt5 python-pyqt5.qtopengl python-pyqt5.qsci python-dbus.mainloop.pyqt5 qttools5-dev-tools qttools5.dev pyqt5-dev-tools python-pyqt5.qtmultimedia gstreamer1.0-plugins-bad libqt5multimedia5-plugins
 
-  sudo apt install python-sphinx
-  pip install sphinx_rtd_theme mock
 
-From the docs dir run ``make html`` to build the HTML documentation.
+For building documentation::
+
+  pip install sphinx sphinx_rtd_theme mock
+
+(From the docs dir run ``make html`` to build the HTML documentation.)
+
 
 **Note:** *We try to keep this up to date, but if you find additional
 dependencies are needed please notify one of the developers so it
 can be added.*
 
 
-Getting the QtPyVCP Source Code
-+++++++++++++++++++++++++++++++
-
-The easiest way to get QtPyVCP is to clone the
-`QtPyVCP repository <https://github.com/kcjengr/qtpyvcp>`_ with git.
-If you don't have git you can simply download the QtPyVCP .zip file
-using the green *Clone or download* button, but this will make it harder
-to update in the future.
-
-To clone the repository open a terminal at the desired location and run::
-
-  git clone https://github.com/kcjengr/qtpyvcp qtpyvcp
-
-Enter the newly cloned directory::
-
-  cd qtpyvcp
-
-
-Install with setup.py
+Install with pip
 +++++++++++++++++++++
 
 You need to have the python 2.7 setup tools installed::
 
   sudo apt install python-setuptools
 
-Install QtPyVCP by running::
+From the qtpyvcp source directory install QtPyVCP by running::
 
-  sudo python setup.py develop
+  pip install --editable .
 
-This will install QtPyVCP on your PYTHONPATH and will generate command line
-scripts for launching QtPyVCP, the example VCPs and the command line tools.
+This will create a setup.py development install and will add command line scripts to
+``~/.local/bin/`` for launching QtPyVCP, the example VCPs and the command line tools.
 
-If you used the ``--user`` flag the scripts will be placed in ``~/.local/bin/``,
-which is not on the PATH on Debian 9 (Stretch). You can add ``~/.local/bin/``
-to the current PATH by running::
+.. note ::
+    On Debian 9 (Stretch) ``~/.local/bin/`` is not on the PATH due to a regression in bash.
+    This prevents being able to launch qtpyvcp from the command line or being able to use it
+    as the ``[DISPLAY]DISPLAY`` directive in the LinuxCNC INI file. For a single shell session
+    you can get around this by running ``export PATH=$PATH:~/.local/bin/`` before launching
+    linuxcnc or any qtpyvcp commands.
 
-  export PATH=$PATH:~/.local/bin/
-
-.. Tip::
-    You will have to run the above commend for every terminal you wish to launch
-    QtPyVCP from, a more convenient solution is to append the following line
-    to your bash ``~/.profile``:
-    ``PATH=$PATH:~/.local/bin/``
+    A more permanent solution is to copy the `.xsessionrc` file from the `qtpyvcp/scripts`
+    directory into your home direcotry, then log out and log back in. This will add
+    ``~/.local/bin/`` to your PATH each time xwindows starts.
 
 
 Testing the Install
@@ -120,7 +104,7 @@ Confirm that QtPyVCP installed correctly and is available by running::
 
   qtpyvcp -h
 
-This will print a list of command line options it the installation was
+This will print a list of command line options if the installation was
 successful.
 
 QtDesigner Plug-ins (development only)

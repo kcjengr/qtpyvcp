@@ -12,10 +12,12 @@ If you are impatient, this is for you!
 **Install QtPyVCP**
 ::
 
-  sudo pip install git+https://github.com/kcjengr/qtpyvcp.git
+  pip install git+https://github.com/kcjengr/qtpyvcp.git
 
 This will install QtPyVCP along with the examples, and will add
 QtPyVCP specific sim configs to ``~/linuxcnc/configs/sim.qtpyvcp``.
+
+*On Debian you will need to log out and log back in.*
 
 **Launch a SIM config**
 
@@ -23,11 +25,13 @@ Launch LinuxCNC as usual and select one of the QtPyVCP sims. You should see a
 dialog from which you can select one of the example VCPs. Chose one and click
 "Launch VCP".
 
-This installation method is tested to work on Debian 9 (Stretch), it will
-probably work on other distros as well. If you intend to make your own VCPs
-or contribute to QtPyVCP you will need to set up a development environment.
+**Notes**
+
+This installation method is tested to work on Debian 9 (Stretch), it should
+work on other distros as well. If you intend to make your own VCPs
+or contribute to QtPyVCP you will need to set up a
+:doc:`development install <installation>`.
 
 .. Note::
-
-    You should un-install using ``sudo pip uninstall qtpyvcp``
+    You should un-install using ``pip uninstall qtpyvcp``
     before using one of the other installation methods to avoid conflicts.
