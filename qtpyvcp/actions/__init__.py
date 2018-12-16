@@ -70,11 +70,11 @@ def bindWidget(widget, action):
     if isinstance(widget, QAction):
         widget.triggered.connect(lambda: method(*args, **kwargs)) # should be able to do widget.triggered[()]
 
+    elif isinstance(widget, QPushButton) or isinstance(widget, QCheckBox):
+
         # if it is a toggle action make the menu item checkable
         if action.endswith('toggle'):
             widget.setCheckable(True)
-
-    elif isinstance(widget, QPushButton) or isinstance(widget, QCheckBox):
 
         if action.startswith('machine.jog'):
             widget.pressed.connect(lambda: method(*args, **kwargs))
