@@ -19286,7 +19286,7 @@ border-radius: 4px;
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;float&quot;, &quot;url&quot;: &quot;status:current_vel&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.1f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;cur vel&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:current_vel&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'%.1f' % (ch[0] * 60)&quot;, &quot;name&quot;: &quot;cur vel&quot;}]</string>
              </property>
              <property name="format" stdset="0">
               <string>{:.1f}</string>
