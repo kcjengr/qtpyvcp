@@ -13,6 +13,18 @@ class ActionButton(QPushButton, CMDWidget):
         parent (QWidget, optional) : The parent widget of the button, or None.
         action (str, optional) : The name of the action the button should trigger.
     """
+
+    DEFAULT_RULE_PROPERTY = 'Enable'
+    RULE_PROPERTIES = {
+        'Enable': ['setEnabled', bool],
+        'Visible': ['setVisible', bool],
+        'Opacity': ['setOpacity', float],
+        'Text': ['setText', str],
+        'Checked': ['setChecked', bool],
+        'Style Class': ['setStyleClass', str],
+        'None': ['None', None],
+    }
+
     def __init__(self, parent=None, action=None):
         super(ActionButton, self).__init__(parent)
 
