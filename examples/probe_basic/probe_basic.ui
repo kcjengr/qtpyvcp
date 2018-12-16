@@ -208,7 +208,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -287,12 +287,41 @@ background-color: transparent;
                  <widget class="RecentFileComboBox" name="recentfilecombobox">
                   <property name="minimumSize">
                    <size>
-                    <width>0</width>
-                    <height>30</height>
+                    <width>148</width>
+                    <height>33</height>
                    </size>
                   </property>
                   <property name="focusPolicy">
                    <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QComboBox {
+	border: 1px solid black;
+	border-radius: 3px;
+	background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+	padding: 1px 23px 1px 3px;
+	min-width: 6em;
+	color: #ffffff;
+    font: 12pt &quot;Bebas Kai&quot;;
+}
+QComboBox::drop-down {
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 20px;
+ 	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+    font: 12pt &quot;Bebas Kai&quot;;
+}
+QComboBox::down-arrow {
+     image: url(:/images/combobox-arrow.png);
+}
+ 
+QComboBox QAbstractItemView{
+	background-color: #4f4f4f;
+	color: #999999;
+ 	selection-background-color: #999999;
+	selection-color: #4f4f4f;
+}</string>
                   </property>
                  </widget>
                 </item>
@@ -13450,6 +13479,16 @@ Background:transparent;
            <attribute name="title">
             <string>          SETTINGS           </string>
            </attribute>
+           <widget class="QComboBox" name="comboBox">
+            <property name="geometry">
+             <rect>
+              <x>480</x>
+              <y>380</y>
+              <width>79</width>
+              <height>23</height>
+             </rect>
+            </property>
+           </widget>
           </widget>
           <widget class="QWidget" name="tab_10">
            <attribute name="title">
