@@ -35,7 +35,7 @@ def load(fname, add_to_recents=True):
         addToRecents(fname)
 
 def reload():
-    raise NotImplemented
+    LOG.error('Reload not implemented yet.')
 
 def addToRecents(fname):
     if fname in STATUS.recent_files:
@@ -114,7 +114,8 @@ def run_from_line(line):
     # TODO: This might should show a popup to select start line,
     #       or it could get the start line from the gcode view or
     #       even from the backplot.
-    raise NotImplemented
+    LOG.error('Run from line not implemented yet.')
+
 
 run_from_line.ok = _run_ok
 run_from_line.bindOk = _run_bindOk
