@@ -8,10 +8,17 @@ with open("README.md", "r") as fh:
 from qtpyvcp.tools.qcompile import compile
 compile(['examples/probe_basic',])
 
-data_dirs = [
-('~/linuxcnc/configs/sim.qtpyvcp', 'sim'),
-# ('~/linuxcnc/vcps', 'examples'),
+# list of (destination, source_file) tuples
+DATA_FILES = [
+    ('~/', ['scripts/.xsessionrc',])
 ]
+
+# list of (destination, source_dir) tuples
+DATA_DIRS = [
+    ('~/linuxcnc/configs/sim.qtpyvcp', 'sim'),
+    # ('~/linuxcnc/vcps', 'examples'),
+]
+
 
 def data_files_from_dirs(data_dirs):
     data_files = []
@@ -21,7 +28,13 @@ def data_files_from_dirs(data_dirs):
             root_files = [os.path.join(root, i) for i in files]
             dest = os.path.join(dest_dir, os.path.relpath(root, source_dir))
             data_files.append((dest, root_files))
+
+    print data_files
     return data_files
+
+
+data_files = [(os.path.expanduser(dest), src_list) for dest, src_list in DATA_FILES]
+data_files.extend(data_files_from_dirs(DATA_DIRS))
 
 setup(
     name="qtpyvcp",
@@ -45,7 +58,7 @@ setup(
         'Programming Language :: Python :: 2.7',
     ],
     packages=find_packages(),
-    data_files=data_files_from_dirs(data_dirs),
+    data_files=data_files,
     include_package_data=True,
     install_requires=[
         'docopt',
