@@ -28,7 +28,7 @@ import time
 from qtpy import QtCore, QtGui, QtWidgets
 
 from qtpy.QtWidgets import QApplication
-from qtpy.QtCore import Property, Signal, Slot
+from qtpy.QtCore import Property, Signal, Slot, QTimer
 from qtpy.QtGui import QColor
 
 from qtpyvcp.widgets.base_widgets.qbackplot import QBackPlot
@@ -79,12 +79,13 @@ class GcodeBackplot(QBackPlot):
         STATUS.actual_position.onValueChanged(self.update)
         STATUS.joint_actual_position.onValueChanged(self.update)
         STATUS.homed.onValueChanged(self.update)
-        STATUS.g5x_offset.onValueChanged(self.update)
-        STATUS.g92_offset.onValueChanged(self.update)
         STATUS.limit.onValueChanged(self.update)
         STATUS.tool_in_spindle.onValueChanged(self.update)
         STATUS.motion_mode.onValueChanged(self.update)
         STATUS.current_vel.onValueChanged(self.update)
+
+        STATUS.g5x_offset.onValueChanged(self.reloadBackplot)
+        STATUS.g92_offset.onValueChanged(self.reloadBackplot)
 
         # Connect status signals
         STATUS.file_loaded.connect(self.loadBackplot)
@@ -96,11 +97,15 @@ class GcodeBackplot(QBackPlot):
         self._reload_filename = fname
         self.load(fname)
 
+    @Slot()
     def reloadBackplot(self):
+        QTimer.singleShot(100, lambda: self._reloadBackplot())
+
+    def _reloadBackplot(self):
         LOG.debug('reload the display: {}'.format(self._reload_filename))
         dist = self.get_zoom_distance()
         try:
-            self.loadBackplot(self._reload_filename)
+            self.load(self._reload_filename)
             self.set_zoom_distance(dist)
         except:
             LOG.warning("Problem reloading backplot file: {}".format(self._reload_filename), exc_info=True)

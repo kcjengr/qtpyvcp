@@ -212,7 +212,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         self.is_lathe = self.inifile.find("DISPLAY", "LATHE") in ['1', 'True', 'true']
         self.random = int(self.inifile.find("EMCIO", "RANDOM_TOOLCHANGER") or 0)
         temp = self.inifile.find("RS274NGC", "PARAMETER_FILE") or "linuxcnc.var"
-        self.parameter_file = os.path.join(os.environ['CONFIG_DIR'], temp)
+        self.parameter_file = os.path.join(os.getenv('CONFIG_DIR', ''), temp)
 
         self.foam_option = bool(self.inifile.find("DISPLAY", "FOAM"))
         self.show_offsets = False
@@ -307,8 +307,9 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         self.canon.aborted = True
 
     def clear(self):
-        path = "/home/kurt/dev/cnc/QtControl/pyqtui/lib/empty.ngc"
-        QTimer.singleShot(0, lambda: self.load(path))
+        # path = "empty.ngc"
+        # QTimer.singleShot(0, lambda: self.load(path))
+        pass
 
     # setup details when window shows
     def realize(self):
@@ -448,7 +449,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
     def paintGL(self):
         GL.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT)
         # GL.glLoadIdentity() # reset the model-view matrix
-        # GL.glTranslated(0.0, 0.0, -10.0)
+        # GL.glTranslated(0.0, 0.0, 10.0)
         # GL.glRotated(self.xRot / 16.0, 1.0, 0.0, 0.0) # rotate on x
         # GL.glRotated(self.yRot / 16.0, 0.0, 1.0, 0.0) # rotate on y
         # GL.glRotated(self.zRot / 16.0, 0.0, 0.0, 1.0) # rotate on z
