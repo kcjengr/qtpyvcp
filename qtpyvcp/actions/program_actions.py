@@ -382,6 +382,8 @@ def _optional_stop_bindOk(widget):
 optional_stop.on.ok = optional_stop.off.ok = optional_stop.toggle.ok = _optional_stop_ok
 optional_stop.on.bindOk = optional_stop.off.bindOk = optional_stop.toggle.bindOk  = _optional_stop_bindOk
 
+optional_skip = block_delete
+
 #==============================================================================
 # Program preprocessing handlers
 #==============================================================================
