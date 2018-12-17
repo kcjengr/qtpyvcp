@@ -705,6 +705,8 @@ override_limits.bindOk = _override_limits_bindOk
 
 class jog:
 
+    max_linear_speed = INFO.getMaxJogVelocity()
+
     linear_speed = INFO.getJogVelocity()
     angular_speed = INFO.getJogVelocity()
     continuous = False
@@ -772,8 +774,29 @@ class jog:
     def set_angular_speed(speed):
         jog.angular_speed = float(speed)
 
+
+    @staticmethod
+    def set_linear_speed_percentage(percentage):
+        jog.set_linear_speed(jog.max_linear_speed * (float(percentage) / 100))
+
+
+def _jog_speed_slider_bindOk(widget):
+
+    try:
+        # these will only work for QSlider or QSpinBox
+        widget.setMinimum(0)
+        widget.setMaximum(100)
+        widget.setValue((jog.linear_speed / jog.max_linear_speed) * 100)
+
+        # jog.linear_speed.connect(lambda v: widget.setValue(v * 100))
+    except AttributeError:
+        pass
+
 jog.set_linear_speed.ok = jog.set_angular_speed.ok = lambda *a, **k: True
 jog.set_linear_speed.bindOk = jog.set_angular_speed.bindOk = lambda *a, **k: True
+
+jog.set_linear_speed_percentage.ok = lambda *a, **k: True
+jog.set_linear_speed_percentage.bindOk = _jog_speed_slider_bindOk
 
 
 def _from_internal_linear_unit(v, unit=None):

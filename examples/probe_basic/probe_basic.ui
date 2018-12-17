@@ -18379,7 +18379,7 @@ border-radius: 4px;
               <enum>Qt::Horizontal</enum>
              </property>
              <property name="actionName" stdset="0">
-              <string>machine.jog.set-linear-speed</string>
+              <string>machine.jog.set-linear-speed-percentage</string>
              </property>
             </widget>
            </item>
