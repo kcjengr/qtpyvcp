@@ -110,7 +110,7 @@ run.bindOk = _run_bindOk
 # -------------------------------------------------------------------------
 # program RUN from LINE action
 # -------------------------------------------------------------------------
-def run_from_line(line):
+def run_from_line(line=None):
     # TODO: This might should show a popup to select start line,
     #       or it could get the start line from the gcode view or
     #       even from the backplot.
