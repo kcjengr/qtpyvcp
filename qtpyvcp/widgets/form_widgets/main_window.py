@@ -85,7 +85,6 @@ class VCPMainWindow(QMainWindow):
         env = {'app': QApplication.instance(),
                'win': self,
                'action': actions,
-               'showDialog': showDialog,
                }
 
         try:
@@ -131,7 +130,7 @@ class VCPMainWindow(QMainWindow):
                     LOG.warn("Skipping unrecognized menu item: %s", item)
                     continue
 
-                title = item.get('title')
+                title = item.get('title') or ''
                 items = item.get('items')
                 provider = item.get('provider')
 
@@ -229,6 +228,9 @@ class VCPMainWindow(QMainWindow):
     @Slot()
     def openFile(self):
         showDialog('open_file')
+
+    def showDialog(self, dialog_name):
+        showDialog(dialog_name)
 
 # ==============================================================================
 # menu functions
