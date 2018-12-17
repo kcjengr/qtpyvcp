@@ -84,7 +84,8 @@ class VCPMainWindow(QMainWindow):
         # ToDo: Clean this up, it is very hacky
         env = {'app': QApplication.instance(),
                'win': self,
-               'action': actions
+               'action': actions,
+               'showDialog': showDialog,
                }
 
         try:
@@ -124,6 +125,10 @@ class VCPMainWindow(QMainWindow):
 
                 if item == 'separator':
                     menu.addSeparator()
+                    continue
+
+                if not isinstance(item, dict):
+                    LOG.warn("Skipping unrecognized menu item: %s", item)
                     continue
 
                 title = item.get('title')
