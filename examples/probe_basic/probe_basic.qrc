@@ -59,6 +59,8 @@
     <file>images/tall_left_arrow.png</file>
     <file>images/tall_right_arrow.png</file>
     <file>images/new_file.png</file>
+    <file>images/zero.png</file>
+    
 
         
 </qresource>
