@@ -6,10 +6,10 @@ import os
 VCP_DIR = os.path.realpath(os.path.dirname(__file__))
 VCP_CONFIG_FILE = os.path.join(VCP_DIR, 'mini.yml')
 
-os.environ['VCP_CONFIG_FILES'] = VCP_CONFIG_FILE + ':' + os.environ.get('VCP_CONFIG_FILES', '')
-
 
 def run(opts):
+    os.environ['VCP_CONFIG_FILES'] = VCP_CONFIG_FILE + ':' + os.environ.get(
+        'VCP_CONFIG_FILES', '')
 
     from qtpyvcp.utilities.config_loader import load_config_files_from_env
     config = load_config_files_from_env()
