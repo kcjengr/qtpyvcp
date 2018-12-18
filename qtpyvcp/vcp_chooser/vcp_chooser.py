@@ -3,9 +3,12 @@ from pkg_resources import iter_entry_points
 from qtpy import uic
 
 from qtpy.QtCore import Qt, Slot
-from qtpy.QtWidgets import QMessageBox, QFileDialog, QApplication, QDialog, QTreeWidgetItem, QStyleFactory
+from qtpy.QtWidgets import QFileDialog, QApplication, QDialog, QTreeWidgetItem, \
+    QStyleFactory
 
 from qtpyvcp import TOP_DIR
+
+from qtpyvcp.utilities.config_loader import load_config_files
 
 CHOOSER_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -20,6 +23,9 @@ class VCPChooser(QDialog):
         self.setAttribute(Qt.WA_DeleteOnClose, True)
 
         self.opts = opts
+        self._vcp_data = {}
+
+        self.selection = self.vcpTreeView.selectionModel()
 
         # example VCP section
         category = QTreeWidgetItem(self.vcpTreeView)
@@ -29,7 +35,7 @@ class VCPChooser(QDialog):
         # add example VCPs to the treeview
         for entry_point in iter_entry_points(group='qtpyvcp.example_vcp'):
             child = QTreeWidgetItem(category)
-            child.setText(0, entry_point.name)
+            child.setText(0, self.get_vcp_data(entry_point))
 
         # installed VCP section
         category = QTreeWidgetItem(self.vcpTreeView)
@@ -40,7 +46,7 @@ class VCPChooser(QDialog):
         # add installed VCPs to the treeview
         for entry_point in iter_entry_points(group='qtpyvcp.vcp'):
             child = QTreeWidgetItem(category)
-            child.setText(0, entry_point.name)
+            child.setText(0, self.get_vcp_data(entry_point))
             category.setHidden(False)
 
         if os.path.exists(CUSTOM_VCP_DIR):
@@ -55,20 +61,47 @@ class VCPChooser(QDialog):
 
         self.vcpTreeView.expandAll()
         self.vcpTreeView.activated.connect(self.on_launchVCPButton_clicked)
+        self.selection.selectionChanged.connect(self.on_selection_changed)
+
+    def get_vcp_data(self, entry_point):
+        vcp_data = {'entry_point_name': entry_point.name}
+        try:
+            vcp = entry_point.load()
+            vcp_config_file = vcp.VCP_CONFIG_FILE
+
+            vcp_data.update(load_config_files(vcp_config_file).get('vcp', {}))
+            vcp_name = vcp_data.get('name', entry_point.name)
+        except:
+            vcp_name = entry_point.name
+
+        self._vcp_data[vcp_name] = vcp_data
+
+        return vcp_name
+
+    def on_selection_changed(self):
+        selection = self.selection.selectedRows()
+        if selection == []:
+            return
+
+        vcp_data = self._vcp_data[selection[0].data()]
+
+        desc = vcp_data.get('description', '')
+        self.vcpDescription.setText(desc)
+
 
     @Slot()
     def on_launchVCPButton_clicked(self):
-        selection = self.vcpTreeView.selectionModel().selectedRows()
+        selection = self.selection.selectedRows()
         if selection == []:
             return
-        vcp = selection[0].data()
-        print vcp
+        vcp_name = selection[0].data()
+        vcp = self._vcp_data[vcp_name].get('entry_point_name', '')
+
         self.opts.vcp = vcp
         self.accept()
 
     @Slot()
     def on_cancelButton_clicked(self):
-        print "rejected"
         self.reject()
 
     @Slot()

@@ -8,9 +8,10 @@ vcp:
   name: Mini
   version: v0.0.1
   author: Kurt Jacobson
-  description: |
+  description: >
     Mini is minimal example VCP mostly used
     for development and testing purposes.
+
 
     Featues:
       * Very tiny
