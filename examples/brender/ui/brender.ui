@@ -59,7 +59,7 @@
          <enum>QTabWidget::South</enum>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tab_2">
          <attribute name="title">
@@ -1521,6 +1521,22 @@
           <string>program.abort</string>
          </property>
         </widget>
+        <widget class="DialogButton" name="dialogbutton">
+         <property name="geometry">
+          <rect>
+           <x>210</x>
+           <y>200</y>
+           <width>71</width>
+           <height>23</height>
+          </rect>
+         </property>
+         <property name="text">
+          <string>Set WCO</string>
+         </property>
+         <property name="dialogName" stdset="0">
+          <string>set_work_offsets</string>
+         </property>
+        </widget>
        </widget>
       </item>
       <item>
@@ -2871,6 +2887,11 @@
    <class>RecentFileComboBox</class>
    <extends>QComboBox</extends>
    <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>DialogButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.dialog_button</header>
   </customwidget>
   <customwidget>
    <class>SubCallButton</class>

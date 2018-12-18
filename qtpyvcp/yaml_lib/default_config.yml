@@ -1,7 +1,3 @@
-qtdesigner:
-  qss_file: "{{ application['kwargs']['stylesheet'] }}"
-  ui_file: "{{ application['kwargs']['stylesheet'] }}"
-
 vcp:
   name: Not Set
   version: Not Set
@@ -12,7 +8,7 @@ windows:
   mainwindow:
     provider: qtpyvcp.widgets.form_widgets.main_window:VCPMainWindow
 
-# This sections defines the Data Sources
+# This sections defines the default Data Sources
 data_plugins:
   status:
     provider: qtpyvcp.plugins.status:Status
@@ -48,9 +44,9 @@ virtual_keyboards:
     kwargs:
       ui_file: keyboards/integer_vkb.ui
       frameless: True
-      stylesheet: hello
+      modal: False
 
 application:
   provider: qtpyvcp.application:VCPApplication
   kwargs:
-    stylesheet: $YAML_DIR$/widgets/default_stylesheet.qss    # application wide stylesheet
+#    stylesheet: {{ file.dir }}/widgets/default_stylesheet.qss   # application wide stylesheet

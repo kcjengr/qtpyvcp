@@ -64,10 +64,6 @@ def load_vcp(opts):
             elif ext == '.ui':
                 _load_vcp_from_ui_file(vcp_path, opts)
 
-            # elif ext == '.py':
-            #     LOG.info("Loading VCP from PY file: yellow<{}>".format(vcp))
-            #     raise NotImplemented
-
         elif os.path.isdir(vcp_path):
             LOG.info("VCP is a directory")
             # TODO: Load from a directory if it has a __main__.py entry point
@@ -123,13 +119,16 @@ def _get_object_by_referance(object_ref):
         raise
 
 
-def _initialize_object_from_dict(object_dict):
+def _initialize_object_from_dict(object_dict, parent=None):
     """Initialize a python object from dict."""
     provider = object_dict['provider']
-    args = object_dict.get('args', [])
-    kwargs = object_dict.get('kwargs', {})
+    args = object_dict.get('args') or []
+    kwargs = object_dict.get('kwargs') or {}
 
     obj = _get_object_by_referance(provider)
+
+    if parent is not None:
+        kwargs.update({'parent': parent})
 
     return obj(*args, **kwargs)
 
@@ -137,12 +136,12 @@ def _initialize_object_from_dict(object_dict):
 def loadWindows(windows):
     for window_id, window_dict in windows.items():
 
-        inst = _initialize_object_from_dict(window_dict)
-        qtpyvcp.WINDOWS[window_id] = inst
+        window = _initialize_object_from_dict(window_dict)
+        qtpyvcp.WINDOWS[window_id] = window
 
         # show the window by default
         if window_dict.get('show', True):
-            inst.show()
+            window.show()
 
 
 def loadDialogs(dialogs):

@@ -1,13 +1,15 @@
+{% include "default_menubar.yml" %}
+
 qtdesigner:
-  ui_file: "{{ windows['mainwindow']['kwargs']['ui_file'] }}"
-  qss_file: "{{ application['kwargs']['stylesheet'] }}"
+  ui_file: ( windows.mainwindow.kwargs.ui_file )
+  qss_file: ( application.kwargs.stylesheet )
 
 vcp:
   name: Probe Basic
   version: v0.0.1
   author: Chris Polanski
   description: |
-    $Probe Basic description here.$
+    Probe Basic description ...
 
 data_plugins:
   status:
@@ -18,8 +20,9 @@ windows:
   mainwindow:
     provider: probe_basic:ProbeBasic
     kwargs:
-      ui_file: $YAML_DIR$/probe_basic.ui
+      menu: ( default_menubar )
+      ui_file: {{ file.dir }}/probe_basic.ui
 
 application:
   kwargs:
-    stylesheet: $YAML_DIR$/probe_basic.qss
+    stylesheet: {{ file.dir }}/probe_basic.qss

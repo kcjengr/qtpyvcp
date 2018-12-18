@@ -23,3 +23,11 @@ Button Widgets
    mdi_button
    subcall_button
    dialog_button
+
+Menus
+-----
+.. toctree::
+   :maxdepth: 1
+
+   menus
+

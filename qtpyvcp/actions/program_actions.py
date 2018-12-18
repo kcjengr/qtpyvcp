@@ -34,6 +34,9 @@ def load(fname, add_to_recents=True):
     if add_to_recents:
         addToRecents(fname)
 
+load.ok = lambda *args, **kwargs: True
+load.bindOk = lambda *args, **kwargs: True
+
 def reload():
     LOG.error('Reload not implemented yet.')
 
@@ -378,6 +381,8 @@ def _optional_stop_bindOk(widget):
 
 optional_stop.on.ok = optional_stop.off.ok = optional_stop.toggle.ok = _optional_stop_ok
 optional_stop.on.bindOk = optional_stop.off.bindOk = optional_stop.toggle.bindOk  = _optional_stop_bindOk
+
+optional_skip = block_delete
 
 #==============================================================================
 # Program preprocessing handlers

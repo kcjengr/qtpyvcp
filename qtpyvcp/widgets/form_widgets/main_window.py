@@ -3,50 +3,47 @@
 
 import os
 import sys
-import time
 
 from qtpy import uic
-from qtpy.QtCore import Qt, Slot, Property, QTimer
-from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, QMenu, QLineEdit
+from qtpy.QtCore import Qt, Slot, QTimer
+from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, QMenu, QMenuBar, QLineEdit
 
+from qtpyvcp import actions
 from qtpyvcp.utilities import logger
-LOG = logger.getLogger(__name__)
-
-from qtpyvcp.plugins import getPlugin
-STATUS = getPlugin('status')
-
 from qtpyvcp.core import Prefs, Info
+from qtpyvcp.lib.types import DotDict
+from qtpyvcp.widgets.dialogs import showDialog
+from qtpyvcp.plugins import getPlugin
+from qtpyvcp.vcp_launcher import _initialize_object_from_dict
+
+LOG = logger.getLogger(__name__)
 PREFS = Prefs()
 INFO = Info()
 
-from qtpyvcp import actions
-
-from qtpyvcp.lib.types import DotDict
-from qtpyvcp.widgets.dialogs.open_file_dialog import OpenFileDialog
 
 class VCPMainWindow(QMainWindow):
 
-    def __init__(self, parent=None, opts=DotDict(), ui_file=None, stylesheet=None, confirm_exit=True,
-                 position=None, size=None):
+    def __init__(self, parent=None, opts=DotDict(), ui_file=None, stylesheet=None,
+                 position=None, size=None, confirm_exit=True, title=None, menu=None):
 
         super(VCPMainWindow, self).__init__(parent)
 
+        self.setWindowTitle(title)
+
         self.app = QApplication.instance()
+        self.status = getPlugin('status')
 
         # QtDesigner settable vars
         self.prompt_at_exit = confirm_exit
-
-        # Variables
-        self.recent_file_actions = []
-        self.log_file_path = ''
-        self.actions = []
-        self.open_file_dialog = OpenFileDialog(self)
 
         # Load the UI file AFTER defining variables, otherwise the values
         # set in QtDesigner get overridden by the default values
         if ui_file is not None:
             self.loadUi(ui_file)
             self.initUi()
+
+        if title is not None:
+            self.setWindowTitle(title)
 
         if stylesheet is not None:
             self.loadStylesheet(stylesheet)
@@ -56,6 +53,9 @@ class VCPMainWindow(QMainWindow):
 
         if opts.fullscreen:
             QTimer.singleShot(0, self.showFullScreen)
+
+        if menu is not None:
+            self.setMenuBar(self.buildMenuBar(menu))
 
         # QShortcut(QKeySequence("t"), self, self.test)
         self.app.focusChanged.connect(self.focusChangedEvent)
@@ -80,25 +80,84 @@ class VCPMainWindow(QMainWindow):
         with open(stylesheet, 'r') as fh:
             self.setStyleSheet(fh.read())
 
-    def initUi(self):
-        STATUS.init_ui.emit()
-        self.loadSplashGcode()
-        self.initRecentFileMenu()
-        self.initHomingMenu()
+    def getMenuAction(self, menu_action, title='notitle', action_name='noaction'):
+        # ToDo: Clean this up, it is very hacky
+        env = {'app': QApplication.instance(),
+               'win': self,
+               'action': actions,
+               }
 
-        s = time.time()
+        try:
+            mod, action = action_name.split('.', 1)
+            method = getattr(env.get(mod, self), action)
+            menu_action.triggered.connect(method)
+            return
+        except:
+            pass
 
-        menus = self.findChildren(QMenu)
-        for menu in menus:
-            menu_actions = menu.actions()
-            for menu_action in menu_actions:
-                if menu_action.isSeparator():
+        try:
+            actions.bindWidget(menu_action, action_name)
+            return
+        except actions.InvalidAction:
+            pass
+
+        msg = "The <b>{}</b> action specified for the " \
+              "<b>{}</b> menu item could not be triggered. " \
+              "Check the YAML config file for errors." \
+              .format(action_name or '', title.replace('&', ''))
+        menu_action.triggered.connect(lambda: QMessageBox.critical(self, "Menu Action Error!", msg))
+
+    def buildMenuBar(self, menus):
+        """Recursively build menu bar.
+
+        Args:
+            menus (list) : List of dicts and lists containing the
+                items to add to the menu.
+
+        Returns:
+            QMenuBar
+        """
+
+        def recursiveAddItems(menu, items):
+
+            for item in items:
+
+                if item == 'separator':
+                    menu.addSeparator()
                     continue
-                action_name = menu_action.property('actionName')
-                if action_name:
-                    actions.bindWidget(menu_action, action_name)
 
-        print "action time ", time.time() - s
+                if not isinstance(item, dict):
+                    LOG.warn("Skipping unrecognized menu item: %s", item)
+                    continue
+
+                title = item.get('title') or ''
+                items = item.get('items')
+                provider = item.get('provider')
+
+                if items is not None:
+                    new_menu = QMenu(parent=self, title=title)
+                    recursiveAddItems(new_menu, items)
+                    menu.addMenu(new_menu)
+
+                elif provider is not None:
+                    new_menu = _initialize_object_from_dict(item, parent=menu)
+                    new_menu.setTitle(title)
+                    menu.addMenu(new_menu)
+
+                else:
+                    act = QAction(parent=self, text=title)
+                    self.getMenuAction(act, title, item.get('action'))
+                    act.setShortcut(item.get('shortcut', ''))
+                    menu.addAction(act)
+
+        menu_bar = QMenuBar(self)
+        recursiveAddItems(menu_bar, menus)
+        return menu_bar
+
+    def initUi(self):
+        self.status.init_ui.emit()
+        self.loadSplashGcode()
+        self.initHomingMenu()
 
     def closeEvent(self, event):
         """Catch close event and show confirmation dialog."""
@@ -107,11 +166,11 @@ class VCPMainWindow(QMainWindow):
             reply = QMessageBox.question(self, 'Exit LinuxCNC?',
                                          quit_msg, QMessageBox.Yes, QMessageBox.No)
             if reply == QMessageBox.Yes:
-                event.accept()
+                QApplication.instance().quit()
             else:
                 event.ignore()
         else:
-            event.accept()
+            self.app.quit()
 
     def keyPressEvent(self, event):
         # super(VCPMainWindow, self).keyPressEvent(event)
@@ -162,49 +221,20 @@ class VCPMainWindow(QMainWindow):
         if issubclass(new_w.__class__, QLineEdit):
             print "QLineEdit got focus: ", new_w
 
-#==============================================================================
+# ==============================================================================
 #  menu action slots
-#==============================================================================
-
-    #==========================================================================
-    # File menu
-    @Slot()
-    def on_actionOpen_triggered(self):
-        self.open_file_dialog.show()
+# ==============================================================================
 
     @Slot()
-    def on_actionExit_triggered(self):
-        self.close()
+    def openFile(self):
+        showDialog('open_file')
 
-#==============================================================================
+    def showDialog(self, dialog_name):
+        showDialog(dialog_name)
+
+# ==============================================================================
 # menu functions
-#==============================================================================
-
-    def initRecentFileMenu(self):
-        if hasattr(self, 'menuRecentFiles'):
-
-            # remove any actions that were added in QtDesigner
-            for action in self.menuRecentFiles.actions():
-                self.menuRecentFiles.removeAction(action)
-
-            # add new actions
-            for i in range(STATUS.max_recent_files):
-                action = QAction(self, visible=False,
-                                 triggered=(lambda: actions.program.load(self.sender().data())))
-                self.recent_file_actions.append(action)
-                self.menuRecentFiles.addAction(action)
-
-            self.updateRecentFilesMenu(STATUS.recent_files)
-            STATUS.recent_files_changed.connect(self.updateRecentFilesMenu)
-
-    def updateRecentFilesMenu(self, recent_files):
-        for i, fname in enumerate(recent_files):
-            fname = fname.encode('utf-8')
-            text = "&{} {}".format(i + 1, os.path.split(fname)[1])
-            action = self.recent_file_actions[i]
-            action.setText(text)
-            action.setData(fname)
-            action.setVisible(True)
+# ==============================================================================
 
     def initHomingMenu(self):
         if hasattr(self, 'menuHoming'):
@@ -231,9 +261,9 @@ class VCPMainWindow(QMainWindow):
                 actions.bindWidget(menu_action, 'machine.home.axis:{}'.format(aletter))
                 self.menuHoming.addAction(menu_action)
 
-#==============================================================================
+# ==============================================================================
 # helper functions
-#==============================================================================
+# ==============================================================================
 
     def loadSplashGcode(self):
         # Load backplot splash code
@@ -242,24 +272,6 @@ class VCPMainWindow(QMainWindow):
         if splash_code is not None:
             # Load after startup to not cause hang and 'Can't set mode while machine is running' error
             QTimer.singleShot(200, lambda: actions.program.load(splash_code, add_to_recents=False))
-
-#==============================================================================
-#  QtDesigner property setters/getters
-#==============================================================================
-
-    # Whether to show a confirmation prompt when closing the main window
-    def getPromptBeforeExit(self):
-        return self.prompt_at_exit
-    def setPromptBeforeExit(self, value):
-        self.prompt_at_exit = value
-    promptAtExit = Property(bool, getPromptBeforeExit, setPromptBeforeExit)
-
-    # Max number of recent files to display in menu
-    def getMaxRecentFiles(self):
-        return STATUS.max_recent_files
-    def setMaxRecentFiles(self, number):
-        STATUS.max_recent_files = number
-    maxNumRecentFiles = Property(int, getMaxRecentFiles, setMaxRecentFiles)
 
 
 if __name__ == '__main__':

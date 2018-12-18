@@ -1,0 +1,42 @@
+{% include "default_menubar.yml" %}
+
+qtdesigner:
+  ui_file: ( windows.mainwindow.kwargs.ui_file )
+#  qss_file: ( application.kwargs.stylesheet )
+
+vcp:
+  name: Mini
+  version: v0.0.1
+  author: Kurt Jacobson
+  description: |
+    Mini is minimal example VCP mostly used
+    for development and testing purposes.
+
+    Featues:
+      * Very tiny
+      * Does not do much
+      * Not very functioinal
+      * Full of bugs
+      * Sometimes works
+
+data_plugins:
+  status:
+    kwargs:
+      cycle_time: {{ ini.display.cycle_time }}
+
+dialogs:
+  test_dialog:
+    provider: qtpy.QtWidgets:QDialog
+
+windows:
+  mainwindow:
+    provider: mini:MiniVCP
+    kwargs:
+      title: ( vcp.name ) ( vcp.version ) on {{ ini.machine.name }}
+      ui_file: {{ file.dir }}/mini.ui  # ui file to load the window from
+      confirm_exit: no
+      menu: ( default_menubar )
+
+#  secondarywindow:
+#    provider: qtpy.QtWidgets:QWidget
+#    show: True
