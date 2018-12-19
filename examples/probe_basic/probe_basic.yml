@@ -1,4 +1,4 @@
-{% include "default_menubar.yml" %}
+{% include "menubar.yml" %}
 
 qtdesigner:
   ui_file: ( windows.mainwindow.kwargs.ui_file )
@@ -20,7 +20,7 @@ windows:
   mainwindow:
     provider: probe_basic:ProbeBasic
     kwargs:
-      menu: ( default_menubar )
+      menu: ( menubar )
       ui_file: {{ file.dir }}/probe_basic.ui
 
 application:
