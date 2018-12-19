@@ -71,6 +71,8 @@ TOP_DIR = os.path.dirname(QTPYVCP_DIR)
 
 DEFAULT_CONFIG_FILE = os.path.join(QTPYVCP_DIR, 'yaml_lib/default_config.yml')
 
+os.environ['VCP_CONFIG_FILES'] = os.getenv('VCP_CONFIG_FILES', '') + ':' \
+                                 + DEFAULT_CONFIG_FILE
 
 # globals
 CONFIG = {}

@@ -86,11 +86,11 @@ def launch_designer(opts=DotDict()):
 
         print "Loading YAML config file:", fname
 
-        from qtpyvcp import CONFIG
+        from qtpyvcp import CONFIG, DEFAULT_CONFIG_FILE
         from qtpyvcp.utilities.config_loader import load_config_files
 
         try:
-            CONFIG.update(load_config_files(fname))
+            CONFIG.update(load_config_files(fname, DEFAULT_CONFIG_FILE))
             data = CONFIG.get('qtdesigner')
         except:
             print "Error loading YAML config file:"
