@@ -87,15 +87,6 @@ DROWidget {
     background-color: black;
 }
 
-GcodeBackplot {
-    border-color: black;
-    border-style: solid;
-    border-width: 2px;
-    border-radius: 4px;
-    background-color: black;
-    margin: 10px;
-}
-
 QGroupBox {
     /*background-color: #6B6B6B;*/
     border: 1px solid #8A8484;
@@ -129,6 +120,8 @@ GcodeBackplot {
     border-width: 2px;
     border-radius: 4px;
     padding: 10px;
+    background-color: black;
+    margin: 10px;
 }
 
 /*===========================================================================*/
