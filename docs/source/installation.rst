@@ -56,7 +56,7 @@ Install Dev Dependencies
 
 Development dependencies::
 
-  sudo apt install python-pyqt5 python-pyqt5.qtopengl python-pyqt5.qsci python-dbus.mainloop.pyqt5 qttools5-dev-tools qttools5.dev pyqt5-dev-tools python-pyqt5.qtmultimedia gstreamer1.0-plugins-bad libqt5multimedia5-plugins
+  sudo apt install python-pyqt5 python-pyqt5.qtopengl python-pyqt5.qsci python-dbus.mainloop.pyqt5 qttools5-dev-tools qttools5.dev pyqt5-dev-tools python-pyqt5.qtmultimedia gstreamer1.0-plugins-bad libqt5multimedia5-plugins python-pip git
 
 
 For building documentation::
@@ -73,10 +73,6 @@ can be added.*
 
 Install with pip
 +++++++++++++++++++++
-
-You need to have the python 2.7 setup tools installed::
-
-  sudo apt install python-setuptools
 
 From the qtpyvcp source directory install QtPyVCP by running::
 
