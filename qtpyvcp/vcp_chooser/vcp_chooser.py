@@ -1,4 +1,5 @@
 import os
+import yaml
 from pkg_resources import iter_entry_points
 from qtpy import uic
 
@@ -7,8 +8,6 @@ from qtpy.QtWidgets import QFileDialog, QApplication, QDialog, QTreeWidgetItem, 
     QStyleFactory
 
 from qtpyvcp import TOP_DIR
-
-from qtpyvcp.utilities.config_loader import load_config_files
 
 CHOOSER_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -69,8 +68,19 @@ class VCPChooser(QDialog):
             vcp = entry_point.load()
             vcp_config_file = vcp.VCP_CONFIG_FILE
 
-            vcp_data.update(load_config_files(vcp_config_file).get('vcp', {}))
+            with open(vcp_config_file, 'r') as fh:
+                lines = fh.readlines()
+
+            clean = []
+            for line in lines:
+                # clean jinja templating commands
+                if line.strip().startswith('{%') or '{{' in line:
+                    continue
+                clean.append(line)
+
+            vcp_data.update(yaml.load(''.join(clean)).get('vcp', {}))
             vcp_name = vcp_data.get('name', entry_point.name)
+
         except:
             vcp_name = entry_point.name
 
