@@ -25,13 +25,12 @@ import os
 import gcode
 import time
 
-from qtpy import QtCore, QtGui, QtWidgets
+from qtpy.QtWidgets import QApplication, QProgressBar, QPushButton, QHBoxLayout, QVBoxLayout
 
-from qtpy.QtWidgets import QApplication
 from qtpy.QtCore import Property, Signal, Slot, QTimer
 from qtpy.QtGui import QColor
 
-from qtpyvcp.widgets.base_widgets.qbackplot import QBackPlot
+from qtpyvcp.widgets.display_widgets.gcode_backplot.qbackplot import QBackPlot
 
 from qtpyvcp.utilities import logger
 
@@ -62,15 +61,15 @@ class GcodeBackplot(QBackPlot):
         self._reload_filename = None
 
         # Add loading progress bar and abort button
-        self.progressBar = QtWidgets.QProgressBar(visible=False)
+        self.progressBar = QProgressBar(visible=False)
         self.progressBar.setFormat("Loading backplot: %p%")
-        self.abortButton = QtWidgets.QPushButton('Abort', visible=False)
+        self.abortButton = QPushButton('Abort', visible=False)
 
-        hBox = QtWidgets.QHBoxLayout()
+        hBox = QHBoxLayout()
         hBox.addWidget(self.progressBar)
         hBox.addWidget(self.abortButton)
 
-        vBox = QtWidgets.QVBoxLayout(self)
+        vBox = QVBoxLayout(self)
         vBox.addStretch()
         vBox.addLayout(hBox)
 
@@ -228,10 +227,8 @@ class GcodeBackplot(QBackPlot):
 # For testing purposes, include code to allow a widget to be created and shown
 # if this file is run.
 if __name__ == "__main__":
-    import sys
-    from qtpy.QtWidgets import QApplication
 
     app = QApplication(sys.argv)
-    widget = GcodeBackPlot(standalone=True)
+    widget = GcodeBackplot(standalone=True)
     widget.show()
     sys.exit(app.exec_())
