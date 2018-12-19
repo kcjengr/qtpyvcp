@@ -90,9 +90,6 @@ menubar:
 
   - title: Tools
     items:
-      - title: HAL Show
-        action: tool.halshow
-
       - title: HAL Meter
         action: tool.halmeter
 
