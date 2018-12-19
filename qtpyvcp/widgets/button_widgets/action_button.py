@@ -4,7 +4,7 @@ from qtpy.QtWidgets import QPushButton
 from qtpy.QtCore import Property
 
 from qtpyvcp.widgets import CMDWidget
-from qtpyvcp.actions import bindWidget
+from qtpyvcp.actions import bindWidget, InvalidAction
 
 class ActionButton(QPushButton, CMDWidget):
     """General purpose button for triggering QtPyVCP actions.
@@ -44,4 +44,7 @@ class ActionButton(QPushButton, CMDWidget):
     @actionName.setter
     def actionName(self, action_name):
         self._action_name = action_name
-        bindWidget(self, action_name)
+        try:
+            bindWidget(self, action_name)
+        except InvalidAction:
+            pass
