@@ -26,15 +26,14 @@ import thread
 
 import re
 import math
-import time
-
 
 from qtpy.QtGui import QColor
-from qtpy.QtCore import Signal, QPoint, QSize, Qt
+from qtpy.QtCore import Signal, QSize, Qt
 from qtpy.QtWidgets import QApplication, QHBoxLayout, QSlider, QWidget
 
 # Set up logging
 from qtpyvcp.utilities import logger
+
 LOG = logger.getLogger(__name__)
 
 try:
@@ -49,17 +48,15 @@ except ImportError:
     LOG.exception('OpenGL ImportError - is python-openGL installed?')
     sys.exit()
 
-
 import gcode
 import linuxcnc
 from rs274 import interpret
-from qtpyvcp.lib import glnav
-from qtpyvcp.lib import glcanon
+from qtpyvcp.widgets.display_widgets.gcode_backplot import glcanon, glnav
 
 
-#==============================================================================
+# ==============================================================================
 # Stand alone window for testing
-#==============================================================================
+# ==============================================================================
 
 class Window(QWidget):
     def __init__(self, inifile):
@@ -117,9 +114,9 @@ class Window(QWidget):
         return slider
 
 
-#==============================================================================
+# ==============================================================================
 # Helper classes
-#==============================================================================
+# ==============================================================================
 
 class StatCanon(glcanon.GLCanon, interpret.StatMixin):
     def __init__(self, colors, geometry, is_lathe, stat, random, line_count, progress_callback):
@@ -132,8 +129,8 @@ class StatCanon(glcanon.GLCanon, interpret.StatMixin):
         self.previous_progress = 0
 
     def change_tool(self, pocket):
-        glcanon.GLCanon.change_tool(self,pocket)
-        interpret.StatMixin.change_tool(self,pocket)
+        glcanon.GLCanon.change_tool(self, pocket)
+        interpret.StatMixin.change_tool(self, pocket)
 
     def check_abort(self):
         if self.aborted:
@@ -148,15 +145,16 @@ class StatCanon(glcanon.GLCanon, interpret.StatMixin):
             self.previous_progress = progress
             self.progress_callback(progress + 1)
 
-#==============================================================================
+
+# ==============================================================================
 # QtGl widget for displaying g-code toolpath backplot
-#==============================================================================
+# ==============================================================================
 
 class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
     xRotationChanged = Signal(int)
     yRotationChanged = Signal(int)
     zRotationChanged = Signal(int)
-    rotation_vectors = [(1.,0.,0.), (0., 0., 1.)]
+    rotation_vectors = [(1., 0., 0.), (0., 0., 1.)]
 
     def __init__(self, parent=None):
         super(QBackPlot, self).__init__(parent)
@@ -166,18 +164,19 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
             a = self.colors[s + "_alpha"]
             s = self.colors[s]
             return [int(x * 255) for x in s + (a,)]
+
         # requires linuxcnc running before laoding this widget
         inifile = os.environ.get('INI_FILE_NAME', '/dev/null')
         self.inifile = linuxcnc.ini(inifile)
         self.logger = linuxcnc.positionlogger(linuxcnc.stat(),
-            C('backplotjog'),
-            C('backplottraverse'),
-            C('backplotfeed'),
-            C('backplotarc'),
-            C('backplottoolchange'),
-            C('backplotprobing'),
-            self.get_geometry()
-        )
+                                              C('backplotjog'),
+                                              C('backplottraverse'),
+                                              C('backplotfeed'),
+                                              C('backplotarc'),
+                                              C('backplottoolchange'),
+                                              C('backplotprobing'),
+                                              self.get_geometry()
+                                              )
         # start tracking linuxcnc position so we can plot it
         thread.start_new_thread(self.logger.start, (.01,))
         glcanon.GlCanonDraw.__init__(self, linuxcnc.stat(), self.logger)
@@ -228,8 +227,8 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         self.c_axis_wrapped = self.inifile.find("AXIS_C", "WRAPPED_ROTARY")
 
         live_axis_count = 0
-        for i,j in enumerate("XYZABCUVW"):
-            if self.stat.axis_mask & (1<<i) == 0: continue
+        for i, j in enumerate("XYZABCUVW"):
+            if self.stat.axis_mask & (1 << i) == 0: continue
             live_axis_count += 1
         self.num_joints = int(self.inifile.find("KINS", "JOINTS") or live_axis_count)
 
@@ -258,7 +257,8 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         self.current_file = filename
         try:
             line_count = self.count_lines(filename)
-            self.canon = StatCanon(self.colors, self.get_geometry(), self.is_lathe, s, self.random, line_count, self.report_progress_percentage)
+            self.canon = StatCanon(self.colors, self.get_geometry(), self.is_lathe, s, self.random, line_count,
+                                   self.report_progress_percentage)
             temp_parameter = os.path.join(td, os.path.basename(self.parameter_file))
             shutil.copy(self.parameter_file, temp_parameter)
             self.canon.parameter_file = temp_parameter
@@ -330,24 +330,55 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
     # gettter / setters
     # def get_font_info(self):
     #     return self.font_charwidth, self.font_linespace, self.font_base
-    def get_program_alpha(self): return self.program_alpha
-    def get_joints_mode(self): return self.use_joints_mode
-    def get_show_commanded(self): return self.use_commanded
-    def get_show_extents(self): return self.show_extents_option
-    def get_show_limits(self): return self.show_limits
-    def get_show_live_plot(self): return self.show_live_plot
-    def get_show_machine_speed(self): return self.show_velocity
-    def get_show_metric(self): return self.metric_units
-    def get_show_program(self): return self.show_program
-    def get_show_rapids(self): return self.show_rapids
-    def get_show_relative(self): return self.use_relative
-    def get_show_tool(self): return self.show_tool
-    def get_show_distance_to_go(self): return self.show_dtg
-    def get_grid_size(self): return self.grid_size
-    def get_show_offsets(self): return self.show_offsets
+    def get_program_alpha(self):
+        return self.program_alpha
+
+    def get_joints_mode(self):
+        return self.use_joints_mode
+
+    def get_show_commanded(self):
+        return self.use_commanded
+
+    def get_show_extents(self):
+        return self.show_extents_option
+
+    def get_show_limits(self):
+        return self.show_limits
+
+    def get_show_live_plot(self):
+        return self.show_live_plot
+
+    def get_show_machine_speed(self):
+        return self.show_velocity
+
+    def get_show_metric(self):
+        return self.metric_units
+
+    def get_show_program(self):
+        return self.show_program
+
+    def get_show_rapids(self):
+        return self.show_rapids
+
+    def get_show_relative(self):
+        return self.use_relative
+
+    def get_show_tool(self):
+        return self.show_tool
+
+    def get_show_distance_to_go(self):
+        return self.show_dtg
+
+    def get_grid_size(self):
+        return self.grid_size
+
+    def get_show_offsets(self):
+        return self.show_offsets
+
     def get_view(self):
-        view_dict = {'x':0, 'y':1, 'y2':1, 'z':2, 'z2':2, 'p':3}
+        view_dict = {'x': 0, 'y': 1, 'y2': 1, 'z': 2, 'z2': 2, 'p': 3}
         return view_dict.get(self.current_view, 3)
+
     def get_geometry(self):
         temp = self.inifile.find("DISPLAY", "GEOMETRY")
         if temp:
@@ -356,19 +387,32 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         else:
             self._geometry = 'XYZ'
         return self._geometry
-    def is_foam(self): return self.foam_option
+
+    def is_foam(self):
+        return self.foam_option
+
     def get_current_tool(self):
         for i in self.stat.tool_table:
             if i[0] == self.stat.tool_in_spindle:
                 return i
-    def get_highlight_line(self): return self.highlight_line
-    def get_a_axis_wrapped(self): return self.a_axis_wrapped
-    def get_b_axis_wrapped(self): return self.b_axis_wrapped
-    def get_c_axis_wrapped(self): return self.c_axis_wrapped
+
+    def get_highlight_line(self):
+        return self.highlight_line
+
+    def get_a_axis_wrapped(self):
+        return self.a_axis_wrapped
+
+    def get_b_axis_wrapped(self):
+        return self.b_axis_wrapped
+
+    def get_c_axis_wrapped(self):
+        return self.c_axis_wrapped
+
     def set_current_view(self):
         if self.current_view not in ['p', 'x', 'y', 'y2', 'z', 'z2']:
             return
         return getattr(self, 'set_view_%s' % self.current_view)()
+
     def clear_live_plotter(self):
         self.logger.clear()
         self.update()
@@ -382,10 +426,13 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
     # trick - we are not gtk
     def activate(self):
         return
+
     def deactivate(self):
         return
+
     def swapbuffers(self):
         return
+
     # redirect for conversion from pygtk to pyqt
     # gcannon assumes this function name
     def _redraw(self):
@@ -436,7 +483,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
             self.updateGL()
 
     def setZoom(self, zoom):
-        self.distance = zoom/100.0
+        self.distance = zoom / 100.0
         self.updateGL()
 
     # called when widget is completely redrawn
@@ -474,14 +521,14 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         if side < 0:
             return
         GL.glViewport((width - side) // 2, (height - side) // 2, side, side)
-        GL.glMatrixMode(GL.GL_PROJECTION) # To operate on projection-view matrix
-        GL.glLoadIdentity() # reset the model-view matrix
+        GL.glMatrixMode(GL.GL_PROJECTION)  # To operate on projection-view matrix
+        GL.glLoadIdentity()  # reset the model-view matrix
         GL.glOrtho(-0.5, +0.5, +0.5, -0.5, 4.0, 15.0)
-        GL.glMatrixMode(GL.GL_MODELVIEW) # To operate on model-view matrix
+        GL.glMatrixMode(GL.GL_MODELVIEW)  # To operate on model-view matrix
 
-    #==========================================================================
+    # ==========================================================================
     # View control methods
-    #==========================================================================
+    # ==========================================================================
     def set_prime(self, x, y):
         if self.select_primed:
             primedx, primedy = self.select_primed
@@ -502,7 +549,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
 
     def wheelEvent(self, _event):
         # Use the mouse wheel to zoom in/out
-        a = _event.angleDelta().y()/200
+        a = _event.angleDelta().y() / 200
         if a < 0:
             self.zoomout()
         else:
@@ -513,7 +560,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         self.end_of_move_mouse_release = False
         if (event.buttons() & Qt.LeftButton):
             self.select_prime(event.pos().x(), event.pos().y())
-            #print self.winfo_width()/2 - event.pos().x(), self.winfo_height()/2 - event.pos().y()
+            # print self.winfo_width()/2 - event.pos().x(), self.winfo_height()/2 - event.pos().y()
         self.recordMouse(event.pos().x(), event.pos().y())
         self.startZoom(event.pos().y())
 
@@ -525,7 +572,6 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
             else:
                 # assume user wanted to select a line
                 self.select_fire()
-
 
     def mouseDoubleClickEvent(self, event):
         if event.button() & Qt.RightButton:
@@ -547,9 +593,9 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
     def user_plot(self):
         GL.glCallList(self.object)
 
-    #==========================================================================
+    # ==========================================================================
     # Draws a 3D Qt logo, could re-implement this for a splash screen ...
-    #==========================================================================
+    # ==========================================================================
     def makeObject(self):
         genList = GL.glGenLists(1)
         GL.glNewList(genList, GL.GL_COMPILE)
@@ -629,18 +675,21 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         GL.glVertex3d(x2, y2, -0.05)
         GL.glVertex3d(x1, y1, -0.05)
 
-#==============================================================================
+
+# ==============================================================================
 # Launch stand alone window
-#==============================================================================
+# ==============================================================================
 if __name__ == '__main__':
 
     app = QApplication(sys.argv)
+
+    inifilename = None
+
     if len(sys.argv) == 1:
         inifilename = None
     elif len(sys.argv) == 2:
         inifilename = sys.argv[1]
-    else:
-        usage()
+
     window = Window(inifilename)
     window.show()
     sys.exit(app.exec_())

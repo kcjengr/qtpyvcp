@@ -12,7 +12,7 @@ class DROPlugin(_DesignerPlugin):
     def pluginClass(self):
         return DROWidget
 
-from gcode_backplot import GcodeBackplot
+from gcode_backplot.gcode_backplot import GcodeBackplot
 class GcodeBackPlotPlugin(_DesignerPlugin):
     def pluginClass(self):
         return GcodeBackplot
