@@ -1,24 +1,29 @@
 #!/usr/bin/env python
 
 import os
+
 from qtpy.QtWidgets import QLineEdit, QCompleter
-from qtpy.QtCore import Qt, QEvent, QStringListModel
+from qtpy.QtCore import Qt, QEvent, QStringListModel, Slot
 from qtpy.QtGui import QKeySequence, QValidator
 
 from qtpyvcp.plugins import getPlugin
+
 STATUS = getPlugin('status')
 
 from qtpyvcp.core import Info
+
 INFO = Info()
 
 from qtpyvcp.actions.machine_actions import issue_mdi
 
 MDI_HISTORY_FILE = INFO.getMDIHistoryFile()
 
+
 class Validator(QValidator):
     def validate(self, string, pos):
         # eventually could do some actual validating here
         return QValidator.Acceptable, string.upper(), pos
+
 
 class MDIEntry(QLineEdit):
     def __init__(self, parent=None):
@@ -40,6 +45,7 @@ class MDIEntry(QLineEdit):
 
         STATUS.on_shutown.connect(self.saveMDIHistory)
 
+    @Slot()
     def submit(self):
         cmd = str(self.text()).strip()
         issue_mdi(cmd)
@@ -77,9 +83,11 @@ class MDIEntry(QLineEdit):
             for cmd in self.model.stringList():
                 fh.write(cmd + '\n')
 
+
 if __name__ == "__main__":
     import sys
     from qtpy.QtWidgets import QApplication
+
     app = QApplication(sys.argv)
     w = MDIEntry()
     w.show()
