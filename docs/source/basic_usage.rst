@@ -9,8 +9,6 @@ Launching a sim config
 Several sim configurations are included with QtPyVCP, they should have been
 copied to your `~/linuxcnc/configs` directory when you installed QtPyVCP.
 
-.. These are intended to be run from a
-.. terminal with the working directory as the project root.
 
 **Included sim configs**::
 
@@ -32,12 +30,12 @@ available VCPs.
 
     VCP Chooser dialog window
 
-**Note:** _If there are no VCPs listed, most likely you did not run
+**Note:** If there are no VCPs listed, most likely you did not run
 `setup.py` per the installation instructions.
 
 To skip the VCP chooser and launch a VCP directly you can specify the name of
 the desired VCP on the command line. For example to launch the Mini VCP:
-`linuxcnc sim/xyz.ini mini`
+``linuxcnc sim/xyz.ini mini``
 
 
 INI Configuration
