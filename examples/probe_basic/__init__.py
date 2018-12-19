@@ -2,17 +2,22 @@
 __version__ = '0.0.1'
 
 import os
+import qtpyvcp
 
 VCP_DIR = os.path.realpath(os.path.dirname(__file__))
 VCP_CONFIG_FILE = os.path.join(VCP_DIR, 'probe_basic.yml')
 
 
-def run(opts):
-    os.environ['VCP_CONFIG_FILES'] = VCP_CONFIG_FILE + ':' + os.environ.get(
-        'VCP_CONFIG_FILES', '')
+def main(opts=None):
 
-    from qtpyvcp.utilities.config_loader import load_config_files_from_env
-    config = load_config_files_from_env()
+    if opts is None:
+        from qtpyvcp.utilities.opt_parser import parse_opts
+        opts = parse_opts(vcp_cmd='probebasic',
+                          vcp_name='Probe Basic',
+                          vcp_version=__version__)
 
-    from qtpyvcp.vcp_launcher import launch_application
-    launch_application(opts, config)
+    qtpyvcp.run_vcp(opts, VCP_CONFIG_FILE)
+
+
+if __name__ == '__main__':
+    main()

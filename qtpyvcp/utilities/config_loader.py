@@ -30,7 +30,7 @@ def load_config_files(*files):
     for file in files:
         sys.path.insert(0, os.path.dirname(file))
 
-    files.append(DEFAULT_CONFIG_FILE)
+    # files.append(DEFAULT_CONFIG_FILE)
     LOG.debug('Loading config files: {}'.format(files))
 
     # hiyapyco merges in order least important to most important

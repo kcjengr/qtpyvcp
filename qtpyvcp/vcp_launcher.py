@@ -22,8 +22,8 @@ log_time("in script")
 
 
 def launch_application(opts, config):
-    qtpyvcp.OPTIONS = opts
-    qtpyvcp.CONFIG = config
+    qtpyvcp.OPTIONS.update(opts)
+    qtpyvcp.CONFIG.update(config)
 
     print 'Loading data plugings'
     loadDataPlugins(config['data_plugins'])
@@ -107,7 +107,7 @@ def _load_vcp_from_entry_point(vcp_name, opts):
     except:
         LOG.exception("Failed to load entry point: {}".format(vcp_name))
     else:
-        vcp.run(opts)
+        vcp.main(opts)
 
 
 def _get_object_by_referance(object_ref):
