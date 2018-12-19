@@ -39,6 +39,7 @@ data_files.extend(data_files_from_dirs(DATA_DIRS))
 setup(
     name="qtpyvcp",
     version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
     author="Kurt Jacobson",
     author_email="kcjengr@gmail.com",
     description="Qt and Python based Virtual Control Panel framework for LinuxCNC.",
