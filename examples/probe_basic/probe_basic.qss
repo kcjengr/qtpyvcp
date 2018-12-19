@@ -297,3 +297,83 @@ JogIncrementWidget {
 #copy_to_usb:pressed {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
 }
+
+/*===========================================================================*/
+/*                             QMenuBar                                      */
+/*===========================================================================*/
+
+QMenuBar {
+    background-color: rgb(85, 90, 90);
+    padding: 1px;
+    border: 0px solid black;
+    color: white;
+    font-family: "Bebas Kai";
+    font-size: 12pt; 
+}
+
+QMenuBar:focus {
+    border: 1px solid #AA6600;
+}
+
+QMenuBar::item {
+    background: transparent;
+    padding: 3px;
+}
+
+QMenuBar::item:selected {
+    padding: 3px;
+    background: rgb(135, 138, 140);
+    border: 0px solid #454545;
+}
+
+QMenuBar::item:pressed {
+    padding: 3px;
+    border: 0px solid #454545;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+    color: #F0F0F0;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+}
+
+/*===========================================================================*/
+/*                               QMenu                                       */
+/*===========================================================================*/
+
+QMenu {
+    border: 0px solid #454545;
+    background-color: gray;
+    color: white;
+    margin: 0px;
+    font-family: "Bebas Kai";
+    font-size: 11pt;
+}
+
+QMenu::separator {
+    height: 2px;
+    background-color: white;
+    color: red;
+    padding-left: 4px;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+QMenu::icon {
+    margin: 0px;
+    padding-left:4px;
+}
+
+QMenu::item {
+    padding: 4px 24px 4px 24px;
+    border: 1px transparent #454545;  /* reserve space for selection border */
+}
+
+QMenu::item:selected {
+    background: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+    border: 0px solid #454545;
+}
+
+QMenu::indicator {
+    width: 12px;
+    height: 12px;
+    padding-left:6px;
+}
