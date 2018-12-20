@@ -40,6 +40,24 @@
    </property>
    <item>
     <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>277</width>
+       <height>285</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>277</width>
+       <height>285</height>
+      </size>
+     </property>
      <property name="styleSheet">
       <string notr="true">QFrame{ 
     border-style: solid;
