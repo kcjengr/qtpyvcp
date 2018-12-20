@@ -1180,7 +1180,7 @@
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
-    color: white;
+    color: rgba(47, 55, 254, 230);
     font: 18pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
@@ -1224,7 +1224,7 @@
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
-    color: white;
+    color: rgb(45, 46, 49);
     font: 18pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
@@ -1891,7 +1891,7 @@
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
-    color: white;
+    color: rgba(47, 55, 254, 230);
     font: 18pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
@@ -1979,7 +1979,7 @@
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
-    color: white;
+    color: rgba(47, 55, 254, 230);
     font: 18pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
@@ -2023,7 +2023,7 @@
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
-    color: white;
+    color: rgba(47, 55, 254, 230);
     font: 18pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
@@ -2646,7 +2646,7 @@
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
-    color: white;
+    color: rgb(45, 46, 49);
     font: 18pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
@@ -2690,7 +2690,7 @@
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
-    color: white;
+    color: rgb(45, 46, 49);
     font: 18pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
@@ -2910,7 +2910,7 @@
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
-    color: white;
+    color: rgba(47, 55, 254, 230);
     font: 18pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
