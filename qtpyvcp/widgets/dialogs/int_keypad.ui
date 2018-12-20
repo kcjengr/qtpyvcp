@@ -65,7 +65,7 @@
          <number>7</number>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_82">
+         <widget class="QPushButton" name="pushButton_15">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -84,10 +84,22 @@
             <height>45</height>
            </size>
           </property>
+          <property name="sizeIncrement">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>12</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -98,23 +110,13 @@
           </property>
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
-    background: rgb(147, 148, 149);
+    background: rgb(97, 98, 99);
     color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
+    font: 12pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="../../../examples/probe_basic/probe_basic.qrc">
-            <normaloff>:/images/up_arrow.png</normaloff>:/images/up_arrow.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>21</width>
-            <height>21</height>
-           </size>
+           <string>CANCEL</string>
           </property>
          </widget>
         </item>
@@ -284,7 +286,7 @@
           </property>
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
-    background: rgb(76, 126, 201);
+    background: rgb(66, 116, 175);
     color: white;
     font: 20pt &quot;Bebas Kai&quot;;
 }</string>
@@ -302,7 +304,7 @@
          <number>7</number>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_81">
+         <widget class="QPushButton" name="pushButton_20">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -324,7 +326,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>12</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -335,23 +337,13 @@
           </property>
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
-    background: rgb(147, 148, 149);
+    background: rgb(97, 98, 99);
     color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
+    font: 12pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
-           <string/>
-          </property>
-          <property name="icon">
-           <iconset resource="../../../examples/probe_basic/probe_basic.qrc">
-            <normaloff>:/images/down_arrow.png</normaloff>:/images/down_arrow.png</iconset>
-          </property>
-          <property name="iconSize">
-           <size>
-            <width>21</width>
-            <height>21</height>
-           </size>
+           <string>in/mm</string>
           </property>
          </widget>
         </item>
@@ -521,7 +513,7 @@
           </property>
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
-    background: rgb(76, 126, 201);
+    background: rgb(66, 116, 175);
     color: white;
     font: 20pt &quot;Bebas Kai&quot;;
 }</string>
@@ -539,7 +531,7 @@
          <number>7</number>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_20">
+         <widget class="QPushButton" name="pushButton_82">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -561,7 +553,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>12</pointsize>
+            <pointsize>18</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -572,13 +564,23 @@
           </property>
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
-    background: rgb(97, 98, 99);
+    background: rgb(66, 116, 175);
     color: white;
-    font: 12pt &quot;Bebas Kai&quot;;
+    font: 18pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
-           <string>in/mm</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../examples/probe_basic/probe_basic.qrc">
+            <normaloff>:/images/up_arrow.png</normaloff>:/images/up_arrow.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>21</width>
+            <height>21</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -748,7 +750,7 @@
           </property>
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
-    background: rgb(76, 126, 201);
+    background: rgb(66, 116, 175);
     color: white;
     font: 20pt &quot;Bebas Kai&quot;;
 }</string>
@@ -766,7 +768,7 @@
          <number>7</number>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_15">
+         <widget class="QPushButton" name="pushButton_81">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -785,22 +787,10 @@
             <height>45</height>
            </size>
           </property>
-          <property name="sizeIncrement">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="baseSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>12</pointsize>
+            <pointsize>18</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -811,13 +801,23 @@
           </property>
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
-    background: rgb(97, 98, 99);
+    background: rgb(66, 116, 175);
     color: white;
-    font: 12pt &quot;Bebas Kai&quot;;
+    font: 18pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
-           <string>CANCEL</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="../../../examples/probe_basic/probe_basic.qrc">
+            <normaloff>:/images/down_arrow.png</normaloff>:/images/down_arrow.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>21</width>
+            <height>21</height>
+           </size>
           </property>
          </widget>
         </item>
@@ -997,7 +997,7 @@
           </property>
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
-    background: rgb(76, 126, 201);
+    background: rgb(66, 116, 175);
     color: white;
     font: 20pt &quot;Bebas Kai&quot;;
 }</string>
@@ -1048,7 +1048,7 @@
           </property>
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
-    background: rgb(147, 148, 149);
+    background: rgb(66, 116, 175);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
 }</string>
@@ -1102,7 +1102,7 @@
           </property>
           <property name="styleSheet">
            <string notr="true">QPushButton{ 
-    background: rgb(147, 148, 149);
+    background: rgb(66, 116, 175);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
 }</string>
