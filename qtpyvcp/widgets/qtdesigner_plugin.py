@@ -23,7 +23,10 @@ LOG = initBaseLogger("qtpyvcp-designer",
                               os.path.expanduser('~/qtpyvcp-designer.log'))
                      )
 
-from qtpyvcp import CONFIG
+from qtpyvcp import CONFIG, DEFAULT_CONFIG_FILE
+os.environ['VCP_CONFIG_FILES'] = os.getenv('VCP_CONFIG_FILES', '') + \
+                                 ':' + DEFAULT_CONFIG_FILE
+
 from qtpyvcp.utilities.config_loader import load_config_files_from_env
 CONFIG.update(load_config_files_from_env())
 
