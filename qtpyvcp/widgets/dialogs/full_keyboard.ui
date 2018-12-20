@@ -40,12 +40,30 @@
    </property>
    <item>
     <widget class="QFrame" name="frame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>1061</width>
+       <height>285</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>1061</width>
+       <height>285</height>
+      </size>
+     </property>
      <property name="styleSheet">
       <string notr="true">QFrame{ 
     border-style: solid;
     border-width: 2px;
     border-color: rgb(136, 138, 133);
-    border-radius: 4px;
+    border-radius: 8px;
     background: rgb(46, 52, 54);    
 }</string>
      </property>
@@ -87,7 +105,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -100,7 +118,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -131,7 +149,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>16</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -144,7 +162,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 16pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -175,7 +193,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>16</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -188,7 +206,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 16pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -219,7 +237,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>16</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -232,7 +250,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 16pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -263,7 +281,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>16</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -276,7 +294,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 16pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -307,7 +325,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>16</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -320,7 +338,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 16pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -351,7 +369,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>16</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -364,7 +382,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 16pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -395,7 +413,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>16</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -408,7 +426,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 16pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -439,7 +457,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>16</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -452,7 +470,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 16pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -483,7 +501,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>16</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -496,7 +514,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 16pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -527,7 +545,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>16</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -540,7 +558,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 16pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -571,7 +589,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -584,7 +602,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -615,7 +633,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -628,7 +646,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -747,7 +765,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -760,7 +778,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
     color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -791,7 +809,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -804,7 +822,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
     color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -835,7 +853,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -848,7 +866,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
     color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -1414,7 +1432,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1427,7 +1445,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -1458,7 +1476,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1471,7 +1489,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -1502,7 +1520,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1515,7 +1533,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -1590,7 +1608,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1603,7 +1621,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
     color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -1634,7 +1652,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1647,7 +1665,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
     color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -1678,7 +1696,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1691,7 +1709,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
     color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -2213,7 +2231,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -2226,7 +2244,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -2257,7 +2275,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -2270,7 +2288,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -2389,7 +2407,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -2402,7 +2420,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
     color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -2433,7 +2451,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -2446,7 +2464,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
     color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -2477,7 +2495,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -2490,7 +2508,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
     color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -2924,7 +2942,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -2937,7 +2955,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -2968,7 +2986,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -2981,7 +2999,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -3012,7 +3030,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -3025,7 +3043,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -3198,7 +3216,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -3211,7 +3229,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(147, 148, 149);
     color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
@@ -3242,7 +3260,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>17</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -3255,7 +3273,7 @@
            <string notr="true">QPushButton{ 
     background: rgb(97, 98, 99);
     color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
+    font: 17pt &quot;Bebas Kai&quot;;
 }</string>
           </property>
           <property name="text">
