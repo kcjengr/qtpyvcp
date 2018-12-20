@@ -107,12 +107,12 @@ QtDesigner Plug-ins (development only)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In order for the QtDesigner plugins to load, you must have the correct version
-of ``libpyqt5.so`` in ``/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/``. This library
-must be compiled for the specific architecture, Qt version and Python version you
-are using. One way to get this file is to build PyQt5 from source, following the
-procedure `here <https://gist.github.com/KurtJacobson/34a2e45ea2227ba58702fc1cb0372c40>`_.
+of `libpyqt5.so` in `/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/`. Precompiled
+libraries suitable for 64Bit Debian Stretch (or other system with Qt v5.7.1 and Py v2.7)
+are included in the `QtDesigner` directory. The easiest way to install the libs to the
+correct location is to use the `install.sh` script located in the same directory:
+``sudo ./install.sh``
 
-If you can find a pre-compiled version, then you should be able simply place it
-in ``/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/`` and be good to go. A
-compiled version of ``libpyqt5.so`` suitable for use on a 64bit Debian stretch
-system with Python2.7 and Qt 5.7.1 is included in the QtDesigner directory.
+If you are using a different architecture or Qt version you may need to compile PyQt5 from
+source to get the proper `libpyqt5.so` file. The steps should be similar those listed
+`here <https://gist.github.com/KurtJacobson/34a2e45ea2227ba58702fc1cb0372c40>`_.
