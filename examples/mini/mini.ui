@@ -319,6 +319,22 @@
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="QLineEdit" name="lineEdit"/>
+    </item>
+    <item>
+     <widget class="VKBKey" name="virtualkey">
+      <property name="focusPolicy">
+       <enum>Qt::NoFocus</enum>
+      </property>
+      <property name="autoRepeat">
+       <bool>true</bool>
+      </property>
+      <property name="key" stdset="0">
+       <string>H</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <action name="actionExit">

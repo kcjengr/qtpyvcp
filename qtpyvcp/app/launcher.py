@@ -70,7 +70,11 @@ def launch_application(opts, config):
     app = _initialize_object_from_dict(config['application'])
     log_time('done initializing app')
 
-    LOG.debug('Loading dialogs')
+    print 'Loading virtual keyboards'
+    loadVirtualKeyboards(config['virtual_keyboards'])
+    log_time('done loading keyboards')
+
+    print 'Loading dialogs'
     loadDialogs(config['dialogs'])
     log_time('done loading dialogs')
 
@@ -221,3 +225,10 @@ def loadDialogs(dialogs):
 
         inst = _initialize_object_from_dict(dialogs_dict)
         qtpyvcp.DIALOGS[dialogs_id] = inst
+
+
+def loadVirtualKeyboards(vkbs):
+    for vkb_id, vkb_dict in vkbs.items():
+
+        inst = _initialize_object_from_dict(vkb_dict)
+        qtpyvcp.KEYBOARDS[vkb_id] = inst
