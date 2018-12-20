@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>287</width>
-    <height>295</height>
+    <width>277</width>
+    <height>285</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -27,16 +27,16 @@
     <enum>QLayout::SetFixedSize</enum>
    </property>
    <property name="leftMargin">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>5</number>
+    <number>0</number>
    </property>
    <item>
     <widget class="QFrame" name="frame">
@@ -83,7 +83,7 @@
          <number>7</number>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_15">
+         <widget class="VKBKey" name="pushButton_15">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -127,7 +127,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(97, 98, 99);
     color: white;
     font: 12pt &quot;Bebas Kai&quot;;
@@ -139,7 +139,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="VKBKey" name="pushButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -171,7 +171,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(147, 148, 149);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
@@ -183,7 +183,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_2">
+         <widget class="VKBKey" name="pushButton_2">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -215,7 +215,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(147, 148, 149);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
@@ -227,7 +227,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_3">
+         <widget class="VKBKey" name="pushButton_3">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -259,7 +259,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(147, 148, 149);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
@@ -271,7 +271,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_16">
+         <widget class="VKBKey" name="pushButton_16">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -303,7 +303,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(66, 116, 175);
     color: white;
     font: 20pt &quot;Bebas Kai&quot;;
@@ -322,7 +322,7 @@
          <number>7</number>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_20">
+         <widget class="VKBKey" name="pushButton_20">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -354,7 +354,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(97, 98, 99);
     color: white;
     font: 12pt &quot;Bebas Kai&quot;;
@@ -366,7 +366,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_4">
+         <widget class="VKBKey" name="pushButton_4">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -398,7 +398,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(147, 148, 149);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
@@ -410,7 +410,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_5">
+         <widget class="VKBKey" name="pushButton_5">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -442,7 +442,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(147, 148, 149);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
@@ -454,7 +454,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_6">
+         <widget class="VKBKey" name="pushButton_6">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -486,7 +486,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(147, 148, 149);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
@@ -498,7 +498,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_17">
+         <widget class="VKBKey" name="pushButton_17">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -530,7 +530,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(66, 116, 175);
     color: white;
     font: 20pt &quot;Bebas Kai&quot;;
@@ -549,7 +549,7 @@
          <number>7</number>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_82">
+         <widget class="VKBKey" name="pushButton_82">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -581,7 +581,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(66, 116, 175);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
@@ -603,7 +603,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_7">
+         <widget class="VKBKey" name="pushButton_7">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -635,7 +635,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(147, 148, 149);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
@@ -647,7 +647,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_8">
+         <widget class="VKBKey" name="pushButton_8">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -679,7 +679,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(147, 148, 149);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
@@ -691,7 +691,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_9">
+         <widget class="VKBKey" name="pushButton_9">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -723,7 +723,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(147, 148, 149);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
@@ -735,7 +735,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_18">
+         <widget class="VKBKey" name="pushButton_18">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -767,7 +767,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(66, 116, 175);
     color: white;
     font: 20pt &quot;Bebas Kai&quot;;
@@ -786,7 +786,7 @@
          <number>7</number>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_81">
+         <widget class="VKBKey" name="pushButton_81">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -818,7 +818,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(66, 116, 175);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
@@ -840,7 +840,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_10">
+         <widget class="VKBKey" name="pushButton_10">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -872,7 +872,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(147, 148, 149);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
@@ -884,7 +884,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_11">
+         <widget class="VKBKey" name="pushButton_11">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -916,7 +916,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(97, 98, 99);
     color: white;
     font: 14pt &quot;Bebas Kai&quot;;
@@ -928,7 +928,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_12">
+         <widget class="VKBKey" name="pushButton_12">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -960,7 +960,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(97, 98, 99);
     color: white;
     font: 14pt &quot;Bebas Kai&quot;;
@@ -982,7 +982,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_19">
+         <widget class="VKBKey" name="pushButton_19">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1014,7 +1014,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(66, 116, 175);
     color: white;
     font: 20pt &quot;Bebas Kai&quot;;
@@ -1033,7 +1033,7 @@
          <number>7</number>
         </property>
         <item>
-         <widget class="QPushButton" name="pushButton_78">
+         <widget class="VKBKey" name="pushButton_78">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1065,7 +1065,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(66, 116, 175);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
@@ -1087,7 +1087,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_80">
+         <widget class="VKBKey" name="pushButton_80">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1119,7 +1119,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(66, 116, 175);
     color: white;
     font: 18pt &quot;Bebas Kai&quot;;
@@ -1141,7 +1141,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_21">
+         <widget class="VKBKey" name="pushButton_21">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1185,7 +1185,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(97, 98, 99);
     color: white;
     font: 14pt &quot;Bebas Kai&quot;;
@@ -1197,7 +1197,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_13">
+         <widget class="VKBKey" name="pushButton_13">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1229,7 +1229,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
+           <string notr="true">VKBKey{ 
     background: rgb(97, 98, 99);
     color: white;
     font: 14pt &quot;Bebas Kai&quot;;
@@ -1247,6 +1247,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>VKBKey</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.virtual_keyboards.vkb_key</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="../../../examples/probe_basic/probe_basic.qrc"/>
  </resources>
