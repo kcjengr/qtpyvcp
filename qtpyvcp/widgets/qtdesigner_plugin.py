@@ -38,3 +38,4 @@ from qtpyvcp.widgets.button_widgets.designer_plugins import *
 from qtpyvcp.widgets.display_widgets.designer_plugins import *
 from qtpyvcp.widgets.input_widgets.designer_plugins import *
 from qtpyvcp.widgets.hal_widgets.designer_plugins import *
+from qtpyvcp.widgets.virtual_keyboards.designer_plugins import *

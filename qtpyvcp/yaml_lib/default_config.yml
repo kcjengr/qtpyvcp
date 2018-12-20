@@ -34,19 +34,22 @@ dialogs:
     provider: qtpyvcp.widgets.dialogs.offsets_dialog:OffsetsDialog
 
 virtual_keyboards:
-  default:
-    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
-    args: []
-    kwargs:
-      ui_file: keyboards/default_vkb.ui
+  engine:
+    provider: qtpyvcp.widgets.virtual_keyboards.vkb_engine:VKBEngine
 
-  integer:
-    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
-    args: []
-    kwargs:
-      ui_file: keyboards/integer_vkb.ui
-      frameless: True
-      modal: False
+#  default:
+#    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
+#    args: []
+#    kwargs:
+#      ui_file: keyboards/default_vkb.ui
+#
+#  integer:
+#    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
+#    args: []
+#    kwargs:
+#      ui_file: keyboards/integer_vkb.ui
+#      frameless: True
+#      modal: False
 
 application:
   provider: qtpyvcp.application:VCPApplication
