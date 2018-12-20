@@ -14,7 +14,7 @@ class VKBKey(QPushButton):
 
         self.engine = getKeyboard('engine')
 
-        self._key = 123
+        self._key = Qt.Key_A
 
         self.pressed.connect(self.onPressEvent)
         self.released.connect(self.onReleaseEvent)

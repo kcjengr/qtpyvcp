@@ -1,8 +1,9 @@
 
 from qtpy.QtGui import QKeySequence, QKeyEvent
 from qtpy.QtCore import Qt, QObject, Signal, Slot, QEvent
-from qtpy.QtWidgets import QApplication
+from qtpy.QtWidgets import QApplication, QLineEdit
 
+from qtpyvcp.widgets.virtual_keyboards import getKeyboard
 
 class VKBEngine(QObject):
 
@@ -13,7 +14,16 @@ class VKBEngine(QObject):
 
         self.app = QApplication.instance()
 
-        self._modifiers = Qt.NoModifier
+        self._modifiers = Qt.NoModifier | Qt.ShiftModifier
+
+        self.app.focusChanged.connect(self.focusChangedEvent)
+
+    def focusChangedEvent(self, old_w, new_w):
+        if issubclass(new_w.__class__, QLineEdit):
+            print "QLineEdit got focus: ", new_w
+            getKeyboard('default').show()
+        else:
+            getKeyboard('default').hide()
 
 
     def emulateEvent(self, key, modifiers=None):

@@ -84,12 +84,11 @@ virtual_keyboards:
   engine:
     provider: qtpyvcp.widgets.virtual_keyboards.vkb_engine:VKBEngine
 
-#  default:
-#    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
-#    args: []
-#    kwargs:
-#      ui_file: keyboards/default_vkb.ui
-#
+  default:
+    provider: qtpyvcp.widgets.virtual_keyboards.vkb_base:VKBBase
+    kwargs:
+      ui_file: {{ file.dir }}/../widgets/dialogs/int_keypad.ui
+
 #  integer:
 #    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
 #    args: []
