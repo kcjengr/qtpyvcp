@@ -19,6 +19,8 @@ class RecentFileComboBox(QComboBox):
         self.activated.connect(self.onItemActivated)
         self.updateRecentFiles(STATUS.recent_files)
 
+        self.insertItem(0, 'No File Loaded', None)
+        self.setCurrentIndex(0)
         STATUS.recent_files_changed.connect(self.updateRecentFiles)
 
     def updateRecentFiles(self, recent_files):
@@ -34,5 +36,7 @@ class RecentFileComboBox(QComboBox):
         data = self.currentData()
         if data == 'browse_files':
             self.file_dialog.show()
+        elif data is None:
+            pass
         else:
             loadProgram(data)
