@@ -69,7 +69,7 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
             sys.argv[index] = '-' + item
             break
 
-    version_str = 'QtPyVCP v{}'.format(__version__)
+    version_str = 'QtPyVCP {}'.format(__version__)
     if vcp_version is not None:
         version_str += ', {} v{}'.format(vcp_name, vcp_version)
 

@@ -60,9 +60,9 @@ Note:
 """
 
 import os
-from ._version import get_versions
 from qtpyvcp.lib.types import DotDict
 
+from ._version import get_versions
 __version__ = get_versions()['version']
 del get_versions
 
