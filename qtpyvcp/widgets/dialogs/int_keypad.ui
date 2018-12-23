@@ -600,6 +600,9 @@
             <height>21</height>
            </size>
           </property>
+          <property name="key" stdset="0">
+           <string>Up</string>
+          </property>
          </widget>
         </item>
         <item>
@@ -836,6 +839,9 @@
             <width>21</width>
             <height>21</height>
            </size>
+          </property>
+          <property name="key" stdset="0">
+           <string>Down</string>
           </property>
          </widget>
         </item>
@@ -1084,6 +1090,9 @@
             <height>21</height>
            </size>
           </property>
+          <property name="key" stdset="0">
+           <string>Left</string>
+          </property>
          </widget>
         </item>
         <item>
@@ -1137,6 +1146,9 @@
             <width>21</width>
             <height>21</height>
            </size>
+          </property>
+          <property name="key" stdset="0">
+           <string>Right</string>
           </property>
          </widget>
         </item>
