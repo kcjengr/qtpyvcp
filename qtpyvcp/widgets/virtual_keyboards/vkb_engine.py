@@ -14,7 +14,7 @@ class VKBEngine(QObject):
 
         self.app = QApplication.instance()
 
-        self._modifiers = Qt.ControlModifier
+        self._modifiers = Qt.NoModifier
 
         self.app.focusChanged.connect(self.focusChangedEvent)
 
@@ -25,17 +25,18 @@ class VKBEngine(QObject):
         else:
             getKeyboard('default').hide()
 
-
-    def emulateKeyPress(self, key_seq, modifiers=None):
+    def emulateKeyPress(self, key_seq=None, modifiers=None):
         widget = self.sender()
 
-        if key_seq.count() == 0:
-            return
+        text = ''
+        if key_seq is None or key_seq.count() == 0:
+            text = widget.text()
+            key_seq = QKeySequence(text)
 
         print self.toKeyCode(key_seq)
         print key_seq.toString()
         receiver = self.app.focusObject()
-        press_event = QKeyEvent(QEvent.KeyPress, key_seq[0], self._modifiers, widget.text()) #QKeySequence(key).toString())
+        press_event = QKeyEvent(QEvent.KeyPress, key_seq[0], self._modifiers, text)
         self.app.sendEvent(receiver, press_event)
 
     def emulateKeyRelease(self, key_seq, modifiers=None):
