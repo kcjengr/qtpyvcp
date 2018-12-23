@@ -220,6 +220,12 @@ class VCPMainWindow(QMainWindow):
             self.app.quit()
 
     def keyPressEvent(self, event):
+
+        print 'Object: ', self.app.focusObject()
+
+        if self.app.focusObject() is not None:
+            return
+
         # super(VCPMainWindow, self).keyPressEvent(event)
         if event.isAutoRepeat():
             return
