@@ -8,6 +8,7 @@ from qtpy import uic
 from qtpy.QtCore import Qt, Slot, QTimer
 from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, QMenu, QMenuBar, QLineEdit
 
+import qtpyvcp
 from qtpyvcp import actions
 from qtpyvcp.utilities import logger
 from qtpyvcp.core import Prefs, Info
@@ -23,10 +24,13 @@ INFO = Info()
 
 class VCPMainWindow(QMainWindow):
 
-    def __init__(self, parent=None, opts=DotDict(), ui_file=None, stylesheet=None,
+    def __init__(self, parent=None, opts=None, ui_file=None, stylesheet=None,
                  position=None, size=None, confirm_exit=True, title=None, menu=None):
 
         super(VCPMainWindow, self).__init__(parent)
+
+        if opts is None:
+            opts = qtpyvcp.OPTIONS
 
         self.setWindowTitle(title)
 
@@ -42,6 +46,16 @@ class VCPMainWindow(QMainWindow):
             self.loadUi(ui_file)
             self.initUi()
 
+        if menu is not None:
+            try:
+                # delete any preexisting menuBar added in QtDesigner
+                # because it shadows the QMainWindow.menuBar() method
+                del self.menuBar
+            except AttributeError:
+                pass
+
+            self.setMenuBar(self.buildMenuBar(menu))
+
         if title is not None:
             self.setWindowTitle(title)
 
@@ -54,8 +68,8 @@ class VCPMainWindow(QMainWindow):
         if opts.fullscreen:
             QTimer.singleShot(0, self.showFullScreen)
 
-        if menu is not None:
-            self.setMenuBar(self.buildMenuBar(menu))
+        if opts.hide_menu_bar:
+            self.menuBar().hide()
 
         # QShortcut(QKeySequence("t"), self, self.test)
         self.app.focusChanged.connect(self.focusChangedEvent)
