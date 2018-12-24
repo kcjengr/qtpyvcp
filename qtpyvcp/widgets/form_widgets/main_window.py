@@ -71,6 +71,20 @@ class VCPMainWindow(QMainWindow):
         if opts.hide_menu_bar:
             self.menuBar().hide()
 
+        if opts.size:
+            try:
+                width, height = opts.size.lower().split('x')
+                self.resize(int(width), int(height))
+            except:
+                LOG.exception('Error parsing --size argument: %s', opts.size)
+
+        if opts.position:
+            try:
+                xpos, ypos = opts.position.lower().split('x')
+                self.move(int(xpos), int(ypos))
+            except:
+                LOG.exception('Error parsing --position argument: %s', opts.position)
+
         # QShortcut(QKeySequence("t"), self, self.test)
         self.app.focusChanged.connect(self.focusChangedEvent)
 
