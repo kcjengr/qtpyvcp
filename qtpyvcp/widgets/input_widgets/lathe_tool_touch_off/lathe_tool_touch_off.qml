@@ -21,6 +21,8 @@ Rectangle {
         source: "images/lathe_chuck_stock.png"
     }
 
+    // FIRST GROUP TOP 5 TOOLS
+
     Image {
         id: tool_1
         x: 286
@@ -194,6 +196,8 @@ Rectangle {
         }
     }
 
+    // SECCOND GROUP BOTTOM 5 TOOLS
+
     Image {
         id: tool_6
         x: 286
@@ -221,7 +225,7 @@ Rectangle {
             },
             State {
                 name: "selected"
-                PropertyChanges { target: tool_6; x: 300; y: 50 }
+                PropertyChanges { target: tool_6; x: 300; y: 300 }
             }
          ]
         transitions: Transition {
@@ -255,7 +259,7 @@ Rectangle {
             },
             State {
                 name: "selected"
-                PropertyChanges { target: tool_7; x: 300; y: 50 }
+                PropertyChanges { target: tool_7; x: 300; y: 300 }
             }
          ]
         transitions: Transition {
@@ -289,7 +293,7 @@ Rectangle {
             },
             State {
                 name: "selected"
-                PropertyChanges { target: tool_8; x: 300; y: 50 }
+                PropertyChanges { target: tool_8; x: 300; y: 300 }
             }
          ]
         transitions: Transition {
@@ -323,7 +327,7 @@ Rectangle {
             },
             State {
                 name: "selected"
-                PropertyChanges { target: tool_9; x: 300; y: 50 }
+                PropertyChanges { target: tool_9; x: 300; y: 300 }
             }
          ]
         transitions: Transition {
@@ -357,13 +361,15 @@ Rectangle {
             },
             State {
                 name: "selected"
-                PropertyChanges { target: tool_10; x: 300; y: 50 }
+                PropertyChanges { target: tool_10; x: 300; y: 300 }
             }
          ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
     }
+
+    // FINAL GROUP MID 5 TOOLS
 
     Image {
         id: tool_11
@@ -397,7 +403,7 @@ Rectangle {
             },
             State {
                 name: "selected"
-                PropertyChanges { target: tool_11; x: 300; y: 50 }
+                PropertyChanges { target: tool_11; x: 300; y: 240}
             }
          ]
         transitions: Transition {
@@ -431,7 +437,7 @@ Rectangle {
             },
             State {
                 name: "selected"
-                PropertyChanges { target: tool_12; x: 300; y: 50 }
+                PropertyChanges { target: tool_12; x: 300; y: 240 }
             }
          ]
         transitions: Transition {
@@ -465,7 +471,7 @@ Rectangle {
             },
             State {
                 name: "selected"
-                PropertyChanges { target: tool_13; x: 300; y: 50 }
+                PropertyChanges { target: tool_13; x: 300; y: 266 }
             }
          ]
         transitions: Transition {
@@ -499,7 +505,7 @@ Rectangle {
             },
             State {
                 name: "selected"
-                PropertyChanges { target: tool_14; x: 300; y: 50 }
+                PropertyChanges { target: tool_14; x: 300; y: 275 }
             }
          ]
         transitions: Transition {
@@ -533,7 +539,7 @@ Rectangle {
             },
             State {
                 name: "selected"
-                PropertyChanges { target: tool_15; x: 300; y: 50 }
+                PropertyChanges { target: tool_15; x: 300; y: 275 }
             }
          ]
         transitions: Transition {
