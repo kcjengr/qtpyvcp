@@ -10,8 +10,10 @@ import qtpyvcp
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import loadDataPlugins
 
+from qtpyvcp.utilities.info import Info
 
 LOG = getLogger(__name__)
+INFO = Info()
 
 def log_time(task, times=[time.time(), time.time()]):
     now = time.time()
@@ -40,6 +42,16 @@ def launch_application(opts, config):
     print 'Loading windows'
     loadWindows(config['windows'])
     log_time('done loading windows')
+
+    postgui_halfile = INFO.getPostguiHalfile()
+    if postgui_halfile:
+        LOG.info('Loading post GUI HAL file: %s', postgui_halfile)
+        res = os.spawnvp(os.P_WAIT, "halcmd",
+                         ["halcmd", "-i", "-f", postgui_halfile])
+
+        print "res:", res
+        if res:
+            raise SystemExit, res
 
     sys.exit(app.exec_())
 

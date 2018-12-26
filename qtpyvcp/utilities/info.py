@@ -90,12 +90,14 @@ class _Info(object):
     def getLogFile(self, default='~/pyqtvcp.log'):
         return self.getFilePath('VCP', 'LOG_FILE', self.VCP_DIR, default)
 
-
     def getMDIHistoryFile(self, default='~/.axis_mdi_history'):
         return self.getFilePath('DISPLAY', 'MDI_HISTORY_FILE', self.CONFIG_DIR, default)
 
     def getToolTableFile(self, default='tool.tbl'):
         return self.getFilePath('EMCIO', 'TOOL_TABLE', self.CONFIG_DIR, default)
+
+    def getPostguiHalfile(self):
+        return self.ini.find("HAL", "POSTGUI_HALFILE")
 
     def getOpenFile(self, default=None):
         return self.getFilePath('DISPLAY', 'OPEN_FILE', self.CONFIG_DIR, default)
