@@ -9,8 +9,6 @@ ctypes.CDLL(ctypes.util.find_library("GL"), mode=ctypes.RTLD_GLOBAL)
 
 # end of Workarround
 
-from hal import component, HAL_BIT, HAL_IN
-
 from qtpy.QtCore import Signal, Slot, QUrl
 from qtpy.QtQuickWidgets import QQuickWidget
 
