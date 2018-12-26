@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.3
 
 Rectangle {
     visible: true
-    width: 1024
+    width: 1280
     color: "#919191"
     height: 600
 
@@ -14,7 +14,7 @@ Rectangle {
         y: 150
         width: 256
         height: 256
-        antialiasing: true
+        fillMode: Image.PreserveAspectCrop
         z: 0
         rotation: 0
         transformOrigin: Item.Center
@@ -29,7 +29,7 @@ Rectangle {
         y: 8
         width: 50
         height: 200
-        antialiasing: true
+        fillMode: Image.PreserveAspectCrop
         z: 0
         rotation: 0
         transformOrigin: Item.Center
@@ -63,6 +63,7 @@ Rectangle {
         y: 8
         width: 38
         height: 200
+        fillMode: Image.PreserveAspectCrop
         source: "images/lathe_center_turning_rp_bs.png"
         antialiasing: true
         rotation: 0
