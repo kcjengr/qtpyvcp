@@ -45,11 +45,18 @@ def launch_application(opts, config):
 
     postgui_halfile = INFO.getPostguiHalfile()
     if postgui_halfile:
-        LOG.info('Loading post GUI HAL file: %s', postgui_halfile)
-        res = os.spawnvp(os.P_WAIT, "halcmd",
-                         ["halcmd", "-i", INFO.INI_FILE, "-f", postgui_halfile])
 
-        print "res:", res
+        config_path = INFO.CONFIG_DIR
+        ini_path = INFO.INI_FILE
+
+        postgui_halfile_path = os.path.join(config_path, postgui_halfile)
+
+        LOG.info('Loading post GUI HAL file: %s', postgui_halfile_path)
+
+        res = os.spawnvp(os.P_WAIT, "halcmd", ["halcmd", "-i", ini_path, "-f", postgui_halfile_path])
+
+        print("res:", res)
+
         if res:
             raise SystemExit, res
 

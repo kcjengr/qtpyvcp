@@ -29,7 +29,7 @@ class Info(object):
 class _Info(object):
 
     INI_FILE = os.environ.get("INI_FILE_NAME")
-    CONFIG_DIR =  os.environ.get('CONFIG_DIR')
+    CONFIG_DIR = os.environ.get('CONFIG_DIR')
 
     VCP_DIR = '~/linuxcnc/vcps'
 
