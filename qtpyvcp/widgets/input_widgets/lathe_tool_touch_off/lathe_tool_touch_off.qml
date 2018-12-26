@@ -4,9 +4,9 @@ import QtQuick.Layouts 1.3
 
 Rectangle {
     visible: true
-    width: 550
+    width: 1024
     color: "#919191"
-    height: 550
+    height: 600
 /*
     GridLayout {
         anchors.top: parent.top
@@ -46,17 +46,312 @@ Rectangle {
 */
     Image {
         id: holder
-        x: 13
-        y: 14
-        width: 524
-        height: 523
+        x: 0
+        y: 150
+        width: 256
+        height: 256
         antialiasing: true
         z: 0
         rotation: 0
         transformOrigin: Item.Center
-        source: "images/carousel_12.png"
+        source: "images/lathe_chuck_stock.png"
+    }
 
+    Image {
+        id: tool_1
+        x: 286
+        y: 8
+        width: 50
+        height: 200
+        antialiasing: true
+        z: 0
+        rotation: 0
+        transformOrigin: Item.Center
+        source: "images/lathe_lh_turning_rp_bs.png"
 
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                tool_selected(1)
+            }
+        }
+
+        NumberAnimation {
+            id: xyAnimation
+            target: tool_1
+            properties: "x,y"
+            easing.type: Easing.InOutQuad
+            duration: 500
+            to: 500
+        }
+    }
+
+    Image {
+        id: tool_2
+        x: 364
+        y: 8
+        width: 38
+        height: 200
+        source: "images/lathe_center_turning_rp_bs.png"
+        antialiasing: true
+        rotation: 0
+        z: 0
+        transformOrigin: Item.Center
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                // do what you want here
+            }
+        }
+    }
+
+    Image {
+        id: tool_3
+        x: 428
+        y: 8
+        width: 50
+        height: 200
+        source: "images/lathe_rh_turning_rp_bs.png"
+        antialiasing: true
+        rotation: 0
+        z: 0
+        transformOrigin: Item.Center
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                // do what you want here
+            }
+        }
+    }
+
+    Image {
+        id: tool_4
+        x: 503
+        y: 8
+        width: 50
+        height: 200
+        antialiasing: true
+        z: 0
+        rotation: 0
+        transformOrigin: Item.Center
+        source: "images/lathe_rh_threading_rp_bs.png"
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                // do what you want here
+            }
+        }
+    }
+
+    Image {
+        id: tool_5
+        x: 575
+        y: 8
+        width: 38
+        height: 200
+        source: "images/lathe_rh_parting_rp_bs.png"
+        antialiasing: true
+        rotation: 0
+        z: 0
+        transformOrigin: Item.Center
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                // do what you want here
+            }
+        }
+    }
+
+    Image {
+        id: tool_6
+        x: 286
+        y: 351
+        width: 50
+        height: 200
+        source: "images/lathe_lh_turning_fp_ts.png"
+        antialiasing: true
+        rotation: 0
+        z: 0
+        transformOrigin: Item.Center
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                // do what you want here
+            }
+        }
+    }
+
+    Image {
+        id: tool_7
+        x: 364
+        y: 351
+        width: 38
+        height: 200
+        source: "images/lathe_center_turning_fp_ts.png"
+        antialiasing: true
+        MouseArea {
+            anchors.fill: parent
+        }
+        rotation: 0
+        z: 0
+        transformOrigin: Item.Center
+    }
+
+    Image {
+        id: tool_8
+        x: 428
+        y: 351
+        width: 50
+        height: 200
+        source: "images/lathe_rh_turning_fp_ts.png"
+        antialiasing: true
+        MouseArea {
+            anchors.fill: parent
+        }
+        rotation: 0
+        z: 0
+        transformOrigin: Item.Center
+    }
+
+    Image {
+        id: tool_9
+        x: 503
+        y: 351
+        width: 50
+        height: 200
+        source: "images/lathe_rh_threading_fp_ts.png"
+        antialiasing: true
+        MouseArea {
+            anchors.fill: parent
+        }
+        rotation: 0
+        z: 0
+        transformOrigin: Item.Center
+    }
+
+    Image {
+        id: tool_10
+        x: 575
+        y: 351
+        width: 38
+        height: 200
+        source: "images/lathe_parting_fp_ts.png"
+        antialiasing: true
+        MouseArea {
+            anchors.fill: parent
+        }
+        rotation: 0
+        z: 0
+        transformOrigin: Item.Center
+    }
+
+    Image {
+        id: tool_11
+        x: 667
+        y: 140
+        width: 200
+        height: 30
+        source: "images/lathe_internal_threading_bs.png"
+        antialiasing: true
+        MouseArea {
+            anchors.fill: parent
+        }
+        rotation: 0
+        z: 0
+        transformOrigin: Item.Center
+    }
+
+    Image {
+        id: tool_12
+        x: 667
+        y: 201
+        width: 200
+        height: 30
+        source: "images/lathe_internal_boring_bs.png"
+        antialiasing: true
+        MouseArea {
+            anchors.fill: parent
+        }
+        rotation: 0
+        transformOrigin: Item.Center
+        z: 0
+    }
+
+    Image {
+        id: tool_13
+        x: 667
+        y: 266
+        width: 200
+        height: 25
+        source: "images/lathe_internal_drilling_ts.png"
+        antialiasing: true
+        MouseArea {
+            anchors.fill: parent
+        }
+        rotation: 0
+        z: 0
+        transformOrigin: Item.Center
+    }
+
+    Image {
+        id: tool_14
+        x: 667
+        y: 318
+        width: 200
+        height: 30
+        source: "images/lathe_internal_boring_ts.png"
+        antialiasing: true
+        MouseArea {
+            anchors.fill: parent
+        }
+        rotation: 0
+        transformOrigin: Item.Center
+        z: 0
+    }
+
+    Image {
+        id: tool_15
+        x: 667
+        y: 376
+        width: 200
+        height: 38
+        source: "images/lathe_internal_threading_ts.png"
+        antialiasing: true
+        MouseArea {
+            anchors.fill: parent
+        }
+        rotation: 0
+        z: 0
+        transformOrigin: Item.Center
+    }
+
+    function tool_selected(tool_no) {
+
+        if (tool_no === 1){
+            tool_2.visible = false
+            tool_3.visible = false
+            tool_4.visible = false
+            tool_5.visible = false
+            tool_6.visible = false
+            tool_7.visible = false
+            tool_8.visible = false
+            tool_9.visible = false
+            tool_1.visible = false
+            tool_11.visible = false
+            tool_12.visible = false
+            tool_13.visible = false
+            tool_14.visible = false
+            tool_15.visible = false
+
+        }
+    }
+
+/*
         RotationAnimator {
             id: atc_anim
             target: atc_holder;
@@ -412,7 +707,6 @@ Rectangle {
             }
         }
     }
-/*
     Timer {
         id: halTimer
         interval: 100
@@ -421,7 +715,6 @@ Rectangle {
         triggeredOnStart: false
         onTriggered: atc_spiner.get_pins()
     }
-*/
 
     function rotate_atc(name, tool_no, direction) {
         if (direction === 1) {
@@ -488,4 +781,5 @@ Rectangle {
 
         }
     }
+*/
 }
