@@ -47,7 +47,7 @@ def launch_application(opts, config):
     if postgui_halfile:
         LOG.info('Loading post GUI HAL file: %s', postgui_halfile)
         res = os.spawnvp(os.P_WAIT, "halcmd",
-                         ["halcmd", "-i", "-f", postgui_halfile])
+                         ["halcmd", "-i", INFO.INI_FILE, "-f", postgui_halfile])
 
         print "res:", res
         if res:
