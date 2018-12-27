@@ -127,11 +127,11 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
     if opts.config_file is not None:
         # cmd line config file should be relative to INI file
         config_dir = os.getenv('CONFIG_DIR', '')
-        config_file = normalizePath(opts.config_file, config_dir)
-        if not os.path.isfile(config_file):
-            print 'Specified YAML file does not exist: {}'.format(config_file)
+        config_file_path = normalizePath(opts.config_file, config_dir)
+        if not os.path.isfile(config_file_path):
+            print 'Specified YAML file does not exist: {}'.format(config_file_path)
             sys.exit()
-        os.environ['VCP_CONFIG_FILES'] = opts.config_file + ':' + os.environ.get('VCP_CONFIG_FILES', '')
+        opts.config_file = config_file_path
 
     # show the chooser if the --chooser flag was specified
     if opts.chooser or not opts.get('vcp', True):
