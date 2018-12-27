@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1924</width>
-    <height>1083</height>
+    <height>1085</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -80,27 +80,27 @@ bottom-margin: 0px;
              <colorrole role="Button">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
-                <red>129</red>
-                <green>133</green>
-                <blue>132</blue>
+                <red>145</red>
+                <green>145</green>
+                <blue>145</blue>
                </color>
               </brush>
              </colorrole>
              <colorrole role="Base">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
-                <red>129</red>
-                <green>133</green>
-                <blue>132</blue>
+                <red>145</red>
+                <green>145</green>
+                <blue>145</blue>
                </color>
               </brush>
              </colorrole>
              <colorrole role="Window">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
-                <red>129</red>
-                <green>133</green>
-                <blue>132</blue>
+                <red>145</red>
+                <green>145</green>
+                <blue>145</blue>
                </color>
               </brush>
              </colorrole>
@@ -118,27 +118,27 @@ bottom-margin: 0px;
              <colorrole role="Button">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
-                <red>129</red>
-                <green>133</green>
-                <blue>132</blue>
+                <red>145</red>
+                <green>145</green>
+                <blue>145</blue>
                </color>
               </brush>
              </colorrole>
              <colorrole role="Base">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
-                <red>129</red>
-                <green>133</green>
-                <blue>132</blue>
+                <red>145</red>
+                <green>145</green>
+                <blue>145</blue>
                </color>
               </brush>
              </colorrole>
              <colorrole role="Window">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
-                <red>129</red>
-                <green>133</green>
-                <blue>132</blue>
+                <red>145</red>
+                <green>145</green>
+                <blue>145</blue>
                </color>
               </brush>
              </colorrole>
@@ -156,27 +156,27 @@ bottom-margin: 0px;
              <colorrole role="Button">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
-                <red>129</red>
-                <green>133</green>
-                <blue>132</blue>
+                <red>145</red>
+                <green>145</green>
+                <blue>145</blue>
                </color>
               </brush>
              </colorrole>
              <colorrole role="Base">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
-                <red>129</red>
-                <green>133</green>
-                <blue>132</blue>
+                <red>145</red>
+                <green>145</green>
+                <blue>145</blue>
                </color>
               </brush>
              </colorrole>
              <colorrole role="Window">
               <brush brushstyle="SolidPattern">
                <color alpha="255">
-                <red>129</red>
-                <green>133</green>
-                <blue>132</blue>
+                <red>145</red>
+                <green>145</green>
+                <blue>145</blue>
                </color>
               </brush>
              </colorrole>
@@ -204,11 +204,14 @@ bottom-margin: 0px;
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: #919191;</string>
+          </property>
           <property name="tabPosition">
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>6</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -13477,6 +13480,19 @@ Background:transparent;
            <attribute name="title">
             <string>          CONVERSATIONAL          </string>
            </attribute>
+           <widget class="LatheToolTouchOff" name="lathetooltouchoff">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>961</width>
+              <height>621</height>
+             </rect>
+            </property>
+            <property name="resizeMode">
+             <enum>QQuickWidget::SizeRootObjectToView</enum>
+            </property>
+           </widget>
           </widget>
           <widget class="QWidget" name="tab_3">
            <attribute name="title">
@@ -18373,7 +18389,7 @@ border-radius: 4px;
               <number>100</number>
              </property>
              <property name="value">
-              <number>100</number>
+              <number>30</number>
              </property>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
@@ -19086,7 +19102,7 @@ border-radius: 1px;
      <x>0</x>
      <y>0</y>
      <width>1924</width>
-     <height>25</height>
+     <height>27</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -19287,7 +19303,7 @@ font: 11pt bebas kai;
   <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
-   <header>qtpyvcp.widgets.display_widgets.gcode_backplot</header>
+   <header>qtpyvcp.widgets.display_widgets.gcode_backplot.gcode_backplot</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -19328,6 +19344,11 @@ font: 11pt bebas kai;
    <header>qtpyvcp.widgets.input_widgets.file_system</header>
   </customwidget>
   <customwidget>
+   <class>LatheToolTouchOff</class>
+   <extends>QQuickWidget</extends>
+   <header>qtpyvcp.widgets.input_widgets.lathe_tool_touch_off.lathe_tool_touch_off</header>
+  </customwidget>
+  <customwidget>
    <class>MDIButton</class>
    <extends>QPushButton</extends>
    <header>qtpyvcp.widgets.button_widgets.mdi_button</header>
@@ -19356,6 +19377,11 @@ font: 11pt bebas kai;
    <class>StatusLabel</class>
    <extends>QLabel</extends>
    <header>qtpyvcp.widgets.display_widgets.status_label</header>
+  </customwidget>
+  <customwidget>
+   <class>QQuickWidget</class>
+   <extends>QWidget</extends>
+   <header>QtQuickWidgets/QQuickWidget</header>
   </customwidget>
  </customwidgets>
  <resources>

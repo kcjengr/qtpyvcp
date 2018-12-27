@@ -7,9 +7,9 @@ Rectangle {
     width: 1024
     clip: false
     transformOrigin: Item.Center
-    border.color: "#00000000"
     height: 600
     color: "#919191"
+    border.color: "#00000000"
 
     Image {
         id: holder
