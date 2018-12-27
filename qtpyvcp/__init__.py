@@ -94,11 +94,11 @@ def run_vcp(opts, config_file=None):
         from qtpyvcp.vcp_launcher import load_vcp
         return load_vcp(opts)
 
-    config_files = []
+    config_files = list()
     config_files.append(config_file)
 
     if opts.config_file is not None:
-        config_files = config_files.append(opts.config_file)
+        config_files.append(opts.config_file)
 
     env_cfgs = os.getenv('VCP_CONFIG_FILES')
     if env_cfgs is not None:
