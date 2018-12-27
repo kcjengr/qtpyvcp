@@ -71,9 +71,6 @@ TOP_DIR = os.path.dirname(QTPYVCP_DIR)
 
 DEFAULT_CONFIG_FILE = os.path.join(QTPYVCP_DIR, 'yaml_lib/default_config.yml')
 
-os.environ['VCP_CONFIG_FILES'] = os.getenv('VCP_CONFIG_FILES', '') + ':' \
-                                 + DEFAULT_CONFIG_FILE
-
 # globals
 CONFIG = {}
 OPTIONS = DotDict()
@@ -91,28 +88,36 @@ def main():
 def run_vcp(opts, config_file=None):
 
     if config_file is None:
+        # we are probably running from a entry point or a bare .ui file
         from qtpyvcp.vcp_launcher import load_vcp
-        return load_vcp(opts)
+        load_vcp(opts)
 
-    config_files = list()
-    config_files.append(config_file)
+    else:
+        # almost certainly being called from a VCP's __init__.py file
 
-    if opts.config_file is not None:
-        config_files.append(opts.config_file)
+        # list of YAML config files, in order of highest to lowest priority
+        config_files = list()
 
-    env_cfgs = os.getenv('VCP_CONFIG_FILES')
-    if env_cfgs is not None:
-        config_files.extend(env_cfgs.strip(':').split(':'))
+        # cmd line or INI files should have highest priority
+        if opts.config_file is not None:
+            config_files.append(opts.config_file)
 
-    config_files.append(DEFAULT_CONFIG_FILE)
+        # env files should have second highest priority
+        env_cfgs = os.getenv('VCP_CONFIG_FILES')
+        if env_cfgs is not None:
+            config_files.extend(env_cfgs.strip(':').split(':'))
 
-    print config_files
+        # VCP specific config files
+        config_files.append(config_file)
 
-    from qtpyvcp.utilities.config_loader import load_config_files
-    config = load_config_files(*config_files)
+        # default config file has lowest priority
+        config_files.append(DEFAULT_CONFIG_FILE)
 
-    from qtpyvcp.vcp_launcher import launch_application
-    launch_application(opts, config)
+        from qtpyvcp.utilities.config_loader import load_config_files
+        config = load_config_files(*config_files)
+
+        from qtpyvcp.vcp_launcher import launch_application
+        launch_application(opts, config)
 
 
 if __name__ == '__main__':

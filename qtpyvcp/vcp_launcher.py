@@ -77,10 +77,10 @@ def load_vcp(opts):
             directory, filename = os.path.split(vcp_path)
             name, ext = os.path.splitext(filename)
 
-            if ext in ['.yaml', '.yml']:
+            if ext.lower() in ['.yaml', '.yml']:
                 _load_vcp_from_yaml_file(vcp_path, opts)
 
-            elif ext == '.ui':
+            elif ext.lower() == '.ui':
                 _load_vcp_from_ui_file(vcp_path, opts)
 
         elif os.path.isdir(vcp_path):
@@ -98,14 +98,21 @@ def load_vcp(opts):
 def _load_vcp_from_yaml_file(yaml_file, opts):
     LOG.info("Loading VCP from YAML file: yellow<{}>".format(yaml_file))
     from qtpyvcp.utilities.config_loader import load_config_files
-    config = load_config_files(opts.config_file, yaml_file, *os.getenv('VCP_CONFIG_FILES', '').split(':'))
+    cfg_files = [opts.config_file or '']
+    cfg_files.extend(os.getenv('VCP_CONFIG_FILES', '').split(':'))
+    cfg_files.append(yaml_file)
+    cfg_files.append(qtpyvcp.DEFAULT_CONFIG_FILE)
+    config = load_config_files(*cfg_files)
     launch_application(opts, config)
 
 
 def _load_vcp_from_ui_file(ui_file, opts):
     LOG.info("Loading VCP from UI file: yellow<{}>".format(ui_file))
-    from qtpyvcp.utilities.config_loader import load_config_files_from_env
-    config = load_config_files_from_env()
+    from qtpyvcp.utilities.config_loader import load_config_files
+    cfg_files = [opts.config_file or '']
+    cfg_files.extend(os.getenv('VCP_CONFIG_FILES', '').split(':'))
+    cfg_files.append(qtpyvcp.DEFAULT_CONFIG_FILE)
+    config = load_config_files(*cfg_files)
     kwargs = config['windows']['mainwindow'].get('kwargs', {})
     kwargs.update({'ui_file': ui_file})
     config['windows']['mainwindow']['kwargs'] = kwargs
