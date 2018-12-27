@@ -4,29 +4,32 @@ import QtQuick.Layouts 1.3
 
 Rectangle {
     visible: true
-    width: 1280
-    color: "#919191"
+    width: 1024
+    clip: false
+    transformOrigin: Item.Center
+    border.color: "#00000000"
     height: 600
+    color: "#919191"
 
     Image {
         id: holder
-        x: 0
-        y: 150
-        width: 256
-        height: 256
+        x: 8
+        y: 140
+        width: 452
+        height: 321
         fillMode: Image.PreserveAspectCrop
         z: 0
         rotation: 0
         transformOrigin: Item.Center
-        source: "images/lathe_chuck_stock.png"
+        source: "images/lathe_chuck_dim_lines.png"
     }
 
     // FIRST GROUP TOP 5 TOOLS
 
     Image {
         id: tool_1
-        x: 286
-        y: 8
+        x: 379
+        y: -14
         width: 50
         height: 200
         fillMode: Image.PreserveAspectCrop
@@ -45,13 +48,13 @@ Rectangle {
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_1; x: 286; y: 8 }
+                PropertyChanges { target: tool_1; x: 379; y: -14 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_1; x: 300; y: 50 }
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
@@ -59,8 +62,8 @@ Rectangle {
 
     Image {
         id: tool_2
-        x: 364
-        y: 8
+        x: 457
+        y: -14
         width: 38
         height: 200
         fillMode: Image.PreserveAspectCrop
@@ -80,13 +83,13 @@ Rectangle {
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_2; x: 364; y: 8 }
+                PropertyChanges { target: tool_2; x: 457; y: -14 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_2; x: 300; y: 50 }
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
@@ -94,8 +97,8 @@ Rectangle {
 
     Image {
         id: tool_3
-        x: 428
-        y: 8
+        x: 521
+        y: -14
         width: 50
         height: 200
         source: "images/lathe_rh_turning_rp_bs.png"
@@ -115,13 +118,13 @@ Rectangle {
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_3; x: 428; y: 8 }
+                PropertyChanges { target: tool_3; x: 521; y: -14 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_3; x: 300; y: 50 }
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
@@ -129,8 +132,8 @@ Rectangle {
 
     Image {
         id: tool_4
-        x: 503
-        y: 8
+        x: 596
+        y: -14
         width: 50
         height: 200
         antialiasing: true
@@ -150,13 +153,13 @@ Rectangle {
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_4; x: 503; y: 8 }
+                PropertyChanges { target: tool_4; x: 596; y: -14 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_4; x: 300; y: 50 }
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
@@ -164,8 +167,8 @@ Rectangle {
 
     Image {
         id: tool_5
-        x: 575
-        y: 8
+        x: 668
+        y: -14
         width: 38
         height: 200
         source: "images/lathe_rh_parting_rp_bs.png"
@@ -185,13 +188,13 @@ Rectangle {
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_5; x: 575; y: 8 }
+                PropertyChanges { target: tool_5; x: 668; y: -14 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_5; x: 300; y: 50 }
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
@@ -201,8 +204,8 @@ Rectangle {
 
     Image {
         id: tool_6
-        x: 286
-        y: 351
+        x: 379
+        y: 411
         width: 50
         height: 200
         source: "images/lathe_lh_turning_fp_ts.png"
@@ -222,13 +225,13 @@ Rectangle {
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_6; x: 286; y: 351 }
+                PropertyChanges { target: tool_6; x: 379; y: 411 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_6; x: 300; y: 300 }
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
@@ -236,8 +239,8 @@ Rectangle {
 
     Image {
         id: tool_7
-        x: 364
-        y: 351
+        x: 457
+        y: 411
         width: 38
         height: 200
         source: "images/lathe_center_turning_fp_ts.png"
@@ -256,13 +259,13 @@ Rectangle {
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_7; x: 364; y: 351 }
+                PropertyChanges { target: tool_7; x: 457; y: 411 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_7; x: 300; y: 300 }
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
@@ -270,8 +273,8 @@ Rectangle {
 
     Image {
         id: tool_8
-        x: 428
-        y: 351
+        x: 521
+        y: 411
         width: 50
         height: 200
         source: "images/lathe_rh_turning_fp_ts.png"
@@ -290,13 +293,13 @@ Rectangle {
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_8; x: 428; y: 351 }
+                PropertyChanges { target: tool_8; x: 521; y: 411 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_8; x: 300; y: 300 }
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
@@ -304,8 +307,8 @@ Rectangle {
 
     Image {
         id: tool_9
-        x: 503
-        y: 351
+        x: 596
+        y: 411
         width: 50
         height: 200
         source: "images/lathe_rh_threading_fp_ts.png"
@@ -321,16 +324,17 @@ Rectangle {
                 tool_selected(9)
             }
         }
+
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_9; x: 503; y: 351 }
+                PropertyChanges { target: tool_9; x: 596; y: 411 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_9; x: 300; y: 300 }
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
@@ -338,8 +342,8 @@ Rectangle {
 
     Image {
         id: tool_10
-        x: 575
-        y: 351
+        x: 668
+        y: 411
         width: 38
         height: 200
         source: "images/lathe_parting_fp_ts.png"
@@ -350,6 +354,10 @@ Rectangle {
         state: "released"
 
         MouseArea {
+            anchors.rightMargin: 0
+            anchors.bottomMargin: 0
+            anchors.leftMargin: 0
+            anchors.topMargin: 0
             anchors.fill: parent
             onClicked: {
                 tool_selected(10)
@@ -358,13 +366,13 @@ Rectangle {
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_10; x: 575; y: 351 }
+                PropertyChanges { target: tool_10; x: 668; y: 411 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_10; x: 300; y: 300 }
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
@@ -374,8 +382,8 @@ Rectangle {
 
     Image {
         id: tool_11
-        x: 667
-        y: 140
+        x: 744
+        y: 164
         width: 200
         height: 30
         enabled: true
@@ -400,13 +408,13 @@ Rectangle {
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_11; x: 667; y: 140 }
+                PropertyChanges { target: tool_11; x: 744; y: 164 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_11; x: 300; y: 240}
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
@@ -414,8 +422,8 @@ Rectangle {
 
     Image {
         id: tool_12
-        x: 667
-        y: 201
+        x: 744
+        y: 225
         width: 200
         height: 30
         source: "images/lathe_internal_boring_bs.png"
@@ -434,13 +442,13 @@ Rectangle {
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_12; x: 667; y: 201 }
+                PropertyChanges { target: tool_12; x: 744; y: 225 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_12; x: 300; y: 240 }
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
@@ -448,10 +456,10 @@ Rectangle {
 
     Image {
         id: tool_13
-        x: 667
-        y: 266
-        width: 200
-        height: 25
+        x: 744
+        y: 290
+        width: 182
+        height: 21
         source: "images/lathe_internal_drilling_ts.png"
         antialiasing: true
         rotation: 0
@@ -468,13 +476,13 @@ Rectangle {
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_13; x: 667; y: 266 }
+                PropertyChanges { target: tool_13; x: 744; y: 290 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_13; x: 300; y: 266 }
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
@@ -482,8 +490,8 @@ Rectangle {
 
     Image {
         id: tool_14
-        x: 667
-        y: 318
+        x: 744
+        y: 342
         width: 200
         height: 30
         source: "images/lathe_internal_boring_ts.png"
@@ -502,13 +510,13 @@ Rectangle {
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_14; x: 667; y: 318 }
+                PropertyChanges { target: tool_14; x: 744; y: 342 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_14; x: 300; y: 275 }
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
@@ -516,8 +524,8 @@ Rectangle {
 
     Image {
         id: tool_15
-        x: 667
-        y: 376
+        x: 744
+        y: 400
         width: 200
         height: 38
         source: "images/lathe_internal_threading_ts.png"
@@ -536,13 +544,13 @@ Rectangle {
         states: [
             State {
                 name: "released"
-                PropertyChanges { target: tool_15; x: 667; y: 376 }
+                PropertyChanges { target: tool_15; x: 744; y: 400 }
             },
             State {
                 name: "selected"
                 PropertyChanges { target: tool_15; x: 300; y: 275 }
             }
-         ]
+        ]
         transitions: Transition {
             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
         }
