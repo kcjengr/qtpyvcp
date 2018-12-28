@@ -37,8 +37,7 @@ class VCPMainWindow(QMainWindow):
         self.app = QApplication.instance()
         self.status = getPlugin('status')
 
-        self.confirm_exit = opts.confirm_exit.lower() in \
-                            ['true', 'yes', '1'] or confirm_exit
+        self.confirm_exit = confirm_exit if opts.confirm_exit is None else opts.confirm_exit
 
         # Load the UI file AFTER defining variables, otherwise the values
         # set in QtDesigner get overridden by the default values

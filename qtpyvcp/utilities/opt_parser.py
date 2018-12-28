@@ -25,7 +25,7 @@ Display  Options:
   --hide-menu-bar    Hides the menu bar, if present.
   --hide-status-bar  Hides the status bar, if present.
   --confirm-exit BOOL
-                    Whether to show dialog to confirm exit. [default: True]
+                    Whether to show dialog to confirm exit.
 
 Application Options:
   --log-level=(DEBUG | INFO | WARN | ERROR | CRITICAL)
@@ -74,8 +74,25 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
 
     raw_args = docopt(doc, version=version_str)
 
+    def convType(val):
+        if isinstance(val, basestring):
+            if val.lower() in ['true', 'on', 'yes', 'false', 'off', 'no']:
+                return val.lower() in ['true', 'on', 'yes']
+
+            try:
+                return int(val)
+            except ValueError:
+                pass
+
+            try:
+                return float(val)
+            except ValueError:
+                pass
+
+        return val
+
     # convert raw argument dict keys to valid python attribute names
-    opts = DotDict({arg.strip('-<>').replace('-', '_') : value for arg, value in raw_args.items()})
+    opts = DotDict({arg.strip('-<>').replace('-', '_') : convType(value) for arg, value in raw_args.items()})
 
     # read options from INI file and merge with cmd line options
     ini_file = ini(normalizePath(opts.ini, os.path.expanduser('~/linuxcnc/configs')))
@@ -87,14 +104,17 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
         # convert str values to bool
         if type(v) == bool:
             # TODO: Find a way to prefer cmd line values over INI values
-            ini_val = ini_val.lower() in ['true', '1', 'on']
+            ini_val = ini_val.lower() in ['true', 'on', 'yes', '1']
 
         # if its a non bool value and it was specified on the cmd line
         # then prefer the cmd line value
         elif v is not None:
             continue
 
-        opts[k] = ini_val
+        opts[k] = convType(ini_val)
+
+    # import json
+    # print json.dumps(opts, sort_keys=True, indent=4)
 
     # Check if LinuxCNC is running
     if not os.path.isfile('/tmp/linuxcnc.lock'):

@@ -29,7 +29,7 @@ Display  Options:
   --hide-menu-bar    Hides the menu bar, if present.
   --hide-status-bar  Hides the status bar, if present.
   --confirm-exit BOOL
-                    Whether to show dialog to confirm exit. [default: True]
+                    Whether to show dialog to confirm exit.
 
 Application Options:
   --log-level=(DEBUG | INFO | WARN | ERROR | CRITICAL)
