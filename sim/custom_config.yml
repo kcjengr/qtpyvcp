@@ -1,0 +1,11 @@
+
+# example of a machine specific settings
+windows:
+  mainwindow:
+    kwargs:
+      confirm_exit: false
+
+data_plugins:
+  status:
+    kwargs:
+      cycle_time: 73
