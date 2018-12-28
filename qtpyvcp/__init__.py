@@ -4,12 +4,7 @@
 QtPyVCP - Qt and Python based Virtual Control Panel framework for LinuxCNC.
 
 Usage:
-  qtpyvcp [<vcp>] --ini=INI [--log-level=LEVEL] [--log-file=FILE] [--perfmon]
-            [--config-file=FILE]
-            [--theme=THEME] [--stylesheet=SYTLESHEET] [--pref-file=FILE]
-            [--size=WIDTHxHEIGHT] [--position=XPOSxYPOS]
-            [--fullscreen] [--maximize] [--hide-menu-bar] [--hide-status-bar]
-            [--chooser] [--qt-api=QT_API]
+  qtpyvcp --ini=INI [<vcp>] [options]
   qtpyvcp (-h | --help)
   qtpyvcp (-v | --version)
 
@@ -33,6 +28,8 @@ Display  Options:
   -m --maximize      Flag to start with window maximized.
   --hide-menu-bar    Hides the menu bar, if present.
   --hide-status-bar  Hides the status bar, if present.
+  --confirm-exit BOOL
+                    Whether to show dialog to confirm exit. [default: True]
 
 Application Options:
   --log-level=(DEBUG | INFO | WARN | ERROR | CRITICAL)

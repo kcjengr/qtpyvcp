@@ -2,12 +2,7 @@
 {vcp_name} - A QtPyVCP based Virtual Control Panel for LinuxCNC.
 
 Usage:
-  {vcp_cmd} --ini=INI [--log-level=LEVEL] [--log-file=FILE] [--perfmon]
-            [--config-file=FILE]
-            [--theme=THEME] [--stylesheet=SYTLESHEET] [--pref-file=FILE]
-            [--size=WIDTHxHEIGHT] [--position=XPOSxYPOS]
-            [--fullscreen] [--maximize] [--hide-menu-bar] [--hide-status-bar]
-            [--qt-api=QT_API]
+  {vcp_cmd} --ini=INI [options]
   {vcp_cmd} (-h | --help)
   {vcp_cmd} (-v | --version)
 
@@ -29,6 +24,8 @@ Display  Options:
   -m --maximize      Flag to start with window maximized.
   --hide-menu-bar    Hides the menu bar, if present.
   --hide-status-bar  Hides the status bar, if present.
+  --confirm-exit BOOL
+                    Whether to show dialog to confirm exit. [default: True]
 
 Application Options:
   --log-level=(DEBUG | INFO | WARN | ERROR | CRITICAL)
