@@ -836,9 +836,9 @@ def _parse_jog_increment(jogincr):
 def _jog_axis_ok(axis, direction=0, widget=None):
     axisnum = getAxisNumber(axis)
     if STAT.task_state == linuxcnc.STATE_ON \
-        and STAT.interp_state == linuxcnc.INTERP_IDLE \
-        and STAT.homed[axisnum] == 1 \
-        and STAT.limit[axisnum] == 0:
+            and STAT.interp_state == linuxcnc.INTERP_IDLE \
+            and STAT.limit[axisnum] == 0:
+        # and STAT.homed[axisnum] == 1 \
         ok = True
         msg = ""
     else:
