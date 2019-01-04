@@ -54,10 +54,9 @@ Otherwise you can simply download the source code archive:
 Install Dev Dependencies
 ++++++++++++++++++++++++
 
-Development dependencies::
+Development dependencies (in addition to those listed in the :doc:`Quick Start <quick_start>`) ::
 
-  sudo apt install python-pyqt5 python-pyqt5.qtopengl python-pyqt5.qsci python-dbus.mainloop.pyqt5 qttools5-dev-tools qttools5.dev pyqt5-dev-tools python-pyqt5.qtmultimedia gstreamer1.0-plugins-bad libqt5multimedia5-plugins python-pip git
-
+  sudo apt install qttools5.dev qttools5-dev-tools
 
 For building documentation::
 

@@ -2,12 +2,15 @@ import os
 import sys
 import hiyapyco
 from jinja2.nativetypes import NativeEnvironment
-from jinja2 import Environment, FileSystemLoader, StrictUndefined, Undefined, make_logging_undefined
+from jinja2 import Environment, FileSystemLoader, Undefined, make_logging_undefined
 
-from qtpyvcp import DEFAULT_CONFIG_FILE
-from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.utilities.logger import getLogger, LOG_LEVEL_MAPPING
 
 LOG = getLogger(__name__)
+
+hiyapyco_logger = getLogger('qtpyvcp.config_loader.hiyapyco')
+hiyapyco_logger.setLevel(os.getenv('HIYAPYCO_LOG_LEVEL', 'ERROR'))
+hiyapyco.logger = hiyapyco_logger
 
 LogUndefined = make_logging_undefined(logger=LOG, base=Undefined)
 
@@ -30,7 +33,6 @@ def load_config_files(*files):
     for file in files:
         sys.path.insert(0, os.path.dirname(file))
 
-    # files.append(DEFAULT_CONFIG_FILE)
     LOG.debug('Loading config files: {}'.format(files))
 
     # hiyapyco merges in order least important to most important
@@ -47,8 +49,10 @@ def load_config_files(*files):
                              interpolate=True,
                              failonmissingfiles=True)
 
-    # import json
-    # print json.dumps(cfg_dict, sort_keys=True, indent=4)
+    if LOG.getEffectiveLevel() == LOG_LEVEL_MAPPING['DEBUG']:
+        LOG.debug("Merged YAML config:\n\n%s\n",
+                  hiyapyco.dump(cfg_dict,
+                                default_flow_style=False))
 
     return cfg_dict
 

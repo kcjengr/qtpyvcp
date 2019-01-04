@@ -29,6 +29,7 @@ class _OpenFileDialog(QFileDialog):
         self.setNameFilters(nc_file_types.split(';;'))
 
         self.setOption(self.DontUseNativeDialog)
+        self.setModal(True)
 
         urls = self.sidebarUrls()
         urls.append(QtCore.QUrl.fromLocalFile(nc_file_dir))

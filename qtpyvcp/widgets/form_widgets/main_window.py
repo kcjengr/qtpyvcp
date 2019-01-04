@@ -37,8 +37,7 @@ class VCPMainWindow(QMainWindow):
         self.app = QApplication.instance()
         self.status = getPlugin('status')
 
-        # QtDesigner settable vars
-        self.prompt_at_exit = confirm_exit
+        self.confirm_exit = confirm_exit if opts.confirm_exit is None else opts.confirm_exit
 
         # Load the UI file AFTER defining variables, otherwise the values
         # set in QtDesigner get overridden by the default values
@@ -189,7 +188,7 @@ class VCPMainWindow(QMainWindow):
 
     def closeEvent(self, event):
         """Catch close event and show confirmation dialog."""
-        if self.prompt_at_exit:
+        if self.confirm_exit:
             quit_msg = "Are you sure you want to exit LinuxCNC?"
             reply = QMessageBox.question(self, 'Exit LinuxCNC?',
                                          quit_msg, QMessageBox.Yes, QMessageBox.No)

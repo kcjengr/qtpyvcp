@@ -2,12 +2,7 @@
 {vcp_name} - A QtPyVCP based Virtual Control Panel for LinuxCNC.
 
 Usage:
-  {vcp_cmd} --ini=INI [--log-level=LEVEL] [--log-file=FILE] [--perfmon]
-            [--config-file=FILE]
-            [--theme=THEME] [--stylesheet=SYTLESHEET] [--pref-file=FILE]
-            [--size=WIDTHxHEIGHT] [--position=XPOSxYPOS]
-            [--fullscreen] [--maximize] [--hide-menu-bar] [--hide-status-bar]
-            [--qt-api=QT_API]
+  {vcp_cmd} --ini=INI [options]
   {vcp_cmd} (-h | --help)
   {vcp_cmd} (-v | --version)
 
@@ -29,6 +24,8 @@ Display  Options:
   -m --maximize      Flag to start with window maximized.
   --hide-menu-bar    Hides the menu bar, if present.
   --hide-status-bar  Hides the status bar, if present.
+  --confirm-exit BOOL
+                    Whether to show dialog to confirm exit.
 
 Application Options:
   --log-level=(DEBUG | INFO | WARN | ERROR | CRITICAL)
@@ -77,8 +74,25 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
 
     raw_args = docopt(doc, version=version_str)
 
+    def convType(val):
+        if isinstance(val, basestring):
+            if val.lower() in ['true', 'on', 'yes', 'false', 'off', 'no']:
+                return val.lower() in ['true', 'on', 'yes']
+
+            try:
+                return int(val)
+            except ValueError:
+                pass
+
+            try:
+                return float(val)
+            except ValueError:
+                pass
+
+        return val
+
     # convert raw argument dict keys to valid python attribute names
-    opts = DotDict({arg.strip('-<>').replace('-', '_') : value for arg, value in raw_args.items()})
+    opts = DotDict({arg.strip('-<>').replace('-', '_') : convType(value) for arg, value in raw_args.items()})
 
     # read options from INI file and merge with cmd line options
     ini_file = ini(normalizePath(opts.ini, os.path.expanduser('~/linuxcnc/configs')))
@@ -90,14 +104,17 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
         # convert str values to bool
         if type(v) == bool:
             # TODO: Find a way to prefer cmd line values over INI values
-            ini_val = ini_val.lower() in ['true', '1', 'on']
+            ini_val = ini_val.lower() in ['true', 'on', 'yes', '1']
 
         # if its a non bool value and it was specified on the cmd line
         # then prefer the cmd line value
         elif v is not None:
             continue
 
-        opts[k] = ini_val
+        opts[k] = convType(ini_val)
+
+    # import json
+    # print json.dumps(opts, sort_keys=True, indent=4)
 
     # Check if LinuxCNC is running
     if not os.path.isfile('/tmp/linuxcnc.lock'):
@@ -127,11 +144,11 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
     if opts.config_file is not None:
         # cmd line config file should be relative to INI file
         config_dir = os.getenv('CONFIG_DIR', '')
-        config_file = normalizePath(opts.config_file, config_dir)
-        if not os.path.isfile(config_file):
-            print 'Specified YAML file does not exist: {}'.format(config_file)
+        config_file_path = normalizePath(opts.config_file, config_dir)
+        if not os.path.isfile(config_file_path):
+            print 'Specified YAML file does not exist: {}'.format(config_file_path)
             sys.exit()
-        os.environ['VCP_CONFIG_FILES'] = opts.config_file + ':' + os.environ.get('VCP_CONFIG_FILES', '')
+        opts.config_file = config_file_path
 
     # show the chooser if the --chooser flag was specified
     if opts.chooser or not opts.get('vcp', True):
