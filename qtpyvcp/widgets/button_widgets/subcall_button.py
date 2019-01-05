@@ -45,7 +45,7 @@ class SubCallButton(QPushButton, CMDWidget):
         window = qApp.activeWindow()
 
         subfile = os.path.join(SUBROUTINE_PATH, self._filename)
-        if not os.path.exists(subfile):
+        if not os.path.isfile(subfile):
             LOG.error('Subroutine file does not exist: yellow<{}>'.format(subfile))
             return False
 
