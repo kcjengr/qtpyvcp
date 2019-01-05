@@ -47,7 +47,7 @@ setup(
     long_description_content_type="text/markdown",
     license="GNU General Public License v2 (GPLv2)",
     url="https://github.com/kcjengr/qtpyvcp",
-    download_url="https://gitlab.com/Hazzy/qtpyvcp/-/archive/master/qtpyvcp-master.tar.gz",
+    download_url="https://github.com/kcjengr/qtpyvcp/archive/master.zip",
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
