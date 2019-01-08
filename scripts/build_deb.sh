@@ -18,6 +18,7 @@ fpm -t deb \
     --maintainer "'Kurt Jacobson <kcjengr@gmail.com>'" \
     --url "https://qtpyvcp.kcjengr.com" \
     --description "QtPyVCP - Qt and Python based Virtual Control Panel framework for LinuxCNC." \
+    -d python-pip \
     -d python-pyqt5 \
     -d python-dbus.mainloop.pyqt5 \
     -d python-pyqt5.qtopengl \
@@ -26,6 +27,7 @@ fpm -t deb \
     -d gstreamer1.0-plugins-bad \
     -d libqt5multimedia5-plugins \
     -d pyqt5-dev-tools \
+    -d qttools5-dev-tools \
     --after-install scripts/after_install.sh \
     --after-remove scripts/after_remove.sh \
     --no-auto-depends \
