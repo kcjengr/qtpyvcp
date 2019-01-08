@@ -16,7 +16,7 @@ deploy:
     branch: master
 
 - provider: script
-  script: bash scripts/github_release.sh
+  script: bash scripts/do_release.sh
   on:
     tags: true
 
