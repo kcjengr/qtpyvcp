@@ -17,6 +17,7 @@ deploy:
 
 - provider: script
   script: bash scripts/do_release.sh
+  skip_cleanup: true
   on:
     tags: true
 
