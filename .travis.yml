@@ -6,10 +6,6 @@ install:
 script:
 - sphinx-build -Wv docs/source docs/html
 
-before_deploy:
-- gem install fpm
-- ./scripts/build_deb.sh
-
 deploy:
 - provider: pages
   skip_cleanup: true
@@ -24,9 +20,9 @@ deploy:
   on:
     tags: true
 
-#- provider: pypi
-#  user: kcjengr
-#  password:
-#    secure: qobDmIBSsl4AA/G6JSnv6AZZILpJRyVTagu3s/uRuQe2kAnrHcGZ5x1j3LI2pNeFzSkAGLvFN08QGAVKEYVx1f8yD16/TRoWMl3sdSxe6pd0elxy9z7fNaQ/YHehKFA6V/FP9QHACXjCZB+5hjZ8qeOra/1IS7Oqqn5tUY1BjNTKWdkFYvbsoLJgjFKGqcJFqUFkNSuShKuhcVOuKzcwQDys8DO5iTecwwskbFQ/y7tVg9X00+KVWVSQSnj3JXR55k9G7Ps3O0ES43FJmZLQcxfo3mQ2dF7I7x5reT6eaLIYeAwWNXG9pNtHzQuKXaZByhl1e7XGzYizmhRWsbRbAjMXgveu09Hs8oCDs88zxKAniT5bkguV0pj7m6YTBSkYYfNAYet70G7MJwi0OMKx9xXnwoDgwYlL1x8C+w1FcTpjMa6C3AFzwlWq5lRocgSpUNO7p+n3qiGjoPiH4Cc6yjWBlIVz6D1ZiNyhBqBPXz4csVTxkFWlLU7ysApAqeSlnDRut5TwO94SQxB9atwyO2wLkD8KRiiY7kLhM5i6tdZYLgPrmYi8TiaAsvzbH/zlaz8EqxMIdamBR+eUA7/mKwqVJ1QCS+ckYCn/UeubJXZNYh8rUkkRRM2dRR3BivZ7wz2+dgIUIJYAKcctZcT+qGvhFT8Jdv51sWSEN6NEj1E=
-#  on:
-#    tags: true
+- provider: pypi
+  user: kcjengr
+  password:
+    secure: qobDmIBSsl4AA/G6JSnv6AZZILpJRyVTagu3s/uRuQe2kAnrHcGZ5x1j3LI2pNeFzSkAGLvFN08QGAVKEYVx1f8yD16/TRoWMl3sdSxe6pd0elxy9z7fNaQ/YHehKFA6V/FP9QHACXjCZB+5hjZ8qeOra/1IS7Oqqn5tUY1BjNTKWdkFYvbsoLJgjFKGqcJFqUFkNSuShKuhcVOuKzcwQDys8DO5iTecwwskbFQ/y7tVg9X00+KVWVSQSnj3JXR55k9G7Ps3O0ES43FJmZLQcxfo3mQ2dF7I7x5reT6eaLIYeAwWNXG9pNtHzQuKXaZByhl1e7XGzYizmhRWsbRbAjMXgveu09Hs8oCDs88zxKAniT5bkguV0pj7m6YTBSkYYfNAYet70G7MJwi0OMKx9xXnwoDgwYlL1x8C+w1FcTpjMa6C3AFzwlWq5lRocgSpUNO7p+n3qiGjoPiH4Cc6yjWBlIVz6D1ZiNyhBqBPXz4csVTxkFWlLU7ysApAqeSlnDRut5TwO94SQxB9atwyO2wLkD8KRiiY7kLhM5i6tdZYLgPrmYi8TiaAsvzbH/zlaz8EqxMIdamBR+eUA7/mKwqVJ1QCS+ckYCn/UeubJXZNYh8rUkkRRM2dRR3BivZ7wz2+dgIUIJYAKcctZcT+qGvhFT8Jdv51sWSEN6NEj1E=
+  on:
+    tags: true

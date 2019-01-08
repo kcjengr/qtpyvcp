@@ -1,4 +1,9 @@
+echo 'Installing fpm gem...'
+gem install fpm
+
+echo 'Building debian package...'
 fpm -s python \
+    -p dist/ \
     -d python-pyqt5 \
     -d python-dbus.mainloop.pyqt5 \
     -d python-pyqt5.qtopengl \
