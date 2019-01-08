@@ -1,7 +1,10 @@
 echo 'Installing fpm gem...'
 gem install fpm
 
-echo 'Building debian package...'
+echo 'Creating debs dir'
+mkdir debs
+
+echo 'Building debian package in debs/...'
 fpm -s python \
     -p debs/ \
     -d python-pyqt5 \
