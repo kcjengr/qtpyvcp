@@ -12,12 +12,23 @@ compile(['examples/probe_basic',])
 if os.getenv('DEB_BUILD') == 'true' or os.getenv('USER') == 'root':
     "/usr/share/doc/linuxcnc/examples/sample-configs/sim"
     # list of (destination, source_file) tuples
-    DATA_FILES = []
+    DATA_FILES = [
+        ('/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/', [
+            'QtDesigner/Qt5.7.1-Py2.7-64bit/libpyqt5_py2.so',
+            'QtDesigner/Qt5.7.1-Py2.7-64bit/libpyqt5_py3.so'])
+    ]
 
     # list of (destination, source_dir) tuples
     DATA_DIRS = [
         ('/usr/share/doc/linuxcnc/examples/sample-configs/sim/qtpyvcp', 'sim'),
     ]
+
+    if os.getenv('USER') == 'root':
+        try:
+            os.rename('/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/libpyqt5.so',
+                      '/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/libpyqt5.so.old')
+        except:
+            pass
 
 else:
     # list of (destination, source_file) tuples

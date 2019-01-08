@@ -26,8 +26,10 @@ fpm -t deb \
     -d gstreamer1.0-plugins-bad \
     -d libqt5multimedia5-plugins \
     -d pyqt5-dev-tools \
-    --after-install scripts/install_pypi_deps.sh \
+    --after-install scripts/after_install.sh \
+    --after-remove scripts/after_remove.sh \
     --no-auto-depends \
+    --verbose \
     setup.py
 
 unset DEB_BUILD
