@@ -8,16 +8,28 @@ with open("README.md", "r") as fh:
 from qtpyvcp.tools.qcompile import compile
 compile(['examples/probe_basic',])
 
-# list of (destination, source_file) tuples
-DATA_FILES = [
-    ('~/', ['scripts/.xsessionrc',])
-]
 
-# list of (destination, source_dir) tuples
-DATA_DIRS = [
-    ('~/linuxcnc/configs/sim.qtpyvcp', 'sim'),
-    # ('~/linuxcnc/vcps', 'examples'),
-]
+if os.getenv('DEB_BUILD') == 'true' or os.getenv('USER') == 'root':
+    "/usr/share/doc/linuxcnc/examples/sample-configs/sim"
+    # list of (destination, source_file) tuples
+    DATA_FILES = []
+
+    # list of (destination, source_dir) tuples
+    DATA_DIRS = [
+        ('/usr/share/doc/linuxcnc/examples/sample-configs/sim/qtpyvcp', 'sim'),
+    ]
+
+else:
+    # list of (destination, source_file) tuples
+    DATA_FILES = [
+        ('~/', ['scripts/.xsessionrc',])
+    ]
+
+    # list of (destination, source_dir) tuples
+    DATA_DIRS = [
+        ('~/linuxcnc/configs/sim.qtpyvcp', 'sim'),
+        # ('~/linuxcnc/vcps', 'examples'),
+    ]
 
 
 def data_files_from_dirs(data_dirs):
@@ -29,7 +41,6 @@ def data_files_from_dirs(data_dirs):
             dest = os.path.join(dest_dir, os.path.relpath(root, source_dir))
             data_files.append((dest, root_files))
 
-    print data_files
     return data_files
 
 

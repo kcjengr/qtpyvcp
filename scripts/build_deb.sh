@@ -1,12 +1,23 @@
+#!/usr/bin/env bash
+
 echo 'Installing fpm gem...'
 gem install fpm
 
 echo 'Creating debs dir'
 mkdir debs
 
+export DEB_BUILD=true
+
 echo 'Building debian package in debs/...'
-fpm -s python \
+fpm -t deb \
     -p debs/ \
+    -s python \
+    -f \
+    --license "GPLv2" \
+    --vendor "KCJ Engineering" \
+    --maintainer "'Kurt Jacobson <kcjengr@gmail.com>'" \
+    --url "https://qtpyvcp.kcjengr.com" \
+    --description "QtPyVCP - Qt and Python based Virtual Control Panel framework for LinuxCNC." \
     -d python-pyqt5 \
     -d python-dbus.mainloop.pyqt5 \
     -d python-pyqt5.qtopengl \
@@ -15,6 +26,8 @@ fpm -s python \
     -d gstreamer1.0-plugins-bad \
     -d libqt5multimedia5-plugins \
     -d pyqt5-dev-tools \
-    -f \
-    -m "Kurt Jacobson" \
-    -t deb setup.py
+    --after-install scripts/install_pypi_deps.sh \
+    --no-auto-depends \
+    setup.py
+
+unset DEB_BUILD
