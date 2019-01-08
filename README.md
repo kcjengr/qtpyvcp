@@ -5,14 +5,13 @@
 [![Chat on Gitter ][gitter-badge]](https://gitter.im/KurtJacobson/hazzy)
 
 
-
-[Travis-badge]: https://img.shields.io/travis/kcjengr/qtpyvcp/master.svg?label=docs
+[Travis-badge]: https://img.shields.io/travis/kcjengr/qtpyvcp/master.svg?label=build
 [linuxcnc-badge]: https://img.shields.io/badge/LinuxCNC-%202.8-blue.svg
 [irc-badge]: https://img.shields.io/badge/Chat%20on%20IRC-%23hazzy-green.svg
 [matrix-badge]: https://img.shields.io/badge/Chat%20on%20Matrix-%23qtpyvcp%3Amatrix.org-green.svg
 [gitter-badge]: https://img.shields.io/badge/Chat%20on%20Gitter-%23hazzy-green.svg
 
-![](docs/source/_static/qtpyvcp_logo_small.png)
+![logo](docs/source/_static/qtpyvcp_logo_small.png)
 
 # QtPyVCP - QtPy Virtual Control Panel
 
