@@ -27,8 +27,8 @@ dialog from which you can select one of the example VCPs. Chose one and click
 
 **Notes**
 
-This installation method is tested to work on Debian 9 (Stretch), it should
-work on other distros as well. If you intend to make your own VCPs
+This installation method is tested to work on Debian 9 (Stretch) and Mint 19.1,
+it should work on other distros as well. If you intend to make your own VCPs
 or contribute to QtPyVCP you will need to set up a
 :doc:`development install <installation>`.
 
