@@ -69,7 +69,7 @@ class SubCallButton(QPushButton, CMDWidget):
 
             try:
                 # get the value from the GUI input widget
-                val = getattr(window, pname).text()
+                val = getattr(window, pname).text() or default_val
             except:
                 val = default_val
                 LOG.warning('No input for red<{}> parameter, using default value blue<{}>'.format(pname, val))
