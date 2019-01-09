@@ -91,10 +91,10 @@ class SubCallButton(QPushButton, CMDWidget):
             args[index] = "[{}]".format(val)
 
         arg_str = ' '.join(args)
+        sub_name = os.path.splitext(self._filename)[0]
+        cmd_str = "o<{}> call {}".format(sub_name, arg_str)
 
-        cmd_str = "o<{}> call {}".format(self._sub_name, arg_str)
-
-        LOG.debug('Calling sub file: yellow<{}> with args blue<{}>'.format(subfile, arg_str))
+        LOG.debug('Calling sub file: yellow<%s> with args blue<%s>', subfile, arg_str)
         issue_mdi(cmd_str)
 
     @Property(str)
