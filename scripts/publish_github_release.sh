@@ -4,7 +4,7 @@ REPO=$TRAVIS_REPO_SLUG
 TAG=$TRAVIS_TAG
 AUTH_TOKEN=$GH_TOKEN
 
-PRERELEASE=true
+PRERELEASE=false
 RELEASEFILES=(debs/python-qtpyvcp_*.deb dist/qtpyvcp-*.tar.gz)
 
 # commit prefix vs. change log section name
