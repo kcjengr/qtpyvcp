@@ -188,7 +188,10 @@ class VCPMainWindow(QMainWindow):
 
     def closeEvent(self, event):
         """Catch close event and show confirmation dialog."""
-        if self.confirm_exit:
+        if os.getenv('DESIGNER', False):
+            self.close()
+
+        elif self.confirm_exit:
             quit_msg = "Are you sure you want to exit LinuxCNC?"
             reply = QMessageBox.question(self, 'Exit LinuxCNC?',
                                          quit_msg, QMessageBox.Yes, QMessageBox.No)
