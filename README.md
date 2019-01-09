@@ -11,7 +11,7 @@
 [matrix-badge]: https://img.shields.io/badge/Chat%20on%20Matrix-%23qtpyvcp%3Amatrix.org-green.svg
 [gitter-badge]: https://img.shields.io/badge/Chat%20on%20Gitter-%23hazzy-green.svg
 
-![logo](docs/source/_static/qtpyvcp_logo_small.png)
+![](docs/source/_static/qtpyvcp_logo_small.png)
 
 # QtPyVCP - QtPy Virtual Control Panel
 
