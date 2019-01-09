@@ -204,8 +204,15 @@ Rectangle {
         set_images(right_tools, right_tool_pics);
     }
 
-
     function tool_selected(tool) {
         tool.state  = "selected"
+    }
+
+    Connections {
+        target: handler
+
+        onPocketSig: {
+            console.log(pocket_number)
+        }
     }
 }
