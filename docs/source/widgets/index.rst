@@ -24,6 +24,15 @@ Button Widgets
    subcall_button
    dialog_button
 
+
+Dialogs
+-------
+.. toctree::
+   :maxdepth: 1
+
+   dialogs/base_dialog
+
+
 Menus
 -----
 .. toctree::
