@@ -87,9 +87,11 @@ This will create a setup.py development install and will add command line script
     you can get around this by running ``export PATH=$PATH:~/.local/bin/`` before launching
     linuxcnc or any qtpyvcp commands.
 
-    A more permanent solution is to copy the `.xsessionrc` file from the `qtpyvcp/scripts`
-    directory into your home direcotry, then log out and log back in. This will add
-    ``~/.local/bin/`` to your PATH each time xwindows starts.
+    A more permanent solution is to copy the `.xsessionrc` file from the
+    `qtpyvcp/scripts` directory into your home direcotry, then log out and log
+    back in. This will add ``~/.local/bin/`` to your PATH each time xwindows
+    starts. In the file manager select View > Show Hidden Files in order to see
+    files that start with a dot like `.xsessionrc`.
 
 
 Testing the Install
