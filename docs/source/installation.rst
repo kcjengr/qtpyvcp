@@ -6,6 +6,9 @@ Installation
     In order to use QtPyVCP you will need to have LinuxCNC ~2.8pre (master)
     installed, either system wide or as a Run In Place (RIP) built from source.
 
+    Instructions for installing on Debian 9 (stretch) and other distros can be
+    found here: https://gnipsel.com/linuxcnc/uspace/debian9-emc.html
+
 The are multiple ways to install QtPyVCP, which one is best depends on how
 you intend to use QtPyVCP. If you are not interested in development then
 it is best is to install with pip per the :doc:`Quick Start <quick_start>` guide.
