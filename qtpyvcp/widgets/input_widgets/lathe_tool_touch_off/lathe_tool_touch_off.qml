@@ -25,10 +25,10 @@ Rectangle {
     }
 
     Row {
-        x: 439
+        x: 308
         y: -89
-        width: 328
-        height: 223
+        width: 459
+        height: 336
         spacing: 20; // a simple layout do avoid overlapping
 
             Repeater {
@@ -37,7 +37,7 @@ Rectangle {
 
                 delegate:
                     Image {
-                        x: 379
+                        x: 380
                         y: 0
                         width: 50
                         height: 200
@@ -51,17 +51,21 @@ Rectangle {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                tool_selected(1)
+                                tool_selected(upper_tools.itemAt(index))
                             }
                         }
                         states: [
                             State {
+                                name: "hidden"
+                                PropertyChanges { target: upper_tools.itemAt(index); x: 70*index ; y: -150 }
+                            },
+                            State {
                                 name: "released"
-                                PropertyChanges { target: upper_tools; x: 379; y: 0 }
+                                PropertyChanges { target: upper_tools.itemAt(index); x: 70*index ; y: 0 }
                             },
                             State {
                                 name: "selected"
-                                PropertyChanges { target: upper_tools; x: 300; y: 50 }
+                                PropertyChanges { target: upper_tools.itemAt(index); x: 0; y: 100 }
                             }
                         ]
                         transitions: Transition {
@@ -72,10 +76,10 @@ Rectangle {
         }
 
     Row {
-        x: 439
-        y: 467
-        width: 333
-        height: 273
+        x: 308
+        y: 351
+        width: 467
+        height: 389
         spacing: 20; // a simple layout do avoid overlapping
 
             Repeater {
@@ -84,8 +88,7 @@ Rectangle {
 
                 delegate:
                     Image {
-                        id: lower_tool
-                        x: 379
+                        x: 380
                         y: 0
                         width: 50
                         height: 200
@@ -99,17 +102,21 @@ Rectangle {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                tool_selected(1)
+                                tool_selected(lower_tools.itemAt(index))
                             }
                         }
                         states: [
                             State {
+                                name: "hidden"
+                                PropertyChanges { target: lower_tools.itemAt(index); x: 70*index ; y: +400 }
+                            },
+                            State {
                                 name: "released"
-                                PropertyChanges { target: lower_tool; x: 379; y: 0 }
+                                PropertyChanges { target: lower_tools.itemAt(index); x: 70*index; y: 100 }
                             },
                             State {
                                 name: "selected"
-                                PropertyChanges { target: lower_tool; x: 300; y: 50 }
+                                PropertyChanges { target: lower_tools.itemAt(index); x: 0; y: 0 }
                             }
                         ]
                         transitions: Transition {
@@ -120,7 +127,7 @@ Rectangle {
         }
 
     Column {
-        x: 731
+        x: 308
         y: 166
         width: 199
         height: 269
@@ -146,23 +153,27 @@ Rectangle {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                tool_selected(this)
+                                tool_selected(right_tools.itemAt(index))
                             }
                         }
                         states: [
                             State {
+                                name: "hidden"
+                                PropertyChanges { target: right_tools.itemAt(index); x: 600 ; y: 58*index }
+                            },
+                            State {
                                 name: "released"
-                                PropertyChanges { target: right_tools; x: 0; y: 0 }
+                                PropertyChanges { target: right_tools.itemAt(index); x: 500; y: 58*index }
                             },
                             State {
                                 name: "selected"
-                                PropertyChanges { target: right_tools; x: 300; y: 50 }
+                                PropertyChanges { target: right_tools.itemAt(index); x: 0; y: 100 }
                             }
                         ]
                         transitions: Transition {
                             NumberAnimation{ properties: "x,y"; easing.type: Easing.OutExpo }
                         }
-                }
+                    }
             }
         }
 
@@ -179,8 +190,8 @@ Rectangle {
             "images/lathe_lh_turning_rp_bs.png",
             "images/lathe_center_turning_rp_bs.png",
             "images/lathe_rh_turning_rp_bs.png",
-            "images/lathe_rh_threading_fp_ts.png",
-            "images/lathe_lh_turning_fp_ts.png"
+            "images/lathe_lh_threading_rp_ts.png",
+            "images/lathe_rh_parting_rp_bs.png"
         ];
 
         var lower_tool_pics = [
@@ -205,7 +216,27 @@ Rectangle {
     }
 
     function tool_selected(tool) {
-        tool.state  = "selected"
+
+
+        if (tool.state === "selected") {
+            for (var i = 0; i < 5; i++){
+                upper_tools.itemAt(i).state = "released"
+                lower_tools.itemAt(i).state = "released"
+                right_tools.itemAt(i).state = "released"
+            }
+        }
+        else {
+            for (var i = 0; i < 5; i++){
+                if (i !== tool.index){
+                    upper_tools.itemAt(i).state = "hidden"
+                    lower_tools.itemAt(i).state = "hidden"
+                    right_tools.itemAt(i).state = "hidden"
+
+                }
+
+            }
+            tool.state  = "selected"
+        }
     }
 
     Connections {
