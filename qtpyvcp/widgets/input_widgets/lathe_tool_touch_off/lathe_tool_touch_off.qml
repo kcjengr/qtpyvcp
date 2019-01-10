@@ -245,8 +245,20 @@ Rectangle {
         target: handler
 
         onPocketSig: {
-            tool_selected(upper_tools.itemAt(pocket_number))
             console.log(pocket_number)
+            if ((pocket_number >= 0) && (pocket_number <= 5)){
+                var pocket = pocket_number
+                tool_selected(upper_tools.itemAt(pocket))
+            }
+            else if ((pocket_number >= 6) && (pocket_number <= 10)){
+                var pocket = pocket_number - 5
+                tool_selected(lower_tools.itemAt(pocket))
+            }
+            else if ((pocket_number >= 11) && (pocket_number <= 15)){
+                var pocket = pocket_number - 10
+                tool_selected(right_tools.itemAt(pocket))
+            }
+
         }
     }
 }
