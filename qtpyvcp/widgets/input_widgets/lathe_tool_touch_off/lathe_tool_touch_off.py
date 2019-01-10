@@ -34,3 +34,8 @@ class LatheToolTouchOff(QQuickWidget):
     @Slot(int)
     def pocket(self, pocket_num):
         self.pocketSig.emit(pocket_num)
+
+    @Slot(str, int)
+    def selected_tool(self, parent, tool_index):
+        print(parent)
+        print(tool_index)

@@ -25,6 +25,7 @@ Rectangle {
     }
 
     Row {
+        id: upper_row
         x: 308
         y: -89
         width: 459
@@ -57,7 +58,7 @@ Rectangle {
                         states: [
                             State {
                                 name: "hidden"
-                                PropertyChanges { target: upper_tools.itemAt(index); x: 70*index ; y: -150 }
+                                PropertyChanges { target: upper_tools.itemAt(index); x: 70*index ; y: -80 }
                             },
                             State {
                                 name: "released"
@@ -76,6 +77,7 @@ Rectangle {
         }
 
     Row {
+        id: lower_row
         x: 308
         y: 351
         width: 467
@@ -108,7 +110,7 @@ Rectangle {
                         states: [
                             State {
                                 name: "hidden"
-                                PropertyChanges { target: lower_tools.itemAt(index); x: 70*index ; y: +400 }
+                                PropertyChanges { target: lower_tools.itemAt(index); x: 70*index ; y: +200 }
                             },
                             State {
                                 name: "released"
@@ -127,6 +129,7 @@ Rectangle {
         }
 
     Column {
+        id: right_column
         x: 308
         y: 166
         width: 199
@@ -217,6 +220,7 @@ Rectangle {
 
     function tool_selected(tool) {
 
+        handler.selected_tool(tool.parent.id, tool.index)
 
         if (tool.state === "selected") {
             for (var i = 0; i < 5; i++){
@@ -231,9 +235,7 @@ Rectangle {
                     upper_tools.itemAt(i).state = "hidden"
                     lower_tools.itemAt(i).state = "hidden"
                     right_tools.itemAt(i).state = "hidden"
-
                 }
-
             }
             tool.state  = "selected"
         }
