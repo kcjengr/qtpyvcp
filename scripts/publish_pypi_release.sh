@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-#echo 'Installing twine... '
-#pip install twine
+echo 'Installing twine... '
+pip install twine
 
 echo 'Uploading files to PyPi...'
 twine upload \
