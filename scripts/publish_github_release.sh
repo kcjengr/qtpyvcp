@@ -8,14 +8,22 @@ PRERELEASE=false
 RELEASEFILES=(debs/python-qtpyvcp_*.deb dist/qtpyvcp-*.tar.gz)
 
 # commit prefix vs. change log section name
-declare -A COMMIT_TYPES=(
-["BUG"]="Bug Fixes"
-["DOC"]="Documentation"
-["BLD"]="Continuous Integration"
-["ENH"]="Enhancements and Features"
-["SIM"]="LinuxCNC sim Configs"
-["VCP"]="VCP Examples"
-["Merge"]="Merged Branches"
+declare -a COMMIT_TYPES=(
+"BUG:Bug Fixes"
+"ENH:Enhancements and Features"
+"API:Braking API changes"
+"BLD:Build System"
+"TST:Tests System"
+"DEP:Deprecated Items"
+"DEV:Dev Tools and Utilities"
+"DOC:Documentation"
+"MNT:Maintenance (refactoring, typos, etc.)"
+"STY:Style Fixes (whitespace, PEP8)"
+"REL:Release (increment version numbers etc.)"
+"SIM:LinuxCNC sim Configs"
+"VCP:VCP Examples"
+"WIP:Work In Progress"
+"REV:Reverted commits"
 )
 
 LAST_RELEASE=$( git describe --abbrev=0 --tags `git rev-list --tags --skip=1  --max-count=1` )
@@ -26,29 +34,30 @@ CREATE_CHANGELOG() {
   CONTENT="Changes since the ${LAST_RELEASE} release.\n\n"
 
   # Get all commits with type annotations and make them paragraphs.
-  for TYPE in "${!COMMIT_TYPES[@]}"
+  for TYPE in "${COMMIT_TYPES[@]}"
     do
+      IFS=':' read -r COMMIT_TAG SECTION_TITLE <<< "$TYPE"
+
       if [ -z "$1" ]
         then
-          PARAGRAPH=$(git log --format="* %s (%h)" --grep="^${TYPE}")
+          PARAGRAPH=$(git log --format="* %s (%h)" --grep="^${COMMIT_TAG}")
         else
-          PARAGRAPH=$(git log "$1"..HEAD --format="* %s (%h)" --grep="^${TYPE}")
+          PARAGRAPH=$(git log "$1"..HEAD --format="* %s (%h)" --grep="^${COMMIT_TAG}")
       fi
       if [ ! -z "$PARAGRAPH" ]
         then
-          TITLE="${COMMIT_TYPES[$TYPE]}"
-          PARAGRAPH="${PARAGRAPH//$TYPE: /}"
-          CONTENT="$CONTENT### $TITLE\n\n$PARAGRAPH\n\n"
+          PARAGRAPH="${PARAGRAPH//$COMMIT_TAG: /}"
+          CONTENT="$CONTENT### $SECTION_TITLE\n\n$PARAGRAPH\n\n"
       fi
     done
 
   # Regex used to find commits without types
   TYPES_REGEX=""
-  for TYPE in "${!COMMIT_TYPES[@]}"
+  for TYPE in "${COMMIT_TYPES[@]}"
     do
-      TYPES_REGEX="$TYPES_REGEX$TYPE:\|"
+      IFS=':' read -r COMMIT_TAG SECTION_TITLE <<< "$TYPE"
+      TYPES_REGEX="$TYPES_REGEX$COMMIT_TAG:\|"
   done
-  TYPES_REGEX="$TYPES_REGEX\[skip-changelog\]"
 
   # Get all commit without type annotation and make them another paragraph.
   if [ -z "$1" ]
@@ -57,6 +66,7 @@ CREATE_CHANGELOG() {
     else
       PARAGRAPH=$(git log "$1"..HEAD --format=";* %s (%h);")
   fi
+
   OIFS="$IFS"
   IFS=";"
   FILTERED_PARAGRAPH=""
