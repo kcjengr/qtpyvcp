@@ -15,7 +15,8 @@ if os.getenv('DEB_BUILD') == 'true' or os.getenv('USER') == 'root':
     DATA_FILES = [
         ('/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/', [
             'QtDesigner/Qt5.7.1-Py2.7-64bit/libpyqt5_py2.so',
-            'QtDesigner/Qt5.7.1-Py2.7-64bit/libpyqt5_py3.so'])
+            'QtDesigner/Qt5.7.1-Py2.7-64bit/libpyqt5_py3.so']),
+        ('/usr/share/fonts/truetype/bebaskai', ['examples/probe_basic/fonts/BebasKai.ttf'])
     ]
 
     # list of (destination, source_dir) tuples
@@ -33,7 +34,8 @@ if os.getenv('DEB_BUILD') == 'true' or os.getenv('USER') == 'root':
 else:
     # list of (destination, source_file) tuples
     DATA_FILES = [
-        ('~/', ['scripts/.xsessionrc',])
+        ('~/', ['scripts/.xsessionrc',]),
+        ('~/.local/share/fonts/truetype/bebaskai', ['examples/probe_basic/fonts/BebasKai.ttf'])
     ]
 
     # list of (destination, source_dir) tuples
