@@ -43,7 +43,8 @@ building complex VCPs.
    :maxdepth: 2
    :caption: Developers Corner
 
-   development/development.rst
+   development/contribution_guide
+   development/dev_environment
    tools/index
 
 .. toctree::
