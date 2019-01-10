@@ -40,5 +40,14 @@ class LatheToolTouchOff(QQuickWidget):
 
     @Slot(str, int)
     def selected_tool(self, parent, tool_index):
-        print(parent)
-        print(tool_index)
+
+        tool = 0
+
+        if parent == "upper":
+            tool = tool_index
+        elif parent == "lower":
+            tool = tool_index + 5
+        elif tool == "right":
+            tool = tool_index + 10
+
+        return tool

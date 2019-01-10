@@ -52,7 +52,7 @@ Rectangle {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                tool_selected(upper_tools.itemAt(index))
+                                tool_selected(upper_tools.itemAt(index), "upper", index)
                             }
                         }
                         states: [
@@ -77,7 +77,7 @@ Rectangle {
         }
 
     Row {
-        id: lower_row
+        id: right_row
         x: 308
         y: 351
         width: 467
@@ -104,7 +104,7 @@ Rectangle {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                tool_selected(lower_tools.itemAt(index))
+                                tool_selected(lower_tools.itemAt(index), "lower", index)
                             }
                         }
                         states: [
@@ -156,7 +156,7 @@ Rectangle {
                         MouseArea {
                             anchors.fill: parent
                             onClicked: {
-                                tool_selected(right_tools.itemAt(index))
+                                tool_selected(right_tools.itemAt(index), "right", index)
                             }
                         }
                         states: [
@@ -218,9 +218,9 @@ Rectangle {
         set_images(right_tools, right_tool_pics);
     }
 
-    function tool_selected(tool) {
+    function tool_selected(tool, group, index) {
 
-        handler.selected_tool(tool.parent.id, tool.index)
+        handler.selected_tool(group, index)
 
         if (tool.state === "selected") {
             for (var i = 0; i < 5; i++){
@@ -231,11 +231,9 @@ Rectangle {
         }
         else {
             for (var i = 0; i < 5; i++){
-                if (i !== tool.index){
-                    upper_tools.itemAt(i).state = "hidden"
-                    lower_tools.itemAt(i).state = "hidden"
-                    right_tools.itemAt(i).state = "hidden"
-                }
+                upper_tools.itemAt(i).state = "hidden"
+                lower_tools.itemAt(i).state = "hidden"
+                right_tools.itemAt(i).state = "hidden"
             }
             tool.state  = "selected"
         }
@@ -245,17 +243,18 @@ Rectangle {
         target: handler
 
         onPocketSig: {
-            console.log(pocket_number)
-            if ((pocket_number >= 0) && (pocket_number <= 5)){
-                var pocket = pocket_number
+            var pocket = 0
+
+            if ((pocket_number >= 0) && (pocket_number <= 4)){
+                pocket = pocket_number
                 tool_selected(upper_tools.itemAt(pocket))
             }
-            else if ((pocket_number >= 6) && (pocket_number <= 10)){
-                var pocket = pocket_number - 5
+            else if ((pocket_number >= 5) && (pocket_number <= 9)){
+                pocket = pocket_number - 5
                 tool_selected(lower_tools.itemAt(pocket))
             }
-            else if ((pocket_number >= 11) && (pocket_number <= 15)){
-                var pocket = pocket_number - 10
+            else if ((pocket_number >= 10) && (pocket_number <= 14)){
+                pocket = pocket_number - 10
                 tool_selected(right_tools.itemAt(pocket))
             }
 

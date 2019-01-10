@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>321</width>
-    <height>378</height>
+    <width>985</width>
+    <height>992</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -27,6 +27,15 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QSpinBox" name="spinBox_2"/>
+    </item>
+    <item>
+     <widget class="LatheToolTouchOff" name="lathetooltouchoff"/>
+    </item>
+    <item>
+     <widget class="QSpinBox" name="spinBox"/>
+    </item>
     <item>
      <widget class="LEDButton" name="ledbutton">
       <property name="text">
@@ -78,7 +87,7 @@
     <item>
      <widget class="LEDButton" name="ledbutton_2">
       <property name="text">
-       <string>Turn Machine OFF</string>
+       <string>Turn Machine ON</string>
       </property>
       <property name="rules" stdset="0">
        <string>[
@@ -276,8 +285,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>321</width>
-     <height>19</height>
+     <width>985</width>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
@@ -617,9 +626,19 @@
    <container>1</container>
   </customwidget>
   <customwidget>
+   <class>DialogButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.dialog_button</header>
+  </customwidget>
+  <customwidget>
    <class>LEDButton</class>
    <extends>ActionButton</extends>
    <header>qtpyvcp.widgets.button_widgets.led_button</header>
+  </customwidget>
+  <customwidget>
+   <class>LatheToolTouchOff</class>
+   <extends>QQuickWidget</extends>
+   <header>qtpyvcp.widgets.input_widgets.lathe_tool_touch_off.lathe_tool_touch_off</header>
   </customwidget>
   <customwidget>
    <class>ActionSlider</class>
@@ -637,15 +656,48 @@
    <header>qtpyvcp.widgets.display_widgets.status_label</header>
   </customwidget>
   <customwidget>
-   <class>DialogButton</class>
-   <extends>QPushButton</extends>
-   <header>qtpyvcp.widgets.button_widgets.dialog_button</header>
+   <class>QQuickWidget</class>
+   <extends>QWidget</extends>
+   <header>QtQuickWidgets/QQuickWidget</header>
   </customwidget>
  </customwidgets>
  <resources>
   <include location="../brender/resources/brender.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lathetooltouchoff</receiver>
+   <slot>pocket(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>571</x>
+     <y>581</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>589</x>
+     <y>420</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lathetooltouchoff</sender>
+   <signal>pocketSig(int)</signal>
+   <receiver>spinBox_2</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>210</x>
+     <y>139</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>233</x>
+     <y>34</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <designerdata>
   <property name="gridDeltaX">
    <number>10</number>
