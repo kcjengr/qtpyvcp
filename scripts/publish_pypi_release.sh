@@ -3,7 +3,7 @@
 echo 'Installing twine... '
 pip install twine
 
-echo 'Using setuptools version:'
+echo -n 'Using setuptools version: '
 python -c "import setuptools; print setuptools.__version__"
 
 echo 'Uploading files to PyPi...'
