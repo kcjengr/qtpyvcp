@@ -245,6 +245,7 @@ Rectangle {
         target: handler
 
         onPocketSig: {
+            tool_selected(upper_tools.itemAt(pocket_number))
             console.log(pocket_number)
         }
     }
