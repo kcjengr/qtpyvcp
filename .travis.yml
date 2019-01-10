@@ -2,6 +2,7 @@ language: python
 
 install:
 - pip install sphinx sphinx_rtd_theme mock
+- pip install --upgrade setuptools
 - sudo apt-get install pyqt5-dev-tools
 
 script:
