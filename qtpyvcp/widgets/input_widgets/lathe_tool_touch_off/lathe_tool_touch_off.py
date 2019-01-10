@@ -1,3 +1,6 @@
+# required packages
+# sudo apt-get install python-pyqt5.qtquick qml-module-qtquick-controls
+
 import os
 
 # Workarround for nvidia propietary drivers
