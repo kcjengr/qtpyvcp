@@ -1,7 +1,9 @@
-"""QtPyVCP Base Widgets
+"""
+Base Widgets
+------------
 
-This file contains the definitions of the fundamental widgets upon which all other QtPyVCP
-widgets are based.
+This file contains the definitions of the fundamental widgets upon which
+all other QtPyVCP widgets are based.
 """
 
 import os
@@ -28,7 +30,7 @@ class QtPyVCPBaseWidget(object):
     """QtPyVCP Base Widget.
 
     Class on which all other QtPyVCP widgets are based.
-    This class handles the rules and other things that should
+    This class handles the rules and other things that
     apply to all QtPyVCP widgets regardless of use.
     """
     IN_DESIGNER = os.getenv('DESIGNER') != None

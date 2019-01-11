@@ -4,8 +4,6 @@ QtPyVCP Widgets
 
 QtPyVCP custom widget documentation.
 
-Base Widgets
---------------
 .. toctree::
    :maxdepth: 1
 
