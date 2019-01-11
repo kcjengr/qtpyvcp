@@ -136,9 +136,10 @@ class QtPyVCPBaseWidget(object):
                 self._data_channels = ch
                 continue
 
-            evil_env = {'ch': ch, 'widget': self}
-            evil_exp = 'lambda: widget.{}({})'.format(prop[0], rule['expression'])
-            exp = eval(evil_exp, evil_env)
+            eval_env = {'ch': ch, 'widget': self}
+            eval_exp = 'lambda: widget.{}({})'.format(
+                            prop[0], rule['expression'].encode('utf-8'))
+            exp = eval(eval_exp, eval_env)
 
             # initial call to update
             try:
