@@ -83,7 +83,6 @@ class QtPyVCPBaseWidget(object):
 
     @style.setter
     def style(self, style):
-        print style
         self._style = style
         self.style().unpolish(self)
         self.style().polish(self)
@@ -118,7 +117,9 @@ class QtPyVCPBaseWidget(object):
                     eval_env = {'plugin': plugin}
 
                     # fast lambda function to get the current value of the channel
-                    chan_val = eval("lambda: plugin.{}.handleQuery('{}')".format(item, query), eval_env)
+                    chan_val = eval("lambda: plugin.{}.handleQuery('{}')"
+                                    .format(item, query), eval_env)
+
                     ch.append(chan_val)
 
                     if chan.get('trigger', False):
@@ -126,7 +127,8 @@ class QtPyVCPBaseWidget(object):
                         triggers.append(chan_obj.valueChanged.connect)
 
                 except:
-                    LOG.exception("Error evaluating rule: {}".format(chan.get('url', '')))
+                    LOG.exception("Error evaluating rule: {}".format(
+                                                        chan.get('url', '')))
                     return
 
             prop = self.RULE_PROPERTIES[rule['property']]
