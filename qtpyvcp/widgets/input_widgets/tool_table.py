@@ -269,6 +269,10 @@ class ToolModel(QStandardItemModel):
                         elif i in ('Z', 'D'):
                             tool.append(float(item))
 
+                        continue
+
+                    tool.append(0.0)
+
             tool.append(str(comment))
 
             # Append a new item to the current parent's list of children.
