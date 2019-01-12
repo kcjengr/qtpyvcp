@@ -34,12 +34,10 @@ if API == 'pyside2':
 
 class VCPApplication(QApplication):
 
-    def __init__(self, vcp_file=None, stylesheet=None):
+    def __init__(self, theme=None, stylesheet=None):
         super(VCPApplication, self).__init__(qtpyvcp.OPTIONS.command_line_args or [])
 
         opts = qtpyvcp.OPTIONS
-
-        qApp = QApplication.instance()
 
         from qtpyvcp.core import Prefs, Info
         self.info = Info()
@@ -48,8 +46,9 @@ class VCPApplication(QApplication):
 
         self.initialiseDataPlugins()
 
-        if opts.theme is not None:
-            self.setStyle(QStyleFactory.create(opts.theme))
+        theme = opts.theme or theme
+        if theme is not None:
+            self.setStyle(QStyleFactory.create(theme))
 
         stylesheet = opts.stylesheet or stylesheet
         if stylesheet is not None:
