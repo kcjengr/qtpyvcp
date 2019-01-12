@@ -72,7 +72,7 @@ class BaseDialog(QDialog):
                 self.setWindowModality(Qt.NonModal)
 
         if popup is not None:
-            self.setWindowFlag(Qt.Popup, popup)
+            self.setWindowFlags(Qt.Popup)
 
         if frameless is not None:
             self.setWindowFlag(Qt.FramelessWindowHint, frameless)
