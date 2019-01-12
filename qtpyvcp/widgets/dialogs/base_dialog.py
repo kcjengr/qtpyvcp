@@ -95,3 +95,17 @@ class BaseDialog(QDialog):
 
         LOG.debug("Loading dialog from ui_file: %s", ui_file)
         uic.loadUi(ui_file, self)
+
+    def setWindowFlag(self, flag, on):
+        """BackPort QWidget.setWindowFlag() implementation from Qt 5.9
+
+        This method was introduced in Qt 5.9 so is not present
+        in Qt 5.7.1 which is standard on Debian 9 (stretch), so
+        add our own implementation.
+        """
+        if on:
+            # add flag
+            self.setWindowFlags(self.windowFlags() | flag)
+        else:
+            # remove flag
+            self.setWindowFlags(self.windowFlags() ^ flag)
