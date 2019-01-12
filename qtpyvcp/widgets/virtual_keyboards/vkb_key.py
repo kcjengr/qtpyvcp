@@ -9,14 +9,15 @@ class VKBKey(QPushButton):
     def __init__(self, parent=None):
         super(VKBKey, self).__init__(parent)
 
-        # self.setFocusPolicy(Qt.NoFocus)
+        self._text = ''
+        self._key = QKeySequence()
 
         self.engine = getKeyboard('engine')
 
-        self._key = QKeySequence()
-
         self.pressed.connect(self.onPressEvent)
         self.released.connect(self.onReleaseEvent)
+
+        self.engine.shiftStateChanged.connect(self.onShiftStateChanged)
 
     def onPressEvent(self):
         print "pressed"
@@ -25,6 +26,24 @@ class VKBKey(QPushButton):
     def onReleaseEvent(self):
         print "released"
         self.engine.emulateKeyRelease(self._key)
+
+    def onShiftStateChanged(self, shift):
+        if shift:
+            self.setText(self.text().lower())
+        else:
+            self.setText(self.text().upper())
+
+
+    # @Property(str)
+    # def text(self):
+    #     print self._text
+    #     return self._text
+    #
+    # @text.setter
+    # def text(self, text):
+    #     print self._text
+    #     self._text = text
+
 
     @Property(QKeySequence)
     def key(self):
