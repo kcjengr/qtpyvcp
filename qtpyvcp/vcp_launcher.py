@@ -4,7 +4,6 @@ import os
 import sys
 import time
 import importlib
-import traceback
 from pkg_resources import iter_entry_points
 
 import qtpyvcp
