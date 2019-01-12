@@ -8,3 +8,4 @@ Getting started with QtPyVCP.
    :maxdepth: 1
 
    first_vcp
+   dro_tutorial
