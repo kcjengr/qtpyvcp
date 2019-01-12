@@ -8,21 +8,21 @@ To copy the example template in a terminal
 
 .. code-block:: bash
 
-	git clone https://github.com/kcjengr/vcp-template.git
-	cd vcp-template
-	./copy.sh
+    git clone https://github.com/kcjengr/vcp-template.git
+    cd vcp-template
+    ./copy.sh
 
 To edit the new template created from the example
 
 .. code-block:: bash
 
-	editvcp
+    editvcp
 
 Navigate to the new vcp location and open the `config.yml` file.
 
 .. code-block:: bash
 
-	~/linuxcnc/configs/qtpyvcp/config_name/config_name/config.yml
+    ~/config_name/config_name/config.yml
 
 The Qt Designer should open up with the VCP for editing.
 
