@@ -90,7 +90,8 @@ setup(
         'qtpy',
         'pyudev',
         'psutil',
-        'HiYaPyCo'
+        'HiYaPyCo',
+        'pyopengl'
     ],
     entry_points={
         'console_scripts': [
