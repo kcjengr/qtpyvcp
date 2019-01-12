@@ -1,22 +1,21 @@
-import sys, os
+import os
+from traceback import format_exception
+
 from qtpy import uic
 from qtpy.QtWidgets import QDialog
 
 class ErrorDialog(QDialog):
-    def __init__(self, traceback='', error_type=None, error_value=None):
+    def __init__(self, exc_info):
         super(ErrorDialog, self).__init__()
         uic.loadUi(os.path.join(os.path.dirname(__file__), 'error_dialog.ui'), self)
-        self.errorType.setText(error_type + ':')
-        self.errorValue.setText(error_value)
-        self.setWindowTitle(error_type)
-        self.tracebackText.setText(traceback)
+
+        exc_type, exc_msg, exc_tb = exc_info
+
+        self.errorType.setText(exc_type.__name__ + ':')
+        self.errorValue.setText(str(exc_msg))
+        self.setWindowTitle(exc_type.__name__)
+        self.tracebackText.setText("".join(format_exception(*exc_info)))
         self.show()
 
     def setTraceback(self, text):
         self.tracebackText.setText(text)
-
-if __name__ == '__main__':
-    from qtpy.QtWidgets import QMainWindow, QApplication
-    app = QApplication(sys.argv)
-    window = ErrorDialog()
-    sys.exit(app.exec_())

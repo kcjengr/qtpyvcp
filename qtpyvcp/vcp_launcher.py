@@ -4,20 +4,35 @@ import os
 import sys
 import time
 import importlib
+import traceback
 from pkg_resources import iter_entry_points
 
 import qtpyvcp
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import loadDataPlugins
+from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog
 
 from qtpyvcp.utilities.info import Info
 
 LOG = getLogger(__name__)
 INFO = Info()
 
+# Catch unhandled exceptions and display in dialog
+def excepthook(exc_type, exc_msg, exc_tb):
+    filename = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+    lineno = exc_tb.tb_lineno
+    LOG.critical('Unhandled exception in %s line %i', filename, lineno,
+                 exc_info=(exc_type, exc_msg, exc_tb))
+
+    error_dialog = ErrorDialog(exc_info=(exc_type, exc_msg, exc_tb))
+    error_dialog.exec_()
+
+sys.excepthook = excepthook
+
 def log_time(task, times=[time.time(), time.time()]):
     now = time.time()
-    LOG.debug("yellow<Time:> {:.3f} (green<{:+.3f}>) - {}".format(now - times[0], now - times[1], task))
+    LOG.debug("yellow<Time:> {:.3f} (green<{:+.3f}>) - {}"
+              .format(now - times[0], now - times[1], task))
     times[1] = now
 
 log_time("in script")
