@@ -77,13 +77,34 @@ WINDOWS = {}
 
 
 def main():
+    """QtPyVCP Main entry point
+
+    This method is called when running `qtpyvcp` directly from the
+    command line. The command line options are generated from the
+    docstring at the beginning of this module.
+    """
     from qtpyvcp.utilities.opt_parser import parse_opts
     opts = parse_opts(__doc__)
     run_vcp(opts, None)
 
 
 def run_vcp(opts, config_file=None):
+    """VCP Entry Point
 
+    This method is used by individual VCPs to launch QtPyVCP. This
+    method should NOT be called directly. Options are generated either
+    from a specification in the VCP, or from a generic fallback generated
+    by the `opt_parser` utility.
+
+    Args:
+        opts (OptDict) : Dictionary of command line options as generated
+            by the opt_parser utility.
+        config_file (str, optional) : A YAML format config file to load.
+            If `config_file` is not None it will be merged with any other
+            config files and the VCP will be loaded from that info, else
+            the VCP will be loaded solely from the options passed in the
+            options dict.
+    """
     if config_file is None:
         # we are probably running from a entry point or a bare .ui file
         from qtpyvcp.vcp_launcher import load_vcp
