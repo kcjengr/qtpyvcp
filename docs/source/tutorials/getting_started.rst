@@ -9,3 +9,4 @@ Getting started with QtPyVCP.
 
    first_vcp
    dro_tutorial
+   touch_screen
