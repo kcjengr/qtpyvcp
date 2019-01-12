@@ -33,7 +33,8 @@ class AutoComplete(Extension, QtCore.QObject):
 
         if key == QtCore.Qt.Key_Tab:
             self.handle_tab_key(event)
-        elif key in (QtCore.Qt.Key_Return, QtCore.Qt.Key_Enter, QtCore.Qt.Key_Space):
+        elif key in (
+        QtCore.Qt.Key_Return, QtCore.Qt.Key_Enter, QtCore.Qt.Key_Space):
             self.handle_complete_key(event)
         elif key == QtCore.Qt.Key_Escape:
             self.hide_completion_suggestions()

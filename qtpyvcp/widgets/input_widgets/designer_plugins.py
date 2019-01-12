@@ -49,3 +49,8 @@ from action_combobox import ActionComboBox
 class ActionComboBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
         return ActionComboBox
+
+from qtpyvcp.widgets.input_widgets.console_widget.wrapper import Wrapper
+class PythonInterpreterPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return Wrapper
