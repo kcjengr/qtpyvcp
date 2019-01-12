@@ -988,6 +988,9 @@
             <height>35</height>
            </size>
           </property>
+          <property name="autoRepeat">
+           <bool>true</bool>
+          </property>
           <property name="key" stdset="0">
            <string>Backspace</string>
           </property>

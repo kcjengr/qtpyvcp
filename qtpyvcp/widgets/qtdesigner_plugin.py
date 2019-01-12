@@ -33,6 +33,9 @@ CONFIG.update(load_config_files_from_env())
 from qtpyvcp.plugins import loadDataPlugins
 loadDataPlugins(CONFIG['data_plugins'])
 
+from qtpyvcp.vcp_launcher import loadVirtualKeyboards
+loadVirtualKeyboards(CONFIG['virtual_keyboards'])
+
 from qtpyvcp.widgets.form_widgets.designer_plugins import *
 from qtpyvcp.widgets.button_widgets.designer_plugins import *
 from qtpyvcp.widgets.display_widgets.designer_plugins import *

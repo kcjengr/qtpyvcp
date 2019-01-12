@@ -7,7 +7,14 @@ from qtpyvcp.widgets.virtual_keyboards import getKeyboard
 
 class VKBEngine(QObject):
 
+    SHIFT_MAP = {'`': '~', '1': '!', '2': '@', '3': '#', '4': '$',
+                       '5': '%', '6': '^', '7': '&', '8': '*', '9': '(',
+                       '0': ')', '-': '_', '=': '+', '[': '{', ']': '}',
+                       '\\': '|', ';': ':', "'": '"', ',': '<', '.': '>',
+                       '/': '?'}
+
     modifierChanged = Signal(int)
+    shiftStateChanged = Signal(bool)
 
     def __init__(self, parent=None):
         super(VKBEngine, self).__init__(parent)
@@ -31,24 +38,31 @@ class VKBEngine(QObject):
         text = ''
         if key_seq is None or key_seq.count() == 0:
             text = widget.text()
+
+            if text == '':
+                return
+
             key_seq = QKeySequence(text)
 
-        print self.toKeyCode(key_seq)
-        print key_seq.toString()
         receiver = self.app.focusObject()
         press_event = QKeyEvent(QEvent.KeyPress, key_seq[0], self._modifiers, text)
         self.app.sendEvent(receiver, press_event)
+
+        # self.shiftStateChanged.emit(True)
 
     def emulateKeyRelease(self, key_seq, modifiers=None):
 
         if key_seq.count() == 0:
             return
 
-        print self.toKeyCode(key_seq)
-        print QKeySequence(key_seq).toString()
         receiver = self.app.focusObject()
         release_event = QKeyEvent(QEvent.KeyRelease, key_seq[0], self._modifiers)
         self.app.sendEvent(receiver, release_event)
+
+
+    def setShifted(self, shifted):
+        self._shifted = shifted
+        self.shiftStateChanged.emit(shifted)
 
 
     def toKeyCode(self, seq):

@@ -87,7 +87,11 @@ virtual_keyboards:
   default:
     provider: qtpyvcp.widgets.virtual_keyboards.vkb_base:VKBBase
     kwargs:
-      ui_file: {{ file.dir }}/../widgets/dialogs/int_keypad.ui
+      ui_file: {{ file.dir }}/../widgets/dialogs/full_keyboard.ui
+#      frameless: True
+#      modal: False
+#      overrides:
+#        esc:
 
 #  integer:
 #    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader

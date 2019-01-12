@@ -7,3 +7,8 @@ class VirtualKeyPlugin(_DesignerPlugin):
     def pluginClass(self):
         return VKBKey
 
+from vkb_modifier_key import VBKModifierKey
+class VBKModifierKeyPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return VBKModifierKey
+
