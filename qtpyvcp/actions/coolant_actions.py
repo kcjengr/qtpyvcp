@@ -19,6 +19,7 @@ CMD = linuxcnc.command()
 #==============================================================================
 
 class flood:
+    """Flood Actions Group"""
     @staticmethod
     def on():
         """Turns Flood coolant ON"""

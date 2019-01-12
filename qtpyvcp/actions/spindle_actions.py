@@ -299,8 +299,7 @@ override.enable.bindOk = override.disable.bindOk = override.toggle_enable.bindOk
 #==============================================================================
 
 class brake:
-    """Spindle brake actions class.
-    """
+    """Spindle brake Group"""
     @staticmethod
     def on(spindle=0):
         """Set spindle brake ON.
