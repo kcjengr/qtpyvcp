@@ -19,3 +19,9 @@ class HalLedPlugin(_DesignerPlugin):
                     <bool>false</bool>
                    </property>
                   </widget>'''
+
+
+from hal_led_button import HALLEDButton
+class HALLEDButtonPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return HALLEDButton
