@@ -15,13 +15,13 @@ Rectangle {
         id: holder
         x: 0
         y: 140
-        width: 452
+        width: 302
         height: 321
         fillMode: Image.PreserveAspectCrop
         z: 0
         rotation: 0
         transformOrigin: Item.Center
-        source: "images/lathe_chuck_dim_lines.png"
+        source: "images/lathe_chuck_stock.png"
     }
 
     Row {
