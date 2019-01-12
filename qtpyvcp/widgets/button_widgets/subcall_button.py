@@ -2,13 +2,13 @@
 
 import os
 import re
-from qtpy.QtWidgets import QPushButton, qApp
-from qtpy.QtCore import Qt, QEvent, Property
+from qtpy.QtWidgets import qApp
+from qtpy.QtCore import Property
 
 from qtpyvcp.core import Info
 INFO = Info()
 
-from qtpyvcp.widgets import CMDWidget
+from qtpyvcp.widgets import VCPButton
 from qtpyvcp.actions.machine_actions import issue_mdi
 
 from qtpyvcp.utilities import logger
@@ -21,7 +21,7 @@ PARSE_POSITIONAL_ARGS = re.compile(r' *# *<([a-z0-9_-]+)> *= *#([0-9]+) *(?:\(= 
 
 SUBROUTINE_PATH = INFO.getSubroutinePath()
 
-class SubCallButton(QPushButton, CMDWidget):
+class SubCallButton(VCPButton):
     """Button for calling ngc subroutines.
 
     Args:

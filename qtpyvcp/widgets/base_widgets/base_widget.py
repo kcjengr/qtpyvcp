@@ -10,6 +10,7 @@ import os
 import json
 
 from qtpy.QtCore import Property
+from qtpy.QtWidgets import QPushButton
 
 import qtpyvcp
 from qtpyvcp.utilities.logger import getLogger
@@ -167,7 +168,7 @@ class CMDWidget(QtPyVCPBaseWidget):
     """Command Widget
 
     This widget should be used as the base class for all widgets
-    that control the machine. Eventualy additional functionality
+    that control the machine. Eventually additional functionality
     will be added to this class.
     """
     def __init__(self, parent=None):
@@ -181,3 +182,25 @@ class HALWidget(QtPyVCPBaseWidget):
     """
     def __init__(self, parent=None):
         super(HALWidget, self).__init__()
+
+
+class VCPButton(QPushButton, CMDWidget):
+    """VCP Button Widget
+
+    This is a general purpose button widget for displaying data
+    and other uses that do not involve user interaction.
+    """
+
+    DEFAULT_RULE_PROPERTY = 'Enable'
+    RULE_PROPERTIES = {
+        'Enable': ['setEnabled', bool],
+        'Visible': ['setVisible', bool],
+        'Opacity': ['setOpacity', float],
+        'Text': ['setText', str],
+        'Checked': ['setChecked', bool],
+        'Style Class': ['setStyleClass', str],
+        'None': ['None', None],
+    }
+
+    def __init__(self, parent=None):
+        super(VCPButton, self).__init__(parent)
