@@ -352,10 +352,19 @@ def _feed_override_bindOk(value=100, widget=None):
         # these will only work for QSlider or QSpinBox
         widget.setMinimum(0)
         widget.setMaximum(INFO.maxFeedOverride() * 100)
-        widget.setValue(100)
+
+        try:
+            widget.setSliderPosition(100)
+            STATUS.feedrate.onValueChanged(
+                lambda v: widget.setSliderPosition(v * 100))
+
+        except AttributeError:
+            widget.setValue(100)
+            STATUS.feedrate.onValueChanged(
+                lambda v: widget.setValue(v * 100))
+
         feed_override.set(100)
 
-        STATUS.feedrate.onValueChanged(lambda v: widget.setValue(v * 100))
     except AttributeError:
         pass
     except:
@@ -405,10 +414,19 @@ def _rapid_override_bindOk(value=100, widget=None):
         # these will only work for QSlider or QSpinBox
         widget.setMinimum(0)
         widget.setMaximum(100)
-        widget.setValue(100)
+
+        try:
+            widget.setSliderPosition(100)
+            STATUS.rapidrate.onValueChanged(
+                lambda v: widget.setSliderPosition(v * 100))
+
+        except AttributeError:
+            STATUS.rapidrate.onValueChanged(
+                lambda v: widget.setValue(v * 100))
+            widget.setValue(100)
+
         rapid_override.set(100)
 
-        STATUS.rapidrate.onValueChanged(lambda v: widget.setValue(v * 100))
     except AttributeError:
         pass
     except:
@@ -456,9 +474,17 @@ def _max_velocity_bindOk(value=100, widget=None):
         # these will only work for QSlider or QSpinBox
         widget.setMinimum(0)
         widget.setMaximum(INFO.maxVelocity())
-        widget.setValue(INFO.maxVelocity())
 
-        STATUS.max_velocity.onValueChanged(lambda v: widget.setValue(v * 60))
+        try:
+            widget.setSliderPosition(INFO.maxVelocity())
+            STATUS.max_velocity.onValueChanged(
+                lambda v: widget.setSliderPosition(v * 60))
+
+        except AttributeError:
+            widget.setValue(INFO.maxVelocity())
+            STATUS.max_velocity.onValueChanged(
+                lambda v: widget.setValue(v * 60))
+
     except AttributeError:
         pass
     except:

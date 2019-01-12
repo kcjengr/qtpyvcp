@@ -248,10 +248,19 @@ def _or_bindOk(value=100, spindle=0, widget=None):
         # these will only work for QSlider or QSpinBox
         widget.setMinimum(INFO.minSpindleOverride() * 100)
         widget.setMaximum(INFO.maxSpindleOverride() * 100)
-        widget.setValue(100)
+
+        try:
+            widget.setSliderPosition(100)
+            STATUS.spindle[spindle].override.onValueChanged(
+                lambda v: widget.setSliderPosition(v * 100))
+
+        except AttributeError:
+            widget.setValue(100)
+            STATUS.spindle[spindle].override.onValueChanged(
+                lambda v: widget.setValue(v * 100))
+
         override(100)
 
-        STATUS.spindle[spindle].override.onValueChanged(lambda v: widget.setValue(v * 100))
     except AttributeError:
         pass
     except:
