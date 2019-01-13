@@ -26,7 +26,7 @@ INFO = Info()
 class VCPMainWindow(QMainWindow):
 
     def __init__(self, parent=None, opts=None, ui_file=None, stylesheet=None,
-                 position=None, size=None, confirm_exit=True, title=None, menu=None):
+                 position=None, size=None, confirm_exit=True, title=None, menu='default'):
 
         super(VCPMainWindow, self).__init__(parent)
 
@@ -53,6 +53,9 @@ class VCPMainWindow(QMainWindow):
                 del self.menuBar
             except AttributeError:
                 pass
+
+            if menu == 'default':
+                menu = qtpyvcp.CONFIG.get('default_menubar', [])
 
             self.setMenuBar(self.buildMenuBar(menu))
 

@@ -9,8 +9,6 @@ vcp:
 windows:
   mainwindow:
     provider: qtpyvcp.widgets.form_widgets.main_window:VCPMainWindow
-    kwargs:
-      menu: ( default_menubar )
 
 # This sections defines the default Data Sources
 data_plugins:
