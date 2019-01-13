@@ -19,6 +19,14 @@ QtPyVCP specific sim configs to ``~/linuxcnc/configs/sim.qtpyvcp``.
 
 *On Debian you will need to log out and log back in.*
 
+**Upgrade QtPyVCP**
+
+As improvements are made to QtPyVCP you an upgrade your pip install with the
+following
+::
+
+  pip install git+https://github.com/kcjengr/qtpyvcp.git --upgrade
+
 **Launch a SIM config**
 
 Launch LinuxCNC as usual and select one of the QtPyVCP sims. You should see a
