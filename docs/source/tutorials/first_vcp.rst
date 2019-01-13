@@ -4,7 +4,8 @@ Making your first VCP
 
 After installing and testing QtPyVCP clone the `vcp-template` then make a copy.
 
-To copy the example template in a terminal
+To copy the example template in a terminal run `copy.sh` and use a new name that
+contains only letters, numbers and the underscore _.
 
 .. code-block:: bash
 
@@ -12,41 +13,30 @@ To copy the example template in a terminal
     cd vcp-template
     ./copy.sh
 
-To edit the new template created from the example
+To edit the new template created from the vcp-template run the following. In
+this example the copied vcp-template was named `vcp1`.
 
 .. code-block:: bash
 
-    editvcp
+    editvcp vcp1
 
-Navigate to the new vcp location and open the `config.yml` file.
+.. image:: images/vcp1-01.png
+   :align: center
+   :scale: 40 %
 
-.. code-block:: bash
+Now we have a very basic VCP with only a few items in it. You can either delete
+everything but the main window and central widget and start from scratch or just
+add to the vcp-template. In this tutorial I'm going to start with a blank slate
+so we don't miss any important details.
 
-    ~/config_name/config_name/config.yml
+This example has to work on a small touch screen with a resolution of 800x600 so
+I set the main window size and the vertical and horzontal policy to fixed.
 
-The Qt Designer should open up with the VCP for editing.
-
-Action Buttons
-^^^^^^^^^^^^^^
-
-Click on the `E-Stop` action button then scroll down in the property editor
-until you find `Action Name` and you will see the name is `machine.estop.toggle`.
-In the :doc:`Machine Actions <../actions/machine_actions>` document you can find
-the info about `qtpyvcp.actions.machine_actions.estop`. In this case it's using the
-`toggle()` function, so to use the `reset()` function you would put
-`machine.estop.reset` as the `Action Name`.
-
-To create an `Action Button` drag it from the `LinuxCNC Buttons` section of the
-`Widget Box` and drop it in place. In this example a Home X button will be
-created. In the `Action Name` box put `machine.home.axis:x`. Looking at the
-`Machine Actions` doc you will see the `class qtpyvcp.actions.machine_actions.home`
-and under that all the options. The `static **axis**(axis)` shows that it can take
-a parameter of axis letter or axis number. Save your VCP and test it, note the
-E-Stop must be out and the power button on before homing.
-
+.. image:: images/vcp1-02.png
+   :align: center
+   :scale: 40 %
 
 Testing the VCP
-^^^^^^^^^^^^^^^
 
 To test your vcp start LinuxCNC and pick a configuration from sim.qtpyvcp
 
@@ -59,6 +49,57 @@ then pick your VCP from the Installed VCPs.
 .. image:: images/vcp-chooser.png
    :align: center
    :scale: 75 %
+
+Now you can see a blank VCP with a menu added.
+
+.. image:: images/vcp1run-01.png
+   :align: center
+   :scale: 75 %
+
+Navigate to the new vcp location and open the `config.yml` file with a text
+editor. Here you can change the author, version, description.
+
+The `mainwindow.py` is the file to add any custom methods.
+
+The `style.qss` is a place to put css styles. In the following example it is for
+an `ActionButton` with the `actionName` of machine.estop.toggle and when it is
+checked change the background color to red. The important thing to note is the
+`checked`, by default an action button is not checkable so for this to work you
+must select that in the `Property Editor`.
+
+.. code-block:: css
+
+    ActionButton[actionName="machine.estop.toggle"]:checked{
+        background: rgb(239, 41, 41);
+    }
+
+To make testing a bit faster in the `~/linuxcnc/configs/sim.qtpyvcp` directory
+make a copy of xyz.ini and rename it vcp1.ini. In the [DISPLAY] section add
+`VCP = vcp1`. Now run the LinuxCNC configuration selector and pick `vcp1` and
+check `Create Desktop Shortcut`. Now we can launch vcp1 with a single mouse
+click.
+
+Create Machine Buttons
+
+I added a tab widget to the central widget then added a Grid Layout. Right click
+on the Grid Layout and morph it into a QGroupBox. Now drag an ActionButton into
+the group box, add text and make it checkable. Now in the `actionName` add
+`machine.estop.toggle` and save and run the vcp. When you toggle the E Stop
+button it should turn red when on and original color when off.
+
+.. image:: images/vcp1run-02.png
+   :align: center
+   :scale: 75 %
+
+Now add a second button for machine power and in the `actionName` put
+`machine.power.toggle`. When you run the vcp you can see the colors change on
+the buttons as you toggle them. The styles are in styles.qss.
+
+.. image:: images/vcp1run-03.png
+   :align: center
+   :scale: 75 %
+
+
 
 
 
