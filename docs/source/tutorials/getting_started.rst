@@ -8,5 +8,6 @@ Getting started with QtPyVCP.
    :maxdepth: 1
 
    first_vcp
+   dialogs
    dro_tutorial
    touch_screen
