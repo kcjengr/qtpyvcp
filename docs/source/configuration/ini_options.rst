@@ -1,6 +1,6 @@
-=================
-INI Configuration
-=================
+===========
+INI Options
+===========
 
 To get a list of current INI file options run
 
@@ -9,8 +9,7 @@ To get a list of current INI file options run
     qtpyvcp -h
 
 Command line options are lower case and use the dash, INI file options are upper
-case and use the underscore. For example the command line option ``--hide-menu-bar``
-would be used in the INI file as ``HIDE_MENU_BAR``.
+case and use the underscore. Example: ``--hide-menu-bar`` >> ``HIDE_MENU_BAR``.
 
 Options available in the INI file are:
 

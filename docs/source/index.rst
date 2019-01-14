@@ -21,7 +21,8 @@ building complex VCPs.
    :maxdepth: 1
    :caption: Configuration
 
-   configuration.rst
+   configuration/ini_options
+   configuration/yml_config
 
 .. toctree::
    :maxdepth: 2

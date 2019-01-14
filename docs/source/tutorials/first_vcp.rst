@@ -101,7 +101,7 @@ the buttons as you toggle them. The styles are in styles.qss.
 
 Now because this is a touch screen VCP we want to hide the main menu bar. In the
 [DISPLAY] section add `HIDE_MENU_BAR = True`. See the 
-:doc:`INI document page <../configuration>` for more info.
+:doc:`INI options page <../configuration/ini_options>` for more info.
 
 
 
