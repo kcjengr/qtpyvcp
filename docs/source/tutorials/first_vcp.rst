@@ -103,5 +103,7 @@ Now because this is a touch screen VCP we want to hide the main menu bar. In the
 [DISPLAY] section add `HIDE_MENU_BAR = True`. See the 
 :doc:`INI options page <../configuration/ini_options>` for more info.
 
+Or you can edit the config.yml file and change `menu = ( default )` to 
+`menu = null`.
 
 

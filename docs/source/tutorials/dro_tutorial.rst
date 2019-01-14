@@ -36,7 +36,7 @@ start a new line with the second style.
 I added a `Grid Layout` to the tab and dragged the labels and dro widgets into
 the grid layout.
 
-.. image:: images/dro-example.png
+.. image:: images/vcp1run-07.png
    :align: center
    :scale: 80 %
 

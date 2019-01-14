@@ -10,4 +10,5 @@ Getting started with QtPyVCP.
    first_vcp
    dialogs
    dro_tutorial
+   machine_buttons
    touch_screen
