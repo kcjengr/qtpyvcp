@@ -17,13 +17,10 @@ class StatusLabel(QLabel, VCPWidget):
     """
 
     DEFAULT_RULE_PROPERTY = "Text"
-    RULE_PROPERTIES = {
-        'Enable': ['setEnabled', bool],
-        'Visible': ['setVisible', bool],
-        'Opacity': ['setOpacity', float],
+    RULE_PROPERTIES = VCPWidget.RULE_PROPERTIES.copy()
+    RULE_PROPERTIES.update({
         'Text': ['setText', str],
-        'Style Class': ['setStyleClass', str],
-    }
+    })
 
     def __init__(self, parent=None):
         super(StatusLabel, self).__init__(parent)

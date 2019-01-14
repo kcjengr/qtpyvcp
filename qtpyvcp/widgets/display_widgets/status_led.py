@@ -15,12 +15,11 @@ class StatusLED(LEDWidget, VCPWidget):
     """
 
     DEFAULT_RULE_PROPERTY = 'On'
-    RULE_PROPERTIES = {
+    RULE_PROPERTIES = VCPWidget.RULE_PROPERTIES.copy()
+    RULE_PROPERTIES.update({
         'On': ['setState', bool],
         'Flashing': ['setFlashing', bool],
-        'Visible': ['setVisible', bool],
-        'Opacity': ['setOpacity', float],
-    }
+    })
 
     def __init__(self, parent=None):
         super(StatusLED, self).__init__(parent)
