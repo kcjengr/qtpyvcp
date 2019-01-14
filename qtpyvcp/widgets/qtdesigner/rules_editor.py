@@ -180,6 +180,7 @@ class RulesEditor(QtWidgets.QDialog):
         self.cmb_property = QtWidgets.QComboBox()
         for name, prop in self.available_properties.items():
             self.cmb_property.addItem(name, prop)
+        self.cmb_property.model().sort(0)
         edit_name_layout.addRow(lbl_property, self.cmb_property)
 
         frm_edit_layout.addLayout(edit_name_layout)
