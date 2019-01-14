@@ -17,17 +17,6 @@ class DialogButton(VCPButton):
         dialog_name (str) : The name of the dialog to show then the button is clicked.
     """
 
-    DEFAULT_RULE_PROPERTY = 'Enable'
-    RULE_PROPERTIES = {
-        'Enable': ['setEnabled', bool],
-        'Visible': ['setVisible', bool],
-        'Opacity': ['setOpacity', float],
-        'Text': ['setText', str],
-        'Checked': ['setChecked', bool],
-        'Style Class': ['setStyleClass', str],
-        'None': ['None', None],
-    }
-
     def __init__(self, parent=None, dialog_name=''):
         super(DialogButton, self).__init__(parent)
 

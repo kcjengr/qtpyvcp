@@ -42,6 +42,7 @@ class QtPyVCPBaseWidget(object):
         'Enable': ['setEnabled', bool],
         'Visible': ['setVisible', bool],
         'Style Class': ['setStyleClass', str],
+        'Style Sheet': ['setStyleSheet', str],
         # 'Opacity': ['setOpacity', float]
     }
 
@@ -192,15 +193,11 @@ class VCPButton(QPushButton, CMDWidget):
     """
 
     DEFAULT_RULE_PROPERTY = 'Enable'
-    RULE_PROPERTIES = {
-        'Enable': ['setEnabled', bool],
-        'Visible': ['setVisible', bool],
-        'Opacity': ['setOpacity', float],
+    RULE_PROPERTIES = CMDWidget.RULE_PROPERTIES.copy()
+    RULE_PROPERTIES.update({
         'Text': ['setText', str],
-        'Checked': ['setChecked', bool],
-        'Style Class': ['setStyleClass', str],
-        'None': ['None', None],
-    }
+        'Checked': ['setChecked', bool]
+    })
 
     def __init__(self, parent=None):
         super(VCPButton, self).__init__(parent)
