@@ -25,5 +25,26 @@ Lets add a `Home All` `ActionButton` with the `actionName` `machine.home.all`.
    :align: center
    :scale: 80 %
 
+Lets create a `Rule` for the Home button to change the text based on at this
+time on if Axis X is homed or not. Double click on the Home button to open the
+Rules Editor.
 
+.. image:: images/home-rule.png
+   :align: center
+   :scale: 80 %
+
+
+Now we need to be able to start and stop the program so add some `ActionButtons`
+to a group box with the following `actionNames`
+::
+
+    program.run
+    program.pause
+    program.resume
+    program.abort
+
+
+.. image:: images/vcp1run-10.png
+   :align: center
+   :scale: 80 %
 

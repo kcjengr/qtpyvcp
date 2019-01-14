@@ -79,7 +79,7 @@ make a copy of xyz.ini and rename it vcp1.ini. In the [DISPLAY] section add
 check `Create Desktop Shortcut`. Now we can launch vcp1 with a single mouse
 click.
 
-Create Machine Buttons
+First Buttons
 
 I added a tab widget to the central widget then added a Grid Layout. Right click
 on the Grid Layout and morph it into a QGroupBox. Now drag an ActionButton into

@@ -11,4 +11,5 @@ Getting started with QtPyVCP.
    dialogs
    dro_tutorial
    machine_buttons
+   mdi
    touch_screen
