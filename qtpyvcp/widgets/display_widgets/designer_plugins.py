@@ -34,3 +34,8 @@ from load_meter import LoadMeter
 class LoadMeterPlugin(_DesignerPlugin):
     def pluginClass(self):
         return LoadMeter
+
+from status_led import StatusLED
+class StatusLEDPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return StatusLED
