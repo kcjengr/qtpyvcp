@@ -93,7 +93,7 @@ And in your .yml config file specify the custom provider:
       provider: my_vcp.my_dialog:MyDialog
 
 
-This custom provider will accept all the same YAML kwarg options
-as the :doc:`BaseDialog </widgets/dialogs/base_dialog>`, but will
-allow you to use python code to add more advanced functionality than
-you could with dialog defined by just a .ui file.
+This custom provider will accept all the same kwarg options as the
+:doc:`BaseDialog </widgets/dialogs/base_dialog>`, but will allow you
+to use python code to add more advanced functionality than you could
+with .ui file dialog.
