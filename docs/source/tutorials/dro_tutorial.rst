@@ -38,5 +38,22 @@ the grid layout.
 
 .. image:: images/vcp1run-07.png
    :align: center
-   :scale: 80 %
+   :scale: 75 %
+
+Next I added a `StatusLED` next to the axis label and defined a rule for each
+one to turn on when the axis is homed. I also set the diameter to 15 and the
+color to green.
+
+.. image:: images/led-rule.png
+   :align: center
+   :scale: 100 %
+
+The LED's in action.
+
+.. image:: images/vcp1run-13.png
+   :align: center
+   :scale: 75 %
+
+
+
 
