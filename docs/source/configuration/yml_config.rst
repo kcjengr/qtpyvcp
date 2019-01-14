@@ -3,7 +3,7 @@ YML Config Files
 ================
 
 At the heart of every QtPyVCP based VCP is a YAML configuration
-file. This file is probably more important than and other, since
+file. This file is probably more important than any other, since
 it defines how the .ui, .py and .qss files come together to make
 a complete VCP.
 
