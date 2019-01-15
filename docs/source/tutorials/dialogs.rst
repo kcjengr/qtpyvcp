@@ -13,23 +13,24 @@ Standard Dialogs
 To launch a dialog add a `DialogButton` to the vcp and in the `dialogName`
 add the name of the dialog.
 
-Lets add an Open dialog to the vcp by adding a `DialogButton` and in the
-`dialogName` put `open_file`.
+Lets add an Open dialog to the vcp by adding a `DialogButton` to a group box and
+in the `dialogName` put ``open_file``. Change the minimum width and height to 50
+and save and run.
 
-.. image:: images/vcp1run-04.png
+.. image:: images/vcp1run-06.png
    :align: center
    :scale: 75 %
 
 If we add a `GcodeBackplot` widget to the vcp we can see the file that is loaded.
 
-.. image:: images/vcp1run-05.png
+.. image:: images/vcp1run-07.png
    :align: center
    :scale: 75 %
 
 Now we need to add the touch off dialog by adding a `DialogButton` and setting
-the `dialogName to `set_work_offsets`.
+the `dialogName to ``set_work_offsets``.
 
-.. image:: images/vcp1run-06.png
+.. image:: images/vcp1run-08.png
    :align: center
    :scale: 75 %
 

@@ -15,13 +15,13 @@ the minimum height to 50 and put the following into the `actionName`.
 
 Now when we run the configuration we can jog and set work offsets.
 
-.. image:: images/vcp1run-08.png
+.. image:: images/vcp1run-12.png
    :align: center
    :scale: 80 %
 
 Lets add a `Home All` `ActionButton` with the `actionName` `machine.home.all`.
 
-.. image:: images/vcp1run-09.png
+.. image:: images/vcp1run-13.png
    :align: center
    :scale: 80 %
 
@@ -40,12 +40,21 @@ The `Channel Type` is the output type of that channel, in this case it is a
 expression syntax is ``Do This If This is True Else Do That``. So we want to
 change the text of the button if the machine is homed so the expression is: ::
 
+<<<<<<< refs/remotes/origin/master
     'Homed' if ch[0] and ch[1] and ch[2] else 'Home'
+=======
+    'Homed' if ch[0] and ch[1] and ch[2] else 'Home All'
+>>>>>>> DOC: update tutorial
 
 .. image:: images/home-rule1.png
    :align: center
    :scale: 80 %
 
+<<<<<<< refs/remotes/origin/master
+=======
+Notice that the button now has some text in it and it came from the rule.
+
+>>>>>>> DOC: update tutorial
 Now we want to add another rule to change the color of the button when all the
 axes are homed so we have a quick visual that the machine is homed. But first we
 need to use a quick shortcut to get a valid markup string. So drag a text label
@@ -54,8 +63,24 @@ editor and add ``background-color:`` then click on the `Add Color` and pick a
 color. Now make sure the validator in the lower left corner is green and says
 `Valid Style Sheet`, now you know your markup is valid. Copy that string to the
 clipboard.
+<<<<<<< refs/remotes/origin/master
 
 .. image:: images/home-rule2-ss.png
+   :align: center
+   :scale: 80 %
+
+Now open back up the Home button `Rules Editor` and add a new rule with the same
+three channels. Pick `Style Sheet` as the property to change.
+
+The expression is:
+``"background-color:rgb(138, 226, 52)" if ch[0] and ch[1] and ch[2] else ''``.
+This reads change the background color if all axes are homed else do nothing.
+
+.. image:: images/home-rule2.png
+=======
+
+.. image:: images/home-rule2-ss.png
+>>>>>>> DOC: update tutorial
    :align: center
    :scale: 80 %
 
@@ -71,6 +96,13 @@ This reads change the background color if all axes are homed else do nothing.
    :scale: 80 %
 
 
+Run the VCP and see the effects of the rules on the Home All button and the DRO
+status labels.
+
+.. image:: images/vcp1run-14.png
+   :align: center
+   :scale: 80 %
+
 Now we need to be able to start and stop the program so add some `ActionButtons`
 to a group box with the following `actionNames`
 ::
@@ -81,7 +113,8 @@ to a group box with the following `actionNames`
     program.abort
 
 
-.. image:: images/vcp1run-10.png
+.. image:: images/vcp1run-15.png
    :align: center
    :scale: 80 %
 
+At this point you have a minimal functioning VCP, next well add the MDI Entry.

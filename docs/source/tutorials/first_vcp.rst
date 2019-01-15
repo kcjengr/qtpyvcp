@@ -84,18 +84,43 @@ First Buttons
 I added a tab widget to the central widget then added a Grid Layout. Right click
 on the Grid Layout and morph it into a QGroupBox. Now drag an ActionButton into
 the group box, add text and make it checkable. Now in the `actionName` add
-`machine.estop.toggle` and save and run the vcp. When you toggle the E Stop
-button it should turn red when on and original color when off.
+``machine.estop.toggle`` and save.
+
+.. image:: images/vcp1-03.png
+   :align: center
+   :scale: 40 %
+
+
+Now run the vcp. When you toggle the E Stop button it should turn red when on
+and original color when off.
 
 .. image:: images/vcp1run-02.png
    :align: center
    :scale: 75 %
 
-Now add a second button for machine power and in the `actionName` put
-`machine.power.toggle`. When you run the vcp you can see the colors change on
-the buttons as you toggle them. The styles are in styles.qss.
+Now add a second button for machine power to the group box. This may be a bit
+tricky to figure out at first but when you drag something into a layout either a
+blue line or a red box will indicate where the widget will be placed.
+
+.. image:: images/vcp1-04.png
+   :align: center
+   :scale: 100 %
+
+
+In the `actionName` put ``machine.power.toggle`` and make sure checkable is
+selected then save. When you run the vcp you can see the colors change on the
+buttons as you toggle them. The styles that change the colors are in the
+styles.qss file.
 
 .. image:: images/vcp1run-03.png
+   :align: center
+   :scale: 75 %
+
+Now because this is for a touch screen lets make the button size large enough to
+use with your fingers. In the property editor change the `minimumSize Width and
+Height` to 50 and save.
+
+.. image:: images/vcp1run-04.png
    :align: center
    :scale: 75 %
 
@@ -103,7 +128,11 @@ Now because this is a touch screen VCP we want to hide the main menu bar. In the
 [DISPLAY] section add `HIDE_MENU_BAR = True`. See the 
 :doc:`INI options page <../configuration/ini_options>` for more info.
 
-Or you can edit the config.yml file and change `menu = ( default )` to 
-`menu = null`.
+Or you can edit the config.yml file and change ``menu = ( default )`` to 
+``menu = null`` which is what I did for this tutorial. Now when you run the vcp
+you can see the menu is gone.
 
+.. image:: images/vcp1run-05.png
+   :align: center
+   :scale: 75 %
 
