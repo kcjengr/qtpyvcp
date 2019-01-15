@@ -268,6 +268,7 @@ abort.bindOk = _abort_bindOk
 # BLOCK DELETE actions
 # -------------------------------------------------------------------------
 class block_delete:
+    """Block Delete Group"""
     @staticmethod
     def on():
         """Start ignoring lines beginning with '/'."""
@@ -327,6 +328,7 @@ block_delete.on.bindOk = block_delete.off.bindOk = block_delete.toggle.bindOk = 
 # OPTIONAL STOP actions
 # -------------------------------------------------------------------------
 class optional_stop:
+    """Optional Stop Group"""
     @staticmethod
     def on():
         """Pause when a line beginning with M1 is encountered"""

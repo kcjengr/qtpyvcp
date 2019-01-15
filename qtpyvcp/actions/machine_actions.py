@@ -273,16 +273,20 @@ feedhold.enable.bindOk = feedhold.disable.bindOk = feedhold.toggle_enable.bindOk
 # -------------------------------------------------------------------------
 
 class feed_override:
+    """Feed Override Group"""
     @staticmethod
     def enable():
+        """Feed Override Enable"""
         CMD.set_feed_override(True)
 
     @staticmethod
     def disable():
+        """Feed Override Disable"""
         CMD.set_feed_override(False)
 
     @staticmethod
     def toggle_enable():
+        """Feed Override Enable Toggle"""
         if STAT.feed_override_enabled:
             feed_override.disable()
         else:
@@ -290,10 +294,12 @@ class feed_override:
 
     @staticmethod
     def set(value):
+        """Feed Override Set Value"""
         CMD.feedrate(float(value) / 100)
 
     @staticmethod
     def reset():
+        """Feed Override Reset"""
         CMD.feedrate(1.0)
 
 def _feed_override_enable_ok(widget=None):
@@ -730,6 +736,7 @@ override_limits.bindOk = _override_limits_bindOk
 # -------------------------------------------------------------------------
 
 class jog:
+    """Jog Actions Group"""
 
     max_linear_speed = INFO.getMaxJogVelocity()
 
@@ -782,6 +789,7 @@ class jog:
 
     @staticmethod
     def set_jog_continuous(continuous):
+        """Set Jog Continuous"""
         if continuous:
             LOG.debug("Setting jog mode to continuous")
         else:
@@ -790,19 +798,23 @@ class jog:
 
     @staticmethod
     def set_increment(raw_increment):
+        """Set Jog Increment"""
         jog.increment = _parse_jog_increment(raw_increment)
 
     @staticmethod
     def set_linear_speed(speed):
+        """Set Jog Linear Speed"""
         jog.linear_speed = float(speed)
 
     @staticmethod
     def set_angular_speed(speed):
+        """Set Jog Angular Speed"""
         jog.angular_speed = float(speed)
 
 
     @staticmethod
     def set_linear_speed_percentage(percentage):
+        """Set Jog Linear Speed Percentage"""
         jog.set_linear_speed(jog.max_linear_speed * (float(percentage) / 100))
 
 
@@ -900,21 +912,24 @@ jog.axis.bindOk = _jog_axis_bindOk
 
 
 class jog_mode:
-
+    """Jog Mode Group"""
     mode = 'continuous'
 
     @staticmethod
     def continuous():
+        """Set Jog Continuous"""
         LOG.debug("Setting jog mode continuous")
         STATUS.setJogMode(True)
 
     @staticmethod
     def incremental():
+        """Set Jog Incremental"""
         LOG.debug("Setting jog mode incremental")
         STATUS.setJogMode(False)
 
     @staticmethod
     def toggle():
+        """Jog Mode Toggle"""
         if STATUS.jog_mode == True:
             jog_mode.continuous()
         else:
