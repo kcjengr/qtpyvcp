@@ -192,7 +192,9 @@ class VCPApplication(QApplication):
             obj.initialise()
 
     def terminateDataPlugins(self):
-        for plugin, obj in qtpyvcp.PLUGINS.items():
+        # terminate in reverse order, this is to prevent problems
+        # when terminating plugins that used other plugins.
+        for plugin, obj in reversed(qtpyvcp.PLUGINS.items()):
             LOG.debug("Terminating %s plugin", plugin)
             try:
                 # try so that other plugins are terminated properly
