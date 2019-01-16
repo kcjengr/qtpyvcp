@@ -6,6 +6,8 @@ import time
 import importlib
 from pkg_resources import iter_entry_points
 
+from qtpy.QtWidgets import QApplication
+
 import qtpyvcp
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import loadDataPlugins
@@ -22,6 +24,11 @@ def excepthook(exc_type, exc_msg, exc_tb):
     lineno = exc_tb.tb_lineno
     LOG.critical('Unhandled exception in %s line %i', filename, lineno,
                  exc_info=(exc_type, exc_msg, exc_tb))
+
+    # if an exception occurs early on a qApp may not have been created yet,
+    # so create one so the dialog will be able to run without errors.
+    if QApplication.instance() is None:
+        app = QApplication([])
 
     error_dialog = ErrorDialog(exc_info=(exc_type, exc_msg, exc_tb))
     error_dialog.exec_()
