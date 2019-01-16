@@ -50,6 +50,7 @@ Note:
 """
 import os
 import sys
+import json
 from linuxcnc import ini
 from docopt import docopt
 
@@ -113,9 +114,6 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
 
         opts[k] = convType(ini_val)
 
-    # import json
-    # print json.dumps(opts, sort_keys=True, indent=4)
-
     # Check if LinuxCNC is running
     if not os.path.isfile('/tmp/linuxcnc.lock'):
         # LinuxCNC is not running.
@@ -163,10 +161,24 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
         qApp.deleteLater()
         del app
 
+    # normalize log file path
+    log_file = normalizePath(opts.log_file,
+                             os.getenv('CONFIG_DIR') or
+                             os.getenv('HOME'))
+
+    if log_file is None or os.path.isdir(log_file):
+        log_file = os.path.expanduser('~/qtpyvcp.log')
+
+    opts.log_file = log_file
+
     # init the logger
     from qtpyvcp.utilities import logger
     LOG = logger.initBaseLogger('qtpyvcp',
                                 log_file=opts.log_file,
                                 log_level=opts.log_level)
+
+    if LOG.getEffectiveLevel() == logger.LOG_LEVEL_MAPPING['DEBUG']:
+        LOG.debug("Command line options:\n%s",
+                  json.dumps(opts, sort_keys=True, indent=4))
 
     return opts
