@@ -649,15 +649,37 @@ class unhome:
     """Unhoming actions group"""
     @staticmethod
     def all():
-        pass
+        """Unhome all the axes
+        ActionButton syntax machine.unhome.all"""
+        LOG.info("Unhoming all Axes")
+        _unhome_joint(-1)
 
     @staticmethod
     def axis(axis):
-        pass
+        """Unhome a specific axis.
+
+        Args:
+            axis (int | str) : Either the axis letter or number to home.
+        ActionButton syntax machine.unhome.axis:Args
+        """
+        axis = getAxisLetter(axis)
+        if axis.lower() == 'all': # not sure what this is copied from home
+            unhome.all()
+            return
+        jnum = INFO.COORDINATES.index(axis)
+        LOG.info('Unhoming Axis: {}'.format(axis.upper()))
+        _unhome_joint(jnum)
 
     @staticmethod
     def joint(jnum):
-        pass
+        """Unhome a specific joint.
+
+        Args:
+            jnum (int) : The number of the joint to home.
+        ActionButton syntax machine.unhome.joint:Args
+        """
+        LOG.info("Unhoming joint: {}".format(jnum))
+        _unhome_joint(jnum)
 
 def _home_joint(jnum):
     setTaskMode(linuxcnc.MODE_MANUAL)
