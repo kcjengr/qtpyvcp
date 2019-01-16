@@ -568,16 +568,19 @@ class home:
     """Homing actions group"""
     @staticmethod
     def all():
-        """Homes all axes."""
+        """Homes all axes
+
+        ActionButton syntax machine.home.all"""
         LOG.info("Homing all axes")
         _home_joint(-1)
 
     @staticmethod
     def axis(axis):
-        """Home a specific axis.
+        """Home a specific axis
 
         Args:
             axis (int | str) : Either the axis letter or number to home.
+        ActionButton syntax machine.home.axis:axis
         """
         axis = getAxisLetter(axis)
         if axis.lower() == 'all':
@@ -589,10 +592,11 @@ class home:
 
     @staticmethod
     def joint(jnum):
-        """Home a specific joint.
+        """Home a specific joint
 
         Args:
             jnum (int) : The number of the joint to home.
+        ActionButton syntax machine.home.joint:jnum
         """
         LOG.info("Homing joint: {}".format(jnum))
         _home_joint(jnum)
@@ -657,7 +661,7 @@ class unhome:
 
     @staticmethod
     def axis(axis):
-        """Unhome a specific axis.
+        """Unhome a specific axis
 
         Args:
             axis (int | str) : Either the axis letter or number to home.
@@ -673,7 +677,7 @@ class unhome:
 
     @staticmethod
     def joint(jnum):
-        """Unhome a specific joint.
+        """Unhome a specific joint
 
         Args:
             jnum (int) : The number of the joint to home.
