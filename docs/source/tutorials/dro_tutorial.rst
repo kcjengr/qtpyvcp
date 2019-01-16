@@ -34,10 +34,10 @@ In the `QWidget` section you can modify the font, size and colors of the DRO
 group box.
 
 To change the colors click on the ellipse in `styleSheet` to open the 
-`Edit Style Sheet` dialog. To change the background color type in 
-``background-color:`` and double click on `Add Color` then click on the color
-you want. To add a second item append a semi-colon to the end of the line then
-start a new line with the second style.
+`Edit Style Sheet` dialog. To change the background color click on the down
+arrow to the right of `Color` and select `background-color` then click on the
+color you want. To add a second item pick the item from the color dropdown then
+pick the color.
 
 .. image:: images/edit-style-sheet.png
    :align: center
