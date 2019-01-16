@@ -47,6 +47,8 @@ class ErrorDialog(QDialog):
             qtpyvcp_version=qtpyvcp.__version__,
             # config=hiyapyco.dump(qtpyvcp.CONFIG, default_flow_style=False),
             options=json.dumps(qtpyvcp.OPTIONS, indent=4, sort_keys=True),
+            log_file=qtpyvcp.OPTIONS.get('log_file'),
+            config_file=qtpyvcp.OPTIONS.get('config_file'),
             )
 
 
@@ -106,5 +108,7 @@ circumstances under which the issue occurred, and the steps needed to reproduce 
 
 ## Attachments
 
-(drag and drop to attach pertinent logs and yaml config files)
+Please also find and attach the following files, along with any others that may be helpful:
+* {log_file}
+* {config_file}
 """
