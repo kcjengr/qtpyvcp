@@ -2,6 +2,7 @@ import os
 from traceback import format_exception
 
 from qtpy import uic
+from qtpy.QtCore import Slot
 from qtpy.QtWidgets import QDialog
 
 class ErrorDialog(QDialog):
@@ -11,11 +12,99 @@ class ErrorDialog(QDialog):
 
         exc_type, exc_msg, exc_tb = exc_info
 
-        self.errorType.setText(exc_type.__name__ + ':')
+        self.exc_typ = exc_type.__name__
+        self.exc_msg = exc_msg
+        self.exc_tb = "".join(format_exception(*exc_info))
+
+        self.errorType.setText(self.exc_typ + ':')
         self.errorValue.setText(str(exc_msg))
-        self.setWindowTitle(exc_type.__name__)
-        self.tracebackText.setText("".join(format_exception(*exc_info)))
+        self.setWindowTitle(self.exc_typ)
+        self.tracebackText.setText(self.exc_tb)
         self.show()
 
     def setTraceback(self, text):
         self.tracebackText.setText(text)
+
+    @Slot()
+    def on_reportIssue_clicked(self):
+        import qtpy
+        import urllib
+        import webbrowser
+        import subprocess
+        import linuxcnc
+        # import hiyapyco
+        import json
+        import qtpyvcp
+        issue_title = "{}: {}".format(self.exc_typ, self.exc_msg)
+        issue_body = ISSUE_TEMPLATE.format(
+            tracback=self.exc_tb.strip(),
+            qt_version=qtpy.QT_VERSION,
+            qt_api=qtpy.API_NAME,
+            api_version=qtpy.PYQT_VERSION or qtpy.PYSIDE_VERSION,
+            dist=subprocess.check_output(['lsb_release', '-d']).strip(),
+            kernel=subprocess.check_output(['uname', '-r']).strip(),
+            lcnc_version=linuxcnc.version,
+            qtpyvcp_version=qtpyvcp.__version__,
+            # config=hiyapyco.dump(qtpyvcp.CONFIG, default_flow_style=False),
+            options=json.dumps(qtpyvcp.OPTIONS, indent=4, sort_keys=True),
+            )
+
+
+        new_issue_url = "https://github.com/kcjengr/qtpyvcp/issues/new?" \
+                        "title={title}&body={body}&&labels=bug,auto+generated"\
+                        .format(title=urllib.quote(issue_title),
+                                body=urllib.quote(issue_body))
+
+        webbrowser.open(new_issue_url, new=2, autoraise=True)
+
+
+ISSUE_TEMPLATE = \
+"""(Please fill in this issue template with as much information as you can about the 
+circumstances under which the issue occurred, and the steps needed to reproduce it.)
+
+## Steps to reproduce the problem
+
+(provide as detailed a step by step as you can) 
+
+ 1.
+ 2.
+ 3.
+
+## This is what I expected to happen
+
+(explain what you thought should have happened)
+
+## This is what happened instead
+
+(explain what happened instead)
+
+## It worked properly before this
+
+(did it work before? what changed?)
+
+## Traceback
+
+```python
+{tracback}
+```
+
+## Options
+
+```json
+{options}
+```
+
+## System Info
+```
+ * {dist}
+ * Kernel: {kernel}
+ * Qt version: v{qt_version}
+ * Qt bindings: {qt_api} v{api_version}
+ * LinuxCNC version: v{lcnc_version}
+ * QtPyVCP version: {qtpyvcp_version}
+```
+
+## Attachments
+
+(drag and drop to attach pertinent logs and yaml config files)
+"""
