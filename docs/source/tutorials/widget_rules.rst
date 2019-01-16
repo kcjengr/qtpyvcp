@@ -126,7 +126,7 @@ Set text in label
 *****************
 
 Here is a basic rule which will set the text in a label to "X Homed" if
-joint No. 0 is homed, or to "X Unhomed" if join No. 0 is not homed.
+joint No. 0 is homed, or to "X Unhomed" if joint No. 0 is not homed.
 
 .. figure:: /_static/rules/homed_label_example.png
 
