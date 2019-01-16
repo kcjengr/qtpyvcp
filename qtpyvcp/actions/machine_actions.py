@@ -667,7 +667,7 @@ def _home_joint(jnum):
 def _unhome_joint(jnum):
     setTaskMode(linuxcnc.MODE_MANUAL)
     CMD.teleop_enable(False)
-    CMD.home(jnum)
+    CMD.unhome(jnum)
 
 # Homing helper functions
 
