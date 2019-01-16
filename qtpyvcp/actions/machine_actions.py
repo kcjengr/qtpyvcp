@@ -650,6 +650,7 @@ class unhome:
     @staticmethod
     def all():
         """Unhome all the axes
+
         ActionButton syntax machine.unhome.all"""
         LOG.info("Unhoming all Axes")
         _unhome_joint(-1)
@@ -660,7 +661,7 @@ class unhome:
 
         Args:
             axis (int | str) : Either the axis letter or number to home.
-        ActionButton syntax machine.unhome.axis:Args
+        ActionButton syntax machine.unhome.axis:axis
         """
         axis = getAxisLetter(axis)
         if axis.lower() == 'all': # not sure what this is copied from home
@@ -676,7 +677,7 @@ class unhome:
 
         Args:
             jnum (int) : The number of the joint to home.
-        ActionButton syntax machine.unhome.joint:Args
+        ActionButton syntax machine.unhome.joint:jnum
         """
         LOG.info("Unhoming joint: {}".format(jnum))
         _unhome_joint(jnum)
