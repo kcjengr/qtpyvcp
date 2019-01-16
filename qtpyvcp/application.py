@@ -186,11 +186,17 @@ class VCPApplication(QApplication):
                  "    Per Thread: {}\n"
                  .format(total_percent, ' '.join(usage)))
 
-
     def initialiseDataPlugins(self):
-        for plugin in qtpyvcp.PLUGINS.itervalues():
-            plugin.initialise()
+        for plugin, obj in qtpyvcp.PLUGINS.items():
+            LOG.debug("Initializing %s plugin", plugin)
+            obj.initialise()
 
     def terminateDataPlugins(self):
-        for plugin in qtpyvcp.PLUGINS.itervalues():
-            plugin.terminate()
+        for plugin, obj in qtpyvcp.PLUGINS.items():
+            LOG.debug("Terminating %s plugin", plugin)
+            try:
+                # try so that other plugins are terminated properly
+                # even if one of them fails.
+                obj.terminate()
+            except Exception:
+                LOG.exception('Error terminating %s plugin', plugin)
