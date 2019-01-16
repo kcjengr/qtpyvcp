@@ -13,3 +13,4 @@ Getting started with QtPyVCP.
    machine_buttons
    mdi
    touch_screen
+   overrides
