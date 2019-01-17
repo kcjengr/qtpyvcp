@@ -279,7 +279,7 @@ class ToolModel(QStandardItemModel):
 
             self.tool_list.append(tool)
 
-    def saveToolTable(self, file):
+    def saveToolTable(self, tool_file):
         for row_index in range(self.rowCount()):
             line = ""
             for col_index in range(self.columnCount()):
@@ -291,10 +291,10 @@ class ToolModel(QStandardItemModel):
                         line += "{}{}".format(['T', 'P', 'Z', 'D', ';'][col_index], item.strip())
             if line:
                 line += "\n"
-                file.write(line)
+                tool_file.write(line)
 
-        file.flush()
-        os.fsync(file.fileno())
+        tool_file.flush()
+        os.fsync(tool_file.fileno())
 
     def newTool(self, row, dir):
         position = row + dir
