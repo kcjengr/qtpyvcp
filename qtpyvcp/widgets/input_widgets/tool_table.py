@@ -204,15 +204,15 @@ class ToolModel(QStandardItemModel):
 
         elif role == Qt.DisplayRole:
             if column == 0:
-                return item[0]
+                return int(item[0])
             elif column == 1:
-                return item[1]
+                return int(item[1])
             elif column == 2:
-                return item[2]
+                return float(item[2])
             elif column == 3:
-                return item[3]
+                return float(item[3])
             elif column == 4:
-                return item[4]
+                return str(item[4])
 
         elif role == Qt.TextAlignmentRole:
             if column == 0:
@@ -225,6 +225,9 @@ class ToolModel(QStandardItemModel):
                 return Qt.AlignVCenter | Qt.AlignRight
             elif column == 4:
                 return Qt.AlignVCenter | Qt.AlignLeft
+        else:
+            return None
+
         """
         elif role == Qt.FontRole:
 
@@ -232,21 +235,19 @@ class ToolModel(QStandardItemModel):
             font.setBold(True)
             return font
         """
-        return None
 
     def setData(self, index, value, role):
         self.tool_list[index.row()][index.column()] = value
         return True
 
-    def loadToolTable(self, file):
+    def loadToolTable(self, tool_file):
 
         parents = [self.rootItem]
         indentations = [0]
 
         self.tool_list = list()
 
-        for count, line in enumerate(file):
-
+        for count, line in enumerate(tool_file):
             # Separate tool data from comments
 
             tool = list()
@@ -264,16 +265,17 @@ class ToolModel(QStandardItemModel):
                 for word in line.split():
                     if word.startswith(i):
                         item = word.lstrip(i)
+                        print(item)
                         if i in ('T', 'P'):
-                            tool.append(int(item))
+                            tool.append(item)
                         elif i in ('Z', 'D'):
-                            tool.append(float(item))
-
-                        continue
-
-                    tool.append(0.0)
+                            tool.append(item)
+                        else:
+                            tool.append(0.0)
 
             tool.append(str(comment))
+
+            print(tool)
 
             # Append a new item to the current parent's list of children.
             parents[-1].appendChild(ToolItem(tool, parents[-1]))
