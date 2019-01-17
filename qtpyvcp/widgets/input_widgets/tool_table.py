@@ -26,6 +26,8 @@ import sys
 
 import linuxcnc
 
+from pprint import pprint
+
 from qtpy.QtCore import Slot, Property, Qt, QModelIndex, QAbstractTableModel, QRegExp, QSortFilterProxyModel
 from qtpy.QtGui import QValidator, QRegExpValidator, QStandardItemModel
 from qtpy.QtWidgets import QTableView, QMessageBox, QAbstractItemView, QSpinBox, QDoubleSpinBox, \
@@ -34,6 +36,7 @@ from qtpy.QtWidgets import QTableView, QMessageBox, QAbstractItemView, QSpinBox,
 # Set up logging
 from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.plugins import getPlugin
 
 LOG = logger.getLogger(__name__)
 INFO = Info()
@@ -242,47 +245,27 @@ class ToolModel(QStandardItemModel):
         self.tool_list[index.row()][index.column()] = value
         return True
 
-    def loadToolTable(self, tool_file):
+    def loadToolTable(self):
+
+        tool_table = getPlugin('tooltable').TOOL_TABLE
 
         parents = [self.rootItem]
-        indentations = [0]
 
         self.tool_list = list()
 
-        for count, line in enumerate(tool_file):
+        for index, tool_data in tool_table.items():
 
-            if len(line) > 1:
+            tool = list()
 
-                # Separate tool data from comments
+            for offset, i in enumerate(['T', 'P', 'Z', 'D', 'comment']):
+                tool.append(tool_data[i])
 
-                tool = list()
+            parents[-1].appendChild(ToolItem(tool, parents[-1]))
 
-                comment = str()
-                index = line.find(";")  # Find comment start index
+            self.tool_list.append(tool)
+            print(tool)
 
-                if index == -1:  # Delimiter ';' is missing, so no comments
-                    line = line.rstrip("\n")
-                else:
-                    comment = (line[index + 1:]).rstrip("\n")
-                    line = line[0:index].rstrip()
-
-                for offset, i in enumerate(['T', 'P', 'Z', 'D']):
-                    for word in line.split():
-                        if word.startswith(i):
-                            item = word.lstrip(i)
-                            if i in ('T', 'P'):
-                                tool.append(int(item))
-                            elif i in ('Z', 'D'):
-                                tool.append(float(item))
-                            else:
-                                tool.append(0.0)
-
-                tool.append(str(comment))
-
-                # Append a new item to the current parent's list of children.
-                parents[-1].appendChild(ToolItem(tool, parents[-1]))
-
-                self.tool_list.append(tool)
+        print(self.tool_list)
 
     def saveToolTable(self, tool_file):
         for row_index in range(self.rowCount()):
@@ -381,8 +364,7 @@ class ToolTable(QTableView):
 
         LOG.debug("Loading tool table: {0}".format(fn))
 
-        with open(fn, "r") as f:
-            self.tool_model.loadToolTable(f)
+        self.tool_model.loadToolTable()
 
         self.selectRow(0)
 
