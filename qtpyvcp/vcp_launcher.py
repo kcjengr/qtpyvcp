@@ -11,7 +11,7 @@ from qtpy.QtWidgets import QApplication
 import qtpyvcp
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import loadDataPlugins
-from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog
+from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog, IGNORE_LIST
 
 from qtpyvcp.utilities.info import Info
 
@@ -22,6 +22,12 @@ INFO = Info()
 def excepthook(exc_type, exc_msg, exc_tb):
     filename = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
     lineno = exc_tb.tb_lineno
+
+    if len(IGNORE_LIST) > 0 and (str(exc_type), str(exc_msg), lineno) in IGNORE_LIST:
+        LOG.debug('Ignoring unhandled exception in %s line %i', filename, lineno,
+                     exc_info=(exc_type, exc_msg, exc_tb))
+        return
+
     LOG.critical('Unhandled exception in %s line %i', filename, lineno,
                  exc_info=(exc_type, exc_msg, exc_tb))
 
