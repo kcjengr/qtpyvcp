@@ -110,9 +110,11 @@ class ToolItem(object):
     def child(self, row):
         if row < 0:
             row = 0
+            return self.childItems[row]
         elif row > self.childCount():
             row = self.childCount()
-        return self.childItems[row - 1]
+
+            return self.childItems[row - 1]
 
     def childCount(self):
         return len(self.childItems)
@@ -204,15 +206,15 @@ class ToolModel(QStandardItemModel):
 
         elif role == Qt.DisplayRole:
             if column == 0:
-                return int(item[0])
+                return item[0]
             elif column == 1:
-                return int(item[1])
+                return item[1]
             elif column == 2:
-                return float(item[2])
+                return item[2]
             elif column == 3:
-                return float(item[3])
+                return item[3]
             elif column == 4:
-                return str(item[4])
+                return item[4]
 
         elif role == Qt.TextAlignmentRole:
             if column == 0:
@@ -248,36 +250,39 @@ class ToolModel(QStandardItemModel):
         self.tool_list = list()
 
         for count, line in enumerate(tool_file):
-            # Separate tool data from comments
 
-            tool = list()
+            if len(line) > 1:
 
-            comment = str()
-            index = line.find(";")  # Find comment start index
+                # Separate tool data from comments
 
-            if index == -1:  # Delimiter ';' is missing, so no comments
-                line = line.rstrip("\n")
-            else:
-                comment = (line[index + 1:]).rstrip("\n")
-                line = line[0:index].rstrip()
+                tool = list()
 
-            for offset, i in enumerate(['T', 'P', 'Z', 'D']):
-                for word in line.split():
-                    if word.startswith(i):
-                        item = word.lstrip(i)
-                        if i in ('T', 'P'):
-                            tool.append(int(item))
-                        elif i in ('Z', 'D'):
-                            tool.append(float(item))
-                        else:
-                            tool.append(0.0)
+                comment = str()
+                index = line.find(";")  # Find comment start index
 
-            tool.append(str(comment))
+                if index == -1:  # Delimiter ';' is missing, so no comments
+                    line = line.rstrip("\n")
+                else:
+                    comment = (line[index + 1:]).rstrip("\n")
+                    line = line[0:index].rstrip()
 
-            # Append a new item to the current parent's list of children.
-            parents[-1].appendChild(ToolItem(tool, parents[-1]))
+                for offset, i in enumerate(['T', 'P', 'Z', 'D']):
+                    for word in line.split():
+                        if word.startswith(i):
+                            item = word.lstrip(i)
+                            if i in ('T', 'P'):
+                                tool.append(int(item))
+                            elif i in ('Z', 'D'):
+                                tool.append(float(item))
+                            else:
+                                tool.append(0.0)
 
-            self.tool_list.append(tool)
+                tool.append(str(comment))
+
+                # Append a new item to the current parent's list of children.
+                parents[-1].appendChild(ToolItem(tool, parents[-1]))
+
+                self.tool_list.append(tool)
 
     def saveToolTable(self, tool_file):
         for row_index in range(self.rowCount()):
@@ -297,14 +302,13 @@ class ToolModel(QStandardItemModel):
         os.fsync(tool_file.fileno())
 
     def newTool(self, row, dir):
+
         position = row + dir
         if position < 0:
             position = 0
 
-        self.beginInsertRows(QModelIndex(), position, position)
-
+        self.beginInsertRows(QModelIndex(), position, row)
         self.tool_list.insert(position, self.new_tool)
-
         self.endInsertRows()
 
     def removeTool(self, row):
