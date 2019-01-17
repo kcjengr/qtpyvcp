@@ -267,9 +267,9 @@ class ToolModel(QStandardItemModel):
                         item = word.lstrip(i)
                         print(item)
                         if i in ('T', 'P'):
-                            tool.append(item)
+                            tool.append(int(item))
                         elif i in ('Z', 'D'):
-                            tool.append(item)
+                            tool.append(float(item))
                         else:
                             tool.append(0.0)
 
