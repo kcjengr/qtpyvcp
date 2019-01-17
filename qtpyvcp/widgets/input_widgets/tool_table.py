@@ -265,7 +265,6 @@ class ToolModel(QStandardItemModel):
                 for word in line.split():
                     if word.startswith(i):
                         item = word.lstrip(i)
-                        print(item)
                         if i in ('T', 'P'):
                             tool.append(int(item))
                         elif i in ('Z', 'D'):
@@ -274,8 +273,6 @@ class ToolModel(QStandardItemModel):
                             tool.append(0.0)
 
             tool.append(str(comment))
-
-            print(tool)
 
             # Append a new item to the current parent's list of children.
             parents[-1].appendChild(ToolItem(tool, parents[-1]))
