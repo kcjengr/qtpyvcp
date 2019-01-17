@@ -26,8 +26,6 @@ import sys
 
 import linuxcnc
 
-from pprint import pprint
-
 from qtpy.QtCore import Slot, Property, Qt, QModelIndex, QAbstractTableModel, QRegExp, QSortFilterProxyModel
 from qtpy.QtGui import QValidator, QRegExpValidator, QStandardItemModel
 from qtpy.QtWidgets import QTableView, QMessageBox, QAbstractItemView, QSpinBox, QDoubleSpinBox, \
@@ -116,7 +114,6 @@ class ToolItem(object):
             return self.childItems[row]
         elif row > self.childCount():
             row = self.childCount()
-
             return self.childItems[row - 1]
 
     def childCount(self):
@@ -249,23 +246,18 @@ class ToolModel(QStandardItemModel):
 
         tool_table = getPlugin('tooltable').TOOL_TABLE
 
-        parents = [self.rootItem]
-
-        self.tool_list = list()
+        parents = []
 
         for index, tool_data in tool_table.items():
+            position = index - 1
 
             tool = list()
 
             for offset, i in enumerate(['T', 'P', 'Z', 'D', 'comment']):
                 tool.append(tool_data[i])
 
-            parents[-1].appendChild(ToolItem(tool, parents[-1]))
-
-            self.tool_list.append(tool)
-            print(tool)
-
-        print(self.tool_list)
+            self.tool_list.insert(position, tool)
+            self.rootItem.appendChild(ToolItem(tool, self.rootItem))
 
     def saveToolTable(self, tool_file):
         for row_index in range(self.rowCount()):
@@ -285,12 +277,11 @@ class ToolModel(QStandardItemModel):
         os.fsync(tool_file.fileno())
 
     def newTool(self, row, dir):
-
         position = row + dir
         if position < 0:
             position = 0
 
-        self.beginInsertRows(QModelIndex(), position, row)
+        self.beginInsertRows(QModelIndex(), position, position)
         self.tool_list.insert(position, self.new_tool)
         self.endInsertRows()
 
