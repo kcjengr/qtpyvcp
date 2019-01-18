@@ -144,6 +144,9 @@ class ToolModel(QStandardItemModel):
         self.new_tool = [0, 0, 0.0, 0.0, "New Tool"]
 
         self.rootItem = ToolItem(self.table_header)
+
+        self.tool_table = getPlugin('tooltable').TOOL_TABLE
+
         self.tool_list = list()
 
     def columnCount(self, parent=None):
@@ -244,9 +247,9 @@ class ToolModel(QStandardItemModel):
 
     def loadToolTable(self):
 
-        tool_table = getPlugin('tooltable').TOOL_TABLE
+        del self.tool_list[:]
 
-        for index, tool_data in tool_table.items():
+        for index, tool_data in self.tool_table.items():
 
             tool = list()
 
