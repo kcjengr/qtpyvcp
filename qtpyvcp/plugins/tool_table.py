@@ -35,12 +35,12 @@ DEFAULT_TOOL = {
     'X': 0.0,
     'Y': 0.0,
     'Z': 0.0,
-    'comment': '',
+    'R': '',
 }
 
 NO_TOOL = DEFAULT_TOOL.copy()
 NO_TOOL.update({'T': 0,
-                'comment': 'No Tool Loaded'})
+                'R': 'No Tool Loaded'})
 
 FILE_HEADER = """
 LinuxCNC Tool Table
@@ -53,7 +53,7 @@ Generated on: {datetime:%x %I:%M:%S %p}
 
 """
 
-TABLE_COLUMN_HEADERS = {
+COLUMN_LABELS = {
     'A': 'A Offset',
     'B': 'B Offset',
     'C': 'C Offset',
@@ -62,6 +62,7 @@ TABLE_COLUMN_HEADERS = {
     'J': 'Bak Ang',
     'P': 'Pocket',
     'Q': 'Orient',
+    'R': 'Remark',
     'T': 'Tool',
     'U': 'U Offset',
     'V': 'V Offset',
@@ -148,7 +149,7 @@ class CurrentTool(QtPyVCPDataChannel):
 
     @property
     def comment(self):
-        return self._value['comment']
+        return self._value['R']
 
     def _update(self, value):
         self._value = value
@@ -163,15 +164,16 @@ class ToolTable(QtPyVCPDataPlugin):
     current_tool = CurrentTool()
 
     TOOL_TABLE = {}
+    COLUMN_LABELS = COLUMN_LABELS
 
-    def __init__(self, columns='TPXYZD', file_header_template=FILE_HEADER):
+    def __init__(self, columns='TPXYZDR', file_header_template=FILE_HEADER):
         super(ToolTable, self).__init__()
 
         self.fs_watcher = None
         self.orig_header_lines = []
         self.file_header_template = file_header_template or ''
 
-        self.columns = self.validateColumns(columns) or [c for c in 'TPXYZD']
+        self.columns = self.validateColumns(columns) or [c for c in 'TPXYZDR']
 
         self.tool_table_file = INFO.getToolTableFile()
         if not os.path.exists(self.tool_table_file):
@@ -184,8 +186,6 @@ class ToolTable(QtPyVCPDataPlugin):
 
         # update signals
         STATUS.tool_in_spindle.onValueChanged(self.onToolChanged)
-
-        self.saveToolTable()
 
     def initialise(self):
         self.fs_watcher = QFileSystemWatcher()
@@ -210,7 +210,7 @@ class ToolTable(QtPyVCPDataPlugin):
             return
 
         return [col for col in [col.strip().upper() for col in columns]
-                if col in 'TPXYZABCUVWDIJQ' and not col == '']
+                if col in 'TPXYZABCUVWDIJQR' and not col == '']
 
     def onToolTableFileChanged(self, path):
         LOG.debug('Tool Table file changed: {}'.format(path))
@@ -258,7 +258,7 @@ class ToolTable(QtPyVCPDataPlugin):
             tool = DEFAULT_TOOL.copy()
             for item in data.split():
                 descriptor = item[0]
-                if descriptor in 'TPXYZABCUVWDIJQ':
+                if descriptor in 'TPXYZABCUVWDIJQR':
                     value = item.lstrip(descriptor)
                     if descriptor in ('T', 'P', 'Q'):
                         try:
@@ -273,7 +273,7 @@ class ToolTable(QtPyVCPDataPlugin):
                             LOG.error('Error converting value to float: {}'.format(value))
                             break
 
-            tool['comment'] = comment.strip()
+            tool['R'] = comment.strip()
 
             tnum = tool['T']
             if tnum == -1:
@@ -287,13 +287,15 @@ class ToolTable(QtPyVCPDataPlugin):
 
         self.current_tool._update(self.TOOL_TABLE[STATUS.tool_in_spindle.value])
 
-        # import json
-        # print json.dumps(table, sort_keys=True, indent=4)
+        import json
+        print json.dumps(table, sort_keys=True, indent=4)
 
-    def saveToolTable(self, columns=None, tool_file=None):
+    def saveToolTable(self, tool_table, columns=None, tool_file=None):
         """Write tooltable data to file.
 
         Args:
+            tool_table (dict) : Dictionary of dictionaries containing
+                the tool data to write to the file.
             columns (str | list) : A list of data columns to write.
                 If `None` will use the value of ``self.columns``.
             tool_file (str) : Path to write the tooltable too.
@@ -328,23 +330,27 @@ class ToolTable(QtPyVCPDataPlugin):
         # create the table header
         items = []
         for col in columns:
+            if col == 'R':
+                continue
             w = (6 if col in 'TPQ' else 8) - 1 if col == self.columns[0] else 0
-            items.append('{:<{w}}'.format(TABLE_COLUMN_HEADERS[col], w=w))
+            items.append('{:<{w}}'.format(COLUMN_LABELS[col], w=w))
 
-        items.append('Comment')
+        items.append('Remark')
         lines.append(';' + ' '.join(items))
 
         # add the tools
-        for tool_num in sorted(self.TOOL_TABLE.iterkeys()):
+        for tool_num in sorted(tool_table.iterkeys()):
             items = []
-            tool_data = self.TOOL_TABLE[tool_num]
+            tool_data = tool_table[tool_num]
             for col in columns:
+                if col == 'R':
+                    continue
                 items.append('{col}{val:<{w}}'
                              .format(col=col,
                                      val=tool_data[col],
                                      w=6 if col in 'TPQ' else 8))
 
-            comment = tool_data.get('comment', '')
+            comment = tool_data.get('R', '')
             if comment is not '':
                 items.append('; ' + comment)
 
