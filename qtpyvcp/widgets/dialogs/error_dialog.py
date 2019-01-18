@@ -3,13 +3,20 @@ from traceback import format_exception
 
 from qtpy import uic
 from qtpy.QtCore import Slot
-from qtpy.QtWidgets import QDialog
+from qtpy.QtWidgets import QDialog, QApplication
+
+from qtpyvcp.utilities.logger import getLogger
+
+LOG = getLogger(__name__)
+
+IGNORE_LIST = []
 
 class ErrorDialog(QDialog):
     def __init__(self, exc_info):
         super(ErrorDialog, self).__init__()
         uic.loadUi(os.path.join(os.path.dirname(__file__), 'error_dialog.ui'), self)
 
+        self.exc_info = exc_info
         exc_type, exc_msg, exc_tb = exc_info
 
         self.exc_typ = exc_type.__name__
@@ -18,12 +25,27 @@ class ErrorDialog(QDialog):
 
         self.errorType.setText(self.exc_typ + ':')
         self.errorValue.setText(str(exc_msg))
-        self.setWindowTitle(self.exc_typ)
+        self.setWindowTitle('Unhandled Exception - {}'.format(self.exc_typ))
         self.tracebackText.setText(self.exc_tb)
         self.show()
 
-    def setTraceback(self, text):
-        self.tracebackText.setText(text)
+    @Slot()
+    def on_quitApp_clicked(self):
+        if os.getenv('DESIGNER', False):
+            self.accept()
+        else:
+            QApplication.exit()
+
+    @Slot()
+    def on_ignoreException_clicked(self):
+        if self.ignoreCheckBox.isChecked():
+            LOG.warn("User selected to ignore future occurrences of exception.",
+                     exc_info=self.exc_info)
+            IGNORE_LIST.append((str(self.exc_info[0]),
+                                str(self.exc_info[1]),
+                                self.exc_info[2].tb_lineno))
+            print IGNORE_LIST
+        self.accept()
 
     @Slot()
     def on_reportIssue_clicked(self):
