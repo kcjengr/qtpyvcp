@@ -229,6 +229,13 @@ class ToolTable(QtPyVCPDataPlugin):
         # reload with the new data
         self.loadToolTable()
 
+    def iterTools(self, tool_table=None, columns=None):
+        tool_table = tool_table or self.TOOL_TABLE
+        columns = self.validateColumns(columns) or self.columns
+        for tool in sorted(tool_table.iterkeys()):
+            tool_data = tool_table[tool]
+            yield [tool_data[key] for key in columns]
+
     def loadToolTable(self):
 
         if not os.path.exists(self.tool_table_file):
