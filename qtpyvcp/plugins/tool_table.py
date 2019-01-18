@@ -46,6 +46,24 @@ NO_TOOL = DEFAULT_TOOL.copy()
 NO_TOOL.update({'T': 0,
                 'comment': 'No Tool Loaded'})
 
+HEADER_LABELS = {
+    'A': 'A Offset',
+    'B': 'B Offset',
+    'C': 'C Offset',
+    'D': 'Diameter',
+    'I': 'Fnt Ang',
+    'J': 'Bak Ang',
+    'P': 'Pocket',
+    'Q': 'Orient',
+    'T': 'Tool',
+    'U': 'U Offset',
+    'V': 'V Offset',
+    'W': 'W Offset',
+    'X': 'X Offset',
+    'Y': 'Y Offset',
+    'Z': 'Z Offset',
+}
+
 class CurrentTool(QtPyVCPDataChannel):
     """Current tool data channel.
     """
@@ -127,6 +145,7 @@ class CurrentTool(QtPyVCPDataChannel):
         self._value = value
         self.valueChanged.emit(value)
 
+
 class ToolTable(QtPyVCPDataPlugin):
 
     protocol = 'tooltable'
@@ -136,10 +155,12 @@ class ToolTable(QtPyVCPDataPlugin):
 
     TOOL_TABLE = {}
 
-    def __init__(self):
+    def __init__(self, columns='TPXYZD'):
         super(ToolTable, self).__init__()
 
         self.fs_watcher = None
+        self.orig_header = ''
+        self.columns = columns or 'TPXYZABCUVWDIJQ'
 
         self.tool_table_file = INFO.getToolTableFile()
         if not os.path.exists(self.tool_table_file):
@@ -225,3 +246,35 @@ class ToolTable(QtPyVCPDataPlugin):
 
         # import json
         # print json.dumps(table, sort_keys=True, indent=4)
+
+    def saveToolTable(self):
+
+        lines = []
+
+        # create the table header
+        items = []
+        for col in self.columns:
+            w = (6 if col in 'TPQ' else 8) - 1 if col == self.columns[0] else 0
+            items.append('{:<{w}}'.format(HEADER_LABELS[col], w=w))
+
+        items.append('Comment')
+        lines.append(';' + ' '.join(items))
+
+        # add the tools
+        for tool_num in sorted(self.TOOL_TABLE.iterkeys()):
+            items = []
+            tool_data = self.TOOL_TABLE[tool_num]
+            for col in self.columns:
+                items.append('{col}{val:<{w}}'
+                             .format(col=col,
+                                     val=tool_data[col],
+                                     w=6 if col in 'TPQ' else 8))
+
+            comment = tool_data.get('comment', '')
+            if comment is not '':
+                items.append(';' + comment)
+
+            lines.append(''.join(items))
+
+        with open(self.tool_table_file, 'w') as fh:
+            fh.write('\n'.join(lines))
