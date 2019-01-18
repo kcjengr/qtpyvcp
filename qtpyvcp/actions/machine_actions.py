@@ -74,19 +74,34 @@ class power:
     """Power action group"""
     @staticmethod
     def on():
-        """Turns machine power On"""
+        """Turns machine power On
+
+        ActionButton syntax::
+
+            machine.power.on
+        """
         LOG.debug("Setting state green<ON>")
         CMD.state(linuxcnc.STATE_ON)
 
     @staticmethod
     def off():
-        """Turns machine power Off"""
+        """Turns machine power Off
+
+        ActionButton syntax::
+
+            machine.power.off
+        """
         LOG.debug("Setting state red<OFF>")
         CMD.state(linuxcnc.STATE_OFF)
 
     @staticmethod
     def toggle():
-        """Toggles machine power On/Off"""
+        """Toggles machine power On/Off
+
+        ActionButton syntax::
+
+            machine.power.toggle
+        """
         if power.is_on():
             power.off()
         else:
@@ -570,7 +585,10 @@ class home:
     def all():
         """Homes all axes
 
-        ActionButton syntax machine.home.all"""
+        ActionButton syntax::
+
+            machine.home.all
+        """
         LOG.info("Homing all axes")
         _home_joint(-1)
 
@@ -580,7 +598,8 @@ class home:
 
         Args:
             axis (int | str) : Either the axis letter or number to home.
-        ActionButton syntax machine.home.axis:axis
+        ActionButton syntax::
+            machine.home.axis:axis
         """
         axis = getAxisLetter(axis)
         if axis.lower() == 'all':
@@ -596,7 +615,8 @@ class home:
 
         Args:
             jnum (int) : The number of the joint to home.
-        ActionButton syntax machine.home.joint:jnum
+        ActionButton syntax::
+            machine.home.joint:jnum
         """
         LOG.info("Homing joint: {}".format(jnum))
         _home_joint(jnum)
@@ -655,7 +675,10 @@ class unhome:
     def all():
         """Unhome all the axes
 
-        ActionButton syntax machine.unhome.all"""
+        ActionButton syntax::
+
+            machine.unhome.all
+        """
         LOG.info("Unhoming all Axes")
         _unhome_joint(-1)
 
@@ -665,7 +688,10 @@ class unhome:
 
         Args:
             axis (int | str) : Either the axis letter or number to home.
-        ActionButton syntax machine.unhome.axis:axis
+
+        ActionButton syntax::
+
+            machine.unhome.axis:axis
         """
         axis = getAxisLetter(axis)
         if axis.lower() == 'all': # not sure what this is copied from home
@@ -681,7 +707,10 @@ class unhome:
 
         Args:
             jnum (int) : The number of the joint to home.
-        ActionButton syntax machine.unhome.joint:jnum
+
+        ActionButton syntax::
+
+            machine.unhome.joint:jnum
         """
         LOG.info("Unhoming joint: {}".format(jnum))
         _unhome_joint(jnum)
@@ -830,7 +859,12 @@ class jog:
 
     @staticmethod
     def set_linear_speed(speed):
-        """Set Jog Linear Speed"""
+        """Set Jog Linear Speed
+
+        ActionSlider syntax::
+
+            machine.jog.set-linear-speed
+        """
         jog.linear_speed = float(speed)
 
     @staticmethod
@@ -943,18 +977,30 @@ class jog_mode:
 
     @staticmethod
     def continuous():
-        """Set Jog Continuous"""
-        jog.set_jog_continuous(True)
+        """Set Jog Continuous
+
+        ActionButton syntax::
+
+            machine.jog-mode.continuous
+        """
 
     @staticmethod
     def incremental():
-        """Set Jog Incremental"""
-        jog.set_jog_continuous(False)
+        """Set Jog Incremental
+
+        ActionButton syntax::
+
+            machine.jog-mode.incremental
+        """
 
     @staticmethod
     def toggle():
-        """Jog Mode Toggle"""
-        if jog.continuous:
+        """Jog Mode Toggle
+
+        ActionButton syntax::
+
+            machine.jog-mode.toggle
+        """
             jog_mode.incremental()
         else:
             jog_mode.continuous()
