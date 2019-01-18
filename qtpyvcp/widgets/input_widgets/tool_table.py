@@ -25,6 +25,7 @@ import os
 import sys
 
 import linuxcnc
+from pprint import pprint
 
 from qtpy.QtCore import Slot, Property, Qt, QModelIndex, QAbstractTableModel, QRegExp, QSortFilterProxyModel
 from qtpy.QtGui import QValidator, QRegExpValidator, QStandardItemModel
@@ -253,29 +254,31 @@ class ToolModel(QStandardItemModel):
 
             tool = list()
 
-            for offset, i in enumerate(['T', 'P', 'Z', 'D', 'comment']):
+            for offset, i in enumerate(['T', 'P', 'Z', 'D', 'R']):
                 tool.append(tool_data[i])
 
             self.tool_list.append(tool)
+        pprint(self.tool_list)
         self.rootItem.appendChild(ToolItem(self.tool_list, self.rootItem))
 
     def save_tool_table(self):
+
+        tool_table = dict()
+        tool_header = ['T', 'P', 'Z', 'D', 'R']
         for row_index in range(self.rowCount()):
-            line = ""
+            tool = dict()
+
             for col_index in range(self.columnCount()):
                 item = self.tool_list[row_index][col_index]
                 if item is not None and item != "":
-                    if col_index in (range(0, 4)):
-                        line += "{}{} ".format(['T', 'P', 'Z', 'D', ';'][col_index], item)
-                    else:
-                        line += "{}{}".format(['T', 'P', 'Z', 'D', ';'][col_index], item.strip())
-            if line:
-                line += "\n"
 
-                tool_file.write(line)
+                    tool[tool_header[col_index]] = item
 
-        tool_file.flush()
-        os.fsync(tool_file.fileno())
+            tool_table[row_index] = tool
+
+        pprint(tool_table)
+
+        getPlugin('tooltable').saveToolTable(tool_table)
 
     def newTool(self, row, dir):
         position = row + dir
