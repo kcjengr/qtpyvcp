@@ -312,6 +312,7 @@ class ToolTable(QtPyVCPDataPlugin):
             header_lines = self.file_header_template.format(
                                 version=qtpyvcp.__version__,
                                 datetime=datetime.now()).lstrip().splitlines()
+            header_lines.append('') # extra new line before table header
         except:
             header_lines = []
 
