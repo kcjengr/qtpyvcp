@@ -246,18 +246,15 @@ class ToolModel(QStandardItemModel):
 
         tool_table = getPlugin('tooltable').TOOL_TABLE
 
-        parents = []
-
         for index, tool_data in tool_table.items():
-            position = index - 1
 
             tool = list()
 
             for offset, i in enumerate(['T', 'P', 'Z', 'D', 'comment']):
                 tool.append(tool_data[i])
 
-            self.tool_list.insert(position, tool)
-            self.rootItem.appendChild(ToolItem(tool, self.rootItem))
+            self.tool_list.append(tool)
+        self.rootItem.appendChild(ToolItem(self.tool_list, self.rootItem))
 
     def saveToolTable(self, tool_file):
         for row_index in range(self.rowCount()):
