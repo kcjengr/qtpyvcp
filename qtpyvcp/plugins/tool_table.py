@@ -187,8 +187,6 @@ class ToolTable(QtPyVCPDataPlugin):
         # update signals
         STATUS.tool_in_spindle.onValueChanged(self.onToolChanged)
 
-        self.saveToolTable()
-
     def initialise(self):
         self.fs_watcher = QFileSystemWatcher()
         self.fs_watcher.addPath(self.tool_table_file)
@@ -292,10 +290,12 @@ class ToolTable(QtPyVCPDataPlugin):
         import json
         print json.dumps(table, sort_keys=True, indent=4)
 
-    def saveToolTable(self, columns=None, tool_file=None):
+    def saveToolTable(self, tool_table, columns=None, tool_file=None):
         """Write tooltable data to file.
 
         Args:
+            tool_table (dict) : Dictionary of dictionaries containing
+                the tool data to write to the file.
             columns (str | list) : A list of data columns to write.
                 If `None` will use the value of ``self.columns``.
             tool_file (str) : Path to write the tooltable too.
@@ -339,9 +339,9 @@ class ToolTable(QtPyVCPDataPlugin):
         lines.append(';' + ' '.join(items))
 
         # add the tools
-        for tool_num in sorted(self.TOOL_TABLE.iterkeys()):
+        for tool_num in sorted(tool_table.iterkeys()):
             items = []
-            tool_data = self.TOOL_TABLE[tool_num]
+            tool_data = tool_table[tool_num]
             for col in columns:
                 if col == 'R':
                     continue
