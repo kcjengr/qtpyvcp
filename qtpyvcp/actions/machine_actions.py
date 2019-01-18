@@ -940,24 +940,21 @@ jog.axis.bindOk = _jog_axis_bindOk
 
 class jog_mode:
     """Jog Mode Group"""
-    mode = 'continuous'
 
     @staticmethod
     def continuous():
         """Set Jog Continuous"""
-        LOG.debug("Setting jog mode continuous")
-        STATUS.setJogMode(True)
+        jog.set_jog_continuous(True)
 
     @staticmethod
     def incremental():
         """Set Jog Incremental"""
-        LOG.debug("Setting jog mode incremental")
-        STATUS.setJogMode(False)
+        jog.set_jog_continuous(False)
 
     @staticmethod
     def toggle():
         """Jog Mode Toggle"""
-        if STATUS.jog_mode == True:
-            jog_mode.continuous()
-        else:
+        if jog.continuous:
             jog_mode.incremental()
+        else:
+            jog_mode.continuous()
