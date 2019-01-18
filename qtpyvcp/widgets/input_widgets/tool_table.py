@@ -245,7 +245,7 @@ class ToolModel(QStandardItemModel):
         self.tool_list[index.row()][index.column()] = value
         return True
 
-    def loadToolTable(self):
+    def load_tool_table(self):
 
         del self.tool_list[:]
 
@@ -259,7 +259,7 @@ class ToolModel(QStandardItemModel):
             self.tool_list.append(tool)
         self.rootItem.appendChild(ToolItem(self.tool_list, self.rootItem))
 
-    def saveToolTable(self, tool_file):
+    def save_tool_table(self):
         for row_index in range(self.rowCount()):
             line = ""
             for col_index in range(self.columnCount()):
@@ -271,6 +271,7 @@ class ToolModel(QStandardItemModel):
                         line += "{}{}".format(['T', 'P', 'Z', 'D', ';'][col_index], item.strip())
             if line:
                 line += "\n"
+
                 tool_file.write(line)
 
         tool_file.flush()
@@ -355,7 +356,7 @@ class ToolTable(QTableView):
 
         LOG.debug("Loading tool table: {0}".format(fn))
 
-        self.tool_model.loadToolTable()
+        self.tool_model.load_tool_table()
 
         self.selectRow(0)
 
@@ -364,16 +365,7 @@ class ToolTable(QTableView):
         if not self.ask_dialog("Do you wan't to save and load this tool table into the system?"):
             return
 
-        fn = self.tool_table_file
-
-        if fn is None:
-            return
-
-        LOG.debug("Saving tool table as: {0}".format(fn))
-
-        with open(fn, "w") as f:
-            self.tool_model.saveToolTable(f)
-
+        self.tool_model.save_tool_table()
         self.cmd.load_tool_table()
 
     @Slot()
