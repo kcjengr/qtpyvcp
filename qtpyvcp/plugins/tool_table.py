@@ -160,7 +160,8 @@ class ToolTable(QtPyVCPDataPlugin):
 
         self.fs_watcher = None
         self.orig_header = ''
-        self.columns = columns or 'TPXYZABCUVWDIJQ'
+
+        self.columns = self.validateColumns(columns) or [c for c in 'TPXYZD']
 
         self.tool_table_file = INFO.getToolTableFile()
         if not os.path.exists(self.tool_table_file):
@@ -178,6 +179,26 @@ class ToolTable(QtPyVCPDataPlugin):
         self.fs_watcher = QFileSystemWatcher()
         self.fs_watcher.addPath(self.tool_table_file)
         self.fs_watcher.fileChanged.connect(self.onToolTableFileChanged)
+
+    @staticmethod
+    def validateColumns(columns):
+        """Validate display column specification.
+
+        The user can specify columns in multiple ways, method is used to make
+        sure that that data is validated and converted to a consistent format.
+
+        Args:
+            columns (str | list) : A string or list of the column IDs
+                that should be shown in the tooltable.
+
+        Returns:
+            None if not valid, else a list of uppercase column IDs.
+        """
+        if not isinstance(columns, (basestring, list, tuple)):
+            return
+
+        return [col for col in [col.strip().upper() for col in columns]
+                if col in 'TPXYZABCUVWDIJQ' and not col == '']
 
     def onToolTableFileChanged(self, path):
         LOG.debug('Tool Table file changed: {}'.format(path))
@@ -247,13 +268,26 @@ class ToolTable(QtPyVCPDataPlugin):
         # import json
         # print json.dumps(table, sort_keys=True, indent=4)
 
-    def saveToolTable(self):
+    def saveToolTable(self, columns=None, tool_file=None):
+        """Write tooltable data to file.
+
+        Args:
+            columns (str | list) : A list of data columns to write.
+                If `None` will use the value of ``self.columns``.
+            tool_file (str) : Path to write the tooltable too.
+                Defaults to ``self.tool_table_file``.
+        """
+
+        columns = self.validateColumns(columns) or self.columns
+
+        if tool_file is None:
+            tool_file = self.tool_table_file
 
         lines = []
 
         # create the table header
         items = []
-        for col in self.columns:
+        for col in columns:
             w = (6 if col in 'TPQ' else 8) - 1 if col == self.columns[0] else 0
             items.append('{:<{w}}'.format(HEADER_LABELS[col], w=w))
 
@@ -264,7 +298,7 @@ class ToolTable(QtPyVCPDataPlugin):
         for tool_num in sorted(self.TOOL_TABLE.iterkeys()):
             items = []
             tool_data = self.TOOL_TABLE[tool_num]
-            for col in self.columns:
+            for col in columns:
                 items.append('{col}{val:<{w}}'
                              .format(col=col,
                                      val=tool_data[col],
@@ -276,5 +310,6 @@ class ToolTable(QtPyVCPDataPlugin):
 
             lines.append(''.join(items))
 
-        with open(self.tool_table_file, 'w') as fh:
+        # write to file
+        with open(tool_file, 'w') as fh:
             fh.write('\n'.join(lines))
