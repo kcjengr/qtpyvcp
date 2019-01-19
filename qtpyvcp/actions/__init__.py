@@ -88,7 +88,7 @@ def bindWidget(widget, action):
 
     elif isinstance(widget, QPushButton) or isinstance(widget, QCheckBox):
 
-        if action.startswith('machine.jog'):
+        if action.startswith('machine.jog.axis'):
             widget.pressed.connect(lambda: method(*args, **kwargs))
             widget.released.connect(lambda: method(*args, speed=0, **kwargs))
 

@@ -986,6 +986,8 @@ class jog_mode:
 
             machine.jog-mode.continuous
         """
+        jog.set_jog_continuous(True)
+
 
     @staticmethod
     def incremental():
@@ -995,6 +997,7 @@ class jog_mode:
 
             machine.jog-mode.incremental
         """
+        jog.set_jog_continuous(False)
 
     @staticmethod
     def toggle():
