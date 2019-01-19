@@ -64,13 +64,13 @@ class ItemDelegate(QStyledItemDelegate):
             editor.setMaximum(100)
             return editor
 
-        elif index.column() in (2, 3):
+        elif index.column() in (2, 3, 4, 5):
             editor = QDoubleSpinBox(parent)
             editor.setDecimals(4)
             editor.setMinimum(0)
             return editor
 
-        elif index.column() == 4:
+        elif index.column() == 6:
             editor = QLineEdit(parent)
             margins = editor.textMargins()
             padding = editor.fontMetrics().width(self._padding) + 1
@@ -82,13 +82,13 @@ class ItemDelegate(QStyledItemDelegate):
 
     def setEditorData(self, item, index):
         value = index.model().data(index, Qt.EditRole)
-        if index.column() in (0, 1, 2, 3):
+        if index.column() in (0, 1, 2, 3, 4, 5):
             item.setValue(value)
         else:
             item.setText(value)
 
     def setModelData(self, item, model, index):
-        if index.column() in (0, 1, 2, 3):
+        if index.column() in (0, 1, 2, 3, 4, 5):
             item.interpretText()
             value = item.value()
         else:
@@ -208,7 +208,9 @@ class ToolModel(QStandardItemModel):
             elif column == 4:
                 return float(item[4])
             elif column == 5:
-                return str(item[5])
+                return float(item[5])
+            elif column == 6:
+                return str(item[6])
 
         elif role == Qt.DisplayRole:
             if column == 0:
@@ -223,6 +225,8 @@ class ToolModel(QStandardItemModel):
                 return item[4]
             elif column == 5:
                 return item[5]
+            elif column == 6:
+                return item[6]
 
         elif role == Qt.TextAlignmentRole:
             if column == 0:
@@ -236,6 +240,8 @@ class ToolModel(QStandardItemModel):
             elif column == 4:
                 return Qt.AlignVCenter | Qt.AlignRight
             elif column == 5:
+                return Qt.AlignVCenter | Qt.AlignRight
+            elif column == 6:
                 return Qt.AlignVCenter | Qt.AlignLeft
         else:
             return None
