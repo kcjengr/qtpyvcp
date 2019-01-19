@@ -3,7 +3,7 @@ LinuxCNC Tool Table
 
 QtPyVCP will preserve comments before the opening semicolon.
 
-;Tool  Pocket X Offset Y Offset Z Offset Diameter Comment
+;Tool  Pocket X Offset Y Offset Z Offset Diameter Remark
 T0     P0     X0.0     Y0.0     Z0.0     D0.0     ; SPINDLE NOSE
 T1     P1     X0.0     Y0.0     Z0.6234  D0.0     ; 1/8" END MILL
 T2     P2     X0.0     Y0.0     Z0.8245  D0.0     ; 1/4" 2FL END MILL
