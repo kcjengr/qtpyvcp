@@ -359,7 +359,7 @@ class ToolTable(QtPyVCPDataPlugin):
         lines.append(';' + ' '.join(items))
 
         # add the tools
-        for tool_num in sorted(tool_table.iterkeys()):
+        for tool_num in sorted(tool_table.iterkeys())[1:]:
             items = []
             tool_data = tool_table[tool_num]
             for col in columns:
