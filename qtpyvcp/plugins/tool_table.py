@@ -8,6 +8,8 @@ import os
 from itertools import takewhile
 from datetime import datetime
 
+import linuxcnc
+
 from qtpy.QtCore import QFileSystemWatcher, QTimer
 
 import qtpyvcp
@@ -15,6 +17,7 @@ from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import QtPyVCPDataPlugin, QtPyVCPDataChannel, getPlugin
 
+CMD = linuxcnc.command()
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 INFO = Info()
@@ -382,3 +385,7 @@ class ToolTable(QtPyVCPDataPlugin):
         # write to file
         with open(tool_file, 'w') as fh:
             fh.write('\n'.join(lines))
+            fh.flush()
+            os.fsync(fh.fileno())
+
+        CMD.load_tool_table()
