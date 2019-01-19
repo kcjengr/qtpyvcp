@@ -19416,7 +19416,7 @@ font: 11pt bebas kai;
    <sender>tool_table_add_tool_button</sender>
    <signal>clicked()</signal>
    <receiver>tableWidget_2</receiver>
-   <slot>insertToolBelow()</slot>
+   <slot>addTool()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>404</x>
