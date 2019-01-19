@@ -302,8 +302,8 @@ class ToolTable(QtPyVCPDataPlugin):
 
         self.current_tool._update(self.TOOL_TABLE[STATUS.tool_in_spindle.value])
 
-        import json
-        print json.dumps(table, sort_keys=True, indent=4)
+        # import json
+        # print json.dumps(table, sort_keys=True, indent=4)
 
     def saveToolTable(self, tool_table, columns=None, tool_file=None):
         """Write tooltable data to file.
@@ -371,8 +371,8 @@ class ToolTable(QtPyVCPDataPlugin):
 
             lines.append(''.join(items))
 
-        for line in lines:
-            print line
+        # for line in lines:
+        #     print line
 
         # write to file
         with open(tool_file, 'w') as fh:
