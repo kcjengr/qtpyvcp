@@ -113,9 +113,9 @@ class ToolItem(object):
         if row < 0:
             row = 0
             return self.childItems[row]
-        elif row > self.childCount():
-            row = self.childCount()
-            return self.childItems[row - 1]
+        else:
+            row = self.childCount() - 1
+            return self.childItems[row]
 
     def childCount(self):
         return len(self.childItems)
@@ -259,7 +259,8 @@ class ToolModel(QStandardItemModel):
         for tool_data in self.tool_table.iterTools():
             self.tool_list.append(tool_data)
 
-        self.rootItem.appendChild(ToolItem(self.tool_list, self.rootItem))
+        tool_item = ToolItem(self.tool_list, self.rootItem)
+        self.rootItem.appendChild(tool_item)
 
     def save_tool_table(self):
 
