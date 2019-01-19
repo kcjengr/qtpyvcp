@@ -141,14 +141,14 @@ class ToolItem(object):
 class ToolModel(QStandardItemModel):
     def __init__(self, parent=None):
         super(ToolModel, self).__init__(parent)
-        self.table_header = ["Tool", "Pocket", "Z", "Diameter", "Comment"]
-        self.new_tool = [0, 0, 0.0, 0.0, "New Tool"]
+
+        self.tool_table = getPlugin('tooltable')
+        self.tool_list = list()
+
+        self.table_header = [self.tool_table.COLUMN_LABELS[col]
+                             for col in self.tool_table.columns]
 
         self.rootItem = ToolItem(self.table_header)
-
-        self.tool_table = getPlugin('tooltable').TOOL_TABLE
-
-        self.tool_list = list()
 
     def columnCount(self, parent=None):
         return len(self.table_header)
@@ -250,16 +250,12 @@ class ToolModel(QStandardItemModel):
 
         del self.tool_list[:]
 
-        for index, tool_data in self.tool_table.items():
+        for tool_data in self.tool_table.iterTools():
+            self.tool_list.append(tool_data)
 
-            tool = list()
-
-            for offset, i in enumerate(['T', 'P', 'Z', 'D', 'R']):
-                tool.append(tool_data[i])
-
-            self.tool_list.append(tool)
         pprint(self.tool_list)
         self.rootItem.appendChild(ToolItem(self.tool_list, self.rootItem))
+        self.rootItem.append
 
     def save_tool_table(self):
 
@@ -286,7 +282,7 @@ class ToolModel(QStandardItemModel):
             position = 0
 
         self.beginInsertRows(QModelIndex(), position, position)
-        self.tool_list.insert(position, self.new_tool)
+        self.tool_list.insert(position, self.tool_table.newTool(tnum=position))
         self.endInsertRows()
 
     def removeTool(self, row):
@@ -295,6 +291,11 @@ class ToolModel(QStandardItemModel):
         self.endRemoveRows()
 
         return True
+
+    def clearTable(self):
+        self.beginResetModel()
+        self.tool_list = []
+        self.endResetModel()
 
 
 class ProxyModel(QSortFilterProxyModel):
@@ -345,7 +346,7 @@ class ToolTable(QTableView):
     @Slot()
     def loadToolTable(self):
         if self.tool_table_loaded and not self.ask_dialog(
-                "Do you wan't to re-load the tool table?\n all unsaved changes will be lost."):
+                "Do you want to re-load the tool table?\n All unsaved changes will be lost."):
             return
 
         fn = self.tool_table_file
@@ -359,6 +360,7 @@ class ToolTable(QTableView):
 
         LOG.debug("Loading tool table: {0}".format(fn))
 
+        self.tool_model.clearTable()
         self.tool_model.load_tool_table()
 
         self.selectRow(0)
@@ -391,7 +393,7 @@ class ToolTable(QTableView):
             return
         current_tool = self.tool_model.tool_list[current_row][0]
 
-        if not self.ask_dialog("Do you wan't to delete T{} ?".format(current_tool)):
+        if not self.ask_dialog("Do you want to delete T{} ?".format(current_tool)):
             return
 
         self.tool_model.removeTool(current_row)
@@ -399,7 +401,7 @@ class ToolTable(QTableView):
     @Slot()
     def removeAllTools(self, confirm=True):
         if confirm:
-            if not self.ask_dialog("Do you wan't to delete the whole tool table?"):
+            if not self.ask_dialog("Do you want to delete the whole tool table?"):
                 return
 
         for i in reversed(range(self.tool_model.rowCount())):

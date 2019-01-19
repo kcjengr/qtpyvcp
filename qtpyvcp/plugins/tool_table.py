@@ -73,7 +73,6 @@ COLUMN_LABELS = {
 }
 
 
-
 class CurrentTool(QtPyVCPDataChannel):
     """Current tool data channel.
     """
@@ -164,6 +163,7 @@ class ToolTable(QtPyVCPDataPlugin):
     current_tool = CurrentTool()
 
     TOOL_TABLE = {}
+    DEFAULT_TOOL = DEFAULT_TOOL
     COLUMN_LABELS = COLUMN_LABELS
 
     def __init__(self, columns='TPXYZDR', file_header_template=FILE_HEADER):
@@ -211,6 +211,14 @@ class ToolTable(QtPyVCPDataPlugin):
 
         return [col for col in [col.strip().upper() for col in columns]
                 if col in 'TPXYZABCUVWDIJQR' and not col == '']
+
+    def newTool(self, tnum=None):
+        """Get a dict of default tool values for a new tool."""
+        if tnum is None:
+            tnum = len(self.TOOL_TABLE)
+        new_tool = DEFAULT_TOOL.copy()
+        new_tool.update({'T': tnum, 'P': tnum, 'R': 'New Tool'})
+        return new_tool
 
     def onToolTableFileChanged(self, path):
         LOG.debug('Tool Table file changed: {}'.format(path))
