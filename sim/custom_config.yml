@@ -12,7 +12,6 @@ data_plugins:
 
   tooltable:
     kwargs:
-      columns: TPXYZD
       file_header_template: |
         LinuxCNC Tool Table
         -------------------

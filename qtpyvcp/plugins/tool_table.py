@@ -8,6 +8,8 @@ import os
 from itertools import takewhile
 from datetime import datetime
 
+import linuxcnc
+
 from qtpy.QtCore import QFileSystemWatcher, QTimer
 
 import qtpyvcp
@@ -15,6 +17,7 @@ from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import QtPyVCPDataPlugin, QtPyVCPDataChannel, getPlugin
 
+CMD = linuxcnc.command()
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 INFO = Info()
@@ -71,7 +74,6 @@ COLUMN_LABELS = {
     'Y': 'Y Offset',
     'Z': 'Z Offset',
 }
-
 
 
 class CurrentTool(QtPyVCPDataChannel):
@@ -164,6 +166,7 @@ class ToolTable(QtPyVCPDataPlugin):
     current_tool = CurrentTool()
 
     TOOL_TABLE = {}
+    DEFAULT_TOOL = DEFAULT_TOOL
     COLUMN_LABELS = COLUMN_LABELS
 
     def __init__(self, columns='TPXYZDR', file_header_template=FILE_HEADER):
@@ -212,6 +215,14 @@ class ToolTable(QtPyVCPDataPlugin):
         return [col for col in [col.strip().upper() for col in columns]
                 if col in 'TPXYZABCUVWDIJQR' and not col == '']
 
+    def newTool(self, tnum=None):
+        """Get a dict of default tool values for a new tool."""
+        if tnum is None:
+            tnum = len(self.TOOL_TABLE)
+        new_tool = DEFAULT_TOOL.copy()
+        new_tool.update({'T': tnum, 'P': tnum, 'R': 'New Tool'})
+        return new_tool
+
     def onToolTableFileChanged(self, path):
         LOG.debug('Tool Table file changed: {}'.format(path))
         # ToolEdit deletes the file and then rewrites it, so wait
@@ -229,13 +240,23 @@ class ToolTable(QtPyVCPDataPlugin):
         # reload with the new data
         self.loadToolTable()
 
-    def loadToolTable(self):
+    def iterTools(self, tool_table=None, columns=None):
+        tool_table = tool_table or self.TOOL_TABLE
+        columns = self.validateColumns(columns) or self.columns
+        for tool in sorted(tool_table.iterkeys()):
+            tool_data = tool_table[tool]
+            yield [tool_data[key] for key in columns]
 
-        if not os.path.exists(self.tool_table_file):
-            LOG.critical("Tool table file does not exist: {}".format(self.tool_table_file))
-            return
+    def loadToolTable(self, tool_file=None):
 
-        with open(self.tool_table_file, 'r') as fh:
+        if tool_file is None:
+            tool_file = self.tool_table_file
+
+        if not os.path.exists(tool_file):
+            LOG.critical("Tool table file does not exist: {}".format(tool_file))
+            return {}
+
+        with open(tool_file, 'r') as fh:
             lines = [line.strip() for line in fh.readlines()]
 
         # find opening colon, and get header data so it can be restored
@@ -287,8 +308,10 @@ class ToolTable(QtPyVCPDataPlugin):
 
         self.current_tool._update(self.TOOL_TABLE[STATUS.tool_in_spindle.value])
 
-        import json
-        print json.dumps(table, sort_keys=True, indent=4)
+        # import json
+        # print json.dumps(table, sort_keys=True, indent=4)
+
+        return table.copy()
 
     def saveToolTable(self, tool_table, columns=None, tool_file=None):
         """Write tooltable data to file.
@@ -339,7 +362,7 @@ class ToolTable(QtPyVCPDataPlugin):
         lines.append(';' + ' '.join(items))
 
         # add the tools
-        for tool_num in sorted(tool_table.iterkeys()):
+        for tool_num in sorted(tool_table.iterkeys())[1:]:
             items = []
             tool_data = tool_table[tool_num]
             for col in columns:
@@ -356,9 +379,13 @@ class ToolTable(QtPyVCPDataPlugin):
 
             lines.append(''.join(items))
 
-        for line in lines:
-            print line
+        # for line in lines:
+        #     print line
 
         # write to file
         with open(tool_file, 'w') as fh:
             fh.write('\n'.join(lines))
+            fh.flush()
+            os.fsync(fh.fileno())
+
+        CMD.load_tool_table()
