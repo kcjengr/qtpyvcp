@@ -22,8 +22,9 @@ class ErrorDialog(QDialog):
         self.exc_typ = exc_type.__name__
         self.exc_msg = exc_msg
         self.exc_tb = "".join(format_exception(*exc_info))
-
-        self.errorType.setText(self.exc_typ + ':')
+        color = 'orange' if 'warning'in self.exc_typ.lower() else 'red'
+        self.errorType.setText("<font color='{}'>{}:</font>"
+                               .format(color, self.exc_typ))
         self.errorValue.setText(str(exc_msg))
         self.setWindowTitle('Unhandled Exception - {}'.format(self.exc_typ))
         self.tracebackText.setText(self.exc_tb)
