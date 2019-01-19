@@ -25,7 +25,6 @@ import os
 import sys
 
 import linuxcnc
-from pprint import pprint
 
 from qtpy.QtCore import Slot, Property, Qt, QModelIndex, QAbstractTableModel, QRegExp, QSortFilterProxyModel
 from qtpy.QtGui import QValidator, QRegExpValidator, QStandardItemModel
@@ -278,22 +277,26 @@ class ToolModel(QStandardItemModel):
             for col_index in range(self.columnCount()):
                 item = self.tool_list[row_index][col_index]
                 if item is not None and item != "":
-
                     tool[tool_header[col_index]] = item
 
             tool_table[row_index] = tool
 
-        pprint(tool_table)
-
         getPlugin('tooltable').saveToolTable(tool_table)
 
-    def newTool(self, row, dir):
-        position = row + dir
+    def newTool(self, row, direction):
+
+        if row == 0:
+            position = 0
+        else:
+            position = row + direction
+
         if position < 0:
             position = 0
 
+
         self.beginInsertRows(QModelIndex(), position, position)
-        self.tool_list.insert(position, self.tool_table.newTool(tnum=position))
+        for tool_data in self.tool_table.iterTools(tool_table={position: self.tool_table.newTool(tnum=position)}):
+            self.tool_list.insert(position, tool_data)
         self.endInsertRows()
 
     def removeTool(self, row):
