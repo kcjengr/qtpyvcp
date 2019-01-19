@@ -1,6 +1,6 @@
-===================
-QtPyVCP Application
-===================
+===========
+Application
+===========
 
 .. automodule:: qtpyvcp.application
     :members:

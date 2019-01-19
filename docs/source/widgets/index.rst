@@ -1,6 +1,6 @@
-===============
-QtPyVCP Widgets
-===============
+=======
+Widgets
+=======
 
 QtPyVCP custom widget documentation.
 

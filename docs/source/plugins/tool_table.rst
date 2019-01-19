@@ -1,6 +1,6 @@
-===============
-Tool Table Data
-===============
+==========
+Tool Table
+==========
 
 .. automodule:: qtpyvcp.plugins.tool_table
     :members:
