@@ -244,13 +244,16 @@ class ToolTable(QtPyVCPDataPlugin):
             tool_data = tool_table[tool]
             yield [tool_data[key] for key in columns]
 
-    def loadToolTable(self):
+    def loadToolTable(self, tool_file=None):
 
-        if not os.path.exists(self.tool_table_file):
-            LOG.critical("Tool table file does not exist: {}".format(self.tool_table_file))
-            return
+        if tool_file is None:
+            tool_file = self.tool_table_file
 
-        with open(self.tool_table_file, 'r') as fh:
+        if not os.path.exists(tool_file):
+            LOG.critical("Tool table file does not exist: {}".format(tool_file))
+            return {}
+
+        with open(tool_file, 'r') as fh:
             lines = [line.strip() for line in fh.readlines()]
 
         # find opening colon, and get header data so it can be restored
@@ -304,6 +307,8 @@ class ToolTable(QtPyVCPDataPlugin):
 
         # import json
         # print json.dumps(table, sort_keys=True, indent=4)
+
+        return table.copy()
 
     def saveToolTable(self, tool_table, columns=None, tool_file=None):
         """Write tooltable data to file.
