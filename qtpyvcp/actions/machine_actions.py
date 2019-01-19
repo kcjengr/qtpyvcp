@@ -169,7 +169,6 @@ def issue_mdi(command, reset=True):
         command (str) : A valid RS274 gcode command string.
         rest (bool, optional): Whether to reset the Task Mode to the state
             the machine was in prior to issuing the MDI command.
-
     """
     if reset:
         # save the previous mode
@@ -189,8 +188,8 @@ def issue_mdi(command, reset=True):
 
 def _issue_mdi_ok(mdi_cmd='', widget=None):
     if STAT.task_state == linuxcnc.STATE_ON \
-        and STATUS.allHomed() \
-        and STAT.interp_state == linuxcnc.INTERP_IDLE:
+                          and STATUS.allHomed() \
+                          and STAT.interp_state == linuxcnc.INTERP_IDLE:
 
         ok = True
         msg = ""
@@ -598,7 +597,9 @@ class home:
 
         Args:
             axis (int | str) : Either the axis letter or number to home.
+
         ActionButton syntax::
+
             machine.home.axis:axis
         """
         axis = getAxisLetter(axis)
@@ -615,7 +616,9 @@ class home:
 
         Args:
             jnum (int) : The number of the joint to home.
+
         ActionButton syntax::
+
             machine.home.joint:jnum
         """
         LOG.info("Homing joint: {}".format(jnum))
