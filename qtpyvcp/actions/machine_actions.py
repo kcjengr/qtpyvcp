@@ -1001,6 +1001,7 @@ class jog_mode:
 
             machine.jog-mode.toggle
         """
+        if jog.continuous:
             jog_mode.incremental()
         else:
             jog_mode.continuous()
