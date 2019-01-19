@@ -259,10 +259,14 @@ class ToolModel(QStandardItemModel):
 
     def load_tool_table(self):
 
-        del self.tool_list[:]
+        self.clearTable()
+
+        self.beginInsertRows(QModelIndex(), self.columnCount(), self.columnCount())
 
         for tool_data in self.tool_table.iterTools():
-            self.tool_list.append(tool_data)
+            self.tool_list.insert(self.columnCount(), tool_data)
+
+        self.endInsertRows()
 
         tool_item = ToolItem(self.tool_list, self.rootItem)
         self.rootItem.appendChild(tool_item)
@@ -270,14 +274,14 @@ class ToolModel(QStandardItemModel):
     def save_tool_table(self):
 
         tool_table = dict()
-        tool_header = ['T', 'P', 'Z', 'D', 'R']
+        table_header = ['T', 'P', 'X', 'Y', 'Z', 'D', 'R']
         for row_index in range(self.rowCount()):
             tool = dict()
 
             for col_index in range(self.columnCount()):
                 item = self.tool_list[row_index][col_index]
                 if item is not None and item != "":
-                    tool[tool_header[col_index]] = item
+                    tool[table_header[col_index]] = item
 
             tool_table[row_index] = tool
 
@@ -293,15 +297,16 @@ class ToolModel(QStandardItemModel):
         if position < 0:
             position = 0
 
-
         self.beginInsertRows(QModelIndex(), position, position)
+
         for tool_data in self.tool_table.iterTools(tool_table={position: self.tool_table.newTool(tnum=position)}):
             self.tool_list.insert(position, tool_data)
+
         self.endInsertRows()
 
     def removeTool(self, row):
         self.beginRemoveRows(QModelIndex(), row, row)
-        self.tool_list.pop(row)
+        del self.tool_list[row]
         self.endRemoveRows()
 
         return True
