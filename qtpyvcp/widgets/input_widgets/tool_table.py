@@ -312,9 +312,9 @@ class ToolModel(QStandardItemModel):
         return True
 
     def clearTable(self):
-        self.beginResetModel()
+        self.beginRemoveRows(QModelIndex(), 0, 0)
         del self.tool_list[:]
-        self.endResetModel()
+        self.endRemoveRows()
 
 
 class ProxyModel(QSortFilterProxyModel):
@@ -379,9 +379,7 @@ class ToolTable(QTableView):
 
         LOG.debug("Loading tool table: {0}".format(fn))
 
-        self.tool_model.clearTable()
         self.tool_model.load_tool_table()
-
         self.selectRow(0)
 
     @Slot()
