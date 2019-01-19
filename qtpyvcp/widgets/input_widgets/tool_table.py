@@ -206,7 +206,9 @@ class ToolModel(QStandardItemModel):
             elif column == 3:
                 return float(item[3])
             elif column == 4:
-                return str(item[4])
+                return float(item[4])
+            elif column == 5:
+                return str(item[5])
 
         elif role == Qt.DisplayRole:
             if column == 0:
@@ -219,6 +221,8 @@ class ToolModel(QStandardItemModel):
                 return item[3]
             elif column == 4:
                 return item[4]
+            elif column == 5:
+                return item[5]
 
         elif role == Qt.TextAlignmentRole:
             if column == 0:
@@ -230,6 +234,8 @@ class ToolModel(QStandardItemModel):
             elif column == 3:
                 return Qt.AlignVCenter | Qt.AlignRight
             elif column == 4:
+                return Qt.AlignVCenter | Qt.AlignRight
+            elif column == 5:
                 return Qt.AlignVCenter | Qt.AlignLeft
         else:
             return None
@@ -253,9 +259,7 @@ class ToolModel(QStandardItemModel):
         for tool_data in self.tool_table.iterTools():
             self.tool_list.append(tool_data)
 
-        pprint(self.tool_list)
         self.rootItem.appendChild(ToolItem(self.tool_list, self.rootItem))
-        self.rootItem.append
 
     def save_tool_table(self):
 
@@ -294,7 +298,7 @@ class ToolModel(QStandardItemModel):
 
     def clearTable(self):
         self.beginResetModel()
-        self.tool_list = []
+        del self.tool_list[:]
         self.endResetModel()
 
 
