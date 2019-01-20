@@ -232,6 +232,7 @@ class ToolTable(QTableView):
     @Slot()
     def addTool(self):
         self.tool_model.addTool()
+        self.selectRow(self.tool_model.rowCount() - 1)
 
     def selectedRow(self):
         return self.selectionModel().currentIndex().row()
