@@ -4,16 +4,16 @@ LinuxCNC Tool Table
 QtPyVCP will preserve comments before the opening semicolon.
 
 ;Tool  Pocket X Offset Y Offset Z Offset Diameter Remark
-T1     P1     X0.0     Y0.0     Z0.6234  D0.0     ; 1/8" END MILL
-T2     P2     X0.0     Y0.0     Z0.8245  D0.0     ; 1/4" 2FL END MILL
-T3     P3     X0.0     Y0.0     Z1.235   D0.0     ; .375 ACCUPRO EM
-T4     P4     X0.0     Y0.0     Z1.4345  D0.0     ; 1/2" 2FL HERTEL EM
-T5     P5     X0.0     Y0.0     Z2.644   D0.0     ; No. 7 TAP DRILL
-T6     P6     X0.0     Y0.0     Z1.1545  D0.0     ; #59 ORIFICE DRILL
-T7     P7     X0.0     Y0.0     Z2.565   D0.0     ; 1/4" DRILL
-T8     P8     X0.0     Y0.0     Z2.232   D0.0     ; FACE MILL
-T9     P9     X0.0     Y0.0     Z1.234   D0.0     ; 1/4" BALL MILL
-T10    P10    X0.0     Y0.0     Z2.5     D0.0     ; coolest tool ever
-T11    P11    X0.0     Y0.0     Z3.125   D0.0     ; 1/2" roughing end mill
-T12    P12    X0.0     Y0.0     Z4.2322  D0.0     ; big khauna cutter
-T13    P13    X0.0     Y0.0     Z3.1     D0.0     ; hulk smasher
+T1     P1     X0.0     Y0.0     Z0.6234  D0.125   ; 1/8" END MILL
+T2     P2     X0.0     Y0.0     Z0.8245  D0.25    ; 1/4" 2FL END MILL
+T3     P3     X0.0     Y0.0     Z1.235   D0.375   ; .375 ACCUPRO EM
+T4     P4     X0.0     Y0.0     Z1.4345  D0.5     ; 1/2" 2FL HERTEL EM
+T5     P5     X0.0     Y0.0     Z2.644   D0.201   ; No. 7 TAP DRILL (1/4-20)
+T6     P6     X0.0     Y0.0     Z1.1545  D0.042   ; #59 ORIFICE DRILL
+T7     P7     X0.0     Y0.0     Z2.565   D0.25    ; 1/4" DRILL
+T8     P8     X0.0     Y0.0     Z2.232   D2.375   ; FACE MILL
+T9     P9     X0.0     Y0.0     Z1.234   D0.25    ; 1/4" BALL MILL
+T10    P10    X0.0     Y0.0     Z2.5     D0.666   ; coolest tool ever
+T11    P11    X0.0     Y0.0     Z3.125   D0.5     ; 1/2" roughing end mill
+T12    P12    X0.0     Y0.0     Z4.2322  D2.0     ; big khauna cutter
+T13    P13    X0.0     Y0.0     Z3.1     D76.0    ; hulk smasher
