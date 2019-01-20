@@ -34,6 +34,7 @@ building complex VCPs.
    :maxdepth: 2
    :caption: Tutorials
 
+   tutorials/basic_vcp
    tutorials/getting_started
    tutorials/widget_rules
 
