@@ -19,6 +19,12 @@ building complex VCPs.
 
 .. toctree::
    :maxdepth: 1
+   :caption: VCP Showcase
+
+   showcase/index
+
+.. toctree::
+   :maxdepth: 1
    :caption: Configuration
 
    configuration/ini_options
