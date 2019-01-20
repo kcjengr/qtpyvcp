@@ -20,8 +20,14 @@ INFO = Info()
 
 # Catch unhandled exceptions and display in dialog
 def excepthook(exc_type, exc_msg, exc_tb):
-    filename = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-    lineno = exc_tb.tb_lineno
+    try:
+        filename = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+        lineno = exc_tb.tb_lineno
+    except AttributeError:
+        # AttributeError: 'NoneType' object has no attribute 'tb_frame'
+        filename = 'unknown file'
+        lineno = -1
+
 
     if len(IGNORE_LIST) > 0 and (str(exc_type), str(exc_msg), lineno) in IGNORE_LIST:
         LOG.debug('Ignoring unhandled exception in %s line %i', filename, lineno,
