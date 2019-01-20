@@ -1,5 +1,5 @@
 from qtpy.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
-from qtpy.QtGui import QStandardItemModel
+from qtpy.QtGui import QStandardItemModel, QColor, QBrush
 from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, \
      QSpinBox, QLineEdit, QMessageBox
 
@@ -71,7 +71,10 @@ class ToolModel(QStandardItemModel):
     def __init__(self, parent=None):
         super(ToolModel, self).__init__(parent)
 
+        self.stat = getPlugin('status').stat
         self.tt = getPlugin('tooltable')
+
+        self.current_tool_color = QColor(Qt.darkGreen)
 
         self._columns = self.tt.columns
         self._column_labels = self.tt.COLUMN_LABELS
@@ -111,6 +114,12 @@ class ToolModel(QStandardItemModel):
             else:               # All the other floats
                 return Qt.AlignVCenter | Qt.AlignRight
 
+        elif role == Qt.TextColorRole:
+            tnum = sorted(self._tool_table)[index.row() + 1]
+            if self.stat.tool_in_spindle == tnum:
+                return QBrush(self.current_tool_color)
+            else:
+                return QStandardItemModel.data(self, index, role)
 
         return QStandardItemModel.data(self, index, role)
 
@@ -183,6 +192,7 @@ class ToolTable(QTableView):
 
         # Properties
         self._confirm_actions = False
+        self._current_tool_color = QColor('sage')
 
         # Appearance/Behaviour settings
         self.setSortingEnabled(True)
@@ -258,6 +268,14 @@ class ToolTable(QTableView):
     @confirmActions.setter
     def confirmActions(self, confirm):
         self._confirm_actions = confirm
+
+    @Property(QColor)
+    def currentToolColor(self):
+        return self.tool_model.current_tool_color
+
+    @currentToolColor.setter
+    def currentToolColor(self, color):
+        self.tool_model.current_tool_color = color
 
     def insertToolAbove(self):
         # it does not make sense to insert tools, since the numbering
