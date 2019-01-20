@@ -58,6 +58,8 @@ class GcodeBackplot(QBackPlot):
             return
 
         self.show_overlay = False  # no DRO or DRO overlay
+        self.program_alpha = True
+        self.grid_size = 1
         self._reload_filename = None
 
         # Add loading progress bar and abort button
