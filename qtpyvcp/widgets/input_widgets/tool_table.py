@@ -1,4 +1,4 @@
-from qtpy.QtCore import Qt, Slot, QModelIndex, QSortFilterProxyModel
+from qtpy.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
 from qtpy.QtGui import QStandardItemModel
 from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, \
      QSpinBox, QLineEdit, QMessageBox
@@ -178,6 +178,9 @@ class ToolTable(QTableView):
 
         self.setModel(self.proxy_model)
 
+        # Properties
+        self._confirm_actions = False
+
         # Appearance/Behaviour settings
         self.setSortingEnabled(True)
         self.verticalHeader().hide()
@@ -231,6 +234,9 @@ class ToolTable(QTableView):
         return self.selectionModel().currentIndex().row()
 
     def confirmAction(self, message):
+        if not self._confirm_actions:
+            return True
+
         box = QMessageBox.question(self,
                                    'Confirm Action',
                                    message,
@@ -240,6 +246,14 @@ class ToolTable(QTableView):
             return True
         else:
             return False
+
+    @Property(bool)
+    def confirmActions(self):
+        return self._confirm_actions
+
+    @confirmActions.setter
+    def confirmActions(self, confirm):
+        self._confirm_actions = confirm
 
     def insertToolAbove(self):
         # it does not make sense to insert tools, since the numbering
