@@ -39,6 +39,7 @@ class ItemDelegate(QStyledItemDelegate):
         elif col in 'TPQ':
             editor = QSpinBox(parent)
             editor.setFrame(False)
+            editor.setAlignment(Qt.AlignCenter)
             editor.setMinimum(0)
             editor.setMaximum(100)
             return editor
@@ -46,6 +47,7 @@ class ItemDelegate(QStyledItemDelegate):
         elif col in 'XYZABCUVWD':
             editor = QDoubleSpinBox(parent)
             editor.setFrame(False)
+            editor.setAlignment(Qt.AlignCenter)
             editor.setDecimals(4)
             # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
@@ -55,6 +57,7 @@ class ItemDelegate(QStyledItemDelegate):
         elif col in 'IJ':
             editor = QDoubleSpinBox(parent)
             editor.setFrame(False)
+            editor.setAlignment(Qt.AlignCenter)
             editor.setDecimals(2)
             # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
