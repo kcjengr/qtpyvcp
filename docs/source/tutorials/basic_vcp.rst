@@ -1,4 +1,4 @@
-=========
+   basic_vcp_03=========
 Basic VCP
 =========
 
@@ -12,3 +12,4 @@ This will cover the steps to build a basic VCP.
    basic_vcp_01
    basic_vcp_02
    basic_vcp_03
+   basic_vcp_04
