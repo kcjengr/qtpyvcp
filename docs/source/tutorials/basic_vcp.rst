@@ -13,3 +13,5 @@ This will cover the steps to build a basic VCP.
    basic_vcp_02
    basic_vcp_03
    basic_vcp_04
+   basic_vcp_05
+   basic_vcp_06

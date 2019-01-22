@@ -64,9 +64,10 @@ Drag a `GcodeBackplot` into the right frame so you can see it move when you jog.
 Drag a grid layout below the jog buttons in the tab. Drag the edge until it
 fills the tab left to right and morph it into a `QGroupBox` and set the title to
 `Jog Override`. Now we need to make a jog speed slider, drag an `ActionSlider`
-into the group box and put ``machine.jog.set-linear-speed`` in the actionName and change
-orientation to horizontal. Now add the following to the grid stylesheet
-because we want all the ActionSliders in this grid to have the same style.
+into the group box and put ``machine.jog.set-linear-speed`` in the actionName
+and change orientation to horizontal and set the value at 80. Now add the
+following to the grid stylesheet because we want all the ActionSliders in this
+grid to have the same style.
 ::
 
     ActionSlider {
@@ -80,12 +81,25 @@ because we want all the ActionSliders in this grid to have the same style.
         margin: 0 12px;
     }
     ActionSlider::handle:horizontal {
-        background: rgb(0,0,0);
-        border: 5px solid rgb(186, 189, 182);
+        background: rgb(138, 226, 52);
+        border: 5px solid rgb(0,0,0);
         width: 23px;
         height: 100px;
-        margin: -24px -12px;
+        margin: -22px -12px;
     }
+    ActionSlider:disabled {
+        background-color: rgb(186, 189, 182);
+    }
+    ActionSlider::groove:horizontal:disabled {
+        border: 1px solid rgb(0,0,0);
+    }
+    ActionSlider::handle:horizontal:disabled {
+        background: rgb(186, 189, 182);
+        border: 5px solid rgb(136, 138, 133);
+    }
+
+The first three handle the size, border and enabled colors and the last three
+handle the disabled colors.
 
 We can also add a vertical spacer above the jog buttons to keep everything from
 expanding.
@@ -95,6 +109,9 @@ expanding.
    :scale: 40 %
 
 Now we can see the slider in action.
+
+.. Note::
+    At this time the jog slider is not complete so it does not go disabled.
 
 .. image:: images/vcp1-run-07.png
    :align: center
@@ -129,7 +146,7 @@ Now when we run the VCP we can see the percent of overrides change.
    :scale: 60 %
 
 Add another rule to each status label enable with the channel ``status:enabled``
-and the expression is ``ch[0]``. This gives us a clue that the slider is
+and the expression is ``ch[0]``. This gives us another clue that the slider is
 disabled until the power is on.
 
 .. image:: images/vcp1-designer-18.png
