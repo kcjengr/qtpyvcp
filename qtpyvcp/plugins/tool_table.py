@@ -22,6 +22,16 @@ LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 INFO = Info()
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
+
+
+def merge(a, b):
+    """Shallow merge two dictionaries"""
+    r = a.copy()
+    r.update(b)
+    return r
+
+
 DEFAULT_TOOL = {
     'A': 0.0,
     'B': 0.0,
@@ -41,9 +51,7 @@ DEFAULT_TOOL = {
     'R': '',
 }
 
-NO_TOOL = DEFAULT_TOOL.copy()
-NO_TOOL.update({'T': 0,
-                'R': 'No Tool Loaded'})
+NO_TOOL = merge(DEFAULT_TOOL, {'T': 0, 'R': 'No Tool Loaded'})
 
 FILE_HEADER = """
 LinuxCNC Tool Table
@@ -75,6 +83,10 @@ COLUMN_LABELS = {
     'Z': 'Z Offset',
 }
 
+def makeLorumIpsumToolTable():
+    return {i: merge(DEFAULT_TOOL,
+                     {'T': i, 'P': i, 'R': 'Lorum Ipsum ' + str(i)})
+            for i in range(10)}
 
 class CurrentTool(QtPyVCPDataChannel):
     """Current tool data channel.
@@ -253,6 +265,8 @@ class ToolTable(QtPyVCPDataPlugin):
             tool_file = self.tool_table_file
 
         if not os.path.exists(tool_file):
+            if IN_DESIGNER:
+                return makeLorumIpsumToolTable()
             LOG.critical("Tool table file does not exist: {}".format(tool_file))
             return {}
 
