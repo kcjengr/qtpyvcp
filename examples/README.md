@@ -1,4 +1,4 @@
-# Example PyQtVCP based Virtual Control Panels
+# Example QtPyVCP based Virtual Control Panels
 
 ## ProbeBasic
 Basic PathPilot inspired VCP with integrated probing.
