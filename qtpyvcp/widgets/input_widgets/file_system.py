@@ -9,7 +9,7 @@ from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox,
 from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.utilities.info import Info
 
-from qtpyvcp.lib.decorators import depricated
+from qtpyvcp.lib.decorators import deprecated
 
 IN_DESIGNER = os.getenv('DESIGNER') != None
 
@@ -228,7 +228,7 @@ class FileSystemTable(QTableView, TableType):
         directory.setPath(new_name)
 
     @Slot()
-    @depricated(replaced_by='newFolder',
+    @deprecated(replaced_by='newFolder',
                 reason='for consistency with newFile method name')
     def createDirectory(self):
         self.newFolder()
@@ -254,7 +254,7 @@ class FileSystemTable(QTableView, TableType):
                 directory.removeRecursively()
 
     @Slot()
-    @depricated(replaced_by='deleteItem',
+    @deprecated(replaced_by='deleteItem',
                 reason='because of unclear method name')
     def deleteFile(self):
         self.deleteItem()
@@ -286,7 +286,7 @@ class FileSystemTable(QTableView, TableType):
         self.rootChanged.emit(new_path)
 
     @Slot()
-    @depricated(replaced_by='viewParentDirectory')
+    @deprecated(replaced_by='viewParentDirectory')
     def goUP(self):
         self.viewParentDirecotry()
 
