@@ -2,9 +2,8 @@
 Machine Controls
 ================
 
-Start by dragging a three of action buttons in the bottom frame. We want all
-buttons in this frame to have a minimum height and width of 50 pixels and the
-font size to be 14pt so in the stylesheet for the frame put the following.::
+We want all buttons in the bottom frame to have a minimum height and width of 50
+pixels and the font size to be 14pt so in the stylesheet for the frame put the following.::
 
     .ActionButton {
         min-height: 50px;
@@ -16,7 +15,8 @@ font size to be 14pt so in the stylesheet for the frame put the following.::
    :align: center
    :scale: 40 %
 
-From left to right add the following to the `actionName` of each button::
+Now add three action buttons in the bottom frame and from left to right add the
+following to the `actionName` of each button::
 
     machine.estop.toggle
     machine.power.toggle
@@ -29,10 +29,10 @@ button will get its name from the rule.
 Make sure you check off the `checkable` box for E Stop and Power buttons, this
 makes them a toggle button.
 
-Now we need to add a couple of rules to the right `Home All` button. The first
-rule will set the text of the button based on if all the joints are homed or
-not. Double click on the button to open the `Rules Editor` and add a new rule.
-The `Property` is Text. Add three channels with the following and make sure
+Now we need to add a couple of rules to the `Home` button. The first rule will
+set the text of the button based on if all the joints are homed or not. Double
+click on the button to open the `Rules Editor` and add a new rule. The
+`Property` is Text. Add three channels with the following and make sure
 `Trigger` is checked in each one.::
 
     status:joint[0].homed
