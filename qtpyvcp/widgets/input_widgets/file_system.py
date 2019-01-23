@@ -100,7 +100,7 @@ class FileSystemTable(QTableView, TableType):
 
         self.parent = parent
         self.path_data = dict()
-        self.doubleClicked.connect(self.changeRoot)
+        self.doubleClicked.connect(self.openSelectedItem)
         self.selected_row = None
         self.clipboard = QApplication.clipboard()
 
@@ -143,24 +143,30 @@ class FileSystemTable(QTableView, TableType):
             self.gcodeFileSelected.emit(False)
             self.filePreviewText.emit('')
 
-    def changeRoot(self, index):
+    @Slot()
+    def openSelectedItem(self, index=None):
+        """If ngc file, opens in LinuxCNC, if dir displays dir."""
+        if index is None:
+            selection = self.getSelection()
+            if selection is None:
+                return
+            index = selection[0]
 
         path = self.model.filePath(self.rootIndex())
-        new_path = self.model.filePath(index)
+        name = self.model.filePath(index)
 
-        absolute_path = os.path.join(path, new_path)
+        absolute_path = os.path.join(path, name)
 
         file_info = QFileInfo(absolute_path)
         if file_info.isDir():
             self.model.setRootPath(absolute_path)
             self.setRootIndex(self.model.index(absolute_path))
-
             self.rootChanged.emit(absolute_path)
 
         elif file_info.isFile():
-            print self.nc_file_exts
-            print absolute_path
-            # if os.path.splitext(new_path)[1] in self.nc_file_exts:
+            # if file_info.completeSuffix() not in self.nc_file_exts:
+            #     LOG.warn("Unsuported NC program type with extention .%s",
+            #              file_info.completeSuffix())
             #     print absolute_path
             loadProgram(absolute_path)
 

@@ -27,8 +27,10 @@ def load(fname, add_to_recents=True):
     setTaskMode(linuxcnc.MODE_AUTO)
     filter_prog = INFO.getFilterProgram(fname)
     if not filter_prog:
+        LOG.debug('Loading NC program: %s', fname)
         CMD.program_open(fname.encode('utf-8'))
     else:
+        LOG.debug('Loading file with filter program: %s', fname)
         openFilterProgram(fname, filter_prog)
 
     if add_to_recents:
@@ -431,7 +433,7 @@ class FilterProgram:
         self.stderr_text = []
         self.program_filter = program_filter
         self.callback = callback
-        self.gid = STATUS.onValueChanged('periodic', self.update)
+        # self.gid = STATUS.onValueChanged('periodic', self.update)
         #progress = Progress(1, 100)
         #progress.set_text(_("Filtering..."))
 
