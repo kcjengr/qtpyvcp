@@ -167,9 +167,3 @@ Now when we run the VCP we can see the changes.
 .. image:: images/vcp1-run-09.png
    :align: center
    :scale: 60 %
-
-.. Note::
-    This tutorial is being reconstructed so images beyond this point might not
-    match up with the text. I'll try and get the reconstruction done as fast as
-    possible.
-
