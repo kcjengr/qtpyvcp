@@ -29,7 +29,7 @@ deploy:
 
 # publish release to GitHub
 - provider: script
-  script: bash scripts/do_release.sh
+  script: bash .travis/do_release.sh
   skip_cleanup: true
   on:
     tags: true
