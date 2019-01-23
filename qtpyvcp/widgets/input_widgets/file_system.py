@@ -91,6 +91,7 @@ class FileSystemTable(QTableView, TableType):
         super(FileSystemTable, self).__init__(parent)
 
         self._table_type = TableType.Local
+        self._hidden_columns = ''
 
         # This prevents doing unneeded initialization
         # when QtDesginer loads the plugin.
@@ -348,6 +349,26 @@ class FileSystemTable(QTableView, TableType):
             self.setRootPath(self._nc_file_dir)
         else:
             self.setRootPath('/media/')
+
+    @Property(str)
+    def hiddenColumns(self):
+        return self._hidden_columns
+
+    @hiddenColumns.setter
+    def hiddenColumns(self, columns):
+        try:
+            col_list = [int(c) for c in columns.split(',') if c != '']
+        except:
+            return False
+
+        self._hidden_columns = columns
+
+        header = self.horizontalHeader()
+        for col in range(4):
+            if col in col_list:
+                header.hideSection(col)
+            else:
+                header.showSection(col)
 
     def ask_dialog(self, message):
         box = QMessageBox.question(self.parent,
