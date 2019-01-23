@@ -352,6 +352,7 @@ class FileSystemTable(QTableView, TableType):
 
     @Property(str)
     def hiddenColumns(self):
+        """String of comma separated column numbers to hide."""
         return self._hidden_columns
 
     @hiddenColumns.setter
