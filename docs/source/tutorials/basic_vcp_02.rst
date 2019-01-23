@@ -12,9 +12,10 @@ it and morph into a `QFrame`.
    :align: center
    :scale: 40 %
 
-Now change the Frame Shape to a `Box` and set the line width to 2 and change the
-margins (left, right, top and bottom) to 5, this makes it easier to see the blue
-line when dragging other layouts into the frame.
+In the `Property Editor` on the right side change the Frame Shape to a `Box` and
+set the line width to 2 and change the margins (left, right, top and bottom)
+to 5, this makes it easier to see the blue line when dragging other layouts into
+the frame.
 
 .. image:: images/vcp1-designer-03.png
    :align: center

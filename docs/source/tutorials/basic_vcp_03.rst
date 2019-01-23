@@ -3,9 +3,10 @@ Machine Controls
 ================
 
 We want all buttons in the bottom frame to have a minimum height and width of 50
-pixels and the font size to be 14pt so in the stylesheet for the frame put the following.::
+pixels and the font size to be 14pt so in the stylesheet for the bottom frame
+put the following.::
 
-    .ActionButton {
+    ActionButton {
         min-height: 50px;
         min-width: 50px;
         font: 14pt "DejaVu Sans";
@@ -49,7 +50,8 @@ Notice that 'Home\\nAll' has a new line character `\\n` in it.
    :align: center
    :scale: 40 %
 
-The second rule will have the same channels with the following expression::
+The second rule will have the same channels but the property will be for the
+`Style Sheet` with the following expression::
 
     "background-color:rgb(138, 226, 52)" if ch[0] and ch[1] and ch[2] else ''
 

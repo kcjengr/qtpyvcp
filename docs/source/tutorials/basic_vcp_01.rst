@@ -2,6 +2,9 @@
 Clone and Prepare
 =================
 
+Before cloning you should have installed QtPyVCP as shown on the
+:doc:`../quick_start` page.
+
 To start with you should clone the `VCP Template`. It has all the basic
 structure needed to build a VCP. In a terminal::
 

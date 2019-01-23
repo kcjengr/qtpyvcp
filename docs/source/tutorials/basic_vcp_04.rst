@@ -39,7 +39,7 @@ we could change the labels to be a different font than the buttons.
    :scale: 40 %
 
 Now lets drag some `actionButtons` into the left panel for jogging controls and
-some labels for each axis.
+some standard labels from the `Display Widgets` for each axis.
 
 .. image:: images/vcp1-designer-14.png
    :align: center
@@ -56,6 +56,10 @@ Add the following `actionNames` to the jog buttons.::
     machine.jog.axis:z,neg
 
 Drag a `GcodeBackplot` into the right frame so you can see it move when you jog.
+Right click in the tab and select `Layout in a Grid` so the backplot fills the
+tab.
+
+To change the tab name select the tab widget and change the `current tab name`.
 
 .. image:: images/vcp1-run-06.png
    :align: center
@@ -63,11 +67,19 @@ Drag a `GcodeBackplot` into the right frame so you can see it move when you jog.
 
 Drag a grid layout below the jog buttons in the tab. Drag the edge until it
 fills the tab left to right and morph it into a `QGroupBox` and set the title to
-`Jog Override`. Now we need to make a jog speed slider, drag an `ActionSlider`
-into the group box and put ``machine.jog.set-linear-speed`` in the actionName
-and change orientation to horizontal and set the value at 80. Now add the
-following to the grid stylesheet because we want all the ActionSliders in this
-grid to have the same style.
+`Jog Override`.
+
+.. image:: images/vcp1-designer-15.png
+   :align: center
+   :scale: 40 %
+
+Now we need to make a jog speed slider, drag an `ActionSlider` into the group
+box and change orientation to horizontal and set the value at 80.
+
+Now put ``machine.jog.set-linear-speed`` in the `ActionSlider` actionName.
+
+Now add the following to the grid stylesheet because we want all the
+`Action Sliders` in this frame to have the same style.
 ::
 
     ActionSlider {
@@ -101,10 +113,7 @@ grid to have the same style.
 The first three handle the size, border and enabled colors and the last three
 handle the disabled colors.
 
-We can also add a vertical spacer above the jog buttons to keep everything from
-expanding.
-
-.. image:: images/vcp1-designer-15.png
+.. image:: images/vcp1-designer-16.png
    :align: center
    :scale: 40 %
 
@@ -117,13 +126,13 @@ Now we can see the slider in action.
    :align: center
    :scale: 60 %
 
-Remove the `Vertical Spacer` and add two more grid layouts below the Jog
-Override and morph them into QGroupBoxes. In order for this all to fit in the
-QFrame you need to set the margins and spacings to 1 and we no longer need the
-box. Add ActionSliders in each box and actionNames are
+Add two more grid layouts below the Jog Override and morph them into
+QGroupBoxes. In order for this all to fit in the QFrame you need to set the
+top and bottom margins and vertical spacing to 1 and we no longer need the box
+so that can be removed. Add ActionSliders in each box and actionNames are
 ``machine.feed-override.set`` and ``machine.rapid-override.set``
 
-.. image:: images/vcp1-designer-16.png
+.. image:: images/vcp1-designer-17.png
    :align: center
    :scale: 40 %
 
@@ -135,7 +144,7 @@ the format(change to an integer(channel 0 times 100)) The overrides are 1 = 100%
 so we multiply them by 100 to get a logical number. For the feed override the
 channel is ``status:feedrate`` and the expression is the same as rapid.
 
-.. image:: images/vcp1-designer-17.png
+.. image:: images/vcp1-designer-18.png
    :align: center
    :scale: 40 %
 
@@ -145,11 +154,11 @@ Now when we run the VCP we can see the percent of overrides change.
    :align: center
    :scale: 60 %
 
-Add another rule to each status label enable with the channel ``status:enabled``
-and the expression is ``ch[0]``. This gives us another clue that the slider is
-disabled until the power is on.
+Add another rule to each status label with the property `Enabled` and the
+channel is ``status:enabled`` and the expression is ``ch[0]``. This gives us
+another clue that the slider is disabled until the power is on.
 
-.. image:: images/vcp1-designer-18.png
+.. image:: images/vcp1-designer-19.png
    :align: center
    :scale: 40 %
 
