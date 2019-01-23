@@ -766,9 +766,11 @@ def override_limits():
 
 def _override_limits_ok(widget=None):
     ok = False
+    mgs = None
     for anum in INFO.AXIS_NUMBER_LIST:
         if STAT.limit[anum] != 0:
-            aletter = 'XYZABCUVW'.index(anum)
+            aaxis = getAxisLetter(anum)
+            aletter = INFO.COORDINATES.index(aaxis)
             ok = True
             msg = "Axis {} on limit".format(aletter)
 
