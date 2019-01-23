@@ -167,6 +167,9 @@ class _Info(object):
             return False
         return True
 
+    def getEditor(self):
+        return self.ini.find('DISPLAY', 'EDITOR') or 'xdg-open'
+
     def getJogVelocity(self):
         # get default jog velocity
         # must convert from self.ini's units per second to hazzys's units per minute

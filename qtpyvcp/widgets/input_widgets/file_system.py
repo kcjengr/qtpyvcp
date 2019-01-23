@@ -1,4 +1,5 @@
 import os
+import subprocess
 import pyudev
 import psutil
 
@@ -8,8 +9,10 @@ from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox,
 
 from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.utilities.info import Info
-
+from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.lib.decorators import deprecated
+
+LOG = getLogger(__name__)
 
 IN_DESIGNER = os.getenv('DESIGNER') != None
 
@@ -119,6 +122,7 @@ class FileSystemTable(QTableView, TableType):
         self.selection_model.selectionChanged.connect(self.onSelectionChanged)
 
         self.info = Info()
+        self.editor = self.info.getEditor()
         self._nc_file_dir = self.info.getProgramPrefix()
         self.nc_file_exts = self.info.getProgramExtentions()
         self.setRootPath(self._nc_file_dir)
@@ -167,8 +171,16 @@ class FileSystemTable(QTableView, TableType):
             # if file_info.completeSuffix() not in self.nc_file_exts:
             #     LOG.warn("Unsuported NC program type with extention .%s",
             #              file_info.completeSuffix())
-            #     print absolute_path
             loadProgram(absolute_path)
+
+    @Slot()
+    def editSelectedFile(self):
+        """Open the selected file in editor."""
+        selection = self.getSelection()
+        if selection is not None:
+            path = self.model.filePath(selection[0])
+            subprocess.Popen([self.editor, path])
+        return False
 
     @Slot()
     def loadSelectedFile(self):
@@ -176,11 +188,8 @@ class FileSystemTable(QTableView, TableType):
         selection = self.getSelection()
         if selection is not None:
             path = self.model.filePath(selection[0])
-            print path
             loadProgram(path)
             return True
-
-        print 'failed'
         return False
 
     @Slot()
