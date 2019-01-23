@@ -43,10 +43,11 @@ into it.
 
 Now we want to change the tab widgets to be more touch screen friendly. To set
 the size of tabs in a `Tab Widget` add the following into the 
-`tabWidget styleSheet`. ``QTabBar::tab { height: 50px; width: 100px; }``. This
-will set the size of the tabs larger and easier to press with your finger. Also
-change the location of the tabs to the `South` position so you can see the tab 
-as you change from tab to tab.
+`QFrame styleSheet` that has the Tab Widgets in it. 
+``QTabBar::tab { height: 50px; width: 100px; }``. This will set the size of the
+tabs larger and easier to press with your finger. Also change the location of
+the tabs to the `South` position so you can see the tab as you change from tab
+to tab.
 
 .. image:: images/vcp1-designer-07.png
    :align: center
