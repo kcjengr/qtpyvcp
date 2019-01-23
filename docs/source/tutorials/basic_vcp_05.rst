@@ -2,6 +2,12 @@
 DRO and File Dialog
 ===================
 
+.. Note::
+    This tutorial is being reconstructed so images on this page might not match
+    up with the text. I'll try and get the reconstruction done as fast as
+    possible.
+
+
 Add a `DROWidget` between the jog buttons and the axis labels and set the axis
 and the reference_type to `Relative` for each one.
 
