@@ -91,96 +91,448 @@ class Status(QtPyVCPDataPlugin):
 
     # Queues
     active_queue = StatusItem('active_queue', int)          # number of motions blending
-    """active_queue, int number of motions blending"""
+    """Status of blending
+
+    :returns: the number of motions blending
+    :rtype: int
+
+    """
     queue = StatusItem('queue', int)                        # current size of the trajectory planner queue
+    """Status of the trajectory planner queue size
+
+    :returns: the current size of the trajectory planner queue
+    :rtype: int
+
+    """
     queue_full = StatusItem('queue_full', bool)             # the trajectory planner queue full flag
+    """Status of the trajectory planner queue
+
+    :returns: True if the trajectory planner queue is full
+
+    :rtype: bool
+
+    """
+
     queued_mdi_commands = StatusItem('queued_mdi_commands', int)   #
+    """Status of MDI queue
+
+    :returns: how many MDI commands are in the queue
+    :rtype: int
+
+    """
+
 
     # Positions
     position = StatusItem('position', tuple)                 # trajectory position
+    """Status of trajectory position
+
+    :returns: the trajectory position for all axes
+    :rtype: tuple
+
+    """
+
     actual_position = StatusItem('actual_position', tuple)   # current position, in machine units
+    """Status of current positions
+
+    :returns: the current position, in machine units for all axes
+    :rtype: tuple
+
+    """
+
     joint_position = StatusItem('joint_position', tuple)     # joint commanded positions
+    """Status of commanded joint positions
+
+    :returns: the joint commanded positions for all joints
+    :rtype: tuple
+
+    """
+
     joint_actual_position = StatusItem('joint_actual_position', tuple) # joint actual positions
+    """Status of actual joint positions
+
+    :returns: the joint actual positions for all joints
+    :rtype: tuple
+
+    """
+
     dtg = StatusItem('dtg', tuple)                           # DTG per axis, as reported by trajectory planner
+    """Status of Distance To Go per axis
+
+    :returns: the DTG per axis, as reported by trajectory planner
+    :rtype: tuple
+
+    """
+
     distance_to_go = StatusItem('distance_to_go', float)     # vector DTG, as reported by trajectory planner
+    """Status of vector Distance To Go
+
+    :returns: vector DTG, as reported by trajectory planner
+    :rtype: float
+
+    """
+
 
     # Velocities
     current_vel = StatusItem('current_vel', float)           # current velocity in user units per second
+    """Status of current velocity
+
+    :returns: current velocity in user units per second
+    :rtype: float
+
+    """
+
     velocity = StatusItem('velocity', float)                 # unclear
+    """Status of velocity
+
+    :returns: unclear
+    :rtype: float
+
+    """
 
     # Offsets
     coords = ["G53", "G54", "G55", "G56", "G57", "G58", "G59", "G59.1", "G59.2", "G59.3"]
     g5x_index = StatusItem('g5x_index', int, coords.__getitem__)    # active coordinate system index, G54=1, G55=2 etc
-    """g5x_index, int active coordinate system index, G54=1, G55=2 etc
+    """Status of active coordinate system
+
     G53=0, G54=1, G55=2, G56=3, G57=4, G58=5, G59=6, G59.1=7, G59.2=8, G59.3=9
-    for a status label use a list slice like this
-    ["G53","G54","G55","G56","G57","G58","G59","G59.1","G59.2","G59.3"][ch[0]]"""
+
+    for a status label using channel 0 use a list slice like this::
+
+    ["G53","G54","G55","G56","G57","G58","G59","G59.1","G59.2","G59.3"][ch[0]]
+
+    :returns: active coordinate system index
+    :rtype: int
+
+"""
     g5x_offset = StatusItem('g5x_offset', tuple)          # offset of the currently active coordinate system
-    """g5x_offset, tuple  offsets of the currently active coordinate system"""
+    """Status of currently active coordinate system offsets
+
+    :returns: tuple of currently active coordinate system offsets joints 0-8
+    :rtype: tuple
+
+g5x_offset, tuple  offsets of the currently active coordinate system"""
     g92_offset = StatusItem('g92_offset', tuple)          # values of the current g92 offset
+    """Status of current g92 offset
+
+    :returns: tuple of current G92 offsets joints 0-8
+    :rtype: tuple
+
+    """
+
     tool_offset = StatusItem('tool_offset', tuple)         # offset values of the current tool
+    """Status of current tool offsets
+
+    :returns: tuple of the current tool offsets joints 0-8
+    :rtype: tuple
+
+    """
+
     rotation_xy = StatusItem('rotation_xy', float)         # current XY rotation angle around Z axis
+    """Status of XY rotation
+
+    :returns: current XY rotation angle around Z axis
+    :rtype: float
+
+    """
+
 
     # I/O
     ain = StatusItem('ain', tuple)                 # current value of the analog input pins
+    """Status of analog input pins
+
+    :returns: current value of the analog input pins, one for each pin created
+    :rtype: tuple
+
+    """
+
     aout = StatusItem('aout', tuple)                # current value of the analog output pins
+    """Status of current analog output pins
+
+    :returns: current value of the analog output pins, one for each pin created
+    :rtype: tuple
+
+    """
+
     din = StatusItem('din', tuple)                 # current value of the digital input pins
+    """Status of digital input pins
+
+    :returns: current value of the digital input pins, one for each pin created
+    :rtype: tuple
+
+    """
+
     dout = StatusItem('dout', tuple)                # current value of the digital output pins
+    """Status of digital output pins
+
+    :returns: current value of the digital output pins, one for each pin created
+    :rtype: tuple
+
+    """
 
     # Cooling
     mist = StatusItem('mist', bool)                 # mist self.status
+    """Status of mist
+
+    :returns: True if iocontrol.0.coolant-mist is on
+    :rtype: bool
+
+    """
+
     flood = StatusItem('flood', bool)                # flood self.status, either FLOOD_OFF or FLOOD_ON
+    """Status of flood
+
+    :returns: True if iocontrol.0.coolant-flood is on
+    :rtype: bool
+
+    """
+
 
     # Active codes
     to_str = lambda gcodes: " ".join(["M%g" % gcode for gcode in sorted(gcodes[1:]) if gcode != -1])
     mcodes = StatusItem('mcodes', tuple, to_str)     # currently active M-codes
+    """Status of M codes
+
+    :returns: tuple of currently active M-codes
+    :rtype: tuple
+
+    """
 
     to_str = lambda mcodes: " ".join(["G%g" % (mcode/10.) for mcode in sorted(mcodes[1:]) if mcode != -1])
     gcodes = StatusItem('gcodes', tuple, to_str)     # active G-codes for each modal group
+    """Status of G codes
+
+    :returns: tuple of active G-codes for each modal group
+    :rtype: tuple
+
+    """
 
     # Home and Limit
     homed = StatusItem('homed', tuple)               # homed flag for each joint
+    """Status of joint homed
+
+    :returns: tuple of homed flag for each joint 0-8
+    :rtype: tuple
+
+    """
+
     inpos = StatusItem('inpos', bool)                # machine-in-position flag
+    """Status of machine in position
+
+    :returns: True if machine is in commanded position
+    :rtype: bool
+
+    """
+
     limit = StatusItem('limit', tuple)               # axis limit self.status masks
+    """Status of limits
+
+    :returns: tuple of limit flags for each axis
+    :rtype: tuple
+
+    """
 
     # Delays
     delay_left = StatusItem('delay_left', float)          # remaining time on dwell (G4) command, seconds
+    """Status of G4 delay
+
+    :returns: remaining time on G4 dwell command, seconds
+    :rtype: float
+
+    """
+
     input_timeout = StatusItem('input_timeout', bool)        # flag for M66 timer in progress
+    """Status of M66 timer
+
+    :returns: True if M66 timer is in progress
+    :rtype: bool
+
+    """
+
 
     # Lube
     lube = StatusItem('lube', bool)                 # lube on flag
-    lube_level = StatusItem('lube_level', int)            # lube level, reflects iocontrol.0.lube_level.
+    """Status of lube
+
+    :returns: True if iocontrol.0.lube is on
+    :rtype: bool
+
+    """
+
+    lube_level = StatusItem('lube_level', int)            # lube level, reflects iocontrol.0.lube_level
+    """Status of lube level
+
+    :returns: True if iocontrol.0.lube_level is on
+    :rtype: int
+
+    """
 
     # Program control
     optional_stop = StatusItem('optional_stop', bool)        # option stop enables flag
+    """Status of optional stop
+
+    :returns: True if optional stop is on
+    :rtype: bool
+
+    """
+
     block_delete = StatusItem('block_delete', bool)         # block delete current self.status
+    """Status of block delete
+
+    :returns: True if block delete is on
+    :rtype: bool
+
+    """
+
     paused = StatusItem('paused', bool)               # motion paused flag
+    """Status of paused
+
+    :returns: True if motion is paused
+    :rtype: bool
+
+    """
+
     feed_hold_enabled = StatusItem('feed_hold_enabled', bool)    # enable flag for feed hold
+    """Status of feed hold
+
+    :returns: True if feed hold is on
+    :rtype: bool
+
+    """
 
     # Probe
     probe_tripped = StatusItem('probe_tripped', bool)        # probe tripped flag (latched)
+    """Status of probe tripped
+
+    :returns: True if motion.probe-input is on
+    :rtype: bool
+
+    """
+
+    # Fix Me I don't think this is correct *******************************
     probe_val = StatusItem('probe_val', bool)            # reflects value of the motion.probe-input pin
+    """Status of probe value
+
+    :returns: value of the motion.probe-input pin
+    :rtype: bool
+
+    """
+
     probed_position = StatusItem('probed_position', tuple)     # position where probe tripped
+    """Status of probe
+
+    :returns: Tuple of axis positions when the probe was tripped
+    :rtype: tuple
+
+    """
+
     probing = StatusItem('probing', bool)              # probing in progress flag
+    """Status of probing
+
+    :returns: True if probing is in progress
+    :rtype: bool
+
+    """
 
     # Program File
     file = StatusItem('file', str)                  # path of currently loaded gcode file
+    """Status of current G code file
+
+    :returns: path of currently loaded g code file
+    :rtype: str
+
+    """
+
     to_str = ["NA", "in", "mm", "cm"].__getitem__
     program_units = StatusItem('program_units', int, to_str)# one of CANON_UNITS_INCHES=1, CANON_UNITS_MM=2
+    """Status of program units
+
+    :returns: CANON_UNITS_INCHES=1, CANON_UNITS_MM=2
+    :rtype: int
+
+    """
+
     motion_line = StatusItem('motion_line', int)           # source line number motion is currently executing
+    """Status of motion line
+
+    :returns: source line number motion is currently executing
+    :rtype: int
+
+    """
+
     current_line = StatusItem('current_line', int)          # currently executing line
+    """Status of executing line
+
+    :returns: currently executing line
+    :rtype: int
+
+    """
+
     read_line = StatusItem('read_line', int)             # line the RS274NGC interpreter is currently reading
+    """Status of interperter reading
+
+    :returns: line the RS274NGC interpreter is currently reading
+    :rtype: int
+
+    """
+
     call_level = StatusItem('call_level', int)            #
+    """Status of call level
+
+    :returns: unknown
+    :rtype: int
+
+    """
+
 
     # Overrides
     feedrate = StatusItem('feedrate', float)            # feed-rate override, 0-1
+    """Status of feed override
+
+    :returns: feed-rate override, 0-1
+    :rtype: float
+
+    """
+
     rapidrate = StatusItem('rapidrate', float)           # rapid-rate override, 0-1
+    """Status of rapid override
+
+    :returns: rapid-rate override, 0-1
+    :rtype: float
+
+    """
+
     max_velocity = StatusItem('max_velocity', float)        # max velocity in machine units/s
+    """Status of max velocity
+
+    :returns: max velocity in machine units/s
+    :rtype: float
+
+    """
+
     feed_override_enabled = StatusItem('feed_override_enabled', bool)# enable flag for feed override
+    """Status of feed override enabled
+
+    :returns: True if feed override is on
+    :rtype: bool
+
+    """
+
     adaptive_feed_enabled = StatusItem('adaptive_feed_enabled', bool)# self.status of adaptive feedrate override
+    """Status of adaptive feed enabled
+
+    :returns: True if adaptive feedrate override is on
+    :rtype: bool
+
+    """
 
     # State
     enabled = StatusItem('enabled', bool)              # trajectory planner enabled
+    """Status of trajectory planner enabled
+
+    :returns: True if trajectory planner is enabled
+    :rtype: bool
+
+    """
 
     # estop = StatusItem([int], [bool])       # linuxcnc.STATE_ESTOP or not
     estop = StatusItem(item = 'estop',
