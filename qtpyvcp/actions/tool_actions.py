@@ -16,16 +16,31 @@ def calibration():
 
 def halmeter():
     """Launch the HALMeter utility.
+
+    ActionButton syntax::
+
+        tool_actions.halmeter
+
     """
     p = os.popen("halmeter &")
 
 def status():
     """Launch the LinuxCNC status monitor utility.
+
+    ActionButton syntax::
+
+        tool_actions.status
+
     """
     p = os.popen("linuxcnctop  > /dev/null &", "w")
 
 def halscope():
     """Launch the HALScope utility.
+
+    ActionButton syntax::
+
+        tool_actions.halscope
+
     """
     p = os.popen("halscope  > /dev/null &", "w")
 
