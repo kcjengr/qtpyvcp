@@ -194,7 +194,16 @@ class Status(QtPyVCPDataPlugin):
     g5x_index = StatusItem('g5x_index', int, coords.__getitem__)    # active coordinate system index, G54=1, G55=2 etc
     """Status of active coordinate system
 
-    G53=0, G54=1, G55=2, G56=3, G57=4, G58=5, G59=6, G59.1=7, G59.2=8, G59.3=9
+    * G53=0
+    * G54=1
+    * G55=2
+    * G56=3
+    * G57=4
+    * G58=5
+    * G59=6
+    * G59.1=7
+    * G59.2=8
+    * G59.3=9
 
     for a status label using channel 0 use a list slice like this::
 
@@ -546,6 +555,20 @@ g5x_offset, tuple  offsets of the currently active coordinate system"""
                                     linuxcnc.RCS_EXEC: "Exec",
                                     linuxcnc.RCS_ERROR: "Error",}.get
                         )
+    """Status of current command execution
+
+    * Done
+    * Executing
+    * Error
+
+    To return the string in a status label::
+
+        status:state?text
+
+    :returns: current command execution status
+    :rtype: int, str
+
+    """
 
     # exec_state = StatusItem([int], [str])   # task execution state
     exec_state = StatusItem(item = 'exec_state',
@@ -560,6 +583,26 @@ g5x_offset, tuple  offsets of the currently active coordinate system"""
                                     linuxcnc.EXEC_WAITING_FOR_SYSTEM_CMD: "Waiting for system CMD",
                                     linuxcnc.EXEC_WAITING_FOR_SPINDLE_ORIENTED: "Waiting for spindle orient"}.get
                             )
+    """Status of task execution state
+
+    * Error
+    * Done
+    * Waiting for Motion
+    * Waiting for Motion Queue
+    * Waiting for Pause
+    * Waiting for Motion and IO
+    * Waiting for Delay
+    * Waiting for system CMD
+    * Waiting for spindle orient
+
+    To return the string in a status label::
+
+        status:exec_state?text
+
+    :returns: current task execution state
+    :rtype: int, str
+
+    """
 
     # task_mode = StatusItem([int], [str])    # current task mode
     task_mode = StatusItem(item = 'task_mode',
@@ -569,11 +612,38 @@ g5x_offset, tuple  offsets of the currently active coordinate system"""
                                         linuxcnc.MODE_AUTO: "Auto",
                                         linuxcnc.MODE_MDI: "MDI"}.get
                             )
+    """Status of current task mode
+
+    * Manual
+    * Auto
+    * MDI
+
+    To return the string in a status label::
+
+        status:task_mode?text
+
+    :returns: 
+    :rtype: int, str
+
+    """
 
     # task_paused = StatusItem(bool)          # task paused flag
     task_paused = StatusItem(item = 'task_paused',
                             description = "Program Paused State",
                             to_str = ['False', 'True'].__getitem__)
+    """Status of task paused state
+
+    * False
+    * True
+
+    To return the string in a status label::
+
+        status:task_paused?text
+
+    :returns: 
+    :rtype: bool, str
+
+    """
 
     # task_state = StatusItem([int], [str])   # current task state
     task_state = StatusItem(item = 'task_state',
@@ -584,6 +654,21 @@ g5x_offset, tuple  offsets of the currently active coordinate system"""
                                       linuxcnc.STATE_ON: "On",
                                       linuxcnc.STATE_OFF: "Off"}.get
                             )
+    """Status of current task state
+
+    * Estop
+    * Reset
+    * On
+    * Off
+
+    To return the string in a status label::
+
+        status:task_state?text
+
+    :returns: 
+    :rtype: int, str
+
+    """
 
     # mode of the motion controller
     motion_mode = StatusItem('motion_mode', int,
@@ -591,6 +676,20 @@ g5x_offset, tuple  offsets of the currently active coordinate system"""
                                     linuxcnc.TRAJ_MODE_COORD: "Coord",
                                     linuxcnc.TRAJ_MODE_FREE: "Free",
                                     linuxcnc.TRAJ_MODE_TELEOP: "Teleop"}.get)
+    """Status of mode of the motion controller
+
+    * Coord
+    * Free
+    * Teleop
+
+    To return the string in a status label::
+
+        status:motion_mode?text
+
+    :returns: 
+    :rtype: int, str
+
+    """
 
     # type of the currently executing motion
     motion_type = StatusItem('motion_type', int,
@@ -601,6 +700,23 @@ g5x_offset, tuple  offsets of the currently active coordinate system"""
                                     linuxcnc.MOTION_TYPE_TOOLCHANGE: "Tool Change",
                                     linuxcnc.MOTION_TYPE_PROBING: "Probing",
                                     linuxcnc.MOTION_TYPE_INDEXROTARY: "Rotary Index"}.get)
+    """Status of type of the currently executing motion
+
+    * Traverse
+    * Linear Feed
+    * Arc Feed
+    * Tool Change
+    * Probing
+    * Rotary Index
+
+    To return the string in a status label::
+
+        status:motion_type?text
+
+    :returns: 
+    :rtype: int, str
+
+    """
 
     # current state of RS274NGC interpreter
     interp_state = StatusItem('interp_state', int,
@@ -609,6 +725,21 @@ g5x_offset, tuple  offsets of the currently active coordinate system"""
                                         linuxcnc.INTERP_READING: "Reading",
                                         linuxcnc.INTERP_PAUSED: "Paused",
                                         linuxcnc.INTERP_WAITING: "Waiting"}.get)
+    """Status of current state of RS274NGC interpreter
+
+    * Idle
+    * Reading
+    * Paused
+    * Waiting
+
+    To return the string in a status label::
+
+        status:interp_state?text
+
+    :returns: 
+    :rtype: int, str
+
+    """
 
     # current RS274NGC interpreter return code
     interpreter_errcode = StatusItem('interpreter_errcode', int,
@@ -619,8 +750,32 @@ g5x_offset, tuple  offsets of the currently active coordinate system"""
                                                 4: "Endfile",
                                                 4: "File not open",
                                                 5: "Error"}.get)
+    """Status of current RS274NGC interpreter return code
+
+    * Unknown
+    * Ok
+    * Exit
+    * Finished
+    * Endfile
+    * File not open
+    * Error
+
+    To return the string in a status label::
+
+        status:interpreter_errcode?text
+
+    :returns: 
+    :rtype: int, str
+
+    """
 
     settings = StatusItem('settings', tuple)            # interpreter settings. (sequence_number, feed_rate, speed)
+    """Status of 
+
+    :returns: 
+    :rtype: bool
+
+    """
 
     jog_mode_signal = Signal(bool)             # jog mode = true
 
@@ -628,19 +783,85 @@ g5x_offset, tuple  offsets of the currently active coordinate system"""
                                 to_str = {  0.0: "N/A",
                                             1.0: "mm",
                                             1/25.4: "in"}.get)
+    """Status of linear units
+
+    * N/A
+    * mm
+    * in
+
+    To return the string in a status label::
+
+        status:linear_units?text
+
+    :returns: 
+    :rtype: int, str
+
+    """
 
     angular_units = StatusItem('angular_units', float)
+    """Status of angular units
+
+    :returns: angular units
+    :rtype: float
+
+    """
 
     # Tool
     tool_in_spindle = StatusItem('tool_in_spindle', int)       # current tool number
+    """Status of tool in spindle
+
+    :returns: current tool number
+    :rtype: int
+
+    """
+
     pocket_prepped = StatusItem('pocket_prepped', int)        # Tx command completed, and this pocket is prepared
+    """Status of pocket prepped
+
+    :returns: Tx command completed, and this pocket is prepared
+    :rtype: int
+
+    """
+
     tool_table = StatusItem('tool_table', tuple)          # list of tool entries
+    """Status of tool table
+
+    :returns: list of tool entries
+    :rtype: tuple
+
+    """
 
     tool_data = StatusItem('tool_in_spindle', dict)
+    """Status of tool data
+
+    :returns: ??
+    :rtype: dict
+
+    """
 
     spindles = StatusItem('spindles', int)
+    """Status of number of spindles
+
+    :returns: number of spindles configured
+    :rtype: int
+
+    """
+
     axes = StatusItem('axes', int)
+    """Status of axes
+
+    :returns: number of axes configured
+    :rtype: int
+
+    """
+
     joints = StatusItem('joints', int)
+    """Status of joints
+
+    :returns: number of joints configured
+    :rtype: int
+
+    """
 
     # Extended status signals
     axis_positions = Signal(tuple)      # ABS, REL and DTG axis values
