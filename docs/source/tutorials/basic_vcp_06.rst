@@ -31,8 +31,9 @@ some `Push Buttons` from the `Buttons` Widget section (we don't need action
 buttons for this. From left to right name them `Up, Down and Select`. Change the
 `objectNames` to ``navUp`` ``navDown`` and ``navSelect``.
 
-Select the `Signal/Slot` tab and add a new one with the green plus. Using the
-drop down box for each item select as follows::
+Select the `Signal/Slot` tab and add a new one with the green plus for each
+button we want to connect to the file system table. Using the drop down box for
+each item select as follows::
 
     Sender      Signal      Receiver            Slot
     navUp       clicked()   filesystemtable     selectPrevious()
