@@ -41,6 +41,7 @@ class flood:
             flood.on()
 
 class mist:
+    """Mist Actions Group"""
     @staticmethod
     def on():
         """Turns Mist coolant ON"""
