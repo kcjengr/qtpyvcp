@@ -2,12 +2,12 @@ import os
 import hal
 
 INI_FILE = os.getenv('INI_FILE')
-TCLPATH = os.getenv('TCLLIBPATH')
+TCLPATH = os.getenv('TCLLIBPATH', '/usr')
 
 def halshow():
     """Launch HALShow utility.
     """
-    p = os.popen("tclsh {0}/bin/halshow.tcl &".format(TCLPATH))
+    p = os.popen("tclsh {0}/bin/halshow &".format(TCLPATH))
 
 def calibration():
     """Launch the HAL PID calibration utility.
