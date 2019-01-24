@@ -84,13 +84,14 @@ class StatusItem(QtPyVCPDataChannel):
 
 
 class Status(QtPyVCPDataPlugin):
-
+    """Status Class"""
     protocol = 'status'
 
     stat = STAT
 
     # Queues
     active_queue = StatusItem('active_queue', int)          # number of motions blending
+    """active_queue, int number of motions blending"""
     queue = StatusItem('queue', int)                        # current size of the trajectory planner queue
     queue_full = StatusItem('queue_full', bool)             # the trajectory planner queue full flag
     queued_mdi_commands = StatusItem('queued_mdi_commands', int)   #
@@ -110,7 +111,12 @@ class Status(QtPyVCPDataPlugin):
     # Offsets
     coords = ["G53", "G54", "G55", "G56", "G57", "G58", "G59", "G59.1", "G59.2", "G59.3"]
     g5x_index = StatusItem('g5x_index', int, coords.__getitem__)    # active coordinate system index, G54=1, G55=2 etc
+    """g5x_index, int active coordinate system index, G54=1, G55=2 etc
+    G53=0, G54=1, G55=2, G56=3, G57=4, G58=5, G59=6, G59.1=7, G59.2=8, G59.3=9
+    for a status label use a list slice like this
+    ["G53","G54","G55","G56","G57","G58","G59","G59.1","G59.2","G59.3"][ch[0]]"""
     g5x_offset = StatusItem('g5x_offset', tuple)          # offset of the currently active coordinate system
+    """g5x_offset, tuple  offsets of the currently active coordinate system"""
     g92_offset = StatusItem('g92_offset', tuple)          # values of the current g92 offset
     tool_offset = StatusItem('tool_offset', tuple)         # offset values of the current tool
     rotation_xy = StatusItem('rotation_xy', float)         # current XY rotation angle around Z axis
