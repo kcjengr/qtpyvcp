@@ -1,4 +1,4 @@
-import os
+import os, subprocess
 import hal
 
 INI_FILE = os.getenv('INI_FILE_NAME')
@@ -90,7 +90,7 @@ def simulate_probe():
         tool_actions.simulate_probe
 
     """
-    p = os.open("simulate_probe  &")
+    p = subprocess.call(["simulate_probe"])
 
 halshow.ok = calibration.ok = halmeter.ok = status.ok = halscope.ok = classicladder.ok = simulate_probe.ok = lambda widget: True
 halshow.bindOk = calibration.bindOk = halmeter.bindOk = status.bindOk = halscope.bindOk = classicladder.bindOk = simulate_probe.ok = lambda widget: None
