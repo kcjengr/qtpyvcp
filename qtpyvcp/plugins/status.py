@@ -301,6 +301,10 @@ g5x_offset, tuple  offsets of the currently active coordinate system"""
     mcodes = StatusItem('mcodes', tuple, to_str)     # currently active M-codes
     """Status of M codes
 
+    In a status label to get the active M codes use::
+
+        status:mcodes?text
+
     :returns: tuple of currently active M-codes
     :rtype: tuple
 
@@ -309,6 +313,10 @@ g5x_offset, tuple  offsets of the currently active coordinate system"""
     to_str = lambda mcodes: " ".join(["G%g" % (mcode/10.) for mcode in sorted(mcodes[1:]) if mcode != -1])
     gcodes = StatusItem('gcodes', tuple, to_str)     # active G-codes for each modal group
     """Status of G codes
+
+    In a status Label to get the active G codes use::
+
+        status:gcodes?text
 
     :returns: tuple of active G-codes for each modal group
     :rtype: tuple
