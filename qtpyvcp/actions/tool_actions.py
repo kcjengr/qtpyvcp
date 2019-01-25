@@ -82,5 +82,15 @@ def classicladder():
         print text
         # self.error_dialog.run(text)
 
-halshow.ok = calibration.ok = halmeter.ok = status.ok = halscope.ok = classicladder.ok = lambda widget: True
-halshow.bindOk = calibration.bindOk = halmeter.bindOk = status.bindOk = halscope.bindOk = classicladder.bindOk = lambda widget: None
+def simulate_probe():
+    """Launch Simulate Probe
+
+    ActionButton syntax::
+
+        tool_actions.simulate_probe
+
+    """
+    p = os.open("simulate_probe  &")
+
+halshow.ok = calibration.ok = halmeter.ok = status.ok = halscope.ok = classicladder.ok = simulate_probe.ok = lambda widget: True
+halshow.bindOk = calibration.bindOk = halmeter.bindOk = status.bindOk = halscope.bindOk = classicladder.bindOk = simulate_probe.ok = lambda widget: None
