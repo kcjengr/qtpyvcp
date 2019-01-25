@@ -22,7 +22,7 @@ def calibration():
         tool_actions.calibration
 
     """
-    p = os.popen("tclsh {0}/bin/emccalib.tcl -- -ini {1} > /dev/null &"
+    p = os.popen("tclsh {0}/bin/emccalib.tcl -ini {1} > /dev/null &"
                  .format(TCLPATH, INI_FILE), "w")
 
 def halmeter():
