@@ -10,4 +10,5 @@ Actions
    program_actions
    spindle_actions
    coolant_actions
-   utility_actions
+   tool_actions
+

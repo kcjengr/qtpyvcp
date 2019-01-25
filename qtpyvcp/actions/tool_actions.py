@@ -4,8 +4,17 @@ import hal
 INI_FILE = os.getenv('INI_FILE_NAME')
 TCLPATH = os.getenv('LINUXCNC_TCL_DIR', '/usr/lib/tcltk/linuxcnc')
 
+"""Tool Actions launch LinuxCNC tools"""
+
 def halshow():
-    """Launch HALShow utility.
+    """Launch HALShow utility to view HAL and a Watch Window
+
+    * Components
+    * Pins
+    * Parameters
+    * Signals
+    * Functions
+    * Threads
 
     ActionButton syntax::
 
@@ -17,6 +26,9 @@ def halshow():
 def calibration():
     """Launch the HAL PID calibration utility.
 
+    Test PID, Scale, Acceleration and Velocity settings if they are in the INI
+    file.
+
     ActionButton syntax::
 
         tool_actions.calibration
@@ -26,7 +38,7 @@ def calibration():
                  .format(TCLPATH, INI_FILE), "w")
 
 def halmeter():
-    """Launch the HALMeter utility.
+    """Launch the HALMeter utility to display the current value of a single pin.
 
     ActionButton syntax::
 
@@ -47,6 +59,8 @@ def status():
 
 def halscope():
     """Launch the HALScope utility.
+
+    Halscope is an oscilloscope for the HAL
 
     ActionButton syntax::
 
