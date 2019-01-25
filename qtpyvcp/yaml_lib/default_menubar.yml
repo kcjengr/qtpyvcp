@@ -108,6 +108,9 @@ default_menubar:
       - title: Classicladder PLC
         action: tool.classicladder
 
+      - title: Simulated Probe
+        action: tool.simulate_probe
+
   - title: About
     items:
       - title: About Mini

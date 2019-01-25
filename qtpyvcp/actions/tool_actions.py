@@ -90,7 +90,7 @@ def simulate_probe():
         tool_actions.simulate_probe
 
     """
-    p = os.open("simulate_probe  &")
+    p = os.popen("simulate_probe > /dev/null &", "w")
 
 halshow.ok = calibration.ok = halmeter.ok = status.ok = halscope.ok = classicladder.ok = simulate_probe.ok = lambda widget: True
-halshow.bindOk = calibration.bindOk = halmeter.bindOk = status.bindOk = halscope.bindOk = classicladder.bindOk = simulate_probe.ok = lambda widget: None
+halshow.bindOk = calibration.bindOk = halmeter.bindOk = status.bindOk = halscope.bindOk = classicladder.bindOk = simulate_probe.bindOk = lambda widget: None

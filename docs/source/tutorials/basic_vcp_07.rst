@@ -13,12 +13,28 @@ Change the `CurrentTabText` to Offsets. Add a grid layout then set the tab
 layout to grid and morph the grid layout into a frame as before.
 
 
-Now in the grid set the button size in the stylesheet::
+Now in the grid set the button size and label text size in the stylesheet::
 
     DialogButton {
         min-height: 50px;
         min-width: 50px;
         font: 14pt "DejaVu Sans";
+    }
+    ActionButton {
+        min-height: 50px;
+        min-width: 50px;
+        font: 14pt "DejaVu Sans";
+    }
+    MDIButton {
+        min-height: 50px;
+        min-width: 50px;
+        font: 14pt "DejaVu Sans";
+    }
+    StatusLabel {
+        font: 12pt "DejaVu Sans";
+    }
+    QLabel {
+        font: 12pt "DejaVu Sans";
     }
 
 Add a DialogButton and set the dialogName to ``set_work_offsets``.
@@ -73,4 +89,50 @@ Now when we run we can see the offsets that are in effect.
 .. image:: images/vcp1-run-12.png
    :align: center
    :scale: 60 %
+
+The ``set_work_offsets`` dialog as you can see in this screen shot is designed
+for a mouse so delete that and we will make some MDI buttons for the offsets tab.
+
+.. image:: images/vcp1-run-13.png
+   :align: center
+   :scale: 60 %
+
+Add three MDIButtons next to the Axis labels and put the following for the
+`MDICommand`::
+
+    G10L20P0X0
+    G10L20P0Y0
+    G10L20P0Z0
+
+.. image:: images/vcp1-designer-31.png
+   :align: center
+   :scale: 40 %
+
+Now when we run the VCP and jog around a bit we can set the coordinate system.
+
+.. image:: images/vcp1-run-14.png
+   :align: center
+   :scale: 60 %
+
+Now add three more MDIButtons to the right of the offsets and add the following
+for the MDICommand::
+
+    G10L2P0X0
+    G10L2P0Y0
+    G10L2P0Z0
+
+.. image:: images/vcp1-designer-32.png
+   :align: center
+   :scale: 40 %
+
+Now we can set and clear the current coordinate system offsets.
+
+.. image:: images/vcp1-run-15.png
+   :align: center
+   :scale: 60 %
+
+.. Note:: I changed the coordinate system status label rule expression to 
+    ``"Set\n"+["G53","G54","G55","G56","G57","G58","G59","G59.1","G59.2","G59.3"][ch[0]]``
+    and moved it over the Set MDI buttons.
+
 
