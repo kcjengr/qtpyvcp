@@ -52,7 +52,6 @@ class ProbeSim(BaseDialog):
         self.close_button.pressed.connect(self.touch_on)
         self.close_button.released.connect(self.touch_off)
 
-        self.pulse = 0
         self.timer = QTimer()
         self.timer.timeout.connect(self.pulse_off)
         self.timer.setSingleShot(True)
