@@ -60,12 +60,10 @@ class ProbeSim(BaseDialog):
     def touch_on(self):
 
         if self.pulse_checkbox.checkState():
-            print("pulse")
             self.timer.start(1000)
             subprocess.Popen(['halcmd', 'setp', 'motion.probe-input', '1'])
             
         else:
-            print("toggle_on")
             subprocess.Popen(['halcmd', 'setp', 'motion.probe-input', '1'])
 
     def touch_off(self):
@@ -73,11 +71,9 @@ class ProbeSim(BaseDialog):
         if self.pulse_checkbox.checkState():
             return
 
-        print("toggle_off")
         subprocess.Popen(['halcmd', 'setp', 'motion.probe-input', '0'])
 
     def pulse_off(self):
-        print("pulse_off")
         subprocess.Popen(['halcmd', 'setp', 'motion.probe-input', '0'])
 
     def close(self):
