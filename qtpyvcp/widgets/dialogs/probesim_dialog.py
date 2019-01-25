@@ -48,16 +48,14 @@ class ProbeSim(BaseDialog):
         self.setLayout(main_layout)
         self.setWindowTitle("Simulate touch probe")
 
-        close_button.clicked.connect(self.touch_on)
+        close_button.pressed.connect(self.touch_on)
         close_button.released.connect(self.touch_off)
 
     def touch_on(self):
-        data = subprocess.check_output(['halcmd', 'setp', 'motion.probe-input', '1'])
-        print(data)
+        subprocess.Popen(['halcmd', 'setp', 'motion.probe-input', '1'])
 
     def touch_off(self):
-        data = subprocess.check_output(['halcmd', 'setp', 'motion.probe-input', '0'])
-        print(data)
+        subprocess.Popen(['halcmd', 'setp', 'motion.probe-input', '0'])
 
     def close(self):
         self.hide()
