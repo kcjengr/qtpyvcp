@@ -49,3 +49,8 @@ from action_combobox import ActionComboBox
 class ActionComboBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
         return ActionComboBox
+
+from probesim_widget import ProbeSim
+class ProbeSimPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return ProbeSim

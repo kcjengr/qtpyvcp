@@ -19,10 +19,7 @@
 import subprocess
 
 from qtpy.QtCore import QTimer
-from qtpy.QtWidgets import QPushButton, QVBoxLayout, QCheckBox
-
-from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
-
+from qtpy.QtWidgets import QPushButton, QVBoxLayout, QCheckBox, QWidget
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities import logger
@@ -30,7 +27,7 @@ from qtpyvcp.utilities import logger
 Log = logger.getLogger(__name__)
 
 
-class ProbeSim(BaseDialog):
+class ProbeSim(QWidget):
 
     def __init__(self, parent=None):
         super(ProbeSim, self).__init__(parent=parent)
@@ -79,6 +76,3 @@ class ProbeSim(BaseDialog):
     def pulse_off(self):
         print("pulse_off")
         subprocess.Popen(['halcmd', 'setp', 'motion.probe-input', '0'])
-
-    def close(self):
-        self.hide()
