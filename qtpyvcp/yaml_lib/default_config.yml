@@ -33,6 +33,9 @@ dialogs:
   set_work_offsets:
     provider: qtpyvcp.widgets.dialogs.offsets_dialog:OffsetsDialog
 
+  probe_sim:
+    provider: qtpyvcp.widgets.dialogs.probesim_dialog:ProbeSim
+
 virtual_keyboards:
   default:
     provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
