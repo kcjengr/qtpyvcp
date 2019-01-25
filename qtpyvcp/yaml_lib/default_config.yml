@@ -1,3 +1,5 @@
+{% include "default_menubar.yml" %}
+
 vcp:
   name: Not Set
   version: Not Set

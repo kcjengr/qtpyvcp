@@ -19,14 +19,22 @@ building complex VCPs.
 
 .. toctree::
    :maxdepth: 1
+   :caption: VCP Showcase
+
+   showcase/index
+
+.. toctree::
+   :maxdepth: 1
    :caption: Configuration
 
-   configuration.rst
+   configuration/ini_options
+   configuration/yml_config
 
 .. toctree::
    :maxdepth: 2
    :caption: Tutorials
 
+   tutorials/basic_vcp
    tutorials/getting_started
    tutorials/widget_rules
 
@@ -43,7 +51,8 @@ building complex VCPs.
    :maxdepth: 2
    :caption: Developers Corner
 
-   development/development.rst
+   development/contribution_guide
+   development/dev_environment
    tools/index
 
 .. toctree::

@@ -1,29 +1,17 @@
 #!/usr/bin/env python
 
-from qtpy.QtWidgets import QPushButton
 from qtpy.QtCore import Property
 
-from qtpyvcp.widgets import CMDWidget
+from qtpyvcp.widgets import VCPButton
 from qtpyvcp.actions import bindWidget, InvalidAction
 
-class ActionButton(QPushButton, CMDWidget):
+class ActionButton(VCPButton):
     """General purpose button for triggering QtPyVCP actions.
 
     Args:
         parent (QWidget, optional) : The parent widget of the button, or None.
         action (str, optional) : The name of the action the button should trigger.
     """
-
-    DEFAULT_RULE_PROPERTY = 'Enable'
-    RULE_PROPERTIES = {
-        'Enable': ['setEnabled', bool],
-        'Visible': ['setVisible', bool],
-        'Opacity': ['setOpacity', float],
-        'Text': ['setText', str],
-        'Checked': ['setChecked', bool],
-        'Style Class': ['setStyleClass', str],
-        'None': ['None', None],
-    }
 
     def __init__(self, parent=None, action=None):
         super(ActionButton, self).__init__(parent)

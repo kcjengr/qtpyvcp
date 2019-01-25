@@ -126,7 +126,10 @@ Set text in label
 *****************
 
 Here is a basic rule which will set the text in a label to "X Homed" if
-joint No. 0 is homed, or to "X Unhomed" if join No. 0 is not homed.
+joint 0 is homed (ch[0] is True), or to "X Unhomed" if joint 0 is not homed
+(ch[0] is False). Channel 0 data type is `bool` which means it is either true or
+false. The expression reads like this `set the label text to X Homed if channel
+0 is true else set the text label to X Unhomed`.
 
 .. figure:: /_static/rules/homed_label_example.png
 

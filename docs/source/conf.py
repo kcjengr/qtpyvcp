@@ -61,7 +61,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'QtPyVCP'
-copyright = u'2018, Kurt Jacobson'
+copyright = u'2018-2019, Kurt Jacobson.'
 author = u'Kurt Jacobson'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -69,7 +69,7 @@ author = u'Kurt Jacobson'
 # built documents.
 
 # The short X.Y version.
-version = qtpyvcp.__version__
+version = qtpyvcp.__version__.split('+')[0]
 # The full version, including alpha/beta/rc tags.
 release = qtpyvcp.__version__
 
@@ -145,8 +145,8 @@ html_theme = "sphinx_rtd_theme"
 
 # The name for this set of Sphinx documents.
 # "<project> v<release> documentation" by default.
-#
-# html_title = u'QtPyVCP v0.0.1'
+
+html_title = u'QtPyVCP {}'.format(version)
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
 #
@@ -177,8 +177,8 @@ html_extra_path = ['CNAME']
 # If not None, a 'Last updated on:' timestamp is inserted at every page
 # bottom, using the given strftime format.
 # The empty string is equivalent to '%b %d, %Y'.
-#
-# html_last_updated_fmt = None
+
+html_last_updated_fmt = ''
 
 # If true, SmartyPants will be used to convert quotes and dashes to
 # typographically correct entities.

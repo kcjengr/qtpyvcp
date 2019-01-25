@@ -58,6 +58,8 @@ class GcodeBackplot(QBackPlot):
             return
 
         self.show_overlay = False  # no DRO or DRO overlay
+        self.program_alpha = True
+        self.grid_size = 1
         self._reload_filename = None
 
         # Add loading progress bar and abort button
@@ -164,7 +166,47 @@ class GcodeBackplot(QBackPlot):
 
     defaultView = Property(str, getView, setView)
 
-    # DRO
+    @Slot()
+    def setViewP(self):
+        self.setView('p')
+
+    @Slot()
+    def setViewX(self):
+        self.setView('x')
+
+    @Slot()
+    def setViewY(self):
+        self.setView('y')
+
+    @Slot()
+    def setViewZ(self):
+        self.setView('z')
+
+    @Slot()
+    def setViewZ2(self):
+        self.setView('z2')
+
+    @Slot()
+    def clearLivePlot(self):
+        self.clear_live_plotter()
+
+    @Slot()
+    def zoomIn(self):
+        self.zoomin()
+
+    @Slot()
+    def zoomOut(self):
+        self.zoomout()
+
+    @Slot(bool)
+    def alphaBlend(self, alpha):
+        self.program_alpha = alpha
+        self.update()
+
+    @Slot(bool)
+    def showGrid(self, grid):
+        self.grid_size = int(grid)  # ugly hack for now
+        self.update()
 
     # @Slot(str) Fixme check for the correct data type
     def setdro(self, state):

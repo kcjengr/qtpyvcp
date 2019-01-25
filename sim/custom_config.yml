@@ -9,3 +9,11 @@ data_plugins:
   status:
     kwargs:
       cycle_time: 73
+
+  tooltable:
+    kwargs:
+      file_header_template: |
+        LinuxCNC Tool Table
+        -------------------
+
+        QtPyVCP will preserve comments before the opening semicolon.

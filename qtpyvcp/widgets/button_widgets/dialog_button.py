@@ -4,19 +4,19 @@
 """
 
 from qtpy.QtCore import Property, Slot
-from qtpy.QtWidgets import QPushButton
 
-from qtpyvcp.widgets import VCPWidget
+from qtpyvcp.widgets import VCPButton
 from qtpyvcp.widgets.dialogs import showDialog
 
 
-class DialogButton(QPushButton, VCPWidget):
+class DialogButton(VCPButton):
     """Dialog Button.
 
     Args:
         parent (QObject) : The dialog's parent or None.
         dialog_name (str) : The name of the dialog to show then the button is clicked.
     """
+
     def __init__(self, parent=None, dialog_name=''):
         super(DialogButton, self).__init__(parent)
 

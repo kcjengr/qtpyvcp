@@ -27,8 +27,10 @@ def load(fname, add_to_recents=True):
     setTaskMode(linuxcnc.MODE_AUTO)
     filter_prog = INFO.getFilterProgram(fname)
     if not filter_prog:
+        LOG.debug('Loading NC program: %s', fname)
         CMD.program_open(fname.encode('utf-8'))
     else:
+        LOG.debug('Loading file with filter program: %s', fname)
         openFilterProgram(fname, filter_prog)
 
     if add_to_recents:
@@ -268,6 +270,7 @@ abort.bindOk = _abort_bindOk
 # BLOCK DELETE actions
 # -------------------------------------------------------------------------
 class block_delete:
+    """Block Delete Group"""
     @staticmethod
     def on():
         """Start ignoring lines beginning with '/'."""
@@ -327,6 +330,7 @@ block_delete.on.bindOk = block_delete.off.bindOk = block_delete.toggle.bindOk = 
 # OPTIONAL STOP actions
 # -------------------------------------------------------------------------
 class optional_stop:
+    """Optional Stop Group"""
     @staticmethod
     def on():
         """Pause when a line beginning with M1 is encountered"""
@@ -429,7 +433,7 @@ class FilterProgram:
         self.stderr_text = []
         self.program_filter = program_filter
         self.callback = callback
-        self.gid = STATUS.onValueChanged('periodic', self.update)
+        # self.gid = STATUS.onValueChanged('periodic', self.update)
         #progress = Progress(1, 100)
         #progress.set_text(_("Filtering..."))
 

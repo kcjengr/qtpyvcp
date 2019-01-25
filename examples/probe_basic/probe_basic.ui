@@ -2260,8 +2260,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_53">
                   <property name="geometry">
                    <rect>
-                    <x>3</x>
-                    <y>3</y>
+                    <x>1</x>
+                    <y>0</y>
                     <width>500</width>
                     <height>500</height>
                    </rect>
@@ -2273,7 +2273,7 @@ border-radius: 8px;
                    <string/>
                   </property>
                   <property name="scaledContents">
-                   <bool>true</bool>
+                   <bool>false</bool>
                   </property>
                   <property name="indent">
                    <number>0</number>
@@ -2282,8 +2282,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_60">
                   <property name="geometry">
                    <rect>
-                    <x>158</x>
-                    <y>353</y>
+                    <x>156</x>
+                    <y>350</y>
                     <width>44</width>
                     <height>44</height>
                    </rect>
@@ -2330,8 +2330,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_61">
                   <property name="geometry">
                    <rect>
-                    <x>112</x>
-                    <y>34</y>
+                    <x>110</x>
+                    <y>31</y>
                     <width>70</width>
                     <height>70</height>
                    </rect>
@@ -2378,8 +2378,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_67">
                   <property name="geometry">
                    <rect>
-                    <x>403</x>
-                    <y>112</y>
+                    <x>401</x>
+                    <y>109</y>
                     <width>70</width>
                     <height>70</height>
                    </rect>
@@ -2426,8 +2426,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_68">
                   <property name="geometry">
                    <rect>
-                    <x>33</x>
-                    <y>324</y>
+                    <x>31</x>
+                    <y>321</y>
                     <width>70</width>
                     <height>70</height>
                    </rect>
@@ -2474,8 +2474,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_69">
                   <property name="geometry">
                    <rect>
-                    <x>353</x>
-                    <y>158</y>
+                    <x>351</x>
+                    <y>155</y>
                     <width>44</width>
                     <height>44</height>
                    </rect>
@@ -2522,8 +2522,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_70">
                   <property name="geometry">
                    <rect>
-                    <x>302</x>
-                    <y>108</y>
+                    <x>300</x>
+                    <y>105</y>
                     <width>44</width>
                     <height>44</height>
                    </rect>
@@ -2570,8 +2570,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_71">
                   <property name="geometry">
                    <rect>
-                    <x>218</x>
-                    <y>429</y>
+                    <x>216</x>
+                    <y>426</y>
                     <width>70</width>
                     <height>70</height>
                    </rect>
@@ -2618,8 +2618,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_72">
                   <property name="geometry">
                    <rect>
-                    <x>304</x>
-                    <y>353</y>
+                    <x>302</x>
+                    <y>350</y>
                     <width>44</width>
                     <height>44</height>
                    </rect>
@@ -2666,8 +2666,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_73">
                   <property name="geometry">
                    <rect>
-                    <x>218</x>
-                    <y>6</y>
+                    <x>216</x>
+                    <y>3</y>
                     <width>70</width>
                     <height>70</height>
                    </rect>
@@ -2714,8 +2714,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_74">
                   <property name="geometry">
                    <rect>
-                    <x>162</x>
-                    <y>107</y>
+                    <x>160</x>
+                    <y>104</y>
                     <width>44</width>
                     <height>44</height>
                    </rect>
@@ -2762,8 +2762,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_75">
                   <property name="geometry">
                    <rect>
-                    <x>373</x>
-                    <y>229</y>
+                    <x>371</x>
+                    <y>226</y>
                     <width>44</width>
                     <height>44</height>
                    </rect>
@@ -2810,8 +2810,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_76">
                   <property name="geometry">
                    <rect>
-                    <x>109</x>
-                    <y>158</y>
+                    <x>107</x>
+                    <y>155</y>
                     <width>44</width>
                     <height>44</height>
                    </rect>
@@ -2858,8 +2858,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_77">
                   <property name="geometry">
                    <rect>
-                    <x>324</x>
-                    <y>35</y>
+                    <x>322</x>
+                    <y>32</y>
                     <width>70</width>
                     <height>70</height>
                    </rect>
@@ -2906,8 +2906,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_78">
                   <property name="geometry">
                    <rect>
-                    <x>430</x>
-                    <y>217</y>
+                    <x>428</x>
+                    <y>214</y>
                     <width>70</width>
                     <height>70</height>
                    </rect>
@@ -2954,8 +2954,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_79">
                   <property name="geometry">
                    <rect>
-                    <x>34</x>
-                    <y>112</y>
+                    <x>32</x>
+                    <y>109</y>
                     <width>70</width>
                     <height>70</height>
                    </rect>
@@ -3002,8 +3002,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_80">
                   <property name="geometry">
                    <rect>
-                    <x>231</x>
-                    <y>89</y>
+                    <x>229</x>
+                    <y>86</y>
                     <width>44</width>
                     <height>44</height>
                    </rect>
@@ -3050,8 +3050,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_81">
                   <property name="geometry">
                    <rect>
-                    <x>112</x>
-                    <y>401</y>
+                    <x>110</x>
+                    <y>398</y>
                     <width>70</width>
                     <height>70</height>
                    </rect>
@@ -3098,8 +3098,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_82">
                   <property name="geometry">
                    <rect>
-                    <x>108</x>
-                    <y>301</y>
+                    <x>106</x>
+                    <y>298</y>
                     <width>44</width>
                     <height>44</height>
                    </rect>
@@ -3146,8 +3146,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_83">
                   <property name="geometry">
                    <rect>
-                    <x>324</x>
-                    <y>402</y>
+                    <x>322</x>
+                    <y>399</y>
                     <width>70</width>
                     <height>70</height>
                    </rect>
@@ -3194,8 +3194,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_84">
                   <property name="geometry">
                    <rect>
-                    <x>90</x>
-                    <y>231</y>
+                    <x>88</x>
+                    <y>228</y>
                     <width>44</width>
                     <height>44</height>
                    </rect>
@@ -3242,8 +3242,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_85">
                   <property name="geometry">
                    <rect>
-                    <x>402</x>
-                    <y>323</y>
+                    <x>400</x>
+                    <y>320</y>
                     <width>70</width>
                     <height>70</height>
                    </rect>
@@ -3290,8 +3290,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_86">
                   <property name="geometry">
                    <rect>
-                    <x>232</x>
-                    <y>373</y>
+                    <x>230</x>
+                    <y>370</y>
                     <width>44</width>
                     <height>44</height>
                    </rect>
@@ -3338,8 +3338,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_87">
                   <property name="geometry">
                    <rect>
-                    <x>355</x>
-                    <y>301</y>
+                    <x>353</x>
+                    <y>298</y>
                     <width>44</width>
                     <height>44</height>
                    </rect>
@@ -3386,8 +3386,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_88">
                   <property name="geometry">
                    <rect>
-                    <x>5</x>
-                    <y>218</y>
+                    <x>3</x>
+                    <y>215</y>
                     <width>70</width>
                     <height>70</height>
                    </rect>
@@ -19442,7 +19442,7 @@ font: 11pt bebas kai;
    <sender>tool_table_add_tool_button</sender>
    <signal>clicked()</signal>
    <receiver>tableWidget_2</receiver>
-   <slot>insertToolBelow()</slot>
+   <slot>addTool()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>404</x>

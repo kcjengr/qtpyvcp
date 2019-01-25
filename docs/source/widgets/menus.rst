@@ -1,7 +1,3 @@
-=====
-Menus
-=====
-
 A collection of menu providers for use in YAML menu definitions.
 
 Recent Files Menu

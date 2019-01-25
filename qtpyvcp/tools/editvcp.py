@@ -41,13 +41,29 @@ from qtpy.QtWidgets import QApplication, QFileDialog
 from qtpyvcp.lib.types import DotDict
 from qtpyvcp.utilities.logger import initBaseLogger
 
+LCNC_VERSION_ERROR_MSG = """
+\033[31mERROR:\033[0m Unsupported LinuxCNC version
+
+QtPyVCP only supports LinuxCNC 2.8, current version is {}. If you have
+LinuxCNC installed as a RIP make sure you have activated the run-in-place 
+environment by running:\n"
+
+    $ . <linuxcnc-rip-dir>/scripts/rip-environment
+
+Otherwise you will need to install LinuxCNC 2.8, info on how to do that
+can be found here: https://gnipsel.com/linuxcnc/uspace/
+""".strip()
+
+INSTALLED_ERROR_MSG = """
+\033[31mERROR:\033[0m Can not edit an installed VCP
+
+The specified VCP appears to be installed in the `python2.7/site-packages` 
+directory. Please set up a development install to edit the VCP.
+""".strip()
 
 if not linuxcnc.version.startswith('2.8'):
-    print "QtPyVCP only supports LinuxCNC 2.8, current version is", linuxcnc.version
-    print "If you have LinuxCNC installed as a RIP make sure you have\n" \
-          "activated the run-in-place environment by running:\n"
-    print "    $ . <linuxcnc-rip-dir>/scripts/rip-environment\n"
-    sys.exit()
+    print LCNC_VERSION_ERROR_MSG.format(linuxcnc.version)
+    sys.exit(1)
 
 LOG = initBaseLogger('qtpyvcp', log_file=os.devnull, log_level='WARNING')
 
@@ -61,7 +77,7 @@ def launch_designer(opts=DotDict()):
             options=QFileDialog.Options() | QFileDialog.DontUseNativeDialog)
 
         if not fname:
-            sys.exit()
+            sys.exit(1)
 
     else:
         fname = opts.vcp or opts.ui_file
@@ -79,6 +95,10 @@ def launch_designer(opts=DotDict()):
             fname = vcp.VCP_CONFIG_FILE
         except KeyError:
             pass
+
+        if 'lib/python2.7/site-packages' in fname:
+            print INSTALLED_ERROR_MSG
+            sys.exit(1)
 
     cmd = ['designer']
     ext = os.path.splitext(fname)[1]

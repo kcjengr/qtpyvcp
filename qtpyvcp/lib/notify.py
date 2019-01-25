@@ -18,6 +18,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
 import dbus
 from collections import OrderedDict
 
@@ -166,7 +167,8 @@ class Notification(object):
 
     def setSoundFile(self, sound_file):
         """Sets a sound file to play when the notification shows"""
-        self.hints['sound-file'] = sound_file
+        if os.path.isfile(sound_file):
+            self.hints['sound-file'] = sound_file
 
     def setSoundName(self, sound_name):
         """Set a freedesktop.org sound name to play when notification shows"""
@@ -174,7 +176,8 @@ class Notification(object):
 
     def setIconPath(self, icon_path):
         """Set the URI of the icon to display in the notification"""
-        self.hints['image-path'] = 'file://' + icon_path
+        if os.path.isfile(icon_path):
+            self.hints['image-path'] = 'file://' + icon_path
 
     def setQIcon(self, q_icon):
         # FixMe this would be convenient, but may not be possible

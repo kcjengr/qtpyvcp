@@ -1,3 +1,4 @@
+import os
 import sys
 from qtpy.QtWidgets import QAction, QPushButton, QCheckBox, QSlider, QSpinBox, QComboBox
 
@@ -10,6 +11,8 @@ import tool_actions as tool
 # Set up logging
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
+
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 class InvalidAction(Exception):
     pass
@@ -57,12 +60,18 @@ def bindWidget(widget, action):
         try:
             method = getattr(method, item)
         except(AttributeError, KeyError):
-            raise InvalidAction("Could not get action method: %s" % item)
+            if IN_DESIGNER:
+                return
+            else:
+                raise InvalidAction("Could not get action method: %s" % item)
 
         prev_item = item
 
     if method is None or not callable(method):
-        raise InvalidAction('Method is not callable: %s' % method)
+        if IN_DESIGNER:
+            return
+        else:
+            raise InvalidAction('Method is not callable: %s' % method)
 
     if args != '':
         # make a list out of comma separated args
@@ -79,7 +88,7 @@ def bindWidget(widget, action):
 
     elif isinstance(widget, QPushButton) or isinstance(widget, QCheckBox):
 
-        if action.startswith('machine.jog'):
+        if action.startswith('machine.jog.axis'):
             widget.pressed.connect(lambda: method(*args, **kwargs))
             widget.released.connect(lambda: method(*args, speed=0, **kwargs))
 

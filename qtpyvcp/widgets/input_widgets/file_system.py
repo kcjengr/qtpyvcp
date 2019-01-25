@@ -1,4 +1,5 @@
 import os
+import subprocess
 import pyudev
 import psutil
 
@@ -8,6 +9,10 @@ from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox,
 
 from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.lib.decorators import deprecated
+
+LOG = getLogger(__name__)
 
 IN_DESIGNER = os.getenv('DESIGNER') != None
 
@@ -17,9 +22,7 @@ class TableType(object):
 
 
 class RemovableDeviceComboBox(QComboBox):
-    """
-    ComboBox for choosing from a list of removable devices.
-    """
+    """ComboBox for choosing from a list of removable devices."""
 
     def __init__(self, parent=None):
         super(RemovableDeviceComboBox, self).__init__(parent)
@@ -91,6 +94,7 @@ class FileSystemTable(QTableView, TableType):
         super(FileSystemTable, self).__init__(parent)
 
         self._table_type = TableType.Local
+        self._hidden_columns = ''
 
         # This prevents doing unneeded initialization
         # when QtDesginer loads the plugin.
@@ -99,7 +103,7 @@ class FileSystemTable(QTableView, TableType):
 
         self.parent = parent
         self.path_data = dict()
-        self.doubleClicked.connect(self.changeRoot)
+        self.doubleClicked.connect(self.openSelectedItem)
         self.selected_row = None
         self.clipboard = QApplication.clipboard()
 
@@ -118,6 +122,7 @@ class FileSystemTable(QTableView, TableType):
         self.selection_model.selectionChanged.connect(self.onSelectionChanged)
 
         self.info = Info()
+        self.editor = self.info.getEditor()
         self._nc_file_dir = self.info.getProgramPrefix()
         self.nc_file_exts = self.info.getProgramExtentions()
         self.setRootPath(self._nc_file_dir)
@@ -142,44 +147,112 @@ class FileSystemTable(QTableView, TableType):
             self.gcodeFileSelected.emit(False)
             self.filePreviewText.emit('')
 
-    def changeRoot(self, index):
+    @Slot()
+    def openSelectedItem(self, index=None):
+        """If ngc file, opens in LinuxCNC, if dir displays dir."""
+        if index is None:
+            selection = self.getSelection()
+            if selection is None:
+                return
+            index = selection[0]
 
         path = self.model.filePath(self.rootIndex())
-        new_path = self.model.filePath(index)
+        name = self.model.filePath(index)
 
-        absolute_path = os.path.join(path, new_path)
+        absolute_path = os.path.join(path, name)
 
         file_info = QFileInfo(absolute_path)
         if file_info.isDir():
             self.model.setRootPath(absolute_path)
             self.setRootIndex(self.model.index(absolute_path))
-
             self.rootChanged.emit(absolute_path)
 
         elif file_info.isFile():
-            print self.nc_file_exts
-            print absolute_path
-            # if os.path.splitext(new_path)[1] in self.nc_file_exts:
-            #     print absolute_path
+            # if file_info.completeSuffix() not in self.nc_file_exts:
+            #     LOG.warn("Unsuported NC program type with extention .%s",
+            #              file_info.completeSuffix())
             loadProgram(absolute_path)
 
     @Slot()
-    def loadSelectedFile(self):
-        selection = self.selection_model.selectedIndexes()
-        if len(selection) == 0:
-            return
+    def editSelectedFile(self):
+        """Open the selected file in editor."""
+        selection = self.getSelection()
+        if selection is not None:
+            path = self.model.filePath(selection[0])
+            subprocess.Popen([self.editor, path])
+        return False
 
-        path = self.model.filePath(selection[0])
-        loadProgram(path)
+    @Slot()
+    def loadSelectedFile(self):
+        """Loads the selected file into LinuxCNC."""
+        selection = self.getSelection()
+        if selection is not None:
+            path = self.model.filePath(selection[0])
+            loadProgram(path)
+            return True
+        return False
+
+    @Slot()
+    def selectPrevious(self):
+        """Select the previous item in the view."""
+        selection = self.getSelection()
+        if selection is None:
+            # select last item in view
+            self.selectRow(self.model.rowCount(self.rootIndex()) - 1)
+        else:
+            self.selectRow(selection[0].row() - 1)
+        return True
+
+    @Slot()
+    def selectNext(self):
+        """Select the next item in the view."""
+        selection = self.getSelection()
+        if selection is None:
+            # select first item in view
+            self.selectRow(0)
+        else:
+            self.selectRow(selection[-1].row() + 1)
+        return True
 
     @Slot()
     def newFile(self):
+        """Create a new empty file"""
         path = self.model.filePath(self.rootIndex())
-        new_file = QFile(os.path.join(path, "New File"))
+        new_file_path = os.path.join(path, "New File.ngc")
+
+        count = 1
+        while os.path.exists(new_file_path):
+            new_file_path = os.path.join(path, "New File {}.ngc".format(count))
+            count += 1
+
+        new_file = QFile(new_file_path)
         new_file.open(QIODevice.ReadWrite)
 
     @Slot()
-    def deleteFile(self):
+    def newFolder(self):
+        path = self.model.filePath(self.rootIndex())
+
+        new_name = 'New Folder'
+
+        count = 1
+        while os.path.exists(os.path.join(path, new_name)):
+            new_name = "New Folder {}".format(count)
+            count += 1
+
+        directory = QDir(path)
+        directory.mkpath(new_name)
+        directory.setPath(new_name)
+
+    @Slot()
+    @deprecated(replaced_by='newFolder',
+                reason='for consistency with newFile method name')
+    def createDirectory(self):
+        self.newFolder()
+
+    @Slot()
+    def deleteItem(self):
+        """Delete the selected item (either a file or folder)."""
+        # ToDo: use Move2Trash, instead of deleting the file
         index = self.selectionModel().currentIndex()
         path = self.model.filePath(index)
         if path:
@@ -197,14 +270,14 @@ class FileSystemTable(QTableView, TableType):
                 directory.removeRecursively()
 
     @Slot()
-    def createDirectory(self):
-        path = self.model.filePath(self.rootIndex())
-        directory = QDir()
-        directory.setPath(path)
-        directory.mkpath("New Folder")
+    @deprecated(replaced_by='deleteItem',
+                reason='because of unclear method name')
+    def deleteFile(self):
+        self.deleteItem()
 
     @Slot(str)
     def setRootPath(self, root_path):
+        """Sets the currently displayed path."""
 
         self.rootChanged.emit(root_path)
         self.model.setRootPath(root_path)
@@ -213,7 +286,8 @@ class FileSystemTable(QTableView, TableType):
         return True
 
     @Slot()
-    def goUP(self):
+    def viewParentDirectory(self):
+        """View the parent directory of the current view."""
 
         path = self.model.filePath(self.rootIndex())
 
@@ -226,6 +300,27 @@ class FileSystemTable(QTableView, TableType):
         self.model.setRootPath(new_path)
         self.setRootIndex(currentRoot.parent())
         self.rootChanged.emit(new_path)
+
+    @Slot()
+    @deprecated(replaced_by='viewParentDirectory')
+    def goUP(self):
+        self.viewParentDirecotry()
+
+    @Slot()
+    def viewHomeDirectory(self):
+        self.setRootPath(os.path.expanduser('~/'))
+
+    @Slot()
+    def viewNCFilesDirectory(self):
+        # ToDo: Make preset user definable
+        path = os.path.expanduser('~/linuxcnc/nc_files')
+        self.setRootPath(path)
+
+    @Slot()
+    def viewPresetDirectory(self):
+        # ToDo: Make preset user definable
+        preset = os.path.expanduser('~/linuxcnc/nc_files')
+        self.setRootPath(preset)
 
     @Slot()
     def doFileTransfer(self):
@@ -247,8 +342,12 @@ class FileSystemTable(QTableView, TableType):
         src_file.copy(dst_path)
 
     @Slot()
-    def getSelected(self):
-        return self.selected_row
+    def getSelection(self):
+        """Returns list of selected indexes, or None."""
+        selection = self.selection_model.selectedIndexes()
+        if len(selection) == 0:
+            return None
+        return selection
 
     @Slot()
     def getCurrentDirectory(self):
@@ -265,6 +364,27 @@ class FileSystemTable(QTableView, TableType):
             self.setRootPath(self._nc_file_dir)
         else:
             self.setRootPath('/media/')
+
+    @Property(str)
+    def hiddenColumns(self):
+        """String of comma separated column numbers to hide."""
+        return self._hidden_columns
+
+    @hiddenColumns.setter
+    def hiddenColumns(self, columns):
+        try:
+            col_list = [int(c) for c in columns.split(',') if c != '']
+        except:
+            return False
+
+        self._hidden_columns = columns
+
+        header = self.horizontalHeader()
+        for col in range(4):
+            if col in col_list:
+                header.hideSection(col)
+            else:
+                header.showSection(col)
 
     def ask_dialog(self, message):
         box = QMessageBox.question(self.parent,

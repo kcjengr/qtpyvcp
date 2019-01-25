@@ -1,6 +1,6 @@
-====================
-QtPyVCP Data Plugins
-====================
+============
+Data Plugins
+============
 
 .. toctree::
    :maxdepth: 1

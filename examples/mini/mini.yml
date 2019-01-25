@@ -1,5 +1,3 @@
-{% include "default_menubar.yml" %}
-
 qtdesigner:
   ui_file: ( windows.mainwindow.kwargs.ui_file )
 #  qss_file: ( application.kwargs.stylesheet )
@@ -36,7 +34,6 @@ windows:
       title: ( vcp.name ) ( vcp.version ) on {{ ini.machine.name }}
       ui_file: {{ file.dir }}/mini.ui  # ui file to load the window from
       confirm_exit: no
-      menu: ( default_menubar )
 
 #  secondarywindow:
 #    provider: qtpy.QtWidgets:QWidget

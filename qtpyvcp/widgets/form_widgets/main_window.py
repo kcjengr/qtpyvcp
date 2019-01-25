@@ -5,16 +5,17 @@ import os
 import sys
 
 from qtpy import uic
+from qtpy.QtGui import QKeySequence
 from qtpy.QtCore import Qt, Slot, QTimer
-from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, QMenu, QMenuBar, QLineEdit
+from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, \
+    QMenu, QMenuBar, QLineEdit, QShortcut
 
 import qtpyvcp
 from qtpyvcp import actions
 from qtpyvcp.utilities import logger
 from qtpyvcp.core import Prefs, Info
-from qtpyvcp.lib.types import DotDict
-from qtpyvcp.widgets.dialogs import showDialog
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.widgets.dialogs import showDialog
 from qtpyvcp.vcp_launcher import _initialize_object_from_dict
 
 LOG = logger.getLogger(__name__)
@@ -25,7 +26,7 @@ INFO = Info()
 class VCPMainWindow(QMainWindow):
 
     def __init__(self, parent=None, opts=None, ui_file=None, stylesheet=None,
-                 position=None, size=None, confirm_exit=True, title=None, menu=None):
+                 position=None, size=None, confirm_exit=True, title=None, menu='default'):
 
         super(VCPMainWindow, self).__init__(parent)
 
@@ -52,6 +53,9 @@ class VCPMainWindow(QMainWindow):
                 del self.menuBar
             except AttributeError:
                 pass
+
+            if menu == 'default':
+                menu = qtpyvcp.CONFIG.get('default_menubar', [])
 
             self.setMenuBar(self.buildMenuBar(menu))
 
@@ -84,7 +88,7 @@ class VCPMainWindow(QMainWindow):
             except:
                 LOG.exception('Error parsing --position argument: %s', opts.position)
 
-        # QShortcut(QKeySequence("t"), self, self.test)
+        QShortcut(QKeySequence("F11"), self, self.toggleFullscreen)
         self.app.focusChanged.connect(self.focusChangedEvent)
 
     def loadUi(self, ui_file):
@@ -186,9 +190,19 @@ class VCPMainWindow(QMainWindow):
         self.loadSplashGcode()
         self.initHomingMenu()
 
+    @Slot()
+    def toggleFullscreen(self):
+        if self.isFullScreen():
+            self.showNormal()
+        else:
+            self.showFullScreen()
+
     def closeEvent(self, event):
         """Catch close event and show confirmation dialog."""
-        if self.confirm_exit:
+        if os.getenv('DESIGNER', False):
+            self.close()
+
+        elif self.confirm_exit:
             quit_msg = "Are you sure you want to exit LinuxCNC?"
             reply = QMessageBox.question(self, 'Exit LinuxCNC?',
                                          quit_msg, QMessageBox.Yes, QMessageBox.No)

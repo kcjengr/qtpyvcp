@@ -8,16 +8,41 @@ with open("README.md", "r") as fh:
 from qtpyvcp.tools.qcompile import compile
 compile(['examples/probe_basic',])
 
-# list of (destination, source_file) tuples
-DATA_FILES = [
-    ('~/', ['scripts/.xsessionrc',])
-]
 
-# list of (destination, source_dir) tuples
-DATA_DIRS = [
-    ('~/linuxcnc/configs/sim.qtpyvcp', 'sim'),
-    # ('~/linuxcnc/vcps', 'examples'),
-]
+if os.getenv('DEB_BUILD') == 'true' or os.getenv('USER') == 'root':
+    "/usr/share/doc/linuxcnc/examples/sample-configs/sim"
+    # list of (destination, source_file) tuples
+    DATA_FILES = [
+        ('/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/', [
+            'QtDesigner/Qt5.7.1-Py2.7-64bit/libpyqt5_py2.so',
+            'QtDesigner/Qt5.7.1-Py2.7-64bit/libpyqt5_py3.so']),
+        ('/usr/share/fonts/truetype/bebaskai', ['examples/probe_basic/fonts/BebasKai.ttf'])
+    ]
+
+    # list of (destination, source_dir) tuples
+    DATA_DIRS = [
+        ('/usr/share/doc/linuxcnc/examples/sample-configs/sim/qtpyvcp', 'sim'),
+    ]
+
+    if os.getenv('USER') == 'root':
+        try:
+            os.rename('/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/libpyqt5.so',
+                      '/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/libpyqt5.so.old')
+        except:
+            pass
+
+else:
+    # list of (destination, source_file) tuples
+    DATA_FILES = [
+        ('~/', ['scripts/.xsessionrc',]),
+        ('~/.local/share/fonts/truetype/bebaskai', ['examples/probe_basic/fonts/BebasKai.ttf'])
+    ]
+
+    # list of (destination, source_dir) tuples
+    DATA_DIRS = [
+        ('~/linuxcnc/configs/sim.qtpyvcp', 'sim'),
+        # ('~/linuxcnc/vcps', 'examples'),
+    ]
 
 
 def data_files_from_dirs(data_dirs):
@@ -29,7 +54,6 @@ def data_files_from_dirs(data_dirs):
             dest = os.path.join(dest_dir, os.path.relpath(root, source_dir))
             data_files.append((dest, root_files))
 
-    print data_files
     return data_files
 
 
@@ -47,7 +71,7 @@ setup(
     long_description_content_type="text/markdown",
     license="GNU General Public License v2 (GPLv2)",
     url="https://github.com/kcjengr/qtpyvcp",
-    download_url="https://gitlab.com/Hazzy/qtpyvcp/-/archive/master/qtpyvcp-master.tar.gz",
+    download_url="https://github.com/kcjengr/qtpyvcp/archive/master.zip",
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers',
@@ -66,7 +90,8 @@ setup(
         'qtpy',
         'pyudev',
         'psutil',
-        'HiYaPyCo'
+        'HiYaPyCo',
+        'pyopengl'
     ],
     entry_points={
         'console_scripts': [

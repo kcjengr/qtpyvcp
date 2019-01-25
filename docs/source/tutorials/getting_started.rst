@@ -8,3 +8,9 @@ Getting started with QtPyVCP.
    :maxdepth: 1
 
    first_vcp
+   dialogs
+   dro_tutorial
+   machine_buttons
+   mdi
+   touch_screen
+   overrides

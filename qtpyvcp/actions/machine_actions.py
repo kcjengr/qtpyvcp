@@ -74,19 +74,34 @@ class power:
     """Power action group"""
     @staticmethod
     def on():
-        """Turns machine power On"""
+        """Turns machine power On
+
+        ActionButton syntax::
+
+            machine.power.on
+        """
         LOG.debug("Setting state green<ON>")
         CMD.state(linuxcnc.STATE_ON)
 
     @staticmethod
     def off():
-        """Turns machine power Off"""
+        """Turns machine power Off
+
+        ActionButton syntax::
+
+            machine.power.off
+        """
         LOG.debug("Setting state red<OFF>")
         CMD.state(linuxcnc.STATE_OFF)
 
     @staticmethod
     def toggle():
-        """Toggles machine power On/Off"""
+        """Toggles machine power On/Off
+
+        ActionButton syntax::
+
+            machine.power.toggle
+        """
         if power.is_on():
             power.off()
         else:
@@ -154,7 +169,6 @@ def issue_mdi(command, reset=True):
         command (str) : A valid RS274 gcode command string.
         rest (bool, optional): Whether to reset the Task Mode to the state
             the machine was in prior to issuing the MDI command.
-
     """
     if reset:
         # save the previous mode
@@ -174,8 +188,8 @@ def issue_mdi(command, reset=True):
 
 def _issue_mdi_ok(mdi_cmd='', widget=None):
     if STAT.task_state == linuxcnc.STATE_ON \
-        and STATUS.allHomed() \
-        and STAT.interp_state == linuxcnc.INTERP_IDLE:
+                          and STATUS.allHomed() \
+                          and STAT.interp_state == linuxcnc.INTERP_IDLE:
 
         ok = True
         msg = ""
@@ -273,16 +287,20 @@ feedhold.enable.bindOk = feedhold.disable.bindOk = feedhold.toggle_enable.bindOk
 # -------------------------------------------------------------------------
 
 class feed_override:
+    """Feed Override Group"""
     @staticmethod
     def enable():
+        """Feed Override Enable"""
         CMD.set_feed_override(True)
 
     @staticmethod
     def disable():
+        """Feed Override Disable"""
         CMD.set_feed_override(False)
 
     @staticmethod
     def toggle_enable():
+        """Feed Override Enable Toggle"""
         if STAT.feed_override_enabled:
             feed_override.disable()
         else:
@@ -290,10 +308,12 @@ class feed_override:
 
     @staticmethod
     def set(value):
+        """Feed Override Set Value"""
         CMD.feedrate(float(value) / 100)
 
     @staticmethod
     def reset():
+        """Feed Override Reset"""
         CMD.feedrate(1.0)
 
 def _feed_override_enable_ok(widget=None):
@@ -352,10 +372,19 @@ def _feed_override_bindOk(value=100, widget=None):
         # these will only work for QSlider or QSpinBox
         widget.setMinimum(0)
         widget.setMaximum(INFO.maxFeedOverride() * 100)
-        widget.setValue(100)
+
+        try:
+            widget.setSliderPosition(100)
+            STATUS.feedrate.onValueChanged(
+                lambda v: widget.setSliderPosition(v * 100))
+
+        except AttributeError:
+            widget.setValue(100)
+            STATUS.feedrate.onValueChanged(
+                lambda v: widget.setValue(v * 100))
+
         feed_override.set(100)
 
-        STATUS.feedrate.onValueChanged(lambda v: widget.setValue(v * 100))
     except AttributeError:
         pass
     except:
@@ -405,10 +434,19 @@ def _rapid_override_bindOk(value=100, widget=None):
         # these will only work for QSlider or QSpinBox
         widget.setMinimum(0)
         widget.setMaximum(100)
-        widget.setValue(100)
+
+        try:
+            widget.setSliderPosition(100)
+            STATUS.rapidrate.onValueChanged(
+                lambda v: widget.setSliderPosition(v * 100))
+
+        except AttributeError:
+            STATUS.rapidrate.onValueChanged(
+                lambda v: widget.setValue(v * 100))
+            widget.setValue(100)
+
         rapid_override.set(100)
 
-        STATUS.rapidrate.onValueChanged(lambda v: widget.setValue(v * 100))
     except AttributeError:
         pass
     except:
@@ -456,9 +494,17 @@ def _max_velocity_bindOk(value=100, widget=None):
         # these will only work for QSlider or QSpinBox
         widget.setMinimum(0)
         widget.setMaximum(INFO.maxVelocity())
-        widget.setValue(INFO.maxVelocity())
 
-        STATUS.max_velocity.onValueChanged(lambda v: widget.setValue(v * 60))
+        try:
+            widget.setSliderPosition(INFO.maxVelocity())
+            STATUS.max_velocity.onValueChanged(
+                lambda v: widget.setSliderPosition(v * 60))
+
+        except AttributeError:
+            widget.setValue(INFO.maxVelocity())
+            STATUS.max_velocity.onValueChanged(
+                lambda v: widget.setValue(v * 60))
+
     except AttributeError:
         pass
     except:
@@ -536,16 +582,25 @@ class home:
     """Homing actions group"""
     @staticmethod
     def all():
-        """Homes all axes."""
+        """Homes all axes
+
+        ActionButton syntax::
+
+            machine.home.all
+        """
         LOG.info("Homing all axes")
         _home_joint(-1)
 
     @staticmethod
     def axis(axis):
-        """Home a specific axis.
+        """Home a specific axis
 
         Args:
             axis (int | str) : Either the axis letter or number to home.
+
+        ActionButton syntax::
+
+            machine.home.axis:axis
         """
         axis = getAxisLetter(axis)
         if axis.lower() == 'all':
@@ -557,10 +612,14 @@ class home:
 
     @staticmethod
     def joint(jnum):
-        """Home a specific joint.
+        """Home a specific joint
 
         Args:
             jnum (int) : The number of the joint to home.
+
+        ActionButton syntax::
+
+            machine.home.joint:jnum
         """
         LOG.info("Homing joint: {}".format(jnum))
         _home_joint(jnum)
@@ -617,15 +676,47 @@ class unhome:
     """Unhoming actions group"""
     @staticmethod
     def all():
-        pass
+        """Unhome all the axes
+
+        ActionButton syntax::
+
+            machine.unhome.all
+        """
+        LOG.info("Unhoming all Axes")
+        _unhome_joint(-1)
 
     @staticmethod
     def axis(axis):
-        pass
+        """Unhome a specific axis
+
+        Args:
+            axis (int | str) : Either the axis letter or number to home.
+
+        ActionButton syntax::
+
+            machine.unhome.axis:axis
+        """
+        axis = getAxisLetter(axis)
+        if axis.lower() == 'all': # not sure what this is copied from home
+            unhome.all()
+            return
+        jnum = INFO.COORDINATES.index(axis)
+        LOG.info('Unhoming Axis: {}'.format(axis.upper()))
+        _unhome_joint(jnum)
 
     @staticmethod
     def joint(jnum):
-        pass
+        """Unhome a specific joint
+
+        Args:
+            jnum (int) : The number of the joint to home.
+
+        ActionButton syntax::
+
+            machine.unhome.joint:jnum
+        """
+        LOG.info("Unhoming joint: {}".format(jnum))
+        _unhome_joint(jnum)
 
 def _home_joint(jnum):
     setTaskMode(linuxcnc.MODE_MANUAL)
@@ -635,7 +726,7 @@ def _home_joint(jnum):
 def _unhome_joint(jnum):
     setTaskMode(linuxcnc.MODE_MANUAL)
     CMD.teleop_enable(False)
-    CMD.home(jnum)
+    CMD.unhome(jnum)
 
 # Homing helper functions
 
@@ -675,9 +766,11 @@ def override_limits():
 
 def _override_limits_ok(widget=None):
     ok = False
+    mgs = None
     for anum in INFO.AXIS_NUMBER_LIST:
         if STAT.limit[anum] != 0:
-            aletter = 'XYZABCUVW'.index(anum)
+            aaxis = getAxisLetter(anum)
+            aletter = INFO.COORDINATES.index(aaxis)
             ok = True
             msg = "Axis {} on limit".format(aletter)
 
@@ -704,6 +797,7 @@ override_limits.bindOk = _override_limits_bindOk
 # -------------------------------------------------------------------------
 
 class jog:
+    """Jog Actions Group"""
 
     max_linear_speed = INFO.getMaxJogVelocity()
 
@@ -756,6 +850,7 @@ class jog:
 
     @staticmethod
     def set_jog_continuous(continuous):
+        """Set Jog Continuous"""
         if continuous:
             LOG.debug("Setting jog mode to continuous")
         else:
@@ -764,19 +859,28 @@ class jog:
 
     @staticmethod
     def set_increment(raw_increment):
+        """Set Jog Increment"""
         jog.increment = _parse_jog_increment(raw_increment)
 
     @staticmethod
     def set_linear_speed(speed):
+        """Set Jog Linear Speed
+
+        ActionSlider syntax::
+
+            machine.jog.set-linear-speed
+        """
         jog.linear_speed = float(speed)
 
     @staticmethod
     def set_angular_speed(speed):
+        """Set Jog Angular Speed"""
         jog.angular_speed = float(speed)
 
 
     @staticmethod
     def set_linear_speed_percentage(percentage):
+        """Set Jog Linear Speed Percentage"""
         jog.set_linear_speed(jog.max_linear_speed * (float(percentage) / 100))
 
 
@@ -874,22 +978,38 @@ jog.axis.bindOk = _jog_axis_bindOk
 
 
 class jog_mode:
-
-    mode = 'continuous'
+    """Jog Mode Group"""
 
     @staticmethod
     def continuous():
-        LOG.debug("Setting jog mode continuous")
-        STATUS.setJogMode(True)
+        """Set Jog Continuous
+
+        ActionButton syntax::
+
+            machine.jog-mode.continuous
+        """
+        jog.set_jog_continuous(True)
+
 
     @staticmethod
     def incremental():
-        LOG.debug("Setting jog mode incremental")
-        STATUS.setJogMode(False)
+        """Set Jog Incremental
+
+        ActionButton syntax::
+
+            machine.jog-mode.incremental
+        """
+        jog.set_jog_continuous(False)
 
     @staticmethod
     def toggle():
-        if STATUS.jog_mode == True:
-            jog_mode.continuous()
-        else:
+        """Jog Mode Toggle
+
+        ActionButton syntax::
+
+            machine.jog-mode.toggle
+        """
+        if jog.continuous:
             jog_mode.incremental()
+        else:
+            jog_mode.continuous()

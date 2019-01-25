@@ -6,6 +6,9 @@ Installation
     In order to use QtPyVCP you will need to have LinuxCNC ~2.8pre (master)
     installed, either system wide or as a Run In Place (RIP) built from source.
 
+    Instructions for installing on Debian 9 (stretch) and other distros can be
+    found here: https://gnipsel.com/linuxcnc/uspace/debian9-emc.html
+
 The are multiple ways to install QtPyVCP, which one is best depends on how
 you intend to use QtPyVCP. If you are not interested in development then
 it is best is to install with pip per the :doc:`Quick Start <quick_start>` guide.
@@ -56,7 +59,7 @@ Install Dev Dependencies
 
 Development dependencies (in addition to those listed in the :doc:`Quick Start <quick_start>`) ::
 
-  sudo apt install qttools5.dev qttools5-dev-tools
+  sudo apt install qttools5.dev qttools5-dev-tools python-pip
 
 For building documentation::
 
@@ -87,9 +90,11 @@ This will create a setup.py development install and will add command line script
     you can get around this by running ``export PATH=$PATH:~/.local/bin/`` before launching
     linuxcnc or any qtpyvcp commands.
 
-    A more permanent solution is to copy the `.xsessionrc` file from the `qtpyvcp/scripts`
-    directory into your home direcotry, then log out and log back in. This will add
-    ``~/.local/bin/`` to your PATH each time xwindows starts.
+    A more permanent solution is to copy the `.xsessionrc` file from the
+    `qtpyvcp/scripts` directory into your home direcotry, then log out and log
+    back in. This will add ``~/.local/bin/`` to your PATH each time xwindows
+    starts. In the file manager select View > Show Hidden Files in order to see
+    files that start with a dot like `.xsessionrc`.
 
 
 Testing the Install

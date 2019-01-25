@@ -2,10 +2,10 @@
 
 import re
 
-from qtpy.QtWidgets import QPushButton, QApplication
 from qtpy.QtCore import Property
+from qtpy.QtWidgets import QApplication
 
-from qtpyvcp.widgets import CMDWidget
+from qtpyvcp.widgets import VCPButton
 from qtpyvcp.actions.machine_actions import issue_mdi
 
 from qtpyvcp.utilities import logger
@@ -16,24 +16,13 @@ LOG = logger.getLogger(__name__)
 # if a group is not present it will be an empty string
 PARSE_VARS = re.compile(r'(\w)#<([^>]+)>', re.I)
 
-class MDIButton(QPushButton, CMDWidget):
+class MDIButton(VCPButton):
     """Button for issuing MDI commands.
 
     Args:
         parent (QWidget, optional) : The parent widget of the button, or None.
         command (str, optional) : A gcode command string for the button to trigger.
     """
-
-    DEFAULT_RULE_PROPERTY = 'Checked'
-    RULE_PROPERTIES = {
-        'Enable': ['setEnabled', bool],
-        'Visible': ['setVisible', bool],
-        'Opacity': ['setOpacity', float],
-        'Text': ['setText', str],
-        'Checked': ['setChecked', bool],
-        'Style Class': ['setStyleClass', str],
-        'None': ['None', None],
-    }
 
     def __init__(self, parent=None, command=''):
         super(MDIButton, self).__init__(parent)

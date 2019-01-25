@@ -1,13 +1,16 @@
-"""QtPyVCP Base Widgets
+"""
+Base Widgets
+------------
 
-This file contains the definitions of the fundamental widgets upon which all other QtPyVCP
-widgets are based.
+This file contains the definitions of the fundamental widgets upon which
+all other QtPyVCP widgets are based.
 """
 
 import os
 import json
 
 from qtpy.QtCore import Property
+from qtpy.QtWidgets import QPushButton
 
 import qtpyvcp
 from qtpyvcp.utilities.logger import getLogger
@@ -28,7 +31,7 @@ class QtPyVCPBaseWidget(object):
     """QtPyVCP Base Widget.
 
     Class on which all other QtPyVCP widgets are based.
-    This class handles the rules and other things that should
+    This class handles the rules and other things that
     apply to all QtPyVCP widgets regardless of use.
     """
     IN_DESIGNER = os.getenv('DESIGNER') != None
@@ -39,6 +42,7 @@ class QtPyVCPBaseWidget(object):
         'Enable': ['setEnabled', bool],
         'Visible': ['setVisible', bool],
         'Style Class': ['setStyleClass', str],
+        'Style Sheet': ['setStyleSheet', str],
         # 'Opacity': ['setOpacity', float]
     }
 
@@ -83,7 +87,6 @@ class QtPyVCPBaseWidget(object):
 
     @style.setter
     def style(self, style):
-        print style
         self._style = style
         self.style().unpolish(self)
         self.style().polish(self)
@@ -118,7 +121,9 @@ class QtPyVCPBaseWidget(object):
                     eval_env = {'plugin': plugin}
 
                     # fast lambda function to get the current value of the channel
-                    chan_val = eval("lambda: plugin.{}.handleQuery('{}')".format(item, query), eval_env)
+                    chan_val = eval("lambda: plugin.{}.handleQuery('{}')"
+                                    .format(item, query), eval_env)
+
                     ch.append(chan_val)
 
                     if chan.get('trigger', False):
@@ -126,7 +131,8 @@ class QtPyVCPBaseWidget(object):
                         triggers.append(chan_obj.valueChanged.connect)
 
                 except:
-                    LOG.exception("Error evaluating rule: {}".format(chan.get('url', '')))
+                    LOG.exception("Error evaluating rule: {}".format(
+                                                        chan.get('url', '')))
                     return
 
             prop = self.RULE_PROPERTIES[rule['property']]
@@ -136,9 +142,10 @@ class QtPyVCPBaseWidget(object):
                 self._data_channels = ch
                 continue
 
-            evil_env = {'ch': ch, 'widget': self}
-            evil_exp = 'lambda: widget.{}({})'.format(prop[0], rule['expression'])
-            exp = eval(evil_exp, evil_env)
+            eval_env = {'ch': ch, 'widget': self}
+            eval_exp = 'lambda: widget.{}({})'.format(
+                            prop[0], rule['expression'].encode('utf-8'))
+            exp = eval(eval_exp, eval_env)
 
             # initial call to update
             try:
@@ -162,7 +169,7 @@ class CMDWidget(QtPyVCPBaseWidget):
     """Command Widget
 
     This widget should be used as the base class for all widgets
-    that control the machine. Eventualy additional functionality
+    that control the machine. Eventually additional functionality
     will be added to this class.
     """
     def __init__(self, parent=None):
@@ -176,3 +183,21 @@ class HALWidget(QtPyVCPBaseWidget):
     """
     def __init__(self, parent=None):
         super(HALWidget, self).__init__()
+
+
+class VCPButton(QPushButton, CMDWidget):
+    """VCP Button Widget
+
+    This is a general purpose button widget for displaying data
+    and other uses that do not involve user interaction.
+    """
+
+    DEFAULT_RULE_PROPERTY = 'Enable'
+    RULE_PROPERTIES = CMDWidget.RULE_PROPERTIES.copy()
+    RULE_PROPERTIES.update({
+        'Text': ['setText', str],
+        'Checked': ['setChecked', bool]
+    })
+
+    def __init__(self, parent=None):
+        super(VCPButton, self).__init__(parent)

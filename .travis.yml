@@ -2,15 +2,14 @@ language: python
 
 install:
 - pip install sphinx sphinx_rtd_theme mock
+- pip install --upgrade setuptools
+- sudo apt-get install pyqt5-dev-tools
 
 script:
 - sphinx-build -Wv docs/source docs/html
 
-before_deploy:
-- gem install fpm
-- ./scripts/build_deb.sh
-
 deploy:
+# publish docs on push
 - provider: pages
   skip_cleanup: true
   keep-history: false
@@ -19,34 +18,18 @@ deploy:
   on:
     branch: master
 
-- provider: pypi
-  user: kcjengr
-  password:
-    secure: qobDmIBSsl4AA/G6JSnv6AZZILpJRyVTagu3s/uRuQe2kAnrHcGZ5x1j3LI2pNeFzSkAGLvFN08QGAVKEYVx1f8yD16/TRoWMl3sdSxe6pd0elxy9z7fNaQ/YHehKFA6V/FP9QHACXjCZB+5hjZ8qeOra/1IS7Oqqn5tUY1BjNTKWdkFYvbsoLJgjFKGqcJFqUFkNSuShKuhcVOuKzcwQDys8DO5iTecwwskbFQ/y7tVg9X00+KVWVSQSnj3JXR55k9G7Ps3O0ES43FJmZLQcxfo3mQ2dF7I7x5reT6eaLIYeAwWNXG9pNtHzQuKXaZByhl1e7XGzYizmhRWsbRbAjMXgveu09Hs8oCDs88zxKAniT5bkguV0pj7m6YTBSkYYfNAYet70G7MJwi0OMKx9xXnwoDgwYlL1x8C+w1FcTpjMa6C3AFzwlWq5lRocgSpUNO7p+n3qiGjoPiH4Cc6yjWBlIVz6D1ZiNyhBqBPXz4csVTxkFWlLU7ysApAqeSlnDRut5TwO94SQxB9atwyO2wLkD8KRiiY7kLhM5i6tdZYLgPrmYi8TiaAsvzbH/zlaz8EqxMIdamBR+eUA7/mKwqVJ1QCS+ckYCn/UeubJXZNYh8rUkkRRM2dRR3BivZ7wz2+dgIUIJYAKcctZcT+qGvhFT8Jdv51sWSEN6NEj1E=
+# publish docs on new release
+- provider: pages
+  skip_cleanup: true
+  keep-history: false
+  github_token: $GH_TOKEN
+  local_dir: docs/html
   on:
     tags: true
 
-#- provider: releases
-#  api_key: $GH_TOKEN
-#  file_glob: true
-#  file: python-qtpyvcp_*.deb
-#  skip_cleanup: true
-#  draft: false
-#  on:
-#    tags: true
-
- notifications:
-   irc:
-     channels:
-       - "chat.freenode.net#hazzy"
-     template:
-       - "%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}"
-       - "Diff view : %{compare_url}"
-       - "Build details : %{build_url}"
-
-#   webhooks:
-#     urls:
-#       - https://webhooks.gitter.im/e/f52c254eacf15cb158b5
-#     on_success: always
-#     on_failure: always
-#     on_start: never
+# publish release to GitHub
+- provider: script
+  script: bash .travis/do_release.sh
+  skip_cleanup: true
+  on:
+    tags: true

@@ -1,11 +1,9 @@
-===============
-QtPyVCP Widgets
-===============
+=======
+Widgets
+=======
 
 QtPyVCP custom widget documentation.
 
-Base Widgets
---------------
 .. toctree::
    :maxdepth: 1
 
@@ -23,6 +21,15 @@ Button Widgets
    mdi_button
    subcall_button
    dialog_button
+
+
+Dialogs
+-------
+.. toctree::
+   :maxdepth: 1
+
+   dialogs/base_dialog
+
 
 Menus
 -----

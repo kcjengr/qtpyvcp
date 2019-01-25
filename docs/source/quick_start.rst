@@ -19,6 +19,14 @@ QtPyVCP specific sim configs to ``~/linuxcnc/configs/sim.qtpyvcp``.
 
 *On Debian you will need to log out and log back in.*
 
+**Upgrade QtPyVCP**
+
+As improvements are made to QtPyVCP you an upgrade your pip install with the
+following
+::
+
+  pip install git+https://github.com/kcjengr/qtpyvcp.git --upgrade
+
 **Launch a SIM config**
 
 Launch LinuxCNC as usual and select one of the QtPyVCP sims. You should see a
@@ -27,8 +35,8 @@ dialog from which you can select one of the example VCPs. Chose one and click
 
 **Notes**
 
-This installation method is tested to work on Debian 9 (Stretch), it should
-work on other distros as well. If you intend to make your own VCPs
+This installation method is tested to work on Debian 9 (Stretch) and Mint 19.1,
+it should work on other distros as well. If you intend to make your own VCPs
 or contribute to QtPyVCP you will need to set up a
 :doc:`development install <installation>`.
 

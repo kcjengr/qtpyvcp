@@ -2,13 +2,13 @@
 
 import os
 import re
-from qtpy.QtWidgets import QPushButton, qApp
-from qtpy.QtCore import Qt, QEvent, Property
+from qtpy.QtWidgets import qApp
+from qtpy.QtCore import Property
 
 from qtpyvcp.core import Info
 INFO = Info()
 
-from qtpyvcp.widgets import CMDWidget
+from qtpyvcp.widgets import VCPButton
 from qtpyvcp.actions.machine_actions import issue_mdi
 
 from qtpyvcp.utilities import logger
@@ -21,7 +21,7 @@ PARSE_POSITIONAL_ARGS = re.compile(r' *# *<([a-z0-9_-]+)> *= *#([0-9]+) *(?:\(= 
 
 SUBROUTINE_PATH = INFO.getSubroutinePath()
 
-class SubCallButton(QPushButton, CMDWidget):
+class SubCallButton(VCPButton):
     """Button for calling ngc subroutines.
 
     Args:
@@ -45,7 +45,7 @@ class SubCallButton(QPushButton, CMDWidget):
         window = qApp.activeWindow()
 
         subfile = os.path.join(SUBROUTINE_PATH, self._filename)
-        if not os.path.exists(subfile):
+        if not os.path.isfile(subfile):
             LOG.error('Subroutine file does not exist: yellow<{}>'.format(subfile))
             return False
 
@@ -69,7 +69,7 @@ class SubCallButton(QPushButton, CMDWidget):
 
             try:
                 # get the value from the GUI input widget
-                val = getattr(window, pname).text()
+                val = getattr(window, pname).text() or default_val
             except:
                 val = default_val
                 LOG.warning('No input for red<{}> parameter, using default value blue<{}>'.format(pname, val))
@@ -91,10 +91,10 @@ class SubCallButton(QPushButton, CMDWidget):
             args[index] = "[{}]".format(val)
 
         arg_str = ' '.join(args)
+        sub_name = os.path.splitext(self._filename)[0]
+        cmd_str = "o<{}> call {}".format(sub_name, arg_str)
 
-        cmd_str = "o<{}> call {}".format(self._sub_name, arg_str)
-
-        LOG.debug('Calling sub file: yellow<{}> with args blue<{}>'.format(subfile, arg_str))
+        LOG.debug('Calling sub file: yellow<%s> with args blue<%s>', subfile, arg_str)
         issue_mdi(cmd_str)
 
     @Property(str)
