@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>321</width>
-    <height>416</height>
+    <height>524</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -64,7 +64,30 @@
 ]</string>
       </property>
       <property name="actionName" stdset="0">
-       <string>machine.estop.toggle</string>
+       <string>machine.estop.reset</string>
+      </property>
+      <property name="color" stdset="0">
+       <color>
+        <red>255</red>
+        <green>0</green>
+        <blue>0</blue>
+       </color>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="LEDButton" name="ledbutton_3">
+      <property name="text">
+       <string>E-Stop Machine</string>
+      </property>
+      <property name="checkable">
+       <bool>false</bool>
+      </property>
+      <property name="rules" stdset="0">
+       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:interp_state&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:task_state&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;ch[0] == 1 and ch[1] == 4&quot;, &quot;name&quot;: &quot;auto generated&quot;}]</string>
+      </property>
+      <property name="actionName" stdset="0">
+       <string>machine.issue-mdi</string>
       </property>
       <property name="color" stdset="0">
        <color>
@@ -78,7 +101,7 @@
     <item>
      <widget class="LEDButton" name="ledbutton_2">
       <property name="text">
-       <string>Turn Machine OFF</string>
+       <string>Turn Machine ON</string>
       </property>
       <property name="rules" stdset="0">
        <string>[
@@ -284,7 +307,7 @@
      <x>0</x>
      <y>0</y>
      <width>321</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">

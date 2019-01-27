@@ -91,7 +91,7 @@ class QtPyVCPBaseWidget(object):
         self.style().unpolish(self)
         self.style().polish(self)
 
-    @Property(str, designable=False)
+    @Property(str, designable=True)
     def rules(self):
         """JSON formatted list of dictionaries, defining the widget rules.
 
@@ -102,11 +102,16 @@ class QtPyVCPBaseWidget(object):
 
     @rules.setter
     def rules(self, rules):
+        print 'rules', rules
+        if not isinstance(rules, basestring):
+            print rules
+            rules = json.dumps(rules)
         self._rules = rules
         self.registerRules(rules)
 
     def registerRules(self, rules):
-        rules = json.loads(rules)
+        if not isinstance(rules, list):
+            rules = json.loads(rules)
         for rule in rules:
             # print rule
             ch = ChanList()

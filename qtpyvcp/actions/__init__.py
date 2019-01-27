@@ -1,6 +1,9 @@
 import os
 import sys
+import json
 from qtpy.QtWidgets import QAction, QPushButton, QCheckBox, QSlider, QSpinBox, QComboBox
+
+from qtpyvcp import ACTIONS
 
 import machine_actions as machine
 import program_actions as program
@@ -9,6 +12,7 @@ import coolant_actions as coolant
 import tool_actions as tool
 
 import application_actions
+import decorators
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -18,6 +22,36 @@ IN_DESIGNER = os.getenv('DESIGNER', False)
 
 class InvalidAction(Exception):
     pass
+
+from qtpyvcp.actions.decorators import MAPPING
+
+def generateRules(requires):
+    for k, v in requires.iteritems():
+        requires[k] = MAPPING[k].get(v, v)
+
+    print requires
+
+    chans = []
+    exp = ''
+    for i, k in enumerate(requires):
+        chans.append({'url': 'status:%s' % k, 'trigger': True})
+        exp += 'ch[%s] == %s' % (i, requires[k])
+        print i, len(requires)
+        if i < len(requires) - 1:
+            exp += ' and '
+
+    rules = [{'channels': chans,
+             "expression": exp,
+             "name": "auto generated",
+             "property": "Enable"
+             }]
+
+    print chans
+    print exp
+
+    print json.dumps(rules, indent=4, sort_keys=True)
+    return rules
+
 
 def bindWidget(widget, action):
     """Binds a widget to an action.
@@ -48,6 +82,21 @@ def bindWidget(widget, action):
 
             bindWidget(widget, 'spindle.0.override')
     """
+
+    act = ACTIONS.get(action)
+
+    if act is not None:
+        print action, act
+
+        if hasattr(act, 'requires'):
+            rules = []
+            if str(widget.rules) != '':
+                rules = json.loads(widget.rules)
+
+            rules.extend(generateRules(act.requires))
+            widget.rules = rules
+
+    return
     action, sep, args = str(action).partition(':')
     action = action.replace('-', '_')
 

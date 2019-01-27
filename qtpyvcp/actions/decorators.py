@@ -73,7 +73,7 @@ def generateRules(requires):
 
 def require(**requires):
     print requires
-    generateRules(requires)
+    # generateRules(requires)
     def decorator(func):
         @wraps(func)
         def inner(*args, **kwargs):
@@ -95,6 +95,11 @@ def issue_mdi(mdi):
     """Issue an MDI command."""
     print "Issuing MDI:", mdi
 
-ACTIONS['machine.issue-mdi']('M6 T3')
-print ACTIONS['machine.issue-mdi'].requires
-print ACTIONS['machine.issue-mdi'].__doc__
+@action('machine.estop.reset')
+def reset_machine():
+    """Issue an MDI command."""
+    print "Resenting Machine"
+
+# ACTIONS['machine.issue-mdi']('M6 T3')
+# print ACTIONS['machine.issue-mdi'].requires
+# print ACTIONS['machine.issue-mdi'].__doc__
