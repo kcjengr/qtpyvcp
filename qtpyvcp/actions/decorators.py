@@ -3,6 +3,8 @@
 from functools import wraps
 
 import linuxcnc
+
+from qtpyvcp.lib.decorators import action, ACTIONS
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.logger import getLogger
 
@@ -11,116 +13,88 @@ LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 STAT = STATUS.stat
 
+MAPPING = {
+    'task_state': {
+        'on': linuxcnc.STATE_ON,
+        'off': linuxcnc.STATE_OFF,
+        'estop': linuxcnc.STATE_ESTOP,
+        'reset': linuxcnc.STATE_ESTOP_RESET,
+        linuxcnc.STATE_ON: 'on',
+        linuxcnc.STATE_OFF: 'off',
+        linuxcnc.STATE_ESTOP: 'estop',
+        linuxcnc.STATE_ESTOP_RESET: 'reset'
+        },
 
-def require_homed(func):
+    'task_mode': {
+        'mdi': linuxcnc.MODE_MDI,
+        'auto': linuxcnc.MODE_AUTO,
+        'manual': linuxcnc.MODE_MANUAL,
+        linuxcnc.MODE_MDI: 'mdi',
+        linuxcnc.MODE_AUTO: 'auto',
+        linuxcnc.MODE_MANUAL: 'manual'
+        },
 
-    @wraps(func)
-    def inner(*args, **kwargs):
-        if _all_homed():
+    'interp_state': {
+        'idle': linuxcnc.INTERP_IDLE,
+        'paused': linuxcnc.INTERP_PAUSED,
+        linuxcnc.INTERP_PAUSED: 'paused',
+        linuxcnc.INTERP_IDLE: 'idle',
+        }
+}
+
+def generateRules(requires):
+    for k, v in requires.iteritems():
+        requires[k] = MAPPING[k].get(v, v)
+
+    print requires
+
+    chans = []
+    exp = ''
+    for i, k in enumerate(requires):
+        chans.append({'url': 'status:%s' % k, 'trigger': True})
+        exp += 'ch[%s] == %s' % (i, requires[k])
+        print i, len(requires)
+        if i < len(requires) - 1:
+            exp += ' and '
+
+    rules = [{'channels': chans,
+             "expression": exp,
+             "name": "",
+             "property": "Enabled"
+             }]
+
+    print chans
+    print exp
+
+    import json
+    print json.dumps(rules, indent=4, sort_keys=True)
+    return rules
+
+
+def require(**requires):
+    print requires
+    generateRules(requires)
+    def decorator(func):
+        @wraps(func)
+        def inner(*args, **kwargs):
+            for key, value in requires.iteritems():
+                print key, value
+                if getattr(STAT, key) != MAPPING[key][value]:
+                    LOG.error("%s requires %s='%s' but it is '%s'",
+                              func.__name__, key, value, MAPPING[key][getattr(STAT, key)])
             func(*args, **kwargs)
-        else:
-            LOG.error("action '%s' requires the machine to be homed",
-                      func.__name__)
-
-    func.func_dict['homed'] = True
-    inner.func_dict = func.func_dict
-    return inner
-
-
-def _all_homed():
-    for jnum in range(STAT.joints):
-        if not STAT.joint[jnum]['homed']:
-            return False
-    return True
-
-
-def require_task_state(task_state):
-
-    enum_to_str = {linuxcnc.STATE_ON: 'on',
-                   linuxcnc.STATE_OFF: 'off',
-                   linuxcnc.STATE_ESTOP: 'estop',
-                   linuxcnc.STATE_ESTOP_RESET: 'reset'}
-
-    def decorator(func):
-
-        @wraps(func)
-        def inner(*args, **kwargs):
-            print STAT.task_state
-            if enum_to_str[STAT.task_state] == task_state:
-                func(*args, **kwargs)
-            else:
-                LOG.error("action '%s' requires task_state of %s but it is %s:",
-                          func.__name__, task_state, enum_to_str[STAT.task_state])
-
-        func.func_dict['task_state'] = task_state
-        inner.func_dict = func.func_dict
+        inner.requires = requires
         return inner
 
     return decorator
 
 
-def require_task_mode(task_mode):
-
-    enum_to_str = {linuxcnc.MODE_MDI: 'mdi',
-                   linuxcnc.MODE_AUTO: 'auto',
-                   linuxcnc.MODE_MANUAL: 'manual'}
-
-    def decorator(func):
-
-        @wraps(func)
-        def inner(*args, **kwargs):
-            print STAT.task_mode
-            if enum_to_str[STAT.task_mode] == task_mode:
-                func(*args, **kwargs)
-            else:
-                LOG.error("action '%s' requires task_mode of %s but it is %s:",
-                          func.__name__, task_mode, enum_to_str[STAT.task_mode])
-
-        func.func_dict['task_mode'] = task_mode
-        inner.func_dict = func.func_dict
-        return inner
-
-    return decorator
-
-
-def require_interp_state(interp_state):
-
-    enum_to_str = {linuxcnc.INTERP_IDLE: 'idle',
-                   linuxcnc.INTERP_PAUSED: 'paused',
-                   linuxcnc.INTERP_READING: 'reading',
-                   linuxcnc.INTERP_WAITING: 'waiting'}
-
-    def decorator(func):
-        print "ok_in_state", func.__name__, func.func_dict
-
-        @wraps(func)
-        def inner(*args, **kwargs):
-            print
-            if enum_to_str[STAT.interp_state] in interp_state:
-                func(*args, **kwargs)
-            else:
-                LOG.error("action '%s' requires interp_state of %s but it is %s:",
-                          func.__name__, interp_state, enum_to_str[STAT.interp_state])
-
-
-        func.func_dict['interp_state'] = interp_state
-        inner.func_dict = func.func_dict
-        return inner
-
-    return decorator
-
-
-@require_task_state('on')
-@require_homed
-@require_task_mode('mdi')
-@require_interp_state('idle')
+@action('machine.issue-mdi')
+@require(task_state='on', interp_state='idle')
 def issue_mdi(mdi):
-    issue_mdi.__dict__['msg'] = 'hello'
+    """Issue an MDI command."""
     print "Issuing MDI:", mdi
 
-issue_mdi("M6 T3")
-
-print issue_mdi.func_dict
-print issue_mdi.__dict__
-
-issue_mdi("M6 T3")
+ACTIONS['machine.issue-mdi']('M6 T3')
+print ACTIONS['machine.issue-mdi'].requires
+print ACTIONS['machine.issue-mdi'].__doc__
