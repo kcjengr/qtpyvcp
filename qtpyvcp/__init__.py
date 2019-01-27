@@ -74,6 +74,7 @@ OPTIONS = DotDict()
 PLUGINS = {}
 DIALOGS = {}
 WINDOWS = {}
+ACTIONS = {}
 
 
 def main():

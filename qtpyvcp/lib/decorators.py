@@ -1,3 +1,4 @@
+from qtpyvcp import ACTIONS
 from qtpyvcp.utilities.logger import getLogger
 
 LOG = getLogger(__name__)
@@ -21,4 +22,16 @@ def deprecated(reason='', replaced_by=''):
 
         return inner
 
+    return decorator
+
+
+def action(action_id):
+    def decorator(func):
+        if action_id in ACTIONS:
+            old = '{func.__module__}.{func.__name__}'.format(func=ACTIONS[action_id])
+            new = '{func.__module__}.{func.__name__}'.format(func=func)
+            LOG.warning("%s action method %s being replaced by %s", action_id, old, new)
+        ACTIONS[action_id] = func
+        func.action_id = action_id
+        return func
     return decorator
