@@ -7,6 +7,7 @@ view. Drag 7 buttons below the back plot and change the objectNames and text
 like this::
 
     objectName  text
+    pView       P
     xView       X
     yView       Y
     zView       Z
