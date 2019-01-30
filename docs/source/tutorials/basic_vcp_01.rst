@@ -2,6 +2,9 @@
 Clone and Prepare
 =================
 
+.. Note::
+    The following tutorial was done using Debian 9 (Stretch).
+
 Before cloning you should have installed QtPyVCP as shown on the
 :doc:`../quick_start` page.
 
@@ -14,13 +17,15 @@ structure needed to build a VCP. In a terminal::
 To make copy the `VCP Template` for this tutorial in the terminal first change
 to the `vcp-template` directory then run `tutorial.sh` and use a new name that
 contains only letters, numbers and the underscore _. For this tutorial I used
-`vcp1` so all examples will use that name::
+`vcp1` so all examples will use that name
+::
 
     cd vcp-template
     ./tutorial.sh
 
-To edit the new template created from the vcp-template run the following. In
-this example the copied vcp-template was named `vcp1`.::
+To edit the new template created from the vcp-template run the following command
+in a terminal. In this example the copied vcp-template was named `vcp1`.
+::
 
     editvcp vcp1
 
@@ -56,6 +61,10 @@ screen tutorial we don't want a menu.
    :scale: 60 %
 
 The `mainwindow.py` is the file to add any custom methods.
+
+.. Note::
+    Python uses indentation to define blocks of code. You should not mix spaces
+    and tabs in the same file.
 
 The `style.qss` is a place to put css styles. In the following example it is for
 an `ActionButton` with the `actionName` of machine.estop.toggle and when it is

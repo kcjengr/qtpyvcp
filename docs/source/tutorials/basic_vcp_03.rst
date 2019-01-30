@@ -2,14 +2,15 @@
 Machine Controls
 ================
 
-We want all buttons in the bottom frame to have a minimum height and width of 50
-pixels and the font size to be 14pt so in the stylesheet for the bottom frame
-put the following.::
+We want all `ActionButtons` in VCP to have a minimum height and width of 50
+pixels and the font size to be 14pt so in the stylesheet for the `QMainWindow`
+put the following.
+::
 
     ActionButton {
-        min-height: 50px;
-        min-width: 50px;
-        font: 14pt "DejaVu Sans";
+    min-height: 50px;
+    min-width: 50px;
+    font: 14pt "DejaVu Sans";
     }
 
 .. image:: images/vcp1-designer-08.png
@@ -17,7 +18,8 @@ put the following.::
    :scale: 40 %
 
 Now add three action buttons in the bottom frame and from left to right add the
-following to the `actionName` of each button::
+following to the `actionName` of each button.
+::
 
     machine.estop.toggle
     machine.power.toggle
@@ -34,7 +36,8 @@ Now we need to add a couple of rules to the `Home` button. The first rule will
 set the text of the button based on if all the joints are homed or not. Double
 click on the button to open the `Rules Editor` and add a new rule. The
 `Property` is Text. Add three channels with the following and make sure
-`Trigger` is checked in each one.::
+`Trigger` is checked in each one.
+::
 
     status:joint[0].homed
     status:joint[1].homed
@@ -59,18 +62,18 @@ The second rule will have the same channels but the property will be for the
    :align: center
    :scale: 40 %
 
-Now when we run the VCP you can see the buttons in
-action.
+Now when we run the VCP you can see the buttons in action.
 
 .. image:: images/vcp1-run-04.png
    :align: center
    :scale: 60 %
 
-To see the styles for machine buttons look in `vcp1/vcp1/ui/style.css and you
-see the how the styles are applied using the style.qss file. For example the
-style for the E Stop button is applied with the following. Notice that the type
-of widget is an `ActionButton` and the specfic button is on with an `actionName`
-machine.estop.toggle.::
+To see the styles for `machine.estop` and `machine.power` buttons look in
+`vcp1/vcp1/ui/style.css and you can see the how the styles are applied using the
+style.qss file. For example the style for the E Stop button is applied with the
+following. Notice that the type of widget is an `ActionButton` and the specfic
+button has the `actionName` machine.estop.toggle. and the state is `checked`.
+::
 
     ActionButton[actionName="machine.estop.toggle"]:checked{
         background: rgb(239, 41, 41);

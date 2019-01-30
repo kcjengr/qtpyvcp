@@ -1,138 +1,86 @@
-=======
-Offsets
-=======
+===
+MDI
+===
 
-Select the File tab on the left tab widget then right click on the File tab and
-select `Insert Page After Current Page`
+.. Note::
+    This page is under construction, I'll try and get the construction done as
+    fast as possible.
+
+**Manual Data Input**
+
+Start by adding a tab to the left tab widget. Right click on the `File` tab and
+select `Insert Page` then `After Current Page` and name that tab MDI. Drag a
+grid into the tab and change the tab layout to grid and morph the grid into a
+QFrame as before.
+
+.. image:: images/vcp1-designer-23.png
+   :align: center
+   :scale: 40 %
+
+Add a `MDIEntry` to the frame and and change the `objectName` to ``mdiEntry``
+and change the font to 12 from the `Property Editor`. Now add some
+`Push Buttons` below that. Add 6 rows of buttons with 5 buttons in each row.
+Press the `Ctrl` key and click on each button to select them all. Right click on
+any button and select `Assign to button group` and click on `New Button Group`.
+
+.. image:: images/vcp1-designer-24.png
+   :align: center
+   :scale: 40 %
+
+In the `Object Inspector` scroll down to the bottom and find the `buttonGroup`
+object we just created and change the `objectName` to `mdiButtonGroup`. Now we
+have a group of buttons that all belong to the same group. Now lets change the
+text of the buttons like the following and change the `objectName` for the Enter
+button to ``mdiEnterButton`` and the `objectName` for the Clear button to
+``mdiClearButton``. Right click on the Clear and Enter buttons and select
+`Assign to button group` `None` to remove them from the group.
 
 .. image:: images/vcp1-designer-25.png
    :align: center
    :scale: 40 %
 
-Change the `CurrentTabText` to Offsets. Add a grid layout then set the tab
-layout to grid and morph the grid layout into a frame as before.
+Now lets work some magic, open up `~/vcp1/vcp1/mainwindow.py` and add the
+following Python code after `# add any custom methods here` and pay attention to
+the indentation level. The example uses 4 spaces per level.
+::
 
+    from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
-Now in the grid set the button size and label text size in the stylesheet::
+    # Setup logging
+    from qtpyvcp.utilities import logger
+    LOG = logger.getLogger('qtpyvcp.' + __name__)
 
-    DialogButton {
-        min-height: 50px;
-        min-width: 50px;
-        font: 14pt "DejaVu Sans";
-    }
-    ActionButton {
-        min-height: 50px;
-        min-width: 50px;
-        font: 14pt "DejaVu Sans";
-    }
-    MDIButton {
-        min-height: 50px;
-        min-width: 50px;
-        font: 14pt "DejaVu Sans";
-    }
-    StatusLabel {
-        font: 12pt "DejaVu Sans";
-    }
-    QLabel {
-        font: 12pt "DejaVu Sans";
-    }
+    class MyMainWindow(VCPMainWindow):
+        """Main window class for the VCP."""
+        def __init__(self, *args, **kwargs):
+            super(MyMainWindow, self).__init__(*args, **kwargs)
 
-Add a DialogButton and set the dialogName to ``set_work_offsets``.
+        # add any custom methods here
 
-.. image:: images/vcp1-designer-26.png
-   :align: center
-   :scale: 40 %
+            self.mdiButtonGroup.buttonClicked.connect(self.mdiHandleKeys)
+            print dir()
 
-Starting at the top add a regular label with the text ``Current\nSystem``. Then
-to the right add a status label. Now create a new rule for the status label with
-the channel ``status:g5x_index`` and the expression is
-``["G53","G54","G55","G56","G57","G58","G59","G59.1","G59.2","G59.3"][ch[0]]``
+        def mdiHandleKeys(self, button):
+            char = str(button.text())
+            text = self.mdiEntry.text() or '0'
+            if text != '0':
+                text += char
+            else:
+                text = char
+            self.mdiEntry.setText(text)
 
-This needs a bit of explaining, the g5x_index returns an integer that represents
-the current coordinate system. The list of coordinate systems is in the same
-order as the index so we use the return value from the ``status:g5x_index`` to
-display only that item in the list by using what is called a slice. The syntax
-is ["item 1","item 2","item 3"][index]. So if the index is 0 the first item in
-the list is returned.
+Now add some signals for the clear and enter buttons.
+::
 
-.. image:: images/vcp1-designer-27.png
-   :align: center
-   :scale: 40 %
+    sender             action       receiver     slot
+    mdiEnterButton    clicked()     mdiEnter     submit()
+    mdiClearButton    clicked()     mdiEnter     clear()
 
-Now add some labels and status labels like the following
+Now when we run the VCP we can enter and execute MDI commands from the touch
+screen
 
-.. image:: images/vcp1-designer-28.png
-   :align: center
-   :scale: 40 %
-
-Change the label text like this and using the control key select all the status
-labels and change the Horziontal Alignment to Align Right.
-
-.. image:: images/vcp1-designer-29.png
-   :align: center
-   :scale: 40 %
-
-Starting with the X Axis G5x Offset make a rule with this channel
-``status:g5x_offset`` and this expression ``str(ch[0][0])`` and we are slicing
-the tuple in the same way that we sliced the list. The axes are in this order
-`X Y Z A B C U V W`. Repeat with the Y and Z incrementing the index number by 1.
-
-.. image:: images/vcp1-designer-30.png
-   :align: center
-   :scale: 40 %
-
-Now do the same thing for the G92 Offsets with the channel being
-``status:g92_offset``
-
-Now when we run we can see the offsets that are in effect.
-
-.. image:: images/vcp1-run-12.png
+.. image:: images/vcp1-run-11.png
    :align: center
    :scale: 60 %
-
-The ``set_work_offsets`` dialog as you can see in this screen shot is designed
-for a mouse so delete that and we will make some MDI buttons for the offsets tab.
-
-.. image:: images/vcp1-run-13.png
-   :align: center
-   :scale: 60 %
-
-Add three MDIButtons next to the Axis labels and put the following for the
-`MDICommand`::
-
-    G10L20P0X0
-    G10L20P0Y0
-    G10L20P0Z0
-
-.. image:: images/vcp1-designer-31.png
-   :align: center
-   :scale: 40 %
-
-Now when we run the VCP and jog around a bit we can set the coordinate system.
-
-.. image:: images/vcp1-run-14.png
-   :align: center
-   :scale: 60 %
-
-Now add three more MDIButtons to the right of the offsets and add the following
-for the MDICommand::
-
-    G10L2P0X0
-    G10L2P0Y0
-    G10L2P0Z0
-
-.. image:: images/vcp1-designer-32.png
-   :align: center
-   :scale: 40 %
-
-Now we can set and clear the current coordinate system offsets.
-
-.. image:: images/vcp1-run-15.png
-   :align: center
-   :scale: 60 %
-
-.. Note:: I changed the coordinate system status label rule expression to 
-    ``"Set\n"+["G53","G54","G55","G56","G57","G58","G59","G59.1","G59.2","G59.3"][ch[0]]``
-    and moved it over the Set MDI buttons.
 
 
