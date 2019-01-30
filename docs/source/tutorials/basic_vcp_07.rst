@@ -2,10 +2,6 @@
 MDI
 ===
 
-.. Note::
-    This page is under construction, I'll try and get the construction done as
-    fast as possible.
-
 **Manual Data Input**
 
 Start by adding a tab to the left tab widget. Right click on the `File` tab and
@@ -69,7 +65,17 @@ the indentation level. The example uses 4 spaces per level.
                 text = char
             self.mdiEntry.setText(text)
 
-Now add some signals for the clear and enter buttons.
+What we are doing in the Python code is connecting all the buttons in the
+`mdiButtonGroup` to the function `mdiHandleKeys`. When a button is clicked it is
+passed to the function as `button`. So we take the button.text() and make sure
+it's a string then assign it to the char variable. Next if the mdiEntry has any
+text in it we assign that to the text variable, if not then we assign it the
+character 0. Next we either append char to text or assign char to text. Last we
+set the new text to the mdiEntry.
+
+The reason the Enter and Clear buttons are not part of the group is we will
+connect those two buttons clicked signal to the mdiEntry. These are the signals
+for the clear and enter buttons.
 ::
 
     sender             action       receiver     slot
