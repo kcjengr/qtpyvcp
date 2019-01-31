@@ -652,7 +652,7 @@ class RulesEditor(QtWidgets.QDialog):
 
     @QtCore.Slot()
     def saveChanges(self):
-        """Save the new rules at the widget `rules` property."""
+        """Save the new rules to the widget `rules` property."""
         # If the form is being edited, we make sure self.rules has all the
         # latest values from the form before we try to validate.  This fixes
         # a problem where the last form item changed wouldn't get saved unless
@@ -668,6 +668,8 @@ class RulesEditor(QtWidgets.QDialog):
             print json.dumps(self.rules, sort_keys=True, indent=4)
             formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self.widget)
             if formWindow:
+                print "edited widget:", formWindow.cursor(), self.widget
+                print "$$$$$$", data
                 formWindow.cursor().setProperty("rules", data)
             self.accept()
         else:

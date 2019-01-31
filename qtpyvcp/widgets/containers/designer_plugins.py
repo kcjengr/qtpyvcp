@@ -6,3 +6,8 @@ class VCPFramePlugin(_DesignerPlugin):
         return VCPFrame
     def isContainer(self):
         return True
+
+from tab_widget import VCPTabWidget
+class VCPTabWidgetPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return VCPTabWidget

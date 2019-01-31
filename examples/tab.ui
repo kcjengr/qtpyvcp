@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="VCPMainWindow" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="VCPTabWidget" name="vcptab">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>30</y>
+      <width>331</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>2</number>
+    </property>
+    <property name="rules" stdset="0">
+     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;None&quot;, &quot;expression&quot;: &quot;&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+    </property>
+    <widget class="QLineEdit" name="tab">
+     <attribute name="title">
+      <string>Page</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Page</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="widget">
+     <attribute name="icon">
+      <iconset>
+       <normaloff>icons/file-open.svg</normaloff>icons/file-open.svg</iconset>
+     </attribute>
+     <attribute name="title">
+      <string/>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="tab_3">
+     <attribute name="icon">
+      <iconset>
+       <normaloff>../../../../linuxcnc/nc_files/examples/torus.png</normaloff>../../../../linuxcnc/nc_files/examples/torus.png</iconset>
+     </attribute>
+     <attribute name="title">
+      <string>Page</string>
+     </attribute>
+    </widget>
+   </widget>
+  </widget>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>VCPMainWindow</class>
+   <extends>QMainWindow</extends>
+   <header>qtpyvcp.widgets.form_widgets.main_window</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VCPTabWidget</class>
+   <extends>QTabWidget</extends>
+   <header>qtpyvcp.widgets.containers.tab_widget</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
