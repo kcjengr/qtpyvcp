@@ -5,8 +5,7 @@ import webbrowser
 
 from qtpy import QtWidgets, QtCore, QtDesigner
 
-import qtpyvcp
-from qtpyvcp.plugins import QtPyVCPDataChannel
+from qtpyvcp.plugins import DataChannel, getPlugin
 from plugin_extension import _PluginExtension
 
 
@@ -278,7 +277,7 @@ class RulesEditor(QtWidgets.QDialog):
         for row, ch in enumerate(channels):
             ch_name = ch.get('url', '')
             ch_tr = ch.get('trigger', False)
-            ch_obj, ch_val, ch_desc = self.get_channel_data(ch_name)
+            ch_obj, ch_exp, ch_val, ch_desc = self.get_channel_data(ch_name)
             self.tbl_channels.setItem(row, 0,
                                       QtWidgets.QTableWidgetItem(str(ch_name)))
 
@@ -287,6 +286,7 @@ class RulesEditor(QtWidgets.QDialog):
 
             typ_lbl = QtWidgets.QLabel()
             typ_lbl.setAlignment(QtCore.Qt.AlignCenter)
+
             if ch_val is None:
                 typ_lbl.setText("<font color='red'>error</font>")
             else:
@@ -450,13 +450,15 @@ class RulesEditor(QtWidgets.QDialog):
 
         row = table_item.row()
         ch_name = table_item.data()
-        ch_obj, ch_val, ch_desc = self.get_channel_data(ch_name)
+        ch_obj, ch_exp, ch_val, ch_desc = self.get_channel_data(ch_name)
 
         typ_lbl = self.tbl_channels.cellWidget(row, 2)
-        if ch_val is None:
-            typ_lbl.setText("<font color='red'>error</font>")
+
+        if isinstance(ch_obj, DataChannel) and ch_val is not None:
+            typ_lbl.setText("<font color='green'>{}</font>"
+                            .format(type(ch_val).__name__))
         else:
-            typ_lbl.setText("<font color='green'>{}</font>".format(type(ch_val).__name__))
+            typ_lbl.setText("<font color='red'>error</font>")
 
         self.update_channels()
 
@@ -473,27 +475,15 @@ class RulesEditor(QtWidgets.QDialog):
         self.change_entry("channels", new_channels)
 
     def get_channel_data(self, url):
-        chan_obj = None
-        chan_val = None
-        chan_desc = ''
 
-        try:
-            protocol, sep, rest = url.partition(':')
-            item, sep, query = rest.partition('?')
+        protocol, sep, item = url.partition(':')
+        chan_obj, chan_exp = getPlugin(protocol).getChannel(item)
+        if chan_obj is not None:
+            chan_val = chan_exp()
+        else:
+            chan_val = None
 
-            if query == '':
-                query = 'value'
-
-            plugin = qtpyvcp.PLUGINS[protocol]
-            eval_env = {'plugin': plugin}
-
-            chan_obj = eval("plugin.{}".format(item), eval_env)
-            chan_val = chan_obj.handleQuery(query)
-
-        except:
-            LOG.exception("Error in eval")
-
-        return chan_obj, chan_val, chan_desc
+        return chan_obj, chan_exp, chan_val, chan_obj.__doc__
 
     def expression_changed(self):
         """Callback executed when the expression is modified."""
@@ -539,11 +529,10 @@ class RulesEditor(QtWidgets.QDialog):
                         found_trigger = True
 
                     # get chan values for use when checking expression
-                    ch_obj, ch_val, ch_desc = self.get_channel_data(ch.get("url", ""))
-                    print ch_obj
+                    ch_obj, ch_exp, ch_val, ch_desc = self.get_channel_data(ch.get("url", ""))
 
-                    if isinstance(ch_obj, QtPyVCPDataChannel):
-                        channel_values.append(ch_val)
+                    if isinstance(ch_obj, DataChannel):
+                        channel_values.append(ch_exp())
                     else:
                         errors.append("Rule #{} is not a valid channel.".format(idx))
                         continue
@@ -578,7 +567,7 @@ class RulesEditor(QtWidgets.QDialog):
         """Save the new rules at the widget `rules` property."""
         # If the form is being edited, we make sure self.rules has all the
         # latest values from the form before we try to validate.  This fixes
-        # a problem where the last form item change wouldn't get saved unless
+        # a problem where the last form item changed wouldn't get saved unless
         # the user knew to hit 'enter' or leave the field to end editing before
         # hitting save.
         if self.frm_edit.isEnabled():

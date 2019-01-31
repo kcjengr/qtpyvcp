@@ -74,14 +74,14 @@ class VCPMainWindow(QMainWindow):
         if opts.hide_menu_bar:
             self.menuBar().hide()
 
-        if opts.size:
+        if opts.size or size:
             try:
                 width, height = opts.size.lower().split('x')
                 self.resize(int(width), int(height))
             except:
                 LOG.exception('Error parsing --size argument: %s', opts.size)
 
-        if opts.position:
+        if opts.position or position:
             try:
                 xpos, ypos = opts.position.lower().split('x')
                 self.move(int(xpos), int(ypos))
@@ -186,7 +186,6 @@ class VCPMainWindow(QMainWindow):
         return menu_bar
 
     def initUi(self):
-        self.status.init_ui.emit()
         self.loadSplashGcode()
         self.initHomingMenu()
 

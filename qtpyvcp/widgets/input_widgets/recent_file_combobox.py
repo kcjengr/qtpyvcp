@@ -21,15 +21,16 @@ class RecentFileComboBox(QComboBox):
 
         self.insertItem(0, 'No File Loaded', None)
         self.setCurrentIndex(0)
-        STATUS.recent_files_changed.connect(self.updateRecentFiles)
+        STATUS.recent_files.notify(self.updateRecentFiles)
 
     def updateRecentFiles(self, recent_files):
         self.clear()
+        print 'recent_files', recent_files
         for file in recent_files:
             self.addItem(os.path.basename(file), file)
 
         # Add separator and item to launch the file dialog
-        self.insertSeparator(len(STATUS.recent_files))
+        self.insertSeparator(len(STATUS.recent_files.get()))
         self.addItem("Browse for files ...", 'browse_files')
 
     def onItemActivated(self):

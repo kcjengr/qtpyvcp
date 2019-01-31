@@ -7,7 +7,7 @@ import importlib
 
 from qtpyvcp import PLUGINS
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.plugins.plugin import QtPyVCPDataPlugin, QtPyVCPDataChannel
+from qtpyvcp.plugins.plugin import DataPlugin, DataChannel
 
 LOG = getLogger(__name__)
 
@@ -25,7 +25,11 @@ def loadDataPlugins(plugins):
 
     for protocol, plugin_dict in plugins.items():
 
-        object_ref = plugin_dict['provider']
+        try:
+            object_ref = plugin_dict['provider']
+        except KeyError:
+            raise ValueError("No provider class specified for %s plugin" % protocol)
+
         args = plugin_dict.get('args', [])
         kwargs = plugin_dict.get('kwargs', {})
 
@@ -39,7 +43,7 @@ def loadDataPlugins(plugins):
             LOG.critical("Failed to import data plugin.")
             raise
 
-        assert issubclass(plugin, QtPyVCPDataPlugin), "Not a valid plugin, must be a QtPyVCPDataPlugin subclass."
+        assert issubclass(plugin, DataPlugin), "Not a valid plugin, must be a DataPlugin subclass."
 
         if protocol in PLUGINS:
             LOG.warning("Replacing {} with {} for use with protocol {}"

@@ -43,11 +43,11 @@ def reload():
     LOG.error('Reload not implemented yet.')
 
 def addToRecents(fname):
-    if fname in STATUS.recent_files:
-        STATUS.recent_files.remove(fname)
-    STATUS.recent_files.insert(0, fname)
-    STATUS.recent_files = STATUS.recent_files[:STATUS.max_recent_files]
-    STATUS.recent_files_changed.emit(tuple(STATUS.recent_files))
+    files = STATUS.recent_files.get()
+    if fname in files:
+        files.remove(fname)
+        files.insert(0, fname)
+    STATUS.recent_files.set(files[:STATUS.max_recent_files])
 
 # -------------------------------------------------------------------------
 # program RUN action

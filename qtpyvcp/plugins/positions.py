@@ -19,7 +19,7 @@ import math
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.plugins import QtPyVCPDataPlugin, QtPyVCPDataChannel, getPlugin
+from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 
 STATUS = getPlugin('status')
 STAT = STATUS.stat
@@ -41,7 +41,7 @@ else:
     CONVERSION_FACTORS = [25.4] * 3 + [1] * 3 + [25.4] * 3
 
 
-class AxisPositions(QtPyVCPDataChannel):
+class AxisPositions(DataChannel):
     """Axis Position Channel.
 
     Axis positions are updated every cycle (~50ms). To save computation
@@ -109,7 +109,7 @@ class AxisPositions(QtPyVCPDataChannel):
         self.valueChanged.emit(self._positions)
 
 
-class Position(QtPyVCPDataPlugin):
+class Position(DataPlugin):
 
     protocol = 'position'
 

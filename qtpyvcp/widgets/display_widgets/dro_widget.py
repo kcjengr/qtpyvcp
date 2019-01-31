@@ -74,9 +74,9 @@ class DROWidget(QLabel, VCPWidget, Axis, ReferenceType, Units):
 
         self.setNum(0.1234)
 
-        STATUS.axis_positions.connect(self.setPosition)
-        STATUS.program_units.onValueChanged(self.updateUnits)
-        STATUS.updateAxisPositions()
+        # STATUS.axis_positions.connect(self.setPosition)
+        STATUS.program_units.notify(self.updateUnits)
+        # STATUS.updateAxisPositions()
         self.updateUnits(STATUS.stat.program_units)
 
     @Slot(tuple)
@@ -118,7 +118,7 @@ class DROWidget(QLabel, VCPWidget, Axis, ReferenceType, Units):
         if self._diameter_mode and self._axis == 0:
             self._factor *= 2
 
-        STATUS.updateAxisPositions()
+        # STATUS.updateAxisPositions()
 
     #==========================================================================
     # Designer property Getters/Setters
@@ -129,7 +129,7 @@ class DROWidget(QLabel, VCPWidget, Axis, ReferenceType, Units):
     @Slot(ReferenceType)
     def setReferenceType(self, ref_type):
         self._type = ref_type
-        STATUS.updateAxisPositions()
+        # STATUS.updateAxisPositions()
     reference_type = Property(ReferenceType, getReferenceType, setReferenceType)
 
     def getAxis(self):
@@ -137,7 +137,7 @@ class DROWidget(QLabel, VCPWidget, Axis, ReferenceType, Units):
     @Slot(Axis)
     def setAxis(self, axis):
         self._axis = axis
-        STATUS.updateAxisPositions()
+        # STATUS.updateAxisPositions()
     axis = Property(Axis, getAxis, setAxis)
 
     def getUnits(self):
@@ -161,7 +161,7 @@ class DROWidget(QLabel, VCPWidget, Axis, ReferenceType, Units):
     @Slot(str)
     def setMetricTemplate(self, value):
         self._metric_template = value
-        STATUS.updateAxisPositions()
+        # STATUS.updateAxisPositions()
     metric_template = Property(str, getMetricTemplate, setMetricTemplate)
 
     def getImperialTemplate(self):
@@ -169,7 +169,7 @@ class DROWidget(QLabel, VCPWidget, Axis, ReferenceType, Units):
     @Slot(str)
     def setImperialTemplate(self, value):
         self._imperial_template = value
-        STATUS.updateAxisPositions()
+        # STATUS.updateAxisPositions()
     imperial_template = Property(str, getImperialTemplate, setImperialTemplate)
 
     @Slot(float)
