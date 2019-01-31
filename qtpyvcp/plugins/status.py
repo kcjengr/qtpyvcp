@@ -63,9 +63,17 @@ class Status(DataPlugin):
         self._cycle_time = cycle_time
         self.timer.timeout.connect(self._periodic)
 
-    on = DataChannel(doc="Machine power state", data=False)
+        self.on.settable = True
+        self.task_state.notify(lambda ts:
+                               self.on.setValue(ts == linuxcnc.STATE_ON))
+
     recent_files = DataChannel(doc='List of recently loaded files', settable=True, data=[])
     file_loaded = DataChannel(doc='File changed')
+
+    @DataChannel
+    def on(chan):
+        """True if machine power is ON."""
+        return STAT.task_state == linuxcnc.STATE_ON
 
     @DataChannel
     def task_state(chan, query=None):

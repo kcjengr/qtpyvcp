@@ -40,10 +40,10 @@ class DataPlugin(QObject):
 
         try:
             chan_obj = self.channels[chan]
-            if len(args) > 0 and args[0] in ('string', 'text'):
-                chan_exp = lambda: chan_obj.fstr(**kwargs)
+            if len(args) > 0 and args[0] in ('string', 'text', 'str'):
+                chan_exp = lambda: chan_obj.getString(*args[1:], **kwargs)
             else:
-                chan_exp = lambda: chan_obj.get(*args, **kwargs)
+                chan_exp = lambda: chan_obj.getValue(*args, **kwargs)
 
         except (KeyError, SyntaxError):
             return None, None
@@ -87,17 +87,24 @@ class DataChannel(QObject):
             doc = fget.__doc__
         self.__doc__ = doc
 
-    def get(self, *args, **kwargs):
+    def getValue(self, *args, **kwargs):
         """Channel data getter method."""
         if self.fget is None:
             return self._data
         return self.fget(self, *args, **kwargs)
 
-    def set(self, value):
+    def getString(self, *args, **kwargs):
+        """Channel data getter method."""
+        if self.fstr is None:
+            return str(self._data)
+        return self.fstr(*args, **kwargs)
+
+    def setValue(self, value):
         """Channel data setter method."""
         if self.fset is None:
             if self.settable:
                 self._data = value
+                self._signal.emit(value)
             else:
                 raise AttributeError('Channel is read only')
         else:
@@ -133,15 +140,13 @@ class DataChannel(QObject):
     onValueChanged = notify
 
     def __call__(self, *args, **kwargs):
-        return self.get(*args, **kwargs)
+        return self.getValue(*args, **kwargs)
 
     def __set__(self, instance, value):
-        return self.set(value)
+        return self.setValue(value)
 
     def __getitem__(self, item):
         return self._data[item]
 
-    def __str__(self):
-        if self.fstr is None:
-            return str(self._data)
-        return self.fstr()
+    # def __str__(self):
+    #     return self.getString()

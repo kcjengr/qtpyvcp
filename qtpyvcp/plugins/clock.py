@@ -1,3 +1,10 @@
+"""
+DateTime
+--------
+
+DataPlugin that provides the current date and time.
+"""
+
 from datetime import datetime
 
 from qtpy.QtCore import QTimer
@@ -12,7 +19,7 @@ class Clock(DataPlugin):
         self.timer.timeout.connect(self.tick)
 
     @DataChannel
-    def current_time(chan):
+    def time(chan):
         """The current date/time, updated every second.
 
         Args:
@@ -24,19 +31,23 @@ class Clock(DataPlugin):
 
         Example:
 
-            ``clock:current_time?string&format=%S``
+            ``datetime:time?format=%S``
         """
         return datetime.now()
 
-    @current_time.tostring
-    def current_time(chan, format="%I:%M:%S %p"):
+    @time.tostring
+    def time(chan, format="%I:%M:%S %p"):
+        return datetime.now().strftime(format)
+
+    @DataChannel
+    def date(chan, format="%x"):
         return datetime.now().strftime(format)
 
     def initialise(self):
         self.timer.start(1000)
 
     def tick(self):
-        self.current_time._signal.emit(datetime.now())
+        self.time._signal.emit(datetime.now())
 
 
 if __name__ == "__main__":
@@ -46,9 +57,12 @@ if __name__ == "__main__":
     c = Clock()
     c.initialise()
 
-    def onTimeChanged():
-        print c.current_time
+    def onTimeChanged(val):
+        print c.time
+        print c.time.getValue()
+        print c.time.getString(format='%S')
+        # c.time.setValue(datetime.now())
 
-    c.current_time.notify(onTimeChanged)
+    c.time.notify(onTimeChanged)
 
     app.exec_()

@@ -58,7 +58,6 @@ class RecentFilesMenu(QMenu):
         self.status.recent_files.notify(self.update)
 
     def update(self, files):
-        print "#################", files
         for i, fname in enumerate(files):
             fname = fname.encode('utf-8')
             text = "&{} {}".format(i + 1, os.path.basename(fname))
