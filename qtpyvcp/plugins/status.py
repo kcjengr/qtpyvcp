@@ -1209,23 +1209,65 @@ class SpindleStatus(QObject):
 
         self.status = new_status
 
-#==============================================================================
+
+# ==============================================================================
 # Error status class
-#==============================================================================
+# ==============================================================================
+
+class ErrorMessage(QtPyVCPDataChannel):
+    def __init__(self):
+        super(ErrorMessage, self).__init__()
+
+        self.typ = str
+        self.last_msg = ''
+
+    @property
+    def value(self):
+        return self.last_msg
+
+    @property
+    def text(self):
+        return self.last_msg
+
+    def _update(self, msg):
+        self.valueChanged.emit(msg)
+        self.last_msg = msg
+
 
 # ToDo: Move error and message handling into its own data plugin
 class _Error(QObject):
+    """LinuxCNC errors and messages."""
 
-    error = linuxcnc.error_channel()
+    error_channel = linuxcnc.error_channel()
 
-    new_error = Signal(str)
-    new_message = Signal(str)
+    error = ErrorMessage()
+    """Error message
+    
+    In a status label to get the latest error use::
+
+        status:error.error
+
+    :returns: current error message
+    :rtype: str
+    """
+
+    message = ErrorMessage()
+    """Info message
+
+    In a status label to get the latest message use::
+
+        status:error.message
+
+    :returns: current info message
+    :rtype: str
+    """
 
     def __init__(self, parent=None):
         super(_Error, self).__init__(parent)
 
     def _periodic(self):
-        error = self.error.poll()
+        error = self.error_channel.poll()
+
         if not error:
             return
 
@@ -1235,12 +1277,14 @@ class _Error(QObject):
             msg = "Unknown error!"
 
         if kind in [linuxcnc.NML_ERROR, linuxcnc.OPERATOR_ERROR]:
-            self.new_error.emit(msg)
+            self.error._update(msg)
             LOG.error(msg)
+
         elif kind in [linuxcnc.NML_TEXT, linuxcnc.OPERATOR_TEXT,
             linuxcnc.NML_DISPLAY, linuxcnc.OPERATOR_DISPLAY]:
-            self.new_message.emit(msg)
+            self.message._update(msg)
             LOG.info(msg)
+
         else:
             # notifications.show_error("UNKNOWN ERROR!", msg)
             LOG.error(msg)
