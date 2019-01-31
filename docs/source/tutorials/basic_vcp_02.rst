@@ -47,7 +47,7 @@ the size of tabs in a `Tab Widget` add the following into the
 ::
 
     QTabBar::tab {
-    height: 50px; width: 75px;
+    height: 50px; width: 90px;
     font: 14pt "DejaVu Sans"; }
 
 This will set the size of the tabs larger and easier to press with your finger.
