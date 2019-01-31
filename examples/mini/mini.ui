@@ -271,8 +271,11 @@
     </item>
     <item>
      <widget class="StatusLabel" name="statuslabel_10">
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
       <property name="rules" stdset="0">
-       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:error.error&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:error.message&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;font color=red&gt;Error: &lt;font&gt;\&quot; + ch[0] if ch[0] else \&quot;&lt;font color=blue&gt;Msg: &lt;font&gt;\&quot; + ch[1] if ch[1] else ''&quot;, &quot;name&quot;: &quot;error&quot;}]</string>
+       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:error.error&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:error.message&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;font color=red&gt;Error: &lt;/font&gt;\&quot; + ch[0] if ch[0] else \&quot;&lt;font color=blue&gt;Msg: &lt;/font&gt;\&quot; + ch[1] if ch[1] else ''&quot;, &quot;name&quot;: &quot;error message&quot;}]</string>
       </property>
      </widget>
     </item>
