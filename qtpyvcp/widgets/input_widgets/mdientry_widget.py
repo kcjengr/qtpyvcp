@@ -1,6 +1,4 @@
-#!/usr/bin/env python
-
-import os
+"""MDI Entry """
 
 from qtpy.QtWidgets import QLineEdit, QCompleter
 from qtpy.QtCore import Qt, QEvent, QStringListModel, Slot
