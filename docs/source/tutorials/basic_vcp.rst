@@ -4,7 +4,8 @@ Basic VCP
 
 This will cover the steps to build a basic VCP.
 
-* QtPyVCP must be installed as shown on the :doc:`../quick_start` page.
+* QtPyVCP must be installed as shown on the :doc:`../quick_start` page. Make
+sure you install the `Qt Designer` as shown on the `Quick Start` page.
 
 .. toctree::
    :maxdepth: 1
@@ -17,4 +18,3 @@ This will cover the steps to build a basic VCP.
    basic_vcp_06
    basic_vcp_07
    basic_vcp_08
-   basic_vcp_09

@@ -33,6 +33,13 @@ Launch LinuxCNC as usual and select one of the QtPyVCP sims. You should see a
 dialog from which you can select one of the example VCPs. Chose one and click
 "Launch VCP".
 
+**Edit a VCP**
+
+To edit a VCP you need to install the Qt Designer.
+::
+
+    sudo apt install qttools5.dev qttools5-dev-tools
+
 **Notes**
 
 This installation method is tested to work on Debian 9 (Stretch) and Mint 19.1,

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>985</width>
-    <height>992</height>
+    <width>321</width>
+    <height>478</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -278,6 +278,16 @@
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="StatusLabel" name="statuslabel_10">
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
+      <property name="rules" stdset="0">
+       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:error.error&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:error.message&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;font color=red&gt;Error: &lt;/font&gt;\&quot; + ch[0] if ch[0] else \&quot;&lt;font color=blue&gt;Msg: &lt;/font&gt;\&quot; + ch[1] if ch[1] else ''&quot;, &quot;name&quot;: &quot;error message&quot;}]</string>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -285,8 +295,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>985</width>
-     <height>20</height>
+     <width>321</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
@@ -654,11 +664,6 @@
    <class>StatusLabel</class>
    <extends>QLabel</extends>
    <header>qtpyvcp.widgets.display_widgets.status_label</header>
-  </customwidget>
-  <customwidget>
-   <class>QQuickWidget</class>
-   <extends>QWidget</extends>
-   <header>QtQuickWidgets/QQuickWidget</header>
   </customwidget>
  </customwidgets>
  <resources>

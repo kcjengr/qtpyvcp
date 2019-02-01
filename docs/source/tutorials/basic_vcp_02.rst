@@ -13,9 +13,8 @@ it and morph into a `QFrame`.
    :scale: 40 %
 
 In the `Property Editor` on the right side change the Frame Shape to a `Box` and
-set the line width to 2 and change the margins (left, right, top and bottom)
-to 5, this makes it easier to see the blue line when dragging other layouts into
-the frame.
+change the margins (left, right, top and bottom) to 5, this makes it easier to
+see the blue line when dragging other layouts into the frame.
 
 .. image:: images/vcp1-designer-03.png
    :align: center
@@ -44,17 +43,22 @@ into it.
 
 Now we want to change the tab widgets to be more touch screen friendly. To set
 the size of tabs in a `Tab Widget` add the following into the 
-`QFrame styleSheet` that has the Tab Widgets in it. 
-``QTabBar::tab { height: 50px; width: 100px; }``. This will set the size of the
-tabs larger and easier to press with your finger. Also change the location of
-the tabs to the `South` position so you can see the tab as you change from tab
-to tab.
+`QFrame styleSheet` that has the Tab Widgets in it.
+::
+
+    QTabBar::tab {
+    height: 50px; width: 90px;
+    font: 14pt "DejaVu Sans"; }
+
+This will set the size of the tabs larger and easier to press with your finger.
+Also change the location of the tabs to the `South` position so you can see the
+tab as you change from tab to tab.
 
 .. image:: images/vcp1-designer-07.png
    :align: center
    :scale: 40 %
 
-Here is our completed layout.
+Here is our completed layout running.
 
 .. image:: images/vcp1-run-03.png
    :align: center

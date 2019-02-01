@@ -50,8 +50,7 @@ class ActionComboBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
         return ActionComboBox
 
-from lathe_tool_touch_off.lathe_tool_touch_off import LatheToolTouchOff
-
-class LatheToolTouchOffPlugin(_DesignerPlugin):
+from probesim_widget import ProbeSim
+class ProbeSimPlugin(_DesignerPlugin):
     def pluginClass(self):
-        return LatheToolTouchOff
+        return ProbeSim
