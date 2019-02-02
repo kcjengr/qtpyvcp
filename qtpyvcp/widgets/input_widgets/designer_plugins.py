@@ -54,3 +54,9 @@ from probesim_widget import ProbeSim
 class ProbeSimPlugin(_DesignerPlugin):
     def pluginClass(self):
         return ProbeSim
+
+
+from lathe_tool_touch_off.lathe_tool_touch_off import LatheToolTouchOff
+class LatheToolTouchOffPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return LatheToolTouchOff

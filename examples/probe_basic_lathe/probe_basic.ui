@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1946</width>
-    <height>1127</height>
+    <height>1136</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -4249,982 +4249,11 @@ padding-right: 10px;
                </attribute>
                <layout class="QHBoxLayout" name="horizontalLayout_43">
                 <item>
-                 <widget class="QWidget" name="verticalWidget_2" native="true">
-                  <layout class="QHBoxLayout" name="horizontalLayout_61">
-                   <property name="spacing">
-                    <number>0</number>
-                   </property>
-                   <property name="leftMargin">
-                    <number>20</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>60</number>
-                   </property>
-                   <item>
-                    <widget class="QLabel" name="label_17">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>301</width>
-                       <height>0</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>480</width>
-                       <height>321</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="pixmap">
-                      <pixmap resource="probe_basic.qrc">:/images/lathe_chuck_stock.png</pixmap>
-                     </property>
-                     <property name="scaledContents">
-                      <bool>false</bool>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QWidget" name="widget_37" native="true">
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>1</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                 </widget>
-                </item>
-                <item>
                  <widget class="QWidget" name="verticalWidget_3" native="true">
                   <layout class="QVBoxLayout" name="verticalLayout_24">
                    <property name="leftMargin">
                     <number>0</number>
                    </property>
-                   <item>
-                    <widget class="QWidget" name="widget_26" native="true"/>
-                   </item>
-                   <item>
-                    <widget class="QWidget" name="widget_29" native="true">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>200</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>200</height>
-                      </size>
-                     </property>
-                     <property name="layoutDirection">
-                      <enum>Qt::LeftToRight</enum>
-                     </property>
-                     <layout class="QHBoxLayout" name="horizontalLayout_39">
-                      <property name="spacing">
-                       <number>15</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>0</number>
-                      </property>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_19">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_lh_turning_rp_bs.png</normaloff>:/images/lathe_lh_turning_rp_bs.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>49</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_20">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_center_turning_rp_bs.png</normaloff>:/images/lathe_center_turning_rp_bs.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>41</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_21">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_rh_turning_rp_bs.png</normaloff>:/images/lathe_rh_turning_rp_bs.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>49</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_22">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_rh_threading_rp_bs.png</normaloff>:/images/lathe_rh_threading_rp_bs.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>52</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_23">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_rh_parting_rp_bs.png</normaloff>:/images/lathe_rh_parting_rp_bs.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>50</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QWidget" name="widget_32" native="true">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>410</width>
-                       <height>106</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>410</width>
-                       <height>106</height>
-                      </size>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QWidget" name="widget_30" native="true">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>0</width>
-                       <height>200</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>200</height>
-                      </size>
-                     </property>
-                     <layout class="QHBoxLayout" name="horizontalLayout_42">
-                      <property name="spacing">
-                       <number>15</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>0</number>
-                      </property>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_25">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_lh_turning_fp_ts.png</normaloff>:/images/lathe_lh_turning_fp_ts.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>49</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_24">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_center_turning_fp_ts.png</normaloff>:/images/lathe_center_turning_fp_ts.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>41</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_32">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_rh_turning_fp_ts.png</normaloff>:/images/lathe_rh_turning_fp_ts.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>49</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_26">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_rh_threading_fp_ts.png</normaloff>:/images/lathe_rh_threading_fp_ts.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>52</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_27">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>70</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_parting_fp_ts.png</normaloff>:/images/lathe_parting_fp_ts.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>50</width>
-                          <height>200</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QWidget" name="widget_25" native="true"/>
-                   </item>
-                  </layout>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QWidget" name="verticalWidget_4" native="true">
-                  <layout class="QVBoxLayout" name="verticalLayout_25">
-                   <property name="leftMargin">
-                    <number>55</number>
-                   </property>
-                   <item>
-                    <widget class="QFrame" name="frame_42">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>110</width>
-                       <height>38</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>38</height>
-                      </size>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(176, 179,172);
-border-width: 1px;
-border-radius: 4px;
-background-color: rgb(90, 90, 90);
-padding: -5px;
-}</string>
-                     </property>
-                     <property name="frameShape">
-                      <enum>QFrame::StyledPanel</enum>
-                     </property>
-                     <property name="frameShadow">
-                      <enum>QFrame::Raised</enum>
-                     </property>
-                     <layout class="QHBoxLayout" name="horizontalLayout_110">
-                      <property name="spacing">
-                       <number>0</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>3</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>3</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>3</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>3</number>
-                      </property>
-                      <item>
-                       <widget class="QLabel" name="ref_coilumn_header_7">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>0</width>
-                          <height>30</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>16777215</width>
-                          <height>30</height>
-                         </size>
-                        </property>
-                        <property name="sizeIncrement">
-                         <size>
-                          <width>0</width>
-                          <height>30</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                        </property>
-                        <property name="text">
-                         <string>REAR POST</string>
-                        </property>
-                        <property name="alignment">
-                         <set>Qt::AlignCenter</set>
-                        </property>
-                        <property name="indent">
-                         <number>0</number>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QWidget" name="widget_31" native="true">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_23">
-                      <property name="spacing">
-                       <number>9</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>0</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>0</number>
-                      </property>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_35">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>200</width>
-                          <height>70</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>200</width>
-                          <height>70</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_internal_threading_bs.png</normaloff>:/images/lathe_internal_threading_bs.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>200</width>
-                          <height>34</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_34">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>200</width>
-                          <height>70</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>200</width>
-                          <height>70</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_internal_boring_bs.png</normaloff>:/images/lathe_internal_boring_bs.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>200</width>
-                          <height>37</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_33">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>200</width>
-                          <height>70</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>200</width>
-                          <height>70</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_internal_drilling_ts.png</normaloff>:/images/lathe_internal_drilling_ts.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>200</width>
-                          <height>32</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_37">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>200</width>
-                          <height>70</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>200</width>
-                          <height>70</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_internal_boring_ts.png</normaloff>:/images/lathe_internal_boring_ts.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>200</width>
-                          <height>37</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                      <item>
-                       <widget class="ActionButton" name="actionbutton_36">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>200</width>
-                          <height>70</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>200</width>
-                          <height>70</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">ActionButton{
-    border: none;
-    background: none;
-}</string>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/lathe_internal_threading_ts.png</normaloff>:/images/lathe_internal_threading_ts.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>200</width>
-                          <height>34</height>
-                         </size>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QFrame" name="frame_41">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>110</width>
-                       <height>38</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>16777215</width>
-                       <height>38</height>
-                      </size>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(176, 179,172);
-border-width: 1px;
-border-radius: 4px;
-background-color: rgb(90, 90, 90);
-padding: -5px;
-}</string>
-                     </property>
-                     <property name="frameShape">
-                      <enum>QFrame::StyledPanel</enum>
-                     </property>
-                     <property name="frameShadow">
-                      <enum>QFrame::Raised</enum>
-                     </property>
-                     <layout class="QHBoxLayout" name="horizontalLayout_107">
-                      <property name="spacing">
-                       <number>0</number>
-                      </property>
-                      <property name="leftMargin">
-                       <number>3</number>
-                      </property>
-                      <property name="topMargin">
-                       <number>3</number>
-                      </property>
-                      <property name="rightMargin">
-                       <number>3</number>
-                      </property>
-                      <property name="bottomMargin">
-                       <number>3</number>
-                      </property>
-                      <item>
-                       <widget class="QLabel" name="ref_coilumn_header_6">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>0</width>
-                          <height>30</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>16777215</width>
-                          <height>30</height>
-                         </size>
-                        </property>
-                        <property name="sizeIncrement">
-                         <size>
-                          <width>0</width>
-                          <height>30</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                        </property>
-                        <property name="text">
-                         <string>FRONT POST</string>
-                        </property>
-                        <property name="alignment">
-                         <set>Qt::AlignCenter</set>
-                        </property>
-                        <property name="indent">
-                         <number>0</number>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
-                   </item>
                   </layout>
                  </widget>
                 </item>
@@ -5244,7 +4273,15 @@ padding: -5px;
 justify: right;
 }</string>
                   </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_21"/>
+                  <layout class="QVBoxLayout" name="verticalLayout_21">
+                   <item>
+                    <widget class="LatheToolTouchOff" name="lathetooltouchoff">
+                     <property name="resizeMode">
+                      <enum>QQuickWidget::SizeRootObjectToView</enum>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
                  </widget>
                 </item>
                 <item>
@@ -5255,7 +4292,7 @@ justify: right;
                     <verstretch>0</verstretch>
                    </sizepolicy>
                   </property>
-                  <layout class="QVBoxLayout" name="verticalLayout_40">
+                  <layout class="QVBoxLayout" name="verticalLayout_23">
                    <property name="spacing">
                     <number>9</number>
                    </property>
@@ -5290,30 +4327,30 @@ justify: right;
                        <number>0</number>
                       </property>
                       <item>
-                       <widget class="QWidget" name="widget_39" native="true"/>
-                      </item>
-                      <item>
-                       <widget class="QFrame" name="frame_43">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>300</width>
-                          <height>0</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>300</width>
-                          <height>16777215</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">QFrame{
+                       <widget class="QWidget" name="widget_39" native="true">
+                        <layout class="QHBoxLayout" name="horizontalLayout_39">
+                         <item>
+                          <widget class="QFrame" name="frame_43">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
+                           </property>
+                           <property name="minimumSize">
+                            <size>
+                             <width>300</width>
+                             <height>0</height>
+                            </size>
+                           </property>
+                           <property name="maximumSize">
+                            <size>
+                             <width>300</width>
+                             <height>16777215</height>
+                            </size>
+                           </property>
+                           <property name="styleSheet">
+                            <string notr="true">QFrame{
 color: rgb(46, 52, 54);
 border-style: solid;
 border-color: rgb(186, 189, 182);
@@ -5325,60 +4362,60 @@ padding-bottom: 0px;
 padding-left: 10px;
 padding-right: 10px;
 }</string>
-                        </property>
-                        <layout class="QVBoxLayout" name="verticalLayout_29">
-                         <property name="topMargin">
-                          <number>9</number>
-                         </property>
-                         <item>
-                          <widget class="QWidget" name="widget_34" native="true">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
                            </property>
-                           <layout class="QHBoxLayout" name="horizontalLayout_45">
-                            <property name="spacing">
-                             <number>15</number>
-                            </property>
-                            <property name="sizeConstraint">
-                             <enum>QLayout::SetDefaultConstraint</enum>
-                            </property>
-                            <property name="leftMargin">
-                             <number>2</number>
-                            </property>
+                           <layout class="QVBoxLayout" name="verticalLayout_29">
                             <property name="topMargin">
-                             <number>6</number>
-                            </property>
-                            <property name="rightMargin">
-                             <number>2</number>
-                            </property>
-                            <property name="bottomMargin">
-                             <number>6</number>
+                             <number>9</number>
                             </property>
                             <item>
-                             <widget class="QFrame" name="frame_30">
+                             <widget class="QWidget" name="widget_34" native="true">
                               <property name="sizePolicy">
                                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                                 <horstretch>0</horstretch>
                                 <verstretch>0</verstretch>
                                </sizepolicy>
                               </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>100</width>
-                                <height>40</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>16777215</width>
-                                <height>40</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">QFrame{
+                              <layout class="QHBoxLayout" name="horizontalLayout_45">
+                               <property name="spacing">
+                                <number>15</number>
+                               </property>
+                               <property name="sizeConstraint">
+                                <enum>QLayout::SetDefaultConstraint</enum>
+                               </property>
+                               <property name="leftMargin">
+                                <number>2</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>2</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>6</number>
+                               </property>
+                               <item>
+                                <widget class="QFrame" name="frame_30">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>100</width>
+                                   <height>40</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>40</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QFrame{
 border-style: solid;
 border-color: rgb(176, 179,172);
 border-width: 1px;
@@ -5386,274 +4423,166 @@ border-radius: 4px;
 background-color: rgb(90, 90, 90);
 padding: -5px;
 }</string>
-                              </property>
-                              <property name="frameShape">
-                               <enum>QFrame::StyledPanel</enum>
-                              </property>
-                              <property name="frameShadow">
-                               <enum>QFrame::Raised</enum>
-                              </property>
-                              <layout class="QHBoxLayout" name="horizontalLayout_106">
-                               <property name="spacing">
-                                <number>0</number>
-                               </property>
-                               <property name="leftMargin">
-                                <number>0</number>
-                               </property>
-                               <property name="topMargin">
-                                <number>0</number>
-                               </property>
-                               <property name="rightMargin">
-                                <number>1</number>
-                               </property>
-                               <property name="bottomMargin">
-                                <number>0</number>
-                               </property>
-                               <item>
-                                <widget class="QLabel" name="ref_coilumn_header_5">
-                                 <property name="sizePolicy">
-                                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                   <horstretch>0</horstretch>
-                                   <verstretch>0</verstretch>
-                                  </sizepolicy>
                                  </property>
-                                 <property name="minimumSize">
-                                  <size>
-                                   <width>15</width>
-                                   <height>36</height>
-                                  </size>
+                                 <property name="frameShape">
+                                  <enum>QFrame::StyledPanel</enum>
                                  </property>
-                                 <property name="maximumSize">
-                                  <size>
-                                   <width>15</width>
-                                   <height>36</height>
-                                  </size>
+                                 <property name="frameShadow">
+                                  <enum>QFrame::Raised</enum>
                                  </property>
-                                 <property name="styleSheet">
-                                  <string notr="true">QLabel{
+                                 <layout class="QHBoxLayout" name="horizontalLayout_106">
+                                  <property name="spacing">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="leftMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="topMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="rightMargin">
+                                   <number>1</number>
+                                  </property>
+                                  <property name="bottomMargin">
+                                   <number>0</number>
+                                  </property>
+                                  <item>
+                                   <widget class="QLabel" name="ref_coilumn_header_5">
+                                    <property name="sizePolicy">
+                                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                      <horstretch>0</horstretch>
+                                      <verstretch>0</verstretch>
+                                     </sizepolicy>
+                                    </property>
+                                    <property name="minimumSize">
+                                     <size>
+                                      <width>15</width>
+                                      <height>36</height>
+                                     </size>
+                                    </property>
+                                    <property name="maximumSize">
+                                     <size>
+                                      <width>15</width>
+                                      <height>36</height>
+                                     </size>
+                                    </property>
+                                    <property name="styleSheet">
+                                     <string notr="true">QLabel{
     border: none;
     color: rgb(238, 238, 236);
     background: transparent;
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
-                                 </property>
-                                 <property name="text">
-                                  <string>  T</string>
-                                 </property>
-                                 <property name="alignment">
-                                  <set>Qt::AlignCenter</set>
-                                 </property>
-                                 <property name="indent">
-                                  <number>0</number>
-                                 </property>
+                                    </property>
+                                    <property name="text">
+                                     <string>  T</string>
+                                    </property>
+                                    <property name="alignment">
+                                     <set>Qt::AlignCenter</set>
+                                    </property>
+                                    <property name="indent">
+                                     <number>0</number>
+                                    </property>
+                                   </widget>
+                                  </item>
+                                  <item>
+                                   <widget class="QSpinBox" name="spinBox">
+                                    <property name="minimumSize">
+                                     <size>
+                                      <width>0</width>
+                                      <height>40</height>
+                                     </size>
+                                    </property>
+                                   </widget>
+                                  </item>
+                                 </layout>
                                 </widget>
                                </item>
                                <item>
-                                <widget class="QLineEdit" name="tool_number_entry_box_2">
+                                <widget class="ActionButton" name="m01_break_button_11">
                                  <property name="sizePolicy">
-                                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                   <horstretch>0</horstretch>
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                   <horstretch>100</horstretch>
                                    <verstretch>0</verstretch>
                                   </sizepolicy>
                                  </property>
                                  <property name="minimumSize">
                                   <size>
-                                   <width>75</width>
-                                   <height>36</height>
+                                   <width>130</width>
+                                   <height>45</height>
                                   </size>
                                  </property>
                                  <property name="maximumSize">
                                   <size>
-                                   <width>75</width>
-                                   <height>36</height>
+                                   <width>16777215</width>
+                                   <height>45</height>
                                   </size>
                                  </property>
-                                 <property name="palette">
-                                  <palette>
-                                   <active>
-                                    <colorrole role="WindowText">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>0</red>
-                                       <green>0</green>
-                                       <blue>0</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="Button">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>235</red>
-                                       <green>235</green>
-                                       <blue>235</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="Text">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>0</red>
-                                       <green>0</green>
-                                       <blue>0</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="ButtonText">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>0</red>
-                                       <green>0</green>
-                                       <blue>0</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="Base">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>235</red>
-                                       <green>235</green>
-                                       <blue>235</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="Window">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>235</red>
-                                       <green>235</green>
-                                       <blue>235</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                   </active>
-                                   <inactive>
-                                    <colorrole role="WindowText">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>0</red>
-                                       <green>0</green>
-                                       <blue>0</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="Button">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>235</red>
-                                       <green>235</green>
-                                       <blue>235</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="Text">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>0</red>
-                                       <green>0</green>
-                                       <blue>0</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="ButtonText">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>0</red>
-                                       <green>0</green>
-                                       <blue>0</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="Base">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>235</red>
-                                       <green>235</green>
-                                       <blue>235</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="Window">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>235</red>
-                                       <green>235</green>
-                                       <blue>235</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                   </inactive>
-                                   <disabled>
-                                    <colorrole role="WindowText">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>0</red>
-                                       <green>0</green>
-                                       <blue>0</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="Button">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>235</red>
-                                       <green>235</green>
-                                       <blue>235</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="Text">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>0</red>
-                                       <green>0</green>
-                                       <blue>0</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="ButtonText">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>0</red>
-                                       <green>0</green>
-                                       <blue>0</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="Base">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>235</red>
-                                       <green>235</green>
-                                       <blue>235</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                    <colorrole role="Window">
-                                     <brush brushstyle="SolidPattern">
-                                      <color alpha="255">
-                                       <red>235</red>
-                                       <green>235</green>
-                                       <blue>235</blue>
-                                      </color>
-                                     </brush>
-                                    </colorrole>
-                                   </disabled>
-                                  </palette>
-                                 </property>
-                                 <property name="font">
-                                  <font>
-                                   <family>Bebas Kai</family>
-                                   <pointsize>17</pointsize>
-                                   <weight>9</weight>
-                                   <italic>false</italic>
-                                   <bold>false</bold>
-                                  </font>
-                                 </property>
                                  <property name="focusPolicy">
-                                  <enum>Qt::ClickFocus</enum>
+                                  <enum>Qt::NoFocus</enum>
                                  </property>
-                                 <property name="contextMenuPolicy">
-                                  <enum>Qt::NoContextMenu</enum>
+                                 <property name="styleSheet">
+                                  <string notr="true">QPushButton {
+   	font: 16pt &quot;Bebas Kai&quot;;
+}</string>
+                                 </property>
+                                 <property name="text">
+                                  <string>TURRET FORWARD</string>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                            </item>
+                            <item>
+                             <widget class="QWidget" name="widget" native="true">
+                              <property name="sizePolicy">
+                               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                <horstretch>0</horstretch>
+                                <verstretch>0</verstretch>
+                               </sizepolicy>
+                              </property>
+                              <layout class="QHBoxLayout" name="horizontalLayout_35">
+                               <property name="spacing">
+                                <number>15</number>
+                               </property>
+                               <property name="sizeConstraint">
+                                <enum>QLayout::SetDefaultConstraint</enum>
+                               </property>
+                               <property name="leftMargin">
+                                <number>2</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>2</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>6</number>
+                               </property>
+                               <item>
+                                <widget class="QLineEdit" name="lineEdit_4">
+                                 <property name="enabled">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                   <horstretch>100</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>130</width>
+                                   <height>40</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>40</height>
+                                  </size>
                                  </property>
                                  <property name="styleSheet">
                                   <string notr="true">QLineEdit {
@@ -5666,14 +4595,41 @@ padding: -5px;
 	font: 75 17pt &quot;Bebas Kai&quot;;
 }</string>
                                  </property>
-                                 <property name="text">
-                                  <string>0</string>
-                                 </property>
-                                 <property name="frame">
-                                  <bool>true</bool>
-                                 </property>
                                  <property name="alignment">
                                   <set>Qt::AlignCenter</set>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="ActionButton" name="m01_break_button_5">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                   <horstretch>100</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>100</width>
+                                   <height>45</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>45</height>
+                                  </size>
+                                 </property>
+                                 <property name="focusPolicy">
+                                  <enum>Qt::NoFocus</enum>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QPushButton {
+   	font: 16pt &quot;Bebas Kai&quot;;
+}</string>
+                                 </property>
+                                 <property name="text">
+                                  <string>TOUCH  X</string>
                                  </property>
                                 </widget>
                                </item>
@@ -5681,93 +4637,57 @@ padding: -5px;
                              </widget>
                             </item>
                             <item>
-                             <widget class="ActionButton" name="m01_break_button_11">
+                             <widget class="QWidget" name="widget_33" native="true">
                               <property name="sizePolicy">
                                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                <horstretch>100</horstretch>
+                                <horstretch>0</horstretch>
                                 <verstretch>0</verstretch>
                                </sizepolicy>
                               </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>130</width>
-                                <height>45</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>16777215</width>
-                                <height>45</height>
-                               </size>
-                              </property>
-                              <property name="focusPolicy">
-                               <enum>Qt::NoFocus</enum>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">QPushButton {
-   	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
-                              </property>
-                              <property name="text">
-                               <string>TURRET FORWARD</string>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QWidget" name="widget" native="true">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <layout class="QHBoxLayout" name="horizontalLayout_35">
-                            <property name="spacing">
-                             <number>15</number>
-                            </property>
-                            <property name="sizeConstraint">
-                             <enum>QLayout::SetDefaultConstraint</enum>
-                            </property>
-                            <property name="leftMargin">
-                             <number>2</number>
-                            </property>
-                            <property name="topMargin">
-                             <number>6</number>
-                            </property>
-                            <property name="rightMargin">
-                             <number>2</number>
-                            </property>
-                            <property name="bottomMargin">
-                             <number>6</number>
-                            </property>
-                            <item>
-                             <widget class="QLineEdit" name="lineEdit_4">
-                              <property name="enabled">
-                               <bool>true</bool>
-                              </property>
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                <horstretch>100</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>130</width>
-                                <height>40</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>16777215</width>
-                                <height>40</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">QLineEdit {
+                              <layout class="QHBoxLayout" name="horizontalLayout_44">
+                               <property name="spacing">
+                                <number>15</number>
+                               </property>
+                               <property name="sizeConstraint">
+                                <enum>QLayout::SetDefaultConstraint</enum>
+                               </property>
+                               <property name="leftMargin">
+                                <number>2</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>6</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>2</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>6</number>
+                               </property>
+                               <item>
+                                <widget class="QLineEdit" name="lineEdit_5">
+                                 <property name="enabled">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                   <horstretch>100</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>130</width>
+                                   <height>40</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>40</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QLineEdit {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -5776,191 +4696,53 @@ padding: -5px;
     background: rgb(235, 235, 235);
 	font: 75 17pt &quot;Bebas Kai&quot;;
 }</string>
-                              </property>
-                              <property name="alignment">
-                               <set>Qt::AlignCenter</set>
-                              </property>
-                             </widget>
-                            </item>
-                            <item>
-                             <widget class="ActionButton" name="m01_break_button_5">
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                <horstretch>100</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>100</width>
-                                <height>45</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>16777215</width>
-                                <height>45</height>
-                               </size>
-                              </property>
-                              <property name="focusPolicy">
-                               <enum>Qt::NoFocus</enum>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">QPushButton {
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignCenter</set>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item>
+                                <widget class="ActionButton" name="m01_break_button_7">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                   <horstretch>100</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>100</width>
+                                   <height>45</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>45</height>
+                                  </size>
+                                 </property>
+                                 <property name="focusPolicy">
+                                  <enum>Qt::NoFocus</enum>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QPushButton {
    	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
-                              </property>
-                              <property name="text">
-                               <string>TOUCH  X</string>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QWidget" name="widget_33" native="true">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <layout class="QHBoxLayout" name="horizontalLayout_44">
-                            <property name="spacing">
-                             <number>15</number>
-                            </property>
-                            <property name="sizeConstraint">
-                             <enum>QLayout::SetDefaultConstraint</enum>
-                            </property>
-                            <property name="leftMargin">
-                             <number>2</number>
-                            </property>
-                            <property name="topMargin">
-                             <number>6</number>
-                            </property>
-                            <property name="rightMargin">
-                             <number>2</number>
-                            </property>
-                            <property name="bottomMargin">
-                             <number>6</number>
-                            </property>
-                            <item>
-                             <widget class="QLineEdit" name="lineEdit_5">
-                              <property name="enabled">
-                               <bool>true</bool>
-                              </property>
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                <horstretch>100</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>130</width>
-                                <height>40</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>16777215</width>
-                                <height>40</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
-}</string>
-                              </property>
-                              <property name="alignment">
-                               <set>Qt::AlignCenter</set>
-                              </property>
+                                 </property>
+                                 <property name="text">
+                                  <string>TOUCH  Z</string>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
                              </widget>
                             </item>
                             <item>
-                             <widget class="ActionButton" name="m01_break_button_7">
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                <horstretch>100</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>100</width>
-                                <height>45</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>16777215</width>
-                                <height>45</height>
-                               </size>
-                              </property>
-                              <property name="focusPolicy">
-                               <enum>Qt::NoFocus</enum>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">QPushButton {
-   	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
-                              </property>
-                              <property name="text">
-                               <string>TOUCH  Z</string>
-                              </property>
-                             </widget>
+                             <widget class="QWidget" name="widget_35" native="true"/>
                             </item>
-                           </layout>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QWidget" name="widget_35" native="true"/>
-                         </item>
-                         <item alignment="Qt::AlignHCenter">
-                          <widget class="QWidget" name="widget_27" native="true">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <property name="minimumSize">
-                            <size>
-                             <width>220</width>
-                             <height>220</height>
-                            </size>
-                           </property>
-                           <property name="maximumSize">
-                            <size>
-                             <width>220</width>
-                             <height>220</height>
-                            </size>
-                           </property>
-                           <layout class="QGridLayout" name="gridLayout_2">
-                            <property name="leftMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="topMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="rightMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="bottomMargin">
-                             <number>0</number>
-                            </property>
-                            <property name="spacing">
-                             <number>0</number>
-                            </property>
-                            <item row="1" column="1">
-                             <widget class="ActionButton" name="actionbutton_44">
+                            <item alignment="Qt::AlignHCenter">
+                             <widget class="QWidget" name="widget_27" native="true">
                               <property name="sizePolicy">
                                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                 <horstretch>0</horstretch>
@@ -5969,94 +4751,130 @@ padding: -5px;
                               </property>
                               <property name="minimumSize">
                                <size>
-                                <width>70</width>
-                                <height>70</height>
+                                <width>220</width>
+                                <height>220</height>
                                </size>
                               </property>
                               <property name="maximumSize">
                                <size>
-                                <width>70</width>
-                                <height>70</height>
+                                <width>220</width>
+                                <height>220</height>
                                </size>
                               </property>
-                              <property name="styleSheet">
-                               <string notr="true">ActionButton{
+                              <layout class="QGridLayout" name="gridLayout_2">
+                               <property name="leftMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="topMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="rightMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>0</number>
+                               </property>
+                               <property name="spacing">
+                                <number>0</number>
+                               </property>
+                               <item row="1" column="1">
+                                <widget class="ActionButton" name="actionbutton_44">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">ActionButton{
     border: none;
     background: none;
 }</string>
-                              </property>
-                              <property name="icon">
-                               <iconset resource="probe_basic.qrc">
-                                <normaloff>:/images/lathe_control_point_9.png</normaloff>:/images/lathe_control_point_9.png</iconset>
-                              </property>
-                              <property name="iconSize">
-                               <size>
-                                <width>65</width>
-                                <height>65</height>
-                               </size>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="0" column="1">
-                             <widget class="ActionButton" name="actionbutton_42">
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">ActionButton{
+                                 </property>
+                                 <property name="icon">
+                                  <iconset resource="probe_basic.qrc">
+                                   <normaloff>:/images/lathe_control_point_9.png</normaloff>:/images/lathe_control_point_9.png</iconset>
+                                 </property>
+                                 <property name="iconSize">
+                                  <size>
+                                   <width>65</width>
+                                   <height>65</height>
+                                  </size>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="0" column="1">
+                                <widget class="ActionButton" name="actionbutton_42">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">ActionButton{
     border: none;
     background: none;
 }</string>
-                              </property>
-                              <property name="icon">
-                               <iconset resource="probe_basic.qrc">
-                                <normaloff>:/images/lathe_control_point_6.png</normaloff>:/images/lathe_control_point_6.png</iconset>
-                              </property>
-                              <property name="iconSize">
-                               <size>
-                                <width>65</width>
-                                <height>65</height>
-                               </size>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="0" column="0">
-                             <widget class="ActionButton" name="actionbutton_41">
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">ActionButton{
+                                 </property>
+                                 <property name="icon">
+                                  <iconset resource="probe_basic.qrc">
+                                   <normaloff>:/images/lathe_control_point_6.png</normaloff>:/images/lathe_control_point_6.png</iconset>
+                                 </property>
+                                 <property name="iconSize">
+                                  <size>
+                                   <width>65</width>
+                                   <height>65</height>
+                                  </size>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="0" column="0">
+                                <widget class="ActionButton" name="actionbutton_41">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">ActionButton{
     border: none;
     background: none;
 }
@@ -6073,299 +4891,302 @@ ActionButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
 }
 </string>
-                              </property>
-                              <property name="icon">
-                               <iconset resource="probe_basic.qrc">
-                                <normaloff>:/images/lathe_control_point_1.png</normaloff>:/images/lathe_control_point_1.png</iconset>
-                              </property>
-                              <property name="iconSize">
-                               <size>
-                                <width>65</width>
-                                <height>65</height>
-                               </size>
-                              </property>
-                              <property name="checkable">
-                               <bool>true</bool>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="0" column="2">
-                             <widget class="ActionButton" name="actionbutton_43">
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">ActionButton{
+                                 </property>
+                                 <property name="icon">
+                                  <iconset resource="probe_basic.qrc">
+                                   <normaloff>:/images/lathe_control_point_1.png</normaloff>:/images/lathe_control_point_1.png</iconset>
+                                 </property>
+                                 <property name="iconSize">
+                                  <size>
+                                   <width>65</width>
+                                   <height>65</height>
+                                  </size>
+                                 </property>
+                                 <property name="checkable">
+                                  <bool>true</bool>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="0" column="2">
+                                <widget class="ActionButton" name="actionbutton_43">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">ActionButton{
     border: none;
     background: none;
 }</string>
-                              </property>
-                              <property name="icon">
-                               <iconset resource="probe_basic.qrc">
-                                <normaloff>:/images/lathe_control_point_2.png</normaloff>:/images/lathe_control_point_2.png</iconset>
-                              </property>
-                              <property name="iconSize">
-                               <size>
-                                <width>65</width>
-                                <height>65</height>
-                               </size>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="1" column="2">
-                             <widget class="ActionButton" name="actionbutton_40">
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">ActionButton{
+                                 </property>
+                                 <property name="icon">
+                                  <iconset resource="probe_basic.qrc">
+                                   <normaloff>:/images/lathe_control_point_2.png</normaloff>:/images/lathe_control_point_2.png</iconset>
+                                 </property>
+                                 <property name="iconSize">
+                                  <size>
+                                   <width>65</width>
+                                   <height>65</height>
+                                  </size>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="1" column="2">
+                                <widget class="ActionButton" name="actionbutton_40">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">ActionButton{
     border: none;
     background: none;
 }</string>
-                              </property>
-                              <property name="icon">
-                               <iconset resource="probe_basic.qrc">
-                                <normaloff>:/images/lathe_control_point_7.png</normaloff>:/images/lathe_control_point_7.png</iconset>
-                              </property>
-                              <property name="iconSize">
-                               <size>
-                                <width>65</width>
-                                <height>65</height>
-                               </size>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="2" column="2">
-                             <widget class="ActionButton" name="actionbutton_45">
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">ActionButton{
+                                 </property>
+                                 <property name="icon">
+                                  <iconset resource="probe_basic.qrc">
+                                   <normaloff>:/images/lathe_control_point_7.png</normaloff>:/images/lathe_control_point_7.png</iconset>
+                                 </property>
+                                 <property name="iconSize">
+                                  <size>
+                                   <width>65</width>
+                                   <height>65</height>
+                                  </size>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="2" column="2">
+                                <widget class="ActionButton" name="actionbutton_45">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">ActionButton{
     border: none;
     background: none;
 }</string>
-                              </property>
-                              <property name="icon">
-                               <iconset resource="probe_basic.qrc">
-                                <normaloff>:/images/lathe_control_point_3.png</normaloff>:/images/lathe_control_point_3.png</iconset>
-                              </property>
-                              <property name="iconSize">
-                               <size>
-                                <width>65</width>
-                                <height>65</height>
-                               </size>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="2" column="1">
-                             <widget class="ActionButton" name="actionbutton_39">
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">ActionButton{
+                                 </property>
+                                 <property name="icon">
+                                  <iconset resource="probe_basic.qrc">
+                                   <normaloff>:/images/lathe_control_point_3.png</normaloff>:/images/lathe_control_point_3.png</iconset>
+                                 </property>
+                                 <property name="iconSize">
+                                  <size>
+                                   <width>65</width>
+                                   <height>65</height>
+                                  </size>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="2" column="1">
+                                <widget class="ActionButton" name="actionbutton_39">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">ActionButton{
     border: none;
     background: none;
 }</string>
-                              </property>
-                              <property name="icon">
-                               <iconset resource="probe_basic.qrc">
-                                <normaloff>:/images/lathe_control_point_8.png</normaloff>:/images/lathe_control_point_8.png</iconset>
-                              </property>
-                              <property name="iconSize">
-                               <size>
-                                <width>65</width>
-                                <height>65</height>
-                               </size>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="1" column="0">
-                             <widget class="ActionButton" name="actionbutton_38">
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">ActionButton{
+                                 </property>
+                                 <property name="icon">
+                                  <iconset resource="probe_basic.qrc">
+                                   <normaloff>:/images/lathe_control_point_8.png</normaloff>:/images/lathe_control_point_8.png</iconset>
+                                 </property>
+                                 <property name="iconSize">
+                                  <size>
+                                   <width>65</width>
+                                   <height>65</height>
+                                  </size>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="1" column="0">
+                                <widget class="ActionButton" name="actionbutton_38">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">ActionButton{
     border: none;
     background: none;
 }</string>
-                              </property>
-                              <property name="icon">
-                               <iconset resource="probe_basic.qrc">
-                                <normaloff>:/images/lathe_control_point_5.png</normaloff>:/images/lathe_control_point_5.png</iconset>
-                              </property>
-                              <property name="iconSize">
-                               <size>
-                                <width>65</width>
-                                <height>65</height>
-                               </size>
-                              </property>
-                             </widget>
-                            </item>
-                            <item row="2" column="0">
-                             <widget class="ActionButton" name="actionbutton_46">
-                              <property name="sizePolicy">
-                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                <horstretch>0</horstretch>
-                                <verstretch>0</verstretch>
-                               </sizepolicy>
-                              </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>70</width>
-                                <height>70</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">ActionButton{
+                                 </property>
+                                 <property name="icon">
+                                  <iconset resource="probe_basic.qrc">
+                                   <normaloff>:/images/lathe_control_point_5.png</normaloff>:/images/lathe_control_point_5.png</iconset>
+                                 </property>
+                                 <property name="iconSize">
+                                  <size>
+                                   <width>65</width>
+                                   <height>65</height>
+                                  </size>
+                                 </property>
+                                </widget>
+                               </item>
+                               <item row="2" column="0">
+                                <widget class="ActionButton" name="actionbutton_46">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>70</width>
+                                   <height>70</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">ActionButton{
     border: none;
     background: none;
 }</string>
-                              </property>
-                              <property name="icon">
-                               <iconset resource="probe_basic.qrc">
-                                <normaloff>:/images/lathe_control_point_4.png</normaloff>:/images/lathe_control_point_4.png</iconset>
-                              </property>
-                              <property name="iconSize">
-                               <size>
-                                <width>65</width>
-                                <height>65</height>
-                               </size>
-                              </property>
+                                 </property>
+                                 <property name="icon">
+                                  <iconset resource="probe_basic.qrc">
+                                   <normaloff>:/images/lathe_control_point_4.png</normaloff>:/images/lathe_control_point_4.png</iconset>
+                                 </property>
+                                 <property name="iconSize">
+                                  <size>
+                                   <width>65</width>
+                                   <height>65</height>
+                                  </size>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
                              </widget>
                             </item>
-                           </layout>
-                          </widget>
-                         </item>
-                         <item>
-                          <widget class="QWidget" name="widget_28" native="true">
-                           <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                             <horstretch>0</horstretch>
-                             <verstretch>0</verstretch>
-                            </sizepolicy>
-                           </property>
-                           <layout class="QHBoxLayout" name="horizontalLayout_46">
-                            <property name="topMargin">
-                             <number>15</number>
-                            </property>
-                            <property name="bottomMargin">
-                             <number>9</number>
-                            </property>
                             <item>
-                             <widget class="ActionButton" name="m01_break_button_6">
+                             <widget class="QWidget" name="widget_28" native="true">
                               <property name="sizePolicy">
                                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                                 <horstretch>0</horstretch>
                                 <verstretch>0</verstretch>
                                </sizepolicy>
                               </property>
-                              <property name="minimumSize">
-                               <size>
-                                <width>0</width>
-                                <height>45</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>16777215</width>
-                                <height>45</height>
-                               </size>
-                              </property>
-                              <property name="focusPolicy">
-                               <enum>Qt::NoFocus</enum>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">QPushButton {
+                              <layout class="QHBoxLayout" name="horizontalLayout_46">
+                               <property name="topMargin">
+                                <number>15</number>
+                               </property>
+                               <property name="bottomMargin">
+                                <number>9</number>
+                               </property>
+                               <item>
+                                <widget class="ActionButton" name="m01_break_button_6">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>0</width>
+                                   <height>45</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>16777215</width>
+                                   <height>45</height>
+                                  </size>
+                                 </property>
+                                 <property name="focusPolicy">
+                                  <enum>Qt::NoFocus</enum>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QPushButton {
    	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
-                              </property>
-                              <property name="text">
-                               <string>RESET TOOL</string>
-                              </property>
+                                 </property>
+                                 <property name="text">
+                                  <string>RESET TOOL</string>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
                              </widget>
                             </item>
                            </layout>
@@ -6387,7 +5208,7 @@ ActionButton:checked {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>400</width>
+                       <width>291</width>
                        <height>35</height>
                       </size>
                      </property>
@@ -19767,6 +18588,11 @@ font: 11pt bebas kai;
    <header>qtpyvcp.widgets.input_widgets.jog_increment</header>
   </customwidget>
   <customwidget>
+   <class>RecentFileComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
    <header>qtpyvcp.widgets.display_widgets.gcode_backplot.gcode_backplot</header>
@@ -19783,11 +18609,6 @@ font: 11pt bebas kai;
    <extends>QMainWindow</extends>
    <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>RecentFileComboBox</class>
-   <extends>QComboBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
   </customwidget>
   <customwidget>
    <class>SubCallButton</class>
@@ -19808,6 +18629,11 @@ font: 11pt bebas kai;
    <class>RemovableDeviceComboBox</class>
    <extends>QComboBox</extends>
    <header>qtpyvcp.widgets.input_widgets.file_system</header>
+  </customwidget>
+  <customwidget>
+   <class>LatheToolTouchOff</class>
+   <extends>QQuickWidget</extends>
+   <header>qtpyvcp.widgets.input_widgets.lathe_tool_touch_off.lathe_tool_touch_off</header>
   </customwidget>
   <customwidget>
    <class>MDIButton</class>
@@ -19839,6 +18665,11 @@ font: 11pt bebas kai;
    <extends>QLabel</extends>
    <header>qtpyvcp.widgets.display_widgets.status_label</header>
   </customwidget>
+  <customwidget>
+   <class>QQuickWidget</class>
+   <extends>QWidget</extends>
+   <header>QtQuickWidgets/QQuickWidget</header>
+  </customwidget>
  </customwidgets>
  <resources>
   <include location="probe_basic.qrc"/>
@@ -19854,12 +18685,12 @@ font: 11pt bebas kai;
    <slot>loadToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>586</x>
-     <y>614</y>
+     <x>139</x>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>115</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19870,12 +18701,12 @@ font: 11pt bebas kai;
    <slot>deleteSelectedTool()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>222</x>
-     <y>614</y>
+     <x>139</x>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>115</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19886,12 +18717,12 @@ font: 11pt bebas kai;
    <slot>loadToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>970</x>
-     <y>614</y>
+     <x>159</x>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>115</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19902,12 +18733,12 @@ font: 11pt bebas kai;
    <slot>goUP()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>752</x>
-     <y>106</y>
+     <x>129</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19918,12 +18749,12 @@ font: 11pt bebas kai;
    <slot>insertToolBelow()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>404</x>
-     <y>614</y>
+     <x>139</x>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>115</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19934,12 +18765,12 @@ font: 11pt bebas kai;
    <slot>deleteFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>738</x>
-     <y>619</y>
+     <x>109</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19950,12 +18781,12 @@ font: 11pt bebas kai;
    <slot>createDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>403</x>
-     <y>619</y>
+     <x>144</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19966,12 +18797,12 @@ font: 11pt bebas kai;
    <slot>createDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>995</x>
-     <y>619</y>
+     <x>144</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19982,12 +18813,12 @@ font: 11pt bebas kai;
    <slot>saveToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>768</x>
-     <y>614</y>
+     <x>139</x>
+     <y>79</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>115</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19998,12 +18829,12 @@ font: 11pt bebas kai;
    <slot>doFileTransfer()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>610</x>
-     <y>477</y>
+     <x>79</x>
+     <y>136</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20014,12 +18845,12 @@ font: 11pt bebas kai;
    <slot>doFileTransfer()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>610</x>
-     <y>318</y>
+     <x>79</x>
+     <y>136</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20030,12 +18861,12 @@ font: 11pt bebas kai;
    <slot>deleteFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>146</x>
-     <y>619</y>
+     <x>109</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20046,12 +18877,12 @@ font: 11pt bebas kai;
    <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>776</x>
-     <y>250</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20062,12 +18893,12 @@ font: 11pt bebas kai;
    <slot>goUP()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>160</x>
-     <y>106</y>
+     <x>129</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20078,12 +18909,12 @@ font: 11pt bebas kai;
    <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>522</x>
-     <y>250</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20094,12 +18925,12 @@ font: 11pt bebas kai;
    <slot>newFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>854</x>
-     <y>619</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20110,12 +18941,12 @@ font: 11pt bebas kai;
    <slot>newFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>262</x>
-     <y>619</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20126,12 +18957,12 @@ font: 11pt bebas kai;
    <slot>loadSelectedFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>473</x>
-     <y>94</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>464</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20142,12 +18973,12 @@ font: 11pt bebas kai;
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>496</x>
-     <y>125</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>491</x>
-     <y>97</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20158,12 +18989,12 @@ font: 11pt bebas kai;
    <slot>setPlainText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1114</x>
-     <y>520</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1207</x>
-     <y>379</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20174,12 +19005,28 @@ font: 11pt bebas kai;
    <slot>setPlainText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1050</x>
-     <y>459</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1210</x>
-     <y>451</y>
+     <x>119</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lathetooltouchoff</receiver>
+   <slot>pocket(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1419</x>
+     <y>144</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1204</x>
+     <y>223</y>
     </hint>
    </hints>
   </connection>
