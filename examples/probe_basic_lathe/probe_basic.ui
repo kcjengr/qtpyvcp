@@ -287,7 +287,7 @@ background-color: transparent;
                  <widget class="RecentFileComboBox" name="recentfilecombobox">
                   <property name="minimumSize">
                    <size>
-                    <width>148</width>
+                    <width>142</width>
                     <height>30</height>
                    </size>
                   </property>
@@ -4813,6 +4813,18 @@ padding: -5px;
                                    <height>65</height>
                                   </size>
                                  </property>
+                                 <property name="checkable">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="autoExclusive">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="rules" stdset="0">
+                                  <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?orientation&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Checked&quot;, &quot;expression&quot;: &quot;ch[0] == 9&quot;, &quot;name&quot;: &quot;check if current orientation matches&quot;}]</string>
+                                 </property>
+                                 <attribute name="buttonGroup">
+                                  <string notr="true">latheToolOrientationGroup</string>
+                                 </attribute>
                                 </widget>
                                </item>
                                <item row="0" column="1">
@@ -4851,6 +4863,18 @@ padding: -5px;
                                    <height>65</height>
                                   </size>
                                  </property>
+                                 <property name="checkable">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="autoExclusive">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="rules" stdset="0">
+                                  <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?orientation&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Checked&quot;, &quot;expression&quot;: &quot;ch[0] == 6&quot;, &quot;name&quot;: &quot;check if current orientation matches&quot;}]</string>
+                                 </property>
+                                 <attribute name="buttonGroup">
+                                  <string notr="true">latheToolOrientationGroup</string>
+                                 </attribute>
                                 </widget>
                                </item>
                                <item row="0" column="0">
@@ -4905,6 +4929,18 @@ ActionButton:checked {
                                  <property name="checkable">
                                   <bool>true</bool>
                                  </property>
+                                 <property name="checked">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="autoExclusive">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="rules" stdset="0">
+                                  <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?orientation&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Checked&quot;, &quot;expression&quot;: &quot;ch[0] == 1&quot;, &quot;name&quot;: &quot;check if current orientation matches&quot;}]</string>
+                                 </property>
+                                 <attribute name="buttonGroup">
+                                  <string notr="true">latheToolOrientationGroup</string>
+                                 </attribute>
                                 </widget>
                                </item>
                                <item row="0" column="2">
@@ -4943,6 +4979,18 @@ ActionButton:checked {
                                    <height>65</height>
                                   </size>
                                  </property>
+                                 <property name="checkable">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="autoExclusive">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="rules" stdset="0">
+                                  <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?orientation&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Checked&quot;, &quot;expression&quot;: &quot;ch[0] == 2&quot;, &quot;name&quot;: &quot;check if current orientation matches&quot;}]</string>
+                                 </property>
+                                 <attribute name="buttonGroup">
+                                  <string notr="true">latheToolOrientationGroup</string>
+                                 </attribute>
                                 </widget>
                                </item>
                                <item row="1" column="2">
@@ -4981,6 +5029,18 @@ ActionButton:checked {
                                    <height>65</height>
                                   </size>
                                  </property>
+                                 <property name="checkable">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="autoExclusive">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="rules" stdset="0">
+                                  <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?orientation&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Checked&quot;, &quot;expression&quot;: &quot;ch[0] == 7&quot;, &quot;name&quot;: &quot;check if current orientation matches&quot;}]</string>
+                                 </property>
+                                 <attribute name="buttonGroup">
+                                  <string notr="true">latheToolOrientationGroup</string>
+                                 </attribute>
                                 </widget>
                                </item>
                                <item row="2" column="2">
@@ -5019,6 +5079,18 @@ ActionButton:checked {
                                    <height>65</height>
                                   </size>
                                  </property>
+                                 <property name="checkable">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="autoExclusive">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="rules" stdset="0">
+                                  <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?orientation&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Checked&quot;, &quot;expression&quot;: &quot;ch[0] == 3&quot;, &quot;name&quot;: &quot;check if current orientation matches&quot;}]</string>
+                                 </property>
+                                 <attribute name="buttonGroup">
+                                  <string notr="true">latheToolOrientationGroup</string>
+                                 </attribute>
                                 </widget>
                                </item>
                                <item row="2" column="1">
@@ -5057,6 +5129,18 @@ ActionButton:checked {
                                    <height>65</height>
                                   </size>
                                  </property>
+                                 <property name="checkable">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="autoExclusive">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="rules" stdset="0">
+                                  <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?orientation&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Checked&quot;, &quot;expression&quot;: &quot;ch[0] == 8&quot;, &quot;name&quot;: &quot;check if current orientation matches&quot;}]</string>
+                                 </property>
+                                 <attribute name="buttonGroup">
+                                  <string notr="true">latheToolOrientationGroup</string>
+                                 </attribute>
                                 </widget>
                                </item>
                                <item row="1" column="0">
@@ -5095,6 +5179,18 @@ ActionButton:checked {
                                    <height>65</height>
                                   </size>
                                  </property>
+                                 <property name="checkable">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="autoExclusive">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="rules" stdset="0">
+                                  <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?orientation&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Checked&quot;, &quot;expression&quot;: &quot;ch[0] == 5&quot;, &quot;name&quot;: &quot;check if current orientation matches&quot;}]</string>
+                                 </property>
+                                 <attribute name="buttonGroup">
+                                  <string notr="true">latheToolOrientationGroup</string>
+                                 </attribute>
                                 </widget>
                                </item>
                                <item row="2" column="0">
@@ -5133,6 +5229,18 @@ ActionButton:checked {
                                    <height>65</height>
                                   </size>
                                  </property>
+                                 <property name="checkable">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="autoExclusive">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="rules" stdset="0">
+                                  <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?orientation&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Checked&quot;, &quot;expression&quot;: &quot;ch[0] == 4&quot;, &quot;name&quot;: &quot;check if current orientation matches&quot;}]</string>
+                                 </property>
+                                 <attribute name="buttonGroup">
+                                  <string notr="true">latheToolOrientationGroup</string>
+                                 </attribute>
                                 </widget>
                                </item>
                               </layout>
@@ -18389,7 +18497,7 @@ LOAD</string>
      <x>0</x>
      <y>0</y>
      <width>1946</width>
-     <height>27</height>
+     <height>26</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -19048,4 +19156,7 @@ font: 11pt bebas kai;
    <bool>true</bool>
   </property>
  </designerdata>
+ <buttongroups>
+  <buttongroup name="latheToolOrientationGroup"/>
+ </buttongroups>
 </ui>
