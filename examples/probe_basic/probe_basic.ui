@@ -454,7 +454,7 @@ border-radius: 6px;
                     <number>5</number>
                    </property>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_30">
+                    <widget class="QPushButton" name="device_folder_up_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -519,7 +519,7 @@ border-radius: 6px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_32">
+                    <widget class="QPushButton" name="device_eject_usb_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -592,7 +592,7 @@ QHeaderView {
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_126">
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_33">
+                    <widget class="QPushButton" name="device_delete_item_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -635,7 +635,7 @@ QHeaderView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_37">
+                    <widget class="QPushButton" name="device_new_file_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -678,7 +678,7 @@ QHeaderView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_35">
+                    <widget class="QPushButton" name="device_new_folder_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -721,7 +721,7 @@ QHeaderView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_34">
+                    <widget class="QPushButton" name="device_rename_item_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -923,7 +923,7 @@ border-radius: 6px;
                     <number>5</number>
                    </property>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_23">
+                    <widget class="QPushButton" name="main_folder_up_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -988,7 +988,7 @@ border-radius: 6px;
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_26">
+                    <widget class="QPushButton" name="main_load_gcode_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -1061,7 +1061,7 @@ QHeaderView {
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_123">
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_27">
+                    <widget class="QPushButton" name="main_delete_item_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -1104,7 +1104,7 @@ QHeaderView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_31">
+                    <widget class="QPushButton" name="main_new_file_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -1147,7 +1147,7 @@ QHeaderView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_29">
+                    <widget class="QPushButton" name="main_new_folder_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -1190,7 +1190,7 @@ QHeaderView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_28">
+                    <widget class="QPushButton" name="main_rename_item_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -1330,7 +1330,7 @@ border-radius: 6px;
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_129">
                    <item>
-                    <widget class="QPushButton" name="x_axis_button_36">
+                    <widget class="QPushButton" name="edit_gcode_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -18373,7 +18373,7 @@ border-radius: 4px;
               <number>100</number>
              </property>
              <property name="value">
-              <number>100</number>
+              <number>30</number>
              </property>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
@@ -19285,9 +19285,14 @@ font: 11pt bebas kai;
    <header>qtpyvcp.widgets.input_widgets.jog_increment</header>
   </customwidget>
   <customwidget>
+   <class>RecentFileComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
-   <header>qtpyvcp.widgets.display_widgets.gcode_backplot</header>
+   <header>qtpyvcp.widgets.display_widgets.gcode_backplot.gcode_backplot</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -19301,11 +19306,6 @@ font: 11pt bebas kai;
    <extends>QMainWindow</extends>
    <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>RecentFileComboBox</class>
-   <extends>QComboBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
   </customwidget>
   <customwidget>
    <class>SubCallButton</class>
@@ -19429,10 +19429,10 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>x_axis_button_27</sender>
+   <sender>main_delete_item_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable</receiver>
-   <slot>deleteFile()</slot>
+   <slot>deleteItem()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>738</x>
@@ -19445,10 +19445,10 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>x_axis_button_23</sender>
+   <sender>main_folder_up_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable</receiver>
-   <slot>goUP()</slot>
+   <slot>viewParentDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>752</x>
@@ -19461,10 +19461,10 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>x_axis_button_29</sender>
+   <sender>main_new_folder_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable</receiver>
-   <slot>createDirectory()</slot>
+   <slot>newFolder()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>995</x>
@@ -19493,10 +19493,10 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>x_axis_button_35</sender>
+   <sender>device_new_folder_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable_2</receiver>
-   <slot>createDirectory()</slot>
+   <slot>newFolder()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>403</x>
@@ -19509,10 +19509,10 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>x_axis_button_33</sender>
+   <sender>device_delete_item_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable_2</receiver>
-   <slot>deleteFile()</slot>
+   <slot>deleteItem()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>146</x>
@@ -19557,10 +19557,10 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>x_axis_button_30</sender>
+   <sender>device_folder_up_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable_2</receiver>
-   <slot>goUP()</slot>
+   <slot>viewParentDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>160</x>
@@ -19605,7 +19605,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>x_axis_button_31</sender>
+   <sender>main_new_file_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable</receiver>
    <slot>newFile()</slot>
@@ -19621,7 +19621,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>x_axis_button_37</sender>
+   <sender>device_new_file_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable_2</receiver>
    <slot>newFile()</slot>
@@ -19653,7 +19653,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>x_axis_button_26</sender>
+   <sender>main_load_gcode_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable</receiver>
    <slot>loadSelectedFile()</slot>
@@ -19671,7 +19671,7 @@ font: 11pt bebas kai;
   <connection>
    <sender>filesystemtable</sender>
    <signal>gcodeFileSelected(bool)</signal>
-   <receiver>x_axis_button_26</receiver>
+   <receiver>main_load_gcode_button</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
