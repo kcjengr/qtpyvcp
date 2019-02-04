@@ -14,6 +14,16 @@ Probe Basic
 | **Project URL:** Included with QtPyVCP
 
 
+BP Touch
+--------
+
+.. image:: https://raw.githubusercontent.com/jethornton/bp_touch/master/bp-touch-01.png
+   :align: center
+
+| **Project URL:** https://github.com/jethornton/bp_touch
+| **Install Command:** ``pip install git+https://github.com/jethornton/bp_touch``
+
+
 Jauria CNC
 -----------
 
