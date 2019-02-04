@@ -2,45 +2,10 @@
 VCP Showcase
 ============
 
-Examples of VCPs made using QtPyVCP
+Showcase of VCPs made using QtPyVCP
 
+.. toctree::
+   :maxdepth: 1
 
-Probe Basic
------------
-
-.. image:: images/probebasic-lathe.png
-   :align: center
-
-| **Project URL:** Included with QtPyVCP
-
-
-BP Touch
---------
-
-.. image:: https://raw.githubusercontent.com/jethornton/bp_touch/master/bp-touch-01.png
-   :align: center
-
-| **Project URL:** https://github.com/jethornton/bp_touch
-| **Install Command:** ``pip install git+https://github.com/jethornton/bp_touch``
-
-
-Jauria CNC
------------
-
-.. image:: images/jcnc.png
-   :align: center
-
-| **Project URL:** https://github.com/TurBoss/JauriaCNC
-| **Install Command:** ``pip install git+https://github.com/TurBoss/JauriaCNC.git``
-
-
-QControl
---------
-
-.. image:: https://raw.githubusercontent.com/KurtJacobson/qcontrol/master/screenshots/qcontrol.png
-   :align: center
-
-| **Project URL:** https://github.com/KurtJacobson/qcontrol
-| **Install Command:** ``pip install git+https://github.com/KurtJacobson/qcontrol.git``
-
-
+   mill_vcps
+   lathe_vcps

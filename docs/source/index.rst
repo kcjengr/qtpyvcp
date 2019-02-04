@@ -10,7 +10,7 @@ building complex VCPs.
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Getting Started
 
    quick_start
@@ -31,7 +31,7 @@ building complex VCPs.
    configuration/yml_config
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Tutorials
 
    tutorials/basic_vcp
@@ -39,7 +39,7 @@ building complex VCPs.
    tutorials/widget_rules
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Module & API Documentation
 
    plugins/index.rst
@@ -48,7 +48,7 @@ building complex VCPs.
    application
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Developers Corner
 
    development/contribution_guide
