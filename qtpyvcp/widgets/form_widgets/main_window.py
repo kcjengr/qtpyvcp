@@ -308,9 +308,9 @@ class VCPMainWindow(QMainWindow):
 
     def loadSplashGcode(self):
         # Load backplot splash code
-        path = os.path.realpath(os.path.join(__file__, '../../../..', 'sim/example_gcode/qtpyvcp.ngc'))
-        splash_code = INFO.getOpenFile() or path
-        if splash_code is not None:
+        splash_code = INFO.getOpenFile()
+        print splash_code
+        if splash_code is not None and os.path.isfile(splash_code):
             # Load after startup to not cause hang and 'Can't set mode while machine is running' error
             QTimer.singleShot(200, lambda: actions.program.load(splash_code, add_to_recents=False))
 

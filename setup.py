@@ -35,7 +35,8 @@ else:
     # list of (destination, source_file) tuples
     DATA_FILES = [
         ('~/', ['scripts/.xsessionrc',]),
-        ('~/.local/share/fonts/truetype/bebaskai', ['examples/probe_basic/fonts/BebasKai.ttf'])
+        ('~/.local/share/fonts/truetype/bebaskai', ['examples/probe_basic/fonts/BebasKai.ttf']),
+        ('~/linuxcnc/nc_files/.qtpyvcp', ['sim/example_gcode/qtpyvcp.ngc'])
     ]
 
     # list of (destination, source_dir) tuples
