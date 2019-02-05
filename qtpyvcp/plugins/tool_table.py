@@ -15,7 +15,7 @@ from qtpy.QtCore import QFileSystemWatcher, QTimer
 import qtpyvcp
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.plugins import QtPyVCPDataPlugin, QtPyVCPDataChannel, getPlugin
+from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 
 CMD = linuxcnc.command()
 LOG = getLogger(__name__)
@@ -88,7 +88,7 @@ def makeLorumIpsumToolTable():
                      {'T': i, 'P': i, 'R': 'Lorum Ipsum ' + str(i)})
             for i in range(10)}
 
-class CurrentTool(QtPyVCPDataChannel):
+class CurrentTool(DataChannel):
     """Current tool data channel.
     """
 
@@ -170,14 +170,14 @@ class CurrentTool(QtPyVCPDataChannel):
         self.valueChanged.emit(value)
 
 
-class ToolTable(QtPyVCPDataPlugin):
+class ToolTable(DataPlugin):
 
     protocol = 'tooltable'
 
-    # data channels
-    current_tool = CurrentTool()
+    # # data channels
+    # current_tool = DataChannel()
 
-    TOOL_TABLE = {}
+    TOOL_TABLE = {0: NO_TOOL}
     DEFAULT_TOOL = DEFAULT_TOOL
     COLUMN_LABELS = COLUMN_LABELS
 
@@ -187,8 +187,9 @@ class ToolTable(QtPyVCPDataPlugin):
         self.fs_watcher = None
         self.orig_header_lines = []
         self.file_header_template = file_header_template or ''
-
         self.columns = self.validateColumns(columns) or [c for c in 'TPXYZDR']
+
+        self.setCurrentToolNumber(0)
 
         self.tool_table_file = INFO.getToolTableFile()
         if not os.path.exists(self.tool_table_file):
@@ -197,10 +198,19 @@ class ToolTable(QtPyVCPDataPlugin):
         if self.TOOL_TABLE == {}:
             self.loadToolTable()
 
-        self.current_tool._update(self.TOOL_TABLE[STATUS.tool_in_spindle.value])
+        self.current_tool.setValue(self.TOOL_TABLE[STATUS.tool_in_spindle.getValue()])
 
         # update signals
-        STATUS.tool_in_spindle.onValueChanged(self.onToolChanged)
+        STATUS.tool_in_spindle.notify(self.setCurrentToolNumber)
+
+
+    @DataChannel
+    def current_tool(chan, item=None):
+        print chan.value
+        print item
+        if item is None:
+            return chan.value
+        return chan.value.get(item.upper())
 
     def initialise(self):
         self.fs_watcher = QFileSystemWatcher()
@@ -241,8 +251,8 @@ class ToolTable(QtPyVCPDataPlugin):
         # a bit to ensure the new data has been writen out.
         QTimer.singleShot(50, self.reloadToolTable)
 
-    def onToolChanged(self, tool_num):
-        self.current_tool._update(self.TOOL_TABLE[tool_num])
+    def setCurrentToolNumber(self, tool_num):
+        self.current_tool.setValue(self.TOOL_TABLE[tool_num])
 
     def reloadToolTable(self):
         # rewatch the file if it stop being watched because it was deleted
@@ -266,7 +276,9 @@ class ToolTable(QtPyVCPDataPlugin):
 
         if not os.path.exists(tool_file):
             if IN_DESIGNER:
-                return makeLorumIpsumToolTable()
+                lorum_tooltable = makeLorumIpsumToolTable()
+                self.current_tool.setValue(lorum_tooltable)
+                return lorum_tooltable
             LOG.critical("Tool table file does not exist: {}".format(tool_file))
             return {}
 
@@ -320,7 +332,7 @@ class ToolTable(QtPyVCPDataPlugin):
         # update tooltable
         self.__class__.TOOL_TABLE = table
 
-        self.current_tool._update(self.TOOL_TABLE[STATUS.tool_in_spindle.value])
+        self.current_tool.setValue(self.TOOL_TABLE[STATUS.tool_in_spindle.getValue()])
 
         # import json
         # print json.dumps(table, sort_keys=True, indent=4)

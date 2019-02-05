@@ -17,14 +17,14 @@ data_plugins:
     kwargs:
       cycle_time: 75
 
-#  position:
-#    provider: qtpyvcp.plugins.positions:Position
-#    kwargs:
-#      report_actual_pos: True
-#      use_program_units: True
+  position:
+    provider: qtpyvcp.plugins.positions:Position
+    kwargs:
+      report_actual_pos: True
+      use_program_units: True
 
-#  tooltable:
-#    provider: qtpyvcp.plugins.tool_table:ToolTable
+  tooltable:
+    provider: qtpyvcp.plugins.tool_table:ToolTable
 
 dialogs:
   open_file:

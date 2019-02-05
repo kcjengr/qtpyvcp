@@ -89,9 +89,9 @@ class GcodeBackplot(QBackPlot):
         STATUS.g92_offset.onValueChanged(self.reloadBackplot)
 
         # Connect status signals
-        STATUS.file_loaded.connect(self.loadBackplot)
-        STATUS.reload_backplot.connect(self.reloadBackplot)
-        STATUS.program_units.onValueChanged(lambda v: self.setMetricUnits(v == 2))
+        STATUS.file.notify(self.loadBackplot)
+        # STATUS.reload_backplot.notify(self.reloadBackplot)
+        STATUS.program_units.notify(lambda v: self.setMetricUnits(v == 2))
 
     def loadBackplot(self, fname):
         LOG.debug('load the display: {}'.format(fname.encode('utf-8')))

@@ -262,7 +262,7 @@ class GcodeEditor(EditorBase, QObject):
         self.last_line = None
         # self.setEolVisibility(True)
 
-        STATUS.file_loaded.notify(self.load_program)
+        STATUS.file.notify(self.load_program)
         STATUS.motion_line.onValueChanged(self.highlight_line)
         # STATUS.connect('line-changed', self.highlight_line)
         # if self.idle_line_reset:

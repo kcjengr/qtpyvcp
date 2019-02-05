@@ -1,7 +1,13 @@
+import inspect
 from qtpy.QtCore import QObject, Signal
 from qtpyvcp.utilities.logger import getLogger
 
 LOG = getLogger(__name__)
+
+
+def isDataChan(obj):
+    return isinstance(obj, DataChannel)
+
 
 class DataPlugin(QObject):
     """DataPlugin."""
@@ -9,8 +15,8 @@ class DataPlugin(QObject):
     def __init__(self):
         super(DataPlugin, self).__init__()
 
-        self.channels = {chan: getattr(self, chan) for chan in dir(self) if
-                         isinstance(getattr(self, chan), DataChannel)}
+        self.channels = {name: obj for name, obj in
+                         inspect.getmembers(self, isDataChan)}
 
     def getChannel(self, url):
         """Get data channel from URL.
@@ -25,7 +31,7 @@ class DataPlugin(QObject):
         chan, sep, query = url.partition('?')
         raw_args = query.split('&')
 
-        print url, chan, raw_args
+        # print url, chan, raw_args
 
         args = []
         kwargs = {}
@@ -36,7 +42,7 @@ class DataPlugin(QObject):
             else:
                 args.append(arg)
 
-        print chan, args, kwargs
+        # print chan, args, kwargs
 
         try:
             chan_obj = self.channels[chan]
@@ -69,7 +75,7 @@ class DataPlugin(QObject):
 
 class DataChannel(QObject):
 
-    _signal = Signal(object)
+    signal = Signal(object)
 
     def __init__(self, fget=None, fset=None, fstr=None, data=None, settable=False,
                  doc = None):
@@ -79,7 +85,7 @@ class DataChannel(QObject):
         self.fset = fset
         self.fstr = fstr
 
-        self._data = data
+        self.value = data
 
         self.settable = settable
 
@@ -90,23 +96,20 @@ class DataChannel(QObject):
     def getValue(self, *args, **kwargs):
         """Channel data getter method."""
         if self.fget is None:
-            return self._data
+            return self.value
         return self.fget(self, *args, **kwargs)
 
     def getString(self, *args, **kwargs):
         """Channel data getter method."""
         if self.fstr is None:
-            return str(self._data)
+            return str(self.value)
         return self.fstr(*args, **kwargs)
 
     def setValue(self, value):
         """Channel data setter method."""
         if self.fset is None:
-            if self.settable:
-                self._data = value
-                self._signal.emit(value)
-            else:
-                raise AttributeError('Channel is read only')
+            self.value = value
+            self.signal.emit(value)
         else:
             self.fset(value)
 
@@ -120,7 +123,7 @@ class DataChannel(QObject):
     def setter(self, fset):
         def inner(*args, **kwargs):
             fset(*args, **kwargs)
-            self._signal.emit(self._data)
+            self.signal.emit(self.value)
 
         self.fset = inner
         return self
@@ -134,7 +137,7 @@ class DataChannel(QObject):
 
     def notify(self, slot):
         # print 'Connecting %s to slot %s' % (self._signal, slot)
-        self._signal.connect(slot)
+        self.signal.connect(slot)
 
     # fixme
     onValueChanged = notify
@@ -146,7 +149,7 @@ class DataChannel(QObject):
         return self.setValue(value)
 
     def __getitem__(self, item):
-        return self._data[item]
+        return self.value[item]
 
     # def __str__(self):
     #     return self.getString()

@@ -47,7 +47,7 @@ class Clock(DataPlugin):
         self.timer.start(1000)
 
     def tick(self):
-        self.time._signal.emit(datetime.now())
+        self.time.signal.emit(datetime.now())
 
 
 if __name__ == "__main__":

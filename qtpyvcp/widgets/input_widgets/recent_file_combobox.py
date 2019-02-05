@@ -30,7 +30,7 @@ class RecentFileComboBox(QComboBox):
             self.addItem(os.path.basename(file), file)
 
         # Add separator and item to launch the file dialog
-        self.insertSeparator(len(STATUS.recent_files.get()))
+        self.insertSeparator(len(STATUS.recent_files.getValue()))
         self.addItem("Browse for files ...", 'browse_files')
 
     def onItemActivated(self):

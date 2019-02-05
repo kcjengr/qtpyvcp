@@ -47,16 +47,16 @@ class Status(DataPlugin):
         # initialize the old values dict
         for item in dir(STAT):
             if item in self.channels:
-                self.channels[item]._data = getattr(STAT, item)
+                self.channels[item].value = getattr(STAT, item)
             elif item not in excluded_items and not item.startswith('_'):
                 chan = DataChannel(doc=item, data=getattr(STAT, item))
-                chan._data = getattr(STAT, item)
+                chan.value = getattr(STAT, item)
                 self.channels[item] = chan
                 setattr(self, item, chan)
 
 
         self.homed.notify(self.all_homed)
-        # self.task_state.notify(lambda s: self.on._data)
+        # self.task_state.notify(lambda s: self.on.value)
 
         # Set up the periodic update timer
         self.timer = QTimer()
@@ -68,12 +68,23 @@ class Status(DataPlugin):
                                self.on.setValue(ts == linuxcnc.STATE_ON))
 
     recent_files = DataChannel(doc='List of recently loaded files', settable=True, data=[])
-    file_loaded = DataChannel(doc='File changed')
 
     @DataChannel
     def on(chan):
         """True if machine power is ON."""
         return STAT.task_state == linuxcnc.STATE_ON
+
+    @DataChannel
+    def file(chan):
+        """Currently loaded file."""
+        return chan.value
+
+    @file.setter
+    def file(chan, fname):
+        if STAT.interp_state == linuxcnc.INTERP_IDLE \
+                and STAT.call_level == 0:
+            chan.value = fname
+            chan.signal.emit(fname)
 
     @DataChannel
     def task_state(chan, query=None):
@@ -93,7 +104,7 @@ class Status(DataPlugin):
         """
         if query == 'string':
             return chan.fstr()
-        return chan._data
+        return chan.value
 
     @task_state.tostring
     def task_state(chan):
@@ -103,14 +114,14 @@ class Status(DataPlugin):
                        linuxcnc.STATE_ON: "On",
                        linuxcnc.STATE_OFF: "Off"}
 
-        return task_states[chan._data]
+        return task_states[chan.value]
 
     @DataChannel
     def interp_state(chan, query=None):
         """Current interpreter state"""
         if query == 'string':
             return str(chan)
-        return chan._data
+        return chan.value
 
     @interp_state.tostring
     def interp_state(chan):
@@ -127,7 +138,7 @@ class Status(DataPlugin):
         """Current motion controller mode"""
         if query == 'string':
             return str(chan)
-        return chan._data
+        return chan.value
 
     @motion_mode.tostring
     def motion_mode(chan):
@@ -136,7 +147,7 @@ class Status(DataPlugin):
                   linuxcnc.TRAJ_MODE_FREE: "Free",
                   linuxcnc.TRAJ_MODE_TELEOP: "Teleop"}
 
-        return modes[chan._data]
+        return modes[chan.value]
 
 
     all_homed = DataChannel(doc='True if all homed, or NO_FORCE_HOMING is True',
@@ -148,8 +159,8 @@ class Status(DataPlugin):
             chan._date = True
         for jnum in range(STAT.joints):
             if not STAT.joint[jnum]['homed']:
-                chan._data = False
-        chan._data = True
+                chan.value = False
+        chan.value = True
 
 
     def allHomed(self):
@@ -169,7 +180,7 @@ class Status(DataPlugin):
 
     def terminate(self):
         """Save persistent settings on terminate."""
-        PREFS.setPref("STATUS", "RECENT_FILES", self.recent_files._data)
+        PREFS.setPref("STATUS", "RECENT_FILES", self.recent_files.value)
         PREFS.setPref("STATUS", "MAX_RECENT_FILES", self.max_recent_files)
 
     def _periodic(self):
@@ -187,10 +198,10 @@ class Status(DataPlugin):
             new_value = getattr(STAT, chan, None)
             if new_value is None:
                 continue
-            if chan_obj._data != new_value:
+            if chan_obj.value != new_value:
                 # update the status items
-                chan_obj._data = new_value
-                chan_obj._signal.emit(new_value)
+                chan_obj.value = new_value
+                chan_obj.signal.emit(new_value)
 
         # print time.time() - s
 

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>393</width>
-    <height>241</height>
+    <height>310</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -77,6 +77,13 @@
      </widget>
     </item>
     <item>
+     <widget class="StatusLabel" name="statuslabel_11">
+      <property name="rules" stdset="0">
+       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:file&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="StatusLabel" name="statuslabel_5">
       <property name="rules" stdset="0">
        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:tool_in_spindle&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;str(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
@@ -94,6 +101,13 @@
      <widget class="StatusLabel" name="statuslabel_10">
       <property name="rules" stdset="0">
        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:axis_mask&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;str(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="StatusLabel" name="statuslabel_12">
+      <property name="rules" stdset="0">
+       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?string&amp;axis=x&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
       </property>
      </widget>
     </item>
