@@ -39,3 +39,8 @@ from status_led import StatusLED
 class StatusLEDPlugin(_DesignerPlugin):
     def pluginClass(self):
         return StatusLED
+
+from vtk_widget import QVTKRenderWindowInteractor
+class QtVTKPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return QVTKRenderWindowInteractor
