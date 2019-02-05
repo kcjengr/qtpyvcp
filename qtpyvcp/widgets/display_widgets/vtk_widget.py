@@ -1,8 +1,9 @@
 import math
+from copy import copy
 
 import vtk
 
-from pygcode import Line, GCodeLinearMove
+from pygcode import Line, GCodeLinearMove, GCodeRapidMove
 
 from qtpy.QtWidgets import QWidget, QFrame, QVBoxLayout, QSizePolicy
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
@@ -30,7 +31,7 @@ class VTKWidget(QWidget, VCPWidget):
         # Create source
         source = vtk.vtkConeSource()
         source.SetResolution(64)
-        source.SetCenter(0, 0, 0)
+        source.SetCenter(0, 0, 0.5)
         source.SetRadius(0.5)
 
         # Create a mapper
@@ -84,9 +85,7 @@ class QtVTKRender(QVTKRenderWindowInteractor):
 
                 for gcode in line.block.gcodes:
 
-                    if line.comment:
-                        pass
-                    elif isinstance(gcode, GCodeLinearMove):
+                    if isinstance(gcode, GCodeLinearMove):
 
                         self.line = VTKLineElement()
 
@@ -94,25 +93,67 @@ class QtVTKRender(QVTKRenderWindowInteractor):
                         y_word = line.block.Y
                         z_word = line.block.Z
 
+                        current_point = list(range(3))
+
                         if x_word is None:
-                            x = self.previous_point[0]
+                            current_point[0] = self.previous_point[0]
                         else:
-                            x = x_word.value
+                            current_point[0] = x_word.value
 
                         if y_word is None:
-                            y = self.previous_point[1]
+                            current_point[1] = self.previous_point[1]
                         else:
-                            y = y_word.value
+                            current_point[1] = y_word.value
 
                         if z_word is None:
-                            z = self.previous_point[2]
+                            current_point[2] = self.previous_point[2]
                         else:
-                            z = z_word.value
-                        self.line.poly_line(x, y, z, self.previous_point)
+                            current_point[2] = z_word.value
 
-                        self.previous_point = [x, y, z]
+                        self.line.poly_line(current_point, self.previous_point)
 
-                        self.parent.add_actor(self.line.get_actor())
+                        self.previous_point = copy(current_point)
+
+                        actor = self.line.get_actor()
+
+                        actor.GetProperty().SetColor(1, 1, 1)  # (R,G,B)
+
+                        self.parent.add_actor(actor)
+
+                    elif isinstance(gcode, GCodeRapidMove):
+
+                        self.line = VTKLineElement()
+
+                        x_word = line.block.X
+                        y_word = line.block.Y
+                        z_word = line.block.Z
+
+                        current_point = list(range(3))
+
+                        if x_word is None:
+                            current_point[0] = self.previous_point[0]
+                        else:
+                            current_point[0] = x_word.value
+
+                        if y_word is None:
+                            current_point[1] = self.previous_point[1]
+                        else:
+                            current_point[1] = y_word.value
+
+                        if z_word is None:
+                            current_point[2] = self.previous_point[2]
+                        else:
+                            current_point[2] = z_word.value
+
+                        self.line.poly_line(current_point, self.previous_point)
+
+                        self.previous_point = copy(current_point)
+
+                        actor = self.line.get_actor()
+
+                        actor.GetProperty().SetColor(1, 0, 0)  # (R,G,B)
+
+                        self.parent.add_actor(actor)
 
 
 class VTKLineElement:
@@ -123,15 +164,13 @@ class VTKLineElement:
         self.polygonMapper = None
         self.polygonActor = None
 
-    def poly_line(self, x, y, z, previous_point):
-
-        px, py, pz = previous_point
+    def poly_line(self, current_point, previous_point):
 
         self.points = vtk.vtkPoints()
 
         self.points.SetNumberOfPoints(2)
-        self.points.SetPoint(0, px, py, pz)
-        self.points.SetPoint(1, x, y, z)
+        self.points.SetPoint(0, previous_point)
+        self.points.SetPoint(1, current_point)
 
         self.lines = vtk.vtkCellArray()
         self.lines.InsertNextCell(3)
