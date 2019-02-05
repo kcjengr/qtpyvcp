@@ -4,8 +4,10 @@ import vtk
 from qtpy.QtWidgets import QMainWindow, QWidget, QFrame, QVBoxLayout, QApplication
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
+from qtpyvcp.widgets import VCPWidget
 
-class VTKWidget(QWidget):
+
+class VTKWidget(VCPWidget):
 
     def __init__(self, parent = None):
         super(VTKWidget, self).__init__()
@@ -33,22 +35,10 @@ class VTKWidget(QWidget):
         actor.SetMapper(mapper)
 
         self.ren.AddActor(actor)
-
         self.ren.ResetCamera()
 
-        self.setLayout(self.vl)
-        self.show()
+        self.frame.setLayout(self.vl)
+        self.addwidget(self.frame)
 
         self.iren.Initialize()
         self.iren.Start()
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = QMainWindow()
-
-    widget = VTKWidget()
-    window.setCentralWidget(widget)
-    window.show()
-
-    sys.exit(app.exec_())
