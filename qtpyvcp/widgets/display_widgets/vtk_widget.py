@@ -1,6 +1,6 @@
 import vtk
 
-from qtpy.QtWidgets import QMainWindow, QWidget, QFrame, QVBoxLayout, QApplication
+from qtpy.QtWidgets import QWidget, QFrame, QVBoxLayout, QSizePolicy
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 from qtpyvcp.widgets import VCPWidget
@@ -11,19 +11,18 @@ class VTKWidget(QWidget, VCPWidget):
     def __init__(self, parent=None):
         super(VTKWidget, self).__init__(parent)
 
-        self.frame = QFrame(self)
-        self.vl = QVBoxLayout()
-        self.vtkWidget = QVTKRenderWindowInteractor(self.frame)
-        self.vl.addWidget(self.vtkWidget)
+        self.vertical_layout = QVBoxLayout()
+        self.vtkWidget = QtVTKRender()
+        self.vertical_layout.addWidget(self.vtkWidget)
 
-        self.ren = vtk.vtkRenderer()
-        self.vtkWidget.GetRenderWindow().AddRenderer(self.ren)
-        self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
+        self.renderer = vtk.vtkRenderer()
+        self.vtkWidget.GetRenderWindow().AddRenderer(self.renderer)
+        self.interactor = self.vtkWidget.GetRenderWindow().GetInteractor()
 
         # Create source
-        source = vtk.vtkSphereSource()
+        source = vtk.vtkConeSource()
         source.SetCenter(0, 0, 0)
-        source.SetRadius(5.0)
+        source.SetRadius(0.5)
 
         # Create a mapper
         mapper = vtk.vtkPolyDataMapper()
@@ -33,10 +32,17 @@ class VTKWidget(QWidget, VCPWidget):
         actor = vtk.vtkActor()
         actor.SetMapper(mapper)
 
-        self.ren.AddActor(actor)
-        self.ren.ResetCamera()
+        self.renderer.AddActor(actor)
+        self.renderer.ResetCamera()
 
-        self.frame.setLayout(self.vl)
+        self.setLayout(self.vertical_layout)
 
-        self.iren.Initialize()
-        self.iren.Start()
+        self.interactor.Initialize()
+        self.interactor.Start()
+
+
+class QtVTKRender(QVTKRenderWindowInteractor):
+    def __init__(self, **kw):
+        QVTKRenderWindowInteractor.__init__(self, **kw)
+
+
