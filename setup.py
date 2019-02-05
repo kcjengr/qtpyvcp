@@ -91,7 +91,8 @@ setup(
         'pyudev',
         'psutil',
         'HiYaPyCo',
-        'pyopengl'
+        'pyopengl',
+        'vtk'
     ],
     entry_points={
         'console_scripts': [
