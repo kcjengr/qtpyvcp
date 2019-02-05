@@ -1,4 +1,3 @@
-import sys
 import vtk
 
 from qtpy.QtWidgets import QMainWindow, QWidget, QFrame, QVBoxLayout, QApplication
@@ -7,12 +6,12 @@ from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 from qtpyvcp.widgets import VCPWidget
 
 
-class VTKWidget(VCPWidget):
+class VTKWidget(QWidget, VCPWidget):
 
-    def __init__(self, parent = None):
-        super(VTKWidget, self).__init__()
-        
-        self.frame = QFrame()
+    def __init__(self, parent=None):
+        super(VTKWidget, self).__init__(parent)
+
+        self.frame = QFrame(self)
         self.vl = QVBoxLayout()
         self.vtkWidget = QVTKRenderWindowInteractor(self.frame)
         self.vl.addWidget(self.vtkWidget)
@@ -38,7 +37,6 @@ class VTKWidget(VCPWidget):
         self.ren.ResetCamera()
 
         self.frame.setLayout(self.vl)
-        self.addwidget(self.frame)
 
         self.iren.Initialize()
         self.iren.Start()
