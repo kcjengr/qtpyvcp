@@ -17,7 +17,8 @@ If you are impatient, this is for you!
 This will install QtPyVCP along with the examples, and will add
 QtPyVCP specific sim configs to ``~/linuxcnc/configs/sim.qtpyvcp``.
 
-*On Debian you will need to log out and log back in.*
+.. note::
+    On Debian you will need to log out and log back in.
 
 **Upgrade QtPyVCP**
 
