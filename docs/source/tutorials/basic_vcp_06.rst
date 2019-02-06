@@ -51,4 +51,13 @@ into the VCP
    :align: center
    :scale: 60 %
 
+One thing I forgot to do was add a button to navigate up one directory level. In
+order for the text to fit I change the QButton font in the main window to 13pt.
+I named the button ``navParent`` and connected it to the `viewParentDirectory`
+of the filesystemtable widget.
+
+
+.. image:: images/vcp1-designer-22-1.png
+   :align: center
+   :scale: 40 %
 
