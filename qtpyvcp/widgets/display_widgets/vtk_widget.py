@@ -1,15 +1,12 @@
-import math
-from copy import copy
-
 import vtk
-
-from pygcode import Line, GCodeLinearMove, GCodeRapidMove
 
 from qtpy.QtWidgets import QWidget, QFrame, QVBoxLayout, QSizePolicy
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets import VCPWidget
+
+from vtk_cannon import VTKCanon
 
 
 STATUS = getPlugin('status')
@@ -69,6 +66,8 @@ class QtVTKRender(QVTKRenderWindowInteractor):
 
         self.previous_point = [0.0, 0.0, 0.0]
 
+        self.gr = VTKCanon()
+
     def load_program(self, fname=None):
 
         if fname is None:
@@ -76,84 +75,21 @@ class QtVTKRender(QVTKRenderWindowInteractor):
         else:
             self._last_filename = fname
 
-        with open(fname, 'r') as fh:
+        self.gr.load(fname)
 
-            self._last_filename = fname
+        for item in self.gr.canon.feed:
+            line = VTKLineElement()
+            line.poly_line(item[2][:3], item[1][:3])
+            actor = line.get_actor()
+            actor.GetProperty().SetColor(1, 1, 1)  # (R,G,B)
+            self.parent.add_actor(actor)
 
-            for line_text in fh.readlines():
-                line = Line(line_text)
-
-                for gcode in line.block.gcodes:
-
-                    if isinstance(gcode, GCodeLinearMove):
-
-                        self.line = VTKLineElement()
-
-                        x_word = line.block.X
-                        y_word = line.block.Y
-                        z_word = line.block.Z
-
-                        current_point = list(range(3))
-
-                        if x_word is None:
-                            current_point[0] = self.previous_point[0]
-                        else:
-                            current_point[0] = x_word.value
-
-                        if y_word is None:
-                            current_point[1] = self.previous_point[1]
-                        else:
-                            current_point[1] = y_word.value
-
-                        if z_word is None:
-                            current_point[2] = self.previous_point[2]
-                        else:
-                            current_point[2] = z_word.value
-
-                        self.line.poly_line(current_point, self.previous_point)
-
-                        self.previous_point = copy(current_point)
-
-                        actor = self.line.get_actor()
-
-                        actor.GetProperty().SetColor(1, 1, 1)  # (R,G,B)
-
-                        self.parent.add_actor(actor)
-
-                    elif isinstance(gcode, GCodeRapidMove):
-
-                        self.line = VTKLineElement()
-
-                        x_word = line.block.X
-                        y_word = line.block.Y
-                        z_word = line.block.Z
-
-                        current_point = list(range(3))
-
-                        if x_word is None:
-                            current_point[0] = self.previous_point[0]
-                        else:
-                            current_point[0] = x_word.value
-
-                        if y_word is None:
-                            current_point[1] = self.previous_point[1]
-                        else:
-                            current_point[1] = y_word.value
-
-                        if z_word is None:
-                            current_point[2] = self.previous_point[2]
-                        else:
-                            current_point[2] = z_word.value
-
-                        self.line.poly_line(current_point, self.previous_point)
-
-                        self.previous_point = copy(current_point)
-
-                        actor = self.line.get_actor()
-
-                        actor.GetProperty().SetColor(1, 0, 0)  # (R,G,B)
-
-                        self.parent.add_actor(actor)
+        for item in self.gr.canon.traverse:
+            line = VTKLineElement()
+            line.poly_line(item[2][:3], item[1][:3])
+            actor = line.get_actor()
+            actor.GetProperty().SetColor(1, 0, 0)  # (R,G,B)
+            self.parent.add_actor(actor)
 
 
 class VTKLineElement:
