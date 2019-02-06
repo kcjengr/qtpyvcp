@@ -4,28 +4,16 @@ Button Groups
 
 A Button Group is a very powerful and flexible way to have a touch screen
 keyboard. You add push buttons to the panel then select them all and add them to
-a button group.
+a button group. The button group will emit a signal any time a button is
+pressed.
 
 Once you `connect` the button group to a function when a button is pressed it
 sends the button pressed to the function so every property is available to use.
 Then you can use the properties of the button like `button.text()` to get the
 text of the button.
 
-For this tutorial I'll clone a copy of the 
-`vcp template <https://github.com/kcjengr/vcp-template>`_ by opening a terminal
-and using this command. If you already have the vcp template skip this part.
-::
-
-    git clone https://github.com/kcjengr/vcp-template.git
-
-
-In a terminal change to the vcp-template directory and run the tutorial.sh
-script with these commands. I named the copy ``button_group`` and copied the
-LinuxCNC Configuration Files so I could test the VCP.
-::
-
-    cd vcp-template
-    ./tutorial.sh
+For this tutorial I'll clone a copy of the vcp template as shown in the :doc:`vcp_template` page and name the VCP ``button_group`` and copy the
+LinuxCNC Configuration Files so we can test the VCP as we go along.
 
 Now open a terminal and edit the vcp with ``editvcp`` and select
 `~button_group/button_group/config.yml`.
@@ -284,7 +272,7 @@ and in the action dynamic property put ``replace``.
    :align: center
    :scale: 40 %
 
-Now add the code for a button action of replace to the mdiKeys function
+Now add the code for a button action of `replace` to the mdiKeys function
 ::
 
             if (button.property('action')) == 'replace':
