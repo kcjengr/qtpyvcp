@@ -100,13 +100,17 @@ setup(
             'mini=examples.mini:main',
             'brender=examples.brender:main',
             'probebasic=examples.probe_basic:main',
+            'probebasic_vertical=examples.probe_basic_vertical:main',
+            'probebasic_lathe=examples.probe_basic_lathe:main',
             'qcompile=qtpyvcp.tools.qcompile:main',
             'editvcp=qtpyvcp.tools.editvcp:main',
         ],
         'qtpyvcp.example_vcp': [
             'mini=examples.mini',
             'brender=examples.brender',
-            'probebasic=examples.probe_basic'
+            'probebasic=examples.probe_basic',
+            'probe_basic_vertical=examples.probe_basic_vertical',
+            'probe_basic_lathe=examples.probe_basic_lathe',
         ],
     },
 )
