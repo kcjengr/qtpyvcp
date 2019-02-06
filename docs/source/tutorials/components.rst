@@ -8,4 +8,5 @@ in more detail.
 .. toctree::
    :maxdepth: 1
 
+   vcp_template
    button_groups
