@@ -56,7 +56,7 @@ class QtPyVCPBaseWidget(object):
         """Set the QSS style class for the widget"""
         self.setProperty('style', style_class)
 
-    @Property(str, designable=True)
+    @Property(str, designable=False)
     def style(self):
         """QSS style class selector property.
 
