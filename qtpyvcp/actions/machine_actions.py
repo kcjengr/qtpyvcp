@@ -519,16 +519,41 @@ max_velocity.set.bindOk = max_velocity.reset.bindOk = _max_velocity_bindOk
 # set MODE actions
 # -------------------------------------------------------------------------
 class mode:
+    """Mode action group"""
     @staticmethod
     def manual():
+        """Change mode to Manual
+
+        ActionButton syntax:
+        ::
+
+            machine.mode.manual
+
+        """
         setTaskMode(linuxcnc.MODE_MANUAL)
 
     @staticmethod
     def auto():
+        """Change mode to Auto
+
+        ActionButton syntax:
+        ::
+
+            machine.mode.auto
+
+        """
         setTaskMode(linuxcnc.MODE_AUTO)
 
     @staticmethod
     def mdi():
+        """Change mode to MDI
+
+        ActionButton syntax:
+        ::
+
+            machine.mode.mdi
+
+        """
         setTaskMode(linuxcnc.MODE_MDI)
 
 def _mode_ok(widget=None):
