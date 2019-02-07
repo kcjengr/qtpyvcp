@@ -6,7 +6,7 @@ import shutil
 import os
 
 
-class NullProgress:
+class NullProgress(object):
     def nextphase(self, var1):
         pass
 
@@ -21,7 +21,8 @@ class StatCanon(rs274.glcanon.GLCanon, rs274.interpret.StatMixin):
         self.progress = NullProgress()
         self.lathe_view_option = lathe_view_option
 
-    def is_lathe(self): return self.lathe_view_option
+    def is_lathe(self):
+        return self.lathe_view_option
 
 
 class VTKCanon(rs274.glcanon.GlCanonDraw):
@@ -101,13 +102,13 @@ class VTKCanon(rs274.glcanon.GlCanonDraw):
         # 5) a tuple of coordinates: the tool offset
 
         for item in self.canon.feed:
-            print "Feed: ", item[0], item[1][:3], item[2][:3]
+            print("Feed: ", item[0], item[1][:3], item[2][:3])
 
         for item in self.canon.arcfeed:
-            print "ArcFeed: ", item[0], item[1][:3], item[2][:3]
+            print("ArcFeed: ", item[0], item[1][:3], item[2][:3])
 
         for item in self.canon.traverse:
-            print "Rapid: ", item[0], item[1][:3], item[2][:3]
+            print("Rapid: ", item[0], item[1][:3], item[2][:3])
 
     def get_geometry(self):
         temp = self.inifile.find("DISPLAY", "GEOMETRY")
@@ -119,8 +120,8 @@ class VTKCanon(rs274.glcanon.GlCanonDraw):
 
     def report_gcode_error(self, result, seq, filename):
         msg = gcode.strerror(result)
-        print "G-Code error in {} line {}: {}".format(
-            os.path.basename(filename), seq - 1, msg)
+        print("G-Code error in {} line {}: {}".format(
+            os.path.basename(filename), seq - 1, msg))
 
 
 if __name__ == "__main__":
