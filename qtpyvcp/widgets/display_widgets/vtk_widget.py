@@ -56,6 +56,8 @@ class QtVTKRender(QVTKRenderWindowInteractor):
     def __init__(self, parent, **kw):
         QVTKRenderWindowInteractor.__init__(self, parent, **kw)
 
+        self.gr = VTKCanon()
+
         self.parent = parent
         self.status = STATUS
 
@@ -63,10 +65,6 @@ class QtVTKRender(QVTKRenderWindowInteractor):
 
         self.line = None
         self._last_filename = None
-
-        self.previous_point = [0.0, 0.0, 0.0]
-
-        self.gr = VTKCanon()
 
     def load_program(self, fname=None):
 
@@ -77,57 +75,77 @@ class QtVTKRender(QVTKRenderWindowInteractor):
 
         self.gr.load(fname)
 
-        for item in self.gr.canon.feed:
-            line = VTKLineElement()
-            line.poly_line(item[2][:3], item[1][:3])
-            actor = line.get_actor()
-            actor.GetProperty().SetColor(1, 1, 1)  # (R,G,B)
-            self.parent.add_actor(actor)
+        feed_lines = len(self.gr.canon.feed)
+        print(feed_lines)
+        line = VTKLineElement(feed_lines)
 
-        for item in self.gr.canon.traverse:
-            line = VTKLineElement()
-            line.poly_line(item[2][:3], item[1][:3])
-            actor = line.get_actor()
-            actor.GetProperty().SetColor(1, 0, 0)  # (R,G,B)
-            self.parent.add_actor(actor)
+        i = 0
+
+        for index, point in enumerate(self.gr.canon.feed):
+            coords = point[1][:3]
+            line.add_point(index, coords)
+
+            i += 1
+
+        print(i)
+        print("LOOL")
+
+        line.draw_poly_line()
+
+        print("LOOOOOL")
+
+        actor = line.get_actor()
+        actor.GetProperty().SetColor(1, 1, 1)  # (R,G,B)
+        self.parent.add_actor(actor)
+
+        print("LOOOOOOOOOOOOL")
+
+
+        # for item in self.gr.canon.traverse:
+        #     line = VTKLineElement(8)
+        #     line.poly_line(item[2][:3], item[1][:3])
+        #     actor = line.get_actor()
+        #     actor.GetProperty().SetColor(1, 0, 0)  # (R,G,B)
+        #     self.parent.add_actor(actor)
 
 
 class VTKLineElement:
-    def __init__(self):
-        self.points = None
-        self.lines = None
-        self.polygon = None
-        self.polygonMapper = None
-        self.polygonActor = None
+    def __init__(self, points):
 
-    def poly_line(self, current_point, previous_point):
+        self.num_points = points
 
         self.points = vtk.vtkPoints()
-
-        self.points.SetNumberOfPoints(2)
-        self.points.SetPoint(0, previous_point)
-        self.points.SetPoint(1, current_point)
+        self.points.SetNumberOfPoints(self.num_points)
 
         self.lines = vtk.vtkCellArray()
-        self.lines.InsertNextCell(3)
-        self.lines.InsertCellPoint(0)
-        self.lines.InsertCellPoint(1)
-        self.lines.InsertCellPoint(0)
 
         self.polygon = vtk.vtkPolyData()
+        self.polygon_mapper = vtk.vtkPolyDataMapper()
+        self.polygon_actor = vtk.vtkActor()
+
+    def add_point(self, index, point):
+        self.points.SetPoint(index, point)
+
+    def draw_poly_line(self):
+
+        self.lines.InsertNextCell(self.num_points + 2 )
+        self.lines.InsertCellPoint(0)
+
+        for i in range(self.num_points):
+            self.lines.InsertCellPoint(i)
+
+        self.lines.InsertCellPoint(0)
+
         self.polygon.SetPoints(self.points)
         self.polygon.SetLines(self.lines)
 
-        self.polygonMapper = vtk.vtkPolyDataMapper()
-
         if vtk.VTK_MAJOR_VERSION <= 5:
-            self.polygonMapper.SetInputConnection(self.polygon.GetProducerPort())
+            self.polygon_mapper.SetInputConnection(self.polygon.GetProducerPort())
         else:
-            self.polygonMapper.SetInputData(self.polygon)
-            self.polygonMapper.Update()
+            self.polygon_mapper.SetInputData(self.polygon)
+            self.polygon_mapper.Update()
 
-        self.polygonActor = vtk.vtkActor()
-        self.polygonActor.SetMapper(self.polygonMapper)
+        self.polygon_actor.SetMapper(self.polygon_mapper)
 
     def get_actor(self):
-        return self.polygonActor
+        return self.polygon_actor
