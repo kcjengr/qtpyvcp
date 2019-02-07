@@ -208,6 +208,7 @@ def _issue_mdi_ok(mdi_cmd='', widget=None):
     return ok
 
 def _issue_mdi_bindOk(mdi_cmd='', widget=None):
+    _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget)
     STATUS.task_state.onValueChanged(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
     STATUS.interp_state.onValueChanged(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
     STATUS.homed.onValueChanged(lambda: _issue_mdi_ok(mdi_cmd=mdi_cmd, widget=widget))
