@@ -87,18 +87,10 @@ class QtVTKRender(QVTKRenderWindowInteractor):
 
             i += 1
 
-        print(i)
-        print("LOOL")
-
         line.draw_poly_line()
-
-        print("LOOOOOL")
-
         actor = line.get_actor()
         actor.GetProperty().SetColor(1, 1, 1)  # (R,G,B)
         self.parent.add_actor(actor)
-
-        print("LOOOOOOOOOOOOL")
 
 
         # for item in self.gr.canon.traverse:
