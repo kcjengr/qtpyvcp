@@ -15138,7 +15138,7 @@ padding: -5px;
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="tool_number_entry_box">
+               <widget class="VCPLineEdit" name="tool_number_entry_box">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -15363,6 +15363,9 @@ padding: -5px;
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
+                </property>
+                <property name="rules" stdset="0">
+                 <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?number&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;str(ch[0])&quot;, &quot;name&quot;: &quot;update tool num&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_state?text&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:interp_state?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;ch[0] == 'On' and ch[1] == 'Idle'&quot;, &quot;name&quot;: &quot;enable/disable&quot;}]</string>
                 </property>
                </widget>
               </item>
@@ -19308,6 +19311,11 @@ font: 11pt bebas kai;
    <container>1</container>
   </customwidget>
   <customwidget>
+   <class>VCPLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.line_edit</header>
+  </customwidget>
+  <customwidget>
    <class>SubCallButton</class>
    <extends>QPushButton</extends>
    <header>qtpyvcp.widgets.button_widgets.subcall_button</header>
@@ -19713,6 +19721,38 @@ font: 11pt bebas kai;
     <hint type="destinationlabel">
      <x>1210</x>
      <y>451</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_number_entry_box</sender>
+   <signal>returnPressed()</signal>
+   <receiver>m6_button</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>466</x>
+     <y>734</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>506</x>
+     <y>747</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>load_spindle_tool_number</sender>
+   <signal>returnPressed()</signal>
+   <receiver>load_current_tool</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1422</x>
+     <y>141</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1508</x>
+     <y>158</y>
     </hint>
    </hints>
   </connection>
