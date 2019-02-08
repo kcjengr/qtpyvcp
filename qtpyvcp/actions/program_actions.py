@@ -129,7 +129,13 @@ run_from_line.bindOk = _run_bindOk
 # program STEP action
 # -------------------------------------------------------------------------
 def step():
-    """Steps program line by line"""
+    """Steps program line by line
+
+    ActionButton syntax::
+
+        program.step
+
+    """
     if STAT.state == linuxcnc.RCS_EXEC and STAT.paused:
         CMD.auto(linuxcnc.AUTO_STEP)
     elif setTaskMode(linuxcnc.MODE_AUTO):
@@ -142,7 +148,14 @@ step.bindOk = _run_bindOk
 # program PAUSE action
 # -------------------------------------------------------------------------
 def pause():
-    """Pause executing program"""
+    """Pause executing program
+
+
+    ActionButton syntax::
+
+        program.pause
+
+    """
     LOG.debug("Pausing program execution")
     CMD.auto(linuxcnc.AUTO_PAUSE)
 
@@ -187,7 +200,13 @@ pause.bindOk = _pause_bindOk
 # program RESUME action
 # -------------------------------------------------------------------------
 def resume():
-    """Resume a previously paused program"""
+    """Resume a previously paused program
+
+    ActionButton syntax::
+
+        program.resume
+
+    """
     LOG.debug("Resuming program execution")
     CMD.auto(linuxcnc.AUTO_RESUME)
 
@@ -229,7 +248,14 @@ resume.bindOk = _resume_bindOk
 # program ABORT action
 # -------------------------------------------------------------------------
 def abort():
-    """Aborts any currently executing program, MDI command or homing operation."""
+    """Aborts any currently executing program, MDI command or homing operation.
+
+    ActionButton syntax::
+
+        program.abort
+
+    """
+
     LOG.debug("Aborting program")
     CMD.abort()
 
@@ -273,19 +299,40 @@ class block_delete:
     """Block Delete Group"""
     @staticmethod
     def on():
-        """Start ignoring lines beginning with '/'."""
+        """Start ignoring lines beginning with '/'.
+
+        ActionButton syntax::
+
+            program.block-delete.on
+
+        """
+
         LOG.debug("Setting block delete green<ON>")
         CMD.set_block_delete(True)
 
     @staticmethod
     def off():
-        """Stop ignoring lines beginning with '/'."""
+        """Stop ignoring lines beginning with '/'.
+
+        ActionButton syntax::
+
+            program.block-delete.off
+
+        """
+
         LOG.debug("Setting block delete red<OFF>")
         CMD.set_block_delete(False)
 
     @staticmethod
     def toggle():
-        """Toggle ignoring lines beginning with '/'."""
+        """Toggle ignoring lines beginning with '/'.
+
+        ActionButton syntax::
+
+            program.block-delete.toggle
+
+        """
+
         if STAT.block_delete == True:
             block_delete.off()
         else:
@@ -333,19 +380,40 @@ class optional_stop:
     """Optional Stop Group"""
     @staticmethod
     def on():
-        """Pause when a line beginning with M1 is encountered"""
+        """Pause when a line beginning with M1 is encountered
+
+        ActionButton syntax::
+
+            program.optional-stop.on
+
+        """
+
         LOG.debug("Setting optional stop green<ON>")
         CMD.set_optional_stop(True)
 
     @staticmethod
     def off():
-        """Don't pause when a line beginning with M1 is encountered"""
+        """Don't pause when a line beginning with M1 is encountered
+
+        ActionButton syntax::
+
+            program.option-stop.off
+
+        """
+
         LOG.debug("Setting optional stop red<OFF>")
         CMD.set_optional_stop(False)
 
     @staticmethod
     def toggle():
-        """Toggle pause when a line beginning with M1 is encountered"""
+        """Toggle pause when a line beginning with M1 is encountered
+
+        ActionButton syntax::
+
+            program.optional-stop.toggle
+
+        """
+
         if STAT.optional_stop == True:
             optional_stop.off()
         else:
