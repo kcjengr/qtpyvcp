@@ -31,8 +31,8 @@ class VTKWidget(QWidget, VCPWidget):
         self.cube = Cube()
         self.cube_actor = self.cube.get_actor()
 
-        self.frustum = Frustum()
-        self.frustum_actor = self.frustum.get_actor()
+        # self.frustum = Frustum()
+        # self.frustum_actor = self.frustum.get_actor()
 
         # Create source
         source = vtk.vtkConeSource()
@@ -53,7 +53,7 @@ class VTKWidget(QWidget, VCPWidget):
 
         self.renderer.AddActor(self.grid_actor)
         self.renderer.AddActor(self.cube_actor)
-        self.renderer.AddActor(self.frustum_actor)
+        # self.renderer.AddActor(self.frustum_actor)
 
 
         self.renderer.ResetCamera()
@@ -94,19 +94,14 @@ class QtVTKRender(QVTKRenderWindowInteractor):
         print(feed_lines)
         line = PolyLine(feed_lines)
 
-        i = 0
-
         for index, point in enumerate(self.gr.canon.feed):
             coords = point[1][:3]
             line.add_point(index, coords)
-
-            i += 1
 
         line.draw_poly_line()
         actor = line.get_actor()
         actor.GetProperty().SetColor(1, 1, 1)  # (R,G,B)
         self.parent.add_actor(actor)
-
 
         # for item in self.gr.canon.traverse:
         #     line = VTKLineElement(8)
