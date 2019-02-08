@@ -208,7 +208,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -1266,13 +1266,13 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>200</width>
+                       <width>300</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>200</width>
+                       <width>300</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1288,7 +1288,7 @@ border-radius: 6px;
 }</string>
                      </property>
                      <property name="text">
-                      <string>G-CODE FILE PREVIEW</string>
+                      <string>G-CODE FILE PREVIEW AND EDIT</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -1330,7 +1330,7 @@ border-radius: 6px;
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_129">
                    <item>
-                    <widget class="QPushButton" name="edit_gcode_button">
+                    <widget class="QPushButton" name="edit_gcode_button_4">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -1339,13 +1339,13 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>150</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>150</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1359,6 +1359,105 @@ border-radius: 6px;
                      </property>
                      <property name="text">
                       <string>EDIT G-CODE</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_2">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>FIND/REPLACE</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>SAVE</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_3">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>SAVE AS</string>
                      </property>
                     </widget>
                    </item>
@@ -5650,7 +5749,7 @@ border-radius: 6px;
                    <item row="1" column="0">
                     <widget class="ActionButton" name="actionbutton_g54_2">
                      <property name="enabled">
-                      <bool>true</bool>
+                      <bool>false</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5689,7 +5788,7 @@ border-radius: 6px;
                    <item row="1" column="1">
                     <widget class="ActionButton" name="actionbutton_g55_2">
                      <property name="enabled">
-                      <bool>true</bool>
+                      <bool>false</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5728,7 +5827,7 @@ border-radius: 6px;
                    <item row="1" column="2">
                     <widget class="ActionButton" name="actionbutton_g56_2">
                      <property name="enabled">
-                      <bool>true</bool>
+                      <bool>false</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5767,7 +5866,7 @@ border-radius: 6px;
                    <item row="1" column="3">
                     <widget class="ActionButton" name="actionbutton_g57_2">
                      <property name="enabled">
-                      <bool>true</bool>
+                      <bool>false</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5806,7 +5905,7 @@ border-radius: 6px;
                    <item row="1" column="4">
                     <widget class="ActionButton" name="actionbutton_g58_2">
                      <property name="enabled">
-                      <bool>true</bool>
+                      <bool>false</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5845,7 +5944,7 @@ border-radius: 6px;
                    <item row="2" column="1">
                     <widget class="ActionButton" name="actionbutton_g59_4">
                      <property name="enabled">
-                      <bool>true</bool>
+                      <bool>false</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5884,7 +5983,7 @@ border-radius: 6px;
                    <item row="2" column="2">
                     <widget class="ActionButton" name="actionbutton_g59_5">
                      <property name="enabled">
-                      <bool>true</bool>
+                      <bool>false</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5923,7 +6022,7 @@ border-radius: 6px;
                    <item row="2" column="3">
                     <widget class="ActionButton" name="actionbutton_g59_6">
                      <property name="enabled">
-                      <bool>true</bool>
+                      <bool>false</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5962,7 +6061,7 @@ border-radius: 6px;
                    <item row="2" column="4">
                     <widget class="ActionButton" name="actionbutton_g59_7">
                      <property name="enabled">
-                      <bool>true</bool>
+                      <bool>false</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -7626,7 +7725,7 @@ padding-left: 5px;
 }</string>
                        </property>
                        <property name="text">
-                        <string>0.000</string>
+                        <string>0.0000</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -7712,7 +7811,7 @@ padding-left: 5px;
 }</string>
                        </property>
                        <property name="text">
-                        <string>0.000</string>
+                        <string>0.0000</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -7798,7 +7897,7 @@ padding-left: 5px;
 }</string>
                        </property>
                        <property name="text">
-                        <string>0.000</string>
+                        <string>0.0000</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -14137,8 +14236,8 @@ border-radius: 6px;
            <widget class="QLabel" name="label_20">
             <property name="geometry">
              <rect>
-              <x>20</x>
-              <y>3</y>
+              <x>95</x>
+              <y>4</y>
               <width>110</width>
               <height>20</height>
              </rect>
@@ -14188,6 +14287,9 @@ font: 14pt &quot;Bebas Kai&quot;;
             <layout class="QVBoxLayout" name="verticalLayout_12">
              <property name="sizeConstraint">
               <enum>QLayout::SetFixedSize</enum>
+             </property>
+             <property name="topMargin">
+              <number>2</number>
              </property>
              <item>
               <widget class="StatusLabel" name="statuslabel_15">
@@ -14278,48 +14380,6 @@ font: 14pt &quot;Bebas Kai&quot;;
              </item>
             </layout>
            </widget>
-           <widget class="QLabel" name="label_27">
-            <property name="geometry">
-             <rect>
-              <x>137</x>
-              <y>3</y>
-              <width>70</width>
-              <height>20</height>
-             </rect>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>70</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>70</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QLabel{
-color: white;
-border: none;
-background-color: transparent;
-font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-            </property>
-            <property name="text">
-             <string>MANUAL</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-           </widget>
           </widget>
           <widget class="QWidget" name="tab_17">
            <attribute name="title">
@@ -14337,6 +14397,9 @@ font: 14pt &quot;Bebas Kai&quot;;
             <layout class="QVBoxLayout" name="verticalLayout_9">
              <property name="sizeConstraint">
               <enum>QLayout::SetFixedSize</enum>
+             </property>
+             <property name="topMargin">
+              <number>2</number>
              </property>
              <item>
               <widget class="StatusLabel" name="statuslabel_13">
@@ -14433,8 +14496,8 @@ font: 14pt &quot;Bebas Kai&quot;;
             </property>
             <property name="geometry">
              <rect>
-              <x>20</x>
-              <y>3</y>
+              <x>95</x>
+              <y>4</y>
               <width>110</width>
               <height>20</height>
              </rect>
@@ -14464,48 +14527,6 @@ font: 14pt &quot;Bebas Kai&quot;;
             </property>
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-            </property>
-           </widget>
-           <widget class="QLabel" name="label_28">
-            <property name="geometry">
-             <rect>
-              <x>137</x>
-              <y>3</y>
-              <width>70</width>
-              <height>20</height>
-             </rect>
-            </property>
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>70</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="maximumSize">
-             <size>
-              <width>70</width>
-              <height>20</height>
-             </size>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QLabel{
-color: white;
-border: none;
-background-color: transparent;
-font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-            </property>
-            <property name="text">
-             <string>MANUAL</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </widget>
@@ -16627,7 +16648,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="style" stdset="0">
-              <string>homed</string>
+              <string>unhomed</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?abs&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint[0].homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
@@ -16860,7 +16881,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="style" stdset="0">
-              <string>homed</string>
+              <string>unhomed</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?abs&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[1].homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint[1].homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
@@ -17093,7 +17114,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="style" stdset="0">
-              <string>homed</string>
+              <string>unhomed</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?abs&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][2]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[2].homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint[2].homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
