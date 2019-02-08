@@ -821,6 +821,10 @@ g5x_offset, tuple  offsets of the currently active coordinate system"""
     :returns: current tool number
     :rtype: int
 
+    Status label syntax::
+
+        status:tool_in_spindle
+
     """
 
     pocket_prepped = StatusItem('pocket_prepped', int)        # Tx command completed, and this pocket is prepared
@@ -834,8 +838,19 @@ g5x_offset, tuple  offsets of the currently active coordinate system"""
     tool_table = StatusItem('tool_table', tuple)          # list of tool entries
     """Status of tool table
 
+    Each entry is a sequence of the following fields: id, xoffset, yoffset,
+    zoffset, aoffset, boffset, coffset, uoffset, voffset, woffset, diameter,
+    frontangle, backangle, orientation. The id and orientation are integers and
+    the rest are floats.
+
+    To return an item from the tool table you use the entry number and the
+    field name, the following returns the first entry id number.
+    ::
+
+        str(ch[0][1].id)
+
     :returns: list of tool entries
-    :rtype: tuple
+    :rtype: tuple of tool_results
 
     """
 
