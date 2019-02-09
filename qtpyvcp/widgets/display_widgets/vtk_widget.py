@@ -25,6 +25,8 @@ class VTKWidget(QWidget, VCPWidget):
         self.vtkWidget.GetRenderWindow().AddRenderer(self.renderer)
         self.interactor = self.vtkWidget.GetRenderWindow().GetInteractor()
 
+        # self.coords_widget = CoordinateWidget(self.interactor)  # Todo is bugged
+
         self.grid = Grid()
         self.grid_actor = self.grid.get_actor()
 
@@ -43,7 +45,6 @@ class VTKWidget(QWidget, VCPWidget):
         self.renderer.AddActor(self.grid_actor)
         self.renderer.AddActor(self.machine_actor)
         # self.renderer.AddActor(self.frustum_actor)
-
 
         self.renderer.ResetCamera()
 
@@ -286,3 +287,21 @@ class Tool:
 
     def get_actor(self):
         return self.actor
+
+
+class CoordinateWidget:
+    def __init__(self, interactor):
+        colors = vtk.vtkNamedColors()
+
+        axes = vtk.vtkAxesActor()
+
+        widget = vtk.vtkOrientationMarkerWidget()
+        rgba = [0] * 4
+        colors.GetColor("Carrot", rgba)
+        widget.SetOutlineColor(rgba[0], rgba[1], rgba[2])
+        widget.SetOrientationMarker(axes)
+        widget.SetInteractor(interactor)
+        widget.SetViewport(0.0, 0.0, 0.4, 0.4)
+        widget.SetEnabled(1)
+        widget.InteractiveOn()
+
