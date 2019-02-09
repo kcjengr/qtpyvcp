@@ -227,9 +227,15 @@ class Machine:
         cube_axes_actor = vtk.vtkCubeAxesActor()
 
         cube_axes_actor.SetUserTransform(transform)
-        cube_axes_actor.SetBounds(-10, -10, -10, 10, 10, 10)
+        # cube_axes_actor.SetBounds(-10, -10, -10, 10, 10, 10)
 
         cube_axes_actor.SetCamera(renderer.GetActiveCamera())
+
+        cube_axes_actor.SetXLabelFormat("%6.3f")
+        cube_axes_actor.SetYLabelFormat("%6.3f")
+        cube_axes_actor.SetZLabelFormat("%6.3f")
+
+        cube_axes_actor.SetFlyModeToFurthestTriad()
 
         cube_axes_actor.GetTitleTextProperty(0).SetColor(1.0, 0.0, 0.0)
         cube_axes_actor.GetLabelTextProperty(0).SetColor(1.0, 0.0, 0.0)
