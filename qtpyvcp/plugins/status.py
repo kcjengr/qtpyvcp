@@ -118,7 +118,21 @@ class Status(DataPlugin):
 
     @DataChannel
     def interp_state(chan, query=None):
-        """Current interpreter state"""
+        """Current interpreter state
+
+        * Idle
+        * Reading
+        * Paused
+        * Waiting
+
+        To return the string in a status label::
+
+            status:interp_state?string
+
+        :returns:
+        :rtype: int, str
+        """
+
         if query == 'string':
             return str(chan)
         return chan.value
@@ -135,7 +149,20 @@ class Status(DataPlugin):
 
     @DataChannel
     def motion_mode(chan, query=None):
-        """Current motion controller mode"""
+        """Current motion controller mode
+
+        * Coord
+        * Free
+        * Teleop
+
+        To return the string in a status label::
+
+            status:motion_mode?string
+
+        :returns:
+        :rtype: int, str
+        """
+
         if query == 'string':
             return str(chan)
         return chan.value
@@ -149,6 +176,204 @@ class Status(DataPlugin):
 
         return modes[chan.value]
 
+    @DataChannel
+    def state(chan, query=None):
+        """Current command execution status
+
+        * Done
+        * Exec
+        * Error
+
+        To return the string in a status label::
+
+            status:state?string
+
+        :returns:
+        :rtype: int, str
+        """
+
+        if query == 'string':
+            return chan.fstr()
+        return chan.value
+
+    @state.tostring
+    def state(chan):
+        states = {0: "N/A",
+                       linuxcnc.RCS_DONE: "Done",
+                       linuxcnc.RCS_EXEC: "Exec",
+                       linuxcnc.RCS_ERROR: "Error"}
+
+        return states[chan.value]
+
+    @DataChannel
+    def exec_state(chan, query=None):
+        """Current task execution state
+
+        * Error
+        * Done
+        * Waiting for Motion
+        * Waiting for Motion Queue
+        * Waiting for Pause
+        * Waiting for Motion and IO
+        * Waiting for Delay
+        * Waiting for system CMD
+        * Waiting for spindle orient
+
+        To return the string in a status label::
+
+            status:exec_state?string
+
+        :returns:
+        :rtype: int, str
+        """
+
+        if query == 'string':
+            return chan.fstr()
+        return chan.value
+
+    @exec_state.tostring
+    def exec_state(chan):
+        exec_states = {0: "N/A",
+                        linuxcnc.EXEC_ERROR: "Error",
+                        linuxcnc.EXEC_DONE: "Done",
+                        linuxcnc.EXEC_WAITING_FOR_MOTION: "Waiting for Motion",
+                        linuxcnc.EXEC_WAITING_FOR_MOTION_QUEUE: "Waiting for Motion Queue",
+                        linuxcnc.EXEC_WAITING_FOR_IO: "Waiting for Pause",
+                        linuxcnc.EXEC_WAITING_FOR_MOTION_AND_IO: "Waiting for Motion and IO",
+                        linuxcnc.EXEC_WAITING_FOR_DELAY: "Waiting for Delay",
+                        linuxcnc.EXEC_WAITING_FOR_SYSTEM_CMD: "Waiting for system CMD",
+                        linuxcnc.EXEC_WAITING_FOR_SPINDLE_ORIENTED: "Waiting for spindle orient"}
+        return exec_states[chan.value]
+
+    @DataChannel
+    def task_mode(chan, query=None):
+        """Current task mode
+
+        * Manual
+        * Auto
+        * MDI
+
+        To return the string in a status label::
+
+            status:task_mode?string
+
+        :returns:
+        :rtype: int, str
+        """
+
+        if query == 'string':
+            return chan.fstr()
+        return chan.value
+
+    @task_mode.tostring
+    def task_mode(chan):
+        task_modes = {0: "N/A",
+                       linuxcnc.MODE_MANUAL: "Manual",
+                       linuxcnc.MODE_AUTO: "Auto",
+                       linuxcnc.MODE_MDI: "MDI"}
+
+        return task_modes[chan.value]
+
+    @DataChannel
+    def motion_type(chan, query=None):
+        """Current executing motion
+
+        * Traverse
+        * Linear Feed
+        * Arc Feed
+        * Tool Change
+        * Probing
+        * Rotary Index
+
+        To return the string in a status label::
+
+            status:motion_type?string
+
+        :returns:
+        :rtype: int, str
+        """
+
+        if query == 'string':
+            return chan.fstr()
+        return chan.value
+
+    @motion_type.tostring
+    def motion_type(chan):
+        motion_types = {0: "N/A",
+                        linuxcnc.MOTION_TYPE_TRAVERSE: "Traverse",
+                        linuxcnc.MOTION_TYPE_FEED: "Linear Feed",
+                        linuxcnc.MOTION_TYPE_ARC: "Arc Feed",
+                        linuxcnc.MOTION_TYPE_TOOLCHANGE: "Tool Change",
+                        linuxcnc.MOTION_TYPE_PROBING: "Probing",
+                        linuxcnc.MOTION_TYPE_INDEXROTARY: "Rotary Index"}
+        return motion_types[chan.value]
+
+    @DataChannel
+    def interp_state(chan, query=None):
+        """Current state of RS274NGC interpreter
+
+        * Idle
+        * Reading
+        * Paused
+        * Waiting
+
+        To return the string in a status label::
+
+            status:interp_state?string
+
+        :returns:
+        :rtype: int, str
+        """
+
+        if query == 'string':
+            return chan.fstr()
+        return chan.value
+
+    @interp_state.tostring
+    def interp_state(chan):
+        interp_states = {0: "N/A",
+                            linuxcnc.INTERP_IDLE: "Idle",
+                            linuxcnc.INTERP_READING: "Reading",
+                            linuxcnc.INTERP_PAUSED: "Paused",
+                            linuxcnc.INTERP_WAITING: "Waiting"}
+
+        return interp_states[chan.value]
+
+
+    @DataChannel
+    def interpreter_errcode(chan, query=None):
+        """Current RS274NGC interpreter return code
+
+        * Ok
+        * Exit
+        * Finished
+        * Endfile
+        * File not open
+        * Error
+
+        To return the string in a status label::
+
+            status:interpreter_errcode?string
+
+        :returns:
+        :rtype: int, str
+        """
+
+        if query == 'string':
+            return chan.fstr()
+        return chan.value
+
+    @interpreter_errcode.tostring
+    def interpreter_errcode(chan):
+        interpreter_errcodes = {0: "N/A",
+                                1: "Ok",
+                                2: "Exit",
+                                3: "Finished",
+                                4: "Endfile",
+                                4: "File not open",
+                                5: "Error"}
+
+        return interpreter_errcodes[chan.value]
 
     all_homed = DataChannel(doc='True if all homed, or NO_FORCE_HOMING is True',
                             data=False)
