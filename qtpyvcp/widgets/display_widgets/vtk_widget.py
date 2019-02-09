@@ -27,14 +27,14 @@ class VTKWidget(QWidget, VCPWidget):
 
         # self.coords_widget = CoordinateWidget(self.interactor)  # Todo is bugged
 
-        self.grid = Grid()
-        self.grid_actor = self.grid.get_actor()
+        # self.grid = Grid()
+        # self.grid_actor = self.grid.get_actor()
 
-        self.machine = Machine()
+        self.machine = Machine(self.renderer)
         self.machine_actor = self.machine.get_actor()
 
-        self.axes = Axes()
-        self.axes_actor = self.axes.get_actor()
+        # self.axes = Axes()
+        # self.axes_actor = self.axes.get_actor()
 
         self.tool = Tool()
         self.tool_actor = self.tool.get_actor()
@@ -45,9 +45,9 @@ class VTKWidget(QWidget, VCPWidget):
         self.renderer.SetBackground(0.36, 0.36, 0.36)
 
         self.renderer.AddActor(self.tool_actor)
-        self.renderer.AddActor(self.grid_actor)
+        # self.renderer.AddActor(self.grid_actor)
         self.renderer.AddActor(self.machine_actor)
-        self.renderer.AddActor(self.axes_actor)
+        # self.renderer.AddActor(self.axes_actor)
         # self.renderer.AddActor(self.frustum_actor)
 
         self.renderer.ResetCamera()
@@ -219,17 +219,39 @@ class Grid:
 
 
 class Machine:
-    def __init__(self):
-        cube = vtk.vtkCubeSource()
+    def __init__(self, renderer):
 
-        # mapper
-        cube_mapper = vtk.vtkPolyDataMapper()
-        cube_mapper.SetInputConnection(cube.GetOutputPort())
+        transform = vtk.vtkTransform()
+        transform.Translate(1.0, 0.0, 0.0)
 
-        # actor
-        self.actor = vtk.vtkActor()
-        self.actor.SetMapper(cube_mapper)
-        self.actor.GetProperty().SetRepresentationToWireframe()
+        cube_axes_actor = vtk.vtkCubeAxesActor()
+
+        cube_axes_actor.SetUserTransform(transform)
+        # cube_axes_actor.SetBounds(0, 0, 0, 10, 10, 10)
+
+        cube_axes_actor.SetCamera(renderer.GetActiveCamera())
+
+        cube_axes_actor.GetTitleTextProperty(0).SetColor(1.0, 0.0, 0.0)
+        cube_axes_actor.GetLabelTextProperty(0).SetColor(1.0, 0.0, 0.0)
+
+        cube_axes_actor.GetTitleTextProperty(1).SetColor(0.0, 1.0, 0.0)
+        cube_axes_actor.GetLabelTextProperty(1).SetColor(0.0, 1.0, 0.0)
+
+        cube_axes_actor.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
+        cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
+
+        cube_axes_actor.DrawXGridlinesOn()
+        cube_axes_actor.DrawYGridlinesOn()
+        cube_axes_actor.DrawZGridlinesOn()
+
+        # if vtk.VTK_MAJOR_VERSION > 5:
+        #     cubeAxesActor.SetGridLineLocation(vtk.VTK_UNIFORM_GRID)
+
+        cube_axes_actor.XAxisMinorTickVisibilityOff()
+        cube_axes_actor.YAxisMinorTickVisibilityOff()
+        cube_axes_actor.ZAxisMinorTickVisibilityOff()
+
+        self.actor = cube_axes_actor
 
     def get_actor(self):
         return self.actor
@@ -243,7 +265,7 @@ class Axes:
 
 
         # actor
-        self.actor = vtk.vtkAxesActor()
+        self.actor = vtk.vtkCubeAxesActor()
         self.actor.SetUserTransform(transform)
 
     def get_actor(self):
