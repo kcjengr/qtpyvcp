@@ -17,6 +17,11 @@ class VTKWidget(QWidget, VCPWidget):
     def __init__(self, parent=None):
         super(VTKWidget, self).__init__(parent)
 
+        self.parent = parent
+        self.status = STATUS
+
+        self.gr = VTKCanon()
+
         self.vertical_layout = QVBoxLayout()
         self.vtkWidget = QVTKRenderWindowInteractor()
         self.vertical_layout.addWidget(self.vtkWidget)
@@ -45,8 +50,9 @@ class VTKWidget(QWidget, VCPWidget):
         self.renderer.SetBackground(0.36, 0.36, 0.36)
 
         self.renderer.AddActor(self.tool_actor)
-        # self.renderer.AddActor(self.grid_actor)
         self.renderer.AddActor(self.machine_actor)
+
+        # self.renderer.AddActor(self.grid_actor)
         # self.renderer.AddActor(self.axes_actor)
         # self.renderer.AddActor(self.frustum_actor)
 
@@ -56,16 +62,11 @@ class VTKWidget(QWidget, VCPWidget):
 
         self.interactor.Initialize()
         self.interactor.Start()
-        self.gr = VTKCanon()
-
-        self.limits = self.gr.get_limits()
-
-        print(self.limits)
-
-        self.parent = parent
-        self.status = STATUS
 
         self.status.file_loaded.connect(self.load_program)
+
+        print(self.status.stat.limit)
+        print(self.status.stat.homed)
 
         self.line = None
         self._last_filename = None
@@ -80,7 +81,9 @@ class VTKWidget(QWidget, VCPWidget):
         self.gr.load(fname)
 
         feed_lines = len(self.gr.canon.feed)
-        print(feed_lines)
+
+        print("Feed Lines", feed_lines)
+
         line = PolyLine(feed_lines)
 
         for index, point in enumerate(self.gr.canon.feed):
@@ -88,8 +91,10 @@ class VTKWidget(QWidget, VCPWidget):
             line.add_point(index, coords)
 
         line.draw_poly_line()
+
         actor = line.get_actor()
-        actor.GetProperty().SetColor(1, 1, 1)  # (R,G,B)
+        color = self.gr.colors["straight_feed"]
+        actor.GetProperty().SetColor(color)  # (R,G,B)
         self.renderer.AddActor(actor)
 
         # for item in self.gr.canon.traverse:
@@ -217,12 +222,12 @@ class Machine:
     def __init__(self, renderer):
 
         transform = vtk.vtkTransform()
-        transform.Translate(1.0, 0.0, 0.0)
+        transform.Translate(1.0, 0.0, 0.0)  # Z up
 
         cube_axes_actor = vtk.vtkCubeAxesActor()
 
         cube_axes_actor.SetUserTransform(transform)
-        # cube_axes_actor.SetBounds(0, 0, 0, 10, 10, 10)
+        cube_axes_actor.SetBounds(-10, -10, -10, 10, 10, 10)
 
         cube_axes_actor.SetCamera(renderer.GetActiveCamera())
 
@@ -256,7 +261,7 @@ class Axes:
     def __init__(self):
 
         transform = vtk.vtkTransform()
-        transform.Translate(1.0, 0.0, 0.0)
+        transform.Translate(1.0, 0.0, 0.0)  # Z up
 
 
         # actor
