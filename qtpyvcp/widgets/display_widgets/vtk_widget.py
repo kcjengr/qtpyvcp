@@ -90,7 +90,7 @@ class VTKWidget(QWidget, VCPWidget):
         line.draw_poly_line()
         actor = line.get_actor()
         actor.GetProperty().SetColor(1, 1, 1)  # (R,G,B)
-        self.renderer.add_actor(actor)
+        self.renderer.AddActor(actor)
 
         # for item in self.gr.canon.traverse:
         #     line = VTKLineElement(8)
