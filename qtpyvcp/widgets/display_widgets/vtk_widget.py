@@ -20,6 +20,8 @@ class VTKWidget(QWidget, VCPWidget):
         self.parent = parent
         self.status = STATUS
 
+        axis = self.status.stat.axis
+
         self.gr = VTKCanon()
 
         self.vertical_layout = QVBoxLayout()
@@ -35,7 +37,7 @@ class VTKWidget(QWidget, VCPWidget):
         # self.grid = Grid()
         # self.grid_actor = self.grid.get_actor()
 
-        self.machine = Machine(self.renderer)
+        self.machine = Machine(self.renderer, axis)
         self.machine_actor = self.machine.get_actor()
 
         # self.axes = Axes()
@@ -64,9 +66,6 @@ class VTKWidget(QWidget, VCPWidget):
         self.interactor.Start()
 
         self.status.file_loaded.connect(self.load_program)
-
-        print(self.status.stat.limit)
-        print(self.status.stat.homed)
 
         self.line = None
         self._last_filename = None
@@ -219,7 +218,7 @@ class Grid:
 
 
 class Machine:
-    def __init__(self, renderer):
+    def __init__(self, renderer, axis):
 
         transform = vtk.vtkTransform()
         transform.Translate(1.0, 0.0, 0.0)  # Z up
@@ -227,7 +226,21 @@ class Machine:
         cube_axes_actor = vtk.vtkCubeAxesActor()
 
         cube_axes_actor.SetUserTransform(transform)
-        # cube_axes_actor.SetBounds(-10, -10, -10, 10, 10, 10)
+
+        x_max = axis[0]["max_position_limit"]
+        x_min = axis[0]["min_position_limit"]
+
+        y_max = axis[1]["max_position_limit"]
+        y_min = axis[1]["min_position_limit"]
+
+        z_max = axis[2]["max_position_limit"]
+        z_min = axis[2]["min_position_limit"]
+
+        print(x_min, x_max)
+        print(y_min, y_max)
+        print(z_min, z_max)
+
+        cube_axes_actor.SetBounds(x_min, y_min, z_min, x_max, y_max, z_max)
 
         cube_axes_actor.SetCamera(renderer.GetActiveCamera())
 
@@ -250,12 +263,13 @@ class Machine:
         cube_axes_actor.DrawYGridlinesOn()
         cube_axes_actor.DrawZGridlinesOn()
 
-        # if vtk.VTK_MAJOR_VERSION > 5:
-        #     cubeAxesActor.SetGridLineLocation(vtk.VTK_UNIFORM_GRID)
-
         cube_axes_actor.XAxisMinorTickVisibilityOff()
         cube_axes_actor.YAxisMinorTickVisibilityOff()
         cube_axes_actor.ZAxisMinorTickVisibilityOff()
+
+        cube_axes_actor.SetXUnits("mm")
+        cube_axes_actor.SetYUnits("mm")
+        cube_axes_actor.SetZUnits("mm")
 
         self.actor = cube_axes_actor
 
