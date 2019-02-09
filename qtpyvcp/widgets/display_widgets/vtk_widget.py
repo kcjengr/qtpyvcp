@@ -33,17 +33,21 @@ class VTKWidget(QWidget, VCPWidget):
         self.machine = Machine()
         self.machine_actor = self.machine.get_actor()
 
+        self.axes = Axes()
+        self.axes_actor = self.axes.get_actor()
+
         self.tool = Tool()
         self.tool_actor = self.tool.get_actor()
 
         # self.frustum = Frustum()
         # self.frustum_actor = self.frustum.get_actor()
 
-        self.renderer.SetBackground(0.1, 0.2, 0.4)
+        self.renderer.SetBackground(0.36, 0.36, 0.36)
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.grid_actor)
         self.renderer.AddActor(self.machine_actor)
+        self.renderer.AddActor(self.axes_actor)
         # self.renderer.AddActor(self.frustum_actor)
 
         self.renderer.ResetCamera()
@@ -223,12 +227,27 @@ class Machine:
         cube_mapper.SetInputConnection(cube.GetOutputPort())
 
         # actor
-        self.cube_actor = vtk.vtkActor()
-        self.cube_actor.SetMapper(cube_mapper)
-        self.cube_actor.GetProperty().SetRepresentationToWireframe()
+        self.actor = vtk.vtkActor()
+        self.actor.SetMapper(cube_mapper)
+        self.actor.GetProperty().SetRepresentationToWireframe()
 
     def get_actor(self):
-        return self.cube_actor
+        return self.actor
+
+
+class Axes:
+    def __init__(self):
+
+        transform = vtk.vtkTransform()
+        transform.Translate(1.0, 0.0, 0.0)
+
+
+        # actor
+        self.actor = vtk.vtkAxesActor()
+        self.actor.SetUserTransform(transform)
+
+    def get_actor(self):
+        return self.actor
 
 
 class Frustum:
@@ -274,7 +293,7 @@ class Tool:
         # Create source
         source = vtk.vtkConeSource()
         source.SetResolution(64)
-        source.SetCenter(0, 0, 0.5)
+        source.SetCenter(0, 0, 0)
         source.SetRadius(0.5)
 
         # Create a mapper
