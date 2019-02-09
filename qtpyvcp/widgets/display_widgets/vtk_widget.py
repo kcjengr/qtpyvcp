@@ -18,7 +18,7 @@ class VTKWidget(QWidget, VCPWidget):
         super(VTKWidget, self).__init__(parent)
 
         self.vertical_layout = QVBoxLayout()
-        self.vtkWidget = QtVTKRender(self)
+        self.vtkWidget = QVTKRenderWindowInteractor()
         self.vertical_layout.addWidget(self.vtkWidget)
 
         self.renderer = vtk.vtkRenderer()
@@ -56,16 +56,11 @@ class VTKWidget(QWidget, VCPWidget):
 
         self.interactor.Initialize()
         self.interactor.Start()
-
-    def add_actor(self, actor):
-        self.renderer.AddActor(actor)
-
-
-class QtVTKRender(QVTKRenderWindowInteractor):
-    def __init__(self, parent, **kw):
-        QVTKRenderWindowInteractor.__init__(self, parent, **kw)
-
         self.gr = VTKCanon()
+
+        self.limits = self.gr.get_limits()
+
+        print(self.limits)
 
         self.parent = parent
         self.status = STATUS
@@ -95,7 +90,7 @@ class QtVTKRender(QVTKRenderWindowInteractor):
         line.draw_poly_line()
         actor = line.get_actor()
         actor.GetProperty().SetColor(1, 1, 1)  # (R,G,B)
-        self.parent.add_actor(actor)
+        self.renderer.add_actor(actor)
 
         # for item in self.gr.canon.traverse:
         #     line = VTKLineElement(8)

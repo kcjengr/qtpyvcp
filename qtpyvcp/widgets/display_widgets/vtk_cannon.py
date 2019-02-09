@@ -119,6 +119,9 @@ class VTKCanon(rs274.glcanon.GlCanonDraw):
     def get_geometry(self):
         return self.geometry
 
+    def get_limits(self):
+        return self.soft_limits()
+
     def report_gcode_error(self, result, seq, filename):
         msg = gcode.strerror(result)
         print("G-Code error in {} line {}: {}".format(
