@@ -35,6 +35,12 @@ class VTKCanon(rs274.glcanon.GlCanonDraw):
         self.INI_FILE_PATH = os.path.split(inifile)[0]
         self.select_primed = None
 
+        temp = self.inifile.find("DISPLAY", "GEOMETRY")
+        if temp:
+            self.geometry = temp.upper()
+        else:
+            self.geometry = 'XYZ'
+
         temp = self.inifile.find("DISPLAY", "LATHE")
         self.lathe_option = temp == "1" or temp == "True" or temp == "true"
 
@@ -111,11 +117,6 @@ class VTKCanon(rs274.glcanon.GlCanonDraw):
             print("Rapid: ", item[0], item[1][:3], item[2][:3])
 
     def get_geometry(self):
-        temp = self.inifile.find("DISPLAY", "GEOMETRY")
-        if temp:
-            self.geometry = temp.upper()
-        else:
-            self.geometry = 'XYZ'
         return self.geometry
 
     def report_gcode_error(self, result, seq, filename):

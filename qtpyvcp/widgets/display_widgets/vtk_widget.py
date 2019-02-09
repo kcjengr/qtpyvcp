@@ -1,6 +1,6 @@
 import vtk
 
-from qtpy.QtWidgets import QWidget, QFrame, QVBoxLayout, QSizePolicy
+from qtpy.QtWidgets import QWidget, QVBoxLayout
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 from qtpyvcp.plugins import getPlugin
@@ -28,31 +28,20 @@ class VTKWidget(QWidget, VCPWidget):
         self.grid = Grid()
         self.grid_actor = self.grid.get_actor()
 
-        self.cube = Cube()
-        self.cube_actor = self.cube.get_actor()
+        self.machine = Machine()
+        self.machine_actor = self.machine.get_actor()
+
+        self.tool = Tool()
+        self.tool_actor = self.tool.get_actor()
 
         # self.frustum = Frustum()
         # self.frustum_actor = self.frustum.get_actor()
 
-        # Create source
-        source = vtk.vtkConeSource()
-        source.SetResolution(64)
-        source.SetCenter(0, 0, 0.5)
-        source.SetRadius(0.5)
-
-        # Create a mapper
-        mapper = vtk.vtkPolyDataMapper()
-        mapper.SetInputConnection(source.GetOutputPort())
-
-        # Create an actor
-        actor = vtk.vtkActor()
-        actor.SetMapper(mapper)
-
-        self.renderer.AddActor(actor)
         self.renderer.SetBackground(0.1, 0.2, 0.4)
 
+        self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.grid_actor)
-        self.renderer.AddActor(self.cube_actor)
+        self.renderer.AddActor(self.machine_actor)
         # self.renderer.AddActor(self.frustum_actor)
 
 
@@ -224,7 +213,7 @@ class Grid:
         return self.wire_actor
 
 
-class Cube:
+class Machine:
     def __init__(self):
         cube = vtk.vtkCubeSource()
 
@@ -273,6 +262,27 @@ class Frustum:
         self.actor.GetProperty().EdgeVisibilityOn()
         self.actor.GetProperty().SetColor(colors.GetColor3d("Banana"))
         self.actor.SetBackfaceProperty(back)
+
+    def get_actor(self):
+        return self.actor
+
+
+class Tool:
+    def __init__(self):
+
+        # Create source
+        source = vtk.vtkConeSource()
+        source.SetResolution(64)
+        source.SetCenter(0, 0, 0.5)
+        source.SetRadius(0.5)
+
+        # Create a mapper
+        mapper = vtk.vtkPolyDataMapper()
+        mapper.SetInputConnection(source.GetOutputPort())
+
+        # Create an actor
+        self.actor = vtk.vtkActor()
+        self.actor.SetMapper(mapper)
 
     def get_actor(self):
         return self.actor
