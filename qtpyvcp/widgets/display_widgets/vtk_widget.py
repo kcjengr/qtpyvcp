@@ -255,9 +255,9 @@ class Machine:
         cube_axes_actor.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
         cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
-        cube_axes_actor.DrawXGridlinesOn()
-        cube_axes_actor.DrawYGridlinesOn()
-        cube_axes_actor.DrawZGridlinesOn()
+        cube_axes_actor.DrawXInnerGridlinesOff()
+        cube_axes_actor.DrawYInnerGridlinesOff()
+        cube_axes_actor.DrawZInnerGridlinesOff()
 
         cube_axes_actor.XAxisMinorTickVisibilityOff()
         cube_axes_actor.YAxisMinorTickVisibilityOff()
@@ -278,7 +278,6 @@ class Axes:
 
         transform = vtk.vtkTransform()
         transform.Translate(1.0, 0.0, 0.0)  # Z up
-
 
         # actor
         self.actor = vtk.vtkCubeAxesActor()
