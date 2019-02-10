@@ -236,11 +236,7 @@ class Machine:
         z_max = axis[2]["max_position_limit"]
         z_min = axis[2]["min_position_limit"]
 
-        print(x_min, x_max)
-        print(y_min, y_max)
-        print(z_min, z_max)
-
-        cube_axes_actor.SetBounds(x_min, y_min, z_min, x_max, y_max, z_max)
+        cube_axes_actor.SetBounds(x_min, x_max, y_min, y_max, z_min, z_max)
 
         cube_axes_actor.SetCamera(renderer.GetActiveCamera())
 
