@@ -76,8 +76,6 @@ class Position(DataPlugin):
         chan, sep, query = url.partition('?')
         raw_args = query.split('&')
 
-        print url, chan, raw_args
-
         args = []
         kwargs = {}
         for arg in [a for a in raw_args if a != '']:
@@ -87,11 +85,8 @@ class Position(DataPlugin):
             else:
                 args.append(arg)
 
-        print chan, args, kwargs
-
         try:
             chan_obj = self.channels[chan]
-            print chan, chan_obj, chan_obj.getValue()
 
             if 'axis' in kwargs:
                 axis = kwargs.pop('axis')
