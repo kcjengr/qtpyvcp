@@ -91,9 +91,10 @@ class Position(DataPlugin):
 
         try:
             chan_obj = self.channels[chan]
+            print chan, chan_obj, chan_obj.getValue()
 
-            axis = kwargs.pop('axis')
-            if axis is not None:
+            if 'axis' in kwargs:
+                axis = kwargs.pop('axis')
                 try:
                     kwargs['anum'] = int(axis)
                 except ValueError:
