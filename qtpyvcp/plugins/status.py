@@ -69,11 +69,6 @@ class Status(DataPlugin):
 
     recent_files = DataChannel(doc='List of recently loaded files', settable=True, data=[])
 
-    class task_state(DataChannel):
-        def value(self):
-            return self.value
-
-
     @DataChannel
     def on(self):
         """True if machine power is ON."""
@@ -95,21 +90,19 @@ class Status(DataPlugin):
     def task_state(self, query=None):
         """Current status of task
 
-        * E-Stop
-        * Reset
-        * On
-        * Off
+        1) E-Stop
+        2) Reset
+        3) Off
+        4) On
 
         To return the string in a status label::
 
             status:task_state?string
 
-        :returns:
+        :returns: current task state
         :rtype: int, str
         """
-        if query == 'string':
-            return str(self.task_state)
-        return self.task_state.value
+        return STAT.task_state
 
     @task_state.tostring
     def task_state(self):
@@ -119,58 +112,24 @@ class Status(DataPlugin):
                        linuxcnc.STATE_ON: "On",
                        linuxcnc.STATE_OFF: "Off"}
 
-        return task_states[self.task_state.value]
+        return task_states[STAT.task_state]
 
     @DataChannel
-    def interp_state(self, query=None):
-        """Current interpreter state
-
-        * Idle
-        * Reading
-        * Paused
-        * Waiting
-
-        To return the string in a status label::
-
-            status:interp_state?string
-
-        :returns:
-        :rtype: int, str
-        """
-
-        if query == 'string':
-            return str(self.interp_state)
-        return self.interp_state.value
-
-    @interp_state.tostring
-    def interp_state(self):
-        states = {0: "N/A",
-                  linuxcnc.INTERP_IDLE: "Idle",
-                  linuxcnc.INTERP_READING: "Reading",
-                  linuxcnc.INTERP_PAUSED: "Paused",
-                  linuxcnc.INTERP_WAITING: "Waiting"}
-
-        return states[STAT.interp_state]
-
-    @DataChannel
-    def motion_mode(self, query=None):
+    def motion_mode(self):
         """Current motion controller mode
 
-        * Coord
-        * Free
-        * Teleop
+        1) Free
+        2) Coord
+        3) Teleop
 
         To return the string in a status label::
 
             status:motion_mode?string
 
-        :returns:
+        :returns: current motion mode
         :rtype: int, str
         """
-
-        if query == 'string':
-            return str(self.motion_mode)
-        return self.motion_mode.value
+        return STAT.motion_mode
 
     @motion_mode.tostring
     def motion_mode(self):
@@ -179,27 +138,24 @@ class Status(DataPlugin):
                   linuxcnc.TRAJ_MODE_FREE: "Free",
                   linuxcnc.TRAJ_MODE_TELEOP: "Teleop"}
 
-        return modes[self.motion_mode.value]
+        return modes[STAT.motion_mode]
 
     @DataChannel
-    def state(self, query=None):
+    def state(self):
         """Current command execution status
 
-        * Done
-        * Exec
-        * Error
+        1) Done
+        2) Exec
+        3) Error
 
         To return the string in a status label::
 
             status:state?string
 
-        :returns:
+        :returns: current command execution state
         :rtype: int, str
         """
-
-        if query == 'string':
-            return self.fstr()
-        return self.value
+        return STAT.state
 
     @state.tostring
     def state(self):
@@ -208,33 +164,31 @@ class Status(DataPlugin):
                        linuxcnc.RCS_EXEC: "Exec",
                        linuxcnc.RCS_ERROR: "Error"}
 
-        return states[self.value]
+        return states[STAT.state]
 
     @DataChannel
-    def exec_state(self, query=None):
+    def exec_state(self):
         """Current task execution state
 
-        * Error
-        * Done
-        * Waiting for Motion
-        * Waiting for Motion Queue
-        * Waiting for Pause
-        * Waiting for Motion and IO
-        * Waiting for Delay
-        * Waiting for system CMD
-        * Waiting for spindle orient
+        1) Error
+        2) Done
+        3) Waiting for Motion
+        4) Waiting for Motion Queue
+        5) Waiting for Pause
+        6) --
+        7) Waiting for Motion and IO
+        8) Waiting for Delay
+        9) Waiting for system CMD
+        10) Waiting for spindle orient
 
         To return the string in a status label::
 
             status:exec_state?string
 
-        :returns:
+        :returns: current task execution error
         :rtype: int, str
         """
-
-        if query == 'string':
-            return self.fstr()
-        return self.value
+        return STAT.exec_state
 
     @exec_state.tostring
     def exec_state(self):
@@ -248,27 +202,25 @@ class Status(DataPlugin):
                         linuxcnc.EXEC_WAITING_FOR_DELAY: "Waiting for Delay",
                         linuxcnc.EXEC_WAITING_FOR_SYSTEM_CMD: "Waiting for system CMD",
                         linuxcnc.EXEC_WAITING_FOR_SPINDLE_ORIENTED: "Waiting for spindle orient"}
-        return exec_states[self.value]
+
+        return exec_states[STAT.exec_state]
 
     @DataChannel
-    def task_mode(self, query=None):
+    def task_mode(self):
         """Current task mode
 
-        * Manual
-        * Auto
-        * MDI
+        1) Manual
+        2) Auto
+        3) MDI
 
         To return the string in a status label::
 
             status:task_mode?string
 
-        :returns:
+        :returns: current task mode
         :rtype: int, str
         """
-
-        if query == 'string':
-            return self.fstr()
-        return self.value
+        return STAT.task_mode
 
     @task_mode.tostring
     def task_mode(self):
@@ -277,62 +229,58 @@ class Status(DataPlugin):
                        linuxcnc.MODE_AUTO: "Auto",
                        linuxcnc.MODE_MDI: "MDI"}
 
-        return task_modes[self.value]
+        return task_modes[STAT.task_mode]
 
     @DataChannel
     def motion_type(self, query=None):
-        """Current executing motion
+        """Motion type
 
-        * Traverse
-        * Linear Feed
-        * Arc Feed
-        * Tool Change
-        * Probing
-        * Rotary Index
+        0) None
+        1) Traverse
+        2) Linear Feed
+        3) Arc Feed
+        4) Tool Change
+        5) Probing
+        6) Rotary Index
 
         To return the string in a status label::
 
             status:motion_type?string
 
-        :returns:
+        :returns:  current motion type
         :rtype: int, str
         """
-
-        if query == 'string':
-            return self.fstr()
-        return self.value
+        return STAT.motion_type
 
     @motion_type.tostring
     def motion_type(self):
-        motion_types = {0: "N/A",
+        motion_types = {0: "None",
                         linuxcnc.MOTION_TYPE_TRAVERSE: "Traverse",
                         linuxcnc.MOTION_TYPE_FEED: "Linear Feed",
                         linuxcnc.MOTION_TYPE_ARC: "Arc Feed",
                         linuxcnc.MOTION_TYPE_TOOLCHANGE: "Tool Change",
                         linuxcnc.MOTION_TYPE_PROBING: "Probing",
                         linuxcnc.MOTION_TYPE_INDEXROTARY: "Rotary Index"}
-        return motion_types[self.value]
+
+        return motion_types[STAT.motion_type]
 
     @DataChannel
-    def interp_state(self, query=None):
+    def interp_state(self):
         """Current state of RS274NGC interpreter
 
-        * Idle
-        * Reading
-        * Paused
-        * Waiting
+        1) Idle
+        2) Reading
+        3) Paused
+        4) Waiting
 
         To return the string in a status label::
 
             status:interp_state?string
 
-        :returns:
+        :returns: RS274 interpreter state
         :rtype: int, str
         """
-
-        if query == 'string':
-            return str(self.interp_state)
-        return self.interp_state.value
+        return STAT.interp_state
 
     @interp_state.tostring
     def interp_state(self):
@@ -342,46 +290,43 @@ class Status(DataPlugin):
                             linuxcnc.INTERP_PAUSED: "Paused",
                             linuxcnc.INTERP_WAITING: "Waiting"}
 
-        return interp_states[self.interp_state.value]
+        return interp_states[STAT.interp_state]
 
 
     @DataChannel
-    def interpreter_errcode(self, query=None):
+    def interpreter_errcode(self):
         """Current RS274NGC interpreter return code
 
-        * Ok
-        * Exit
-        * Finished
-        * Endfile
-        * File not open
-        * Error
+        0) Ok
+        1) Exit
+        2) Finished
+        3) Endfile
+        4) File not open
+        5) Error
 
         To return the string in a status label::
 
             status:interpreter_errcode?string
 
-        :returns:
+        :returns: interp error code
         :rtype: int, str
         """
-
-        if query == 'string':
-            return self.fstr()
-        return self.value
+        return STAT.interpreter_errcode
 
     @interpreter_errcode.tostring
     def interpreter_errcode(self):
-        interpreter_errcodes = {0: "N/A",
-                                1: "Ok",
-                                2: "Exit",
-                                3: "Finished",
-                                4: "Endfile",
+        interpreter_errcodes = {0: "Ok",
+                                1: "Exit",
+                                2: "Finished",
+                                3: "Endfile",
                                 4: "File not open",
                                 5: "Error"}
 
-        return interpreter_errcodes[self.value]
+        return interpreter_errcodes[STAT.interpreter_errcode]
 
     all_homed = DataChannel(doc='True if all homed, or NO_FORCE_HOMING is True',
                             data=False)
+
 
     @all_homed.setter
     def all_homed(self, *args, **kwargs):
