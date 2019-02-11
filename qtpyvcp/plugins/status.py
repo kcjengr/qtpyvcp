@@ -331,13 +331,17 @@ class Status(DataPlugin):
     def program_units(self):
         """Program units
 
-        1) in
-        2) mm
-        3) cm
+        Available as an integer, or in short or long string formats.
+
+        1) in, Inches
+        2) mm, Millimeters
+        3) cm, Centimeters
 
         To return the string in a status label::
 
+            status:program_units
             status:program_units?string
+            status:program_units?string&format=long
 
         :returns: current program units
         :rtype: int, str
@@ -345,8 +349,11 @@ class Status(DataPlugin):
         return STAT.program_units
 
     @program_units.tostring
-    def program_units(self):
-        return ["N/A", "in", "mm", "cm"][STAT.program_units]
+    def program_units(self, format='short'):
+        if format == 'short':
+            return ["N/A", "in", "mm", "cm"][STAT.program_units]
+        else:
+            return ["N/A", "Inches", "Millimeters", "Centimeters"][STAT.program_units]
 
     @all_homed.setter
     def all_homed(self, *args, **kwargs):
