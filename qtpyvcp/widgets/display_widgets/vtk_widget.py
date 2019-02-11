@@ -28,8 +28,11 @@ class VTKWidget(QWidget, VCPWidget):
         self.vtkWidget = QVTKRenderWindowInteractor()
         self.vertical_layout.addWidget(self.vtkWidget)
 
+        self.nav_style = vtk.vtkInteractorStyleTrackballCamera()
+
         self.renderer = vtk.vtkRenderer()
         self.vtkWidget.GetRenderWindow().AddRenderer(self.renderer)
+        self.vtkWidget.SetInteractorStyle(self.nav_style)
         self.interactor = self.vtkWidget.GetRenderWindow().GetInteractor()
 
         # self.coords_widget = CoordinateWidget(self.interactor)  # Todo is bugged
@@ -220,12 +223,9 @@ class Grid:
 class Machine:
     def __init__(self, renderer, axis):
 
-        transform = vtk.vtkTransform()
-        transform.Translate(1.0, 0.0, 0.0)  # Z up
-
         cube_axes_actor = vtk.vtkCubeAxesActor()
 
-        cube_axes_actor.SetUserTransform(transform)
+        # cube_axes_actor.SetUserTransform(transform)
 
         x_max = axis[0]["max_position_limit"]
         x_min = axis[0]["min_position_limit"]
@@ -263,9 +263,9 @@ class Machine:
         cube_axes_actor.YAxisMinorTickVisibilityOff()
         cube_axes_actor.ZAxisMinorTickVisibilityOff()
 
-        cube_axes_actor.SetXUnits("mm")
-        cube_axes_actor.SetYUnits("mm")
-        cube_axes_actor.SetZUnits("mm")
+        # cube_axes_actor.SetXUnits("mm")  # Todo machine units here
+        # cube_axes_actor.SetYUnits("mm")
+        # cube_axes_actor.SetZUnits("mm")
 
         self.actor = cube_axes_actor
 
@@ -329,8 +329,9 @@ class Tool:
 
         # Create source
         source = vtk.vtkConeSource()
-        source.SetResolution(64)
-        source.SetCenter(0, 0, 0)
+        source.SetResolution(128)
+        source.SetHeight(1.0)
+        source.SetCenter(0, 0, -0.5)
         source.SetRadius(0.5)
 
         # Create a mapper
