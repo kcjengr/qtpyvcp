@@ -98,7 +98,7 @@ class DataChannel(QObject):
         """Channel data getter method."""
         if self.fget is None:
             return self.value
-        return self.fget(self, *args, **kwargs)
+        return self.fget(self.instance, *args, **kwargs)
 
     def getString(self, *args, **kwargs):
         """Channel data getter method."""
