@@ -327,6 +327,26 @@ class Status(DataPlugin):
     all_homed = DataChannel(doc='True if all homed, or NO_FORCE_HOMING is True',
                             data=False)
 
+    @DataChannel
+    def program_units(self):
+        """Program units
+
+        1) in
+        2) mm
+        3) cm
+
+        To return the string in a status label::
+
+            status:program_units?string
+
+        :returns: current program units
+        :rtype: int, str
+        """
+        return STAT.program_units
+
+    @program_units.tostring
+    def program_units(self):
+        return ["N/A", "in", "mm", "cm"][STAT.program_units]
 
     @all_homed.setter
     def all_homed(self, *args, **kwargs):
