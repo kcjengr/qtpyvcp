@@ -326,7 +326,6 @@ class Frustum:
 
 class Tool:
     def __init__(self):
-
         # Create source
         source = vtk.vtkConeSource()
         source.SetResolution(128)
@@ -334,9 +333,16 @@ class Tool:
         source.SetCenter(0, 0, -0.5)
         source.SetRadius(0.5)
 
+        transform = vtk.vtkTransform()
+        transform.RotateWXYZ(90, 0, 1, 0)
+        transform_filter = vtk.vtkTransformPolyDataFilter()
+        transform_filter.SetTransform(transform)
+        transform_filter.SetInputConnection(source.GetOutputPort())
+        transform_filter.Update()
+
         # Create a mapper
         mapper = vtk.vtkPolyDataMapper()
-        mapper.SetInputConnection(source.GetOutputPort())
+        mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         # Create an actor
         self.actor = vtk.vtkActor()
