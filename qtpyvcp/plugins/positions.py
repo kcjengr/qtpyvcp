@@ -206,6 +206,6 @@ class Position(DataPlugin):
         # self._positions = tuple([tuple(pos), tuple(rel), tuple(dtg)])
         # self.valueChanged.emit(self._positions)
 
-        self.rel.setValue(rel)
-        self.abs.setValue(pos)
-        self.dtg.setValue(dtg)
+        self.rel.setValue(tuple(rel))
+        self.abs.setValue(tuple(pos))
+        self.dtg.setValue(tuple(dtg))
