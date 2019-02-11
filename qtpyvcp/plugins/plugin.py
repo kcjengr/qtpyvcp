@@ -88,6 +88,7 @@ class DataChannel(QObject):
         self.value = data
 
         self.settable = settable
+        self.instance = None
 
         if doc is None and fget is not None:
             doc = fget.__doc__
@@ -115,14 +116,14 @@ class DataChannel(QObject):
 
     def getter(self, fget):
         def inner(*args, **kwargs):
-            fget(self, *args, **kwargs)
+            fget(self.instance, *args, **kwargs)
 
         self.fget = inner
         return self
 
     def setter(self, fset):
         def inner(*args, **kwargs):
-            fset(*args, **kwargs)
+            fset(self.instance, *args, **kwargs)
             self.signal.emit(self.value)
 
         self.fset = inner
@@ -130,7 +131,7 @@ class DataChannel(QObject):
 
     def tostring(self, fstr):
         def inner(*args, **kwargs):
-            return fstr(self, *args, **kwargs)
+            return fstr(self.instance, *args, **kwargs)
 
         self.fstr = inner
         return self
@@ -141,6 +142,10 @@ class DataChannel(QObject):
 
     # fixme
     onValueChanged = notify
+
+    def __get__(self, instance, owner):
+        self.instance = instance
+        return self
 
     def __call__(self, *args, **kwargs):
         return self.getValue(*args, **kwargs)

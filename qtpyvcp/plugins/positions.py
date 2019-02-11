@@ -52,6 +52,8 @@ class Position(DataPlugin):
         self._metric_format = metric_format
         self._imperial_format = imperial_format
 
+        self._current_format = self._imperial_format
+
         self._update()
 
         # all these should cause the positions to update
@@ -59,7 +61,7 @@ class Position(DataPlugin):
         STATUS.g5x_offset.onValueChanged(self._update)
         STATUS.g92_offset.onValueChanged(self._update)
         STATUS.tool_offset.onValueChanged(self._update)
-        STATUS.program_units.onValueChanged(self._update)
+        STATUS.program_units.onValueChanged(self.program_units.setValue)
 
     def getChannel(self, url):
         """Get data channel from URL.
@@ -108,29 +110,42 @@ class Position(DataPlugin):
         return chan_obj, chan_exp
 
     @DataChannel
-    def rel(chan, anum=-1):
+    def program_units(self):
+        return self.program_units.value
+
+    @program_units.setter
+    def program_units(self, canon_units):
+        print "setting units "
+        self.program_units.setValue(canon_units)
+
+    @program_units.tostring
+    def program_units(self):
+        return ['in', 'mm', 'cm'].index(self.program_units.value)
+
+    @DataChannel
+    def rel(self, anum=-1):
         """The current G5x relative axis positions."""
         if anum == -1:
-            return chan.value
-        return chan.value[anum]
+            return self.rel.value
+        return self.rel.value[anum]
 
     @rel.tostring
-    def rel(chan, anum):
-        return '%8.4f' % chan.value[anum]
+    def rel(self, anum):
+        return self._current_format % self.rel.value[anum]
 
     @DataChannel
-    def abs(chan, anum=-1):
+    def abs(self, anum=-1):
         """The current absolute axis positions."""
         if anum == -1:
-            return chan.value
-        return chan.value[anum]
+            return self.value
+        return self.abs.value[anum]
 
     @DataChannel
-    def dtg(chan, anum=-1):
+    def dtg(self, anum=-1):
         """The per axis remaining distance-to-go for the current move."""
         if anum == -1:
-            return chan.value
-        return chan.value[anum]
+            return self.dtg.value
+        return self.dtg.value[anum]
 
     def posToString(self, pos, ):
         pass

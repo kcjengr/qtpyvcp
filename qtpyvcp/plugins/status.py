@@ -50,7 +50,7 @@ class Status(DataPlugin):
                 self.channels[item].value = getattr(STAT, item)
             elif item not in excluded_items and not item.startswith('_'):
                 chan = DataChannel(doc=item, data=getattr(STAT, item))
-                chan.value = getattr(STAT, item)
+                self.value = getattr(STAT, item)
                 self.channels[item] = chan
                 setattr(self, item, chan)
 
@@ -69,25 +69,30 @@ class Status(DataPlugin):
 
     recent_files = DataChannel(doc='List of recently loaded files', settable=True, data=[])
 
+    class task_state(DataChannel):
+        def value(self):
+            return self.value
+
+
     @DataChannel
-    def on(chan):
+    def on(self):
         """True if machine power is ON."""
         return STAT.task_state == linuxcnc.STATE_ON
 
     @DataChannel
-    def file(chan):
+    def file(self):
         """Currently loaded file."""
-        return chan.value
+        return self.value or 'No file loaded'
 
     @file.setter
-    def file(chan, fname):
+    def file(self, fname):
         if STAT.interp_state == linuxcnc.INTERP_IDLE \
                 and STAT.call_level == 0:
-            chan.value = fname
-            chan.signal.emit(fname)
+            self.value = fname
+            self.signal.emit(fname)
 
     @DataChannel
-    def task_state(chan, query=None):
+    def task_state(self, query=None):
         """Current status of task
 
         * E-Stop
@@ -103,21 +108,21 @@ class Status(DataPlugin):
         :rtype: int, str
         """
         if query == 'string':
-            return chan.fstr()
-        return chan.value
+            return str(self.task_state)
+        return self.task_state.value
 
     @task_state.tostring
-    def task_state(chan):
+    def task_state(self):
         task_states = {0: "N/A",
                        linuxcnc.STATE_ESTOP: "E-Stop",
                        linuxcnc.STATE_ESTOP_RESET: "Reset",
                        linuxcnc.STATE_ON: "On",
                        linuxcnc.STATE_OFF: "Off"}
 
-        return task_states[chan.value]
+        return task_states[self.task_state.value]
 
     @DataChannel
-    def interp_state(chan, query=None):
+    def interp_state(self, query=None):
         """Current interpreter state
 
         * Idle
@@ -134,11 +139,11 @@ class Status(DataPlugin):
         """
 
         if query == 'string':
-            return str(chan)
-        return chan.value
+            return str(self.interp_state)
+        return self.interp_state.value
 
     @interp_state.tostring
-    def interp_state(chan):
+    def interp_state(self):
         states = {0: "N/A",
                   linuxcnc.INTERP_IDLE: "Idle",
                   linuxcnc.INTERP_READING: "Reading",
@@ -148,7 +153,7 @@ class Status(DataPlugin):
         return states[STAT.interp_state]
 
     @DataChannel
-    def motion_mode(chan, query=None):
+    def motion_mode(self, query=None):
         """Current motion controller mode
 
         * Coord
@@ -164,20 +169,20 @@ class Status(DataPlugin):
         """
 
         if query == 'string':
-            return str(chan)
-        return chan.value
+            return str(self.motion_mode)
+        return self.motion_mode.value
 
     @motion_mode.tostring
-    def motion_mode(chan):
+    def motion_mode(self):
         modes = {0: "N/A",
                   linuxcnc.TRAJ_MODE_COORD: "Coord",
                   linuxcnc.TRAJ_MODE_FREE: "Free",
                   linuxcnc.TRAJ_MODE_TELEOP: "Teleop"}
 
-        return modes[chan.value]
+        return modes[self.motion_mode.value]
 
     @DataChannel
-    def state(chan, query=None):
+    def state(self, query=None):
         """Current command execution status
 
         * Done
@@ -193,20 +198,20 @@ class Status(DataPlugin):
         """
 
         if query == 'string':
-            return chan.fstr()
-        return chan.value
+            return self.fstr()
+        return self.value
 
     @state.tostring
-    def state(chan):
+    def state(self):
         states = {0: "N/A",
                        linuxcnc.RCS_DONE: "Done",
                        linuxcnc.RCS_EXEC: "Exec",
                        linuxcnc.RCS_ERROR: "Error"}
 
-        return states[chan.value]
+        return states[self.value]
 
     @DataChannel
-    def exec_state(chan, query=None):
+    def exec_state(self, query=None):
         """Current task execution state
 
         * Error
@@ -228,11 +233,11 @@ class Status(DataPlugin):
         """
 
         if query == 'string':
-            return chan.fstr()
-        return chan.value
+            return self.fstr()
+        return self.value
 
     @exec_state.tostring
-    def exec_state(chan):
+    def exec_state(self):
         exec_states = {0: "N/A",
                         linuxcnc.EXEC_ERROR: "Error",
                         linuxcnc.EXEC_DONE: "Done",
@@ -243,10 +248,10 @@ class Status(DataPlugin):
                         linuxcnc.EXEC_WAITING_FOR_DELAY: "Waiting for Delay",
                         linuxcnc.EXEC_WAITING_FOR_SYSTEM_CMD: "Waiting for system CMD",
                         linuxcnc.EXEC_WAITING_FOR_SPINDLE_ORIENTED: "Waiting for spindle orient"}
-        return exec_states[chan.value]
+        return exec_states[self.value]
 
     @DataChannel
-    def task_mode(chan, query=None):
+    def task_mode(self, query=None):
         """Current task mode
 
         * Manual
@@ -262,20 +267,20 @@ class Status(DataPlugin):
         """
 
         if query == 'string':
-            return chan.fstr()
-        return chan.value
+            return self.fstr()
+        return self.value
 
     @task_mode.tostring
-    def task_mode(chan):
+    def task_mode(self):
         task_modes = {0: "N/A",
                        linuxcnc.MODE_MANUAL: "Manual",
                        linuxcnc.MODE_AUTO: "Auto",
                        linuxcnc.MODE_MDI: "MDI"}
 
-        return task_modes[chan.value]
+        return task_modes[self.value]
 
     @DataChannel
-    def motion_type(chan, query=None):
+    def motion_type(self, query=None):
         """Current executing motion
 
         * Traverse
@@ -294,11 +299,11 @@ class Status(DataPlugin):
         """
 
         if query == 'string':
-            return chan.fstr()
-        return chan.value
+            return self.fstr()
+        return self.value
 
     @motion_type.tostring
-    def motion_type(chan):
+    def motion_type(self):
         motion_types = {0: "N/A",
                         linuxcnc.MOTION_TYPE_TRAVERSE: "Traverse",
                         linuxcnc.MOTION_TYPE_FEED: "Linear Feed",
@@ -306,10 +311,10 @@ class Status(DataPlugin):
                         linuxcnc.MOTION_TYPE_TOOLCHANGE: "Tool Change",
                         linuxcnc.MOTION_TYPE_PROBING: "Probing",
                         linuxcnc.MOTION_TYPE_INDEXROTARY: "Rotary Index"}
-        return motion_types[chan.value]
+        return motion_types[self.value]
 
     @DataChannel
-    def interp_state(chan, query=None):
+    def interp_state(self, query=None):
         """Current state of RS274NGC interpreter
 
         * Idle
@@ -326,22 +331,22 @@ class Status(DataPlugin):
         """
 
         if query == 'string':
-            return chan.fstr()
-        return chan.value
+            return str(self.interp_state)
+        return self.interp_state.value
 
     @interp_state.tostring
-    def interp_state(chan):
+    def interp_state(self):
         interp_states = {0: "N/A",
                             linuxcnc.INTERP_IDLE: "Idle",
                             linuxcnc.INTERP_READING: "Reading",
                             linuxcnc.INTERP_PAUSED: "Paused",
                             linuxcnc.INTERP_WAITING: "Waiting"}
 
-        return interp_states[chan.value]
+        return interp_states[self.interp_state.value]
 
 
     @DataChannel
-    def interpreter_errcode(chan, query=None):
+    def interpreter_errcode(self, query=None):
         """Current RS274NGC interpreter return code
 
         * Ok
@@ -360,11 +365,11 @@ class Status(DataPlugin):
         """
 
         if query == 'string':
-            return chan.fstr()
-        return chan.value
+            return self.fstr()
+        return self.value
 
     @interpreter_errcode.tostring
-    def interpreter_errcode(chan):
+    def interpreter_errcode(self):
         interpreter_errcodes = {0: "N/A",
                                 1: "Ok",
                                 2: "Exit",
@@ -373,19 +378,19 @@ class Status(DataPlugin):
                                 4: "File not open",
                                 5: "Error"}
 
-        return interpreter_errcodes[chan.value]
+        return interpreter_errcodes[self.value]
 
     all_homed = DataChannel(doc='True if all homed, or NO_FORCE_HOMING is True',
                             data=False)
 
     @all_homed.setter
-    def all_homed(chan, *args, **kwargs):
-        if chan.no_force_homing:
-            chan._date = True
+    def all_homed(self, *args, **kwargs):
+        if self.no_force_homing:
+            self._date = True
         for jnum in range(STAT.joints):
             if not STAT.joint[jnum]['homed']:
-                chan.value = False
-        chan.value = True
+                self.value = False
+        self.value = True
 
 
     def allHomed(self):
@@ -419,8 +424,8 @@ class Status(DataPlugin):
             self.timer.stop()
             return
 
-        for chan, chan_obj in self.channels.iteritems():
-            new_value = getattr(STAT, chan, None)
+        for self, chan_obj in self.channels.iteritems():
+            new_value = getattr(STAT, self, None)
             if new_value is None:
                 continue
             if chan_obj.value != new_value:
