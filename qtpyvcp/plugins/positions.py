@@ -7,9 +7,9 @@ machine or program units.
 Usage:
     Example syntax to use in Widget Rules Editor::
 
-        position:axis?abs        # returns tuple of ABS positions
-        position:axis?rel        # returns tuple of REL positions
-        position:axis?dtg        # returns tuple of DTG values
+        position:abs?string&axis=x        # returns X axis absolute position
+        position:rel?string&axis=x        # returns X axis relative position
+        position:dtg?string&axis=x        # returns X axis DTG value
 
 ToDO:
     Add joint positions.
@@ -120,7 +120,20 @@ class Position(DataPlugin):
 
     @DataChannel
     def rel(self, anum=-1):
-        """The current G5x relative axis positions."""
+        """The current relative axis positions including all offsets
+
+        To get a single axis pass string and the axis letter::
+
+            position:rel?string&axis=x
+
+        To get a tuple of all the axes pass only string::
+
+            position:rel?
+
+        :returns: current relative axis positions including all offsets
+        :rtype: tuple, str
+        """
+
         if anum == -1:
             return self.rel.value
         return self.rel.value[anum]
@@ -131,14 +144,40 @@ class Position(DataPlugin):
 
     @DataChannel
     def abs(self, anum=-1):
-        """The current absolute axis positions."""
+        """The current absolute axis positions
+
+        To get a single axis pass string and the axis letter::
+
+            position:abs?string&axis=x
+
+        To get a tuple of all the axes pass only string::
+
+            position:abs?
+
+        :returns: current absolute axis positions
+        :rtype: tuple, str
+        """
+
         if anum == -1:
             return self.value
         return self.abs.value[anum]
 
     @DataChannel
     def dtg(self, anum=-1):
-        """The per axis remaining distance-to-go for the current move."""
+        """The remaining distance-to-go for the current move
+
+        To get a single axis pass string and the axis letter::
+
+            position:dtg?string&axis=x
+
+        To get a tuple of all the axes pass only string::
+
+            position:dtg?
+
+        :returns: remaining distance-to-go for the current move
+        :rtype: tuple, str
+        """
+
         if anum == -1:
             return self.dtg.value
         return self.dtg.value[anum]
