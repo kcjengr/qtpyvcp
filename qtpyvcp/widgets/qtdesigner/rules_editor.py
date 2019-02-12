@@ -86,7 +86,7 @@ class CompleterDelegate(QtWidgets.QStyledItemDelegate):
             for chan_name in obj.channels:
                 items.append('{}:{}'.format(plugin, chan_name))
 
-        self.completer = QtWidgets.QCompleter(items)
+        self.completer = QtWidgets.QCompleter(sorted(items))
         self.completer.setCompletionColumn(0)
         self.completer.setCompletionRole(QtCore.Qt.EditRole)
         self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
