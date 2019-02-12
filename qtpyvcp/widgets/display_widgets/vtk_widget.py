@@ -20,7 +20,7 @@ class VTKWidget(QWidget, VCPWidget):
         self.parent = parent
         self.status = STATUS
 
-        axis = self.status.stat.axis
+        self.axis = self.status.stat.axis
 
         self.gr = VTKCanon()
 
@@ -40,7 +40,7 @@ class VTKWidget(QWidget, VCPWidget):
         # self.grid = Grid()
         # self.grid_actor = self.grid.get_actor()
 
-        self.machine = Machine(self.renderer, axis)
+        self.machine = Machine(self.renderer, self.axis)
         self.machine_actor = self.machine.get_actor()
 
         # self.axes = Axes()
@@ -82,10 +82,19 @@ class VTKWidget(QWidget, VCPWidget):
 
         self.gr.load(fname)
 
+        path = Path(self.gr)
+        path_actors = path.get_actors()
+
+        for path_actor in path_actors:
+            self.renderer.AddActor(path_actor)
+
+
+class Path:
+    def __init__(self, gr):
+
+        self.gr = gr
+
         feed_lines = len(self.gr.canon.feed)
-
-        print("Feed Lines", feed_lines)
-
         line = PolyLine(feed_lines)
 
         for index, point in enumerate(self.gr.canon.feed):
@@ -94,10 +103,9 @@ class VTKWidget(QWidget, VCPWidget):
 
         line.draw_poly_line()
 
-        actor = line.get_actor()
-        color = self.gr.colors["straight_feed"]
-        actor.GetProperty().SetColor(color)  # (R,G,B)
-        self.renderer.AddActor(actor)
+        self.feed_actor = line.get_actor()
+        self.color = self.gr.colors["straight_feed"]
+        self.feed_actor.GetProperty().SetColor(self.color)  # (R,G,B)
 
         # for item in self.gr.canon.traverse:
         #     line = VTKLineElement(8)
@@ -105,6 +113,9 @@ class VTKWidget(QWidget, VCPWidget):
         #     actor = line.get_actor()
         #     actor.GetProperty().SetColor(1, 0, 0)  # (R,G,B)
         #     self.parent.add_actor(actor)
+
+    def get_actors(self):
+        return [self.feed_actor]
 
 
 class PolyLine:
@@ -225,8 +236,6 @@ class Machine:
 
         cube_axes_actor = vtk.vtkCubeAxesActor()
 
-        # cube_axes_actor.SetUserTransform(transform)
-
         x_max = axis[0]["max_position_limit"]
         x_min = axis[0]["min_position_limit"]
 
@@ -244,7 +253,7 @@ class Machine:
         cube_axes_actor.SetYLabelFormat("%6.3f")
         cube_axes_actor.SetZLabelFormat("%6.3f")
 
-        cube_axes_actor.SetFlyModeToFurthestTriad()
+        cube_axes_actor.SetFlyModeToStaticEdges()
 
         cube_axes_actor.GetTitleTextProperty(0).SetColor(1.0, 0.0, 0.0)
         cube_axes_actor.GetLabelTextProperty(0).SetColor(1.0, 0.0, 0.0)
@@ -255,13 +264,13 @@ class Machine:
         cube_axes_actor.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
         cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
-        cube_axes_actor.DrawXInnerGridlinesOff()
-        cube_axes_actor.DrawYInnerGridlinesOff()
-        cube_axes_actor.DrawZInnerGridlinesOff()
+        # cube_axes_actor.XAxisMinorTickVisibilityOff()
+        # cube_axes_actor.YAxisMinorTickVisibilityOff()
+        # cube_axes_actor.ZAxisMinorTickVisibilityOff()
 
-        cube_axes_actor.XAxisMinorTickVisibilityOff()
-        cube_axes_actor.YAxisMinorTickVisibilityOff()
-        cube_axes_actor.ZAxisMinorTickVisibilityOff()
+        cube_axes_actor.XAxisTickVisibilityOn()
+        cube_axes_actor.YAxisTickVisibilityOn()
+        cube_axes_actor.ZAxisTickVisibilityOn()
 
         # cube_axes_actor.SetXUnits("mm")  # Todo machine units here
         # cube_axes_actor.SetYUnits("mm")
