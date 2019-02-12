@@ -5,9 +5,9 @@ import webbrowser
 
 from qtpy import QtWidgets, QtCore, QtDesigner
 
+from qtpyvcp import PLUGINS
 from qtpyvcp.plugins import DataChannel, getPlugin
 from plugin_extension import _PluginExtension
-
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -21,6 +21,7 @@ RULE_PROPERTIES = {
     # 'Opacity': ['setOpacity', float]
 }
 
+
 class RulesEditorExtension(_PluginExtension):
     def __init__(self, widget):
         super(RulesEditorExtension, self).__init__(widget)
@@ -29,6 +30,7 @@ class RulesEditorExtension(_PluginExtension):
 
     def editAction(self, state):
         RulesEditor(self.widget, parent=None).exec_()
+
 
 class TableCheckButton(QtWidgets.QWidget):
     def __init__(self, checked=False):
@@ -43,6 +45,28 @@ class TableCheckButton(QtWidgets.QWidget):
 
     def __getattr__(self, attr):
         return getattr(self.chk_bx, attr)
+
+
+class CompleterDelegate(QtWidgets.QStyledItemDelegate):
+    def __init__(self, parent=None):
+        super(CompleterDelegate, self).__init__(parent)
+
+        items = []
+        for plugin, obj in PLUGINS.iteritems():
+            for chan_name in obj.channels:
+                items.append('{}:{}'.format(plugin, chan_name))
+
+        self.completer = QtWidgets.QCompleter(items)
+        self.completer.setCompletionColumn(0)
+        self.completer.setCompletionRole(QtCore.Qt.EditRole)
+        self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+
+    def createEditor(self, parent, option, index):
+        editor = QtWidgets.QLineEdit(parent)
+        editor.setFrame(False)
+        editor.setCompleter(self.completer)
+        return editor
+
 
 class RulesEditor(QtWidgets.QDialog):
     """QDialog for user-friendly editing of widget Rules in Qt Designer.
@@ -206,6 +230,8 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.setMinimumWidth(350)
         self.tbl_channels.setShowGrid(True)
         self.tbl_channels.setCornerButtonEnabled(False)
+        delegate = CompleterDelegate(self.tbl_channels)
+        self.tbl_channels.setItemDelegateForColumn(0, delegate)
         self.tbl_channels.model().dataChanged.connect(self.tbl_channels_changed)
         headers = ["Channel", "Trigger", "Type"]
         self.tbl_channels.setColumnCount(len(headers))
@@ -427,7 +453,6 @@ class RulesEditor(QtWidgets.QDialog):
 
     def property_changed(self, index):
         """Callback executed when the property is selected."""
-        print "prop changed"
         try:
             prop = self.cmb_property.currentData()
             if prop[1] is None:
