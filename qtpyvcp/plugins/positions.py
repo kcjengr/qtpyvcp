@@ -44,7 +44,7 @@ else:
 class Position(DataPlugin):
     """Positions Plugin"""
     def __init__(self, report_actual_pos=True, use_program_units=True,
-                 metric_format='%8.3f', imperial_format='%8.4f'):
+                 metric_format='%9.3f', imperial_format='%8.4f'):
         super(Position, self).__init__()
 
         self._report_actual_pos = report_actual_pos
@@ -61,7 +61,7 @@ class Position(DataPlugin):
         STATUS.g5x_offset.onValueChanged(self._update)
         STATUS.g92_offset.onValueChanged(self._update)
         STATUS.tool_offset.onValueChanged(self._update)
-        STATUS.program_units.onValueChanged(self.program_units.setValue)
+        STATUS.program_units.onValueChanged(self.updateUnits)
 
     def getChannel(self, url):
         """Get data channel from URL.
@@ -101,22 +101,19 @@ class Position(DataPlugin):
                 chan_exp = lambda: chan_obj.getValue(*args, **kwargs)
 
         except (KeyError, SyntaxError):
+            LOG.exception('Error getting channel')
             return None, None
 
         return chan_obj, chan_exp
 
-    @DataChannel
-    def program_units(self):
-        return self.program_units.value
+    def updateUnits(self, canon_units):
+        print 'updating units', canon_units
+        if canon_units == 2:
+            self._current_format = self._metric_format
+        else:
+            self._current_format = self._imperial_format
 
-    @program_units.setter
-    def program_units(self, canon_units):
-        print "setting units "
-        self.program_units.setValue(canon_units)
-
-    @program_units.tostring
-    def program_units(self):
-        return ['in', 'mm', 'cm'].index(self.program_units.value)
+        self._update()
 
     @DataChannel
     def rel(self, anum=-1):
@@ -182,8 +179,10 @@ class Position(DataPlugin):
             return self.dtg.value
         return self.dtg.value[anum]
 
-    def posToString(self, pos, ):
-        pass
+    def posToString(self, pos, format=None):
+        if format is not None:
+            return format % self.rel.value[anum]
+        return self._current_format % pos
 
     @property
     def report_actual(self):
