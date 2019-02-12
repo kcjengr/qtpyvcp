@@ -3,6 +3,7 @@ import json
 import functools
 import webbrowser
 
+from qtpy import uic
 from qtpy import QtWidgets, QtCore, QtDesigner
 
 from qtpyvcp import PLUGINS
@@ -30,6 +31,35 @@ class RulesEditorExtension(_PluginExtension):
 
     def editAction(self, state):
         RulesEditor(self.widget, parent=None).exec_()
+
+
+class ChanInfoDialog(QtWidgets.QDialog):
+    def __init__(self, info, parent=None):
+        super(ChanInfoDialog, self).__init__(parent)
+        ui_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                               "channel_info_dialog.ui")
+        uic.loadUi(ui_file, self)
+
+        ch_obj, ch_exp, ch_val, ch_doc = info
+
+        doc_lines = [l.strip() for l in ch_doc.strip().splitlines()]
+        title = doc_lines[0]
+
+        self.lbl_rtn_typ.setText(type(ch_obj.getValue()).__name__)
+
+        for line in doc_lines:
+            if line.startswith(':returns:'):
+                self.lbl_chan_rtn.setText(line.replace(':returns:', '').strip())
+            elif line.startswith(':rtype:'):
+                self.lbl_rtn_typ.setText(line.replace(':rtype:', '').strip())
+
+        self.lbl_chan_name.setText(title)
+        self.tb_chan_doc.setText(ch_doc)
+        val = ch_obj.getValue()
+        txt = ''
+        if len(self.lbl_rtn_typ.text().split(',')) > 1:
+            txt = ', ' + ch_obj.getString()
+        self.lbl_can_val.setText(str(val) + txt)
 
 
 class TableCheckButton(QtWidgets.QWidget):
@@ -240,7 +270,8 @@ class RulesEditor(QtWidgets.QDialog):
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
-        # self.tbl_channels.setColumnWidth(2, 60)
+        # header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
+        self.tbl_channels.setColumnWidth(3, 8)
 
         frm_edit_layout.addWidget(self.tbl_channels)
 
@@ -250,7 +281,16 @@ class RulesEditor(QtWidgets.QDialog):
         self.lbl_expected_type = QtWidgets.QLabel(parent=self)
         # self.lbl_expected_type.setText("")
         self.lbl_expected_type.setStyleSheet("color: rgb(0, 128, 255); font-weight: bold;")
-        expression_layout.addRow(lbl_expected, self.lbl_expected_type)
+
+        hbox = QtWidgets.QHBoxLayout()
+        hbox.addWidget(self.lbl_expected_type)
+        hbox.addStretch()
+        self.btn_chan_info = QtWidgets.QPushButton("Info ...")
+        self.btn_chan_info.setAutoDefault(False)
+        self.btn_chan_info.pressed.connect(self.show_chan_info)
+        hbox.addWidget(self.btn_chan_info)
+
+        expression_layout.addRow(lbl_expected, hbox)
 
         lbl_expression = QtWidgets.QLabel("Expression:")
         expr_help_layout = QtWidgets.QHBoxLayout()
@@ -318,8 +358,6 @@ class RulesEditor(QtWidgets.QDialog):
             else:
                 typ_lbl.setText("<font color='green'>{}</font>".format(type(ch_val).__name__))
             self.tbl_channels.setCellWidget(row, 2, typ_lbl)
-
-            # self.tbl_channels.setItem(row, 2, QtWidgets.QTableWidgetItem(type(ch_val).__name__))
 
         self.frm_edit.setEnabled(True)
         self.loading_data = False
@@ -445,6 +483,15 @@ class RulesEditor(QtWidgets.QDialog):
             webbrowser.open(help_url, new=2, autoraise=True)
         else:
             return help_url
+
+    def show_chan_info(self):
+        selection = self.tbl_channels.selectedIndexes()
+        if len(selection) > 0:
+            row = selection[0].row()
+            model = self.tbl_channels.model()
+            chan = model.data(model.index(row, 0))
+            info = self.get_channel_data(chan)
+            ChanInfoDialog(info).exec_()
 
     def name_changed(self):
         """Callback executed when the rule name is changed."""
