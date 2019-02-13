@@ -82,14 +82,17 @@ on the top left or delete a rule by clicking on the **Remove Rule** button.
     the property you select. This indicate the type of value the Expression should return.
 
 - **Channels**
-    Add at least one channel to be used to trigger the rule and provide a value for use in
-    the expression. To do this click at the **Add Channel** button on top of the table and
-    fill in the channel address. The channel address format is ``datasource:channel_name?query``
+    Add at least one channel to be used to trigger the rule and provide a value
+    for use in the expression. To do this click at the **Add Channel** button on
+    top of the table and fill in the channel address. The channel address format
+    is ``datasource:channel_name?query``. Type the first letter of the `Data
+    Plugin` to get a list of channels for that plugin. 
 
     Examples::
 
         status:paused                       # bool, whether the machine is paused or not
         status:joint[0].homed               # bool, whether joint No. 0 is homed
+        position:abs?string&axis=x          # string, current absolute position of the X axis
         tootlable:current_tool              # dict, dictionary of current tool data
         tootlable:current_tool?diameter     # float, query diameter of the currently loaded tool
         tootlable:current_tool?comment      # string, query comment for the currently loaded tool
