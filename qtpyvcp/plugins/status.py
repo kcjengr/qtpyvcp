@@ -387,7 +387,6 @@ class Status(DataPlugin):
     # line 83, in _run_ok elif not STATUS.allHomed():
 
     def allHomed(self):
-        """Returns TRUE if all joints are homed."""
         if self.no_force_homing:
             return True
         for jnum in range(STAT.joints):
