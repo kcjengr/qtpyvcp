@@ -156,8 +156,13 @@ class Position(DataPlugin):
         """
 
         if anum == -1:
-            return self.value
+            return self.abs.value
         return self.abs.value[anum]
+
+    @abs.tostring
+    def abs(self, anum):
+        return self._current_format % self.abs.value[anum]
+
 
     @DataChannel
     def dtg(self, anum=-1):
@@ -178,6 +183,11 @@ class Position(DataPlugin):
         if anum == -1:
             return self.dtg.value
         return self.dtg.value[anum]
+
+    @dtg.tostring
+    def dtg(self, anum):
+        return self._current_format % self.dtg.value[anum]
+
 
     def posToString(self, pos, format=None):
         if format is not None:
