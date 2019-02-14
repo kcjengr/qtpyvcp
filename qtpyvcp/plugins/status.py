@@ -355,6 +355,22 @@ class Status(DataPlugin):
         else:
             return ["N/A", "Inches", "Millimeters", "Centimeters"][STAT.program_units]
 
+    @DataChannel
+    def all_axes_homed(self):
+        print('all axes homed')
+        if self.no_force_homing:
+            self.value = True
+        else:
+            for jnum in range(STAT.joints):
+                if not STAT.joint[jnum]['homed']:
+                    self.value = False
+                    print('False')
+                else:
+                    self.value = True
+                    print('True')
+        print('self.value {}'.format(self.value))
+        return self.value
+
     @all_homed.setter
     def all_homed(self, *args, **kwargs):
         if self.no_force_homing:
