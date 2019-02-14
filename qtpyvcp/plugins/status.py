@@ -383,7 +383,7 @@ class Status(DataPlugin):
         self.value = True
     """
 
-    # this is used by File "/home/john/qtpyvcp/qtpyvcp/actions/program_actions.py",
+    # this is used by File "qtpyvcp/qtpyvcp/actions/program_actions.py",
     # line 83, in _run_ok elif not STATUS.allHomed():
 
     def allHomed(self):
