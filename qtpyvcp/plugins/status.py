@@ -53,6 +53,8 @@ class Status(DataPlugin):
                 self.channels[item] = chan
                 setattr(self, item, chan)
 
+        self.joint = tuple(JointStatus(jnum) for jnum in range(9))
+
         self.homed.notify(self.all_axes_homed.setValue)
 
         # Set up the periodic update timer
@@ -65,6 +67,13 @@ class Status(DataPlugin):
                                self.on.setValue(ts == linuxcnc.STATE_ON))
 
     recent_files = DataChannel(doc='List of recently loaded files', settable=True, data=[])
+
+    def getChannel(self, url):
+        if url.startswith('joint'):
+            _, jnum, url = url.split('.', 2)
+            return self.joint[int(jnum)].getChannel(url)
+
+        return super(Status, self).getChannel(url)
 
     @DataChannel
     def on(self):
@@ -425,8 +434,8 @@ class Status(DataPlugin):
             self.timer.stop()
             return
 
-        for self, chan_obj in self.channels.iteritems():
-            new_value = getattr(STAT, self, None)
+        for chan, chan_obj in self.channels.iteritems():
+            new_value = getattr(STAT, chan, None)
             if new_value is None:
                 continue
             if chan_obj.value != new_value:
@@ -434,7 +443,39 @@ class Status(DataPlugin):
                 chan_obj.value = new_value
                 chan_obj.signal.emit(new_value)
 
+        # joint status updates
+        for joint in self.joint:
+            joint._update()
+
+        # spindle status updates
+        # for snum, spindle in enumerate(self.spindle):
+        #     spindle._update(STAT.spindle[snum])
+
         # print time.time() - s
+
+
+class JointStatus(DataPlugin):
+    def __init__(self, jnum):
+        super(JointStatus, self).__init__()
+
+        self.jnum = jnum
+        self.jstat = STAT.joint[jnum]
+
+        for key, value in self.jstat.items():
+            chan = DataChannel(doc=key, data=value)
+            self.channels[key] = chan
+            setattr(self, key, chan)
+
+    def _update(self):
+        """Periodic joint item updates."""
+
+        jstat = STAT.joint[self.jnum].items()
+        changed_items = tuple(set(jstat) - set(self.jstat.items()))
+        for item in changed_items:
+            LOG.debug('JOINT_{0} {1}: {2}'.format(self.jnum, item[0], item[1]))
+            self.channels[item[0]].setValue(item[1])
+
+        self.jstat.update(jstat)
 
 
 if __name__ == "__main__":
