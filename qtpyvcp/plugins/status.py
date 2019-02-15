@@ -54,11 +54,7 @@ class Status(DataPlugin):
                 self.channels[item] = chan
                 setattr(self, item, chan)
 
-
-        #self.homed.notify(self.all_homed)
         self.homed.notify(self.all_axes_homed.setValue)
-
-        # self.task_state.notify(lambda s: self.on.value)
 
         # Set up the periodic update timer
         self.timer = QTimer()
@@ -326,11 +322,6 @@ class Status(DataPlugin):
 
         return interpreter_errcodes[STAT.interpreter_errcode]
 
-    """
-    all_homed = DataChannel(doc='True if all homed, or NO_FORCE_HOMING is True',
-                            data=False)
-    """
-
     @DataChannel
     def program_units(self):
         """Program units
@@ -361,7 +352,13 @@ class Status(DataPlugin):
 
     @DataChannel
     def all_axes_homed(self):
-        """True if all homed, or NO_FORCE_HOMING is True"""
+        """All axes homed status
+
+        True if all axes are homed or if [TRAJ]NO_FORCE_HOMING set in INI.
+
+        :returns: all homed
+        :rtype: bool
+        """
         if self.no_force_homing:
             self.value = True
         else:
@@ -372,17 +369,6 @@ class Status(DataPlugin):
             else:
                 self.value = True
         return self.value
-
-    """
-    @all_homed.setter
-    def all_homed(self, *args, **kwargs):
-        if self.no_force_homing:
-            self._date = True
-        for jnum in range(STAT.joints):
-            if not STAT.joint[jnum]['homed']:
-                self.value = False
-        self.value = True
-    """
 
     # this is used by File "qtpyvcp/qtpyvcp/actions/program_actions.py",
     # line 83, in _run_ok elif not STATUS.allHomed():
