@@ -71,12 +71,18 @@ class Status(DataPlugin):
 
     def getChannel(self, url):
         if url.startswith('joint'):
-            _, jnum, url = url.split('.', 2)
-            return self.joint[int(jnum)].getChannel(url)
+            try:
+                _, jnum, url = url.split('.', 2)
+                return self.joint[int(jnum)].getChannel(url)
+            except:
+                pass
 
-        if url.startswith('spindle'):
-            _, jnum, url = url.split('.', 2)
-            return self.spindle[int(jnum)].getChannel(url)
+        elif url.startswith('spindle'):
+            try:
+                _, jnum, url = url.split('.', 2)
+                return self.spindle[int(jnum)].getChannel(url)
+            except:
+                pass
 
         return super(Status, self).getChannel(url)
 
