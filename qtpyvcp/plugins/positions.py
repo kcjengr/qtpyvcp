@@ -188,12 +188,6 @@ class Position(DataPlugin):
     def dtg(self, anum):
         return self._current_format % self.dtg.value[anum]
 
-
-    def posToString(self, pos, format=None):
-        if format is not None:
-            return format % self.rel.value[anum]
-        return self._current_format % pos
-
     @property
     def report_actual(self):
         """Whether to report the actual position. Default True."""
