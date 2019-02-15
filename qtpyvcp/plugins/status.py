@@ -351,6 +351,29 @@ class Status(DataPlugin):
             return ["N/A", "Inches", "Millimeters", "Centimeters"][STAT.program_units]
 
     @DataChannel
+    def homed(self, anum=None):
+        """Axis homed status
+
+        If no axis number is specified returns a tuple of integers.
+        If ``anum`` is specified returns True if the axis is homed, else False.
+
+        Rules syntax::
+
+            status:homed
+            status:homed?anum=0
+
+        Args:
+         anum (int, optional) : the axis number to return the homed state of.
+
+        :returns: axis homed states
+        :rtype: tuple, bool
+
+        """
+        if anum is None:
+            return STAT.homed
+        return bool(STAT.homed[int(anum)])
+
+    @DataChannel
     def all_axes_homed(self):
         """All axes homed status
 
