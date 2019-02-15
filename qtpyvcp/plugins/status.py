@@ -362,6 +362,22 @@ class Status(DataPlugin):
             return ["N/A", "Inches", "Millimeters", "Centimeters"][STAT.program_units]
 
     @DataChannel
+    def settings(self, item=None):
+        """Interpreter Settings
+
+        Available Items:
+            0) sequence_number
+            1) feed
+            2) speed
+
+        :return: interpreter settings
+        :rtype: tuple, int, float
+        """
+        if item is None:
+            return STAT.settings
+        return STAT.settings[{'sequence_number': 0, 'feed': 1, 'speed': 2}[item]]
+
+    @DataChannel
     def homed(self, anum=None):
         """Axis homed status
 
