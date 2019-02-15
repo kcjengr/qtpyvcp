@@ -93,7 +93,7 @@ class Status(DataPlugin):
 
     @DataChannel
     def file(self):
-        """Currently loaded file."""
+        """Currently loaded file including path"""
         return self.file.value or 'No file loaded'
 
     @file.setter
