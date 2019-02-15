@@ -369,6 +369,7 @@ class Status(DataPlugin):
                 if STAT.homed[anum] is not 1:
                     self.value = False
                     break
+            else:
                 self.value = True
         return self.value
 
