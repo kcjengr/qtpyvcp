@@ -53,8 +53,17 @@ class Status(DataPlugin):
                 self.channels[item] = chan
                 setattr(self, item, chan)
 
+        # add joint status channels
         self.joint = tuple(JointStatus(jnum) for jnum in range(9))
+        for joint in self.joint:
+            for chan, obj in joint.channels.items():
+                self.channels['joint.{}.{}'.format(joint.jnum, chan)] = obj
+
+        # add spindle status channels
         self.spindle = tuple(SpindleStatus(snum) for snum in range(8))
+        for spindle in self.spindle:
+            for chan, obj in spindle.channels.items():
+                self.channels['spindle.{}.{}'.format(spindle.snum, chan)] = obj
 
         self.homed.notify(self.all_axes_homed.setValue)
 
@@ -68,23 +77,6 @@ class Status(DataPlugin):
                                self.on.setValue(ts == linuxcnc.STATE_ON))
 
     recent_files = DataChannel(doc='List of recently loaded files', settable=True, data=[])
-
-    def getChannel(self, url):
-        if url.startswith('joint'):
-            try:
-                _, jnum, url = url.split('.', 2)
-                return self.joint[int(jnum)].getChannel(url)
-            except:
-                pass
-
-        elif url.startswith('spindle'):
-            try:
-                _, jnum, url = url.split('.', 2)
-                return self.spindle[int(jnum)].getChannel(url)
-            except:
-                pass
-
-        return super(Status, self).getChannel(url)
 
     @DataChannel
     def on(self):
