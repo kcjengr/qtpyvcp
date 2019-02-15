@@ -50,7 +50,6 @@ class Status(DataPlugin):
                 self.channels[item].value = getattr(STAT, item)
             elif item not in excluded_items and not item.startswith('_'):
                 chan = DataChannel(doc=item, data=getattr(STAT, item))
-                self.value = getattr(STAT, item)
                 self.channels[item] = chan
                 setattr(self, item, chan)
 
@@ -75,13 +74,13 @@ class Status(DataPlugin):
     @DataChannel
     def file(self):
         """Currently loaded file."""
-        return self.value or 'No file loaded'
+        return self.file.value or 'No file loaded'
 
     @file.setter
     def file(self, fname):
         if STAT.interp_state == linuxcnc.INTERP_IDLE \
                 and STAT.call_level == 0:
-            self.value = fname
+            self.file.value = fname
             self.signal.emit(fname)
 
     @DataChannel
@@ -383,15 +382,15 @@ class Status(DataPlugin):
         :rtype: bool
         """
         if self.no_force_homing:
-            self.value = True
+            self.all_axes_homed.value = True
         else:
             for anum in INFO.AXIS_NUMBER_LIST:
                 if STAT.homed[anum] is not 1:
-                    self.value = False
+                    self.all_axes_homed.value = False
                     break
             else:
-                self.value = True
-        return self.value
+                self.all_axes_homed.value = True
+        return self.all_axes_homed.value
 
     # this is used by File "qtpyvcp/qtpyvcp/actions/program_actions.py",
     # line 83, in _run_ok elif not STATUS.allHomed():
