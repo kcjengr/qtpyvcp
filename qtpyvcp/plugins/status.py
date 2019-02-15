@@ -54,6 +54,7 @@ class Status(DataPlugin):
                 setattr(self, item, chan)
 
         self.joint = tuple(JointStatus(jnum) for jnum in range(9))
+        self.spindle = tuple(SpindleStatus(snum) for snum in range(8))
 
         self.homed.notify(self.all_axes_homed.setValue)
 
@@ -72,6 +73,10 @@ class Status(DataPlugin):
         if url.startswith('joint'):
             _, jnum, url = url.split('.', 2)
             return self.joint[int(jnum)].getChannel(url)
+
+        if url.startswith('spindle'):
+            _, jnum, url = url.split('.', 2)
+            return self.spindle[int(jnum)].getChannel(url)
 
         return super(Status, self).getChannel(url)
 
@@ -448,8 +453,8 @@ class Status(DataPlugin):
             joint._update()
 
         # spindle status updates
-        # for snum, spindle in enumerate(self.spindle):
-        #     spindle._update(STAT.spindle[snum])
+        for spindle in self.spindle:
+            spindle._update()
 
         # print time.time() - s
 
@@ -476,6 +481,30 @@ class JointStatus(DataPlugin):
             self.channels[item[0]].setValue(item[1])
 
         self.jstat.update(jstat)
+
+
+class SpindleStatus(DataPlugin):
+    def __init__(self, snum):
+        super(SpindleStatus, self).__init__()
+
+        self.snum = snum
+        self.sstat = STAT.spindle[snum]
+
+        for key, value in self.sstat.items():
+            chan = DataChannel(doc=key, data=value)
+            self.channels[key] = chan
+            setattr(self, key, chan)
+
+    def _update(self):
+        """Periodic spindle item updates."""
+
+        sstat = STAT.spindle[self.snum].items()
+        changed_items = tuple(set(sstat) - set(self.sstat.items()))
+        for item in changed_items:
+            LOG.debug('Spindle_{0} {1}: {2}'.format(self.snum, item[0], item[1]))
+            self.channels[item[0]].setValue(item[1])
+
+        self.sstat.update(sstat)
 
 
 if __name__ == "__main__":
