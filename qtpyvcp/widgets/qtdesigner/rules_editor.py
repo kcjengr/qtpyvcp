@@ -58,7 +58,7 @@ class ChanInfoDialog(QtWidgets.QDialog):
         val = ch_obj.getValue()
         txt = ''
         if len(self.lbl_rtn_typ.text().split(',')) > 1:
-            txt = ', ' + ch_obj.getString()
+            txt = ', ' + ch_val
         self.lbl_can_val.setText(str(val) + txt)
 
 
