@@ -12,10 +12,6 @@ from qtpyvcp.plugins.plugin import DataPlugin, DataChannel
 LOG = getLogger(__name__)
 
 
-class NoSuchPlugin(Exception):
-    pass
-
-
 def loadDataPlugins(plugins):
     """Load data plugins from list of object references.
 
@@ -74,4 +70,4 @@ def getPlugin(protocol):
     try:
         return PLUGINS[protocol]
     except KeyError:
-        raise NoSuchPlugin("Failed to find plugin for '{}' protocol.".format(protocol))
+        raise ValueError("Failed to find plugin for '{}' protocol.".format(protocol))

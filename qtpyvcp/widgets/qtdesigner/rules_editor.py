@@ -549,7 +549,12 @@ class RulesEditor(QtWidgets.QDialog):
     def get_channel_data(self, url):
 
         protocol, sep, item = url.partition(':')
-        chan_obj, chan_exp = getPlugin(protocol).getChannel(item)
+        try:
+            plugin = getPlugin(protocol)
+        except ValueError:
+            return None, None, None, None
+
+        chan_obj, chan_exp = plugin.getChannel(item)
         if chan_obj is not None:
             chan_val = chan_exp()
         else:
