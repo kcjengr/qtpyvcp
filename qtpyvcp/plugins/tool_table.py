@@ -20,6 +20,7 @@ from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 CMD = linuxcnc.command()
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
+STAT = STATUS.stat
 INFO = Info()
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
@@ -88,94 +89,8 @@ def makeLorumIpsumToolTable():
                      {'T': i, 'P': i, 'R': 'Lorum Ipsum ' + str(i)})
             for i in range(10)}
 
-class CurrentTool(DataChannel):
-    """Current tool data channel.
-    """
-
-    def __init__(self):
-        super(CurrentTool, self).__init__()
-
-        self._value = NO_TOOL
-
-    @property
-    def value(self):
-        return self._value
-
-    @property
-    def number(self):
-        return self._value['T']
-
-    @property
-    def pocket(self):
-        return self._value['P']
-
-    @property
-    def diameter(self):
-        return self._value['D']
-
-    @property
-    def x_offset(self):
-        return self._value['X']
-
-    @property
-    def y_offset(self):
-        return self._value['Y']
-
-    @property
-    def z_offset(self):
-        return self._value['Z']
-
-    @property
-    def a_offset(self):
-        return self._value['A']
-
-    @property
-    def b_offset(self):
-        return self._value['B']
-
-    @property
-    def c_offset(self):
-        return self._value['C']
-
-    @property
-    def u_offset(self):
-        return self._value['U']
-
-    @property
-    def v_offset(self):
-        return self._value['V']
-
-    @property
-    def w_offset(self):
-        return self._value['W']
-
-    @property
-    def front_angle(self):
-        return self._value['I']
-
-    @property
-    def back_angle(self):
-        return self._value['J']
-
-    @property
-    def orientation(self):
-        return self._value['Q']
-
-    @property
-    def comment(self):
-        return self._value['R']
-
-    def _update(self, value):
-        self._value = value
-        self.valueChanged.emit(value)
-
 
 class ToolTable(DataPlugin):
-
-    protocol = 'tooltable'
-
-    # # data channels
-    # current_tool = DataChannel()
 
     TOOL_TABLE = {0: NO_TOOL}
     DEFAULT_TOOL = DEFAULT_TOOL
@@ -205,12 +120,39 @@ class ToolTable(DataPlugin):
 
 
     @DataChannel
-    def current_tool(chan, item=None):
-        print chan.value
-        print item
+    def current_tool(self, item=None):
+        """Current Tool Info
+
+        Available items:
+
+        * T -- tool number
+        * P -- pocket number
+        * X -- x offset
+        * Y -- y offset
+        * Z -- z offset
+        * A -- a offset
+        * B -- b offset
+        * C -- c offset
+        * U -- u offset
+        * V -- v offset
+        * W -- w offset
+        * I -- front angle
+        * J -- back angle
+        * Q -- orientation
+        * R -- remark
+
+        Rules channel syntax::
+
+            tooltable:current_tool
+            tooltable:current_tool?X
+            tooltable:current_tool?x_offset
+
+        :param item: the name of the tool data item to get
+        :return: dict, int, float, str
+        """
         if item is None:
-            return chan.value
-        return chan.value.get(item.upper())
+            return self.TOOL_TABLE[STAT.tool_in_spindle]
+        return self.TOOL_TABLE[STAT.tool_in_spindle].get(item[0].upper())
 
     def initialise(self):
         self.fs_watcher = QFileSystemWatcher()
