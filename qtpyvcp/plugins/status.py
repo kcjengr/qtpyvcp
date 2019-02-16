@@ -96,60 +96,6 @@ class Status(DataPlugin):
             self.signal.emit(fname)
 
     @DataChannel
-    def task_state(self, query=None):
-        """Current status of task
-
-        1) E-Stop
-        2) Reset
-        3) Off
-        4) On
-
-        To return the string in a status label::
-
-            status:task_state?string
-
-        :returns: current task state
-        :rtype: int, str
-        """
-        return STAT.task_state
-
-    @task_state.tostring
-    def task_state(self):
-        task_states = {0: "N/A",
-                       linuxcnc.STATE_ESTOP: "E-Stop",
-                       linuxcnc.STATE_ESTOP_RESET: "Reset",
-                       linuxcnc.STATE_ON: "On",
-                       linuxcnc.STATE_OFF: "Off"}
-
-        return task_states[STAT.task_state]
-
-    @DataChannel
-    def motion_mode(self):
-        """Current motion controller mode
-
-        1) Free
-        2) Coord
-        3) Teleop
-
-        To return the string in a status label::
-
-            status:motion_mode?string
-
-        :returns: current motion mode
-        :rtype: int, str
-        """
-        return STAT.motion_mode
-
-    @motion_mode.tostring
-    def motion_mode(self):
-        modes = {0: "N/A",
-                  linuxcnc.TRAJ_MODE_COORD: "Coord",
-                  linuxcnc.TRAJ_MODE_FREE: "Free",
-                  linuxcnc.TRAJ_MODE_TELEOP: "Teleop"}
-
-        return modes[STAT.motion_mode]
-
-    @DataChannel
     def state(self):
         """Current command execution status
 
@@ -215,65 +161,6 @@ class Status(DataPlugin):
         return exec_states[STAT.exec_state]
 
     @DataChannel
-    def task_mode(self):
-        """Current task mode
-
-        1) Manual
-        2) Auto
-        3) MDI
-
-        To return the string in a status label::
-
-            status:task_mode?string
-
-        :returns: current task mode
-        :rtype: int, str
-        """
-        return STAT.task_mode
-
-    @task_mode.tostring
-    def task_mode(self):
-        task_modes = {0: "N/A",
-                       linuxcnc.MODE_MANUAL: "Manual",
-                       linuxcnc.MODE_AUTO: "Auto",
-                       linuxcnc.MODE_MDI: "MDI"}
-
-        return task_modes[STAT.task_mode]
-
-    @DataChannel
-    def motion_type(self, query=None):
-        """Motion type
-
-        0) None
-        1) Traverse
-        2) Linear Feed
-        3) Arc Feed
-        4) Tool Change
-        5) Probing
-        6) Rotary Index
-
-        To return the string in a status label::
-
-            status:motion_type?string
-
-        :returns:  current motion type
-        :rtype: int, str
-        """
-        return STAT.motion_type
-
-    @motion_type.tostring
-    def motion_type(self):
-        motion_types = {0: "None",
-                        linuxcnc.MOTION_TYPE_TRAVERSE: "Traverse",
-                        linuxcnc.MOTION_TYPE_FEED: "Linear Feed",
-                        linuxcnc.MOTION_TYPE_ARC: "Arc Feed",
-                        linuxcnc.MOTION_TYPE_TOOLCHANGE: "Tool Change",
-                        linuxcnc.MOTION_TYPE_PROBING: "Probing",
-                        linuxcnc.MOTION_TYPE_INDEXROTARY: "Rotary Index"}
-
-        return motion_types[STAT.motion_type]
-
-    @DataChannel
     def interp_state(self):
         """Current state of RS274NGC interpreter
 
@@ -332,6 +219,119 @@ class Status(DataPlugin):
                                 5: "Error"}
 
         return interpreter_errcodes[STAT.interpreter_errcode]
+
+    @DataChannel
+    def task_state(self, query=None):
+        """Current status of task
+
+        1) E-Stop
+        2) Reset
+        3) Off
+        4) On
+
+        To return the string in a status label::
+
+            status:task_state?string
+
+        :returns: current task state
+        :rtype: int, str
+        """
+        return STAT.task_state
+
+    @task_state.tostring
+    def task_state(self):
+        task_states = {0: "N/A",
+                       linuxcnc.STATE_ESTOP: "E-Stop",
+                       linuxcnc.STATE_ESTOP_RESET: "Reset",
+                       linuxcnc.STATE_ON: "On",
+                       linuxcnc.STATE_OFF: "Off"}
+
+        return task_states[STAT.task_state]
+
+    @DataChannel
+    def task_mode(self):
+        """Current task mode
+
+        1) Manual
+        2) Auto
+        3) MDI
+
+        To return the string in a status label::
+
+            status:task_mode?string
+
+        :returns: current task mode
+        :rtype: int, str
+        """
+        return STAT.task_mode
+
+    @task_mode.tostring
+    def task_mode(self):
+        task_modes = {0: "N/A",
+                       linuxcnc.MODE_MANUAL: "Manual",
+                       linuxcnc.MODE_AUTO: "Auto",
+                       linuxcnc.MODE_MDI: "MDI"}
+
+        return task_modes[STAT.task_mode]
+
+    @DataChannel
+    def motion_mode(self):
+        """Current motion controller mode
+
+        1) Free
+        2) Coord
+        3) Teleop
+
+        To return the string in a status label::
+
+            status:motion_mode?string
+
+        :returns: current motion mode
+        :rtype: int, str
+        """
+        return STAT.motion_mode
+
+    @motion_mode.tostring
+    def motion_mode(self):
+        modes = {0: "N/A",
+                  linuxcnc.TRAJ_MODE_COORD: "Coord",
+                  linuxcnc.TRAJ_MODE_FREE: "Free",
+                  linuxcnc.TRAJ_MODE_TELEOP: "Teleop"}
+
+        return modes[STAT.motion_mode]
+
+    @DataChannel
+    def motion_type(self, query=None):
+        """Motion type
+
+        0) None
+        1) Traverse
+        2) Linear Feed
+        3) Arc Feed
+        4) Tool Change
+        5) Probing
+        6) Rotary Index
+
+        To return the string in a status label::
+
+            status:motion_type?string
+
+        :returns:  current motion type
+        :rtype: int, str
+        """
+        return STAT.motion_type
+
+    @motion_type.tostring
+    def motion_type(self):
+        motion_types = {0: "None",
+                        linuxcnc.MOTION_TYPE_TRAVERSE: "Traverse",
+                        linuxcnc.MOTION_TYPE_FEED: "Linear Feed",
+                        linuxcnc.MOTION_TYPE_ARC: "Arc Feed",
+                        linuxcnc.MOTION_TYPE_TOOLCHANGE: "Tool Change",
+                        linuxcnc.MOTION_TYPE_PROBING: "Probing",
+                        linuxcnc.MOTION_TYPE_INDEXROTARY: "Rotary Index"}
+
+        return motion_types[STAT.motion_type]
 
     @DataChannel
     def program_units(self):
