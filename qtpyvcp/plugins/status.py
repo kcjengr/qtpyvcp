@@ -459,8 +459,7 @@ class Status(DataPlugin):
                 continue
             if chan_obj.value != new_value:
                 # update the status items
-                chan_obj.value = new_value
-                chan_obj.signal.emit(new_value)
+                chan_obj.setValue(new_value)
 
         # joint status updates
         for joint in self.joint:
