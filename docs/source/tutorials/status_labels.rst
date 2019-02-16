@@ -295,51 +295,111 @@ interpreter_errcode
     | syntax ``status:interpreter_errcode?string`` returns str
 
 
-status:joint.0.backlash float
+joint.n.backlash
+    backlash in machine units, reflects [JOINT_n]BACKLASH (`n` is joint number)
 
-status:joint.0.enabled int
+    | syntax ``status:joint.n.backlash`` returns float
+    | syntax ``status:joint.n.backlash?string`` returns str
 
-status:joint.0.fault int
+joint.n.enabled
+    status of joint n enabled, 0 not enabled 1 enabled
 
-status:joint.0.ferror_current float
+    | syntax ``status:joint.n.enabled`` returns int
+    | syntax ``status:joint.n.enabled?string`` returns str
 
-status:joint.0.ferror_highmark float
+joint.n.fault
+    status of joint n fault, 0 not faulted 1 faulted
 
-status:joint.0.homed int
+    | syntax ``status:joint.n.fault`` returns int
+    | syntax ``status:joint.n.fault?string`` returns str
 
-status:joint.0.homing int
+joint.n.ferror_current
+    current joint n following error
 
-status:joint.0.inpos int
+    | syntax ``status:joint.n.ferror_current`` returns float
+    | syntax ``status:joint.n.ferror_current?string`` returns str
 
-status:joint.0.input float
+joint.n.ferror_highmark
+    joint n magnitude of max following error
 
-status:joint.0.jointType int
+    | syntax ``status:joint.n.ferror_highmark`` returns float
+    | syntax ``status:joint.n.ferror_highmark?string`` returns str
 
-status:joint.0.max_ferror float
+joint.n.homed
+    status of joint n homed, 0 not homed 1 homed
 
-status:joint.0.max_hard_limit int
+    | syntax ``status:joint.n.homed`` returns int
+    | syntax ``status:joint.n.homed?string`` returns str
 
-status:joint.0.max_position_limit float
+joint.n.homing
+    status of joint n homing in progress, 0 not homing 1 homing
 
-status:joint.0.max_soft_limit int
+    | syntax ``status:joint.n.homing`` returns int
+    | syntax ``status:joint.n.homing?string`` returns str
 
-status:joint.0.min_ferror float
+joint.n.inpos
+    status of joint n in position, 0 not in position 1 in position
 
-status:joint.0.min_hard_limit int
+    | syntax ``status:joint.n.inpos`` returns int
+    | syntax ``status:joint.n.inpos?string`` returns str
 
-status:joint.0.min_position_limit float
+joint.n.input
+    joint n current input position
 
-status:joint.0.min_soft_limit int
+    | syntax ``status:joint.n.input`` returns float
+    | syntax ``status:joint.n.input?string`` returns str
 
-status:joint.0.output float
+joint.n.jointType
+    joint n type of axis, reflects [JOINT_n]TYPE
 
-status:joint.0.units float
+    | syntax ``status:joint.n.jointType`` returns int
+    | syntax ``status:joint.n.jointType?string`` returns str
 
-status:joint.0.velocity float
 
-status:joint_actual_position tuple
+joint.n.max_ferror
+    joint n maximum following error, reflects [JOINT_n]FERROR
 
-status:joint_position tuple
+    | syntax ``status:joint.n.max_ferror`` returns float
+    | syntax ``status:joint.n.max_ferror?string`` returns str
+
+joint.n.max_hard_limit
+    status of joint n max hard limit, 0 not exceeded 1 exceeded
+
+    | syntax ``status:joint.n.max_hard_limit`` returns int
+    | syntax ``status:joint.n.max_hard_limit?string`` returns str
+
+status:joint.n.max_position_limit
+    joint n maximum soft limit, parameter [JOINT_n]MAX_LIMIT
+
+status:joint.n.max_soft_limit
+    
+
+status:joint.n.min_ferror
+    
+
+status:joint.n.min_hard_limit
+    
+
+status:joint.n.min_position_limit
+    
+
+status:joint.n.min_soft_limit
+    
+
+status:joint.n.output
+    
+
+status:joint.n.units
+    
+
+status:joint.n.velocity
+    
+
+status:joint_actual_position
+    
+
+status:joint_position
+    
 
 status:joints
     number of joints. Reflects [KINS]JOINTS ini value
@@ -347,97 +407,143 @@ status:joints
     | syntax ``status:joints`` returns int
     | syntax ``status:joints?string`` returns str
 
-status:kinematics_type int
+status:kinematics_type
+    
 
-status:limit tuple
+status:limit
+    
 
-status:linear_units float
+status:linear_units
+    
 
-status:lube int
+status:lube
+    
 
-status:lube_level int
+status:lube_level
+    
 
-status:max_acceleration float
+status:max_acceleration
+    
 
-status:max_velocity float
+status:max_velocity
+    
 
-status:mcodes tuple
+status:mcodes
+    
 
-status:mist int
+status:mist
+    
 
-status:motion_line int
+status:motion_line
+    
 
-status:motion_mode int
+status:motion_mode
+    
 
-status:motion_type int
+status:motion_type
+    
 
-status:on bool
+status:on
+    
 
-status:optional_stop bool
+status:optional_stop
+    
 
-status:paused bool
+status:paused
+    
 
-status:pocket_prepped int
+status:pocket_prepped
+    
 
-status:position tuple
+status:position
+    
 
-status:probe_tripped bool
+status:probe_tripped
+    
 
-status:probe_val int
+status:probe_val
+    
 
-status:probed_position tuple
+status:probed_position
+    
 
 status:probing bool
 
-status:program_units int
+status:program_units
+    
 
-status:queue int
+status:queue
+    
 
-status:queue_full bool
+status:queue_full
+    
 
-status:queued_mdi_commands int
+status:queued_mdi_commands
+    
 
-status:rapidrate float
+status:rapidrate
+    
 
-status:read_line int
+status:read_line
+    
 
-status:recent_files list
+status:recent_files
+    
 
-status:rotation_xy float
+status:rotation_xy
+    
 
-status:settings tuple
+status:settings
+    
 
-status:spindle.0.brake long
+status:spindle.n.brake
+    
 
-status:spindle.0.direction long
+status:spindle.n.direction
+    
 
-status:spindle.0.enabled long
+status:spindle.n.enabled
+    
 
-status:spindle.0.homed long
+status:spindle.n.homed
+    
 
-status:spindle.0.orient_fault long
+status:spindle.n.orient_fault
+    
 
-status:spindle.0.orient_state long
+status:spindle.n.orient_state
+    
 
-status:spindle.0.override float
+status:spindle.n.override
+    
 
-status:spindle.0.override_enabled bool
+status:spindle.n.override_enabled
+    
 
-status:spindle.0.speed float
+status:spindle.n.speed
+    
 
-status:spindles int
+status:spindles
+    
 
-status:state int
+status:state
+    
 
-status:task_mode int
+status:task_mode
+    
 
-status:task_paused int
+status:task_paused
+    
 
-status:tool_in_spindle int
+status:tool_in_spindle
+    
 
-status:tool_offset tuple
+status:tool_offset
+    
 
-status:tool_table tuple
+status:tool_table
+    
 
-status:velocity float
+status:velocity
+    
 
