@@ -93,7 +93,7 @@ class Status(DataPlugin):
         if STAT.interp_state == linuxcnc.INTERP_IDLE \
                 and STAT.call_level == 0:
             self.file.value = fname
-            self.signal.emit(fname)
+            self.file.signal.emit(fname)
 
     @DataChannel
     def state(self):
