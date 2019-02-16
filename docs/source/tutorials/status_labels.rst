@@ -134,45 +134,166 @@ dout
     | syntax ``status:dout`` returns tuple of integers
     | syntax ``status:dout?string`` returns str
 
-status:dtg tuple
+dtg
+    remaining distance of current move for each axis, as reported by trajectory planner
 
-status:echo_serial_number int
+    | syntax ``status:dtg`` returns tuple of floats
+    | syntax ``status:dtg?string`` returns str
 
-status:enabled bool
+echo_serial_number
+    The serial number of the last completed command sent by a UI to task
 
-status:estop int
+    | syntax ``status:echo_serial_number`` returns int
+    | syntax ``status:echo_serial_number?string`` returns str
 
-status:exec_state int
+enabled
+    trajectory planner enabled flag
 
-status:feed_hold_enabled bool
+    | syntax ``status:enabled`` returns bool
+    | syntax ``status:enabled?string`` returns str
 
-status:feed_override_enabled bool
+estop
+    status of E Stop, 1 for enabled and 0 for not enabled
 
-status:feedrate float
+    | syntax ``status:estop`` returns int
+    | syntax ``status:estop?string`` returns str
 
-status:file str
+exec_state
+    task execution state
 
-status:flood int
+    === ===========================
+    int str
+    === ===========================
+    1   Error
+    2   Done
+    3   Waiting for Motion
+    4   Waiting for Motion Queue
+    5   Waiting for Pause
+    6   Not used by LinuxCNC
+    7   Waiting for Motion and IO
+    8   Waiting for Delay
+    9   Waiting for system CMD
+    10  Waiting for spindle orient
+    === ===========================
 
-status:g5x_index int
+    | syntax ``status:exec_state`` returns int
+    | syntax ``status:exec_state?string`` returns str
 
-status:g5x_offset tuple
+feed_hold_enabled
+    status of feed hold
 
-status:g92_offset tuple
+    | syntax ``status:feed_hold_enabled`` returns bool
+    | syntax ``status:feed_hold_enabled?string`` returns str
 
-status:gcodes tuple
+feed_override_enabled
+    status of feed override
 
-status:homed tuple
+    | syntax ``status:feed_override_enabled`` returns bool
+    | syntax ``status:feed_override_enabled?string`` returns str
 
-status:id int
+feedrate
+    current feedrate override, 1.0 = 100%
 
-status:inpos bool
+    | syntax ``status:feedrate`` returns float
+    | syntax ``status:feedrate?string`` returns str
 
-status:input_timeout bool
+file
+    currently loaded gcode filename with path
 
-status:interp_state int
+    | syntax ``status:file`` returns str
+    | for just the file name use this expression ``ch[0].split('/')[-1]``
 
-status:interpreter_errcode int
+flood
+    current flood status 0 for off, 1 for on
+
+    | syntax ``status:flood`` returns int
+    | syntax ``status:flood?string`` returns str
+
+g5x_index
+    currently active coordinate system
+
+    | syntax ``status:g5x_index`` returns int
+    | syntax ``status:g5x_index?string`` returns str
+
+    to get the text for the currently active coodinate system use this expression
+    ::
+
+    ["G53","G54","G55","G56","G57","G58","G59","G59.1","G59.2","G59.3"][ch[0]]
+
+g5x_offset
+    offsets of the currently active coordinate system
+
+    | syntax ``status:g5x_offset`` returns tuple of floats
+    | syntax ``status:g5x_offset?string`` returns str
+
+g92_offset
+    current g92 offsets
+
+    | syntax ``status:g92_offset`` returns tuple of floats
+    | syntax ``status:g92_offset?string`` returns str
+
+gcodes
+    active G-codes for each modal group
+
+    | syntax ``status:gcodes`` returns tuple of integers
+    | syntax ``status:gcodes?string`` returns str
+
+homed
+    currently homed joints, 0 = not homed, 1 = homed
+
+    | syntax ``status:homed`` returns tuple of integers
+    | syntax ``status:homed?string`` returns str
+
+id
+    currently executing motion id
+
+    | syntax ``status:id`` returns int
+    | syntax ``status:id?string`` returns str
+
+inpos
+    status machine in position
+
+    | syntax ``status:inpos`` returns bool
+    | syntax ``status:inpos?string`` returns str
+
+input_timeout
+    flag for M66 timer in progress
+
+    | syntax ``status:input_timeout`` returns bool
+    | syntax ``status:input_timeout?string`` returns str
+
+interp_state
+    current state of RS274NGC interpreter
+
+    === ======
+    int str
+    === ======
+    1   E-Stop
+    2   Reset
+    3   Off
+    4   On
+    === ======
+
+    | syntax ``status:interp_state`` returns int
+    | syntax ``status:interp_state?string`` returns str
+
+interpreter_errcode
+    current RS274NGC interpreter return code
+
+    === =============
+    int str
+    === =============
+    0   Ok
+    1   Exit
+    2   Finished
+    3   Endfile
+    4   File not open
+    5   Error
+    === =============
+
+    | syntax ``status:interpreter_errcode`` returns int
+    | syntax ``status:interpreter_errcode?string`` returns str
+
 
 status:joint.0.backlash float
 
