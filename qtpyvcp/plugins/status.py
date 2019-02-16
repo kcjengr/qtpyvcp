@@ -44,12 +44,15 @@ class Status(DataPlugin):
         excluded_items = ['axis', 'joint', 'spindle', 'poll', 'command', 'debug']
 
         self.old = {}
-        # initialize the old values dict
+        # initialize data channels
         for item in dir(STAT):
             if item in self.channels:
-                self.channels[item].value = getattr(STAT, item)
+                self.old[item] = getattr(STAT, item)
+                self.channels[item].setValue(getattr(STAT, item))
             elif item not in excluded_items and not item.startswith('_'):
-                chan = DataChannel(doc=item, data=getattr(STAT, item))
+                self.old[item] = getattr(STAT, item)
+                chan = DataChannel(doc=item)
+                chan.setValue(getattr(STAT, item))
                 self.channels[item] = chan
                 setattr(self, item, chan)
 
@@ -453,13 +456,12 @@ class Status(DataPlugin):
             self.timer.stop()
             return
 
-        for chan, chan_obj in self.channels.iteritems():
-            new_value = getattr(STAT, chan, None)
-            if new_value is None:
-                continue
-            if chan_obj.value != new_value:
-                # update the status items
-                chan_obj.setValue(new_value)
+        # status updates
+        for item, old_val in self.old.iteritems():
+            new_val = getattr(STAT, item)
+            if new_val != old_val:
+                self.old[item] = new_val
+                self.channels[item].setValue(new_val)
 
         # joint status updates
         for joint in self.joint:
