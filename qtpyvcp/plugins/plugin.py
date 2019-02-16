@@ -124,7 +124,6 @@ class DataChannel(QObject):
     def setter(self, fset):
         def inner(*args, **kwargs):
             fset(self.instance, *args, **kwargs)
-            self.signal.emit(self.value)
 
         self.fset = inner
         return self
