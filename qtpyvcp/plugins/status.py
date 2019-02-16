@@ -413,6 +413,20 @@ class Status(DataPlugin):
         self.mcodes.signal.emit(self.mcodes.value)
 
     @DataChannel
+    def g5x_index(self):
+        """Current G5x work coord system
+
+        | syntax ``status:g5x_index`` returns int
+        | syntax ``status:g5x_index?string`` returns str
+        """
+        return STAT.g5x_index
+
+    @g5x_index.tostring
+    def g5x_index(self):
+        return ["G53", "G54", "G55", "G56", "G57", "G58",
+                "G59", "G59.1", "G59.2", "G59.3"][STAT.g5x_index]
+
+    @DataChannel
     def settings(self, item=None):
         """Interpreter Settings
 
