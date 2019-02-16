@@ -365,6 +365,54 @@ class Status(DataPlugin):
             return ["N/A", "Inches", "Millimeters", "Centimeters"][STAT.program_units]
 
     @DataChannel
+    def gcodes(self, fmt=None):
+        """G-codes
+
+        active G-codes for each modal group
+
+        | syntax ``status:gcodes`` returns tuple of strings
+        | syntax ``status:gcodes?raw`` returns tuple of integers
+        | syntax ``status:gcodes?string`` returns str
+        """
+        if fmt == 'raw':
+            return STAT.gcodes
+        return self.gcodes.value
+
+    @gcodes.tostring
+    def gcodes(self):
+        print self.gcodes.value
+        return " ".join(self.gcodes.value)
+
+    @gcodes.setter
+    def gcodes(self, gcodes):
+        self.gcodes.value = tuple(["G%g" % (c/10.) for c in sorted(gcodes[1:]) if c != -1])
+        self.gcodes.signal.emit(self.gcodes.value)
+
+    @DataChannel
+    def mcodes(self, fmt=None):
+        """M-codes
+
+        active M-codes for each modal group
+
+        | syntax ``status:mcodes`` returns tuple of strings
+        | syntax ``status:mcodes?raw`` returns tuple of integers
+        | syntax ``status:mcodes?string`` returns str
+        """
+        if fmt == 'raw':
+            return STAT.mcodes
+        return self.mcodes.value
+
+    @mcodes.tostring
+    def mcodes(self):
+        print self.mcodes.value
+        return " ".join(self.mcodes.value)
+
+    @mcodes.setter
+    def mcodes(self, gcodes):
+        self.mcodes.value = tuple(["M%g" % gcode for gcode in sorted(gcodes[1:]) if gcode != -1])
+        self.mcodes.signal.emit(self.mcodes.value)
+
+    @DataChannel
     def settings(self, item=None):
         """Interpreter Settings
 
