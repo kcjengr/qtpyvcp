@@ -17,6 +17,9 @@ class ItemDelegate(QStyledItemDelegate):
         self._columns = columns
         self._padding = ' ' * 2
 
+    def setColumns(self, columns):
+        self._columns = columns
+
     def displayText(self, value, locale):
 
         if type(value) == float:
@@ -84,6 +87,10 @@ class ToolModel(QStandardItemModel):
         self.setColumnCount(self.columnCount())
         self.setRowCount(100)  # (self.rowCount())
 
+    def setColumns(self, columns):
+        self._columns = columns
+        self.setColumnCount(len(columns))
+
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role == Qt.DisplayRole and orientation == Qt.Horizontal:
             return self._column_labels[self._columns[section]]
@@ -101,7 +108,7 @@ class ToolModel(QStandardItemModel):
 
     def data(self, index, role=Qt.DisplayRole):
         if role == Qt.DisplayRole or role == Qt.EditRole:
-            key = self.tt.columns[index.column()]
+            key = self._columns[index.column()]
             tnum = sorted(self._tool_table)[index.row() + 1]
             return self._tool_table[tnum][key]
 
@@ -124,7 +131,7 @@ class ToolModel(QStandardItemModel):
         return QStandardItemModel.data(self, index, role)
 
     def setData(self, index, value, role):
-        key = self.tt.columns[index.column()]
+        key = self._columns[index.column()]
         tnum = sorted(self._tool_table)[index.row() + 1]
         self._tool_table[tnum][key] = value
         return True
@@ -181,8 +188,8 @@ class ToolTable(QTableView):
 
         self.tool_model = ToolModel(self)
 
-        delegate = ItemDelegate(columns=self.tool_model._columns)
-        self.setItemDelegate(delegate)
+        self.item_delegate = ItemDelegate(columns=self.tool_model._columns)
+        self.setItemDelegate(self.item_delegate)
 
         self.proxy_model = QSortFilterProxyModel()
         self.proxy_model.setFilterKeyColumn(0)
@@ -191,6 +198,7 @@ class ToolTable(QTableView):
         self.setModel(self.proxy_model)
 
         # Properties
+        self._columns = self.tool_model._columns
         self._confirm_actions = False
         self._current_tool_color = QColor('sage')
 
@@ -260,6 +268,16 @@ class ToolTable(QTableView):
             return True
         else:
             return False
+
+    @Property(str)
+    def displayColumns(self):
+        return "".join(self._columns)
+
+    @displayColumns.setter
+    def displayColumns(self, columns):
+        self._columns = [col for col in columns.upper() if col in 'TPXYZABCUVWDIJQR']
+        self.tool_model.setColumns(self._columns)
+        self.itemDelegate().setColumns(self._columns)
 
     @Property(bool)
     def confirmActions(self):
