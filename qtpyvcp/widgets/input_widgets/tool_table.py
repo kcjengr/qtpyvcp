@@ -28,6 +28,7 @@ class ItemDelegate(QStyledItemDelegate):
         return "{}{}".format(self._padding, value)
 
     def createEditor(self, parent, option, index):
+        # ToDo: set dec placed for IN and MM machines
         col = self._columns[index.column()]
 
         if col == 'R':
@@ -43,8 +44,10 @@ class ItemDelegate(QStyledItemDelegate):
             editor = QSpinBox(parent)
             editor.setFrame(False)
             editor.setAlignment(Qt.AlignCenter)
-            editor.setMinimum(0)
-            editor.setMaximum(100)
+            if col == 'Q':
+                editor.setMaximum(9)
+            else:
+                editor.setMaximum(99999)
             return editor
 
         elif col in 'XYZABCUVWD':
@@ -54,7 +57,7 @@ class ItemDelegate(QStyledItemDelegate):
             editor.setDecimals(4)
             # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
-            editor.setMinimum(0)
+            editor.setRange(-1000, 1000)
             return editor
 
         elif col in 'IJ':
@@ -64,7 +67,6 @@ class ItemDelegate(QStyledItemDelegate):
             editor.setDecimals(2)
             # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
-            editor.setMinimum(0)
             return editor
 
         return None
