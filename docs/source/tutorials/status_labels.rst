@@ -7,11 +7,11 @@ Status Labels
 ----------
 
 If a status item returns a tuple you can get a single value from the tuple by
-slicing. For example if the tuple is channel 0 you can convert it to a string
-and get the first entry like this ``str(ch[0][0])``. To get the third item in the
-tuple you slice at 2 because counting starts at 0 not 1 so ``str(ch[0][2])``
-returns the third item in the tuple. For axis items they are in this order
-X, Y, Z, A, B, C, U, V, W.
+slicing. For example if the tuple is channel 0 ``ch[0]`` you can convert it to a
+string and get the first entry like this ``str(ch[0][0])``. To get the third
+item in the tuple you slice at 2 because counting starts at 0 not 1 so
+``str(ch[0][2])`` returns the third item in the tuple. For axis items they are
+in this order X, Y, Z, A, B, C, U, V, W.
 
 --------------------
 **Status Data List**
@@ -463,14 +463,14 @@ input_timeout
 interp_state
     current state of RS274NGC interpreter
 
-    === ======
+    === =======
     int str
-    === ======
-    1   E-Stop
-    2   Reset
-    3   Off
-    4   On
-    === ======
+    === =======
+    1   Idle
+    2   Reading
+    3   Paused
+    4   Waiting
+    === =======
 
     | syntax ``status:interp_state`` returns int
     | syntax ``status:interp_state?string`` returns str
@@ -796,6 +796,18 @@ motion_mode
 motion_type
     motion type of move currently executing
 
+    === ===========
+    int string
+    === ===========
+    0   None
+    1   Traverse
+    2   Linear Feed
+    3   Arc Feed
+    4   Tool Change
+    5   Probing
+    6   Rotary Index
+    === ============
+
     | syntax ``status:motion_type`` returns int
     | syntax ``status:motion_type?string`` returns str
 
@@ -1046,6 +1058,15 @@ state
 task_mode
     current task mode
 
+    === ======
+    int string
+    === ======
+    0   N/A
+    1   Manual
+    2   Auto
+    3   MDI
+    === ======
+
     | syntax ``status:task_mode`` returns int
     | syntax ``status:task_mode?string`` returns str
 
@@ -1061,6 +1082,16 @@ task_paused
 
 task_state
     current task state
+
+    === ======
+    int string
+    === ======
+    0   N/A
+    1   E-Stop
+    2   Reset
+    3   Off
+    4   On
+    === ======
 
     | syntax ``status:task_state`` returns int
     | syntax ``status:task_state?string`` returns str
