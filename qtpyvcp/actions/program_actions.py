@@ -105,7 +105,7 @@ def _run_ok(widget=None):
 def _run_bindOk(widget):
     STATUS.estop.onValueChanged(lambda: _run_ok(widget))
     STATUS.enabled.onValueChanged(lambda: _run_ok(widget))
-    STATUS.all_homed.connect(lambda: _run_ok(widget))
+    STATUS.all_axes_homed.onValueChanged(lambda: _run_ok(widget))
     STATUS.interp_state.onValueChanged(lambda: _run_ok(widget))
     STATUS.file.onValueChanged(lambda: _run_ok(widget))
 

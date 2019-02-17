@@ -118,19 +118,20 @@ class VCPMainWindow(QMainWindow):
                'action': actions,
                }
 
-        try:
-            mod, action = action_name.split('.', 1)
-            method = getattr(env.get(mod, self), action)
-            menu_action.triggered.connect(method)
-            return
-        except:
-            pass
+        if action_name is not None:
+            try:
+                mod, action = action_name.split('.', 1)
+                method = getattr(env.get(mod, self), action)
+                menu_action.triggered.connect(method)
+                return
+            except:
+                pass
 
-        try:
-            actions.bindWidget(menu_action, action_name)
-            return
-        except actions.InvalidAction:
-            pass
+            try:
+                actions.bindWidget(menu_action, action_name)
+                return
+            except actions.InvalidAction:
+                LOG.exception('Error binding menu action %s', action_name)
 
         msg = "The <b>{}</b> action specified for the " \
               "<b>{}</b> menu item could not be triggered. " \
