@@ -19,7 +19,7 @@ class Clock(DataPlugin):
         self.timer.timeout.connect(self.tick)
 
     @DataChannel
-    def time(chan):
+    def time(self, chan):
         """The current date/time, updated every second.
 
         Args:
@@ -36,11 +36,11 @@ class Clock(DataPlugin):
         return datetime.now()
 
     @time.tostring
-    def time(chan, format="%I:%M:%S %p"):
+    def time(self, chan, format="%I:%M:%S %p"):
         return datetime.now().strftime(format)
 
     @DataChannel
-    def date(chan, format="%x"):
+    def date(self, chan, format="%x"):
         return datetime.now().strftime(format)
 
     def initialise(self):

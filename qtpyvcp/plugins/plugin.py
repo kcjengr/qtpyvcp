@@ -98,13 +98,13 @@ class DataChannel(QObject):
         """Channel data getter method."""
         if self.fget is None:
             return self.value
-        return self.fget(self.instance, *args, **kwargs)
+        return self.fget(self.instance, self, *args, **kwargs)
 
     def getString(self, *args, **kwargs):
         """Channel data getter method."""
         if self.fstr is None:
             return str(self.value)
-        return self.fstr(*args, **kwargs)
+        return self.fstr(self.instance, self, *args, **kwargs)
 
     def setValue(self, value):
         """Channel data setter method."""
@@ -112,25 +112,25 @@ class DataChannel(QObject):
             self.value = value
             self.signal.emit(value)
         else:
-            self.fset(value)
+            self.fset(self.instance, self, value)
 
     def getter(self, fget):
         def inner(*args, **kwargs):
-            fget(self.instance, *args, **kwargs)
+            fget(*args, **kwargs)
 
         self.fget = inner
         return self
 
     def setter(self, fset):
         def inner(*args, **kwargs):
-            fset(self.instance, *args, **kwargs)
+            fset(*args, **kwargs)
 
         self.fset = inner
         return self
 
     def tostring(self, fstr):
         def inner(*args, **kwargs):
-            return fstr(self.instance, *args, **kwargs)
+            return fstr(*args, **kwargs)
 
         self.fstr = inner
         return self
@@ -155,5 +155,5 @@ class DataChannel(QObject):
     def __getitem__(self, item):
         return self.value[item]
 
-    # def __str__(self):
-    #     return self.getString()
+    def __str__(self):
+        return self.getString()

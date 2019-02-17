@@ -120,7 +120,7 @@ class ToolTable(DataPlugin):
 
 
     @DataChannel
-    def current_tool(self, item=None):
+    def current_tool(self, chan, item=None):
         """Current Tool Info
 
         Available items:
@@ -150,6 +150,7 @@ class ToolTable(DataPlugin):
         :param item: the name of the tool data item to get
         :return: dict, int, float, str
         """
+        print self.TOOL_TABLE
         if item is None:
             return self.TOOL_TABLE[STAT.tool_in_spindle]
         return self.TOOL_TABLE[STAT.tool_in_spindle].get(item[0].upper())
@@ -194,6 +195,7 @@ class ToolTable(DataPlugin):
         QTimer.singleShot(50, self.reloadToolTable)
 
     def setCurrentToolNumber(self, tool_num):
+        print self.TOOL_TABLE
         self.current_tool.setValue(self.TOOL_TABLE[tool_num])
 
     def reloadToolTable(self):

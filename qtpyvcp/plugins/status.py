@@ -68,6 +68,7 @@ class Status(DataPlugin):
             for chan, obj in spindle.channels.items():
                 self.channels['spindle.{}.{}'.format(spindle.snum, chan)] = obj
 
+        self.all_axes_homed.setValue(STAT.homed)
         self.homed.notify(self.all_axes_homed.setValue)
 
         # Set up the periodic update timer
@@ -87,19 +88,19 @@ class Status(DataPlugin):
         return STAT.task_state == linuxcnc.STATE_ON
 
     @DataChannel
-    def file(self):
+    def file(self, chan):
         """Currently loaded file including path"""
-        return self.file.value or 'No file loaded'
+        return chan.value or 'No file loaded'
 
     @file.setter
-    def file(self, fname):
+    def file(self, chan, fname):
         if STAT.interp_state == linuxcnc.INTERP_IDLE \
                 and STAT.call_level == 0:
-            self.file.value = fname
-            self.file.signal.emit(fname)
+            chan.value = fname
+            chan.signal.emit(fname)
 
     @DataChannel
-    def state(self):
+    def state(self, chan):
         """Current command execution status
 
         1) Done
@@ -116,7 +117,7 @@ class Status(DataPlugin):
         return STAT.state
 
     @state.tostring
-    def state(self):
+    def state(self, chan):
         states = {0: "N/A",
                        linuxcnc.RCS_DONE: "Done",
                        linuxcnc.RCS_EXEC: "Exec",
@@ -125,7 +126,7 @@ class Status(DataPlugin):
         return states[STAT.state]
 
     @DataChannel
-    def exec_state(self):
+    def exec_state(self, chan):
         """Current task execution state
 
         1) Error
@@ -149,7 +150,7 @@ class Status(DataPlugin):
         return STAT.exec_state
 
     @exec_state.tostring
-    def exec_state(self):
+    def exec_state(self, chan):
         exec_states = {0: "N/A",
                         linuxcnc.EXEC_ERROR: "Error",
                         linuxcnc.EXEC_DONE: "Done",
@@ -164,7 +165,7 @@ class Status(DataPlugin):
         return exec_states[STAT.exec_state]
 
     @DataChannel
-    def interp_state(self):
+    def interp_state(self, chan):
         """Current state of RS274NGC interpreter
 
         1) Idle
@@ -182,7 +183,7 @@ class Status(DataPlugin):
         return STAT.interp_state
 
     @interp_state.tostring
-    def interp_state(self):
+    def interp_state(self, chan):
         interp_states = {0: "N/A",
                             linuxcnc.INTERP_IDLE: "Idle",
                             linuxcnc.INTERP_READING: "Reading",
@@ -193,7 +194,7 @@ class Status(DataPlugin):
 
 
     @DataChannel
-    def interpreter_errcode(self):
+    def interpreter_errcode(self, chan):
         """Current RS274NGC interpreter return code
 
         0) Ok
@@ -213,7 +214,7 @@ class Status(DataPlugin):
         return STAT.interpreter_errcode
 
     @interpreter_errcode.tostring
-    def interpreter_errcode(self):
+    def interpreter_errcode(self, chan):
         interpreter_errcodes = {0: "Ok",
                                 1: "Exit",
                                 2: "Finished",
@@ -224,7 +225,7 @@ class Status(DataPlugin):
         return interpreter_errcodes[STAT.interpreter_errcode]
 
     @DataChannel
-    def task_state(self, query=None):
+    def task_state(self, chan, query=None):
         """Current status of task
 
         1) E-Stop
@@ -242,7 +243,7 @@ class Status(DataPlugin):
         return STAT.task_state
 
     @task_state.tostring
-    def task_state(self):
+    def task_state(self, chan):
         task_states = {0: "N/A",
                        linuxcnc.STATE_ESTOP: "E-Stop",
                        linuxcnc.STATE_ESTOP_RESET: "Reset",
@@ -252,7 +253,7 @@ class Status(DataPlugin):
         return task_states[STAT.task_state]
 
     @DataChannel
-    def task_mode(self):
+    def task_mode(self, chan):
         """Current task mode
 
         1) Manual
@@ -269,7 +270,7 @@ class Status(DataPlugin):
         return STAT.task_mode
 
     @task_mode.tostring
-    def task_mode(self):
+    def task_mode(self, chan):
         task_modes = {0: "N/A",
                        linuxcnc.MODE_MANUAL: "Manual",
                        linuxcnc.MODE_AUTO: "Auto",
@@ -278,7 +279,7 @@ class Status(DataPlugin):
         return task_modes[STAT.task_mode]
 
     @DataChannel
-    def motion_mode(self):
+    def motion_mode(self, chan):
         """Current motion controller mode
 
         1) Free
@@ -295,7 +296,7 @@ class Status(DataPlugin):
         return STAT.motion_mode
 
     @motion_mode.tostring
-    def motion_mode(self):
+    def motion_mode(self, chan):
         modes = {0: "N/A",
                   linuxcnc.TRAJ_MODE_COORD: "Coord",
                   linuxcnc.TRAJ_MODE_FREE: "Free",
@@ -304,7 +305,7 @@ class Status(DataPlugin):
         return modes[STAT.motion_mode]
 
     @DataChannel
-    def motion_type(self, query=None):
+    def motion_type(self, chan, query=None):
         """Motion type
 
         0) None
@@ -325,7 +326,7 @@ class Status(DataPlugin):
         return STAT.motion_type
 
     @motion_type.tostring
-    def motion_type(self):
+    def motion_type(self, chan):
         motion_types = {0: "None",
                         linuxcnc.MOTION_TYPE_TRAVERSE: "Traverse",
                         linuxcnc.MOTION_TYPE_FEED: "Linear Feed",
@@ -337,7 +338,7 @@ class Status(DataPlugin):
         return motion_types[STAT.motion_type]
 
     @DataChannel
-    def program_units(self):
+    def program_units(self, chan):
         """Program units
 
         Available as an integer, or in short or long string formats.
@@ -358,14 +359,14 @@ class Status(DataPlugin):
         return STAT.program_units
 
     @program_units.tostring
-    def program_units(self, format='short'):
+    def program_units(self, chan, format='short'):
         if format == 'short':
             return ["N/A", "in", "mm", "cm"][STAT.program_units]
         else:
             return ["N/A", "Inches", "Millimeters", "Centimeters"][STAT.program_units]
 
     @DataChannel
-    def gcodes(self, fmt=None):
+    def gcodes(self, chan, fmt=None):
         """G-codes
 
         active G-codes for each modal group
@@ -376,20 +377,20 @@ class Status(DataPlugin):
         """
         if fmt == 'raw':
             return STAT.gcodes
-        return self.gcodes.value
+        return chan.value
 
     @gcodes.tostring
-    def gcodes(self):
-        print self.gcodes.value
-        return " ".join(self.gcodes.value)
+    def gcodes(self, chan):
+        print chan.value
+        return " ".join(chan.value)
 
     @gcodes.setter
-    def gcodes(self, gcodes):
-        self.gcodes.value = tuple(["G%g" % (c/10.) for c in sorted(gcodes[1:]) if c != -1])
-        self.gcodes.signal.emit(self.gcodes.value)
+    def gcodes(self, chan, gcodes):
+        chan.value = tuple(["G%g" % (c/10.) for c in sorted(gcodes[1:]) if c != -1])
+        chan.signal.emit(self.gcodes.value)
 
     @DataChannel
-    def mcodes(self, fmt=None):
+    def mcodes(self, chan, fmt=None):
         """M-codes
 
         active M-codes for each modal group
@@ -400,20 +401,20 @@ class Status(DataPlugin):
         """
         if fmt == 'raw':
             return STAT.mcodes
-        return self.mcodes.value
+        return chan.value
 
     @mcodes.tostring
-    def mcodes(self):
-        print self.mcodes.value
-        return " ".join(self.mcodes.value)
+    def mcodes(self, chan):
+        print chan.value
+        return " ".join(chan.value)
 
     @mcodes.setter
-    def mcodes(self, gcodes):
-        self.mcodes.value = tuple(["M%g" % gcode for gcode in sorted(gcodes[1:]) if gcode != -1])
-        self.mcodes.signal.emit(self.mcodes.value)
+    def mcodes(self, chan, gcodes):
+        chan.value = tuple(["M%g" % gcode for gcode in sorted(gcodes[1:]) if gcode != -1])
+        chan.signal.emit(chan.value)
 
     @DataChannel
-    def g5x_index(self):
+    def g5x_index(self, chan):
         """Current G5x work coord system
 
         | syntax ``status:g5x_index`` returns int
@@ -422,12 +423,12 @@ class Status(DataPlugin):
         return STAT.g5x_index
 
     @g5x_index.tostring
-    def g5x_index(self):
+    def g5x_index(self, chan):
         return ["G53", "G54", "G55", "G56", "G57", "G58",
                 "G59", "G59.1", "G59.2", "G59.3"][STAT.g5x_index]
 
     @DataChannel
-    def settings(self, item=None):
+    def settings(self, chan, item=None):
         """Interpreter Settings
 
         Available Items:
@@ -443,7 +444,7 @@ class Status(DataPlugin):
         return STAT.settings[{'sequence_number': 0, 'feed': 1, 'speed': 2}[item]]
 
     @DataChannel
-    def homed(self, anum=None):
+    def homed(self, chan, anum=None):
         """Axis homed status
 
         If no axis number is specified returns a tuple of integers.
@@ -466,7 +467,7 @@ class Status(DataPlugin):
         return bool(STAT.homed[int(anum)])
 
     @DataChannel
-    def all_axes_homed(self):
+    def all_axes_homed(self, chan):
         """All axes homed status
 
         True if all axes are homed or if [TRAJ]NO_FORCE_HOMING set in INI.
@@ -474,16 +475,20 @@ class Status(DataPlugin):
         :returns: all homed
         :rtype: bool
         """
+        return chan.value
+
+    @all_axes_homed.setter
+    def all_axes_homed(self, chan, homed):
         if self.no_force_homing:
-            self.all_axes_homed.value = True
+            chan.value = True
         else:
             for anum in INFO.AXIS_NUMBER_LIST:
-                if STAT.homed[anum] is not 1:
-                    self.all_axes_homed.value = False
+                if homed[anum] is not 1:
+                    chan.value = False
                     break
             else:
-                self.all_axes_homed.value = True
-        return self.all_axes_homed.value
+                chan.value = True
+        chan.signal.emit(chan.value)
 
     # this is used by File "qtpyvcp/qtpyvcp/actions/program_actions.py",
     # line 83, in _run_ok elif not STATUS.allHomed():

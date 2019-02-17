@@ -116,7 +116,7 @@ class Position(DataPlugin):
         self._update()
 
     @DataChannel
-    def rel(self, anum=-1):
+    def rel(self, chan, anum=-1):
         """The current relative axis positions including all offsets
 
         To get a single axis pass string and the axis letter::
@@ -132,15 +132,15 @@ class Position(DataPlugin):
         """
 
         if anum == -1:
-            return self.rel.value
-        return self.rel.value[anum]
+            return chan.value
+        return chan.value[anum]
 
     @rel.tostring
-    def rel(self, anum):
-        return self._current_format % self.rel.value[anum]
+    def rel(self, chan, anum):
+        return self._current_format % chan.value[anum]
 
     @DataChannel
-    def abs(self, anum=-1):
+    def abs(self, chan, anum=-1):
         """The current absolute axis positions
 
         To get a single axis pass string and the axis letter::
@@ -156,16 +156,16 @@ class Position(DataPlugin):
         """
 
         if anum == -1:
-            return self.abs.value
-        return self.abs.value[anum]
+            return chan.value
+        return chan.value[anum]
 
     @abs.tostring
     def abs(self, anum):
-        return self._current_format % self.abs.value[anum]
+        return self._current_format % chan.value[anum]
 
 
     @DataChannel
-    def dtg(self, anum=-1):
+    def dtg(self, chan, anum=-1):
         """The remaining distance-to-go for the current move
 
         To get a single axis pass string and the axis letter::
@@ -181,12 +181,12 @@ class Position(DataPlugin):
         """
 
         if anum == -1:
-            return self.dtg.value
-        return self.dtg.value[anum]
+            return chan.value
+        return chan.value[anum]
 
     @dtg.tostring
-    def dtg(self, anum):
-        return self._current_format % self.dtg.value[anum]
+    def dtg(self, chan, anum):
+        return self._current_format % chan.value[anum]
 
     @property
     def report_actual(self):
