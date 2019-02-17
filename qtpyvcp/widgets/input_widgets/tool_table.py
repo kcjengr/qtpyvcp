@@ -87,7 +87,7 @@ class ToolModel(QStandardItemModel):
         self._tool_table = self.tt.loadToolTable()
 
         self.setColumnCount(self.columnCount())
-        self.setRowCount(100)  # (self.rowCount())
+        self.setRowCount(56)  # (self.rowCount())
 
     def setColumns(self, columns):
         self._columns = columns
@@ -151,11 +151,12 @@ class ToolModel(QStandardItemModel):
         except IndexError:
             tnum = 1
 
-        if tnum > 100:
-            # max 100 tools
-            return False
-
         row = len(self._tool_table) - 1
+        print tnum, row
+
+        if row == 56:
+            # max 56 tools
+            return False
 
         self.beginInsertRows(QModelIndex(), row, row)
         self._tool_table[tnum] = self.tt.newTool(tnum=tnum)
