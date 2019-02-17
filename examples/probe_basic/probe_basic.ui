@@ -8433,39 +8433,6 @@ ToolTable {
                       </widget>
                      </item>
                      <item>
-                      <widget class="QPushButton" name="tool_table_reread_button">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="minimumSize">
-                        <size>
-                         <width>120</width>
-                         <height>33</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>120</width>
-                         <height>33</height>
-                        </size>
-                       </property>
-                       <property name="focusPolicy">
-                        <enum>Qt::NoFocus</enum>
-                       </property>
-                       <property name="styleSheet">
-                        <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                       </property>
-                       <property name="text">
-                        <string>RE-READ</string>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
                       <widget class="QPushButton" name="tool_table_save_button">
                        <property name="sizePolicy">
                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -19988,11 +19955,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>738</x>
-     <y>619</y>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20004,11 +19971,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>752</x>
-     <y>106</y>
+     <y>108</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20020,11 +19987,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>995</x>
-     <y>619</y>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20036,11 +20003,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>403</x>
-     <y>619</y>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20052,11 +20019,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>146</x>
-     <y>619</y>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20068,11 +20035,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>610</x>
-     <y>477</y>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20084,11 +20051,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>610</x>
-     <y>318</y>
+     <y>320</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20100,11 +20067,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>160</x>
-     <y>106</y>
+     <y>108</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20115,12 +20082,12 @@ font: 11pt bebas kai;
    <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>776</x>
-     <y>250</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20131,12 +20098,12 @@ font: 11pt bebas kai;
    <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>522</x>
-     <y>250</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20148,11 +20115,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>854</x>
-     <y>619</y>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20164,11 +20131,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>262</x>
-     <y>619</y>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20199,8 +20166,8 @@ font: 11pt bebas kai;
      <y>108</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1094</x>
-     <y>254</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20211,8 +20178,8 @@ font: 11pt bebas kai;
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1114</x>
-     <y>233</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
      <x>1110</x>
@@ -20227,12 +20194,12 @@ font: 11pt bebas kai;
    <slot>setPlainText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1114</x>
-     <y>520</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1207</x>
-     <y>379</y>
+     <x>1253</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20243,12 +20210,12 @@ font: 11pt bebas kai;
    <slot>setPlainText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>522</x>
-     <y>567</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1210</x>
-     <y>451</y>
+     <x>1253</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -20275,12 +20242,76 @@ font: 11pt bebas kai;
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1422</x>
-     <y>141</y>
+     <x>1447</x>
+     <y>171</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1508</x>
-     <y>158</y>
+     <x>1602</x>
+     <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_delete_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>deleteSelectedTool()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>98</x>
+     <y>598</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>513</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_add_tool_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>addTool()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>258</x>
+     <y>601</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>258</x>
+     <y>529</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_save_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>saveToolTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>811</x>
+     <y>605</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>783</x>
+     <y>515</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_reload_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>loadToolTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>946</x>
+     <y>596</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>945</x>
+     <y>546</y>
     </hint>
    </hints>
   </connection>
