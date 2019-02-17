@@ -116,7 +116,6 @@ class QtPyVCPBaseWidget(object):
                     url = chan['url'].strip()
                     protocol, sep, item = url.partition(':')
                     chan_obj, chan_exp = getPlugin(protocol).getChannel(item)
-                    chan_val = chan_exp()
 
                     ch.append(chan_exp)
 
