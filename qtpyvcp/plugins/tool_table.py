@@ -2,6 +2,23 @@
 
 Exposes all the info available in the tool table. Watches the
 tool table file for changes and re-loads as needed.
+
+Tool Table YAML configuration:
+
+.. code-block:: yaml
+
+    data_plugins:
+      tooltable:
+        kwargs:
+          # specify the columns that should be read and writen to the
+          # tooltable file. To use all columns set to: TPXYZABCUVWDIJQR
+          columns: PTDZR
+          # specify text to be added before the tool table data
+          file_header_template: |
+            LinuxCNC Tool Table
+            -------------------
+
+            QtPyVCP will preserve comments before the opening semicolon.
 """
 
 import os
