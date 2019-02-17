@@ -28,8 +28,8 @@ fpm -t deb \
     -d libqt5multimedia5-plugins \
     -d pyqt5-dev-tools \
     -d qttools5-dev-tools \
-    --after-install scripts/after_install.sh \
-    --after-remove scripts/after_remove.sh \
+    --after-install .travis/after_install.sh \
+    --after-remove .travis/after_remove.sh \
     --no-auto-depends \
     --verbose \
     setup.py

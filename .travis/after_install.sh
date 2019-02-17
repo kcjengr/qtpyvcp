@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # install python deps
 pip install docopt qtpy pyudev psutil HiYaPyCo
 

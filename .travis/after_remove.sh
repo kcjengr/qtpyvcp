@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # unrename the old libpyqt5.so file
 libpath="/usr/lib/x86_64-linux-gnu/qt5/plugins/designer"
 oldlib="${libpath}/libpyqt5.so.old"
