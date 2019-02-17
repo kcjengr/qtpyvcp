@@ -582,23 +582,3 @@ class SpindleStatus(DataPlugin):
             self.channels[item[0]].setValue(item[1])
 
         self.sstat.update(sstat)
-
-
-if __name__ == "__main__":
-    from qtpy.QtWidgets import QApplication
-    app = QApplication([])
-
-    s = Status()
-
-    def onInterpStateChanged(*args, **kwargs):
-        print 'Interp State:', s.interp_state
-
-    def onTaskStateChanged(*args, **kwargs):
-        print 'Task State:', s.task_state
-
-    s.interp_state.notify(onInterpStateChanged)
-    s.task_state.notify(onTaskStateChanged)
-
-    s.initialise()
-
-    app.exec_()
