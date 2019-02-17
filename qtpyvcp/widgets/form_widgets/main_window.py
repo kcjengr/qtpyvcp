@@ -74,19 +74,21 @@ class VCPMainWindow(QMainWindow):
         if opts.hide_menu_bar:
             self.menuBar().hide()
 
-        if opts.size:
+        size = opts.size or size
+        if size:
             try:
-                width, height = opts.size.lower().split('x')
+                width, height = size.lower().split('x')
                 self.resize(int(width), int(height))
             except:
-                LOG.exception('Error parsing --size argument: %s', opts.size)
+                LOG.exception('Error parsing --size argument: %s', size)
 
-        if opts.position:
+        pos = opts.position or position
+        if pos:
             try:
-                xpos, ypos = opts.position.lower().split('x')
+                xpos, ypos = pos.lower().split('x')
                 self.move(int(xpos), int(ypos))
             except:
-                LOG.exception('Error parsing --position argument: %s', opts.position)
+                LOG.exception('Error parsing --position argument: %s', pos)
 
         QShortcut(QKeySequence("F11"), self, self.toggleFullscreen)
         self.app.focusChanged.connect(self.focusChangedEvent)
