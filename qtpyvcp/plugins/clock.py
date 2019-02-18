@@ -2,7 +2,19 @@
 DateTime
 --------
 
-DataPlugin that provides the current date and time.
+This plugin provides the Date and Time
+
+This plugin is not loaded by default, so to use it you will first
+need to add it to your VCPs YAML config file.
+
+YAML configuration:
+
+.. code-block:: yaml
+
+    data_plugins:
+      clock:
+        provider: qtpyvcp.plugins.clock:Clock
+
 """
 
 from datetime import datetime
@@ -16,39 +28,68 @@ class Clock(DataPlugin):
     def __init__(self):
         super(Clock, self).__init__()
 
+        # set initial values
+        self.time.setValue(datetime.now())
+        self.date.setValue(datetime.now())
+
+        # make the clock tick
         self.timer = QTimer()
         self.timer.timeout.connect(self.tick)
 
     @DataChannel
     def time(self, chan):
-        """The current date/time, updated every second.
+        """The current time, updated every second.
 
         Args:
-            format (str) : Format spec. Defaults to "%I:%M:%S %p".
+            format (str) : Format spec. Defaults to ``%I:%M:%S %p``.
                 See http://strftime.org for supported formats.
 
         Returns:
-            The current date time as a formatted string. Default HH:MM:SS AM
+            The current time as a formatted string. Default HH:MM:SS AM
 
-        Example:
+        Channel syntax::
 
-            ``datetime:time?format=%S``
+            clock:time
+            clock:time?string
+            clock:time?string&format=%S
+
         """
-        return datetime.now()
+        return chan.value
 
     @time.tostring
     def time(self, chan, format="%I:%M:%S %p"):
-        return datetime.now().strftime(format)
+        return chan.value.strftime(format)
 
     @DataChannel
-    def date(self, chan, format="%x"):
-        return datetime.now().strftime(format)
+    def date(self, chan):
+        """The current date, updated every second.
+
+        Args:
+            format (str) : Format spec. Defaults to ``%m/%d/%Y``.
+                See http://strftime.org for supported formats.
+
+        Returns:
+            The current date as a formatted string. Default MM/DD/YYYY
+
+        Channel syntax::
+
+            clock:date
+            clock:date?string
+            clock:date?string&format=%Y
+
+        """
+        return chan.value
+
+    @date.tostring
+    def date(self, chan, format="%m/%d/%Y"):
+        return chan.value.strftime(format)
 
     def initialise(self):
         self.timer.start(1000)
 
     def tick(self):
-        self.time.signal.emit(datetime.now())
+        self.time.setValue(datetime.now())
+        self.date.setValue(datetime.now())
 
 
 if __name__ == "__main__":
@@ -60,9 +101,7 @@ if __name__ == "__main__":
 
     def onTimeChanged(val):
         print c.time
-        print c.time.getValue()
-        print c.time.getString(format='%S')
-        # c.time.setValue(datetime.now())
+        print c.date
 
     c.time.notify(onTimeChanged)
 
