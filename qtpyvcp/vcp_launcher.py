@@ -60,19 +60,19 @@ def launch_application(opts, config):
     qtpyvcp.OPTIONS.update(opts)
     qtpyvcp.CONFIG.update(config)
 
-    print 'Loading data plugings'
+    LOG.debug('Loading data plugings')
     loadDataPlugins(config['data_plugins'])
     log_time('done loading data plugins')
 
-    print 'Initializing app'
+    LOG.debug('Initializing app')
     app = _initialize_object_from_dict(config['application'])
     log_time('done initializing app')
 
-    print 'Loading dialogs'
+    LOG.debug('Loading dialogs')
     loadDialogs(config['dialogs'])
     log_time('done loading dialogs')
 
-    print 'Loading windows'
+    LOG.debug('Loading windows')
     loadWindows(config['windows'])
     log_time('done loading windows')
 

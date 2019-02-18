@@ -25,7 +25,6 @@ class RecentFileComboBox(QComboBox):
 
     def updateRecentFiles(self, recent_files):
         self.clear()
-        print 'recent_files', recent_files
         for file in recent_files:
             self.addItem(os.path.basename(file), file)
 
