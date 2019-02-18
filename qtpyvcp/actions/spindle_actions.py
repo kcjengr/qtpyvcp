@@ -53,7 +53,7 @@ def _spindle_ok(speed=None, spindle=0, widget=None):
 def _spindle_bindOk(speed=None, spindle=0, widget=None):
     if not _spindle_exists(spindle):
         return
-    STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.on.notify(lambda: _spindle_ok(spindle=spindle, widget=widget))
     STATUS.task_mode.onValueChanged(lambda: _spindle_ok(spindle=spindle, widget=widget))
 
 
@@ -76,7 +76,7 @@ def _spindle_forward_bindOk(speed=None, spindle=0, widget=None):
     if not _spindle_exists(spindle):
         return
     widget.setCheckable(True)
-    STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.on.notify(lambda: _spindle_ok(spindle=spindle, widget=widget))
     STATUS.task_mode.onValueChanged(lambda: _spindle_ok(spindle=spindle, widget=widget))
     STATUS.spindle[spindle].direction.onValueChanged(lambda d: widget.setChecked(d == 1))
 
@@ -103,7 +103,7 @@ def _spindle_reverse_bindOk(speed=None, spindle=0, widget=None):
     if not _spindle_exists(spindle):
         return
     widget.setCheckable(True)
-    STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.on.notify(lambda: _spindle_ok(spindle=spindle, widget=widget))
     STATUS.task_mode.onValueChanged(lambda: _spindle_ok(spindle=spindle, widget=widget))
     STATUS.spindle[spindle].direction.onValueChanged(lambda d: widget.setChecked(d == -1))
 
@@ -353,7 +353,7 @@ def _brake_bind_ok(spindle=0, widget=None):
     if not _spindle_exists(spindle):
         return
 
-    STATUS.on.connect(lambda: _spindle_ok(spindle=spindle, widget=widget))
+    STATUS.on.notify(lambda: _spindle_ok(spindle=spindle, widget=widget))
     STATUS.task_mode.onValueChanged(lambda: _spindle_ok(spindle=spindle, widget=widget))
     STATUS.spindle[spindle].brake.onValueChanged(widget.setChecked)
 

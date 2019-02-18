@@ -43,11 +43,11 @@ def reload():
     LOG.error('Reload not implemented yet.')
 
 def addToRecents(fname):
-    if fname in STATUS.recent_files:
-        STATUS.recent_files.remove(fname)
-    STATUS.recent_files.insert(0, fname)
-    STATUS.recent_files = STATUS.recent_files[:STATUS.max_recent_files]
-    STATUS.recent_files_changed.emit(tuple(STATUS.recent_files))
+    files = STATUS.recent_files.getValue()
+    if fname in files:
+        files.remove(fname)
+        files.insert(0, fname)
+    STATUS.recent_files.setValue(files[:STATUS.max_recent_files])
 
 # -------------------------------------------------------------------------
 # program RUN action
@@ -105,7 +105,7 @@ def _run_ok(widget=None):
 def _run_bindOk(widget):
     STATUS.estop.onValueChanged(lambda: _run_ok(widget))
     STATUS.enabled.onValueChanged(lambda: _run_ok(widget))
-    STATUS.all_homed.connect(lambda: _run_ok(widget))
+    STATUS.all_axes_homed.onValueChanged(lambda: _run_ok(widget))
     STATUS.interp_state.onValueChanged(lambda: _run_ok(widget))
     STATUS.file.onValueChanged(lambda: _run_ok(widget))
 

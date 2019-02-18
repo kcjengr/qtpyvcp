@@ -7,9 +7,26 @@ machine or program units.
 Usage:
     Example syntax to use in Widget Rules Editor::
 
-        position:axis?abs        # returns tuple of ABS positions
-        position:axis?rel        # returns tuple of REL positions
-        position:axis?dtg        # returns tuple of DTG values
+        position:abs?string&axis=x        # returns X axis absolute position
+        position:rel?string&axis=x        # returns X axis relative position
+        position:dtg?string&axis=x        # returns X axis DTG value
+
+
+YAML configuration:
+
+.. code-block:: yaml
+
+    data_plugins:
+      position:
+        kwargs:
+          # whether to report actual or commanded pos
+          report_actual_pos: False
+          # whether to report program or machine units
+          use_program_units: True
+          # format used for metric units
+          metric_format: "%9.3f"
+          # format used for imperial units
+          imperial_format: "%8.4f"
 
 ToDO:
     Add joint positions.
@@ -19,7 +36,7 @@ import math
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.plugins import QtPyVCPDataPlugin, QtPyVCPDataChannel, getPlugin
+from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 
 STATUS = getPlugin('status')
 STAT = STATUS.stat
@@ -41,42 +58,184 @@ else:
     CONVERSION_FACTORS = [25.4] * 3 + [1] * 3 + [25.4] * 3
 
 
-class AxisPositions(QtPyVCPDataChannel):
-    """Axis Position Channel.
+class Position(DataPlugin):
+    """Positions Plugin"""
+    def __init__(self, report_actual_pos=False, use_program_units=True,
+                 metric_format='%9.3f', imperial_format='%8.4f'):
+        super(Position, self).__init__()
 
-    Axis positions are updated every cycle (~50ms). To save computation
-    resources cached values are returned instead of recalculating for each
-    request.
-    """
-    def __init__(self):
-        super(AxisPositions, self).__init__(description="Axis positions")
+        self._report_actual_pos = False
+        self._use_program_units = use_program_units
+        self._metric_format = metric_format
+        self._imperial_format = imperial_format
 
-        self._report_actual = True
-        self._positions = [[0.0]*9]*3
+        self._current_format = self._imperial_format
+
+        self._update()
+
+        # all these should cause the positions to update
+        STATUS.position.signal.connect(self._update)
+        STATUS.g5x_offset.signal.connect(self._update)
+        STATUS.g92_offset.signal.connect(self._update)
+        STATUS.tool_offset.signal.connect(self._update)
+        STATUS.program_units.signal.connect(self.updateUnits)
+
+        self.report_actual_pos = report_actual_pos
+
+    def getChannel(self, url):
+        """Get data channel from URL.
+
+        Args:
+            url (str) : The URL of the channel to get.
+
+        Returns:
+            tuple : (chan_obj, chan_exp)
+        """
+
+        chan, sep, query = url.partition('?')
+        raw_args = query.split('&')
+
+        args = []
+        kwargs = {}
+        for arg in [a for a in raw_args if a != '']:
+            if '=' in arg:
+                key, val = arg.split('=')
+                kwargs[key] = val
+            else:
+                args.append(arg)
+
+        try:
+            chan_obj = self.channels[chan]
+
+            if 'axis' in kwargs:
+                axis = kwargs.pop('axis')
+                try:
+                    kwargs['anum'] = int(axis)
+                except ValueError:
+                    kwargs['anum'] = 'xyzabcuvw'.index(str(axis).lower())
+
+            if len(args) > 0 and args[0] in ('string', 'text', 'str'):
+                chan_exp = lambda: chan_obj.getString(*args[1:], **kwargs)
+            else:
+                chan_exp = lambda: chan_obj.getValue(*args, **kwargs)
+
+        except (KeyError, SyntaxError):
+            LOG.exception('Error getting channel')
+            return None, None
+
+        return chan_obj, chan_exp
+
+    def updateUnits(self, canon_units):
+        print 'updating units', canon_units
+        if canon_units == 2:
+            self._current_format = self._metric_format
+        else:
+            self._current_format = self._imperial_format
+
+        self._update()
+
+    @DataChannel
+    def rel(self, chan, anum=-1):
+        """The current relative axis positions including all offsets
+
+        To get a single axis pass string and the axis letter::
+
+            position:rel?string&axis=x
+
+        To get a tuple of all the axes pass only string::
+
+            position:rel?
+
+        :returns: current relative axis positions including all offsets
+        :rtype: tuple, str
+        """
+
+        if anum == -1:
+            return chan.value
+        return chan.value[anum]
+
+    @rel.tostring
+    def rel(self, chan, anum):
+        return self._current_format % chan.value[anum]
+
+    @DataChannel
+    def abs(self, chan, anum=-1):
+        """The current absolute axis positions
+
+        To get a single axis pass string and the axis letter::
+
+            position:abs?string&axis=x
+
+        To get a tuple of all the axes pass only string::
+
+            position:abs?
+
+        :returns: current absolute axis positions
+        :rtype: tuple, str
+        """
+
+        if anum == -1:
+            return chan.value
+        return chan.value[anum]
+
+    @abs.tostring
+    def abs(self, chan, anum):
+        return self._current_format % chan.value[anum]
+
+
+    @DataChannel
+    def dtg(self, chan, anum=-1):
+        """The remaining distance-to-go for the current move
+
+        To get a single axis pass string and the axis letter::
+
+            position:dtg?string&axis=x
+
+        To get a tuple of all the axes pass only string::
+
+            position:dtg?
+
+        :returns: remaining distance-to-go for the current move
+        :rtype: tuple, str
+        """
+
+        if anum == -1:
+            return chan.value
+        return chan.value[anum]
+
+    @dtg.tostring
+    def dtg(self, chan, anum):
+        return self._current_format % chan.value[anum]
 
     @property
-    def value(self):
-        """Tuple of tuples. REL, ABS and DTG axis positions"""
-        return self._positions
+    def report_actual_pos(self):
+        """Whether to report the actual position. Default True."""
+        return self._report_actual_pos
 
-    @property
-    def abs(self):
-        """Tuple of ABS axis positions."""
-        return self._positions[0]
+    @report_actual_pos.setter
+    def report_actual_pos(self, report_actual_pos):
+        if report_actual_pos == self._report_actual_pos:
+            return
+        self._report_actual_pos = report_actual_pos
 
-    @property
-    def rel(self):
-        """Tuple of REL axis positions."""
-        return self._positions[1]
-
-    @property
-    def dtg(self):
-        """Tuple of DTG values for each axis"""
-        return self._positions[2]
+        if self._report_actual_pos:
+            # disconnect commanded pos update signals
+            STATUS.position.signal.disconnect(self._update)
+            # STATUS.joint_position.signal.disconnect(self._update)
+            # connect actual pos update signals
+            STATUS.actual_position.signal.connect(self._update)
+            # STATUS.joint_actual_position.signal.connect(self.joint._update)
+        else:
+            # disconnect actual pos update signals
+            STATUS.actual_position.signal.disconnect(self._update)
+            # STATUS.joint_actual_position.signal.disconnect(self._update)
+            # connect commanded pos update signals
+            STATUS.position.signal.connect(self._update)
+            # STATUS.joint_position.signal.connect(self._update)
 
     def _update(self):
 
-        if self._report_actual:
+        if self._report_actual_pos:
             pos = STAT.actual_position
         else:
             pos = STAT.position
@@ -100,60 +259,11 @@ class AxisPositions(QtPyVCPDataChannel):
         for axis in INFO.AXIS_NUMBER_LIST:
             rel[axis] -= g92_offset[axis]
 
-        if STAT.program_units != MACHINE_UNITS:
+        if STAT.program_units != MACHINE_UNITS and self._use_program_units:
             pos = [pos[anum] * CONVERSION_FACTORS[anum] for anum in range(9)]
             rel = [rel[anum] * CONVERSION_FACTORS[anum] for anum in range(9)]
             dtg = [dtg[anum] * CONVERSION_FACTORS[anum] for anum in range(9)]
 
-        self._positions = tuple([tuple(pos), tuple(rel), tuple(dtg)])
-        self.valueChanged.emit(self._positions)
-
-
-class Position(QtPyVCPDataPlugin):
-
-    protocol = 'position'
-
-    axis = AxisPositions()
-
-    def __init__(self, report_actual_pos=True, use_program_units=True):
-        super(Position, self).__init__()
-
-        self._report_actual_pos = report_actual_pos
-        self._use_program_units = use_program_units
-
-        self.axis._update()
-
-        # all these should cause the positions to update
-        STATUS.position.onValueChanged(self.axis._update)
-        STATUS.g5x_offset.onValueChanged(self.axis._update)
-        STATUS.g92_offset.onValueChanged(self.axis._update)
-        STATUS.tool_offset.onValueChanged(self.axis._update)
-        STATUS.program_units.onValueChanged(self.axis._update)
-
-    @property
-    def report_actual(self):
-        """Whether to report the actual position. Default True."""
-        return self._report_actual_pos
-
-    @report_actual.setter
-    def report_actual(self, report_actual_pos):
-        if report_actual_pos == self._report_actual_pos:
-            return
-        self._report_actual_pos = report_actual_pos
-
-        if self._report_actual_pos:
-            # disconnect commanded pos update signals
-            STATUS.position.valueChanged.disconect(self.axis._update)
-            STATUS.joint_position.valueChanged.disconnect(self.joint._update)
-            # connect actual pos update signals
-            STATUS.actual_position.valueChanged.connect(self.axis._update)
-            STATUS.joint_actual_position.valueChanged.connect(self.joint._update)
-        else:
-            # disconnect actual pos update signals
-            STATUS.actual_position.valueChanged.disconnect(self.axis._update)
-            STATUS.joint_actual_position.valueChanged.disconnect(self.joint._update)
-            # connect commanded pos update signals
-            STATUS.position.valueChanged.connect(self.axis._update)
-            STATUS.joint_position.valueChanged.connect(self.joint._update)
-
-
+        self.rel.setValue(tuple(rel))
+        self.abs.setValue(tuple(pos))
+        self.dtg.setValue(tuple(dtg))

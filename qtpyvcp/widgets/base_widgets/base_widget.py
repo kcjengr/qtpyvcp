@@ -12,7 +12,7 @@ import json
 from qtpy.QtCore import Property
 from qtpy.QtWidgets import QPushButton
 
-import qtpyvcp
+from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.logger import getLogger
 
 LOG = getLogger(__name__)
@@ -43,7 +43,6 @@ class QtPyVCPBaseWidget(object):
         'Visible': ['setVisible', bool],
         'Style Class': ['setStyleClass', str],
         'Style Sheet': ['setStyleSheet', str],
-        # 'Opacity': ['setOpacity', float]
     }
 
     def __init__(self, parent=None):
@@ -114,25 +113,18 @@ class QtPyVCPBaseWidget(object):
             for chan in rule['channels']:
 
                 try:
-                    protocol, sep, rest = chan['url'].partition(':')
-                    item, sep, query = rest.partition('?')
+                    url = chan['url'].strip()
+                    protocol, sep, item = url.partition(':')
+                    chan_obj, chan_exp = getPlugin(protocol).getChannel(item)
 
-                    plugin = qtpyvcp.PLUGINS[protocol]
-                    eval_env = {'plugin': plugin}
-
-                    # fast lambda function to get the current value of the channel
-                    chan_val = eval("lambda: plugin.{}.handleQuery('{}')"
-                                    .format(item, query), eval_env)
-
-                    ch.append(chan_val)
+                    ch.append(chan_exp)
 
                     if chan.get('trigger', False):
-                        chan_obj = eval("plugin.{}".format(item), eval_env)
-                        triggers.append(chan_obj.valueChanged.connect)
+                        triggers.append(chan_obj.onValueChanged)
 
-                except:
-                    LOG.exception("Error evaluating rule: {}".format(
-                                                        chan.get('url', '')))
+                except Exception:
+                    LOG.exception("Error evaluating rule: {}"
+                                  .format(chan.get('url', '')))
                     return
 
             prop = self.RULE_PROPERTIES[rule['property']]
@@ -151,6 +143,7 @@ class QtPyVCPBaseWidget(object):
             try:
                 exp()
             except:
+                LOG.exception('Error calling rules expression:')
                 continue
 
             for trigger in triggers:

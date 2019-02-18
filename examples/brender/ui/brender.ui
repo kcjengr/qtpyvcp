@@ -316,7 +316,7 @@
            </rect>
           </property>
           <property name="rules" stdset="0">
-           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:mcodes?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;active mcodes&quot;}]</string>
+           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:mcodes?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;active mcodes&quot;}]</string>
           </property>
           <property name="format" stdset="0">
            <string>&lt;b&gt;Active M-Codes:&lt;/b&gt; {}</string>
@@ -335,7 +335,7 @@
            </rect>
           </property>
           <property name="rules" stdset="0">
-           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:gcodes?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;active gcodes&quot;}]</string>
+           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:gcodes?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;active gcodes&quot;}]</string>
           </property>
           <property name="format" stdset="0">
            <string>&lt;b&gt;Active G-Codes:&lt;/b&gt; {}</string>
@@ -354,7 +354,7 @@
            </rect>
           </property>
           <property name="rules" stdset="0">
-           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_state?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Task State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;task state&quot;}]</string>
+           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_state?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Task State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;task state&quot;}]</string>
           </property>
           <property name="format" stdset="0">
            <string>&lt;b&gt;Task State:&lt;/b&gt; {}</string>
@@ -373,7 +373,7 @@
            </rect>
           </property>
           <property name="rules" stdset="0">
-           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:interp_state?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Interp State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;interp state&quot;}]</string>
+           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:interp_state?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Interp State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;interp state&quot;}]</string>
           </property>
           <property name="format" stdset="0">
            <string>&lt;b&gt;Interp State:&lt;/b&gt; {}</string>
@@ -392,7 +392,7 @@
            </rect>
           </property>
           <property name="rules" stdset="0">
-           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:motion_mode?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Motion Mode: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;motion mode&quot;}]</string>
+           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:motion_mode?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Motion Mode: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;motion mode&quot;}]</string>
           </property>
           <property name="format" stdset="0">
            <string>&lt;b&gt;Motion Mode:&lt;/b&gt; {}</string>
@@ -411,7 +411,7 @@
            </rect>
           </property>
           <property name="rules" stdset="0">
-           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status: task_mode?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Task Mode:  \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;task mode&quot;}]</string>
+           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_mode?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Task Mode:  \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;task mode&quot;}]</string>
           </property>
           <property name="format" stdset="0">
            <string>&lt;b&gt;Task Mode:&lt;/b&gt; {}</string>
@@ -608,7 +608,7 @@
            </rect>
           </property>
           <property name="rules" stdset="0">
-           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:motion_type?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Motion Type: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;motion type&quot;}]</string>
+           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:motion_type?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Motion Type: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;motion type&quot;}]</string>
           </property>
           <property name="format" stdset="0">
            <string>&lt;b&gt;Motion Type:&lt;/b&gt; {}</string>
@@ -780,7 +780,7 @@
            <set>Qt::AlignCenter</set>
           </property>
           <property name="rules" stdset="0">
-           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:max_velocity?value&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Max Vel: {:.0f} {}/min\&quot;.format(ch[0] * 60, ch[1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:max_velocity&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Max Vel: {:.3f} {}/min\&quot;.format(ch[0] * 60, ch[1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
           </property>
           <property name="format" stdset="0">
            <string>&lt;b&gt;Max Vel:&lt;/b&gt; {:.1f} in/min</string>
@@ -856,7 +856,7 @@
            </rect>
           </property>
           <property name="rules" stdset="0">
-           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.0f} rpm\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;spindle speed&quot;}]</string>
+           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.0f} rpm\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;spindle speed&quot;}]</string>
           </property>
           <property name="format" stdset="0">
            <string>{:.1f} rpm</string>
@@ -1161,20 +1161,7 @@
            <set>Qt::AlignCenter</set>
           </property>
           <property name="rules" stdset="0">
-           <string>[
-    {
-        &quot;channels&quot;: [
-            {
-                &quot;url&quot;: &quot;status:spindle[0].override&quot;,
-                &quot;trigger&quot;: true,
-                &quot;type&quot;: &quot;float&quot;
-            }
-        ],
-        &quot;expression&quot;: &quot;\&quot;Spindle Override: {:.0%}\&quot;.format(ch[0])&quot;,
-        &quot;name&quot;: &quot;New Rule&quot;,
-        &quot;property&quot;: &quot;Text&quot;
-    }
-]</string>
+           <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Spindle Override: {:.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
           </property>
           <property name="format" stdset="0">
            <string>&lt;b&gt;Spindle Override:&lt;/b&gt; {:.0%}</string>
@@ -1467,7 +1454,7 @@
           </rect>
          </property>
          <property name="rules" stdset="0">
-          <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.0f} rpm\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;spindle speed&quot;}]</string>
+          <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.0f} rpm\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;spindle speed&quot;}]</string>
          </property>
          <property name="statusItem" stdset="0">
           <string>task_state</string>
@@ -2861,6 +2848,11 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>RecentFileComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
    <class>ActionCheckBox</class>
    <extends>QCheckBox</extends>
    <header>qtpyvcp.widgets.button_widgets.action_checkbox</header>
@@ -2868,7 +2860,7 @@
   <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
-   <header>qtpyvcp.widgets.display_widgets.gcode_backplot</header>
+   <header>qtpyvcp.widgets.display_widgets.gcode_backplot.gcode_backplot</header>
    <container>1</container>
   </customwidget>
   <customwidget>
@@ -2882,11 +2874,6 @@
    <extends>QMainWindow</extends>
    <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>RecentFileComboBox</class>
-   <extends>QComboBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
   </customwidget>
   <customwidget>
    <class>DialogButton</class>

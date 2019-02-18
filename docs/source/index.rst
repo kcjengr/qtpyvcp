@@ -38,6 +38,7 @@ building complex VCPs.
    tutorials/getting_started
    tutorials/widget_rules
    tutorials/components
+   tutorials/status_labels
 
 .. toctree::
    :maxdepth: 1

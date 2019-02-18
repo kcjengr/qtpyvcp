@@ -137,7 +137,7 @@ def _power_bindOk(widget):
     _power_ok(widget)
     widget.setChecked(STAT.task_state == linuxcnc.STATE_ON)
     STATUS.estop.onValueChanged(lambda: _power_ok(widget))
-    STATUS.on.connect(lambda v: widget.setChecked(v))
+    STATUS.on.notify(lambda v: widget.setChecked(v))
 
 power.on.ok = power.off.ok = power.toggle.ok = _power_ok
 power.on.bindOk = power.off.bindOk = power.toggle.bindOk = _power_bindOk
@@ -228,12 +228,12 @@ def _set_work_coord_bindOk(coord='', widget=None):
     _issue_mdi_bindOk(coord, widget=widget)
     if isinstance(widget, QComboBox):
         widget.setCurrentText(coord)
-        widget.setCurrentText(STATUS.g5x_index.to_str(STATUS.g5x_index.value))
-        STATUS.g5x_index.onValueChanged(lambda wc: widget.setCurrentText(STATUS.g5x_index.to_str(wc)))
+        widget.setCurrentText(STATUS.g5x_index.getString())
+        STATUS.g5x_index.notify(lambda g5x: widget.setCurrentText(g5x), 'string')
     else:
         widget.setCheckable(True)
-        widget.setChecked(STATUS.g5x_index.to_str(STATUS.g5x_index.value) == coord)
-        STATUS.g5x_index.onValueChanged(lambda wc: widget.setChecked(STATUS.g5x_index.to_str(wc) == coord))
+        widget.setChecked(STATUS.g5x_index.getString() == coord)
+        STATUS.g5x_index.notify(lambda g5x: widget.setChecked(g5x == coord), 'string')
 
 set_work_coord.ok = _issue_mdi_ok
 set_work_coord.bindOk = _set_work_coord_bindOk
@@ -669,15 +669,15 @@ def _home_ok(jnum=-1, widget=None):
     return ok
 
 def _home_all_bindOk(widget):
-    STATUS.on.connect(lambda: _home_ok(widget=widget))
-    STATUS.homed.onValueChanged(lambda: _home_ok(widget=widget))
+    STATUS.on.notify(lambda: _home_ok(widget=widget))
+    STATUS.homed.notify(lambda: _home_ok(widget=widget))
 
 home.all.ok = _home_ok
 home.all.bindOk = _home_all_bindOk
 
 def _home_joint_bindOk(jnum, widget):
-    STATUS.on.connect(lambda: _home_ok(jnum, widget=widget))
-    STATUS.homed.onValueChanged(lambda: _home_ok(jnum, widget=widget))
+    STATUS.on.notify(lambda: _home_ok(jnum, widget=widget))
+    STATUS.homed.notify(lambda: _home_ok(jnum, widget=widget))
 
 home.joint.ok = _home_ok
 home.joint.bindOk = _home_joint_bindOk
@@ -692,7 +692,7 @@ def _home_axis_bindOk(axis, widget):
         return
 
     jnum = INFO.AXIS_LETTER_LIST.index(axis)
-    STATUS.on.connect(lambda: _home_ok(jnum, widget=widget))
+    STATUS.on.notify(lambda: _home_ok(jnum, widget=widget))
 
 home.axis.ok = _home_ok
 home.axis.bindOk = _home_axis_bindOk

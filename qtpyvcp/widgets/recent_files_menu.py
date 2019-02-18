@@ -54,8 +54,8 @@ class RecentFilesMenu(QMenu):
 
         self.addAction(action)
 
-        self.update(files or self.status.recent_files)
-        self.status.recent_files_changed.connect(self.update)
+        self.update(files or self.status.recent_files())
+        self.status.recent_files.notify(self.update)
 
     def update(self, files):
         for i, fname in enumerate(files):

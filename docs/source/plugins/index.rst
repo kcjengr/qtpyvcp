@@ -9,3 +9,4 @@ Data Plugins
    status
    positions
    tool_table
+   clock
