@@ -39,5 +39,4 @@ class HomingMenu(QMenu):
             home_axis.setVisible(True)
 
         self.setEnabled(self.status.stat.state == linuxcnc.STATE_ON)
-        self.status.task_state.valueChanged.connect(lambda s:
-                                      self.setEnabled(s == linuxcnc.STATE_ON))
+        self.status.on.notify(lambda on: self.setEnabled(on))

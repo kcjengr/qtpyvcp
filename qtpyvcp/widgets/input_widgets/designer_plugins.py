@@ -2,6 +2,11 @@
 
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
 
+from line_edit import VCPLineEdit
+class VCPLineEditPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return VCPLineEdit
+
 from mdientry_widget import MDIEntry
 class MDIEntryPlugin(_DesignerPlugin):
     def pluginClass(self):

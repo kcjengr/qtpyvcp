@@ -3,12 +3,12 @@ import json
 import functools
 import webbrowser
 
+from qtpy import uic
 from qtpy import QtWidgets, QtCore, QtDesigner
 
-import qtpyvcp
-from qtpyvcp.plugins import QtPyVCPDataChannel
+from qtpyvcp import PLUGINS
+from qtpyvcp.plugins import DataChannel, getPlugin
 from plugin_extension import _PluginExtension
-
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -22,6 +22,7 @@ RULE_PROPERTIES = {
     # 'Opacity': ['setOpacity', float]
 }
 
+
 class RulesEditorExtension(_PluginExtension):
     def __init__(self, widget):
         super(RulesEditorExtension, self).__init__(widget)
@@ -30,6 +31,36 @@ class RulesEditorExtension(_PluginExtension):
 
     def editAction(self, state):
         RulesEditor(self.widget, parent=None).exec_()
+
+
+class ChanInfoDialog(QtWidgets.QDialog):
+    def __init__(self, info, parent=None):
+        super(ChanInfoDialog, self).__init__(parent)
+        ui_file = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                               "channel_info_dialog.ui")
+        uic.loadUi(ui_file, self)
+
+        ch_obj, ch_exp, ch_val, ch_doc = info
+
+        doc_lines = [l.strip() for l in ch_doc.strip().splitlines()]
+        title = doc_lines[0]
+
+        self.lbl_rtn_typ.setText(type(ch_obj.getValue()).__name__)
+
+        for line in doc_lines:
+            if line.startswith(':returns:'):
+                self.lbl_chan_rtn.setText(line.replace(':returns:', '').strip())
+            elif line.startswith(':rtype:'):
+                self.lbl_rtn_typ.setText(line.replace(':rtype:', '').strip())
+
+        self.lbl_chan_name.setText(title)
+        self.tb_chan_doc.setText(ch_doc)
+        val = ch_obj.getValue()
+        txt = ''
+        if len(self.lbl_rtn_typ.text().split(',')) > 1:
+            txt = ', ' + str(ch_val)
+        self.lbl_can_val.setText(str(val) + txt)
+
 
 class TableCheckButton(QtWidgets.QWidget):
     def __init__(self, checked=False):
@@ -44,6 +75,28 @@ class TableCheckButton(QtWidgets.QWidget):
 
     def __getattr__(self, attr):
         return getattr(self.chk_bx, attr)
+
+
+class CompleterDelegate(QtWidgets.QStyledItemDelegate):
+    def __init__(self, parent=None):
+        super(CompleterDelegate, self).__init__(parent)
+
+        items = []
+        for plugin, obj in PLUGINS.iteritems():
+            for chan_name in obj.channels:
+                items.append('{}:{}'.format(plugin, chan_name))
+
+        self.completer = QtWidgets.QCompleter(sorted(items))
+        self.completer.setCompletionColumn(0)
+        self.completer.setCompletionRole(QtCore.Qt.EditRole)
+        self.completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+
+    def createEditor(self, parent, option, index):
+        editor = QtWidgets.QLineEdit(parent)
+        editor.setFrame(False)
+        editor.setCompleter(self.completer)
+        return editor
+
 
 class RulesEditor(QtWidgets.QDialog):
     """QDialog for user-friendly editing of widget Rules in Qt Designer.
@@ -207,6 +260,8 @@ class RulesEditor(QtWidgets.QDialog):
         self.tbl_channels.setMinimumWidth(350)
         self.tbl_channels.setShowGrid(True)
         self.tbl_channels.setCornerButtonEnabled(False)
+        delegate = CompleterDelegate(self.tbl_channels)
+        self.tbl_channels.setItemDelegateForColumn(0, delegate)
         self.tbl_channels.model().dataChanged.connect(self.tbl_channels_changed)
         headers = ["Channel", "Trigger", "Type"]
         self.tbl_channels.setColumnCount(len(headers))
@@ -215,7 +270,8 @@ class RulesEditor(QtWidgets.QDialog):
         header.setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
         header.setSectionResizeMode(1, QtWidgets.QHeaderView.ResizeToContents)
         header.setSectionResizeMode(2, QtWidgets.QHeaderView.ResizeToContents)
-        # self.tbl_channels.setColumnWidth(2, 60)
+        # header.setSectionResizeMode(3, QtWidgets.QHeaderView.ResizeToContents)
+        self.tbl_channels.setColumnWidth(3, 8)
 
         frm_edit_layout.addWidget(self.tbl_channels)
 
@@ -225,7 +281,16 @@ class RulesEditor(QtWidgets.QDialog):
         self.lbl_expected_type = QtWidgets.QLabel(parent=self)
         # self.lbl_expected_type.setText("")
         self.lbl_expected_type.setStyleSheet("color: rgb(0, 128, 255); font-weight: bold;")
-        expression_layout.addRow(lbl_expected, self.lbl_expected_type)
+
+        hbox = QtWidgets.QHBoxLayout()
+        hbox.addWidget(self.lbl_expected_type)
+        hbox.addStretch()
+        self.btn_chan_info = QtWidgets.QPushButton("Info ...")
+        self.btn_chan_info.setAutoDefault(False)
+        self.btn_chan_info.pressed.connect(self.show_chan_info)
+        hbox.addWidget(self.btn_chan_info)
+
+        expression_layout.addRow(lbl_expected, hbox)
 
         lbl_expression = QtWidgets.QLabel("Expression:")
         expr_help_layout = QtWidgets.QHBoxLayout()
@@ -278,7 +343,7 @@ class RulesEditor(QtWidgets.QDialog):
         for row, ch in enumerate(channels):
             ch_name = ch.get('url', '')
             ch_tr = ch.get('trigger', False)
-            ch_obj, ch_val, ch_desc = self.get_channel_data(ch_name)
+            ch_obj, ch_exp, ch_val, ch_desc = self.get_channel_data(ch_name)
             self.tbl_channels.setItem(row, 0,
                                       QtWidgets.QTableWidgetItem(str(ch_name)))
 
@@ -287,13 +352,12 @@ class RulesEditor(QtWidgets.QDialog):
 
             typ_lbl = QtWidgets.QLabel()
             typ_lbl.setAlignment(QtCore.Qt.AlignCenter)
+
             if ch_val is None:
                 typ_lbl.setText("<font color='red'>error</font>")
             else:
                 typ_lbl.setText("<font color='green'>{}</font>".format(type(ch_val).__name__))
             self.tbl_channels.setCellWidget(row, 2, typ_lbl)
-
-            # self.tbl_channels.setItem(row, 2, QtWidgets.QTableWidgetItem(type(ch_val).__name__))
 
         self.frm_edit.setEnabled(True)
         self.loading_data = False
@@ -420,6 +484,15 @@ class RulesEditor(QtWidgets.QDialog):
         else:
             return help_url
 
+    def show_chan_info(self):
+        selection = self.tbl_channels.selectedIndexes()
+        if len(selection) > 0:
+            row = selection[0].row()
+            model = self.tbl_channels.model()
+            chan = model.data(model.index(row, 0))
+            info = self.get_channel_data(chan)
+            ChanInfoDialog(info).exec_()
+
     def name_changed(self):
         """Callback executed when the rule name is changed."""
         self.lst_rule_item.setText(self.txt_name.text())
@@ -427,7 +500,6 @@ class RulesEditor(QtWidgets.QDialog):
 
     def property_changed(self, index):
         """Callback executed when the property is selected."""
-        print "prop changed"
         try:
             prop = self.cmb_property.currentData()
             if prop[1] is None:
@@ -450,13 +522,15 @@ class RulesEditor(QtWidgets.QDialog):
 
         row = table_item.row()
         ch_name = table_item.data()
-        ch_obj, ch_val, ch_desc = self.get_channel_data(ch_name)
+        ch_obj, ch_exp, ch_val, ch_desc = self.get_channel_data(ch_name)
 
         typ_lbl = self.tbl_channels.cellWidget(row, 2)
-        if ch_val is None:
-            typ_lbl.setText("<font color='red'>error</font>")
+
+        if isinstance(ch_obj, DataChannel) and ch_val is not None:
+            typ_lbl.setText("<font color='green'>{}</font>"
+                            .format(type(ch_val).__name__))
         else:
-            typ_lbl.setText("<font color='green'>{}</font>".format(type(ch_val).__name__))
+            typ_lbl.setText("<font color='red'>error</font>")
 
         self.update_channels()
 
@@ -473,27 +547,20 @@ class RulesEditor(QtWidgets.QDialog):
         self.change_entry("channels", new_channels)
 
     def get_channel_data(self, url):
-        chan_obj = None
-        chan_val = None
-        chan_desc = ''
 
+        protocol, sep, item = url.partition(':')
         try:
-            protocol, sep, rest = url.partition(':')
-            item, sep, query = rest.partition('?')
+            plugin = getPlugin(protocol)
+        except ValueError:
+            return None, None, None, None
 
-            if query == '':
-                query = 'value'
+        chan_obj, chan_exp = plugin.getChannel(item)
+        if chan_obj is not None:
+            chan_val = chan_exp()
+        else:
+            chan_val = None
 
-            plugin = qtpyvcp.PLUGINS[protocol]
-            eval_env = {'plugin': plugin}
-
-            chan_obj = eval("plugin.{}".format(item), eval_env)
-            chan_val = chan_obj.handleQuery(query)
-
-        except:
-            LOG.exception("Error in eval")
-
-        return chan_obj, chan_val, chan_desc
+        return chan_obj, chan_exp, chan_val, chan_obj.__doc__
 
     def expression_changed(self):
         """Callback executed when the expression is modified."""
@@ -539,11 +606,10 @@ class RulesEditor(QtWidgets.QDialog):
                         found_trigger = True
 
                     # get chan values for use when checking expression
-                    ch_obj, ch_val, ch_desc = self.get_channel_data(ch.get("url", ""))
-                    print ch_obj
+                    ch_obj, ch_exp, ch_val, ch_desc = self.get_channel_data(ch.get("url", ""))
 
-                    if isinstance(ch_obj, QtPyVCPDataChannel):
-                        channel_values.append(ch_val)
+                    if isinstance(ch_obj, DataChannel):
+                        channel_values.append(ch_exp())
                     else:
                         errors.append("Rule #{} is not a valid channel.".format(idx))
                         continue
@@ -578,7 +644,7 @@ class RulesEditor(QtWidgets.QDialog):
         """Save the new rules at the widget `rules` property."""
         # If the form is being edited, we make sure self.rules has all the
         # latest values from the form before we try to validate.  This fixes
-        # a problem where the last form item change wouldn't get saved unless
+        # a problem where the last form item changed wouldn't get saved unless
         # the user knew to hit 'enter' or leave the field to end editing before
         # hitting save.
         if self.frm_edit.isEnabled():

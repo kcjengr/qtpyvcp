@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 REPO=$TRAVIS_REPO_SLUG
 TAG=$TRAVIS_TAG

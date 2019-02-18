@@ -23,6 +23,9 @@ data_plugins:
     kwargs:
       cycle_time: {{ ini.display.cycle_time }}
 
+  clock:
+    provider: qtpyvcp.plugins.clock:Clock
+
 dialogs:
   test_dialog:
     provider: qtpy.QtWidgets:QDialog

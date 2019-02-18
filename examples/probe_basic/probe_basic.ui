@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1924</width>
-    <height>1083</height>
+    <height>1085</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -208,7 +208,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>4</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -1266,13 +1266,13 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>200</width>
+                       <width>300</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>200</width>
+                       <width>300</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1288,7 +1288,7 @@ border-radius: 6px;
 }</string>
                      </property>
                      <property name="text">
-                      <string>G-CODE FILE PREVIEW</string>
+                      <string>G-CODE FILE PREVIEW AND EDIT</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -1330,7 +1330,7 @@ border-radius: 6px;
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_129">
                    <item>
-                    <widget class="QPushButton" name="edit_gcode_button">
+                    <widget class="QPushButton" name="edit_gcode_button_4">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -1339,13 +1339,13 @@ border-radius: 6px;
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>150</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>150</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -1359,6 +1359,105 @@ border-radius: 6px;
                      </property>
                      <property name="text">
                       <string>EDIT G-CODE</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_2">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>FIND/REPLACE</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>SAVE</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_3">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::NoFocus</enum>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>SAVE AS</string>
                      </property>
                     </widget>
                    </item>
@@ -6499,7 +6598,7 @@ OFFSET</string>
                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                        </property>
                        <property name="rules" stdset="0">
-                        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?axis=x&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                        </property>
                       </widget>
                      </item>
@@ -6696,7 +6795,7 @@ OFFSET</string>
                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                        </property>
                        <property name="rules" stdset="0">
-                        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?axis=y&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                        </property>
                       </widget>
                      </item>
@@ -6893,7 +6992,7 @@ OFFSET</string>
                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                        </property>
                        <property name="rules" stdset="0">
-                        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?axis=z&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                        </property>
                       </widget>
                      </item>
@@ -7089,7 +7188,7 @@ OFFSET</string>
                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                        </property>
                        <property name="rules" stdset="0">
-                        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?axis=a&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                        </property>
                       </widget>
                      </item>
@@ -7286,7 +7385,7 @@ OFFSET</string>
                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                        </property>
                        <property name="rules" stdset="0">
-                        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+                        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?axis=b&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
                        </property>
                       </widget>
                      </item>
@@ -7831,20 +7930,52 @@ padding-left: 5px;
            </attribute>
            <layout class="QHBoxLayout" name="horizontalLayout_41">
             <item>
-             <layout class="QHBoxLayout" name="horizontalLayout_40">
-              <property name="leftMargin">
-               <number>15</number>
+             <widget class="QTabWidget" name="tabWidget">
+              <property name="font">
+               <font>
+                <family>Bebas Kai</family>
+                <pointsize>13</pointsize>
+               </font>
               </property>
-              <property name="topMargin">
-               <number>25</number>
+              <property name="tabShape">
+               <enum>QTabWidget::Rounded</enum>
               </property>
-              <property name="bottomMargin">
-               <number>25</number>
+              <property name="currentIndex">
+               <number>0</number>
               </property>
-              <item>
-               <widget class="QFrame" name="frame_13">
-                <property name="styleSheet">
-                 <string notr="true">QFrame{
+              <property name="elideMode">
+               <enum>Qt::ElideNone</enum>
+              </property>
+              <property name="tabBarAutoHide">
+               <bool>false</bool>
+              </property>
+              <widget class="QWidget" name="TOOLTABLE">
+               <attribute name="title">
+                <string>          TOOL TABLE          </string>
+               </attribute>
+               <layout class="QHBoxLayout" name="horizontalLayout_40">
+                <property name="leftMargin">
+                 <number>15</number>
+                </property>
+                <property name="topMargin">
+                 <number>25</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>25</number>
+                </property>
+                <item>
+                 <widget class="QFrame" name="frame_13">
+                  <property name="enabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QFrame{
 border-style: solid;
 border-color: rgb(186, 189, 182);
 background-color: rgb(51, 57, 59);
@@ -7852,231 +7983,240 @@ border-width: 2px;
 border-radius: 6px;
 font: 15pt &quot;Bebas Kai&quot;;
 }</string>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_20">
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_38">
-                   <property name="leftMargin">
-                    <number>5</number>
-                   </property>
+                  </property>
+                  <layout class="QVBoxLayout" name="verticalLayout_20">
                    <property name="topMargin">
-                    <number>5</number>
-                   </property>
-                   <property name="rightMargin">
-                    <number>5</number>
+                    <number>9</number>
                    </property>
                    <item>
-                    <widget class="ToolTable" name="tableWidget_2">
-                     <property name="palette">
-                      <palette>
-                       <active>
-                        <colorrole role="WindowText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>238</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Button">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>120</red>
-                           <green>120</green>
-                           <blue>120</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Text">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>238</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="ButtonText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>238</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Base">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>120</red>
-                           <green>120</green>
-                           <blue>120</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Window">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>120</red>
-                           <green>120</green>
-                           <blue>120</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="AlternateBase">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>90</red>
-                           <green>90</green>
-                           <blue>90</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                       </active>
-                       <inactive>
-                        <colorrole role="WindowText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>238</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Button">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>120</red>
-                           <green>120</green>
-                           <blue>120</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Text">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>238</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="ButtonText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>238</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Base">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>120</red>
-                           <green>120</green>
-                           <blue>120</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Window">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>120</red>
-                           <green>120</green>
-                           <blue>120</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="AlternateBase">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>90</red>
-                           <green>90</green>
-                           <blue>90</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                       </inactive>
-                       <disabled>
-                        <colorrole role="WindowText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>238</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Button">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>120</red>
-                           <green>120</green>
-                           <blue>120</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Text">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>238</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="ButtonText">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>238</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Base">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>120</red>
-                           <green>120</green>
-                           <blue>120</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="Window">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>120</red>
-                           <green>120</green>
-                           <blue>120</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                        <colorrole role="AlternateBase">
-                         <brush brushstyle="SolidPattern">
-                          <color alpha="255">
-                           <red>90</red>
-                           <green>90</green>
-                           <blue>90</blue>
-                          </color>
-                         </brush>
-                        </colorrole>
-                       </disabled>
-                      </palette>
+                    <layout class="QHBoxLayout" name="horizontalLayout_38">
+                     <property name="leftMargin">
+                      <number>5</number>
                      </property>
-                     <property name="font">
-                      <font>
-                       <family>Bebas Kai</family>
-                       <pointsize>15</pointsize>
-                       <weight>50</weight>
-                       <italic>false</italic>
-                       <bold>false</bold>
-                      </font>
+                     <property name="topMargin">
+                      <number>5</number>
                      </property>
-                     <property name="styleSheet">
-                      <string notr="true">TootTable,
+                     <property name="rightMargin">
+                      <number>5</number>
+                     </property>
+                     <item>
+                      <widget class="ToolTable" name="tableWidget_2">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="palette">
+                        <palette>
+                         <active>
+                          <colorrole role="WindowText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>235</red>
+                             <green>235</green>
+                             <blue>238</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Button">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>120</red>
+                             <green>120</green>
+                             <blue>120</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Text">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>235</red>
+                             <green>235</green>
+                             <blue>238</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="ButtonText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>235</red>
+                             <green>235</green>
+                             <blue>238</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Base">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>120</red>
+                             <green>120</green>
+                             <blue>120</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Window">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>120</red>
+                             <green>120</green>
+                             <blue>120</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="AlternateBase">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>90</red>
+                             <green>90</green>
+                             <blue>90</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                         </active>
+                         <inactive>
+                          <colorrole role="WindowText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>235</red>
+                             <green>235</green>
+                             <blue>238</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Button">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>120</red>
+                             <green>120</green>
+                             <blue>120</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Text">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>235</red>
+                             <green>235</green>
+                             <blue>238</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="ButtonText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>235</red>
+                             <green>235</green>
+                             <blue>238</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Base">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>120</red>
+                             <green>120</green>
+                             <blue>120</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Window">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>120</red>
+                             <green>120</green>
+                             <blue>120</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="AlternateBase">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>90</red>
+                             <green>90</green>
+                             <blue>90</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                         </inactive>
+                         <disabled>
+                          <colorrole role="WindowText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>235</red>
+                             <green>235</green>
+                             <blue>238</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Button">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>120</red>
+                             <green>120</green>
+                             <blue>120</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Text">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>235</red>
+                             <green>235</green>
+                             <blue>238</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="ButtonText">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>235</red>
+                             <green>235</green>
+                             <blue>238</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Base">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>120</red>
+                             <green>120</green>
+                             <blue>120</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="Window">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>120</red>
+                             <green>120</green>
+                             <blue>120</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                          <colorrole role="AlternateBase">
+                           <brush brushstyle="SolidPattern">
+                            <color alpha="255">
+                             <red>90</red>
+                             <green>90</green>
+                             <blue>90</blue>
+                            </color>
+                           </brush>
+                          </colorrole>
+                         </disabled>
+                        </palette>
+                       </property>
+                       <property name="font">
+                        <font>
+                         <family>Bebas Kai</family>
+                         <pointsize>15</pointsize>
+                         <weight>50</weight>
+                         <italic>false</italic>
+                         <bold>false</bold>
+                        </font>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">TootTable,
 QHeaderView {
     font: 14pt &quot;Bebas Kai&quot;;
 	background-color: rgb(220, 220, 220);
@@ -8096,241 +8236,301 @@ ToolTable {
     gridline-color: rgb(203, 203, 203);
 	alternate-background-color: rgb(90, 90, 90);
 }</string>
-                     </property>
-                     <property name="frameShape">
-                      <enum>QFrame::StyledPanel</enum>
-                     </property>
-                     <property name="frameShadow">
-                      <enum>QFrame::Sunken</enum>
-                     </property>
-                     <property name="lineWidth">
-                      <number>3</number>
-                     </property>
-                     <property name="midLineWidth">
-                      <number>3</number>
-                     </property>
-                     <property name="editTriggers">
-                      <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
-                     </property>
-                     <property name="showDropIndicator" stdset="0">
-                      <bool>true</bool>
-                     </property>
-                     <property name="alternatingRowColors">
-                      <bool>true</bool>
-                     </property>
-                     <property name="showGrid">
-                      <bool>true</bool>
-                     </property>
-                     <property name="gridStyle">
-                      <enum>Qt::SolidLine</enum>
-                     </property>
-                     <property name="sortingEnabled">
-                      <bool>true</bool>
-                     </property>
-                     <attribute name="horizontalHeaderDefaultSectionSize">
-                      <number>90</number>
-                     </attribute>
-                     <attribute name="horizontalHeaderHighlightSections">
-                      <bool>false</bool>
-                     </attribute>
-                     <attribute name="horizontalHeaderMinimumSectionSize">
-                      <number>90</number>
-                     </attribute>
-                     <attribute name="horizontalHeaderStretchLastSection">
-                      <bool>true</bool>
-                     </attribute>
-                     <attribute name="verticalHeaderVisible">
-                      <bool>false</bool>
-                     </attribute>
-                     <attribute name="verticalHeaderCascadingSectionResizes">
-                      <bool>true</bool>
-                     </attribute>
-                     <attribute name="verticalHeaderDefaultSectionSize">
-                      <number>30</number>
-                     </attribute>
-                     <attribute name="verticalHeaderHighlightSections">
-                      <bool>false</bool>
-                     </attribute>
-                     <attribute name="verticalHeaderMinimumSectionSize">
-                      <number>30</number>
-                     </attribute>
-                    </widget>
+                       </property>
+                       <property name="frameShape">
+                        <enum>QFrame::StyledPanel</enum>
+                       </property>
+                       <property name="frameShadow">
+                        <enum>QFrame::Sunken</enum>
+                       </property>
+                       <property name="lineWidth">
+                        <number>3</number>
+                       </property>
+                       <property name="midLineWidth">
+                        <number>3</number>
+                       </property>
+                       <property name="editTriggers">
+                        <set>QAbstractItemView::AnyKeyPressed|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+                       </property>
+                       <property name="showDropIndicator" stdset="0">
+                        <bool>true</bool>
+                       </property>
+                       <property name="alternatingRowColors">
+                        <bool>true</bool>
+                       </property>
+                       <property name="showGrid">
+                        <bool>true</bool>
+                       </property>
+                       <property name="gridStyle">
+                        <enum>Qt::SolidLine</enum>
+                       </property>
+                       <property name="sortingEnabled">
+                        <bool>true</bool>
+                       </property>
+                       <attribute name="horizontalHeaderDefaultSectionSize">
+                        <number>90</number>
+                       </attribute>
+                       <attribute name="horizontalHeaderHighlightSections">
+                        <bool>false</bool>
+                       </attribute>
+                       <attribute name="horizontalHeaderMinimumSectionSize">
+                        <number>90</number>
+                       </attribute>
+                       <attribute name="horizontalHeaderStretchLastSection">
+                        <bool>true</bool>
+                       </attribute>
+                       <attribute name="verticalHeaderVisible">
+                        <bool>false</bool>
+                       </attribute>
+                       <attribute name="verticalHeaderCascadingSectionResizes">
+                        <bool>true</bool>
+                       </attribute>
+                       <attribute name="verticalHeaderDefaultSectionSize">
+                        <number>30</number>
+                       </attribute>
+                       <attribute name="verticalHeaderHighlightSections">
+                        <bool>false</bool>
+                       </attribute>
+                       <attribute name="verticalHeaderMinimumSectionSize">
+                        <number>30</number>
+                       </attribute>
+                      </widget>
+                     </item>
+                    </layout>
+                   </item>
+                   <item>
+                    <layout class="QHBoxLayout" name="horizontalLayout_37">
+                     <item>
+                      <widget class="QPushButton" name="tool_table_delete_button">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>120</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>120</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>DELETE</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="tool_table_add_tool_button">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>120</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>120</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>ADD TOOL</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="tool_table_import_tool_button">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>120</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>120</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>IMPORT TOOL</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="tool_table_export_tool_button">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>120</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>120</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>EXPORT TOOL</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="tool_table_save_button">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>120</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>120</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>SAVE TABLE</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="tool_table_reload_button">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton {
+   	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>RELOAD TABLE</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
                    </item>
                   </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_37">
-                   <item>
-                    <widget class="QPushButton" name="tool_table_delete_button">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>120</width>
-                       <height>33</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>120</width>
-                       <height>33</height>
-                      </size>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+              <widget class="QWidget" name="toollibrary">
+               <attribute name="title">
+                <string>         TOOL LIBRARY         </string>
+               </attribute>
+               <widget class="QWidget" name="widget_2" native="true">
+                <property name="geometry">
+                 <rect>
+                  <x>15</x>
+                  <y>25</y>
+                  <width>1001</width>
+                  <height>523</height>
+                 </rect>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QWidget{
+border-style: solid;
+border-color: rgb(186, 189, 182);
+background-color: rgb(51, 57, 59);
+border-width: 2px;
+border-radius: 6px;
+font: 15pt &quot;Bebas Kai&quot;;
 }</string>
-                     </property>
-                     <property name="text">
-                      <string>DELETE</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="tool_table_add_tool_button">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>120</width>
-                       <height>33</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>120</width>
-                       <height>33</height>
-                      </size>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>ADD TOOL</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="tool_table_reread_button">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>120</width>
-                       <height>33</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>120</width>
-                       <height>33</height>
-                      </size>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>RE-READ</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="tool_table_save_button">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>120</width>
-                       <height>33</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>120</width>
-                       <height>33</height>
-                      </size>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>SAVE TABLE</string>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QPushButton" name="tool_table_reload_button">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>140</width>
-                       <height>33</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>140</width>
-                       <height>33</height>
-                      </size>
-                     </property>
-                     <property name="focusPolicy">
-                      <enum>Qt::NoFocus</enum>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 14pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>RELOAD TABLE</string>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                </layout>
+                </property>
                </widget>
-              </item>
-             </layout>
+              </widget>
+             </widget>
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_6">
@@ -8524,9 +8724,6 @@ border-style: none;
                       <property name="format" stdset="0">
                        <string>{:.3f}</string>
                       </property>
-                      <property name="statusItem" stdset="0">
-                       <string>tool_offset.3</string>
-                      </property>
                      </widget>
                     </item>
                    </layout>
@@ -8666,9 +8863,6 @@ border-style: none;
                       <property name="format" stdset="0">
                        <string>{:.3f}</string>
                       </property>
-                      <property name="statusItem" stdset="0">
-                       <string>tool_offset.3</string>
-                      </property>
                      </widget>
                     </item>
                    </layout>
@@ -8800,13 +8994,10 @@ border-style: none;
                        <number>4</number>
                       </property>
                       <property name="rules" stdset="0">
-                       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?comment&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Tool Comment&quot;}]</string>
+                       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?remark&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Tool Comment&quot;}]</string>
                       </property>
                       <property name="format" stdset="0">
                        <string>{:.3f}</string>
-                      </property>
-                      <property name="statusItem" stdset="0">
-                       <string>tool_offset.3</string>
                       </property>
                      </widget>
                     </item>
@@ -8903,9 +9094,6 @@ border-style: none;
                  </property>
                  <property name="format" stdset="0">
                   <string>{:.3f}</string>
-                 </property>
-                 <property name="statusItem" stdset="0">
-                  <string>tool_offset.3</string>
                  </property>
                 </widget>
                </widget>
@@ -13580,13 +13768,13 @@ border-radius: 6px;
               <number>9</number>
              </property>
              <property name="topMargin">
-              <number>9</number>
+              <number>5</number>
              </property>
              <property name="rightMargin">
               <number>9</number>
              </property>
              <property name="bottomMargin">
-              <number>9</number>
+              <number>4</number>
              </property>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_106">
@@ -13976,14 +14164,170 @@ border-radius: 6px;
                </item>
               </layout>
              </item>
+             <item>
+              <widget class="QWidget" name="horizontalWidget" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>42</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>42</height>
+                </size>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_2">
+                <property name="spacing">
+                 <number>8</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="ActionButton" name="manual_mode_button">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>MAN</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <property name="autoExclusive">
+                   <bool>true</bool>
+                  </property>
+                  <property name="actionName" stdset="0">
+                   <string>machine.mode.manual</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="ActionButton" name="auto_mode_button">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>AUTO</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <property name="autoExclusive">
+                   <bool>true</bool>
+                  </property>
+                  <property name="actionName" stdset="0">
+                   <string>machine.mode.auto</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="ActionButton" name="mdi_mode_button">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>MDI</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <property name="autoExclusive">
+                   <bool>true</bool>
+                  </property>
+                  <property name="actionName" stdset="0">
+                   <string>machine.mode.mdi</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
             </layout>
            </widget>
            <widget class="QLabel" name="label_20">
             <property name="geometry">
              <rect>
-              <x>55</x>
-              <y>3</y>
-              <width>150</width>
+              <x>95</x>
+              <y>4</y>
+              <width>110</width>
               <height>20</height>
              </rect>
             </property>
@@ -13995,13 +14339,13 @@ border-radius: 6px;
             </property>
             <property name="minimumSize">
              <size>
-              <width>150</width>
+              <width>110</width>
               <height>20</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>150</width>
+              <width>110</width>
               <height>20</height>
              </size>
             </property>
@@ -14032,6 +14376,9 @@ font: 14pt &quot;Bebas Kai&quot;;
             <layout class="QVBoxLayout" name="verticalLayout_12">
              <property name="sizeConstraint">
               <enum>QLayout::SetFixedSize</enum>
+             </property>
+             <property name="topMargin">
+              <number>2</number>
              </property>
              <item>
               <widget class="StatusLabel" name="statuslabel_15">
@@ -14140,6 +14487,9 @@ font: 14pt &quot;Bebas Kai&quot;;
              <property name="sizeConstraint">
               <enum>QLayout::SetFixedSize</enum>
              </property>
+             <property name="topMargin">
+              <number>2</number>
+             </property>
              <item>
               <widget class="StatusLabel" name="statuslabel_13">
                <property name="enabled">
@@ -14235,16 +14585,22 @@ font: 14pt &quot;Bebas Kai&quot;;
             </property>
             <property name="geometry">
              <rect>
-              <x>-3</x>
-              <y>1</y>
-              <width>208</width>
-              <height>24</height>
+              <x>95</x>
+              <y>4</y>
+              <width>110</width>
+              <height>20</height>
              </rect>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>110</width>
+              <height>20</height>
+             </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>16777215</width>
-              <height>30</height>
+              <width>110</width>
+              <height>20</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -14261,6 +14617,213 @@ font: 14pt &quot;Bebas Kai&quot;;
             <property name="alignment">
              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
             </property>
+           </widget>
+           <widget class="QFrame" name="frame_29">
+            <property name="geometry">
+             <rect>
+              <x>7</x>
+              <y>31</y>
+              <width>201</width>
+              <height>600</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QFrame{
+border-style: solid;
+border-color: rgb(186, 189, 182);
+background-color: rgb(51, 57, 59);
+border-width: 2px;
+border-radius: 6px;
+}</string>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_40">
+             <property name="spacing">
+              <number>12</number>
+             </property>
+             <property name="leftMargin">
+              <number>9</number>
+             </property>
+             <property name="topMargin">
+              <number>5</number>
+             </property>
+             <property name="rightMargin">
+              <number>9</number>
+             </property>
+             <property name="bottomMargin">
+              <number>13</number>
+             </property>
+             <item>
+              <widget class="QWidget" name="widget" native="true"/>
+             </item>
+             <item>
+              <widget class="QWidget" name="horizontalWidget_2" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>0</width>
+                 <height>42</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>42</height>
+                </size>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout_9">
+                <property name="spacing">
+                 <number>8</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <property name="rightMargin">
+                 <number>0</number>
+                </property>
+                <property name="bottomMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="ActionButton" name="manual_mode_button_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>MAN</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <property name="autoExclusive">
+                   <bool>true</bool>
+                  </property>
+                  <property name="actionName" stdset="0">
+                   <string>machine.mode.manual</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="ActionButton" name="auto_mode_button_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>AUTO</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <property name="autoExclusive">
+                   <bool>true</bool>
+                  </property>
+                  <property name="actionName" stdset="0">
+                   <string>machine.mode.auto</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="ActionButton" name="mdi_mode_button_2">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>40</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton {
+   	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                  </property>
+                  <property name="text">
+                   <string>MDI</string>
+                  </property>
+                  <property name="checkable">
+                   <bool>true</bool>
+                  </property>
+                  <property name="autoExclusive">
+                   <bool>true</bool>
+                  </property>
+                  <property name="actionName" stdset="0">
+                   <string>machine.mode.mdi</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </widget>
          </widget>
@@ -15138,7 +15701,7 @@ padding: -5px;
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="tool_number_entry_box">
+               <widget class="VCPLineEdit" name="tool_number_entry_box">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -15363,6 +15926,9 @@ padding: -5px;
                 </property>
                 <property name="alignment">
                  <set>Qt::AlignCenter</set>
+                </property>
+                <property name="rules" stdset="0">
+                 <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?tool_number&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;str(ch[0])&quot;, &quot;name&quot;: &quot;update tool num&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_state?text&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:interp_state?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;ch[0] == 'On' and ch[1] == 'Idle'&quot;, &quot;name&quot;: &quot;enable/disable&quot;}]</string>
                 </property>
                </widget>
               </item>
@@ -15716,9 +16282,6 @@ padding: -5px;
     }
 ]</string>
              </property>
-             <property name="statusItem" stdset="0">
-              <string>program_units</string>
-             </property>
             </widget>
            </item>
           </layout>
@@ -15845,23 +16408,7 @@ padding: -5px;
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[
-    {
-        &quot;channels&quot;: [
-            {
-                &quot;url&quot;: &quot;status:linear_units?text&quot;,
-                &quot;trigger&quot;: true,
-                &quot;type&quot;: &quot;str&quot;
-            }
-        ],
-        &quot;expression&quot;: &quot;ch[0]&quot;,
-        &quot;name&quot;: &quot;Units&quot;,
-        &quot;property&quot;: &quot;Text&quot;
-    }
-]</string>
-             </property>
-             <property name="statusItem" stdset="0">
-              <string>program_units</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Units&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -16330,7 +16877,7 @@ padding: -5px;
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;('%.4f' if ch[1] == 'in' else '%.3f') % ch[0][0]&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?string&amp;axis=x&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -16381,7 +16928,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <string>unhomed</string>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?abs&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint[0].homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=x&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.0.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.0.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -16421,7 +16968,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?dtg&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;('%.4f' if ch[1] == 'in' else '%.3f') % ch[0][0]&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:dtg?string&amp;axis=x&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -16563,7 +17110,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?string&amp;axis=y&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -16614,7 +17161,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <string>unhomed</string>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?abs&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[1].homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint[1].homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=y&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.1.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.1.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -16654,7 +17201,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?dtg&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:dtg?string&amp;axis=x&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -16796,7 +17343,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][2]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?string&amp;axis=y&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -16847,7 +17394,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <string>unhomed</string>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?abs&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][2]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[2].homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint[2].homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=z&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.2.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.2.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -16887,7 +17434,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?dtg&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][2]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:dtg?string&amp;axis=x&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -17028,7 +17575,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][3]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?string&amp;axis=z&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -17079,7 +17626,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <string>unhomed</string>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?abs&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][3]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[3].homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint[3].homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=a&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.3.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.3.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -17119,7 +17666,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?dtg&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][3]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:dtg?string&amp;axis=x&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -17261,7 +17808,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?rel&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][4]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?string&amp;axis=x&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -17312,7 +17859,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <string>unhomed</string>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?abs&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][4]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[4].homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint[4].homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=b&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.4.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.4.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -17352,7 +17899,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:axis?dtg&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][4]) if ch[1] == 'in' else \&quot;{:.3f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:dtg?string&amp;axis=x&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;REL axis position&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -17497,9 +18044,6 @@ padding-right: 7px;
     }
 ]</string>
            </property>
-           <property name="statusItem" stdset="0">
-            <string>feedrate</string>
-           </property>
           </widget>
          </item>
          <item row="5" column="0">
@@ -17619,23 +18163,7 @@ border-radius: 4px;
             <number>0</number>
            </property>
            <property name="rules" stdset="0">
-            <string>[
-    {
-        &quot;channels&quot;: [
-            {
-                &quot;url&quot;: &quot;status:spindle[0].override&quot;,
-                &quot;trigger&quot;: true,
-                &quot;type&quot;: &quot;float&quot;
-            }
-        ],
-        &quot;expression&quot;: &quot;'{:.0%}'.format(ch[0])&quot;,
-        &quot;name&quot;: &quot;New Rule&quot;,
-        &quot;property&quot;: &quot;Text&quot;
-    }
-]</string>
-           </property>
-           <property name="statusItem" stdset="0">
-            <string>spindle.0.override</string>
+            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'{:.0%}'.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
            </property>
           </widget>
          </item>
@@ -17696,9 +18224,6 @@ border-radius: 4px;
         &quot;property&quot;: &quot;Text&quot;
     }
 ]</string>
-           </property>
-           <property name="statusItem" stdset="0">
-            <string>rapidrate</string>
            </property>
           </widget>
          </item>
@@ -17855,15 +18380,6 @@ LOAD</string>
         &quot;property&quot;: &quot;Text&quot;
     }
 ]</string>
-           </property>
-           <property name="statusItem" stdset="0">
-            <string>max_velocity</string>
-           </property>
-           <property name="fromat" stdset="0">
-            <string>{:.0f}</string>
-           </property>
-           <property name="conv_factor" stdset="0">
-            <double>60.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -18475,9 +18991,6 @@ border-radius: 4px;
              <property name="format" stdset="0">
               <string>{:.1f}</string>
              </property>
-             <property name="statusItem" stdset="0">
-              <string/>
-             </property>
             </widget>
            </item>
            <item>
@@ -18643,9 +19156,6 @@ border-radius: 4px;
                 <property name="rules" stdset="0">
                  <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Linear Units&quot;}]</string>
                 </property>
-                <property name="statusItem" stdset="0">
-                 <string>linear_units</string>
-                </property>
                 <property name="fromat" stdset="0">
                  <string/>
                 </property>
@@ -18752,9 +19262,6 @@ border-radius: 4px;
              <property name="format" stdset="0">
               <string>{:.1f}</string>
              </property>
-             <property name="statusItem" stdset="0">
-              <string/>
-             </property>
             </widget>
            </item>
           </layout>
@@ -18828,13 +19335,10 @@ border-radius: 1px;
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;trigger&quot;: true, &quot;type&quot;: &quot;float&quot;, &quot;url&quot;: &quot;status:spindle[0].speed&quot;}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.2f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;Speed&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.2f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;Speed&quot;}]</string>
              </property>
              <property name="format" stdset="0">
               <string>{:.2f}</string>
-             </property>
-             <property name="statusItem" stdset="0">
-              <string/>
              </property>
             </widget>
            </item>
@@ -18909,13 +19413,10 @@ border-radius: 1px;
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="rules" stdset="0">
-              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:settings&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;str( ch[0][2] )&quot;, &quot;name&quot;: &quot;S Word&quot;}]</string>
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:settings?speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;str( ch[0] )&quot;, &quot;name&quot;: &quot;S Word&quot;}]</string>
              </property>
              <property name="format" stdset="0">
               <string>{:.2f}</string>
-             </property>
-             <property name="statusItem" stdset="0">
-              <string/>
              </property>
             </widget>
            </item>
@@ -19308,6 +19809,11 @@ font: 11pt bebas kai;
    <container>1</container>
   </customwidget>
   <customwidget>
+   <class>VCPLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.line_edit</header>
+  </customwidget>
+  <customwidget>
    <class>SubCallButton</class>
    <extends>QPushButton</extends>
    <header>qtpyvcp.widgets.button_widgets.subcall_button</header>
@@ -19365,70 +19871,6 @@ font: 11pt bebas kai;
  </resources>
  <connections>
   <connection>
-   <sender>tool_table_delete_button</sender>
-   <signal>clicked()</signal>
-   <receiver>tableWidget_2</receiver>
-   <slot>deleteSelectedTool()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>222</x>
-     <y>614</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>150</x>
-     <y>115</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tool_table_reread_button</sender>
-   <signal>clicked()</signal>
-   <receiver>tableWidget_2</receiver>
-   <slot>loadToolTable()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>586</x>
-     <y>614</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>150</x>
-     <y>115</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tool_table_reload_button</sender>
-   <signal>clicked()</signal>
-   <receiver>tableWidget_2</receiver>
-   <slot>loadToolTable()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>970</x>
-     <y>614</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>150</x>
-     <y>115</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tool_table_add_tool_button</sender>
-   <signal>clicked()</signal>
-   <receiver>tableWidget_2</receiver>
-   <slot>addTool()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>404</x>
-     <y>614</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>150</x>
-     <y>115</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>main_delete_item_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable</receiver>
@@ -19436,11 +19878,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>738</x>
-     <y>619</y>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -19452,11 +19894,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>752</x>
-     <y>106</y>
+     <y>108</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -19468,27 +19910,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>995</x>
-     <y>619</y>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tool_table_save_button</sender>
-   <signal>clicked()</signal>
-   <receiver>tableWidget_2</receiver>
-   <slot>saveToolTable()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>768</x>
-     <y>614</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>150</x>
-     <y>115</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -19500,11 +19926,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>403</x>
-     <y>619</y>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -19516,11 +19942,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>146</x>
-     <y>619</y>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -19532,11 +19958,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>610</x>
-     <y>477</y>
+     <y>479</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -19548,11 +19974,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>610</x>
-     <y>318</y>
+     <y>320</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -19564,11 +19990,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>160</x>
-     <y>106</y>
+     <y>108</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -19579,12 +20005,12 @@ font: 11pt bebas kai;
    <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>776</x>
-     <y>250</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -19595,12 +20021,12 @@ font: 11pt bebas kai;
    <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>522</x>
-     <y>250</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -19612,11 +20038,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>854</x>
-     <y>619</y>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
-     <x>776</x>
-     <y>250</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -19628,11 +20054,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>262</x>
-     <y>619</y>
+     <y>621</y>
     </hint>
     <hint type="destinationlabel">
-     <x>522</x>
-     <y>250</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -19659,11 +20085,11 @@ font: 11pt bebas kai;
    <slot>loadSelectedFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>473</x>
-     <y>94</y>
+     <x>1110</x>
+     <y>108</y>
     </hint>
     <hint type="destinationlabel">
-     <x>464</x>
+     <x>738</x>
      <y>146</y>
     </hint>
    </hints>
@@ -19675,12 +20101,12 @@ font: 11pt bebas kai;
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>496</x>
-     <y>125</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
-     <x>491</x>
-     <y>97</y>
+     <x>1110</x>
+     <y>108</y>
     </hint>
    </hints>
   </connection>
@@ -19691,12 +20117,12 @@ font: 11pt bebas kai;
    <slot>setPlainText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1114</x>
-     <y>520</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1207</x>
-     <y>379</y>
+     <x>1253</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -19707,12 +20133,108 @@ font: 11pt bebas kai;
    <slot>setPlainText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1050</x>
-     <y>459</y>
+     <x>146</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1210</x>
-     <y>451</y>
+     <x>1253</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_number_entry_box</sender>
+   <signal>returnPressed()</signal>
+   <receiver>m6_button</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>466</x>
+     <y>734</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>506</x>
+     <y>747</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>load_spindle_tool_number</sender>
+   <signal>returnPressed()</signal>
+   <receiver>load_current_tool</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1447</x>
+     <y>171</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1602</x>
+     <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_delete_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>deleteSelectedTool()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>98</x>
+     <y>598</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>513</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_add_tool_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>addTool()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>258</x>
+     <y>601</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>258</x>
+     <y>529</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_save_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>saveToolTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>811</x>
+     <y>605</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>783</x>
+     <y>515</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_reload_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>loadToolTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>946</x>
+     <y>596</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>945</x>
+     <y>546</y>
     </hint>
    </hints>
   </connection>

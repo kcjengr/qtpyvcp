@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>370</width>
-    <height>417</height>
+    <height>443</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -88,7 +88,7 @@
          <item row="2" column="3">
           <widget class="StatusLabel" name="statuslabelnew_4">
            <property name="rules" stdset="0">
-            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;override val&quot;}]</string>
+            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;override val&quot;}]</string>
            </property>
            <property name="format" stdset="0">
             <string>{:3.0%}</string>
@@ -203,7 +203,7 @@
          <item row="2" column="3">
           <widget class="StatusLabel" name="statuslabelnew_5">
            <property name="rules" stdset="0">
-            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;override val&quot;}]</string>
+            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;override val&quot;}]</string>
            </property>
            <property name="format" stdset="0">
             <string>{:3.0%}</string>
@@ -222,7 +222,7 @@
             <string>      0 rpm</string>
            </property>
            <property name="rules" stdset="0">
-            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:7.0f} rpm\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;rpm&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindles&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;ch[0] &gt; 1&quot;, &quot;name&quot;: &quot;enable&quot;}]</string>
+            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:7.0f} rpm\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;rpm&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindles&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;ch[0] &gt; 1&quot;, &quot;name&quot;: &quot;enable&quot;}]</string>
            </property>
            <property name="factor" stdset="0">
             <double>0.000000000000000</double>
@@ -311,7 +311,7 @@
          <item row="2" column="3">
           <widget class="StatusLabel" name="statuslabelnew_8">
            <property name="rules" stdset="0">
-            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;override val&quot;}]</string>
+            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;override val&quot;}]</string>
            </property>
            <property name="format" stdset="0">
             <string>{:3.0%}</string>
@@ -330,7 +330,7 @@
             <string>      0 rpm</string>
            </property>
            <property name="rules" stdset="0">
-            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:7.0f} rpm\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;rpm&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindles&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;ch[0] &gt; 2&quot;, &quot;name&quot;: &quot;enable&quot;}]</string>
+            <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:7.0f} rpm\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;rpm&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindles&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;ch[0] &gt; 2&quot;, &quot;name&quot;: &quot;enable&quot;}]</string>
            </property>
            <property name="factor" stdset="0">
             <double>0.000000000000000</double>
@@ -353,7 +353,7 @@
      <x>0</x>
      <y>0</y>
      <width>370</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">

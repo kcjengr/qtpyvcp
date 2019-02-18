@@ -5,11 +5,11 @@ qtdesigner:
   qss_file: ( application.kwargs.stylesheet )
 
 vcp:
-  name: Probe Basic
+  name: Probe Basic Vertical
   version: v0.0.1
   author: Chris Polanski
   description: |
-    Probe Basic description ...
+    Probe Basic Vertical Layout
 
 data_plugins:
   status:

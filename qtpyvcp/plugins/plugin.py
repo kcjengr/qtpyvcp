@@ -1,15 +1,60 @@
+import inspect
 from qtpy.QtCore import QObject, Signal
 from qtpyvcp.utilities.logger import getLogger
 
 LOG = getLogger(__name__)
 
-class QtPyVCPDataPlugin(QObject):
-    """QtPyVCPDataPlugin."""
 
-    protocol = None
+def isDataChan(obj):
+    return isinstance(obj, DataChannel)
+
+
+class DataPlugin(QObject):
+    """DataPlugin."""
 
     def __init__(self):
-        super(QtPyVCPDataPlugin, self).__init__()
+        super(DataPlugin, self).__init__()
+
+        self.channels = {name: obj for name, obj in
+                         inspect.getmembers(self, isDataChan)}
+
+    def getChannel(self, url):
+        """Get data channel from URL.
+
+        Args:
+            url (str) : The URL of the channel to get.
+
+        Returns:
+            tuple : (chan_obj, chan_exp)
+        """
+
+        chan, sep, query = url.partition('?')
+        raw_args = query.split('&')
+
+        # print url, chan, raw_args
+
+        args = []
+        kwargs = {}
+        for arg in [a for a in raw_args if a != '']:
+            if '=' in arg:
+                key, val = arg.split('=')
+                kwargs[key] = val
+            else:
+                args.append(arg)
+
+        # print chan, args, kwargs
+
+        try:
+            chan_obj = self.channels[chan]
+            if len(args) > 0 and args[0] in ('string', 'text', 'str'):
+                chan_exp = lambda: chan_obj.getString(*args[1:], **kwargs)
+            else:
+                chan_exp = lambda: chan_obj.getValue(*args, **kwargs)
+
+        except (KeyError, SyntaxError):
+            return None, None
+
+        return chan_obj, chan_exp
 
     def initialise(self):
         """Initialize the data plugin.
@@ -23,63 +68,98 @@ class QtPyVCPDataPlugin(QObject):
         """Terminate the data plugin.
 
         This is called right before the main event loop exits. Any cleanup
-        of the plugin should be done here, such as saving data to a file.
+        of the plugin should be done here, such as saving persistent data.
         """
         pass
 
 
-class QtPyVCPDataChannel(QObject):
-    """QtPyVCPChannel.
+class DataChannel(QObject):
 
-    Args:
-        description (str) : A human readable description of the item.
-    """
+    signal = Signal(object)
 
-    valueChanged = Signal(object)
+    def __init__(self, fget=None, fset=None, fstr=None, data=None, settable=False,
+                 doc = None):
+        super(DataChannel, self).__init__()
 
-    def __init__(self, description=''):
-        super(QtPyVCPDataChannel, self).__init__()
+        self.fget = fget
+        self.fset = fset
+        self.fstr = fstr
 
-        self.description = description
+        self.value = data
 
-    def handleQuery(self, query):
-        """Query channel value.
+        self.settable = settable
+        self.instance = None
 
-        Args:
-            query (str) : The name of the value to query. If no query
-                is passed or it is an empty string the current value of
-                the ``value`` property will be returned.
+        if doc is None and fget is not None:
+            doc = fget.__doc__
+        self.__doc__ = doc
 
-        Returns:
-            The queried value, or None.
-        """
-        try:
-            return getattr(self, query or 'value')
-        except AttributeError:
-            LOG.exception("Failed to handle query: {}".format(query))
-            return None
+    def getValue(self, *args, **kwargs):
+        """Channel data getter method."""
+        if self.fget is None:
+            return self.value
+        return self.fget(self.instance, self, *args, **kwargs)
 
-    def handleAssigment(self, attr, value):
-        raise NotImplemented
-        # setattr(self, attr, value)
+    def getString(self, *args, **kwargs):
+        """Channel data getter method."""
+        if self.fstr is None:
+            return str(self.value)
+        return self.fstr(self.instance, self, *args, **kwargs)
 
-    @property
-    def value(self):
-        """Channel value property.
+    def setValue(self, value):
+        """Channel data setter method."""
+        if self.fset is None:
+            self.value = value
+            self.signal.emit(value)
+        else:
+            self.fset(self.instance, self, value)
 
-        In a channel implementation the `value` property should return the
-        current value of the channel. If getting the value is reasonably
-        fast and light (e.g. dict lookup) then that can be done here, but if
-        it may take some time (e.g. over a network), then this method should
-        return a cashed value that is updated periodically.
-        """
-        pass
+    def getter(self, fget):
+        def inner(*args, **kwargs):
+            fget(*args, **kwargs)
 
-    def onValueChanged(self, slot):
-        """Connect a callback to the valueChanged signal.
+        self.fget = inner
+        return self
 
-        Args:
-            slot : The method to call when the value changes.
-        """
-        self.valueChanged.connect(slot)
+    def setter(self, fset):
+        def inner(*args, **kwargs):
+            fset(*args, **kwargs)
 
+        self.fset = inner
+        return self
+
+    def tostring(self, fstr):
+        def inner(*args, **kwargs):
+            return fstr(*args, **kwargs)
+
+        self.fstr = inner
+        return self
+
+    def notify(self, slot, *args, **kwargs):
+        # print 'Connecting %s to slot %s' % (self._signal, slot)
+        if len(args) == 0 and len(kwargs) == 0:
+            self.signal.connect(slot)
+        else:
+            if args[0] in ['string', 'str']:
+                self.signal.connect(lambda: slot(self.getString(*args[1:], **kwargs)))
+            else:
+                self.signal.connect(lambda: slot(self.getValue(*args, **kwargs)))
+
+    # fixme
+    onValueChanged = notify
+
+    def __get__(self, instance, owner):
+        self.instance = instance
+        return self
+
+    def __call__(self, *args, **kwargs):
+        return self.getValue(*args, **kwargs)
+
+    def __set__(self, instance, value):
+        return self.setValue(value)
+
+    def __getitem__(self, item):
+        return self.value[item]
+
+    def __str__(self):
+        return self.getString()

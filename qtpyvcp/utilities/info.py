@@ -11,6 +11,8 @@ import sys
 
 from linuxcnc import ini
 
+from qtpyvcp import TOP_DIR
+
 # Setup logging
 from qtpyvcp.utilities import logger
 log = logger.getLogger(__name__)
@@ -100,6 +102,10 @@ class _Info(object):
         return self.ini.find("HAL", "POSTGUI_HALFILE")
 
     def getOpenFile(self, default=None):
+        if default is None:
+            default = os.path.realpath(os.path.join(TOP_DIR, 'sim/example_gcode/qtpyvcp.ngc'))
+            if not os.path.isfile(default):
+                default = os.path.expanduser('~/linuxcnc/nc_files/.qtpyvcp/qtpyvcp.ngc')
         return self.getFilePath('DISPLAY', 'OPEN_FILE', self.CONFIG_DIR, default)
 
     def getCoordinates(self):

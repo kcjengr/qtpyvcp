@@ -1,6 +1,6 @@
 """MDI Entry """
 
-from qtpy.QtWidgets import QLineEdit, QCompleter
+from qtpy.QtWidgets import QLineEdit, QCompleter, QApplication
 from qtpy.QtCore import Qt, QEvent, QStringListModel, Slot
 from qtpy.QtGui import QKeySequence, QValidator
 
@@ -41,7 +41,7 @@ class MDIEntry(QLineEdit):
 
         self.returnPressed.connect(self.submit)
 
-        STATUS.on_shutown.connect(self.saveMDIHistory)
+        QApplication.instance().aboutToQuit.connect(self.saveMDIHistory)
 
     @Slot()
     def submit(self):

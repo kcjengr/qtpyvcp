@@ -74,19 +74,21 @@ class VCPMainWindow(QMainWindow):
         if opts.hide_menu_bar:
             self.menuBar().hide()
 
-        if opts.size:
+        size = opts.size or size
+        if size:
             try:
-                width, height = opts.size.lower().split('x')
+                width, height = size.lower().split('x')
                 self.resize(int(width), int(height))
             except:
-                LOG.exception('Error parsing --size argument: %s', opts.size)
+                LOG.exception('Error parsing --size argument: %s', size)
 
-        if opts.position:
+        pos = opts.position or position
+        if pos:
             try:
-                xpos, ypos = opts.position.lower().split('x')
+                xpos, ypos = pos.lower().split('x')
                 self.move(int(xpos), int(ypos))
             except:
-                LOG.exception('Error parsing --position argument: %s', opts.position)
+                LOG.exception('Error parsing --position argument: %s', pos)
 
         QShortcut(QKeySequence("F11"), self, self.toggleFullscreen)
         self.app.focusChanged.connect(self.focusChangedEvent)
@@ -118,19 +120,20 @@ class VCPMainWindow(QMainWindow):
                'action': actions,
                }
 
-        try:
-            mod, action = action_name.split('.', 1)
-            method = getattr(env.get(mod, self), action)
-            menu_action.triggered.connect(method)
-            return
-        except:
-            pass
+        if action_name is not None:
+            try:
+                mod, action = action_name.split('.', 1)
+                method = getattr(env.get(mod, self), action)
+                menu_action.triggered.connect(method)
+                return
+            except:
+                pass
 
-        try:
-            actions.bindWidget(menu_action, action_name)
-            return
-        except actions.InvalidAction:
-            pass
+            try:
+                actions.bindWidget(menu_action, action_name)
+                return
+            except actions.InvalidAction:
+                LOG.exception('Error binding menu action %s', action_name)
 
         msg = "The <b>{}</b> action specified for the " \
               "<b>{}</b> menu item could not be triggered. " \
@@ -186,7 +189,6 @@ class VCPMainWindow(QMainWindow):
         return menu_bar
 
     def initUi(self):
-        self.status.init_ui.emit()
         self.loadSplashGcode()
         self.initHomingMenu()
 
@@ -308,9 +310,9 @@ class VCPMainWindow(QMainWindow):
 
     def loadSplashGcode(self):
         # Load backplot splash code
-        path = os.path.realpath(os.path.join(__file__, '../../../..', 'sim/example_gcode/qtpyvcp.ngc'))
-        splash_code = INFO.getOpenFile() or path
-        if splash_code is not None:
+        splash_code = INFO.getOpenFile()
+        print splash_code
+        if splash_code is not None and os.path.isfile(splash_code):
             # Load after startup to not cause hang and 'Can't set mode while machine is running' error
             QTimer.singleShot(200, lambda: actions.program.load(splash_code, add_to_recents=False))
 
