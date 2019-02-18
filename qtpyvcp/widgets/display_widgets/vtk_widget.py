@@ -339,11 +339,14 @@ class Frustum:
 
 class Tool:
     def __init__(self):
+
+        self.height = 1.0
+
         # Create source
         source = vtk.vtkConeSource()
-        source.SetResolution(128)
-        source.SetHeight(1.0)
-        source.SetCenter(0, 0, -0.5)
+        source.SetResolution(8)
+        source.SetHeight(self.height)
+        source.SetCenter(-self.height/2, 0, 0)
         source.SetRadius(0.5)
 
         transform = vtk.vtkTransform()
