@@ -405,7 +405,6 @@ class Status(DataPlugin):
 
     @gcodes.tostring
     def gcodes(self, chan):
-        print chan.value
         return " ".join(chan.value)
 
     @gcodes.setter
@@ -429,7 +428,6 @@ class Status(DataPlugin):
 
     @mcodes.tostring
     def mcodes(self, chan):
-        print chan.value
         return " ".join(chan.value)
 
     @mcodes.setter
