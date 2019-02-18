@@ -796,9 +796,9 @@ motion_mode
 motion_type
     motion type of move currently executing
 
-    === ===========
+    === ============
     int string
-    === ===========
+    === ============
     0   None
     1   Traverse
     2   Linear Feed

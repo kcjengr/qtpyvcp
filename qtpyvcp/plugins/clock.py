@@ -12,6 +12,7 @@ from qtpyvcp.plugins import DataPlugin, DataChannel
 
 
 class Clock(DataPlugin):
+    """Clock Plugin"""
     def __init__(self):
         super(Clock, self).__init__()
 
