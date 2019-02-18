@@ -176,11 +176,20 @@ class Notification(object):
 
     def setIconPath(self, icon_path):
         """Set the URI of the icon to display in the notification"""
+        # "image-path" hint should be either a URI (file:// is the only URI
+        # schema supported right now) or a freedesktop.org-compliant icon name
         if os.path.isfile(icon_path):
+            # it is a file, so format as a URI
             self.hints['image-path'] = 'file://' + icon_path
+        else:
+            # probably is a icon name
+            self.hints['image-path'] = icon_path
 
     def setQIcon(self, q_icon):
-        # FixMe this would be convenient, but may not be possible
+        # ToDO: implement setting image-data from a QIcon
+        # The "image-data" hint should be a raw image data structure of
+        # signature (iiibiiay) which describes the width, height, rowstride,
+        # has alpha, bits per sample, channels and image data respectively.
         raise NotImplementedError
 
     def setLocation(self, x_pos, y_pos):
@@ -265,7 +274,7 @@ if __name__ == "__main__":
     n = Notification("Demo")
     n.setUrgency(Urgency.NORMAL)
     n.setCategory("device")
-    n.setIconPath("/usr/share/icons/Tango/scalable/status/dialog-error.svg")
+    n.setIconPath("dialog-error")
     # no user data
     n.addAction("help", "Help", onHelp)
     # passing arbitrary user data to the callback
