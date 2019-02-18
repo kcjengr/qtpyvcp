@@ -135,9 +135,15 @@ class DataChannel(QObject):
         self.fstr = inner
         return self
 
-    def notify(self, slot):
+    def notify(self, slot, *args, **kwargs):
         # print 'Connecting %s to slot %s' % (self._signal, slot)
-        self.signal.connect(slot)
+        if len(args) == 0 and len(kwargs) == 0:
+            self.signal.connect(slot)
+        else:
+            if args[0] in ['string', 'str']:
+                self.signal.connect(lambda: slot(self.getString(*args[1:], **kwargs)))
+            else:
+                self.signal.connect(lambda: slot(self.getValue(*args, **kwargs)))
 
     # fixme
     onValueChanged = notify
