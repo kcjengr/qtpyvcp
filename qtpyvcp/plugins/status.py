@@ -366,6 +366,30 @@ class Status(DataPlugin):
             return ["N/A", "Inches", "Millimeters", "Centimeters"][STAT.program_units]
 
     @DataChannel
+    def linear_units(self, chan):
+        """Machine linear units
+
+        Available as float (units/mm), or in short or long string formats.
+
+        To return the string in a status label::
+
+            status:linear_units
+            status:linear_units?string
+            status:linear_units?string&format=long
+
+        :returns: machine linear units
+        :rtype: float, str
+        """
+        return STAT.linear_units
+
+    @linear_units.tostring
+    def linear_units(self, chan, format='short'):
+        if format == 'short':
+            return {0.0: "N/A", 1.0: "mm", 1 / 25.4: "in"}[STAT.linear_units]
+        else:
+            return {0.0: "N/A", 1.0: "Millimeters", 1 / 25.4: "Inches"}[STAT.linear_units]
+
+    @DataChannel
     def gcodes(self, chan, fmt=None):
         """G-codes
 
