@@ -160,7 +160,7 @@ class Position(DataPlugin):
         return chan.value[anum]
 
     @abs.tostring
-    def abs(self, anum):
+    def abs(self, chan, anum):
         return self._current_format % chan.value[anum]
 
 
