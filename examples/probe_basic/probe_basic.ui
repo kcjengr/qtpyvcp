@@ -8524,9 +8524,6 @@ border-style: none;
                       <property name="format" stdset="0">
                        <string>{:.3f}</string>
                       </property>
-                      <property name="statusItem" stdset="0">
-                       <string>tool_offset.3</string>
-                      </property>
                      </widget>
                     </item>
                    </layout>
@@ -8666,9 +8663,6 @@ border-style: none;
                       <property name="format" stdset="0">
                        <string>{:.3f}</string>
                       </property>
-                      <property name="statusItem" stdset="0">
-                       <string>tool_offset.3</string>
-                      </property>
                      </widget>
                     </item>
                    </layout>
@@ -8805,9 +8799,6 @@ border-style: none;
                       <property name="format" stdset="0">
                        <string>{:.3f}</string>
                       </property>
-                      <property name="statusItem" stdset="0">
-                       <string>tool_offset.3</string>
-                      </property>
                      </widget>
                     </item>
                    </layout>
@@ -8903,9 +8894,6 @@ border-style: none;
                  </property>
                  <property name="format" stdset="0">
                   <string>{:.3f}</string>
-                 </property>
-                 <property name="statusItem" stdset="0">
-                  <string>tool_offset.3</string>
                  </property>
                 </widget>
                </widget>
@@ -15716,9 +15704,6 @@ padding: -5px;
     }
 ]</string>
              </property>
-             <property name="statusItem" stdset="0">
-              <string>program_units</string>
-             </property>
             </widget>
            </item>
           </layout>
@@ -15846,9 +15831,6 @@ padding: -5px;
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Units&quot;}]</string>
-             </property>
-             <property name="statusItem" stdset="0">
-              <string>program_units</string>
              </property>
             </widget>
            </item>
@@ -17484,9 +17466,6 @@ padding-right: 7px;
     }
 ]</string>
            </property>
-           <property name="statusItem" stdset="0">
-            <string>feedrate</string>
-           </property>
           </widget>
          </item>
          <item row="5" column="0">
@@ -17608,9 +17587,6 @@ border-radius: 4px;
            <property name="rules" stdset="0">
             <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'{:.0%}'.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
            </property>
-           <property name="statusItem" stdset="0">
-            <string>spindle.0.override</string>
-           </property>
           </widget>
          </item>
          <item row="5" column="1">
@@ -17670,9 +17646,6 @@ border-radius: 4px;
         &quot;property&quot;: &quot;Text&quot;
     }
 ]</string>
-           </property>
-           <property name="statusItem" stdset="0">
-            <string>rapidrate</string>
            </property>
           </widget>
          </item>
@@ -17829,15 +17802,6 @@ LOAD</string>
         &quot;property&quot;: &quot;Text&quot;
     }
 ]</string>
-           </property>
-           <property name="statusItem" stdset="0">
-            <string>max_velocity</string>
-           </property>
-           <property name="fromat" stdset="0">
-            <string>{:.0f}</string>
-           </property>
-           <property name="conv_factor" stdset="0">
-            <double>60.000000000000000</double>
            </property>
           </widget>
          </item>
@@ -18449,9 +18413,6 @@ border-radius: 4px;
              <property name="format" stdset="0">
               <string>{:.1f}</string>
              </property>
-             <property name="statusItem" stdset="0">
-              <string/>
-             </property>
             </widget>
            </item>
            <item>
@@ -18617,9 +18578,6 @@ border-radius: 4px;
                 <property name="rules" stdset="0">
                  <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Linear Units&quot;}]</string>
                 </property>
-                <property name="statusItem" stdset="0">
-                 <string>linear_units</string>
-                </property>
                 <property name="fromat" stdset="0">
                  <string/>
                 </property>
@@ -18726,9 +18684,6 @@ border-radius: 4px;
              <property name="format" stdset="0">
               <string>{:.1f}</string>
              </property>
-             <property name="statusItem" stdset="0">
-              <string/>
-             </property>
             </widget>
            </item>
           </layout>
@@ -18807,9 +18762,6 @@ border-radius: 1px;
              <property name="format" stdset="0">
               <string>{:.2f}</string>
              </property>
-             <property name="statusItem" stdset="0">
-              <string/>
-             </property>
             </widget>
            </item>
            <item>
@@ -18887,9 +18839,6 @@ border-radius: 1px;
              </property>
              <property name="format" stdset="0">
               <string>{:.2f}</string>
-             </property>
-             <property name="statusItem" stdset="0">
-              <string/>
              </property>
             </widget>
            </item>
