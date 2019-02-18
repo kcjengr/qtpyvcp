@@ -11,6 +11,23 @@ Usage:
         position:rel?string&axis=x        # returns X axis relative position
         position:dtg?string&axis=x        # returns X axis DTG value
 
+
+YAML configuration:
+
+.. code-block:: yaml
+
+    data_plugins:
+      position:
+        kwargs:
+          # whether to report actual or commanded pos
+          report_actual_pos: False
+          # whether to report program or machine units
+          use_program_units: True
+          # format used for metric units
+          metric_format: "%9.3f"
+          # format used for imperial units
+          imperial_format: "%8.4f"
+
 ToDO:
     Add joint positions.
 """
