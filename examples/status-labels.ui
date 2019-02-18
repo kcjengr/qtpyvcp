@@ -36,7 +36,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Interp State: &lt;/b&gt;Idle</string>
+     <string>&lt;b&gt;Interp State: &lt;/b&gt;N/A</string>
     </property>
     <property name="rules" stdset="0">
      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:interp_state?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Interp State: &lt;/b&gt;\&quot; + ch[0]&quot;, &quot;name&quot;: &quot;interp state&quot;}]</string>
@@ -68,7 +68,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;State: &lt;/b&gt;Done</string>
+     <string>&lt;b&gt;State: &lt;/b&gt;N/A</string>
     </property>
     <property name="rules" stdset="0">
      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:state?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;State: &lt;/b&gt;\&quot; + ch[0]&quot;, &quot;name&quot;: &quot;state&quot;}]</string>
@@ -84,7 +84,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Motion Mode: &lt;/b&gt;Teleop</string>
+     <string>&lt;b&gt;Motion Mode: &lt;/b&gt;N/A</string>
     </property>
     <property name="rules" stdset="0">
      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:motion_mode?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Motion Mode: &lt;/b&gt;\&quot; + ch[0]&quot;, &quot;name&quot;: &quot;motion mode&quot;}]</string>
@@ -100,7 +100,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Program Units: &lt;/b&gt;in</string>
+     <string>&lt;b&gt;Program Units: &lt;/b&gt;N/A</string>
     </property>
     <property name="rules" stdset="0">
      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:program_units?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Program Units: &lt;/b&gt;\&quot; + ch[0]&quot;, &quot;name&quot;: &quot;prog units&quot;}]</string>
@@ -116,13 +116,13 @@
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Spindle Override:&lt;/b&gt;    81%</string>
+     <string>&lt;b&gt;Spindle Override:&lt;/b&gt;     0%</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
     </property>
     <property name="rules" stdset="0">
-     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Spindle Override:&lt;/b&gt; {:6.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;override&quot;}]</string>
+     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Spindle Override:&lt;/b&gt; {:6.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;override&quot;}]</string>
     </property>
    </widget>
    <widget class="StatusLabel" name="statuslabelnew_3">
@@ -135,7 +135,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Task Mode:&lt;/b&gt; Manual</string>
+     <string>&lt;b&gt;Task Mode:&lt;/b&gt; N/A</string>
     </property>
     <property name="rules" stdset="0">
      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_mode?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Task Mode:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;Task Mode&quot;}]</string>
@@ -151,7 +151,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Motion Line:&lt;/b&gt; 559</string>
+     <string>&lt;b&gt;Motion Line:&lt;/b&gt; 0</string>
     </property>
     <property name="rules" stdset="0">
      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:motion_line&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Motion Line:&lt;/b&gt; {}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;motion line&quot;}]</string>
@@ -167,7 +167,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;File: &lt;/b&gt;/media/data/dev/cnc/qtpyvcp/sim/example_gcode/qtpyvcp.ngc</string>
+     <string>&lt;b&gt;File: &lt;/b&gt;No file loaded</string>
     </property>
     <property name="scaledContents">
      <bool>true</bool>
@@ -202,7 +202,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Task State:&lt;/b&gt; On</string>
+     <string>&lt;b&gt;Task State:&lt;/b&gt; N/A</string>
     </property>
     <property name="rules" stdset="0">
      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_state?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Task State:&lt;/b&gt; {}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;Task State&quot;}]</string>
@@ -240,100 +240,100 @@
      <item>
       <widget class="StatusLabel" name="statuslabelnew_13">
        <property name="text">
-        <string>&lt;b&gt;Enabled: &lt;/b&gt;True</string>
+        <string>&lt;b&gt;Enabled:&lt;/b&gt; False</string>
        </property>
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].enabled?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Enabled: &lt;/b&gt;\&quot; + ch[0]&quot;, &quot;name&quot;: &quot;enabled&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.0.enabled&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Enabled:&lt;/b&gt; %s\&quot; % bool(ch[0])&quot;, &quot;name&quot;: &quot;enabled&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_14">
        <property name="text">
-        <string>&lt;b&gt;Fault: &lt;/b&gt;False</string>
+        <string>&lt;b&gt;Fault:&lt;/b&gt; False</string>
        </property>
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].fault?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Fault: &lt;/b&gt;\&quot; + ch[0]&quot;, &quot;name&quot;: &quot;fault&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.0.fault&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Fault:&lt;/b&gt; %s\&quot; % bool(ch[0])&quot;, &quot;name&quot;: &quot;fault&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_15">
        <property name="text">
-        <string>&lt;b&gt;Ferror:&lt;/b&gt; 0.0000 in</string>
+        <string>&lt;b&gt;Ferror:&lt;/b&gt; 0.0000 0.0</string>
        </property>
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].ferror_current&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Ferror:&lt;/b&gt; {:0.4f} {}\&quot;.format(ch[0], ch[1])&quot;, &quot;name&quot;: &quot;ferror&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.0.ferror_current&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Ferror:&lt;/b&gt; {:0.4f} {}\&quot;.format(ch[0], ch[1])&quot;, &quot;name&quot;: &quot;ferror&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_21">
        <property name="text">
-        <string>&lt;b&gt;Max Ferror:&lt;/b&gt; 2.0472 in</string>
+        <string>&lt;b&gt;Max Ferror:&lt;/b&gt; 0.0000 0.0</string>
        </property>
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].ferror_highmark&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Max Ferror:&lt;/b&gt; {:0.4f} {}\&quot;.format(ch[0], ch[1])&quot;, &quot;name&quot;: &quot;max ferror&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.0.ferror_highmark&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Max Ferror:&lt;/b&gt; {:0.4f} {}\&quot;.format(ch[0], ch[1])&quot;, &quot;name&quot;: &quot;max ferror&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_22">
        <property name="text">
-        <string>&lt;b&gt;Inpos:&lt;/b&gt; True</string>
+        <string>&lt;b&gt;Inpos:&lt;/b&gt; 0</string>
        </property>
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].inpos?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Inpos:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;in pos&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.0.inpos?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Inpos:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;in pos&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_16">
        <property name="text">
-        <string>&lt;b&gt;Homed:&lt;/b&gt; True</string>
+        <string>&lt;b&gt;Homed:&lt;/b&gt; 0</string>
        </property>
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].homed?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Homed:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;homed&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.0.homed?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Homed:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;homed&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_17">
        <property name="text">
-        <string>&lt;b&gt;On Max Limit:&lt;/b&gt; False</string>
+        <string>&lt;b&gt;On Max Limit:&lt;/b&gt; 0</string>
        </property>
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].max_hard_limit?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;On Max Limit:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.0.max_hard_limit?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;On Max Limit:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_23">
        <property name="text">
-        <string>&lt;b&gt;Input:&lt;/b&gt; 1.08673e+01 in</string>
+        <string>&lt;b&gt;Input:&lt;/b&gt; 0.00000e+00 0.0</string>
        </property>
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].input&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Input:&lt;/b&gt; {:0.5e} {}\&quot;.format(ch[0], ch[1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.0.input&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Input:&lt;/b&gt; {:0.5e} {}\&quot;.format(ch[0], ch[1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_20">
        <property name="text">
-        <string>&lt;b&gt;Output:&lt;/b&gt; 1.08673e+01 in</string>
+        <string>&lt;b&gt;Output:&lt;/b&gt; 0.00000e+00 0.0</string>
        </property>
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].output&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Output:&lt;/b&gt; {:0.5e} {}\&quot;.format(ch[0], ch[1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.0.output&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:linear_units?text&quot;, &quot;trigger&quot;: false}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Output:&lt;/b&gt; {:0.5e} {}\&quot;.format(ch[0], ch[1])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_19">
        <property name="text">
-        <string>&lt;b&gt;Units:&lt;/b&gt; 0.0394</string>
+        <string>&lt;b&gt;Units:&lt;/b&gt; 0.0000</string>
        </property>
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint[0].units&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Units:&lt;/b&gt; {:0.4f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.0.units&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Units:&lt;/b&gt; {:0.4f}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
       </widget>
      </item>
@@ -371,14 +371,14 @@
      <item>
       <widget class="StatusLabel" name="statuslabelnew_28">
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].enabled?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Enabled:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.enabled?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Enabled:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_29">
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Act Speed:&lt;/b&gt; {:.0f} rpm\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;speed&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Act Speed:&lt;/b&gt; {:.0f} rpm\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;speed&quot;}]</string>
        </property>
        <property name="format" stdset="0">
         <string>&lt;b&gt;speed:&lt;/b&gt; {:.1f} rpm</string>
@@ -391,35 +391,35 @@
      <item>
       <widget class="StatusLabel" name="statuslabelnew_24">
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:settings&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Prog Speed:&lt;/b&gt; {:.0f} rpm\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:settings?speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Prog Speed:&lt;/b&gt; {:.0f} rpm\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_25">
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].direction?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Direction:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.direction?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Direction:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_26">
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Override:&lt;/b&gt; {:.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.override&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Override:&lt;/b&gt; {:.0%}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_27">
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].override_enabled?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Override Enabled:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.override_enabled?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Override Enabled:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="StatusLabel" name="statuslabelnew_30">
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle[0].orient_fault?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Orient Fault:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:spindle.0.orient_fault?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Orient Fault:&lt;/b&gt; \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
       </widget>
      </item>
@@ -439,9 +439,9 @@
     <property name="geometry">
      <rect>
       <x>350</x>
-      <y>120</y>
+      <y>80</y>
       <width>161</width>
-      <height>151</height>
+      <height>191</height>
      </rect>
     </property>
     <property name="title">
@@ -459,7 +459,7 @@
         <set>Qt::AlignCenter</set>
        </property>
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?number&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Tool No.:&lt;/b&gt; {}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?tool&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Tool No.:&lt;/b&gt; {}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
        </property>
       </widget>
      </item>
@@ -475,7 +475,7 @@
         <set>Qt::AlignCenter</set>
        </property>
        <property name="rules" stdset="0">
-        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?comment&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;comment&quot;}]</string>
+        <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?remark&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;comment&quot;}]</string>
        </property>
       </widget>
      </item>
@@ -512,7 +512,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>&lt;b&gt;Program Line:&lt;/b&gt; 559</string>
+     <string>&lt;b&gt;Program Line:&lt;/b&gt; 0</string>
     </property>
     <property name="rules" stdset="0">
      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:current_line&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;&lt;b&gt;Program Line:&lt;/b&gt; {}\&quot;.format(ch[0])&quot;, &quot;name&quot;: &quot;prog line&quot;}]</string>
@@ -525,7 +525,7 @@
      <x>0</x>
      <y>0</y>
      <width>740</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
@@ -869,7 +869,7 @@
   <customwidget>
    <class>GcodeBackplot</class>
    <extends>QWidget</extends>
-   <header>qtpyvcp.widgets.display_widgets.gcode_backplot</header>
+   <header>qtpyvcp.widgets.display_widgets.gcode_backplot.gcode_backplot</header>
    <container>1</container>
   </customwidget>
   <customwidget>
