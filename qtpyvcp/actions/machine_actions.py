@@ -227,12 +227,12 @@ def _set_work_coord_bindOk(coord='', widget=None):
     _issue_mdi_bindOk(coord, widget=widget)
     if isinstance(widget, QComboBox):
         widget.setCurrentText(coord)
-        widget.setCurrentText(STATUS.g5x_index.to_str(STATUS.g5x_index.value))
-        STATUS.g5x_index.onValueChanged(lambda wc: widget.setCurrentText(STATUS.g5x_index.to_str(wc)))
+        widget.setCurrentText(STATUS.g5x_index.getString())
+        STATUS.g5x_index.notify(lambda g5x: widget.setCurrentText(g5x), 'string')
     else:
         widget.setCheckable(True)
-        widget.setChecked(STATUS.g5x_index.to_str(STATUS.g5x_index.value) == coord)
-        STATUS.g5x_index.onValueChanged(lambda wc: widget.setChecked(STATUS.g5x_index.to_str(wc) == coord))
+        widget.setChecked(STATUS.g5x_index.getString() == coord)
+        STATUS.g5x_index.notify(lambda g5x: widget.setChecked(g5x == coord), 'string')
 
 set_work_coord.ok = _issue_mdi_ok
 set_work_coord.bindOk = _set_work_coord_bindOk
