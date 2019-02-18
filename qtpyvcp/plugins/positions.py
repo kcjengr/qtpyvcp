@@ -71,16 +71,16 @@ class Position(DataPlugin):
 
         self._current_format = self._imperial_format
 
-        self.report_actual_pos = report_actual_pos
-
         self._update()
 
         # all these should cause the positions to update
-        STATUS.position.onValueChanged(self._update)
-        STATUS.g5x_offset.onValueChanged(self._update)
-        STATUS.g92_offset.onValueChanged(self._update)
-        STATUS.tool_offset.onValueChanged(self._update)
-        STATUS.program_units.onValueChanged(self.updateUnits)
+        STATUS.position.signal.connect(self._update)
+        STATUS.g5x_offset.signal.connect(self._update)
+        STATUS.g92_offset.signal.connect(self._update)
+        STATUS.tool_offset.signal.connect(self._update)
+        STATUS.program_units.signal.connect(self.updateUnits)
+
+        self.report_actual_pos = report_actual_pos
 
     def getChannel(self, url):
         """Get data channel from URL.
@@ -220,18 +220,18 @@ class Position(DataPlugin):
 
         if self._report_actual_pos:
             # disconnect commanded pos update signals
-            STATUS.position.valueChanged.disconect(self.axis._update)
-            # STATUS.joint_position.valueChanged.disconnect(self.joint._update)
+            STATUS.position.signal.disconnect(self._update)
+            # STATUS.joint_position.signal.disconnect(self._update)
             # connect actual pos update signals
-            STATUS.actual_position.valueChanged.connect(self.axis._update)
-            # STATUS.joint_actual_position.valueChanged.connect(self.joint._update)
+            STATUS.actual_position.signal.connect(self._update)
+            # STATUS.joint_actual_position.signal.connect(self.joint._update)
         else:
             # disconnect actual pos update signals
-            STATUS.actual_position.valueChanged.disconnect(self.axis._update)
-            # STATUS.joint_actual_position.valueChanged.disconnect(self.joint._update)
+            STATUS.actual_position.signal.disconnect(self._update)
+            # STATUS.joint_actual_position.signal.disconnect(self._update)
             # connect commanded pos update signals
-            STATUS.position.valueChanged.connect(self.axis._update)
-            # STATUS.joint_position.valueChanged.connect(self.joint._update)
+            STATUS.position.signal.connect(self._update)
+            # STATUS.joint_position.signal.connect(self._update)
 
     def _update(self):
 
