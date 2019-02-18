@@ -82,7 +82,7 @@ class VTKWidget(QWidget, VCPWidget):
 
         self.gr.load(fname)
 
-        path = Path(self.gr)
+        path = Path(self.gr, self.renderer)
         path_actors = path.get_actors()
 
         for path_actor in path_actors:
@@ -97,7 +97,7 @@ class VTKWidget(QWidget, VCPWidget):
 
 
 class Path:
-    def __init__(self, gr):
+    def __init__(self, gr, renderer):
         self.gr = gr
 
         feed_lines = len(self.gr.canon.feed)
@@ -113,6 +113,9 @@ class Path:
         self.color = self.gr.colors["straight_feed"]
         self.feed_actor.GetProperty().SetColor(self.color)  # (R,G,B)
 
+        self.path_boundaries = PathBoundaries(renderer, self.feed_actor)
+        self.path_boundaries_actor = self.path_boundaries.get_actor()
+
         # for item in self.gr.canon.traverse:
         #     line = VTKLineElement(8)
         #     line.poly_line(item[2][:3], item[1][:3])
@@ -121,7 +124,47 @@ class Path:
         #     self.parent.add_actor(actor)
 
     def get_actors(self):
-        return [self.feed_actor]
+        return [self.feed_actor, self.path_boundaries_actor]
+
+
+class PathBoundaries:
+    def __init__(self, renderer, path_actor):
+
+        self.actor = path_actor
+
+        cube_axes_actor = vtk.vtkCubeAxesActor()
+
+        cube_axes_actor.SetBounds(self.actor.GetBounds())
+
+        cube_axes_actor.SetCamera(renderer.GetActiveCamera())
+
+        cube_axes_actor.SetXLabelFormat("%6.3f")
+        cube_axes_actor.SetYLabelFormat("%6.3f")
+        cube_axes_actor.SetZLabelFormat("%6.3f")
+
+        cube_axes_actor.SetFlyModeToStaticEdges()
+
+        cube_axes_actor.GetTitleTextProperty(0).SetColor(1.0, 0.0, 0.0)
+        cube_axes_actor.GetLabelTextProperty(0).SetColor(1.0, 0.0, 0.0)
+
+        cube_axes_actor.GetTitleTextProperty(1).SetColor(0.0, 1.0, 0.0)
+        cube_axes_actor.GetLabelTextProperty(1).SetColor(0.0, 1.0, 0.0)
+
+        cube_axes_actor.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
+        cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
+
+        # cube_axes_actor.XAxisMinorTickVisibilityOff()
+        # cube_axes_actor.YAxisMinorTickVisibilityOff()
+        # cube_axes_actor.ZAxisMinorTickVisibilityOff()
+
+        cube_axes_actor.XAxisTickVisibilityOn()
+        cube_axes_actor.YAxisTickVisibilityOn()
+        cube_axes_actor.ZAxisTickVisibilityOn()
+
+        self.actor = cube_axes_actor
+
+    def get_actor(self):
+        return self.actor
 
 
 class PolyLine:
