@@ -67,8 +67,8 @@ class VTKWidget(QWidget, VCPWidget):
         self.interactor.Initialize()
         self.interactor.Start()
 
-        self.status.file_loaded.connect(self.load_program)
-        self.status.axis_positions.connect(self.move_tool)
+        self.status.file.notify(self.load_program)
+        self.status.position.notify(self.move_tool)
 
         self.line = None
         self._last_filename = None
