@@ -8,7 +8,6 @@ from qtpyvcp.widgets import VCPWidget
 
 from vtk_cannon import VTKCanon
 
-
 STATUS = getPlugin('status')
 
 
@@ -69,6 +68,7 @@ class VTKWidget(QWidget, VCPWidget):
         self.interactor.Start()
 
         self.status.file_loaded.connect(self.load_program)
+        self.status.axis_positions.connect(self.move_tool)
 
         self.line = None
         self._last_filename = None
@@ -88,10 +88,16 @@ class VTKWidget(QWidget, VCPWidget):
         for path_actor in path_actors:
             self.renderer.AddActor(path_actor)
 
+    def move_tool(self, position):
+        self.tool_actor.SetPosition(position[0][0:3])
+        self.update_render()
+
+    def update_render(self):
+        self.vtkWidget.GetRenderWindow().Render()
+
 
 class Path:
     def __init__(self, gr):
-
         self.gr = gr
 
         feed_lines = len(self.gr.canon.feed)
@@ -233,7 +239,6 @@ class Grid:
 
 class Machine:
     def __init__(self, renderer, axis):
-
         cube_axes_actor = vtk.vtkCubeAxesActor()
 
         x_max = axis[0]["max_position_limit"]
@@ -284,7 +289,6 @@ class Machine:
 
 class Axes:
     def __init__(self):
-
         transform = vtk.vtkTransform()
         transform.Translate(1.0, 0.0, 0.0)  # Z up
 
@@ -376,4 +380,3 @@ class CoordinateWidget:
         widget.SetViewport(0.0, 0.0, 0.4, 0.4)
         widget.SetEnabled(1)
         widget.InteractiveOn()
-
