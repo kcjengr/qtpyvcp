@@ -43,16 +43,18 @@ else:
 
 class Position(DataPlugin):
     """Positions Plugin"""
-    def __init__(self, report_actual_pos=True, use_program_units=True,
+    def __init__(self, report_actual_pos=False, use_program_units=True,
                  metric_format='%9.3f', imperial_format='%8.4f'):
         super(Position, self).__init__()
 
-        self._report_actual_pos = report_actual_pos
+        self._report_actual_pos = False
         self._use_program_units = use_program_units
         self._metric_format = metric_format
         self._imperial_format = imperial_format
 
         self._current_format = self._imperial_format
+
+        self.report_actual_pos = report_actual_pos
 
         self._update()
 
@@ -189,12 +191,12 @@ class Position(DataPlugin):
         return self._current_format % chan.value[anum]
 
     @property
-    def report_actual(self):
+    def report_actual_pos(self):
         """Whether to report the actual position. Default True."""
         return self._report_actual_pos
 
-    @report_actual.setter
-    def report_actual(self, report_actual_pos):
+    @report_actual_pos.setter
+    def report_actual_pos(self, report_actual_pos):
         if report_actual_pos == self._report_actual_pos:
             return
         self._report_actual_pos = report_actual_pos
@@ -202,17 +204,17 @@ class Position(DataPlugin):
         if self._report_actual_pos:
             # disconnect commanded pos update signals
             STATUS.position.valueChanged.disconect(self.axis._update)
-            STATUS.joint_position.valueChanged.disconnect(self.joint._update)
+            # STATUS.joint_position.valueChanged.disconnect(self.joint._update)
             # connect actual pos update signals
             STATUS.actual_position.valueChanged.connect(self.axis._update)
-            STATUS.joint_actual_position.valueChanged.connect(self.joint._update)
+            # STATUS.joint_actual_position.valueChanged.connect(self.joint._update)
         else:
             # disconnect actual pos update signals
             STATUS.actual_position.valueChanged.disconnect(self.axis._update)
-            STATUS.joint_actual_position.valueChanged.disconnect(self.joint._update)
+            # STATUS.joint_actual_position.valueChanged.disconnect(self.joint._update)
             # connect commanded pos update signals
             STATUS.position.valueChanged.connect(self.axis._update)
-            STATUS.joint_position.valueChanged.connect(self.joint._update)
+            # STATUS.joint_position.valueChanged.connect(self.joint._update)
 
     def _update(self):
 
@@ -240,13 +242,10 @@ class Position(DataPlugin):
         for axis in INFO.AXIS_NUMBER_LIST:
             rel[axis] -= g92_offset[axis]
 
-        if STAT.program_units != MACHINE_UNITS:
+        if STAT.program_units != MACHINE_UNITS and self._use_program_units:
             pos = [pos[anum] * CONVERSION_FACTORS[anum] for anum in range(9)]
             rel = [rel[anum] * CONVERSION_FACTORS[anum] for anum in range(9)]
             dtg = [dtg[anum] * CONVERSION_FACTORS[anum] for anum in range(9)]
-
-        # self._positions = tuple([tuple(pos), tuple(rel), tuple(dtg)])
-        # self.valueChanged.emit(self._positions)
 
         self.rel.setValue(tuple(rel))
         self.abs.setValue(tuple(pos))
