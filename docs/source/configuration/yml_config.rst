@@ -1,6 +1,6 @@
-================
-YML Config Files
-================
+=================
+YAML Config Files
+=================
 
 At the heart of every QtPyVCP based VCP is a YAML configuration
 file. This file is probably more important than any other, since
@@ -25,3 +25,6 @@ At the highest level is the machine specific configuration file. This
 file is usually located in the config dir along with the INI file. It
 is not required but can be used to tweak configurations settings for a
 particular machine.
+
+More information about YAML files can be found at 
+`Wikipedia <https://en.wikipedia.org/wiki/YAML>`_
