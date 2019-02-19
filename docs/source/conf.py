@@ -398,7 +398,8 @@ Mock.mock_modules('qtpy',
                   'qtpy.QtCore',
                   'qtpy.QtGui',
                   'qtpy.QtWidgets',
-                  'docopt')
+                  'docopt',
+                  'dbus')
 
 import qtpyvcp
 qtpyvcp.PLUGINS = mock.MagicMock()
