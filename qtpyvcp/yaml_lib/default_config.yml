@@ -26,6 +26,14 @@ data_plugins:
   tooltable:
     provider: qtpyvcp.plugins.tool_table:ToolTable
 
+  notifications:
+    provider: qtpyvcp.plugins.notifications:Notifications
+    kwargs:
+      # whether to save messages on exit
+      persistent: True
+      # where to save, relative to config dir
+      persistent_file: .qtpyvcp-messages.json
+
 dialogs:
   open_file:
     provider: qtpyvcp.widgets.dialogs.open_file_dialog:_OpenFileDialog
