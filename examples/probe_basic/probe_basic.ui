@@ -208,7 +208,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>4</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tab_2">
            <attribute name="title">
@@ -11502,6 +11502,9 @@ color: rgb(255, 255, 255);
               <property name="tabShape">
                <enum>QTabWidget::Rounded</enum>
               </property>
+              <property name="currentIndex">
+               <number>7</number>
+              </property>
               <property name="iconSize">
                <size>
                 <width>25</width>
@@ -13430,6 +13433,9 @@ Background:transparent;
                     <property name="tabPosition">
                      <enum>QTabWidget::South</enum>
                     </property>
+                    <property name="currentIndex">
+                     <number>3</number>
+                    </property>
                     <widget class="QWidget" name="tab_5">
                      <attribute name="title">
                       <string>     STEP OFF WIDTH     </string>
@@ -13441,14 +13447,14 @@ Background:transparent;
                          <widget class="QLabel" name="label">
                           <property name="minimumSize">
                            <size>
-                            <width>541</width>
-                            <height>451</height>
+                            <width>523</width>
+                            <height>436</height>
                            </size>
                           </property>
                           <property name="maximumSize">
                            <size>
-                            <width>541</width>
-                            <height>451</height>
+                            <width>523</width>
+                            <height>436</height>
                            </size>
                           </property>
                           <property name="styleSheet">
@@ -13487,14 +13493,14 @@ Background:transparent;
                          <widget class="QLabel" name="label_2">
                           <property name="minimumSize">
                            <size>
-                            <width>411</width>
-                            <height>331</height>
+                            <width>541</width>
+                            <height>436</height>
                            </size>
                           </property>
                           <property name="maximumSize">
                            <size>
-                            <width>411</width>
-                            <height>331</height>
+                            <width>541</width>
+                            <height>436</height>
                            </size>
                           </property>
                           <property name="styleSheet">
@@ -13539,14 +13545,14 @@ Background:transparent;
                          <widget class="QLabel" name="label_3">
                           <property name="minimumSize">
                            <size>
-                            <width>785</width>
-                            <height>407</height>
+                            <width>841</width>
+                            <height>436</height>
                            </size>
                           </property>
                           <property name="maximumSize">
                            <size>
-                            <width>785</width>
-                            <height>407</height>
+                            <width>841</width>
+                            <height>436</height>
                            </size>
                           </property>
                           <property name="autoFillBackground">
@@ -13603,14 +13609,14 @@ Background:transparent;
                          <widget class="QLabel" name="label_4">
                           <property name="minimumSize">
                            <size>
-                            <width>791</width>
-                            <height>391</height>
+                            <width>882</width>
+                            <height>436</height>
                            </size>
                           </property>
                           <property name="maximumSize">
                            <size>
-                            <width>791</width>
-                            <height>391</height>
+                            <width>882</width>
+                            <height>436</height>
                            </size>
                           </property>
                           <property name="styleSheet">
