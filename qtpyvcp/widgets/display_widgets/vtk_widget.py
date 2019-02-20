@@ -104,20 +104,22 @@ class Path:
         traverse_lines = len(self.gr.canon.traverse)
         arcfeed_lines = len(self.gr.canon.arcfeed)
 
-        line = PathLine(feed_lines + traverse_lines + arcfeed_lines)
+        total_lines = feed_lines + traverse_lines + arcfeed_lines
+
+        line = PathLine(self.gr, total_lines)
 
         path = dict()
 
         for point in self.gr.canon.traverse:
             seq = point[0]
-            color = self.gr.colors["straight_feed"]
+            type = "straight_feed"
             cords = point[1][:3]
 
-            path[seq] = [cords, color]
+            path[seq] = [cords, type]
 
         for point in self.gr.canon.feed:
             seq = point[0]
-            color = self.gr.colors["traverse"]
+            color = "traverse"
             cords = point[1][:3]
 
             path[seq] = [cords, color]
@@ -132,50 +134,48 @@ class Path:
         self.path_boundaries = PathBoundaries(renderer, self.path_actor)
         self.path_boundaries_actor = self.path_boundaries.get_actor()
 
-        # for item in self.gr.canon.traverse:
-        #     line = VTKLineElement(8)
-        #     line.poly_line(item[2][:3], item[1][:3])
-        #     actor = line.get_actor()
-        #     actor.GetProperty().SetColor(1, 0, 0)  # (R,G,B)
-        #     self.parent.add_actor(actor)
-
     def get_actors(self):
         return [self.path_actor, self.path_boundaries_actor]
 
 
 class PathLine:
-    def __init__(self, points):
+    def __init__(self, gr, points):
+
+        self.gr = gr
 
         self.num_points = points
 
         self.points = vtk.vtkPoints()
-        self.points.SetNumberOfPoints(self.num_points)
-
-        self.line_colors = dict()
-
         self.lines = vtk.vtkCellArray()
-        self.polygon = vtk.vtkPolyData()
+
+        self.line_type = dict()
+
+        self.lines_poligon_data = vtk.vtkPolyData()
         self.polygon_mapper = vtk.vtkPolyDataMapper()
         self.actor = vtk.vtkActor()
 
     def add_point(self, index, point, color):
-        self.line_colors[index] = color
+        self.line_type[index] = color
 
-        self.points.InsertPoint(index, point)
+        self.points.InsertNextPoint(point)
 
     def draw_path_line(self):
 
-        self.polygon.SetPoints(self.points)
-
-        self.lines.InsertNextCell(self.num_points)
-
         for index in range(0, self.num_points):
-            color = self.line_colors[index]
-            self.lines.InsertNextCell(index)
 
-        self.polygon.SetLines(self.lines)
+            type = self.line_type[index]
 
-        self.polygon_mapper.SetInputData(self.polygon)
+            line = vtk.vtkLine()
+
+            line.GetPointIds().SetId(0, index)  # the second 0 is the index of the Origin in linesPolyData's points
+            line.GetPointIds().SetId(1, index+1)  # the second 1 is the index of P0 in linesPolyData's points
+
+            self.lines.InsertNextCell(line)
+
+        self.lines_poligon_data.SetPoints(self.points)
+        self.lines_poligon_data.SetLines(self.lines)
+
+        self.polygon_mapper.SetInputData(self.lines_poligon_data)
         self.polygon_mapper.Update()
 
         self.actor.SetMapper(self.polygon_mapper)
@@ -187,11 +187,11 @@ class PathLine:
 class PathBoundaries:
     def __init__(self, renderer, path_actor):
 
-        self.actor = path_actor
+        self.path_actor = path_actor
 
         cube_axes_actor = vtk.vtkCubeAxesActor()
 
-        cube_axes_actor.SetBounds(self.actor.GetBounds())
+        cube_axes_actor.SetBounds(self.path_actor.GetBounds())
 
         cube_axes_actor.SetCamera(renderer.GetActiveCamera())
 
