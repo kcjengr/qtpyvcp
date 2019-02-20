@@ -190,7 +190,6 @@ class VCPMainWindow(QMainWindow):
 
     def initUi(self):
         self.loadSplashGcode()
-        self.initHomingMenu()
 
     @Slot()
     def toggleFullscreen(self):
@@ -272,6 +271,7 @@ class VCPMainWindow(QMainWindow):
     def openFile(self):
         showDialog('open_file')
 
+    @Slot(str)
     def showDialog(self, dialog_name):
         showDialog(dialog_name)
 
@@ -279,30 +279,7 @@ class VCPMainWindow(QMainWindow):
 # menu functions
 # ==============================================================================
 
-    def initHomingMenu(self):
-        if hasattr(self, 'menuHoming'):
 
-            # remove any actions that were added in QtDesigner
-            for menu_action in self.menuHoming.actions():
-                self.menuHoming.removeAction(menu_action)
-
-            # Register the submenu with the action (so it will be disabled
-            # if the actions are not valid), but don't connect it to method
-            # home_action = action.Home(widget=self.menuHoming, method=None)
-            # FIXME:
-            # home_action = actions.bindWidget(self.menuHoming, 'machine.home.all.ok')
-
-            menu_action = QAction(self)
-            menu_action.setText("Home &All")
-            actions.bindWidget(menu_action, 'machine.home.all')
-            self.menuHoming.addAction(menu_action)
-
-            # add homing actions for each axis
-            for aletter in INFO.AXIS_LETTER_LIST:
-                menu_action = QAction(self)
-                menu_action.setText("Home &{}".format(aletter.upper()))
-                actions.bindWidget(menu_action, 'machine.home.axis:{}'.format(aletter))
-                self.menuHoming.addAction(menu_action)
 
 # ==============================================================================
 # helper functions

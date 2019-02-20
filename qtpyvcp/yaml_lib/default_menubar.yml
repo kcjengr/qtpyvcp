@@ -21,6 +21,12 @@ default_menubar:
 
     - separator
 
+    - title: "Edit ToolTable"
+      action: win.showDialog
+      args: tool_edit
+
+    - separator
+
     - title: Exit
       action: app.exit # or win.close
       shortcut: ctrl+q

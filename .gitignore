@@ -27,3 +27,6 @@ sim/*.old
 
 # debian packages
 *.deb
+
+# persistent messages
+sim/*messages.json

@@ -14,6 +14,8 @@ Usage:
 
 YAML configuration:
 
+This goes in your config.yml file in the `data_plugins` section.
+
 .. code-block:: yaml
 
     data_plugins:
@@ -209,7 +211,11 @@ class Position(DataPlugin):
 
     @property
     def report_actual_pos(self):
-        """Whether to report the actual position. Default True."""
+        """Whether to report the actual position. Default True.
+
+        See the YAML configuration.
+
+        """
         return self._report_actual_pos
 
     @report_actual_pos.setter
