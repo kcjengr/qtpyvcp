@@ -16,6 +16,7 @@ import qtpyvcp
 
 from qtpyvcp.utilities.logger import initBaseLogger
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.widgets.base_widgets.base_widget import QtPyVCPBaseWidget
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
 # initialize logging. If a base logger was already initialized in a startup
@@ -67,7 +68,7 @@ class VCPApplication(QApplication):
             self.perf_timer.timeout.connect(self.logPerformance)
             self.perf_timer.start()
 
-        self.aboutToQuit.connect(self.terminateDataPlugins)
+        self.aboutToQuit.connect(self.terminate)
 
     def loadVCPMainWindow(self, opts, vcp_file=None):
         """
@@ -185,6 +186,24 @@ class VCPApplication(QApplication):
                  "    Total CPU usage (%): {}\n"
                  "    Per Thread: {}\n"
                  .format(total_percent, ' '.join(usage)))
+
+    def terminate(self):
+        self.terminateWidgets()
+        self.terminateDataPlugins()
+
+    def initialiseWidgets(self):
+        for w in self.allWidgets():
+            if isinstance(w, QtPyVCPBaseWidget):
+                w.initialize()
+
+    def terminateWidgets(self):
+        LOG.debug("Terminating widgets")
+        for w in self.allWidgets():
+            if isinstance(w, QtPyVCPBaseWidget):
+                try:
+                    w.terminate()
+                except Exception:
+                    LOG.exception('Error terminating %s widget', w)
 
     def initialiseDataPlugins(self):
         for plugin, obj in qtpyvcp.PLUGINS.items():

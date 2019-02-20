@@ -149,6 +149,12 @@ class QtPyVCPBaseWidget(object):
             for trigger in triggers:
                 trigger(exp)
 
+    def initialize(self):
+        pass
+
+    def terminate(self):
+        pass
+
 
 class VCPWidget(QtPyVCPBaseWidget):
     """VCP Widget
