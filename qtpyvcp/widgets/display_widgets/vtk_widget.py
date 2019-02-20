@@ -108,26 +108,26 @@ class Path:
 
         for point in self.gr.canon.traverse:
             seq = point[0]
+            color = self.gr.colors["straight_feed"]
             cords = point[1][:3]
 
-            path[seq] = cords
+            path[seq] = [cords, color]
 
         for point in self.gr.canon.feed:
             seq = point[0]
+            color = self.gr.colors["traverse"]
             cords = point[1][:3]
 
-            path[seq] = cords
+            path[seq] = [cords, color]
 
         for index, cords in enumerate(path.items()):
-            line.add_point(index, cords[1])
+            line.add_point(index, cords[1][0], cords[1][1])
 
         line.draw_poly_line()
 
-        self.feed_actor = line.get_actor()
-        self.color = self.gr.colors["straight_feed"]
-        self.feed_actor.GetProperty().SetColor(self.color)  # (R,G,B)
+        self.path_actor = line.get_actor()
 
-        self.path_boundaries = PathBoundaries(renderer, self.feed_actor)
+        self.path_boundaries = PathBoundaries(renderer, self.path_actor)
         self.path_boundaries_actor = self.path_boundaries.get_actor()
 
         # for item in self.gr.canon.traverse:
@@ -138,7 +138,7 @@ class Path:
         #     self.parent.add_actor(actor)
 
     def get_actors(self):
-        return [self.feed_actor, self.path_boundaries_actor]
+        return [self.path_actor, self.path_boundaries_actor]
 
 
 class PathBoundaries:
@@ -189,28 +189,51 @@ class PolyLine:
         self.points = vtk.vtkPoints()
         self.points.SetNumberOfPoints(self.num_points)
 
-
+        self.line_colors = dict()
 
         self.lines = vtk.vtkCellArray()
         self.polygon = vtk.vtkPolyData()
         self.polygon_mapper = vtk.vtkPolyDataMapper()
         self.polygon_actor = vtk.vtkActor()
 
-    def add_point(self, index, point):
+    def add_point(self, index, point, color):
+        self.line_colors[index] = color
+
         self.points.SetPoint(index, point)
 
     def draw_poly_line(self):
 
-        self.lines.InsertNextCell(self.num_points + 1)
-        self.lines.InsertCellPoint(0)
+        self.polygon.SetPoints(self.points)
+
+        self.lines.InsertNextCell(self.num_points)
 
         for i in range(self.num_points):
-            self.lines.InsertCellPoint(i)
+            color = self.line_colors[i]
 
-        # self.lines.InsertCellPoint(0)
+            print(i, color)
 
-        self.polygon.SetPoints(self.points)
+            line = vtk.vtkLine()
+            line.GetPointIds().SetId(0, i)
+            line.GetPointIds().SetId(1, i+1)  # Todo duno whats goin on here
+
+            self.lines.InsertNextCell(line)
+
         self.polygon.SetLines(self.lines)
+
+        named_colors = vtk.vtkNamedColors()
+
+        # Create a vtkUnsignedCharArray container and store the colors in it
+        colors = vtk.vtkUnsignedCharArray()
+        colors.SetNumberOfComponents(3)
+        try:
+            colors.InsertNextTupleValue(named_colors.GetColor3ub("Tomato"))
+            colors.InsertNextTupleValue(named_colors.GetColor3ub("Mint"))
+        except AttributeError:
+            # For compatibility with new VTK generic data arrays.
+            colors.InsertNextTypedTuple(named_colors.GetColor3ub("White"))
+            colors.InsertNextTypedTuple(named_colors.GetColor3ub("Tomato"))
+
+        self.polygon.GetCellData().SetScalars(colors)
 
         if vtk.VTK_MAJOR_VERSION <= 5:
             self.polygon_mapper.SetInputConnection(self.polygon.GetProducerPort())
