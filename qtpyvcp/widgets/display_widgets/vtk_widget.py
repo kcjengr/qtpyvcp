@@ -124,6 +124,13 @@ class Path:
 
             path[seq] = [cords, color]
 
+        for point in self.gr.canon.arcfeed:
+            seq = point[0]
+            color = "traverse"
+            cords = point[1][:3]
+
+            path[seq] = [cords, color]
+
         for index, cords in enumerate(path.items()):
             line.add_point(index, cords[1][0], cords[1][1])
 
@@ -161,9 +168,10 @@ class PathLine:
 
     def draw_path_line(self):
 
-        for index in range(0, self.num_points):
+        for index in range(0, self.num_points-1):
 
             type = self.line_type[index]
+            print(type)
 
             line = vtk.vtkLine()
 
