@@ -189,6 +189,8 @@ class PolyLine:
         self.points = vtk.vtkPoints()
         self.points.SetNumberOfPoints(self.num_points)
 
+
+
         self.lines = vtk.vtkCellArray()
         self.polygon = vtk.vtkPolyData()
         self.polygon_mapper = vtk.vtkPolyDataMapper()
@@ -199,13 +201,13 @@ class PolyLine:
 
     def draw_poly_line(self):
 
-        self.lines.InsertNextCell(self.num_points + 2)
+        self.lines.InsertNextCell(self.num_points + 1)
         self.lines.InsertCellPoint(0)
 
         for i in range(self.num_points):
             self.lines.InsertCellPoint(i)
 
-        self.lines.InsertCellPoint(0)
+        # self.lines.InsertCellPoint(0)
 
         self.polygon.SetPoints(self.points)
         self.polygon.SetLines(self.lines)
