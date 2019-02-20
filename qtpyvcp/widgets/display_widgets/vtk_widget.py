@@ -101,11 +101,25 @@ class Path:
         self.gr = gr
 
         feed_lines = len(self.gr.canon.feed)
-        line = PolyLine(feed_lines)
+        traverse_lines = len(self.gr.canon.traverse)
+        line = PolyLine(feed_lines + traverse_lines)
 
-        for index, point in enumerate(self.gr.canon.feed):
-            coords = point[1][:3]
-            line.add_point(index, coords)
+        path = dict()
+
+        for point in self.gr.canon.traverse:
+            seq = point[0]
+            cords = point[1][:3]
+
+            path[seq] = cords
+
+        for point in self.gr.canon.feed:
+            seq = point[0]
+            cords = point[1][:3]
+
+            path[seq] = cords
+
+        for index, cords in enumerate(path.items()):
+            line.add_point(index, cords[1])
 
         line.draw_poly_line()
 
@@ -176,7 +190,6 @@ class PolyLine:
         self.points.SetNumberOfPoints(self.num_points)
 
         self.lines = vtk.vtkCellArray()
-
         self.polygon = vtk.vtkPolyData()
         self.polygon_mapper = vtk.vtkPolyDataMapper()
         self.polygon_actor = vtk.vtkActor()
