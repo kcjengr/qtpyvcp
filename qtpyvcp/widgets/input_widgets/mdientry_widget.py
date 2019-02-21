@@ -4,6 +4,7 @@ from qtpy.QtWidgets import QLineEdit, QCompleter, QApplication
 from qtpy.QtCore import Qt, QEvent, QStringListModel, Slot
 from qtpy.QtGui import QKeySequence, QValidator
 
+from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
 from qtpyvcp.plugins import getPlugin
 
 STATUS = getPlugin('status')
@@ -23,7 +24,7 @@ class Validator(QValidator):
         return QValidator.Acceptable, string.upper(), pos
 
 
-class MDIEntry(QLineEdit):
+class MDIEntry(QLineEdit, CMDWidget):
     def __init__(self, parent=None):
         super(MDIEntry, self).__init__(parent)
 

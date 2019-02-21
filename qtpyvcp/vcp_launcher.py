@@ -76,6 +76,10 @@ def launch_application(opts, config):
     loadWindows(config['windows'])
     log_time('done loading windows')
 
+    LOG.debug('Initializing widgets')
+    app.initialiseWidgets()
+    log_time('done initializing widgets')
+
     postgui_halfile = INFO.getPostguiHalfile()
     if postgui_halfile:
 
