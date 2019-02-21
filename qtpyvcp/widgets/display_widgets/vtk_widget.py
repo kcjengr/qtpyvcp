@@ -168,12 +168,20 @@ class PathLine:
 
     def draw_path_line(self):
 
+        namedColors = vtk.vtkNamedColors()
+
+        # Create a vtkUnsignedCharArray container and store the colors in it
+        colors = vtk.vtkUnsignedCharArray()
+        colors.SetNumberOfComponents(3)
+
         for index in range(0, self.num_points-1):
 
-            type = self.line_type[index]
-            print(type)
-
             line = vtk.vtkLine()
+
+            if self.line_type[index] == "traverse":
+                colors.InsertNextTypedTuple(namedColors.GetColor3ub("Mint"))
+            elif self.line_type[index] == "straight_feed":
+                colors.InsertNextTypedTuple(namedColors.GetColor3ub("Tomato"))
 
             line.GetPointIds().SetId(0, index)  # the second 0 is the index of the Origin in linesPolyData's points
             line.GetPointIds().SetId(1, index+1)  # the second 1 is the index of P0 in linesPolyData's points
@@ -182,6 +190,8 @@ class PathLine:
 
         self.lines_poligon_data.SetPoints(self.points)
         self.lines_poligon_data.SetLines(self.lines)
+
+        self.lines_poligon_data.GetCellData().SetScalars(colors)
 
         self.polygon_mapper.SetInputData(self.lines_poligon_data)
         self.polygon_mapper.Update()
