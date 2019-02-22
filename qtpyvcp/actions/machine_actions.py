@@ -181,7 +181,7 @@ def issue_mdi(command, reset=True):
         STATUS.old['interp_state'] = -1
 
     if setTaskMode(linuxcnc.MODE_MDI):
-        LOG.info("Issuind MDI command: {}".format(command))
+        LOG.info("Issuing MDI command: {}".format(command))
         CMD.mdi(command)
     else:
         LOG.error("Failed to issue MDI command: {}".format(command))
