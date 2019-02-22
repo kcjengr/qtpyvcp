@@ -12,9 +12,10 @@ it and morph into a `QFrame`.
    :align: center
    :scale: 40 %
 
-In the `Property Editor` on the right side change the Frame Shape to a `Box` and
-change the margins (left, right, top and bottom) to 5, this makes it easier to
-see the blue line when dragging other layouts into the frame.
+In the `Property Editor` on the right side change the Frame Shape from
+`No Frame` to a `Box` and change the margins (left, right, top and bottom) to 5,
+this makes it easier to see the blue line when dragging other layouts into the
+frame.
 
 .. image:: images/vcp1-designer-03.png
    :align: center
@@ -27,7 +28,8 @@ can see the space between the inner and outer frames very well.
    :align: center
    :scale: 40 %
 
-Now drag a horizontal layout above the grid and change as above.
+Now drag a horizontal layout above the grid and inside the vertical layout and
+change as above.
 
 .. image:: images/vcp1-designer-05.png
    :align: center
@@ -43,7 +45,8 @@ into it.
 
 Now we want to change the tab widgets to be more touch screen friendly. To set
 the size of tabs in a `Tab Widget` add the following into the 
-`QFrame styleSheet` that has the Tab Widgets in it.
+`QFrame styleSheet` that has the Tab Widgets in it. This is how you change the
+style of everything in a container in one place.
 ::
 
     QTabBar::tab {

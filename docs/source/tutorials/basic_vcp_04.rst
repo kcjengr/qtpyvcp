@@ -31,7 +31,8 @@ Notice how we set the `QLabel` font inside the frame, if we wanted to set all
    :scale: 40 %
 
 Now lets drag some `actionButtons` into the left panel for jogging controls and
-some standard labels from the `Display Widgets` for each axis.
+some standard labels from the `Display Widgets` for each axis and change the
+text to match the following.
 
 .. image:: images/vcp1-designer-14.png
    :align: center
@@ -48,8 +49,11 @@ Add the following `actionNames` to the jog buttons.
     machine.jog.axis:z,neg
     machine.jog.axis:z,pos
 
+Notice how the buttons become disabled as you add the actionNames. The action is
+controlling the button enable.
+
 In the right hand `QTabWidget` do as above and drag a grid into Tab 1 and set
-the layout to grid and add the box and the margins to 5. Now drag a
+the layout to grid and change to a box frame and the margins to 5. Now drag a
 `GcodeBackplot` into the frame so you can see it move when you jog.
 
 To change the tab name select the tab widget and change the `current tab name`.
@@ -57,6 +61,9 @@ To change the tab name select the tab widget and change the `current tab name`.
 .. image:: images/vcp1-run-06.png
    :align: center
    :scale: 60 %
+
+.. Note::
+    At this time the jog slider is being worked on so skip this section for now.
 
 Drag a grid layout below the jog buttons in the tab. Drag the edge until it
 fills the tab left to right and morph it into a `QGroupBox` and set the title to
@@ -121,6 +128,10 @@ Now we can see the slider in action.
 
 **DRO**
 
+.. Note::
+    At this time the `DROWidget` is being reworked so it does not work.
+
+
 Add a `DROWidget` between the jog buttons and the axis labels and set the axis
 and the reference_type to `Relative` and select the correct axis for each one.
 
@@ -133,3 +144,15 @@ Now when we run the VCP we can see the DRO's change when we jog an axis.
 .. image:: images/vcp1-run-08.png
    :align: center
    :scale: 60 %
+
+For now we can use a `StatusLabel` to display the positions. Drag three status
+labels between the jog buttons and the labels and create a rule for each one.
+
+The channels for each one are from the positions status so type in `p` and pick
+position:rel and add the rest like this. The expression is ``ch[0]``.
+::
+
+    position:rel?string&axis=x
+    position:rel?string&axis=y
+    position:rel?string&axis=z
+
