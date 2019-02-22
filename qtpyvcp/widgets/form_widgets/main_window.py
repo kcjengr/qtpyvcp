@@ -26,7 +26,8 @@ INFO = Info()
 class VCPMainWindow(QMainWindow):
 
     def __init__(self, parent=None, opts=None, ui_file=None, stylesheet=None,
-                 position=None, size=None, confirm_exit=True, title=None, menu='default'):
+                 maximize=False, fullscreen=False, position=None, size=None,
+                 confirm_exit=True, title=None, menu='default'):
 
         super(VCPMainWindow, self).__init__(parent)
 
@@ -65,10 +66,12 @@ class VCPMainWindow(QMainWindow):
         if stylesheet is not None:
             self.loadStylesheet(stylesheet)
 
-        if opts.maximize:
+        maximize = opts.maximize if opts.maximize is not None else maximize
+        if maximize:
             QTimer.singleShot(0, self.showMaximized)
 
-        if opts.fullscreen:
+        fullscreen = opts.fullscreen if opts.fullscreen is not None else fullscreen
+        if fullscreen:
             QTimer.singleShot(0, self.showFullScreen)
 
         if opts.hide_menu_bar:
