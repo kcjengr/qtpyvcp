@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 import vtk
 
 from qtpy.QtWidgets import QWidget, QVBoxLayout
@@ -110,29 +112,35 @@ class Path:
 
         path = dict()
 
-        for point in self.gr.canon.traverse:
-            seq = point[0]
-            type = "straight_feed"
-            cords = point[1][:3]
+        for traverse in self.gr.canon.traverse:
+            seq = traverse[0]
+            line_type = "straight_feed"
+            cords = traverse[1][:3]
 
-            path[seq] = [cords, type]
+            path[seq] = [cords, line_type]
 
-        for point in self.gr.canon.feed:
-            seq = point[0]
-            color = "traverse"
-            cords = point[1][:3]
+        for feed in self.gr.canon.feed:
+            seq = feed[0]
+            line_type = "traverse"
+            cords = feed[1][:3]
 
-            path[seq] = [cords, color]
+            path[seq] = [cords, line_type]
 
-        for point in self.gr.canon.arcfeed:
-            seq = point[0]
-            color = "traverse"
-            cords = point[1][:3]
+        arc_segments = defaultdict(list)
 
-            path[seq] = [cords, color]
+        for index, arc in enumerate(self.gr.canon.arcfeed):
 
-        for index, cords in enumerate(path.items()):
-            line.add_point(index, cords[1][0], cords[1][1])
+            seq = arc[0]
+            line_type = "arc_feed"
+            cords = arc[1][:3]
+            arc_segments[seq].append((seq, [cords, line_type]))
+
+        for point_data in path.items():
+            line.add_line_point(point_data)
+
+        for line_no, arc in arc_segments.items():
+            for segment in arc:
+                line.add_line_point(segment)
 
         line.draw_path_line()
 
@@ -155,19 +163,22 @@ class PathLine:
         self.points = vtk.vtkPoints()
         self.lines = vtk.vtkCellArray()
 
-        self.line_type = dict()
+        self.line_type = list()
+
+        self.arc_data = dict()
 
         self.lines_poligon_data = vtk.vtkPolyData()
         self.polygon_mapper = vtk.vtkPolyDataMapper()
         self.actor = vtk.vtkActor()
 
-    def add_point(self, index, point, color):
-        self.line_type[index] = color
-
-        self.points.InsertNextPoint(point)
+    def add_line_point(self, point):
+        data = point[1][0]
+        line_type = point[1][1]
+        self.line_type.append(line_type)
+        self.points.InsertNextPoint(data)
 
     def draw_path_line(self):
-
+        # https://github.com/invesalius/invesalius3/blob/3b3e3f88c2f48514e6d57e8e20f2543deac7c228/invesalius/data/measures.py
         namedColors = vtk.vtkNamedColors()
 
         # Create a vtkUnsignedCharArray container and store the colors in it
@@ -176,16 +187,16 @@ class PathLine:
 
         for index in range(0, self.num_points-1):
 
-            line = vtk.vtkLine()
+            line_type = self.line_type[index]
 
-            if self.line_type[index] == "traverse":
+            if line_type == "traverse" or line_type == "arc_feed":
                 colors.InsertNextTypedTuple(namedColors.GetColor3ub("Mint"))
-            elif self.line_type[index] == "straight_feed":
+            elif line_type == "straight_feed":
                 colors.InsertNextTypedTuple(namedColors.GetColor3ub("Tomato"))
 
+            line = vtk.vtkLine()
             line.GetPointIds().SetId(0, index)  # the second 0 is the index of the Origin in linesPolyData's points
             line.GetPointIds().SetId(1, index+1)  # the second 1 is the index of P0 in linesPolyData's points
-
             self.lines.InsertNextCell(line)
 
         self.lines_poligon_data.SetPoints(self.points)
