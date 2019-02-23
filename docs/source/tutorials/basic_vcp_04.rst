@@ -128,10 +128,6 @@ Now we can see the slider in action.
 
 **DRO**
 
-.. Note::
-    At this time the `DROWidget` is being reworked so it does not work.
-
-
 Add a `DROWidget` between the jog buttons and the axis labels and set the axis
 and the reference_type to `Relative` and select the correct axis for each one.
 
@@ -145,14 +141,10 @@ Now when we run the VCP we can see the DRO's change when we jog an axis.
    :align: center
    :scale: 60 %
 
-For now we can use a `StatusLabel` to display the positions. Drag three status
-labels between the jog buttons and the labels and create a rule for each one.
-
-The channels for each one are from the positions status so type in `p` and pick
-position:rel and add the rest like this. The expression is ``ch[0]``.
+You can also use a `StatusLabel` to display position. Create a rule for the
+`StatusLabel` and add a channel from the position plugin and the expression is
+``ch[0]``. The following example is for relative position and the X axis.
 ::
 
     position:rel?string&axis=x
-    position:rel?string&axis=y
-    position:rel?string&axis=z
 
