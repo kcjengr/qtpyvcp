@@ -120,3 +120,10 @@ correct location is to use the `install.sh` script located in the same directory
 If you are using a different architecture or Qt version you may need to compile PyQt5 from
 source to get the proper `libpyqt5.so` file. The steps should be similar those listed
 `here <https://gist.github.com/KurtJacobson/34a2e45ea2227ba58702fc1cb0372c40>`_.
+
+Trouble shooting
+^^^^^^^^^^^^^^^^
+
+If you get an error about `Make sure that you have the correct version of the
+libpyqt5.so` you probably installed the stock version of Qt Designer over the
+QtPyVCP version. To fix that just install libpyqt5 with the install script.
