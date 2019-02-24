@@ -6,7 +6,7 @@ Action Buttons
 
 Action button syntax for the `actionName` is
 `group.action.subaction:argument=item`. Some action items take an optional
-argument like ``spindle.override.reset:spindle=2`` to reset the override for a
+argument like ``spindle.override.reset:2`` to reset the override for a
 spindle number 2.
 
 -------------------
