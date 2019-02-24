@@ -1,0 +1,15 @@
+QtPyVCP simulations
+
+Select a configuration type then select the GUI
+
+xyz-metric 3 axis using metric
+
+xyz 3 axis using imperial
+
+xyz3s 3 axis, 3 spindle using imperial
+
+xyzb 4 axis using imperial
+
+xyzcw 5 axis using imperial
+
+xyyz-gantry 3 axis gantry with dual drives on the Y axis
