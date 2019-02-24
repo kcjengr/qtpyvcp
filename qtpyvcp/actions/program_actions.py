@@ -55,6 +55,11 @@ def addToRecents(fname):
 def run(start_line=0):
     """Runs the loaded program, optionally starting from a specific line.
 
+    ActionButton syntax::
+
+        program.run
+        program.run?line=n
+
     Args:
         start_line (int, optional) : The line to start program from. Defaults to 0.
     """
