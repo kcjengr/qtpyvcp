@@ -73,19 +73,26 @@ class VTKWidget(QWidget, VCPWidget):
 
         self.status.file.notify(self.load_program)
         self.status.position.notify(self.move_tool)
+        self.status.g5x_offset.notify(self.reload_program)
+        self.status.g92_offset.notify(self.reload_program)
+        self.status.tool_offset.notify(self.reload_program)
 
         self.line = None
-        self._last_filename = None
+        self._last_filename = str()
+
+    def reload_program(self, *args, **kwargs):
+        print("RELOAD")
+        self.load_program(self._last_filename)
 
     def load_program(self, fname=None):
-
+        print("LOAD")
         for path_actor in self.path_actors:
             self.renderer.RemoveActor(path_actor)
 
-        if fname is None:
-            fname = self._last_filename
-        else:
+        if fname:
             self._last_filename = fname
+        else:
+            fname = self._last_filename
 
         self.gr.load(fname)
 
