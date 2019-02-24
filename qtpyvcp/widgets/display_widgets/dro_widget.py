@@ -51,11 +51,10 @@ class RefType(object):
 
 class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
 
-    if IN_DESIGNER:
-        from PyQt5.QtCore import Q_ENUMS
-        Q_ENUMS(Axis)
-        Q_ENUMS(RefType)
-        Q_ENUMS(Units)
+    from PyQt5.QtCore import Q_ENUMS
+    Q_ENUMS(Axis)
+    Q_ENUMS(RefType)
+    Q_ENUMS(Units)
 
     def __init__(self, parent=None):
         super(DROWidget, self).__init__(parent)
@@ -68,8 +67,6 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
         self._format = self._imperial_format
 
         self.update(POSITIONS.abs.getValue())
-        POSITIONS.abs.notify(self.update)
-
         STATUS.program_units.notify(self.onUnitsChanged, 'string')
 
     def update(self, pos):
@@ -83,9 +80,12 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
         self.update(
             getattr(POSITIONS, RefType.toString(self._ref_typ)).getValue())
 
-    #==========================================================================
+    def initialize(self):
+        getattr(POSITIONS, RefType.toString(self._ref_typ)).notify(self.update)
+
+    # ==========================================================================
     # Designer property Getters/Setters
-    #==========================================================================
+    # ==========================================================================
 
     @Property(RefType)
     def referenceType(self):
@@ -93,12 +93,8 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
 
     @referenceType.setter
     def referenceType(self, ref_typ):
-        old_ref_typ = RefType.toString(self._ref_typ)
         new_ref_typ = RefType.toString(ref_typ)
         self._ref_typ = ref_typ
-
-        getattr(POSITIONS, old_ref_typ).signal.disconnect(self.update)
-        getattr(POSITIONS, new_ref_typ).signal.connect(self.update)
         self.update(getattr(POSITIONS, new_ref_typ).getValue())
 
     @Property(Axis)

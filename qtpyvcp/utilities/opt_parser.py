@@ -7,40 +7,38 @@ Usage:
   {vcp_cmd} (-v | --version)
 
 Required Arguments:
-  --ini INI          Path to INI file, relative to ~/linuxcnc/configs.
+  --ini INI            Path to INI file, relative to ~/linuxcnc/configs.
 
 Display  Options:
-  --theme=THEME      The Qt theme to use, defaults to system theme.
+  --theme=THEME        The Qt theme to use, defaults to system theme.
   --stylesheet=STYLESHEET
-                     Path to QSS file containing styles to be applied
-                     to specific Qt and/or QtPyVCP widget classes.
-  --size=WIDTHxHEIGHT
-                     Initial size of the window in pixels.
+                       Path to QSS file containing styles to be applied
+                       to specific Qt and/or QtPyVCP widget classes.
+  --size=WIDTHxHEIGHT  Initial size of the window in pixels.
   --position=XPOSxYPOS
-                     Initial position of the window, specified as the
-                     coordinates of the top left corner of the window
-                     relative to the top left corner of the screen.
-  -f --fullscreen    Flag to start with window fullscreen.
-  -m --maximize      Flag to start with window maximized.
-  --hide-menu-bar    Hides the menu bar, if present.
-  --hide-status-bar  Hides the status bar, if present.
-  --confirm-exit BOOL
-                    Whether to show dialog to confirm exit.
+                       Initial position of the window, specified as the
+                       coordinates of the top left corner of the window
+                       relative to the top left corner of the screen.
+  --fullscreen BOOL    Flag to start with window fullscreen.
+  --maximize BOOL      Flag to start with window maximized.
+  --hide-menu-bar      Hides the menu bar, if present.
+  --hide-status-bar    Hides the status bar, if present.
+  --confirm-exit BOOL  Whether to show dialog to confirm exit.
 
 Application Options:
   --log-level=(DEBUG | INFO | WARN | ERROR | CRITICAL)
-                     Sets the log level. [default: INFO]
-  --config-file=FILE Specifies the YML config file.
-  --log-file=FILE    Specifies the log file. Overrides INI setting.
-  --pref-file=FILE   Specifies the preference file. Overrides INI setting.
+                       Sets the log level. [default: INFO]
+  --config-file=FILE   Specifies the YML config file.
+  --log-file=FILE      Specifies the log file. Overrides INI setting.
+  --pref-file=FILE     Specifies the preference file. Overrides INI setting.
   --qt-api=(pyqt5 | pyqt | pyside2 | pyside)
-                     Specify the Qt Python binding to use.
-  --perfmon          Monitor and log system performance.
+                       Specify the Qt Python binding to use.
+  --perfmon            Monitor and log system performance.
   --command_line_args <args>...
 
 General Options:
-  -h --help          Show this help and exit.
-  -v --version       Show version.
+  -h --help            Show this help and exit.
+  -v --version         Show version.
 
 Note:
   When specifying {vcp_name} in the INI using [DISPLAY]DISPLAY={vcp_cmd} [...]

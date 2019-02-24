@@ -35,32 +35,31 @@ makes them a toggle button.
 Now we need to add a couple of rules to the `Home` button. The first rule will
 set the text of the button based on if all the joints are homed or not. Double
 click on the button to open the `Rules Editor` and add a new rule. The
-`Property` is Text. Add three channels with the following and make sure
-`Trigger` is checked in each one.
+`Property` is Text. Click in the blue channel box and type `s` now pick
+`status:all_axes_homed` from the list. Notice the type is `bool` which is a true
+false type and that is what we want for this.
 ::
 
-    status:joint[0].homed
-    status:joint[1].homed
-    status:joint[2].homed
+    status:all_axes_homed
 
 The expression to change the text of the button is::
 
-    'Homed' if ch[0] and ch[1] and ch[2] else 'Home\nAll'
+    'Homed' if ch[0] else 'Home\nAll'
 
 Notice that 'Home\\nAll' has a new line character `\\n` in it.
 
 .. image:: images/vcp1-designer-09.png
    :align: center
-   :scale: 40 %
+   :scale: 60 %
 
-The second rule will have the same channels but the property will be for the
+The second rule will have the same channel but the property will be for the
 `Style Sheet` with the following expression::
 
-    "background-color:rgb(138, 226, 52)" if ch[0] and ch[1] and ch[2] else ''
+    'background-color:rgb(138, 226, 52)' if ch[0]else ''
 
 .. image:: images/vcp1-designer-10.png
    :align: center
-   :scale: 40 %
+   :scale: 60 %
 
 Now when we run the VCP you can see the buttons in action.
 

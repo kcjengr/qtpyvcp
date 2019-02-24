@@ -187,8 +187,8 @@ def override(override, spindle=0):
     """Set spindle override percentage.
 
     Args:
-        override (int) : The desired spindle override in percent.
-        spindle (int, optional) : The number of the spindle to apply the
+        override (float) : The desired spindle override in percent.
+        spindle (float, optional) : The number of the spindle to apply the
             override to. If ``spindle`` is not specified spindle 0 is assumed.
     """
     CMD.spindleoverride(float(override) / 100, spindle)

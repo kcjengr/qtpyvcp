@@ -25,6 +25,15 @@ building complex VCPs.
 
 .. toctree::
    :maxdepth: 1
+   :caption: Tutorials
+
+   tutorials/basic_vcp
+   tutorials/getting_started
+   tutorials/widget_rules
+   tutorials/components
+
+.. toctree::
+   :maxdepth: 1
    :caption: Configuration
 
    configuration/ini_options
@@ -32,13 +41,10 @@ building complex VCPs.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Tutorials
+   :caption: Components
 
-   tutorials/basic_vcp
-   tutorials/getting_started
-   tutorials/widget_rules
-   tutorials/components
-   tutorials/status_labels
+   components/action_buttons
+   components/status_labels
 
 .. toctree::
    :maxdepth: 1

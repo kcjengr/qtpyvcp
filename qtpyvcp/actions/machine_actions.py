@@ -181,7 +181,7 @@ def issue_mdi(command, reset=True):
         STATUS.old['interp_state'] = -1
 
     if setTaskMode(linuxcnc.MODE_MDI):
-        LOG.info("Issuind MDI command: {}".format(command))
+        LOG.info("Issuing MDI command: {}".format(command))
         CMD.mdi(command)
     else:
         LOG.error("Failed to issue MDI command: {}".format(command))
@@ -401,6 +401,7 @@ feed_override.enable.bindOk = feed_override.disable.bindOk = feed_override.toggl
 # -------------------------------------------------------------------------
 
 class rapid_override:
+    """Rapid Override Group"""
     @staticmethod
     def set(value):
         CMD.rapidrate(float(value) / 100)
@@ -461,12 +462,15 @@ rapid_override.set.bindOk = rapid_override.reset.bindOk = _rapid_override_bindOk
 # -------------------------------------------------------------------------
 
 class max_velocity:
+    """Max Velocity Group"""
     @staticmethod
     def set(value):
+        """Max Velocity Override Set Value"""
         CMD.maxvel(float(value) / 60)
 
     @staticmethod
     def reset():
+        """Max Velocity Override Reset Value"""
         CMD.maxvel(INFO.maxVelocity() / 60)
 
 def _max_velocity_ok(value=100, widget=None):

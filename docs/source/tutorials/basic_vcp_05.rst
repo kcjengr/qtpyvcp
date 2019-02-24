@@ -26,7 +26,7 @@ buttons will have the same style.
     QPushButton {
     min-height: 50px;
     min-width: 50px;
-    font: 14pt "DejaVu Sans";
+    font: 12pt "DejaVu Sans";
     }
 
 .. image:: images/vcp1-designer-18.png

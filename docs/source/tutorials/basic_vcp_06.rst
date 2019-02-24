@@ -26,18 +26,21 @@ with the touch screen.
    :align: center
    :scale: 40 %
 
-Now add a grid under the file navigator and make sure its inside the frame and
-morph it into a frame and add frameShape Box and Margins to 5. Drag some
-`Push Buttons` from the `Buttons` Widget section (we don't need action buttons
-for this. From left to right name them `Up, Down and Select`. Change the
-`objectNames` to ``navUp`` ``navDown`` and ``navSelect``.
+Now add a horizontal layout under the file navigator and make sure its inside
+the frame and morph it into a frame and add frameShape Box and Margins to 5.
+Drag 4 `Push Buttons` from the `Buttons` Widget section (we don't need action
+buttons for this. From left to right name them `Open\\nParent, Up, Down and
+Select`. Change the `objectNames` to ``navParent``, ``navUp``, ``navDown`` and
+``navSelect``.
 
 Add the following new signals::
 
     Sender      Signal      Receiver            Slot
+    navParent   clicked()   filesystemtable     viewParentDirectory()
     navUp       clicked()   filesystemtable     selectPrevious()
     navDown     clicked()   filesystemtable     selectNext()
     navSelect   clicked()   filesystemtable     openSelectedItem()
+
 
 .. image:: images/vcp1-designer-22.png
    :align: center
@@ -50,14 +53,4 @@ into the VCP
 .. image:: images/vcp1-run-10.png
    :align: center
    :scale: 60 %
-
-One thing I forgot to do was add a button to navigate up one directory level. In
-order for the text to fit I change the QButton font in the main window to 13pt.
-I named the button ``navParent`` and connected it to the `viewParentDirectory`
-of the filesystemtable widget.
-
-
-.. image:: images/vcp1-designer-22-1.png
-   :align: center
-   :scale: 40 %
 

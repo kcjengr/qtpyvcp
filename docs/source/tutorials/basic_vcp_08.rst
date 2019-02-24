@@ -5,8 +5,7 @@ Offsets
 
 Select Tab 2 from the right hand tab widget and add a grid, set the tab layout
 to grid, morph the grid into a qframe and set the outline to box and the margins
-to 5. Name the tab `Offsets`. In the horzontal frame that the tab widgets are in
-change the tab width to 90.
+to 5. Name the tab `Offsets`.
 
 .. image:: images/vcp1-designer-26.png
    :align: center
@@ -53,16 +52,16 @@ receiver = offsetLabel, slot = clear().
 Now open back up `~vcp1/vcp1/mainwindow.py` and add the following
 ::
 
-            self.offsetButtonGroup.buttonClicked.connect(self.offsetHandleKeys)
+                self.offsetButtonGroup.buttonClicked.connect(self.offsetHandleKeys)
 
-        def offsetHandleKeys(self, button):
-            char = str(button.text())
-            text = self.offsetLabel.text() or '0'
-            if text != '0':
-                text += char
-            else:
-                text = char
-            self.offsetLabel.setText(text)
+            def offsetHandleKeys(self, button):
+                char = str(button.text())
+                text = self.offsetLabel.text() or '0'
+                if text != '0':
+                    text += char
+                else:
+                    text = char
+                self.offsetLabel.setText(text)
 
 The full mainwindow.py code.
 ::
@@ -77,11 +76,10 @@ The full mainwindow.py code.
         """Main window class for the VCP."""
         def __init__(self, *args, **kwargs):
             super(MyMainWindow, self).__init__(*args, **kwargs)
-
-        # add any custom methods here
-
             self.mdiButtonGroup.buttonClicked.connect(self.mdiHandleKeys)
             self.offsetButtonGroup.buttonClicked.connect(self.offsetHandleKeys)
+
+        # add any custom methods here
 
         def mdiHandleKeys(self, button):
             char = str(button.text())

@@ -21,6 +21,7 @@ windows:
     provider: probe_basic:ProbeBasic
     kwargs:
       menu: ( menubar )
+      fullscreen: true
       ui_file: {{ file.dir }}/probe_basic.ui
 
 application:

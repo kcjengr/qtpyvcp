@@ -24,7 +24,7 @@ any button and select `Assign to button group` and click on `New Button Group`.
    :scale: 40 %
 
 In the `Object Inspector` scroll down to the bottom and find the `buttonGroup`
-object we just created and change the `objectName` to `mdiButtonGroup`. Now we
+object we just created and change the `objectName` to ``mdiButtonGroup``. Now we
 have a group of buttons that all belong to the same group. Now lets change the
 text of the buttons like the following and change the `objectName` for the Enter
 button to ``mdiEnterButton`` and the `objectName` for the Clear button to
@@ -37,7 +37,8 @@ button to ``mdiEnterButton`` and the `objectName` for the Clear button to
 
 Now lets work some magic, open up `~/vcp1/vcp1/mainwindow.py` and add the
 following Python code after `# add any custom methods here` and pay attention to
-the indentation level. The example uses 4 spaces per level.
+the indentation level. The example uses 4 spaces per level. Don't forget to add
+the line after `super(MyMainWindow, self).__init__(*args, **kwargs)`
 ::
 
     from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
@@ -50,11 +51,9 @@ the indentation level. The example uses 4 spaces per level.
         """Main window class for the VCP."""
         def __init__(self, *args, **kwargs):
             super(MyMainWindow, self).__init__(*args, **kwargs)
+            self.mdiButtonGroup.buttonClicked.connect(self.mdiHandleKeys)
 
         # add any custom methods here
-
-            self.mdiButtonGroup.buttonClicked.connect(self.mdiHandleKeys)
-            print dir()
 
         def mdiHandleKeys(self, button):
             char = str(button.text())

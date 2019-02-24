@@ -17,7 +17,8 @@ structure needed to build a VCP. In a terminal::
 To make copy the `VCP Template` for this tutorial in the terminal first change
 to the `vcp-template` directory then run `tutorial.sh` and use a new name that
 contains only letters, numbers and the underscore _. For this tutorial I used
-`vcp1` so all examples will use that name
+`vcp1` so all examples will use that name. Pick yes to copy the LinuxCNC
+Configuration files.
 ::
 
     cd vcp-template
