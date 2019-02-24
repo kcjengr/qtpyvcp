@@ -50,6 +50,8 @@ class VTKWidget(QWidget, VCPWidget):
         self.tool = Tool()
         self.tool_actor = self.tool.get_actor()
 
+        self.path_actors = list()
+
         # self.frustum = Frustum()
         # self.frustum_actor = self.frustum.get_actor()
 
@@ -77,6 +79,9 @@ class VTKWidget(QWidget, VCPWidget):
 
     def load_program(self, fname=None):
 
+        for path_actor in self.path_actors:
+            self.renderer.RemoveActor(path_actor)
+
         if fname is None:
             fname = self._last_filename
         else:
@@ -85,9 +90,9 @@ class VTKWidget(QWidget, VCPWidget):
         self.gr.load(fname)
 
         path = Path(self.gr, self.renderer)
-        path_actors = path.get_actors()
+        self.path_actors = path.get_actors()
 
-        for path_actor in path_actors:
+        for path_actor in self.path_actors:
             self.renderer.AddActor(path_actor)
 
     def move_tool(self, position):
