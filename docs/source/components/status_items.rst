@@ -1,6 +1,10 @@
-=============
-Status Labels
-=============
+============
+Status Items
+============
+
+Status Items can be used in :doc:`../tutorials/widget_rules` to control and
+display status data for LinuxCNC.
+
 
 ----------
 **Tuples**
@@ -13,9 +17,11 @@ item in the tuple you slice at 2 because counting starts at 0 not 1 so
 ``str(ch[0][2])`` returns the third item in the tuple. For axis items they are
 in this order X, Y, Z, A, B, C, U, V, W.
 
---------------------
-**Status Data List**
---------------------
+.. _status_list:
+
+---------------------
+**Status Items List**
+---------------------
 
 * :ref:`acceleration <acceleration>`
 * :ref:`active queue <active_queue>`
@@ -139,6 +145,8 @@ acceleration
     | syntax ``status:acceleration`` returns float
     | syntax ``status:acceleration?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _active_queue:
 
 active_queue
@@ -146,6 +154,8 @@ active_queue
 
     | syntax ``status:active_queue`` returns int
     | syntax ``status:active_queue?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _actual_position:
 
@@ -155,6 +165,8 @@ actual_position
     | syntax ``status:actual_position`` returns tuple of floats
     | syntax ``status:actual_position?string`` returns tuple of str
 
+:ref:`return to the status items list <status_list>`
+
 .. _adaptive_feed_enabled:
 
 adaptive_feed_enabled
@@ -162,6 +174,8 @@ adaptive_feed_enabled
 
     | syntax ``status:adaptive_feed_enabled`` returns bool
     | syntax ``status:adaptive_feed_enabled?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _ain:
 
@@ -171,6 +185,8 @@ ain
     | syntax ``status:ain`` returns tuple of floats
     | syntax ``status:ain?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _all_axes_homed:
 
 all_axes_homed
@@ -178,6 +194,8 @@ all_axes_homed
 
     | syntax ``status:all_axes_homed`` returns bool
     | syntax ``status:all_axes_homed?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _angular_units:
 
@@ -187,6 +205,8 @@ angular_units
     | syntax ``status:angular_units`` returns float
     | syntax ``status:angular_units?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _aout:
 
 aout
@@ -195,6 +215,8 @@ aout
     | syntax ``status:aout`` returns tuple of floats
     | syntax ``status:aout?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _axes:
 
 axes
@@ -202,6 +224,8 @@ axes
 
     | syntax ``status:axes`` returns int
     | syntax ``status:axes?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _axis_mask:
 
@@ -212,6 +236,8 @@ axis_mask
     | syntax ``status:axis_mask`` returns int
     | syntax ``status:axis_mask?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _block_delete:
 
 block_delete
@@ -219,6 +245,8 @@ block_delete
 
     | syntax ``status:block_delete`` returns bool
     | syntax ``status:block_delete?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _call_level:
 
@@ -228,6 +256,8 @@ call_level
     | syntax ``status:call_level`` returns int
     | syntax ``status:call_level?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _current_line:
 
 current_line
@@ -235,6 +265,8 @@ current_line
 
     | syntax ``status:current_line`` returns int
     | syntax ``status:current_line?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _current_vel:
 
@@ -244,6 +276,8 @@ current_vel
     | syntax ``status:current_vel`` returns float
     | syntax ``status:current_vel?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _cycle_time:
 
 cycle_time
@@ -251,6 +285,8 @@ cycle_time
 
     | syntax ``status:cycle_time`` returns float
     | syntax ``status:cycle_time?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _delay_left:
 
@@ -260,6 +296,8 @@ delay_left
     | syntax ``status:delay_left`` returns float
     | syntax ``status:delay_left?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _din:
 
 din
@@ -267,6 +305,8 @@ din
 
     | syntax ``status:din`` returns tuple of integers
     | syntax ``status:din?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _distance_to_go:
 
@@ -276,6 +316,8 @@ distance_to_go
     | syntax ``status:distance_to_go`` returns float
     | syntax ``status:distance_to_go?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _dout:
 
 dout
@@ -283,6 +325,8 @@ dout
 
     | syntax ``status:dout`` returns tuple of integers
     | syntax ``status:dout?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _dtg:
 
@@ -292,6 +336,8 @@ dtg
     | syntax ``status:dtg`` returns tuple of floats
     | syntax ``status:dtg?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _echo_serial_number:
 
 echo_serial_number
@@ -299,6 +345,8 @@ echo_serial_number
 
     | syntax ``status:echo_serial_number`` returns int
     | syntax ``status:echo_serial_number?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _enabled:
 
@@ -308,6 +356,8 @@ enabled
     | syntax ``status:enabled`` returns bool
     | syntax ``status:enabled?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _estop:
 
 estop
@@ -315,6 +365,8 @@ estop
 
     | syntax ``status:estop`` returns int
     | syntax ``status:estop?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _exec_state:
 
@@ -339,6 +391,8 @@ exec_state
     | syntax ``status:exec_state`` returns int
     | syntax ``status:exec_state?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _feed_hold_enabled:
 
 feed_hold_enabled
@@ -346,6 +400,8 @@ feed_hold_enabled
 
     | syntax ``status:feed_hold_enabled`` returns bool
     | syntax ``status:feed_hold_enabled?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _feed_override_enabled:
 
@@ -355,6 +411,8 @@ feed_override_enabled
     | syntax ``status:feed_override_enabled`` returns bool
     | syntax ``status:feed_override_enabled?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _feedrate:
 
 feedrate
@@ -362,6 +420,8 @@ feedrate
 
     | syntax ``status:feedrate`` returns float
     | syntax ``status:feedrate?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _file:
 
@@ -371,6 +431,8 @@ file
     | syntax ``status:file`` returns str
     | for just the file name use this expression ``ch[0].split('/')[-1]``
 
+:ref:`return to the status items list <status_list>`
+
 .. _flood:
 
 flood
@@ -378,6 +440,8 @@ flood
 
     | syntax ``status:flood`` returns int
     | syntax ``status:flood?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _g5x_index:
 
@@ -402,6 +466,8 @@ g5x_index
     | syntax ``status:g5x_index`` returns int
     | syntax ``status:g5x_index?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _g5x_offset:
 
 g5x_offset
@@ -409,6 +475,8 @@ g5x_offset
 
     | syntax ``status:g5x_offset`` returns tuple of floats
     | syntax ``status:g5x_offset?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _g92_offset:
 
@@ -418,6 +486,8 @@ g92_offset
     | syntax ``status:g92_offset`` returns tuple of floats
     | syntax ``status:g92_offset?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _gcodes:
 
 gcodes
@@ -425,6 +495,8 @@ gcodes
 
     | syntax ``status:gcodes`` returns tuple of integers
     | syntax ``status:gcodes?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _homed:
 
@@ -434,6 +506,8 @@ homed
     | syntax ``status:homed`` returns tuple of integers
     | syntax ``status:homed?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _id:
 
 id
@@ -441,6 +515,8 @@ id
 
     | syntax ``status:id`` returns int
     | syntax ``status:id?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _inpos:
 
@@ -450,6 +526,8 @@ inpos
     | syntax ``status:inpos`` returns bool
     | syntax ``status:inpos?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _input_timeout:
 
 input_timeout
@@ -457,6 +535,8 @@ input_timeout
 
     | syntax ``status:input_timeout`` returns bool
     | syntax ``status:input_timeout?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _interp_state:
 
@@ -474,6 +554,8 @@ interp_state
 
     | syntax ``status:interp_state`` returns int
     | syntax ``status:interp_state?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _interpreter_errcode:
 
@@ -494,6 +576,8 @@ interpreter_errcode
     | syntax ``status:interpreter_errcode`` returns int
     | syntax ``status:interpreter_errcode?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _joint.n.backlash:
 
 joint.n.backlash
@@ -501,6 +585,8 @@ joint.n.backlash
 
     | syntax ``status:joint.n.backlash`` returns float
     | syntax ``status:joint.n.backlash?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _joint.n.enabled:
 
@@ -510,6 +596,8 @@ joint.n.enabled
     | syntax ``status:joint.n.enabled`` returns int
     | syntax ``status:joint.n.enabled?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _joint.n.fault:
 
 joint.n.fault
@@ -517,6 +605,8 @@ joint.n.fault
 
     | syntax ``status:joint.n.fault`` returns int
     | syntax ``status:joint.n.fault?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _joint.n.ferror_current:
 
@@ -526,6 +616,8 @@ joint.n.ferror_current
     | syntax ``status:joint.n.ferror_current`` returns float
     | syntax ``status:joint.n.ferror_current?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _joint.n.ferror_highmark:
 
 joint.n.ferror_highmark
@@ -533,6 +625,8 @@ joint.n.ferror_highmark
 
     | syntax ``status:joint.n.ferror_highmark`` returns float
     | syntax ``status:joint.n.ferror_highmark?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _joint.n.homed:
 
@@ -542,6 +636,8 @@ joint.n.homed
     | syntax ``status:joint.n.homed`` returns int
     | syntax ``status:joint.n.homed?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _joint.n.homing:
 
 joint.n.homing
@@ -549,6 +645,8 @@ joint.n.homing
 
     | syntax ``status:joint.n.homing`` returns int
     | syntax ``status:joint.n.homing?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _joint.n.inpos:
 
@@ -558,6 +656,8 @@ joint.n.inpos
     | syntax ``status:joint.n.inpos`` returns int
     | syntax ``status:joint.n.inpos?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _joint.n.input:
 
 joint.n.input
@@ -565,6 +665,8 @@ joint.n.input
 
     | syntax ``status:joint.n.input`` returns float
     | syntax ``status:joint.n.input?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _joint.n.jointType:
 
@@ -574,6 +676,8 @@ joint.n.jointType
     | syntax ``status:joint.n.jointType`` returns int
     | syntax ``status:joint.n.jointType?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _joint.n.max_ferror:
 
 joint.n.max_ferror
@@ -581,6 +685,8 @@ joint.n.max_ferror
 
     | syntax ``status:joint.n.max_ferror`` returns float
     | syntax ``status:joint.n.max_ferror?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _joint.n.max_hard_limit:
 
@@ -590,6 +696,8 @@ joint.n.max_hard_limit
     | syntax ``status:joint.n.max_hard_limit`` returns int
     | syntax ``status:joint.n.max_hard_limit?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _joint.n.max_position_limit:
 
 joint.n.max_position_limit
@@ -597,6 +705,8 @@ joint.n.max_position_limit
 
     | syntax ``status:joint.n.max_position_limit`` returns float
     | syntax ``status:joint.n.max_position_limit?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _joint.n.max_soft_limit:
 
@@ -606,6 +716,8 @@ joint.n.max_soft_limit
     | syntax ``status:joint.n.max_soft_limit`` returns int
     | syntax ``status:joint.n.max_soft_limit?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _joint.n.min_ferror:
 
 joint.n.min_ferror
@@ -613,6 +725,8 @@ joint.n.min_ferror
 
     | syntax ``status:joint.n.min_ferror`` returns float
     | syntax ``status:joint.n.min_ferror?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _joint.n.min_hard_limit:
 
@@ -622,6 +736,8 @@ joint.n.min_hard_limit
     | syntax ``status:joint.n.min_hard_limit`` returns int
     | syntax ``status:joint.n.min_hard_limit?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _joint.n.min_position_limit:
 
 joint.n.min_position_limit
@@ -629,6 +745,8 @@ joint.n.min_position_limit
 
     | syntax ``status:joint.n.min_position_limit`` returns float
     | syntax ``status:joint.n.min_position_limit?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _joint.n.min_soft_limit:
 
@@ -638,6 +756,8 @@ joint.n.min_soft_limit
     | syntax ``status:joint.n.min_soft_limit`` returns int
     | syntax ``status:joint.n.min_soft_limit?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _joint.n.output:
 
 joint.n.output
@@ -645,6 +765,8 @@ joint.n.output
 
     | syntax ``status:joint.n.output`` returns float
     | syntax ``status:joint.n.output?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _joint.n.override_limits:
 
@@ -654,6 +776,8 @@ joint.n.override_limits
     | syntax ``status:joint.n.override_limits`` returns int
     | syntax ``status:joint.n.override_limits?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _joint.n.units:
 
 joint.n.units
@@ -661,6 +785,8 @@ joint.n.units
 
     | syntax ``status:joint.n.units`` returns float
     | syntax ``status:joint.n.units?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _joint.n.velocity:
 
@@ -670,6 +796,8 @@ joint.n.velocity
     | syntax ``status:joint.n.velocity`` returns float
     | syntax ``status:joint.n.velocity?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _joint_actual_position:
 
 joint_actual_position
@@ -677,6 +805,8 @@ joint_actual_position
 
     | syntax ``status:joint_actual_position`` returns tuple of floats
     | syntax ``status:joint_actual_position?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _joint_position:
 
@@ -686,6 +816,8 @@ joint_position
     | syntax ``status:joint_position`` returns tuple of floats
     | syntax ``status:joint_position?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _joints:
 
 joints
@@ -693,6 +825,8 @@ joints
 
     | syntax ``status:joints`` returns int
     | syntax ``status:joints?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _kinematics_type:
 
@@ -702,6 +836,8 @@ kinematics_type
     | syntax ``status:kinematics_type`` returns int
     | syntax ``status:kinematics_type?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _limit:
 
 limit
@@ -709,6 +845,8 @@ limit
 
     | syntax ``status:limit`` returns tuple of integers
     | syntax ``status:limit?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _linear_units:
 
@@ -718,6 +856,8 @@ linear_units
     | syntax ``status:linear_units`` returns float
     | syntax ``status:linear_units?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _lube:
 
 lube
@@ -725,6 +865,8 @@ lube
 
     | syntax ``status:lube`` returns int
     | syntax ``status:lube?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _lube_level:
 
@@ -734,6 +876,8 @@ lube_level
     | syntax ``status:lube_level`` returns int
     | syntax ``status:lube_level?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _max_acceleration:
 
 max_acceleration
@@ -741,6 +885,8 @@ max_acceleration
 
     | syntax ``status:max_acceleration`` returns float
     | syntax ``status:max_acceleration?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _max_velocity:
 
@@ -750,6 +896,8 @@ max_velocity
     | syntax ``status:max_velocity`` returns float
     | syntax ``status:max_velocity?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _mcodes:
 
 mcodes
@@ -757,6 +905,8 @@ mcodes
 
     | syntax ``status:mcodes`` returns tuple of integers
     | syntax ``status:mcodes?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _mist:
 
@@ -766,6 +916,8 @@ mist
     | syntax ``status:mist`` returns int
     | syntax ``status:mist?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _motion_line:
 
 motion_line
@@ -773,6 +925,8 @@ motion_line
 
     | syntax ``status:motion_line`` returns int
     | syntax ``status:motion_line?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _motion_mode:
 
@@ -790,6 +944,8 @@ motion_mode
 
     | syntax ``status:motion_mode`` returns int
     | syntax ``status:motion_mode?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _motion_type:
 
@@ -811,6 +967,8 @@ motion_type
     | syntax ``status:motion_type`` returns int
     | syntax ``status:motion_type?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _on:
 
 on
@@ -818,6 +976,8 @@ on
 
     | syntax ``status:on`` returns bool
     | syntax ``status:on?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _optional_stop:
 
@@ -827,6 +987,8 @@ optional_stop
     | syntax ``status:optional_stop`` returns int
     | syntax ``status:optional_stop?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _paused:
 
 paused
@@ -834,6 +996,8 @@ paused
 
     | syntax ``pstatus:aused`` returns bool
     | syntax ``status:paused?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _pocket_prepped:
 
@@ -843,6 +1007,8 @@ pocket_prepped
     | syntax ``status:pocket_prepped`` returns int
     | syntax ``status:pocket_prepped?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _position:
 
 position
@@ -850,6 +1016,8 @@ position
 
     | syntax ``status:position`` returns tuple of floats
     | syntax ``status:position?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _probe_tripped:
 
@@ -859,6 +1027,8 @@ probe_tripped
     | syntax ``status:probe_tripped`` returns bool
     | syntax ``status:probe_tripped?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _probe_val:
 
 probe_val
@@ -866,6 +1036,8 @@ probe_val
 
     | syntax ``status:probe_val`` returns int
     | syntax ``status:probe_val?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _probed_position:
 
@@ -875,6 +1047,8 @@ probed_position
     | syntax ``status:probed_position`` returns tuple of floats
     | syntax ``status:probed_position?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _probing:
 
 probing
@@ -882,6 +1056,8 @@ probing
 
     | syntax ``status:probing`` returns bool
     | syntax ``status:probing?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _program_units:
 
@@ -901,6 +1077,8 @@ program_units
     | syntax ``status:rogram_units?string`` returns short str
     | syntax ``status:rogram_units?string&format=long`` returns long str
 
+:ref:`return to the status items list <status_list>`
+
 .. _queue:
 
 queue
@@ -908,6 +1086,8 @@ queue
 
     | syntax ``status:queue`` returns int
     | syntax ``status:queue?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _queue_full:
 
@@ -917,6 +1097,8 @@ queue_full
     | syntax ``status:queue_full`` returns bool
     | syntax ``status:queue_full?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _queued_mdi_commands:
 
 queued_mdi_commands
@@ -924,6 +1106,8 @@ queued_mdi_commands
 
     | syntax ``status:queued_mdi_commands`` returns int
     | syntax ``status:queued_mdi_commands?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _rapidrate:
 
@@ -933,6 +1117,8 @@ rapidrate
     | syntax ``status:rapidrate`` returns float
     | syntax ``status:rapidrate?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _read_line:
 
 read_line
@@ -940,6 +1126,8 @@ read_line
 
     | syntax ``status:read_line`` returns int
     | syntax ``status:read_line?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _recent_files:
 
@@ -949,6 +1137,8 @@ recent_files
     | syntax ``status:recent_files`` returns list
     | syntax ``status:recent_files?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _rotation_xy:
 
 rotation_xy
@@ -956,6 +1146,8 @@ rotation_xy
 
     | syntax ``status:rotation_xy`` returns float
     | syntax ``status:rotation_xy?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _settings:
 
@@ -965,6 +1157,8 @@ settings
     | syntax ``status:settings`` returns tuple of floats
     | syntax ``status:settings?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _spindle.n.brake:
 
 spindle.n.brake
@@ -972,6 +1166,8 @@ spindle.n.brake
 
     | syntax ``status:spindle.n.brake`` returns int
     | syntax ``status:spindle.n.brake?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _spindle.n.direction:
 
@@ -981,6 +1177,8 @@ spindle.n.direction
     | syntax ``status:spindle.n.direction`` returns int
     | syntax ``status:spindle.n.direction?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _spindle.n.enabled:
 
 spindle.n.enabled
@@ -988,6 +1186,8 @@ spindle.n.enabled
 
     | syntax ``status:spindle.n.enabled`` returns int
     | syntax ``status:spindle.n.enabled?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _spindle.n.homed:
 
@@ -997,6 +1197,8 @@ spindle.n.homed
     | syntax ``status:spindle.n.homed`` returns bool
     | syntax ``status:spindle.n.homed?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _spindle.n.orient_fault:
 
 spindle.n.orient_fault
@@ -1004,6 +1206,8 @@ spindle.n.orient_fault
 
     | syntax ``status:spindle.n.orient_fault`` returns int
     | syntax ``status:spindle.n.orient_fault?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _spindle.n.orient_state:
 
@@ -1013,6 +1217,8 @@ spindle.n.orient_state
     | syntax ``status:spindle.n.orient_state`` returns int
     | syntax ``status:spindle.n.orient_state?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _spindle.n.override:
 
 spindle.n.override
@@ -1020,6 +1226,8 @@ spindle.n.override
 
     | syntax ``status:spindle.n.override`` returns float
     | syntax ``status:spindle.n.override?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _spindle.n.override_enabled:
 
@@ -1029,6 +1237,8 @@ spindle.n.override_enabled
     | syntax ``status:spindle.n.override_enabled`` returns bool
     | syntax ``status:spindle.n.override_enabled?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _spindle.n.speed:
 
 spindle.n.speed
@@ -1036,6 +1246,8 @@ spindle.n.speed
 
     | syntax ``status:spindle.n.speed`` returns float
     | syntax ``status:spindle.n.speed?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _spindles:
 
@@ -1045,6 +1257,8 @@ spindles
     | syntax ``status:spindles`` returns int
     | syntax ``status:spindles?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _state:
 
 state
@@ -1052,6 +1266,8 @@ state
 
     | syntax ``status:state`` returns int
     | syntax ``status:state?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _task_mode:
 
@@ -1070,6 +1286,8 @@ task_mode
     | syntax ``status:task_mode`` returns int
     | syntax ``status:task_mode?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _task_paused:
 
 task_paused
@@ -1077,6 +1295,8 @@ task_paused
 
     | syntax ``status:task_paused`` returns int
     | syntax ``status:task_paused?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _task_state:
 
@@ -1096,6 +1316,8 @@ task_state
     | syntax ``status:task_state`` returns int
     | syntax ``status:task_state?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _tool_in_spindle:
 
 tool_in_spindle
@@ -1103,6 +1325,8 @@ tool_in_spindle
 
     | syntax ``status:tool_in_spindle`` returns int
     | syntax ``status:tool_in_spindle?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 
 .. _tool_offset:
 
@@ -1112,6 +1336,10 @@ tool_offset
     | syntax ``status:tool_offset`` returns tuple of floats
     | syntax ``status:tool_offset?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
+:ref:`return to the status items list <status_list>`
+
 .. _tool_table:
 
 tool_table
@@ -1120,6 +1348,8 @@ tool_table
     | syntax ``status:tool_table`` returns tuple of tool_results
     | syntax ``status:tool_table?string`` returns str
 
+:ref:`return to the status items list <status_list>`
+
 .. _velocity:
 
 velocity
@@ -1127,4 +1357,6 @@ velocity
 
     | syntax ``status:velocity`` returns float
     | syntax ``status:velocity?string`` returns str
+
+:ref:`return to the status items list <status_list>`
 

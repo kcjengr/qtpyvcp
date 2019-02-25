@@ -44,7 +44,8 @@ building complex VCPs.
    :caption: Components
 
    components/action_buttons
-   components/status_labels
+   components/action_sliders
+   components/status_items
 
 .. toctree::
    :maxdepth: 1
