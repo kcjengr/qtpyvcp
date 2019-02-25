@@ -102,6 +102,8 @@ class VTKWidget(QWidget, VCPWidget):
         for path_actor in self.path_actors:
             self.renderer.AddActor(path_actor)
 
+        self.update_render()
+
     def move_tool(self, position):
         self.tool_actor.SetPosition(position[:3])
         self.update_render()
