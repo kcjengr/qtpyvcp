@@ -36,34 +36,24 @@ class VTKWidget(QWidget, VCPWidget):
         self.vtkWidget.SetInteractorStyle(self.nav_style)
         self.interactor = self.vtkWidget.GetRenderWindow().GetInteractor()
 
-        # self.coords_widget = CoordinateWidget(self.interactor)  # Todo is bugged
-
-        # self.grid = Grid()
-        # self.grid_actor = self.grid.get_actor()
-
-        self.machine = Machine(self.renderer, self.axis)
+        self.machine = Machine(self.axis)
         self.machine_actor = self.machine.get_actor()
+        self.machine_actor.SetCamera(self.renderer.GetActiveCamera())
 
-        # self.axes = Axes()
-        # self.axes_actor = self.axes.get_actor()
+        self.axes = Axes()
+        self.axes_actor = self.axes.get_actor()
+        self.axes_actor.SetCamera(self.renderer.GetActiveCamera())
 
         self.tool = Tool()
         self.tool_actor = self.tool.get_actor()
 
         self.path_actors = list()
 
-        # self.frustum = Frustum()
-        # self.frustum_actor = self.frustum.get_actor()
-
         self.renderer.SetBackground(0.36, 0.36, 0.36)
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.machine_actor)
-
-        # self.renderer.AddActor(self.grid_actor)
-        # self.renderer.AddActor(self.axes_actor)
-        # self.renderer.AddActor(self.frustum_actor)
-
+        self.renderer.AddActor(self.axes_actor)
         self.renderer.ResetCamera()
 
         self.setLayout(self.vertical_layout)
@@ -339,7 +329,7 @@ class Grid:
 
 
 class Machine:
-    def __init__(self, renderer, axis):
+    def __init__(self, axis):
         cube_axes_actor = vtk.vtkCubeAxesActor()
 
         x_max = axis[0]["max_position_limit"]
@@ -352,8 +342,6 @@ class Machine:
         z_min = axis[2]["min_position_limit"]
 
         cube_axes_actor.SetBounds(x_min, x_max, y_min, y_max, z_min, z_max)
-
-        cube_axes_actor.SetCamera(renderer.GetActiveCamera())
 
         cube_axes_actor.SetXLabelFormat("%6.3f")
         cube_axes_actor.SetYLabelFormat("%6.3f")
@@ -391,7 +379,7 @@ class Machine:
 class Axes:
     def __init__(self):
         transform = vtk.vtkTransform()
-        transform.Translate(1.0, 0.0, 0.0)  # Z up
+        transform.Translate(0.0, 0.0, 0.0)  # Z up
 
         # actor
         self.actor = vtk.vtkCubeAxesActor()
