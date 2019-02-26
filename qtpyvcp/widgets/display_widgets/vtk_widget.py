@@ -433,7 +433,7 @@ class Tool:
 
         # Create source
         source = vtk.vtkConeSource()
-        source.SetResolution(8)
+        source.SetResolution(128)
         source.SetHeight(self.height)
         source.SetCenter(-self.height/2, 0, 0)
         source.SetRadius(0.5)
