@@ -40,9 +40,18 @@ class VTKWidget(QWidget, VCPWidget):
         self.machine_actor = self.machine.get_actor()
         self.machine_actor.SetCamera(self.renderer.GetActiveCamera())
 
-        self.axes = Axes()
-        self.axes_actor = self.axes.get_actor()
-        self.axes_actor.SetCamera(self.renderer.GetActiveCamera())
+        #self.axes = Axes()
+        #self.axes_actor = self.axes.get_actor()
+        #self.axes_actor.SetCamera(self.renderer.GetActiveCamera())
+
+        transform = vtk.vtkTransform()
+        transform.Translate(0.0, 0.0, 0.0)
+
+        self.axes_actor = vtk.vtkAxesActor()
+        self.axes_actor.SetUserTransform(transform)
+        #self.axes_actor.SetAxisLabels(False)
+        self.axes_actor.AxisLabelsOff()
+        self.axes_actor.SetShaftType(vtk.vtkAxesActor.CYLINDER_SHAFT)
 
         self.tool = Tool()
         self.tool_actor = self.tool.get_actor()
@@ -53,6 +62,7 @@ class VTKWidget(QWidget, VCPWidget):
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.machine_actor)
+        #self.renderer.AddActor(self.axes_actor)
         self.renderer.AddActor(self.axes_actor)
         self.renderer.ResetCamera()
 
