@@ -40,9 +40,18 @@ class VTKWidget(QWidget, VCPWidget):
         self.machine_actor = self.machine.get_actor()
         self.machine_actor.SetCamera(self.renderer.GetActiveCamera())
 
-        self.axes = Axes()
-        self.axes_actor = self.axes.get_actor()
-        self.axes_actor.SetCamera(self.renderer.GetActiveCamera())
+        #self.axes = Axes()
+        #self.axes_actor = self.axes.get_actor()
+        #self.axes_actor.SetCamera(self.renderer.GetActiveCamera())
+
+        transform = vtk.vtkTransform()
+        transform.Translate(0.0, 0.0, 0.0)
+
+        self.axes_actor = vtk.vtkAxesActor()
+        self.axes_actor.SetUserTransform(transform)
+        #self.axes_actor.SetAxisLabels(False)
+        self.axes_actor.AxisLabelsOff()
+        self.axes_actor.SetShaftType(vtk.vtkAxesActor.CYLINDER_SHAFT)
 
         self.tool = Tool()
         self.tool_actor = self.tool.get_actor()
@@ -53,6 +62,7 @@ class VTKWidget(QWidget, VCPWidget):
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.machine_actor)
+        #self.renderer.AddActor(self.axes_actor)
         self.renderer.AddActor(self.axes_actor)
         self.renderer.ResetCamera()
 
@@ -243,13 +253,18 @@ class PathBoundaries:
         cube_axes_actor.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
         cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
+        cube_axes_actor.XAxisLabelVisibilityOff()
+        cube_axes_actor.YAxisLabelVisibilityOff()
+        cube_axes_actor.ZAxisLabelVisibilityOff()
+
+
         # cube_axes_actor.XAxisMinorTickVisibilityOff()
         # cube_axes_actor.YAxisMinorTickVisibilityOff()
         # cube_axes_actor.ZAxisMinorTickVisibilityOff()
 
-        cube_axes_actor.XAxisTickVisibilityOn()
-        cube_axes_actor.YAxisTickVisibilityOn()
-        cube_axes_actor.ZAxisTickVisibilityOn()
+        cube_axes_actor.XAxisTickVisibilityOff()
+        cube_axes_actor.YAxisTickVisibilityOff()
+        cube_axes_actor.ZAxisTickVisibilityOff()
 
         self.actor = cube_axes_actor
 
@@ -362,9 +377,14 @@ class Machine:
         # cube_axes_actor.YAxisMinorTickVisibilityOff()
         # cube_axes_actor.ZAxisMinorTickVisibilityOff()
 
-        cube_axes_actor.XAxisTickVisibilityOn()
-        cube_axes_actor.YAxisTickVisibilityOn()
-        cube_axes_actor.ZAxisTickVisibilityOn()
+        cube_axes_actor.XAxisTickVisibilityOff()
+        cube_axes_actor.YAxisTickVisibilityOff()
+        cube_axes_actor.ZAxisTickVisibilityOff()
+
+        cube_axes_actor.XAxisLabelVisibilityOff()
+        cube_axes_actor.YAxisLabelVisibilityOff()
+        cube_axes_actor.ZAxisLabelVisibilityOff()
+
 
         # cube_axes_actor.SetXUnits("mm")  # Todo machine units here
         # cube_axes_actor.SetYUnits("mm")
