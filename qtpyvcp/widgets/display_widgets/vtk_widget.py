@@ -243,13 +243,18 @@ class PathBoundaries:
         cube_axes_actor.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
         cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
+        cube_axes_actor.XAxisLabelVisibilityOff()
+        cube_axes_actor.YAxisLabelVisibilityOff()
+        cube_axes_actor.ZAxisLabelVisibilityOff()
+
+
         # cube_axes_actor.XAxisMinorTickVisibilityOff()
         # cube_axes_actor.YAxisMinorTickVisibilityOff()
         # cube_axes_actor.ZAxisMinorTickVisibilityOff()
 
-        cube_axes_actor.XAxisTickVisibilityOn()
-        cube_axes_actor.YAxisTickVisibilityOn()
-        cube_axes_actor.ZAxisTickVisibilityOn()
+        cube_axes_actor.XAxisTickVisibilityOff()
+        cube_axes_actor.YAxisTickVisibilityOff()
+        cube_axes_actor.ZAxisTickVisibilityOff()
 
         self.actor = cube_axes_actor
 
@@ -362,9 +367,14 @@ class Machine:
         # cube_axes_actor.YAxisMinorTickVisibilityOff()
         # cube_axes_actor.ZAxisMinorTickVisibilityOff()
 
-        cube_axes_actor.XAxisTickVisibilityOn()
-        cube_axes_actor.YAxisTickVisibilityOn()
-        cube_axes_actor.ZAxisTickVisibilityOn()
+        cube_axes_actor.XAxisTickVisibilityOff()
+        cube_axes_actor.YAxisTickVisibilityOff()
+        cube_axes_actor.ZAxisTickVisibilityOff()
+
+        cube_axes_actor.XAxisLabelVisibilityOff()
+        cube_axes_actor.YAxisLabelVisibilityOff()
+        cube_axes_actor.ZAxisLabelVisibilityOff()
+
 
         # cube_axes_actor.SetXUnits("mm")  # Todo machine units here
         # cube_axes_actor.SetYUnits("mm")
