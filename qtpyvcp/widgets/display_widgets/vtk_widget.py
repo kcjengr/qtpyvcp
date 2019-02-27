@@ -24,7 +24,6 @@ class VTKWidget(QWidget, VCPWidget):
         self.status = STATUS
 
         self.axis = self.status.stat.axis
-        print('stat axis {}'.format(self.status.stat.axis))
 
         self.gr = VTKCanon()
 
@@ -394,9 +393,7 @@ class Machine:
         cube_axes_actor = vtk.vtkCubeAxesActor()
 
         x_max = axis[0]["max_position_limit"]
-        print('x max {}'.format(x_max))
         x_min = axis[0]["min_position_limit"]
-        print('x min {}'.format(x_min))
         y_max = axis[1]["max_position_limit"]
         y_min = axis[1]["min_position_limit"]
 
