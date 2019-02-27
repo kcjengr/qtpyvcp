@@ -2,7 +2,9 @@ from collections import defaultdict
 
 import vtk
 
+from qtpy.QtCore import Property, Signal, Slot
 from qtpy.QtWidgets import QWidget, QVBoxLayout
+
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 from qtpyvcp.plugins import getPlugin
@@ -22,6 +24,7 @@ class VTKWidget(QWidget, VCPWidget):
         self.status = STATUS
 
         self.axis = self.status.stat.axis
+        print('stat axis {}'.format(self.status.stat.axis))
 
         self.gr = VTKCanon()
 
@@ -70,6 +73,7 @@ class VTKWidget(QWidget, VCPWidget):
         self.line = None
         self._last_filename = str()
 
+    @Slot()
     def reload_program(self, *args, **kwargs):
         print("RELOAD")
         self.load_program(self._last_filename)
@@ -100,6 +104,58 @@ class VTKWidget(QWidget, VCPWidget):
 
     def update_render(self):
         self.vtkWidget.GetRenderWindow().Render()
+
+    @Slot()
+    def setViewP(self):
+        print('p')
+
+    @Slot()
+    def setViewX(self):
+        print('x')
+
+    @Slot()
+    def setViewY(self):
+        print('y')
+
+    @Slot()
+    def setViewZ(self):
+        print('z')
+
+    @Slot()
+    def setViewZ2(self):
+        print('z2')
+
+    @Slot()
+    def clearLivePlot(self):
+        print('clear live plot')
+
+    @Slot()
+    def zoomIn(self):
+        print('zoom in')
+
+    @Slot()
+    def zoomOut(self):
+        print('zoom out')
+
+    @Slot(bool)
+    def alphaBlend(self, alpha):
+        print('alpha blend')
+
+    @Slot(bool)
+    def showGrid(self, grid):
+        print('show grid')
+
+    @Slot(bool)
+    def hideProgramBounds(self, bounds):
+        print('show program bounds {}'.format(bounds))
+
+    @Slot(bool)
+    def hideMachineBounds(self, bounds):
+        print('show machine bounds {}'.format(bounds))
+
+    # @Slot(str) Fixme check for the correct data type
+    def setdro(self, state):
+        print('set dro')
 
 
 class Path:
@@ -338,8 +394,9 @@ class Machine:
         cube_axes_actor = vtk.vtkCubeAxesActor()
 
         x_max = axis[0]["max_position_limit"]
+        print('x max {}'.format(x_max))
         x_min = axis[0]["min_position_limit"]
-
+        print('x min {}'.format(x_min))
         y_max = axis[1]["max_position_limit"]
         y_min = axis[1]["min_position_limit"]
 
