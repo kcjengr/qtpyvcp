@@ -11,9 +11,12 @@ from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets import VCPWidget
+from qtpyvcp.utilities import logger
 
 from vtk_cannon import VTKCanon
 
+
+LOG = logger.getLogger(__name__)
 STATUS = getPlugin('status')
 
 
@@ -22,6 +25,7 @@ class VTKWidget(QWidget, VCPWidget):
     def __init__(self, parent=None):
         super(VTKWidget, self).__init__(parent)
 
+        self.current_position = (0.0, 0.0, 0.0)
         self.parent = parent
         self.status = STATUS
 
@@ -47,7 +51,7 @@ class VTKWidget(QWidget, VCPWidget):
         self.axes = Axes()
         self.axes_actor = self.axes.get_actor()
 
-        self.path_cache = PathCache()
+        self.path_cache = PathCache(self.current_position)
         self.path_cache_actor = self.path_cache.get_actor()
 
         self.tool = Tool()
@@ -102,6 +106,7 @@ class VTKWidget(QWidget, VCPWidget):
         self.update_render()
 
     def move_tool(self, position):
+        self.current_position = position[:3]
         self.tool_actor.SetPosition(position[:3])
         self.path_cache.add_line_point(position[:3])
         self.update_render()
@@ -199,7 +204,17 @@ class VTKWidget(QWidget, VCPWidget):
 
     @Slot()
     def clearLivePlot(self):
-        print('clear live plot')
+
+        LOG.debug('clear live plot')
+
+        self.renderer.RemoveActor(self.path_cache_actor)
+
+        self.path_cache = PathCache(self.current_position)
+        self.path_cache_actor = self.path_cache.get_actor()
+
+        self.renderer.AddActor(self.path_cache_actor)
+
+        self.update_render()
 
     @Slot()
     def zoomIn(self):
@@ -387,12 +402,13 @@ class PathBoundaries:
 
 
 class PathCache:
-    def __init__(self):
+    def __init__(self, current_position):
+        self.current_position = current_position
         self.index = 0
         self.num_points = 2
 
         self.points = vtk.vtkPoints()
-        self.points.InsertPoint(0, 0.0, 0.0, 0.0)
+        self.points.InsertNextPoint(current_position)
 
         self.lines = vtk.vtkCellArray()
         self.lines.InsertNextCell(1)  # number of points
