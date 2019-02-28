@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-import vtk
+import vtk, math
 
 from qtpy.QtCore import Property, Signal, Slot
 from vtk.util.colors import tomato, yellow, mint
@@ -116,18 +116,86 @@ class VTKWidget(QWidget, VCPWidget):
     @Slot()
     def setViewX(self):
         print('x')
+        self.renderer.GetActiveCamera().SetPosition(1, 0, 0)
+        self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
+        self.renderer.GetActiveCamera().SetFocalPoint(0,0,0)
+        self.renderer.ResetCamera()
+        self.interactor.ReInitialize()
 
     @Slot()
     def setViewY(self):
         print('y')
+        self.renderer.GetActiveCamera().SetPosition(0, -1, 0)
+        self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
+        self.renderer.GetActiveCamera().SetFocalPoint(0,0,0)
+        self.renderer.ResetCamera()
+        self.interactor.ReInitialize()
 
     @Slot()
     def setViewZ(self):
         print('z')
+        self.renderer.GetActiveCamera().SetPosition(0, 0, 1)
+        self.renderer.GetActiveCamera().SetViewUp(0, 1, 0)
+        self.renderer.GetActiveCamera().SetFocalPoint(0,0,0)
+        self.renderer.ResetCamera()
+        self.interactor.ReInitialize()
+
+    @Slot()
+    def printView(self):
+        print('print view stats')
+        fp = self.renderer.GetActiveCamera().GetFocalPoint()
+        print('focal point {}'.format(fp))
+        p = self.renderer.GetActiveCamera().GetPosition()
+        print('position {}'.format(p))
+        #dist = math.sqrt( (p[0]-fp[0])**2 + (p[1]-fp[1])**2 + (p[2]-fp[2])**2 )
+        #print(dist)
+        #self.renderer.GetActiveCamera().SetPosition(10, -40, -1)
+        #self.renderer.GetActiveCamera().SetViewUp(0.0, 1.0, 0.0)
+        #self.renderer.ResetCamera()
+        vu = self.renderer.GetActiveCamera().GetViewUp()
+        print('view up {}'.format(vu))
+        d = self.renderer.GetActiveCamera().GetDistance()
+        print('distance {}'.format(d))
+        #self.interactor.ReInitialize()
+
+        """
+        x
+        print view stats
+        focal point (5.5, 3.5, -1.5)
+        position (37.53613541114848, 3.5, -1.5)
+        view up (0.0, 0.0, 1.0)
+        distance 32.0361354111
+        y
+        print view stats
+        focal point (5.5, 3.5, -1.5)
+        position (5.5, -28.53613541114848, -1.5)
+        view up (0.0, 0.0, 1.0)
+        distance 32.0361354111
+        z
+        print view stats
+        focal point (5.5, 3.5, -1.5)
+        position (5.5, 3.5, 30.53613541114848)
+        view up (0.0, 1.0, 0.0)
+        distance 32.0361354111
+
+        """
 
     @Slot()
     def setViewZ2(self):
         print('z2')
+        self.renderer.GetActiveCamera().SetPosition(0, 0, 1)
+        self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
+        self.renderer.GetActiveCamera().SetFocalPoint(0,0,0)
+        self.renderer.ResetCamera()
+        self.interactor.ReInitialize()
+
+    @Slot()
+    def setViewMachine(self):
+        print('Machine')
+
+    @Slot()
+    def setViewPath(self):
+        print('Path')
 
     @Slot()
     def clearLivePlot(self):
@@ -136,10 +204,14 @@ class VTKWidget(QWidget, VCPWidget):
     @Slot()
     def zoomIn(self):
         print('zoom in')
+        self.renderer.GetActiveCamera().Zoom(1.1)
+        self.interactor.ReInitialize()
 
     @Slot()
     def zoomOut(self):
         print('zoom out')
+        self.renderer.GetActiveCamera().Zoom(0.9)
+        self.interactor.ReInitialize()
 
     @Slot(bool)
     def alphaBlend(self, alpha):
