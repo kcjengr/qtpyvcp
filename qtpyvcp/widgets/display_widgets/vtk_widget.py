@@ -39,7 +39,11 @@ class VTKWidget(QWidget, VCPWidget):
 
         self.nav_style = vtk.vtkInteractorStyleTrackballCamera()
 
+        self.camera = vtk.vtkCamera()
+        self.camera.ParallelProjectionOn()
+
         self.renderer = vtk.vtkRenderer()
+        self.renderer.SetActiveCamera(self.camera)
         self.vtkWidget.GetRenderWindow().AddRenderer(self.renderer)
         self.vtkWidget.SetInteractorStyle(self.nav_style)
         self.interactor = self.vtkWidget.GetRenderWindow().GetInteractor()
@@ -190,7 +194,7 @@ class VTKWidget(QWidget, VCPWidget):
         print('z2')
         self.renderer.GetActiveCamera().SetPosition(0, 0, 1)
         self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
-        self.renderer.GetActiveCamera().SetFocalPoint(0,0,0)
+        self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
