@@ -233,6 +233,26 @@
                 </property>
                </widget>
               </item>
+              <item row="3" column="6">
+               <widget class="QPushButton" name="viewMachine">
+                <property name="toolTip">
+                 <string>Zoom to Machine Bounds</string>
+                </property>
+                <property name="text">
+                 <string>Zoom M</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="7">
+               <widget class="QPushButton" name="viewPath">
+                <property name="toolTip">
+                 <string>Zoom to Path Bounds</string>
+                </property>
+                <property name="text">
+                 <string>Zoom P</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </widget>
            </item>
@@ -680,6 +700,38 @@
    <hints>
     <hint type="sourcelabel">
      <x>110</x>
+     <y>439</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewMachine</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewMachine()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>560</x>
+     <y>439</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewPath</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewPath()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>642</x>
      <y>439</y>
     </hint>
     <hint type="destinationlabel">
