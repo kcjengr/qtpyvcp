@@ -80,11 +80,9 @@ class VTKWidget(QWidget, VCPWidget):
 
     @Slot()
     def reload_program(self, *args, **kwargs):
-        print("RELOAD")
         self.load_program(self._last_filename)
 
     def load_program(self, fname=None):
-        print("LOAD")
         for path_actor in self.path_actors:
             self.renderer.RemoveActor(path_actor)
 
@@ -318,23 +316,21 @@ class PathBoundaries:
 
 class PathCache:
     def __init__(self):
+        self.index = 0
         self.num_points = 2
 
         self.points = vtk.vtkPoints()
+        self.points.InsertPoint(0, 0.0, 0.0, 0.0)
+
         self.lines = vtk.vtkCellArray()
+        self.lines.InsertNextCell(1)  # number of points
+        self.lines.InsertCellPoint(0)
 
         self.lines_poligon_data = vtk.vtkPolyData()
         self.polygon_mapper = vtk.vtkPolyDataMapper()
         self.actor = vtk.vtkActor()
         self.actor.GetProperty().SetColor(yellow)
-
-    def add_line_point(self, point):
-        self.points.InsertNextPoint(point)
-
-        for index in range(0, self.num_points - 1):
-
-            line = vtk.vtkLine()
-            self.lines.InsertNextCell(line)
+        self.actor.SetMapper(self.polygon_mapper)
 
         self.lines_poligon_data.SetPoints(self.points)
         self.lines_poligon_data.SetLines(self.lines)
@@ -342,7 +338,16 @@ class PathCache:
         self.polygon_mapper.SetInputData(self.lines_poligon_data)
         self.polygon_mapper.Update()
 
-        self.actor.SetMapper(self.polygon_mapper)
+    def add_line_point(self, point):
+        self.index += 1
+
+        self.points.InsertNextPoint(point)
+        self.points.Modified()
+
+        self.lines.InsertNextCell(self.num_points)
+        self.lines.InsertCellPoint(self.index - 1)
+        self.lines.InsertCellPoint(self.index)
+        self.lines.Modified()
 
     def get_actor(self):
         return self.actor
