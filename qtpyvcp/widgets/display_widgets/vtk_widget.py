@@ -3,6 +3,8 @@ from collections import defaultdict
 import vtk
 
 from qtpy.QtCore import Property, Signal, Slot
+from vtk.util.colors import tomato, yellow, mint
+
 from qtpy.QtWidgets import QWidget, QVBoxLayout
 
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
@@ -45,6 +47,9 @@ class VTKWidget(QWidget, VCPWidget):
         self.axes = Axes()
         self.axes_actor = self.axes.get_actor()
 
+        self.path_cache = PathCache()
+        self.path_cache_actor = self.path_cache.get_actor()
+
         self.tool = Tool()
         self.tool_actor = self.tool.get_actor()
 
@@ -55,6 +60,7 @@ class VTKWidget(QWidget, VCPWidget):
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.machine_actor)
         self.renderer.AddActor(self.axes_actor)
+        self.renderer.AddActor(self.path_cache_actor)
 
         self.renderer.ResetCamera()
 
@@ -99,6 +105,7 @@ class VTKWidget(QWidget, VCPWidget):
 
     def move_tool(self, position):
         self.tool_actor.SetPosition(position[:3])
+        self.path_cache.add_line_point(position[:3])
         self.update_render()
 
     def update_render(self):
@@ -167,7 +174,7 @@ class Path:
 
         total_lines = feed_lines + traverse_lines + arcfeed_lines
 
-        line = PathLine(self.gr, total_lines)
+        line = PathLine(total_lines)
 
         path = dict()
 
@@ -188,7 +195,6 @@ class Path:
         arc_segments = defaultdict(list)
 
         for index, arc in enumerate(self.gr.canon.arcfeed):
-
             seq = arc[0]
             line_type = "arc_feed"
             cords = arc[1][:3]
@@ -213,9 +219,7 @@ class Path:
 
 
 class PathLine:
-    def __init__(self, gr, points):
-
-        self.gr = gr
+    def __init__(self, points):
 
         self.num_points = points
 
@@ -223,8 +227,6 @@ class PathLine:
         self.lines = vtk.vtkCellArray()
 
         self.line_type = list()
-
-        self.arc_data = dict()
 
         self.lines_poligon_data = vtk.vtkPolyData()
         self.polygon_mapper = vtk.vtkPolyDataMapper()
@@ -237,25 +239,24 @@ class PathLine:
         self.points.InsertNextPoint(data)
 
     def draw_path_line(self):
-        # https://github.com/invesalius/invesalius3/blob/3b3e3f88c2f48514e6d57e8e20f2543deac7c228/invesalius/data/measures.py
         namedColors = vtk.vtkNamedColors()
 
         # Create a vtkUnsignedCharArray container and store the colors in it
         colors = vtk.vtkUnsignedCharArray()
         colors.SetNumberOfComponents(3)
 
-        for index in range(0, self.num_points-1):
+        for index in range(0, self.num_points - 1):
 
             line_type = self.line_type[index]
 
             if line_type == "traverse" or line_type == "arc_feed":
-                colors.InsertNextTypedTuple(namedColors.GetColor3ub("Mint"))
+                colors.InsertNextTypedTuple(namedColors.GetColor3ub("mint"))
             elif line_type == "straight_feed":
-                colors.InsertNextTypedTuple(namedColors.GetColor3ub("Tomato"))
+                colors.InsertNextTypedTuple(namedColors.GetColor3ub("tomato"))
 
             line = vtk.vtkLine()
             line.GetPointIds().SetId(0, index)  # the second 0 is the index of the Origin in linesPolyData's points
-            line.GetPointIds().SetId(1, index+1)  # the second 1 is the index of P0 in linesPolyData's points
+            line.GetPointIds().SetId(1, index + 1)  # the second 1 is the index of P0 in linesPolyData's points
             self.lines.InsertNextCell(line)
 
         self.lines_poligon_data.SetPoints(self.points)
@@ -274,7 +275,6 @@ class PathLine:
 
 class PathBoundaries:
     def __init__(self, renderer, path_actor):
-
         self.path_actor = path_actor
 
         cube_axes_actor = vtk.vtkCubeAxesActor()
@@ -302,7 +302,6 @@ class PathBoundaries:
         cube_axes_actor.YAxisLabelVisibilityOff()
         cube_axes_actor.ZAxisLabelVisibilityOff()
 
-
         # cube_axes_actor.XAxisMinorTickVisibilityOff()
         # cube_axes_actor.YAxisMinorTickVisibilityOff()
         # cube_axes_actor.ZAxisMinorTickVisibilityOff()
@@ -312,6 +311,38 @@ class PathBoundaries:
         cube_axes_actor.ZAxisTickVisibilityOff()
 
         self.actor = cube_axes_actor
+
+    def get_actor(self):
+        return self.actor
+
+
+class PathCache:
+    def __init__(self):
+        self.num_points = 2
+
+        self.points = vtk.vtkPoints()
+        self.lines = vtk.vtkCellArray()
+
+        self.lines_poligon_data = vtk.vtkPolyData()
+        self.polygon_mapper = vtk.vtkPolyDataMapper()
+        self.actor = vtk.vtkActor()
+        self.actor.GetProperty().SetColor(yellow)
+
+    def add_line_point(self, point):
+        self.points.InsertNextPoint(point)
+
+        for index in range(0, self.num_points - 1):
+
+            line = vtk.vtkLine()
+            self.lines.InsertNextCell(line)
+
+        self.lines_poligon_data.SetPoints(self.points)
+        self.lines_poligon_data.SetLines(self.lines)
+
+        self.polygon_mapper.SetInputData(self.lines_poligon_data)
+        self.polygon_mapper.Update()
+
+        self.actor.SetMapper(self.polygon_mapper)
 
     def get_actor(self):
         return self.actor
@@ -429,7 +460,6 @@ class Machine:
         cube_axes_actor.YAxisLabelVisibilityOff()
         cube_axes_actor.ZAxisLabelVisibilityOff()
 
-
         # cube_axes_actor.SetXUnits("mm")  # Todo machine units here
         # cube_axes_actor.SetYUnits("mm")
         # cube_axes_actor.SetZUnits("mm")
@@ -455,53 +485,15 @@ class Axes:
         return self.actor
 
 
-class Frustum:
-    def __init__(self):
-        colors = vtk.vtkNamedColors()
-
-        camera = vtk.vtkCamera()
-        camera.SetClippingRange(0.1, 0.4)
-        planesArray = [0] * 24
-
-        camera.GetFrustumPlanes(1.0, planesArray)
-
-        planes = vtk.vtkPlanes()
-        planes.SetFrustumPlanes(planesArray)
-
-        frustumSource = vtk.vtkFrustumSource()
-        frustumSource.ShowLinesOff()
-        frustumSource.SetPlanes(planes)
-
-        shrink = vtk.vtkShrinkPolyData()
-        shrink.SetInputConnection(frustumSource.GetOutputPort())
-        shrink.SetShrinkFactor(.9)
-
-        mapper = vtk.vtkPolyDataMapper()
-        mapper.SetInputConnection(shrink.GetOutputPort())
-
-        back = vtk.vtkProperty()
-        back.SetColor(colors.GetColor3d("Tomato"))
-
-        self.actor = vtk.vtkActor()
-        self.actor.SetMapper(mapper)
-        self.actor.GetProperty().EdgeVisibilityOn()
-        self.actor.GetProperty().SetColor(colors.GetColor3d("Banana"))
-        self.actor.SetBackfaceProperty(back)
-
-    def get_actor(self):
-        return self.actor
-
-
 class Tool:
     def __init__(self):
-
         self.height = 1.0
 
         # Create source
         source = vtk.vtkConeSource()
         source.SetResolution(128)
         source.SetHeight(self.height)
-        source.SetCenter(-self.height/2, 0, 0)
+        source.SetCenter(-self.height / 2, 0, 0)
         source.SetRadius(0.5)
 
         transform = vtk.vtkTransform()
