@@ -141,7 +141,7 @@ class VTKWidget(QWidget, VCPWidget):
         print('x')
         self.renderer.GetActiveCamera().SetPosition(1, 0, 0)
         self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
-        self.renderer.GetActiveCamera().SetFocalPoint(0,0,0)
+        self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
@@ -159,7 +159,7 @@ class VTKWidget(QWidget, VCPWidget):
         print('z')
         self.renderer.GetActiveCamera().SetPosition(0, 0, 1)
         self.renderer.GetActiveCamera().SetViewUp(0, 1, 0)
-        self.renderer.GetActiveCamera().SetFocalPoint(0,0,0)
+        self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
@@ -257,10 +257,65 @@ class VTKWidget(QWidget, VCPWidget):
     @Slot(bool)
     def hideProgramBounds(self, bounds):
         print('show program bounds {}'.format(bounds))
+        if bounds:
+            # self.path_actors[1].XAxisMinorTickVisibilityOn()
+            # self.path_actors[1].YAxisMinorTickVisibilityOn()
+            # self.path_actors[1].ZAxisMinorTickVisibilityOn()
+
+            self.path_actors[1].XAxisTickVisibilityOn()
+            self.path_actors[1].YAxisTickVisibilityOn()
+            self.path_actors[1].ZAxisTickVisibilityOn()
+
+            self.path_actors[1].XAxisLabelVisibilityOn()
+            self.path_actors[1].YAxisLabelVisibilityOn()
+            self.path_actors[1].ZAxisLabelVisibilityOn()
+        else:
+
+            # self.path_actors[1].XAxisMinorTickVisibilityOff()
+            # self.path_actors[1].YAxisMinorTickVisibilityOff()
+            # self.path_actors[1].ZAxisMinorTickVisibilityOff()
+
+            self.path_actors[1].XAxisMinorTickVisibilityOff()
+            self.path_actors[1].YAxisMinorTickVisibilityOff()
+            self.path_actors[1].ZAxisMinorTickVisibilityOff()
+
+            self.path_actors[1].XAxisTickVisibilityOff()
+            self.path_actors[1].YAxisTickVisibilityOff()
+            self.path_actors[1].ZAxisTickVisibilityOff()
+
+        self.update_render()
 
     @Slot(bool)
     def hideMachineBounds(self, bounds):
         print('show machine bounds {}'.format(bounds))
+        if bounds:
+
+            # self.machine_actor.XAxisMinorTickVisibilityOn()
+            # self.machine_actor.YAxisMinorTickVisibilityOn()
+            # self.machine_actor.ZAxisMinorTickVisibilityOn()
+
+            self.machine_actor.XAxisTickVisibilityOn()
+            self.machine_actor.YAxisTickVisibilityOn()
+            self.machine_actor.ZAxisTickVisibilityOn()
+
+            self.machine_actor.XAxisLabelVisibilityOn()
+            self.machine_actor.YAxisLabelVisibilityOn()
+            self.machine_actor.ZAxisLabelVisibilityOn()
+        else:
+
+            # self.machine_actor.XAxisMinorTickVisibilityOff()
+            # self.machine_actor.YAxisMinorTickVisibilityOff()
+            # self.machine_actor.ZAxisMinorTickVisibilityOff()
+
+            self.machine_actor.XAxisTickVisibilityOff()
+            self.machine_actor.YAxisTickVisibilityOff()
+            self.machine_actor.ZAxisTickVisibilityOff()
+
+            self.machine_actor.XAxisLabelVisibilityOff()
+            self.machine_actor.YAxisLabelVisibilityOff()
+            self.machine_actor.ZAxisLabelVisibilityOff()
+
+        self.update_render()
 
     # @Slot(str) Fixme check for the correct data type
     def setdro(self, state):
@@ -532,6 +587,8 @@ class Grid:
 
 class Machine:
     def __init__(self, axis):
+        self.status = STATUS
+
         cube_axes_actor = vtk.vtkCubeAxesActor()
 
         x_max = axis[0]["max_position_limit"]
@@ -571,9 +628,11 @@ class Machine:
         cube_axes_actor.YAxisLabelVisibilityOff()
         cube_axes_actor.ZAxisLabelVisibilityOff()
 
-        # cube_axes_actor.SetXUnits("mm")  # Todo machine units here
-        # cube_axes_actor.SetYUnits("mm")
-        # cube_axes_actor.SetZUnits("mm")
+        units = str(self.status.program_units)
+
+        cube_axes_actor.SetXUnits(units)
+        cube_axes_actor.SetYUnits(units)
+        cube_axes_actor.SetZUnits(units)
 
         self.actor = cube_axes_actor
 
