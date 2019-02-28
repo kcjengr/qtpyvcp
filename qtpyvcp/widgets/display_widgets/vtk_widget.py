@@ -119,6 +119,20 @@ class VTKWidget(QWidget, VCPWidget):
         self.vtkWidget.GetRenderWindow().Render()
 
     @Slot()
+    def setViewOrtho(self):
+        print('orthographic view')
+        self.renderer.GetActiveCamera().ParallelProjectionOn()
+        self.renderer.ResetCamera()
+        self.interactor.ReInitialize()
+
+    @Slot()
+    def setViewPersp(self):
+        print('perspective view')
+        self.renderer.GetActiveCamera().ParallelProjectionOff()
+        self.renderer.ResetCamera()
+        self.interactor.ReInitialize()
+
+    @Slot()
     def setViewP(self):
         print('p')
 

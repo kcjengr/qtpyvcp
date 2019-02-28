@@ -253,6 +253,20 @@
                 </property>
                </widget>
               </item>
+              <item row="4" column="6">
+               <widget class="QPushButton" name="viewOrtho">
+                <property name="text">
+                 <string>Ortho</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="7">
+               <widget class="QPushButton" name="viewPerspective">
+                <property name="text">
+                 <string>Persp</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </widget>
            </item>
@@ -733,6 +747,38 @@
     <hint type="sourcelabel">
      <x>642</x>
      <y>439</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewOrtho</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewOrtho()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>560</x>
+     <y>468</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewPerspective</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewPersp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>642</x>
+     <y>468</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
