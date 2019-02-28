@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>840</width>
+    <height>700</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,8 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>800</width>
-    <height>600</height>
+    <width>840</width>
+    <height>700</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -58,7 +58,7 @@
            <string>Plot</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_2">
-           <item row="0" column="0">
+           <item row="0" column="1">
             <widget class="QFrame" name="gridFrame">
              <property name="frameShape">
               <enum>QFrame::Box</enum>
@@ -76,102 +76,7 @@
               <property name="bottomMargin">
                <number>5</number>
               </property>
-              <item row="3" column="0" colspan="2">
-               <widget class="QPushButton" name="showViewStats">
-                <property name="text">
-                 <string>Show View Stats</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QPushButton" name="viewX">
-                <property name="text">
-                 <string>X View</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="6">
-               <widget class="QPushButton" name="viewZoomIn">
-                <property name="text">
-                 <string>Zoom In</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
-               <widget class="ActionButton" name="actionbutton_10">
-                <property name="text">
-                 <string>Jog X +</string>
-                </property>
-                <property name="actionName" stdset="0">
-                 <string>machine.jog.axis:x,pos</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QPushButton" name="viewP">
-                <property name="text">
-                 <string>Perspective</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="7">
-               <widget class="QPushButton" name="viewZoomOut">
-                <property name="text">
-                 <string>Zoom Out</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="8">
-               <widget class="MDIButton" name="mdibutton">
-                <property name="text">
-                 <string>Go Home</string>
-                </property>
-                <property name="MDICommand" stdset="0">
-                 <string>G0X0Y0Z0</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="2">
-               <widget class="QPushButton" name="viewY">
-                <property name="text">
-                 <string>Y View</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" colspan="10">
-               <widget class="VTKWidget" name="vtk"/>
-              </item>
-              <item row="4" column="1">
-               <widget class="ActionButton" name="actionbutton_11">
-                <property name="text">
-                 <string>Jog X -</string>
-                </property>
-                <property name="actionName" stdset="0">
-                 <string>machine.jog.axis:x,neg</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="2">
-               <widget class="ActionButton" name="actionbutton_12">
-                <property name="text">
-                 <string>Jog Y+</string>
-                </property>
-                <property name="actionName" stdset="0">
-                 <string>machine.jog.axis:y,pos</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="3">
-               <widget class="ActionButton" name="actionbutton_13">
-                <property name="text">
-                 <string>Jog Y-</string>
-                </property>
-                <property name="actionName" stdset="0">
-                 <string>machine.jog.axis:y,neg</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="4">
+              <item row="5" column="4">
                <widget class="ActionButton" name="actionbutton_14">
                 <property name="text">
                  <string>Jog Z+</string>
@@ -181,20 +86,13 @@
                 </property>
                </widget>
               </item>
-              <item row="4" column="5">
+              <item row="5" column="5">
                <widget class="ActionButton" name="actionbutton_15">
                 <property name="text">
                  <string>Jog Z-</string>
                 </property>
                 <property name="actionName" stdset="0">
                  <string>machine.jog.axis:z,neg</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="2" colspan="2">
-               <widget class="QCheckBox" name="viewHideProgramBounds">
-                <property name="text">
-                 <string>Hide Prog Bounds</string>
                 </property>
                </widget>
               </item>
@@ -226,24 +124,102 @@
                 </property>
                </widget>
               </item>
-              <item row="3" column="4" colspan="2">
-               <widget class="QCheckBox" name="viewHideMachineBounds">
+              <item row="0" column="0" colspan="10">
+               <widget class="VTKWidget" name="vtk"/>
+              </item>
+              <item row="5" column="1">
+               <widget class="ActionButton" name="actionbutton_11">
                 <property name="text">
-                 <string>Hide Mach Bounds</string>
+                 <string>Jog X -</string>
+                </property>
+                <property name="actionName" stdset="0">
+                 <string>machine.jog.axis:x,neg</string>
                 </property>
                </widget>
               </item>
-              <item row="3" column="6">
-               <widget class="QPushButton" name="viewMachine">
-                <property name="toolTip">
-                 <string>Zoom to Machine Bounds</string>
-                </property>
+              <item row="5" column="2">
+               <widget class="ActionButton" name="actionbutton_12">
                 <property name="text">
-                 <string>Zoom M</string>
+                 <string>Jog Y+</string>
+                </property>
+                <property name="actionName" stdset="0">
+                 <string>machine.jog.axis:y,pos</string>
                 </property>
                </widget>
               </item>
-              <item row="3" column="7">
+              <item row="5" column="3">
+               <widget class="ActionButton" name="actionbutton_13">
+                <property name="text">
+                 <string>Jog Y-</string>
+                </property>
+                <property name="actionName" stdset="0">
+                 <string>machine.jog.axis:y,neg</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QPushButton" name="viewX">
+                <property name="text">
+                 <string>X View</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="6">
+               <widget class="QPushButton" name="viewZoomIn">
+                <property name="text">
+                 <string>Zoom In</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0">
+               <widget class="ActionButton" name="actionbutton_10">
+                <property name="text">
+                 <string>Jog X +</string>
+                </property>
+                <property name="actionName" stdset="0">
+                 <string>machine.jog.axis:x,pos</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="viewP">
+                <property name="text">
+                 <string>P View</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="7">
+               <widget class="QPushButton" name="viewZoomOut">
+                <property name="text">
+                 <string>Zoom Out</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="8">
+               <widget class="MDIButton" name="mdibutton">
+                <property name="text">
+                 <string>Go Home</string>
+                </property>
+                <property name="MDICommand" stdset="0">
+                 <string>G0X0Y0Z0</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QPushButton" name="viewY">
+                <property name="text">
+                 <string>Y View</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="4" colspan="2">
+               <widget class="QCheckBox" name="hideMachineLabels">
+                <property name="text">
+                 <string>Hide Machine Labels</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="8">
                <widget class="QPushButton" name="viewPath">
                 <property name="toolTip">
                  <string>Zoom to Path Bounds</string>
@@ -253,17 +229,69 @@
                 </property>
                </widget>
               </item>
-              <item row="4" column="6">
+              <item row="3" column="7">
+               <widget class="QPushButton" name="viewMachine">
+                <property name="toolTip">
+                 <string>Zoom to Machine Bounds</string>
+                </property>
+                <property name="text">
+                 <string>Zoom M</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="8">
+               <widget class="QPushButton" name="viewPerspective">
+                <property name="text">
+                 <string>Perspective</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="7">
                <widget class="QPushButton" name="viewOrtho">
                 <property name="text">
                  <string>Ortho</string>
                 </property>
                </widget>
               </item>
-              <item row="4" column="7">
-               <widget class="QPushButton" name="viewPerspective">
+              <item row="3" column="2" colspan="2">
+               <widget class="QCheckBox" name="hideProgramTicks">
                 <property name="text">
-                 <string>Persp</string>
+                 <string>Hide Program Ticks</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="7">
+               <widget class="QPushButton" name="showViewStats">
+                <property name="text">
+                 <string>View Status</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0" colspan="2">
+               <widget class="QCheckBox" name="hideProgramBoundry">
+                <property name="text">
+                 <string>Hide Prog Boundry</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0" colspan="2">
+               <widget class="QCheckBox" name="hideMachineBoundry">
+                <property name="text">
+                 <string>Hide Mach Boundry</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="4" colspan="2">
+               <widget class="QCheckBox" name="hideProgramLabels">
+                <property name="text">
+                 <string>Hide Prog Labels</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="2" colspan="2">
+               <widget class="QCheckBox" name="hideMachineTicks">
+                <property name="text">
+                 <string>Hide Machine Ticks</string>
                 </property>
                </widget>
               </item>
@@ -659,23 +687,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>viewHideProgramBounds</sender>
-   <signal>pressed()</signal>
-   <receiver>vtk</receiver>
-   <slot>reload_program()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>733</x>
-     <y>419</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>213</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>viewHideMachineBounds</sender>
+   <sender>hideMachineBoundry</sender>
    <signal>clicked(bool)</signal>
    <receiver>vtk</receiver>
    <slot>hideMachineBounds(bool)</slot>
@@ -691,7 +703,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>viewHideProgramBounds</sender>
+   <sender>hideProgramBoundry</sender>
    <signal>clicked(bool)</signal>
    <receiver>vtk</receiver>
    <slot>hideProgramBounds(bool)</slot>
@@ -783,6 +795,70 @@
     <hint type="destinationlabel">
      <x>399</x>
      <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hideMachineTicks</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>hideMachineTicks(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>286</x>
+     <y>539</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>419</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hideMachineLabels</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>hideMachineLabels(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>458</x>
+     <y>539</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>419</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hideProgramTicks</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>hideProgramTicks(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>286</x>
+     <y>510</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>419</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hideProgramLabels</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>hideProgramLabels(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>458</x>
+     <y>510</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>419</x>
+     <y>247</y>
     </hint>
    </hints>
   </connection>
