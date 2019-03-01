@@ -37,8 +37,8 @@ Options available in the INI file are:
     COMMAND_LINE_ARGS = <args>
 
     # VTK_Widget Options
-    PROGRAM_BOUNDRY        # Boolean True to hide the program boundry
-    MACHINE_BOUNDRY        # Boolean True to hide the machine boundry
+    PROGRAM_BOUNDRY        # Boolean False to hide the program boundry
+    MACHINE_BOUNDRY        # Boolean False to hide the machine boundry
 
 
 Boolean values can be one of ``true``, ``on``, ``yes`` or ``1`` for **True**,
