@@ -477,7 +477,7 @@ class PathBoundaries:
         cube_axes_actor.ZAxisTickVisibilityOff()
 
         programBoundry = INIFILE.find("VTK", "PROGRAM_BOUNDRY") or None
-        if programBoundry:
+        if programBoundry.lower() in ['false', 'off', 'no', '0']:
             cube_axes_actor.XAxisVisibilityOff()
             cube_axes_actor.YAxisVisibilityOff()
             cube_axes_actor.ZAxisVisibilityOff()
@@ -639,7 +639,7 @@ class Machine:
         cube_axes_actor.ZAxisTickVisibilityOff()
 
         machineBoundry = INIFILE.find("VTK", "MACHINE_BOUNDRY") or None
-        if machineBoundry:
+        if machineBoundry.lower() in ['false', 'off', 'no', '0']:
             cube_axes_actor.XAxisVisibilityOff()
             cube_axes_actor.YAxisVisibilityOff()
             cube_axes_actor.ZAxisVisibilityOff()
