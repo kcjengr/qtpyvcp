@@ -3,6 +3,7 @@ from collections import defaultdict
 import vtk, math
 
 from qtpy.QtCore import Property, Signal, Slot
+from qtpy.QtGui import QColor
 from vtk.util.colors import tomato, yellow, mint
 
 from qtpy.QtWidgets import QWidget, QVBoxLayout
@@ -24,6 +25,9 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
     def __init__(self, parent=None):
         super(VTKWidget, self).__init__(parent)
+
+        # properties
+        self._background_color = QColor(0, 0, 0)
 
         self.current_position = (0.0, 0.0, 0.0)
         self.parent = parent
@@ -58,8 +62,6 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
         self.tool_actor = self.tool.get_actor()
 
         self.path_actors = list()
-
-        self.renderer.SetBackground(0.36, 0.36, 0.36)
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.machine_actor)
@@ -349,6 +351,16 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
     # @Slot(str) Fixme check for the correct data type
     def setdro(self, state):
         print('set dro')
+
+    @Property(QColor)
+    def backgroundColor(self):
+        return self._background_color
+
+    @backgroundColor.setter
+    def backgroundColor(self, color):
+        self._background_color = color
+        self.renderer.SetBackground(color.getRgbF()[:3])
+        self.update_render()
 
 
 class Path:
