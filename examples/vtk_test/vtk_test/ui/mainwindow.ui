@@ -295,6 +295,19 @@
                 </property>
                </widget>
               </item>
+              <item row="3" column="6">
+               <widget class="DialogButton" name="dialogbutton">
+                <property name="text">
+                 <string>Offsets</string>
+                </property>
+                <property name="rules" stdset="0">
+                 <string>[]</string>
+                </property>
+                <property name="dialogName" stdset="0">
+                 <string>offsets_dialog</string>
+                </property>
+               </widget>
+              </item>
              </layout>
             </widget>
            </item>
@@ -507,6 +520,11 @@
    <class>VTKWidget</class>
    <extends>QWidget</extends>
    <header>qtpyvcp.widgets.display_widgets.vtk_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>DialogButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.dialog_button</header>
   </customwidget>
   <customwidget>
    <class>FileSystemTable</class>
