@@ -208,6 +208,10 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
     @Slot()
     def setViewPath(self):
         print('Path')
+        self.path_actors[1].SetCamera(self.renderer.GetActiveCamera())
+        self.renderer.ResetCamera()
+        self.interactor.ReInitialize()
+
 
     @Slot()
     def clearLivePlot(self):
