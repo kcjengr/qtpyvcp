@@ -264,8 +264,8 @@ class VTKWidget(QWidget, VCPWidget):
         print('show grid')
 
     @Slot(bool)
-    def hideProgramBounds(self, bounds):
-        print('hide program bounds {}'.format(bounds))
+    def programBounds(self, bounds):
+        print('program bounds {}'.format(bounds))
         if bounds:
             self.path_actors[1].XAxisVisibilityOff()
             self.path_actors[1].YAxisVisibilityOff()
@@ -277,37 +277,37 @@ class VTKWidget(QWidget, VCPWidget):
         self.update_render()
 
     @Slot(bool)
-    def hideProgramTicks(self, bounds):
-        print('hide program bounds ticks {}'.format(bounds))
+    def programTicks(self, bounds):
+        print('program bounds ticks {}'.format(bounds))
         if bounds:
-            self.path_actors[1].XAxisTickVisibilityOff()
-            self.path_actors[1].YAxisTickVisibilityOff()
-            self.path_actors[1].ZAxisTickVisibilityOff()
-        else:
             self.path_actors[1].XAxisTickVisibilityOn()
             self.path_actors[1].YAxisTickVisibilityOn()
             self.path_actors[1].ZAxisTickVisibilityOn()
             self.path_actors[1].XAxisMinorTickVisibilityOff()
             self.path_actors[1].YAxisMinorTickVisibilityOff()
             self.path_actors[1].ZAxisMinorTickVisibilityOff()
+        else:
+            self.path_actors[1].XAxisTickVisibilityOff()
+            self.path_actors[1].YAxisTickVisibilityOff()
+            self.path_actors[1].ZAxisTickVisibilityOff()
         self.update_render()
 
     @Slot(bool)
-    def hideProgramLabels(self, bounds):
-        print('hide program bounds labels {}'.format(bounds))
+    def programLabels(self, bounds):
+        print('program bounds labels {}'.format(bounds))
         if bounds:
-            self.path_actors[1].XAxisLabelVisibilityOff()
-            self.path_actors[1].YAxisLabelVisibilityOff()
-            self.path_actors[1].ZAxisLabelVisibilityOff()
-        else:
             self.path_actors[1].XAxisLabelVisibilityOn()
             self.path_actors[1].YAxisLabelVisibilityOn()
             self.path_actors[1].ZAxisLabelVisibilityOn()
+        else:
+            self.path_actors[1].XAxisLabelVisibilityOff()
+            self.path_actors[1].YAxisLabelVisibilityOff()
+            self.path_actors[1].ZAxisLabelVisibilityOff()
         self.update_render()
 
     @Slot(bool)
-    def hideMachineBounds(self, bounds):
-        print('hide machine bounds {}'.format(bounds))
+    def machineBounds(self, bounds):
+        print('machine bounds {}'.format(bounds))
         if bounds:
             self.machine_actor.XAxisVisibilityOff()
             self.machine_actor.YAxisVisibilityOff()
@@ -319,32 +319,32 @@ class VTKWidget(QWidget, VCPWidget):
         self.update_render()
 
     @Slot(bool)
-    def hideMachineTicks(self, bounds):
-        print('hide machine bounds ticks {}'.format(bounds))
+    def machineTicks(self, bounds):
+        print('machine bounds ticks {}'.format(bounds))
         if bounds:
-            self.machine_actor.XAxisTickVisibilityOff()
-            self.machine_actor.YAxisTickVisibilityOff()
-            self.machine_actor.ZAxisTickVisibilityOff()
-        else:
             self.machine_actor.XAxisTickVisibilityOn()
             self.machine_actor.YAxisTickVisibilityOn()
             self.machine_actor.ZAxisTickVisibilityOn()
             self.machine_actor.XAxisMinorTickVisibilityOff()
             self.machine_actor.YAxisMinorTickVisibilityOff()
             self.machine_actor.ZAxisMinorTickVisibilityOff()
+        else:
+            self.machine_actor.XAxisTickVisibilityOff()
+            self.machine_actor.YAxisTickVisibilityOff()
+            self.machine_actor.ZAxisTickVisibilityOff()
         self.update_render()
 
     @Slot(bool)
-    def hideMachineLabels(self, bounds):
-        print('hide machine bounds labels {}'.format(bounds))
+    def machineLabels(self, bounds):
+        print('machine bounds labels {}'.format(bounds))
         if bounds:
-            self.machine_actor.XAxisLabelVisibilityOff()
-            self.machine_actor.YAxisLabelVisibilityOff()
-            self.machine_actor.ZAxisLabelVisibilityOff()
-        else:
             self.machine_actor.XAxisLabelVisibilityOn()
             self.machine_actor.YAxisLabelVisibilityOn()
             self.machine_actor.ZAxisLabelVisibilityOn()
+        else:
+            self.machine_actor.XAxisLabelVisibilityOff()
+            self.machine_actor.YAxisLabelVisibilityOff()
+            self.machine_actor.ZAxisLabelVisibilityOff()
         self.update_render()
 
     # @Slot(str) Fixme check for the correct data type
@@ -486,17 +486,13 @@ class PathBoundaries:
         cube_axes_actor.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
         cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
-        #cube_axes_actor.XAxisLabelVisibilityOff()
-        #cube_axes_actor.YAxisLabelVisibilityOff()
-        #cube_axes_actor.ZAxisLabelVisibilityOff()
+        cube_axes_actor.XAxisLabelVisibilityOff()
+        cube_axes_actor.YAxisLabelVisibilityOff()
+        cube_axes_actor.ZAxisLabelVisibilityOff()
 
-        # cube_axes_actor.XAxisMinorTickVisibilityOff()
-        # cube_axes_actor.YAxisMinorTickVisibilityOff()
-        # cube_axes_actor.ZAxisMinorTickVisibilityOff()
-
-        #cube_axes_actor.XAxisTickVisibilityOff()
-        #cube_axes_actor.YAxisTickVisibilityOff()
-        #cube_axes_actor.ZAxisTickVisibilityOff()
+        cube_axes_actor.XAxisTickVisibilityOff()
+        cube_axes_actor.YAxisTickVisibilityOff()
+        cube_axes_actor.ZAxisTickVisibilityOff()
 
         self.actor = cube_axes_actor
 
@@ -646,17 +642,13 @@ class Machine:
         cube_axes_actor.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
         cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
-        # cube_axes_actor.XAxisMinorTickVisibilityOff()
-        # cube_axes_actor.YAxisMinorTickVisibilityOff()
-        # cube_axes_actor.ZAxisMinorTickVisibilityOff()
+        cube_axes_actor.XAxisLabelVisibilityOff()
+        cube_axes_actor.YAxisLabelVisibilityOff()
+        cube_axes_actor.ZAxisLabelVisibilityOff()
 
-        #cube_axes_actor.XAxisTickVisibilityOff()
-        #cube_axes_actor.YAxisTickVisibilityOff()
-        #cube_axes_actor.ZAxisTickVisibilityOff()
-
-        #cube_axes_actor.XAxisLabelVisibilityOff()
-        #cube_axes_actor.YAxisLabelVisibilityOff()
-        #cube_axes_actor.ZAxisLabelVisibilityOff()
+        cube_axes_actor.XAxisTickVisibilityOff()
+        cube_axes_actor.YAxisTickVisibilityOff()
+        cube_axes_actor.ZAxisTickVisibilityOff()
 
         units = str(self.status.program_units)
 

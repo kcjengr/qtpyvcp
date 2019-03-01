@@ -213,9 +213,9 @@
                </widget>
               </item>
               <item row="4" column="4" colspan="2">
-               <widget class="QCheckBox" name="hideMachineLabels">
+               <widget class="QCheckBox" name="showMachineLabels">
                 <property name="text">
-                 <string>Hide Machine Labels</string>
+                 <string>Show Machine Labels</string>
                 </property>
                </widget>
               </item>
@@ -254,9 +254,9 @@
                </widget>
               </item>
               <item row="3" column="2" colspan="2">
-               <widget class="QCheckBox" name="hideProgramTicks">
+               <widget class="QCheckBox" name="showProgramTicks">
                 <property name="text">
-                 <string>Hide Program Ticks</string>
+                 <string>Show Program Ticks</string>
                 </property>
                </widget>
               </item>
@@ -282,16 +282,16 @@
                </widget>
               </item>
               <item row="3" column="4" colspan="2">
-               <widget class="QCheckBox" name="hideProgramLabels">
+               <widget class="QCheckBox" name="showProgramLabels">
                 <property name="text">
-                 <string>Hide Prog Labels</string>
+                 <string>Show Prog Labels</string>
                 </property>
                </widget>
               </item>
               <item row="4" column="2" colspan="2">
-               <widget class="QCheckBox" name="hideMachineTicks">
+               <widget class="QCheckBox" name="showMachineTicks">
                 <property name="text">
-                 <string>Hide Machine Ticks</string>
+                 <string>Show Machine Ticks</string>
                 </property>
                </widget>
               </item>
@@ -708,7 +708,7 @@
    <sender>hideMachineBoundry</sender>
    <signal>clicked(bool)</signal>
    <receiver>vtk</receiver>
-   <slot>hideMachineBounds(bool)</slot>
+   <slot>machineBounds(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>733</x>
@@ -724,7 +724,7 @@
    <sender>hideProgramBoundry</sender>
    <signal>clicked(bool)</signal>
    <receiver>vtk</receiver>
-   <slot>hideProgramBounds(bool)</slot>
+   <slot>programBounds(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>733</x>
@@ -817,10 +817,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>hideMachineTicks</sender>
+   <sender>showMachineTicks</sender>
    <signal>clicked(bool)</signal>
    <receiver>vtk</receiver>
-   <slot>hideMachineTicks(bool)</slot>
+   <slot>machineTicks(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>286</x>
@@ -833,10 +833,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>hideMachineLabels</sender>
+   <sender>showMachineLabels</sender>
    <signal>clicked(bool)</signal>
    <receiver>vtk</receiver>
-   <slot>hideMachineLabels(bool)</slot>
+   <slot>machineLabels(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>458</x>
@@ -849,10 +849,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>hideProgramTicks</sender>
+   <sender>showProgramTicks</sender>
    <signal>clicked(bool)</signal>
    <receiver>vtk</receiver>
-   <slot>hideProgramTicks(bool)</slot>
+   <slot>programTicks(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>286</x>
@@ -865,10 +865,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>hideProgramLabels</sender>
+   <sender>showProgramLabels</sender>
    <signal>clicked(bool)</signal>
    <receiver>vtk</receiver>
-   <slot>hideProgramLabels(bool)</slot>
+   <slot>programLabels(bool)</slot>
    <hints>
     <hint type="sourcelabel">
      <x>458</x>
