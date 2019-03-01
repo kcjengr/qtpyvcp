@@ -304,7 +304,7 @@
                  <string>[]</string>
                 </property>
                 <property name="dialogName" stdset="0">
-                 <string>offsets_dialog</string>
+                 <string>set_work_offsets</string>
                 </property>
                </widget>
               </item>
