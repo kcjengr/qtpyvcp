@@ -135,6 +135,11 @@ class VTKWidget(QWidget, VCPWidget):
     @Slot()
     def setViewP(self):
         print('p')
+        self.renderer.GetActiveCamera().SetPosition(1, -1, 1)
+        self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
+        self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
+        self.renderer.ResetCamera()
+        self.interactor.ReInitialize()
 
     @Slot()
     def setViewX(self):
