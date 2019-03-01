@@ -20,7 +20,7 @@ LOG = logger.getLogger(__name__)
 STATUS = getPlugin('status')
 
 
-class VTKWidget(QWidget, VCPWidget):
+class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
     def __init__(self, parent=None):
         super(VTKWidget, self).__init__(parent)
@@ -33,11 +33,6 @@ class VTKWidget(QWidget, VCPWidget):
 
         self.gr = VTKCanon()
 
-        self.vertical_layout = QVBoxLayout()
-        self.vertical_layout.setContentsMargins(0,0,0,0)
-        self.vtkWidget = QVTKRenderWindowInteractor()
-        self.vertical_layout.addWidget(self.vtkWidget)
-
         self.nav_style = vtk.vtkInteractorStyleTrackballCamera()
 
         self.camera = vtk.vtkCamera()
@@ -45,9 +40,9 @@ class VTKWidget(QWidget, VCPWidget):
 
         self.renderer = vtk.vtkRenderer()
         self.renderer.SetActiveCamera(self.camera)
-        self.vtkWidget.GetRenderWindow().AddRenderer(self.renderer)
-        self.vtkWidget.SetInteractorStyle(self.nav_style)
-        self.interactor = self.vtkWidget.GetRenderWindow().GetInteractor()
+        self.GetRenderWindow().AddRenderer(self.renderer)
+        self.SetInteractorStyle(self.nav_style)
+        self.interactor = self.GetRenderWindow().GetInteractor()
 
         self.machine = Machine(self.axis)
         self.machine_actor = self.machine.get_actor()
@@ -72,8 +67,6 @@ class VTKWidget(QWidget, VCPWidget):
         self.renderer.AddActor(self.path_cache_actor)
 
         self.renderer.ResetCamera()
-
-        self.setLayout(self.vertical_layout)
 
         self.interactor.Initialize()
         self.interactor.Start()
@@ -117,7 +110,7 @@ class VTKWidget(QWidget, VCPWidget):
         self.update_render()
 
     def update_render(self):
-        self.vtkWidget.GetRenderWindow().Render()
+        self.GetRenderWindow().Render()
 
     @Slot()
     def setViewOrtho(self):
