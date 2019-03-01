@@ -21,6 +21,7 @@ import linuxcnc
 
 LOG = logger.getLogger(__name__)
 STATUS = getPlugin('status')
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 # add inifile
 #INIFILE_PATH = os.getenv("INI_FILE_NAME")
@@ -480,11 +481,12 @@ class PathBoundaries:
         cube_axes_actor.YAxisTickVisibilityOff()
         cube_axes_actor.ZAxisTickVisibilityOff()
 
-        programBoundry = INIFILE.find("VTK", "PROGRAM_BOUNDRY") or None
-        if programBoundry.lower() in ['false', 'off', 'no', '0']:
-            cube_axes_actor.XAxisVisibilityOff()
-            cube_axes_actor.YAxisVisibilityOff()
-            cube_axes_actor.ZAxisVisibilityOff()
+        if not IN_DESIGNER:
+            programBoundry = INIFILE.find("VTK", "PROGRAM_BOUNDRY") or None
+            if programBoundry.lower() in ['false', 'off', 'no', '0']:
+                cube_axes_actor.XAxisVisibilityOff()
+                cube_axes_actor.YAxisVisibilityOff()
+                cube_axes_actor.ZAxisVisibilityOff()
 
         self.actor = cube_axes_actor
 
@@ -642,11 +644,12 @@ class Machine:
         cube_axes_actor.YAxisTickVisibilityOff()
         cube_axes_actor.ZAxisTickVisibilityOff()
 
-        machineBoundry = INIFILE.find("VTK", "MACHINE_BOUNDRY") or None
-        if machineBoundry.lower() in ['false', 'off', 'no', '0']:
-            cube_axes_actor.XAxisVisibilityOff()
-            cube_axes_actor.YAxisVisibilityOff()
-            cube_axes_actor.ZAxisVisibilityOff()
+        if not IN_DESIGNER:
+            machineBoundry = INIFILE.find("VTK", "MACHINE_BOUNDRY") or None
+            if machineBoundry.lower() in ['false', 'off', 'no', '0']:
+                cube_axes_actor.XAxisVisibilityOff()
+                cube_axes_actor.YAxisVisibilityOff()
+                cube_axes_actor.ZAxisVisibilityOff()
 
         units = str(self.status.program_units)
 
