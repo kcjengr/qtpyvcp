@@ -124,21 +124,18 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
     @Slot()
     def setViewOrtho(self):
-        print('orthographic view')
         self.renderer.GetActiveCamera().ParallelProjectionOn()
         self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewPersp(self):
-        print('perspective view')
         self.renderer.GetActiveCamera().ParallelProjectionOff()
         self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewP(self):
-        print('p')
         self.renderer.GetActiveCamera().SetPosition(1, -1, 1)
         self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
         self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
@@ -147,7 +144,6 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
     @Slot()
     def setViewX(self):
-        print('x')
         self.renderer.GetActiveCamera().SetPosition(1, 0, 0)
         self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
         self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
@@ -158,7 +154,6 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
     @Slot()
     def setViewY(self):
-        print('y')
         self.renderer.GetActiveCamera().SetPosition(0, -1, 0)
         self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
         self.renderer.GetActiveCamera().SetFocalPoint(0,0,0)
@@ -169,7 +164,6 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
     @Slot()
     def setViewZ(self):
-        print('z')
         self.renderer.GetActiveCamera().SetPosition(0, 0, 1)
         self.renderer.GetActiveCamera().SetViewUp(0, 1, 0)
         self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
@@ -196,30 +190,7 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
         print('distance {}'.format(d))
         #self.interactor.ReInitialize()
 
-        """
-        x
-        print view stats
-        focal point (5.5, 3.5, -1.5)
-        position (37.53613541114848, 3.5, -1.5)
-        view up (0.0, 0.0, 1.0)
-        distance 32.0361354111
-        y
-        print view stats
-        focal point (5.5, 3.5, -1.5)
-        position (5.5, -28.53613541114848, -1.5)
-        view up (0.0, 0.0, 1.0)
-        distance 32.0361354111
-        z
-        print view stats
-        focal point (5.5, 3.5, -1.5)
-        position (5.5, 3.5, 30.53613541114848)
-        view up (0.0, 1.0, 0.0)
-        distance 32.0361354111
-
-        """
-
     @Slot()
-    def setViewZ2(self):
         print('z2')
         self.renderer.GetActiveCamera().SetPosition(0, 0, 1)
         self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
@@ -254,13 +225,11 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
     @Slot()
     def zoomIn(self):
-        print('zoom in')
         self.renderer.GetActiveCamera().Zoom(1.1)
         self.interactor.ReInitialize()
 
     @Slot()
     def zoomOut(self):
-        print('zoom out')
         self.renderer.GetActiveCamera().Zoom(0.9)
         self.interactor.ReInitialize()
 
@@ -274,7 +243,6 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
     @Slot(bool)
     def programBounds(self, bounds):
-        print('program bounds {}'.format(bounds))
         if bounds:
             self.path_actors[1].XAxisVisibilityOff()
             self.path_actors[1].YAxisVisibilityOff()
@@ -287,7 +255,6 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
     @Slot(bool)
     def programTicks(self, bounds):
-        print('program bounds ticks {}'.format(bounds))
         if bounds:
             self.path_actors[1].XAxisTickVisibilityOn()
             self.path_actors[1].YAxisTickVisibilityOn()
@@ -303,7 +270,6 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
     @Slot(bool)
     def programLabels(self, bounds):
-        print('program bounds labels {}'.format(bounds))
         if bounds:
             self.path_actors[1].XAxisLabelVisibilityOn()
             self.path_actors[1].YAxisLabelVisibilityOn()
@@ -316,7 +282,6 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
     @Slot(bool)
     def machineBounds(self, bounds):
-        print('machine bounds {}'.format(bounds))
         if bounds:
             self.machine_actor.XAxisVisibilityOff()
             self.machine_actor.YAxisVisibilityOff()
@@ -329,7 +294,6 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
     @Slot(bool)
     def machineTicks(self, bounds):
-        print('machine bounds ticks {}'.format(bounds))
         if bounds:
             self.machine_actor.XAxisTickVisibilityOn()
             self.machine_actor.YAxisTickVisibilityOn()
@@ -345,7 +309,6 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
     @Slot(bool)
     def machineLabels(self, bounds):
-        print('machine bounds labels {}'.format(bounds))
         if bounds:
             self.machine_actor.XAxisLabelVisibilityOn()
             self.machine_actor.YAxisLabelVisibilityOn()
@@ -680,7 +643,6 @@ class Machine:
             cube_axes_actor.XAxisVisibilityOff()
             cube_axes_actor.YAxisVisibilityOff()
             cube_axes_actor.ZAxisVisibilityOff()
-
 
         units = str(self.status.program_units)
 
