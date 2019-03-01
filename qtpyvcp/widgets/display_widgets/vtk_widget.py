@@ -143,6 +143,8 @@ class VTKWidget(QWidget, VCPWidget):
         self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
         self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
+        # FIXME ugly hack
+        self.renderer.GetActiveCamera().Zoom(2.5)
         self.interactor.ReInitialize()
 
     @Slot()
@@ -152,6 +154,8 @@ class VTKWidget(QWidget, VCPWidget):
         self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
         self.renderer.GetActiveCamera().SetFocalPoint(0,0,0)
         self.renderer.ResetCamera()
+        # FIXME ugly hack
+        self.renderer.GetActiveCamera().Zoom(2.0)
         self.interactor.ReInitialize()
 
     @Slot()
@@ -161,6 +165,8 @@ class VTKWidget(QWidget, VCPWidget):
         self.renderer.GetActiveCamera().SetViewUp(0, 1, 0)
         self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
+        # FIXME ugly hack
+        self.renderer.GetActiveCamera().Zoom(1.5)
         self.interactor.ReInitialize()
 
     @Slot()
