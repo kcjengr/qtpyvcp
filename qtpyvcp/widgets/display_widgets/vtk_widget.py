@@ -34,6 +34,7 @@ class VTKWidget(QWidget, VCPWidget):
         self.gr = VTKCanon()
 
         self.vertical_layout = QVBoxLayout()
+        self.vertical_layout.setContentsMargins(0,0,0,0)
         self.vtkWidget = QVTKRenderWindowInteractor()
         self.vertical_layout.addWidget(self.vtkWidget)
 
