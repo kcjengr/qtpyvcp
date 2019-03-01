@@ -16,9 +16,17 @@ from qtpyvcp.utilities import logger
 
 from vtk_cannon import VTKCanon
 
+import os
+import linuxcnc
 
 LOG = logger.getLogger(__name__)
 STATUS = getPlugin('status')
+
+# add inifile
+#INIFILE_PATH = os.getenv("INI_FILE_NAME")
+#print(INIFILE_PATH)
+
+INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 
 
 class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
@@ -505,6 +513,12 @@ class PathBoundaries:
         cube_axes_actor.YAxisTickVisibilityOff()
         cube_axes_actor.ZAxisTickVisibilityOff()
 
+        programBoundry = INIFILE.find("VTK", "PROGRAM_BOUNDRY") or None
+        if programBoundry:
+            cube_axes_actor.XAxisVisibilityOff()
+            cube_axes_actor.YAxisVisibilityOff()
+            cube_axes_actor.ZAxisVisibilityOff()
+
         self.actor = cube_axes_actor
 
     def get_actor(self):
@@ -660,6 +674,13 @@ class Machine:
         cube_axes_actor.XAxisTickVisibilityOff()
         cube_axes_actor.YAxisTickVisibilityOff()
         cube_axes_actor.ZAxisTickVisibilityOff()
+
+        machineBoundry = INIFILE.find("VTK", "MACHINE_BOUNDRY") or None
+        if machineBoundry:
+            cube_axes_actor.XAxisVisibilityOff()
+            cube_axes_actor.YAxisVisibilityOff()
+            cube_axes_actor.ZAxisVisibilityOff()
+
 
         units = str(self.status.program_units)
 
