@@ -84,7 +84,7 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
         self.status.file.notify(self.load_program)
         self.status.position.notify(self.move_tool)
 
-        self.status.g5x_offset.notify(self.update_g5x_offsets)
+        self.status.g5x_offset.notify(self.update_g5x_offset)
         self.status.g92_offset.notify(self.reload_program)
         self.status.tool_offset.notify(self.reload_program)
 
@@ -123,14 +123,13 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
         self.path_cache.add_line_point(position[:3])
         self.update_render()
 
-    def update_g5x_offsets(self, g5x_offset):
+    def update_g5x_offset(self, g5x_offset):
         # determine change in g5x offset since path was drawn
-        path_offset = [new - old for new, old in zip(g5x_offset,
-                                                     self.original_g5x_offset)]
-        for path_actor in self.path_actors:
-            print path_actor
-            path_actor.SetPosition(*path_offset[:3])
+        path_offset = [n - o for n, o in zip(g5x_offset[:3],
+                                             self.original_g5x_offset[:3])]
 
+        self.path_actors[0].SetPosition(*path_offset)
+        self.path_actors[1].SetPosition(3, 4, 5)
         self.update_render()
 
     def update_render(self):
