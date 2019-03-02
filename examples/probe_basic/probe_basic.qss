@@ -377,3 +377,115 @@ QMenu::indicator {
     height: 12px;
     padding-left:6px;
 }
+
+/*===========================================================================*/
+/*                               vtkbuttons                                  */
+/*===========================================================================*/
+
+#vtk_control_buttons {
+    background:black;
+}
+
+#x_view_button,
+#y_view_button,
+#z_view_button,
+#z2_view_button,
+#iso_view_button,
+#clear_button,
+#zoom_in_button,
+#zoom_out_button,
+#ortho_button,
+#perspective_button,
+#path_button{
+    color: white;
+    border-color: gray;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+#x_view_button,
+#y_view_button,
+#z_view_button,
+#z2_view_button,
+#iso_view_button,
+#clear_button,
+#zoom_in_button,
+#zoom_out_button,
+#ortho_button,
+#perspective_button,
+#path_button{
+    font-family: "Bebas Kai";
+    font-size: 14pt
+}
+
+#x_view_button:disabled,
+#y_view_button:disabled,
+#z_view_button:disabled,
+#z2_view_button:disabled,
+#iso_view_button:disabled,
+#clear_button:disabled,
+#zoom_in_button:disabled,
+#zoom_out_button:disabled,
+#ortho_button:disabled,
+#perspective_button:disabled,
+#path_button:disabled {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+#x_view_button:hover,
+#y_view_button:hover,
+#z_view_button:hover,
+#z2_view_button:hover:hover,
+#iso_view_button:hover,
+#clear_button:hover,
+#zoom_in_button:hover,
+#zoom_out_button:hover,
+#ortho_button:hover,
+#perspective_button:hover,
+#path_button:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+#x_view_button:pressed,
+#y_view_button:pressed,
+#z_view_button:pressed,
+#z2_view_button:pressed,
+#iso_view_button:pressed,
+#clear_button:pressed,
+#zoom_in_button:pressed,
+#zoom_out_button:pressed,
+#ortho_button:pressed,
+#perspective_button:pressed,
+#path_button:pressed {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+#x_view_button:checked[option="true"],
+#y_view_button:checked[option="true"],
+#z_view_button:checked[option="true"],
+#z2_view_button:checked[option="true"],
+#iso_view_button:checked[option="true"],
+#clear_button:checked[option="true"],
+#zoom_in_button:checked[option="true"],
+#zoom_out_button:checked[option="true"],
+#ortho_button:checked[option="true"],
+#perspective_button:checked[option="true"],
+#path_button:checked[option="true"] {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+#x_view_button:checked[option="false"],
+#y_view_button:checked[option="false"],
+#z_view_button:checked[option="false"],
+#z2_view_button:checked[option="false"],
+#iso_view_button:checked[option="false"],
+#clear_button:checked[option="false"],
+#zoom_in_button:checked[option="false"],
+#zoom_out_button:checked[option="false"],
+#ortho_button:checked[option="false"],
+#perspective_button:checked[option="false"],
+#path_button:checked[option="false"] {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
