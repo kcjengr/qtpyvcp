@@ -129,7 +129,7 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
                                              self.original_g5x_offset[:3])]
 
         self.path_actors[0].SetPosition(*path_offset)
-        self.path_actors[1].SetPosition(3, 4, 5)
+        self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
         self.update_render()
 
     def update_render(self):
