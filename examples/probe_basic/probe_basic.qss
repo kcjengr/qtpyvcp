@@ -397,6 +397,7 @@ QMenu::indicator {
 #ortho_button,
 #perspective_button,
 #path_button,
+#pan_button,
 #program_zoom_button,
 #machine_zoom_button {
     color: white;
@@ -417,7 +418,8 @@ QMenu::indicator {
 #zoom_out_button,
 #ortho_button,
 #perspective_button,
-#path_button
+#path_button,
+#pan_button,
 #program_zoom_button,
 #machine_zoom_button {
     font-family: "Bebas Kai";
@@ -435,6 +437,7 @@ QMenu::indicator {
 #ortho_button:disabled,
 #perspective_button:disabled,
 #path_button:disabled,
+#pan_button:disabled,
 #program_zoom_button:disabled,
 #machine_zoom_button:disabled {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #A19E9E, stop: 1.0 #5C5959);
@@ -451,6 +454,7 @@ QMenu::indicator {
 #ortho_button:hover,
 #perspective_button:hover,
 #path_button:hover,
+#pan_button:hover,
 #program_zoom_button:hover,
 #machine_zoom_button:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #A19E9E, stop: 1.0 #5C5959);
@@ -467,6 +471,7 @@ QMenu::indicator {
 #ortho_button:pressed,
 #perspective_button:pressed,
 #path_button:pressed,
+#pan_button:pressed,
 #program_zoom_button:pressed,
 #machine_zoom_button:pressed {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
@@ -483,6 +488,7 @@ QMenu::indicator {
 #ortho_button:checked[option="true"],
 #perspective_button:checked[option="true"],
 #path_button:checked[option="true"],
+#pan_button:checked[option="true"],
 #program_zoom_button[option="true"],
 #machine_zoom_button[option="true"] {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
@@ -499,6 +505,7 @@ QMenu::indicator {
 #ortho_button:checked[option="false"],
 #perspective_button:checked[option="false"],
 #path_button:checked[option="false"],
+#pan_button:checked[option="false"],
 #program_zoom_button[option="false"],
 #machine_zoom_button[option="false"] {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
