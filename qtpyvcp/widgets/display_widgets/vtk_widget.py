@@ -34,6 +34,9 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
         # properties
         self._background_color = QColor(0, 0, 0)
 
+        self.original_g5x_offset = [0.0] * 9
+        self.original_g92_offset = [0.0] * 9
+
         self.current_position = (0.0, 0.0, 0.0)
         self.parent = parent
         self.status = STATUS
@@ -80,7 +83,8 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
         self.status.file.notify(self.load_program)
         self.status.position.notify(self.move_tool)
-        self.status.g5x_offset.notify(self.reload_program)
+
+        self.status.g5x_offset.notify(self.update_g5x_offsets)
         self.status.g92_offset.notify(self.reload_program)
         self.status.tool_offset.notify(self.reload_program)
 
@@ -100,6 +104,9 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
         else:
             fname = self._last_filename
 
+        self.original_g5x_offset = self.status.stat.g5x_offset
+        self.original_g92_offset = self.status.stat.g92_offset
+
         self.gr.load(fname)
 
         path = Path(self.gr, self.renderer)
@@ -114,6 +121,16 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
         self.current_position = position[:3]
         self.tool_actor.SetPosition(position[:3])
         self.path_cache.add_line_point(position[:3])
+        self.update_render()
+
+    def update_g5x_offsets(self, g5x_offset):
+        # determine change in g5x offset since path was drawn
+        path_offset = [new - old for new, old in zip(g5x_offset,
+                                                     self.original_g5x_offset)]
+        for path_actor in self.path_actors:
+            print path_actor
+            path_actor.SetPosition(*path_offset[:3])
+
         self.update_render()
 
     def update_render(self):
