@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-from qtpyvcp.widgets.qtdesigner import _DesignerPlugin, _PluginExtension
+from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
 
 from status_label import StatusLabel
 class StatusLabelPlugin(_DesignerPlugin):
@@ -40,7 +40,7 @@ class StatusLEDPlugin(_DesignerPlugin):
     def pluginClass(self):
         return StatusLED
 
-from vtk_widget import VTKWidget
+from vtk_backplot.vtk_backplot import VTKBackPlot
 class VTKWidgetPlugin(_DesignerPlugin):
     def pluginClass(self):
-        return VTKWidget
+        return VTKBackPlot

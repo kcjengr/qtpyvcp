@@ -26,10 +26,10 @@ IN_DESIGNER = os.getenv('DESIGNER', False)
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 
 
-class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
+class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
 
     def __init__(self, parent=None):
-        super(VTKWidget, self).__init__(parent)
+        super(VTKBackPlot, self).__init__(parent)
 
         # properties
         self._background_color = QColor(0, 0, 0)
