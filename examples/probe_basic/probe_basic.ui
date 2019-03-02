@@ -467,10 +467,10 @@ QComboBox QAbstractItemView{
                    <number>6</number>
                   </property>
                   <property name="leftMargin">
-                   <number>18</number>
+                   <number>15</number>
                   </property>
                   <property name="rightMargin">
-                   <number>3</number>
+                   <number>0</number>
                   </property>
                   <item>
                    <widget class="QPushButton" name="iso_view_button">
@@ -14200,7 +14200,7 @@ Background:transparent;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -15141,7 +15141,314 @@ border-radius: 6px;
               <number>13</number>
              </property>
              <item>
-              <widget class="QWidget" name="widget" native="true"/>
+              <widget class="QWidget" name="widget" native="true">
+               <widget class="QWidget" name="widget_5" native="true">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>85</width>
+                  <height>360</height>
+                 </rect>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_14">
+                 <property name="spacing">
+                  <number>9</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>5</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>3</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>5</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>3</number>
+                 </property>
+                 <item>
+                  <widget class="QPushButton" name="zoom_p_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#zoom_p_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>ZOOM PGM</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="zoom_m_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#zoom_m_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>ZOOM MCH</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="program_boundry_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#program_boundry_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>PRG BDRY</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="autoExclusive">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="machine_boundry_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>Bebas Kai</family>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#machine_boundry_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>MCH BDRY</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="program_ticks_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#program_ticks_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>PGM TICKS</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="machine_ticks_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#machine_ticks_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>MCH TICKS</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="program_labels_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#program_labels_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>PGM LABELS</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="machine_labels_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#machine_labels_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>MCH LABELS</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </widget>
              </item>
              <item>
               <widget class="QWidget" name="horizontalWidget_2" native="true">
@@ -20720,8 +21027,8 @@ font: 11pt bebas kai;
    <slot>setViewX()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1602</x>
-     <y>90</y>
+     <x>826</x>
+     <y>155</y>
     </hint>
     <hint type="destinationlabel">
      <x>1461</x>
@@ -20736,8 +21043,8 @@ font: 11pt bebas kai;
    <slot>setViewY()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1606</x>
-     <y>146</y>
+     <x>826</x>
+     <y>208</y>
     </hint>
     <hint type="destinationlabel">
      <x>1473</x>
@@ -20752,8 +21059,8 @@ font: 11pt bebas kai;
    <slot>setViewZ()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1598</x>
-     <y>206</y>
+     <x>826</x>
+     <y>261</y>
     </hint>
     <hint type="destinationlabel">
      <x>1382</x>
@@ -20768,8 +21075,8 @@ font: 11pt bebas kai;
    <slot>clearLivePlot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1595</x>
-     <y>353</y>
+     <x>826</x>
+     <y>389</y>
     </hint>
     <hint type="destinationlabel">
      <x>1316</x>
@@ -20784,8 +21091,8 @@ font: 11pt bebas kai;
    <slot>zoomIn()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1611</x>
-     <y>383</y>
+     <x>826</x>
+     <y>562</y>
     </hint>
     <hint type="destinationlabel">
      <x>1263</x>
@@ -20800,44 +21107,12 @@ font: 11pt bebas kai;
    <slot>zoomOut()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1613</x>
-     <y>448</y>
+     <x>826</x>
+     <y>618</y>
     </hint>
     <hint type="destinationlabel">
      <x>1295</x>
      <y>498</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ortho_button</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk</receiver>
-   <slot>setViewOrtho()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1620</x>
-     <y>493</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1405</x>
-     <y>554</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>perspective_button</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk</receiver>
-   <slot>setViewPersp()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1616</x>
-     <y>555</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1397</x>
-     <y>622</y>
     </hint>
    </hints>
   </connection>
@@ -20848,8 +21123,8 @@ font: 11pt bebas kai;
    <slot>setViewPath()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1628</x>
-     <y>614</y>
+     <x>826</x>
+     <y>336</y>
     </hint>
     <hint type="destinationlabel">
      <x>1350</x>
@@ -20864,12 +21139,156 @@ font: 11pt bebas kai;
    <slot>setViewP()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1624</x>
-     <y>300</y>
+     <x>826</x>
+     <y>102</y>
     </hint>
     <hint type="destinationlabel">
      <x>1281</x>
      <y>304</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_boundry_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>programBounds(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1711</x>
+     <y>187</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1545</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_boundry_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>machineBounds(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1716</x>
+     <y>229</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1583</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_ticks_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>programTicks(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1706</x>
+     <y>278</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1551</x>
+     <y>292</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_ticks_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>machineTicks(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1732</x>
+     <y>321</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1528</x>
+     <y>328</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_labels_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>programLabels(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1731</x>
+     <y>371</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1593</x>
+     <y>377</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_labels_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>machineLabels(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1713</x>
+     <y>418</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1536</x>
+     <y>415</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoom_m_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewMachine()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1708</x>
+     <y>145</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1570</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ortho_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewOrtho()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>826</x>
+     <y>464</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1405</x>
+     <y>554</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>perspective_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewPersp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>826</x>
+     <y>517</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1397</x>
+     <y>622</y>
     </hint>
    </hints>
   </connection>
