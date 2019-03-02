@@ -23,10 +23,6 @@ LOG = logger.getLogger(__name__)
 STATUS = getPlugin('status')
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
-# add inifile
-#INIFILE_PATH = os.getenv("INI_FILE_NAME")
-#print(INIFILE_PATH)
-
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 
 
@@ -213,7 +209,6 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
         self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
-
     @Slot()
     def clearLivePlot(self):
 
@@ -323,10 +318,6 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
             self.machine_actor.YAxisLabelVisibilityOff()
             self.machine_actor.ZAxisLabelVisibilityOff()
         self.update_render()
-
-    # @Slot(str) Fixme check for the correct data type
-    def setdro(self, state):
-        print('set dro')
 
     @Property(QColor)
     def backgroundColor(self):
