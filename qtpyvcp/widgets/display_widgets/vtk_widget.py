@@ -2,7 +2,7 @@ from collections import defaultdict
 
 import vtk, math
 
-from qtpy.QtCore import Property, Signal, Slot
+from qtpy.QtCore import Property, Signal, Slot, QTimer
 from qtpy.QtGui import QColor
 from vtk.util.colors import tomato, yellow, mint
 
@@ -86,6 +86,7 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
         self.status.g5x_offset.notify(self.update_g5x_offset)
         self.status.g92_offset.notify(self.update_g92_offset)
+        self.status.rotation_xy.notify(self.update_rotation_xy)
         self.status.tool_offset.notify(self.reload_program)
 
         self.line = None
@@ -140,6 +141,13 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
         self.path_actors[0].SetPosition(*path_offset)
         self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
         self.update_render()
+
+    def update_rotation_xy(self, rotation):
+        print 'Rotation: ', rotation # in degrees
+        # ToDo: use transform matrix to rotate existing path?
+        # probably not worth it since rotation is not used much ...
+        # nasty hack so ensure the positions have updated before loading
+        QTimer.singleShot(10, self.reload_program)
 
     def update_render(self):
         self.GetRenderWindow().Render()
