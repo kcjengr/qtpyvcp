@@ -622,104 +622,65 @@ QComboBox QAbstractItemView{
                    </widget>
                   </item>
                   <item>
-                   <widget class="QWidget" name="widget_6" native="true">
+                   <widget class="QPushButton" name="zoom_in_button">
                     <property name="sizePolicy">
-                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                       <horstretch>0</horstretch>
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
-                    <property name="sizeIncrement">
+                    <property name="minimumSize">
                      <size>
-                      <width>90</width>
-                      <height>35</height>
+                      <width>75</width>
+                      <height>33</height>
                      </size>
                     </property>
-                    <property name="baseSize">
+                    <property name="maximumSize">
                      <size>
-                      <width>90</width>
-                      <height>35</height>
+                      <width>75</width>
+                      <height>33</height>
                      </size>
                     </property>
-                    <layout class="QHBoxLayout" name="horizontalLayout_12">
-                     <property name="spacing">
-                      <number>5</number>
-                     </property>
-                     <property name="leftMargin">
-                      <number>0</number>
-                     </property>
-                     <property name="topMargin">
-                      <number>0</number>
-                     </property>
-                     <property name="rightMargin">
-                      <number>0</number>
-                     </property>
-                     <property name="bottomMargin">
-                      <number>0</number>
-                     </property>
-                     <item>
-                      <widget class="QPushButton" name="zoom_out_button">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="minimumSize">
-                        <size>
-                         <width>35</width>
-                         <height>33</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>35</width>
-                         <height>33</height>
-                        </size>
-                       </property>
-                       <property name="styleSheet">
-                        <string notr="true"/>
-                       </property>
-                       <property name="text">
-                        <string>-Z</string>
-                       </property>
-                       <property name="checkable">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                     <item>
-                      <widget class="QPushButton" name="zoom_in_button">
-                       <property name="sizePolicy">
-                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                        </sizepolicy>
-                       </property>
-                       <property name="minimumSize">
-                        <size>
-                         <width>35</width>
-                         <height>33</height>
-                        </size>
-                       </property>
-                       <property name="maximumSize">
-                        <size>
-                         <width>35</width>
-                         <height>33</height>
-                        </size>
-                       </property>
-                       <property name="styleSheet">
-                        <string notr="true"/>
-                       </property>
-                       <property name="text">
-                        <string>Z+</string>
-                       </property>
-                       <property name="checkable">
-                        <bool>true</bool>
-                       </property>
-                      </widget>
-                     </item>
-                    </layout>
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>ZOOM IN</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="zoom_out_button">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>ZOOM OUT</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
                    </widget>
                   </item>
                   <item>
@@ -15296,10 +15257,10 @@ border-radius: 6px;
                <widget class="QWidget" name="widget_5" native="true">
                 <property name="geometry">
                  <rect>
-                  <x>0</x>
+                  <x>4</x>
                   <y>0</y>
-                  <width>85</width>
-                  <height>360</height>
+                  <width>171</width>
+                  <height>151</height>
                  </rect>
                 </property>
                 <property name="sizePolicy">
@@ -15308,23 +15269,68 @@ border-radius: 6px;
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
-                <layout class="QVBoxLayout" name="verticalLayout_14">
+                <property name="minimumSize">
+                 <size>
+                  <width>171</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>171</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_7">
+                 <property name="leftMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>6</number>
+                 </property>
                  <property name="spacing">
                   <number>9</number>
                  </property>
-                 <property name="leftMargin">
-                  <number>5</number>
-                 </property>
-                 <property name="topMargin">
-                  <number>3</number>
-                 </property>
-                 <property name="rightMargin">
-                  <number>5</number>
-                 </property>
-                 <property name="bottomMargin">
-                  <number>3</number>
-                 </property>
-                 <item>
+                 <item row="5" column="0">
+                  <widget class="QPushButton" name="program_labels_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#program_labels_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>PGM LABELS</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
                   <widget class="QPushButton" name="program_boundry_button">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -15360,7 +15366,7 @@ font-size: 12pt;
                    </property>
                   </widget>
                  </item>
-                 <item>
+                 <item row="1" column="1">
                   <widget class="QPushButton" name="machine_boundry_button">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -15399,40 +15405,7 @@ font-size: 12pt;
                    </property>
                   </widget>
                  </item>
-                 <item>
-                  <widget class="QPushButton" name="program_ticks_button">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>75</width>
-                     <height>35</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>75</width>
-                     <height>35</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">#program_ticks_button{
-font-size: 12pt;
-}</string>
-                   </property>
-                   <property name="text">
-                    <string>PGM TICKS</string>
-                   </property>
-                   <property name="checkable">
-                    <bool>true</bool>
-                   </property>
-                  </widget>
-                 </item>
-                 <item>
+                 <item row="2" column="1">
                   <widget class="QPushButton" name="machine_ticks_button">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -15465,8 +15438,8 @@ font-size: 12pt;
                    </property>
                   </widget>
                  </item>
-                 <item>
-                  <widget class="QPushButton" name="program_labels_button">
+                 <item row="2" column="0">
+                  <widget class="QPushButton" name="program_ticks_button">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                      <horstretch>0</horstretch>
@@ -15486,19 +15459,19 @@ font-size: 12pt;
                     </size>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">#program_labels_button{
+                    <string notr="true">#program_ticks_button{
 font-size: 12pt;
 }</string>
                    </property>
                    <property name="text">
-                    <string>PGM LABELS</string>
+                    <string>PGM TICKS</string>
                    </property>
                    <property name="checkable">
                     <bool>true</bool>
                    </property>
                   </widget>
                  </item>
-                 <item>
+                 <item row="5" column="1">
                   <widget class="QPushButton" name="machine_labels_button">
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">

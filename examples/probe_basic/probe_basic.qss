@@ -400,11 +400,11 @@ QMenu::indicator {
 #program_zoom_button,
 #machine_zoom_button {
     color: white;
-    border-color: gray;
+    border-color: rgb(74, 77, 81);
     border-style: solid;
     border-radius: 5px;
     border-width: 2px;
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #A19E9E, stop: 1.0 #5C5959);
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
 }
 
 #x_view_button,
