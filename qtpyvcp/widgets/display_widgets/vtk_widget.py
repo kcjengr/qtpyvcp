@@ -190,7 +190,7 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
     @Slot()
     def setViewZ2(self):
         self.renderer.GetActiveCamera().SetPosition(0, 0, 1)
-        self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
+        self.renderer.GetActiveCamera().SetViewUp(1, 0, 0)
         self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
         self.interactor.ReInitialize()
