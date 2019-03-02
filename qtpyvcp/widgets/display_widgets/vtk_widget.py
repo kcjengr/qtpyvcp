@@ -34,6 +34,9 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
         # properties
         self._background_color = QColor(0, 0, 0)
 
+        self.original_g5x_offset = [0.0] * 9
+        self.original_g92_offset = [0.0] * 9
+
         self.current_position = (0.0, 0.0, 0.0)
         self.parent = parent
         self.status = STATUS
@@ -79,9 +82,10 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
         self.interactor.Start()
 
         self.status.file.notify(self.load_program)
-        self.status.position.notify(self.move_tool)
-        self.status.g5x_offset.notify(self.reload_program)
-        self.status.g92_offset.notify(self.reload_program)
+        self.status.position.notify(self.update_tool_position)
+
+        self.status.g5x_offset.notify(self.update_g5x_offset)
+        self.status.g92_offset.notify(self.update_g92_offset)
         self.status.tool_offset.notify(self.reload_program)
 
         self.line = None
@@ -100,6 +104,9 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
         else:
             fname = self._last_filename
 
+        self.original_g5x_offset = self.status.stat.g5x_offset
+        self.original_g92_offset = self.status.stat.g92_offset
+
         self.gr.load(fname)
 
         path = Path(self.gr, self.renderer)
@@ -110,10 +117,28 @@ class VTKWidget(QVTKRenderWindowInteractor, VCPWidget):
 
         self.update_render()
 
-    def move_tool(self, position):
+    def update_tool_position(self, position):
         self.current_position = position[:3]
         self.tool_actor.SetPosition(position[:3])
         self.path_cache.add_line_point(position[:3])
+        self.update_render()
+
+    def update_g5x_offset(self, g5x_offset):
+        # determine change in g5x offset since path was drawn
+        path_offset = [n - o for n, o in zip(g5x_offset[:3],
+                                             self.original_g5x_offset[:3])]
+
+        self.path_actors[0].SetPosition(*path_offset)
+        self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
+        self.update_render()
+
+    def update_g92_offset(self, g92_offset):
+        # determine change in g92 offset since path was drawn
+        path_offset = [n - o for n, o in zip(g92_offset[:3],
+                                             self.original_g92_offset[:3])]
+
+        self.path_actors[0].SetPosition(*path_offset)
+        self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
         self.update_render()
 
     def update_render(self):
