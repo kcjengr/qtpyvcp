@@ -133,6 +133,13 @@
                   <blue>207</blue>
                  </color>
                 </property>
+                <property name="backgroundColor2" stdset="0">
+                 <color>
+                  <red>220</red>
+                  <green>255</green>
+                  <blue>103</blue>
+                 </color>
+                </property>
                </widget>
               </item>
               <item row="5" column="1">

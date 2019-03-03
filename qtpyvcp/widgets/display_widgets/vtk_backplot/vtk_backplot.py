@@ -53,7 +53,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
 
         self.renderer = vtk.vtkRenderer()
         self.renderer.SetActiveCamera(self.camera)
-        self.renderer.GradientBackgroundOn()
         self.GetRenderWindow().AddRenderer(self.renderer)
         self.SetInteractorStyle(self.nav_style)
         self.interactor = self.GetRenderWindow().GetInteractor()
@@ -358,10 +357,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
     def backgroundColor(self):
         return self._background_color
 
-    @Property(QColor)
-    def backgroundColor2(self):
-        return self._background_color2
-
     @backgroundColor.setter
     def backgroundColor(self, color):
         self._background_color = color
@@ -369,12 +364,23 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.renderer.SetBackground(color.getRgbF()[:3])
         self.update_render()
 
+    @Property(QColor)
+    def backgroundColor2(self):
+        return self._background_color2
+
     @backgroundColor2.setter
     def backgroundColor2(self, color):
         self._background_color2 = color
 
         self.renderer.GradientBackgroundOn()
         self.renderer.SetBackground2(color.getRgbF()[:3])
+        self.update_render()
+
+    @backgroundColor2.reset
+    def backgroundColor2(self):
+        self._background_color2 = QColor(0, 0, 0)
+
+        self.renderer.GradientBackgroundOff()
         self.update_render()
 
 
