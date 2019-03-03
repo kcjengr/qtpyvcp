@@ -73,7 +73,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.path_cache = PathCache(self.current_position)
         self.path_cache_actor = self.path_cache.get_actor()
 
-        self.tool = Tool(self._tool_table[0])
+        tool_info = self._tool_table[1]
+
+        self.tool = Tool(tool_info)
         self.tool_actor = self.tool.get_actor()
 
         self.path_actors = list()
@@ -744,6 +746,8 @@ class Tool:
         self.height = 3.0
 
         self.dia = self.tool['D']
+        self.x_offset = self.tool['X']
+        self.y_offset = self.tool['Y']
         self.z_offset = self.tool['Z']
 
         transform = vtk.vtkTransform()
@@ -756,7 +760,7 @@ class Tool:
         #     transform.RotateWXYZ(90, 0, 1, 0)
 
         source = vtk.vtkCylinderSource()
-        source.SetCenter(0, self.height / 2 - self.z_offset, 0)  # FIXME positive or negative?
+        source.SetCenter(self.x_offset, self.height / 2 - self.z_offset, - self.y_offset)
         source.SetRadius(self.dia / 2)
         source.SetHeight(self.height)
 
