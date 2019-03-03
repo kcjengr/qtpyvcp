@@ -760,7 +760,7 @@ class Tool:
 
         if self.tool_no == 0:
             source = vtk.vtkConeSource()
-            source.SetCenter(-self.height / 2, 0, 0)
+            source.SetCenter(-self.height / 2, - self.z_offset, - self.y_offset)
             source.SetRadius(0.5)
             transform.RotateWXYZ(90, 0, 1, 0)
         else:
