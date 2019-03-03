@@ -168,8 +168,9 @@ class VTKCanon(object):
         w += self.g92_offset_w
 
         if self.rotation_xy:
-            x = x * self.rotation_cos - y * self.rotation_sin
-            y = x * self.rotation_sin + y * self.rotation_cos
+            rotx = x * self.rotation_cos - y * self.rotation_sin
+            roty = x * self.rotation_sin + y * self.rotation_cos
+            x, y = rotx, roty
 
         x += self.g5x_offset_x
         y += self.g5x_offset_y
