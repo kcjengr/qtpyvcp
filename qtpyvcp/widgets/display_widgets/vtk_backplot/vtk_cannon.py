@@ -1,4 +1,4 @@
-import rs274.glcanon
+import vtk_canon
 import rs274.interpret
 import linuxcnc
 import gcode
@@ -14,10 +14,10 @@ class NullProgress(object):
         pass
 
 
-class StatCanon(rs274.glcanon.GLCanon, rs274.interpret.StatMixin):
+class StatCanon(vtk_canon.VTKCanon, vtk_canon.StatMixin):
     def __init__(self, colors, geometry, lathe_view_option, stat, random):
-        rs274.glcanon.GLCanon.__init__(self, colors, geometry)
-        rs274.interpret.StatMixin.__init__(self, stat, random)
+        vtk_canon.VTKCanon.__init__(self, colors, geometry)
+        vtk_canon.StatMixin.__init__(self, stat, random)
         self.progress = NullProgress()
         self.lathe_view_option = lathe_view_option
 
@@ -25,12 +25,13 @@ class StatCanon(rs274.glcanon.GLCanon, rs274.interpret.StatMixin):
         return self.lathe_view_option
 
 
-class VTKCanon(rs274.glcanon.GlCanonDraw):
+class VTKCanon(vtk_canon.VTKCanon):
     def __init__(self, inifile=None):
         inifile = inifile or os.getenv("INI_FILE_NAME")
         if inifile is None:
             raise ValueError("Invalid INI file.")
 
+        self.stat = linuxcnc.stat()
         self.inifile = linuxcnc.ini(inifile)
         self.INI_FILE_PATH = os.path.split(inifile)[0]
         self.select_primed = None
@@ -44,7 +45,7 @@ class VTKCanon(rs274.glcanon.GlCanonDraw):
         temp = self.inifile.find("DISPLAY", "LATHE")
         self.lathe_option = temp == "1" or temp == "True" or temp == "true"
 
-        rs274.glcanon.GlCanonDraw.__init__(self, linuxcnc.stat(), None)
+        # vtk_canon.GlCanonDraw.__init__(self, linuxcnc.stat(), None)
 
         live_axis_count = 0
         for i, j in enumerate("XYZABCUVW"):
@@ -66,7 +67,7 @@ class VTKCanon(rs274.glcanon.GlCanonDraw):
 
         # create the object which handles the canonical motion callbacks
         # (straight_feed, straight_traverse, arc_feed, rigid_tap, etc.)
-        # StatCanon inherits from GLCanon, which will do the work for us
+        # StatCanon inherits from VTKCanon, which will do the work for us
         self.canon = StatCanon(None, self.get_geometry(), self.lathe_option,
                                self.stat, random)
 
@@ -94,8 +95,8 @@ class VTKCanon(rs274.glcanon.GlCanonDraw):
         # THIS IS WHERE IT ALL HAPPENS: load_preview will execute the code,
         # call back to the canon with motion commands, and record a history
         # of all the movements.
-        result, seq = self.load_preview(filename, self.canon, unitcode,
-                                        initcode)
+        result, seq = gcode.parse(filename, self.canon, unitcode, initcode)
+
         if result > gcode.MIN_ERROR:
             self.report_gcode_error(result, seq, filename)
 
@@ -129,5 +130,5 @@ if __name__ == "__main__":
     from qtpyvcp import TOP_DIR
     INI_FILENAME = os.path.join(TOP_DIR, 'sim/xyz.ini')
     gr = VTKCanon(INI_FILENAME)
-    gr.load()
+    gr.load('/home/kurt/dev/cnc/qtpyvcp/sim/example_gcode/qtpyvcp.ngc')
     gr.print_moves()
