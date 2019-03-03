@@ -25,6 +25,10 @@
   <property name="windowTitle">
    <string>Probe Basic</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="probe_basic.qrc">
+    <normaloff>:/images/probe_basic_icon.png</normaloff>:/images/probe_basic_icon.png</iconset>
+  </property>
   <property name="toolTipDuration">
    <number>-1</number>
   </property>
