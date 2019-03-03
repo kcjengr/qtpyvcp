@@ -1,4 +1,5 @@
 from collections import defaultdict
+from pprint import pprint
 
 import vtk, math
 
@@ -21,6 +22,7 @@ import linuxcnc
 
 LOG = logger.getLogger(__name__)
 STATUS = getPlugin('status')
+TOOLTABLE = getPlugin('tooltable')
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
@@ -41,6 +43,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.current_position = (0.0, 0.0, 0.0)
         self.parent = parent
         self.status = STATUS
+        self.tt = TOOLTABLE
+
+        self._tool_table = self.tt.loadToolTable()
 
         self.axis = self.status.stat.axis
 
@@ -67,7 +72,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.path_cache = PathCache(self.current_position)
         self.path_cache_actor = self.path_cache.get_actor()
 
-        self.tool = Tool()
+        tool_info = self._tool_table[1]
+
+        self.tool = Tool(tool_info)
         self.tool_actor = self.tool.get_actor()
 
         self.path_actors = list()
@@ -84,6 +91,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
 
         self.status.file.notify(self.load_program)
         self.status.position.notify(self.update_tool_position)
+
+        self.status.tool_in_spindle.notify(self.update_tool_number)
 
         self.status.g5x_offset.notify(self.update_g5x_offset)
         self.status.g92_offset.notify(self.update_g92_offset)
@@ -144,11 +153,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.update_render()
 
     def update_rotation_xy(self, rotation):
-        print 'Rotation: ', rotation # in degrees
+        print('Rotation: ', rotation) # in degrees
         # ToDo: use transform matrix to rotate existing path?
         # probably not worth it since rotation is not used much ...
         # nasty hack so ensure the positions have updated before loading
         QTimer.singleShot(10, self.reload_program)
+
+    def update_tool_number(self, tool):
+        self.renderer.RemoveActor(self.tool_actor)
+
+        tool_info = self._tool_table[tool]
+        self.tool = Tool(tool=tool_info)
+        self.tool_actor = self.tool.get_actor()
+
+        self.renderer.AddActor(self.tool_actor)
+
+        self.update_render()
 
     def update_render(self):
         self.GetRenderWindow().Render()
@@ -369,11 +389,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         return self._background_color2
 
     @backgroundColor2.setter
-    def backgroundColor2(self, color):
-        self._background_color2 = color
+    def backgroundColor2(self, color2):
+        self._background_color2 = color2
 
-        self.renderer.GradientBackgroundOn()
-        self.renderer.SetBackground2(color.getRgbF()[:3])
+        self.renderer.SetBackground2(color2.getRgbF()[:3])
         self.update_render()
 
     @backgroundColor2.reset
@@ -724,18 +743,34 @@ class Axes:
 
 
 class Tool:
-    def __init__(self):
-        self.height = 1.0
+    def __init__(self, tool):
 
-        # Create source
-        source = vtk.vtkConeSource()
-        source.SetResolution(128)
-        source.SetHeight(self.height)
-        source.SetCenter(-self.height / 2, 0, 0)
-        source.SetRadius(0.5)
+        self.tool = tool
+
+        print(self.tool)
+        self.height = 3.0
+
+        self.dia = self.tool['D']
+        self.x_offset = self.tool['X']
+        self.y_offset = self.tool['Y']
+        self.z_offset = self.tool['Z']
 
         transform = vtk.vtkTransform()
-        transform.RotateWXYZ(90, 0, 1, 0)
+        transform.RotateWXYZ(90, 1, 0, 0)
+
+        # if self.tool_type == 0:
+        #     source = vtk.vtkConeSource()
+        #     source.SetCenter(-self.height / 2, 0, 0)
+        #     source.SetRadius(0.5)
+        #     transform.RotateWXYZ(90, 0, 1, 0)
+
+        source = vtk.vtkCylinderSource()
+        source.SetCenter(self.x_offset, self.height / 2 - self.z_offset, - self.y_offset)
+        source.SetRadius(self.dia / 2)
+        source.SetHeight(self.height)
+
+        source.SetResolution(128)
+
         transform_filter = vtk.vtkTransformPolyDataFilter()
         transform_filter.SetTransform(transform)
         transform_filter.SetInputConnection(source.GetOutputPort())
