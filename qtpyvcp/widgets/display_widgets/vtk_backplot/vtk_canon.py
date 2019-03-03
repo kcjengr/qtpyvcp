@@ -58,15 +58,15 @@ class VTKCanon(object):
         self.max_extents_notool = [-9e99, -9e99, -9e99]
 
         # tool length offsets
-        self.tool_offset_x = 0
-        self.tool_offset_y = 0
-        self.tool_offset_z = 0
-        self.tool_offset_a = 0
-        self.tool_offset_b = 0
-        self.tool_offset_c = 0
-        self.tool_offset_u = 0
-        self.tool_offset_v = 0
-        self.tool_offset_w = 0
+        self.tlo_x = 0
+        self.tlo_y = 0
+        self.tlo_z = 0
+        self.tlo_a = 0
+        self.tlo_b = 0
+        self.tlo_c = 0
+        self.tlo_u = 0
+        self.tlo_v = 0
+        self.tlo_w = 0
 
         # G92/G52 offsets
         self.g92_offset_x = 0.0
@@ -218,19 +218,19 @@ class VTKCanon(object):
         x, y, z, a, b, c, u, v, w = self.lo
 
         self.lo = (
-            x - xo + self.tool_offset_x, y - yo + self.tool_offset_y, z - zo + self.tool_offset_z,
-            a - ao + self.tool_offset_a, b - bo + self.tool_offset_b, c - bo + self.tool_offset_b,
-            u - uo + self.tool_offset_u, v - vo + self.tool_offset_v, w - wo + self.tool_offset_w)
+            x - xo + self.tlo_x, y - yo + self.tlo_y, z - zo + self.tlo_z,
+            a - ao + self.tlo_a, b - bo + self.tlo_b, c - bo + self.tlo_b,
+            u - uo + self.tlo_u, v - vo + self.tlo_v, w - wo + self.tlo_w)
 
-        self.tool_offset_x = xo
-        self.tool_offset_y = yo
-        self.tool_offset_z = zo
-        self.tool_offset_a = ao
-        self.tool_offset_b = bo
-        self.tool_offset_c = co
-        self.tool_offset_u = uo
-        self.tool_offset_v = vo
-        self.tool_offset_w = wo
+        self.tlo_x = xo
+        self.tlo_y = yo
+        self.tlo_z = zo
+        self.tlo_a = ao
+        self.tlo_b = bo
+        self.tlo_c = co
+        self.tlo_u = uo
+        self.tlo_v = vo
+        self.tlo_w = wo
 
     def set_spindle_rate(self, speed):
         pass
@@ -250,7 +250,7 @@ class VTKCanon(object):
         pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
         if not self.first_move:
             self.traverse_append(
-                (self.lineno, self.lo, pos, [self.tool_offset_x, self.tool_offset_y, self.tool_offset_z]))
+                (self.lineno, self.lo, pos, [self.tlo_x, self.tlo_y, self.tlo_z]))
         self.lo = pos
 
     def rigid_tap(self, x, y, z):
@@ -261,10 +261,10 @@ class VTKCanon(object):
         l += [self.lo[3], self.lo[4], self.lo[5],
               self.lo[6], self.lo[7], self.lo[8]]
         self.feed_append((self.lineno, self.lo, l, self.feedrate,
-                          [self.tool_offset_x, self.tool_offset_y, self.tool_offset_z]))
+                          [self.tlo_x, self.tlo_y, self.tlo_z]))
         #        self.dwells_append((self.lineno, self.colors['dwell'], x + self.offset_x, y + self.offset_y, z + self.offset_z, 0))
         self.feed_append((self.lineno, l, self.lo, self.feedrate,
-                          [self.tool_offset_x, self.tool_offset_y, self.tool_offset_z]))
+                          [self.tlo_x, self.tlo_y, self.tlo_z]))
 
     def set_plane(self, plane):
         print "setting plane: ", plane
@@ -287,7 +287,7 @@ class VTKCanon(object):
         lo = self.lo
         lineno = self.lineno
         feedrate = self.feedrate
-        to = [self.tool_offset_x, self.tool_offset_y, self.tool_offset_z]
+        to = [self.tlo_x, self.tlo_y, self.tlo_z]
         append = self.arcfeed_append
         for l in segs:
             append((lineno, lo, l, feedrate, to))
@@ -299,7 +299,7 @@ class VTKCanon(object):
         self.first_move = False
         l = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
         self.feed_append((self.lineno, self.lo, l, self.feedrate,
-                          [self.tool_offset_x, self.tool_offset_y, self.tool_offset_z]))
+                          [self.tlo_x, self.tlo_y, self.tlo_z]))
         self.lo = l
 
     straight_probe = straight_feed
