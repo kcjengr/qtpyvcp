@@ -19,7 +19,8 @@
 from collections import OrderedDict
 
 from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QComboBox, QDialog, QHBoxLayout, QLabel, QLineEdit, QPushButton, QVBoxLayout
+from qtpy.QtWidgets import QComboBox, QDialog, QHBoxLayout, QLabel, \
+    QDoubleSpinBox, QPushButton, QVBoxLayout
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities import logger
@@ -45,8 +46,8 @@ class OffsetsDialog(QDialog):
         coords_msg = QLabel("Coordinate relative to workpiece:")
         system_msg = QLabel("Coordinate System:")
 
-        self.coords_input = QLineEdit('0.0000')
-        self.coords_input.setInputMask('000009.00000')
+        self.coords_input = QDoubleSpinBox()
+        self.coords_input.setRange(-999999, 999999)
 
         self.system_combo = QComboBox()
 

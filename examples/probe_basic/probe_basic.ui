@@ -214,7 +214,7 @@ bottom-margin: 0px;
           <property name="currentIndex">
            <number>0</number>
           </property>
-          <widget class="QWidget" name="tab_2">
+          <widget class="QWidget" name="main_tab">
            <attribute name="title">
             <string>          MAIN          </string>
            </attribute>
@@ -267,22 +267,40 @@ background-color: transparent;
               <property name="handleWidth">
                <number>10</number>
               </property>
-              <widget class="QWidget" name="verticalLayoutWidget">
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
+              <widget class="QWidget" name="verticalWidget" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
                </property>
-               <layout class="QVBoxLayout" name="verticalLayout_2">
+               <property name="minimumSize">
+                <size>
+                 <width>700</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>700</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0">
                 <property name="spacing">
                  <number>2</number>
                 </property>
+                <property name="sizeConstraint">
+                 <enum>QLayout::SetMinimumSize</enum>
+                </property>
                 <property name="leftMargin">
-                 <number>0</number>
+                 <number>1</number>
                 </property>
                 <property name="topMargin">
                  <number>3</number>
                 </property>
                 <property name="rightMargin">
-                 <number>0</number>
+                 <number>1</number>
                 </property>
                 <property name="bottomMargin">
                  <number>3</number>
@@ -293,6 +311,12 @@ background-color: transparent;
                    <size>
                     <width>148</width>
                     <height>30</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>700</width>
+                    <height>16777215</height>
                    </size>
                   </property>
                   <property name="focusPolicy">
@@ -334,6 +358,24 @@ QComboBox QAbstractItemView{
                 </item>
                 <item>
                  <widget class="GcodeEditor" name="gcodeeditor">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>700</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>700</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
                   <property name="focusPolicy">
                    <enum>Qt::NoFocus</enum>
                   </property>
@@ -341,10 +383,22 @@ QComboBox QAbstractItemView{
                 </item>
                 <item>
                  <widget class="MDIEntry" name="mdi_entry_box">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
                   <property name="minimumSize">
                    <size>
-                    <width>0</width>
+                    <width>700</width>
                     <height>40</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>700</width>
+                    <height>16777215</height>
                    </size>
                   </property>
                   <property name="font">
@@ -363,32 +417,591 @@ QComboBox QAbstractItemView{
                 </item>
                </layout>
               </widget>
-              <widget class="GcodeBackplot" name="gcodebackplot">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
+             </widget>
+            </item>
+            <item>
+             <widget class="QWidget" name="widget_7" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="styleSheet">
+               <string notr="true"/>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_10">
+               <property name="spacing">
+                <number>0</number>
                </property>
-               <property name="focusPolicy">
-                <enum>Qt::NoFocus</enum>
+               <property name="leftMargin">
+                <number>0</number>
                </property>
-               <property name="renderProgramAlpha" stdset="0">
-                <bool>true</bool>
+               <property name="topMargin">
+                <number>0</number>
                </property>
-               <property name="backgroundColor">
-                <color>
-                 <red>0</red>
-                 <green>0</green>
-                 <blue>0</blue>
-                </color>
+               <property name="rightMargin">
+                <number>0</number>
                </property>
-              </widget>
+               <property name="bottomMargin">
+                <number>1</number>
+               </property>
+               <item>
+                <widget class="QWidget" name="vtk_control_buttons" native="true">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>90</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>90</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <layout class="QVBoxLayout" name="verticalLayout_8">
+                  <property name="spacing">
+                   <number>6</number>
+                  </property>
+                  <property name="leftMargin">
+                   <number>15</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>0</number>
+                  </property>
+                  <item>
+                   <widget class="QPushButton" name="iso_view_button">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>ISO VIEW</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="x_view_button">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>X View</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="y_view_button">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>Y View</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="z_view_button">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>Z View</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_29">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>60</width>
+                      <height>4</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>4</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>TextLabel</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="pan_button">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>PAN</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="zoom_in_button">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>ZOOM IN</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="zoom_out_button">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>ZOOM OUT</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_32">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>60</width>
+                      <height>4</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>4</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>TextLabel</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="program_zoom_button">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>PGM EXTS</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="machine_zoom_button">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>MCH EXTS</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_27">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>60</width>
+                      <height>4</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>4</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>TextLabel</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="path_button">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>PATH</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="clear_button">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>CLEAR</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QLabel" name="label_28">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>60</width>
+                      <height>4</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>60</width>
+                      <height>4</height>
+                     </size>
+                    </property>
+                    <property name="text">
+                     <string>TextLabel</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="ortho_button">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>ORTHO</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="perspective_button">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>75</width>
+                      <height>33</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>PSPECT</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+               <item>
+                <widget class="VTKBackPlot" name="vtk">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="backgroundColor" stdset="0">
+                  <color>
+                   <red>0</red>
+                   <green>0</green>
+                   <blue>0</blue>
+                  </color>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </widget>
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_15">
+          <widget class="QWidget" name="file_tab">
            <attribute name="title">
             <string>          FILE          </string>
            </attribute>
@@ -1474,7 +2087,7 @@ border-radius: 6px;
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="status_tab">
+          <widget class="QWidget" name="atc_tab">
            <attribute name="title">
             <string>          ATC          </string>
            </attribute>
@@ -4330,7 +4943,7 @@ padding-right: 10px;
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_16">
+          <widget class="QWidget" name="offsets_tab">
            <attribute name="title">
             <string>        OFFSETS        </string>
            </attribute>
@@ -7928,7 +8541,7 @@ padding-left: 5px;
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tooling_tab">
+          <widget class="QWidget" name="tool_tab">
            <attribute name="title">
             <string>          TOOL          </string>
            </attribute>
@@ -13671,17 +14284,17 @@ Background:transparent;
             </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="tab_4">
+          <widget class="QWidget" name="conversational_tab">
            <attribute name="title">
             <string>          CONVERSATIONAL          </string>
            </attribute>
           </widget>
-          <widget class="QWidget" name="tab_3">
+          <widget class="QWidget" name="settings_tab">
            <attribute name="title">
             <string>          SETTINGS           </string>
            </attribute>
           </widget>
-          <widget class="QWidget" name="tab_10">
+          <widget class="QWidget" name="status_tab">
            <attribute name="title">
             <string>          STATUS           </string>
            </attribute>
@@ -13734,7 +14347,7 @@ Background:transparent;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -14675,7 +15288,260 @@ border-radius: 6px;
               <number>13</number>
              </property>
              <item>
-              <widget class="QWidget" name="widget" native="true"/>
+              <widget class="QWidget" name="widget" native="true">
+               <widget class="QWidget" name="widget_5" native="true">
+                <property name="geometry">
+                 <rect>
+                  <x>4</x>
+                  <y>0</y>
+                  <width>171</width>
+                  <height>151</height>
+                 </rect>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>171</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>171</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <layout class="QGridLayout" name="gridLayout_7">
+                 <property name="leftMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>6</number>
+                 </property>
+                 <property name="spacing">
+                  <number>9</number>
+                 </property>
+                 <item row="5" column="0">
+                  <widget class="QPushButton" name="program_labels_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#program_labels_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>PGM LABELS</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0">
+                  <widget class="QPushButton" name="program_boundry_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#program_boundry_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>PRG BDRY</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                   <property name="autoExclusive">
+                    <bool>false</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="1">
+                  <widget class="QPushButton" name="machine_boundry_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>Bebas Kai</family>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#machine_boundry_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>MCH BDRY</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1">
+                  <widget class="QPushButton" name="machine_ticks_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#machine_ticks_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>MCH TICKS</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="0">
+                  <widget class="QPushButton" name="program_ticks_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#program_ticks_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>PGM TICKS</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="5" column="1">
+                  <widget class="QPushButton" name="machine_labels_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#machine_labels_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>MCH LABELS</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </widget>
              </item>
              <item>
               <widget class="QWidget" name="horizontalWidget_2" native="true">
@@ -19801,12 +20667,6 @@ font: 11pt bebas kai;
    <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
   </customwidget>
   <customwidget>
-   <class>GcodeBackplot</class>
-   <extends>QWidget</extends>
-   <header>qtpyvcp.widgets.display_widgets.gcode_backplot.gcode_backplot</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>GcodeEditor</class>
    <extends>QFrame</extends>
    <header>qtpyvcp.widgets.input_widgets.gcode_editor</header>
@@ -19817,6 +20677,11 @@ font: 11pt bebas kai;
    <extends>QMainWindow</extends>
    <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VTKBackPlot</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot</header>
   </customwidget>
   <customwidget>
    <class>VCPLineEdit</class>
@@ -19887,12 +20752,12 @@ font: 11pt bebas kai;
    <slot>deleteItem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>738</x>
-     <y>621</y>
+     <x>109</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19903,12 +20768,12 @@ font: 11pt bebas kai;
    <slot>viewParentDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>752</x>
-     <y>108</y>
+     <x>129</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19919,12 +20784,12 @@ font: 11pt bebas kai;
    <slot>newFolder()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>995</x>
-     <y>621</y>
+     <x>144</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19935,12 +20800,12 @@ font: 11pt bebas kai;
    <slot>newFolder()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>403</x>
-     <y>621</y>
+     <x>144</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>146</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19951,12 +20816,12 @@ font: 11pt bebas kai;
    <slot>deleteItem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>146</x>
-     <y>621</y>
+     <x>109</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>146</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19967,12 +20832,12 @@ font: 11pt bebas kai;
    <slot>doFileTransfer()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>610</x>
-     <y>479</y>
+     <x>79</x>
+     <y>136</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19983,12 +20848,12 @@ font: 11pt bebas kai;
    <slot>doFileTransfer()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>610</x>
-     <y>320</y>
+     <x>79</x>
+     <y>136</y>
     </hint>
     <hint type="destinationlabel">
-     <x>146</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -19999,12 +20864,12 @@ font: 11pt bebas kai;
    <slot>viewParentDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>160</x>
-     <y>108</y>
+     <x>129</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>146</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20015,12 +20880,12 @@ font: 11pt bebas kai;
    <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>738</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>146</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20031,12 +20896,12 @@ font: 11pt bebas kai;
    <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>146</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20047,12 +20912,12 @@ font: 11pt bebas kai;
    <slot>newFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>854</x>
-     <y>621</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20063,12 +20928,12 @@ font: 11pt bebas kai;
    <slot>newFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>262</x>
-     <y>621</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>146</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20095,12 +20960,12 @@ font: 11pt bebas kai;
    <slot>loadSelectedFile()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1110</x>
-     <y>108</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20111,12 +20976,12 @@ font: 11pt bebas kai;
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>738</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1110</x>
-     <y>108</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20127,12 +20992,12 @@ font: 11pt bebas kai;
    <slot>setPlainText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>738</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1253</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20143,12 +21008,12 @@ font: 11pt bebas kai;
    <slot>setPlainText(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>146</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1253</x>
-     <y>146</y>
+     <x>119</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -20175,12 +21040,12 @@ font: 11pt bebas kai;
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1447</x>
-     <y>171</y>
+     <x>213</x>
+     <y>86</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1602</x>
-     <y>174</y>
+     <x>213</x>
+     <y>91</y>
     </hint>
    </hints>
   </connection>
@@ -20191,12 +21056,12 @@ font: 11pt bebas kai;
    <slot>deleteSelectedTool()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>98</x>
-     <y>598</y>
+     <x>109</x>
+     <y>104</y>
     </hint>
     <hint type="destinationlabel">
-     <x>127</x>
-     <y>513</y>
+     <x>134</x>
+     <y>101</y>
     </hint>
    </hints>
   </connection>
@@ -20207,12 +21072,12 @@ font: 11pt bebas kai;
    <slot>addTool()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>258</x>
-     <y>601</y>
+     <x>154</x>
+     <y>104</y>
     </hint>
     <hint type="destinationlabel">
-     <x>258</x>
-     <y>529</y>
+     <x>134</x>
+     <y>101</y>
     </hint>
    </hints>
   </connection>
@@ -20223,12 +21088,12 @@ font: 11pt bebas kai;
    <slot>saveToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>811</x>
-     <y>605</y>
+     <x>154</x>
+     <y>104</y>
     </hint>
     <hint type="destinationlabel">
-     <x>783</x>
-     <y>515</y>
+     <x>134</x>
+     <y>101</y>
     </hint>
    </hints>
   </connection>
@@ -20239,12 +21104,268 @@ font: 11pt bebas kai;
    <slot>loadToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>946</x>
-     <y>596</y>
+     <x>174</x>
+     <y>104</y>
     </hint>
     <hint type="destinationlabel">
-     <x>945</x>
-     <y>546</y>
+     <x>134</x>
+     <y>101</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_view_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewX()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>823</x>
+     <y>155</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1461</x>
+     <y>134</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>y_view_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewY()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>823</x>
+     <y>208</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1473</x>
+     <y>182</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>z_view_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewZ()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>823</x>
+     <y>261</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1382</x>
+     <y>245</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>clearLivePlot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>823</x>
+     <y>389</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1316</x>
+     <y>376</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoom_in_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>zoomIn()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>823</x>
+     <y>570</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1263</x>
+     <y>447</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoom_out_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>zoomOut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>823</x>
+     <y>623</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1295</x>
+     <y>498</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>path_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewPath()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>823</x>
+     <y>336</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1350</x>
+     <y>622</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>iso_view_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>823</x>
+     <y>102</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1281</x>
+     <y>304</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_boundry_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>programBounds(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1711</x>
+     <y>187</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1545</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_boundry_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>machineBounds(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1716</x>
+     <y>229</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1583</x>
+     <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_ticks_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>programTicks(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1706</x>
+     <y>278</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1551</x>
+     <y>292</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_ticks_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>machineTicks(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1732</x>
+     <y>321</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1528</x>
+     <y>328</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_labels_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>programLabels(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1731</x>
+     <y>371</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1593</x>
+     <y>377</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_labels_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>machineLabels(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1713</x>
+     <y>418</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1536</x>
+     <y>415</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ortho_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewOrtho()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>823</x>
+     <y>464</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1405</x>
+     <y>554</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>perspective_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewPersp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>823</x>
+     <y>517</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1397</x>
+     <y>622</y>
     </hint>
    </hints>
   </connection>

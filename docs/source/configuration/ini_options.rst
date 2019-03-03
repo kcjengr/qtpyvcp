@@ -36,6 +36,10 @@ Options available in the INI file are:
     QT_API = api           # Qt Python binding to use, pyqt5 or pyside2.
     COMMAND_LINE_ARGS = <args>
 
+    # VTK_Widget Options
+    PROGRAM_BOUNDRY        # Boolean False to hide the program boundry
+    MACHINE_BOUNDRY        # Boolean False to hide the machine boundry
+
 
 Boolean values can be one of ``true``, ``on``, ``yes`` or ``1`` for **True**,
 and one of ``false``, ``off``, ``no`` or ``0`` for **False**.
