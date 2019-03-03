@@ -68,7 +68,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.path_cache = PathCache(self.current_position)
         self.path_cache_actor = self.path_cache.get_actor()
 
-        self.tool = Tool()
+        self.tool = Tool("CONE")
         self.tool_actor = self.tool.get_actor()
 
         self.path_actors = list()
@@ -85,6 +85,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
 
         self.status.file.notify(self.load_program)
         self.status.position.notify(self.update_tool_position)
+
+        self.status.tool_in_spindle.notify(self.update_tool_number)
 
         self.status.g5x_offset.notify(self.update_g5x_offset)
         self.status.g92_offset.notify(self.update_g92_offset)
@@ -150,6 +152,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         # probably not worth it since rotation is not used much ...
         # nasty hack so ensure the positions have updated before loading
         QTimer.singleShot(10, self.reload_program)
+
+    def update_tool_number(self, tool):
+        print(tool)
+
+        self.renderer.RemoveActor(self.tool_actor)
+        self.tool = Tool("CYL")
+        self.tool_actor = self.tool.get_actor()
+        self.renderer.AddActor(self.tool_actor)
+
+        self.update_render()
 
     def update_render(self):
         self.GetRenderWindow().Render()
@@ -718,18 +730,29 @@ class Axes:
 
 
 class Tool:
-    def __init__(self):
+    def __init__(self, tool_type):
         self.height = 1.0
 
-        # Create source
-        source = vtk.vtkConeSource()
-        source.SetResolution(128)
-        source.SetHeight(self.height)
-        source.SetCenter(-self.height / 2, 0, 0)
-        source.SetRadius(0.5)
+        self.tool_type = tool_type
 
         transform = vtk.vtkTransform()
-        transform.RotateWXYZ(90, 0, 1, 0)
+
+        if self.tool_type == "CONE":
+            source = vtk.vtkConeSource()
+            source.SetCenter(-self.height / 2, 0, 0)
+            source.SetRadius(0.5)
+            transform.RotateWXYZ(90, 0, 1, 0)
+        elif self.tool_type == "CYL":
+            source = vtk.vtkCylinderSource()
+            source.SetCenter(0, self.height / 2, 0)
+            source.SetRadius(0.15)
+            transform.RotateWXYZ(90, 1, 0, 0)
+        else:
+            source = None
+
+        source.SetResolution(128)
+        source.SetHeight(self.height)
+        
         transform_filter = vtk.vtkTransformPolyDataFilter()
         transform_filter.SetTransform(transform)
         transform_filter.SetInputConnection(source.GetOutputPort())
