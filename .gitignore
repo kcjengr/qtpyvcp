@@ -31,4 +31,4 @@ sim/*.old
 # persistent messages
 sim/*messages.json
 
-examples/vtk_test/configs/vtk_test/\.qtpyvcp-messages\.json
+*messages.json
