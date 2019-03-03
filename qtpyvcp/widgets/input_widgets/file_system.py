@@ -59,7 +59,7 @@ class RemovableDeviceComboBox(QComboBox):
                     self.addItem(p.mountpoint, p.device)
 
         if not self.count():
-            self.addItem("No Devide Found", "NONONONONO")
+            self.addItem("No Device Found", "NONONONONO")
 
         self.setCurrentIndex(0)
 
