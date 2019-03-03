@@ -41,7 +41,7 @@ class VTKCanon(object):
         self.feedrate = 1
         self.dwell_time = 0
 
-        self.line_num = -1
+        self.seq_num = -1
         self.last_pos = (0,) * 9
 
         self.first_move = True
@@ -102,6 +102,8 @@ class VTKCanon(object):
         self.notify = 0
         self.notify_message = ""
 
+        self.path_points = list()
+
     def comment(self, msg):
         pass
 
@@ -118,7 +120,7 @@ class VTKCanon(object):
         # 'overrides', 'path_mode', 'plane', 'retract_mode', 'sequence_number',
         # 'speed', 'spindle', 'stopping', 'tool_length_offset', 'toolchange',
         self.state = st
-        self.line_num = self.state.sequence_number
+        self.seq_num = self.state.sequence_number
 
     def calc_extents(self):
         self.min_extents, self.max_extents, self.min_extents_notool, \
@@ -209,7 +211,7 @@ class VTKCanon(object):
     def select_plane(self, plane):
         pass
 
-    def change_tool(self, tnum):
+    def change_tool(self, pocket):
         self.first_move = True
 
     def straight_traverse(self, x, y, z, a, b, c, u, v, w):
@@ -219,7 +221,7 @@ class VTKCanon(object):
         pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
         if not self.first_move:
             self.traverse_append(
-                (self.line_num, self.last_pos, pos, [self.tlo_x, self.tlo_y, self.tlo_z]))
+                (self.seq_num, self.last_pos, pos, [self.tlo_x, self.tlo_y, self.tlo_z]))
         self.last_pos = pos
 
     def rigid_tap(self, x, y, z):
@@ -230,10 +232,10 @@ class VTKCanon(object):
         pos = self.rotate_and_translate(x, y, z, 0, 0, 0, 0, 0, 0)[:3]
         pos += self.last_pos[3:]
 
-        self.feed_append((self.line_num, self.last_pos, pos, self.feedrate,
+        self.feed_append((self.seq_num, self.last_pos, pos, self.feedrate,
                           [self.tlo_x, self.tlo_y, self.tlo_z]))
 
-        self.feed_append((self.line_num, pos, self.last_pos, self.feedrate,
+        self.feed_append((self.seq_num, pos, self.last_pos, self.feedrate,
                           [self.tlo_x, self.tlo_y, self.tlo_z]))
 
     def set_plane(self, plane):
@@ -255,25 +257,25 @@ class VTKCanon(object):
 
     def straight_arcsegments(self, segs):
         self.first_move = False
-        lo = self.last_pos
-        lineno = self.line_num
+        last_pos = self.last_pos
+        seq_num = self.seq_num
         feedrate = self.feedrate
         to = [self.tlo_x, self.tlo_y, self.tlo_z]
         append = self.arcfeed_append
-        for l in segs:
-            append((lineno, lo, l, feedrate, to))
-            lo = l
-        self.last_pos = lo
+        for pos in segs:
+            append((seq_num, last_pos, pos, feedrate, to))
+            last_pos = pos
+        self.last_pos = last_pos
 
     def straight_feed(self, x, y, z, a, b, c, u, v, w):
         if self.suppress > 0:
             return
 
         self.first_move = False
-        l = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
-        self.feed_append((self.line_num, self.last_pos, l, self.feedrate,
+        pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
+        self.feed_append((self.seq_num, self.last_pos, pos, self.feedrate,
                           [self.tlo_x, self.tlo_y, self.tlo_z]))
-        self.last_pos = l
+        self.last_pos = pos
 
     straight_probe = straight_feed
 
@@ -282,7 +284,7 @@ class VTKCanon(object):
             return
 
         color = self.colors['m1xx']
-        self.dwells_append((self.line_num, color, self.last_pos[0], self.last_pos[1],
+        self.dwells_append((self.seq_num, color, self.last_pos[0], self.last_pos[1],
                             self.last_pos[2], self.state.plane / 10 - 17))
 
     def dwell(self, arg):
@@ -291,7 +293,7 @@ class VTKCanon(object):
 
         self.dwell_time += arg
         color = self.colors['dwell']
-        self.dwells_append((self.line_num, color, self.last_pos[0], self.last_pos[1],
+        self.dwells_append((self.seq_num, color, self.last_pos[0], self.last_pos[1],
                             self.last_pos[2], self.state.plane / 10 - 17))
 
 
@@ -339,11 +341,10 @@ class StatMixin:
 
     def change_tool(self, pocket):
         if self.random:
-            self.tools[0], self.tools[pocket] = self.tools[pocket], self.tools[
-                0]
+            self.tools[0] = self.tools[pocket]
+            self.tools[pocket] = self.tools[0]
         elif pocket == 0:
-            self.tools[
-                0] = -1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0
+            self.tools[0] = -1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0
         else:
             self.tools[0] = self.tools[pocket]
 
