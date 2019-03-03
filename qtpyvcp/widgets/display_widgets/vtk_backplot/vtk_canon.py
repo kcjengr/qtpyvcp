@@ -20,8 +20,6 @@ import gcode
 
 
 class VTKCanon(object):
-    lineno = -1
-
     def __init__(self, geometry, is_foam=0):
 
         # traverse list - [line number, [start position], [end position], [tlo x, tlo y, tlo z]]
@@ -42,7 +40,9 @@ class VTKCanon(object):
 
         self.feedrate = 1
         self.dwell_time = 0
-        self.lo = (0,) * 9
+
+        self.line_num = -1
+        self.last_pos = (0,) * 9
 
         self.first_move = True
         self.in_arc = 0
@@ -101,56 +101,24 @@ class VTKCanon(object):
         self.foam_w = 1.5
         self.notify = 0
         self.notify_message = ""
-        self.highlight_line = None
 
-    def comment(self, arg):
-        if arg.startswith("AXIS,"):
-            parts = arg.split(",")
-            command = parts[1]
+    def comment(self, msg):
+        pass
 
-            if command == "stop":
-                raise KeyboardInterrupt
-
-            if command == "hide":
-                self.suppress += 1
-
-            if command == "show":
-                self.suppress -= 1
-
-            if command == "XY_Z_POS":
-                if len(parts) > 2:
-                    try:
-                        self.foam_z = float(parts[2])
-                        if 210 in self.state.gcodes:
-                            self.foam_z = self.foam_z / 25.4
-                    except:
-                        self.foam_z = 5.0 / 25.4
-
-            if command == "UV_Z_POS":
-                if len(parts) > 2:
-                    try:
-                        self.foam_w = float(parts[2])
-                        if 210 in self.state.gcodes:
-                            self.foam_w = self.foam_w / 25.4
-                    except:
-                        self.foam_w = 30.0
-
-            if command == "notify":
-                self.notify = self.notify + 1
-                self.notify_message = "(AXIS,notify):" + str(self.notify)
-                if len(parts) > 2:
-                    if len(parts[2]):
-                        self.notify_message = parts[2]
-
-    def message(self, message):
+    def message(self, msg):
         pass
 
     def check_abort(self):
         pass
 
     def next_line(self, st):
+        # state attributes
+        # 'block', 'cutter_side', 'distance_mode', 'feed_mode', 'feed_rate',
+        # 'flood', 'gcodes', 'mcodes', 'mist', 'motion_mode', 'origin', 'units',
+        # 'overrides', 'path_mode', 'plane', 'retract_mode', 'sequence_number',
+        # 'speed', 'spindle', 'stopping', 'tool_length_offset', 'toolchange',
         self.state = st
-        self.lineno = self.state.sequence_number
+        self.line_num = self.state.sequence_number
 
     def calc_extents(self):
         self.min_extents, self.max_extents, self.min_extents_notool, \
@@ -215,9 +183,9 @@ class VTKCanon(object):
 
     def tool_offset(self, xo, yo, zo, ao, bo, co, uo, vo, wo):
         self.first_move = True
-        x, y, z, a, b, c, u, v, w = self.lo
+        x, y, z, a, b, c, u, v, w = self.last_pos
 
-        self.lo = (
+        self.last_pos = (
             x - xo + self.tlo_x, y - yo + self.tlo_y, z - zo + self.tlo_z,
             a - ao + self.tlo_a, b - bo + self.tlo_b, c - bo + self.tlo_b,
             u - uo + self.tlo_u, v - vo + self.tlo_v, w - wo + self.tlo_w)
@@ -241,74 +209,81 @@ class VTKCanon(object):
     def select_plane(self, plane):
         pass
 
-    def change_tool(self, arg):
+    def change_tool(self, tnum):
         self.first_move = True
 
     def straight_traverse(self, x, y, z, a, b, c, u, v, w):
         if self.suppress > 0:
             return
+
         pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
         if not self.first_move:
             self.traverse_append(
-                (self.lineno, self.lo, pos, [self.tlo_x, self.tlo_y, self.tlo_z]))
-        self.lo = pos
+                (self.line_num, self.last_pos, pos, [self.tlo_x, self.tlo_y, self.tlo_z]))
+        self.last_pos = pos
 
     def rigid_tap(self, x, y, z):
         if self.suppress > 0:
             return
+
         self.first_move = False
-        l = self.rotate_and_translate(x, y, z, 0, 0, 0, 0, 0, 0)[:3]
-        l += [self.lo[3], self.lo[4], self.lo[5],
-              self.lo[6], self.lo[7], self.lo[8]]
-        self.feed_append((self.lineno, self.lo, l, self.feedrate,
+        pos = self.rotate_and_translate(x, y, z, 0, 0, 0, 0, 0, 0)[:3]
+        pos += self.last_pos[3:]
+
+        self.feed_append((self.line_num, self.last_pos, pos, self.feedrate,
                           [self.tlo_x, self.tlo_y, self.tlo_z]))
-        #        self.dwells_append((self.lineno, self.colors['dwell'], x + self.offset_x, y + self.offset_y, z + self.offset_z, 0))
-        self.feed_append((self.lineno, l, self.lo, self.feedrate,
+
+        self.feed_append((self.line_num, pos, self.last_pos, self.feedrate,
                           [self.tlo_x, self.tlo_y, self.tlo_z]))
 
     def set_plane(self, plane):
-        print "setting plane: ", plane
         self.plane = plane
 
     def arc_feed(self, x1, y1, cx, cy, rot, z1, a, b, c, u, v, w):
         if self.suppress > 0:
             return
+
         self.first_move = False
         self.in_arc = True
         try:
-            self.lo = tuple(self.lo)
-            segs = gcode.arc_to_segments(self, x1, y1, cx, cy, rot, z1, a, b, c, v, w, self.arcdivision)
+            self.lo = tuple(self.last_pos)
+            segs = gcode.arc_to_segments(self, x1, y1, cx, cy, rot, z1, a, b,
+                                         c, u, v, w, self.arcdivision)
             self.straight_arcsegments(segs)
         finally:
             self.in_arc = False
 
     def straight_arcsegments(self, segs):
         self.first_move = False
-        lo = self.lo
-        lineno = self.lineno
+        lo = self.last_pos
+        lineno = self.line_num
         feedrate = self.feedrate
         to = [self.tlo_x, self.tlo_y, self.tlo_z]
         append = self.arcfeed_append
         for l in segs:
             append((lineno, lo, l, feedrate, to))
             lo = l
-        self.lo = lo
+        self.last_pos = lo
 
     def straight_feed(self, x, y, z, a, b, c, u, v, w):
-        if self.suppress > 0: return
+        if self.suppress > 0:
+            return
+
         self.first_move = False
         l = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
-        self.feed_append((self.lineno, self.lo, l, self.feedrate,
+        self.feed_append((self.line_num, self.last_pos, l, self.feedrate,
                           [self.tlo_x, self.tlo_y, self.tlo_z]))
-        self.lo = l
+        self.last_pos = l
 
     straight_probe = straight_feed
 
     def user_defined_function(self, i, p, q):
-        if self.suppress > 0: return
+        if self.suppress > 0:
+            return
+
         color = self.colors['m1xx']
-        self.dwells_append((self.lineno, color, self.lo[0], self.lo[1],
-                            self.lo[2], self.state.plane / 10 - 17))
+        self.dwells_append((self.line_num, color, self.last_pos[0], self.last_pos[1],
+                            self.last_pos[2], self.state.plane / 10 - 17))
 
     def dwell(self, arg):
         if self.suppress > 0:
@@ -316,8 +291,8 @@ class VTKCanon(object):
 
         self.dwell_time += arg
         color = self.colors['dwell']
-        self.dwells_append((self.lineno, color, self.lo[0], self.lo[1],
-                            self.lo[2], self.state.plane / 10 - 17))
+        self.dwells_append((self.line_num, color, self.last_pos[0], self.last_pos[1],
+                            self.last_pos[2], self.state.plane / 10 - 17))
 
 
 class PrintCanon:
