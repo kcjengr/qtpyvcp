@@ -323,6 +323,9 @@
                 </property>
                </widget>
               </item>
+              <item row="4" column="6">
+               <widget class="MDIEntry" name="mdientry"/>
+              </item>
              </layout>
             </widget>
            </item>
@@ -550,6 +553,11 @@
    <class>MDIButton</class>
    <extends>QPushButton</extends>
    <header>qtpyvcp.widgets.button_widgets.mdi_button</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
   <customwidget>
    <class>ActionButton</class>
