@@ -1,4 +1,5 @@
 from collections import defaultdict
+from pprint import pprint
 
 import vtk, math
 
@@ -21,6 +22,7 @@ import linuxcnc
 
 LOG = logger.getLogger(__name__)
 STATUS = getPlugin('status')
+TOOLTABLE = getPlugin('tooltable')
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
@@ -41,6 +43,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.current_position = (0.0, 0.0, 0.0)
         self.parent = parent
         self.status = STATUS
+        self.tt = TOOLTABLE
+
+        self._tool_table = self.tt.loadToolTable()
 
         self.axis = self.status.stat.axis
 
@@ -68,7 +73,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.path_cache = PathCache(self.current_position)
         self.path_cache_actor = self.path_cache.get_actor()
 
-        self.tool = Tool("CONE")
+        self.tool = Tool(self._tool_table[0])
         self.tool_actor = self.tool.get_actor()
 
         self.path_actors = list()
@@ -147,18 +152,19 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.update_render()
 
     def update_rotation_xy(self, rotation):
-        print 'Rotation: ', rotation # in degrees
+        print('Rotation: ', rotation) # in degrees
         # ToDo: use transform matrix to rotate existing path?
         # probably not worth it since rotation is not used much ...
         # nasty hack so ensure the positions have updated before loading
         QTimer.singleShot(10, self.reload_program)
 
     def update_tool_number(self, tool):
-        print(tool)
-
         self.renderer.RemoveActor(self.tool_actor)
-        self.tool = Tool("CYL")
+
+        tool_info = self._tool_table[tool]
+        self.tool = Tool(tool=tool_info)
         self.tool_actor = self.tool.get_actor()
+
         self.renderer.AddActor(self.tool_actor)
 
         self.update_render()
@@ -730,29 +736,32 @@ class Axes:
 
 
 class Tool:
-    def __init__(self, tool_type):
-        self.height = 1.0
+    def __init__(self, tool):
 
-        self.tool_type = tool_type
+        self.tool = tool
+
+        print(self.tool)
+        self.height = 3.0
+
+        self.dia = self.tool['D']
+        self.z_offset = self.tool['Z']
 
         transform = vtk.vtkTransform()
+        transform.RotateWXYZ(90, 1, 0, 0)
 
-        if self.tool_type == "CONE":
-            source = vtk.vtkConeSource()
-            source.SetCenter(-self.height / 2, 0, 0)
-            source.SetRadius(0.5)
-            transform.RotateWXYZ(90, 0, 1, 0)
-        elif self.tool_type == "CYL":
-            source = vtk.vtkCylinderSource()
-            source.SetCenter(0, self.height / 2, 0)
-            source.SetRadius(0.15)
-            transform.RotateWXYZ(90, 1, 0, 0)
-        else:
-            source = None
+        # if self.tool_type == 0:
+        #     source = vtk.vtkConeSource()
+        #     source.SetCenter(-self.height / 2, 0, 0)
+        #     source.SetRadius(0.5)
+        #     transform.RotateWXYZ(90, 0, 1, 0)
+
+        source = vtk.vtkCylinderSource()
+        source.SetCenter(0, self.height / 2 - self.z_offset, 0)  # FIXME positive or negative?
+        source.SetRadius(self.dia / 2)
+        source.SetHeight(self.height)
 
         source.SetResolution(128)
-        source.SetHeight(self.height)
-        
+
         transform_filter = vtk.vtkTransformPolyDataFilter()
         transform_filter.SetTransform(transform)
         transform_filter.SetInputConnection(source.GetOutputPort())
