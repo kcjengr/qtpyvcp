@@ -14,10 +14,9 @@ class NullProgress(object):
         pass
 
 
-class StatCanon(vtk_canon.VTKCanon, vtk_canon.StatMixin):
+class StatCanon(vtk_canon.VTKCanon):
     def __init__(self, colors, geometry, lathe_view_option, stat, random):
-        vtk_canon.VTKCanon.__init__(self, colors, geometry)
-        vtk_canon.StatMixin.__init__(self, stat, random)
+        vtk_canon.VTKCanon.__init__(self, colors, geometry, stat, random)
         self.progress = NullProgress()
         self.lathe_view_option = lathe_view_option
 
@@ -25,35 +24,25 @@ class StatCanon(vtk_canon.VTKCanon, vtk_canon.StatMixin):
         return self.lathe_view_option
 
 
-class VTKCanon(vtk_canon.VTKCanon):
+class VTKCanon(object):
     def __init__(self, inifile=None):
         inifile = inifile or os.getenv("INI_FILE_NAME")
-        if inifile is None:
-            raise ValueError("Invalid INI file.")
+        if inifile is None or not os.path.isfile(inifile):
+            raise ValueError("Invalid INI file: %s", inifile)
 
         self.stat = linuxcnc.stat()
-        self.inifile = linuxcnc.ini(inifile)
-        self.INI_FILE_PATH = os.path.split(inifile)[0]
-        self.select_primed = None
+        self.ini = linuxcnc.ini(inifile)
+        self.config_dir = os.path.dirname(inifile)
 
-        temp = self.inifile.find("DISPLAY", "GEOMETRY")
-        if temp:
-            self.geometry = temp.upper()
-        else:
-            self.geometry = 'XYZ'
+        temp = self.ini.find("DISPLAY", "GEOMETRY") or 'XYZ'
+        self.geometry = temp.upper()
 
-        temp = self.inifile.find("DISPLAY", "LATHE")
-        self.lathe_option = temp == "1" or temp == "True" or temp == "true"
+        temp = self.ini.find("DISPLAY", "LATHE") or "false"
+        self.lathe_option = temp.lower() in ["1", "true", "yes"]
 
-        # vtk_canon.GlCanonDraw.__init__(self, linuxcnc.stat(), None)
-
-        live_axis_count = 0
-        for i, j in enumerate("XYZABCUVW"):
-            if self.stat.axis_mask & (1 << i) == 0:
-                continue
-            live_axis_count += 1
-
-        self.num_joints = int(self.inifile.find("TRAJ", "JOINTS") or live_axis_count)
+        temp = self.ini.find("RS274NGC", "PARAMETER_FILE") or "linuxcnc.var"
+        self.parameter_file = os.path.join(self.config_dir, temp)
+        self.temp_parameter_file = os.path.join(self.parameter_file + '.temp')
 
     def load(self, filename=None):
         self.stat.poll()
@@ -63,34 +52,21 @@ class VTKCanon(vtk_canon.VTKCanon):
             return
 
         # indicate the style of tool-changer
-        random = int(self.inifile.find("EMCIO", "RANDOM_TOOLCHANGER") or 0)
+        random = int(self.ini.find("EMCIO", "RANDOM_TOOLCHANGER") or 0)
 
         # create the object which handles the canonical motion callbacks
         # (straight_feed, straight_traverse, arc_feed, rigid_tap, etc.)
         # StatCanon inherits from VTKCanon, which will do the work for us
-        self.canon = StatCanon(None, self.get_geometry(), self.lathe_option,
-                               self.stat, random)
+        self.canon = vtk_canon.VTKCanon(self.geometry)
 
-        # load numbered g-code variables from files. Current working
-        # directory must be where the files live Parameter files are
-        # persistent across linuxcnc sessions.  Since this is just a
-        # simulation, we don't want the gcode file to actually change
-        # the persistent parameters, so we make a temporary copy
-        parameter = self.inifile.find("RS274NGC", "PARAMETER_FILE")
-        temp_parameter_orig = os.path.join(self.INI_FILE_PATH,
-                                           os.path.basename(
-                                               parameter or "linuxcnc.var"))
+        if os.path.exists(self.parameter_file):
+            shutil.copy(self.parameter_file, self.temp_parameter_file)
 
-        temp_parameter_new = os.path.join(os.getcwd(), "tmp_params.var")
-        if os.path.exists(parameter):
-            shutil.copy(temp_parameter_orig, temp_parameter_new)
-
-        self.canon.parameter_file = temp_parameter_new
+        self.canon.parameter_file = self.temp_parameter_file
 
         # Some initialization g-code to set the units and optional user code
         unitcode = "G%d" % (20 + (self.stat.linear_units == 1))
-        initcode = self.inifile.find("RS274NGC",
-                                     "RS274NGC_STARTUP_CODE") or ""
+        initcode = self.ini.find("RS274NGC", "RS274NGC_STARTUP_CODE") or ""
 
         # THIS IS WHERE IT ALL HAPPENS: load_preview will execute the code,
         # call back to the canon with motion commands, and record a history
@@ -99,6 +75,10 @@ class VTKCanon(vtk_canon.VTKCanon):
 
         if result > gcode.MIN_ERROR:
             self.report_gcode_error(result, seq, filename)
+
+        # clean up temp var file and the backup
+        os.unlink(self.temp_parameter_file)
+        os.unlink(self.temp_parameter_file + '.bak')
 
     def print_moves(self):
         # each item is:
@@ -130,5 +110,5 @@ if __name__ == "__main__":
     from qtpyvcp import TOP_DIR
     INI_FILENAME = os.path.join(TOP_DIR, 'sim/xyz.ini')
     gr = VTKCanon(INI_FILENAME)
-    gr.load('/home/kurt/dev/cnc/qtpyvcp/sim/example_gcode/qtpyvcp.ngc')
+    gr.load(os.path.join(TOP_DIR, '/sim/example_gcode/qtpyvcp.ngc'))
     gr.print_moves()
