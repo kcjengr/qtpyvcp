@@ -128,10 +128,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
 
         self.update_render()
 
-    def update_tool_position(self, position):
-        self.current_position = position[:3]
-        self.tool_actor.SetPosition(position[:3])
-        self.path_cache.add_line_point(position[:3])
+    def update_tool_position(self, pos):
+        tlo = self.status.tool_offset
+        self.current_position = [pos - tlo for pos, tlo in zip(pos[:3], tlo[:3])]
+        self.tool_actor.SetPosition(self.current_position)
+        self.path_cache.add_line_point(self.current_position)
         self.update_render()
 
     def update_g5x_offset(self, g5x_offset):
@@ -769,8 +770,8 @@ class Tool:
             transform.RotateWXYZ(90, 0, 1, 0)
         else:
             source = vtk.vtkCylinderSource()
-            source.SetHeight(self.height)
-            source.SetCenter(self.x_offset, self.height / 2 - self.z_offset, self.y_offset)
+            source.SetHeight(1)
+            source.SetCenter(0, .5, 0)
             source.SetRadius(self.dia / 2)
             transform.RotateWXYZ(90, 1, 0, 0)
 
