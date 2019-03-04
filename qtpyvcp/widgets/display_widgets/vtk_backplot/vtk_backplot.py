@@ -166,6 +166,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.tool = Tool(tool=tool_info)
         self.tool_actor = self.tool.get_actor()
 
+        self.tool_actor.SetPosition(self.current_position)
+
         self.renderer.AddActor(self.tool_actor)
 
         self.update_render()
