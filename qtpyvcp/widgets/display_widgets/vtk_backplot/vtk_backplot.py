@@ -578,6 +578,7 @@ class PathCache:
         self.polygon_mapper = vtk.vtkPolyDataMapper()
         self.actor = vtk.vtkActor()
         self.actor.GetProperty().SetColor(yellow)
+        self.actor.GetProperty().SetLineWidth(2)
         self.actor.SetMapper(self.polygon_mapper)
 
         self.lines_poligon_data.SetPoints(self.points)
