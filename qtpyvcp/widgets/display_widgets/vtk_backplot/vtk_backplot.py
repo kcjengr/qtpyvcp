@@ -72,7 +72,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.path_cache = PathCache(self.current_position)
         self.path_cache_actor = self.path_cache.get_actor()
 
-        tool_info = self._tool_table[1]
+        tool_info = self._tool_table[0]
 
         self.tool = Tool(tool_info)
         self.tool_actor = self.tool.get_actor()
@@ -747,8 +747,7 @@ class Tool:
 
         self.tool = tool
 
-        print(self.tool)
-        self.height = 3.0
+        self.height = 2.0
 
         self.tool_no = self.tool['T']
         self.dia = self.tool['D']
@@ -760,14 +759,15 @@ class Tool:
 
         if self.tool_no == 0:
             source = vtk.vtkConeSource()
-            source.SetCenter(-self.height / 2, - self.z_offset, - self.y_offset)
-            source.SetRadius(0.5)
+            source.SetHeight(self.height/2)
+            source.SetCenter(-self.height / 4 + self.z_offset, self.y_offset, self.x_offset)  # because of transformation Z, Y, X
+            source.SetRadius(self.height/4)
             transform.RotateWXYZ(90, 0, 1, 0)
         else:
             source = vtk.vtkCylinderSource()
-            source.SetCenter(self.x_offset, self.height / 2 - self.z_offset, - self.y_offset)
-            source.SetRadius(self.dia / 2)
             source.SetHeight(self.height)
+            source.SetCenter(self.x_offset, self.height / 2 + self.z_offset, self.y_offset)
+            source.SetRadius(self.dia / 2)
             transform.RotateWXYZ(90, 1, 0, 0)
 
         source.SetResolution(128)
