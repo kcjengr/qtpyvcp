@@ -1,13 +1,10 @@
 from collections import defaultdict
-from pprint import pprint
 
-import vtk, math
+import vtk
 
 from qtpy.QtCore import Property, Signal, Slot, QTimer
 from qtpy.QtGui import QColor
 from vtk.util.colors import tomato, yellow, mint
-
-from qtpy.QtWidgets import QWidget, QVBoxLayout
 
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
@@ -15,7 +12,8 @@ from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities import logger
 
-from vtk_cannon import VTKCanon
+from base_canon import StatCanon
+from base_backplot import BaseBackPlot
 
 import os
 import linuxcnc
@@ -24,14 +22,23 @@ LOG = logger.getLogger(__name__)
 STATUS = getPlugin('status')
 TOOLTABLE = getPlugin('tooltable')
 IN_DESIGNER = os.getenv('DESIGNER', False)
-
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 
 
-class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
+class VTKCanon(StatCanon):
+    def __init__(self, *args, **kwargs):
+        super(VTKCanon, self).__init__(*args, **kwargs)
+
+    def add_path_point(self, line_type, start_point, end_point):
+        print "Adding Path Point", line_type
+
+
+class VTKBackPlot(QVTKRenderWindowInteractor, BaseBackPlot, VCPWidget):
 
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
+
+        self.canon_class = VTKCanon
 
         # properties
         self._background_color = QColor(0, 0, 0)
@@ -48,8 +55,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self._tool_table = self.tt.loadToolTable()
 
         self.axis = self.status.stat.axis
-
-        self.gr = VTKCanon()
 
         self.nav_style = vtk.vtkInteractorStyleTrackballCamera()
 
@@ -110,17 +115,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         for path_actor in self.path_actors:
             self.renderer.RemoveActor(path_actor)
 
-        if fname:
-            self._last_filename = fname
-        else:
-            fname = self._last_filename
+        self.load(fname)
+        if self.canon is None:
+            return
 
         self.original_g5x_offset = self.status.stat.g5x_offset
         self.original_g92_offset = self.status.stat.g92_offset
 
-        self.gr.load(fname)
-
-        path = Path(self.gr, self.renderer)
+        path = Path(self.canon, self.renderer)
         self.path_actors = path.get_actors()
 
         for path_actor in self.path_actors:
@@ -408,12 +410,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
 
 
 class Path:
-    def __init__(self, gr, renderer):
-        self.gr = gr
+    def __init__(self, canon, renderer):
+        self.canon =canon
 
-        feed_lines = len(self.gr.canon.feed)
-        traverse_lines = len(self.gr.canon.traverse)
-        arcfeed_lines = len(self.gr.canon.arcfeed)
+        feed_lines = len(self.canon.feed)
+        traverse_lines = len(self.canon.traverse)
+        arcfeed_lines = len(self.canon.arcfeed)
 
         total_lines = feed_lines + traverse_lines + arcfeed_lines
 
@@ -421,14 +423,14 @@ class Path:
 
         path = dict()
 
-        for traverse in self.gr.canon.traverse:
+        for traverse in self.canon.traverse:
             seq = traverse[0]
             line_type = "straight_feed"
             cords = traverse[1][:3]
 
             path[seq] = [cords, line_type]
 
-        for feed in self.gr.canon.feed:
+        for feed in self.canon.feed:
             seq = feed[0]
             line_type = "traverse"
             cords = feed[1][:3]
@@ -437,7 +439,7 @@ class Path:
 
         arc_segments = defaultdict(list)
 
-        for index, arc in enumerate(self.gr.canon.arcfeed):
+        for index, arc in enumerate(self.canon.arcfeed):
             seq = arc[0]
             line_type = "arc_feed"
             cords = arc[1][:3]

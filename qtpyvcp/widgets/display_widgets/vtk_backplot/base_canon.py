@@ -20,17 +20,8 @@ import gcode
 import linuxcnc
 
 
-class VTKCanon(object):
-    def __init__(self, geometry='XYZ', random=False, stat=None):
-
-        self.geometry = geometry
-        self.random = random
-
-        self.s = stat or linuxcnc.stat()
-        self.s.poll()
-
-        self.tools = list(self.s.tool_table)
-
+class BaseCanon(object):
+    def __init__(self):
 
         # traverse list - [line number, [start position], [end position], [tlo x, tlo y, tlo z]]
         self.traverse = []
@@ -114,7 +105,6 @@ class VTKCanon(object):
         self.rotation_sin = 0
 
     def add_path_point(self, line_type, start_point, end_point):
-        # print "Path Point:", line_type
         pass
 
     def comment(self, msg):
@@ -229,6 +219,9 @@ class VTKCanon(object):
     def change_tool(self, pocket):
         self.first_move = True
 
+    def get_tool(self, pocket):
+        return -1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0
+
     def straight_traverse(self, x, y, z, a, b, c, u, v, w):
         if self.suppress > 0:
             return
@@ -317,6 +310,31 @@ class VTKCanon(object):
         self.dwells_append((self.seq_num, color, self.last_pos[0], self.last_pos[1],
                             self.last_pos[2], self.state.plane / 10 - 17))
 
+    def get_external_angular_units(self):
+        return 1.0
+
+    def get_external_length_units(self):
+        return 1.0
+
+    def get_axis_mask(self):
+        return 0
+
+    def get_block_delete(self):
+        return 0
+
+
+class StatCanon(BaseCanon):
+    def __init__(self, geometry='XYZ', random=False, stat=None):
+        super(StatCanon, self).__init__()
+
+        self.geometry = geometry
+        self.random = random
+
+        self.stat = stat or linuxcnc.stat()
+        self.stat.poll()
+
+        self.tools = list(self.stat.tool_table)
+
     def change_tool(self, pocket):
         if self.random:
             self.tools[0] = self.tools[pocket]
@@ -333,19 +351,19 @@ class VTKCanon(object):
         return -1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0
 
     def get_external_angular_units(self):
-        return self.s.angular_units or 1.0
+        return self.stat.angular_units or 1.0
 
     def get_external_length_units(self):
-        return self.s.linear_units or 1.0
+        return self.stat.linear_units or 1.0
 
     def get_axis_mask(self):
-        return self.s.axis_mask
+        return self.stat.axis_mask
 
     def get_block_delete(self):
-        return self.s.block_delete
+        return self.stat.block_delete
 
 
-class PrintCanon:
+class PrintCanon(BaseCanon):
     def set_g5x_offset(self, *args):
         print "set_g5x_offset", args
 

@@ -1,38 +1,27 @@
-import vtk_canon
-import rs274.interpret
 import linuxcnc
 import gcode
 import shutil
 import os
 
-
-class NullProgress(object):
-    def nextphase(self, var1):
-        pass
-
-    def progress(self):
-        pass
+from base_canon import BaseCanon
 
 
-class StatCanon(vtk_canon.VTKCanon):
-    def __init__(self, colors, geometry, lathe_view_option, stat, random):
-        vtk_canon.VTKCanon.__init__(self, colors, geometry, stat, random)
-        self.progress = NullProgress()
-        self.lathe_view_option = lathe_view_option
+class BaseBackPlot(object):
+    def __init__(self, inifile=None, canon=BaseCanon):
 
-    def is_lathe(self):
-        return self.lathe_view_option
-
-
-class VTKCanon(object):
-    def __init__(self, inifile=None):
         inifile = inifile or os.getenv("INI_FILE_NAME")
         if inifile is None or not os.path.isfile(inifile):
             raise ValueError("Invalid INI file: %s", inifile)
 
+        self.canon_class = canon
+        self.canon = None
+
         self.stat = linuxcnc.stat()
         self.ini = linuxcnc.ini(inifile)
         self.config_dir = os.path.dirname(inifile)
+
+        temp = self.ini.find("EMCIO", "RANDOM_TOOLCHANGER")
+        self.random = int(temp or 0)
 
         temp = self.ini.find("DISPLAY", "GEOMETRY") or 'XYZ'
         self.geometry = temp.upper()
@@ -44,20 +33,24 @@ class VTKCanon(object):
         self.parameter_file = os.path.join(self.config_dir, temp)
         self.temp_parameter_file = os.path.join(self.parameter_file + '.temp')
 
+        self.last_filename = None
+
     def load(self, filename=None):
-        self.stat.poll()
 
-        filename = filename or self.stat.file
+        filename = filename or self.last_filename
+        if filename is None:
+            self.stat.poll()
+            filename = self.stat.file
+
         if filename is None or not os.path.isfile(filename):
-            return
+            self.canon = None
+            raise ValueError("Can't load backplot, invalid file: %s" % filename)
 
-        # indicate the style of tool-changer
-        random = int(self.ini.find("EMCIO", "RANDOM_TOOLCHANGER") or 0)
+        self.last_filename = filename
 
         # create the object which handles the canonical motion callbacks
         # (straight_feed, straight_traverse, arc_feed, rigid_tap, etc.)
-        # StatCanon inherits from VTKCanon, which will do the work for us
-        self.canon = vtk_canon.VTKCanon(self.geometry)
+        self.canon = self.canon_class()
 
         if os.path.exists(self.parameter_file):
             shutil.copy(self.parameter_file, self.temp_parameter_file)
@@ -74,7 +67,9 @@ class VTKCanon(object):
         result, seq = gcode.parse(filename, self.canon, unitcode, initcode)
 
         if result > gcode.MIN_ERROR:
-            self.report_gcode_error(result, seq, filename)
+            msg = gcode.strerror(result)
+            fname = os.path.basename(filename)
+            raise SyntaxError("Error in %s line %i: %s" % (fname, seq - 1, msg))
 
         # clean up temp var file and the backup
         os.unlink(self.temp_parameter_file)
@@ -97,18 +92,12 @@ class VTKCanon(object):
         for item in self.canon.traverse:
             print("Rapid: ", item[0], item[1][:3], item[2][:3])
 
-    def get_geometry(self):
-        return self.geometry
-
-    def report_gcode_error(self, result, seq, filename):
-        msg = gcode.strerror(result)
-        print("G-Code error in {} line {}: {}".format(
-            os.path.basename(filename), seq - 1, msg))
-
 
 if __name__ == "__main__":
     from qtpyvcp import TOP_DIR
-    INI_FILENAME = os.path.join(TOP_DIR, 'sim/xyz.ini')
-    gr = VTKCanon(INI_FILENAME)
-    gr.load(os.path.join(TOP_DIR, '/sim/example_gcode/qtpyvcp.ngc'))
+    from base_canon import PrintCanon
+    INI_FILE = os.path.join(TOP_DIR, 'sim/xyz.ini')
+    NGC_FILE = os.path.join(TOP_DIR, 'sim/example_gcode/qtpyvcp.ngc')
+    gr = BaseBackPlot(INI_FILE, canon=PrintCanon)
+    gr.load(NGC_FILE)
     gr.print_moves()
