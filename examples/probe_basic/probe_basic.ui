@@ -276,13 +276,13 @@ background-color: transparent;
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>700</width>
+                 <width>650</width>
                  <height>0</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>700</width>
+                 <width>650</width>
                  <height>16777215</height>
                 </size>
                </property>
@@ -309,14 +309,8 @@ background-color: transparent;
                  <widget class="RecentFileComboBox" name="recentfilecombobox">
                   <property name="minimumSize">
                    <size>
-                    <width>148</width>
+                    <width>0</width>
                     <height>30</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>700</width>
-                    <height>16777215</height>
                    </size>
                   </property>
                   <property name="focusPolicy">
@@ -366,14 +360,8 @@ QComboBox QAbstractItemView{
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>700</width>
+                    <width>0</width>
                     <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>700</width>
-                    <height>16777215</height>
                    </size>
                   </property>
                   <property name="focusPolicy">
@@ -391,14 +379,8 @@ QComboBox QAbstractItemView{
                   </property>
                   <property name="minimumSize">
                    <size>
-                    <width>700</width>
+                    <width>0</width>
                     <height>40</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>700</width>
-                    <height>16777215</height>
                    </size>
                   </property>
                   <property name="font">
@@ -422,7 +404,7 @@ QComboBox QAbstractItemView{
             <item>
              <widget class="QWidget" name="widget_7" native="true">
               <property name="sizePolicy">
-               <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                 <horstretch>0</horstretch>
                 <verstretch>0</verstretch>
                </sizepolicy>
