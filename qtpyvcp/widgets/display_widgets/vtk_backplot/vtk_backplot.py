@@ -60,6 +60,22 @@ class VTKCanon(StatCanon):
 
         self.index += 1
 
+    # FixMe: how to add arcs to the lines cell array?
+    # def arc_feed(self, x_end, y_end, x_center, y_center, rot, z_end, a, b, c, u, v, w):
+    #
+    #     self.points.InsertNextPoint(x_end, y_end, z_end)
+    #     self.colors.InsertNextTypedTuple(self.path_colors['arcfeed'])
+    #
+    #     arc = vtk.vtkArcSource()
+    #     arc.SetPoint1(*self.last_pos[:3])
+    #     arc.SetPoint2(x_end, y_end, z_end)
+    #     arc.SetCenter(x_center, y_center, z_end)
+    #     # arc.GetPointIds().SetId(0, self.index)
+    #     # arc.GetPointIds().SetId(1, self.index + 1)
+    #     self.lines.InsertNextCell(arc)
+    #
+    #     self.index += 1
+
     def draw_lines(self):
         self.poly_data.SetPoints(self.points)
         self.poly_data.SetLines(self.lines)
