@@ -5,12 +5,13 @@ import os
 
 from base_canon import BaseCanon
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 class BaseBackPlot(object):
     def __init__(self, inifile=None, canon=BaseCanon):
 
         inifile = inifile or os.getenv("INI_FILE_NAME")
-        if inifile is None or not os.path.isfile(inifile):
+        if inifile is None or not os.path.isfile(inifile) and not IN_DESIGNER:
             raise ValueError("Invalid INI file: %s", inifile)
 
         self.canon_class = canon

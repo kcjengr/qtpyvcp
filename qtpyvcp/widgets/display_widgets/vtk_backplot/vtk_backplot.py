@@ -85,7 +85,7 @@ class VTKCanon(StatCanon):
         return self.path_actor
 
 
-class VTKBackPlot(QVTKRenderWindowInteractor, BaseBackPlot, VCPWidget):
+class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
 
