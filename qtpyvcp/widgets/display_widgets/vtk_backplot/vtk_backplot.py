@@ -48,9 +48,10 @@ class VTKCanon(StatCanon):
         self.path_actor = vtk.vtkActor()
 
         self.path_points = []
+        self.append_path_point = self.path_points.append
 
     def add_path_point(self, line_type, start_point, end_point):
-        self.path_points.append((line_type, end_point[:3]))
+        self.append_path_point((line_type, end_point[:3]))
 
     def draw_lines(self):
 
