@@ -15,7 +15,6 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-import time
 import math
 import gcode
 import linuxcnc
@@ -23,27 +22,6 @@ import linuxcnc
 
 class BaseCanon(object):
     def __init__(self):
-
-        # traverse list - [line number, [start position], [end position], [tlo x, tlo y, tlo z]]
-        self.traverse = []
-        self.traverse_append = self.traverse.append
-
-        # feed list - [line number, [start position], [end position], feedrate, [tlo x, tlo y, tlo z]]
-        self.feed = []
-        self.feed_append = self.feed.append
-
-        # arcfeed list - [line number, [start position], [end position], feedrate, [tlo x, tlo y, tlo z]]
-        self.arcfeed = []
-        self.arcfeed_append = self.arcfeed.append
-
-        # dwell list - [line number, color, pos x, pos y, pos z, plane]
-        self.dwells = []
-        self.dwells_append = self.dwells.append
-
-        # list tuples
-        # [(path_type, (start_pos), (end_pos), (tool_offset), feed_rate), ...]
-        self.path_points = list()
-        self.path_points_append = self.path_points.append
 
         self.feedrate = 1
         self.dwell_time = 0
@@ -229,9 +207,6 @@ class BaseCanon(object):
 
         pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
         if not self.first_move:
-            self.traverse_append(
-                (self.seq_num, self.last_pos, pos, [self.tlo_x, self.tlo_y, self.tlo_z]))
-
             self.add_path_point('traverse', self.last_pos, pos)
 
         self.last_pos = pos
@@ -244,11 +219,7 @@ class BaseCanon(object):
         pos = self.rotate_and_translate(x, y, z, 0, 0, 0, 0, 0, 0)[:3]
         pos += self.last_pos[3:]
 
-        self.feed_append((self.seq_num, self.last_pos, pos, self.feedrate,
-                          [self.tlo_x, self.tlo_y, self.tlo_z]))
-
-        self.feed_append((self.seq_num, pos, self.last_pos, self.feedrate,
-                          [self.tlo_x, self.tlo_y, self.tlo_z]))
+        self.add_path_point('feed', self.last_pos, pos)
 
     def set_plane(self, plane):
         self.plane = plane
@@ -271,10 +242,7 @@ class BaseCanon(object):
     def straight_arcsegments(self, segs):
         self.first_move = False
         last_pos = self.last_pos
-        seq_num = self.seq_num
-        append = self.arcfeed_append
         for pos in segs:
-            append((seq_num, last_pos, pos, self.feedrate, self.tool_offsets))
             self.add_path_point('arcfeed', last_pos, pos)
             last_pos = pos
         self.last_pos = last_pos
@@ -285,11 +253,8 @@ class BaseCanon(object):
 
         self.first_move = False
         pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
-        self.feed_append((self.seq_num, self.last_pos, pos, self.feedrate,
-                          [self.tlo_x, self.tlo_y, self.tlo_z]))
 
         self.add_path_point('feed', self.last_pos, pos)
-
         self.last_pos = pos
 
     straight_probe = straight_feed
@@ -298,18 +263,14 @@ class BaseCanon(object):
         if self.suppress > 0:
             return
 
-        # color = self.colors['m1xx']
-        # self.dwells_append((self.seq_num, color, self.last_pos[0], self.last_pos[1],
-        #                     self.last_pos[2], self.state.plane / 10 - 17))
+        self.add_path_point('user', self.last_pos, self.last_pos)
 
     def dwell(self, arg):
         if self.suppress > 0:
             return
 
         self.dwell_time += arg
-        # color = self.colors['dwell']
-        # self.dwells_append((self.seq_num, color, self.last_pos[0], self.last_pos[1],
-        #                     self.last_pos[2], self.state.plane / 10 - 17))
+        self.add_path_point('dwell', self.last_pos, self.last_pos)
 
     def get_external_angular_units(self):
         return 1.0
@@ -385,10 +346,10 @@ class PrintCanon(BaseCanon):
         print "#", arg
 
     def straight_traverse(self, *args):
-        print "straight_traverse %.4g %.4g %.4g  %.4g %.4g %.4g" % args
+        print "straight_traverse %.4g %.4g %.4g  %.4g %.4g %.4g   %.4g %.4g %.4g" % args
 
     def straight_feed(self, *args):
-        print "straight_feed %.4g %.4g %.4g  %.4g %.4g %.4g" % args
+        print "straight_feed %.4g %.4g %.4g  %.4g %.4g %.4g  %.4g %.4g %.4g" % args
 
     def dwell(self, arg):
         if arg < .1:
@@ -398,3 +359,6 @@ class PrintCanon(BaseCanon):
 
     def arc_feed(self, *args):
         print "arc_feed %.4g %.4g  %.4g %.4g %.4g  %.4g  %.4g %.4g %.4g" % args
+
+    def get_axis_mask(self):
+        return 7 # XYZ

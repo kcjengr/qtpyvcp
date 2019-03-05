@@ -76,29 +76,11 @@ class BaseBackPlot(object):
         os.unlink(self.temp_parameter_file)
         os.unlink(self.temp_parameter_file + '.bak')
 
-    def print_moves(self):
-        # each item is:
-        # 1) the line number in the gcode file that generated the movement
-        # 2) a tuple of coordinates: the line start location
-        # 3) a tuple of coordinates: the line end location
-        # 4) feedrate (ONLY FOR "FEED" and "ARCFEED" entries)
-        # 5) a tuple of coordinates: the tool offset
-
-        for item in self.canon.feed:
-            print("Feed: ", item[0], item[1][:3], item[2][:3])
-
-        for item in self.canon.arcfeed:
-            print("ArcFeed: ", item[0], item[1][:3], item[2][:3])
-
-        for item in self.canon.traverse:
-            print("Rapid: ", item[0], item[1][:3], item[2][:3])
-
 
 if __name__ == "__main__":
     from qtpyvcp import TOP_DIR
-    from base_canon import StatCanon
+    from base_canon import PrintCanon
     INI_FILE = os.path.join(TOP_DIR, 'sim/xyz.ini')
-    NGC_FILE = os.path.join(TOP_DIR, '/home/kurt/linuxcnc/nc_files/Bezel_Fast.ngc')
-    gr = BaseBackPlot(INI_FILE, canon=StatCanon)
+    NGC_FILE = os.path.join(TOP_DIR, 'sim/example_gcode/qtpyvcp.ngc')
+    gr = BaseBackPlot(INI_FILE, canon=PrintCanon)
     gr.load(NGC_FILE)
-    # gr.print_moves()
