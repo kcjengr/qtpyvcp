@@ -301,7 +301,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
     @Slot()
     def toggleProgramBounds(self):
         bounds = self.path_actors[1].GetXAxisVisibility()
-        #print(bounds)
         if bounds:
             self.path_actors[1].XAxisVisibilityOff()
             self.path_actors[1].YAxisVisibilityOff()
@@ -314,7 +313,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
 
     @Slot()
     def toggleProgramTicks(self):
-        # get program ticks current state and toggle
         ticks = self.path_actors[1].GetXAxisTickVisibility()
         if ticks:
             self.path_actors[1].XAxisTickVisibilityOff()
@@ -324,9 +322,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
             self.path_actors[1].XAxisTickVisibilityOn()
             self.path_actors[1].YAxisTickVisibilityOn()
             self.path_actors[1].ZAxisTickVisibilityOn()
-            #self.path_actors[1].XAxisMinorTickVisibilityOff()
-            #self.path_actors[1].YAxisMinorTickVisibilityOff()
-            #self.path_actors[1].ZAxisMinorTickVisibilityOff()
         self.update_render()
 
     @Slot()
@@ -366,9 +361,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
             self.machine_actor.XAxisTickVisibilityOn()
             self.machine_actor.YAxisTickVisibilityOn()
             self.machine_actor.ZAxisTickVisibilityOn()
-            #self.machine_actor.XAxisMinorTickVisibilityOff()
-            #self.machine_actor.YAxisMinorTickVisibilityOff()
-            #self.machine_actor.ZAxisMinorTickVisibilityOff()
         self.update_render()
 
     @Slot()
