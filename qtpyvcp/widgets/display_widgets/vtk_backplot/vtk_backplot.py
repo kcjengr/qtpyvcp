@@ -1,8 +1,5 @@
 import os
-import time
 import linuxcnc
-
-from collections import defaultdict
 
 from qtpy.QtCore import Property, Signal, Slot, QTimer
 from qtpy.QtGui import QColor
@@ -66,6 +63,9 @@ class VTKCanon(StatCanon):
             self.lines.InsertNextCell(line)
 
             index += 1
+
+        # free up memory, lots of it for big files
+        self.path_points = []
 
         self.poly_data.SetPoints(self.points)
         self.poly_data.SetLines(self.lines)
