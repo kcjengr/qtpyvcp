@@ -30,12 +30,11 @@ COLOR_MAP = {'traverse': (188, 252, 201, 75),
 
 
 class VTKCanon(StatCanon):
-    def __init__(self, renderer, colors=None, *args, **kwargs):
+    def __init__(self, renderer, colors=COLOR_MAP, *args, **kwargs):
         super(VTKCanon, self).__init__(*args, **kwargs)
         self.renderer = renderer
 
-        self.index = 0
-        self.path_colors = colors or COLOR_MAP
+        self.path_colors = colors
 
         # Create a vtkUnsignedCharArray container and store the colors in it
         self.colors = vtk.vtkUnsignedCharArray()
@@ -48,35 +47,26 @@ class VTKCanon(StatCanon):
         self.data_mapper = vtk.vtkPolyDataMapper()
         self.path_actor = vtk.vtkActor()
 
+        self.extents = PathBoundaries(self.renderer, self.path_actor)
+        self.path_points = []
+
     def add_path_point(self, line_type, start_point, end_point):
-        # print "Adding Path Point", line_type
-        self.points.InsertNextPoint(end_point[:3])
-        self.colors.InsertNextTypedTuple(self.path_colors[line_type])
-
-        line = vtk.vtkLine()
-        line.GetPointIds().SetId(0, self.index)
-        line.GetPointIds().SetId(1, self.index + 1)
-        self.lines.InsertNextCell(line)
-
-        self.index += 1
-
-    # FixMe: how to add arcs to the lines cell array?
-    # def arc_feed(self, x_end, y_end, x_center, y_center, rot, z_end, a, b, c, u, v, w):
-    #
-    #     self.points.InsertNextPoint(x_end, y_end, z_end)
-    #     self.colors.InsertNextTypedTuple(self.path_colors['arcfeed'])
-    #
-    #     arc = vtk.vtkArcSource()
-    #     arc.SetPoint1(*self.last_pos[:3])
-    #     arc.SetPoint2(x_end, y_end, z_end)
-    #     arc.SetCenter(x_center, y_center, z_end)
-    #     # arc.GetPointIds().SetId(0, self.index)
-    #     # arc.GetPointIds().SetId(1, self.index + 1)
-    #     self.lines.InsertNextCell(arc)
-    #
-    #     self.index += 1
+        self.path_points.append((line_type, end_point[:3]))
 
     def draw_lines(self):
+
+        index = 0
+        for line_type, end_point in self.path_points:
+            self.points.InsertNextPoint(end_point[:3])
+            self.colors.InsertNextTypedTuple(self.path_colors[line_type])
+
+            line = vtk.vtkLine()
+            line.GetPointIds().SetId(0, index)
+            line.GetPointIds().SetId(1, index + 1)
+            self.lines.InsertNextCell(line)
+
+            index += 1
+
         self.poly_data.SetPoints(self.points)
         self.poly_data.SetLines(self.lines)
 
@@ -88,10 +78,9 @@ class VTKCanon(StatCanon):
         self.path_actor.SetMapper(self.data_mapper)
 
         self.extents = PathBoundaries(self.renderer, self.path_actor)
-        self.extents_actor = self.extents.get_actor()
 
     def get_actors(self):
-        return self.path_actor, self.extents_actor
+        return self.path_actor, self.extents.get_actor()
 
 
 class VTKBackPlot(QVTKRenderWindowInteractor, BaseBackPlot, VCPWidget):
@@ -471,115 +460,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, BaseBackPlot, VCPWidget):
 
         self.renderer.GradientBackgroundOff()
         self.update_render()
-
-
-class Path:
-    def __init__(self, canon, renderer):
-        self.canon =canon
-
-        feed_lines = len(self.canon.feed)
-        traverse_lines = len(self.canon.traverse)
-        arcfeed_lines = len(self.canon.arcfeed)
-
-        total_lines = feed_lines + traverse_lines + arcfeed_lines
-
-        line = PathLine(total_lines)
-
-        path = dict()
-
-        for traverse in self.canon.traverse:
-            seq = traverse[0]
-            line_type = "straight_feed"
-            cords = traverse[1][:3]
-
-            path[seq] = [cords, line_type]
-
-        for feed in self.canon.feed:
-            seq = feed[0]
-            line_type = "traverse"
-            cords = feed[1][:3]
-
-            path[seq] = [cords, line_type]
-
-        arc_segments = defaultdict(list)
-
-        for index, arc in enumerate(self.canon.arcfeed):
-            seq = arc[0]
-            line_type = "arc_feed"
-            cords = arc[1][:3]
-            arc_segments[seq].append((seq, [cords, line_type]))
-
-        for point_data in path.items():
-            line.add_line_point(point_data)
-
-        for line_no, arc in arc_segments.items():
-            for segment in arc:
-                line.add_line_point(segment)
-
-        line.draw_path_line()
-
-        self.path_actor = line.get_actor()
-
-        self.path_boundaries = PathBoundaries(renderer, self.path_actor)
-        self.path_boundaries_actor = self.path_boundaries.get_actor()
-
-    def get_actors(self):
-        return [self.path_actor, self.path_boundaries_actor]
-
-
-class PathLine:
-    def __init__(self, points):
-
-        self.num_points = points
-
-        self.points = vtk.vtkPoints()
-        self.lines = vtk.vtkCellArray()
-
-        self.line_type = list()
-
-        self.lines_poligon_data = vtk.vtkPolyData()
-        self.polygon_mapper = vtk.vtkPolyDataMapper()
-        self.actor = vtk.vtkActor()
-
-    def add_line_point(self, point):
-        data = point[1][0]
-        line_type = point[1][1]
-        self.line_type.append(line_type)
-        self.points.InsertNextPoint(data)
-
-    def draw_path_line(self):
-        namedColors = vtk.vtkNamedColors()
-
-        # Create a vtkUnsignedCharArray container and store the colors in it
-        colors = vtk.vtkUnsignedCharArray()
-        colors.SetNumberOfComponents(3)
-
-        for index in range(0, self.num_points - 1):
-
-            line_type = self.line_type[index]
-
-            if line_type == "traverse" or line_type == "arc_feed":
-                colors.InsertNextTypedTuple(namedColors.GetColor3ub("mint"))
-            elif line_type == "straight_feed":
-                colors.InsertNextTypedTuple(namedColors.GetColor3ub("tomato"))
-
-            line = vtk.vtkLine()
-            line.GetPointIds().SetId(0, index)  # the second 0 is the index of the Origin in linesPolyData's points
-            line.GetPointIds().SetId(1, index + 1)  # the second 1 is the index of P0 in linesPolyData's points
-            self.lines.InsertNextCell(line)
-
-        self.lines_poligon_data.SetPoints(self.points)
-        self.lines_poligon_data.SetLines(self.lines)
-
-        self.lines_poligon_data.GetCellData().SetScalars(colors)
-
-        self.polygon_mapper.SetInputData(self.lines_poligon_data)
-        self.polygon_mapper.Update()
-
-        self.actor.SetMapper(self.polygon_mapper)
-
-    def get_actor(self):
-        return self.actor
 
 
 class PathBoundaries:
