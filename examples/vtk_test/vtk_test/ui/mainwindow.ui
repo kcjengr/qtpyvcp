@@ -140,8 +140,8 @@
                   <blue>103</blue>
                  </color>
                 </property>
-                <property name="programTicks" stdset="0">
-                 <bool>false</bool>
+                <property name="enableProgramTicks" stdset="0">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
@@ -230,13 +230,6 @@
                 </property>
                </widget>
               </item>
-              <item row="4" column="4" colspan="2">
-               <widget class="QCheckBox" name="showMachineLabels">
-                <property name="text">
-                 <string>Show Machine Labels</string>
-                </property>
-               </widget>
-              </item>
               <item row="3" column="8">
                <widget class="QPushButton" name="viewPath">
                 <property name="toolTip">
@@ -271,45 +264,10 @@
                 </property>
                </widget>
               </item>
-              <item row="3" column="2" colspan="2">
-               <widget class="QCheckBox" name="showProgramTicks">
-                <property name="text">
-                 <string>Show Program Ticks</string>
-                </property>
-               </widget>
-              </item>
               <item row="5" column="7">
                <widget class="QPushButton" name="showViewStats">
                 <property name="text">
                  <string>View Status</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0" colspan="2">
-               <widget class="QCheckBox" name="hideProgramBoundry">
-                <property name="text">
-                 <string>Hide Prog Boundry</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0" colspan="2">
-               <widget class="QCheckBox" name="hideMachineBoundry">
-                <property name="text">
-                 <string>Hide Mach Boundry</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="4" colspan="2">
-               <widget class="QCheckBox" name="showProgramLabels">
-                <property name="text">
-                 <string>Show Prog Labels</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="2" colspan="2">
-               <widget class="QCheckBox" name="showMachineTicks">
-                <property name="text">
-                 <string>Show Machine Ticks</string>
                 </property>
                </widget>
               </item>
@@ -328,6 +286,48 @@
               </item>
               <item row="4" column="6">
                <widget class="MDIEntry" name="mdientry"/>
+              </item>
+              <item row="3" column="2" colspan="2">
+               <widget class="QPushButton" name="toggleProgramTicks">
+                <property name="text">
+                 <string>Toggle Program Ticks</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="4" colspan="2">
+               <widget class="QPushButton" name="toggleProgramLabels">
+                <property name="text">
+                 <string>Toggle Prog Labels</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0" colspan="2">
+               <widget class="QPushButton" name="toggleProgramBoundry">
+                <property name="text">
+                 <string>Toggle Prog Boundry</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0" colspan="2">
+               <widget class="QPushButton" name="toggleMachineBoundry">
+                <property name="text">
+                 <string>Toggle Mach Boundry</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="2" colspan="2">
+               <widget class="QPushButton" name="toggleMachineTicks">
+                <property name="text">
+                 <string>Toggle Machine Ticks</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="4" colspan="2">
+               <widget class="QPushButton" name="toggleMachineLabels">
+                <property name="text">
+                 <string>Toggle Machine Labels</string>
+                </property>
+               </widget>
               </item>
              </layout>
             </widget>
@@ -577,8 +577,8 @@
    <slot>reload_program()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>675</x>
-     <y>439</y>
+     <x>801</x>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -593,8 +593,8 @@
    <slot>viewParentDirectory()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>152</x>
-     <y>468</y>
+     <x>175</x>
+     <y>579</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -609,8 +609,8 @@
    <slot>setViewP()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>70</x>
-     <y>419</y>
+     <x>93</x>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -625,8 +625,8 @@
    <slot>setViewX()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>153</x>
-     <y>419</y>
+     <x>197</x>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -641,8 +641,8 @@
    <slot>setViewY()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>236</x>
-     <y>419</y>
+     <x>283</x>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -657,8 +657,8 @@
    <slot>setViewZ()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>319</x>
-     <y>419</y>
+     <x>369</x>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -673,8 +673,8 @@
    <slot>setViewZ2()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>362</x>
-     <y>419</y>
+     <x>455</x>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -689,8 +689,8 @@
    <slot>zoomIn()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>511</x>
-     <y>419</y>
+     <x>627</x>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -705,8 +705,8 @@
    <slot>zoomOut()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>585</x>
-     <y>419</y>
+     <x>714</x>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -721,40 +721,8 @@
    <slot>clearLivePlot()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>437</x>
-     <y>419</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>213</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>hideMachineBoundry</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk</receiver>
-   <slot>machineBounds(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>733</x>
-     <y>461</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>399</x>
-     <y>213</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>hideProgramBoundry</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk</receiver>
-   <slot>programBounds(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>733</x>
-     <y>419</y>
+     <x>541</x>
+     <y>492</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -769,8 +737,8 @@
    <slot>printView()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>110</x>
-     <y>439</y>
+     <x>714</x>
+     <y>579</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -785,8 +753,8 @@
    <slot>setViewMachine()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>560</x>
-     <y>439</y>
+     <x>714</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -801,8 +769,8 @@
    <slot>setViewPath()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>642</x>
-     <y>439</y>
+     <x>801</x>
+     <y>521</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -817,8 +785,8 @@
    <slot>setViewOrtho()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>560</x>
-     <y>468</y>
+     <x>714</x>
+     <y>550</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -833,8 +801,8 @@
    <slot>setViewPersp()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>642</x>
-     <y>468</y>
+     <x>801</x>
+     <y>550</y>
     </hint>
     <hint type="destinationlabel">
      <x>399</x>
@@ -843,42 +811,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>showMachineTicks</sender>
-   <signal>clicked(bool)</signal>
+   <sender>toggleProgramTicks</sender>
+   <signal>clicked()</signal>
    <receiver>vtk</receiver>
-   <slot>machineTicks(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>286</x>
-     <y>539</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>419</x>
-     <y>247</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>showMachineLabels</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk</receiver>
-   <slot>machineLabels(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>458</x>
-     <y>539</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>419</x>
-     <y>247</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>showProgramTicks</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk</receiver>
-   <slot>programTicks(bool)</slot>
+   <slot>toggleProgramTicks()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>286</x>
@@ -891,14 +827,78 @@
    </hints>
   </connection>
   <connection>
-   <sender>showProgramLabels</sender>
-   <signal>clicked(bool)</signal>
+   <sender>toggleProgramBoundry</sender>
+   <signal>clicked()</signal>
    <receiver>vtk</receiver>
-   <slot>programLabels(bool)</slot>
+   <slot>toggleProgramBounds()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>114</x>
+     <y>510</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>419</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toggleProgramLabels</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>toggleProgramLabels()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>458</x>
      <y>510</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>419</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toggleMachineBoundry</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>toggleMachineBounds()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>114</x>
+     <y>539</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>419</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toggleMachineLabels</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>toggleMachineLabels()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>458</x>
+     <y>539</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>419</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>toggleMachineTicks</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>toggleMachineTicks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>286</x>
+     <y>539</y>
     </hint>
     <hint type="destinationlabel">
      <x>419</x>
