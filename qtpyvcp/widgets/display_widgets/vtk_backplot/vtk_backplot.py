@@ -62,8 +62,13 @@ class VTKCanon(StatCanon):
             self.colors.InsertNextTypedTuple(self.path_colors[line_type])
 
             line = vtk.vtkLine()
-            line.GetPointIds().SetId(0, index)
-            line.GetPointIds().SetId(1, index + 1)
+            if index == 0:
+                line.GetPointIds().SetId(0, 0)
+                line.GetPointIds().SetId(1, 1)
+            else:
+                line.GetPointIds().SetId(0, index-1)
+                line.GetPointIds().SetId(1, index)
+
             self.lines.InsertNextCell(line)
 
             index += 1
