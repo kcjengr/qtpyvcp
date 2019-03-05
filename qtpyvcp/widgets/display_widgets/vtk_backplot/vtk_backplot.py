@@ -153,7 +153,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.status.file.notify(self.load_program)
         self.status.position.notify(self.update_tool_position)
 
-        self.status.tool_in_spindle.notify(self.update_tool)
+        self.tt.current_tool.notify(self.update_tool)
 
         self.status.g5x_offset.notify(self.update_g5x_offset)
         self.status.g92_offset.notify(self.update_g92_offset)
@@ -223,10 +223,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # nasty hack so ensure the positions have updated before loading
         QTimer.singleShot(10, self.reload_program)
 
-    def update_tool(self, tool):
+    def update_tool(self, tool_info):
         self.renderer.RemoveActor(self.tool_actor)
 
-        tool_info = self._tool_table[tool]
         self.tool = Tool(tool=tool_info)
         self.tool_actor = self.tool.get_actor()
 
