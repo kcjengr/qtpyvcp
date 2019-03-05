@@ -15,6 +15,7 @@
 #    along with this program; if not, write to the Free Software
 #    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
+import time
 import math
 import gcode
 import linuxcnc
@@ -297,18 +298,18 @@ class BaseCanon(object):
         if self.suppress > 0:
             return
 
-        color = self.colors['m1xx']
-        self.dwells_append((self.seq_num, color, self.last_pos[0], self.last_pos[1],
-                            self.last_pos[2], self.state.plane / 10 - 17))
+        # color = self.colors['m1xx']
+        # self.dwells_append((self.seq_num, color, self.last_pos[0], self.last_pos[1],
+        #                     self.last_pos[2], self.state.plane / 10 - 17))
 
     def dwell(self, arg):
         if self.suppress > 0:
             return
 
         self.dwell_time += arg
-        color = self.colors['dwell']
-        self.dwells_append((self.seq_num, color, self.last_pos[0], self.last_pos[1],
-                            self.last_pos[2], self.state.plane / 10 - 17))
+        # color = self.colors['dwell']
+        # self.dwells_append((self.seq_num, color, self.last_pos[0], self.last_pos[1],
+        #                     self.last_pos[2], self.state.plane / 10 - 17))
 
     def get_external_angular_units(self):
         return 1.0

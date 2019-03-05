@@ -1,11 +1,14 @@
-from collections import defaultdict
+import os
+import time
+import linuxcnc
 
-import vtk
+from collections import defaultdict
 
 from qtpy.QtCore import Property, Signal, Slot, QTimer
 from qtpy.QtGui import QColor
-from vtk.util.colors import tomato, yellow, mint
 
+import vtk
+from vtk.util.colors import tomato, yellow, mint
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 from qtpyvcp.plugins import getPlugin
@@ -15,9 +18,6 @@ from qtpyvcp.utilities import logger
 from base_canon import StatCanon
 from base_backplot import BaseBackPlot
 
-import os
-import linuxcnc
-
 LOG = logger.getLogger(__name__)
 STATUS = getPlugin('status')
 TOOLTABLE = getPlugin('tooltable')
@@ -26,15 +26,61 @@ INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 
 
 class VTKCanon(StatCanon):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, renderer, *args, **kwargs):
         super(VTKCanon, self).__init__(*args, **kwargs)
+        self.renderer = renderer
+
+        self.index = 0
+
+        named_colors = vtk.vtkNamedColors()
+        self.path_colors = {'traverse': named_colors.GetColor3ub("mint"),
+                            'arcfeed': named_colors.GetColor3ub("mint"),
+                            'feed': named_colors.GetColor3ub("tomato")}
+
+        # Create a vtkUnsignedCharArray container and store the colors in it
+        self.colors = vtk.vtkUnsignedCharArray()
+        self.colors.SetNumberOfComponents(3)
+
+        self.points = vtk.vtkPoints()
+        self.lines = vtk.vtkCellArray()
+
+        self.poly_data = vtk.vtkPolyData()
+        self.data_mapper = vtk.vtkPolyDataMapper()
+        self.path_actor = vtk.vtkActor()
 
     def add_path_point(self, line_type, start_point, end_point):
-        print "Adding Path Point", line_type
+        # print "Adding Path Point", line_type
+        self.points.InsertNextPoint(end_point[:3])
+        self.colors.InsertNextTypedTuple(self.path_colors[line_type])
+
+        line = vtk.vtkLine()
+        line.GetPointIds().SetId(0, self.index)
+        line.GetPointIds().SetId(1, self.index + 1)
+        self.lines.InsertNextCell(line)
+
+        self.index += 1
+
+    def draw_lines(self):
+
+        self.poly_data.SetPoints(self.points)
+        self.poly_data.SetLines(self.lines)
+
+        self.poly_data.GetCellData().SetScalars(self.colors)
+
+        self.data_mapper.SetInputData(self.poly_data)
+        self.data_mapper.Update()
+
+        self.path_actor.SetMapper(self.data_mapper)
+
+    # def draw_extents(self):
+        self.extents = PathBoundaries(self.renderer, self.path_actor)
+        self.extents_actor = self.extents.get_actor()
+
+    def get_actors(self):
+        return self.path_actor, self.extents_actor
 
 
 class VTKBackPlot(QVTKRenderWindowInteractor, BaseBackPlot, VCPWidget):
-
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
 
@@ -115,15 +161,19 @@ class VTKBackPlot(QVTKRenderWindowInteractor, BaseBackPlot, VCPWidget):
         for path_actor in self.path_actors:
             self.renderer.RemoveActor(path_actor)
 
-        self.load(fname)
+        self.original_g5x_offset = self.status.stat.g5x_offset
+        self.original_g92_offset = self.status.stat.g92_offset
+
+        self.load(fname, renderer=self.renderer)
         if self.canon is None:
             return
 
         self.original_g5x_offset = self.status.stat.g5x_offset
-        self.original_g92_offset = self.status.stat.g92_offset
 
-        path = Path(self.canon, self.renderer)
-        self.path_actors = path.get_actors()
+        self.canon.draw_lines()
+
+        # path = Path(self.canon, self.renderer)
+        self.path_actors = self.canon.get_actors()
 
         for path_actor in self.path_actors:
             self.renderer.AddActor(path_actor)

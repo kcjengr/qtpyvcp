@@ -35,7 +35,8 @@ class BaseBackPlot(object):
 
         self.last_filename = None
 
-    def load(self, filename=None):
+    def load(self, filename=None, *args, **kwargs):
+        # args and kwargs are passed to the canon init method
 
         filename = filename or self.last_filename
         if filename is None:
@@ -50,7 +51,7 @@ class BaseBackPlot(object):
 
         # create the object which handles the canonical motion callbacks
         # (straight_feed, straight_traverse, arc_feed, rigid_tap, etc.)
-        self.canon = self.canon_class()
+        self.canon = self.canon_class(*args, **kwargs)
 
         if os.path.exists(self.parameter_file):
             shutil.copy(self.parameter_file, self.temp_parameter_file)
@@ -95,9 +96,9 @@ class BaseBackPlot(object):
 
 if __name__ == "__main__":
     from qtpyvcp import TOP_DIR
-    from base_canon import PrintCanon
+    from base_canon import StatCanon
     INI_FILE = os.path.join(TOP_DIR, 'sim/xyz.ini')
-    NGC_FILE = os.path.join(TOP_DIR, 'sim/example_gcode/qtpyvcp.ngc')
-    gr = BaseBackPlot(INI_FILE, canon=PrintCanon)
+    NGC_FILE = os.path.join(TOP_DIR, '/home/kurt/linuxcnc/nc_files/Bezel_Fast.ngc')
+    gr = BaseBackPlot(INI_FILE, canon=StatCanon)
     gr.load(NGC_FILE)
-    gr.print_moves()
+    # gr.print_moves()
