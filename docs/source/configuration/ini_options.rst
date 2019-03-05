@@ -28,6 +28,7 @@ Options available in the INI file are:
     CONFIRM_EXIT = bool    # Whether to show dialog to confirm exit.
 
     # Application Options
+    [APPLICATIONS]
     LOG_LEVEL = level      # One of DEBUG, INFO, WARN, ERROR or CRITICAL.
     LOG_FILE = file        # Specifies the log file.
     CONFIG_FILE = file     # Specifies a machine specific YML config file.
@@ -37,6 +38,7 @@ Options available in the INI file are:
     COMMAND_LINE_ARGS = <args>
 
     # VTK_Widget Options
+    [VTK]
     MACHINE_BOUNDRY        # Boolean False to hide the machine boundry
     MACHINE_TICKS          # Boolean False to hide the machine boundry ticks
     MACHINE_LABELS         # Boolean False to hide the machine labels
