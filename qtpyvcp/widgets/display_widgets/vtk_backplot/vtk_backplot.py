@@ -21,9 +21,13 @@ TOOLTABLE = getPlugin('tooltable')
 IN_DESIGNER = os.getenv('DESIGNER', False)
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 
-COLOR_MAP = {'traverse': (188, 252, 201, 75),
-             'arcfeed': (255, 255, 255, 128),
-             'feed': (255, 255, 255, 128)}
+COLOR_MAP = {
+    'traverse': (188, 252, 201, 75),
+    'arcfeed':  (255, 255, 255, 128),
+    'feed':     (255, 255, 255, 128),
+    'dwell':    (100, 100, 100, 255),
+    'user':     (100, 100, 100, 255),
+}
 
 
 class VTKCanon(StatCanon):
