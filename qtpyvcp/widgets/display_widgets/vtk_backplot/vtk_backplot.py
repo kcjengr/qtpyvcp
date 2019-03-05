@@ -36,6 +36,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         # properties
         self._background_color = QColor(0, 0, 0)
         self._background_color2 = QColor(0, 0, 0)
+        self._programTicks = True
 
         self.original_g5x_offset = [0.0] * 9
         self.original_g92_offset = [0.0] * 9
@@ -403,6 +404,19 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
 
         self.renderer.GradientBackgroundOff()
         self.update_render()
+
+    @Property(bool)
+    def programTicks(self):
+        print(str(self._programTicks))
+        return self._programTicks
+
+    @programTicks.setter
+    def programTicks(self, enable):
+        self._programTicks = enable
+        #self.path_actors[1].XAxisTickVisibilityOff()
+        #self.path_actors[1].YAxisTickVisibilityOff()
+        #self.path_actors[1].ZAxisTickVisibilityOff()
+        #self.update_render()
 
 
 class Path:
