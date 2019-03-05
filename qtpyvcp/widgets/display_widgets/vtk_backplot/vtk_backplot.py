@@ -24,22 +24,22 @@ TOOLTABLE = getPlugin('tooltable')
 IN_DESIGNER = os.getenv('DESIGNER', False)
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 
+COLOR_MAP = {'traverse': (188, 252, 201, 75),
+             'arcfeed': (255, 255, 255, 128),
+             'feed': (255, 255, 255, 128)}
+
 
 class VTKCanon(StatCanon):
-    def __init__(self, renderer, *args, **kwargs):
+    def __init__(self, renderer, colors=None, *args, **kwargs):
         super(VTKCanon, self).__init__(*args, **kwargs)
         self.renderer = renderer
 
         self.index = 0
-
-        named_colors = vtk.vtkNamedColors()
-        self.path_colors = {'traverse': named_colors.GetColor3ub("mint"),
-                            'arcfeed': named_colors.GetColor3ub("mint"),
-                            'feed': named_colors.GetColor3ub("tomato")}
+        self.path_colors = colors or COLOR_MAP
 
         # Create a vtkUnsignedCharArray container and store the colors in it
         self.colors = vtk.vtkUnsignedCharArray()
-        self.colors.SetNumberOfComponents(3)
+        self.colors.SetNumberOfComponents(4)
 
         self.points = vtk.vtkPoints()
         self.lines = vtk.vtkCellArray()
@@ -61,7 +61,6 @@ class VTKCanon(StatCanon):
         self.index += 1
 
     def draw_lines(self):
-
         self.poly_data.SetPoints(self.points)
         self.poly_data.SetLines(self.lines)
 
@@ -72,7 +71,6 @@ class VTKCanon(StatCanon):
 
         self.path_actor.SetMapper(self.data_mapper)
 
-    # def draw_extents(self):
         self.extents = PathBoundaries(self.renderer, self.path_actor)
         self.extents_actor = self.extents.get_actor()
 
@@ -632,6 +630,7 @@ class PathCache:
         self.actor = vtk.vtkActor()
         self.actor.GetProperty().SetColor(yellow)
         self.actor.GetProperty().SetLineWidth(2)
+        self.actor.GetProperty().SetOpacity(0.5)
         self.actor.SetMapper(self.polygon_mapper)
 
         self.lines_poligon_data.SetPoints(self.points)
