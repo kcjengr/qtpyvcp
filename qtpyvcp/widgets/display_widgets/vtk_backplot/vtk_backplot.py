@@ -27,9 +27,8 @@ COLOR_MAP = {'traverse': (188, 252, 201, 75),
 
 
 class VTKCanon(StatCanon):
-    def __init__(self, renderer, colors=COLOR_MAP, *args, **kwargs):
+    def __init__(self, colors=COLOR_MAP, *args, **kwargs):
         super(VTKCanon, self).__init__(*args, **kwargs)
-        self.renderer = renderer
 
         self.path_colors = colors
 
@@ -44,7 +43,6 @@ class VTKCanon(StatCanon):
         self.data_mapper = vtk.vtkPolyDataMapper()
         self.path_actor = vtk.vtkActor()
 
-        self.extents = PathBoundaries(self.renderer, self.path_actor)
         self.path_points = []
 
     def add_path_point(self, line_type, start_point, end_point):
@@ -54,6 +52,7 @@ class VTKCanon(StatCanon):
 
         index = 0
         for line_type, end_point in self.path_points:
+            # print line_type, end_point
             self.points.InsertNextPoint(end_point[:3])
             self.colors.InsertNextTypedTuple(self.path_colors[line_type])
 
@@ -77,10 +76,8 @@ class VTKCanon(StatCanon):
 
         self.path_actor.SetMapper(self.data_mapper)
 
-        self.extents = PathBoundaries(self.renderer, self.path_actor)
-
-    def get_actors(self):
-        return self.path_actor, self.extents.get_actor()
+    def get_actor(self):
+        return self.path_actor
 
 
 class VTKBackPlot(QVTKRenderWindowInteractor, BaseBackPlot, VCPWidget):
@@ -167,19 +164,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, BaseBackPlot, VCPWidget):
         self.original_g5x_offset = self.status.stat.g5x_offset
         self.original_g92_offset = self.status.stat.g92_offset
 
-        self.load(fname, renderer=self.renderer)
+        self.load(fname)
         if self.canon is None:
             return
 
-        self.original_g5x_offset = self.status.stat.g5x_offset
-
         self.canon.draw_lines()
+        self.path_actor = self.canon.get_actor()
 
-        # path = Path(self.canon, self.renderer)
-        self.path_actors = self.canon.get_actors()
+        extents = PathBoundaries(self.renderer, self.path_actor)
+        self.extents_actor = extents.get_actor()
 
-        for path_actor in self.path_actors:
-            self.renderer.AddActor(path_actor)
+        self.renderer.AddActor(self.path_actor)
+        self.renderer.AddActor(self.extents_actor)
+
+        self.path_actors = (self.path_actor, self.extents_actor)
 
         self.update_render()
 
