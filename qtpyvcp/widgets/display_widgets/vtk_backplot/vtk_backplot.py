@@ -99,6 +99,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # properties
         self._background_color = QColor(0, 0, 0)
         self._background_color2 = QColor(0, 0, 0)
+        self._enableProgramTicks = True
 
         self.original_g5x_offset = [0.0] * 9
         self.original_g92_offset = [0.0] * 9
@@ -364,8 +365,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def showGrid(self, grid):
         print('show grid')
 
-    @Slot(bool)
-    def programBounds(self, bounds):
+    @Slot()
+    def toggleProgramBounds(self):
+        bounds = self.path_actors[1].GetXAxisVisibility()
         if bounds:
             self.path_actors[1].XAxisVisibilityOff()
             self.path_actors[1].YAxisVisibilityOff()
@@ -376,35 +378,35 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.path_actors[1].ZAxisVisibilityOn()
         self.update_render()
 
-    @Slot(bool)
-    def programTicks(self, bounds):
-        if bounds:
-            self.path_actors[1].XAxisTickVisibilityOn()
-            self.path_actors[1].YAxisTickVisibilityOn()
-            self.path_actors[1].ZAxisTickVisibilityOn()
-            self.path_actors[1].XAxisMinorTickVisibilityOff()
-            self.path_actors[1].YAxisMinorTickVisibilityOff()
-            self.path_actors[1].ZAxisMinorTickVisibilityOff()
-        else:
+    @Slot()
+    def toggleProgramTicks(self):
+        ticks = self.path_actors[1].GetXAxisTickVisibility()
+        if ticks:
             self.path_actors[1].XAxisTickVisibilityOff()
             self.path_actors[1].YAxisTickVisibilityOff()
             self.path_actors[1].ZAxisTickVisibilityOff()
+        else:
+            self.path_actors[1].XAxisTickVisibilityOn()
+            self.path_actors[1].YAxisTickVisibilityOn()
+            self.path_actors[1].ZAxisTickVisibilityOn()
         self.update_render()
 
-    @Slot(bool)
-    def programLabels(self, bounds):
-        if bounds:
-            self.path_actors[1].XAxisLabelVisibilityOn()
-            self.path_actors[1].YAxisLabelVisibilityOn()
-            self.path_actors[1].ZAxisLabelVisibilityOn()
-        else:
+    @Slot()
+    def toggleProgramLabels(self):
+        labels = self.path_actors[1].GetXAxisLabelVisibility()
+        if labels:
             self.path_actors[1].XAxisLabelVisibilityOff()
             self.path_actors[1].YAxisLabelVisibilityOff()
             self.path_actors[1].ZAxisLabelVisibilityOff()
+        else:
+            self.path_actors[1].XAxisLabelVisibilityOn()
+            self.path_actors[1].YAxisLabelVisibilityOn()
+            self.path_actors[1].ZAxisLabelVisibilityOn()
         self.update_render()
 
-    @Slot(bool)
-    def machineBounds(self, bounds):
+    @Slot()
+    def toggleMachineBounds(self):
+        bounds = self.machine_actor.GetXAxisVisibility()
         if bounds:
             self.machine_actor.XAxisVisibilityOff()
             self.machine_actor.YAxisVisibilityOff()
@@ -415,31 +417,30 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.machine_actor.ZAxisVisibilityOn()
         self.update_render()
 
-    @Slot(bool)
-    def machineTicks(self, bounds):
-        if bounds:
-            self.machine_actor.XAxisTickVisibilityOn()
-            self.machine_actor.YAxisTickVisibilityOn()
-            self.machine_actor.ZAxisTickVisibilityOn()
-            self.machine_actor.XAxisMinorTickVisibilityOff()
-            self.machine_actor.YAxisMinorTickVisibilityOff()
-            self.machine_actor.ZAxisMinorTickVisibilityOff()
-        else:
+    @Slot()
+    def toggleMachineTicks(self):
+        ticks = self.machine_actor.GetXAxisTickVisibility()
+        if ticks:
             self.machine_actor.XAxisTickVisibilityOff()
             self.machine_actor.YAxisTickVisibilityOff()
             self.machine_actor.ZAxisTickVisibilityOff()
+        else:
+            self.machine_actor.XAxisTickVisibilityOn()
+            self.machine_actor.YAxisTickVisibilityOn()
+            self.machine_actor.ZAxisTickVisibilityOn()
         self.update_render()
 
-    @Slot(bool)
-    def machineLabels(self, bounds):
-        if bounds:
-            self.machine_actor.XAxisLabelVisibilityOn()
-            self.machine_actor.YAxisLabelVisibilityOn()
-            self.machine_actor.ZAxisLabelVisibilityOn()
-        else:
+    @Slot()
+    def toggleMachineLabels(self):
+        labels = self.machine_actor.GetXAxisLabelVisibility()
+        if labels:
             self.machine_actor.XAxisLabelVisibilityOff()
             self.machine_actor.YAxisLabelVisibilityOff()
             self.machine_actor.ZAxisLabelVisibilityOff()
+        else:
+            self.machine_actor.XAxisLabelVisibilityOn()
+            self.machine_actor.YAxisLabelVisibilityOn()
+            self.machine_actor.ZAxisLabelVisibilityOn()
         self.update_render()
 
     @Property(QColor)
@@ -472,10 +473,32 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.GradientBackgroundOff()
         self.update_render()
 
+    @Property(bool)
+    def enableProgramTicks(self):
+        return self._enableProgramTicks
+
+    @enableProgramTicks.setter
+    def enableProgramTicks(self, enable):
+        self._enableProgramTicks = enable
+
 
 class PathBoundaries:
     def __init__(self, renderer, path_actor):
         self.path_actor = path_actor
+
+        """
+        for k, v in VTKBackPlot.__dict__.items():
+            if "function" in str(v):
+                print(k)
+
+        for attr_name in dir(VTKBackPlot):
+            attr_value = getattr(VTKBackPlot, attr_name)
+            print(attr_name, attr_value, callable(attr_value))
+
+        print(dir(VTKBackPlot))
+        testit = getattr(VTKBackPlot, '_enableProgramTicks')
+        print('enableProgramTicks {}'.format(testit))
+        """
 
         cube_axes_actor = vtk.vtkCubeAxesActor()
 
@@ -498,20 +521,22 @@ class PathBoundaries:
         cube_axes_actor.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
         cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
-        cube_axes_actor.XAxisLabelVisibilityOff()
-        cube_axes_actor.YAxisLabelVisibilityOff()
-        cube_axes_actor.ZAxisLabelVisibilityOff()
-
-        cube_axes_actor.XAxisTickVisibilityOff()
-        cube_axes_actor.YAxisTickVisibilityOff()
-        cube_axes_actor.ZAxisTickVisibilityOff()
-
         if not IN_DESIGNER:
             programBoundry = INIFILE.find("VTK", "PROGRAM_BOUNDRY") or ""
             if programBoundry.lower() in ['false', 'off', 'no', '0']:
                 cube_axes_actor.XAxisVisibilityOff()
                 cube_axes_actor.YAxisVisibilityOff()
                 cube_axes_actor.ZAxisVisibilityOff()
+            programTicks = INIFILE.find("VTK", "PROGRAM_TICKS") or ""
+            if programTicks.lower() in ['false', 'off', 'no', '0']:
+                cube_axes_actor.XAxisTickVisibilityOff()
+                cube_axes_actor.YAxisTickVisibilityOff()
+                cube_axes_actor.ZAxisTickVisibilityOff()
+            programLabel = INIFILE.find("VTK", "PROGRAM_LABELS") or ""
+            if programTicks.lower() in ['false', 'off', 'no', '0']:
+                cube_axes_actor.XAxisLabelVisibilityOff()
+                cube_axes_actor.YAxisLabelVisibilityOff()
+                cube_axes_actor.ZAxisLabelVisibilityOff()
 
         self.actor = cube_axes_actor
 
@@ -663,20 +688,22 @@ class Machine:
         cube_axes_actor.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
         cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
-        cube_axes_actor.XAxisLabelVisibilityOff()
-        cube_axes_actor.YAxisLabelVisibilityOff()
-        cube_axes_actor.ZAxisLabelVisibilityOff()
-
-        cube_axes_actor.XAxisTickVisibilityOff()
-        cube_axes_actor.YAxisTickVisibilityOff()
-        cube_axes_actor.ZAxisTickVisibilityOff()
-
         if not IN_DESIGNER:
             machineBoundry = INIFILE.find("VTK", "MACHINE_BOUNDRY") or ""
             if machineBoundry.lower() in ['false', 'off', 'no', '0']:
                 cube_axes_actor.XAxisVisibilityOff()
                 cube_axes_actor.YAxisVisibilityOff()
                 cube_axes_actor.ZAxisVisibilityOff()
+            machineTicks = INIFILE.find("VTK", "MACHINE_TICKS") or ""
+            if machineTicks.lower() in ['false', 'off', 'no', '0']:
+                cube_axes_actor.XAxisTickVisibilityOff()
+                cube_axes_actor.YAxisTickVisibilityOff()
+                cube_axes_actor.ZAxisTickVisibilityOff()
+            machineLabels = INIFILE.find("VTK", "MACHINE_LABELS") or ""
+            if machineLabels.lower() in ['false', 'off', 'no', '0']:
+                cube_axes_actor.XAxisLabelVisibilityOff()
+                cube_axes_actor.YAxisLabelVisibilityOff()
+                cube_axes_actor.ZAxisLabelVisibilityOff()
 
         units = str(self.status.program_units)
 
