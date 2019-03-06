@@ -1,0 +1,14 @@
+(polar spiral)
+G20 G64 G90
+S3400 M3
+
+G0 Z1
+G0 X2 Y0
+G1 Z-.1 F24
+
+o100 repeat [800]
+  G91 G1 @-.0025 ^4.5
+o100 endrepeat
+
+G90 G0 Z1
+M2
