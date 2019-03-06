@@ -14,19 +14,16 @@ from hal import component, HAL_BIT, HAL_IN
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, QUrl
 from PyQt5.QtQuickWidgets import QQuickWidget
 
-from QtPyVCP.core import Status
-STATUS = Status()
+from qtpyvcp.plugins import getPlugin
+from qtpyvcp.widgets import VCPWidget
+from qtpyvcp.utilities import logger
+
+LOG = logger.getLogger(__name__)
+STATUS = getPlugin('status')
+TOOLTABLE = getPlugin('tooltable')
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
 WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
-
-
-def _initComp():
-    halcomp = component("atc_widget")
-    halcomp.newpin("fwd", HAL_BIT, HAL_IN)
-    halcomp.newpin("rev", HAL_BIT, HAL_IN)
-    halcomp.ready()
-
-    return halcomp
 
 
 class DynATC(QQuickWidget):
@@ -41,11 +38,6 @@ class DynATC(QQuickWidget):
         url = QUrl.fromLocalFile(os.path.join(WIDGET_PATH, "atc.qml"))
         self.setSource(url)
 
-        try:
-            self.halcomp = _initComp()
-        except Exception as e:
-            self.halcomp = None
-
         self.fwd_pin = 0
         self.rev_pin = 0
 
@@ -54,14 +46,14 @@ class DynATC(QQuickWidget):
 
         self.atc_position = 0
 
-        STATUS.tool_in_spindle.connect(self.on_tool_in_spindle)
-        STATUS.pocket_prepped.connect(self.on_pocket_prepped)
+        STATUS.tool_in_spindle.notify(self.on_tool_in_spindle)
+        STATUS.pocket_prepped.notify(self.on_pocket_prepped)
 
     def on_pocket_prepped(self, pocket_num):
-        print "Pocket Prepared: ", pocket_num
+        print("Pocket Prepared: ", pocket_num)
 
     def on_tool_in_spindle(self, tool_num):
-        print "Tool in Spindle: ", tool_num
+        print("Tool in Spindle: ", tool_num)
 
 
     rotateFwdSig = pyqtSignal(int, arguments=['rotate_forward'])

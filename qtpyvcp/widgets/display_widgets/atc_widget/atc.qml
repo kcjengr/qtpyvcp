@@ -413,14 +413,14 @@ Rectangle {
         }
     }
 
-    Timer {
-        id: halTimer
-        interval: 100
-        repeat: true
-        running: true
-        triggeredOnStart: false
-        onTriggered: atc_spiner.get_pins()
-    }
+//    Timer {
+//        id: halTimer
+//        interval: 100
+//        repeat: true
+//        running: true
+//        triggeredOnStart: false
+//        onTriggered: atc_spiner.get_pins()
+//    }
 
 
     function rotate_atc(name, tool_no, direction) {
