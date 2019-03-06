@@ -5,7 +5,8 @@ import QtQuick.Layouts 1.3
 Rectangle {
     visible: true
     width: 550
-    color: "#919191"
+    color: "#00000000"
+    border.color: "#00000000"
     height: 550
 
     GridLayout {
@@ -46,10 +47,10 @@ Rectangle {
 
     Image {
         id: atc_holder
-        x: 13
-        y: 14
         width: 524
         height: 523
+        x: parent.width / 2 - width / 2
+        y: parent.height / 2 - height / 2
         antialiasing: true
         z: 0
         rotation: 0
@@ -451,6 +452,10 @@ Rectangle {
 
     Connections {
         target: atc_spiner
+
+        onMoveToPocketSig: {
+            console.log(pocket_no)
+        }
 
         onRotateFwdSig: {
             rotate_atc(atc_anim, rotate_forward, 1)

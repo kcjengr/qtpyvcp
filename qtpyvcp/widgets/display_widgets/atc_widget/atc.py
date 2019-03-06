@@ -25,6 +25,10 @@ WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 
 class DynATC(QQuickWidget):
 
+    moveToPocketSig = pyqtSignal(int, arguments=['pocket_no'])
+    rotateFwdSig = pyqtSignal(int, arguments=['rotate_forward'])
+    rotateRevSig = pyqtSignal(int, arguments=['rotate_reverse'])
+
     def __init__(self, parent=None):
         super(DynATC, self).__init__(parent)
 
@@ -44,15 +48,14 @@ class DynATC(QQuickWidget):
         print("Pocket Prepared: ", pocket_num)
 
     def on_tool_in_spindle(self, tool_num):
+        self.moveToPocketSig.emit(tool_num)
         print("Tool in Spindle: ", tool_num)
 
-    rotateFwdSig = pyqtSignal(int, arguments=['rotate_forward'])
     @pyqtSlot()
     def rotate_forward(self):
         self.rotateFwdSig.emit(self.atc_position)
         self.atc_position += 1
 
-    rotateRevSig = pyqtSignal(int, arguments=['rotate_reverse'])
     @pyqtSlot()
     def rotate_reverse(self):
         self.rotateRevSig.emit(self.atc_position)

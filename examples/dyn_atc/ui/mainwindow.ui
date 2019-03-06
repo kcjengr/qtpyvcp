@@ -53,7 +53,11 @@
           </attribute>
           <layout class="QGridLayout" name="gridLayout_2">
            <item row="0" column="1">
-            <widget class="DynATC" name="dynatc"/>
+            <widget class="DynATC" name="dynatc">
+             <property name="resizeMode">
+              <enum>QQuickWidget::SizeRootObjectToView</enum>
+             </property>
+            </widget>
            </item>
            <item row="1" column="1">
             <widget class="MDIEntry" name="mdientry"/>
