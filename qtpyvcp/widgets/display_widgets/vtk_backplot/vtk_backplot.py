@@ -1,37 +1,100 @@
-from collections import defaultdict
-from pprint import pprint
-
-import vtk, math
+import os
+import linuxcnc
 
 from qtpy.QtCore import Property, Signal, Slot, QTimer
 from qtpy.QtGui import QColor
+
+import vtk
 from vtk.util.colors import tomato, yellow, mint
-
-from qtpy.QtWidgets import QWidget, QVBoxLayout
-
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities import logger
 
-from vtk_cannon import VTKCanon
-
-import os
-import linuxcnc
+from base_canon import StatCanon
+from base_backplot import BaseBackPlot
 
 LOG = logger.getLogger(__name__)
 STATUS = getPlugin('status')
 TOOLTABLE = getPlugin('tooltable')
 IN_DESIGNER = os.getenv('DESIGNER', False)
-
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 
+COLOR_MAP = {
+    'traverse': (188, 252, 201, 75),
+    'arcfeed':  (255, 255, 255, 128),
+    'feed':     (255, 255, 255, 128),
+    'dwell':    (100, 100, 100, 255),
+    'user':     (100, 100, 100, 255),
+}
 
-class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
 
+class VTKCanon(StatCanon):
+    def __init__(self, colors=COLOR_MAP, *args, **kwargs):
+        super(VTKCanon, self).__init__(*args, **kwargs)
+
+        self.path_colors = colors
+
+        # Create a vtkUnsignedCharArray container and store the colors in it
+        self.colors = vtk.vtkUnsignedCharArray()
+        self.colors.SetNumberOfComponents(4)
+
+        self.points = vtk.vtkPoints()
+        self.lines = vtk.vtkCellArray()
+
+        self.poly_data = vtk.vtkPolyData()
+        self.data_mapper = vtk.vtkPolyDataMapper()
+        self.path_actor = vtk.vtkActor()
+
+        self.path_points = []
+        self.append_path_point = self.path_points.append
+
+    def add_path_point(self, line_type, start_point, end_point):
+        self.append_path_point((line_type, end_point[:3]))
+
+    def draw_lines(self):
+
+        index = 0
+        for line_type, end_point in self.path_points:
+            # print line_type, end_point
+            self.points.InsertNextPoint(end_point[:3])
+            self.colors.InsertNextTypedTuple(self.path_colors[line_type])
+
+            line = vtk.vtkLine()
+            if index == 0:
+                line.GetPointIds().SetId(0, 0)
+                line.GetPointIds().SetId(1, 1)
+            else:
+                line.GetPointIds().SetId(0, index-1)
+                line.GetPointIds().SetId(1, index)
+
+            self.lines.InsertNextCell(line)
+
+            index += 1
+
+        # free up memory, lots of it for big files
+        self.path_points = []
+
+        self.poly_data.SetPoints(self.points)
+        self.poly_data.SetLines(self.lines)
+
+        self.poly_data.GetCellData().SetScalars(self.colors)
+
+        self.data_mapper.SetInputData(self.poly_data)
+        self.data_mapper.Update()
+
+        self.path_actor.SetMapper(self.data_mapper)
+
+    def get_actor(self):
+        return self.path_actor
+
+
+class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
+
+        self.canon_class = VTKCanon
 
         # properties
         self._background_color = QColor(0, 0, 0)
@@ -40,16 +103,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.original_g5x_offset = [0.0] * 9
         self.original_g92_offset = [0.0] * 9
 
-        self.current_position = (0.0, 0.0, 0.0)
+        self.spindle_position = (0.0, 0.0, 0.0)
+        self.tooltip_position = (0.0, 0.0, 0.0)
+
         self.parent = parent
         self.status = STATUS
-        self.tt = TOOLTABLE
+        self.stat = STATUS.stat
 
-        self._tool_table = self.tt.loadToolTable()
-
-        self.axis = self.status.stat.axis
-
-        self.gr = VTKCanon()
+        self.axis = self.stat.axis
 
         self.nav_style = vtk.vtkInteractorStyleTrackballCamera()
 
@@ -69,12 +130,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.axes = Axes()
         self.axes_actor = self.axes.get_actor()
 
-        self.path_cache = PathCache(self.current_position)
+        self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
 
-        tool_info = self._tool_table[0]
-
-        self.tool = Tool(tool_info)
+        self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
         self.path_actors = list()
@@ -90,17 +149,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.interactor.Start()
 
         self.status.file.notify(self.load_program)
-        self.status.position.notify(self.update_tool_position)
-
-        self.status.tool_in_spindle.notify(self.update_tool)
+        self.status.position.notify(self.update_position)
 
         self.status.g5x_offset.notify(self.update_g5x_offset)
         self.status.g92_offset.notify(self.update_g92_offset)
         self.status.rotation_xy.notify(self.update_rotation_xy)
-        self.status.tool_offset.notify(self.reload_program)
+
+        self.status.tool_offset.notify(self.update_tool)
+        self.status.tool_table.notify(self.update_tool)
 
         self.line = None
         self._last_filename = str()
+
+    def tlo(self, tlo):
+        print tlo
 
     @Slot()
     def reload_program(self, *args, **kwargs):
@@ -110,29 +172,34 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         for path_actor in self.path_actors:
             self.renderer.RemoveActor(path_actor)
 
-        if fname:
-            self._last_filename = fname
-        else:
-            fname = self._last_filename
-
         self.original_g5x_offset = self.status.stat.g5x_offset
         self.original_g92_offset = self.status.stat.g92_offset
 
-        self.gr.load(fname)
+        self.load(fname)
+        if self.canon is None:
+            return
 
-        path = Path(self.gr, self.renderer)
-        self.path_actors = path.get_actors()
+        self.canon.draw_lines()
+        self.path_actor = self.canon.get_actor()
 
-        for path_actor in self.path_actors:
-            self.renderer.AddActor(path_actor)
+        extents = PathBoundaries(self.renderer, self.path_actor)
+        self.extents_actor = extents.get_actor()
+
+        self.renderer.AddActor(self.path_actor)
+        self.renderer.AddActor(self.extents_actor)
+
+        self.path_actors = (self.path_actor, self.extents_actor)
 
         self.update_render()
 
-    def update_tool_position(self, pos):
+    def update_position(self, pos):
+        self.spindle_position = pos[:3]
+
         tlo = self.status.tool_offset
-        self.current_position = [pos - tlo for pos, tlo in zip(pos[:3], tlo[:3])]
-        self.tool_actor.SetPosition(self.current_position)
-        self.path_cache.add_line_point(self.current_position)
+        self.tooltip_position = [pos - tlo for pos, tlo in zip(pos[:3], tlo[:3])]
+
+        self.tool_actor.SetPosition(self.spindle_position)
+        self.path_cache.add_line_point(self.tooltip_position)
         self.update_render()
 
     def update_g5x_offset(self, g5x_offset):
@@ -160,14 +227,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         # nasty hack so ensure the positions have updated before loading
         QTimer.singleShot(10, self.reload_program)
 
-    def update_tool(self, tool):
+    def update_tool(self):
         self.renderer.RemoveActor(self.tool_actor)
 
-        tool_info = self._tool_table[tool]
-        self.tool = Tool(tool=tool_info)
+        self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
-        self.tool_actor.SetPosition(self.current_position)
+        self.tool_actor.SetPosition(self.spindle_position)
 
         self.renderer.AddActor(self.tool_actor)
 
@@ -273,7 +339,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
 
         self.renderer.RemoveActor(self.path_cache_actor)
 
-        self.path_cache = PathCache(self.current_position)
+        self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
 
         self.renderer.AddActor(self.path_cache_actor)
@@ -407,115 +473,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget):
         self.update_render()
 
 
-class Path:
-    def __init__(self, gr, renderer):
-        self.gr = gr
-
-        feed_lines = len(self.gr.canon.feed)
-        traverse_lines = len(self.gr.canon.traverse)
-        arcfeed_lines = len(self.gr.canon.arcfeed)
-
-        total_lines = feed_lines + traverse_lines + arcfeed_lines
-
-        line = PathLine(total_lines)
-
-        path = dict()
-
-        for traverse in self.gr.canon.traverse:
-            seq = traverse[0]
-            line_type = "straight_feed"
-            cords = traverse[1][:3]
-
-            path[seq] = [cords, line_type]
-
-        for feed in self.gr.canon.feed:
-            seq = feed[0]
-            line_type = "traverse"
-            cords = feed[1][:3]
-
-            path[seq] = [cords, line_type]
-
-        arc_segments = defaultdict(list)
-
-        for index, arc in enumerate(self.gr.canon.arcfeed):
-            seq = arc[0]
-            line_type = "arc_feed"
-            cords = arc[1][:3]
-            arc_segments[seq].append((seq, [cords, line_type]))
-
-        for point_data in path.items():
-            line.add_line_point(point_data)
-
-        for line_no, arc in arc_segments.items():
-            for segment in arc:
-                line.add_line_point(segment)
-
-        line.draw_path_line()
-
-        self.path_actor = line.get_actor()
-
-        self.path_boundaries = PathBoundaries(renderer, self.path_actor)
-        self.path_boundaries_actor = self.path_boundaries.get_actor()
-
-    def get_actors(self):
-        return [self.path_actor, self.path_boundaries_actor]
-
-
-class PathLine:
-    def __init__(self, points):
-
-        self.num_points = points
-
-        self.points = vtk.vtkPoints()
-        self.lines = vtk.vtkCellArray()
-
-        self.line_type = list()
-
-        self.lines_poligon_data = vtk.vtkPolyData()
-        self.polygon_mapper = vtk.vtkPolyDataMapper()
-        self.actor = vtk.vtkActor()
-
-    def add_line_point(self, point):
-        data = point[1][0]
-        line_type = point[1][1]
-        self.line_type.append(line_type)
-        self.points.InsertNextPoint(data)
-
-    def draw_path_line(self):
-        namedColors = vtk.vtkNamedColors()
-
-        # Create a vtkUnsignedCharArray container and store the colors in it
-        colors = vtk.vtkUnsignedCharArray()
-        colors.SetNumberOfComponents(3)
-
-        for index in range(0, self.num_points - 1):
-
-            line_type = self.line_type[index]
-
-            if line_type == "traverse" or line_type == "arc_feed":
-                colors.InsertNextTypedTuple(namedColors.GetColor3ub("mint"))
-            elif line_type == "straight_feed":
-                colors.InsertNextTypedTuple(namedColors.GetColor3ub("tomato"))
-
-            line = vtk.vtkLine()
-            line.GetPointIds().SetId(0, index)  # the second 0 is the index of the Origin in linesPolyData's points
-            line.GetPointIds().SetId(1, index + 1)  # the second 1 is the index of P0 in linesPolyData's points
-            self.lines.InsertNextCell(line)
-
-        self.lines_poligon_data.SetPoints(self.points)
-        self.lines_poligon_data.SetLines(self.lines)
-
-        self.lines_poligon_data.GetCellData().SetScalars(colors)
-
-        self.polygon_mapper.SetInputData(self.lines_poligon_data)
-        self.polygon_mapper.Update()
-
-        self.actor.SetMapper(self.polygon_mapper)
-
-    def get_actor(self):
-        return self.actor
-
-
 class PathBoundaries:
     def __init__(self, renderer, path_actor):
         self.path_actor = path_actor
@@ -580,6 +537,7 @@ class PathCache:
         self.actor = vtk.vtkActor()
         self.actor.GetProperty().SetColor(yellow)
         self.actor.GetProperty().SetLineWidth(2)
+        self.actor.GetProperty().SetOpacity(0.5)
         self.actor.SetMapper(self.polygon_mapper)
 
         self.lines_poligon_data.SetPoints(self.points)
@@ -748,31 +706,23 @@ class Axes:
 
 
 class Tool:
-    def __init__(self, tool):
-
-        self.tool = tool
+    def __init__(self, tool, offset):
 
         self.height = 2.0
 
-        self.tool_no = self.tool['T']
-        self.dia = self.tool['D']
-        self.x_offset = self.tool['X']
-        self.y_offset = self.tool['Y']
-        self.z_offset = self.tool['Z']
-
         transform = vtk.vtkTransform()
 
-        if self.tool_no == 0:
+        if tool.id == 0 or tool.diameter < .05:
             source = vtk.vtkConeSource()
-            source.SetHeight(self.height/2)
-            source.SetCenter(-self.height / 4 + self.z_offset, self.y_offset, self.x_offset)  # because of transformation Z, Y, X
-            source.SetRadius(self.height/4)
+            source.SetHeight(self.height / 2)
+            source.SetCenter(-self.height / 4 + offset[2], -offset[1], -offset[0])
+            source.SetRadius(self.height / 4)
             transform.RotateWXYZ(90, 0, 1, 0)
         else:
             source = vtk.vtkCylinderSource()
             source.SetHeight(1)
-            source.SetCenter(0, .5, 0)
-            source.SetRadius(self.dia / 2)
+            source.SetCenter(-offset[0], .5 - offset[2], offset[1])
+            source.SetRadius(tool.diameter / 2)
             transform.RotateWXYZ(90, 1, 0, 0)
 
         source.SetResolution(128)

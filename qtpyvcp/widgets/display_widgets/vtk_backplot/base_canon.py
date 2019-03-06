@@ -17,31 +17,16 @@
 
 import math
 import gcode
+import linuxcnc
 
 
-class VTKCanon(object):
-    def __init__(self, geometry, is_foam=0):
-
-        # traverse list - [line number, [start position], [end position], [tlo x, tlo y, tlo z]]
-        self.traverse = []
-        self.traverse_append = self.traverse.append
-
-        # feed list - [line number, [start position], [end position], feedrate, [tlo x, tlo y, tlo z]]
-        self.feed = []
-        self.feed_append = self.feed.append
-
-        # arcfeed list - [line number, [start position], [end position], feedrate, [tlo x, tlo y, tlo z]]
-        self.arcfeed = []
-        self.arcfeed_append = self.arcfeed.append
-
-        # dwell list - [line number, color, pos x, pos y, pos z, plane]
-        self.dwells = []
-        self.dwells_append = self.dwells.append
+class BaseCanon(object):
+    def __init__(self):
 
         self.feedrate = 1
         self.dwell_time = 0
 
-        self.line_num = -1
+        self.seq_num = -1
         self.last_pos = (0,) * 9
 
         self.first_move = True
@@ -58,15 +43,17 @@ class VTKCanon(object):
         self.max_extents_notool = [-9e99, -9e99, -9e99]
 
         # tool length offsets
-        self.tlo_x = 0
-        self.tlo_y = 0
-        self.tlo_z = 0
-        self.tlo_a = 0
-        self.tlo_b = 0
-        self.tlo_c = 0
-        self.tlo_u = 0
-        self.tlo_v = 0
-        self.tlo_w = 0
+        self.tlo_x = 0.0
+        self.tlo_y = 0.0
+        self.tlo_z = 0.0
+        self.tlo_a = 0.0
+        self.tlo_b = 0.0
+        self.tlo_c = 0.0
+        self.tlo_u = 0.0
+        self.tlo_v = 0.0
+        self.tlo_w = 0.0
+
+        self.tool_offsets = (0.0, ) * 9
 
         # G92/G52 offsets
         self.g92_offset_x = 0.0
@@ -96,11 +83,8 @@ class VTKCanon(object):
         self.rotation_cos = 1
         self.rotation_sin = 0
 
-        self.is_foam = is_foam
-        self.foam_z = 0
-        self.foam_w = 1.5
-        self.notify = 0
-        self.notify_message = ""
+    def add_path_point(self, line_type, start_point, end_point):
+        pass
 
     def comment(self, msg):
         pass
@@ -118,7 +102,7 @@ class VTKCanon(object):
         # 'overrides', 'path_mode', 'plane', 'retract_mode', 'sequence_number',
         # 'speed', 'spindle', 'stopping', 'tool_length_offset', 'toolchange',
         self.state = st
-        self.line_num = self.state.sequence_number
+        self.seq_num = self.state.sequence_number
 
     def calc_extents(self):
         self.min_extents, self.max_extents, self.min_extents_notool, \
@@ -200,6 +184,8 @@ class VTKCanon(object):
         self.tlo_v = vo
         self.tlo_w = wo
 
+        self.tool_offsets = xo, yo, zo, ao, bo, co, uo, vo, wo
+
     def set_spindle_rate(self, speed):
         pass
 
@@ -209,8 +195,11 @@ class VTKCanon(object):
     def select_plane(self, plane):
         pass
 
-    def change_tool(self, tnum):
+    def change_tool(self, pocket):
         self.first_move = True
+
+    def get_tool(self, pocket):
+        return -1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0
 
     def straight_traverse(self, x, y, z, a, b, c, u, v, w):
         if self.suppress > 0:
@@ -218,8 +207,8 @@ class VTKCanon(object):
 
         pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
         if not self.first_move:
-            self.traverse_append(
-                (self.line_num, self.last_pos, pos, [self.tlo_x, self.tlo_y, self.tlo_z]))
+            self.add_path_point('traverse', self.last_pos, pos)
+
         self.last_pos = pos
 
     def rigid_tap(self, x, y, z):
@@ -230,16 +219,13 @@ class VTKCanon(object):
         pos = self.rotate_and_translate(x, y, z, 0, 0, 0, 0, 0, 0)[:3]
         pos += self.last_pos[3:]
 
-        self.feed_append((self.line_num, self.last_pos, pos, self.feedrate,
-                          [self.tlo_x, self.tlo_y, self.tlo_z]))
-
-        self.feed_append((self.line_num, pos, self.last_pos, self.feedrate,
-                          [self.tlo_x, self.tlo_y, self.tlo_z]))
+        self.add_path_point('feed', self.last_pos, pos)
 
     def set_plane(self, plane):
         self.plane = plane
 
-    def arc_feed(self, x1, y1, cx, cy, rot, z1, a, b, c, u, v, w):
+    def arc_feed(self, end_x, end_y, center_x, center_y, rot, end_z, a, b, c, u, v, w):
+
         if self.suppress > 0:
             return
 
@@ -247,33 +233,29 @@ class VTKCanon(object):
         self.in_arc = True
         try:
             self.lo = tuple(self.last_pos)
-            segs = gcode.arc_to_segments(self, x1, y1, cx, cy, rot, z1, a, b,
-                                         c, u, v, w, self.arcdivision)
+            segs = gcode.arc_to_segments(self, end_x, end_y, center_x, center_y,
+                                         rot, end_z, a, b, c, u, v, w, self.arcdivision)
             self.straight_arcsegments(segs)
         finally:
             self.in_arc = False
 
     def straight_arcsegments(self, segs):
         self.first_move = False
-        lo = self.last_pos
-        lineno = self.line_num
-        feedrate = self.feedrate
-        to = [self.tlo_x, self.tlo_y, self.tlo_z]
-        append = self.arcfeed_append
-        for l in segs:
-            append((lineno, lo, l, feedrate, to))
-            lo = l
-        self.last_pos = lo
+        last_pos = self.last_pos
+        for pos in segs:
+            self.add_path_point('arcfeed', last_pos, pos)
+            last_pos = pos
+        self.last_pos = last_pos
 
     def straight_feed(self, x, y, z, a, b, c, u, v, w):
         if self.suppress > 0:
             return
 
         self.first_move = False
-        l = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
-        self.feed_append((self.line_num, self.last_pos, l, self.feedrate,
-                          [self.tlo_x, self.tlo_y, self.tlo_z]))
-        self.last_pos = l
+        pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
+
+        self.add_path_point('feed', self.last_pos, pos)
+        self.last_pos = pos
 
     straight_probe = straight_feed
 
@@ -281,21 +263,69 @@ class VTKCanon(object):
         if self.suppress > 0:
             return
 
-        color = self.colors['m1xx']
-        self.dwells_append((self.line_num, color, self.last_pos[0], self.last_pos[1],
-                            self.last_pos[2], self.state.plane / 10 - 17))
+        self.add_path_point('user', self.last_pos, self.last_pos)
 
     def dwell(self, arg):
         if self.suppress > 0:
             return
 
         self.dwell_time += arg
-        color = self.colors['dwell']
-        self.dwells_append((self.line_num, color, self.last_pos[0], self.last_pos[1],
-                            self.last_pos[2], self.state.plane / 10 - 17))
+        self.add_path_point('dwell', self.last_pos, self.last_pos)
+
+    def get_external_angular_units(self):
+        return 1.0
+
+    def get_external_length_units(self):
+        return 1.0
+
+    def get_axis_mask(self):
+        return 0
+
+    def get_block_delete(self):
+        return 0
 
 
-class PrintCanon:
+class StatCanon(BaseCanon):
+    def __init__(self, geometry='XYZ', random=False, stat=None):
+        super(StatCanon, self).__init__()
+
+        self.geometry = geometry
+        self.random = random
+
+        self.stat = stat or linuxcnc.stat()
+        self.stat.poll()
+
+        self.tools = list(self.stat.tool_table)
+
+    def change_tool(self, pocket):
+        if self.random:
+            self.tools[0] = self.tools[pocket]
+            self.tools[pocket] = self.tools[0]
+        elif pocket == 0:
+            self.tools[0] = (-1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                             0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0)
+        else:
+            self.tools[0] = self.tools[pocket]
+
+    def get_tool(self, pocket):
+        if pocket >= 0 and pocket < len(self.tools):
+            return tuple(self.tools[pocket])
+        return -1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0
+
+    def get_external_angular_units(self):
+        return self.stat.angular_units or 1.0
+
+    def get_external_length_units(self):
+        return self.stat.linear_units or 1.0
+
+    def get_axis_mask(self):
+        return self.stat.axis_mask
+
+    def get_block_delete(self):
+        return self.stat.block_delete
+
+
+class PrintCanon(BaseCanon):
     def set_g5x_offset(self, *args):
         print "set_g5x_offset", args
 
@@ -316,10 +346,10 @@ class PrintCanon:
         print "#", arg
 
     def straight_traverse(self, *args):
-        print "straight_traverse %.4g %.4g %.4g  %.4g %.4g %.4g" % args
+        print "straight_traverse %.4g %.4g %.4g  %.4g %.4g %.4g   %.4g %.4g %.4g" % args
 
     def straight_feed(self, *args):
-        print "straight_feed %.4g %.4g %.4g  %.4g %.4g %.4g" % args
+        print "straight_feed %.4g %.4g %.4g  %.4g %.4g %.4g  %.4g %.4g %.4g" % args
 
     def dwell(self, arg):
         if arg < .1:
@@ -330,37 +360,5 @@ class PrintCanon:
     def arc_feed(self, *args):
         print "arc_feed %.4g %.4g  %.4g %.4g %.4g  %.4g  %.4g %.4g %.4g" % args
 
-
-class StatMixin:
-    def __init__(self, s, r):
-        self.s = s
-        self.tools = list(s.tool_table)
-        self.random = r
-
-    def change_tool(self, pocket):
-        if self.random:
-            self.tools[0], self.tools[pocket] = self.tools[pocket], self.tools[
-                0]
-        elif pocket == 0:
-            self.tools[
-                0] = -1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0
-        else:
-            self.tools[0] = self.tools[pocket]
-
-    def get_tool(self, pocket):
-        if pocket >= 0 and pocket < len(self.tools):
-            return tuple(self.tools[pocket])
-        return -1, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0
-
-    def get_external_angular_units(self):
-        return self.s.angular_units or 1.0
-
-    def get_external_length_units(self):
-        return self.s.linear_units or 1.0
-
     def get_axis_mask(self):
-        return self.s.axis_mask
-
-    def get_block_delete(self):
-        return self.s.block_delete
-
+        return 7 # XYZ

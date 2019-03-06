@@ -27,7 +27,7 @@ from datetime import datetime
 
 import linuxcnc
 
-from qtpy.QtCore import QFileSystemWatcher, QTimer
+from qtpy.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
 
 import qtpyvcp
 from qtpyvcp.utilities.info import Info
@@ -113,6 +113,8 @@ class ToolTable(DataPlugin):
     DEFAULT_TOOL = DEFAULT_TOOL
     COLUMN_LABELS = COLUMN_LABELS
 
+    tool_table_changed = Signal(dict)
+
     def __init__(self, columns='TPXYZDR', file_header_template=None):
         super(ToolTable, self).__init__()
 
@@ -133,6 +135,7 @@ class ToolTable(DataPlugin):
 
         # update signals
         STATUS.tool_in_spindle.notify(self.setCurrentToolNumber)
+        STATUS.tool_table.notify(lambda *args: self.loadToolTable())
 
 
     @DataChannel
@@ -218,7 +221,8 @@ class ToolTable(DataPlugin):
             self.fs_watcher.addPath(self.tool_table_file)
 
         # reload with the new data
-        self.loadToolTable()
+        tool_table = self.loadToolTable()
+        self.tool_table_changed.emit(tool_table)
 
     def iterTools(self, tool_table=None, columns=None):
         tool_table = tool_table or self.TOOL_TABLE
@@ -295,7 +299,11 @@ class ToolTable(DataPlugin):
         # import json
         # print json.dumps(table, sort_keys=True, indent=4)
 
+        # self.tool_table_changed.emit(table)
         return table.copy()
+
+    def getToolTable(self):
+        return self.TOOL_TABLE.copy()
 
     def saveToolTable(self, tool_table, columns=None, tool_file=None):
         """Write tooltable data to file.
