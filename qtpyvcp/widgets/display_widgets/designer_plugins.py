@@ -44,3 +44,8 @@ from vtk_backplot.vtk_backplot import VTKBackPlot
 class VTKWidgetPlugin(_DesignerPlugin):
     def pluginClass(self):
         return VTKBackPlot
+
+from atc_widget.atc import DynATC
+class DynATCPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return DynATC
