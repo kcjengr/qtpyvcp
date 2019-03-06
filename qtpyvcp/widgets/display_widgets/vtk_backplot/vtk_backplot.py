@@ -721,7 +721,7 @@ class Tool:
         else:
             source = vtk.vtkCylinderSource()
             source.SetHeight(1)
-            source.SetCenter(-offset[0], .5 - offset[2], -offset[1])
+            source.SetCenter(-offset[0], .5 - offset[2], offset[1])
             source.SetRadius(tool.diameter / 2)
             transform.RotateWXYZ(90, 1, 0, 0)
 
