@@ -3,9 +3,12 @@ import QtQuick.Controls 1.5
 import QtQuick.Layouts 1.3
 
 Rectangle {
+    id: rectangle
     visible: true
     width: 600
     color: "#00000000"
+    property alias rectangle: rectangle
+    border.width: 0
     border.color: "#00000000"
     height: 600
 
