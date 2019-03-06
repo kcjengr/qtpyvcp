@@ -1,0 +1,50 @@
+# Include the QtPyVCP default menubar.
+{% include "default_menubar.yml" %}
+
+qtdesigner:
+  ui_file: ( windows.mainwindow.kwargs.ui_file )
+  qss_file: ( application.kwargs.stylesheet )
+
+vcp:
+  name: vtk_tool_table
+  version: v0.0.1
+  author: My Name
+  description: >
+    Put a short description of your VCP here. This will be
+    shown in the VCP Chooser when launching QtPyVCP with the
+    --chooser option.
+
+
+    Examples of what to included here:
+      * VCP Features
+      * Type of machine the VCP is for
+      * Development status
+      * Acknowledgments
+
+data_plugins:
+  status:
+    kwargs:
+      cycle_time: 75
+
+windows:
+
+  mainwindow:
+    # Specify the class to use for the VCP's mainwindow
+    #   Format: package.module:class
+    provider: vtk_tool_table.mainwindow:MyMainWindow
+
+    # Keyword arguments to pass when initializing the class.
+    kwargs:
+      # Specify the mainwindow menubar as the default.
+      menu: ( default_menubar )
+      # Specify the UI file to load the window layout from.
+      ui_file: {{ file.dir }}/ui/mainwindow.ui
+      # Specify a stylesheet to use only for mainwindow.
+      stylesheet: null
+      # Set the window title from from the date in the vcp section above.
+      title: ( vcp.name ) ( vcp.version)
+
+application:
+  kwargs:
+    # Specify the application wide stylesheet.
+    stylesheet: {{ file.dir }}/ui/style.qss

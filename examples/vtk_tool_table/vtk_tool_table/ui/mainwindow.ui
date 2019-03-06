@@ -1,0 +1,981 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1711</width>
+    <height>769</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QFrame" name="verticalFrame">
+      <property name="frameShape">
+       <enum>QFrame::Box</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>5</number>
+       </property>
+       <item>
+        <widget class="QTabWidget" name="tabWidget">
+         <property name="tabPosition">
+          <enum>QTabWidget::South</enum>
+         </property>
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="tab">
+          <attribute name="title">
+           <string>Plot</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_2">
+           <item row="0" column="3">
+            <widget class="ToolTable" name="tooltable">
+             <property name="minimumSize">
+              <size>
+               <width>400</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QFrame" name="gridFrame">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <layout class="QGridLayout" name="gridLayout">
+              <property name="leftMargin">
+               <number>5</number>
+              </property>
+              <property name="topMargin">
+               <number>5</number>
+              </property>
+              <property name="rightMargin">
+               <number>5</number>
+              </property>
+              <property name="bottomMargin">
+               <number>5</number>
+              </property>
+              <item row="5" column="4">
+               <widget class="ActionButton" name="actionbutton_14">
+                <property name="text">
+                 <string>Jog Z+</string>
+                </property>
+                <property name="actionName" stdset="0">
+                 <string>machine.jog.axis:z,pos</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="5">
+               <widget class="ActionButton" name="actionbutton_15">
+                <property name="text">
+                 <string>Jog Z-</string>
+                </property>
+                <property name="actionName" stdset="0">
+                 <string>machine.jog.axis:z,neg</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="5">
+               <widget class="QPushButton" name="viewClear">
+                <property name="text">
+                 <string>Clear</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="4">
+               <widget class="QPushButton" name="viewZ2">
+                <property name="text">
+                 <string>Z2 View</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="8">
+               <widget class="QPushButton" name="reloadFile">
+                <property name="text">
+                 <string>Reload</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="3">
+               <widget class="QPushButton" name="viewZ">
+                <property name="text">
+                 <string>Z View</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" colspan="10">
+               <widget class="VTKBackPlot" name="vtk">
+                <property name="backgroundColor" stdset="0">
+                 <color>
+                  <red>206</red>
+                  <green>92</green>
+                  <blue>0</blue>
+                 </color>
+                </property>
+                <property name="backgroundColor2" stdset="0">
+                 <color>
+                  <red>45</red>
+                  <green>45</green>
+                  <blue>45</blue>
+                 </color>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="1">
+               <widget class="ActionButton" name="actionbutton_11">
+                <property name="text">
+                 <string>Jog X -</string>
+                </property>
+                <property name="actionName" stdset="0">
+                 <string>machine.jog.axis:x,neg</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="2">
+               <widget class="ActionButton" name="actionbutton_12">
+                <property name="text">
+                 <string>Jog Y+</string>
+                </property>
+                <property name="actionName" stdset="0">
+                 <string>machine.jog.axis:y,pos</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="3">
+               <widget class="ActionButton" name="actionbutton_13">
+                <property name="text">
+                 <string>Jog Y-</string>
+                </property>
+                <property name="actionName" stdset="0">
+                 <string>machine.jog.axis:y,neg</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="1">
+               <widget class="QPushButton" name="viewX">
+                <property name="text">
+                 <string>X View</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="6">
+               <widget class="QPushButton" name="viewZoomIn">
+                <property name="text">
+                 <string>Zoom In</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="0">
+               <widget class="ActionButton" name="actionbutton_10">
+                <property name="text">
+                 <string>Jog X +</string>
+                </property>
+                <property name="actionName" stdset="0">
+                 <string>machine.jog.axis:x,pos</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="viewP">
+                <property name="text">
+                 <string>P View</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="7">
+               <widget class="QPushButton" name="viewZoomOut">
+                <property name="text">
+                 <string>Zoom Out</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="8">
+               <widget class="MDIButton" name="mdibutton">
+                <property name="text">
+                 <string>Go Home</string>
+                </property>
+                <property name="MDICommand" stdset="0">
+                 <string>G0X0Y0Z0</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="2">
+               <widget class="QPushButton" name="viewY">
+                <property name="text">
+                 <string>Y View</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="4" colspan="2">
+               <widget class="QCheckBox" name="showMachineLabels">
+                <property name="text">
+                 <string>Show Machine Labels</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="8">
+               <widget class="QPushButton" name="viewPath">
+                <property name="toolTip">
+                 <string>Zoom to Path Bounds</string>
+                </property>
+                <property name="text">
+                 <string>Zoom P</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="7">
+               <widget class="QPushButton" name="viewMachine">
+                <property name="toolTip">
+                 <string>Zoom to Machine Bounds</string>
+                </property>
+                <property name="text">
+                 <string>Zoom M</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="8">
+               <widget class="QPushButton" name="viewPerspective">
+                <property name="text">
+                 <string>Perspective</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="7">
+               <widget class="QPushButton" name="viewOrtho">
+                <property name="text">
+                 <string>Ortho</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="2" colspan="2">
+               <widget class="QCheckBox" name="showProgramTicks">
+                <property name="text">
+                 <string>Show Program Ticks</string>
+                </property>
+               </widget>
+              </item>
+              <item row="5" column="7">
+               <widget class="QPushButton" name="showViewStats">
+                <property name="text">
+                 <string>View Status</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0" colspan="2">
+               <widget class="QCheckBox" name="hideProgramBoundry">
+                <property name="text">
+                 <string>Hide Prog Boundry</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="0" colspan="2">
+               <widget class="QCheckBox" name="hideMachineBoundry">
+                <property name="text">
+                 <string>Hide Mach Boundry</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="4" colspan="2">
+               <widget class="QCheckBox" name="showProgramLabels">
+                <property name="text">
+                 <string>Show Prog Labels</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="2" colspan="2">
+               <widget class="QCheckBox" name="showMachineTicks">
+                <property name="text">
+                 <string>Show Machine Ticks</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="6">
+               <widget class="DialogButton" name="dialogbutton">
+                <property name="text">
+                 <string>Offsets</string>
+                </property>
+                <property name="rules" stdset="0">
+                 <string>[]</string>
+                </property>
+                <property name="dialogName" stdset="0">
+                 <string>set_work_offsets</string>
+                </property>
+               </widget>
+              </item>
+              <item row="4" column="6">
+               <widget class="MDIEntry" name="mdientry"/>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <layout class="QVBoxLayout" name="verticalLayout_3">
+             <item>
+              <widget class="QPushButton" name="pushButton_3">
+               <property name="text">
+                <string>Save</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string>PushButton</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_6">
+               <property name="text">
+                <string>PushButton</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_5">
+               <property name="text">
+                <string>PushButton</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_7">
+               <property name="text">
+                <string>PushButton</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_4">
+               <property name="text">
+                <string>PushButton</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab_2">
+          <attribute name="title">
+           <string>File</string>
+          </attribute>
+          <layout class="QGridLayout" name="gridLayout_4">
+           <item row="0" column="0">
+            <widget class="QFrame" name="gridFrame">
+             <property name="frameShape">
+              <enum>QFrame::Box</enum>
+             </property>
+             <layout class="QGridLayout" name="gridLayout_3">
+              <property name="leftMargin">
+               <number>5</number>
+              </property>
+              <property name="topMargin">
+               <number>5</number>
+              </property>
+              <property name="rightMargin">
+               <number>5</number>
+              </property>
+              <property name="bottomMargin">
+               <number>5</number>
+              </property>
+              <item row="1" column="2">
+               <widget class="QPushButton" name="pushButton_2">
+                <property name="text">
+                 <string>PushButton</string>
+                </property>
+               </widget>
+              </item>
+              <item row="1" column="0">
+               <widget class="QPushButton" name="navParent">
+                <property name="text">
+                 <string>Parent</string>
+                </property>
+               </widget>
+              </item>
+              <item row="0" column="0" colspan="3">
+               <widget class="FileSystemTable" name="filesystemtable"/>
+              </item>
+              <item row="1" column="1">
+               <widget class="QPushButton" name="pushButton_9">
+                <property name="text">
+                 <string>PushButton</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tab_3">
+          <attribute name="title">
+           <string>Page</string>
+          </attribute>
+         </widget>
+        </widget>
+       </item>
+       <item>
+        <widget class="QFrame" name="horizontalFrame">
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="leftMargin">
+           <number>5</number>
+          </property>
+          <property name="topMargin">
+           <number>5</number>
+          </property>
+          <property name="rightMargin">
+           <number>5</number>
+          </property>
+          <property name="bottomMargin">
+           <number>5</number>
+          </property>
+          <item>
+           <widget class="ActionButton" name="actionbutton_9">
+            <property name="text">
+             <string>Exit</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ActionButton" name="actionbutton_8">
+            <property name="text">
+             <string>E Stop</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="actionName" stdset="0">
+             <string>machine.estop.toggle</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ActionButton" name="actionbutton_7">
+            <property name="text">
+             <string>Power</string>
+            </property>
+            <property name="checkable">
+             <bool>true</bool>
+            </property>
+            <property name="actionName" stdset="0">
+             <string>machine.power.toggle</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ActionButton" name="actionbutton_6">
+            <property name="text">
+             <string>Home All</string>
+            </property>
+            <property name="rules" stdset="0">
+             <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:all_axes_homed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'Homed' if ch[0] else 'Home All'&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+            </property>
+            <property name="actionName" stdset="0">
+             <string>machine.home.all</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ActionButton" name="actionbutton_5">
+            <property name="text">
+             <string>Run</string>
+            </property>
+            <property name="actionName" stdset="0">
+             <string>program.run</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ActionButton" name="actionbutton_4">
+            <property name="text">
+             <string>Step</string>
+            </property>
+            <property name="actionName" stdset="0">
+             <string>program.step</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ActionButton" name="actionbutton_3">
+            <property name="text">
+             <string>Pause</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="ActionButton" name="actionbutton_2"/>
+          </item>
+          <item>
+           <widget class="ActionButton" name="actionbutton">
+            <property name="text">
+             <string>Abort</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="MDIEntry" name="mdientry_2"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionOPEN">
+   <property name="text">
+    <string>oPEN</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionFullscreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Fullscreen</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>VTKBackPlot</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot</header>
+  </customwidget>
+  <customwidget>
+   <class>DialogButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.dialog_button</header>
+  </customwidget>
+  <customwidget>
+   <class>FileSystemTable</class>
+   <extends>QTableView</extends>
+   <header>qtpyvcp.widgets.input_widgets.file_system</header>
+  </customwidget>
+  <customwidget>
+   <class>ToolTable</class>
+   <extends>QTableView</extends>
+   <header>qtpyvcp.widgets.input_widgets.tool_table</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.mdi_button</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.action_button</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>reloadFile</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>reload_program()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>899</x>
+     <y>843</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>226</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>navParent</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable</receiver>
+   <slot>viewParentDirectory()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>175</x>
+     <y>930</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>241</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewP</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>93</x>
+     <y>843</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewX</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewX()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>197</x>
+     <y>843</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewY</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewY()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>283</x>
+     <y>843</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewZ</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewZ()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>369</x>
+     <y>843</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewZ2</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewZ2()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>455</x>
+     <y>843</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewZoomIn</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>zoomIn()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>722</x>
+     <y>843</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewZoomOut</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>zoomOut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>811</x>
+     <y>843</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewClear</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>clearLivePlot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>541</x>
+     <y>843</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hideMachineBoundry</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>machineBounds(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>197</x>
+     <y>900</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>hideProgramBoundry</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>programBounds(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>197</x>
+     <y>871</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>213</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showViewStats</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>printView()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>811</x>
+     <y>930</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewMachine</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewMachine()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>811</x>
+     <y>872</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewPath</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewPath()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>899</x>
+     <y>872</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewOrtho</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewOrtho()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>811</x>
+     <y>901</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>viewPerspective</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewPersp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>899</x>
+     <y>901</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>212</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showMachineTicks</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>machineTicks(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>369</x>
+     <y>900</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>419</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showMachineLabels</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>machineLabels(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>541</x>
+     <y>900</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>419</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showProgramTicks</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>programTicks(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>369</x>
+     <y>871</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>419</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>showProgramLabels</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk</receiver>
+   <slot>programLabels(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>541</x>
+     <y>871</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>419</x>
+     <y>247</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>tooltable</receiver>
+   <slot>saveToolTable()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>963</x>
+     <y>141</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1079</x>
+     <y>174</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

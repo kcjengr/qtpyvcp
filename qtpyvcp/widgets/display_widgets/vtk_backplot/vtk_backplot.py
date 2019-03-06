@@ -103,14 +103,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.original_g5x_offset = [0.0] * 9
         self.original_g92_offset = [0.0] * 9
 
-        self.current_position = (0.0, 0.0, 0.0)
+        self.spindle_position = (0.0, 0.0, 0.0)
+        self.tooltip_position = (0.0, 0.0, 0.0)
+
         self.parent = parent
         self.status = STATUS
-        self.tt = TOOLTABLE
+        self.stat = STATUS.stat
 
-        self._tool_table = self.tt.loadToolTable()
-
-        self.axis = self.status.stat.axis
+        self.axis = self.stat.axis
 
         self.nav_style = vtk.vtkInteractorStyleTrackballCamera()
 
@@ -130,12 +130,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.axes = Axes()
         self.axes_actor = self.axes.get_actor()
 
-        self.path_cache = PathCache(self.current_position)
+        self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
 
-        tool_info = self._tool_table[0]
-
-        self.tool = Tool(tool_info)
+        self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
         self.path_actors = list()
@@ -151,17 +149,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.interactor.Start()
 
         self.status.file.notify(self.load_program)
-        self.status.position.notify(self.update_tool_position)
-
-        self.status.tool_in_spindle.notify(self.update_tool)
+        self.status.position.notify(self.update_position)
 
         self.status.g5x_offset.notify(self.update_g5x_offset)
         self.status.g92_offset.notify(self.update_g92_offset)
         self.status.rotation_xy.notify(self.update_rotation_xy)
-        self.status.tool_offset.notify(self.reload_program)
+
+        self.status.tool_offset.notify(self.update_tool)
+        self.status.tool_table.notify(self.update_tool)
 
         self.line = None
         self._last_filename = str()
+
+    def tlo(self, tlo):
+        print tlo
 
     @Slot()
     def reload_program(self, *args, **kwargs):
@@ -191,11 +192,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.update_render()
 
-    def update_tool_position(self, pos):
+    def update_position(self, pos):
+        self.spindle_position = pos[:3]
+
         tlo = self.status.tool_offset
-        self.current_position = [pos - tlo for pos, tlo in zip(pos[:3], tlo[:3])]
-        self.tool_actor.SetPosition(self.current_position)
-        self.path_cache.add_line_point(self.current_position)
+        self.tooltip_position = [pos - tlo for pos, tlo in zip(pos[:3], tlo[:3])]
+
+        self.tool_actor.SetPosition(self.spindle_position)
+        self.path_cache.add_line_point(self.tooltip_position)
         self.update_render()
 
     def update_g5x_offset(self, g5x_offset):
@@ -223,14 +227,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # nasty hack so ensure the positions have updated before loading
         QTimer.singleShot(10, self.reload_program)
 
-    def update_tool(self, tool):
+    def update_tool(self):
         self.renderer.RemoveActor(self.tool_actor)
 
-        tool_info = self._tool_table[tool]
-        self.tool = Tool(tool=tool_info)
+        self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
-        self.tool_actor.SetPosition(self.current_position)
+        self.tool_actor.SetPosition(self.spindle_position)
 
         self.renderer.AddActor(self.tool_actor)
 
@@ -336,7 +339,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.RemoveActor(self.path_cache_actor)
 
-        self.path_cache = PathCache(self.current_position)
+        self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
 
         self.renderer.AddActor(self.path_cache_actor)
@@ -703,31 +706,23 @@ class Axes:
 
 
 class Tool:
-    def __init__(self, tool):
-
-        self.tool = tool
+    def __init__(self, tool, offset):
 
         self.height = 2.0
 
-        self.tool_no = self.tool['T']
-        self.dia = self.tool['D']
-        self.x_offset = self.tool['X']
-        self.y_offset = self.tool['Y']
-        self.z_offset = self.tool['Z']
-
         transform = vtk.vtkTransform()
 
-        if self.tool_no == 0:
+        if tool.id == 0 or tool.diameter < .05:
             source = vtk.vtkConeSource()
-            source.SetHeight(self.height/2)
-            source.SetCenter(-self.height / 4 + self.z_offset, self.y_offset, self.x_offset)  # because of transformation Z, Y, X
-            source.SetRadius(self.height/4)
+            source.SetHeight(self.height / 2)
+            source.SetCenter(-self.height / 4 + offset[2], -offset[1], -offset[0])
+            source.SetRadius(self.height / 4)
             transform.RotateWXYZ(90, 0, 1, 0)
         else:
             source = vtk.vtkCylinderSource()
             source.SetHeight(1)
-            source.SetCenter(0, .5, 0)
-            source.SetRadius(self.dia / 2)
+            source.SetCenter(-offset[0], .5 - offset[2], -offset[1])
+            source.SetRadius(tool.diameter / 2)
             transform.RotateWXYZ(90, 1, 0, 0)
 
         source.SetResolution(128)

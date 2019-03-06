@@ -76,7 +76,8 @@ class ToolModel(QStandardItemModel):
     def __init__(self, parent=None):
         super(ToolModel, self).__init__(parent)
 
-        self.stat = getPlugin('status').stat
+        self.status = getPlugin('status')
+        self.stat = self.status.stat
         self.tt = getPlugin('tooltable')
 
         self.current_tool_color = QColor(Qt.darkGreen)
@@ -84,10 +85,24 @@ class ToolModel(QStandardItemModel):
         self._columns = self.tt.columns
         self._column_labels = self.tt.COLUMN_LABELS
 
-        self._tool_table = self.tt.loadToolTable()
+        self._tool_table = self.tt.getToolTable()
 
         self.setColumnCount(self.columnCount())
         self.setRowCount(56)  # (self.rowCount())
+
+        self.status.tool_in_spindle.notify(self.refreshModel)
+        self.tt.tool_table_changed.connect(self.updateModel)
+
+    def refreshModel(self):
+        # refresh model so current tool gets highlighted
+        self.beginResetModel()
+        self.endResetModel()
+
+    def updateModel(self, tool_table):
+        # update model with new data
+        self.beginResetModel()
+        self._tool_table = tool_table
+        self.endResetModel()
 
     def setColumns(self, columns):
         self._columns = columns
@@ -179,9 +194,9 @@ class ToolModel(QStandardItemModel):
         return True
 
     def loadToolTable(self):
-        self.beginResetModel()
-        self._tool_table = self.tt.loadToolTable()
-        self.endResetModel()
+        # the tooltable plugin will emit the tool_table_changed signal
+        # so we don't need to do any more here
+        self.tt.loadToolTable()
         return True
 
 
