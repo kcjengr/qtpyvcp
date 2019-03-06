@@ -4,10 +4,10 @@ import QtQuick.Layouts 1.3
 
 Rectangle {
     visible: true
-    width: 550
+    width: 600
     color: "#00000000"
     border.color: "#00000000"
-    height: 550
+    height: 600
 
     GridLayout {
         anchors.top: parent.top
@@ -23,24 +23,24 @@ Rectangle {
         Button {
             height: 40
             Layout.fillWidth: true
-            text: qsTr("Forward")
-
-            Layout.columnSpan: 2
-
-            onClicked: {
-                atc_spiner.rotate_forward()
-            }
-        }
-
-        Button {
-            height: 40
-            Layout.fillWidth: true
             text: qsTr("Reverse")
 
             Layout.columnSpan: 2
 
             onClicked: {
                 atc_spiner.rotate_reverse()
+            }
+        }
+
+        Button {
+            height: 40
+            Layout.fillWidth: true
+            text: qsTr("Forward")
+
+            Layout.columnSpan: 2
+
+            onClicked: {
+                atc_spiner.rotate_forward()
             }
         }
     }
