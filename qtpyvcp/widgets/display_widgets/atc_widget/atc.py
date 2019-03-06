@@ -9,8 +9,8 @@ ctypes.CDLL(ctypes.util.find_library("GL"), mode=ctypes.RTLD_GLOBAL)
 
 # end of Workarround
 
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, QUrl
-from PyQt5.QtQuickWidgets import QQuickWidget
+from qtpy.QtCore import Signal, Slot, QUrl
+from qtpy.QtQuickWidgets import QQuickWidget
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities import logger
@@ -25,9 +25,9 @@ WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 
 class DynATC(QQuickWidget):
 
-    moveToPocketSig = pyqtSignal(int, arguments=['pocket_no'])
-    rotateFwdSig = pyqtSignal(int, arguments=['rotate_forward'])
-    rotateRevSig = pyqtSignal(int, arguments=['rotate_reverse'])
+    moveToPocketSig = Signal(int, arguments=['pocket_num'])
+    rotateFwdSig = Signal(int, arguments=['rotate_forward'])
+    rotateRevSig = Signal(int, arguments=['rotate_reverse'])
 
     def __init__(self, parent=None):
         super(DynATC, self).__init__(parent)
@@ -51,12 +51,12 @@ class DynATC(QQuickWidget):
         self.moveToPocketSig.emit(tool_num)
         print("Tool in Spindle: ", tool_num)
 
-    @pyqtSlot()
+    @Slot()
     def rotate_forward(self):
         self.rotateFwdSig.emit(self.atc_position)
         self.atc_position += 1
 
-    @pyqtSlot()
+    @Slot()
     def rotate_reverse(self):
         self.rotateRevSig.emit(self.atc_position)
         self.atc_position -= 1

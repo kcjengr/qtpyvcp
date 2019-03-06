@@ -426,18 +426,16 @@ Rectangle {
 //        onTriggered: atc_spiner.get_pins()
 //    }
 
-
     function rotate_atc(name, tool_no, direction) {
         if (direction === 1) {
             name.from = (360/12 * tool_no)
             name.to = (360/12 * tool_no + 360/12)
-            name.restart()
         }
         else if (direction === -1) {
             name.from = (360/12 * tool_no)
             name.to = (360/12 * tool_no - 360/12)
-            name.restart()
         }
+        name.restart()
     }
 
     function rotate_tool(name, tool_no, direction) {
@@ -457,7 +455,21 @@ Rectangle {
         target: atc_spiner
 
         onMoveToPocketSig: {
-            console.log(pocket_no)
+            console.log(pocket_num)
+            rotate_atc(atc_anim, pocket_num, 1)
+
+            rotate_tool(tool_anim_1, pocket_num, 1)
+            rotate_tool(tool_anim_2, pocket_num, 1)
+            rotate_tool(tool_anim_3, pocket_num, 1)
+            rotate_tool(tool_anim_4, pocket_num, 1)
+            rotate_tool(tool_anim_5, pocket_num, 1)
+            rotate_tool(tool_anim_6, pocket_num, 1)
+            rotate_tool(tool_anim_7, pocket_num, 1)
+            rotate_tool(tool_anim_8, pocket_num, 1)
+            rotate_tool(tool_anim_9, pocket_num, 1)
+            rotate_tool(tool_anim_10, pocket_num, 1)
+            rotate_tool(tool_anim_11, pocket_num, 1)
+            rotate_tool(tool_anim_12, pocket_num, 1)
         }
 
         onRotateFwdSig: {
