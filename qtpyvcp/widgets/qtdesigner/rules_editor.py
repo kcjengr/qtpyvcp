@@ -1,3 +1,14 @@
+# Copyright (c) 2017-2018, SLAC National Accelerator Laboratory
+
+# This file has been adapted from PyDM, and can be redistributed and/or
+# modified in accordance with terms in conditions set forth in the BSD
+# 3-Clause License. You can find the complete licence text in the LICENCES
+# directory.
+
+# Links:
+#   PyDM Project: https://github.com/slaclab/pydm
+#   PyDM Licence: https://github.com/slaclab/pydm/blob/master/LICENSE.md
+
 import os
 import json
 import functools

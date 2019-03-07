@@ -66,6 +66,12 @@ building complex VCPs.
 
 .. toctree::
    :maxdepth: 1
+   :caption: Acknowledgements
+
+   acknowledgements
+
+.. toctree::
+   :maxdepth: 1
    :caption: Links
    :hidden:
 
