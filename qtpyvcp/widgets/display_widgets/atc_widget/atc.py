@@ -4,6 +4,7 @@ import os
 
 import ctypes
 import ctypes.util
+from pprint import pprint
 
 ctypes.CDLL(ctypes.util.find_library("GL"), mode=ctypes.RTLD_GLOBAL)
 
@@ -25,7 +26,7 @@ WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 
 class DynATC(QQuickWidget):
 
-    moveToPocketSig = Signal(int, arguments=['pocket_num'])
+    moveToPocketSig = Signal(int, int, arguments=['previous_pocket', 'pocket_num'])
     rotateFwdSig = Signal(int, arguments=['rotate_forward'])
     rotateRevSig = Signal(int, arguments=['rotate_reverse'])
 
@@ -41,6 +42,8 @@ class DynATC(QQuickWidget):
 
         self.atc_position = 0
 
+        self.tools = list(STATUS.stat.tool_table)
+
         STATUS.tool_in_spindle.notify(self.on_tool_in_spindle)
         STATUS.pocket_prepped.notify(self.on_pocket_prepped)
 
@@ -48,7 +51,10 @@ class DynATC(QQuickWidget):
         print("Pocket Prepared: ", pocket_num)
 
     def on_tool_in_spindle(self, tool_num):
-        self.moveToPocketSig.emit(tool_num)
+
+        print(self.tools[tool_num])
+        self.moveToPocketSig.emit(self.atc_position, 1)
+        self.atc_position = tool_num
         print("Tool in Spindle: ", tool_num)
 
     @Slot()
