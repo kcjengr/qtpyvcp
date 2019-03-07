@@ -73,7 +73,7 @@ Rectangle {
             x: 454
             y: 228
             width: 66
-            height: 66
+            height: width
             color: "#ffffff"
             radius: width / 2
             border.width: 2
@@ -103,7 +103,7 @@ Rectangle {
             x: 424
             y: 116
             width: 66
-            height: 66
+            height: width
             color: "#ffffff"
             radius: width / 2
             border.width: 2
@@ -133,7 +133,7 @@ Rectangle {
             x: 341
             y: 34
             width: 66
-            height: 66
+            height: width
             color: "#ffffff"
             radius: width / 2
             border.width: 2
@@ -163,7 +163,7 @@ Rectangle {
             x: 228
             y: 5
             width: 66
-            height: 66
+            height: width
             color: "#ffffff"
             radius: width / 2
             border.width: 2
@@ -193,7 +193,7 @@ Rectangle {
             x: 117
             y: 35
             width: 66
-            height: 66
+            height: width
             color: "#ffffff"
             radius: width / 2
             border.width: 2
@@ -223,7 +223,7 @@ Rectangle {
             x: 34
             y: 116
             width: 66
-            height: 66
+            height: width
             color: "#ffffff"
             radius: width / 2
             border.width: 2
@@ -253,7 +253,7 @@ Rectangle {
             x: 4
             y: 229
             width: 66
-            height: 66
+            height: width
             color: "#ffffff"
             radius: width / 2
             border.width: 2
@@ -283,7 +283,7 @@ Rectangle {
             x: 34
             y: 341
             width: 66
-            height: 66
+            height: width
             color: "#ffffff"
             radius: width / 2
             border.width: 2
@@ -313,7 +313,7 @@ Rectangle {
             x: 116
             y: 423
             width: 66
-            height: 66
+            height: width
             color: "#ffffff"
             radius: width / 2
             border.width: 2
@@ -343,7 +343,7 @@ Rectangle {
             x: 229
             y: 453
             width: 66
-            height: 66
+            height: width
             color: "#ffffff"
             radius: width / 2
             border.width: 2
@@ -373,7 +373,7 @@ Rectangle {
             x: 341
             y: 423
             width: 66
-            height: 66
+            height: width
             color: "#ffffff"
             radius: width / 2
             border.width: 2
@@ -403,7 +403,7 @@ Rectangle {
             x: 424
             y: 341
             width: 66
-            height: 66
+            height: width
             color: "#ffffff"
             radius: width / 2
             border.width: 2
