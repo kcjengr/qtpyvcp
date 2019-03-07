@@ -468,8 +468,8 @@ Rectangle {
 
         Text {
             id: text3
-            x: 335
-            y: 116
+            x: 334
+            y: 115
             text: qsTr("3")
             font.family: "Bebas Kai"
             font.bold: false
@@ -487,8 +487,8 @@ Rectangle {
 
         Text {
             id: text4
-            x: 391
-            y: 184
+            x: 389
+            y: 181
             width: 8
             height: 14
             text: qsTr("2")
@@ -565,8 +565,8 @@ Rectangle {
 
         Text {
             id: text8
-            x: 333
-            y: 377
+            x: 332
+            y: 378
             text: qsTr("11")
             font.family: "Bebas Kai"
             font.bold: false
@@ -603,8 +603,8 @@ Rectangle {
 
         Text {
             id: text10
-            x: 124
-            y: 172
+            x: 125
+            y: 170
             text: qsTr("6")
             font.family: "Bebas Kai"
             font.bold: false
@@ -622,8 +622,8 @@ Rectangle {
 
         Text {
             id: text11
-            x: 124
-            y: 325
+            x: 123
+            y: 324
             text: qsTr("8")
             font.family: "Bebas Kai"
             font.bold: false
@@ -641,8 +641,8 @@ Rectangle {
 
         Text {
             id: text12
-            x: 182
-            y: 378
+            x: 181
+            y: 377
             text: qsTr("9")
             font.family: "Bebas Kai"
             font.bold: false
