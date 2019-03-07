@@ -70,12 +70,12 @@ Rectangle {
 
         Rectangle {
             id: tool_1
-            x: 464
-            y: 236
-            width: 52
-            height: 52
+            x: 454
+            y: 228
+            width: 66
+            height: 66
             color: "#ffffff"
-            radius: width / 2
+            radius: 33
             border.width: 2
 
             RotationAnimator {
@@ -88,10 +88,11 @@ Rectangle {
             Text {
                 id: tool_text_1
                 text: qsTr("T1")
-                font.bold: true
+                font.family: "Bebas Kai"
+                font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 22
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -99,12 +100,12 @@ Rectangle {
 
         Rectangle {
             id: tool_2
-            x: 437
-            y: 122
-            width: 52
-            height: 52
+            x: 424
+            y: 116
+            width: 66
+            height: 66
             color: "#ffffff"
-            radius: width / 2
+            radius: 33
             border.width: 2
 
             RotationAnimator {
@@ -117,10 +118,11 @@ Rectangle {
             Text {
                 id: tool_text_2
                 text: qsTr("T2")
-                font.bold: true
+                font.family: "Bebas Kai"
+                font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 22
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -128,12 +130,12 @@ Rectangle {
 
         Rectangle {
             id: tool_3
-            x: 349
-            y: 39
-            width: 52
-            height: 52
+            x: 341
+            y: 34
+            width: 66
+            height: 66
             color: "#ffffff"
-            radius: width / 2
+            radius: 33
             border.width: 2
 
             RotationAnimator {
@@ -146,10 +148,11 @@ Rectangle {
             Text {
                 id: tool_text_3
                 text: qsTr("T3")
-                font.bold: true
+                font.family: "Bebas Kai"
+                font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 22
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -157,12 +160,12 @@ Rectangle {
 
         Rectangle {
             id: tool_4
-            x: 236
-            y: 8
-            width: 52
-            height: 52
+            x: 228
+            y: 5
+            width: 66
+            height: 66
             color: "#ffffff"
-            radius: width / 2
+            radius: 33
             border.width: 2
 
             RotationAnimator {
@@ -175,10 +178,11 @@ Rectangle {
             Text {
                 id: tool_text_4
                 text: qsTr("T4")
-                font.bold: true
+                font.family: "Bebas Kai"
+                font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 22
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -186,12 +190,12 @@ Rectangle {
 
         Rectangle {
             id: tool_5
-            x: 122
-            y: 39
-            width: 52
-            height: 52
+            x: 117
+            y: 35
+            width: 66
+            height: 66
             color: "#ffffff"
-            radius: width / 2
+            radius: 33
             border.width: 2
 
             RotationAnimator {
@@ -204,10 +208,11 @@ Rectangle {
             Text {
                 id: tool_text_5
                 text: qsTr("T5")
-                font.bold: true
+                font.family: "Bebas Kai"
+                font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 22
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -215,12 +220,12 @@ Rectangle {
 
         Rectangle {
             id: tool_6
-            x: 39
-            y: 121
-            width: 52
-            height: 52
+            x: 34
+            y: 116
+            width: 66
+            height: 66
             color: "#ffffff"
-            radius: width / 2
+            radius: 33
             border.width: 2
 
             RotationAnimator {
@@ -233,10 +238,11 @@ Rectangle {
             Text {
                 id: tool_text_6
                 text: qsTr("T6")
-                font.bold: true
+                font.family: "Bebas Kai"
+                font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 22
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -244,12 +250,12 @@ Rectangle {
 
         Rectangle {
             id: tool_7
-            x: 8
-            y: 236
-            width: 52
-            height: 52
+            x: 4
+            y: 229
+            width: 66
+            height: 66
             color: "#ffffff"
-            radius: width / 2
+            radius: 33
             border.width: 2
 
             RotationAnimator {
@@ -262,10 +268,11 @@ Rectangle {
             Text {
                 id: tool_text_7
                 text: qsTr("T7")
-                font.bold: true
+                font.family: "Bebas Kai"
+                font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 22
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -274,11 +281,11 @@ Rectangle {
         Rectangle {
             id: tool_8
             x: 34
-            y: 351
-            width: 52
-            height: 52
+            y: 341
+            width: 66
+            height: 66
             color: "#ffffff"
-            radius: width / 2
+            radius: 33
             border.width: 2
 
             RotationAnimator {
@@ -291,10 +298,11 @@ Rectangle {
             Text {
                 id: tool_text_8
                 text: qsTr("T8")
-                font.bold: true
+                font.bold: false
+                font.family: "Bebas Kai"
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 22
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -302,12 +310,12 @@ Rectangle {
 
         Rectangle {
             id: tool_9
-            x: 120
-            y: 434
-            width: 52
-            height: 52
+            x: 116
+            y: 423
+            width: 66
+            height: 66
             color: "#ffffff"
-            radius: width / 2
+            radius: 33
             border.width: 2
 
             RotationAnimator {
@@ -320,10 +328,11 @@ Rectangle {
             Text {
                 id: tool_text_9
                 text: qsTr("T9")
-                font.bold: true
+                font.family: "Bebas Kai"
+                font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 22
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -331,12 +340,12 @@ Rectangle {
 
         Rectangle {
             id: tool_10
-            x: 236
-            y: 463
-            width: 52
-            height: 52
+            x: 229
+            y: 453
+            width: 66
+            height: 66
             color: "#ffffff"
-            radius: width / 2
+            radius: 33
             border.width: 2
 
             RotationAnimator {
@@ -349,10 +358,11 @@ Rectangle {
             Text {
                 id: tool_text_10
                 text: qsTr("T10")
-                font.bold: true
+                font.family: "Bebas Kai"
+                font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 22
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -360,12 +370,12 @@ Rectangle {
 
         Rectangle {
             id: tool_11
-            x: 349
-            y: 432
-            width: 52
-            height: 52
+            x: 341
+            y: 423
+            width: 66
+            height: 66
             color: "#ffffff"
-            radius: width / 2
+            radius: 33
             border.width: 2
 
             RotationAnimator {
@@ -378,10 +388,11 @@ Rectangle {
             Text {
                 id: tool_text_11
                 text: qsTr("T11")
-                font.bold: true
+                font.family: "Bebas Kai"
+                font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 22
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -389,12 +400,12 @@ Rectangle {
 
         Rectangle {
             id: tool_12
-            x: 437
-            y: 351
-            width: 52
-            height: 52
+            x: 424
+            y: 341
+            width: 66
+            height: 66
             color: "#ffffff"
-            radius: width / 2
+            radius: 33
             border.width: 2
 
             RotationAnimator {
@@ -407,10 +418,11 @@ Rectangle {
             Text {
                 id: tool_text_12
                 text: qsTr("T12")
-                font.bold: true
+                font.family: "Bebas Kai"
+                font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 22
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
