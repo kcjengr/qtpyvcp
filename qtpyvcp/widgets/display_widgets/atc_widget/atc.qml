@@ -427,6 +427,236 @@ Rectangle {
                 y: parent.height / 2 - height / 2
             }
         }
+
+        Text {
+            id: text1
+            x: 183
+            y: 117
+            text: qsTr("5")
+            font.family: "Bebas Kai"
+            font.bold: false
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 24
+
+            RotationAnimator {
+                id: text1_anim
+                target: text1;
+                duration: 1000
+                running: false
+            }
+        }
+
+        Text {
+            id: text2
+            x: 257
+            y: 97
+            text: qsTr("4")
+            font.family: "Bebas Kai"
+            font.bold: false
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 24
+
+            RotationAnimator {
+                id: text2_anim
+                target: text2;
+                duration: 1000
+                running: false
+            }
+        }
+
+        Text {
+            id: text3
+            x: 335
+            y: 116
+            text: qsTr("3")
+            font.family: "Bebas Kai"
+            font.bold: false
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 24
+
+            RotationAnimator {
+                id: text3_anim
+                target: text3;
+                duration: 1000
+                running: false
+            }
+        }
+
+        Text {
+            id: text4
+            x: 391
+            y: 184
+            width: 8
+            height: 14
+            text: qsTr("2")
+            font.family: "Bebas Kai"
+            font.bold: false
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 24
+
+            RotationAnimator {
+                id: text4_anim
+                target: text4;
+                duration: 1000
+                running: false
+            }
+        }
+
+        Text {
+            id: text5
+            x: 407
+            y: 246
+            text: qsTr("1")
+            font.family: "Bebas Kai"
+            font.bold: false
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 24
+
+            RotationAnimator {
+                id: text5_anim
+                target: text5;
+                duration: 1000
+                running: false
+            }
+        }
+
+        Text {
+            id: text6
+            x: 102
+            y: 247
+            text: qsTr("7")
+            font.family: "Bebas Kai"
+            font.bold: false
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 24
+
+            RotationAnimator {
+                id: text6_anim
+                target: text6;
+                duration: 1000
+                running: false
+            }
+        }
+
+        Text {
+            id: text7
+            x: 254
+            y: 398
+            text: qsTr("10")
+            font.family: "Bebas Kai"
+            font.bold: false
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 24
+
+            RotationAnimator {
+                id: text7_anim
+                target: text7;
+                duration: 1000
+                running: false
+            }
+        }
+
+        Text {
+            id: text8
+            x: 333
+            y: 377
+            text: qsTr("11")
+            font.family: "Bebas Kai"
+            font.bold: false
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 24
+
+            RotationAnimator {
+                id: text8_anim
+                target: text8;
+                duration: 1000
+                running: false
+            }
+        }
+
+        Text {
+            id: text9
+            x: 384
+            y: 322
+            text: qsTr("12")
+            font.family: "Bebas Kai"
+            font.bold: false
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 24
+
+            RotationAnimator {
+                id: text9_anim
+                target: text9;
+                duration: 1000
+                running: false
+            }
+        }
+
+        Text {
+            id: text10
+            x: 124
+            y: 172
+            text: qsTr("6")
+            font.family: "Bebas Kai"
+            font.bold: false
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 24
+
+            RotationAnimator {
+                id: text10_anim
+                target: text10;
+                duration: 1000
+                running: false
+            }
+        }
+
+        Text {
+            id: text11
+            x: 124
+            y: 325
+            text: qsTr("8")
+            font.family: "Bebas Kai"
+            font.bold: false
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 24
+
+            RotationAnimator {
+                id: text11_anim
+                target: text11;
+                duration: 1000
+                running: false
+            }
+        }
+
+        Text {
+            id: text12
+            x: 182
+            y: 378
+            text: qsTr("9")
+            font.family: "Bebas Kai"
+            font.bold: false
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
+            font.pixelSize: 24
+
+            RotationAnimator {
+                id: text12_anim
+                target: text12;
+                duration: 1000
+                running: false
+            }
+        }
     }
 
 //    Timer {
