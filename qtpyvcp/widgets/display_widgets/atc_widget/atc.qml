@@ -712,18 +712,19 @@ Rectangle {
             rotate_tool(tool_anim_10, pocket_num, 1)
             rotate_tool(tool_anim_11, pocket_num, 1)
             rotate_tool(tool_anim_12, pocket_num, 1)
-            rotate_tool(text1_anim, rotate_forward, 1)
-            rotate_tool(text2_anim, rotate_forward, 1)
-            rotate_tool(text3_anim, rotate_forward, 1)
-            rotate_tool(text4_anim, rotate_forward, 1)
-            rotate_tool(text5_anim, rotate_forward, 1)
-            rotate_tool(text6_anim, rotate_forward, 1)
-            rotate_tool(text7_anim, rotate_forward, 1)
-            rotate_tool(text8_anim, rotate_forward, 1)
-            rotate_tool(text9_anim, rotate_forward, 1)
-            rotate_tool(text10_anim, rotate_forward, 1)
-            rotate_tool(text11_anim, rotate_forward, 1)
-            rotate_tool(text12_anim, rotate_forward, 1)
+
+            rotate_tool(text1_anim, pocket_num, 1)
+            rotate_tool(text2_anim, pocket_num, 1)
+            rotate_tool(text3_anim, pocket_num, 1)
+            rotate_tool(text4_anim, pocket_num, 1)
+            rotate_tool(text5_anim, pocket_num, 1)
+            rotate_tool(text6_anim, pocket_num, 1)
+            rotate_tool(text7_anim, pocket_num, 1)
+            rotate_tool(text8_anim, pocket_num, 1)
+            rotate_tool(text9_anim, pocket_num, 1)
+            rotate_tool(text10_anim, pocket_num, 1)
+            rotate_tool(text11_anim, pocket_num, 1)
+            rotate_tool(text12_anim, pocket_num, 1)
         }
 
         onRotateFwdSig: {
@@ -741,6 +742,7 @@ Rectangle {
             rotate_tool(tool_anim_10, rotate_forward, 1)
             rotate_tool(tool_anim_11, rotate_forward, 1)
             rotate_tool(tool_anim_12, rotate_forward, 1)
+
             rotate_tool(text1_anim, rotate_forward, 1)
             rotate_tool(text2_anim, rotate_forward, 1)
             rotate_tool(text3_anim, rotate_forward, 1)
@@ -771,6 +773,7 @@ Rectangle {
             rotate_tool(tool_anim_10, rotate_reverse, -1)
             rotate_tool(tool_anim_11, rotate_reverse, -1)
             rotate_tool(tool_anim_12, rotate_reverse, -1)
+
             rotate_tool(text1_anim, rotate_reverse, -1)
             rotate_tool(text2_anim, rotate_reverse, -1)
             rotate_tool(text3_anim, rotate_reverse, -1)
