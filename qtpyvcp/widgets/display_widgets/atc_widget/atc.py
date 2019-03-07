@@ -32,7 +32,7 @@ class DynATC(QQuickWidget):
     def __init__(self, parent=None):
         super(DynATC, self).__init__(parent)
 
-        if parent is None:
+        if IN_DESIGNER:
             return
 
         self.engine().rootContext().setContextProperty("atc_spiner", self)
