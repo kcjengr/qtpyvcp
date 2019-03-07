@@ -75,7 +75,7 @@ Rectangle {
             width: 66
             height: 66
             color: "#ffffff"
-            radius: 33
+            radius: width / 2
             border.width: 2
 
             RotationAnimator {
@@ -105,7 +105,7 @@ Rectangle {
             width: 66
             height: 66
             color: "#ffffff"
-            radius: 33
+            radius: width / 2
             border.width: 2
 
             RotationAnimator {
@@ -135,7 +135,7 @@ Rectangle {
             width: 66
             height: 66
             color: "#ffffff"
-            radius: 33
+            radius: width / 2
             border.width: 2
 
             RotationAnimator {
@@ -165,7 +165,7 @@ Rectangle {
             width: 66
             height: 66
             color: "#ffffff"
-            radius: 33
+            radius: width / 2
             border.width: 2
 
             RotationAnimator {
@@ -195,7 +195,7 @@ Rectangle {
             width: 66
             height: 66
             color: "#ffffff"
-            radius: 33
+            radius: width / 2
             border.width: 2
 
             RotationAnimator {
@@ -225,7 +225,7 @@ Rectangle {
             width: 66
             height: 66
             color: "#ffffff"
-            radius: 33
+            radius: width / 2
             border.width: 2
 
             RotationAnimator {
@@ -255,7 +255,7 @@ Rectangle {
             width: 66
             height: 66
             color: "#ffffff"
-            radius: 33
+            radius: width / 2
             border.width: 2
 
             RotationAnimator {
@@ -285,7 +285,7 @@ Rectangle {
             width: 66
             height: 66
             color: "#ffffff"
-            radius: 33
+            radius: width / 2
             border.width: 2
 
             RotationAnimator {
@@ -315,7 +315,7 @@ Rectangle {
             width: 66
             height: 66
             color: "#ffffff"
-            radius: 33
+            radius: width / 2
             border.width: 2
 
             RotationAnimator {
@@ -345,7 +345,7 @@ Rectangle {
             width: 66
             height: 66
             color: "#ffffff"
-            radius: 33
+            radius: width / 2
             border.width: 2
 
             RotationAnimator {
@@ -375,7 +375,7 @@ Rectangle {
             width: 66
             height: 66
             color: "#ffffff"
-            radius: 33
+            radius: width / 2
             border.width: 2
 
             RotationAnimator {
@@ -405,7 +405,7 @@ Rectangle {
             width: 66
             height: 66
             color: "#ffffff"
-            radius: 33
+            radius: width / 2
             border.width: 2
 
             RotationAnimator {
