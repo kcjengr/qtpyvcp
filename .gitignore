@@ -4,6 +4,7 @@
 /venv
 *.egg-info
 *.pyc
+*.qmlc
 *.pdf
 *.log
 *.var
