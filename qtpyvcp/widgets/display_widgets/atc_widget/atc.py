@@ -40,7 +40,7 @@ class DynATC(QQuickWidget):
         url = QUrl.fromLocalFile(os.path.join(WIDGET_PATH, "atc.qml"))
         self.setSource(url)
 
-        self.atc_position = 0
+        self.atc_position = 1
 
         self.tools = list(STATUS.stat.tool_table)
 
@@ -48,14 +48,16 @@ class DynATC(QQuickWidget):
         STATUS.pocket_prepped.notify(self.on_pocket_prepped)
 
     def on_pocket_prepped(self, pocket_num):
-        print("Pocket Prepared: ", pocket_num)
+        if pocket_num > 0:
+            print("Pocket Prepared: {}".format(pocket_num))
+            print("Rotate from pocket {} to {}".format(self.atc_position, pocket_num))
+            self.moveToPocketSig.emit(self.atc_position - 1, pocket_num - 1)
+            self.atc_position = pocket_num
+        else:
+            print("Pocket Clear {}".format(pocket_num))
 
     def on_tool_in_spindle(self, tool_num):
-
-        print(self.tools[tool_num])
-        self.moveToPocketSig.emit(self.atc_position, 1)
-        self.atc_position = tool_num
-        print("Tool in Spindle: ", tool_num)
+        print("Tool in Spindle: {}".format(tool_num))
 
     @Slot()
     def rotate_forward(self):

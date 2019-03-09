@@ -668,41 +668,18 @@ Rectangle {
 //        onTriggered: atc_spiner.get_pins()
 //    }
 
-    function rotate_atc(name, tool_no, direction) {
-        if (direction === 1) {
-            name.from = (360/12 * tool_no)
-            name.to = (360/12 * tool_no + 360/12)
-        }
-        else if (direction === -1) {
-            name.from = (360/12 * tool_no)
-            name.to = (360/12 * tool_no - 360/12)
-        }
-        name.restart()
+    function rotate_atc(atc, previous_pocket, tool_no) {
+
+        atc.from = 360/12 * previous_pocket
+        atc.to = 360/12 * tool_no
+        atc.restart()
     }
 
+    function rotate_tool(tool, previous_pocket, tool_no) {
 
-    function rotate_atc2(name, previous_pocket, tool_no, direction) {
-        if (direction === 1) {
-            name.from = (360/12 * previous_pocket)
-            name.to = (360/12 * tool_no + 360/12)
-        }
-        else if (direction === -1) {
-            name.from = (360/12 * previous_pocket)
-            name.to = (360/12 * tool_no - 360/12)
-        }
-        name.restart()
-    }
-
-    function rotate_tool(name, tool_no, direction) {
-        if (direction === 1) {
-            name.from = -(360/12 * tool_no)
-            name.to = -(360/12 * tool_no + 360/12)
-        }
-        else if (direction === -1) {
-            name.from = -(360/12 * tool_no)
-            name.to = -(360/12 * tool_no - 360/12)
-        }
-        name.restart()
+        tool.from = -(360/12 * previous_pocket)
+        tool.to = -(360/12 * tool_no)
+        tool.restart()
     }
 
 
@@ -712,33 +689,33 @@ Rectangle {
         onMoveToPocketSig: {
             console.log(previous_pocket, pocket_num)
 
-            rotate_atc2(atc_anim, previous_pocket, pocket_num, 1)
+            rotate_atc(atc_anim, previous_pocket, pocket_num)
 
-//            rotate_tool(tool_anim_1, pocket_num, 1)
-//            rotate_tool(tool_anim_2, pocket_num, 1)
-//            rotate_tool(tool_anim_3, pocket_num, 1)
-//            rotate_tool(tool_anim_4, pocket_num, 1)
-//            rotate_tool(tool_anim_5, pocket_num, 1)
-//            rotate_tool(tool_anim_6, pocket_num, 1)
-//            rotate_tool(tool_anim_7, pocket_num, 1)
-//            rotate_tool(tool_anim_8, pocket_num, 1)
-//            rotate_tool(tool_anim_9, pocket_num, 1)
-//            rotate_tool(tool_anim_10, pocket_num, 1)
-//            rotate_tool(tool_anim_11, pocket_num, 1)
-//            rotate_tool(tool_anim_12, pocket_num, 1)
+            rotate_tool(tool_anim_1, previous_pocket, pocket_num)
+            rotate_tool(tool_anim_2, previous_pocket, pocket_num)
+            rotate_tool(tool_anim_3, previous_pocket, pocket_num)
+            rotate_tool(tool_anim_4, previous_pocket, pocket_num)
+            rotate_tool(tool_anim_5, previous_pocket, pocket_num)
+            rotate_tool(tool_anim_6, previous_pocket, pocket_num)
+            rotate_tool(tool_anim_7, previous_pocket, pocket_num)
+            rotate_tool(tool_anim_8, previous_pocket, pocket_num)
+            rotate_tool(tool_anim_9, previous_pocket, pocket_num)
+            rotate_tool(tool_anim_10, previous_pocket, pocket_num)
+            rotate_tool(tool_anim_11, previous_pocket, pocket_num)
+            rotate_tool(tool_anim_12, previous_pocket, pocket_num)
 
-//            rotate_tool(text1_anim, pocket_num, 1)
-//            rotate_tool(text2_anim, pocket_num, 1)
-//            rotate_tool(text3_anim, pocket_num, 1)
-//            rotate_tool(text4_anim, pocket_num, 1)
-//            rotate_tool(text5_anim, pocket_num, 1)
-//            rotate_tool(text6_anim, pocket_num, 1)
-//            rotate_tool(text7_anim, pocket_num, 1)
-//            rotate_tool(text8_anim, pocket_num, 1)
-//            rotate_tool(text9_anim, pocket_num, 1)
-//            rotate_tool(text10_anim, pocket_num, 1)
-//            rotate_tool(text11_anim, pocket_num, 1)
-//            rotate_tool(text12_anim, pocket_num, 1)
+            rotate_tool(text1_anim, previous_pocket, pocket_num)
+            rotate_tool(text2_anim, previous_pocket, pocket_num)
+            rotate_tool(text3_anim, previous_pocket, pocket_num)
+            rotate_tool(text4_anim, previous_pocket, pocket_num)
+            rotate_tool(text5_anim, previous_pocket, pocket_num)
+            rotate_tool(text6_anim, previous_pocket, pocket_num)
+            rotate_tool(text7_anim, previous_pocket, pocket_num)
+            rotate_tool(text8_anim, previous_pocket, pocket_num)
+            rotate_tool(text9_anim, previous_pocket, pocket_num)
+            rotate_tool(text10_anim, previous_pocket, pocket_num)
+            rotate_tool(text11_anim, previous_pocket, pocket_num)
+            rotate_tool(text12_anim, previous_pocket, pocket_num)
         }
 
         onRotateFwdSig: {
