@@ -33,368 +33,8 @@ Rectangle {
             running: false
         }
 
-        Rectangle {
-            id: tool_1
-            x: 429
-            y: 217
-            width: 66
-            height: width
-            color: "#ffffff"
-            radius: width / 2
-            border.width: 2
-
-            RotationAnimator {
-                id: tool_anim_1
-                target: tool_1;
-                duration: 1000
-                running: false
-            }
-
-            Text {
-                id: tool_text_1
-                text: qsTr("T1")
-                font.family: "Bebas Kai"
-                font.bold: false
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
-                x: parent.width / 2 - width / 2
-                y: parent.height / 2 - height / 2
-            }
-        }
-
-        Rectangle {
-            id: tool_2
-            x: 401
-            y: 110
-            width: 66
-            height: width
-            color: "#ffffff"
-            radius: width / 2
-            border.width: 2
-
-            RotationAnimator {
-                id: tool_anim_2
-                target: tool_2;
-                duration: 1000
-                running: false
-            }
-
-            Text {
-                id: tool_text_2
-                text: qsTr("T2")
-                font.family: "Bebas Kai"
-                font.bold: false
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
-                x: parent.width / 2 - width / 2
-                y: parent.height / 2 - height / 2
-            }
-        }
-
-        Rectangle {
-            id: tool_3
-            x: 323
-            y: 32
-            width: 66
-            height: width
-            color: "#ffffff"
-            radius: width / 2
-            border.width: 2
-
-            RotationAnimator {
-                id: tool_anim_3
-                target: tool_3;
-                duration: 1000
-                running: false
-            }
-
-            Text {
-                id: tool_text_3
-                text: qsTr("T3")
-                font.family: "Bebas Kai"
-                font.bold: false
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
-                x: parent.width / 2 - width / 2
-                y: parent.height / 2 - height / 2
-            }
-        }
-
-        Rectangle {
-            id: tool_4
-            x: 216
-            y: 4
-            width: 66
-            height: width
-            color: "#ffffff"
-            radius: width / 2
-            border.width: 2
-
-            RotationAnimator {
-                id: tool_anim_4
-                target: tool_4;
-                duration: 1000
-                running: false
-            }
-
-            Text {
-                id: tool_text_4
-                text: qsTr("T4")
-                font.family: "Bebas Kai"
-                font.bold: false
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
-                x: parent.width / 2 - width / 2
-                y: parent.height / 2 - height / 2
-            }
-        }
-
-        Rectangle {
-            id: tool_5
-            x: 110
-            y: 32
-            width: 66
-            height: width
-            color: "#ffffff"
-            radius: width / 2
-            border.width: 2
-
-            RotationAnimator {
-                id: tool_anim_5
-                target: tool_5;
-                duration: 1000
-                running: false
-            }
-
-            Text {
-                id: tool_text_5
-                text: qsTr("T5")
-                font.family: "Bebas Kai"
-                font.bold: false
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
-                x: parent.width / 2 - width / 2
-                y: parent.height / 2 - height / 2
-            }
-        }
-
-        Rectangle {
-            id: tool_6
-            x: 32
-            y: 111
-            width: 66
-            height: width
-            color: "#ffffff"
-            radius: width / 2
-            border.width: 2
-
-            RotationAnimator {
-                id: tool_anim_6
-                target: tool_6;
-                duration: 1000
-                running: false
-            }
-
-            Text {
-                id: tool_text_6
-                text: qsTr("T6")
-                font.family: "Bebas Kai"
-                font.bold: false
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
-                x: parent.width / 2 - width / 2
-                y: parent.height / 2 - height / 2
-            }
-        }
-
-        Rectangle {
-            id: tool_7
-            x: 3
-            y: 217
-            width: 66
-            height: width
-            color: "#ffffff"
-            radius: width / 2
-            border.width: 2
-
-            RotationAnimator {
-                id: tool_anim_7
-                target: tool_7;
-                duration: 1000
-                running: false
-            }
-
-            Text {
-                id: tool_text_7
-                text: qsTr("T7")
-                font.family: "Bebas Kai"
-                font.bold: false
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
-                x: parent.width / 2 - width / 2
-                y: parent.height / 2 - height / 2
-            }
-        }
-
-        Rectangle {
-            id: tool_8
-            x: 32
-            y: 323
-            width: 66
-            height: width
-            color: "#ffffff"
-            radius: width / 2
-            border.width: 2
-
-            RotationAnimator {
-                id: tool_anim_8
-                target: tool_8;
-                duration: 1000
-                running: false
-            }
-
-            Text {
-                id: tool_text_8
-                text: qsTr("T8")
-                font.bold: false
-                font.family: "Bebas Kai"
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
-                x: parent.width / 2 - width / 2
-                y: parent.height / 2 - height / 2
-            }
-        }
-
-        Rectangle {
-            id: tool_9
-            x: 110
-            y: 401
-            width: 66
-            height: width
-            color: "#ffffff"
-            radius: width / 2
-            border.width: 2
-
-            RotationAnimator {
-                id: tool_anim_9
-                target: tool_9;
-                duration: 1000
-                running: false
-            }
-
-            Text {
-                id: tool_text_9
-                text: qsTr("T9")
-                font.family: "Bebas Kai"
-                font.bold: false
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
-                x: parent.width / 2 - width / 2
-                y: parent.height / 2 - height / 2
-            }
-        }
-
-        Rectangle {
-            id: tool_10
-            x: 216
-            y: 430
-            width: 66
-            height: width
-            color: "#ffffff"
-            radius: width / 2
-            border.width: 2
-
-            RotationAnimator {
-                id: tool_anim_10
-                target: tool_10;
-                duration: 1000
-                running: false
-            }
-
-            Text {
-                id: tool_text_10
-                text: qsTr("T10")
-                font.family: "Bebas Kai"
-                font.bold: false
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
-                x: parent.width / 2 - width / 2
-                y: parent.height / 2 - height / 2
-            }
-        }
-
-        Rectangle {
-            id: tool_11
-            x: 322
-            y: 401
-            width: 66
-            height: width
-            color: "#ffffff"
-            radius: width / 2
-            border.width: 2
-
-            RotationAnimator {
-                id: tool_anim_11
-                target: tool_11;
-                duration: 1000
-                running: false
-            }
-
-            Text {
-                id: tool_text_11
-                text: qsTr("T11")
-                font.family: "Bebas Kai"
-                font.bold: false
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
-                x: parent.width / 2 - width / 2
-                y: parent.height / 2 - height / 2
-            }
-        }
-
-        Rectangle {
-            id: tool_12
-            x: 401
-            y: 323
-            width: 66
-            height: width
-            color: "#ffffff"
-            radius: width / 2
-            border.width: 2
-
-            RotationAnimator {
-                id: tool_anim_12
-                target: tool_12;
-                duration: 1000
-                running: false
-            }
-
-            Text {
-                id: tool_text_12
-                text: qsTr("T12")
-                font.family: "Bebas Kai"
-                font.bold: false
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
-                x: parent.width / 2 - width / 2
-                y: parent.height / 2 - height / 2
-            }
-        }
-
         Text {
-            id: text1
+            id: pocket_text_1
             x: 170
             y: 109
             text: qsTr("5")
@@ -405,15 +45,46 @@ Rectangle {
             font.pixelSize: 24
 
             RotationAnimator {
-                id: text1_anim
+                id: pocket_text_anim_1
                 target: text1;
                 duration: 1000
                 running: false
             }
         }
 
+            Rectangle {
+                id: tool_1
+                x: 429
+                y: 217
+                width: 66
+                height: width
+                color: "#ffffff"
+                radius: width / 2
+                border.width: 2
+
+                RotationAnimator {
+                    id: tool_anim_1
+                    target: tool_1;
+                    duration: 1000
+                    running: false
+                }
+
+                Text {
+                    id: tool_text_1
+                    text: qsTr("T1")
+                    font.family: "Bebas Kai"
+                    font.bold: false
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 24
+                    x: parent.width / 2 - width / 2
+                    y: parent.height / 2 - height / 2
+                }
+        }
+
+
         Text {
-            id: text2
+            id: pocket_text_2
             x: 245
             y: 88
             text: qsTr("4")
@@ -424,15 +95,45 @@ Rectangle {
             font.pixelSize: 24
 
             RotationAnimator {
-                id: text2_anim
+                id: pocket_text_anim_2
                 target: text2;
                 duration: 1000
                 running: false
             }
         }
 
+            Rectangle {
+                id: tool_2
+                x: 401
+                y: 110
+                width: 66
+                height: width
+                color: "#ffffff"
+                radius: width / 2
+                border.width: 2
+
+                RotationAnimator {
+                    id: tool_anim_2
+                    target: tool_2;
+                    duration: 1000
+                    running: false
+                }
+
+                Text {
+                    id: tool_text_2
+                    text: qsTr("T2")
+                    font.family: "Bebas Kai"
+                    font.bold: false
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 24
+                    x: parent.width / 2 - width / 2
+                    y: parent.height / 2 - height / 2
+                }
+        }
+
         Text {
-            id: text3
+            id: pocket_text_3
             x: 321
             y: 106
             width: 11
@@ -444,15 +145,45 @@ Rectangle {
             font.pixelSize: 24
 
             RotationAnimator {
-                id: text3_anim
+                id: pocket_text_anim_3
                 target: text3;
                 duration: 1000
                 running: false
             }
         }
 
+            Rectangle {
+                id: tool_3
+                x: 323
+                y: 32
+                width: 66
+                height: width
+                color: "#ffffff"
+                radius: width / 2
+                border.width: 2
+
+                RotationAnimator {
+                    id: tool_anim_3
+                    target: tool_3;
+                    duration: 1000
+                    running: false
+                }
+
+                Text {
+                    id: tool_text_3
+                    text: qsTr("T3")
+                    font.family: "Bebas Kai"
+                    font.bold: false
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 24
+                    x: parent.width / 2 - width / 2
+                    y: parent.height / 2 - height / 2
+                }
+        }
+
         Text {
-            id: text4
+            id: pocket_text_4
             x: 375
             y: 172
             width: 9
@@ -465,15 +196,45 @@ Rectangle {
             font.pixelSize: 24
 
             RotationAnimator {
-                id: text4_anim
+                id: pocket_text_anim_4
                 target: text4;
                 duration: 1000
                 running: false
             }
         }
 
+            Rectangle {
+                id: tool_4
+                x: 216
+                y: 4
+                width: 66
+                height: width
+                color: "#ffffff"
+                radius: width / 2
+                border.width: 2
+
+                RotationAnimator {
+                    id: tool_anim_4
+                    target: tool_4;
+                    duration: 1000
+                    running: false
+                }
+
+                Text {
+                    id: tool_text_4
+                    text: qsTr("T4")
+                    font.family: "Bebas Kai"
+                    font.bold: false
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 24
+                    x: parent.width / 2 - width / 2
+                    y: parent.height / 2 - height / 2
+                }
+        }
+
         Text {
-            id: text5
+            id: pocket_text_5
             x: 394
             y: 236
             text: qsTr("1")
@@ -484,15 +245,45 @@ Rectangle {
             font.pixelSize: 24
 
             RotationAnimator {
-                id: text5_anim
+                id: pocket_text_anim_5
                 target: text5;
                 duration: 1000
                 running: false
             }
         }
 
+            Rectangle {
+                id: tool_5
+                x: 110
+                y: 32
+                width: 66
+                height: width
+                color: "#ffffff"
+                radius: width / 2
+                border.width: 2
+
+                RotationAnimator {
+                    id: tool_anim_5
+                    target: tool_5;
+                    duration: 1000
+                    running: false
+                }
+
+                Text {
+                    id: tool_text_5
+                    text: qsTr("T5")
+                    font.family: "Bebas Kai"
+                    font.bold: false
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 24
+                    x: parent.width / 2 - width / 2
+                    y: parent.height / 2 - height / 2
+                }
+        }
+
         Text {
-            id: text6
+            id: pocket_text_6
             x: 91
             y: 237
             text: qsTr("7")
@@ -503,15 +294,45 @@ Rectangle {
             font.pixelSize: 24
 
             RotationAnimator {
-                id: text6_anim
+                id: pocket_text_anim_6
                 target: text6;
                 duration: 1000
                 running: false
             }
         }
 
+            Rectangle {
+                id: tool_6
+                x: 32
+                y: 111
+                width: 66
+                height: width
+                color: "#ffffff"
+                radius: width / 2
+                border.width: 2
+
+                RotationAnimator {
+                    id: tool_anim_6
+                    target: tool_6;
+                    duration: 1000
+                    running: false
+                }
+
+                Text {
+                    id: tool_text_6
+                    text: qsTr("T6")
+                    font.family: "Bebas Kai"
+                    font.bold: false
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 24
+                    x: parent.width / 2 - width / 2
+                    y: parent.height / 2 - height / 2
+                }
+        }
+
         Text {
-            id: text7
+            id: pocket_text_7
             x: 242
             y: 385
             text: qsTr("10")
@@ -522,15 +343,45 @@ Rectangle {
             font.pixelSize: 24
 
             RotationAnimator {
-                id: text7_anim
+                id: pocket_text_anim_7
                 target: text7;
                 duration: 1000
                 running: false
             }
         }
 
+            Rectangle {
+                id: tool_7
+                x: 3
+                y: 217
+                width: 66
+                height: width
+                color: "#ffffff"
+                radius: width / 2
+                border.width: 2
+
+                RotationAnimator {
+                    id: tool_anim_7
+                    target: tool_7;
+                    duration: 1000
+                    running: false
+                }
+
+                Text {
+                    id: tool_text_7
+                    text: qsTr("T7")
+                    font.family: "Bebas Kai"
+                    font.bold: false
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 24
+                    x: parent.width / 2 - width / 2
+                    y: parent.height / 2 - height / 2
+                }
+        }
+
         Text {
-            id: text8
+            id: pocket_text_8
             x: 319
             y: 364
             text: qsTr("11")
@@ -541,15 +392,45 @@ Rectangle {
             font.pixelSize: 24
 
             RotationAnimator {
-                id: text8_anim
+                id: pocket_text_anim_8
                 target: text8;
                 duration: 1000
                 running: false
             }
         }
 
+            Rectangle {
+                id: tool_8
+                x: 32
+                y: 323
+                width: 66
+                height: width
+                color: "#ffffff"
+                radius: width / 2
+                border.width: 2
+
+                RotationAnimator {
+                    id: tool_anim_8
+                    target: tool_8;
+                    duration: 1000
+                    running: false
+                }
+
+                Text {
+                    id: tool_text_8
+                    text: qsTr("T8")
+                    font.bold: false
+                    font.family: "Bebas Kai"
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 24
+                    x: parent.width / 2 - width / 2
+                    y: parent.height / 2 - height / 2
+                }
+        }
+
         Text {
-            id: text9
+            id: pocket_text_9
             x: 371
             y: 311
             text: qsTr("12")
@@ -560,15 +441,45 @@ Rectangle {
             font.pixelSize: 24
 
             RotationAnimator {
-                id: text9_anim
+                id: pocket_text_anim_9
                 target: text9;
                 duration: 1000
                 running: false
             }
         }
 
+            Rectangle {
+                id: tool_9
+                x: 110
+                y: 401
+                width: 66
+                height: width
+                color: "#ffffff"
+                radius: width / 2
+                border.width: 2
+
+                RotationAnimator {
+                    id: tool_anim_9
+                    target: tool_9;
+                    duration: 1000
+                    running: false
+                }
+
+                Text {
+                    id: tool_text_9
+                    text: qsTr("T9")
+                    font.family: "Bebas Kai"
+                    font.bold: false
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 24
+                    x: parent.width / 2 - width / 2
+                    y: parent.height / 2 - height / 2
+                }
+        }
+
         Text {
-            id: text10
+            id: pocket_text_10
             x: 113
             y: 161
             text: qsTr("6")
@@ -579,15 +490,45 @@ Rectangle {
             font.pixelSize: 24
 
             RotationAnimator {
-                id: text10_anim
+                id: pocket_text_anim_10
                 target: text10;
                 duration: 1000
                 running: false
             }
         }
 
+            Rectangle {
+                id: tool_10
+                x: 216
+                y: 430
+                width: 66
+                height: width
+                color: "#ffffff"
+                radius: width / 2
+                border.width: 2
+
+                RotationAnimator {
+                    id: tool_anim_10
+                    target: tool_10;
+                    duration: 1000
+                    running: false
+                }
+
+                Text {
+                    id: tool_text_10
+                    text: qsTr("T10")
+                    font.family: "Bebas Kai"
+                    font.bold: false
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 24
+                    x: parent.width / 2 - width / 2
+                    y: parent.height / 2 - height / 2
+                }
+        }
+
         Text {
-            id: text11
+            id: pocket_text_11
             x: 112
             y: 313
             text: qsTr("8")
@@ -598,15 +539,45 @@ Rectangle {
             font.pixelSize: 24
 
             RotationAnimator {
-                id: text11_anim
+                id: pocket_text_anim_11
                 target: text11;
                 duration: 1000
                 running: false
             }
         }
 
+            Rectangle {
+                id: tool_11
+                x: 322
+                y: 401
+                width: 66
+                height: width
+                color: "#ffffff"
+                radius: width / 2
+                border.width: 2
+
+                RotationAnimator {
+                    id: tool_anim_11
+                    target: tool_11;
+                    duration: 1000
+                    running: false
+                }
+
+                Text {
+                    id: tool_text_11
+                    text: qsTr("T11")
+                    font.family: "Bebas Kai"
+                    font.bold: false
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 24
+                    x: parent.width / 2 - width / 2
+                    y: parent.height / 2 - height / 2
+                }
+        }
+
         Text {
-            id: text12
+            id: pocket_text_12
             x: 170
             y: 365
             text: qsTr("9")
@@ -617,11 +588,41 @@ Rectangle {
             font.pixelSize: 24
 
             RotationAnimator {
-                id: text12_anim
+                id: pocket_text_anim_12
                 target: text12;
                 duration: 1000
                 running: false
             }
+        }
+
+            Rectangle {
+                id: tool_12
+                x: 401
+                y: 323
+                width: 66
+                height: width
+                color: "#ffffff"
+                radius: width / 2
+                border.width: 2
+
+                RotationAnimator {
+                    id: tool_anim_12
+                    target: tool_12;
+                    duration: 1000
+                    running: false
+                }
+
+                Text {
+                    id: tool_text_12
+                    text: qsTr("T12")
+                    font.family: "Bebas Kai"
+                    font.bold: false
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.pixelSize: 24
+                    x: parent.width / 2 - width / 2
+                    y: parent.height / 2 - height / 2
+                }
         }
     }
 
