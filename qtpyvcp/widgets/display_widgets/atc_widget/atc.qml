@@ -46,7 +46,7 @@ Rectangle {
 
             RotationAnimator {
                 id: pocket_text_anim_1
-                target: text1;
+                target: pocket_text_1;
                 duration: 1000
                 running: false
             }
@@ -96,7 +96,7 @@ Rectangle {
 
             RotationAnimator {
                 id: pocket_text_anim_2
-                target: text2;
+                target: pocket_text_2;
                 duration: 1000
                 running: false
             }
@@ -146,7 +146,7 @@ Rectangle {
 
             RotationAnimator {
                 id: pocket_text_anim_3
-                target: text3;
+                target: pocket_text_3;
                 duration: 1000
                 running: false
             }
@@ -197,7 +197,7 @@ Rectangle {
 
             RotationAnimator {
                 id: pocket_text_anim_4
-                target: text4;
+                target: pocket_text_4;
                 duration: 1000
                 running: false
             }
@@ -246,7 +246,7 @@ Rectangle {
 
             RotationAnimator {
                 id: pocket_text_anim_5
-                target: text5;
+                target: pocket_text_5;
                 duration: 1000
                 running: false
             }
@@ -295,7 +295,7 @@ Rectangle {
 
             RotationAnimator {
                 id: pocket_text_anim_6
-                target: text6;
+                target: pocket_text_6;
                 duration: 1000
                 running: false
             }
@@ -344,7 +344,7 @@ Rectangle {
 
             RotationAnimator {
                 id: pocket_text_anim_7
-                target: text7;
+                target: pocket_text_7;
                 duration: 1000
                 running: false
             }
@@ -393,7 +393,7 @@ Rectangle {
 
             RotationAnimator {
                 id: pocket_text_anim_8
-                target: text8;
+                target: pocket_text_8;
                 duration: 1000
                 running: false
             }
@@ -442,7 +442,7 @@ Rectangle {
 
             RotationAnimator {
                 id: pocket_text_anim_9
-                target: text9;
+                target: pocket_text_9;
                 duration: 1000
                 running: false
             }
@@ -491,7 +491,7 @@ Rectangle {
 
             RotationAnimator {
                 id: pocket_text_anim_10
-                target: text10;
+                target: pocket_text_10;
                 duration: 1000
                 running: false
             }
@@ -540,7 +540,7 @@ Rectangle {
 
             RotationAnimator {
                 id: pocket_text_anim_11
-                target: text11;
+                target: pocket_text_11;
                 duration: 1000
                 running: false
             }
@@ -589,7 +589,7 @@ Rectangle {
 
             RotationAnimator {
                 id: pocket_text_anim_12
-                target: text12;
+                target: pocket_text_12;
                 duration: 1000
                 running: false
             }
@@ -708,18 +708,18 @@ Rectangle {
     ]
 
     property var pocket_anim_list : [
-        text1_anim,
-        text2_anim,
-        text3_anim,
-        text4_anim,
-        text5_anim,
-        text6_anim,
-        text7_anim,
-        text8_anim,
-        text9_anim,
-        text10_anim,
-        text11_anim,
-        text12_anim
+        pocket_text_anim_1,
+        pocket_text_anim_2,
+        pocket_text_anim_3,
+        pocket_text_anim_4,
+        pocket_text_anim_5,
+        pocket_text_anim_6,
+        pocket_text_anim_7,
+        pocket_text_anim_8,
+        pocket_text_anim_9,
+        pocket_text_anim_10,
+        pocket_text_anim_11,
+        pocket_text_anim_12
     ]
 
     Connections {
