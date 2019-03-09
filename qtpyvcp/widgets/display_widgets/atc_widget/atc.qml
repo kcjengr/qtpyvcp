@@ -19,7 +19,7 @@ Rectangle {
         y: parent.height / 2 - height / 2
         antialiasing: true
         z: 0
-        rotation: 0
+        rotation: 90
         transformOrigin: Item.Center
         source: "images/carousel_12.png"
 
@@ -40,9 +40,11 @@ Rectangle {
 
                 height: atc_holder.height/2
                 transformOrigin: Item.Bottom
-                rotation: index * 30
+                rotation: (index * 30) - 90
                 x: atc_holder.width/2
                 y: 0
+
+                property string pocket_num: "P" + (index+1)
 
                 Text {
 
@@ -55,7 +57,7 @@ Rectangle {
                     y: atc_holder.height*0.2
                     rotation: 360 - index * 30
 
-                    text: qsTr("P" + (index+1))
+                    text: parent.pocket_num
                     font.family: "Bebas Kai"
                     font.bold: false
                     verticalAlignment: Text.AlignVCenter
@@ -71,6 +73,7 @@ Rectangle {
                 }
             }
         }
+
         Repeater {
             id: tool_slot
             model: 12
@@ -84,10 +87,12 @@ Rectangle {
                 x: atc_holder.width/2
                 y: 0
 
+
                 state: "visible"
 
                 Rectangle {
                     id: tool
+
                     height: atc_holder.height*0.125
                     width: height
                     radius: width/2
@@ -97,7 +102,9 @@ Rectangle {
                     anchors.top: parent.top
                     anchors.topMargin: 4
                     border.width: 2
-                    rotation: 360 - index * 30
+                    rotation: (360 - index * 30) - 90
+
+                    property string tool_num: "NO"
 
                     RotationAnimator {
                         id: tool_anim
@@ -107,8 +114,7 @@ Rectangle {
                     }
 
                     Text {
-                        id: tool_text
-                        text: qsTr("T" + (index+1))
+                        text: parent.tool_num
                         font.family: "Bebas Kai"
                         font.bold: false
                         verticalAlignment: Text.AlignVCenter
@@ -167,85 +173,27 @@ Rectangle {
         name.restart()
     }
 
-    property var tool_list : [
-        tool_1,
-        tool_2,
-        tool_3,
-        tool_4,
-        tool_5,
-        tool_6,
-        tool_7,
-        tool_8,
-        tool_9,
-        tool_10,
-        tool_11,
-        tool_12
-    ]
-    property var tool_text : [
-        tool_text_1,
-        tool_text_2,
-        tool_text_3,
-        tool_text_4,
-        tool_text_5,
-        tool_text_6,
-        tool_text_7,
-        tool_text_8,
-        tool_text_9,
-        tool_text_10,
-        tool_text_11,
-        tool_text_12
-    ]
-
-    property var tool_anim_list : [
-        tool_anim_1,
-        tool_anim_2,
-        tool_anim_3,
-        tool_anim_4,
-        tool_anim_5,
-        tool_anim_6,
-        tool_anim_7,
-        tool_anim_8,
-        tool_anim_9,
-        tool_anim_10,
-        tool_anim_11,
-        tool_anim_12
-    ]
-
-    property var pocket_anim_list : [
-        pocket_text_anim_1,
-        pocket_text_anim_2,
-        pocket_text_anim_3,
-        pocket_text_anim_4,
-        pocket_text_anim_5,
-        pocket_text_anim_6,
-        pocket_text_anim_7,
-        pocket_text_anim_8,
-        pocket_text_anim_9,
-        pocket_text_anim_10,
-        pocket_text_anim_11,
-        pocket_text_anim_12
-    ]
     Connections {
         target: atc_spiner
-/*
+
         onHideToolSig: {
-            tool_list[tool].visible = false;
+            tool_slot.itemAt(tool_num).state = "hidden";
         }
         onShowToolSig: {
-            tool_list[pocket].visible = true;
-            tool_text[pocket].text = qsTr("T" + tool)
+            tool_slot.itemAt(tool_num).state = "visible";
+            tool_slot.itemAt(tool_num).tool_num = "T"+ tool_num;
 
         }
- */
+
        onMoveToPocketSig: {
             rotate_atc_from_to(atc_anim, previous_pocket, pocket_num);
 
-            for (var i = 0; i < tool_anim_list.length; i++) {
-                rotate_tool_from_to(tool_anim_list[i], previous_pocket, pocket_num);
+            for (var i = 0; i < tool_slot.length; i++) {
+                rotate_tool_from_to(tool_slot[i], previous_pocket, pocket_num);
             }
 
-            for (var i = 0; i < pocket_anim_list.length; i++) {
-                rotate_tool_from_to(pocket_anim_list[i], previous_pocket, pocket_num);
+            for (var i = 0; i < pocket_slot.length; i++) {
+                rotate_tool_from_to(pocket_slot[i], previous_pocket, pocket_num);
             }
         }
 
