@@ -27,9 +27,14 @@ WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 class DynATC(QQuickWidget):
 
     moveToPocketSig = Signal(int, int, arguments=['previous_pocket', 'pocket_num'])
+
     toolInSpindleSig = Signal(int, arguments=['tool_num'])
+
     rotateFwdSig = Signal(int, arguments=['position'])
     rotateRevSig = Signal(int, arguments=['position'])
+
+    showToolSig = Signal(int, int,  arguments=['pocket', 'tool'])
+    hideToolSig = Signal(int,  arguments=['tool'])
 
     def __init__(self, parent=None):
         super(DynATC, self).__init__(parent)
@@ -43,18 +48,28 @@ class DynATC(QQuickWidget):
 
         self.atc_position = 1
 
+        self.tool_table = None
+        self.tools = None
+
+        self.load_tools()
+
+        STATUS.tool_table.notify(self.load_tools)
+        STATUS.tool_in_spindle.notify(self.on_tool_in_spindle)
+        STATUS.pocket_prepped.notify(self.on_pocket_prepped)
+
+    def load_tools(self):
+
         self.tool_table = TOOLTABLE.getToolTable()
 
         self.tools = dict()
-
         for index, tool in self.tool_table.items():
-            print(tool['T'])
-            print(tool['P'])
-
             self.tools[tool['P']] = tool['T']
 
-        STATUS.tool_in_spindle.notify(self.on_tool_in_spindle)
-        STATUS.pocket_prepped.notify(self.on_pocket_prepped)
+        for i in range(12):
+            self.hideToolSig.emit(i)
+
+        for pocket, tool in self.tools.items():
+            self.showToolSig.emit(pocket - 1, tool)
 
     def on_pocket_prepped(self, pocket_num):
         if pocket_num > 0:

@@ -663,6 +663,35 @@ Rectangle {
     }
 
     property var tool_list : [
+        tool_1,
+        tool_2,
+        tool_3,
+        tool_4,
+        tool_5,
+        tool_6,
+        tool_7,
+        tool_8,
+        tool_9,
+        tool_10,
+        tool_11,
+        tool_12
+    ]
+    property var tool_text : [
+        tool_text_1,
+        tool_text_2,
+        tool_text_3,
+        tool_text_4,
+        tool_text_5,
+        tool_text_6,
+        tool_text_7,
+        tool_text_8,
+        tool_text_9,
+        tool_text_10,
+        tool_text_11,
+        tool_text_12
+    ]
+
+    property var tool_anim_list : [
         tool_anim_1,
         tool_anim_2,
         tool_anim_3,
@@ -676,7 +705,8 @@ Rectangle {
         tool_anim_11,
         tool_anim_12
     ]
-    property var pocket_list : [
+
+    property var pocket_anim_list : [
         text1_anim,
         text2_anim,
         text3_anim,
@@ -694,15 +724,24 @@ Rectangle {
     Connections {
         target: atc_spiner
 
+        onHideToolSig: {
+            tool_list[tool].visible = false;
+        }
+        onShowToolSig: {
+            tool_list[pocket].visible = true;
+            tool_text[pocket].text = qsTr("T" + tool)
+
+        }
+
         onMoveToPocketSig: {
             rotate_atc_from_to(atc_anim, previous_pocket, pocket_num)
 
-            for (var i = 0; i < tool_list.length; i++) {
-                rotate_tool_from_to(tool_list[i], previous_pocket, pocket_num)
+            for (var i = 0; i < tool_anim_list.length; i++) {
+                rotate_tool_from_to(tool_anim_list[i], previous_pocket, pocket_num)
             }
 
-            for (var i = 0; i < pocket_list.length; i++) {
-                rotate_tool_from_to(pocket_list[i], previous_pocket, pocket_num)
+            for (var i = 0; i < pocket_anim_list.length; i++) {
+                rotate_tool_from_to(pocket_anim_list[i], previous_pocket, pocket_num)
             }
         }
 
@@ -714,24 +753,24 @@ Rectangle {
         onRotateFwdSig: {
             rotate_atc(atc_anim, position, 1)
 
-            for (var i = 0; i < tool_list.length; i++) {
-                rotate_tool(tool_list[i], position, 1)
+            for (var i = 0; i < tool_anim_list.length; i++) {
+                rotate_tool(tool_anim_list[i], position, 1)
             }
 
-            for (var i = 0; i < pocket_list.length; i++) {
-                rotate_tool(pocket_list[i], position, 1)
+            for (var i = 0; i < pocket_anim_list.length; i++) {
+                rotate_tool(pocket_anim_list[i], position, 1)
             }
         }
 
         onRotateRevSig: {
             rotate_atc(atc_anim, position, -1)
 
-            for (var i = 0; i < tool_list.length; i++) {
-                rotate_tool(tool_list[i], position, -1)
+            for (var i = 0; i < tool_anim_list.length; i++) {
+                rotate_tool(tool_anim_list[i], position, -1)
             }
 
-            for (var i = 0; i < pocket_list.length; i++) {
-                rotate_tool(pocket_list[i], position, -1)
+            for (var i = 0; i < pocket_anim_list.length; i++) {
+                rotate_tool(pocket_anim_list[i], position, -1)
             }
         }
     }
