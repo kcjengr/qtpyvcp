@@ -79,7 +79,7 @@ class DynATC(QQuickWidget):
             print(self.tools)
             print(pocket_num)
 
-            next_pocket = self.tools[pocket_num + 1]
+            next_pocket = self.tools[pocket_num]
 
             print(next_pocket)
 
