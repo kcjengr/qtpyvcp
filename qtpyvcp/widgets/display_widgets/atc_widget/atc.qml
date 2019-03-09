@@ -5,53 +5,18 @@ import QtQuick.Layouts 1.3
 Rectangle {
     id: rectangle
     visible: true
-    width: 600
-    color: "#00000000"
+    width: 504
+    color: "#939695"
+    opacity: 1
     property alias rectangle: rectangle
-    border.width: 0
-    border.color: "#00000000"
-    height: 600
+    height: 504
 
-    GridLayout {
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: 9
-
-        columns: 4
-        rows: 4
-        rowSpacing: 10
-        columnSpacing: 10
-
-        Button {
-            height: 40
-            Layout.fillWidth: true
-            text: qsTr("Reverse")
-
-            Layout.columnSpan: 2
-
-            onClicked: {
-                atc_spiner.rotate_reverse()
-            }
-        }
-
-        Button {
-            height: 40
-            Layout.fillWidth: true
-            text: qsTr("Forward")
-
-            Layout.columnSpan: 2
-
-            onClicked: {
-                atc_spiner.rotate_forward()
-            }
-        }
-    }
 
     Image {
         id: atc_holder
-        width: 524
-        height: 523
+        width: 499
+        height: 499
+        visible: true
         x: parent.width / 2 - width / 2
         y: parent.height / 2 - height / 2
         antialiasing: true
@@ -70,8 +35,8 @@ Rectangle {
 
         Rectangle {
             id: tool_1
-            x: 454
-            y: 228
+            x: 429
+            y: 217
             width: 66
             height: width
             color: "#ffffff"
@@ -92,7 +57,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 28
+                font.pixelSize: 24
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -100,8 +65,8 @@ Rectangle {
 
         Rectangle {
             id: tool_2
-            x: 424
-            y: 116
+            x: 401
+            y: 110
             width: 66
             height: width
             color: "#ffffff"
@@ -122,7 +87,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 28
+                font.pixelSize: 24
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -130,8 +95,8 @@ Rectangle {
 
         Rectangle {
             id: tool_3
-            x: 341
-            y: 34
+            x: 323
+            y: 32
             width: 66
             height: width
             color: "#ffffff"
@@ -152,7 +117,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 28
+                font.pixelSize: 24
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -160,8 +125,8 @@ Rectangle {
 
         Rectangle {
             id: tool_4
-            x: 228
-            y: 5
+            x: 216
+            y: 4
             width: 66
             height: width
             color: "#ffffff"
@@ -182,7 +147,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 28
+                font.pixelSize: 24
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -190,8 +155,8 @@ Rectangle {
 
         Rectangle {
             id: tool_5
-            x: 117
-            y: 35
+            x: 110
+            y: 32
             width: 66
             height: width
             color: "#ffffff"
@@ -212,7 +177,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 28
+                font.pixelSize: 24
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -220,8 +185,8 @@ Rectangle {
 
         Rectangle {
             id: tool_6
-            x: 34
-            y: 116
+            x: 32
+            y: 111
             width: 66
             height: width
             color: "#ffffff"
@@ -242,7 +207,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 28
+                font.pixelSize: 24
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -250,8 +215,8 @@ Rectangle {
 
         Rectangle {
             id: tool_7
-            x: 4
-            y: 229
+            x: 3
+            y: 217
             width: 66
             height: width
             color: "#ffffff"
@@ -272,7 +237,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 28
+                font.pixelSize: 24
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -280,8 +245,8 @@ Rectangle {
 
         Rectangle {
             id: tool_8
-            x: 34
-            y: 341
+            x: 32
+            y: 323
             width: 66
             height: width
             color: "#ffffff"
@@ -302,7 +267,7 @@ Rectangle {
                 font.family: "Bebas Kai"
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 28
+                font.pixelSize: 24
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -310,8 +275,8 @@ Rectangle {
 
         Rectangle {
             id: tool_9
-            x: 116
-            y: 423
+            x: 110
+            y: 401
             width: 66
             height: width
             color: "#ffffff"
@@ -332,7 +297,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 28
+                font.pixelSize: 24
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -340,8 +305,8 @@ Rectangle {
 
         Rectangle {
             id: tool_10
-            x: 229
-            y: 453
+            x: 216
+            y: 430
             width: 66
             height: width
             color: "#ffffff"
@@ -362,7 +327,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 28
+                font.pixelSize: 24
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -370,8 +335,8 @@ Rectangle {
 
         Rectangle {
             id: tool_11
-            x: 341
-            y: 423
+            x: 322
+            y: 401
             width: 66
             height: width
             color: "#ffffff"
@@ -392,7 +357,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 28
+                font.pixelSize: 24
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -400,8 +365,8 @@ Rectangle {
 
         Rectangle {
             id: tool_12
-            x: 424
-            y: 341
+            x: 401
+            y: 323
             width: 66
             height: width
             color: "#ffffff"
@@ -422,7 +387,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 28
+                font.pixelSize: 24
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -430,8 +395,8 @@ Rectangle {
 
         Text {
             id: text1
-            x: 183
-            y: 117
+            x: 170
+            y: 109
             text: qsTr("5")
             font.family: "Bebas Kai"
             font.bold: false
@@ -449,8 +414,8 @@ Rectangle {
 
         Text {
             id: text2
-            x: 257
-            y: 97
+            x: 245
+            y: 88
             text: qsTr("4")
             font.family: "Bebas Kai"
             font.bold: false
@@ -468,8 +433,9 @@ Rectangle {
 
         Text {
             id: text3
-            x: 334
-            y: 115
+            x: 321
+            y: 106
+            width: 11
             text: qsTr("3")
             font.family: "Bebas Kai"
             font.bold: false
@@ -487,10 +453,10 @@ Rectangle {
 
         Text {
             id: text4
-            x: 389
-            y: 181
-            width: 8
-            height: 14
+            x: 375
+            y: 172
+            width: 9
+            height: 12
             text: qsTr("2")
             font.family: "Bebas Kai"
             font.bold: false
@@ -508,8 +474,8 @@ Rectangle {
 
         Text {
             id: text5
-            x: 407
-            y: 246
+            x: 394
+            y: 236
             text: qsTr("1")
             font.family: "Bebas Kai"
             font.bold: false
@@ -527,8 +493,8 @@ Rectangle {
 
         Text {
             id: text6
-            x: 102
-            y: 247
+            x: 91
+            y: 237
             text: qsTr("7")
             font.family: "Bebas Kai"
             font.bold: false
@@ -546,8 +512,8 @@ Rectangle {
 
         Text {
             id: text7
-            x: 254
-            y: 398
+            x: 242
+            y: 385
             text: qsTr("10")
             font.family: "Bebas Kai"
             font.bold: false
@@ -565,8 +531,8 @@ Rectangle {
 
         Text {
             id: text8
-            x: 332
-            y: 378
+            x: 319
+            y: 364
             text: qsTr("11")
             font.family: "Bebas Kai"
             font.bold: false
@@ -584,8 +550,8 @@ Rectangle {
 
         Text {
             id: text9
-            x: 384
-            y: 322
+            x: 371
+            y: 311
             text: qsTr("12")
             font.family: "Bebas Kai"
             font.bold: false
@@ -603,8 +569,8 @@ Rectangle {
 
         Text {
             id: text10
-            x: 125
-            y: 170
+            x: 113
+            y: 161
             text: qsTr("6")
             font.family: "Bebas Kai"
             font.bold: false
@@ -622,8 +588,8 @@ Rectangle {
 
         Text {
             id: text11
-            x: 123
-            y: 324
+            x: 112
+            y: 313
             text: qsTr("8")
             font.family: "Bebas Kai"
             font.bold: false
@@ -641,8 +607,8 @@ Rectangle {
 
         Text {
             id: text12
-            x: 181
-            y: 377
+            x: 170
+            y: 365
             text: qsTr("9")
             font.family: "Bebas Kai"
             font.bold: false
@@ -668,7 +634,7 @@ Rectangle {
 //        onTriggered: atc_spiner.get_pins()
 //    }
 
-    function rotate_atc(name, tool_no, direction) {
+function rotate_atc(name, tool_no, direction) {
         if (direction === 1) {
             name.from = (360/12 * tool_no)
             name.to = (360/12 * tool_no + 360/12)
