@@ -2948,17 +2948,17 @@ border-radius: 8px;
                   <rect>
                    <x>10</x>
                    <y>9</y>
-                   <width>500</width>
-                   <height>500</height>
+                   <width>510</width>
+                   <height>510</height>
                   </rect>
                  </property>
                  <widget class="DynATC" name="dynatc">
                   <property name="geometry">
                    <rect>
-                    <x>3</x>
-                    <y>3</y>
-                    <width>494</width>
-                    <height>494</height>
+                    <x>0</x>
+                    <y>0</y>
+                    <width>510</width>
+                    <height>510</height>
                    </rect>
                   </property>
                   <property name="resizeMode">
