@@ -104,7 +104,7 @@ Rectangle {
                     border.width: 2
                     rotation: (360 - index * 30) - 90
 
-                    property string tool_num: "NO"
+                    property string tool_text: "NO"
 
                     RotationAnimator {
                         id: tool_anim
@@ -114,7 +114,8 @@ Rectangle {
                     }
 
                     Text {
-                        text: parent.tool_num
+                        id: text
+                        text: parent.tool_text
                         font.family: "Bebas Kai"
                         font.bold: false
                         verticalAlignment: Text.AlignVCenter
@@ -180,8 +181,10 @@ Rectangle {
             tool_slot.itemAt(tool_num).state = "hidden";
         }
         onShowToolSig: {
-            tool_slot.itemAt(tool_num).state = "visible";
-            tool_slot.itemAt(tool_num).tool_num = "T"+ tool_num;
+            var widget = tool_slot.itemAt(tool_num)
+            widget.state = "visible";
+            console.log(widget)
+            // tool_slot.itemAt(tool_num).tool_num = "T"+ tool_num;
 
         }
 
