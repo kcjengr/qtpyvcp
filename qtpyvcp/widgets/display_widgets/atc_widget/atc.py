@@ -27,18 +27,19 @@ WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 class DynATC(QQuickWidget):
 
     moveToPocketSig = Signal(int, int, arguments=['previous_pocket', 'pocket_num'])
+    toolInSpindleSig = Signal(int, arguments=['tool_num'])
     rotateFwdSig = Signal(int, arguments=['rotate_forward'])
     rotateRevSig = Signal(int, arguments=['rotate_reverse'])
 
     def __init__(self, parent=None):
         super(DynATC, self).__init__(parent)
 
-        if IN_DESIGNER:
-            return
-
         self.engine().rootContext().setContextProperty("atc_spiner", self)
         url = QUrl.fromLocalFile(os.path.join(WIDGET_PATH, "atc.qml"))
         self.setSource(url)
+
+        if IN_DESIGNER:
+            return
 
         self.atc_position = 1
 
@@ -58,6 +59,7 @@ class DynATC(QQuickWidget):
 
     def on_tool_in_spindle(self, tool_num):
         print("Tool in Spindle: {}".format(tool_num))
+        self.toolInSpindleSig.emit(tool_num)
 
     @Slot()
     def rotate_forward(self):

@@ -659,15 +659,6 @@ Rectangle {
         }
     }
 
-//    Timer {
-//        id: halTimer
-//        interval: 100
-//        repeat: true
-//        running: true
-//        triggeredOnStart: false
-//        onTriggered: atc_spiner.get_pins()
-//    }
-
     function rotate_atc(atc, previous_pocket, tool_no) {
 
         atc.from = 360/12 * previous_pocket
@@ -716,6 +707,9 @@ Rectangle {
             rotate_tool(text10_anim, previous_pocket, pocket_num)
             rotate_tool(text11_anim, previous_pocket, pocket_num)
             rotate_tool(text12_anim, previous_pocket, pocket_num)
+        }
+        onToolInSpindleSig: {
+            rotate_tool(tool_anim_1, 0, 12)
         }
 
         onRotateFwdSig: {
