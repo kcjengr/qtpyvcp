@@ -5,18 +5,53 @@ import QtQuick.Layouts 1.3
 Rectangle {
     id: rectangle
     visible: true
-    width: 504
-    color: "#939695"
-    opacity: 1
+    width: 600
+    color: "#00000000"
     property alias rectangle: rectangle
-    height: 504
+    border.width: 0
+    border.color: "#00000000"
+    height: 600
 
+    GridLayout {
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.margins: 9
+
+        columns: 4
+        rows: 4
+        rowSpacing: 10
+        columnSpacing: 10
+
+        Button {
+            height: 40
+            Layout.fillWidth: true
+            text: qsTr("Reverse")
+
+            Layout.columnSpan: 2
+
+            onClicked: {
+                atc_spiner.rotate_reverse()
+            }
+        }
+
+        Button {
+            height: 40
+            Layout.fillWidth: true
+            text: qsTr("Forward")
+
+            Layout.columnSpan: 2
+
+            onClicked: {
+                atc_spiner.rotate_forward()
+            }
+        }
+    }
 
     Image {
         id: atc_holder
-        width: 499
-        height: 499
-        visible: true
+        width: 524
+        height: 523
         x: parent.width / 2 - width / 2
         y: parent.height / 2 - height / 2
         antialiasing: true
@@ -35,8 +70,8 @@ Rectangle {
 
         Rectangle {
             id: tool_1
-            x: 429
-            y: 217
+            x: 454
+            y: 228
             width: 66
             height: width
             color: "#ffffff"
@@ -57,7 +92,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -65,8 +100,8 @@ Rectangle {
 
         Rectangle {
             id: tool_2
-            x: 401
-            y: 110
+            x: 424
+            y: 116
             width: 66
             height: width
             color: "#ffffff"
@@ -87,7 +122,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -95,8 +130,8 @@ Rectangle {
 
         Rectangle {
             id: tool_3
-            x: 323
-            y: 32
+            x: 341
+            y: 34
             width: 66
             height: width
             color: "#ffffff"
@@ -117,7 +152,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -125,8 +160,8 @@ Rectangle {
 
         Rectangle {
             id: tool_4
-            x: 216
-            y: 4
+            x: 228
+            y: 5
             width: 66
             height: width
             color: "#ffffff"
@@ -147,7 +182,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -155,8 +190,8 @@ Rectangle {
 
         Rectangle {
             id: tool_5
-            x: 110
-            y: 32
+            x: 117
+            y: 35
             width: 66
             height: width
             color: "#ffffff"
@@ -177,7 +212,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -185,8 +220,8 @@ Rectangle {
 
         Rectangle {
             id: tool_6
-            x: 32
-            y: 111
+            x: 34
+            y: 116
             width: 66
             height: width
             color: "#ffffff"
@@ -207,7 +242,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -215,8 +250,8 @@ Rectangle {
 
         Rectangle {
             id: tool_7
-            x: 3
-            y: 217
+            x: 4
+            y: 229
             width: 66
             height: width
             color: "#ffffff"
@@ -237,7 +272,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -245,8 +280,8 @@ Rectangle {
 
         Rectangle {
             id: tool_8
-            x: 32
-            y: 323
+            x: 34
+            y: 341
             width: 66
             height: width
             color: "#ffffff"
@@ -267,7 +302,7 @@ Rectangle {
                 font.family: "Bebas Kai"
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -275,8 +310,8 @@ Rectangle {
 
         Rectangle {
             id: tool_9
-            x: 110
-            y: 401
+            x: 116
+            y: 423
             width: 66
             height: width
             color: "#ffffff"
@@ -297,7 +332,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -305,8 +340,8 @@ Rectangle {
 
         Rectangle {
             id: tool_10
-            x: 216
-            y: 430
+            x: 229
+            y: 453
             width: 66
             height: width
             color: "#ffffff"
@@ -327,7 +362,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -335,8 +370,8 @@ Rectangle {
 
         Rectangle {
             id: tool_11
-            x: 322
-            y: 401
+            x: 341
+            y: 423
             width: 66
             height: width
             color: "#ffffff"
@@ -357,7 +392,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -365,8 +400,8 @@ Rectangle {
 
         Rectangle {
             id: tool_12
-            x: 401
-            y: 323
+            x: 424
+            y: 341
             width: 66
             height: width
             color: "#ffffff"
@@ -387,7 +422,7 @@ Rectangle {
                 font.bold: false
                 verticalAlignment: Text.AlignVCenter
                 horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 24
+                font.pixelSize: 28
                 x: parent.width / 2 - width / 2
                 y: parent.height / 2 - height / 2
             }
@@ -395,8 +430,8 @@ Rectangle {
 
         Text {
             id: text1
-            x: 170
-            y: 109
+            x: 183
+            y: 117
             text: qsTr("5")
             font.family: "Bebas Kai"
             font.bold: false
@@ -414,8 +449,8 @@ Rectangle {
 
         Text {
             id: text2
-            x: 245
-            y: 88
+            x: 257
+            y: 97
             text: qsTr("4")
             font.family: "Bebas Kai"
             font.bold: false
@@ -433,9 +468,8 @@ Rectangle {
 
         Text {
             id: text3
-            x: 321
-            y: 106
-            width: 11
+            x: 334
+            y: 115
             text: qsTr("3")
             font.family: "Bebas Kai"
             font.bold: false
@@ -453,10 +487,10 @@ Rectangle {
 
         Text {
             id: text4
-            x: 375
-            y: 172
-            width: 9
-            height: 12
+            x: 389
+            y: 181
+            width: 8
+            height: 14
             text: qsTr("2")
             font.family: "Bebas Kai"
             font.bold: false
@@ -474,8 +508,8 @@ Rectangle {
 
         Text {
             id: text5
-            x: 394
-            y: 236
+            x: 407
+            y: 246
             text: qsTr("1")
             font.family: "Bebas Kai"
             font.bold: false
@@ -493,8 +527,8 @@ Rectangle {
 
         Text {
             id: text6
-            x: 91
-            y: 237
+            x: 102
+            y: 247
             text: qsTr("7")
             font.family: "Bebas Kai"
             font.bold: false
@@ -512,8 +546,8 @@ Rectangle {
 
         Text {
             id: text7
-            x: 242
-            y: 385
+            x: 254
+            y: 398
             text: qsTr("10")
             font.family: "Bebas Kai"
             font.bold: false
@@ -531,8 +565,8 @@ Rectangle {
 
         Text {
             id: text8
-            x: 319
-            y: 364
+            x: 332
+            y: 378
             text: qsTr("11")
             font.family: "Bebas Kai"
             font.bold: false
@@ -550,8 +584,8 @@ Rectangle {
 
         Text {
             id: text9
-            x: 371
-            y: 311
+            x: 384
+            y: 322
             text: qsTr("12")
             font.family: "Bebas Kai"
             font.bold: false
@@ -569,8 +603,8 @@ Rectangle {
 
         Text {
             id: text10
-            x: 113
-            y: 161
+            x: 125
+            y: 170
             text: qsTr("6")
             font.family: "Bebas Kai"
             font.bold: false
@@ -588,8 +622,8 @@ Rectangle {
 
         Text {
             id: text11
-            x: 112
-            y: 313
+            x: 123
+            y: 324
             text: qsTr("8")
             font.family: "Bebas Kai"
             font.bold: false
@@ -607,8 +641,8 @@ Rectangle {
 
         Text {
             id: text12
-            x: 170
-            y: 365
+            x: 181
+            y: 377
             text: qsTr("9")
             font.family: "Bebas Kai"
             font.bold: false
@@ -625,9 +659,21 @@ Rectangle {
         }
     }
 
-    function rotate_atc(atc, previous_pocket, tool_no) {
+    function rotate_atc_from_to(atc, previous_pocket, tool_no) {
 
-function rotate_atc(name, tool_no, direction) {
+        atc.from = 360/12 * previous_pocket
+        atc.to = 360/12 * tool_no
+        atc.restart()
+    }
+
+    function rotate_tool_from_to(tool, previous_pocket, tool_no) {
+
+        tool.from = -(360/12 * previous_pocket)
+        tool.to = -(360/12 * tool_no)
+        tool.restart()
+    }
+
+    function rotate_atc(name, tool_no, direction) {
         if (direction === 1) {
             name.from = (360/12 * tool_no)
             name.to = (360/12 * tool_no + 360/12)
@@ -637,16 +683,17 @@ function rotate_atc(name, tool_no, direction) {
             name.to = (360/12 * tool_no - 360/12)
         }
         name.restart()
-        atc.from = 360/12 * previous_pocket
-        atc.to = 360/12 * tool_no
-        atc.restart()
     }
-
-    function rotate_tool(tool, previous_pocket, tool_no) {
-
-        tool.from = -(360/12 * previous_pocket)
-        tool.to = -(360/12 * tool_no)
-        tool.restart()
+    function rotate_tool(name, tool_no, direction) {
+        if (direction === 1) {
+            name.from = -(360/12 * tool_no)
+            name.to = -(360/12 * tool_no + 360/12)
+        }
+        else if (direction === -1) {
+            name.from = -(360/12 * tool_no)
+            name.to = -(360/12 * tool_no - 360/12)
+        }
+        name.restart()
     }
 
     property var tool_list : [
@@ -681,87 +728,45 @@ function rotate_atc(name, tool_no, direction) {
     Connections {
         target: atc_spiner
 
-
         onMoveToPocketSig: {
-            console.log(previous_pocket, pocket_num)
-
-            rotate_atc(atc_anim, previous_pocket, pocket_num)
-
-
+            rotate_atc_from_to(atc_anim, previous_pocket, pocket_num)
 
             for (var i = 0; i < tool_list.length; i++) {
-
-                rotate_tool(tool_list[i], previous_pocket, pocket_num)
+                rotate_tool_from_to(tool_list[i], previous_pocket, pocket_num)
             }
+
             for (var i = 0; i < pocket_list.length; i++) {
-
-                rotate_tool(pocket_list[i], previous_pocket, pocket_num)
+                rotate_tool_from_to(pocket_list[i], previous_pocket, pocket_num)
             }
-
         }
+
         onToolInSpindleSig: {
             console.log("tool_in_spindle")
             // rotate_tool(tool_anim_1, 0, 12)
         }
 
         onRotateFwdSig: {
-            rotate_atc(atc_anim, rotate_forward, 1)
+            rotate_atc(atc_anim, position, 1)
 
-            rotate_tool(tool_anim_1, rotate_forward, 1)
-            rotate_tool(tool_anim_2, rotate_forward, 1)
-            rotate_tool(tool_anim_3, rotate_forward, 1)
-            rotate_tool(tool_anim_4, rotate_forward, 1)
-            rotate_tool(tool_anim_5, rotate_forward, 1)
-            rotate_tool(tool_anim_6, rotate_forward, 1)
-            rotate_tool(tool_anim_7, rotate_forward, 1)
-            rotate_tool(tool_anim_8, rotate_forward, 1)
-            rotate_tool(tool_anim_9, rotate_forward, 1)
-            rotate_tool(tool_anim_10, rotate_forward, 1)
-            rotate_tool(tool_anim_11, rotate_forward, 1)
-            rotate_tool(tool_anim_12, rotate_forward, 1)
+            for (var i = 0; i < tool_list.length; i++) {
+                rotate_tool(tool_list[i], position, 1)
+            }
 
-            rotate_tool(text1_anim, rotate_forward, 1)
-            rotate_tool(text2_anim, rotate_forward, 1)
-            rotate_tool(text3_anim, rotate_forward, 1)
-            rotate_tool(text4_anim, rotate_forward, 1)
-            rotate_tool(text5_anim, rotate_forward, 1)
-            rotate_tool(text6_anim, rotate_forward, 1)
-            rotate_tool(text7_anim, rotate_forward, 1)
-            rotate_tool(text8_anim, rotate_forward, 1)
-            rotate_tool(text9_anim, rotate_forward, 1)
-            rotate_tool(text10_anim, rotate_forward, 1)
-            rotate_tool(text11_anim, rotate_forward, 1)
-            rotate_tool(text12_anim, rotate_forward, 1)
+            for (var i = 0; i < pocket_list.length; i++) {
+                rotate_tool(pocket_list[i], position, 1)
+            }
         }
 
         onRotateRevSig: {
-            rotate_atc(atc_anim, rotate_reverse, -1)
+            rotate_atc(atc_anim, position, -1)
 
-            rotate_tool(tool_anim_1, rotate_reverse, -1)
-            rotate_tool(tool_anim_2, rotate_reverse, -1)
-            rotate_tool(tool_anim_3, rotate_reverse, -1)
-            rotate_tool(tool_anim_4, rotate_reverse, -1)
-            rotate_tool(tool_anim_5, rotate_reverse, -1)
-            rotate_tool(tool_anim_6, rotate_reverse, -1)
-            rotate_tool(tool_anim_7, rotate_reverse, -1)
-            rotate_tool(tool_anim_8, rotate_reverse, -1)
-            rotate_tool(tool_anim_9, rotate_reverse, -1)
-            rotate_tool(tool_anim_10, rotate_reverse, -1)
-            rotate_tool(tool_anim_11, rotate_reverse, -1)
-            rotate_tool(tool_anim_12, rotate_reverse, -1)
+            for (var i = 0; i < tool_list.length; i++) {
+                rotate_tool(tool_list[i], position, -1)
+            }
 
-            rotate_tool(text1_anim, rotate_reverse, -1)
-            rotate_tool(text2_anim, rotate_reverse, -1)
-            rotate_tool(text3_anim, rotate_reverse, -1)
-            rotate_tool(text4_anim, rotate_reverse, -1)
-            rotate_tool(text5_anim, rotate_reverse, -1)
-            rotate_tool(text6_anim, rotate_reverse, -1)
-            rotate_tool(text7_anim, rotate_reverse, -1)
-            rotate_tool(text8_anim, rotate_reverse, -1)
-            rotate_tool(text9_anim, rotate_reverse, -1)
-            rotate_tool(text10_anim, rotate_reverse, -1)
-            rotate_tool(text11_anim, rotate_reverse, -1)
-            rotate_tool(text12_anim, rotate_reverse, -1)
+            for (var i = 0; i < pocket_list.length; i++) {
+                rotate_tool(pocket_list[i], position, -1)
+            }
         }
     }
 }

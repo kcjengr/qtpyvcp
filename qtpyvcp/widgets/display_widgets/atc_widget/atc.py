@@ -28,8 +28,8 @@ class DynATC(QQuickWidget):
 
     moveToPocketSig = Signal(int, int, arguments=['previous_pocket', 'pocket_num'])
     toolInSpindleSig = Signal(int, arguments=['tool_num'])
-    rotateFwdSig = Signal(int, arguments=['rotate_forward'])
-    rotateRevSig = Signal(int, arguments=['rotate_reverse'])
+    rotateFwdSig = Signal(int, arguments=['position'])
+    rotateRevSig = Signal(int, arguments=['position'])
 
     def __init__(self, parent=None):
         super(DynATC, self).__init__(parent)
@@ -63,10 +63,10 @@ class DynATC(QQuickWidget):
 
     @Slot()
     def rotate_forward(self):
-        self.rotateFwdSig.emit(self.atc_position)
+        self.rotateFwdSig.emit(self.atc_position -1)
         self.atc_position += 1
 
     @Slot()
     def rotate_reverse(self):
-        self.rotateRevSig.emit(self.atc_position)
+        self.rotateRevSig.emit(self.atc_position -1)
         self.atc_position -= 1
