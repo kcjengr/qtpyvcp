@@ -43,7 +43,15 @@ class DynATC(QQuickWidget):
 
         self.atc_position = 1
 
-        self.tools = list(STATUS.stat.tool_table)
+        self.tool_table = TOOLTABLE.getToolTable()
+
+        self.tools = dict()
+
+        for index, tool in self.tool_table.items():
+            print(tool['T'])
+            print(tool['P'])
+
+            self.tools[tool['P']] = tool['T']
 
         STATUS.tool_in_spindle.notify(self.on_tool_in_spindle)
         STATUS.pocket_prepped.notify(self.on_pocket_prepped)
@@ -63,10 +71,10 @@ class DynATC(QQuickWidget):
 
     @Slot()
     def rotate_forward(self):
-        self.rotateFwdSig.emit(self.atc_position -1)
+        self.rotateFwdSig.emit(self.atc_position - 1)
         self.atc_position += 1
 
     @Slot()
     def rotate_reverse(self):
-        self.rotateRevSig.emit(self.atc_position -1)
+        self.rotateRevSig.emit(self.atc_position - 1)
         self.atc_position -= 1
