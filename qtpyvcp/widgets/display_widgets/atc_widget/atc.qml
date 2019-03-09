@@ -673,43 +673,59 @@ Rectangle {
         tool.restart()
     }
 
+    property var tool_list : [
+        tool_anim_1,
+        tool_anim_2,
+        tool_anim_3,
+        tool_anim_4,
+        tool_anim_5,
+        tool_anim_6,
+        tool_anim_7,
+        tool_anim_8,
+        tool_anim_9,
+        tool_anim_10,
+        tool_anim_11,
+        tool_anim_12
+    ]
+    property var pocket_list : [
+        text1_anim,
+        text2_anim,
+        text3_anim,
+        text4_anim,
+        text5_anim,
+        text6_anim,
+        text7_anim,
+        text8_anim,
+        text9_anim,
+        text10_anim,
+        text11_anim,
+        text12_anim
+    ]
 
     Connections {
         target: atc_spiner
+
 
         onMoveToPocketSig: {
             console.log(previous_pocket, pocket_num)
 
             rotate_atc(atc_anim, previous_pocket, pocket_num)
 
-            rotate_tool(tool_anim_1, previous_pocket, pocket_num)
-            rotate_tool(tool_anim_2, previous_pocket, pocket_num)
-            rotate_tool(tool_anim_3, previous_pocket, pocket_num)
-            rotate_tool(tool_anim_4, previous_pocket, pocket_num)
-            rotate_tool(tool_anim_5, previous_pocket, pocket_num)
-            rotate_tool(tool_anim_6, previous_pocket, pocket_num)
-            rotate_tool(tool_anim_7, previous_pocket, pocket_num)
-            rotate_tool(tool_anim_8, previous_pocket, pocket_num)
-            rotate_tool(tool_anim_9, previous_pocket, pocket_num)
-            rotate_tool(tool_anim_10, previous_pocket, pocket_num)
-            rotate_tool(tool_anim_11, previous_pocket, pocket_num)
-            rotate_tool(tool_anim_12, previous_pocket, pocket_num)
 
-            rotate_tool(text1_anim, previous_pocket, pocket_num)
-            rotate_tool(text2_anim, previous_pocket, pocket_num)
-            rotate_tool(text3_anim, previous_pocket, pocket_num)
-            rotate_tool(text4_anim, previous_pocket, pocket_num)
-            rotate_tool(text5_anim, previous_pocket, pocket_num)
-            rotate_tool(text6_anim, previous_pocket, pocket_num)
-            rotate_tool(text7_anim, previous_pocket, pocket_num)
-            rotate_tool(text8_anim, previous_pocket, pocket_num)
-            rotate_tool(text9_anim, previous_pocket, pocket_num)
-            rotate_tool(text10_anim, previous_pocket, pocket_num)
-            rotate_tool(text11_anim, previous_pocket, pocket_num)
-            rotate_tool(text12_anim, previous_pocket, pocket_num)
+
+            for (var i = 0; i < tool_list.length; i++) {
+
+                rotate_tool(tool_list[i], previous_pocket, pocket_num)
+            }
+            for (var i = 0; i < pocket_list.length; i++) {
+
+                rotate_tool(pocket_list[i], previous_pocket, pocket_num)
+            }
+
         }
         onToolInSpindleSig: {
-            rotate_tool(tool_anim_1, 0, 12)
+            console.log("tool_in_spindle")
+            // rotate_tool(tool_anim_1, 0, 12)
         }
 
         onRotateFwdSig: {
