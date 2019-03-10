@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from qtpy.QtGui import QColor
 from qtpy.QtCore import Qt, Slot, Property, QSize
 

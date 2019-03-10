@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import os
 import re
 from qtpy.QtWidgets import qApp

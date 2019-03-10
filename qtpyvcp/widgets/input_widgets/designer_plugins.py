@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
 
 from line_edit import VCPLineEdit

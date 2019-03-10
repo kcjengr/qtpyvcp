@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
 
 from main_window import VCPMainWindow

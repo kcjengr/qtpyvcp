@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """Persistent preferences manager using INI format .pref file.
 
 Setting Preference::

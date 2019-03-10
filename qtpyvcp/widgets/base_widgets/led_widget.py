@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 from qtpy.QtCore import Qt, Slot, Property, QTimer, QSize
 from qtpy.QtGui import QColor, QPainter, QRadialGradient, QBrush
 from qtpy.QtWidgets import QWidget

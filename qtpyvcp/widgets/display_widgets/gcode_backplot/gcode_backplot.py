@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-#
 #    Copyright 2016 Chris Morley
 #
 #    This program is free software; you can redistribute it and/or modify

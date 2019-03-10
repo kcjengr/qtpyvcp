@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from qtpy.QtGui import QIcon
 from qtpy.QtDesigner import QPyDesignerCustomWidgetPlugin
 

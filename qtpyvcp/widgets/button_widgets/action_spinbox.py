@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from qtpy.QtWidgets import QSpinBox
 from qtpy.QtCore import Property
 

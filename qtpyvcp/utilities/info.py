@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """Utility for reading INI file info.
 
 This module is used to get information from the machine's INI file.

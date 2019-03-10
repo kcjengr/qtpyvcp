@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from qtpy.QtWidgets import QLabel
 from qtpy.QtCore import Property, Slot
 
