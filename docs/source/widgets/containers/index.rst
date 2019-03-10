@@ -6,3 +6,4 @@ Containers
    :maxdepth: 1
 
    frame
+   embedded_ui

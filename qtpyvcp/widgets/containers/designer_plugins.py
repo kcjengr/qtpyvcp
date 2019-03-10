@@ -6,3 +6,8 @@ class VCPFramePlugin(_DesignerPlugin):
         return VCPFrame
     def isContainer(self):
         return True
+
+from embedded_ui import EmbeddedUI
+class EmbeddedUIPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return EmbeddedUI

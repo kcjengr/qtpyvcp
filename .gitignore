@@ -18,6 +18,7 @@
 # Compiled Qt resource and ui files
 *_rc.py
 *_ui.py
+!*embedded_ui.py
 
 # update INI backups
 sim/*.old
