@@ -5,31 +5,12 @@ Widgets
 QtPyVCP custom widget documentation.
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    base_widget
+   buttons/index
+   containers/index
 
-
-Buttons
--------
-.. toctree::
-   :maxdepth: 1
-
-   action_button
-   action_checkbox
-   action_spinbox
-   mdi_button
-   subcall_button
-   dialog_button
-
-
-Containers
-----------
-
-.. toctree::
-   :maxdepth: 1
-
-   containers/frame
 
 Dialogs
 -------
