@@ -40,7 +40,7 @@ Rectangle {
 
                 height: atc_holder.height/2
                 transformOrigin: Item.Bottom
-                rotation: (index * 30) - 90
+                rotation: index * 30
                 x: atc_holder.width/2
                 y: 0
 
@@ -55,7 +55,7 @@ Rectangle {
                     }
                     x: 0
                     y: atc_holder.height*0.2
-                    rotation: 360 - index * 30
+                    rotation: (360 - index * 30) - 90
 
                     text: parent.pocket_num
                     font.family: "Bebas Kai"
@@ -81,17 +81,18 @@ Rectangle {
             delegate:
                 Item {
 
+                id: tool_item
                 height: atc_holder.height/2
                 transformOrigin: Item.Bottom
                 rotation: index * 30
                 x: atc_holder.width/2
                 y: 0
 
-
                 state: "visible"
+                property string tool_text: "NO"
 
                 Rectangle {
-                    id: tool
+                    id: tool_rectangle
 
                     height: atc_holder.height*0.125
                     width: height
@@ -104,18 +105,17 @@ Rectangle {
                     border.width: 2
                     rotation: (360 - index * 30) - 90
 
-                    property string tool_text: "NO"
 
                     RotationAnimator {
                         id: tool_anim
-                        target: tool
+                        target: tool_rectangle
                         duration: 1000
                         running: false
                     }
 
                     Text {
-                        id: text
-                        text: parent.tool_text
+                        id: tool_text
+                        text: tool_item.tool_text
                         font.family: "Bebas Kai"
                         font.bold: false
                         verticalAlignment: Text.AlignVCenter
@@ -132,13 +132,13 @@ Rectangle {
                     },
                     State {
                         name: "visible"
-                        PropertyChanges { target: tool_slot.itemAt(index); visible: true }
+                        PropertyChanges { target: tool_slot.itemAt(index); visible: true}
                     }
                 ]
             }
         }
-
     }
+
     function rotate_atc_from_to(atc, previous_pocket, tool_no) {
         atc.from = 360/12 * previous_pocket
         atc.to = 360/12 * tool_no
@@ -162,6 +162,7 @@ Rectangle {
         }
         name.restart()
     }
+
     function rotate_tool(name, tool_no, direction) {
         if (direction === 1) {
             name.from = -(360/12 * tool_no)
@@ -177,18 +178,18 @@ Rectangle {
     Connections {
         target: atc_spiner
 
+
         onHideToolSig: {
             tool_slot.itemAt(tool_num).state = "hidden";
         }
         onShowToolSig: {
             var widget = tool_slot.itemAt(tool_num)
             widget.state = "visible";
-            console.log(widget)
-            // tool_slot.itemAt(tool_num).tool_num = "T"+ tool_num;
+            widget.tool_text= "T" + (tool_num+1);
 
         }
 
-       onMoveToPocketSig: {
+        onMoveToPocketSig: {
             rotate_atc_from_to(atc_anim, previous_pocket, pocket_num);
 
             for (var i = 0; i < tool_slot.length; i++) {
