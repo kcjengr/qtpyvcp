@@ -212,7 +212,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="main_tab">
            <attribute name="title">
@@ -2925,13 +2925,13 @@ padding-right: 10px;
                 <property name="minimumSize">
                  <size>
                   <width>863</width>
-                  <height>521</height>
+                  <height>570</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
                   <width>883</width>
-                  <height>521</height>
+                  <height>540</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -2943,1190 +2943,6 @@ border-width: 2px;
 border-radius: 8px;
 }</string>
                 </property>
-                <widget class="QWidget" name="widget_3" native="true">
-                 <property name="geometry">
-                  <rect>
-                   <x>10</x>
-                   <y>9</y>
-                   <width>500</width>
-                   <height>500</height>
-                  </rect>
-                 </property>
-                 <widget class="QLabel" name="label_53">
-                  <property name="geometry">
-                   <rect>
-                    <x>1</x>
-                    <y>0</y>
-                    <width>500</width>
-                    <height>500</height>
-                   </rect>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">image: url(:/images/carousel_12.png);</string>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="scaledContents">
-                   <bool>false</bool>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_60">
-                  <property name="geometry">
-                   <rect>
-                    <x>156</x>
-                    <y>350</y>
-                    <width>44</width>
-                    <height>44</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(74, 74, 75);
-    border-width: 1px;
-    border-radius: 22px;
-    color: white;
-    background: rgb(122, 129, 131);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>P9</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_61">
-                  <property name="geometry">
-                   <rect>
-                    <x>110</x>
-                    <y>31</y>
-                    <width>70</width>
-                    <height>70</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(217, 217, 217);
-    border-width: 2px;
-    border-radius: 35px;
-    color: black;
-    background: white;
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>T5</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_67">
-                  <property name="geometry">
-                   <rect>
-                    <x>401</x>
-                    <y>109</y>
-                    <width>70</width>
-                    <height>70</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(217, 217, 217);
-    border-width: 2px;
-    border-radius: 35px;
-    color: black;
-    background: white;
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>T2</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_68">
-                  <property name="geometry">
-                   <rect>
-                    <x>31</x>
-                    <y>321</y>
-                    <width>70</width>
-                    <height>70</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(217, 217, 217);
-    border-width: 2px;
-    border-radius: 35px;
-    color: black;
-    background: white;
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>T8</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_69">
-                  <property name="geometry">
-                   <rect>
-                    <x>351</x>
-                    <y>155</y>
-                    <width>44</width>
-                    <height>44</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(74, 74, 75);
-    border-width: 1px;
-    border-radius: 22px;
-    color: white;
-    background: rgb(122, 129, 131);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>P2</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_70">
-                  <property name="geometry">
-                   <rect>
-                    <x>300</x>
-                    <y>105</y>
-                    <width>44</width>
-                    <height>44</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(74, 74, 75);
-    border-width: 1px;
-    border-radius: 22px;
-    color: white;
-    background: rgb(122, 129, 131);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>P3</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_71">
-                  <property name="geometry">
-                   <rect>
-                    <x>216</x>
-                    <y>426</y>
-                    <width>70</width>
-                    <height>70</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(217, 217, 217);
-    border-width: 2px;
-    border-radius: 35px;
-    color: black;
-    background: white;
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>T10</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_72">
-                  <property name="geometry">
-                   <rect>
-                    <x>302</x>
-                    <y>350</y>
-                    <width>44</width>
-                    <height>44</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(74, 74, 75);
-    border-width: 1px;
-    border-radius: 22px;
-    color: white;
-    background: rgb(122, 129, 131);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>P11</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_73">
-                  <property name="geometry">
-                   <rect>
-                    <x>216</x>
-                    <y>3</y>
-                    <width>70</width>
-                    <height>70</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(217, 217, 217);
-    border-width: 2px;
-    border-radius: 35px;
-    color: black;
-    background: white;
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>T4</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_74">
-                  <property name="geometry">
-                   <rect>
-                    <x>160</x>
-                    <y>104</y>
-                    <width>44</width>
-                    <height>44</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(74, 74, 75);
-    border-width: 1px;
-    border-radius: 22px;
-    color: white;
-    background: rgb(122, 129, 131);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>P5</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_75">
-                  <property name="geometry">
-                   <rect>
-                    <x>371</x>
-                    <y>226</y>
-                    <width>44</width>
-                    <height>44</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(74, 74, 75);
-    border-width: 1px;
-    border-radius: 22px;
-    color: white;
-    background: rgb(122, 129, 131);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>P1</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_76">
-                  <property name="geometry">
-                   <rect>
-                    <x>107</x>
-                    <y>155</y>
-                    <width>44</width>
-                    <height>44</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(74, 74, 75);
-    border-width: 1px;
-    border-radius: 22px;
-    color: white;
-    background: rgb(122, 129, 131);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>P6</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_77">
-                  <property name="geometry">
-                   <rect>
-                    <x>322</x>
-                    <y>32</y>
-                    <width>70</width>
-                    <height>70</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(217, 217, 217);
-    border-width: 2px;
-    border-radius: 35px;
-    color: black;
-    background: white;
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>T3</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_78">
-                  <property name="geometry">
-                   <rect>
-                    <x>428</x>
-                    <y>214</y>
-                    <width>70</width>
-                    <height>70</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(217, 217, 217);
-    border-width: 2px;
-    border-radius: 35px;
-    color: black;
-    background: white;
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>T1</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_79">
-                  <property name="geometry">
-                   <rect>
-                    <x>32</x>
-                    <y>109</y>
-                    <width>70</width>
-                    <height>70</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(217, 217, 217);
-    border-width: 2px;
-    border-radius: 35px;
-    color: black;
-    background: white;
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>T6</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_80">
-                  <property name="geometry">
-                   <rect>
-                    <x>229</x>
-                    <y>86</y>
-                    <width>44</width>
-                    <height>44</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(74, 74, 75);
-    border-width: 1px;
-    border-radius: 22px;
-    color: white;
-    background: rgb(122, 129, 131);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>P4</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_81">
-                  <property name="geometry">
-                   <rect>
-                    <x>110</x>
-                    <y>398</y>
-                    <width>70</width>
-                    <height>70</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(217, 217, 217);
-    border-width: 2px;
-    border-radius: 35px;
-    color: black;
-    background: white;
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>T9</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_82">
-                  <property name="geometry">
-                   <rect>
-                    <x>106</x>
-                    <y>298</y>
-                    <width>44</width>
-                    <height>44</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(74, 74, 75);
-    border-width: 1px;
-    border-radius: 22px;
-    color: white;
-    background: rgb(122, 129, 131);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>P8</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_83">
-                  <property name="geometry">
-                   <rect>
-                    <x>322</x>
-                    <y>399</y>
-                    <width>70</width>
-                    <height>70</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(217, 217, 217);
-    border-width: 2px;
-    border-radius: 35px;
-    color: black;
-    background: white;
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>T11</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_84">
-                  <property name="geometry">
-                   <rect>
-                    <x>88</x>
-                    <y>228</y>
-                    <width>44</width>
-                    <height>44</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(74, 74, 75);
-    border-width: 1px;
-    border-radius: 22px;
-    color: white;
-    background: rgb(122, 129, 131);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>P7</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_85">
-                  <property name="geometry">
-                   <rect>
-                    <x>400</x>
-                    <y>320</y>
-                    <width>70</width>
-                    <height>70</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(217, 217, 217);
-    border-width: 2px;
-    border-radius: 35px;
-    color: black;
-    background: white;
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>T12</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_86">
-                  <property name="geometry">
-                   <rect>
-                    <x>230</x>
-                    <y>370</y>
-                    <width>44</width>
-                    <height>44</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(74, 74, 75);
-    border-width: 1px;
-    border-radius: 22px;
-    color: white;
-    background: rgb(122, 129, 131);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>P10</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_87">
-                  <property name="geometry">
-                   <rect>
-                    <x>353</x>
-                    <y>298</y>
-                    <width>44</width>
-                    <height>44</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(74, 74, 75);
-    border-width: 1px;
-    border-radius: 22px;
-    color: white;
-    background: rgb(122, 129, 131);
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>P12</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_88">
-                  <property name="geometry">
-                   <rect>
-                    <x>3</x>
-                    <y>215</y>
-                    <width>70</width>
-                    <height>70</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                    <horstretch>0</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>100</width>
-                    <height>100</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel{
-    border-style: solid;
-    border-color: rgb(217, 217, 217);
-    border-width: 2px;
-    border-radius: 35px;
-    color: black;
-    background: white;
-	font: 17pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>T7</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                </widget>
                 <widget class="QWidget" name="widget_4" native="true">
                  <property name="geometry">
                   <rect>
@@ -4139,8 +2955,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_89">
                   <property name="geometry">
                    <rect>
-                    <x>4</x>
-                    <y>3</y>
+                    <x>14</x>
+                    <y>13</y>
                     <width>169</width>
                     <height>300</height>
                    </rect>
@@ -4161,8 +2977,8 @@ border-radius: 8px;
                  <widget class="StatusLabel" name="tool_length_8">
                   <property name="geometry">
                    <rect>
-                    <x>64</x>
-                    <y>139</y>
+                    <x>74</x>
+                    <y>149</y>
                     <width>50</width>
                     <height>33</height>
                    </rect>
@@ -4216,8 +3032,8 @@ border-radius: 8px;
                 <widget class="QLabel" name="label_38">
                  <property name="geometry">
                   <rect>
-                   <x>610</x>
-                   <y>317</y>
+                   <x>620</x>
+                   <y>340</y>
                    <width>240</width>
                    <height>200</height>
                   </rect>
@@ -4232,9 +3048,25 @@ border-radius: 8px;
                   <bool>true</bool>
                  </property>
                 </widget>
-                <zorder>widget_4</zorder>
-                <zorder>label_38</zorder>
-                <zorder>widget_3</zorder>
+                <widget class="QLabel" name="label_53">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>550</width>
+                   <height>550</height>
+                  </rect>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">image: url(:/images/12_tool_carousel.png);</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="indent">
+                  <number>0</number>
+                 </property>
+                </widget>
                </widget>
               </item>
              </layout>
@@ -14270,17 +13102,6 @@ Background:transparent;
            <attribute name="title">
             <string>          CONVERSATIONAL          </string>
            </attribute>
-           <widget class="QWidget" name="widget_6" native="true">
-            <property name="geometry">
-             <rect>
-              <x>1220</x>
-              <y>200</y>
-              <width>171</width>
-              <height>281</height>
-             </rect>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_9"/>
-           </widget>
           </widget>
           <widget class="QWidget" name="settings_tab">
            <attribute name="title">
@@ -21128,6 +19949,38 @@ font: 11pt bebas kai;
  </resources>
  <connections>
   <connection>
+   <sender>actionslider_5</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>fr_override_dro_2</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1632</x>
+     <y>806</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1870</x>
+     <y>809</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_number_entry_box</sender>
+   <signal>returnPressed()</signal>
+   <receiver>m6_button</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>466</x>
+     <y>734</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>506</x>
+     <y>747</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>main_delete_item_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable</receiver>
@@ -21192,6 +20045,22 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
+   <sender>copy_from_usb_2</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable_2</receiver>
+   <slot>doFileTransfer()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>610</x>
+     <y>320</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>146</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>device_delete_item_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable_2</receiver>
@@ -21203,6 +20072,22 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>main_new_file_button</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable</receiver>
+   <slot>newFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>854</x>
+     <y>621</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>738</x>
      <y>146</y>
     </hint>
    </hints>
@@ -21224,22 +20109,6 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>copy_from_usb_2</sender>
-   <signal>clicked()</signal>
-   <receiver>filesystemtable_2</receiver>
-   <slot>doFileTransfer()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>610</x>
-     <y>320</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>146</x>
-     <y>146</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>device_folder_up_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable_2</receiver>
@@ -21248,22 +20117,6 @@ font: 11pt bebas kai;
     <hint type="sourcelabel">
      <x>160</x>
      <y>108</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>146</x>
-     <y>146</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>filesystemtable</sender>
-   <signal>transferFileRequest(QString)</signal>
-   <receiver>filesystemtable_2</receiver>
-   <slot>transferFile(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>738</x>
-     <y>146</y>
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
@@ -21288,17 +20141,17 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>main_new_file_button</sender>
-   <signal>clicked()</signal>
-   <receiver>filesystemtable</receiver>
-   <slot>newFile()</slot>
+   <sender>filesystemtable</sender>
+   <signal>transferFileRequest(QString)</signal>
+   <receiver>filesystemtable_2</receiver>
+   <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>854</x>
-     <y>621</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
+     <x>146</x>
      <y>146</y>
     </hint>
    </hints>
@@ -21316,22 +20169,6 @@ font: 11pt bebas kai;
     <hint type="destinationlabel">
      <x>146</x>
      <y>146</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionslider_5</sender>
-   <signal>sliderMoved(int)</signal>
-   <receiver>fr_override_dro_2</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1632</x>
-     <y>806</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1870</x>
-     <y>809</y>
     </hint>
    </hints>
   </connection>
@@ -21400,38 +20237,6 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>tool_number_entry_box</sender>
-   <signal>returnPressed()</signal>
-   <receiver>m6_button</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>466</x>
-     <y>734</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>506</x>
-     <y>747</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>load_spindle_tool_number</sender>
-   <signal>returnPressed()</signal>
-   <receiver>load_current_tool</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1447</x>
-     <y>171</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1602</x>
-     <y>174</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>tool_table_delete_button</sender>
    <signal>clicked()</signal>
    <receiver>tableWidget_2</receiver>
@@ -21448,18 +20253,18 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>tool_table_add_tool_button</sender>
-   <signal>clicked()</signal>
-   <receiver>tableWidget_2</receiver>
-   <slot>addTool()</slot>
+   <sender>load_spindle_tool_number</sender>
+   <signal>returnPressed()</signal>
+   <receiver>load_current_tool</receiver>
+   <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>350</x>
-     <y>616</y>
+     <x>1447</x>
+     <y>171</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>151</y>
+     <x>1602</x>
+     <y>174</y>
     </hint>
    </hints>
   </connection>
@@ -21496,22 +20301,6 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>x_view_button</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk</receiver>
-   <slot>setViewX()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>781</x>
-     <y>131</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1461</x>
-     <y>134</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>y_view_button</sender>
    <signal>clicked()</signal>
    <receiver>vtk</receiver>
@@ -21528,18 +20317,34 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>z_view_button</sender>
+   <sender>x_view_button</sender>
    <signal>clicked()</signal>
    <receiver>vtk</receiver>
-   <slot>setViewZ()</slot>
+   <slot>setViewX()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>781</x>
-     <y>213</y>
+     <y>131</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1382</x>
-     <y>245</y>
+     <x>1461</x>
+     <y>134</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_add_tool_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>addTool()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>350</x>
+     <y>616</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>150</x>
+     <y>151</y>
     </hint>
    </hints>
   </connection>
@@ -21572,6 +20377,22 @@ font: 11pt bebas kai;
     <hint type="destinationlabel">
      <x>1263</x>
      <y>447</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>z_view_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewZ()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>781</x>
+     <y>213</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1382</x>
+     <y>245</y>
     </hint>
    </hints>
   </connection>
