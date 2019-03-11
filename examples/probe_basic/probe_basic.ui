@@ -3048,25 +3048,6 @@ border-radius: 8px;
                   <bool>true</bool>
                  </property>
                 </widget>
-                <widget class="QLabel" name="label_53">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>0</y>
-                   <width>550</width>
-                   <height>550</height>
-                  </rect>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">image: url(:/images/24_tool_carousel.png);</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="indent">
-                  <number>0</number>
-                 </property>
-                </widget>
                </widget>
               </item>
              </layout>
