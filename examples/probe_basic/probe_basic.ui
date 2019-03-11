@@ -3058,7 +3058,7 @@ border-radius: 8px;
                   </rect>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">image: url(:/images/12_tool_carousel.png);</string>
+                  <string notr="true">image: url(:/images/24_tool_carousel.png);</string>
                  </property>
                  <property name="text">
                   <string/>
