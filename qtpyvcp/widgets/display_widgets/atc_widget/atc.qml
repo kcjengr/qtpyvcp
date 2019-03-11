@@ -5,15 +5,15 @@ import QtQuick.Layouts 1.3
 Rectangle {
     id: rectangle
     visible: true
-    width: 504
+    width: 550
     color: "#939695"
     opacity: 1
-    height: 504
+    height: 550
 
     Image {
         id: atc_holder
-        width: 499
-        height: 499
+        width: 550
+        height: 550
         visible: true
         x: parent.width / 2 - width / 2
         y: parent.height / 2 - height / 2
@@ -98,7 +98,7 @@ Rectangle {
                     width: height
                     radius: width/2
                     color: "white"
-                    border.color: "black"
+                    border.color: "grey"
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.top: parent.top
                     anchors.topMargin: 4
