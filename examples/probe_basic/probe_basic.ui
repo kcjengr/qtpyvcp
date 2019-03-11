@@ -2925,13 +2925,13 @@ padding-right: 10px;
                 <property name="minimumSize">
                  <size>
                   <width>863</width>
-                  <height>521</height>
+                  <height>570</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
                   <width>883</width>
-                  <height>521</height>
+                  <height>540</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -2978,8 +2978,8 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_89">
                   <property name="geometry">
                    <rect>
-                    <x>4</x>
-                    <y>3</y>
+                    <x>14</x>
+                    <y>13</y>
                     <width>169</width>
                     <height>300</height>
                    </rect>
@@ -3000,8 +3000,8 @@ border-radius: 8px;
                  <widget class="StatusLabel" name="tool_length_8">
                   <property name="geometry">
                    <rect>
-                    <x>64</x>
-                    <y>139</y>
+                    <x>74</x>
+                    <y>149</y>
                     <width>50</width>
                     <height>33</height>
                    </rect>
@@ -3055,8 +3055,8 @@ border-radius: 8px;
                 <widget class="QLabel" name="label_38">
                  <property name="geometry">
                   <rect>
-                   <x>610</x>
-                   <y>317</y>
+                   <x>620</x>
+                   <y>340</y>
                    <width>240</width>
                    <height>200</height>
                   </rect>
@@ -3071,9 +3071,25 @@ border-radius: 8px;
                   <bool>true</bool>
                  </property>
                 </widget>
-                <zorder>widget_4</zorder>
-                <zorder>label_38</zorder>
-                <zorder>widget_3</zorder>
+                <widget class="QLabel" name="label_53">
+                 <property name="geometry">
+                  <rect>
+                   <x>0</x>
+                   <y>0</y>
+                   <width>550</width>
+                   <height>550</height>
+                  </rect>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">image: url(:/images/24_tool_carousel.png);</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="indent">
+                  <number>0</number>
+                 </property>
+                </widget>
                </widget>
               </item>
              </layout>
@@ -13109,17 +13125,6 @@ Background:transparent;
            <attribute name="title">
             <string>          CONVERSATIONAL          </string>
            </attribute>
-           <widget class="QWidget" name="widget_6" native="true">
-            <property name="geometry">
-             <rect>
-              <x>1220</x>
-              <y>200</y>
-              <width>171</width>
-              <height>281</height>
-             </rect>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_9"/>
-           </widget>
           </widget>
           <widget class="QWidget" name="settings_tab">
            <attribute name="title">
@@ -19977,6 +19982,38 @@ font: 11pt bebas kai;
  </resources>
  <connections>
   <connection>
+   <sender>actionslider_5</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>fr_override_dro_2</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1632</x>
+     <y>806</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1870</x>
+     <y>809</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_number_entry_box</sender>
+   <signal>returnPressed()</signal>
+   <receiver>m6_button</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>466</x>
+     <y>734</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>506</x>
+     <y>747</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>main_delete_item_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable</receiver>
@@ -20041,6 +20078,22 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
+   <sender>copy_from_usb_2</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable_2</receiver>
+   <slot>doFileTransfer()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>610</x>
+     <y>320</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>146</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>device_delete_item_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable_2</receiver>
@@ -20052,6 +20105,22 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
+     <y>146</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>main_new_file_button</sender>
+   <signal>clicked()</signal>
+   <receiver>filesystemtable</receiver>
+   <slot>newFile()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>854</x>
+     <y>621</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>738</x>
      <y>146</y>
     </hint>
    </hints>
@@ -20073,22 +20142,6 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>copy_from_usb_2</sender>
-   <signal>clicked()</signal>
-   <receiver>filesystemtable_2</receiver>
-   <slot>doFileTransfer()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>610</x>
-     <y>320</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>146</x>
-     <y>146</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>device_folder_up_button</sender>
    <signal>clicked()</signal>
    <receiver>filesystemtable_2</receiver>
@@ -20097,22 +20150,6 @@ font: 11pt bebas kai;
     <hint type="sourcelabel">
      <x>160</x>
      <y>108</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>146</x>
-     <y>146</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>filesystemtable</sender>
-   <signal>transferFileRequest(QString)</signal>
-   <receiver>filesystemtable_2</receiver>
-   <slot>transferFile(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>738</x>
-     <y>146</y>
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
@@ -20137,17 +20174,17 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>main_new_file_button</sender>
-   <signal>clicked()</signal>
-   <receiver>filesystemtable</receiver>
-   <slot>newFile()</slot>
+   <sender>filesystemtable</sender>
+   <signal>transferFileRequest(QString)</signal>
+   <receiver>filesystemtable_2</receiver>
+   <slot>transferFile(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>854</x>
-     <y>621</y>
+     <x>738</x>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
-     <x>738</x>
+     <x>146</x>
      <y>146</y>
     </hint>
    </hints>
@@ -20165,22 +20202,6 @@ font: 11pt bebas kai;
     <hint type="destinationlabel">
      <x>146</x>
      <y>146</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>actionslider_5</sender>
-   <signal>sliderMoved(int)</signal>
-   <receiver>fr_override_dro_2</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1632</x>
-     <y>806</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1870</x>
-     <y>809</y>
     </hint>
    </hints>
   </connection>
@@ -20249,18 +20270,18 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>tool_number_entry_box</sender>
-   <signal>returnPressed()</signal>
-   <receiver>m6_button</receiver>
-   <slot>click()</slot>
+   <sender>tool_table_delete_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>deleteSelectedTool()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>466</x>
-     <y>734</y>
+     <x>150</x>
+     <y>616</y>
     </hint>
     <hint type="destinationlabel">
-     <x>506</x>
-     <y>747</y>
+     <x>150</x>
+     <y>151</y>
     </hint>
    </hints>
   </connection>
@@ -20345,22 +20366,6 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>x_view_button</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk</receiver>
-   <slot>setViewX()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>781</x>
-     <y>131</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>y_view_button</sender>
    <signal>clicked()</signal>
    <receiver>vtk</receiver>
@@ -20377,14 +20382,30 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>z_view_button</sender>
+   <sender>x_view_button</sender>
    <signal>clicked()</signal>
    <receiver>vtk</receiver>
-   <slot>setViewZ()</slot>
+   <slot>setViewX()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>781</x>
-     <y>213</y>
+     <y>131</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>881</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>tool_table_add_tool_button</sender>
+   <signal>clicked()</signal>
+   <receiver>tableWidget_2</receiver>
+   <slot>addTool()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>350</x>
+     <y>616</y>
     </hint>
     <hint type="destinationlabel">
      <x>881</x>
@@ -20421,6 +20442,22 @@ font: 11pt bebas kai;
     <hint type="destinationlabel">
      <x>881</x>
      <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>z_view_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewZ()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>781</x>
+     <y>213</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1382</x>
+     <y>245</y>
     </hint>
    </hints>
   </connection>

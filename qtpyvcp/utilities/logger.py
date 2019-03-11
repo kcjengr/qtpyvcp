@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 # QtPyVCP Logging Module
 # Provides a consistent and easy to use logging facility.  Log messages printed
 # to the terminal will be colorized for easy identification of log level.

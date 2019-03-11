@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 from qtpy.QtCore import Slot, Property
 
 from qtpyvcp.widgets.base_widgets.led_widget import LEDWidget

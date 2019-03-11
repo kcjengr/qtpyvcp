@@ -6,7 +6,7 @@ This is intended to be used as a base class for custom dialogs, as well
 as a provider for use in YAML config files. This allows loading custom
 dialogs from .ui files without needing to write any python code.
 
-You can launch dialogs using a :doc:`Dialog Button <../dialog_button>` or
+You can launch dialogs using a :doc:`Dialog Button </widgets/buttons/dialog_button>` or
 from a window menu item.
 
 Example:

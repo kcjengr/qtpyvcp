@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin, _PluginExtension
 
 from action_button import ActionButton

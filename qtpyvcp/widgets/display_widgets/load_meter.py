@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 from qtpy.QtCore import Qt, Property, QRectF
 from qtpy.QtGui import QColor, QLinearGradient, QPainter, QPen
 from qtpy.QtWidgets import QProgressBar, QStyle

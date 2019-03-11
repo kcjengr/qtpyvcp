@@ -1,4 +1,3 @@
-
 import os
 from qtpy.QtWidgets import QMenu, QAction
 

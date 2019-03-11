@@ -107,15 +107,19 @@ Confirm that QtPyVCP installed correctly and is available by running::
 This will print a list of command line options if the installation was
 successful.
 
-QtDesigner Plug-ins (development only)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+QtDesigner Plug-ins
+^^^^^^^^^^^^^^^^^^^
 
-In order for the QtDesigner plugins to load, you must have the correct version
-of `libpyqt5.so` in `/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/`. Precompiled
-libraries suitable for 64Bit Debian Stretch (or other system with Qt v5.7.1 and Py v2.7)
-are included in the `QtDesigner` directory. The easiest way to install the libs to the
-correct location is to use the `install.sh` script located in the same directory:
-``sudo ./install.sh``
+If you want to edit a VCP or create one from a template you need to have the
+QtDesigner plugins installed. To load, you must have the correct version of
+`libpyqt5.so` in `/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/`. Precompiled
+libraries suitable for 64Bit Debian Stretch (or other system with Qt v5.7.1 and
+Py v2.7) are included in the `QtDesigner` directory. The easiest way to install
+the libs to the correct location is to use the `install.sh` script located in
+the `qtpyvcp/pyqt5designer/Qt5.7.1-64bit` directory with this command.
+::
+
+    sudo ./install.sh
 
 If you are using a different architecture or Qt version you may need to compile PyQt5 from
 source to get the proper `libpyqt5.so` file. The steps should be similar those listed

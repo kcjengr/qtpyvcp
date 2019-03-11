@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
 import linuxcnc
 from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.info import Info

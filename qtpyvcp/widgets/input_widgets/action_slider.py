@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import linuxcnc
 from qtpy.QtWidgets import QSlider
 from qtpy.QtCore import Slot, Property

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from qtpy.QtWidgets import QCheckBox
 from qtpy.QtCore import Property
 

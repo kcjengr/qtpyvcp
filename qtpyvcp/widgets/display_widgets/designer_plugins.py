@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
 
 from status_label import StatusLabel

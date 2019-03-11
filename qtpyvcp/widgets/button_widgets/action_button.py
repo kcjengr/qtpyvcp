@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from qtpy.QtCore import Property
 
 from qtpyvcp.widgets import VCPButton

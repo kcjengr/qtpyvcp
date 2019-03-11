@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
 
 from qtpyvcp.widgets.hal_widgets.hal_led_widget import HalLedWidget

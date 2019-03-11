@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 #   Copyright (c) 2018 Kurt Jacobson
 #      <kurtcjacobson@gmail.com>
 #
