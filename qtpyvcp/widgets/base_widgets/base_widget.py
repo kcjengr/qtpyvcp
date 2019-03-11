@@ -15,8 +15,6 @@ from qtpy.QtWidgets import QPushButton
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.logger import getLogger
 
-print dir(Property)
-
 LOG = getLogger(__name__)
 
 class ChanList(list):

@@ -1,7 +1,9 @@
-from qtpy.QtGui import QIcon
-from qtpy.QtDesigner import QPyDesignerCustomWidgetPlugin
+import sip
 
-from plugin_extension import ExtensionFactory
+from qtpy.QtGui import QIcon
+from qtpy.QtDesigner import QPyDesignerCustomWidgetPlugin, QPyDesignerPropertySheetExtension
+
+from plugin_extension import ExtensionFactory, Q_TYPEID
 from designer_hooks import DesignerHooks
 
 from rules_editor import RulesEditorExtension
@@ -46,11 +48,12 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
     # Override to set the QtDesigner widget box group heading
     def group(self):
         group = self.pluginClass().__module__.split('.')[2].split('_')[0].capitalize()
-        return "LinuxCNC - {}".format(group)
+        return "QtPyVCP - {}".format(group)
 
     # Override to set initial QtDesigner property values
     def domXml(self):
-        return ('<widget class="{}" name="{}">\n</widget>\n'.format(self.name(), self.objectName()))
+        return '<widget class="{}" name="{}">\n</widget>\n'.format(
+            self.name(), self.objectName())
 
 #==============================================================================
 #  These methods should not need to be overridden
@@ -63,17 +66,12 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
         designer_hooks = DesignerHooks()
         designer_hooks.form_editor = form_editor
 
-        if len(self.designerExtensions()) > 0:
-            self.manager = form_editor.extensionManager()
-            if self.manager:
-                factory = ExtensionFactory(parent=self.manager)
-                self.manager.registerExtensions(
-                    factory,
-                    'org.qt-project.Qt.Designer.TaskMenu')
+        self.manager = form_editor.extensionManager()
 
-                self.manager.registerExtensions(
-                    factory,
-                    'org.qt-project.Qt.Designer.PropertySheet')
+        if len(self.designerExtensions()) > 0 and self.manager:
+            factory = ExtensionFactory(parent=self.manager)
+            self.manager.registerExtensions(factory,
+                                            Q_TYPEID['QDesignerTaskMenuExtension'])
 
         self.initialized = True
 
@@ -83,6 +81,17 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
     def createWidget(self, parent):
         w = self.pluginClass()(parent)
         w.extensions = self.designerExtensions()
+
+        if self.manager:
+            sheet = self.manager.extension(w, Q_TYPEID['QDesignerPropertySheetExtension'])
+            # This explicit cast is necessary here
+            sheet = sip.cast(sheet, QPyDesignerPropertySheetExtension)
+            index = sheet.indexOf('rules')
+
+            if index > -1:
+                print "Rules index:", index
+                sheet.setChanged(index, True)
+
         return w
 
     def name(self):

@@ -9,31 +9,29 @@
 #   PyDM Project: https://github.com/slaclab/pydm
 #   PyDM Licence: https://github.com/slaclab/pydm/blob/master/LICENSE.md
 
+import sip
 from qtpy.QtCore import QObject, QVariant
 from qtpy.QtWidgets import QAction
 from qtpy.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension, \
     QPyDesignerPropertySheetExtension, QDesignerPropertySheetExtension,\
     QDesignerFormWindowInterface
 
+Q_TYPEID = {
+    'QDesignerTaskMenuExtension':      'org.qt-project.Qt.Designer.TaskMenu',
+    'QDesignerContainerExtension':     'org.qt-project.Qt.Designer.Container',
+    'QDesignerPropertySheetExtension': 'org.qt-project.Qt.Designer.PropertySheet'
+}
+
 class ExtensionFactory(QExtensionFactory):
     def __init__(self, parent=None):
         super(ExtensionFactory, self).__init__(parent)
 
     def createExtension(self, obj, iid, parent):
-
-        print iid
-
-        # For now check the iid for TaskMenu...
-        if iid == "org.qt-project.Qt.Designer.TaskMenu":
+        if iid == Q_TYPEID['QDesignerTaskMenuExtension']:
             return TaskMenuExtension(obj, parent)
 
-        if iid == "org.qt-project.Qt.Designer.PropertySheet":
+        if iid == Q_TYPEID['QDesignerPropertySheetExtension']:
             return PropertySheetExtension(obj, parent)
-
-        # In the future we can expand to the others such as Property and etc
-        # When the time comes...  we will need a new Extension and
-        # the equivalent for TaskMenuExtension classes for the
-        # property editor and an elif statement in here to instantiate it...
 
 
 class TaskMenuExtension(QPyDesignerTaskMenuExtension):
@@ -65,9 +63,8 @@ class TaskMenuExtension(QPyDesignerTaskMenuExtension):
             return self.__actions[0]
 
 
-class PropertySheetExtension(QPyDesignerPropertySheetExtension):
+class PropertySheetExtension(object):
     def __init__(self, widget, parent):
-        super(PropertySheetExtension, self).__init__(parent)
 
         self.parent = parent
         self.widget = widget
@@ -76,79 +73,12 @@ class PropertySheetExtension(QPyDesignerPropertySheetExtension):
 
         self.widget = widget
         self.formWindow = QDesignerFormWindowInterface.findFormWindow(self.widget)
-        self.propertylist=['objectName', 'geometry', 'text']
-    #     self.temp_flag = True
-    #     #print dir(self.widget.pyqtConfigure.__sizeof__)
-    #     #print self.widget.pyqtConfigure.__sizeof__()
-    #     for i in widget.__dict__:
-    #         #print i
-    #         if 'PyQt4.QtCore.pyqtProperty' in str(widget.__dict__[i]):
-    #             self.propertylist.append(i)
-    #             print i
-    #     #print dir(self.widget)
 
-    def count(self):
-        return len(self.propertylist)
-
-    def property(self, index):
-        name = self.propertyName(index)
-        print 'property index:', index, name
-        return QVariant(self.widget.property(name))
-
-    def indexOf(self, name):
-        #print 'NAME:', name
-        for num, i in enumerate(self.propertylist):
-            if i == name:
-                return num
-        self.propertylist.append(name)
-        print 'not found:', name, num + 1
-        return num + 1
-
-    def setChanged(self, index, value):
-        return
-
-    def isChanged(self, index):
-        return False
-
-    def hasReset(self, index):
-        return True
-
-    def isAttribute(self, index):
-        return False
-
-    def propertyGroup(self, index):
-        name = self.propertyName(index)
-        if 'geometry' in name:
-            return 'QObject'
-        if 'objectName' in name:
-            return 'QWidget'
-        if 'text' in name:
-            return 'Text'
-        return 'Bool'
-
-    def setProperty(self, index, value):
-        name = self.propertyName(index)
-        print value
-        try:
-            value = value.toPyObject()
-        except:
-            pass
-        if self.formWindow:
-            self.formWindow.cursor().setProperty(name, QVariant(value))
-        return
-
-    def getVisible(self, index, data):
-        pass
-
-    def isVisible(self, index):
-        prop = self.propertyName(index)
-        if 'alt_text' in prop:
-            return self.temp_flag
-        return True
-
-    def propertyName(self, index):
-        return self.propertylist[index]
-
+        # sheet = sip.cast(widget.widget, QDesignerPropertySheetExtension)
+        # propertyIndex = sheet.indexOf('windowTitle')
+        #
+        #
+        # sheet.setChanged(propertyIndex, True)
 
 
 class _PluginExtension(object):
