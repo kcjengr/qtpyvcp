@@ -17,7 +17,7 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
     def pluginClass(self):
         raise NotImplementedError()
 
-    def extensions(self):
+    def designerExtensions(self):
         if hasattr(self.pluginClass(), 'RULE_PROPERTIES'):
             return [RulesEditorExtension,]
         else:
@@ -56,20 +56,24 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 #  These methods should not need to be overridden
 #==============================================================================
 
-    def initialize(self, core):
+    def initialize(self, form_editor):
         if self.initialized:
             return
 
         designer_hooks = DesignerHooks()
-        designer_hooks.form_editor = core
+        designer_hooks.form_editor = form_editor
 
-        if len(self.extensions()) > 0:
-            self.manager = core.extensionManager()
+        if len(self.designerExtensions()) > 0:
+            self.manager = form_editor.extensionManager()
             if self.manager:
                 factory = ExtensionFactory(parent=self.manager)
                 self.manager.registerExtensions(
                     factory,
                     'org.qt-project.Qt.Designer.TaskMenu')
+
+                self.manager.registerExtensions(
+                    factory,
+                    'org.qt-project.Qt.Designer.PropertySheet')
 
         self.initialized = True
 
@@ -78,7 +82,7 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 
     def createWidget(self, parent):
         w = self.pluginClass()(parent)
-        w.extensions = self.extensions()
+        w.extensions = self.designerExtensions()
         return w
 
     def name(self):

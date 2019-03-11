@@ -50,6 +50,7 @@ class DesignerHooks(object):
     def __set_stylesheet_hook(self):
         if self.form_editor:
             fwman = self.form_editor.formWindowManager()
+            print dir(self.form_editor.propertyEditor)
             if fwman:
                 fwman.formWindowAdded.connect(
                     self.__new_form_added
