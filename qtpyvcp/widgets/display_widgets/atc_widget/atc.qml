@@ -94,7 +94,7 @@ Rectangle {
                 Rectangle {
                     id: tool_rectangle
 
-                    height: atc_holder.height*0.125
+                    height: atc_holder.height*0.135
                     width: height
                     radius: width/2
                     color: "white"

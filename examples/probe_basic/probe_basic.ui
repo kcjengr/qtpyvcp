@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1924</width>
+    <width>1975</width>
     <height>1085</height>
    </rect>
   </property>
@@ -212,7 +212,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>3</number>
           </property>
           <widget class="QWidget" name="main_tab">
            <attribute name="title">
@@ -2859,6 +2859,12 @@ padding-right: 10px;
               </item>
               <item>
                <widget class="MDIEntry" name="mdi_entry_box_3">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                 <property name="minimumSize">
                  <size>
                   <width>0</width>
@@ -2910,12 +2916,12 @@ padding-right: 10px;
              </layout>
             </item>
             <item>
-             <layout class="QVBoxLayout" name="verticalLayout_19">
+             <layout class="QHBoxLayout" name="horizontalLayout_13">
               <property name="spacing">
                <number>0</number>
               </property>
               <item>
-               <widget class="QFrame" name="frame_4">
+               <widget class="DynATC" name="dynatc">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -2924,161 +2930,19 @@ padding-right: 10px;
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>863</width>
-                  <height>570</height>
+                  <width>560</width>
+                  <height>560</height>
                  </size>
                 </property>
                 <property name="maximumSize">
                  <size>
-                  <width>883</width>
-                  <height>570</height>
+                  <width>560</width>
+                  <height>560</height>
                  </size>
                 </property>
-                <property name="styleSheet">
-                 <string notr="true">QFrame{
-border: none;
-border-color: Transparent;
-background-color:transparent;
-border-width: 2px;
-border-radius: 8px;
-}</string>
+                <property name="resizeMode">
+                 <enum>QQuickWidget::SizeRootObjectToView</enum>
                 </property>
-                <widget class="QWidget" name="widget_4" native="true">
-                 <property name="geometry">
-                  <rect>
-                   <x>534</x>
-                   <y>4</y>
-                   <width>176</width>
-                   <height>291</height>
-                  </rect>
-                 </property>
-                 <widget class="QLabel" name="label_89">
-                  <property name="geometry">
-                   <rect>
-                    <x>20</x>
-                    <y>13</y>
-                    <width>169</width>
-                    <height>300</height>
-                   </rect>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">image: url(:/images/atc_spindle_tool.png);</string>
-                  </property>
-                  <property name="text">
-                   <string/>
-                  </property>
-                  <property name="scaledContents">
-                   <bool>true</bool>
-                  </property>
-                  <property name="indent">
-                   <number>0</number>
-                  </property>
-                 </widget>
-                 <widget class="StatusLabel" name="tool_length_8">
-                  <property name="geometry">
-                   <rect>
-                    <x>80</x>
-                    <y>149</y>
-                    <width>50</width>
-                    <height>33</height>
-                   </rect>
-                  </property>
-                  <property name="sizePolicy">
-                   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                    <horstretch>1</horstretch>
-                    <verstretch>0</verstretch>
-                   </sizepolicy>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>50</width>
-                    <height>33</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>50</width>
-                    <height>33</height>
-                   </size>
-                  </property>
-                  <property name="styleSheet">
-                   <string notr="true">QLabel {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 75 16pt &quot;Bebas Kai&quot;;
-}</string>
-                  </property>
-                  <property name="text">
-                   <string>T0</string>
-                  </property>
-                  <property name="alignment">
-                   <set>Qt::AlignCenter</set>
-                  </property>
-                  <property name="rules" stdset="0">
-                   <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:tool_in_spindle?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'T' + ch[0]&quot;, &quot;name&quot;: &quot;current tool&quot;}]</string>
-                  </property>
-                  <property name="format" stdset="0">
-                   <string>{:.3f}</string>
-                  </property>
-                  <property name="statusItem" stdset="0">
-                   <string>tool_offset.3</string>
-                  </property>
-                 </widget>
-                </widget>
-                <widget class="QLabel" name="label_38">
-                 <property name="geometry">
-                  <rect>
-                   <x>626</x>
-                   <y>340</y>
-                   <width>240</width>
-                   <height>200</height>
-                  </rect>
-                 </property>
-                 <property name="styleSheet">
-                  <string notr="true">image: url(:/images/tool_probe.png);</string>
-                 </property>
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="scaledContents">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-                <widget class="DynATC" name="dynatc">
-                 <property name="geometry">
-                  <rect>
-                   <x>0</x>
-                   <y>0</y>
-                   <width>560</width>
-                   <height>560</height>
-                  </rect>
-                 </property>
-                 <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                   <horstretch>0</horstretch>
-                   <verstretch>0</verstretch>
-                  </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                  <size>
-                   <width>560</width>
-                   <height>560</height>
-                  </size>
-                 </property>
-                 <property name="maximumSize">
-                  <size>
-                   <width>560</width>
-                   <height>560</height>
-                  </size>
-                 </property>
-                 <property name="resizeMode">
-                  <enum>QQuickWidget::SizeRootObjectToView</enum>
-                 </property>
-                </widget>
                </widget>
               </item>
              </layout>
@@ -3091,15 +2955,311 @@ border-radius: 8px;
               <item>
                <widget class="QFrame" name="frame_21">
                 <property name="sizePolicy">
-                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                   <horstretch>1</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>350</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>350</width>
+                  <height>16777215</height>
+                 </size>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QFrame {
     border: none;
 }</string>
+                </property>
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_14">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>20</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>9</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>20</number>
+                 </property>
+                 <item>
+                  <widget class="QFrame" name="frame_40">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>60</height>
+                    </size>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">QFrame{
+color: rgb(46, 52, 54);
+border-style: solid;
+border-color: rgb(186, 189, 182);
+background-color: rgb(51, 57, 59);
+border-width: 2px;
+border-radius: 7px;
+padding-top: 0px;
+padding-bottom: 0px;
+padding-left: 3px;
+padding-right: 3px;
+}</string>
+                   </property>
+                   <layout class="QHBoxLayout" name="horizontalLayout_132">
+                    <property name="leftMargin">
+                     <number>5</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>3</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>5</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>3</number>
+                    </property>
+                    <item>
+                     <layout class="QHBoxLayout" name="horizontalLayout_133">
+                      <property name="spacing">
+                       <number>3</number>
+                      </property>
+                      <item>
+                       <widget class="StatusLabel" name="tool_length_10">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>70</width>
+                          <height>40</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>16777215</width>
+                          <height>40</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 7px;
+    color: black;
+    background: white;
+	font: 75 13pt &quot;Bebas Kai&quot;;
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>No Tool Loaded</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>true</bool>
+                        </property>
+                        <property name="indent">
+                         <number>4</number>
+                        </property>
+                        <property name="rules" stdset="0">
+                         <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;tooltable:current_tool?remark&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;Tool Comment&quot;}]</string>
+                        </property>
+                        <property name="format" stdset="0">
+                         <string>{:.3f}</string>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QWidget" name="widget_3" native="true">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                     <horstretch>1</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>280</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>280</height>
+                    </size>
+                   </property>
+                   <widget class="QLabel" name="label_89">
+                    <property name="geometry">
+                     <rect>
+                      <x>20</x>
+                      <y>4</y>
+                      <width>169</width>
+                      <height>274</height>
+                     </rect>
+                    </property>
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">image: url(:/images/atc_spindle_tool.png);</string>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="scaledContents">
+                     <bool>true</bool>
+                    </property>
+                    <property name="indent">
+                     <number>0</number>
+                    </property>
+                   </widget>
+                   <widget class="StatusLabel" name="tool_length_8">
+                    <property name="geometry">
+                     <rect>
+                      <x>80</x>
+                      <y>135</y>
+                      <width>50</width>
+                      <height>30</height>
+                     </rect>
+                    </property>
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>1</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>50</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>50</width>
+                      <height>30</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QLabel {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 16pt &quot;Bebas Kai&quot;;
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>T0</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                    <property name="rules" stdset="0">
+                     <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:tool_in_spindle?text&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'T' + ch[0]&quot;, &quot;name&quot;: &quot;current tool&quot;}]</string>
+                    </property>
+                    <property name="format" stdset="0">
+                     <string>{:.3f}</string>
+                    </property>
+                    <property name="statusItem" stdset="0">
+                     <string>tool_offset.3</string>
+                    </property>
+                   </widget>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QWidget" name="widget_4" native="true">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                     <horstretch>1</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>0</width>
+                     <height>202</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>16777215</width>
+                     <height>202</height>
+                    </size>
+                   </property>
+                   <widget class="QLabel" name="label_38">
+                    <property name="geometry">
+                     <rect>
+                      <x>90</x>
+                      <y>0</y>
+                      <width>240</width>
+                      <height>200</height>
+                     </rect>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">image: url(:/images/tool_probe.png);</string>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="scaledContents">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_12">
+              <property name="spacing">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QFrame" name="frame">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
                 </property>
                 <property name="frameShape">
                  <enum>QFrame::StyledPanel</enum>
@@ -19677,7 +19837,7 @@ border-radius: 1px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1924</width>
+     <width>1975</width>
      <height>27</height>
     </rect>
    </property>
