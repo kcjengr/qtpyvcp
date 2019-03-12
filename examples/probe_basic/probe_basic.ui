@@ -2931,7 +2931,7 @@ padding-right: 10px;
                 <property name="maximumSize">
                  <size>
                   <width>883</width>
-                  <height>540</height>
+                  <height>570</height>
                  </size>
                 </property>
                 <property name="styleSheet">
@@ -2943,29 +2943,6 @@ border-width: 2px;
 border-radius: 8px;
 }</string>
                 </property>
-                <widget class="QWidget" name="widget_3" native="true">
-                 <property name="geometry">
-                  <rect>
-                   <x>10</x>
-                   <y>9</y>
-                   <width>510</width>
-                   <height>510</height>
-                  </rect>
-                 </property>
-                 <widget class="DynATC" name="dynatc">
-                  <property name="geometry">
-                   <rect>
-                    <x>0</x>
-                    <y>0</y>
-                    <width>510</width>
-                    <height>510</height>
-                   </rect>
-                  </property>
-                  <property name="resizeMode">
-                   <enum>QQuickWidget::SizeRootObjectToView</enum>
-                  </property>
-                 </widget>
-                </widget>
                 <widget class="QWidget" name="widget_4" native="true">
                  <property name="geometry">
                   <rect>
@@ -2978,7 +2955,7 @@ border-radius: 8px;
                  <widget class="QLabel" name="label_89">
                   <property name="geometry">
                    <rect>
-                    <x>14</x>
+                    <x>20</x>
                     <y>13</y>
                     <width>169</width>
                     <height>300</height>
@@ -3000,7 +2977,7 @@ border-radius: 8px;
                  <widget class="StatusLabel" name="tool_length_8">
                   <property name="geometry">
                    <rect>
-                    <x>74</x>
+                    <x>80</x>
                     <y>149</y>
                     <width>50</width>
                     <height>33</height>
@@ -3055,7 +3032,7 @@ border-radius: 8px;
                 <widget class="QLabel" name="label_38">
                  <property name="geometry">
                   <rect>
-                   <x>620</x>
+                   <x>626</x>
                    <y>340</y>
                    <width>240</width>
                    <height>200</height>
@@ -3071,23 +3048,35 @@ border-radius: 8px;
                   <bool>true</bool>
                  </property>
                 </widget>
-                <widget class="QLabel" name="label_53">
+                <widget class="DynATC" name="dynatc">
                  <property name="geometry">
                   <rect>
                    <x>0</x>
                    <y>0</y>
-                   <width>550</width>
-                   <height>550</height>
+                   <width>560</width>
+                   <height>560</height>
                   </rect>
                  </property>
-                 <property name="styleSheet">
-                  <string notr="true">image: url(:/images/24_tool_carousel.png);</string>
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
-                 <property name="text">
-                  <string/>
+                 <property name="minimumSize">
+                  <size>
+                   <width>560</width>
+                   <height>560</height>
+                  </size>
                  </property>
-                 <property name="indent">
-                  <number>0</number>
+                 <property name="maximumSize">
+                  <size>
+                   <width>560</width>
+                   <height>560</height>
+                  </size>
+                 </property>
+                 <property name="resizeMode">
+                  <enum>QQuickWidget::SizeRootObjectToView</enum>
                  </property>
                 </widget>
                </widget>
