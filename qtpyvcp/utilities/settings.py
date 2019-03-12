@@ -1,6 +1,15 @@
 from qtpy.QtCore import QObject, Signal
 from qtpyvcp import SETTINGS
 
+def getSetting(id, default=None):
+    return SETTINGS.get(id, default)
+
+def setSetting(id, value):
+    try:
+        SETTINGS[id].setValue(value)
+    except KeyError:
+        raise ValueError("The setting '%s' does not exist" % id)
+
 class Setting(QObject):
 
     signal = Signal(object)
