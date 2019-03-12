@@ -120,7 +120,7 @@ class QtPyVCPBaseWidget(object):
                     ch.append(chan_exp)
 
                     if chan.get('trigger', False):
-                        triggers.append(chan_obj.onValueChanged)
+                        triggers.append(chan_obj.notify)
 
                 except Exception:
                     LOG.exception("Error evaluating rule: {}"
