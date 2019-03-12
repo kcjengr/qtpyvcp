@@ -56,6 +56,7 @@ Note:
 """
 
 import os
+from collections import OrderedDict
 from qtpyvcp.lib.types import DotDict
 
 from ._version import get_versions
@@ -70,7 +71,7 @@ DEFAULT_CONFIG_FILE = os.path.join(QTPYVCP_DIR, 'yaml_lib/default_config.yml')
 # globals
 CONFIG = {}
 OPTIONS = DotDict()
-PLUGINS = {}
+PLUGINS = OrderedDict()  # Ordered dict so
 DIALOGS = {}
 WINDOWS = {}
 
