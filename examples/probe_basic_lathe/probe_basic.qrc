@@ -28,8 +28,6 @@
     <file>images/boss_pocket_3d_image.png</file>
     <file>images/inside_corners_3d_image.png</file>
     <file>images/probe_corner_group_3d_images.png</file>
-    <file>images/probe_corner_group_3d_image.png</file>
-    <file>images/carousel_12.png</file>
     <file>images/atc_spindle_tool.png</file>
     <file>images/probe_x_valley.png</file>
     <file>images/probe_y_valley.png</file>
@@ -62,7 +60,6 @@
     <file>images/zero.png</file>
     <file>images/up_arrow.png</file>
     <file>images/down_arrow.png</file>
-    <file>images/backspace.png</file>
     <file>images/lathe_tool_dimensions.png</file>
     <file>images/lathe_chuck_stock.png</file>
     <file>images/lathe_internal_boring_bs.png</file>

@@ -28,7 +28,6 @@
     <file>images/boss_pocket_3d_image.png</file>
     <file>images/inside_corners_3d_image.png</file>
     <file>images/probe_corner_group_3d_images.png</file>
-    <file>images/probe_corner_group_3d_image.png</file>
     <file>images/atc_spindle_tool.png</file>
     <file>images/probe_x_valley.png</file>
     <file>images/probe_y_valley.png</file>
@@ -60,8 +59,6 @@
     <file>images/new_file.png</file>
     <file>images/zero.png</file>
     <file>images/probe_basic_icon.png</file>
-    
 
-        
 </qresource>
 </RCC>
