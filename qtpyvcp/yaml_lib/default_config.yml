@@ -17,6 +17,9 @@ data_plugins:
     kwargs:
       cycle_time: 75
 
+  settings:
+    provider: qtpyvcp.plugins.settings:Settings
+
   position:
     provider: qtpyvcp.plugins.positions:Position
     kwargs:

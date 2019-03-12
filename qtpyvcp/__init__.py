@@ -74,6 +74,7 @@ OPTIONS = DotDict()
 PLUGINS = OrderedDict()  # Ordered dict so
 DIALOGS = {}
 WINDOWS = {}
+SETTINGS = {}
 
 
 def main():

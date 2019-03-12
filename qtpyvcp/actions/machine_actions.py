@@ -3,6 +3,8 @@ import time
 import linuxcnc
 from qtpy.QtWidgets import QComboBox
 
+from qtpyvcp.utilities.settings import setting
+
 # Set up logging
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -823,12 +825,47 @@ override_limits.bindOk = _override_limits_bindOk
 # JOG actions
 # -------------------------------------------------------------------------
 
+DEFAULT_JOG_SPEED = INFO.getJogVelocity()
+MAX_JOG_SPEED = INFO.getMaxJogVelocity()
+
+@setting('machine.jog.linear-speed', DEFAULT_JOG_SPEED, persistent=False)
+def jog_linear_speed(obj):
+    return obj.value
+
+@jog_linear_speed.setter
+def jog_linear_speed(obj, value):
+    obj.value = value
+    jog_linear_speed.signal.emit(value)
+
+    percentage = int(value * 100 / MAX_JOG_SPEED)
+    jog_linear_speed_percentage.value = percentage
+    jog_linear_speed_percentage.signal.emit(percentage)
+
+
+@setting('machine.jog.linear-speed.percentage', int(DEFAULT_JOG_SPEED * 100 / MAX_JOG_SPEED), persistent=False)
+def jog_linear_speed_percentage(obj):
+    return obj.value
+
+@jog_linear_speed_percentage.setter
+def jog_linear_speed_percentage(obj, percentage):
+    print "Setting Jog Speed Percentage: ", percentage
+    jog_linear_speed.setValue(float(MAX_JOG_SPEED * percentage / 100))
+
+
+@setting('machine.jog.angular-speed', default_value=100.0, persistent=False)
+def jog_angular_speed(obj):
+    return obj.value
+
+@jog_angular_speed.setter
+def jog_angular_speed(obj, value):
+    print "Setting Jog Angular Speed: ", value
+    obj.value = value
+
+
 class jog:
     """Jog Actions Group"""
 
     max_linear_speed = INFO.getMaxJogVelocity()
-
-    linear_speed = INFO.getJogVelocity()
     angular_speed = INFO.getJogVelocity()
     continuous = False
     increment = INFO.getIncrements()[0]
@@ -863,7 +900,7 @@ class jog:
                 if axis in (3, 4, 5):
                     speed = jog.angular_speed / 60
                 else:
-                    speed = jog.linear_speed / 60
+                    speed = jog_linear_speed.value / 60
 
             if distance is None:
                 distance = jog.increment
@@ -897,7 +934,7 @@ class jog:
 
             machine.jog.set-linear-speed
         """
-        jog.linear_speed = float(speed)
+        jog_linear_speed.setValue(float(speed))
 
     @staticmethod
     def set_angular_speed(speed):
@@ -908,7 +945,7 @@ class jog:
     @staticmethod
     def set_linear_speed_percentage(percentage):
         """Set Jog Linear Speed Percentage"""
-        jog.set_linear_speed(jog.max_linear_speed * (float(percentage) / 100))
+        jog_linear_speed_percentage.setValue(percentage)
 
 
 def _jog_speed_slider_bindOk(widget):
@@ -917,7 +954,7 @@ def _jog_speed_slider_bindOk(widget):
         # these will only work for QSlider or QSpinBox
         widget.setMinimum(0)
         widget.setMaximum(100)
-        widget.setValue((jog.linear_speed / jog.max_linear_speed) * 100)
+        widget.setValue((jog.linear_speed.getValue() / jog.max_linear_speed) * 100)
 
         # jog.linear_speed.connect(lambda v: widget.setValue(v * 100))
     except AttributeError:
