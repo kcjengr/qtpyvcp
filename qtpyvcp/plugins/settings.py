@@ -1,12 +1,23 @@
+import os
+import json
+
 from qtpyvcp import SETTINGS
+from qtpyvcp.utilities.misc import normalizePath
+from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import DataPlugin, DataChannel
+
+LOG = getLogger(__name__)
 
 
 class Settings(DataPlugin):
-    def __init__(self):
+    def __init__(self, persistence_file='.settings.json'):
         super(Settings, self).__init__()
 
         self.channels = SETTINGS
+        self.settings = {}
+
+        self.persistence_file = normalizePath(path=persistence_file,
+                                              base=os.getenv('CONFIG_DIR', '~/'))
 
     def getChannel(self, url):
 
@@ -19,5 +30,28 @@ class Settings(DataPlugin):
         return chan_obj, chan_exp
 
     def initialise(self):
-        for name, obj in SETTINGS.items():
-            print name, obj
+        if os.path.isfile(self.persistence_file):
+            with open(self.persistence_file, 'r') as fh:
+                try:
+                    self.settings = json.loads(fh.read())
+                except:
+                    LOG.exception("Error loading persistent settings from %s",
+                                  self.persistence_file)
+
+        for key, value in self.settings.items():
+            try:
+                SETTINGS[key].setValue(value)
+            except KeyError:
+                pass
+
+    def terminate(self):
+        LOG.debug("Saving persistent settings to %s", self.persistence_file)
+        settings = {}
+        for key, obj in SETTINGS.items():
+            if obj.persistent == True:
+                value = obj.getValue()
+                if obj.default_value != value:
+                    settings[key] = value
+
+        with open(self.persistence_file, 'w') as fh:
+            fh.write(json.dumps(settings, indent=4, sort_keys=True))

@@ -1,4 +1,3 @@
-
 from qtpy.QtCore import QObject, Signal
 from qtpyvcp import SETTINGS
 
@@ -89,11 +88,10 @@ class Setting(QObject):
         return str(self.value)
 
 
-def setting(name, default_value=False, persistent=False):
+def setting(name, default_value=False, persistent=True):
     obj = Setting(default_value=default_value, persistent=persistent)
     SETTINGS[name] = obj
     def wrapper(func):
-        print "######", func.__class__
         return obj
     return wrapper
 
