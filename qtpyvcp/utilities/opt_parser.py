@@ -52,7 +52,7 @@ import json
 from linuxcnc import ini
 from docopt import docopt
 
-from qtpyvcp import __version__
+from qtpyvcp import __version__ as QTPYVCP_VERSION
 from qtpyvcp.lib.types import DotDict
 from qtpyvcp.utilities.misc import normalizePath
 
@@ -65,7 +65,7 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
             sys.argv[index] = '-' + item
             break
 
-    version_str = 'QtPyVCP {}'.format(__version__)
+    version_str = 'QtPyVCP {}'.format(QTPYVCP_VERSION)
     if vcp_version is not None:
         version_str += ', {} v{}'.format(vcp_name, vcp_version)
 
@@ -175,7 +175,15 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
                                 log_file=opts.log_file,
                                 log_level=opts.log_level)
 
+    LOG.info("QtPyVCP Version: %s", QTPYVCP_VERSION)
+
     if LOG.getEffectiveLevel() == logger.LOG_LEVEL_MAPPING['DEBUG']:
+        import qtpy
+        LOG.debug("Qt Version: %s", qtpy.QT_VERSION)
+        LOG.debug("Qt API: %s", qtpy.QT_API)
+        LOG.debug("QtPy Version: %s", qtpy.__version__)
+
+
         LOG.debug("Command line options:\n%s",
                   json.dumps(opts, sort_keys=True, indent=4))
 

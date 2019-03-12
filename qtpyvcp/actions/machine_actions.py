@@ -1,5 +1,3 @@
-import sys
-import time
 import linuxcnc
 from qtpy.QtWidgets import QComboBox
 
