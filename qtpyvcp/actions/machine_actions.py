@@ -828,7 +828,7 @@ override_limits.bindOk = _override_limits_bindOk
 DEFAULT_JOG_SPEED = INFO.getJogVelocity()
 MAX_JOG_SPEED = INFO.getMaxJogVelocity()
 
-@setting('machine.jog.linear-speed', DEFAULT_JOG_SPEED, persistent=False)
+@setting('machine.jog.linear-speed', DEFAULT_JOG_SPEED, persistent=True)
 def jog_linear_speed(obj):
     return obj.value
 
@@ -862,6 +862,69 @@ def jog_angular_speed(obj, value):
     obj.value = value
 
 
+@setting('machine.jog.incidental', default_value=100.0, persistent=False)
+def jog_angular_speed(obj):
+    return obj.value
+
+@jog_angular_speed.setter
+def jog_angular_speed(obj, value):
+    print "Setting Jog Angular Speed: ", value
+    obj.value = value
+
+
+def fromInternalLinearUnits(v, unit=None):
+    if unit is None:
+        unit = STAT.linear_units
+    lu = (unit or 1) * 25.4
+    return v * lu
+
+def parseJogIncrement(jogincr):
+    scale = 1
+    if isinstance(jogincr, basestring):
+        jogincr = jogincr.lower()
+        if jogincr.endswith("mm"):
+            scale = fromInternalLinearUnits(1 / 25.4)
+        elif jogincr.endswith("cm"):
+            scale = fromInternalLinearUnits(10 / 25.4)
+        elif jogincr.endswith("um"):
+            scale = fromInternalLinearUnits(.001 / 25.4)
+        elif jogincr.endswith("in") or jogincr.endswith("inch") or jogincr.endswith('"'):
+            scale = fromInternalLinearUnits(1.)
+        elif jogincr.endswith("mil"):
+            scale = fromInternalLinearUnits(.001)
+        else:
+            scale = 1
+        jogincr = jogincr.rstrip(" inchmuil")
+        try:
+            if "/" in jogincr:
+                p, q = jogincr.split("/")
+                jogincr = float(p) / float(q)
+            else:
+                jogincr = float(jogincr)
+        except ValueError:
+            jogincr = 0
+    return jogincr * scale
+
+@setting('machine.jog.increment', parseJogIncrement(INFO.getIncrements()[0]))
+def jog_increment(obj):
+    """Linear jog increment.
+
+    Args:
+        jogincr (str, int, float) : The desired jog increment. Can be passed
+            as a string including an optional units specifier. Valid unit
+            specifiers include ``mm``, ``cm``, ``um``, ``in``, ``inch``, ``"``,
+            and ``mil``.
+    """
+    return obj.value
+
+@jog_increment.setter
+def jog_increment(obj, jogincr):
+    value = parseJogIncrement(jogincr)
+    LOG.debug('Setting jog increment: %s (%2.4f)', jogincr, value)
+    obj.value = value
+    obj.signal.emit(value)
+
+
 class jog:
     """Jog Actions Group"""
 
@@ -876,9 +939,9 @@ class jog:
 
         Args:
             axis (str | int) : Either the letter or number of the axis to jog.
-                direction (str | int) : pos or +1 for positive, neg or -1 for negative.
+            direction (str | int) : pos or +1 for positive, neg or -1 for negative.
             speed (float, optional) : Desired jog vel in machine_units/s.
-                distance (float, optional) : Desired jog distance, continuous jog if 0.00.
+            distance (float, optional) : Desired jog distance, continuous if 0.00.
         """
 
         if isinstance(direction, str):
@@ -903,7 +966,7 @@ class jog:
                     speed = jog_linear_speed.value / 60
 
             if distance is None:
-                distance = jog.increment
+                distance = jog_increment.value
 
             velocity = float(speed) * direction
 
@@ -924,7 +987,7 @@ class jog:
     @staticmethod
     def set_increment(raw_increment):
         """Set Jog Increment"""
-        jog.increment = _parse_jog_increment(raw_increment)
+        jog_increment.setValue(raw_increment)
 
     @staticmethod
     def set_linear_speed(speed):
@@ -965,40 +1028,6 @@ jog.set_linear_speed.bindOk = jog.set_angular_speed.bindOk = lambda *a, **k: Tru
 
 jog.set_linear_speed_percentage.ok = lambda *a, **k: True
 jog.set_linear_speed_percentage.bindOk = _jog_speed_slider_bindOk
-
-
-def _from_internal_linear_unit(v, unit=None):
-    if unit is None:
-        unit = STAT.linear_units
-    lu = (unit or 1) * 25.4
-    return v * lu
-
-def _parse_jog_increment(jogincr):
-    scale = 1
-    if isinstance(jogincr, basestring):
-        jogincr = jogincr.lower()
-        if jogincr.endswith("mm"):
-            scale = _from_internal_linear_unit(1 / 25.4)
-        elif jogincr.endswith("cm"):
-            scale = _from_internal_linear_unit(10 / 25.4)
-        elif jogincr.endswith("um"):
-            scale = _from_internal_linear_unit(.001 / 25.4)
-        elif jogincr.endswith("in") or jogincr.endswith("inch") or jogincr.endswith('"'):
-            scale = _from_internal_linear_unit(1.)
-        elif jogincr.endswith("mil"):
-            scale = _from_internal_linear_unit(.001)
-        else:
-            scale = 1
-        jogincr = jogincr.rstrip(" inchmuil")
-        try:
-            if "/" in jogincr:
-                p, q = jogincr.split("/")
-                jogincr = float(p) / float(q)
-            else:
-                jogincr = float(jogincr)
-        except ValueError:
-            jogincr = 0
-    return jogincr * scale
 
 
 def _jog_axis_ok(axis, direction=0, widget=None):
