@@ -35,7 +35,9 @@ Rectangle {
             id: pocket_slot
             model: 12
 
-                Item {
+            delegate: Item {
+
+                id: pocket_item
 
                 height: atc_holder.height/2
                 transformOrigin: Item.Bottom
@@ -63,12 +65,13 @@ Rectangle {
                     horizontalAlignment: Text.AlignHCenter
                     font.pixelSize: 24
 
-                    RotationAnimator {
-                        id: pocket_text_anim
-                        target: pocket_text;
-                        duration: 1000
-                        running: false
-                    }
+                }
+                RotationAnimator {
+                    id: pocket_anim
+
+                    target: pocket_item;
+                    duration: 1000
+                    running: false
                 }
             }
         }
@@ -77,7 +80,7 @@ Rectangle {
             id: tool_slot
             model: 12
 
-                Item {
+            delegate: Item {
 
                 id: tool_item
                 height: atc_holder.height/2
@@ -103,14 +106,6 @@ Rectangle {
                     border.width: 2
                     rotation: 360 + (index * 30) - 90
 
-
-                    RotationAnimator {
-                        id: tool_anim
-                        target: tool_rectangle
-                        duration: 1000
-                        running: false
-                    }
-
                     Text {
                         id: tool_text
                         text: tool_item.tool_text
@@ -122,7 +117,15 @@ Rectangle {
                         x: parent.width / 2 - width / 2
                         y: parent.height / 2 - height / 2
                     }
+
+                    RotationAnimator {
+                        id: tool_anim
+                        target: tool_rectangle
+                        duration: 1000
+                        running: false
+                    }
                 }
+
                 states: [
                     State {
                         name: "hidden"
@@ -179,33 +182,30 @@ Rectangle {
 
 
         onHideToolSig: {
-            tool_slot.itemAt(tool_num).state = "hidden";
+            tool_slot.itemAt(tool_num - 1).state = "hidden";
         }
 
         onShowToolSig: {
-            var widget = tool_slot.itemAt(tool_num)
-            widget.state = "visible";
-            widget.tool_text= "T" + (tool_num+1);
+            tool_slot.itemAt(pocket - 1).tool_text = "T" + (tool_num);
+            tool_slot.itemAt(pocket - 1).state = "visible";
         }
 
         onMoveToPocketSig: {
-            console.log("###############")
             rotate_atc_from_to(atc_anim, previous_pocket, pocket_num);
-
+            /*
             for (var i = 0; i < 10; i++) {
                 console.log("loop i ")
+                console.log(tool_slot.itemAt(i))
                 rotate_tool_from_to(tool_slot.itemAt(i), previous_pocket, pocket_num);
             }
-
-            for (var j = 0; j < pocket_slot.count(); j++) {
-                console.log("loop j ")
-                rotate_tool_from_to(pocket_slot.itemAt(j), previous_pocket, pocket_num);
+            */
+            for (var j = 0; j < pocket_slot.count; j++) {
+                rotate_tool_from_to(pocket_anim, previous_pocket, pocket_num);
             }
         }
 
         onToolInSpindleSig: {
             console.log("tool_in_spindle")
-            // rotate_tool(tool_anim_1, 0, 12)
         }
 
         onRotateFwdSig: {

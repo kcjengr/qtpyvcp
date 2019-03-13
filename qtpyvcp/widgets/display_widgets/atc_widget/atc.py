@@ -33,7 +33,7 @@ class DynATC(QQuickWidget):
     rotateFwdSig = Signal(int, arguments=['position'])
     rotateRevSig = Signal(int, arguments=['position'])
 
-    showToolSig = Signal(int, arguments=['tool_num'])
+    showToolSig = Signal(int, int, arguments=['pocket', 'tool_num'])
     hideToolSig = Signal(int,  arguments=['tool_num'])
 
     def __init__(self, parent=None):
@@ -70,22 +70,20 @@ class DynATC(QQuickWidget):
             self.pockets[tool['P']] = tool['T']
             self.tools[tool['T']] = tool['P']
 
-        for i in range(12):
+        for i in range(1, 13):
             self.hideToolSig.emit(i)
 
         for pocket, tool in self.pockets.items():
-            self.showToolSig.emit(tool)
+            if 0 <= pocket <= 12:
+                self.showToolSig.emit(pocket, tool)
 
     def on_pocket_prepped(self, pocket_num):
         if pocket_num > 0:
+
             print(self.tools)
-            print(pocket_num)
+            next_pocket = self.tools[pocket_num+1]
 
-            next_pocket = self.tools[pocket_num]
-
-            print(next_pocket)
-
-            print("Tool Prepared: {}".format(pocket_num))
+            print("Tool Prepared: {}".format(pocket_num + 1))
             print("Rotate from pocket {} to {}".format(self.atc_position, next_pocket))
             self.moveToPocketSig.emit(self.atc_position - 1, next_pocket - 1)
             self.atc_position = next_pocket
