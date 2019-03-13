@@ -35,12 +35,11 @@ Rectangle {
             id: pocket_slot
             model: 12
 
-            delegate:
                 Item {
 
                 height: atc_holder.height/2
                 transformOrigin: Item.Bottom
-                rotation: index * 30
+                rotation: -index * 30
                 x: atc_holder.width/2
                 y: 0
 
@@ -55,7 +54,7 @@ Rectangle {
                     }
                     x: 0
                     y: atc_holder.height*0.2
-                    rotation: (360 - index * 30) - 90
+                    rotation: 360 + (index * 30) - 90
 
                     text: parent.pocket_num
                     font.family: "Bebas Kai"
@@ -78,13 +77,12 @@ Rectangle {
             id: tool_slot
             model: 12
 
-            delegate:
                 Item {
 
                 id: tool_item
                 height: atc_holder.height/2
                 transformOrigin: Item.Bottom
-                rotation: index * 30
+                rotation: -index * 30
                 x: atc_holder.width/2
                 y: 0
 
@@ -103,7 +101,7 @@ Rectangle {
                     anchors.top: parent.top
                     anchors.topMargin: 4
                     border.width: 2
-                    rotation: (360 - index * 30) - 90
+                    rotation: 360 + (index * 30) - 90
 
 
                     RotationAnimator {
@@ -140,8 +138,9 @@ Rectangle {
     }
 
     function rotate_atc_from_to(atc, previous_pocket, tool_no) {
-        atc.from = 360/12 * previous_pocket
-        atc.to = 360/12 * tool_no
+        atc.from = 360/12 * previous_pocket + 90
+        atc.to = 360/12 * tool_no + 90
+
         atc.restart()
     }
 
@@ -182,22 +181,25 @@ Rectangle {
         onHideToolSig: {
             tool_slot.itemAt(tool_num).state = "hidden";
         }
+
         onShowToolSig: {
             var widget = tool_slot.itemAt(tool_num)
             widget.state = "visible";
             widget.tool_text= "T" + (tool_num+1);
-
         }
 
         onMoveToPocketSig: {
+            console.log("###############")
             rotate_atc_from_to(atc_anim, previous_pocket, pocket_num);
 
-            for (var i = 0; i < tool_slot.length; i++) {
-                rotate_tool_from_to(tool_slot[i], previous_pocket, pocket_num);
+            for (var i = 0; i < 10; i++) {
+                console.log("loop i ")
+                rotate_tool_from_to(tool_slot.itemAt(i), previous_pocket, pocket_num);
             }
 
-            for (var i = 0; i < pocket_slot.length; i++) {
-                rotate_tool_from_to(pocket_slot[i], previous_pocket, pocket_num);
+            for (var j = 0; j < pocket_slot.count(); j++) {
+                console.log("loop j ")
+                rotate_tool_from_to(pocket_slot.itemAt(j), previous_pocket, pocket_num);
             }
         }
 
