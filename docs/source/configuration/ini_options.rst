@@ -37,15 +37,15 @@ Options available in the INI file are:
     QT_API = api           # Qt Python binding to use, pyqt5 or pyside2.
     COMMAND_LINE_ARGS = <args>
 
-    # VTK_Widget Options
+    # VTK_BackPlot Options
     [VTK]
-    MACHINE_BOUNDRY        # Boolean False to hide the machine boundry
-    MACHINE_TICKS          # Boolean False to hide the machine boundry ticks
-    MACHINE_LABELS         # Boolean False to hide the machine labels
+    MACHINE_BOUNDRY = bool # Boolean False to hide the machine boundry
+    MACHINE_TICKS = bool   # Boolean False to hide the machine boundry ticks
+    MACHINE_LABELS = bool  # Boolean False to hide the machine labels
 
-    PROGRAM_BOUNDRY        # Boolean False to hide the program boundry
-    PROGRAM_TICKS          # Boolean False to hide the program boundry ticks
-    PROGRAM_LABELS         # Boolean False to hide the program labels
+    PROGRAM_BOUNDRY = bool # Boolean False to hide the program boundry
+    PROGRAM_TICKS = bool   # Boolean False to hide the program boundry ticks
+    PROGRAM_LABELS = bool  # Boolean False to hide the program labels
 
 Boolean values can be one of ``true``, ``on``, ``yes`` or ``1`` for **True**,
 and one of ``false``, ``off``, ``no`` or ``0`` for **False**.
