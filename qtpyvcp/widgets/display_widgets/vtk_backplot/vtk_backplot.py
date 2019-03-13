@@ -335,16 +335,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def clearLivePlot(self):
-
         LOG.debug('clear live plot')
-
         self.renderer.RemoveActor(self.path_cache_actor)
-
         self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
-
         self.renderer.AddActor(self.path_cache_actor)
-
         self.update_render()
 
     @Slot()
@@ -367,42 +362,45 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def toggleProgramBounds(self):
-        bounds = self.path_actors[1].GetXAxisVisibility()
-        if bounds:
-            self.path_actors[1].XAxisVisibilityOff()
-            self.path_actors[1].YAxisVisibilityOff()
-            self.path_actors[1].ZAxisVisibilityOff()
-        else:
-            self.path_actors[1].XAxisVisibilityOn()
-            self.path_actors[1].YAxisVisibilityOn()
-            self.path_actors[1].ZAxisVisibilityOn()
-        self.update_render()
+        if len(self.path_actors) > 0:
+            bounds = self.path_actors[1].GetXAxisVisibility()
+            if bounds:
+                self.path_actors[1].XAxisVisibilityOff()
+                self.path_actors[1].YAxisVisibilityOff()
+                self.path_actors[1].ZAxisVisibilityOff()
+            else:
+                self.path_actors[1].XAxisVisibilityOn()
+                self.path_actors[1].YAxisVisibilityOn()
+                self.path_actors[1].ZAxisVisibilityOn()
+            self.update_render()
 
     @Slot()
     def toggleProgramTicks(self):
-        ticks = self.path_actors[1].GetXAxisTickVisibility()
-        if ticks:
-            self.path_actors[1].XAxisTickVisibilityOff()
-            self.path_actors[1].YAxisTickVisibilityOff()
-            self.path_actors[1].ZAxisTickVisibilityOff()
-        else:
-            self.path_actors[1].XAxisTickVisibilityOn()
-            self.path_actors[1].YAxisTickVisibilityOn()
-            self.path_actors[1].ZAxisTickVisibilityOn()
-        self.update_render()
+        if len(self.path_actors) > 0:
+            ticks = self.path_actors[1].GetXAxisTickVisibility()
+            if ticks:
+                self.path_actors[1].XAxisTickVisibilityOff()
+                self.path_actors[1].YAxisTickVisibilityOff()
+                self.path_actors[1].ZAxisTickVisibilityOff()
+            else:
+                self.path_actors[1].XAxisTickVisibilityOn()
+                self.path_actors[1].YAxisTickVisibilityOn()
+                self.path_actors[1].ZAxisTickVisibilityOn()
+            self.update_render()
 
     @Slot()
     def toggleProgramLabels(self):
-        labels = self.path_actors[1].GetXAxisLabelVisibility()
-        if labels:
-            self.path_actors[1].XAxisLabelVisibilityOff()
-            self.path_actors[1].YAxisLabelVisibilityOff()
-            self.path_actors[1].ZAxisLabelVisibilityOff()
-        else:
-            self.path_actors[1].XAxisLabelVisibilityOn()
-            self.path_actors[1].YAxisLabelVisibilityOn()
-            self.path_actors[1].ZAxisLabelVisibilityOn()
-        self.update_render()
+        if len(self.path_actors) > 0:
+            labels = self.path_actors[1].GetXAxisLabelVisibility()
+            if labels:
+                self.path_actors[1].XAxisLabelVisibilityOff()
+                self.path_actors[1].YAxisLabelVisibilityOff()
+                self.path_actors[1].ZAxisLabelVisibilityOff()
+            else:
+                self.path_actors[1].XAxisLabelVisibilityOn()
+                self.path_actors[1].YAxisLabelVisibilityOn()
+                self.path_actors[1].ZAxisLabelVisibilityOn()
+            self.update_render()
 
     @Slot()
     def toggleMachineBounds(self):
