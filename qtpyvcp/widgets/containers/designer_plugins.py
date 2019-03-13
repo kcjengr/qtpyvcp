@@ -6,3 +6,10 @@ class VCPFramePlugin(_DesignerPlugin):
         return VCPFrame
     def isContainer(self):
         return True
+
+from widget import VCPWidget
+class VCPWidgetPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return VCPWidget
+    def isContainer(self):
+        return True
