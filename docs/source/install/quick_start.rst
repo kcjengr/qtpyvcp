@@ -2,7 +2,7 @@
 Quick Start
 ===========
 
-If you are impatient, this is for you!
+To install the current release of `QtPyVCP`
 
 **Install dependencies**
 ::

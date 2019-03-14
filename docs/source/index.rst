@@ -8,44 +8,15 @@ The goal is to provide a no-code, drag-and-drop system for making simple VCPs,
 as well as a straightforward, flexible and extensible framework to aid in
 building complex VCPs.
 
-
 .. toctree::
    :maxdepth: 1
-   :caption: Getting Started
+   :caption: QtPyVCP
 
-   quick_start
-   installation
-   basic_usage
-
-.. toctree::
-   :maxdepth: 1
-   :caption: VCP Showcase
-
+   install/index
    showcase/index
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Tutorials
-
-   tutorials/basic_vcp
-   tutorials/getting_started
-   tutorials/widget_rules
-   tutorials/components
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Configuration
-
-   configuration/ini_options
-   configuration/yml_config
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Components
-
-   components/action_buttons
-   components/action_sliders
-   components/status_items
+   tutorials/index
+   configuration/index
+   components/index
 
 .. toctree::
    :maxdepth: 1
