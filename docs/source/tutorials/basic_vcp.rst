@@ -2,7 +2,7 @@
 Basic VCP
 =========
 
-This will cover the steps to build a basic VCP.
+This will cover the steps to build a basic VCP for a touch screen.
 
 .. note::
     For this toutorial you will need to have installed `Qt Designer`

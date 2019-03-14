@@ -15,9 +15,10 @@ Open a terminal and clone the `VCP Template` to your computer.
 This will put a copy of the VCP Template in the `~vcp-template` directory. The
 best way to use this is to run the tutorial.sh script and create a copy with
 the name of your new VCP. In the terminal change to the vcp-template directory
-and run the script. Note the name can be letters, numbers and the underscore. To
-run the template with a simulation answer `yes` to the prompt
-`Copy the Tutorial LinuxCNC Configuration Files?`
+and run the script. Note the name can be letters, numbers and the underscore.
+
+To create a LinuxCNC simulation configuration to test your template with answer
+`yes` to the prompt `Copy the Tutorial LinuxCNC Configuration Files?`
 ::
 
     cd vcp-template
