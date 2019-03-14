@@ -10,7 +10,7 @@ from qtpyvcp.widgets.base_widgets import VCPWidget
 
 
 class VCPWidget(QWidget, VCPWidget):
-    """VCPFrame"""
+    """VCPWidget"""
 
     DEFAULT_RULE_PROPERTY = 'Enable'
 
