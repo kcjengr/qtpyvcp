@@ -57,3 +57,31 @@ from probesim_widget import ProbeSim
 class ProbeSimPlugin(_DesignerPlugin):
     def pluginClass(self):
         return ProbeSim
+
+from setting_slider import VCPSettingsSlider
+class VCPSettingsSliderPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return VCPSettingsSlider
+    def objectName(self):
+        return 'settings_slider'
+
+from setting_slider import VCPSettingsSpinBox
+class VCPSettingsSpinBoxPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return VCPSettingsSpinBox
+    def objectName(self):
+        return 'settings_spinbox'
+
+from setting_slider import VCPSettingsDoubleSpinBox
+class VCPSettingsDoubleSpinBoxPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return VCPSettingsDoubleSpinBox
+    def objectName(self):
+        return 'settings_double_spinbox'
+
+from setting_slider import VCPSettingsCheckBox
+class VCPSettingsCheckBoxPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return VCPSettingsCheckBox
+    def objectName(self):
+        return 'settings_checkbox'

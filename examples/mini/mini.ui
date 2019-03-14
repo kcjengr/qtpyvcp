@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>636</width>
-    <height>663</height>
+    <height>772</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -149,7 +149,7 @@
     <item>
      <widget class="StatusLabel" name="statuslabel_24">
       <property name="rules" stdset="0">
-       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;settings:machine.jog.linear-speed.percentage&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Jog Speed: %i%%\&quot; % ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;settings:machine.jog.linear-speed-percentage&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Jog Speed: %i%%\&quot; % ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
       </property>
      </widget>
     </item>
@@ -170,6 +170,52 @@
       </property>
       <property name="actionName" stdset="0">
        <string>machine.jog.set-linear-speed-percentage</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="VCPSettingsSlider" name="vcpsettingsslider">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="tickPosition">
+       <enum>QSlider::TicksAbove</enum>
+      </property>
+      <property name="settingName" stdset="0">
+       <string>machine.jog.linear-speed-percentage</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="VCPSettingsSpinBox" name="vcpsettingsSpinBox">
+      <property name="showGroupSeparator" stdset="0">
+       <bool>false</bool>
+      </property>
+      <property name="suffix">
+       <string> %</string>
+      </property>
+      <property name="settingName" stdset="0">
+       <string>machine.jog.linear-speed-percentage</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="VCPSettingsDoubleSpinBox" name="settings_spinbox">
+      <property name="suffix">
+       <string> in/min</string>
+      </property>
+      <property name="settingName" stdset="0">
+       <string>machine.jog.linear-speed</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="VCPSettingsCheckBox" name="settings_checkbox">
+      <property name="text">
+       <string>Jog Continuous</string>
+      </property>
+      <property name="settingName" stdset="0">
+       <string>machine.jog.mode-incremental</string>
       </property>
      </widget>
     </item>
@@ -481,10 +527,30 @@
    <header>qtpyvcp.widgets.input_widgets.jog_increment</header>
   </customwidget>
   <customwidget>
+   <class>VCPSettingsDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
    <class>VCPMainWindow</class>
    <extends>QMainWindow</extends>
    <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
   </customwidget>
   <customwidget>
    <class>MDIEntry</class>

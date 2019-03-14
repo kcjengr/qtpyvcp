@@ -1,1 +1,1 @@
-from qtpyvcp.widgets.base_widgets.base_widget import VCPWidget, CMDWidget, HALWidget, VCPButton
+from qtpyvcp.widgets.base_widgets.base_widget import *
