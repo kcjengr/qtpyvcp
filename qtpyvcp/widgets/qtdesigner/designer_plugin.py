@@ -25,7 +25,7 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 
     # Override to set the default widget name used in QtDesinger
     def objectName(self):
-        return self.name().lower().replace('widget', '')
+        return self.name().lower()
 
     # Override to set the tooltip displayed in the QtDesinger widget box
     def toolTip(self):
