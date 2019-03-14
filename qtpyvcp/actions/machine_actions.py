@@ -828,13 +828,19 @@ override_limits.bindOk = _override_limits_bindOk
 DEFAULT_JOG_SPEED = INFO.getJogVelocity()
 MAX_JOG_SPEED = INFO.getMaxJogVelocity()
 
-@setting('machine.jog.linear-speed', DEFAULT_JOG_SPEED, persistent=True)
+@setting('machine.jog.linear-speed',
+         default_value=DEFAULT_JOG_SPEED,
+         min_value=0,
+         max_value=MAX_JOG_SPEED,
+         persistent=True)
 def jog_linear_speed(obj):
     return obj.value
 
 @jog_linear_speed.setter
 def jog_linear_speed(obj, value):
-    obj.value = value
+
+    value = obj.clampValue(value)
+    obj.value = obj.clampValue(value)
     jog_linear_speed.signal.emit(value)
 
     percentage = int(value * 100 / MAX_JOG_SPEED)
@@ -842,7 +848,11 @@ def jog_linear_speed(obj, value):
     jog_linear_speed_percentage.signal.emit(percentage)
 
 
-@setting('machine.jog.linear-speed.percentage', int(DEFAULT_JOG_SPEED * 100 / MAX_JOG_SPEED), persistent=False)
+@setting('machine.jog.linear-speed-percentage',
+         default_value=int(DEFAULT_JOG_SPEED * 100 / MAX_JOG_SPEED),
+         min_value=0,
+         max_value=100,
+         persistent=False)
 def jog_linear_speed_percentage(obj):
     return obj.value
 
@@ -862,13 +872,13 @@ def jog_angular_speed(obj, value):
     obj.value = value
 
 
-@setting('machine.jog.incidental', default_value=100.0, persistent=False)
-def jog_angular_speed(obj):
+@setting('machine.jog.mode-incremental')
+def jog_mode_incremental(obj):
     return obj.value
 
-@jog_angular_speed.setter
-def jog_angular_speed(obj, value):
-    print "Setting Jog Angular Speed: ", value
+@jog_mode_incremental.setter
+def jog_mode_incremental(obj, value):
+    print "Setting Jog Mode: ", value
     obj.value = value
 
 

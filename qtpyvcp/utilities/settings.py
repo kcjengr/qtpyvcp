@@ -15,12 +15,15 @@ class Setting(QObject):
     signal = Signal(object)
 
     def __init__(self, fget=None, fset=None, freset=None, default_value=False,
-                 persistent=True, doc=None):
+                 max_value=None, min_value=None, persistent=True, doc=None):
         super(Setting, self).__init__()
 
         self.fget = fget
         self.fset = fset
         self.freset = freset
+
+        self.max_value = max_value
+        self.min_value = min_value
 
         self.value_type = type(default_value)
         self.value = self.default_value = default_value
@@ -42,7 +45,7 @@ class Setting(QObject):
     def setValue(self, value):
         """Setting value set method."""
         if self.fset is None:
-            self.value = value
+            self.value = self.clampValue(value)
             self.signal.emit(value)
         else:
             self.fset(self.instance, self, value)
@@ -53,6 +56,13 @@ class Setting(QObject):
             self.setValue(self.default_value)
         else:
             self.freset(self.instance, self, self.default_value)
+
+    def clampValue(self, value):
+        if self.max_value is not None:
+            value = min(value, self.max_value)
+        if self.min_value is not None:
+            value = max(value, self.min_value)
+        return value
 
     def getter(self, fget):
         def inner(*args, **kwargs):
@@ -97,10 +107,15 @@ class Setting(QObject):
         return str(self.value)
 
 
-def setting(name, default_value=False, persistent=True):
-    obj = Setting(default_value=default_value, persistent=persistent)
-    SETTINGS[name] = obj
+def setting(id, default_value=False, max_value=None, min_value=None, persistent=True):
     def wrapper(func):
+        obj = Setting(default_value=default_value,
+                      max_value=max_value,
+                      min_value=min_value,
+                      persistent=persistent,
+                      doc=func.__doc__)
+
+        SETTINGS[id] = obj
         return obj
     return wrapper
 
