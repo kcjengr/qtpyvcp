@@ -47,10 +47,10 @@ class DynATC(QQuickWidget):
 
         self.setSource(url)
 
-
         self.atc_position = 1
 
         self.tool_table = None
+        self.status_tool_table = None
         self.pockets = None
         self.tools = None
 
@@ -63,9 +63,11 @@ class DynATC(QQuickWidget):
     def load_tools(self):
 
         self.tool_table = TOOLTABLE.getToolTable()
+        self.status_tool_table = STATUS.tool_table
 
         self.pockets = dict()
         self.tools = dict()
+
         for index, tool in self.tool_table.items():
             self.pockets[tool['P']] = tool['T']
             self.tools[tool['T']] = tool['P']
@@ -78,15 +80,15 @@ class DynATC(QQuickWidget):
                 self.showToolSig.emit(pocket, tool)
 
     def on_pocket_prepped(self, pocket_num):
+
         if pocket_num > 0:
+            tool = self.status_tool_table[pocket_num][0]
 
-            print(self.tools)
-            next_pocket = self.tools[pocket_num+1]
+            next_pocket = self.tool_table[tool]['P']
 
-            print("Tool Prepared: {}".format(pocket_num + 1))
-            print("Rotate from pocket {} to {}".format(self.atc_position, next_pocket))
             self.moveToPocketSig.emit(self.atc_position - 1, next_pocket - 1)
             self.atc_position = next_pocket
+
         else:
             print("Pocket Clear {}".format(pocket_num))
 
