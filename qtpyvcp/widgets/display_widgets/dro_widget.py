@@ -23,7 +23,7 @@ from qtpy.QtCore import Slot, Property
 
 from qtpyvcp.plugins import getPlugin
 STATUS = getPlugin('status')
-POSITIONS = getPlugin('position')
+POSITION = getPlugin('position')
 
 from qtpyvcp.widgets import VCPWidget
 
@@ -64,7 +64,7 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
         self._imperial_format = '%9.4f'
         self._format = self._imperial_format
 
-        self.update(POSITIONS.abs.getValue())
+        self.update(POSITION.abs.getValue())
         STATUS.program_units.notify(self.onUnitsChanged, 'string')
 
     def update(self, pos):
@@ -76,10 +76,10 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
         else:
             self._format = self._metric_format
         self.update(
-            getattr(POSITIONS, RefType.toString(self._ref_typ)).getValue())
+            getattr(POSITION, RefType.toString(self._ref_typ)).getValue())
 
     def initialize(self):
-        getattr(POSITIONS, RefType.toString(self._ref_typ)).notify(self.update)
+        getattr(POSITION, RefType.toString(self._ref_typ)).notify(self.update)
 
     # ==========================================================================
     # Designer property Getters/Setters
@@ -93,7 +93,7 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
     def referenceType(self, ref_typ):
         new_ref_typ = RefType.toString(ref_typ)
         self._ref_typ = ref_typ
-        self.update(getattr(POSITIONS, new_ref_typ).getValue())
+        self.update(getattr(POSITION, new_ref_typ).getValue())
 
     @Property(Axis)
     def axis(self):
@@ -102,7 +102,7 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
     @axis.setter
     def axis(self, axis):
         self._axis_number = axis
-        self.update(getattr(POSITIONS, RefType.toString(self._ref_typ)).getValue())
+        self.update(getattr(POSITION, RefType.toString(self._ref_typ)).getValue())
 
     def getDiamterMode(self):
         return self._diameter_mode
