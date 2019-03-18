@@ -55,7 +55,7 @@ Rectangle {
                         horizontalCenter: parent.horizontalCenter
                     }
                     x: 0
-                    y: atc_holder.height*0.2
+                    y: atc_holder.height*0.18
                     rotation: 360 + (index * 30) - 90
 
                     text: parent.pocket_num

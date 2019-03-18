@@ -1,5 +1,5 @@
 ;Tool  Pocket X Offset Y Offset Z Offset Diameter Remark
-T1     P1     X0.0     Y0.0     Z0.6234  D0.125   ; 1/8" END MILL
+T1     P1     X0.0     Y0.0     Z0.6234  D0.125   ; 1/8" END MILL 0.010" corner radius
 T2     P2     X0.0     Y0.0     Z0.8245  D0.25    ; 1/4" 2FL END MILL
 T3     P3     X0.0     Y0.0     Z1.235   D0.375   ; .375 ACCUPRO EM
 T4     P4     X0.0     Y0.0     Z1.4345  D0.5     ; 1/2" 2FL HERTEL EM
