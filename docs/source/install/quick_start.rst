@@ -4,6 +4,15 @@ Quick Start
 
 To install the current release of `QtPyVCP`
 
+**Requirements**
+
+Debian 9 64 bit or Linux Mint 19 64 bit with LinuxCNC 2.8 (master) installed,
+either system wide or as a Run In Place (RIP) built from source.
+
+Instructions for installing on Debian 9 (stretch) and other distros can be
+found here: https://gnipsel.com/linuxcnc/uspace/debian9-emc.html
+
+
 **Install dependencies**
 ::
 
