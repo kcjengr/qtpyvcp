@@ -45,33 +45,48 @@ Rectangle {
                 x: atc_holder.width/2
                 y: 0
 
-                property string pocket_num: "P" + (index+1)
+                property string pocket_num: index+1
+                property int anim_from: 0
+                property int anim_to: 0
+                property bool anim_run: false
 
-                Text {
 
-                    id: pocket_text
 
-                    anchors {
-                        horizontalCenter: parent.horizontalCenter
+                Rectangle {
+                    id: pocket_rectangle
+
+                    height: atc_holder.height * 0.1
+                    width: height
+                    radius: width/2
+                    color: "white"
+                    border.color: "white"
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.top: parent.top
+                    anchors.topMargin: 90
+                    border.width: 2
+                    rotation: 30 * index -90
+
+
+                    Text {
+                        id: pocket_text
+                        text: "P" + pocket_item.pocket_num
+                        font.family: "Bebas Kai"
+                        font.bold: false
+                        verticalAlignment: Text.AlignVCenter
+                        horizontalAlignment: Text.AlignHCenter
+                        font.pixelSize: 24
+                        x: parent.width / 2 - width / 2
+                        y: parent.height / 2 - height / 2
                     }
-                    x: 0
-                    y: atc_holder.height*0.18
-                    rotation: 360 + (index * 30) - 90
 
-                    text: parent.pocket_num
-                    font.family: "Bebas Kai"
-                    font.bold: false
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    font.pixelSize: 24
-
-                }
-                RotationAnimator {
-                    id: pocket_anim
-
-                    target: pocket_item;
-                    duration: 1000
-                    running: false
+                    RotationAnimation{
+                        target:pocket_text
+                        direction: RotationAnimator.Shortest
+                        duration: atc_anim.duration
+                        running: anim_run
+                        from: anim_from
+                        to: anim_to
+                    }
                 }
             }
         }
@@ -90,7 +105,10 @@ Rectangle {
                 y: 0
 
                 state: "visible"
-                property string tool_text: "NO"
+                property int tool_num: index
+                property int anim_from: 0
+                property int anim_to: 0
+                property bool anim_run: false
 
                 Rectangle {
                     id: tool_rectangle
@@ -104,11 +122,11 @@ Rectangle {
                     anchors.top: parent.top
                     anchors.topMargin: 4
                     border.width: 2
-                    rotation: 360 + (index * 30) - 90
+                    rotation: 30 * index -90
 
                     Text {
                         id: tool_text
-                        text: tool_item.tool_text
+                        text: "P" + tool_item.tool_num
                         font.family: "Bebas Kai"
                         font.bold: false
                         verticalAlignment: Text.AlignVCenter
@@ -118,11 +136,13 @@ Rectangle {
                         y: parent.height / 2 - height / 2
                     }
 
-                    RotationAnimator {
-                        id: tool_anim
-                        target: tool_rectangle
-                        duration: 1000
-                        running: false
+                    RotationAnimation{
+                        target:tool_text
+                        direction: RotationAnimator.Shortest
+                        duration: atc_anim.duration
+                        running: anim_run
+                        from: anim_from
+                        to: anim_to
                     }
                 }
 
@@ -172,9 +192,9 @@ Rectangle {
     }
 
     function rotate_tool_from_to(tool, previous_pocket, tool_no) {
-        tool.from = -(360/12 * previous_pocket)
-        tool.to = -(360/12 * tool_no)
-        tool.restart()
+        tool.anim_from = -(360/12 * previous_pocket)
+        tool.anim_to = -(360/12 * tool_no)
+        tool.anim_run = true
     }
 
     function rotate_atc(name, tool_no, direction) {
@@ -210,21 +230,19 @@ Rectangle {
         }
 
         onShowToolSig: {
-            tool_slot.itemAt(pocket - 1).tool_text = "T" + (tool_num);
+            tool_slot.itemAt(pocket - 1).tool_num = tool_num;
             tool_slot.itemAt(pocket - 1).state = "visible";
         }
 
         onMoveToPocketSig: {
             rotate_atc_from_to(atc_anim, previous_pocket, pocket_num);
-            /*
-            for (var i = 0; i < 10; i++) {
-                console.log("loop i ")
-                console.log(tool_slot.itemAt(i))
+
+            for (var i = 0; i < tool_slot.count; i++) {
                 rotate_tool_from_to(tool_slot.itemAt(i), previous_pocket, pocket_num);
             }
-            */
+
             for (var j = 0; j < pocket_slot.count; j++) {
-                rotate_tool_from_to(pocket_anim, previous_pocket, pocket_num);
+                rotate_tool_from_to(pocket_slot.itemAt(j), previous_pocket, pocket_num);
             }
         }
 
