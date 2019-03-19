@@ -140,11 +140,21 @@ Rectangle {
         }
     }
 
-    function rotate_atc_from_to(atc, previous_pocket, tool_no) {
-        atc.from = 360/12 * previous_pocket + 90
-        atc.to = 360/12 * tool_no + 90
+    function rotate_atc_from_to(atc, previous_pocket, next_pocket) {
+        atc.from = 360/12 * previous_pocket + 90;
+        atc.to = 360/12 * next_pocket + 90;
 
-        atc.restart()
+        var  slots_num = 0;
+
+        if(next_pocket > previous_pocket){
+            slots_num = next_pocket - previous_pocket;
+        }
+        else {
+            slots_num = previous_pocket - next_pocket;
+        }
+
+        atc.duration = 1000 * slots_num;
+        atc.restart();
     }
 
     function rotate_tool_from_to(tool, previous_pocket, tool_no) {
