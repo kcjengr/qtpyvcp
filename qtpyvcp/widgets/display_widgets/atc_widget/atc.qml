@@ -143,22 +143,30 @@ Rectangle {
     function rotate_atc_from_to(atc, previous_pocket, next_pocket) {
         atc.direction = "Shortest"
 
-        console.log(atc_holder.rotation);
-
         atc.from = 360/12 * previous_pocket + 90;
         atc.to = 360/12 * next_pocket + 90;
 
-        var  slots_num = 0;
+        var slots_num = 0;
+        var direction;
 
-        if(next_pocket > previous_pocket){
-            slots_num = next_pocket - previous_pocket;
-        } else {
-            slots_num = previous_pocket - next_pocket;
-        };
+        slots_num = previous_pocket - next_pocket;
 
-        var i;
-        console.log(slots_num);
-        atc.duration = (slots_num+1) * 1000
+        if ( slots_num > 6){
+            slots_num -= 12;
+        }
+        if ( slots_num < -6){
+            slots_num += 12;
+        }
+
+        if (slots_num > 0){
+            direction = "CCW"
+        } else if(slots_num < 0){
+            slots_num = slots_num * -1
+            direction = "CW"
+        }
+
+        atc.duration = slots_num * 1000
+
         atc.restart();
 
     }
