@@ -1,6 +1,8 @@
-=============
-Installation
-=============
+===================
+Development Install
+===================
+
+If you wish to contribute to the project you need to do a develpment install.
 
 **Requirements**
 
