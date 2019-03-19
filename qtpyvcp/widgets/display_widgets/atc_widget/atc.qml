@@ -46,9 +46,8 @@ Rectangle {
                 y: 0
 
                 property string pocket_num: index+1
-                property int anim_from: 0
-                property int anim_to: 0
-                property bool anim_run: false
+                property var anim: pocket_anim
+
 
 
 
@@ -80,12 +79,11 @@ Rectangle {
                     }
 
                     RotationAnimation{
+                        id:pocket_anim
                         target:pocket_text
                         direction: RotationAnimator.Shortest
                         duration: atc_anim.duration
-                        running: anim_run
-                        from: anim_from
-                        to: anim_to
+                        running: false
                     }
                 }
             }
@@ -105,10 +103,9 @@ Rectangle {
                 y: 0
 
                 state: "visible"
+
                 property int tool_num: index
-                property int anim_from: 0
-                property int anim_to: 0
-                property bool anim_run: false
+                property var anim: tool_anim
 
                 Rectangle {
                     id: tool_rectangle
@@ -136,13 +133,12 @@ Rectangle {
                         y: parent.height / 2 - height / 2
                     }
 
-                    RotationAnimation{
+                    RotationAnimation {
+                        id: tool_anim
                         target:tool_text
                         direction: RotationAnimator.Shortest
                         duration: atc_anim.duration
-                        running: anim_run
-                        from: anim_from
-                        to: anim_to
+                        running: false
                     }
                 }
 
@@ -191,10 +187,11 @@ Rectangle {
 
     }
 
-    function rotate_tool_from_to(tool, previous_pocket, tool_no) {
-        tool.anim_from = -(360/12 * previous_pocket)
-        tool.anim_to = -(360/12 * tool_no)
-        tool.anim_run = true
+    function rotate_tool_from_to(widget, previous_pocket, next_pocket) {
+        widget.anim.from = -(360/12 * previous_pocket)
+        widget.anim.to = -(360/12 * next_pocket)
+
+        widget.anim.restart()
     }
 
     function rotate_atc(name, tool_no, direction) {
@@ -237,12 +234,13 @@ Rectangle {
         onMoveToPocketSig: {
             rotate_atc_from_to(atc_anim, previous_pocket, pocket_num);
 
-            for (var i = 0; i < tool_slot.count; i++) {
-                rotate_tool_from_to(tool_slot.itemAt(i), previous_pocket, pocket_num);
-            }
 
             for (var j = 0; j < pocket_slot.count; j++) {
                 rotate_tool_from_to(pocket_slot.itemAt(j), previous_pocket, pocket_num);
+            }
+
+            for (var i = 0; i < (tool_slot.count); i++) {
+                rotate_tool_from_to(tool_slot.itemAt(i), previous_pocket, pocket_num);
             }
         }
 
