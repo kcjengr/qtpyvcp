@@ -18880,7 +18880,7 @@ border-radius: 6px;
             <number>0</number>
            </property>
            <item>
-            <widget class="ActionSlider" name="actionslider_5">
+            <widget class="VCPSettingsSlider" name="settings_slider">
              <property name="minimumSize">
               <size>
                <width>0</width>
@@ -18945,28 +18945,16 @@ border: 1px solid #aaa;
 border-radius: 4px;
 }</string>
              </property>
-             <property name="maximum">
-              <number>100</number>
-             </property>
-             <property name="value">
-              <number>30</number>
-             </property>
              <property name="orientation">
               <enum>Qt::Horizontal</enum>
              </property>
-             <property name="actionName" stdset="0">
-              <string>machine.jog.set-linear-speed-percentage</string>
+             <property name="settingName" stdset="0">
+              <string>machine.jog.linear-speed-percentage</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QSpinBox" name="fr_override_dro_2">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+            <widget class="StatusLabel" name="fr_override_dro_2">
              <property name="minimumSize">
               <size>
                <width>48</width>
@@ -18975,12 +18963,12 @@ border-radius: 4px;
              </property>
              <property name="maximumSize">
               <size>
-               <width>42</width>
+               <width>48</width>
                <height>38</height>
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">QSpinBox {
+              <string notr="true">StatusLabel {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -18993,14 +18981,8 @@ border-radius: 4px;
              <property name="alignment">
               <set>Qt::AlignCenter</set>
              </property>
-             <property name="buttonSymbols">
-              <enum>QAbstractSpinBox::NoButtons</enum>
-             </property>
-             <property name="maximum">
-              <number>100</number>
-             </property>
-             <property name="value">
-              <number>100</number>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;settings:machine.jog.linear-speed-percentage&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;%s%%\&quot; % ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
              </property>
             </widget>
            </item>
@@ -19883,6 +19865,11 @@ font: 11pt bebas kai;
    <header>qtpyvcp.widgets.input_widgets.file_system</header>
   </customwidget>
   <customwidget>
+   <class>VCPSettingsSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
    <class>ToolTable</class>
    <extends>QTableView</extends>
    <header>qtpyvcp.widgets.input_widgets.tool_table</header>
@@ -19929,22 +19916,6 @@ font: 11pt bebas kai;
   <include location="probe_basic.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>actionslider_5</sender>
-   <signal>sliderMoved(int)</signal>
-   <receiver>fr_override_dro_2</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1632</x>
-     <y>806</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1870</x>
-     <y>809</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>tool_number_entry_box</sender>
    <signal>returnPressed()</signal>

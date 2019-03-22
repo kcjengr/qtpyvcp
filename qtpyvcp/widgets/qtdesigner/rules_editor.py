@@ -17,8 +17,9 @@ import webbrowser
 from qtpy import uic
 from qtpy import QtWidgets, QtCore, QtDesigner
 
-from qtpyvcp import PLUGINS
+from qtpyvcp import PLUGINS, SETTINGS
 from qtpyvcp.plugins import DataChannel, getPlugin
+from qtpyvcp.utilities.settings import Setting
 from plugin_extension import _PluginExtension
 
 # Set up logging
@@ -537,7 +538,7 @@ class RulesEditor(QtWidgets.QDialog):
 
         typ_lbl = self.tbl_channels.cellWidget(row, 2)
 
-        if isinstance(ch_obj, DataChannel) and ch_val is not None:
+        if isinstance(ch_obj, (DataChannel, Setting)) and ch_val is not None:
             typ_lbl.setText("<font color='green'>{}</font>"
                             .format(type(ch_val).__name__))
         else:
@@ -619,7 +620,7 @@ class RulesEditor(QtWidgets.QDialog):
                     # get chan values for use when checking expression
                     ch_obj, ch_exp, ch_val, ch_desc = self.get_channel_data(ch.get("url", ""))
 
-                    if isinstance(ch_obj, DataChannel):
+                    if isinstance(ch_obj, (DataChannel, Setting)):
                         channel_values.append(ch_exp())
                     else:
                         errors.append("Rule #{} is not a valid channel.".format(idx))

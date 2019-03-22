@@ -17,6 +17,12 @@ data_plugins:
     kwargs:
       cycle_time: 75
 
+  settings:
+    provider: qtpyvcp.plugins.settings:Settings
+    kwargs:
+      # persistent settings file, relative to config dir
+      persistence_file: .settings.json
+
   position:
     provider: qtpyvcp.plugins.positions:Position
     kwargs:
