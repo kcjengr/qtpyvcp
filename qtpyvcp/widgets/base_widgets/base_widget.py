@@ -101,11 +101,11 @@ class QtPyVCPBaseWidget(object):
 
     @rules.setter
     def rules(self, rules):
-        self._rules = rules
-        self.registerRules(rules)
+        self._rules = rules or '[]'
+        self.registerRules()
 
-    def registerRules(self, rules):
-        rules = json.loads(rules)
+    def registerRules(self):
+        rules = json.loads(self._rules)
         for rule in rules:
             # print rule
             ch = ChanList()
