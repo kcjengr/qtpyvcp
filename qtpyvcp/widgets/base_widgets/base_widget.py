@@ -47,7 +47,7 @@ class QtPyVCPBaseWidget(object):
 
     def __init__(self, parent=None):
         super(QtPyVCPBaseWidget, self).__init__()
-        self._rules = ''
+        self._rules = '[]'
         self._style = ''
         self._data_channels = []
 
