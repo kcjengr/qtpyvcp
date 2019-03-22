@@ -93,7 +93,7 @@ setup(
         'psutil',
         'HiYaPyCo',
         'pyopengl',
-        'vtk', 'pygcode'
+        'vtk',
     ],
     entry_points={
         'console_scripts': [
