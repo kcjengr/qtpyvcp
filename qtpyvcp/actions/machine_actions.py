@@ -858,7 +858,7 @@ def jog_linear_speed_percentage(obj):
 
 @jog_linear_speed_percentage.setter
 def jog_linear_speed_percentage(obj, percentage):
-    print "Setting Jog Speed Percentage: ", percentage
+    LOG.debug("Setting Jog Speed Percentage: %d", percentage)
     jog_linear_speed.setValue(float(MAX_JOG_SPEED * percentage / 100))
 
 
@@ -868,7 +868,7 @@ def jog_angular_speed(obj):
 
 @jog_angular_speed.setter
 def jog_angular_speed(obj, value):
-    print "Setting Jog Angular Speed: ", value
+    LOG.debug("Setting Jog Angular Speed: %d", value)
     obj.value = value
 
 
@@ -878,7 +878,7 @@ def jog_mode_incremental(obj):
 
 @jog_mode_incremental.setter
 def jog_mode_incremental(obj, value):
-    print "Setting Jog Mode: ", value
+    LOG.debug("Setting Jog Mode Incremental: %s", value)
     obj.value = value
 
 
