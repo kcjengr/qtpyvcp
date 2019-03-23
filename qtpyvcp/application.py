@@ -192,9 +192,18 @@ class VCPApplication(QApplication):
         self.terminateDataPlugins()
 
     def initialiseWidgets(self):
-        for w in self.allWidgets():
-            if isinstance(w, QtPyVCPBaseWidget):
-                w.initialize()
+        widgets = [w for w in self.allWidgets() if isinstance(w, QtPyVCPBaseWidget)]
+
+        for w in widgets:
+            w.registerSettings()
+
+        for w in widgets:
+            w.registerRules()
+
+        for w in widgets:
+            w.initialize()
+
+        del widgets
 
     def terminateWidgets(self):
         LOG.debug("Terminating widgets")

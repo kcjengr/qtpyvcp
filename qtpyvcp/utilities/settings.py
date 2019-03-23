@@ -107,6 +107,18 @@ class Setting(QObject):
         return str(self.value)
 
 
+def instance_setting(id, default_value=False, max_value=None, min_value=None, persistent=True):
+    def wrapper(func):
+        obj = Setting(default_value=default_value,
+                      max_value=max_value,
+                      min_value=min_value,
+                      persistent=persistent,
+                      doc=func.__doc__)
+
+        return obj
+    return wrapper
+
+
 def setting(id, default_value=False, max_value=None, min_value=None, persistent=True):
     def wrapper(func):
         obj = Setting(default_value=default_value,

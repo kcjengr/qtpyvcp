@@ -95,6 +95,8 @@ def launch_application(opts, config):
         if res:
             raise SystemExit, res
 
+    print qtpyvcp.SETTINGS
+
     sys.exit(app.exec_())
 
 

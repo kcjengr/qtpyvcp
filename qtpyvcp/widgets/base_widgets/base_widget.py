@@ -8,14 +8,43 @@ all other QtPyVCP widgets are based.
 
 import os
 import json
+import inspect
 
 from qtpy.QtCore import Property
 from qtpy.QtWidgets import QPushButton
 
+from qtpyvcp import SETTINGS
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.utilities.settings import Setting
 
 LOG = getLogger(__name__)
+
+
+class WidgetSetting(object):
+    def __init__(self, parent, name, signal):
+        self.parent = parent
+        self.signal = signal
+        self.name = name
+
+
+class VCPProperty(Property):
+    def __init__(self, type=bool, persistent=True, *args, **kwargs):
+        super(VCPProperty, self).__init__(type, *args, user=True, **kwargs)
+
+    def setValue(self, value):
+        self.parent.setProperty(self.name, value)
+
+    def getValue(self):
+        return self.parent.property(self.name)
+
+    def notify(self, slot):
+        self.signal.connect(slot)
+
+    def __getattribute__(self, item):
+        print "Gettater", item
+        return super(VCPProperty, self).getter(item)
+
 
 class ChanList(list):
     """Channel value list.
@@ -45,11 +74,14 @@ class QtPyVCPBaseWidget(object):
         'Style Sheet': ['setStyleSheet', str],
     }
 
+
     def __init__(self, parent=None):
         super(QtPyVCPBaseWidget, self).__init__()
         self._rules = '[]'
         self._style = ''
         self._data_channels = []
+
+        # self.objectNameChanged.connect(self.registerSettings)
 
     def setStyleClass(self, style_class):
         """Set the QSS style class for the widget"""
@@ -101,8 +133,23 @@ class QtPyVCPBaseWidget(object):
 
     @rules.setter
     def rules(self, rules):
-        self._rules = rules or '[]'
-        self.registerRules()
+        self._rules = rules
+        # self.registerRules(rules)
+
+    def registerSettings(self):
+
+        if self.objectName() is None:
+            return
+
+        meta = self.metaObject()
+        for i in range(meta.propertyCount()):
+            prop = meta.property(i)
+            if prop.isUser():
+                # print prop
+                # print "sig", prop.hasNotifySignal(), prop.notifySignal().name()
+                # print prop.name(), prop.read(self), prop.typeName()
+                # print dir(prop)
+                SETTINGS['{}.{}'.format(self.objectName(), prop.name())] = WidgetSetting(self, prop.name(), getattr(self, str(prop.notifySignal().name())))
 
     def registerRules(self):
         rules = json.loads(self._rules)

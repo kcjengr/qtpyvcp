@@ -3,7 +3,7 @@ import sys
 
 from qtpy import uic
 from qtpy.QtGui import QKeySequence
-from qtpy.QtCore import Qt, Slot, QTimer
+from qtpy.QtCore import Qt, Property, Signal, Slot, QTimer
 from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, \
     QMenu, QMenuBar, QLineEdit, QShortcut
 
@@ -12,6 +12,7 @@ from qtpyvcp import actions
 from qtpyvcp.utilities import logger
 from qtpyvcp.core import Prefs, Info
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.widgets.base_widgets.base_widget import VCPWidget, VCPProperty
 from qtpyvcp.widgets.dialogs import showDialog
 from qtpyvcp.vcp_launcher import _initialize_object_from_dict
 
@@ -20,7 +21,9 @@ PREFS = Prefs()
 INFO = Info()
 
 
-class VCPMainWindow(QMainWindow):
+class VCPMainWindow(QMainWindow, VCPWidget):
+
+    maximizedChanged = Signal(bool)
 
     def __init__(self, parent=None, opts=None, ui_file=None, stylesheet=None,
                  maximize=False, fullscreen=False, position=None, size=None,
@@ -262,6 +265,18 @@ class VCPMainWindow(QMainWindow):
     def focusChangedEvent(self, old_w, new_w):
         if issubclass(new_w.__class__, QLineEdit):
             print "QLineEdit got focus: ", new_w
+
+    @VCPProperty(bool, notify=maximizedChanged)
+    def maximized(self):
+        return self.isMaximized()
+
+    @maximized.setter
+    def maximized(self, maximize):
+        if maximize:
+            self.showMaximized()
+        else:
+            self.showNormal()
+        self.maximizedChanged.emit(maximize)
 
 # ==============================================================================
 #  menu action slots
