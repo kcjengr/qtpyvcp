@@ -60,6 +60,9 @@ class DynATC(QQuickWidget):
         STATUS.tool_in_spindle.notify(self.on_tool_in_spindle)
         STATUS.pocket_prepped.notify(self.on_pocket_prepped)
 
+    def hideEvent(self, *args, **kwargs):
+        pass
+
     def load_tools(self):
 
         self.tool_table = TOOLTABLE.getToolTable()
