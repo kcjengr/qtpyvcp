@@ -113,5 +113,10 @@ setup(
             'probe_basic_vertical=examples.probe_basic_vertical',
             'probe_basic_lathe=examples.probe_basic_lathe',
         ],
+        'qtpyvcp.test_vcp': [
+            'vtk_test=video_tests.vkt_test',
+            'opengl_test=video_tests.opengl_test',
+            'qtpyvcp_test=video_tests.qtpyvcp_test',
+        ],
     },
 )
