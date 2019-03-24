@@ -10,16 +10,11 @@ vcp:
   version: v0.0.1
   author: My Name
   description: >
-    Put a short description of your VCP here. This will be
-    shown in the VCP Chooser when launching QtPyVCP with the
-    --chooser option.
-
+    If you're having trouble loading a VCP with a backplot
+    try this basic VCP with no graphics.
 
     Examples of what to included here:
-      * VCP Features
-      * Type of machine the VCP is for
-      * Development status
-      * Acknowledgments
+      * QtPyVCP test
 
 data_plugins:
   status:

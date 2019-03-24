@@ -10,16 +10,15 @@ vcp:
   version: v0.0.1
   author: My Name
   description: >
-    Put a short description of your VCP here. This will be
-    shown in the VCP Chooser when launching QtPyVCP with the
-    --chooser option.
-
+    OpenGL Test is a video card test tool to see if the
+    OpenGL Toolkit backplot works on your PC
+    If your having problems run this test from the
+    terminal by starting LinuxCNC with linuxcnc then
+    pick a QtPyVCP sim like XYZ
 
     Examples of what to included here:
-      * VCP Features
-      * Type of machine the VCP is for
-      * Development status
-      * Acknowledgments
+      * OpenGL Test
+      * Video Card Test
 
 data_plugins:
   status:
