@@ -1,0 +1,49 @@
+# Include the QtPyVCP default menubar.
+{% include "default_menubar.yml" %}
+
+qtdesigner:
+  ui_file: ( windows.mainwindow.kwargs.ui_file )
+  qss_file: ( application.kwargs.stylesheet )
+
+vcp:
+  name: vtk_test
+  version: v0.0.1
+  author: John Thornton
+  description: >
+    VTK Test is a video card test tool to see if the
+    Visualization Toolkit backplot works on your PC
+    If your having problems run this test from the
+    terminal by starting LinuxCNC with linuxcnc then
+    pick a QtPyVCP sim like XYZ
+
+    Examples of what to included here:
+      * VTK Test
+      * Video Card Test
+
+data_plugins:
+  status:
+    kwargs:
+      cycle_time: 75
+
+windows:
+
+  mainwindow:
+    # Specify the class to use for the VCP's mainwindow
+    #   Format: package.module:class
+    provider: vtk_test.mainwindow:MyMainWindow
+
+    # Keyword arguments to pass when initializing the class.
+    kwargs:
+      # Specify the mainwindow menubar as the default.
+      menu: ( default_menubar )
+      # Specify the UI file to load the window layout from.
+      ui_file: {{ file.dir }}/mainwindow.ui
+      # Specify a stylesheet to use only for mainwindow.
+      stylesheet: null
+      # Set the window title from from the date in the vcp section above.
+      title: ( vcp.name ) ( vcp.version)
+
+application:
+  kwargs:
+    # Specify the application wide stylesheet.
+    stylesheet: {{ file.dir }}/style.qss
