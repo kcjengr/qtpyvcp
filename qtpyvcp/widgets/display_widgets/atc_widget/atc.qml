@@ -227,8 +227,10 @@ Rectangle {
         }
 
         onShowToolSig: {
+            console.log("tool " + tool_num);
             tool_slot.itemAt(pocket - 1).tool_num = tool_num;
             tool_slot.itemAt(pocket - 1).state = "visible";
+            console.log(tool_slot.itemAt(pocket - 1).state);
         }
 
         onMoveToPocketSig: {
@@ -245,7 +247,9 @@ Rectangle {
         }
 
         onToolInSpindleSig: {
-            console.log("tool_in_spindle")
+            console.log("tool_in_spindle " + tool_num + tool_slot.itemAt(tool_num).state);
+            tool_slot.itemAt(tool_num).state = "hidden";
+            console.log(tool_slot.itemAt(tool_num).state);
         }
 
         onRotateFwdSig: {

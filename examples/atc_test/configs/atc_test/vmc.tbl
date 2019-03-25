@@ -1,8 +1,10 @@
-T11 P1 ;Added 20150513 
-T2 P2 D0.062500 Z+0.100000 ;1/16 end mill 
-T3 P3 D0.201000 Z+1.273000 ;#7 tap drill 
-T20 P4 D1 Z1
-T12 P5 ;Added 20150513 
-T10 P6 Z+0.200000 ;added 20150513 
-T13 P7 D1 Z1
-T1 P8 D0.125000 Z+0.511000 ;1/8 end mill 
+;Tool  Pocket X Offset Y Offset Z Offset Diameter Remark
+T1     P8     X0.0     Y0.0     Z0.511   D0.125   ; 1/8 end mill
+T2     P2     X0.0     Y0.0     Z0.1     D0.0625  ; 1/16 end mill
+T3     P3     X0.0     Y0.0     Z1.273   D0.201   ; #7 tap drill
+T7     P12    X0.0     Y0.0     Z0.0     D0.0     ; New Tool
+T10    P6     X0.0     Y0.0     Z0.2     D0.0     ; added 20150513
+T11    P1     X0.0     Y0.0     Z0.0     D0.0     ; Added 20150513
+T12    P5     X0.0     Y0.0     Z0.0     D0.0     ; Added 20150513
+T13    P7     X0.0     Y0.0     Z1.0     D1.0     
+T20    P4     X0.0     Y0.0     Z1.0     D1.0     
