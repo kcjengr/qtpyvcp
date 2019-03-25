@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>882</width>
-    <height>849</height>
+    <height>851</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -58,9 +58,6 @@
               <enum>QQuickWidget::SizeRootObjectToView</enum>
              </property>
             </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="MDIEntry" name="mdientry"/>
            </item>
           </layout>
          </widget>

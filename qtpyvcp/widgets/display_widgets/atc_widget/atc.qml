@@ -123,7 +123,7 @@ Rectangle {
 
                     Text {
                         id: tool_text
-                        text: "P" + tool_item.tool_num
+                        text: "T" + tool_item.tool_num
                         font.family: "Bebas Kai"
                         font.bold: false
                         verticalAlignment: Text.AlignVCenter

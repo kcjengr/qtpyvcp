@@ -6,7 +6,7 @@ qtdesigner:
   qss_file: ( application.kwargs.stylesheet )
 
 vcp:
-  name: dyn_atc
+  name: atc_test
   version: v0.0.1
   author: My Name
   description: >
