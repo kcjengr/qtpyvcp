@@ -212,7 +212,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>8</number>
           </property>
           <widget class="QWidget" name="main_tab">
            <attribute name="title">
@@ -13264,6 +13264,1064 @@ Background:transparent;
            <attribute name="title">
             <string>          STATUS           </string>
            </attribute>
+           <widget class="QFrame" name="frame_41">
+            <property name="geometry">
+             <rect>
+              <x>1270</x>
+              <y>40</y>
+              <width>308</width>
+              <height>492</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QFrame{
+border-style: solid;
+border-color: rgb(186, 189, 182);
+background-color: rgb(51, 57, 59);
+border-width: 2px;
+border-radius: 6px;
+}</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_41">
+             <property name="spacing">
+              <number>6</number>
+             </property>
+             <property name="topMargin">
+              <number>5</number>
+             </property>
+             <property name="bottomMargin">
+              <number>5</number>
+             </property>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_48">
+               <property name="topMargin">
+                <number>5</number>
+               </property>
+               <property name="bottomMargin">
+                <number>5</number>
+               </property>
+               <item>
+                <widget class="QTableWidget" name="tableWidget_4">
+                 <property name="palette">
+                  <palette>
+                   <active>
+                    <colorrole role="WindowText">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>235</red>
+                       <green>235</green>
+                       <blue>237</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="Button">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>120</red>
+                       <green>120</green>
+                       <blue>120</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="Text">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>235</red>
+                       <green>235</green>
+                       <blue>237</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="ButtonText">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>235</red>
+                       <green>235</green>
+                       <blue>237</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="Base">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>120</red>
+                       <green>120</green>
+                       <blue>120</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="Window">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>120</red>
+                       <green>120</green>
+                       <blue>120</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="AlternateBase">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>90</red>
+                       <green>90</green>
+                       <blue>90</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                   </active>
+                   <inactive>
+                    <colorrole role="WindowText">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>235</red>
+                       <green>235</green>
+                       <blue>237</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="Button">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>120</red>
+                       <green>120</green>
+                       <blue>120</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="Text">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>235</red>
+                       <green>235</green>
+                       <blue>237</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="ButtonText">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>235</red>
+                       <green>235</green>
+                       <blue>237</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="Base">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>120</red>
+                       <green>120</green>
+                       <blue>120</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="Window">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>120</red>
+                       <green>120</green>
+                       <blue>120</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="AlternateBase">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>90</red>
+                       <green>90</green>
+                       <blue>90</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                   </inactive>
+                   <disabled>
+                    <colorrole role="WindowText">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>235</red>
+                       <green>235</green>
+                       <blue>237</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="Button">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>120</red>
+                       <green>120</green>
+                       <blue>120</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="Text">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>235</red>
+                       <green>235</green>
+                       <blue>237</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="ButtonText">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>235</red>
+                       <green>235</green>
+                       <blue>237</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="Base">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>120</red>
+                       <green>120</green>
+                       <blue>120</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="Window">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>120</red>
+                       <green>120</green>
+                       <blue>120</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                    <colorrole role="AlternateBase">
+                     <brush brushstyle="SolidPattern">
+                      <color alpha="255">
+                       <red>90</red>
+                       <green>90</green>
+                       <blue>90</blue>
+                      </color>
+                     </brush>
+                    </colorrole>
+                   </disabled>
+                  </palette>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Bebas Kai</family>
+                   <pointsize>16</pointsize>
+                   <weight>50</weight>
+                   <italic>false</italic>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QTableView {
+	color: rgb(235, 235, 237);
+   	border-top: 8px rgb(120, 120, 120);
+	border-left: 4px  rgb(120, 120, 120);
+	border-bottom: 1px rgb(120, 120, 120);
+	border-right: 4px rgb(120, 120, 120);
+	border-radius: 5px;
+	border-color: rgb(120, 120, 120);
+	border-style: solid;
+	background-color: rgb(120, 120, 120);
+    gridline-color: rgb(203, 203, 203);
+	alternate-background-color: rgb(90, 90, 90);
+    font: 16pt &quot;Bebas Kai&quot;;
+}
+
+QHeaderView {
+    font: 16pt &quot;Bebas Kai&quot;;
+	background-color: rgb(220, 220, 220);
+	color: black;
+    border: none;
+}</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::StyledPanel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Sunken</enum>
+                 </property>
+                 <property name="lineWidth">
+                  <number>6</number>
+                 </property>
+                 <property name="midLineWidth">
+                  <number>4</number>
+                 </property>
+                 <property name="autoScroll">
+                  <bool>false</bool>
+                 </property>
+                 <property name="autoScrollMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="alternatingRowColors">
+                  <bool>true</bool>
+                 </property>
+                 <property name="verticalScrollMode">
+                  <enum>QAbstractItemView::ScrollPerPixel</enum>
+                 </property>
+                 <property name="horizontalScrollMode">
+                  <enum>QAbstractItemView::ScrollPerPixel</enum>
+                 </property>
+                 <property name="sortingEnabled">
+                  <bool>false</bool>
+                 </property>
+                 <property name="rowCount">
+                  <number>12</number>
+                 </property>
+                 <attribute name="horizontalHeaderCascadingSectionResizes">
+                  <bool>false</bool>
+                 </attribute>
+                 <attribute name="horizontalHeaderDefaultSectionSize">
+                  <number>90</number>
+                 </attribute>
+                 <attribute name="horizontalHeaderHighlightSections">
+                  <bool>false</bool>
+                 </attribute>
+                 <attribute name="horizontalHeaderMinimumSectionSize">
+                  <number>90</number>
+                 </attribute>
+                 <attribute name="horizontalHeaderStretchLastSection">
+                  <bool>true</bool>
+                 </attribute>
+                 <attribute name="verticalHeaderVisible">
+                  <bool>false</bool>
+                 </attribute>
+                 <attribute name="verticalHeaderDefaultSectionSize">
+                  <number>35</number>
+                 </attribute>
+                 <attribute name="verticalHeaderHighlightSections">
+                  <bool>false</bool>
+                 </attribute>
+                 <attribute name="verticalHeaderMinimumSectionSize">
+                  <number>35</number>
+                 </attribute>
+                 <attribute name="verticalHeaderStretchLastSection">
+                  <bool>false</bool>
+                 </attribute>
+                 <row>
+                  <property name="text">
+                   <string>1</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>2</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>3</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>4</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>5</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>6</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>7</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>8</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>9</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>10</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>11</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </row>
+                 <row>
+                  <property name="text">
+                   <string>12</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>14</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </row>
+                 <column>
+                  <property name="text">
+                   <string>ATC POCKET</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>VAR NO</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>TOOL NO</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </column>
+                 <item row="0" column="0">
+                  <property name="text">
+                   <string>1</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="0" column="1">
+                  <property name="text">
+                   <string>#5190</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="0" column="2">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="1" column="0">
+                  <property name="text">
+                   <string>2</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="1" column="1">
+                  <property name="text">
+                   <string>#5191</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="1" column="2">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="2" column="0">
+                  <property name="text">
+                   <string>3</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="2" column="1">
+                  <property name="text">
+                   <string>#5192</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="2" column="2">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="3" column="0">
+                  <property name="text">
+                   <string>4</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="3" column="1">
+                  <property name="text">
+                   <string>#5193</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="3" column="2">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="4" column="0">
+                  <property name="text">
+                   <string>5</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="4" column="1">
+                  <property name="text">
+                   <string>#5194</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="4" column="2">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="5" column="0">
+                  <property name="text">
+                   <string>6</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="5" column="1">
+                  <property name="text">
+                   <string>#5195</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="5" column="2">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="6" column="0">
+                  <property name="text">
+                   <string>7</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="6" column="1">
+                  <property name="text">
+                   <string>#5196</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="6" column="2">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="7" column="0">
+                  <property name="text">
+                   <string>8</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="7" column="1">
+                  <property name="text">
+                   <string>#5197</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="7" column="2">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="8" column="0">
+                  <property name="text">
+                   <string>9</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="8" column="1">
+                  <property name="text">
+                   <string>#5198</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="8" column="2">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="9" column="0">
+                  <property name="text">
+                   <string>10</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="9" column="1">
+                  <property name="text">
+                   <string>#5199</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="9" column="2">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="10" column="0">
+                  <property name="text">
+                   <string>11</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="10" column="1">
+                  <property name="text">
+                   <string>#5200</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="10" column="2">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="11" column="0">
+                  <property name="text">
+                   <string>12</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="11" column="1">
+                  <property name="text">
+                   <string>#5201</string>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                 <item row="11" column="2">
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Bebas Kai</family>
+                    <pointsize>15</pointsize>
+                   </font>
+                  </property>
+                  <property name="textAlignment">
+                   <set>AlignCenter</set>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
           </widget>
          </widget>
         </item>
