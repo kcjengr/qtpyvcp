@@ -31,7 +31,7 @@ windows:
   mainwindow:
     # Specify the class to use for the VCP's mainwindow
     #   Format: package.module:class
-    provider: vtk_tool_table.mainwindow:MyMainWindow
+    provider: atc_test.mainwindow:MainWindow
 
     # Keyword arguments to pass when initializing the class.
     kwargs:
