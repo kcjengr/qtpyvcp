@@ -39,7 +39,6 @@ class DynATC(QQuickWidget):
     def __init__(self, parent=None):
         super(DynATC, self).__init__(parent)
 
-
         self.engine().rootContext().setContextProperty("atc_spiner", self)
         url = QUrl.fromLocalFile(os.path.join(WIDGET_PATH, "atc.qml"))
 
@@ -53,16 +52,15 @@ class DynATC(QQuickWidget):
         self.tools = None
 
         self.load_tools()
+        self.draw_tools()
 
         STATUS.tool_table.notify(self.load_tools)
-        STATUS.tool_in_spindle.notify(self.on_tool_in_spindle)
         STATUS.pocket_prepped.notify(self.on_pocket_prepped)
 
     def hideEvent(self, *args, **kwargs):
         pass  # hack to prevent animation glitch
 
     def load_tools(self):
-
         self.tool_table = TOOLTABLE.getToolTable()
         self.status_tool_table = STATUS.tool_table
 
@@ -73,6 +71,7 @@ class DynATC(QQuickWidget):
             self.pockets[tool['P']] = tool['T']
             self.tools[tool['T']] = tool['P']
 
+    def draw_tools(self):
         for i in range(1, 12):
             self.hideToolSig.emit(i)
 
@@ -83,18 +82,18 @@ class DynATC(QQuickWidget):
     def on_pocket_prepped(self, pocket_num):
 
         if pocket_num > 0:
-            tool = self.status_tool_table[pocket_num][0]
 
+            self.draw_tools()
+
+            tool = self.status_tool_table[pocket_num][0]
             next_pocket = self.tool_table[tool]['P']
 
             self.moveToPocketSig.emit(self.atc_position - 1, next_pocket - 1)
             self.atc_position = next_pocket
 
-        else:
-            print("Pocket Clear {}".format(pocket_num))
-
-    def on_tool_in_spindle(self, tool_num):
-        self.toolInSpindleSig.emit(tool_num)
+        if pocket_num == -1:
+            tool = self.status_tool_table[self.atc_position][0]
+            self.hideToolSig.emit(tool)
 
     @Slot()
     def rotate_forward(self):
