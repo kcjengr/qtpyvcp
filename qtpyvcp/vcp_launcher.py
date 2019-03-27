@@ -138,6 +138,8 @@ def _load_vcp_from_yaml_file(yaml_file, opts):
     cfg_files.append(yaml_file)
     cfg_files.append(qtpyvcp.DEFAULT_CONFIG_FILE)
     config = load_config_files(*cfg_files)
+    # add the YAML file dir to path so can import relative modules
+    sys.path.insert(0, os.path.dirname(os.path.dirname(yaml_file)))
     launch_application(opts, config)
 
 
