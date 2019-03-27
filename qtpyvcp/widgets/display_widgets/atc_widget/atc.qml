@@ -227,10 +227,8 @@ Rectangle {
         }
 
         onShowToolSig: {
-            console.log("tool " + tool_num);
             tool_slot.itemAt(pocket - 1).tool_num = tool_num;
             tool_slot.itemAt(pocket - 1).state = "visible";
-            console.log(tool_slot.itemAt(pocket - 1).state);
         }
 
         onMoveToPocketSig: {
@@ -244,12 +242,6 @@ Rectangle {
             for (var i = 0; i < (tool_slot.count); i++) {
                 rotate_tool_from_to(tool_slot.itemAt(i), previous_pocket, pocket_num);
             }
-        }
-
-        onToolInSpindleSig: {
-            console.log("tool_in_spindle " + tool_num + tool_slot.itemAt(tool_num).state);
-            tool_slot.itemAt(tool_num).state = "hidden";
-            console.log(tool_slot.itemAt(tool_num).state);
         }
 
         onRotateFwdSig: {
