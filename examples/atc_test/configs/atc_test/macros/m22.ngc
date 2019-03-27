@@ -12,9 +12,7 @@ M19 R0 Q2
 
 M24
 M19 R0 Q1
-G0 G53 Z-3.0000 ; rapid move to above the toolchange position
-G91 G1 Z-0.1900 F1000 ; feed move incremental to tool change position
-G90
+G0 G53 Z-100 ; rapid move to tool change position
 
 M65 P2 ; release the drawbar to clamp the tool
 M5

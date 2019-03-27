@@ -10,7 +10,7 @@ M66 P1 L3 Q1
 ;   O100 endif
 
 M5 M9
-G0 G53 Z-3.1900 ; move to tool change position
+G0 G53 Z-100 ; move to tool change position
 
 M19 R0 Q3 ; oreient spindle
 
