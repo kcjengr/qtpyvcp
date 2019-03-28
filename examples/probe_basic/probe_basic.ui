@@ -212,7 +212,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>8</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="main_tab">
            <attribute name="title">
@@ -2413,7 +2413,7 @@ padding-right: 10px;
                       </size>
                      </property>
                      <property name="sub_name" stdset="0">
-                      <string>m11.ngc</string>
+                      <string>m11</string>
                      </property>
                     </widget>
                    </item>
@@ -2462,7 +2462,7 @@ padding-right: 10px;
                       </size>
                      </property>
                      <property name="sub_name" stdset="0">
-                      <string>m12.ngc</string>
+                      <string>m12</string>
                      </property>
                     </widget>
                    </item>
@@ -3563,7 +3563,7 @@ padding-right: 10px;
                       </size>
                      </property>
                      <property name="sub_name" stdset="0">
-                      <string>m11.ngc</string>
+                      <string>m11</string>
                      </property>
                     </widget>
                    </item>
@@ -3612,7 +3612,7 @@ padding-right: 10px;
                       </size>
                      </property>
                      <property name="sub_name" stdset="0">
-                      <string>m12.ngc</string>
+                      <string>m12</string>
                      </property>
                     </widget>
                    </item>

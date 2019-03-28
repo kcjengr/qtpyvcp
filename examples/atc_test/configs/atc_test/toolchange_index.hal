@@ -3,24 +3,23 @@ loadrt carousel pockets=12 dir=2 encoding=index
 addf carousel.0 servo-thread
 addf conv-float-s32.2 servo-thread # G-code analogue outputs are float-type
 
-net car-enable motion.digital-out-00 carousel.0.enable
-net car-ready carousel.0.ready motion.digital-in-00
-net car-fwd carousel.0.motor-fwd
-net car-rev carousel.0.motor-rev
+net car-enable carousel.0.enable
+net car-ready carousel.0.ready
+net car-fwd motion.digital-out-03
+net car-rev motion.digital-out-04
 net car-pos-req motion.analog-out-00 conv-float-s32.2.in
 net car-pos-s32 conv-float-s32.2.out carousel.0.pocket-number
-net index carousel.0.sense-0
-net pulse carousel.0.sense-1
+net index carousel.0.sense-0 motion.digital-in-03
+net pulse carousel.0.sense-1 motion.digital-in-04
 
-net car-lock motion.digital-out-01
-net car-locked motion.digital-in-01
 
-net arm-act motion.digital-out-02
-net arm-in motion.digital-in-02
-net arm-out motion.digital-in-04
+net arm-act motion.digital-out-00
+net arm-in motion.digital-in-01
+net arm-out motion.digital-in-00
 
-net tool-release motion.digital-out-03
-net tool-released motion.digital-in-03
+net tool-release motion.digital-out-02
+net tool-released motion.digital-in-02
+net tool-locked motion.digital-in-05
 
 net tool-prep-loop iocontrol.0.tool-prepare iocontrol.0.tool-prepared
 net tool-change-loop iocontrol.0.tool-change iocontrol.0.tool-changed

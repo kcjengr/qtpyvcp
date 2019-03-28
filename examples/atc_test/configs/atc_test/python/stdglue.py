@@ -1,137 +1,46 @@
-# stdglue - canned prolog and epilog functions for the remappable builtin codes (T,M6,M61,S,F)
+#   This is a component of LinuxCNC
+#   Copyright 2014 Norbert Schechner <nieson@web.de>
 #
-# we dont use argspec to avoid the generic error message of the argspec prolog and give more
-# concise ones here
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program; if not, write to the Free Software
+#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# gmoccapy - Remap of M6 for auto tool measurement
 
-# cycle_prolog,cycle_epilog: generic code-independent support glue for oword sub cycles
-#
-# these are provided as starting point - for more concise error message you would better
-# write a prolog specific for the code
-#
-# Usage:
-#REMAP=G84.3  modalgroup=1 argspec=xyzqp prolog=cycle_prolog ngc=g843 epilog=cycle_epilog
-
+import os
+import sys
 import emccanon 
 from interpreter import *
+from gscreen import preferences
 throw_exceptions = 1
 
-# REMAP=S   prolog=setspeed_prolog  ngc=setspeed epilog=setspeed_epilog
-# exposed parameter: #<speed>
+debug = False
+if debug:
+    pydevdir = '/home/emcmesa/Aptana_Studio_3/plugins/org.python.pydev_2.7.0.2013032300/pysrc'
 
-def setspeed_prolog(self,**words):
-    try:
-        c = self.blocks[self.remap_level]
-        if not c.s_flag:
-            self.set_errormsg("S requires a value") 
-            return INTERP_ERROR
-        self.params["speed"] = c.s_number
-    except Exception,e:
-        self.set_errormsg("S/setspeed_prolog: %s)" % (e))
-        return INTERP_ERROR
-    return INTERP_OK
+    # the 'emctask' module is present only in the milltask instance, otherwise both the UI and
+    # milltask would try to connect to the debug server.
 
-def setspeed_epilog(self,**words):
-    try:
-        if not self.value_returned:
-            r = self.blocks[self.remap_level].executing_remap
-            self.set_errormsg("the %s remap procedure %s did not return a value"
-                             % (r.name,r.remap_ngc if r.remap_ngc else r.remap_py))
-            return INTERP_ERROR
-        if self.return_value < -TOLERANCE_EQUAL: # 'less than 0 within interp's precision'
-            self.set_errormsg("S: remap procedure returned %f" % (self.return_value)) 
-            return INTERP_ERROR
-        if self.blocks[self.remap_level].builtin_used:
+    if os.path.isdir( pydevdir ) and  'emctask' in sys.builtin_module_names:
+        sys.path.append( pydevdir )
+        sys.path.insert( 0, pydevdir )
+        try:
+            import pydevd
+            emccanon.MESSAGE( "pydevd imported, connecting to Eclipse debug server..." )
+            pydevd.settrace()
+        except:
+            emccanon.MESSAGE( "no pydevd module found" )
             pass
-            #print "---------- S builtin recursion, nothing to do"
-        else:
-            self.speed = self.params["speed"]
-            emccanon.enqueue_SET_SPINDLE_SPEED(self.speed)
-        return INTERP_OK
-    except Exception,e:
-        self.set_errormsg("S/setspeed_epilog: %s)" % (e))
-        return INTERP_ERROR
-    return INTERP_OK    
-
-# REMAP=F   prolog=setfeed_prolog  ngc=setfeed epilog=setfeed_epilog
-# exposed parameter: #<feed>
-
-def setfeed_prolog(self,**words):
-    try:
-        c = self.blocks[self.remap_level]
-        if not c.f_flag:
-            self.set_errormsg("F requires a value") 
-            return INTERP_ERROR
-        self.params["feed"] = c.f_number
-    except Exception,e:
-        self.set_errormsg("F/setfeed_prolog: %s)" % (e))
-        return INTERP_ERROR
-    return INTERP_OK    
-
-def setfeed_epilog(self,**words):
-    try:
-        if not self.value_returned:
-            r = self.blocks[self.remap_level].executing_remap
-            self.set_errormsg("the %s remap procedure %s did not return a value"
-                             % (r.name,r.remap_ngc if r.remap_ngc else r.remap_py))
-            return INTERP_ERROR
-        if self.blocks[self.remap_level].builtin_used:
-            pass
-            #print "---------- F builtin recursion, nothing to do"
-        else:
-            self.feed_rate = self.params["feed"]
-            emccanon.enqueue_SET_FEED_RATE(self.feed_rate)
-        return INTERP_OK
-    except Exception,e:
-        self.set_errormsg("F/setfeed_epilog: %s)" % (e))
-        return INTERP_ERROR
-    return INTERP_OK    
-
-# REMAP=T   prolog=prepare_prolog ngc=prepare epilog=prepare_epilog
-# exposed parameters: #<tool> #<pocket>
-
-def prepare_prolog(self,**words):
-    try:
-        cblock = self.blocks[self.remap_level]
-        if not cblock.t_flag:
-            self.set_errormsg("T requires a tool number")
-            return INTERP_ERROR
-        tool  = cblock.t_number
-        if tool:
-            (status, pocket) = self.find_tool_pocket(tool)
-            if status != INTERP_OK:
-                self.set_errormsg("T%d: pocket not found" % (tool))
-                return status
-        else:
-            pocket = -1 # this is a T0 - tool unload
-        self.params["tool"] = tool
-        self.params["pocket"] = pocket
-        return INTERP_OK
-    except Exception, e:
-        self.set_errormsg("T%d/prepare_prolog: %s" % (int(words['t']), e))
-        return INTERP_ERROR
-
-def prepare_epilog(self, **words):
-    try:
-        if not self.value_returned:
-            r = self.blocks[self.remap_level].executing_remap
-            self.set_errormsg("the %s remap procedure %s did not return a value"
-                             % (r.name,r.remap_ngc if r.remap_ngc else r.remap_py))
-            return INTERP_ERROR
-        if self.blocks[self.remap_level].builtin_used:
-            #print "---------- T builtin recursion, nothing to do"
-            return INTERP_OK
-        else:
-            if self.return_value > 0:
-                self.selected_tool = int(self.params["tool"])
-                self.selected_pocket = int(self.params["pocket"])
-                emccanon.SELECT_POCKET(self.selected_pocket, self.selected_tool)
-                return INTERP_OK
-            else:
-                self.set_errormsg("T%d: aborted (return code %.1f)" % (int(self.params["tool"]),self.return_value))
-                return INTERP_ERROR
-    except Exception, e:
-        self.set_errormsg("T%d/prepare_epilog: %s" % (tool,e))
-        return INTERP_ERROR       
 
 # REMAP=M6  modalgroup=6 prolog=change_prolog ngc=change epilog=change_epilog
 # exposed parameters:
@@ -152,6 +61,7 @@ def change_prolog(self, **words):
         if self.selected_pocket < 0:
             self.set_errormsg("M6: no tool prepared")
             return INTERP_ERROR
+
         if self.cutter_comp_side:
             self.set_errormsg("Cannot change tools with cutter radius compensation on")
             return INTERP_ERROR
@@ -160,6 +70,7 @@ def change_prolog(self, **words):
         self.params["current_pocket"] = self.current_pocket # this is probably nonsense
         self.params["selected_pocket"] = self.selected_pocket
         return INTERP_OK
+
     except Exception, e:
         self.set_errormsg("M6/change_prolog: %s" % (e))
         return INTERP_ERROR
@@ -170,117 +81,29 @@ def change_epilog(self, **words):
             r = self.blocks[self.remap_level].executing_remap
             self.set_errormsg("the %s remap procedure %s did not return a value"
                              % (r.name,r.remap_ngc if r.remap_ngc else r.remap_py))
-            yield INTERP_ERROR
-        # this is relevant only when using iocontrol-v2.
-        if self.params[5600] > 0.0:
-            if self.params[5601] < 0.0:
-                self.set_errormsg("Toolchanger hard fault %d" % (int(self.params[5601])))
-                yield INTERP_ERROR
-            print "change_epilog: Toolchanger soft fault %d" % int(self.params[5601])
+            return INTERP_ERROR
 
-        if self.blocks[self.remap_level].builtin_used:
-            #print "---------- M6 builtin recursion, nothing to do"
-            yield INTERP_OK
+        if self.return_value > 0.0:
+            if self.return_value == 3:
+                message = "No tool measurement ! Please take care of the entry in the tool table"
+                emccanon.MESSAGE(message)
+            return INTERP_OK
         else:
-            if self.return_value > 0.0:
-                # commit change
-                self.selected_pocket =  int(self.params["selected_pocket"])
-                emccanon.CHANGE_TOOL(self.selected_pocket)
-                self.current_pocket = self.selected_pocket
-                self.selected_pocket = -1
-                self.selected_tool = -1
-                # cause a sync()
-                self.set_tool_parameters()
-                self.toolchange_flag = True
-                yield INTERP_EXECUTE_FINISH
+            if self.return_value == -1:
+                message = "Searchvel <= 0, not permitted!, Please correct INI Settings."
+            elif self.return_value == -2:
+                message = "Probevel <= 0, not permitted!, Please correct INI Settings."
+            elif self.return_value == -3:
+                message = "Probe contact failiure !!"
             else:
-                self.set_errormsg("M6 aborted (return code %.1f)" % (self.return_value))
-                yield INTERP_ERROR
+                message = "M6 aborted (return code %.1f)" % (self.return_value)
+            self.set_errormsg(message)
+            return INTERP_ERROR
+
     except Exception, e:
         self.set_errormsg("M6/change_epilog: %s" % (e))
-        yield INTERP_ERROR
-
-# REMAP=M61  modalgroup=6 prolog=settool_prolog ngc=settool epilog=settool_epilog
-# exposed parameters: #<tool> #<pocket>
-
-def settool_prolog(self,**words):
-    try:
-        c = self.blocks[self.remap_level]
-        if not c.q_flag:
-            self.set_errormsg("M61 requires a Q parameter") 
-            return INTERP_ERROR
-        tool = int(c.q_number)
-        if tool < -TOLERANCE_EQUAL: # 'less than 0 within interp's precision'
-            self.set_errormsg("M61: Q value < 0") 
-            return INTERP_ERROR
-        (status,pocket) = self.find_tool_pocket(tool)
-        if status != INTERP_OK:
-            self.set_errormsg("M61 failed: requested tool %d not in table" % (tool))
-            return status
-        self.params["tool"] = tool
-        self.params["pocket"] = pocket
-        return INTERP_OK
-    except Exception,e:
-        self.set_errormsg("M61/settool_prolog: %s)" % (e))
         return INTERP_ERROR
 
-def settool_epilog(self,**words):
-    try:
-        if not self.value_returned:
-            r = self.blocks[self.remap_level].executing_remap
-            self.set_errormsg("the %s remap procedure %s did not return a value"
-                             % (r.name,r.remap_ngc if r.remap_ngc else r.remap_py))
-            return INTERP_ERROR
-
-        if self.blocks[self.remap_level].builtin_used:
-            #print "---------- M61 builtin recursion, nothing to do"
-            return INTERP_OK
-        else:
-            if self.return_value > 0.0:
-                self.current_tool = int(self.params["tool"])
-                self.current_pocket = int(self.params["pocket"])
-                emccanon.CHANGE_TOOL_NUMBER(self.current_pocket)
-                # cause a sync()
-                self.tool_change_flag = True
-                self.set_tool_parameters()
-            else:
-                self.set_errormsg("M61 aborted (return code %.1f)" % (self.return_value))
-                return INTERP_ERROR
-    except Exception,e:
-        self.set_errormsg("M61/settool_epilog: %s)" % (e))
-        return INTERP_ERROR
-
-# educational alternative: M61 remapped to an all-Python handler
-# demo - this really does the same thing as the builtin (non-remapped) M61
-#
-# REMAP=M61 modalgroup=6 python=set_tool_number
-
-def set_tool_number(self, **words):
-    try:
-        c = self.blocks[self.remap_level]
-        if c.q_flag:
-            toolno = int(c.q_number)
-        else:
-            self.set_errormsg("M61 requires a Q parameter")
-            return status 
-        (status,pocket) = self.find_tool_pocket(toolno)
-        if status != INTERP_OK:
-            self.set_errormsg("M61 failed: requested tool %d not in table" % (toolno))
-            return status
-        if words['q'] > -TOLERANCE_EQUAL: # 'greater equal 0 within interp's precision'
-            self.current_pocket = pocket
-            self.current_tool = toolno
-            emccanon.CHANGE_TOOL_NUMBER(pocket)
-            # cause a sync()
-            self.tool_change_flag = True
-            self.set_tool_parameters()
-            return INTERP_OK
-        else:
-            self.set_errormsg("M61 failed: Q=%4" % (toolno))
-            return INTERP_ERROR
-    except Exception, e:
-        self.set_errormsg("M61/set_tool_number: %s" % (e))
-        return INTERP_ERROR
 
 _uvw = ("u","v","w","a","b","c")
 _xyz = ("x","y","z","a","b","c")
@@ -294,7 +117,7 @@ _compat = {
     emccanon.CANON_PLANE_VW : (("u","r"),_xyz,"VW"),
     emccanon.CANON_PLANE_UW : (("v","r"),_xyz,"UW")}           
 
-# extract and pass parameters from current block, merged with extra parameters on a continuation line
+# extract and pass parameters from current block, merged with extra paramters on a continuation line
 # keep tjose parameters across invocations
 # export the parameters into the oword procedure
 def cycle_prolog(self,**words):
@@ -310,7 +133,7 @@ def cycle_prolog(self,**words):
             self.sticky_params[r.name] = dict()
 
         self.params["motion_code"] = c.g_modes[1]
-
+        
         (sw,incompat,plane_name) =_compat[self.plane]
         for (word,value) in words.items():
             # inject current parameters
@@ -352,7 +175,7 @@ def cycle_prolog(self,**words):
         if self.cutter_comp_side:
             return "%s: Cannot use canned cycles with cutter compensation on" % (r.name)
         return INTERP_OK
-
+    
     except Exception, e:
         raise
         return "cycle_prolog failed: %s" % (e)
