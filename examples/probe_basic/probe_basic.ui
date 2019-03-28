@@ -2375,7 +2375,7 @@ padding-right: 10px;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="SubCallButton" name="subcallbutton_9">
+                    <widget class="MDIButton" name="subcallbutton_9">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>1</horstretch>
@@ -2395,9 +2395,7 @@ padding-right: 10px;
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+                      <string notr="true">font: 16pt &quot;Bebas Kai&quot;;</string>
                      </property>
                      <property name="text">
                       <string> ATC REV</string>
@@ -2412,13 +2410,13 @@ padding-right: 10px;
                        <height>20</height>
                       </size>
                      </property>
-                     <property name="sub_name" stdset="0">
+                     <property name="MDICommand" stdset="0">
                       <string>m11</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="SubCallButton" name="subcallbutton_3">
+                    <widget class="MDIButton" name="subcallbutton_3">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>1</horstretch>
@@ -2441,11 +2439,9 @@ padding-right: 10px;
                       <enum>Qt::RightToLeft</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">SubCallButton {
-    text-align: right;
-    padding-right: 19px;
-   	font: 16pt &quot;Bebas Kai&quot;;
-}
+                      <string notr="true">text-align: right;
+padding-right: 19px;
+font: 16pt &quot;Bebas Kai&quot;;
 </string>
                      </property>
                      <property name="text">
@@ -2461,7 +2457,7 @@ padding-right: 10px;
                        <height>20</height>
                       </size>
                      </property>
-                     <property name="sub_name" stdset="0">
+                     <property name="MDICommand" stdset="0">
                       <string>m12</string>
                      </property>
                     </widget>
@@ -3525,7 +3521,7 @@ padding-right: 10px;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="SubCallButton" name="subcallbutton_15">
+                    <widget class="MDIButton" name="subcallbutton_15">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>1</horstretch>
@@ -3545,9 +3541,7 @@ padding-right: 10px;
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+                      <string notr="true">font: 16pt &quot;Bebas Kai&quot;;</string>
                      </property>
                      <property name="text">
                       <string> ATC REV</string>
@@ -3562,13 +3556,13 @@ padding-right: 10px;
                        <height>20</height>
                       </size>
                      </property>
-                     <property name="sub_name" stdset="0">
+                     <property name="MDICommand" stdset="0">
                       <string>m11</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="SubCallButton" name="subcallbutton_4">
+                    <widget class="MDIButton" name="subcallbutton_5">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>1</horstretch>
@@ -3591,11 +3585,9 @@ padding-right: 10px;
                       <enum>Qt::RightToLeft</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">SubCallButton {
-    text-align: right;
-    padding-right: 20px;
-   	font: 16pt &quot;Bebas Kai&quot;;
-}
+                      <string notr="true">text-align: right;
+padding-right: 19px;
+font: 16pt &quot;Bebas Kai&quot;;
 </string>
                      </property>
                      <property name="text">
@@ -3611,7 +3603,7 @@ padding-right: 10px;
                        <height>20</height>
                       </size>
                      </property>
-                     <property name="sub_name" stdset="0">
+                     <property name="MDICommand" stdset="0">
                       <string>m12</string>
                      </property>
                     </widget>
@@ -21184,8 +21176,8 @@ font: 11pt bebas kai;
      <y>806</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1935</x>
-     <y>830</y>
+     <x>1883</x>
+     <y>839</y>
     </hint>
    </hints>
   </connection>
@@ -21196,8 +21188,8 @@ font: 11pt bebas kai;
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>466</x>
-     <y>734</y>
+     <x>474</x>
+     <y>767</y>
     </hint>
     <hint type="destinationlabel">
      <x>506</x>
@@ -21468,12 +21460,12 @@ font: 11pt bebas kai;
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>219</x>
-     <y>86</y>
+     <x>1453</x>
+     <y>174</y>
     </hint>
     <hint type="destinationlabel">
-     <x>219</x>
-     <y>91</y>
+     <x>1598</x>
+     <y>177</y>
     </hint>
    </hints>
   </connection>
@@ -21484,12 +21476,12 @@ font: 11pt bebas kai;
    <slot>deleteSelectedTool()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>195</x>
-     <y>616</y>
+     <x>148</x>
+     <y>88</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>151</y>
+     <x>128</x>
+     <y>85</y>
     </hint>
    </hints>
   </connection>
@@ -21500,12 +21492,12 @@ font: 11pt bebas kai;
    <slot>saveToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>815</x>
-     <y>616</y>
+     <x>148</x>
+     <y>88</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>151</y>
+     <x>128</x>
+     <y>85</y>
     </hint>
    </hints>
   </connection>
@@ -21516,12 +21508,12 @@ font: 11pt bebas kai;
    <slot>loadToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>990</x>
-     <y>616</y>
+     <x>168</x>
+     <y>88</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>151</y>
+     <x>128</x>
+     <y>85</y>
     </hint>
    </hints>
   </connection>
@@ -21564,12 +21556,12 @@ font: 11pt bebas kai;
    <slot>addTool()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>350</x>
-     <y>616</y>
+     <x>148</x>
+     <y>88</y>
     </hint>
     <hint type="destinationlabel">
-     <x>908</x>
-     <y>164</y>
+     <x>128</x>
+     <y>85</y>
     </hint>
    </hints>
   </connection>
@@ -21676,8 +21668,8 @@ font: 11pt bebas kai;
    <slot>toggleProgramBounds()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1760</x>
-     <y>119</y>
+     <x>1739</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
      <x>171</x>
@@ -21692,8 +21684,8 @@ font: 11pt bebas kai;
    <slot>toggleMachineBounds()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1844</x>
-     <y>119</y>
+     <x>1739</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
      <x>171</x>
@@ -21708,8 +21700,8 @@ font: 11pt bebas kai;
    <slot>toggleProgramTicks()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1760</x>
-     <y>166</y>
+     <x>1739</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
      <x>171</x>
@@ -21724,8 +21716,8 @@ font: 11pt bebas kai;
    <slot>toggleMachineTicks()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1844</x>
-     <y>166</y>
+     <x>1739</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
      <x>171</x>
@@ -21740,8 +21732,8 @@ font: 11pt bebas kai;
    <slot>toggleProgramLabels()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1760</x>
-     <y>213</y>
+     <x>1739</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
      <x>171</x>
@@ -21756,8 +21748,8 @@ font: 11pt bebas kai;
    <slot>toggleMachineLabels()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1844</x>
-     <y>213</y>
+     <x>1739</x>
+     <y>103</y>
     </hint>
     <hint type="destinationlabel">
      <x>171</x>
@@ -21804,28 +21796,28 @@ font: 11pt bebas kai;
    <slot>rotate_reverse()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>219</x>
-     <y>91</y>
+     <x>1381</x>
+     <y>290</y>
     </hint>
     <hint type="destinationlabel">
-     <x>605</x>
-     <y>353</y>
+     <x>868</x>
+     <y>284</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>subcallbutton_4</sender>
+   <sender>subcallbutton_5</sender>
    <signal>clicked()</signal>
    <receiver>dynatc</receiver>
    <slot>rotate_forward()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>219</x>
-     <y>91</y>
+     <x>1497</x>
+     <y>280</y>
     </hint>
     <hint type="destinationlabel">
-     <x>605</x>
-     <y>313</y>
+     <x>871</x>
+     <y>309</y>
     </hint>
    </hints>
   </connection>
