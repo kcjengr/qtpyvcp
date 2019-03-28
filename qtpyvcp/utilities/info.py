@@ -318,7 +318,7 @@ class _Info(object):
         if temp is None:
             log.info("No subroutine path specified in INI file")
             return self.getProgramPrefix()
-        return normalizePath(temp, os.getenv("CONFIG_DIR"))
+        return normalizePath(temp, os.getenv("CONFIG_DIR", ""))
 
     def getRS274StartCode(self):
         temp = self.ini.find('RS274NGC', 'RS274NGC_STARTUP_CODE')
