@@ -13,7 +13,7 @@ ctypes.CDLL(ctypes.util.find_library("GL"), mode=ctypes.RTLD_GLOBAL)
 
 
 import linuxcnc
-from qtpy.QtCore import Signal, Slot, QUrl
+from qtpy.QtCore import Signal, Slot, QUrl, QTimer
 from qtpy.QtQuickWidgets import QQuickWidget
 
 from qtpyvcp.plugins import getPlugin
@@ -24,29 +24,6 @@ STATUS = getPlugin('status')
 TOOLTABLE = getPlugin('tooltable')
 IN_DESIGNER = os.getenv('DESIGNER', False)
 WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
-
-
-class Pin:
-    def __init__(self, initial_value=0):
-        self._value = initial_value
-        self._callbacks = []
-
-    @property
-    def value(self):
-        return self._value
-
-    @value.setter
-    def value(self, new_value):
-        old_value = self._value
-        self._value = new_value
-        self._notify_observers(old_value, new_value)
-
-    def _notify_observers(self, old_value, new_value):
-        for callback in self._callbacks:
-            callback(old_value, new_value)
-
-    def register_callback(self, callback):
-        self._callbacks.append(callback)
 
 
 class DynATC(QQuickWidget):
@@ -66,19 +43,12 @@ class DynATC(QQuickWidget):
         if IN_DESIGNER:
             return
 
-        self.c = hal.component("dyn_atc")
-        self.c.newpin("cw", hal.HAL_BIT, hal.HAL_IN)
-        self.c.newpin("ccw", hal.HAL_BIT, hal.HAL_IN)
-        self.c.ready()
+        self.comp = hal.component("dyn_atc")
+        self.comp.ready()
 
-        pin_clockwise = Pin()
-        pin_counterclockwise = Pin()
-
-        pin_clockwise.register_callback(self.rotate_forward)
-        pin_counterclockwise.register_callback(self.rotate_reverse)
-
-        pin_clockwise.value = self.c.cw
-        pin_counterclockwise.value = self.c.ccw
+        timer = QTimer(self)
+        timer.timeout.connect(self.check_hal)
+        timer.start(500)
 
         inifile = os.getenv("INI_FILE_NAME")
         self.inifile = linuxcnc.ini(inifile)
@@ -180,3 +150,9 @@ class DynATC(QQuickWidget):
 
         self.rotateRevSig.emit(self.atc_position - 1)
         self.atc_position -= 1
+
+    def check_hal(self):
+        cw = hal.get_value("car-cw")
+        ccw = hal.get_value("car-ccw")
+
+        print(cw, ccw)
