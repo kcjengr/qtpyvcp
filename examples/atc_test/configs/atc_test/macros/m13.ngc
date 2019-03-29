@@ -5,7 +5,7 @@ o<m13> sub
 (print, o<M13> P#<p>)
 
 M64 P3 ; Move Motor FWD
-M66 P3 L1 Q10
+M66 P3 L2 Q10
  O120 if [#5399 LT 0]
       (abort, failed to home carousel)
       M65 P3; stop motor
