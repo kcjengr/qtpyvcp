@@ -29,7 +29,7 @@ WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 class DynATC(QQuickWidget):
     moveToPocketSig = Signal(int, int, arguments=['previous_pocket', 'pocket_num'])
 
-    toolInSpindleSig = Signal(int, arguments=['tool_num'])
+    #toolInSpindleSig = Signal(int, arguments=['tool_num'])
 
     rotateFwdSig = Signal(int, arguments=['position'])
     rotateRevSig = Signal(int, arguments=['position'])
@@ -76,8 +76,8 @@ class DynATC(QQuickWidget):
         self.load_tools()
         self.draw_tools()
 
-        STATUS.tool_table.notify(self.load_tools)
-        STATUS.pocket_prepped.notify(self.on_pocket_prepped)
+        # STATUS.tool_table.notify(self.load_tools)
+        # STATUS.pocket_prepped.notify(self.on_pocket_prepped)
 
     def hideEvent(self, *args, **kwargs):
         pass  # hack to prevent animation glitch
@@ -97,9 +97,9 @@ class DynATC(QQuickWidget):
         self.pockets = dict()
         self.tools = dict()
 
-        #for index, tool in self.tool_table.items():
-            # self.pockets[tool['P']] = tool['T']
-            # self.tools[tool['T']] = tool['P']
+        # for index, tool in self.tool_table.items():
+        #   self.pockets[tool['P']] = tool['T']
+        #   self.tools[tool['T']] = tool['P']
 
         for index, offset in enumerate(self.offsets):
             self.pockets[index + 1] = self.parameter[offset]
@@ -113,20 +113,20 @@ class DynATC(QQuickWidget):
                 if tool != 0:
                     self.showToolSig.emit(pocket, tool)
 
-    def on_pocket_prepped(self, pocket_num):
-
-        if pocket_num > 0:
-            self.draw_tools()
-
-            tool = self.status_tool_table[pocket_num][0]
-            next_pocket = self.tool_table[tool]['P']
-
-            self.moveToPocketSig.emit(self.atc_position - 1, next_pocket - 1)
-            self.atc_position = next_pocket
-
-        if pocket_num == -1:
-            tool = self.status_tool_table[self.atc_position][0]
-            self.hideToolSig.emit(tool)
+    # def on_pocket_prepped(self, pocket_num):
+    #
+    #     if pocket_num > 0:
+    #         self.draw_tools()
+    #
+    #         tool = self.status_tool_table[pocket_num][0]
+    #         next_pocket = self.tool_table[tool]['P']
+    #
+    #         self.moveToPocketSig.emit(self.atc_position - 1, next_pocket - 1)
+    #         self.atc_position = next_pocket
+    #
+    #     if pocket_num == -1:
+    #         tool = self.status_tool_table[self.atc_position][0]
+    #         self.hideToolSig.emit(tool)
 
     @Slot()
     def rotate_forward(self):
