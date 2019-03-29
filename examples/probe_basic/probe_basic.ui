@@ -2583,7 +2583,7 @@ font: 16pt &quot;Bebas Kai&quot;;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="SubCallButton" name="subcallbutton_12">
+                    <widget class="MDIButton" name="subcallbutton_16">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>1</horstretch>
@@ -2603,20 +2603,24 @@ font: 16pt &quot;Bebas Kai&quot;;
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+                      <string notr="true">font: 16pt &quot;Bebas Kai&quot;;</string>
                      </property>
                      <property name="text">
                       <string>DRAWBAR LOOSE</string>
                      </property>
-                     <property name="sub_name" stdset="0">
-                      <string>unclamptool.ngc</string>
+                     <property name="iconSize">
+                      <size>
+                       <width>20</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                     <property name="MDICommand" stdset="0">
+                      <string>M64 P2</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="SubCallButton" name="subcallbutton_13">
+                    <widget class="MDIButton" name="subcallbutton_6">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>1</horstretch>
@@ -2635,16 +2639,24 @@ font: 16pt &quot;Bebas Kai&quot;;
                        <height>45</height>
                       </size>
                      </property>
+                     <property name="layoutDirection">
+                      <enum>Qt::LeftToRight</enum>
+                     </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+                      <string notr="true">font: 16pt &quot;Bebas Kai&quot;;
+</string>
                      </property>
                      <property name="text">
                       <string>DRAWBAR TIGHT</string>
                      </property>
-                     <property name="sub_name" stdset="0">
-                      <string>clamptool.ngc</string>
+                     <property name="iconSize">
+                      <size>
+                       <width>20</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                     <property name="MDICommand" stdset="0">
+                      <string>M65 P2</string>
                      </property>
                     </widget>
                    </item>
@@ -2753,7 +2765,7 @@ font: 16pt &quot;Bebas Kai&quot;;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="SubCallButton" name="subcallbutton_14">
+                    <widget class="MDIButton" name="subcallbutton_17">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>1</horstretch>
@@ -2773,15 +2785,19 @@ font: 16pt &quot;Bebas Kai&quot;;
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+                      <string notr="true">font: 16pt &quot;Bebas Kai&quot;;</string>
                      </property>
                      <property name="text">
                       <string>REF CAROUSEL</string>
                      </property>
-                     <property name="sub_name" stdset="0">
-                      <string>m13.ngc</string>
+                     <property name="iconSize">
+                      <size>
+                       <width>20</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                     <property name="MDICommand" stdset="0">
+                      <string>m13</string>
                      </property>
                     </widget>
                    </item>
