@@ -1,3 +1,4 @@
+
 import os
 
 # Workarround for nvidia propietary drivers
@@ -10,6 +11,8 @@ ctypes.CDLL(ctypes.util.find_library("GL"), mode=ctypes.RTLD_GLOBAL)
 
 # end of Workarround
 
+
+import linuxcnc
 from qtpy.QtCore import Signal, Slot, QUrl
 from qtpy.QtQuickWidgets import QQuickWidget
 
@@ -45,7 +48,21 @@ class DynATC(QQuickWidget):
         self.engine().rootContext().setContextProperty("atc_spiner", self)
         url = QUrl.fromLocalFile(os.path.join(WIDGET_PATH, "atc.qml"))
 
-        self.setSource(url)
+        self.setSource(url)  # Fixme fails on qtdesigner
+
+        inifile = os.getenv("INI_FILE_NAME")
+        self.inifile = linuxcnc.ini(inifile)
+        parameter_file = self.inifile.find("RS274NGC", "PARAMETER_FILE")
+
+        self.parameter = dict()
+
+        with open(parameter_file) as param:
+            for line in param.read().splitlines():
+                offset = int(line[0:4])
+                val = float(line[5:])
+                self.parameter[offset] = val
+
+        print(self.parameter)
 
         self.atc_position = 1
 
