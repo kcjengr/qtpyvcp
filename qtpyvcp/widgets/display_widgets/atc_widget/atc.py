@@ -1,4 +1,3 @@
-
 import os
 
 # Workarround for nvidia propietary drivers
@@ -28,7 +27,6 @@ WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 class DynATC(QQuickWidget):
-
     moveToPocketSig = Signal(int, int, arguments=['previous_pocket', 'pocket_num'])
 
     toolInSpindleSig = Signal(int, arguments=['tool_num'])
@@ -37,7 +35,7 @@ class DynATC(QQuickWidget):
     rotateRevSig = Signal(int, arguments=['position'])
 
     showToolSig = Signal(int, int, arguments=['pocket', 'tool_num'])
-    hideToolSig = Signal(int,  arguments=['tool_num'])
+    hideToolSig = Signal(int, arguments=['tool_num'])
 
     def __init__(self, parent=None):
         super(DynATC, self).__init__(parent)
@@ -52,24 +50,28 @@ class DynATC(QQuickWidget):
 
         inifile = os.getenv("INI_FILE_NAME")
         self.inifile = linuxcnc.ini(inifile)
-        parameter_file = self.inifile.find("RS274NGC", "PARAMETER_FILE")
 
         self.parameter = dict()
-
-        with open(parameter_file) as param:
-            for line in param.read().splitlines():
-                offset = int(line[0:4])
-                val = float(line[5:])
-                self.parameter[offset] = val
-
-        print(self.parameter)
 
         self.atc_position = 1
 
         self.tool_table = None
         self.status_tool_table = None
-        self.pockets = None
+        self.pockets = dict()
         self.tools = None
+
+        self.offsets = [5190,
+                        5191,
+                        5192,
+                        5193,
+                        5194,
+                        5195,
+                        5196,
+                        5197,
+                        5198,
+                        5199,
+                        5200,
+                        5201]
 
         self.load_tools()
         self.draw_tools()
@@ -81,28 +83,39 @@ class DynATC(QQuickWidget):
         pass  # hack to prevent animation glitch
 
     def load_tools(self):
+        parameter_file = self.inifile.find("RS274NGC", "PARAMETER_FILE")
+
+        with open(parameter_file) as param:
+            for line in param.read().splitlines():
+                offset = int(line[0:4])
+                val = float(line[5:])
+                self.parameter[offset] = val
+
         self.tool_table = TOOLTABLE.getToolTable()
         self.status_tool_table = STATUS.tool_table
 
         self.pockets = dict()
         self.tools = dict()
 
-        for index, tool in self.tool_table.items():
-            self.pockets[tool['P']] = tool['T']
-            self.tools[tool['T']] = tool['P']
+        #for index, tool in self.tool_table.items():
+            # self.pockets[tool['P']] = tool['T']
+            # self.tools[tool['T']] = tool['P']
+
+        for index, offset in enumerate(self.offsets):
+            self.pockets[index + 1] = self.parameter[offset]
 
     def draw_tools(self):
-        for i in range(1, 12):
+        for i in range(1, 13):
             self.hideToolSig.emit(i)
 
         for pocket, tool in self.pockets.items():
             if 0 < pocket < 13:
-                self.showToolSig.emit(pocket, tool)
+                if tool != 0:
+                    self.showToolSig.emit(pocket, tool)
 
     def on_pocket_prepped(self, pocket_num):
 
         if pocket_num > 0:
-
             self.draw_tools()
 
             tool = self.status_tool_table[pocket_num][0]
