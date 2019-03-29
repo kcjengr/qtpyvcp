@@ -1,3 +1,4 @@
+import hal
 import os
 
 # Workarround for nvidia propietary drivers
@@ -22,14 +23,36 @@ LOG = logger.getLogger(__name__)
 STATUS = getPlugin('status')
 TOOLTABLE = getPlugin('tooltable')
 IN_DESIGNER = os.getenv('DESIGNER', False)
-
 WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
+
+
+class Pin:
+    def __init__(self, initial_value=0):
+        self._value = initial_value
+        self._callbacks = []
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, new_value):
+        old_value = self._value
+        self._value = new_value
+        self._notify_observers(old_value, new_value)
+
+    def _notify_observers(self, old_value, new_value):
+        for callback in self._callbacks:
+            callback(old_value, new_value)
+
+    def register_callback(self, callback):
+        self._callbacks.append(callback)
 
 
 class DynATC(QQuickWidget):
     moveToPocketSig = Signal(int, int, arguments=['previous_pocket', 'pocket_num'])
 
-    #toolInSpindleSig = Signal(int, arguments=['tool_num'])
+    # toolInSpindleSig = Signal(int, arguments=['tool_num'])
 
     rotateFwdSig = Signal(int, arguments=['position'])
     rotateRevSig = Signal(int, arguments=['position'])
@@ -43,13 +66,30 @@ class DynATC(QQuickWidget):
         if IN_DESIGNER:
             return
 
-        self.engine().rootContext().setContextProperty("atc_spiner", self)
-        url = QUrl.fromLocalFile(os.path.join(WIDGET_PATH, "atc.qml"))
+        self.c = hal.component("dyn_atc")
+        self.c.newpin("cw", hal.HAL_BIT, hal.HAL_IN)
+        self.c.newpin("ccw", hal.HAL_BIT, hal.HAL_IN)
+        self.c.ready()
 
-        self.setSource(url)  # Fixme fails on qtdesigner
+        pin_clockwise = Pin()
+        pin_counterclockwise = Pin()
+
+        pin_clockwise.register_callback(self.rotate_forward)
+        pin_counterclockwise.register_callback(self.rotate_reverse)
+
+        pin_clockwise.value = self.c.cw
+        pin_counterclockwise.value = self.c.ccw
 
         inifile = os.getenv("INI_FILE_NAME")
         self.inifile = linuxcnc.ini(inifile)
+
+        self.parameter_file = self.inifile.find("RS274NGC", "PARAMETER_FILE")
+
+        self.engine().rootContext().setContextProperty("atc_spiner", self)
+        qml_path = os.path.join(WIDGET_PATH, "atc.qml")
+        url = QUrl.fromLocalFile(qml_path)
+
+        self.setSource(url)  # Fixme fails on qtdesigner
 
         self.parameter = dict()
 
@@ -60,18 +100,20 @@ class DynATC(QQuickWidget):
         self.pockets = dict()
         self.tools = None
 
-        self.offsets = [5190,
-                        5191,
-                        5192,
-                        5193,
-                        5194,
-                        5195,
-                        5196,
-                        5197,
-                        5198,
-                        5199,
-                        5200,
-                        5201]
+        self.offsets = [
+            5190,
+            5191,
+            5192,
+            5193,
+            5194,
+            5195,
+            5196,
+            5197,
+            5198,
+            5199,
+            5200,
+            5201
+        ]
 
         self.load_tools()
         self.draw_tools()
@@ -83,9 +125,8 @@ class DynATC(QQuickWidget):
         pass  # hack to prevent animation glitch
 
     def load_tools(self):
-        parameter_file = self.inifile.find("RS274NGC", "PARAMETER_FILE")
 
-        with open(parameter_file) as param:
+        with open(self.parameter_file) as param:
             for line in param.read().splitlines():
                 offset = int(line[0:4])
                 val = float(line[5:])
@@ -130,10 +171,12 @@ class DynATC(QQuickWidget):
 
     @Slot()
     def rotate_forward(self):
+
         self.rotateFwdSig.emit(self.atc_position - 1)
         self.atc_position += 1
 
     @Slot()
     def rotate_reverse(self):
+
         self.rotateRevSig.emit(self.atc_position - 1)
         self.atc_position -= 1
