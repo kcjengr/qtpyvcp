@@ -101,10 +101,10 @@ setp near.1.difference 0.01
 setp scale.0.gain 0.1
 setp scale.0.offset -1 # to show-off index homing
 net car-pos scale.0.in
-net car-pos-div12 scale.0.out conv-float-s32.1.in
-net car-pos-div12-int conv-float-s32.1.out conv-s32-float.1.in
-net car-pos-div12-float conv-s32-float.1.out near.2.in2
-net car-pos-div12 near.2.in1
+net car-pos-div10 scale.0.out conv-float-s32.1.in
+net car-pos-div10-int conv-float-s32.1.out conv-s32-float.1.in
+net car-pos-div10-float conv-s32-float.1.out near.2.in2
+net car-pos-div10 near.2.in1
 net index near.2.out
 setp near.2.difference 0.009
 
