@@ -7,6 +7,8 @@ import ctypes
 import ctypes.util
 from pprint import pprint
 
+from qtpyvcp.utilities.obj_status import HALStatus
+
 ctypes.CDLL(ctypes.util.find_library("GL"), mode=ctypes.RTLD_GLOBAL)
 
 # end of Workarround
@@ -33,6 +35,8 @@ class DynATC(QQuickWidget):
 
     rotateFwdSig = Signal(int, arguments=['position'])
     rotateRevSig = Signal(int, arguments=['position'])
+    
+    rotateSig = Signal(int, arguments=['position'])
 
     showToolSig = Signal(int, int, arguments=['pocket', 'tool_num'])
     hideToolSig = Signal(int, arguments=['tool_num'])
@@ -43,12 +47,22 @@ class DynATC(QQuickWidget):
         if IN_DESIGNER:
             return
 
-        self.comp = hal.component("dyn_atc")
-        self.comp.ready()
+        self.atc_position = 0
+        self.prevous_car_position = None
+        self.direction = 0
 
-        timer = QTimer(self)
-        timer.timeout.connect(self.check_hal)
-        timer.start(500)
+        self.hal_stat = HALStatus()
+
+        self.car_pos = self.hal_stat.getHALPin('carpos.out')
+
+        self.car_pos.setLogChange(True)
+        self.car_pos.connect(self.rotate)
+
+        # self.hal_cw_pin.setLogChange(True)
+        # self.hal_cw_pin.connect(self.rotate_forward)
+        #
+        # self.hal_ccw_pin.setLogChange(True)
+        # self.hal_ccw_pin.connect(self.rotate_reverse)
 
         inifile = os.getenv("INI_FILE_NAME")
         self.inifile = linuxcnc.ini(inifile)
@@ -63,7 +77,6 @@ class DynATC(QQuickWidget):
 
         self.parameter = dict()
 
-        self.atc_position = 1
 
         self.tool_table = None
         self.status_tool_table = None
@@ -142,17 +155,38 @@ class DynATC(QQuickWidget):
     @Slot()
     def rotate_forward(self):
 
-        self.rotateFwdSig.emit(self.atc_position - 1)
+        print("rotate FW", self.atc_position)
+        self.rotateFwdSig.emit(self.atc_position)
         self.atc_position += 1
 
     @Slot()
     def rotate_reverse(self):
 
-        self.rotateRevSig.emit(self.atc_position - 1)
+        print("rotate BW", self.atc_position)
+        self.rotateRevSig.emit(self.atc_position)
         self.atc_position -= 1
 
-    def check_hal(self):
-        cw = hal.get_value("car-cw")
-        ccw = hal.get_value("car-ccw")
+    def rotate(self, car_pos):
+        direction = 0
 
-        print(cw, ccw)
+        if car_pos > self.direction:
+            direction = 1
+        elif car_pos < self.direction:
+            direction = -1
+
+        self.direction = car_pos
+
+        car_pos = int(car_pos)
+
+        if car_pos != self.prevous_car_position:
+
+            if direction < 0:
+                self.rotate_forward()
+            elif direction > 0:
+                self.rotate_reverse()
+
+            if self.prevous_car_position is None:
+                self.prevous_car_position = -9999
+            else:
+                self.prevous_car_position = car_pos
+

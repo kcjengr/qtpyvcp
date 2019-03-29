@@ -194,28 +194,28 @@ Rectangle {
         widget.anim.restart()
     }
 
-    function rotate_atc(name, tool_no, direction) {
+    function rotate_atc(widget, position, direction) {
         if (direction === 1) {
-            name.from = (360/12 * tool_no)
-            name.to = (360/12 * tool_no + 360/12)
+            widget.from = 360/12 * position
+            widget.to = 360/12 * position + 360/12
         }
         else if (direction === -1) {
-            name.from = (360/12 * tool_no)
-            name.to = (360/12 * tool_no - 360/12)
+            widget.from = 360/12 * position
+            widget.to = 360/12 * position - 360/12
         }
-        name.restart()
+        widget.restart()
     }
 
-    function rotate_tool(name, tool_no, direction) {
+    function rotate_tool(widget, tool_no, direction) {
         if (direction === 1) {
-            name.from = -(360/12 * tool_no)
-            name.to = -(360/12 * tool_no + 360/12)
+            widget.anim.from = -(360/12 * tool_no)
+            widget.anim.to = -(360/12 * tool_no + 360/12)
         }
         else if (direction === -1) {
-            name.from = -(360/12 * tool_no)
-            name.to = -(360/12 * tool_no - 360/12)
+            widget.anim.from = -(360/12 * tool_no)
+            widget.anim.to = -(360/12 * tool_no - 360/12)
         }
-        name.restart()
+        widget.anim.restart()
     }
 
     Connections {
@@ -247,24 +247,24 @@ Rectangle {
         onRotateFwdSig: {
             rotate_atc(atc_anim, position, 1);
 
-            for (var i = 0; i < tool_anim_list.length; i++) {
-                rotate_tool(tool_anim_list[i], position, 1);
+            for (var j = 0; j < pocket_slot.count; j++) {
+                rotate_tool(pocket_slot.itemAt(j), position, 1);
             }
 
-            for (var i = 0; i < pocket_anim_list.length; i++) {
-                rotate_tool(pocket_anim_list[i], position, 1);
+            for (var i = 0; i < (tool_slot.count); i++) {
+                rotate_tool(tool_slot.itemAt(i), position, 1);
             }
         }
 
         onRotateRevSig: {
             rotate_atc(atc_anim, position, -1);
 
-            for (var i = 0; i < tool_anim_list.length; i++) {
-                rotate_tool(tool_anim_list[i], position, -1);
+            for (var j = 0; j < pocket_slot.count; j++) {
+                rotate_tool(pocket_slot.itemAt(j), position, -1);
             }
 
-            for (var i = 0; i < pocket_anim_list.length; i++) {
-                rotate_tool(pocket_anim_list[i], position, -1);
+            for (var i = 0; i < (tool_slot.count); i++) {
+                rotate_tool(tool_slot.itemAt(i), position, -1);
             }
         }
     }
