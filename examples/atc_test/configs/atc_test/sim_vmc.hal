@@ -80,6 +80,7 @@ net bit2 bitslice.0.out-02
 net bit3 bitslice.0.out-03
 net bit4 bitslice.0.out-04
 
+
 # pulse and index output variant (untidy modmaths)
 loadrt conv_s32_float count=2
 loadrt conv_float_s32 count=3
@@ -98,13 +99,13 @@ net car-pos-float conv-s32-float.0.out near.1.in2
 net car-pos near.1.in1
 net pulse near.1.out
 setp near.1.difference 0.01
-setp scale.0.gain 0.1
+setp scale.0.gain 0.08333333
 setp scale.0.offset -1 # to show-off index homing
 net car-pos scale.0.in
-net car-pos-div10 scale.0.out conv-float-s32.1.in
-net car-pos-div10-int conv-float-s32.1.out conv-s32-float.1.in
-net car-pos-div10-float conv-s32-float.1.out near.2.in2
-net car-pos-div10 near.2.in1
+net car-pos-div12 scale.0.out conv-float-s32.1.in
+net car-pos-div12-int conv-float-s32.1.out conv-s32-float.1.in
+net car-pos-div12-float conv-s32-float.1.out near.2.in2
+net car-pos-div12 near.2.in1
 net index near.2.out
 setp near.2.difference 0.009
 
