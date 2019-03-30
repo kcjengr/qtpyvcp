@@ -239,24 +239,30 @@ set_work_coord.bindOk = _set_work_coord_bindOk
 # FEED HOLD action
 # -------------------------------------------------------------------------
 class feedhold:
+    """Feed Hold action Group"""
 
     # FIXME: Not sure what feedhold does, or how to turn it ON/OFF, if it even can be.
 
     @staticmethod
     def enable():
+        """Enables Feed Hold"""
         LOG.info("Setting feedhold ENABLED")
         CMD.set_feed_hold(1)
 
     @staticmethod
     def disable():
+        """Disables Feed Hold"""
         LOG.info("Setting feedhold DISABLED")
         CMD.set_feed_hold(0)
 
     @staticmethod
-    def toggle_enable():
+    def toggle():
+        """Toggles Feed Hold state"""
         if STAT.feed_hold_enabled:
+            LOG.info("Setting feedhold DISABLED")
             feedhold.disable()
         else:
+            LOG.info("Setting feedhold ENABLED")
             feedhold.enable()
 
     @staticmethod
@@ -267,9 +273,9 @@ class feedhold:
     def off():
         pass
 
-    @staticmethod
-    def toggle():
-        pass
+    #@staticmethod
+    #def toggle():
+    #    pass
 
 def _feed_hold_ok(widget=None):
     return True
@@ -277,8 +283,8 @@ def _feed_hold_ok(widget=None):
 def _feed_hold_bindOk(widget):
     pass
 
-feedhold.enable.ok = feedhold.disable.ok = feedhold.toggle_enable.ok = _feed_hold_ok
-feedhold.enable.bindOk = feedhold.disable.bindOk = feedhold.toggle_enable.bindOk = _feed_hold_bindOk
+feedhold.enable.ok = feedhold.disable.ok = feedhold.toggle.ok = _feed_hold_ok
+feedhold.enable.bindOk = feedhold.disable.bindOk = feedhold.toggle.bindOk = _feed_hold_bindOk
 
 # -------------------------------------------------------------------------
 # FEED OVERRIDE actions
