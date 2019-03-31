@@ -21805,38 +21805,6 @@ font: 11pt bebas kai;
     </hint>
    </hints>
   </connection>
-  <connection>
-   <sender>subcallbutton_15</sender>
-   <signal>clicked()</signal>
-   <receiver>dynatc</receiver>
-   <slot>rotate_reverse()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1381</x>
-     <y>290</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>868</x>
-     <y>284</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>subcallbutton_5</sender>
-   <signal>clicked()</signal>
-   <receiver>dynatc</receiver>
-   <slot>rotate_forward()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1497</x>
-     <y>280</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>871</x>
-     <y>309</y>
-    </hint>
-   </hints>
-  </connection>
  </connections>
  <designerdata>
   <property name="gridDeltaX">
