@@ -19,7 +19,7 @@ Rectangle {
         y: parent.height / 2 - height / 2
         antialiasing: true
         z: 0
-        rotation: 90
+        rotation: 0
         transformOrigin: Item.Center
         source: "images/carousel_12.png"
 
@@ -27,7 +27,7 @@ Rectangle {
         RotationAnimator {
             id: atc_anim
             target: atc_holder;
-            duration: 1000
+            duration: 500
             running: false
         }
 
@@ -48,9 +48,6 @@ Rectangle {
                 property string pocket_num: index+1
                 property var anim: pocket_anim
 
-
-
-
                 Rectangle {
                     id: pocket_rectangle
 
@@ -63,7 +60,7 @@ Rectangle {
                     anchors.top: parent.top
                     anchors.topMargin: 90
                     border.width: 2
-                    rotation: 30 * index -90
+                    rotation: 30 * index
 
 
                     Text {
@@ -119,7 +116,7 @@ Rectangle {
                     anchors.top: parent.top
                     anchors.topMargin: 4
                     border.width: 2
-                    rotation: 30 * index -90
+                    rotation: 30 * index
 
                     Text {
                         id: tool_text
@@ -265,6 +262,18 @@ Rectangle {
 
             for (var i = 0; i < (tool_slot.count); i++) {
                 rotate_tool(tool_slot.itemAt(i), position, -1);
+            }
+        }
+        onRotateSig: {
+            if (direction == 1){
+                atc_anim.from = atc_holder.rotation;
+                atc_anim.to = atc_holder.rotation + 30;
+                atc_anim.restart()
+            }else if (direction == -1){
+                atc_anim.from = atc_holder.rotation;
+                atc_anim.to = atc_holder.rotation - 30;
+                atc_anim.restart()
+
             }
         }
     }

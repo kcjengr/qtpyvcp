@@ -35,8 +35,8 @@ class DynATC(QQuickWidget):
 
     rotateFwdSig = Signal(int, arguments=['position'])
     rotateRevSig = Signal(int, arguments=['position'])
-    
-    rotateSig = Signal(int, arguments=['position'])
+
+    rotateSig = Signal(int, arguments=['direction'])
 
     showToolSig = Signal(int, int, arguments=['pocket', 'tool_num'])
     hideToolSig = Signal(int, arguments=['tool_num'])
@@ -47,22 +47,20 @@ class DynATC(QQuickWidget):
         if IN_DESIGNER:
             return
 
-        self.atc_position = 0
-        self.prevous_car_position = None
+        self.position = 0
+        self.previous_atc_position = 0
+
         self.direction = 0
+        self.previous_atc_direction = 0
 
         self.hal_stat = HALStatus()
 
-        self.car_pos = self.hal_stat.getHALPin('carpos.out')
+        self.car_position = self.hal_stat.getHALPin('carpos.out')
+        self.car_direction = self.hal_stat.getHALPin('cardir.out')
 
-        self.car_pos.setLogChange(True)
-        self.car_pos.connect(self.rotate)
+        self.car_position.setLogChange(True)
+        self.car_position.connect(self.rotate)
 
-        # self.hal_cw_pin.setLogChange(True)
-        # self.hal_cw_pin.connect(self.rotate_forward)
-        #
-        # self.hal_ccw_pin.setLogChange(True)
-        # self.hal_ccw_pin.connect(self.rotate_reverse)
 
         inifile = os.getenv("INI_FILE_NAME")
         self.inifile = linuxcnc.ini(inifile)
@@ -76,7 +74,6 @@ class DynATC(QQuickWidget):
         self.setSource(url)  # Fixme fails on qtdesigner
 
         self.parameter = dict()
-
 
         self.tool_table = None
         self.status_tool_table = None
@@ -101,11 +98,12 @@ class DynATC(QQuickWidget):
         self.load_tools()
         self.draw_tools()
 
-        # STATUS.tool_table.notify(self.load_tools)
-        # STATUS.pocket_prepped.notify(self.on_pocket_prepped)
+        STATUS.tool_table.notify(self.load_tools)
+        STATUS.pocket_prepped.notify(self.on_pocket_prepped)
+        STATUS.tool_in_spindle.notify(self.on_tool_in_spindle)
 
     def hideEvent(self, *args, **kwargs):
-        pass  # hack to prevent animation glitch
+        pass  # hack to prevent animation glitch when we are on another tab
 
     def load_tools(self):
 
@@ -136,57 +134,60 @@ class DynATC(QQuickWidget):
             if 0 < pocket < 13:
                 if tool != 0:
                     self.showToolSig.emit(pocket, tool)
-
-    # def on_pocket_prepped(self, pocket_num):
-    #
-    #     if pocket_num > 0:
-    #         self.draw_tools()
-    #
-    #         tool = self.status_tool_table[pocket_num][0]
-    #         next_pocket = self.tool_table[tool]['P']
-    #
-    #         self.moveToPocketSig.emit(self.atc_position - 1, next_pocket - 1)
-    #         self.atc_position = next_pocket
-    #
-    #     if pocket_num == -1:
-    #         tool = self.status_tool_table[self.atc_position][0]
-    #         self.hideToolSig.emit(tool)
-
     @Slot()
     def rotate_forward(self):
 
-        print("rotate FW", self.atc_position)
-        self.rotateFwdSig.emit(self.atc_position)
-        self.atc_position += 1
+        print("rotate FW", self.car_position)
+        self.rotateFwdSig.emit(self.car_position)
+        self.car_position += 1
 
     @Slot()
     def rotate_reverse(self):
 
-        print("rotate BW", self.atc_position)
-        self.rotateRevSig.emit(self.atc_position)
-        self.atc_position -= 1
+        print("rotate BW", self.car_position)
+        self.rotateRevSig.emit(self.car_position)
+        self.car_position -= 1
 
-    def rotate(self, car_pos):
-        direction = 0
+    def rotate(self, position):
 
-        if car_pos > self.direction:
-            direction = 1
-        elif car_pos < self.direction:
-            direction = -1
+        self.position = round(position)
 
-        self.direction = car_pos
+        if self.position != self.previous_atc_position:
+            print(self.position)
 
-        car_pos = int(car_pos)
+            direction = self.car_direction.getValue()
 
-        if car_pos != self.prevous_car_position:
+            if direction > 0:
+                self.rotateSig.emit(1)
+            elif direction < 0:
+                self.rotateSig.emit(-1)
 
-            if direction < 0:
-                self.rotate_forward()
-            elif direction > 0:
-                self.rotate_reverse()
+            self.previous_atc_position = self.position
 
-            if self.prevous_car_position is None:
-                self.prevous_car_position = -9999
-            else:
-                self.prevous_car_position = car_pos
+    def on_tool_in_spindle(self, tool):
+
+        print("tool_in_spindle", tool)
+        # self.hideToolSig.emit(tool)
+        self.load_tools()
+        self.draw_tools()
+
+    def on_pocket_prepped(self, pocket_num):
+
+        print("pocket_num", pocket_num)
+        self.load_tools()
+        self.draw_tools()
+
+        # if pocket_num > 0:
+        #
+        #     self.draw_tools()
+        #
+        #     tool = self.status_tool_table[pocket_num][0]
+        #     next_pocket = self.tool_table[tool]['P']
+        #
+        #     self.moveToPocketSig.emit(self.atc_position - 1, next_pocket - 1)
+        #     self.atc_position = next_pocket
+
+        # if pocket_num == -1:
+        #     tool = self.status_tool_table[self.atc_position][0]
+        #     self.hideToolSig.emit(tool)
 
