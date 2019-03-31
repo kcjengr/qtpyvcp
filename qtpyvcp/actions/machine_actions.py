@@ -259,29 +259,18 @@ class feedhold:
     def toggle():
         """Toggles Feed Hold state"""
         if STAT.feed_hold_enabled:
-            LOG.info("Setting feedhold DISABLED")
             feedhold.disable()
         else:
-            LOG.info("Setting feedhold ENABLED")
             feedhold.enable()
 
-    @staticmethod
-    def on():
-        pass
-
-    @staticmethod
-    def off():
-        pass
-
-    #@staticmethod
-    #def toggle():
-    #    pass
-
 def _feed_hold_ok(widget=None):
-    return True
+    return STAT.task_state == linuxcnc.STATE_ON and STAT.interp_state == linuxcnc.INTERP_IDLE
 
 def _feed_hold_bindOk(widget):
-    pass
+    widget.setEnabled(STAT.task_state == linuxcnc.STATE_ON)
+    widget.setChecked(STAT.feed_hold_enabled)
+    STATUS.task_state.notify(lambda s: widget.setEnabled(s == linuxcnc.STATE_ON))
+    STATUS.feed_hold_enabled.notify(widget.setChecked)
 
 feedhold.enable.ok = feedhold.disable.ok = feedhold.toggle.ok = _feed_hold_ok
 feedhold.enable.bindOk = feedhold.disable.bindOk = feedhold.toggle.bindOk = _feed_hold_bindOk
