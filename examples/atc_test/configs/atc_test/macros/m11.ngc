@@ -17,7 +17,6 @@ o<m11> sub
     O110 endif
 
     M64 P4 ; Move atc motor Rev
-    M111 P#<Steps_to_move>
 
     O120 do
         M66 P4 L1 Q3 ; wait for rising edge on rotation index

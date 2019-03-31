@@ -33,10 +33,8 @@ class DynATC(QQuickWidget):
 
     # toolInSpindleSig = Signal(int, arguments=['tool_num'])
 
-    rotateFwdSig = Signal(int, arguments=['position'])
-    rotateRevSig = Signal(int, arguments=['position'])
-
-    rotateSig = Signal(int, arguments=['direction'])
+    rotateFwdSig = Signal(int, arguments=['steps'])
+    rotateRevSig = Signal(int, arguments=['steps'])
 
     showToolSig = Signal(int, int, arguments=['pocket', 'tool_num'])
     hideToolSig = Signal(int, arguments=['tool_num'])
@@ -50,14 +48,19 @@ class DynATC(QQuickWidget):
         self.atc_position = 0
 
         self.comp = hal.component("atc_widget")
+        self.comp.newpin("steps_in", hal.HAL_FLOAT, hal.HAL_IN)
         self.comp.newpin("steps_cw", hal.HAL_FLOAT, hal.HAL_IN)
         self.comp.newpin("steps_ccw", hal.HAL_FLOAT, hal.HAL_IN)
         self.comp.ready()
 
         self.hal_stat = HALStatus()
 
+        self.steps_in = self.hal_stat.getHALPin('atc_widget.steps_in')
         self.steps_cw = self.hal_stat.getHALPin('atc_widget.steps_cw')
         self.steps_ccw = self.hal_stat.getHALPin('atc_widget.steps_ccw')
+
+        self.steps_in.setLogChange(True)
+        self.steps_in.connect(self.rotate)
 
         self.steps_cw.setLogChange(True)
         self.steps_cw.connect(self.rotate_forward)
@@ -138,17 +141,11 @@ class DynATC(QQuickWidget):
                 if tool != 0:
                     self.showToolSig.emit(pocket, tool)
 
-    @Slot()
-    def rotate_forward(self):
-
-        steps = self.steps_cw.getValue()
+    def rotate_forward(self, steps):
 
         self.rotateFwdSig.emit(steps)
 
-    @Slot()
-    def rotate_reverse(self):
-
-        steps = self.steps_ccw.getValue()
+    def rotate_reverse(self, steps):
 
         self.rotateRevSig.emit(steps)
 
@@ -178,4 +175,20 @@ class DynATC(QQuickWidget):
         # if pocket_num == -1:
         #     tool = self.status_tool_table[self.atc_position][0]
         #     self.hideToolSig.emit(tool)
+
+    def rotate(self):
+        steps = self.steps_in.getValue()
+
+        if steps > 6:
+            steps -= 12
+        elif steps < -6:
+            steps += 12
+
+        if steps > 0:
+            print("ROTATE FW", steps)
+            self.rotate_forward(steps)
+        elif steps < 0:
+            steps *= -1
+            print("ROTATE RE", steps)
+            self.rotate_reverse(steps)
 

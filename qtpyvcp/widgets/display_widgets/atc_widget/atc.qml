@@ -19,7 +19,7 @@ Rectangle {
         y: parent.height / 2 - height / 2
         antialiasing: true
         z: 0
-        rotation: 0
+        rotation: 90
         transformOrigin: Item.Center
         source: "images/carousel_12.png"
 
@@ -60,7 +60,7 @@ Rectangle {
                     anchors.top: parent.top
                     anchors.topMargin: 90
                     border.width: 2
-                    rotation: 30 * index
+                    rotation: 30 * index - 90
 
 
                     Text {
@@ -116,7 +116,7 @@ Rectangle {
                     anchors.top: parent.top
                     anchors.topMargin: 4
                     border.width: 2
-                    rotation: 30 * index
+                    rotation: 30 * index - 90
 
                     Text {
                         id: tool_text
@@ -191,26 +191,32 @@ Rectangle {
         widget.anim.restart()
     }
 
-    function rotate_atc(widget, position, direction) {
+    function rotate_atc(widget, steps, direction) {
         if (direction === 1) {
-            widget.from = 360/12 * position
-            widget.to = 360/12 * position + 360/12
+
+            widget.duration = 500 * steps;
+            widget.from = 360/12 * steps;
+            widget.to = 360/12 * steps + 360/12 * steps;
         }
         else if (direction === -1) {
-            widget.from = 360/12 * position
-            widget.to = 360/12 * position - 360/12
+            widget.duration = 500 * steps;
+            widget.from = 360/12 * steps;
+            widget.to = 360/12 * steps - 360/12 * steps;
         }
         widget.restart()
     }
 
-    function rotate_tool(widget, tool_no, direction) {
+    function rotate_tool(widget, steps, direction) {
         if (direction === 1) {
-            widget.anim.from = -(360/12 * tool_no)
-            widget.anim.to = -(360/12 * tool_no + 360/12)
+
+            widget.anim.duration = 500 * steps;
+            widget.anim.from = 360/12 * steps;
+            widget.anim.to = 360/12 * steps + 360/12 * steps;
         }
         else if (direction === -1) {
-            widget.anim.from = -(360/12 * tool_no)
-            widget.anim.to = -(360/12 * tool_no - 360/12)
+            widget.anim.duration = 500 * steps;
+            widget.anim.from = 360/12 * steps;
+            widget.anim.to = 360/12 * steps - 360/12 * steps;
         }
         widget.anim.restart()
     }
@@ -243,26 +249,26 @@ Rectangle {
 
         onRotateFwdSig: {
 
-            rotate_atc(atc_anim, position, 1);
+            rotate_atc(atc_anim, steps, 1);
 
             for (var j = 0; j < pocket_slot.count; j++) {
-                rotate_tool(pocket_slot.itemAt(j), position, 1);
+                rotate_tool(pocket_slot.itemAt(j), steps, 1);
             }
 
             for (var i = 0; i < (tool_slot.count); i++) {
-                rotate_tool(tool_slot.itemAt(i), position, 1);
+                rotate_tool(tool_slot.itemAt(i), steps, 1);
             }
         }
 
         onRotateRevSig: {
-            rotate_atc(atc_anim, position, -1);
+            rotate_atc(atc_anim, steps, -1);
 
             for (var j = 0; j < pocket_slot.count; j++) {
-                rotate_tool(pocket_slot.itemAt(j), position, -1);
+                rotate_tool(pocket_slot.itemAt(j), steps, -1);
             }
 
             for (var i = 0; i < (tool_slot.count); i++) {
-                rotate_tool(tool_slot.itemAt(i), position, -1);
+                rotate_tool(tool_slot.itemAt(i), steps, -1);
             }
         }
 

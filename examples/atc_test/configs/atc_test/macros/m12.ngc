@@ -17,8 +17,6 @@ o<m12> sub
     O110 endif
 
     M64 P3 ; Move atc motor FWD
-    M112 P#<Steps_to_move>
-
 
     O120 do
         M66 P4 L2 Q3 ; wait for falling edge on rotation index

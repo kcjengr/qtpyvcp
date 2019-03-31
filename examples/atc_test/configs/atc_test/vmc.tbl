@@ -12,3 +12,4 @@ T10    P10    X0.0     Y0.0     Z0.2     D0.5     ; tool 10
 T11    P11    X0.0     Y0.0     Z3.75    D0.3125  ; tool 11
 T12    P12    X0.0     Y0.0     Z4.0     D0.25    ; tool 12
 T14    P14    X0.0     Y0.0     Z2.75    D1.25    ; tool 14
+T13    P13    X0.0     Y0.0     Z0.0     D0.0     ; New Tool
