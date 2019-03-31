@@ -242,6 +242,7 @@ Rectangle {
         }
 
         onRotateFwdSig: {
+
             rotate_atc(atc_anim, position, 1);
 
             for (var j = 0; j < pocket_slot.count; j++) {
@@ -264,17 +265,6 @@ Rectangle {
                 rotate_tool(tool_slot.itemAt(i), position, -1);
             }
         }
-        onRotateSig: {
-            if (direction == 1){
-                atc_anim.from = atc_holder.rotation;
-                atc_anim.to = atc_holder.rotation + 30;
-                atc_anim.restart()
-            }else if (direction == -1){
-                atc_anim.from = atc_holder.rotation;
-                atc_anim.to = atc_holder.rotation - 30;
-                atc_anim.restart()
 
-            }
-        }
     }
 }

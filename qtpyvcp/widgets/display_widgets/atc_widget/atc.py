@@ -47,20 +47,23 @@ class DynATC(QQuickWidget):
         if IN_DESIGNER:
             return
 
-        self.position = 0
-        self.previous_atc_position = 0
+        self.atc_position = 0
 
-        self.direction = 0
-        self.previous_atc_direction = 0
+        self.comp = hal.component("atc_widget")
+        self.comp.newpin("steps_cw", hal.HAL_FLOAT, hal.HAL_IN)
+        self.comp.newpin("steps_ccw", hal.HAL_FLOAT, hal.HAL_IN)
+        self.comp.ready()
 
         self.hal_stat = HALStatus()
 
-        self.car_position = self.hal_stat.getHALPin('carpos.out')
-        self.car_direction = self.hal_stat.getHALPin('cardir.out')
+        self.steps_cw = self.hal_stat.getHALPin('atc_widget.steps_cw')
+        self.steps_ccw = self.hal_stat.getHALPin('atc_widget.steps_ccw')
 
-        self.car_position.setLogChange(True)
-        self.car_position.connect(self.rotate)
+        self.steps_cw.setLogChange(True)
+        self.steps_cw.connect(self.rotate_forward)
 
+        self.steps_ccw.setLogChange(True)
+        self.steps_ccw.connect(self.rotate_reverse)
 
         inifile = os.getenv("INI_FILE_NAME")
         self.inifile = linuxcnc.ini(inifile)
@@ -134,35 +137,20 @@ class DynATC(QQuickWidget):
             if 0 < pocket < 13:
                 if tool != 0:
                     self.showToolSig.emit(pocket, tool)
+
     @Slot()
     def rotate_forward(self):
 
-        print("rotate FW", self.car_position)
-        self.rotateFwdSig.emit(self.car_position)
-        self.car_position += 1
+        steps = self.steps_cw.getValue()
+
+        self.rotateFwdSig.emit(steps)
 
     @Slot()
     def rotate_reverse(self):
 
-        print("rotate BW", self.car_position)
-        self.rotateRevSig.emit(self.car_position)
-        self.car_position -= 1
+        steps = self.steps_ccw.getValue()
 
-    def rotate(self, position):
-
-        self.position = round(position)
-
-        if self.position != self.previous_atc_position:
-            print(self.position)
-
-            direction = self.car_direction.getValue()
-
-            if direction > 0:
-                self.rotateSig.emit(1)
-            elif direction < 0:
-                self.rotateSig.emit(-1)
-
-            self.previous_atc_position = self.position
+        self.rotateRevSig.emit(steps)
 
     def on_tool_in_spindle(self, tool):
 

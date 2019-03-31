@@ -1,30 +1,36 @@
 o<m12> sub
 
-; Move tool carousel CW Parameter P number of steps
-; Without parameter one step CW.
-; Parameter #5170 is used to track the current tool pocket (persistently)
-(print, o<M12> P#<p>)
-O100 if [EXISTS[#<p>]]
-   #<Steps_to_move> = #<p>
-O100 else
-   #<Steps_to_move>=1
-O100 endif
-O110 if [#5171 NE 1]
-      (abort, atc not homed-m13 to home)
-O110 endif
-     
-M64 P3 ; Move atc motor FWD
+    ; Move tool carousel CW Parameter P number of steps
+    ; Without parameter one step CW.
+    ; Parameter #5170 is used to track the current tool pocket (persistently)
+    (print, o<M12> P#<p>)
 
-O120 do
-   M66 P4 L2 Q3 ; wait for falling edge on rotation index
-   O130 if [#5399 LT 0]
-      (abort, failed to get rotation index)
-      M65 P3 ; Stop atc motor
-   O130 endif
-   #5170 = [[[#5170-2] MOD 12]+1]    ;Pocket is no.1-12
-   #<Steps_to_move> = [#<Steps_to_move>-1]
-O120 while [#<Steps_to_move> GT 0]
-M65 P3 ; Stop motor
+    O100 if [EXISTS[#<p>]]
+        #<Steps_to_move> = #<p>
+    O100 else
+        #<Steps_to_move>=1
+    O100 endif
+
+    O110 if [#5171 NE 1]
+        (print, atc not homed homing)
+        M13
+    O110 endif
+
+    M64 P3 ; Move atc motor FWD
+    M112 P#<Steps_to_move>
+
+
+    O120 do
+        M66 P4 L2 Q3 ; wait for falling edge on rotation index
+        O130 if [#5399 LT 0]
+            (abort, failed to get rotation index)
+            M65 P3 ; Stop atc motor
+        O130 endif
+        #5170 = [[[#5170-2] MOD 12]+1]    ;Pocket is no.1-12
+        #<Steps_to_move> = [#<Steps_to_move>-1]
+    O120 while [#<Steps_to_move> GT 0]
+
+    M65 P3 ; Stop motor
 
 o<m12> endsub [1]
 

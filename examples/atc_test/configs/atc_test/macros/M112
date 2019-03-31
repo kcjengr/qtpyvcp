@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+halcmd setp atc_widget.steps_cw $1
+exit 0
