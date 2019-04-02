@@ -20,7 +20,7 @@ o<m12> sub
     M64 P3 ; Move atc motor FWD
 
     O120 do
-        M66 P4 L2 Q3 ; wait for falling edge on rotation index
+        M66 P4 L1 Q3 ; wait for falling edge on rotation index
         O130 if [#5399 LT 0]
             (abort, failed to get rotation index)
             M65 P3 ; Stop atc motor
