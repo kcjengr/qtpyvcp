@@ -4,6 +4,7 @@ o<m12> sub
     ; Without parameter one step CW.
     ; Parameter #5170 is used to track the current tool pocket (persistently)
     (print, o<M12> P#<p>)
+    M112 P#<p>
 
     O100 if [EXISTS[#<p>]]
         #<Steps_to_move> = #<p>
@@ -12,7 +13,7 @@ o<m12> sub
     O100 endif
 
     O110 if [#5171 NE 1]
-        (print, atc not homed homing)
+        (print, atc not homed, homing)
         M13
     O110 endif
 
@@ -29,6 +30,7 @@ o<m12> sub
     O120 while [#<Steps_to_move> GT 0]
 
     M65 P3 ; Stop motor
+    #<_my_current_pocket> = #5170
 
 o<m12> endsub [1]
 

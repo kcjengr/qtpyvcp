@@ -1,4 +1,3 @@
-import hal
 import os
 
 # Workarround for nvidia propietary drivers
@@ -7,7 +6,7 @@ import ctypes
 import ctypes.util
 from pprint import pprint
 
-from qtpyvcp.utilities.obj_status import HALStatus
+from qtpyvcp.utilities.obj_status import HALPin
 
 ctypes.CDLL(ctypes.util.find_library("GL"), mode=ctypes.RTLD_GLOBAL)
 
@@ -47,26 +46,33 @@ class DynATC(QQuickWidget):
 
         self.atc_position = 0
 
-        self.comp = hal.component("atc_widget")
-        self.comp.newpin("steps_in", hal.HAL_FLOAT, hal.HAL_IN)
-        self.comp.newpin("steps_cw", hal.HAL_FLOAT, hal.HAL_IN)
-        self.comp.newpin("steps_ccw", hal.HAL_FLOAT, hal.HAL_IN)
-        self.comp.ready()
+        self.cw_pin = HALPin('cw', 's32', 'IN', "0")
+        self.ccw_pin = HALPin('ccw', 's32', 'IN', "0")
 
-        self.hal_stat = HALStatus()
+        self.cw_pin.connect(self.rotate_fw)
+        self.ccw_pin.connect(self.rotate_rev)
 
-        self.steps_in = self.hal_stat.getHALPin('atc_widget.steps_in')
-        self.steps_cw = self.hal_stat.getHALPin('atc_widget.steps_cw')
-        self.steps_ccw = self.hal_stat.getHALPin('atc_widget.steps_ccw')
-
-        self.steps_in.setLogChange(True)
-        self.steps_in.connect(self.rotate)
-
-        self.steps_cw.setLogChange(True)
-        self.steps_cw.connect(self.rotate_forward)
-
-        self.steps_ccw.setLogChange(True)
-        self.steps_ccw.connect(self.rotate_reverse)
+        #
+        # self.comp = hal.component("atc_widget")
+        # self.comp.newpin("steps_in", hal.HAL_FLOAT, hal.HAL_IN)
+        # self.comp.newpin("steps_cw", hal.HAL_FLOAT, hal.HAL_IN)
+        # self.comp.newpin("steps_ccw", hal.HAL_FLOAT, hal.HAL_IN)
+        # self.comp.ready()
+        #
+        # self.hal_stat = HALStatus()
+        #
+        # # self.steps_in = self.hal_stat.getHALPin('atc_widget.steps_in')
+        # self.steps_cw = self.hal_stat.getHALPin('atc_widget.steps_cw')
+        # self.steps_ccw = self.hal_stat.getHALPin('atc_widget.steps_ccw')
+        # #
+        # # self.steps_in.setLogChange(True)
+        # # self.steps_in.connect(self.rotate)
+        #
+        # self.steps_ccw.setLogChange(True)
+        # self.steps_ccw.connect(self.rotate_fw)
+        #
+        # self.steps_cw.setLogChange(True)
+        # self.steps_cw.connect(self.rotate_rev)
 
         inifile = os.getenv("INI_FILE_NAME")
         self.inifile = linuxcnc.ini(inifile)
@@ -141,14 +147,6 @@ class DynATC(QQuickWidget):
                 if tool != 0:
                     self.showToolSig.emit(pocket, tool)
 
-    def rotate_forward(self, steps):
-
-        self.rotateFwdSig.emit(steps)
-
-    def rotate_reverse(self, steps):
-
-        self.rotateRevSig.emit(steps)
-
     def on_tool_in_spindle(self, tool):
 
         print("tool_in_spindle", tool)
@@ -176,19 +174,53 @@ class DynATC(QQuickWidget):
         #     tool = self.status_tool_table[self.atc_position][0]
         #     self.hideToolSig.emit(tool)
 
-    def rotate(self):
-        steps = self.steps_in.getValue()
+    def rotate_fw(self, *args, **kwargs):
+        print(args, kwargs)
 
-        if steps > 6:
-            steps -= 12
-        elif steps < -6:
-            steps += 12
+        steps = args[0]
 
-        if steps > 0:
-            print("ROTATE FW", steps)
-            self.rotate_forward(steps)
-        elif steps < 0:
-            steps *= -1
-            print("ROTATE RE", steps)
-            self.rotate_reverse(steps)
+        print("#### FORWARD {} steps".format(steps))
+
+        self.rotateFwdSig.emit(steps)
+
+
+        #
+        # if steps > 6:
+        #     steps -= 12
+        # elif steps < -6:
+        #     steps += 12
+        #
+        # steps += 1
+        #
+        # if steps > 0:
+        #     print("ROTATE FW", steps)
+        #     self.rotate_forward(steps)
+        # elif steps < 0:
+        #     steps *= -1
+        #     print("ROTATE RE", steps)
+        #     self.rotate_reverse(steps)
+
+    def rotate_rev(self, *args, **kwargs):
+        print(args, kwargs)
+
+        steps = args[0]
+
+        print("#### REVERSE {} steps".format(steps))
+
+        self.rotateRevSig.emit(steps)
+        #
+        # if steps > 6:
+        #     steps -= 12
+        # elif steps < -6:
+        #     steps += 12
+        #
+        # steps += 1
+        #
+        # if steps > 0:
+        #     print("ROTATE FW", steps)
+        #     self.rotate_forward(steps)
+        # elif steps < 0:
+        #     steps *= -1
+        #     print("ROTATE RE", steps)
+        #     self.rotate_reverse(steps)
 

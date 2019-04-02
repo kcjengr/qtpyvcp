@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 
-halcmd setp atc_widget.steps_ccw $1
+P=$1
+echo "CW ${P}"
+
+halcmd setp cw ${P}
 exit 0

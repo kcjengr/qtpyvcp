@@ -8,7 +8,6 @@ o<m10> sub
     O110 endif
 
     #<steps> = [#5170 - #<p>]
-    M110 P[#<steps>]
     (print, o<M10> P#<p>, steps=#<steps>)
 
     o1000 if [#<steps> GT 6]

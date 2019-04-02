@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
-echo TEST
-halcmd setp atc_widget.steps_in $1
+
+P=$1
+echo "IN ${P}"
+
+halcmd setp atc_widget.steps_in ${P}
 exit 0

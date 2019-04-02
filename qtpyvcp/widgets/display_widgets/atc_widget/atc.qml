@@ -190,25 +190,25 @@ Rectangle {
 
         widget.anim.restart()
     }
+    property int atc_rotation: 10;
 
     function rotate_atc(widget, steps, direction) {
-        if (direction === 1) {
 
-            widget.duration = 500 * steps;
-            widget.from = 360/12 * steps;
-            widget.to = 360/12 * steps + 360/12 * steps;
-        }
-        else if (direction === -1) {
-            widget.duration = 500 * steps;
-            widget.from = 360/12 * steps;
-            widget.to = 360/12 * steps - 360/12 * steps;
-        }
-        widget.restart()
+        widget.duration = 1000 * steps;
+        widget.from = atc_rotation;
+
+        if (direction === 1)
+            atc_rotation = atc_holder.rotation + 360/12 * steps;
+        else if (direction === -1)
+            atc_rotation = atc_holder.rotation - 360/12 * steps;
+
+        widget.to = atc_rotation;
+
+        widget.restart();
     }
 
     function rotate_tool(widget, steps, direction) {
         if (direction === 1) {
-
             widget.anim.duration = 500 * steps;
             widget.anim.from = 360/12 * steps;
             widget.anim.to = 360/12 * steps + 360/12 * steps;
@@ -217,13 +217,12 @@ Rectangle {
             widget.anim.duration = 500 * steps;
             widget.anim.from = 360/12 * steps;
             widget.anim.to = 360/12 * steps - 360/12 * steps;
-        }
+        };
         widget.anim.restart()
     }
 
     Connections {
         target: atc_spiner
-
 
         onHideToolSig: {
             tool_slot.itemAt(tool_num - 1).state = "hidden";
@@ -251,25 +250,25 @@ Rectangle {
 
             rotate_atc(atc_anim, steps, 1);
 
-            for (var j = 0; j < pocket_slot.count; j++) {
-                rotate_tool(pocket_slot.itemAt(j), steps, 1);
-            }
+//            for (var j = 0; j < pocket_slot.count; j++) {
+//                rotate_tool(pocket_slot.itemAt(j), steps, 1);
+//            }
 
-            for (var i = 0; i < (tool_slot.count); i++) {
-                rotate_tool(tool_slot.itemAt(i), steps, 1);
-            }
+//            for (var i = 0; i < (tool_slot.count); i++) {
+//                rotate_tool(tool_slot.itemAt(i), steps, 1);
+//            }
         }
 
         onRotateRevSig: {
             rotate_atc(atc_anim, steps, -1);
 
-            for (var j = 0; j < pocket_slot.count; j++) {
-                rotate_tool(pocket_slot.itemAt(j), steps, -1);
-            }
+//            for (var j = 0; j < pocket_slot.count; j++) {
+//                rotate_tool(pocket_slot.itemAt(j), steps, -1);
+//            }
 
-            for (var i = 0; i < (tool_slot.count); i++) {
-                rotate_tool(tool_slot.itemAt(i), steps, -1);
-            }
+//            for (var i = 0; i < (tool_slot.count); i++) {
+//                rotate_tool(tool_slot.itemAt(i), steps, -1);
+//            }
         }
 
     }
