@@ -1,11 +1,12 @@
-import _hal, hal
-import linuxcnc
+"""QPin"""
 
+import _hal, hal
 from qtpy.QtCore import QObject, Signal
 
+
 class QPin(QObject, hal.Pin):
-    """QPin object, represents a single LinuxCNC HAL pin, enables reading.
-        writing and connecting slots to be called when the HAL pin value changes.
+    """QPin object, represents a single HAL pin.
+    writing and connecting slots to be called when the HAL pin value changes.
 
     Attributes:
         log_change (bool):      whether to log changes of pin's value
@@ -18,59 +19,81 @@ class QPin(QObject, hal.Pin):
 
     valueChanged = Signal([bool], [float], [int])
 
-    REGISTRY = []
-    UPDATE = False
-
-    def __init__(self, *a, **kw):
-        QObject.__init__(self)
-        hal.Pin.__init__(self, *a, **kw)
-        self._item_wrap(self._item)
+    def __init__(self, item):
+        super(QPin, self).__init__(item=item)
+        print "##################"
+        # self._item_wrap(self._item)
         self._prev = None
-        self.REGISTRY.append(self)
-        self.update_start()
 
-    def update(self):
-        tmp = self.get()
-        if tmp != self._prev:
-            self.emit('value-changed')
-        self._prev = tmp
+        # start the QPin update timer
+        self.startTimer(100)
 
-    @classmethod
-    def update_all(self):
-        if not self.UPDATE:
-            return
-        kill = []
-        for p in self.REGISTRY:
-            try:
-                p.update()
-            except:
-                kill.append(p)
-                print "Error updating pin %s; Removing" % p
-        for p in kill:
-            self.REGISTRY.remove(p)
-        return self.UPDATE
+    # @classmethod
+    # def update_all(self):
+    #     if not self.UPDATE:
+    #         return
+    #     kill = []
+    #     for p in self.REGISTRY:
+    #         try:
+    #             p.update()
+    #         except:
+    #             kill.append(p)
+    #             print "Error updating pin %s; Removing" % p
+    #     for p in kill:
+    #         self.REGISTRY.remove(p)
+    #     return self.UPDATE
 
-    @classmethod
-    def update_start(self, timeout=100):
-        if GPin.UPDATE:
-            return
-        GPin.UPDATE = True
-        gobject.timeout_add(timeout, self.update_all)
+    def timerEvent(self, timer):
+        print "Timout"
+        # tmp = self.get()
+        # if tmp != self._prev:
+        #     self.valueChanged.emit(tmp)
+        # self._prev = tmp
 
-    @classmethod
-    def update_stop(self, timeout=100):
-        GPin.UPDATE = False
 
-class GComponent:
-    def __init__(self, comp):
-        if isinstance(comp, GComponent):
-            comp = comp.comp
-        self.comp = comp
+class QHalComponent(_hal.component):
+    def __init__(self, comp_name):
+        super(QHalComponent, self).__init__(comp_name)
 
-    def newpin(self, *a, **kw): return GPin(_hal.component.newpin(self.comp, *a, **kw))
-    def getpin(self, *a, **kw): return GPin(_hal.component.getpin(self.comp, *a, **kw))
+    def newPin(self, *a, **kw):
+        return QPin(self.newpin(*a, **kw))
 
-    def exit(self, *a, **kw): return self.comp.exit(*a, **kw)
+    def getPin(self, *a, **kw):
+        return QPin(self.getpin(*a, **kw))
 
-    def __getitem__(self, k): return self.comp[k]
-    def __setitem__(self, k, v): self.comp[k] = v
+    # def exit(self, *a, **kw):
+    #     return self.exit(*a, **kw)
+    #
+    # def __getitem__(self, k):
+    #     return self.comp[k]
+    #
+    # def __setitem__(self, k, v):
+    #     self.comp[k] = v
+
+
+class QTestPin(QObject):
+    def __init__(self):
+        super(QTestPin, self).__init__()
+
+        self.startTimer(100)
+
+    def timerEvent(self, timer):
+        print "timout"
+
+
+def main():
+    from qtpy.QtWidgets import QApplication
+
+    app = QApplication([])
+
+    c = QHalComponent('test')
+    c.newPin('input', hal.HAL_BIT, hal.HAL_IN)
+    c.ready()
+
+    print c
+
+    app.exec_()
+
+
+if __name__ == "__main__":
+    main()
