@@ -426,7 +426,7 @@ QComboBox QAbstractItemView{
                 <number>0</number>
                </property>
                <property name="bottomMargin">
-                <number>1</number>
+                <number>0</number>
                </property>
                <item>
                 <widget class="QWidget" name="vtk_control_buttons" native="true">
@@ -451,6 +451,7 @@ QComboBox QAbstractItemView{
                  <property name="styleSheet">
                   <string notr="true">QWidget{
     background: rgb(32, 36, 37);
+    border: none;
 }</string>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -1483,6 +1484,14 @@ QPushButton:checked {
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">VTKBackPlot {
+    border: solid;
+    border-color: white;
+    border-width: 2px;
+    border-radius: 8px;
+}</string>
                  </property>
                  <property name="backgroundColor" stdset="0">
                   <color>
@@ -14133,7 +14142,7 @@ QTabBar::tab:only-one {
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -17532,6 +17541,9 @@ border-radius: 1px;
              </property>
              <property name="text">
               <string>REFERENCE ALL</string>
+             </property>
+             <property name="rules" stdset="0">
+              <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:all_axes_homed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'MACHINE REFERENCED' if ch[0] else 'REFERENCE ALL'&quot;, &quot;name&quot;: &quot;reference_all&quot;}]</string>
              </property>
              <property name="actionName" stdset="0">
               <string>machine.home.all</string>
