@@ -98,13 +98,21 @@ setup(
     entry_points={
         'console_scripts': [
             'qtpyvcp=qtpyvcp:main',
+            'qcompile=qtpyvcp.tools.qcompile:main',
+            'editvcp=qtpyvcp.tools.editvcp:main',
+
+            # example VCPs
             'mini=examples.mini:main',
             'brender=examples.brender:main',
             'probebasic=examples.probe_basic:main',
             'probebasic_vertical=examples.probe_basic_vertical:main',
             'probebasic_lathe=examples.probe_basic_lathe:main',
-            'qcompile=qtpyvcp.tools.qcompile:main',
-            'editvcp=qtpyvcp.tools.editvcp:main',
+
+            # test VCPs
+            'vtk_test=video_tests.vtk_test:main',
+            'opengl_test=video_tests.opengl_test:main',
+            'qtpyvcp_test=video_tests.qtpyvcp_test:main',
+
         ],
         'qtpyvcp.example_vcp': [
             'mini=examples.mini',
@@ -114,7 +122,7 @@ setup(
             'probe_basic_lathe=examples.probe_basic_lathe',
         ],
         'qtpyvcp.test_vcp': [
-            'vtk_test=video_tests.vkt_test',
+            'vtk_test=video_tests.vtk_test',
             'opengl_test=video_tests.opengl_test',
             'qtpyvcp_test=video_tests.qtpyvcp_test',
         ],

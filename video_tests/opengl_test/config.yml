@@ -6,7 +6,7 @@ qtdesigner:
   qss_file: ( application.kwargs.stylesheet )
 
 vcp:
-  name: opengl_test
+  name: OpenGL Test
   version: v0.0.1
   author: My Name
   description: >

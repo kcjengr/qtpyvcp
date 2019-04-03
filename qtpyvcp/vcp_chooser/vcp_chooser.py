@@ -93,6 +93,7 @@ class VCPChooser(QDialog):
             vcp_name = vcp_data.get('name', entry_point.name)
 
         except:
+            raise 
             vcp_name = entry_point.name
 
         self._vcp_data[vcp_name] = vcp_data
