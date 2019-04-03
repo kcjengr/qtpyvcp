@@ -1,84 +1,60 @@
 """QPin"""
 
 import _hal, hal
-from qtpy.QtCore import QObject, Signal
+from qtpy.QtCore import QObject, Signal, QTimer
 
 
-class QPin(QObject, hal.Pin):
-    """QPin object, represents a single HAL pin.
-    writing and connecting slots to be called when the HAL pin value changes.
+class QPin(QObject):
 
-    Attributes:
-        log_change (bool):      whether to log changes of pin's value
-        pin_name (str):         the name of the HAL pin
-        settable (bool):        weather the HAL pin is writable
-        type (type):            the python type of the HAL pin
-        value (varies):         the value of the HAL pin as of last check
-        valueChanged (QtSignal): signal emitted when the HAL pin value changes
-    """
+    valueChanged = Signal(object)
 
-    valueChanged = Signal([bool], [float], [int])
+    def __init__(self, comp, name, typ, dir):
+        super(QPin, self).__init__()
 
-    def __init__(self, item):
-        super(QPin, self).__init__(item=item)
-        print "##################"
-        # self._item_wrap(self._item)
-        self._prev = None
+        self._pin = _hal.component.newpin(comp, name, typ, dir)
+        self._val = self._pin.get()
 
-        # start the QPin update timer
         self.startTimer(100)
 
-    # @classmethod
-    # def update_all(self):
-    #     if not self.UPDATE:
-    #         return
-    #     kill = []
-    #     for p in self.REGISTRY:
-    #         try:
-    #             p.update()
-    #         except:
-    #             kill.append(p)
-    #             print "Error updating pin %s; Removing" % p
-    #     for p in kill:
-    #         self.REGISTRY.remove(p)
-    #     return self.UPDATE
-
     def timerEvent(self, timer):
-        print "Timout"
-        # tmp = self.get()
-        # if tmp != self._prev:
-        #     self.valueChanged.emit(tmp)
-        # self._prev = tmp
+        tmp = self._pin.get()
+        print tmp, type(tmp)
+        if tmp != self._val:
+            self.valueChanged.emit(tmp)
+            self._val = tmp
+
+    @property
+    def value(self):
+        return self._pin.get()
+
+    @value.setter
+    def value(self, val):
+        pass
 
 
-class QHalComponent(_hal.component):
+class QComponent(QObject):
     def __init__(self, comp_name):
-        super(QHalComponent, self).__init__(comp_name)
+        super(QComponent, self).__init__()
+        self._comp = _hal.component(comp_name)
+        self._pins = {}
 
-    def newPin(self, *a, **kw):
-        return QPin(self.newpin(*a, **kw))
+    def newPin(self, name, typ, dir):
+        pin = QPin(self._comp, name, typ, dir)
+        self._pins[name] = pin
 
     def getPin(self, *a, **kw):
         return QPin(self.getpin(*a, **kw))
 
-    # def exit(self, *a, **kw):
-    #     return self.exit(*a, **kw)
-    #
-    # def __getitem__(self, k):
-    #     return self.comp[k]
-    #
-    # def __setitem__(self, k, v):
-    #     self.comp[k] = v
+    def ready(self):
+        self._comp.ready()
 
+    def exit(self, *a, **kw):
+        return self._comp.exit(*a, **kw)
 
-class QTestPin(QObject):
-    def __init__(self):
-        super(QTestPin, self).__init__()
-
-        self.startTimer(100)
-
-    def timerEvent(self, timer):
-        print "timout"
+    # def __del__(self):
+    #     print "exiting"
+    #     self.exit()
+    #     super(QHalComponent, self).__del__()
 
 
 def main():
@@ -86,11 +62,9 @@ def main():
 
     app = QApplication([])
 
-    c = QHalComponent('test')
+    c = QComponent('test')
     c.newPin('input', hal.HAL_BIT, hal.HAL_IN)
     c.ready()
-
-    print c
 
     app.exec_()
 
