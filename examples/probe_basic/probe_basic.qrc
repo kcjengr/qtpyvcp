@@ -72,8 +72,8 @@
     <file>images/24_tool_carousel.png</file>
     <file>images/drill_dim.png</file>
     <file>images/drill_dims_white.png</file>
-    
-
-        
+    <file>images/up_arrow.png</file>
+    <file>images/down_arrow.png</file>
+            
 </qresource>
 </RCC>
