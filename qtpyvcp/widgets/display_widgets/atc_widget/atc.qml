@@ -201,7 +201,7 @@ Rectangle {
 
         onRotateFwdSig: {
 
-            console.log("QML: ROTRATE FWD " + steps)
+            console.log("QML: ROTATE FWD " + steps)
 
             rotate_atc(atc_anim, steps, 1);
 
@@ -215,7 +215,7 @@ Rectangle {
 
         onRotateRevSig: {
 
-            console.log("QML: ROTRATE REV " + steps)
+            console.log("QML: ROTATE REV " + steps)
 
             rotate_atc(atc_anim, steps, -1);
 
