@@ -1109,3 +1109,6 @@ class jog_mode:
             jog_mode.incremental()
         else:
             jog_mode.continuous()
+
+jog_mode.incremental.ok = jog_mode.continuous.ok = lambda *a, **kw: True
+jog_mode.incremental.bindOk = jog_mode.continuous.bindOk = lambda *a, **kw: True
