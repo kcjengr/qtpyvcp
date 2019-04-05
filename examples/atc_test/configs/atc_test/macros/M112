@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 P=$1
-echo "CCW ${P}"
+echo "M112 CW ${P} STEPS"
 
 halcmd setp atcsim.ccw ${P}
 exit 0

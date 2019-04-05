@@ -166,7 +166,6 @@ class DynATC(QQuickWidget):
 
         self.rotateFwdSig.emit(steps)
 
-
         #
         # if steps > 6:
         #     steps -= 12

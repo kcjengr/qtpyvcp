@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 P=$1
-echo "CW ${P}"
+echo "M111 CW ${P} STEPS"
 
 halcmd setp atcsim.cw ${P}
 exit 0
