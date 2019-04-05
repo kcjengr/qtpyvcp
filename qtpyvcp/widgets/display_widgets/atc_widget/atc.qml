@@ -177,21 +177,10 @@ Rectangle {
         anim.from = from
         anim.to = to
         anim.restart()
-
-        //        widget.duration = 900 * steps;
-        //        widget.from = atc_rotation;
-
-        //        if (direction === 1)
-        //            atc_rotation = atc_rotation + 360/12 * steps;
-        //        else if (direction === -1)
-        //            atc_rotation = atc_rotation - 360/12 * steps;
-
-        //        widget.to = atc_rotation;
-
-        //        widget.restart();
     }
 
     function rotate_tool(widget, duration, from, to) {
+
         widget.anim.duration = duration;
         widget.anim.from = from;
         widget.anim.to = to
@@ -199,8 +188,8 @@ Rectangle {
     }
 
     property int anim_from: 90;
-    property int anim_to;
-    property int anim_duration;
+    property int anim_to: 0;
+    property int anim_duration: 0;
 
     Connections {
         target: atc_spiner
