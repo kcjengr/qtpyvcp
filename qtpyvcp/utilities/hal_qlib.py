@@ -22,7 +22,6 @@ class QPin(QObject):
 
     def timerEvent(self, timer):
         tmp = self._pin.get()
-        print(tmp, type(tmp))
         if tmp != self._val:
             self.valueChanged.emit(tmp)
             self._val = tmp
@@ -63,14 +62,21 @@ class QComponent(QObject):
     def signal_handler(self, signal, frame):
         self.exit()
 
+    def __getitem__(self, item):
+        return self._pins[item]
 
 def main():
     from qtpy.QtWidgets import QApplication
 
     app = QApplication([])
 
+    def printChange(new_val):
+        print "Value Changed", new_val
+
     c = QComponent('test')
     c.newPin('input', hal.HAL_BIT, hal.HAL_IN)
+    c.newPin('float_in', hal.HAL_FLOAT, hal.HAL_IN)
+    c['input'].valueChanged.connect(printChange)
     c.ready()
 
     app.exec_()
