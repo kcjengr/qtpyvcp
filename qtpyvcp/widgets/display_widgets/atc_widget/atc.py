@@ -47,12 +47,12 @@ class DynATC(QQuickWidget):
 
         self.atc_position = 0
 
-        self.component = QComponent('atc-sim')
+        self.component = QComponent("atcsim")
 
-        self.component.newPin('cc', "s32", "in")
-        self.component.newPin('ccw', "s32", "in")
+        self.component.newPin('cw', "float", "in")
+        self.component.newPin('ccw', "float", "in")
 
-        self.component['cc'].valueChanged.connect(self.rotate_fw)
+        self.component['cw'].valueChanged.connect(self.rotate_fw)
         self.component['ccw'].valueChanged.connect(self.rotate_rev)
 
         self.component.ready()

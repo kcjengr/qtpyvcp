@@ -3,5 +3,5 @@
 P=$1
 echo "CCW ${P}"
 
-halcmd setp ccw ${P}
+halcmd setp atcsim.ccw ${P}
 exit 0

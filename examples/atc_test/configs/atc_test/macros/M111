@@ -3,5 +3,5 @@
 P=$1
 echo "CW ${P}"
 
-halcmd setp cw ${P}
+halcmd setp atcsim.cw ${P}
 exit 0

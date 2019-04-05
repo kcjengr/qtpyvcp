@@ -190,11 +190,12 @@ Rectangle {
 
         widget.anim.restart()
     }
-    property int atc_rotation: 10;
+    property int atc_rotation: 90;
+    property int tool_rotation: 90;
 
     function rotate_atc(widget, steps, direction) {
 
-        widget.duration = 1000 * steps;
+        widget.duration = 750 * steps;
         widget.from = atc_rotation;
 
         if (direction === 1)
@@ -208,16 +209,19 @@ Rectangle {
     }
 
     function rotate_tool(widget, steps, direction) {
+
+        widget.anim.duration = 750 * steps;
+        widget.anim.from = tool_rotation;
+
         if (direction === 1) {
-            widget.anim.duration = 500 * steps;
-            widget.anim.from = 360/12 * steps;
-            widget.anim.to = 360/12 * steps + 360/12 * steps;
+            tool_rotation = -atc_rotation;
         }
         else if (direction === -1) {
-            widget.anim.duration = 500 * steps;
-            widget.anim.from = 360/12 * steps;
-            widget.anim.to = 360/12 * steps - 360/12 * steps;
+            tool_rotation = -atc_rotation;
         };
+
+        widget.anim.to = tool_rotation;
+
         widget.anim.restart()
     }
 
@@ -250,25 +254,24 @@ Rectangle {
 
             rotate_atc(atc_anim, steps, 1);
 
-//            for (var j = 0; j < pocket_slot.count; j++) {
-//                rotate_tool(pocket_slot.itemAt(j), steps, 1);
-//            }
-
-//            for (var i = 0; i < (tool_slot.count); i++) {
-//                rotate_tool(tool_slot.itemAt(i), steps, 1);
-//            }
+            for (var j = 0; j < pocket_slot.count; j++) {
+                rotate_tool(pocket_slot.itemAt(j), steps, 1);
+            }
+            for (var i = 0; i < (tool_slot.count); i++) {
+                rotate_tool(tool_slot.itemAt(i), steps, 1);
+            }
         }
 
         onRotateRevSig: {
             rotate_atc(atc_anim, steps, -1);
 
-//            for (var j = 0; j < pocket_slot.count; j++) {
-//                rotate_tool(pocket_slot.itemAt(j), steps, -1);
-//            }
+            for (var j = 0; j < pocket_slot.count; j++) {
+                rotate_tool(pocket_slot.itemAt(j), steps, -1);
+            }
 
-//            for (var i = 0; i < (tool_slot.count); i++) {
-//                rotate_tool(tool_slot.itemAt(i), steps, -1);
-//            }
+            for (var i = 0; i < (tool_slot.count); i++) {
+                rotate_tool(tool_slot.itemAt(i), steps, -1);
+            }
         }
 
     }
