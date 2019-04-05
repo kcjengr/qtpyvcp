@@ -1,6 +1,10 @@
 """QPin"""
 
-import _hal, hal
+
+import signal
+import _hal
+import hal
+
 from qtpy.QtCore import QObject, Signal, QTimer
 
 
@@ -18,7 +22,7 @@ class QPin(QObject):
 
     def timerEvent(self, timer):
         tmp = self._pin.get()
-        print tmp, type(tmp)
+        print(tmp, type(tmp))
         if tmp != self._val:
             self.valueChanged.emit(tmp)
             self._val = tmp
@@ -34,6 +38,10 @@ class QPin(QObject):
 
 class QComponent(QObject):
     def __init__(self, comp_name):
+
+        signal.signal(signal.SIGTERM, self.signal_handler)
+        signal.signal(signal.SIGINT, self.signal_handler)
+
         super(QComponent, self).__init__()
         self._comp = _hal.component(comp_name)
         self._pins = {}
@@ -49,12 +57,11 @@ class QComponent(QObject):
         self._comp.ready()
 
     def exit(self, *a, **kw):
+        print("exit")
         return self._comp.exit(*a, **kw)
 
-    # def __del__(self):
-    #     print "exiting"
-    #     self.exit()
-    #     super(QHalComponent, self).__del__()
+    def signal_handler(self, signal, frame):
+        self.exit()
 
 
 def main():
