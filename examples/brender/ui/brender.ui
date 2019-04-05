@@ -1569,14 +1569,11 @@
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="reference_type" stdset="0">
+             <property name="referenceType" stdset="0">
               <enum>DROWidget::DistanceToGo</enum>
              </property>
-             <property name="axis">
+             <property name="axis" stdset="0">
               <enum>DROWidget::A</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
@@ -1613,55 +1610,6 @@
              </property>
             </widget>
            </item>
-           <item row="4" column="1">
-            <widget class="QLineEdit" name="lineEdit_4">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>110</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>110</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="contextMenuPolicy">
-              <enum>Qt::NoContextMenu</enum>
-             </property>
-             <property name="inputMask">
-              <string/>
-             </property>
-             <property name="text">
-              <string>0.1234</string>
-             </property>
-             <property name="frame">
-              <bool>true</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
            <item row="1" column="2">
             <widget class="DROWidget" name="dro">
              <property name="sizePolicy">
@@ -1682,11 +1630,8 @@
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="reference_type" stdset="0">
+             <property name="referenceType" stdset="0">
               <enum>DROWidget::Relative</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
@@ -1710,14 +1655,11 @@
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="reference_type" stdset="0">
+             <property name="referenceType" stdset="0">
               <enum>DROWidget::Relative</enum>
              </property>
-             <property name="axis">
+             <property name="axis" stdset="0">
               <enum>DROWidget::Z</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
@@ -1741,14 +1683,11 @@
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="reference_type" stdset="0">
+             <property name="referenceType" stdset="0">
               <enum>DROWidget::DistanceToGo</enum>
              </property>
-             <property name="axis">
+             <property name="axis" stdset="0">
               <enum>DROWidget::Z</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
@@ -1807,14 +1746,11 @@
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="reference_type" stdset="0">
+             <property name="referenceType" stdset="0">
               <enum>DROWidget::Relative</enum>
              </property>
-             <property name="axis">
+             <property name="axis" stdset="0">
               <enum>DROWidget::A</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
@@ -1838,11 +1774,8 @@
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="reference_type" stdset="0">
+             <property name="referenceType" stdset="0">
               <enum>DROWidget::DistanceToGo</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
@@ -1866,14 +1799,11 @@
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="reference_type" stdset="0">
+             <property name="referenceType" stdset="0">
               <enum>DROWidget::Relative</enum>
              </property>
-             <property name="axis">
+             <property name="axis" stdset="0">
               <enum>DROWidget::Y</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
@@ -1912,107 +1842,6 @@
              </property>
              <property name="checkable">
               <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="1">
-            <widget class="QLineEdit" name="lineEdit_2">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>110</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>110</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="contextMenuPolicy">
-              <enum>Qt::NoContextMenu</enum>
-             </property>
-             <property name="inputMask">
-              <string/>
-             </property>
-             <property name="text">
-              <string>0.1234</string>
-             </property>
-             <property name="frame">
-              <bool>true</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="readOnly">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLineEdit" name="lineEdit">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>110</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>110</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="contextMenuPolicy">
-              <enum>Qt::NoContextMenu</enum>
-             </property>
-             <property name="inputMask">
-              <string/>
-             </property>
-             <property name="text">
-              <string>0.1234</string>
-             </property>
-             <property name="frame">
-              <bool>true</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="readOnly">
-              <bool>false</bool>
-             </property>
-             <property name="cursorMoveStyle">
-              <enum>Qt::VisualMoveStyle</enum>
              </property>
             </widget>
            </item>
@@ -2137,14 +1966,11 @@
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="reference_type" stdset="0">
+             <property name="referenceType" stdset="0">
               <enum>DROWidget::DistanceToGo</enum>
              </property>
-             <property name="axis">
+             <property name="axis" stdset="0">
               <enum>DROWidget::Y</enum>
-             </property>
-             <property name="units">
-              <enum>DROWidget::Program</enum>
              </property>
             </widget>
            </item>
@@ -2183,25 +2009,13 @@
              </property>
             </widget>
            </item>
-           <item row="3" column="1">
-            <widget class="QLineEdit" name="lineEdit_3">
+           <item row="1" column="1">
+            <widget class="DROWidget" name="dro_9">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>110</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>110</width>
-               <height>16777215</height>
-              </size>
              </property>
              <property name="font">
               <font>
@@ -2212,23 +2026,83 @@
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
-             <property name="contextMenuPolicy">
-              <enum>Qt::NoContextMenu</enum>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="inputMask">
-              <string/>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="DROWidget" name="dro_10">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
-             <property name="text">
-              <string>0.1234</string>
+             <property name="font">
+              <font>
+               <family>Roboto</family>
+               <pointsize>16</pointsize>
+              </font>
              </property>
-             <property name="frame">
-              <bool>true</bool>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="readOnly">
-              <bool>true</bool>
+             <property name="axis" stdset="0">
+              <enum>DROWidget::Y</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="DROWidget" name="dro_11">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>Roboto</family>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="axis" stdset="0">
+              <enum>DROWidget::Z</enum>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="DROWidget" name="dro_12">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>Roboto</family>
+               <pointsize>16</pointsize>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="axis" stdset="0">
+              <enum>DROWidget::A</enum>
              </property>
             </widget>
            </item>
@@ -2506,7 +2380,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>20</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">

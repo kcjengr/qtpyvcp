@@ -109,4 +109,6 @@ def bindWidget(widget, action):
         method.ok(*args, widget=widget, **kwargs)      # Set the initial widget OK state
         method.bindOk(*args, widget=widget, **kwargs)  # Update widget on OK status changes
     except:
-        raise InvalidAction("Could not bind OK status to widget.")
+        # LOG.exception("Could not bind OK status to widget.")
+        # raise InvalidAction("Could not bind OK status to widget.")
+        raise

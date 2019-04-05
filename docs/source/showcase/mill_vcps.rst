@@ -32,6 +32,15 @@ BP Touch
 | **Project URL:** https://github.com/jethornton/bp_touch
 | **Install Command:** ``pip install git+https://github.com/jethornton/bp_touch``
 
+Mill Touch
+----------
+
+.. image:: https://raw.githubusercontent.com/jethornton/mill_touch/master/mill-touch-01.png
+   :align: center
+
+| **Project URL:** https://github.com/jethornton/mill_touch
+| **Install Command:** ``pip install git+https://github.com/jethornton/mill_touch``
+
 
 Jauria CNC
 -----------

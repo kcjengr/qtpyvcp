@@ -25,6 +25,7 @@ from qtpy.QtWidgets import QWidget, QBoxLayout, QSizePolicy
 from qtpyvcp.core import Info
 from qtpyvcp.actions.machine_actions import jog
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.utilities.settings import getSetting, setSetting
 from qtpyvcp.widgets.button_widgets.led_button import LEDButton
 
 STATUS = getPlugin('status')
@@ -65,7 +66,7 @@ class JogIncrementWidget(QWidget):
         self.placeLed()
 
     def setJogIncrement(self):
-        jog.set_increment(self.sender().text())
+        setSetting('machine.jog.increment', self.sender().text())
 
     def layoutWidgets(self, layout):
         return (layout.itemAt(i) for i in range(layout.count()))

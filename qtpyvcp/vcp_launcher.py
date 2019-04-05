@@ -160,6 +160,8 @@ def _load_vcp_from_entry_point(vcp_name, opts):
     entry_points = {}
     for entry_point in iter_entry_points(group='qtpyvcp.example_vcp'):
         entry_points[entry_point.name] = entry_point
+    for entry_point in iter_entry_points(group='qtpyvcp.test_vcp'):
+        entry_points[entry_point.name] = entry_point
     for entry_point in iter_entry_points(group='qtpyvcp.vcp'):
         entry_points[entry_point.name] = entry_point
 

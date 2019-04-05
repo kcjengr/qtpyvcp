@@ -2,11 +2,11 @@
 Basic VCP
 =========
 
-This will cover the steps to build a basic VCP.
+This will cover the steps to build a basic VCP for a touch screen.
 
 .. note::
     For this toutorial you will need to have installed `Qt Designer`
-    as shown on the :doc:`../quick_start` page.
+    as shown on the :doc:`../install/quick_start` page.
 
 .. toctree::
    :maxdepth: 1

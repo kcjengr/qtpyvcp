@@ -2,7 +2,18 @@
 Quick Start
 ===========
 
-If you are impatient, this is for you!
+These instructions will install the current release of `QtPyVCP` including
+sample configurations for LinuxCNC and the GUI builder Qt Designer with the
+QtPyVCP widgets as well as the dependencies needed to run QtPyVCP.
+
+**Requirements**
+
+Debian 9 64 bit or Linux Mint 19 64 bit with LinuxCNC 2.8 (master) installed,
+either system wide or as a Run In Place (RIP) built from source.
+
+Instructions for installing on Debian 9 (stretch) and other distros can be
+found here: https://gnipsel.com/linuxcnc/uspace/debian9-emc.html
+
 
 **Install dependencies**
 ::
@@ -44,9 +55,8 @@ To edit a VCP you need to install the Qt Designer.
 **Notes**
 
 This installation method is tested to work on Debian 9 (Stretch) and Mint 19.1,
-it should work on other distros as well. If you intend to make your own VCPs
-or contribute to QtPyVCP you will need to set up a
-:doc:`development install <installation>`.
+it should work on other distros as well. If you intend to contribute to QtPyVCP
+you will need to set up a :doc:`development install <installation>`.
 
 .. Note::
     You should un-install using ``pip uninstall qtpyvcp``

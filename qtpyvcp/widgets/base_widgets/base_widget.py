@@ -47,7 +47,7 @@ class QtPyVCPBaseWidget(object):
 
     def __init__(self, parent=None):
         super(QtPyVCPBaseWidget, self).__init__()
-        self._rules = ''
+        self._rules = '[]'
         self._style = ''
         self._data_channels = []
 
@@ -101,11 +101,11 @@ class QtPyVCPBaseWidget(object):
 
     @rules.setter
     def rules(self, rules):
-        self._rules = rules
-        self.registerRules(rules)
+        self._rules = rules or '[]'
+        self.registerRules()
 
-    def registerRules(self, rules):
-        rules = json.loads(rules)
+    def registerRules(self):
+        rules = json.loads(self._rules)
         for rule in rules:
             # print rule
             ch = ChanList()
@@ -120,7 +120,7 @@ class QtPyVCPBaseWidget(object):
                     ch.append(chan_exp)
 
                     if chan.get('trigger', False):
-                        triggers.append(chan_obj.onValueChanged)
+                        triggers.append(chan_obj.notify)
 
                 except Exception:
                     LOG.exception("Error evaluating rule: {}"

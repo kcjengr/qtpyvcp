@@ -12,14 +12,18 @@
 from qtpy.QtWidgets import QAction
 from qtpy.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
 
+Q_TYPEID = {
+    'QDesignerTaskMenuExtension':      'org.qt-project.Qt.Designer.TaskMenu',
+    'QDesignerContainerExtension':     'org.qt-project.Qt.Designer.Container',
+    'QDesignerPropertySheetExtension': 'org.qt-project.Qt.Designer.PropertySheet'
+}
+
 class ExtensionFactory(QExtensionFactory):
     def __init__(self, parent=None):
         super(ExtensionFactory, self).__init__(parent)
 
     def createExtension(self, obj, iid, parent):
-
-        # For now check the iid for TaskMenu...
-        if iid == "org.qt-project.Qt.Designer.TaskMenu":
+        if iid == Q_TYPEID['QDesignerTaskMenuExtension']:
             return TaskMenuExtension(obj, parent)
         # In the future we can expand to the others such as Property and etc
         # When the time comes...  we will need a new Extension and

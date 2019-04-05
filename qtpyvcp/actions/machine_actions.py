@@ -1,7 +1,7 @@
-import sys
-import time
 import linuxcnc
 from qtpy.QtWidgets import QComboBox
+
+from qtpyvcp.utilities.settings import setting
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -239,46 +239,41 @@ set_work_coord.bindOk = _set_work_coord_bindOk
 # FEED HOLD action
 # -------------------------------------------------------------------------
 class feedhold:
+    """Feed Hold action Group"""
 
     # FIXME: Not sure what feedhold does, or how to turn it ON/OFF, if it even can be.
 
     @staticmethod
     def enable():
+        """Enables Feed Hold"""
         LOG.info("Setting feedhold ENABLED")
         CMD.set_feed_hold(1)
 
     @staticmethod
     def disable():
+        """Disables Feed Hold"""
         LOG.info("Setting feedhold DISABLED")
         CMD.set_feed_hold(0)
 
     @staticmethod
-    def toggle_enable():
+    def toggle():
+        """Toggles Feed Hold state"""
         if STAT.feed_hold_enabled:
             feedhold.disable()
         else:
             feedhold.enable()
 
-    @staticmethod
-    def on():
-        pass
-
-    @staticmethod
-    def off():
-        pass
-
-    @staticmethod
-    def toggle():
-        pass
-
 def _feed_hold_ok(widget=None):
-    return True
+    return STAT.task_state == linuxcnc.STATE_ON and STAT.interp_state == linuxcnc.INTERP_IDLE
 
 def _feed_hold_bindOk(widget):
-    pass
+    widget.setEnabled(STAT.task_state == linuxcnc.STATE_ON)
+    widget.setChecked(STAT.feed_hold_enabled)
+    STATUS.task_state.notify(lambda s: widget.setEnabled(s == linuxcnc.STATE_ON))
+    STATUS.feed_hold_enabled.notify(widget.setChecked)
 
-feedhold.enable.ok = feedhold.disable.ok = feedhold.toggle_enable.ok = _feed_hold_ok
-feedhold.enable.bindOk = feedhold.disable.bindOk = feedhold.toggle_enable.bindOk = _feed_hold_bindOk
+feedhold.enable.ok = feedhold.disable.ok = feedhold.toggle.ok = _feed_hold_ok
+feedhold.enable.bindOk = feedhold.disable.bindOk = feedhold.toggle.bindOk = _feed_hold_bindOk
 
 # -------------------------------------------------------------------------
 # FEED OVERRIDE actions
@@ -823,12 +818,120 @@ override_limits.bindOk = _override_limits_bindOk
 # JOG actions
 # -------------------------------------------------------------------------
 
+DEFAULT_JOG_SPEED = INFO.getJogVelocity()
+MAX_JOG_SPEED = INFO.getMaxJogVelocity()
+
+@setting('machine.jog.linear-speed',
+         default_value=DEFAULT_JOG_SPEED,
+         min_value=0,
+         max_value=MAX_JOG_SPEED,
+         persistent=True)
+def jog_linear_speed(obj):
+    return obj.value
+
+@jog_linear_speed.setter
+def jog_linear_speed(obj, value):
+
+    value = obj.clampValue(value)
+    obj.value = obj.clampValue(value)
+    jog_linear_speed.signal.emit(value)
+
+    percentage = int(value * 100 / MAX_JOG_SPEED)
+    jog_linear_speed_percentage.value = percentage
+    jog_linear_speed_percentage.signal.emit(percentage)
+
+
+@setting('machine.jog.linear-speed-percentage',
+         default_value=int(DEFAULT_JOG_SPEED * 100 / MAX_JOG_SPEED),
+         min_value=0,
+         max_value=100,
+         persistent=False)
+def jog_linear_speed_percentage(obj):
+    return obj.value
+
+@jog_linear_speed_percentage.setter
+def jog_linear_speed_percentage(obj, percentage):
+    LOG.debug("Setting Jog Speed Percentage: %d", percentage)
+    jog_linear_speed.setValue(float(MAX_JOG_SPEED * percentage / 100))
+
+
+@setting('machine.jog.angular-speed', default_value=100.0, persistent=False)
+def jog_angular_speed(obj):
+    return obj.value
+
+@jog_angular_speed.setter
+def jog_angular_speed(obj, value):
+    LOG.debug("Setting Jog Angular Speed: %d", value)
+    obj.value = value
+
+
+@setting('machine.jog.mode-incremental')
+def jog_mode_incremental(obj):
+    return obj.value
+
+@jog_mode_incremental.setter
+def jog_mode_incremental(obj, value):
+    LOG.debug("Setting Jog Mode Incremental: %s", value)
+    obj.value = value
+
+
+def fromInternalLinearUnits(v, unit=None):
+    if unit is None:
+        unit = STAT.linear_units
+    lu = (unit or 1) * 25.4
+    return v * lu
+
+def parseJogIncrement(jogincr):
+    scale = 1
+    if isinstance(jogincr, basestring):
+        jogincr = jogincr.lower()
+        if jogincr.endswith("mm"):
+            scale = fromInternalLinearUnits(1 / 25.4)
+        elif jogincr.endswith("cm"):
+            scale = fromInternalLinearUnits(10 / 25.4)
+        elif jogincr.endswith("um"):
+            scale = fromInternalLinearUnits(.001 / 25.4)
+        elif jogincr.endswith("in") or jogincr.endswith("inch") or jogincr.endswith('"'):
+            scale = fromInternalLinearUnits(1.)
+        elif jogincr.endswith("mil"):
+            scale = fromInternalLinearUnits(.001)
+        else:
+            scale = 1
+        jogincr = jogincr.rstrip(" inchmuil")
+        try:
+            if "/" in jogincr:
+                p, q = jogincr.split("/")
+                jogincr = float(p) / float(q)
+            else:
+                jogincr = float(jogincr)
+        except ValueError:
+            jogincr = 0
+    return jogincr * scale
+
+@setting('machine.jog.increment', parseJogIncrement(INFO.getIncrements()[0]))
+def jog_increment(obj):
+    """Linear jog increment.
+
+    Args:
+        jogincr (str, int, float) : The desired jog increment. Can be passed
+            as a string including an optional units specifier. Valid unit
+            specifiers include ``mm``, ``cm``, ``um``, ``in``, ``inch``, ``"``,
+            and ``mil``.
+    """
+    return obj.value
+
+@jog_increment.setter
+def jog_increment(obj, jogincr):
+    value = parseJogIncrement(jogincr)
+    LOG.debug('Setting jog increment: %s (%2.4f)', jogincr, value)
+    obj.value = value
+    obj.signal.emit(value)
+
+
 class jog:
     """Jog Actions Group"""
 
     max_linear_speed = INFO.getMaxJogVelocity()
-
-    linear_speed = INFO.getJogVelocity()
     angular_speed = INFO.getJogVelocity()
     continuous = False
     increment = INFO.getIncrements()[0]
@@ -839,9 +942,9 @@ class jog:
 
         Args:
             axis (str | int) : Either the letter or number of the axis to jog.
-                direction (str | int) : pos or +1 for positive, neg or -1 for negative.
+            direction (str | int) : pos or +1 for positive, neg or -1 for negative.
             speed (float, optional) : Desired jog vel in machine_units/s.
-                distance (float, optional) : Desired jog distance, continuous jog if 0.00.
+            distance (float, optional) : Desired jog distance, continuous if 0.00.
         """
 
         if isinstance(direction, str):
@@ -863,10 +966,10 @@ class jog:
                 if axis in (3, 4, 5):
                     speed = jog.angular_speed / 60
                 else:
-                    speed = jog.linear_speed / 60
+                    speed = jog_linear_speed.value / 60
 
             if distance is None:
-                distance = jog.increment
+                distance = jog_increment.value
 
             velocity = float(speed) * direction
 
@@ -887,7 +990,7 @@ class jog:
     @staticmethod
     def set_increment(raw_increment):
         """Set Jog Increment"""
-        jog.increment = _parse_jog_increment(raw_increment)
+        jog_increment.setValue(raw_increment)
 
     @staticmethod
     def set_linear_speed(speed):
@@ -897,7 +1000,7 @@ class jog:
 
             machine.jog.set-linear-speed
         """
-        jog.linear_speed = float(speed)
+        jog_linear_speed.setValue(float(speed))
 
     @staticmethod
     def set_angular_speed(speed):
@@ -908,7 +1011,7 @@ class jog:
     @staticmethod
     def set_linear_speed_percentage(percentage):
         """Set Jog Linear Speed Percentage"""
-        jog.set_linear_speed(jog.max_linear_speed * (float(percentage) / 100))
+        jog_linear_speed_percentage.setValue(percentage)
 
 
 def _jog_speed_slider_bindOk(widget):
@@ -917,7 +1020,7 @@ def _jog_speed_slider_bindOk(widget):
         # these will only work for QSlider or QSpinBox
         widget.setMinimum(0)
         widget.setMaximum(100)
-        widget.setValue((jog.linear_speed / jog.max_linear_speed) * 100)
+        widget.setValue((jog.linear_speed.getValue() / jog.max_linear_speed) * 100)
 
         # jog.linear_speed.connect(lambda v: widget.setValue(v * 100))
     except AttributeError:
@@ -928,40 +1031,6 @@ jog.set_linear_speed.bindOk = jog.set_angular_speed.bindOk = lambda *a, **k: Tru
 
 jog.set_linear_speed_percentage.ok = lambda *a, **k: True
 jog.set_linear_speed_percentage.bindOk = _jog_speed_slider_bindOk
-
-
-def _from_internal_linear_unit(v, unit=None):
-    if unit is None:
-        unit = STAT.linear_units
-    lu = (unit or 1) * 25.4
-    return v * lu
-
-def _parse_jog_increment(jogincr):
-    scale = 1
-    if isinstance(jogincr, basestring):
-        jogincr = jogincr.lower()
-        if jogincr.endswith("mm"):
-            scale = _from_internal_linear_unit(1 / 25.4)
-        elif jogincr.endswith("cm"):
-            scale = _from_internal_linear_unit(10 / 25.4)
-        elif jogincr.endswith("um"):
-            scale = _from_internal_linear_unit(.001 / 25.4)
-        elif jogincr.endswith("in") or jogincr.endswith("inch") or jogincr.endswith('"'):
-            scale = _from_internal_linear_unit(1.)
-        elif jogincr.endswith("mil"):
-            scale = _from_internal_linear_unit(.001)
-        else:
-            scale = 1
-        jogincr = jogincr.rstrip(" inchmuil")
-        try:
-            if "/" in jogincr:
-                p, q = jogincr.split("/")
-                jogincr = float(p) / float(q)
-            else:
-                jogincr = float(jogincr)
-        except ValueError:
-            jogincr = 0
-    return jogincr * scale
 
 
 def _jog_axis_ok(axis, direction=0, widget=None):

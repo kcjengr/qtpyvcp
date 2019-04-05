@@ -1,7 +1,7 @@
 from qtpy.QtGui import QIcon
 from qtpy.QtDesigner import QPyDesignerCustomWidgetPlugin
 
-from plugin_extension import ExtensionFactory
+from plugin_extension import ExtensionFactory, Q_TYPEID
 from designer_hooks import DesignerHooks
 
 from rules_editor import RulesEditorExtension
@@ -17,7 +17,7 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
     def pluginClass(self):
         raise NotImplementedError()
 
-    def extensions(self):
+    def designerExtensions(self):
         if hasattr(self.pluginClass(), 'RULE_PROPERTIES'):
             return [RulesEditorExtension,]
         else:
@@ -25,7 +25,10 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 
     # Override to set the default widget name used in QtDesinger
     def objectName(self):
-        return self.name().lower().replace('widget', '')
+        name = self.name().lower()
+        if name.startswith('vcp'):
+            name = name[3:]
+        return name
 
     # Override to set the tooltip displayed in the QtDesinger widget box
     def toolTip(self):
@@ -46,30 +49,30 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
     # Override to set the QtDesigner widget box group heading
     def group(self):
         group = self.pluginClass().__module__.split('.')[2].split('_')[0].capitalize()
-        return "LinuxCNC - {}".format(group)
+        return "QtPyVCP - {}".format(group)
 
     # Override to set initial QtDesigner property values
     def domXml(self):
-        return ('<widget class="{}" name="{}">\n</widget>\n'.format(self.name(), self.objectName()))
+        return '<widget class="{}" name="{}">\n</widget>\n'.format(
+            self.name(), self.objectName())
 
 #==============================================================================
 #  These methods should not need to be overridden
 #==============================================================================
 
-    def initialize(self, core):
+    def initialize(self, form_editor):
         if self.initialized:
             return
 
         designer_hooks = DesignerHooks()
-        designer_hooks.form_editor = core
+        designer_hooks.form_editor = form_editor
 
-        if len(self.extensions()) > 0:
-            self.manager = core.extensionManager()
-            if self.manager:
-                factory = ExtensionFactory(parent=self.manager)
-                self.manager.registerExtensions(
-                    factory,
-                    'org.qt-project.Qt.Designer.TaskMenu')
+        self.manager = form_editor.extensionManager()
+
+        if len(self.designerExtensions()) > 0 and self.manager:
+            factory = ExtensionFactory(parent=self.manager)
+            self.manager.registerExtensions(factory,
+                                            Q_TYPEID['QDesignerTaskMenuExtension'])
 
         self.initialized = True
 
@@ -78,7 +81,7 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 
     def createWidget(self, parent):
         w = self.pluginClass()(parent)
-        w.extensions = self.extensions()
+        w.extensions = self.designerExtensions()
         return w
 
     def name(self):

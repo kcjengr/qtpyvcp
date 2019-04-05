@@ -14,8 +14,8 @@ if os.getenv('DEB_BUILD') == 'true' or os.getenv('USER') == 'root':
     # list of (destination, source_file) tuples
     DATA_FILES = [
         ('/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/', [
-            'QtDesigner/Qt5.7.1-Py2.7-64bit/libpyqt5_py2.so',
-            'QtDesigner/Qt5.7.1-Py2.7-64bit/libpyqt5_py3.so']),
+            'pyqt5designer/Qt5.7.1-64bit/libpyqt5_py2.so',
+            'pyqt5designer/Qt5.7.1-64bit/libpyqt5_py3.so']),
         ('/usr/share/fonts/truetype/bebaskai', ['examples/probe_basic/fonts/BebasKai.ttf'])
     ]
 
@@ -93,18 +93,26 @@ setup(
         'psutil',
         'HiYaPyCo',
         'pyopengl',
-        'vtk', 'pygcode'
+        'vtk',
     ],
     entry_points={
         'console_scripts': [
             'qtpyvcp=qtpyvcp:main',
+            'qcompile=qtpyvcp.tools.qcompile:main',
+            'editvcp=qtpyvcp.tools.editvcp:main',
+
+            # example VCPs
             'mini=examples.mini:main',
             'brender=examples.brender:main',
             'probebasic=examples.probe_basic:main',
             'probebasic_vertical=examples.probe_basic_vertical:main',
             'probebasic_lathe=examples.probe_basic_lathe:main',
-            'qcompile=qtpyvcp.tools.qcompile:main',
-            'editvcp=qtpyvcp.tools.editvcp:main',
+
+            # test VCPs
+            'vtk_test=video_tests.vtk_test:main',
+            'opengl_test=video_tests.opengl_test:main',
+            'qtpyvcp_test=video_tests.qtpyvcp_test:main',
+
         ],
         'qtpyvcp.example_vcp': [
             'mini=examples.mini',
@@ -112,6 +120,11 @@ setup(
             'probebasic=examples.probe_basic',
             'probe_basic_vertical=examples.probe_basic_vertical',
             'probe_basic_lathe=examples.probe_basic_lathe',
+        ],
+        'qtpyvcp.test_vcp': [
+            'vtk_test=video_tests.vtk_test',
+            'opengl_test=video_tests.opengl_test',
+            'qtpyvcp_test=video_tests.qtpyvcp_test',
         ],
     },
 )

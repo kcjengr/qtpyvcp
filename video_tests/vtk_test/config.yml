@@ -8,18 +8,17 @@ qtdesigner:
 vcp:
   name: vtk_test
   version: v0.0.1
-  author: My Name
+  author: John Thornton
   description: >
-    Put a short description of your VCP here. This will be
-    shown in the VCP Chooser when launching QtPyVCP with the
-    --chooser option.
-
+    VTK Test is a video card test tool to see if the
+    Visualization Toolkit backplot works on your PC
+    If your having problems run this test from the
+    terminal by starting LinuxCNC with linuxcnc then
+    pick a QtPyVCP sim like XYZ
 
     Examples of what to included here:
-      * VCP Features
-      * Type of machine the VCP is for
-      * Development status
-      * Acknowledgments
+      * VTK Test
+      * Video Card Test
 
 data_plugins:
   status:
@@ -38,7 +37,7 @@ windows:
       # Specify the mainwindow menubar as the default.
       menu: ( default_menubar )
       # Specify the UI file to load the window layout from.
-      ui_file: {{ file.dir }}/ui/mainwindow.ui
+      ui_file: {{ file.dir }}/mainwindow.ui
       # Specify a stylesheet to use only for mainwindow.
       stylesheet: null
       # Set the window title from from the date in the vcp section above.
@@ -47,4 +46,4 @@ windows:
 application:
   kwargs:
     # Specify the application wide stylesheet.
-    stylesheet: {{ file.dir }}/ui/style.qss
+    stylesheet: {{ file.dir }}/style.qss

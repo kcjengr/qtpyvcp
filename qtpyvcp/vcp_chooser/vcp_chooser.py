@@ -36,6 +36,17 @@ class VCPChooser(QDialog):
             child = QTreeWidgetItem(category)
             child.setText(0, self.get_vcp_data(entry_point))
 
+        # test VCP section
+        category = QTreeWidgetItem(self.vcpTreeView)
+        category.setText(0, 'Video Test VCPs')
+        category.setFlags(Qt.ItemIsEnabled)
+
+        # add example VCPs to the treeview
+        for entry_point in iter_entry_points(group='qtpyvcp.test_vcp'):
+            child = QTreeWidgetItem(category)
+            child.setText(0, self.get_vcp_data(entry_point))
+
+
         # installed VCP section
         category = QTreeWidgetItem(self.vcpTreeView)
         category.setText(0, 'Installed VCPs')
@@ -82,6 +93,7 @@ class VCPChooser(QDialog):
             vcp_name = vcp_data.get('name', entry_point.name)
 
         except:
+            raise 
             vcp_name = entry_point.name
 
         self._vcp_data[vcp_name] = vcp_data
