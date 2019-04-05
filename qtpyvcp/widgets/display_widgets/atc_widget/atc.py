@@ -158,7 +158,7 @@ class DynATC(QQuickWidget):
         if self.homing:
             self.homeMsgSig.emit("")
         else:
-            self.homeMsgSig.emit("UNREFERENCED")
+            self.homeMsgSig.emit("UN REFERENCED")
 
     def rotate_fw(self, *args, **kwargs):
 
