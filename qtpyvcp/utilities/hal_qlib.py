@@ -23,8 +23,8 @@ class QPin(QObject):
     def timerEvent(self, timer):
         tmp = self._pin.get()
         if tmp != self._val:
-            self.valueChanged.emit(tmp)
             self._val = tmp
+            self.valueChanged.emit(tmp)
 
     @property
     def value(self):
@@ -32,7 +32,7 @@ class QPin(QObject):
 
     @value.setter
     def value(self, val):
-        pass
+        self._pin.set(val)
 
 
 class QComponent(QObject):
