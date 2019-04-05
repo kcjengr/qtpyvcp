@@ -153,39 +153,53 @@ Rectangle {
         }
     }
 
-    property int atc_rotation: 90;
 
-    function rotate_atc(widget, steps, direction) {
-
-        widget.duration = 900 * steps;
-        widget.from = atc_rotation;
-
-        if (direction === 1)
-            atc_rotation = atc_rotation + 360/12 * steps;
-        else if (direction === -1)
-            atc_rotation = atc_rotation - 360/12 * steps;
-
-        widget.to = atc_rotation;
-
-        widget.restart();
+    Text {
+        id: msg_text
+        width: 206
+        height: 91
+        x: parent.width/2 - width/2
+        y: parent.height/2 - height/2
+        text: qsTr("messages")
+        font.capitalization: Font.AllUppercase
+        font.pixelSize: 36
+        font.family: "Bebas Kai"
+        fontSizeMode: Text.Fit
+        verticalAlignment: Text.AlignVCenter
+        horizontalAlignment: Text.AlignHCenter
     }
 
-    property int tool_rotation: 90;
 
-    function rotate_tool(widget, steps, direction) {
+    function rotate_atc(anim, duration, from, to) {
 
-        widget.anim.duration = 900 * steps;
-        widget.anim.from = tool_rotation;
+        anim.duration = duration
+        anim.from = from
+        anim.to = to
+        anim.restart()
 
-        if (direction === 1) {
-            widget.anim.to = -atc_rotation + 360/12 * steps;
-        }
-        else if (direction === -1) {
-            widget.anim.to = -atc_rotation - 360/12 * steps;
-        };
+        //        widget.duration = 900 * steps;
+        //        widget.from = atc_rotation;
 
+        //        if (direction === 1)
+        //            atc_rotation = atc_rotation + 360/12 * steps;
+        //        else if (direction === -1)
+        //            atc_rotation = atc_rotation - 360/12 * steps;
+
+        //        widget.to = atc_rotation;
+
+        //        widget.restart();
+    }
+
+    function rotate_tool(widget, duration, from, to) {
+        widget.anim.duration = duration;
+        widget.anim.from = from;
+        widget.anim.to = to
         widget.anim.restart()
     }
+
+    property int anim_from: 90;
+    property int anim_to;
+    property int anim_duration;
 
     Connections {
         target: atc_spiner
@@ -203,29 +217,38 @@ Rectangle {
 
             console.log("QML: ROTATE FWD " + steps)
 
-            rotate_atc(atc_anim, steps, 1);
+            anim_duration = 1000 * steps;
+
+            anim_to = anim_from + (360/12 *steps);
+
+            rotate_atc(atc_anim, anim_duration, anim_from, anim_to);
 
             for (var j = 0; j < pocket_slot.count; j++) {
-                rotate_tool(pocket_slot.itemAt(j), steps, 1);
+                rotate_tool(pocket_slot.itemAt(j), anim_duration, anim_from-90, -anim_to+90);
             }
             for (var i = 0; i < (tool_slot.count); i++) {
-                rotate_tool(tool_slot.itemAt(i), steps, 1);
+                rotate_tool(tool_slot.itemAt(i), anim_duration, anim_from-90, -anim_to+90);
             }
+            anim_from = anim_to
         }
 
         onRotateRevSig: {
 
             console.log("QML: ROTATE REV " + steps)
 
-            rotate_atc(atc_anim, steps, -1);
+            anim_duration = 1000 * steps;
+
+            anim_to = anim_from - 360/12 *steps;
+
+            rotate_atc(atc_anim, anim_duration, anim_from, anim_to);
 
             for (var j = 0; j < pocket_slot.count; j++) {
-                rotate_tool(pocket_slot.itemAt(j), steps, -1);
+                rotate_tool(pocket_slot.itemAt(j), anim_duration, anim_from-90, -anim_to+90);
             }
-
             for (var i = 0; i < (tool_slot.count); i++) {
-                rotate_tool(tool_slot.itemAt(i), steps, -1);
+                rotate_tool(tool_slot.itemAt(i), anim_duration, anim_from-90, -anim_to+90);
             }
+            anim_from = anim_to
         }
     }
 }
