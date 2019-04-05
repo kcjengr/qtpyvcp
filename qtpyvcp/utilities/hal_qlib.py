@@ -38,11 +38,11 @@ class QPin(QObject):
 
 class QComponent(QObject):
     def __init__(self, comp_name):
+        super(QComponent, self).__init__()
 
         signal.signal(signal.SIGTERM, self.signal_handler)
         signal.signal(signal.SIGINT, self.signal_handler)
 
-        super(QComponent, self).__init__()
         self._comp = _hal.component(comp_name)
         self._pins = {}
 
