@@ -36,6 +36,9 @@ class DynATC(QQuickWidget):
     showToolSig = Signal(int, int, arguments=['pocket', 'tool_num'])
     hideToolSig = Signal(int, arguments=['tool_num'])
 
+    homeMsgSig = Signal(str, arguments=["message"])
+    homingMsgSig = Signal(str, arguments=["message"])
+
     def __init__(self, parent=None):
         super(DynATC, self).__init__(parent)
 
@@ -43,11 +46,19 @@ class DynATC(QQuickWidget):
             return
 
         self.atc_position = 0
+        self.home = 0
+        self.homing = 0
 
         self.component = QComponent("atcsim")
 
+        self.component.newPin('home', "float", "in")
+        self.component.newPin('homing', "float", "in")
+
         self.component.newPin('cw', "float", "in")
         self.component.newPin('ccw', "float", "in")
+
+        self.component['home'].valueChanged.connect(self.home_message)
+        self.component['homing'].valueChanged.connect(self.homing_message)
 
         self.component['cw'].valueChanged.connect(self.rotate_fw)
         self.component['ccw'].valueChanged.connect(self.rotate_rev)
@@ -124,32 +135,30 @@ class DynATC(QQuickWidget):
                     self.showToolSig.emit(pocket, tool)
 
     def on_tool_in_spindle(self, tool):
-
-        # print("tool_in_spindle", tool)
-        # self.hideToolSig.emit(tool)
-
         self.load_tools()
         self.draw_tools()
 
     def on_pocket_prepped(self, pocket_num):
-
-        # print("pocket_num", pocket_num)
         self.load_tools()
         self.draw_tools()
 
-        # if pocket_num > 0:
-        #
-        #     self.draw_tools()
-        #
-        #     tool = self.status_tool_table[pocket_num][0]
-        #     next_pocket = self.tool_table[tool]['P']
-        #
-        #     self.moveToPocketSig.emit(self.atc_position - 1, next_pocket - 1)
-        #     self.atc_position = next_pocket
+    def homing_message(self, *args, **kwargs):
 
-        # if pocket_num == -1:
-        #     tool = self.status_tool_table[self.atc_position][0]
-        #     self.hideToolSig.emit(tool)
+        self.homing = args[0]
+
+        if self.homing:
+            self.homingMsgSig.emit("REFERENCING")
+        else:
+            self.homingMsgSig.emit("")
+
+    def home_message(self, *args, **kwargs):
+
+        self.home = args[0]
+
+        if self.homing:
+            self.homeMsgSig.emit("")
+        else:
+            self.homeMsgSig.emit("UNREFERENCED")
 
     def rotate_fw(self, *args, **kwargs):
 
@@ -157,8 +166,6 @@ class DynATC(QQuickWidget):
 
         if not steps:
             return
-
-        print("#### FORWARD {} steps".format(steps))
 
         self.rotateFwdSig.emit(steps)
 
@@ -170,8 +177,6 @@ class DynATC(QQuickWidget):
 
         if not steps:
             return
-
-        print("#### REVERSE {} steps".format(steps))
 
         self.rotateRevSig.emit(steps)
 

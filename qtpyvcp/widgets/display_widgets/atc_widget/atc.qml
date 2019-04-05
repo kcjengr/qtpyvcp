@@ -160,7 +160,8 @@ Rectangle {
         height: 91
         x: parent.width/2 - width/2
         y: parent.height/2 - height/2
-        text: qsTr("messages")
+        text: qsTr("UNREFERENCED")
+        visible: true
         font.capitalization: Font.AllUppercase
         font.pixelSize: 36
         font.family: "Bebas Kai"
@@ -215,8 +216,6 @@ Rectangle {
 
         onRotateFwdSig: {
 
-            console.log("QML: ROTATE FWD " + steps)
-
             anim_duration = 1000 * steps;
 
             anim_to = anim_from + (360/12 *steps);
@@ -234,8 +233,6 @@ Rectangle {
 
         onRotateRevSig: {
 
-            console.log("QML: ROTATE REV " + steps)
-
             anim_duration = 1000 * steps;
 
             anim_to = anim_from - 360/12 *steps;
@@ -249,6 +246,16 @@ Rectangle {
                 rotate_tool(tool_slot.itemAt(i), anim_duration, anim_from-90, -anim_to+90);
             }
             anim_from = anim_to
+        }
+
+        onHomeMsgSig: {
+            console.log(message);
+            msg_text.text = message;
+        }
+
+        onHomingMsgSig: {
+            console.log(message);
+            msg_text.text = message;
         }
     }
 }
