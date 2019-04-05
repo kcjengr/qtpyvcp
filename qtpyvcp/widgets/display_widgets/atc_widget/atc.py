@@ -155,9 +155,14 @@ class DynATC(QQuickWidget):
 
         steps = args[0]
 
+        if not steps:
+            return
+
         print("#### FORWARD {} steps".format(steps))
 
         self.rotateFwdSig.emit(steps)
+
+        self.component["cw"].value = 0.0
 
     def rotate_rev(self, *args, **kwargs):
 
@@ -165,5 +170,10 @@ class DynATC(QQuickWidget):
 
         print("#### REVERSE {} steps".format(steps))
 
+        if not steps:
+            return
+
         self.rotateRevSig.emit(steps)
+
+        self.component["ccw"].value = 0.0
 
