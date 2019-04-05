@@ -153,43 +153,6 @@ Rectangle {
         }
     }
 
-    function rotate_atc_from_to(atc, previous_pocket, next_pocket) {
-        atc.direction = "Shortest"
-
-        atc.from = 360/12 * previous_pocket + 90;
-        atc.to = 360/12 * next_pocket + 90;
-
-        var slots_num = 0;
-        var direction;
-
-        slots_num = previous_pocket - next_pocket;
-
-        if ( slots_num > 6){
-            slots_num -= 12;
-        }
-        if ( slots_num < -6){
-            slots_num += 12;
-        }
-
-        if (slots_num > 0){
-            direction = "CCW"
-        } else if(slots_num < 0){
-            slots_num = slots_num * -1
-            direction = "CW"
-        }
-
-        atc.duration = slots_num * 1000
-
-        atc.restart();
-
-    }
-
-    function rotate_tool_from_to(widget, previous_pocket, next_pocket) {
-        widget.anim.from = -(360/12 * previous_pocket)
-        widget.anim.to = -(360/12 * next_pocket)
-
-        widget.anim.restart()
-    }
     property int atc_rotation: 90;
     property int tool_rotation: 90;
 
@@ -235,19 +198,6 @@ Rectangle {
         onShowToolSig: {
             tool_slot.itemAt(pocket - 1).tool_num = tool_num;
             tool_slot.itemAt(pocket - 1).state = "visible";
-        }
-
-        onMoveToPocketSig: {
-            rotate_atc_from_to(atc_anim, previous_pocket, pocket_num);
-
-
-            for (var j = 0; j < pocket_slot.count; j++) {
-                rotate_tool_from_to(pocket_slot.itemAt(j), previous_pocket, pocket_num);
-            }
-
-            for (var i = 0; i < (tool_slot.count); i++) {
-                rotate_tool_from_to(tool_slot.itemAt(i), previous_pocket, pocket_num);
-            }
         }
 
         onRotateFwdSig: {
