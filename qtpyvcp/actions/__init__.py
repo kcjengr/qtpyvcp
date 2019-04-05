@@ -106,9 +106,11 @@ def bindWidget(widget, action):
                             .format(action, widget.__class__.__name__))
 
     try:
-        method.ok(*args, widget=widget, **kwargs)      # Set the initial widget OK state
-        method.bindOk(*args, widget=widget, **kwargs)  # Update widget on OK status changes
-    except:
-        # LOG.exception("Could not bind OK status to widget.")
-        # raise InvalidAction("Could not bind OK status to widget.")
-        raise
+        # Set the initial widget OK state and update on changes
+        method.ok(*args, widget=widget, **kwargs)
+        method.bindOk(*args, widget=widget, **kwargs)
+    except Exception as e:
+        msg = "%s raised while trying to bind '%s' action to '%s'" % \
+              (e.message, action, widget)
+        raise type(e), type(e)(msg), sys.exc_info()[2]
+
