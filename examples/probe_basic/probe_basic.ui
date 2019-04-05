@@ -22361,14 +22361,69 @@ font: 11pt bebas kai;
  </widget>
  <customwidgets>
   <customwidget>
+   <class>JogIncrementWidget</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.input_widgets.jog_increment</header>
+  </customwidget>
+  <customwidget>
+   <class>FileSystemTable</class>
+   <extends>QTableView</extends>
+   <header>qtpyvcp.widgets.input_widgets.file_system</header>
+  </customwidget>
+  <customwidget>
+   <class>LoadMeter</class>
+   <extends>QProgressBar</extends>
+   <header>qtpyvcp.widgets.display_widgets.load_meter</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.input_widgets.action_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>RemovableDeviceComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.file_system</header>
+  </customwidget>
+  <customwidget>
+   <class>StatusLabel</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.display_widgets.status_label</header>
+  </customwidget>
+  <customwidget>
    <class>DynATC</class>
    <extends>QQuickWidget</extends>
    <header>qtpyvcp.widgets.display_widgets.atc_widget.atc</header>
   </customwidget>
   <customwidget>
-   <class>JogIncrementWidget</class>
-   <extends>QWidget</extends>
-   <header>qtpyvcp.widgets.input_widgets.jog_increment</header>
+   <class>RecentFileComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>SubCallButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.subcall_button</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>ToolTable</class>
+   <extends>QTableView</extends>
+   <header>qtpyvcp.widgets.input_widgets.tool_table</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.mdi_button</header>
   </customwidget>
   <customwidget>
    <class>GcodeEditor</class>
@@ -22388,69 +22443,14 @@ font: 11pt bebas kai;
    <header>qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot</header>
   </customwidget>
   <customwidget>
-   <class>MDIEntry</class>
-   <extends>QLineEdit</extends>
-   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
-  </customwidget>
-  <customwidget>
-   <class>RecentFileComboBox</class>
-   <extends>QComboBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
-  </customwidget>
-  <customwidget>
    <class>VCPLineEdit</class>
    <extends>QLineEdit</extends>
    <header>qtpyvcp.widgets.input_widgets.line_edit</header>
   </customwidget>
   <customwidget>
-   <class>SubCallButton</class>
-   <extends>QPushButton</extends>
-   <header>qtpyvcp.widgets.button_widgets.subcall_button</header>
-  </customwidget>
-  <customwidget>
-   <class>FileSystemTable</class>
-   <extends>QTableView</extends>
-   <header>qtpyvcp.widgets.input_widgets.file_system</header>
-  </customwidget>
-  <customwidget>
-   <class>VCPSettingsSlider</class>
-   <extends>QSlider</extends>
-   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
-  </customwidget>
-  <customwidget>
-   <class>ToolTable</class>
-   <extends>QTableView</extends>
-   <header>qtpyvcp.widgets.input_widgets.tool_table</header>
-  </customwidget>
-  <customwidget>
-   <class>RemovableDeviceComboBox</class>
-   <extends>QComboBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.file_system</header>
-  </customwidget>
-  <customwidget>
-   <class>MDIButton</class>
-   <extends>QPushButton</extends>
-   <header>qtpyvcp.widgets.button_widgets.mdi_button</header>
-  </customwidget>
-  <customwidget>
-   <class>LoadMeter</class>
-   <extends>QProgressBar</extends>
-   <header>qtpyvcp.widgets.display_widgets.load_meter</header>
-  </customwidget>
-  <customwidget>
-   <class>ActionSlider</class>
-   <extends>QSlider</extends>
-   <header>qtpyvcp.widgets.input_widgets.action_slider</header>
-  </customwidget>
-  <customwidget>
    <class>ActionButton</class>
    <extends>QPushButton</extends>
    <header>qtpyvcp.widgets.button_widgets.action_button</header>
-  </customwidget>
-  <customwidget>
-   <class>StatusLabel</class>
-   <extends>QLabel</extends>
-   <header>qtpyvcp.widgets.display_widgets.status_label</header>
   </customwidget>
   <customwidget>
    <class>QQuickWidget</class>
@@ -22464,39 +22464,6 @@ font: 11pt bebas kai;
   <include location="probe_basic.qrc"/>
  </resources>
  <connections>
-  <connection>
-   <sender>actionslider_5</sender>
-   <signal>sliderMoved(int)</signal>
-   <receiver>fr_override_dro_2</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1632</x>
-     <y>806</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1870</x>
-     <y>809</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>tool_number_entry_box</sender>
-   <sender>actionslider_5</sender>
-   <signal>sliderMoved(int)</signal>
-   <receiver>fr_override_dro_2</receiver>
-   <slot>setValue(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1632</x>
-     <y>806</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1883</x>
-     <y>839</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>main_tool_number_entry_box</sender>
    <signal>returnPressed()</signal>
