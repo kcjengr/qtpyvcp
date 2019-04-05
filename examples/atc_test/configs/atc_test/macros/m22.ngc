@@ -27,7 +27,7 @@ M65 P0 ; Move Carousel home
 
 M66 P0 L3 Q4 ;check carousel in position sensor
    O150 if [#5399 LT 0]
-      (abort, failed to send carousel home) ; abort if the sensor does not activate in 5 seconds
+    (abort, failed to send carousel home) ; abort if the sensor does not activate in 5 seconds
    O150 endif
 
 o<m22> endsub [1]
