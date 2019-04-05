@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 
-from pyqt.QtWidgets import QPushButton
-from pyqt.QtCore import *
-from pyqt.QtGui import *
+from qtpy.QtWidgets import QPushButton
+from qtpy.QtCore import *
+from qtpy.QtGui import *
 
-from qtpyvcp.utilities import action
 from qtpyvcp.utilities.obj_status import HALStatus
 from qtpyvcp.widgets.base_widgets.led_widget import LEDWidget
 
 hal_status = HALStatus()
+
 
 class HALLEDButton(QPushButton):
 
@@ -17,6 +17,7 @@ class HALLEDButton(QPushButton):
 
         self._alignment = Qt.AlignRight | Qt.AlignTop
         self._pin_name = ''
+        self._flash_pin_name = ''
         # self.setCheckable(True)
         self.led = LEDWidget(self)
         self.led.setDiameter(14)
