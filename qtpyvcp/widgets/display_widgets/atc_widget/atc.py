@@ -168,10 +168,10 @@ class DynATC(QQuickWidget):
 
         steps = args[0]
 
-        print("#### REVERSE {} steps".format(steps))
-
         if not steps:
             return
+
+        print("#### REVERSE {} steps".format(steps))
 
         self.rotateRevSig.emit(steps)
 

@@ -154,36 +154,35 @@ Rectangle {
     }
 
     property int atc_rotation: 90;
-    property int tool_rotation: 90;
 
     function rotate_atc(widget, steps, direction) {
 
-        widget.duration = 750 * steps;
+        widget.duration = 900 * steps;
         widget.from = atc_rotation;
 
         if (direction === 1)
-            atc_rotation = atc_holder.rotation + 360/12 * steps;
+            atc_rotation = atc_rotation + 360/12 * steps;
         else if (direction === -1)
-            atc_rotation = atc_holder.rotation - 360/12 * steps;
+            atc_rotation = atc_rotation - 360/12 * steps;
 
         widget.to = atc_rotation;
 
         widget.restart();
     }
 
+    property int tool_rotation: 90;
+
     function rotate_tool(widget, steps, direction) {
 
-        widget.anim.duration = 750 * steps;
+        widget.anim.duration = 900 * steps;
         widget.anim.from = tool_rotation;
 
         if (direction === 1) {
-            tool_rotation = -atc_rotation;
+            widget.anim.to = -atc_rotation + 360/12 * steps;
         }
         else if (direction === -1) {
-            tool_rotation = -atc_rotation;
+            widget.anim.to = -atc_rotation - 360/12 * steps;
         };
-
-        widget.anim.to = tool_rotation;
 
         widget.anim.restart()
     }
@@ -228,6 +227,5 @@ Rectangle {
                 rotate_tool(tool_slot.itemAt(i), steps, -1);
             }
         }
-
     }
 }
