@@ -249,12 +249,10 @@ Rectangle {
         }
 
         onHomeMsgSig: {
-            console.log(message);
             msg_text.text = message;
         }
 
         onHomingMsgSig: {
-            console.log(message);
             msg_text.text = message;
         }
     }
