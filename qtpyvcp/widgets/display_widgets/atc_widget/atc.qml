@@ -202,6 +202,8 @@ Rectangle {
 
         onRotateFwdSig: {
 
+            console.log("QML: ROTRATE FWD " + steps)
+
             rotate_atc(atc_anim, steps, 1);
 
             for (var j = 0; j < pocket_slot.count; j++) {
@@ -213,6 +215,9 @@ Rectangle {
         }
 
         onRotateRevSig: {
+
+            console.log("QML: ROTRATE REV " + steps)
+
             rotate_atc(atc_anim, steps, -1);
 
             for (var j = 0; j < pocket_slot.count; j++) {
