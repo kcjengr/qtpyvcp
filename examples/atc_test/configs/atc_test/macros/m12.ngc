@@ -4,7 +4,6 @@ o<m12> sub
 ; Without parameter one step CW.
 ; Parameter #5170 is used to track the current tool pocket (persistently)
 (print, o<M12> P#<p>)
-   M112 P#<p>
 
 O100 if [EXISTS[#<p>]]
    #<Steps_to_move> = #<p>
@@ -16,6 +15,8 @@ O110 if [#5171 NE 1]
       (print, atc not homed, homing)
       M13
 O110 endif
+
+M112 P#<Steps_to_move>
 
 M64 P3 ; Move atc motor FWD
 

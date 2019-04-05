@@ -4094,7 +4094,7 @@ padding-right: 10px;
                       </size>
                      </property>
                      <property name="MDICommand" stdset="0">
-                      <string>m11 P1</string>
+                      <string>m11</string>
                      </property>
                     </widget>
                    </item>
@@ -4141,7 +4141,7 @@ font: 16pt &quot;Bebas Kai&quot;;
                       </size>
                      </property>
                      <property name="MDICommand" stdset="0">
-                      <string>m12 P1</string>
+                      <string>m12</string>
                      </property>
                     </widget>
                    </item>
