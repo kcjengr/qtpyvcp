@@ -42,11 +42,18 @@ class QComponent(QObject):
         signal.signal(signal.SIGTERM, self.signal_handler)
         signal.signal(signal.SIGINT, self.signal_handler)
 
+        self.type_map = {'float': hal.HAL_FLOAT,
+                         's32': hal.HAL_S32,
+                         'u32': hal.HAL_U32,
+                         'bit': hal.HAL_BIT}
+
         self._comp = _hal.component(comp_name)
         self._pins = {}
 
-    def newPin(self, name, typ, dir):
-        pin = QPin(self._comp, name, typ, dir)
+    def newPin(self, name, typ, direction):
+
+        pin_type = self.type_map.get(typ.lower())
+        pin = QPin(self._comp, name, pin_type, direction)
         self._pins[name] = pin
 
     def getPin(self, *a, **kw):

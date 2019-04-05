@@ -7,6 +7,7 @@ import ctypes.util
 from pprint import pprint
 
 from qtpyvcp.utilities.obj_status import HALPin
+from utilities.hal_qlib import QComponent
 
 ctypes.CDLL(ctypes.util.find_library("GL"), mode=ctypes.RTLD_GLOBAL)
 
@@ -46,33 +47,15 @@ class DynATC(QQuickWidget):
 
         self.atc_position = 0
 
-        self.cw_pin = HALPin('cw', 's32', 'IN', "0")
-        self.ccw_pin = HALPin('ccw', 's32', 'IN', "0")
+        self.component = QComponent('atc-sim')
 
-        self.cw_pin.connect(self.rotate_fw)
-        self.ccw_pin.connect(self.rotate_rev)
+        self.component.newPin('cc', "s32", "in")
+        self.component.newPin('ccw', "s32", "in")
 
-        #
-        # self.comp = hal.component("atc_widget")
-        # self.comp.newpin("steps_in", hal.HAL_FLOAT, hal.HAL_IN)
-        # self.comp.newpin("steps_cw", hal.HAL_FLOAT, hal.HAL_IN)
-        # self.comp.newpin("steps_ccw", hal.HAL_FLOAT, hal.HAL_IN)
-        # self.comp.ready()
-        #
-        # self.hal_stat = HALStatus()
-        #
-        # # self.steps_in = self.hal_stat.getHALPin('atc_widget.steps_in')
-        # self.steps_cw = self.hal_stat.getHALPin('atc_widget.steps_cw')
-        # self.steps_ccw = self.hal_stat.getHALPin('atc_widget.steps_ccw')
-        # #
-        # # self.steps_in.setLogChange(True)
-        # # self.steps_in.connect(self.rotate)
-        #
-        # self.steps_ccw.setLogChange(True)
-        # self.steps_ccw.connect(self.rotate_fw)
-        #
-        # self.steps_cw.setLogChange(True)
-        # self.steps_cw.connect(self.rotate_rev)
+        self.component['cc'].valueChanged.connect(self.rotate_fw)
+        self.component['ccw'].valueChanged.connect(self.rotate_rev)
+
+        self.component.ready()
 
         inifile = os.getenv("INI_FILE_NAME")
         self.inifile = linuxcnc.ini(inifile)
