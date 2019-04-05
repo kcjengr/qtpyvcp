@@ -7,7 +7,6 @@ import ctypes.util
 from pprint import pprint
 
 from qtpyvcp.utilities.obj_status import HALPin
-from utilities.hal_qlib import QComponent
 
 ctypes.CDLL(ctypes.util.find_library("GL"), mode=ctypes.RTLD_GLOBAL)
 
@@ -20,6 +19,7 @@ from qtpy.QtQuickWidgets import QQuickWidget
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities import logger
+from qtpyvcp.utilities.hal_qlib import QComponent
 
 LOG = logger.getLogger(__name__)
 STATUS = getPlugin('status')
