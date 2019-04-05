@@ -194,7 +194,7 @@ Rectangle {
 
     function rotate(steps, direction) {
 
-        console.log("ROTATE")
+//        console.log("ROTATE")
 
         anim_duration = 1000 * steps;
 
@@ -203,28 +203,28 @@ Rectangle {
         else if (direction === -1)
             anim_to = anim_from - (360/12 * steps);
 
-        console.log("ROTATE ATC FROM " + anim_from + " TO " + anim_to);
+//        console.log("ROTATE ATC FROM " + anim_from + " TO " + anim_to);
         rotate_atc(atc_anim, anim_duration, anim_from, anim_to);
 
-        console.log("ROTATE TOOLS");
+//        console.log("ROTATE TOOLS");
 
         for (var i = 0; i < (tool_slot.count); i++) {
 
             var tool_from = -anim_from + 90;
             var tool_to = -anim_to + 90;
 
-            console.log("ROTATE TOOL FROM " + tool_from + " TO " + tool_to);
+//            console.log("ROTATE TOOL FROM " + tool_from + " TO " + tool_to);
             rotate_tool(tool_slot.itemAt(i), anim_duration, tool_from, tool_to);
         }
 
-        console.log("ROTATE POCKET SLOTS");
+//        console.log("ROTATE POCKET SLOTS");
 
         for (var j = 0; j < pocket_slot.count; j++) {
 
             var pocket_from = -anim_from + 90;
             var pocket_to = -anim_to + 90;
 
-            console.log("ROTATE POCKET SLOT FROM " + pocket_from + " TO " + pocket_to);
+//            console.log("ROTATE POCKET SLOT FROM " + pocket_from + " TO " + pocket_to);
             rotate_tool(pocket_slot.itemAt(j), anim_duration, pocket_from, pocket_to);
         }
 
