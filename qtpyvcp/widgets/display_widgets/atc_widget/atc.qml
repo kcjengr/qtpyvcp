@@ -173,26 +173,63 @@ Rectangle {
 
     function rotate_atc(anim, duration, from, to) {
 
-        anim.duration = duration
-        anim.from = from
-        anim.to = to
-        anim.restart()
+        anim.duration = duration;
+        anim.from = from;
+        anim.to = to;
+        anim.restart();
     }
 
     function rotate_tool(widget, duration, from, to) {
 
         widget.anim.duration = duration;
         widget.anim.from = from;
-        widget.anim.to = to
-        widget.anim.restart()
+        widget.anim.to = to;
+        widget.anim.restart();
     }
 
     property int anim_from: 90;
     property int anim_to: 0;
     property int anim_duration: 0;
 
+
+    function rotate(steps, direction) {
+
+        console.log("ROTATE")
+
+        anim_duration = 1000 * steps;
+
+        anim_to = anim_from - 360/12 *steps;
+
+        console.log("ROTATE ATC FROM " + anim_from + " TO " + anim_to);
+        rotate_atc(atc_anim, anim_duration, anim_from, anim_to);
+
+        console.log("ROTATE TOOLS");
+
+        for (var i = 0; i < (tool_slot.count); i++) {
+
+            var tool_from = anim_from - 90;
+            var tool_to = -anim_to + 90;
+
+            console.log("ROTATE TOOL FROM " + tool_from + " TO " + tool_to);
+            rotate_tool(tool_slot.itemAt(i), anim_duration, tool_from, tool_to);
+        }
+
+        console.log("ROTATE POCKET SLOTS");
+
+        for (var j = 0; j < pocket_slot.count; j++) {
+
+            var pocket_from = anim_from - 90;
+            var pocket_to = -anim_to + 90;
+
+            console.log("ROTATE POCKET SLOT FROM " + pocket_from + " TO " + pocket_to);
+            rotate_tool(pocket_slot.itemAt(j), anim_duration, pocket_from, pocket_to);
+        }
+
+
+        anim_from = anim_to;
+    }
     Connections {
-        target: atc_spiner
+        target: atc_spiner;
 
         onHideToolSig: {
             tool_slot.itemAt(tool_num - 1).state = "hidden";
@@ -204,37 +241,11 @@ Rectangle {
         }
 
         onRotateFwdSig: {
-
-            anim_duration = 1000 * steps;
-
-            anim_to = anim_from + (360/12 *steps);
-
-            rotate_atc(atc_anim, anim_duration, anim_from, anim_to);
-
-            for (var j = 0; j < pocket_slot.count; j++) {
-                rotate_tool(pocket_slot.itemAt(j), anim_duration, anim_from-90, -anim_to+90);
-            }
-            for (var i = 0; i < (tool_slot.count); i++) {
-                rotate_tool(tool_slot.itemAt(i), anim_duration, anim_from-90, -anim_to+90);
-            }
-            anim_from = anim_to
+            rotate(steps, 1);
         }
 
         onRotateRevSig: {
-
-            anim_duration = 1000 * steps;
-
-            anim_to = anim_from - 360/12 *steps;
-
-            rotate_atc(atc_anim, anim_duration, anim_from, anim_to);
-
-            for (var j = 0; j < pocket_slot.count; j++) {
-                rotate_tool(pocket_slot.itemAt(j), anim_duration, anim_from-90, -anim_to+90);
-            }
-            for (var i = 0; i < (tool_slot.count); i++) {
-                rotate_tool(tool_slot.itemAt(i), anim_duration, anim_from-90, -anim_to+90);
-            }
-            anim_from = anim_to
+            rotate(steps, -1);
         }
 
         onHomeMsgSig: {
