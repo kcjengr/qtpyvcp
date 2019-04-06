@@ -40,6 +40,7 @@ Application Options:
                        Specify the Qt Python binding to use.
   --perfmon            Monitor and log system performance.
   --command_line_args <args>...
+                       Additional args passed to the QtApplication.
 
 General Options:
   --chooser            Forces the graphical VCP chooser to be shown. If a VCP

@@ -46,9 +46,6 @@ Options available in the INI file are:
     # Whether to show dialog to confirm exit
     CONFIRM_EXIT = bool
 
-    # Application Options
-    [APPLICATIONS]
-
     # One of DEBUG, INFO, WARN, ERROR or CRITICAL
     LOG_LEVEL = level
 
@@ -67,6 +64,7 @@ Options available in the INI file are:
     # Qt Python binding to use, pyqt5 or pyside2
     QT_API = api
 
+    # Additional args passed to the QtApplication.
     COMMAND_LINE_ARGS = <args>
 
     # VTK_BackPlot Options
