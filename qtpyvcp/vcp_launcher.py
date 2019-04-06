@@ -79,21 +79,19 @@ def launch_application(opts, config):
     log_time('done initializing widgets')
 
     postgui_halfile = INFO.getPostguiHalfile()
-    if postgui_halfile:
+    if postgui_halfile is not "":
+        if not os.path.exists(postgui_halfile):
+            raise IOError('The specified POSTGUI_HALFILE does not exist: %s' %
+                          postgui_halfile)
 
-        config_path = INFO.CONFIG_DIR
         ini_path = INFO.INI_FILE
 
-        postgui_halfile_path = os.path.join(config_path, postgui_halfile)
+        LOG.info('Loading POSTGUI_HALFILE: %s', postgui_halfile)
 
-        LOG.info('Loading post GUI HAL file: %s', postgui_halfile_path)
-
-        res = os.spawnvp(os.P_WAIT, "halcmd", ["halcmd", "-i", ini_path, "-f", postgui_halfile_path])
-
-        print("res:", res)
+        res = os.spawnvp(os.P_WAIT, "halcmd", ["halcmd", "-i", ini_path, "-f", postgui_halfile])
 
         if res:
-            raise SystemExit, res
+            raise SystemExit("Failed to load POSTGUI_HALFILE with error: %s" % res)
 
     sys.exit(app.exec_())
 

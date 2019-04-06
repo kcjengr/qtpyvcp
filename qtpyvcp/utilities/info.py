@@ -66,7 +66,7 @@ class _Info(object):
     def getMachineName(self):
         return self.ini.find('EMC', 'MACHINE') or "PyQtVCP Machine"
 
-    def getFilePath(self, section, option, base, default):
+    def getFilePath(self, section, option, base, default=None):
         path = self.ini.find(section, option) or default
         if path is None or not isinstance(path, str):
             return ""
@@ -98,7 +98,7 @@ class _Info(object):
         return self.getFilePath('EMCIO', 'TOOL_TABLE', self.CONFIG_DIR, default)
 
     def getPostguiHalfile(self):
-        return self.ini.find("HAL", "POSTGUI_HALFILE")
+        return self.getFilePath("HAL", "POSTGUI_HALFILE", self.CONFIG_DIR)
 
     def getOpenFile(self, default=None):
         if default is None:
