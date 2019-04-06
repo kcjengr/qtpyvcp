@@ -27,7 +27,7 @@ Display  Options:
 
 Application Options:
   --log-level=(DEBUG | INFO | WARN | ERROR | CRITICAL)
-                       Sets the log level. [default: INFO]
+                       Sets the log level. Default INFO.
   --config-file=FILE   Specifies the YML config file.
   --log-file=FILE      Specifies the log file. Overrides INI setting.
   --pref-file=FILE     Specifies the preference file. Overrides INI setting.
@@ -55,6 +55,7 @@ from docopt import docopt
 from qtpyvcp import __version__ as QTPYVCP_VERSION
 from qtpyvcp.lib.types import DotDict
 from qtpyvcp.utilities.misc import normalizePath
+
 
 def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp_version=None):
     # LinuxCNC passes the INI file as `-ini=inifile` which docopt sees as a
@@ -173,7 +174,7 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
     from qtpyvcp.utilities import logger
     LOG = logger.initBaseLogger('qtpyvcp',
                                 log_file=opts.log_file,
-                                log_level=opts.log_level)
+                                log_level=opts.log_level or "INFO")
 
     LOG.info("QtPyVCP Version: %s", QTPYVCP_VERSION)
 
