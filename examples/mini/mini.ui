@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>636</width>
-    <height>772</height>
+    <height>431</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -28,234 +28,10 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="StatusLabel" name="statuslabel">
-      <property name="rules" stdset="0">
-       <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;clock:time?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
+     <widget class="VTKBackPlot" name="vtkbackplot"/>
     </item>
     <item>
-     <widget class="StatusLabel" name="statuslabel_3">
-      <property name="rules" stdset="0">
-       <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;clock:date?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_2">
-      <property name="rules" stdset="0">
-       <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:estop&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Estoped: \&quot; + str(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_17">
-      <property name="rules" stdset="0">
-       <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:state?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_6">
-      <property name="rules" stdset="0">
-       <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:motion_mode?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Motion Mode: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_16">
-      <property name="rules" stdset="0">
-       <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_mode?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Task Mode: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_7">
-      <property name="rules" stdset="0">
-       <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_state?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Task State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_18">
-      <property name="rules" stdset="0">
-       <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:exec_state?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Exec State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_8">
-      <property name="rules" stdset="0">
-       <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:interp_state?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Interp State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_10">
-      <property name="rules" stdset="0">
-       <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:motion_type?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Motion Type: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_19">
-      <property name="rules" stdset="0">
-       <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:program_units?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Progam Units: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_11">
-      <property name="rules" stdset="0">
-       <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:file&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;File: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_5">
-      <property name="rules" stdset="0">
-       <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:tool_in_spindle&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Tool No.: \&quot; + str(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_9">
-      <property name="rules" stdset="0">
-       <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:all_axes_homed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Homed: \&quot; + str(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_20">
-      <property name="rules" stdset="0">
-       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:gcodes?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;G-codes: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_21">
-      <property name="rules" stdset="0">
-       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:mcodes?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;M-codes: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_22">
-      <property name="rules" stdset="0">
-       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;settings:machine.jog.linear-speed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Jog Speed: %4.1f in/min\&quot; % ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_24">
-      <property name="rules" stdset="0">
-       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;settings:machine.jog.linear-speed-percentage&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Jog Speed: %i%%\&quot; % ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_25">
-      <property name="rules" stdset="0">
-       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;settings:machine.jog.increment&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Jog Increment: %2.4f in\&quot; % ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="JogIncrementWidget" name="jogincrement"/>
-    </item>
-    <item>
-     <widget class="ActionSlider" name="actionslider">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="actionName" stdset="0">
-       <string>machine.jog.set-linear-speed-percentage</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="VCPSettingsSlider" name="vcpsettingsslider">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-      <property name="tickPosition">
-       <enum>QSlider::TicksAbove</enum>
-      </property>
-      <property name="settingName" stdset="0">
-       <string>machine.jog.linear-speed-percentage</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="VCPSettingsSpinBox" name="vcpsettingsSpinBox">
-      <property name="showGroupSeparator" stdset="0">
-       <bool>false</bool>
-      </property>
-      <property name="suffix">
-       <string> %</string>
-      </property>
-      <property name="settingName" stdset="0">
-       <string>machine.jog.linear-speed-percentage</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="VCPSettingsDoubleSpinBox" name="settings_spinbox">
-      <property name="suffix">
-       <string> in/min</string>
-      </property>
-      <property name="settingName" stdset="0">
-       <string>machine.jog.linear-speed</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="VCPSettingsCheckBox" name="settings_checkbox">
-      <property name="text">
-       <string>Jog Continuous</string>
-      </property>
-      <property name="settingName" stdset="0">
-       <string>machine.jog.mode-incremental</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_12">
-      <property name="rules" stdset="0">
-       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?string&amp;axis=x&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_13">
-      <property name="rules" stdset="0">
-       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?string&amp;axis=y&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_14">
-      <property name="rules" stdset="0">
-       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?string&amp;axis=z&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="StatusLabel" name="statuslabel_15">
-      <property name="rules" stdset="0">
-       <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:rel?string&amp;axis=x&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="MDIEntry" name="mdientry">
-      <property name="focusPolicy">
-       <enum>Qt::ClickFocus</enum>
-      </property>
-      <property name="rules" stdset="0">
-       <string notr="true"/>
-      </property>
-     </widget>
+     <widget class="MDIEntry" name="mdientry"/>
     </item>
    </layout>
   </widget>
@@ -522,50 +298,20 @@
  <layoutdefault spacing="6" margin="9"/>
  <customwidgets>
   <customwidget>
-   <class>JogIncrementWidget</class>
-   <extends>QWidget</extends>
-   <header>qtpyvcp.widgets.input_widgets.jog_increment</header>
-  </customwidget>
-  <customwidget>
-   <class>VCPSettingsDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
-  </customwidget>
-  <customwidget>
    <class>VCPMainWindow</class>
    <extends>QMainWindow</extends>
    <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>VCPSettingsCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
-  </customwidget>
-  <customwidget>
-   <class>VCPSettingsSlider</class>
-   <extends>QSlider</extends>
-   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
-  </customwidget>
-  <customwidget>
-   <class>VCPSettingsSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+   <class>VTKBackPlot</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot</header>
   </customwidget>
   <customwidget>
    <class>MDIEntry</class>
    <extends>QLineEdit</extends>
    <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
-  </customwidget>
-  <customwidget>
-   <class>ActionSlider</class>
-   <extends>QSlider</extends>
-   <header>qtpyvcp.widgets.input_widgets.action_slider</header>
-  </customwidget>
-  <customwidget>
-   <class>StatusLabel</class>
-   <extends>QLabel</extends>
-   <header>qtpyvcp.widgets.display_widgets.status_label</header>
   </customwidget>
  </customwidgets>
  <resources>

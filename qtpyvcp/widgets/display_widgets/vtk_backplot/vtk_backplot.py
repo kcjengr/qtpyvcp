@@ -737,20 +737,30 @@ class Tool:
 
         transform = vtk.vtkTransform()
 
-        if tool.id == 0 or tool.diameter < .05:
+        if False: # tool.id == 0 or tool.diameter < .05:
             source = vtk.vtkConeSource()
+            source.SetResolution(128)
             source.SetHeight(self.height / 2)
             source.SetCenter(-self.height / 4 + offset[2], -offset[1], -offset[0])
             source.SetRadius(self.height / 4)
             transform.RotateWXYZ(90, 0, 1, 0)
+
+        elif True:
+            filename = os.path.join(os.path.dirname(__file__), "tool_models/thread_mill.stl")
+
+            source = vtk.vtkSTLReader()
+            source.SetFileName(filename)
+
+            transform.RotateWXYZ(90, 1, 0, 0)
+
         else:
             source = vtk.vtkCylinderSource()
+            source.SetResolution(128)
             source.SetHeight(1)
             source.SetCenter(-offset[0], .5 - offset[2], offset[1])
             source.SetRadius(tool.diameter / 2)
             transform.RotateWXYZ(90, 1, 0, 0)
 
-        source.SetResolution(128)
 
         transform_filter = vtk.vtkTransformPolyDataFilter()
         transform_filter.SetTransform(transform)
