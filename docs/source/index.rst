@@ -26,6 +26,7 @@ building complex VCPs.
    actions/index.rst
    widgets/index.rst
    application
+   hal
 
 .. toctree::
    :maxdepth: 1
