@@ -17,6 +17,8 @@
 
 # QtPyVCP - QtPy Virtual Control Panel
 
+[![Join the chat at https://gitter.im/kcjengr/qtpyvcp](https://badges.gitter.im/kcjengr/qtpyvcp.svg)](https://gitter.im/kcjengr/qtpyvcp?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 QtPyVCP is a Qt and Python based framework for building virtual control panels
 for the LinuxCNC machine control.
 
