@@ -26,8 +26,15 @@ import interpreter
 
 def __init__(self):
     print("__init__")
-    print(sys.executable)
 
+    print(interpreter.__dict__)
+
+    print(sys.builtin_module_names)
+    print(sys.exec_prefix)
+    print("Python version")
+    print (sys.version)
+    print("Version info.")
+    print (sys.version_info)
     emc_methods = [name for name, val in emccanon.__dict__.iteritems() if callable(val)]
     interp_methods = [name for name, val in interpreter.__dict__.iteritems() if callable(val)]
 
