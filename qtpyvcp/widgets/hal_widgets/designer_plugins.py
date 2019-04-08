@@ -1,5 +1,10 @@
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
 
+from hal_checkbox import HalCheckBox
+class HalCheckBoxPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return HalCheckBox
+
 from qtpyvcp.widgets.hal_widgets.hal_led_widget import HalLedWidget
 class HalLedPlugin(_DesignerPlugin):
     def pluginClass(self):

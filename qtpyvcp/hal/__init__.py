@@ -24,7 +24,7 @@ Example:
         # loop the out pin to the in pin value
         comp.getPin('out').value = new_value
 
-    # connect the
+    # connect the listener to the input pin
     comp.addListener('in', onInChanged)
 
 """
