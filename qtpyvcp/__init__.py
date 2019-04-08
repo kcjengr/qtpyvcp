@@ -58,10 +58,12 @@ Note:
 
 import os
 from collections import OrderedDict
-from qtpyvcp.lib.types import DotDict
 
-from ._version import get_versions
+from qtpyvcp.lib.types import DotDict
+from qtpyvcp._version import get_versions
+
 __version__ = get_versions()['version']
+
 del get_versions
 
 QTPYVCP_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -76,6 +78,10 @@ PLUGINS = OrderedDict()  # Ordered dict so
 DIALOGS = {}
 WINDOWS = {}
 SETTINGS = {}
+
+
+def __init__(self):
+    print(self.params[5190])
 
 
 def main():
