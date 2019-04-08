@@ -17,6 +17,7 @@
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 
+import imp
 import os
 import sys
 
@@ -27,14 +28,24 @@ import interpreter
 def __init__(self):
     print("__init__")
 
-    print(interpreter.__dict__)
+    print(imp.find_module('emccanon'))
+    print(imp.find_module('interpreter'))
+
+    print(sys.modules['emccanon'])
+    print(sys.modules['interpreter'])
 
     print(sys.builtin_module_names)
+
+    print(interpreter.__dict__)
+
+    print('\n'.join(sys.path))
+
     print(sys.exec_prefix)
     print("Python version")
     print (sys.version)
     print("Version info.")
     print (sys.version_info)
+
     emc_methods = [name for name, val in emccanon.__dict__.iteritems() if callable(val)]
     interp_methods = [name for name, val in interpreter.__dict__.iteritems() if callable(val)]
 
