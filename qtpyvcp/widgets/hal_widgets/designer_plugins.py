@@ -29,3 +29,8 @@ from qtpyvcp.widgets.hal_widgets.hal_u32_dro import Halu32Dro
 class Halu32DroPlugin(_DesignerPlugin):
     def pluginClass(self):
         return Halu32Dro
+
+from qtpyvcp.widgets.hal_widgets.hal_float_dro import HalFloatDro
+class HalFloatDroPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return HalFloatDro

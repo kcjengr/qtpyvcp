@@ -125,6 +125,9 @@
       </property>
      </widget>
     </item>
+    <item>
+     <widget class="HalFloatDro" name="halfloatdro"/>
+    </item>
    </layout>
   </widget>
   <action name="actionExit">
@@ -413,6 +416,11 @@
    <class>HalDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
    <header>qtpyvcp.widgets.hal_widgets.hal_double_spinbox</header>
+  </customwidget>
+  <customwidget>
+   <class>HalFloatDro</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_float_dro</header>
   </customwidget>
   <customwidget>
    <class>HalLedIndicator</class>
