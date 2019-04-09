@@ -2,7 +2,7 @@
 HAL DoubleSpinBox
 -----------------
 
-DoubleSpinBox used for displaying and setting float HAL pin values.
+DoubleSpinBox for displaying and setting `float` HAL pin values.
 
 Generated HAL Pins
 ++++++++++++++++++
@@ -38,11 +38,9 @@ class HalDoubleSpinBox(QDoubleSpinBox, HALWidget):
     def changeEvent(self, event):
         super(HalDoubleSpinBox, self).changeEvent(event)
         if event == QEvent.EnabledChange and self._enabled_pin is not None:
-            print "enabled changed:", self.isEnabled()
             self._enabled_pin.value = self.isEnabled()
 
     def onCheckedStateChanged(self, checked):
-        print "checked changed:", checked
         if self._value_pin is not None:
             self._value_pin.value = checked
 
@@ -50,15 +48,15 @@ class HalDoubleSpinBox(QDoubleSpinBox, HALWidget):
         comp = hal.COMPONENTS['qtpyvcp']
         obj_name = str(self.objectName()).replace('_', '-')
 
-        # add checkbox.enabled HAL pin
+        # add spinbox.enabled HAL pin
         self._enabled_pin = comp.addPin(obj_name + ".enable", "bit", "in")
         self._enabled_pin.value = self.isEnabled()
         self._enabled_pin.valueChanged.connect(self.setEnabled)
 
-        # add checkbox.checked HAL pin
+        # add spinbox.checked HAL pin
         self._value_pin = comp.addPin(obj_name + ".out", "float", "out")
         self._value_pin.value = self.value()
 
-        # add checkbox.checked HAL pin
+        # add spinbox.checked HAL pin
         self._set_value_pin = comp.addPin(obj_name + ".in", "float", "in")
         self._set_value_pin.valueChanged.connect(self.setValue)

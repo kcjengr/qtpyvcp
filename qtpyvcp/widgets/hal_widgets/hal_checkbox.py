@@ -2,7 +2,7 @@
 HAL CheckBox
 ------------
 
-CheckBox used for displaying and setting BIT HAL pin values.
+CheckBox for displaying and setting `bit` HAL pin values.
 
 Generated HAL Pins
 ++++++++++++++++++
@@ -37,11 +37,9 @@ class HalCheckBox(QCheckBox, HALWidget):
     def changeEvent(self, event):
         super(HalCheckBox, self).changeEvent(event)
         if event == QEvent.EnabledChange and self._enable_pin is not None:
-            print "enabled changed:", self.isEnabled()
             self._enable_pin.value = self.isEnabled()
 
     def onCheckedStateChanged(self, checked):
-        print "checked changed:", checked
         if self._checked_pin is not None:
             self._checked_pin.value = checked
 

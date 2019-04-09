@@ -2,7 +2,7 @@
 HAL SpinBox
 -----------
 
-SpinBox used for displaying and setting u32 and s32 HAL pin values.
+SpinBox for displaying and setting `u32` and `s32` HAL pin values.
 
 Generated HAL Pins
 ++++++++++++++++++
@@ -43,11 +43,9 @@ class HalQSpinBox(QSpinBox, HALWidget):
     def changeEvent(self, event):
         super(HalQSpinBox, self).changeEvent(event)
         if event == QEvent.EnabledChange and self._enabled_pin is not None:
-            print "enabled changed:", self.isEnabled()
             self._enabled_pin.value = self.isEnabled()
 
     def onCheckedStateChanged(self, checked):
-        print "checked changed:", checked
         if self._value_pin is not None:
             self._value_pin.value = checked
 
