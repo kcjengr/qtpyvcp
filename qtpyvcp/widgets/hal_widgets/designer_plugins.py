@@ -24,3 +24,8 @@ from qtpyvcp.widgets.hal_widgets.hal_s32_dro import Hals32Dro
 class Hals32DroPlugin(_DesignerPlugin):
     def pluginClass(self):
         return Hals32Dro
+
+from qtpyvcp.widgets.hal_widgets.hal_u32_dro import Halu32Dro
+class Halu32DroPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return Halu32Dro
