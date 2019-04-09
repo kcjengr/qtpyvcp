@@ -391,6 +391,9 @@ class Mock(object):
     def connect(cls, *args, **kwargs):
         pass
 
+    def Alignment(self):
+        pass
+
     def __getitem__(self, key):
         return Mock()
 

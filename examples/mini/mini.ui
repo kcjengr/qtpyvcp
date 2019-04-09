@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>569</width>
-    <height>125</height>
+    <width>216</width>
+    <height>232</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -26,51 +26,94 @@
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QVBoxLayout" name="verticalLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="1" column="0">
-       <widget class="HalCheckBox" name="box_2">
-        <property name="text">
-         <string>HAL CheckBox 2</string>
-        </property>
-        <property name="pinName" stdset="0">
-         <string>check-box</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="HalCheckBox" name="box_1">
-        <property name="text">
-         <string>HAL CheckBox 1</string>
-        </property>
-        <property name="pinName" stdset="0">
-         <string>check-box</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1" rowspan="2">
-       <widget class="QLabel" name="label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="font">
-         <font>
-          <family>Monospace</family>
-         </font>
-        </property>
-        <property name="text">
-         <string>net check qtpyvcp.box-1.checked &lt;=&gt; qtpyvcp.box-2.checked</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>X Axis E-Offset</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="1">
+          <widget class="HalCheckBox" name="checkbox_xeo_enable">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pinName" stdset="0">
+            <string>check-box</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Enable:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Counts:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="HalQSpinBox" name="spinbox_xeo_counts">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimum">
+            <number>-1</number>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="HalDoubleSpinBox" name="spinbox_xeo_scale">
+           <property name="value">
+            <double>1.000000000000000</double>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Scale:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </item>
     <item>
      <widget class="MDIEntry" name="mdientry"/>
+    </item>
+    <item>
+     <widget class="HalLedIndicator" name="halledindicator"/>
     </item>
    </layout>
   </widget>
@@ -337,10 +380,14 @@
  <layoutdefault spacing="6" margin="9"/>
  <customwidgets>
   <customwidget>
-   <class>VCPMainWindow</class>
-   <extends>QMainWindow</extends>
-   <header>qtpyvcp.widgets.form_widgets.main_window</header>
-   <container>1</container>
+   <class>HalQSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_spinbox</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
   <customwidget>
    <class>HalCheckBox</class>
@@ -348,9 +395,20 @@
    <header>qtpyvcp.widgets.hal_widgets.hal_checkbox</header>
   </customwidget>
   <customwidget>
-   <class>MDIEntry</class>
-   <extends>QLineEdit</extends>
-   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
+   <class>HalDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_double_spinbox</header>
+  </customwidget>
+  <customwidget>
+   <class>HalLedIndicator</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_led</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPMainWindow</class>
+   <extends>QMainWindow</extends>
+   <header>qtpyvcp.widgets.form_widgets.main_window</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>
