@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>216</width>
-    <height>232</height>
+    <height>255</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -114,6 +114,16 @@
     </item>
     <item>
      <widget class="HalLedIndicator" name="halledindicator"/>
+    </item>
+    <item>
+     <widget class="Hals32Dro" name="s32_dro">
+      <property name="text">
+       <string> 0 Int</string>
+      </property>
+      <property name="numberFormat" stdset="0">
+       <string>%2d Int</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -388,6 +398,11 @@
    <class>MDIEntry</class>
    <extends>QLineEdit</extends>
    <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>Hals32Dro</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_s32_dro</header>
   </customwidget>
   <customwidget>
    <class>HalCheckBox</class>

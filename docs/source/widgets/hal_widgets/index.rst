@@ -17,3 +17,6 @@ has been fully loaded.
 
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_led
     :members:
+
+.. automodule:: qtpyvcp.widgets.hal_widgets.hal_s32_dro
+    :members:
