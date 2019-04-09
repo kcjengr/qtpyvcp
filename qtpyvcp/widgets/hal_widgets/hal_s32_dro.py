@@ -10,8 +10,8 @@ Generated HAL Pins
 ========================= ========= =========
 HAL Pin Name              Type      Direction
 ========================= ========= =========
-qtpyvcp.s32-dro.enable    s32 | u32 in
-qtpyvcp.s32-dro.in        s32 | u32 in
+qtpyvcp.s32-dro.enable    s32       in
+qtpyvcp.s32-dro.in        s32       in
 ========================= ========= =========
 """
 
