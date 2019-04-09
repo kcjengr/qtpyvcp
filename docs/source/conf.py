@@ -352,7 +352,7 @@ texinfo_documents = [
 
 
 # mock linuxcnc modules
-for module in ['linuxcnc', 'hal']:
+for module in ['linuxcnc', '_hal', 'hal']:
     sys.modules[module] = mock.MagicMock()
 
 # MagicMock does not work for inheriting, so use our own Mock for PyQt5
