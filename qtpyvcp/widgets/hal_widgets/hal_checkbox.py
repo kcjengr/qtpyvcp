@@ -25,7 +25,7 @@ from qtpyvcp.widgets import HALWidget
 
 class HalCheckBox(QCheckBox, HALWidget):
     """HAL CheckBox"""
-    def __init__(self, parent=None, pin_name=None):
+    def __init__(self, parent=None):
         super(HalCheckBox, self).__init__(parent)
 
         self._enable_pin = None

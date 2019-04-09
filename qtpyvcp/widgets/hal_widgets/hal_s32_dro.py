@@ -24,7 +24,7 @@ from qtpyvcp.widgets import HALWidget
 
 class Hals32Dro(QLabel, HALWidget):
     """HAL s32 DRO"""
-    def __init__(self, parent=None, pin_name=None):
+    def __init__(self, parent=None):
         super(Hals32Dro, self).__init__(parent)
 
         self._in_pin = None

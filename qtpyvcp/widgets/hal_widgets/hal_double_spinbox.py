@@ -25,7 +25,7 @@ from qtpyvcp.widgets import HALWidget
 
 class HalDoubleSpinBox(QDoubleSpinBox, HALWidget):
     """HAL DoubleSpinBox"""
-    def __init__(self, parent=None, pin_name=None):
+    def __init__(self, parent=None):
         super(HalDoubleSpinBox, self).__init__(parent)
 
         self._value_pin = None
