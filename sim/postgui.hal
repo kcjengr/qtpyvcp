@@ -1,1 +1,8 @@
-net in qtpyvcp.box-1.checked <=> qtpyvcp.box-2.checked
+net xeo-enabled qtpyvcp.checkbox-xeo-enable.checked => axis.x.eoffset-enable
+net xeo-enabled => qtpyvcp.spinbox-xeo-counts.enable
+net xeo-enabled => qtpyvcp.spinbox-xeo-scale.enable
+
+net xeo-scale  qtpyvcp.spinbox-xeo-scale.out  => axis.x.eoffset-scale
+net xeo-counts qtpyvcp.spinbox-xeo-counts.out => axis.x.eoffset-counts
+
+net xeo-counts => qtpyvcp.s32-dro.in
