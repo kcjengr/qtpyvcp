@@ -10,6 +10,7 @@ QtPyVCP custom widget documentation.
    base_widget
    buttons/index
    containers/index
+   hal_widgets/index
 
 
 Dialogs

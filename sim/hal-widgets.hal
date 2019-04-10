@@ -1,0 +1,14 @@
+# enable the XEO GroupBox when the X axis is homed
+net homed joint.0.homed => qtpyvcp.xeo-group.enable
+
+# enable/disable XEO is the GroupBox is checked
+net xeo-enabled qtpyvcp.xeo-group.checked => axis.x.eoffset-enable
+
+# connect the HAL widget outputs to the XEO inputs
+net xeo-scale  qtpyvcp.xeo-scale.out  => axis.x.eoffset-scale
+net xeo-counts qtpyvcp.xeo-counts.out => axis.x.eoffset-counts
+net xeo-clear  qtpyvcp.xeo-clear.out  => axis.x.eoffset-clear
+
+# display the resultant XEO in some DROs
+net xeo-request axis.x.eoffset-request => qtpyvcp.xeo-request.in
+net xeo-request => qtpyvcp.lcd-dro.in-f

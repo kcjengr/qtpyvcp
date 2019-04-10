@@ -7,6 +7,7 @@ from pkg_resources import iter_entry_points
 from qtpy.QtWidgets import QApplication
 
 import qtpyvcp
+from qtpyvcp import hal
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import loadDataPlugins
 from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog, IGNORE_LIST
@@ -58,6 +59,8 @@ def launch_application(opts, config):
     qtpyvcp.OPTIONS.update(opts)
     qtpyvcp.CONFIG.update(config)
 
+    hal_comp = hal.component('qtpyvcp')
+
     LOG.debug('Loading data plugings')
     loadDataPlugins(config['data_plugins'])
     log_time('done loading data plugins')
@@ -78,6 +81,9 @@ def launch_application(opts, config):
     app.initialiseWidgets()
     log_time('done initializing widgets')
 
+    hal_comp.ready()
+
+    # load any post GUI hal file
     postgui_halfile = INFO.getPostguiHalfile()
     if postgui_halfile is not "":
         if not os.path.exists(postgui_halfile):
