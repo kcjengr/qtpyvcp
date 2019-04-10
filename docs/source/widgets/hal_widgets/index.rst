@@ -1,10 +1,14 @@
 HAL Widgets
 -----------
 
-These widgets generate HAL pins by which they can control
-or be controlled by external HAL signals. They must be connected
-in the ``POSTGUI_HALFILE`` because they do not exist until the GUI
+These widgets generate HAL pins by which they can control or be
+controlled by external HAL signals. HAL signals must be connected
+in the ``POSTGUI_HALFILE`` since they do not exist until the GUI
 has been fully loaded.
+
+All pins belong to the ``qtpyvcp`` HAL component. Pin names are
+derived from the widget's ObjectName as set in designer, with any
+underscores replaced by dashes.
 
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_checkbox
     :members:
