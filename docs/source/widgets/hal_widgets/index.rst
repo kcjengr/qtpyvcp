@@ -26,3 +26,6 @@ has been fully loaded.
 
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_float_dro
     :members:
+
+.. automodule:: qtpyvcp.widgets.hal_widgets.hal_slider
+    :members:

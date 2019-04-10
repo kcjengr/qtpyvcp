@@ -34,3 +34,8 @@ from qtpyvcp.widgets.hal_widgets.hal_float_dro import HalFloatDro
 class HalFloatDroPlugin(_DesignerPlugin):
     def pluginClass(self):
         return HalFloatDro
+
+from qtpyvcp.widgets.hal_widgets.hal_slider import HalSlider
+class HalSliderPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return HalSlider
