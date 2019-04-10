@@ -65,9 +65,6 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
-          <widget class="HalFloatDro" name="xeo_request"/>
-         </item>
          <item row="3" column="0" colspan="2">
           <widget class="HalButton" name="xeo_clear">
            <property name="text">
@@ -98,6 +95,13 @@
            </property>
            <property name="maximum">
             <number>100</number>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="HalDro" name="xeo_request">
+           <property name="textFormat" stdset="0">
+            <string>%7.4f</string>
            </property>
           </widget>
          </item>
@@ -398,6 +402,11 @@
    <container>1</container>
   </customwidget>
   <customwidget>
+   <class>HalDro</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_dro</header>
+  </customwidget>
+  <customwidget>
    <class>HalButton</class>
    <extends>QPushButton</extends>
    <header>qtpyvcp.widgets.hal_widgets.hal_button</header>
@@ -406,11 +415,6 @@
    <class>HalDoubleSpinBox</class>
    <extends>QDoubleSpinBox</extends>
    <header>qtpyvcp.widgets.hal_widgets.hal_double_spinbox</header>
-  </customwidget>
-  <customwidget>
-   <class>HalFloatDro</class>
-   <extends>QLabel</extends>
-   <header>qtpyvcp.widgets.hal_widgets.hal_float_dro</header>
   </customwidget>
   <customwidget>
    <class>HalLcdDro</class>

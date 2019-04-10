@@ -25,13 +25,7 @@ underscores replaced by dashes.
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_slider
     :members:
 
-.. automodule:: qtpyvcp.widgets.hal_widgets.hal_s32_dro
-    :members:
-
-.. automodule:: qtpyvcp.widgets.hal_widgets.hal_u32_dro
-    :members:
-
-.. automodule:: qtpyvcp.widgets.hal_widgets.hal_float_dro
+.. automodule:: qtpyvcp.widgets.hal_widgets.hal_dro
     :members:
 
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_lcd_dro
