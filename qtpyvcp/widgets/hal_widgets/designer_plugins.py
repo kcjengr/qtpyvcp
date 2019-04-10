@@ -49,3 +49,10 @@ from qtpyvcp.widgets.hal_widgets.hal_lcd_dro import HalLcdDro
 class HalLcdDroPlugin(_DesignerPlugin):
     def pluginClass(self):
         return HalLcdDro
+
+from qtpyvcp.widgets.hal_widgets.hal_groupbox import HalGroupBox
+class HalGroupBoxPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return HalGroupBox
+    def isContainer(self):
+        return True
