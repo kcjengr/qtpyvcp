@@ -107,7 +107,7 @@
      </widget>
     </item>
     <item>
-     <widget class="HalLcdDro" name="lcd_dro">
+     <widget class="HalLCDNumber" name="lcd_dro">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -408,9 +408,9 @@
    <header>qtpyvcp.widgets.hal_widgets.hal_double_spinbox</header>
   </customwidget>
   <customwidget>
-   <class>HalLcdDro</class>
+   <class>HalLCDNumber</class>
    <extends>QLCDNumber</extends>
-   <header>qtpyvcp.widgets.hal_widgets.hal_lcd_dro</header>
+   <header>qtpyvcp.widgets.hal_widgets.hal_lcd</header>
   </customwidget>
   <customwidget>
    <class>VCPMainWindow</class>

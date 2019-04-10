@@ -1,18 +1,18 @@
 """
-HAL LCD DRO
--------------
+HAL LCD Number
+--------------
 
-LCD DRO for displaying `float` or `s32` HAL pin values.
+LCD Number for displaying `float` or `s32` HAL pin values.
 
 Generated HAL Pins
 ++++++++++++++++++
 
-========================= ========= =========
-HAL Pin Name              Type      Direction
-========================= ========= =========
-qtpyvcp.lcd-dro.in-i      s32       in
-qtpyvcp.lcd-dro.in-f      float     in
-========================= ========= =========
+===================== ========= =========
+HAL Pin Name          Type      Direction
+===================== ========= =========
+qtpyvcp.lcd.in-i      s32       in
+qtpyvcp.lcd.in-f      float     in
+===================== ========= =========
 """
 
 from qtpy.QtWidgets import QLCDNumber
@@ -22,10 +22,10 @@ from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget
 
 
-class HalLcdDro(QLCDNumber, HALWidget):
-    """HAL LCD DRO"""
+class HalLCDNumber(QLCDNumber, HALWidget):
+    """HAL LCD Number"""
     def __init__(self, parent=None):
-        super(HalLcdDro, self).__init__(parent)
+        super(HalLCDNumber, self).__init__(parent)
 
         self._in_pin = None
         self._enable_pin = None
