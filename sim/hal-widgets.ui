@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>243</width>
-    <height>411</height>
+    <height>388</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -118,15 +118,12 @@
     <item>
      <widget class="Hals32Dro" name="s32_dro">
       <property name="text">
-       <string> 0 Int</string>
+       <string>0</string>
       </property>
       <property name="numberFormat" stdset="0">
-       <string>%2d Int</string>
+       <string>%1d</string>
       </property>
      </widget>
-    </item>
-    <item>
-     <widget class="HalFloatDro" name="halfloatdro"/>
     </item>
     <item>
      <widget class="HalSlider" name="halslider">
@@ -149,7 +146,7 @@
      </widget>
     </item>
     <item>
-     <widget class="HalLcdDro" name="hallcddro">
+     <widget class="HalLcdDro" name="lcd_dro">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
         <horstretch>0</horstretch>
@@ -464,11 +461,6 @@
    <header>qtpyvcp.widgets.hal_widgets.hal_double_spinbox</header>
   </customwidget>
   <customwidget>
-   <class>HalFloatDro</class>
-   <extends>QLabel</extends>
-   <header>qtpyvcp.widgets.hal_widgets.hal_float_dro</header>
-  </customwidget>
-  <customwidget>
    <class>HalLedIndicator</class>
    <extends>QWidget</extends>
    <header>qtpyvcp.widgets.hal_widgets.hal_led</header>
@@ -485,9 +477,7 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../brender/resources/brender.qrc"/>
- </resources>
+ <resources/>
  <connections/>
  <designerdata>
   <property name="gridDeltaX">

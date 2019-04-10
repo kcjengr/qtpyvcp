@@ -6,3 +6,4 @@ net xeo-scale  qtpyvcp.spinbox-xeo-scale.out  => axis.x.eoffset-scale
 net xeo-counts qtpyvcp.spinbox-xeo-counts.out => axis.x.eoffset-counts
 
 net xeo-counts => qtpyvcp.s32-dro.in
+net xeo-scale => qtpyvcp.lcd-dro.in-f
