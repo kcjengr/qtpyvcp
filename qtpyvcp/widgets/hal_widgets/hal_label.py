@@ -1,6 +1,6 @@
 """
-HAL DRO
--------
+HAL Label
+---------
 
 Label for displaying HAL pin values.
 
@@ -16,8 +16,8 @@ Generated HAL Pins
 ========================= =========== =========
 HAL Pin Name              Type        Direction
 ========================= =========== =========
-qtpyvcp.s32-dro.enable    bit         in
-qtpyvcp.s32-dro.in        selecatable in
+qtpyvcp.label.enable      bit         in
+qtpyvcp.label.in          selecatable in
 ========================= =========== =========
 """
 
@@ -30,13 +30,13 @@ from qtpyvcp.widgets import HALWidget
 from . import HalType
 
 
-class HalDro(QLabel, HALWidget, HalType):
-    """HAL DRO"""
+class HalLabel(QLabel, HALWidget, HalType):
+    """HAL Label"""
 
     Q_ENUMS(HalType)
 
     def __init__(self, parent=None):
-        super(HalDro, self).__init__(parent)
+        super(HalLabel, self).__init__(parent)
 
         self._in_pin = None
         self._enable_pin = None
@@ -79,12 +79,12 @@ class HalDro(QLabel, HALWidget, HalType):
         comp = hal.COMPONENTS['qtpyvcp']
         obj_name = str(self.objectName()).replace('_', '-')
 
-        # add s32-dro.enable HAL pin
+        # add label.enable HAL pin
         self._enable_pin = comp.addPin(obj_name + ".enable", "bit", "in")
         self._enable_pin.value = self.isEnabled()
         self._enable_pin.valueChanged.connect(self.setEnabled)
 
-        # add s32-dro.in HAL pin
+        # add label.in HAL pin
         self._in_pin = comp.addPin(obj_name + ".in", self._typ, "in")
         self.setValue(self._in_pin.value)
         self._in_pin.valueChanged.connect(self.setValue)

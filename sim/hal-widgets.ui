@@ -99,11 +99,7 @@
           </widget>
          </item>
          <item row="2" column="1">
-          <widget class="HalDro" name="xeo_request">
-           <property name="textFormat" stdset="0">
-            <string>%7.4f</string>
-           </property>
-          </widget>
+          <widget class="HalLabel" name="xeo_request"/>
          </item>
         </layout>
        </item>
@@ -402,11 +398,6 @@
    <container>1</container>
   </customwidget>
   <customwidget>
-   <class>HalDro</class>
-   <extends>QLabel</extends>
-   <header>qtpyvcp.widgets.hal_widgets.hal_dro</header>
-  </customwidget>
-  <customwidget>
    <class>HalButton</class>
    <extends>QPushButton</extends>
    <header>qtpyvcp.widgets.hal_widgets.hal_button</header>
@@ -426,6 +417,11 @@
    <extends>QMainWindow</extends>
    <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>HalLabel</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_label</header>
   </customwidget>
  </customwidgets>
  <resources/>
