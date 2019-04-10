@@ -39,3 +39,8 @@ from qtpyvcp.widgets.hal_widgets.hal_slider import HalSlider
 class HalSliderPlugin(_DesignerPlugin):
     def pluginClass(self):
         return HalSlider
+
+from qtpyvcp.widgets.hal_widgets.hal_button import HalButton
+class HalButtonPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return HalButton

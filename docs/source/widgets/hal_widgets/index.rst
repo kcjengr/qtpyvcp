@@ -29,3 +29,6 @@ has been fully loaded.
 
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_slider
     :members:
+
+.. automodule:: qtpyvcp.widgets.hal_widgets.hal_button
+    :members:

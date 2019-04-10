@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>218</width>
-    <height>255</height>
+    <height>299</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -127,6 +127,26 @@
     </item>
     <item>
      <widget class="HalFloatDro" name="halfloatdro"/>
+    </item>
+    <item>
+     <widget class="HalSlider" name="halslider">
+      <property name="maximum">
+       <number>100</number>
+      </property>
+      <property name="value">
+       <number>50</number>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="HalButton" name="halbutton">
+      <property name="text">
+       <string>HAL Button</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -403,6 +423,11 @@
    <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
   <customwidget>
+   <class>HalSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_slider</header>
+  </customwidget>
+  <customwidget>
    <class>Hals32Dro</class>
    <extends>QLabel</extends>
    <header>qtpyvcp.widgets.hal_widgets.hal_s32_dro</header>
@@ -411,6 +436,11 @@
    <class>HalCheckBox</class>
    <extends>QCheckBox</extends>
    <header>qtpyvcp.widgets.hal_widgets.hal_checkbox</header>
+  </customwidget>
+  <customwidget>
+   <class>HalButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_button</header>
   </customwidget>
   <customwidget>
    <class>HalDoubleSpinBox</class>
