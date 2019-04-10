@@ -44,3 +44,8 @@ from qtpyvcp.widgets.hal_widgets.hal_button import HalButton
 class HalButtonPlugin(_DesignerPlugin):
     def pluginClass(self):
         return HalButton
+
+from qtpyvcp.widgets.hal_widgets.hal_lcd_dro import HalLcdDro
+class HalLcdDroPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return HalLcdDro

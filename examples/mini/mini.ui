@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>218</width>
-    <height>299</height>
+    <width>243</width>
+    <height>411</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -145,6 +145,22 @@
      <widget class="HalButton" name="halbutton">
       <property name="text">
        <string>HAL Button</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="HalLcdDro" name="hallcddro">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>225</width>
+        <height>75</height>
+       </size>
       </property>
      </widget>
     </item>
@@ -456,6 +472,11 @@
    <class>HalLedIndicator</class>
    <extends>QWidget</extends>
    <header>qtpyvcp.widgets.hal_widgets.hal_led</header>
+  </customwidget>
+  <customwidget>
+   <class>HalLcdDro</class>
+   <extends>QLCDNumber</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_lcd_dro</header>
   </customwidget>
   <customwidget>
    <class>VCPMainWindow</class>
