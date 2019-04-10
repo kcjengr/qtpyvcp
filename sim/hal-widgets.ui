@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>243</width>
-    <height>388</height>
+    <height>277</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -28,40 +28,34 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <widget class="QGroupBox" name="groupBox">
+     <widget class="HalGroupBox" name="xeo_group">
       <property name="title">
        <string>X Axis E-Offset</string>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
         <layout class="QGridLayout" name="gridLayout">
-         <item row="0" column="1">
-          <widget class="HalCheckBox" name="checkbox_xeo_enable">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="pinName" stdset="0">
-            <string>check-box</string>
+         <item row="1" column="1">
+          <widget class="HalDoubleSpinBox" name="xeo_scale">
+           <property name="value">
+            <double>1.000000000000000</double>
            </property>
           </widget>
          </item>
-         <item row="0" column="0">
-          <widget class="QLabel" name="label_2">
+         <item row="1" column="0">
+          <widget class="QLabel" name="label_3">
            <property name="text">
-            <string>Enable:</string>
+            <string>Scale:</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
            </property>
           </widget>
          </item>
-         <item row="1" column="0">
+         <item row="0" column="0">
           <widget class="QLabel" name="label">
            <property name="text">
             <string>Counts:</string>
@@ -71,8 +65,28 @@
            </property>
           </widget>
          </item>
-         <item row="1" column="1">
-          <widget class="HalQSpinBox" name="spinbox_xeo_counts">
+         <item row="2" column="1">
+          <widget class="HalFloatDro" name="xeo_request"/>
+         </item>
+         <item row="3" column="0" colspan="2">
+          <widget class="HalButton" name="xeo_clear">
+           <property name="text">
+            <string>Clear E-Offset</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Request:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="HalQSpinBox" name="xeo_counts">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -87,62 +101,9 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="1">
-          <widget class="HalDoubleSpinBox" name="spinbox_xeo_scale">
-           <property name="value">
-            <double>1.000000000000000</double>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="label_3">
-           <property name="text">
-            <string>Scale:</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
         </layout>
        </item>
       </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="MDIEntry" name="mdientry"/>
-    </item>
-    <item>
-     <widget class="HalLedIndicator" name="halledindicator"/>
-    </item>
-    <item>
-     <widget class="Hals32Dro" name="s32_dro">
-      <property name="text">
-       <string>0</string>
-      </property>
-      <property name="numberFormat" stdset="0">
-       <string>%1d</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="HalSlider" name="halslider">
-      <property name="maximum">
-       <number>100</number>
-      </property>
-      <property name="value">
-       <number>50</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="HalButton" name="halbutton">
-      <property name="text">
-       <string>HAL Button</string>
-      </property>
      </widget>
     </item>
     <item>
@@ -431,24 +392,10 @@
    <header>qtpyvcp.widgets.hal_widgets.hal_spinbox</header>
   </customwidget>
   <customwidget>
-   <class>MDIEntry</class>
-   <extends>QLineEdit</extends>
-   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
-  </customwidget>
-  <customwidget>
-   <class>HalSlider</class>
-   <extends>QSlider</extends>
-   <header>qtpyvcp.widgets.hal_widgets.hal_slider</header>
-  </customwidget>
-  <customwidget>
-   <class>Hals32Dro</class>
-   <extends>QLabel</extends>
-   <header>qtpyvcp.widgets.hal_widgets.hal_s32_dro</header>
-  </customwidget>
-  <customwidget>
-   <class>HalCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>qtpyvcp.widgets.hal_widgets.hal_checkbox</header>
+   <class>HalGroupBox</class>
+   <extends>QGroupBox</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_groupbox</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
    <class>HalButton</class>
@@ -461,9 +408,9 @@
    <header>qtpyvcp.widgets.hal_widgets.hal_double_spinbox</header>
   </customwidget>
   <customwidget>
-   <class>HalLedIndicator</class>
-   <extends>QWidget</extends>
-   <header>qtpyvcp.widgets.hal_widgets.hal_led</header>
+   <class>HalFloatDro</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_float_dro</header>
   </customwidget>
   <customwidget>
    <class>HalLcdDro</class>

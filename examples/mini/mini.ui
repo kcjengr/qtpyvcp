@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>636</width>
-    <height>772</height>
+    <height>780</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -253,7 +253,7 @@
        <enum>Qt::ClickFocus</enum>
       </property>
       <property name="rules" stdset="0">
-       <string notr="true"/>
+       <string notr="true">[]</string>
       </property>
      </widget>
     </item>
@@ -527,27 +527,6 @@
    <header>qtpyvcp.widgets.input_widgets.jog_increment</header>
   </customwidget>
   <customwidget>
-   <class>VCPSettingsDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
-  </customwidget>
-  <customwidget>
-   <class>VCPMainWindow</class>
-   <extends>QMainWindow</extends>
-   <header>qtpyvcp.widgets.form_widgets.main_window</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>VCPSettingsCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
-  </customwidget>
-  <customwidget>
-   <class>VCPSettingsSlider</class>
-   <extends>QSlider</extends>
-   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
-  </customwidget>
-  <customwidget>
    <class>VCPSettingsSpinBox</class>
    <extends>QSpinBox</extends>
    <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
@@ -563,9 +542,30 @@
    <header>qtpyvcp.widgets.input_widgets.action_slider</header>
   </customwidget>
   <customwidget>
+   <class>VCPSettingsDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
    <class>StatusLabel</class>
    <extends>QLabel</extends>
    <header>qtpyvcp.widgets.display_widgets.status_label</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPMainWindow</class>
+   <extends>QMainWindow</extends>
+   <header>qtpyvcp.widgets.form_widgets.main_window</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
   </customwidget>
  </customwidgets>
  <resources>
