@@ -28,7 +28,7 @@ underscores replaced by dashes.
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_label
     :members:
 
-.. automodule:: qtpyvcp.widgets.hal_widgets.hal_lcd_dro
+.. automodule:: qtpyvcp.widgets.hal_widgets.hal_lcd
     :members:
 
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_groupbox
