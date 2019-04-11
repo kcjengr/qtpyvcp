@@ -61,70 +61,162 @@ def change_prolog(self, **words):
         if self.selected_pocket < 0:
             self.set_errormsg("M6: no tool prepared")
             return INTERP_ERROR
-
         if self.cutter_comp_side:
             self.set_errormsg("Cannot change tools with cutter radius compensation on")
             return INTERP_ERROR
         self.params["tool_in_spindle"] = self.current_tool
         self.params["selected_tool"] = self.selected_tool
-        self.params["current_pocket"] = self.current_pocket # this is probably nonsense
+        self.params["current_pocket"] = self.current_pocket  # this is probably nonsense
         self.params["selected_pocket"] = self.selected_pocket
         return INTERP_OK
-
     except Exception, e:
         self.set_errormsg("M6/change_prolog: %s" % (e))
         return INTERP_ERROR
+
 
 def change_epilog(self, **words):
     try:
         if not self.value_returned:
             r = self.blocks[self.remap_level].executing_remap
             self.set_errormsg("the %s remap procedure %s did not return a value"
-                             % (r.name,r.remap_ngc if r.remap_ngc else r.remap_py))
-            return INTERP_ERROR
+                              % (r.name, r.remap_ngc if r.remap_ngc else r.remap_py))
+            yield INTERP_ERROR
+        # this is relevant only when using iocontrol-v2.
+        if self.params[5600] > 0.0:
+            if self.params[5601] < 0.0:
+                self.set_errormsg("Toolchanger hard fault %d" % (int(self.params[5601])))
+                yield INTERP_ERROR
+            print "change_epilog: Toolchanger soft fault %d" % int(self.params[5601])
 
-        if self.return_value > 0.0:
-            if self.return_value == 3:
-                message = "No tool measurement ! Please take care of the entry in the tool table"
-                emccanon.MESSAGE(message)
-            return INTERP_OK
+        if self.blocks[self.remap_level].builtin_used:
+            # print "---------- M6 builtin recursion, nothing to do"
+            yield INTERP_OK
         else:
-            if self.return_value == -1:
-                message = "Searchvel <= 0, not permitted!, Please correct INI Settings."
-            elif self.return_value == -2:
-                message = "Probevel <= 0, not permitted!, Please correct INI Settings."
-            elif self.return_value == -3:
-                message = "Probe contact failiure !!"
+            if self.return_value > 0.0:
+                # commit change
+                self.selected_pocket = int(self.params["selected_pocket"])
+                emccanon.CHANGE_TOOL(self.selected_pocket)
+                self.current_pocket = self.selected_pocket
+                self.selected_pocket = -1
+                self.selected_tool = -1
+                # cause a sync()
+                self.set_tool_parameters()
+                self.toolchange_flag = True
+                yield INTERP_EXECUTE_FINISH
             else:
-                message = "M6 aborted (return code %.1f)" % (self.return_value)
-            self.set_errormsg(message)
-            return INTERP_ERROR
-
+                self.set_errormsg("M6 aborted (return code %.1f)" % (self.return_value))
+                yield INTERP_ERROR
     except Exception, e:
         self.set_errormsg("M6/change_epilog: %s" % (e))
+        yield INTERP_ERROR
+
+
+# REMAP=M61  modalgroup=6 prolog=settool_prolog ngc=settool epilog=settool_epilog
+# exposed parameters: #<tool> #<pocket>
+
+def settool_prolog(self, **words):
+    try:
+        c = self.blocks[self.remap_level]
+        if not c.q_flag:
+            self.set_errormsg("M61 requires a Q parameter")
+            return INTERP_ERROR
+        tool = int(c.q_number)
+        if tool < -TOLERANCE_EQUAL:  # 'less than 0 within interp's precision'
+            self.set_errormsg("M61: Q value < 0")
+            return INTERP_ERROR
+        (status, pocket) = self.find_tool_pocket(tool)
+        if status != INTERP_OK:
+            self.set_errormsg("M61 failed: requested tool %d not in table" % (tool))
+            return status
+        self.params["tool"] = tool
+        self.params["pocket"] = pocket
+        return INTERP_OK
+    except Exception, e:
+        self.set_errormsg("M61/settool_prolog: %s)" % (e))
         return INTERP_ERROR
 
 
-_uvw = ("u","v","w","a","b","c")
-_xyz = ("x","y","z","a","b","c")
+def settool_epilog(self, **words):
+    try:
+        if not self.value_returned:
+            r = self.blocks[self.remap_level].executing_remap
+            self.set_errormsg("the %s remap procedure %s did not return a value"
+                              % (r.name, r.remap_ngc if r.remap_ngc else r.remap_py))
+            return INTERP_ERROR
+
+        if self.blocks[self.remap_level].builtin_used:
+            # print "---------- M61 builtin recursion, nothing to do"
+            return INTERP_OK
+        else:
+            if self.return_value > 0.0:
+                self.current_tool = int(self.params["tool"])
+                self.current_pocket = int(self.params["pocket"])
+                emccanon.CHANGE_TOOL_NUMBER(self.current_pocket)
+                # cause a sync()
+                self.tool_change_flag = True
+                self.set_tool_parameters()
+            else:
+                self.set_errormsg("M61 aborted (return code %.1f)" % (self.return_value))
+                return INTERP_ERROR
+    except Exception, e:
+        self.set_errormsg("M61/settool_epilog: %s)" % (e))
+        return INTERP_ERROR
+
+
+# educational alternative: M61 remapped to an all-Python handler
+# demo - this really does the same thing as the builtin (non-remapped) M61
+#
+# REMAP=M61 modalgroup=6 python=set_tool_number
+
+def set_tool_number(self, **words):
+    try:
+        c = self.blocks[self.remap_level]
+        if c.q_flag:
+            toolno = int(c.q_number)
+        else:
+            self.set_errormsg("M61 requires a Q parameter")
+            return status
+        (status, pocket) = self.find_tool_pocket(toolno)
+        if status != INTERP_OK:
+            self.set_errormsg("M61 failed: requested tool %d not in table" % (toolno))
+            return status
+        if words['q'] > -TOLERANCE_EQUAL:  # 'greater equal 0 within interp's precision'
+            self.current_pocket = pocket
+            self.current_tool = toolno
+            emccanon.CHANGE_TOOL_NUMBER(pocket)
+            # cause a sync()
+            self.tool_change_flag = True
+            self.set_tool_parameters()
+            return INTERP_OK
+        else:
+            self.set_errormsg("M61 failed: Q=%4" % (toolno))
+            return INTERP_ERROR
+    except Exception, e:
+        self.set_errormsg("M61/set_tool_number: %s" % (e))
+        return INTERP_ERROR
+
+
+_uvw = ("u", "v", "w", "a", "b", "c")
+_xyz = ("x", "y", "z", "a", "b", "c")
 # given a plane, return  sticky words, incompatible axis words and plane name
 # sticky[0] is also the movement axis
 _compat = {
-    emccanon.CANON_PLANE_XY : (("z","r"),_uvw,"XY"),
-    emccanon.CANON_PLANE_YZ : (("x","r"),_uvw,"YZ"),
-    emccanon.CANON_PLANE_XZ : (("y","r"),_uvw,"XZ"),
-    emccanon.CANON_PLANE_UV : (("w","r"),_xyz,"UV"),
-    emccanon.CANON_PLANE_VW : (("u","r"),_xyz,"VW"),
-    emccanon.CANON_PLANE_UW : (("v","r"),_xyz,"UW")}           
+    emccanon.CANON_PLANE_XY: (("z", "r"), _uvw, "XY"),
+    emccanon.CANON_PLANE_YZ: (("x", "r"), _uvw, "YZ"),
+    emccanon.CANON_PLANE_XZ: (("y", "r"), _uvw, "XZ"),
+    emccanon.CANON_PLANE_UV: (("w", "r"), _xyz, "UV"),
+    emccanon.CANON_PLANE_VW: (("u", "r"), _xyz, "VW"),
+    emccanon.CANON_PLANE_UW: (("v", "r"), _xyz, "UW")}
 
-# extract and pass parameters from current block, merged with extra paramters on a continuation line
+
+# extract and pass parameters from current block, merged with extra parameters on a continuation line
 # keep tjose parameters across invocations
 # export the parameters into the oword procedure
-def cycle_prolog(self,**words):
+def cycle_prolog(self, **words):
     # self.sticky_params is assumed to have been initialized by the
     # init_stgdlue() method below
     global _compat
-    try:    
+    try:
         # determine whether this is the first or a subsequent call
         c = self.blocks[self.remap_level]
         r = c.executing_remap
@@ -133,22 +225,22 @@ def cycle_prolog(self,**words):
             self.sticky_params[r.name] = dict()
 
         self.params["motion_code"] = c.g_modes[1]
-        
-        (sw,incompat,plane_name) =_compat[self.plane]
-        for (word,value) in words.items():
+
+        (sw, incompat, plane_name) = _compat[self.plane]
+        for (word, value) in words.items():
             # inject current parameters
             self.params[word] = value
             # record sticky words
             if word in sw:
-                if self.debugmask & 0x00080000: print "%s: record sticky %s = %.4f" % (r.name,word,value)
+                if self.debugmask & 0x00080000: print "%s: record sticky %s = %.4f" % (r.name, word, value)
                 self.sticky_params[r.name][word] = value
             if word in incompat:
                 return "%s: Cannot put a %s in a canned cycle in the %s plane" % (r.name, word.upper(), plane_name)
 
         # inject sticky parameters which were not in words:
-        for (key,value) in self.sticky_params[r.name].items():
+        for (key, value) in self.sticky_params[r.name].items():
             if not key in words:
-                if self.debugmask & 0x00080000: print "%s: inject sticky %s = %.4f" % (r.name,key,value)
+                if self.debugmask & 0x00080000: print "%s: inject sticky %s = %.4f" % (r.name, key, value)
                 self.params[key] = value
 
         if not "r" in self.sticky_params[r.name]:
@@ -161,7 +253,7 @@ def cycle_prolog(self,**words):
             # checked in interpreter during block parsing
             # if l <= 0 or l not near an int
             self.params["l"] = words["l"]
-            
+
         if "p" in words:
             p = words["p"]
             if p < 0.0:
@@ -175,20 +267,22 @@ def cycle_prolog(self,**words):
         if self.cutter_comp_side:
             return "%s: Cannot use canned cycles with cutter compensation on" % (r.name)
         return INTERP_OK
-    
+
     except Exception, e:
         raise
         return "cycle_prolog failed: %s" % (e)
 
+
 # make sure the next line has the same motion code, unless overriden by a
 # new G code
-def cycle_epilog(self,**words):
+def cycle_epilog(self, **words):
     try:
         c = self.blocks[self.remap_level]
-        self.motion_mode = c.executing_remap.motion_code # retain the current motion mode
+        self.motion_mode = c.executing_remap.motion_code  # retain the current motion mode
         return INTERP_OK
     except Exception, e:
         return "cycle_epilog failed: %s" % (e)
+
 
 # this should be called from TOPLEVEL __init__()
 def init_stdglue(self):
