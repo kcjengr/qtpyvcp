@@ -9,7 +9,7 @@ import inspect
 from pkg_resources import iter_entry_points
 
 from qtpy import API
-from qtpy.QtCore import QTimer, Slot
+from qtpy.QtCore import QTimer, Slot, Qt
 from qtpy.QtWidgets import QApplication, QStyleFactory
 
 import qtpyvcp
@@ -58,6 +58,10 @@ class VCPApplication(QApplication):
         # self.window = self.loadVCPMainWindow(opts, vcp_file)
         # if self.window is not None:
         #     self.window.show()
+
+        if opts.hide_cursor:
+            from qtpy.QtGui import QCursor
+            self.setOverrideCursor(QCursor(Qt.BlankCursor))
 
         # Performance monitoring
         if opts.perfmon:

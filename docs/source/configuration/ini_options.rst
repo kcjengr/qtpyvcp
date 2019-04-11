@@ -43,6 +43,9 @@ Options available in the INI file are:
     # Hides the status bar, if present
     HIDE_STATUS_BAR = bool
 
+    # Hides the cursor for touchscreen VCPs
+    HIDE_CURSOR = True
+
     # Whether to show dialog to confirm exit
     CONFIRM_EXIT = bool
 

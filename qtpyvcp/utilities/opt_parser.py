@@ -23,6 +23,7 @@ Display  Options:
   --maximize BOOL      Flag to start with window maximized.
   --hide-menu-bar      Hides the menu bar, if present.
   --hide-status-bar    Hides the status bar, if present.
+  --hide-cursor        Hide the mouse cursor.
   --confirm-exit BOOL  Whether to show dialog to confirm exit.
 
 Application Options:
