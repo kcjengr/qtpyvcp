@@ -16,8 +16,95 @@
 #   along with this program; if not, write to the Free Software
 #   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
-from stdglue import *
+
+import linuxcnc
+
+from interpreter import *
+import emccanon
+
+# from stdglue import *
+
+COMMAND = linuxcnc.command()
 
 
-def M6_Remap_ATC(self, **words):
-    print(words)
+
+def change_prolog(self, **words):
+    print("change_prolog", words)
+
+    return INTERP_OK
+
+
+def change_epilog(self, **words):
+    print("change_epilog", words)
+
+    return INTERP_OK
+
+
+def m6(self, **words):
+    print("m6 called", words)
+
+    return INTERP_OK
+
+
+def m10(self, **words):
+    print("m10 called", words)
+
+    return INTERP_OK
+
+
+def m11(self, **words):
+    print("m11 called", words)
+
+    COMMAND.set_digital_output(4, 1)
+
+    return INTERP_OK
+
+
+def m12(self, **words):
+    print("m12 called", words)
+
+    COMMAND.set_digital_output(4, 0)
+
+    return INTERP_OK
+
+
+def m13(self, **words):
+    print("m13 called Homing ATC", words)
+
+    return INTERP_OK
+
+
+def m21(self, **words):
+    print("m21 called", words)
+
+    return INTERP_OK
+
+
+def m22(self, **words):
+    print("m22 called", words)
+
+    return INTERP_OK
+
+
+def m23(self, **words):
+    print("m23 called", words)
+
+    return INTERP_OK
+
+
+def m24(self, **words):
+    print("m24 called")
+
+    return INTERP_OK
+
+
+def m25(self, **words):
+    print("m25 called")
+
+    return INTERP_OK
+
+
+def m26(self, **words):
+    print("m26 called")
+
+    return INTERP_OK
