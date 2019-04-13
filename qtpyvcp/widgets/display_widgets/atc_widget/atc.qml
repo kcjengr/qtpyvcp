@@ -205,9 +205,9 @@ Rectangle {
         anim_duration = 1000 * steps;
 
         if (direction === 1)
-            anim_to = anim_from + (360/12 * steps);
-        else if (direction === -1)
             anim_to = anim_from - (360/12 * steps);
+        else if (direction === -1)
+            anim_to = anim_from + (360/12 * steps);
 
         //        console.log("ROTATE ATC FROM " + anim_from + " TO " + anim_to);
         rotate_atc(atc_anim, anim_duration, anim_from, anim_to);

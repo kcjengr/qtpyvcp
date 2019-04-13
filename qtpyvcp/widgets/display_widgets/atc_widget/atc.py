@@ -164,12 +164,18 @@ class DynATC(QQuickWidget):
 
     def rotate_fw(self, *args, **kwargs):
 
+        if self.component["fwd"].value == 0:
+            return
+
         steps = self.component["goto"].value
         print(steps)
 
         self.rotateFwdSig.emit(steps)
 
     def rotate_rev(self, *args, **kwargs):
+        
+        if self.component["rev"].value == 0:
+            return
 
         steps = self.component["goto"].value
         print(steps)

@@ -72,52 +72,13 @@ def change_epilog(self, **words):
         print("M6/change_epilog: {}".format(e))
         return
 
-
-def prepare_prolog(self, **words):
-    print("PREPARE PROLOG")
-    try:
-        cblock = self.blocks[self.remap_level]
-        if not cblock.t_flag:
-            return "T requires a tool number"
-
-        tool = cblock.t_number
-        if tool:
-            (status, pocket) = self.find_tool_pocket(tool)
-            if status != INTERP_OK:
-                return "T{}: pocket not found".format(tool)
-        else:
-            pocket = -1 # this is a T0 - tool unload
-
-        # these variables will be visible in the ngc oword sub
-        # as #<tool> and #<pocket> local variables, and can be
-        # modified there - the epilog will retrieve the changed
-        # values
-        self.params["tool"] = tool
-        self.params["pocket"] = pocket
-
-        return INTERP_OK
-    except Exception as e:
-        return "T{[t]}/prepare_prolog: {}".format(words, e)
-
-
-def prepare_epilog(self, **words):
-    print("PREPARE EPILOG")
-    try:
-        if self.return_value > 0:
-            self.selected_tool = int(self.params["tool"])
-            self.selected_pocket = int(self.params["pocket"])
-            emccanon.SELECT_POCKET(self.selected_pocket, self.selected_tool)
-            return INTERP_OK
-        else:
-            return "T%d: aborted (return code %.1f)" % (int(self.params["tool"]),self.return_value)
-
-    except Exception as e:
-        return "T%d/prepare_epilog: {}".format(self.selected_tool, e)
-
-
 def m6(self, **words):
 
     print("M6 T{} P{}".format(self.selected_tool, self.selected_pocket))
+
+    if self.selected_tool == self.current_tool:
+        emccanon.MESSAGE("Tool already in spindle")
+        return
 
     emccanon.SET_AUX_OUTPUT_VALUE(0, self.selected_tool)
     emccanon.SET_AUX_OUTPUT_BIT(0)
