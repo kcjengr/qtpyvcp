@@ -30,8 +30,8 @@ class DynATC(QQuickWidget):
 
     # toolInSpindleSig = Signal(int, arguments=['tool_num'])
 
-    rotateFwdSig = Signal(int, arguments=['steps'])
-    rotateRevSig = Signal(int, arguments=['steps'])
+    rotateFwdSig = Signal(int, arguments=['pocket'])
+    rotateRevSig = Signal(int, arguments=['pocket'])
 
     showToolSig = Signal(int, int, arguments=['pocket', 'tool_num'])
     hideToolSig = Signal(int, arguments=['tool_num'])
@@ -54,7 +54,7 @@ class DynATC(QQuickWidget):
         self.component.newPin('home', "float", "in")
         self.component.newPin('homing', "float", "in")
 
-        self.component.newPin("goto", "s32", "in")
+        self.component.newPin("goto", "float", "in")
 
         self.component.newPin('fwd', "bit", "in")
         self.component.newPin('rev', "bit", "in")
@@ -168,6 +168,7 @@ class DynATC(QQuickWidget):
             return
 
         steps = self.component["goto"].value
+        print(steps)
 
         self.rotateFwdSig.emit(steps)
 
@@ -177,6 +178,7 @@ class DynATC(QQuickWidget):
             return
 
         steps = self.component["goto"].value
+        print(steps)
 
         self.rotateRevSig.emit(steps)
 
