@@ -54,6 +54,8 @@ class DynATC(QQuickWidget):
         self.component.newPin('home', "float", "in")
         self.component.newPin('homing', "float", "in")
 
+        self.component.newPin("goto", "s32", "in")
+
         self.component.newPin('fwd', "bit", "in")
         self.component.newPin('rev', "bit", "in")
 
@@ -162,24 +164,15 @@ class DynATC(QQuickWidget):
 
     def rotate_fw(self, *args, **kwargs):
 
-        steps = args[0]
+        steps = self.component["goto"].value
         print(steps)
 
-        if not steps:
-            return
-
-        self.rotateFwdSig.emit(1)
-
-        self.component["fwd"].value = False
+        self.rotateFwdSig.emit(steps)
 
     def rotate_rev(self, *args, **kwargs):
 
-        steps = args[0]
+        steps = self.component["goto"].value
+        print(steps)
 
-        if not steps:
-            return
-
-        self.rotateRevSig.emit(1)
-
-        self.component["rev"].value = False
+        self.rotateRevSig.emit(steps)
 

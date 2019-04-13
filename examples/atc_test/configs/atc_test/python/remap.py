@@ -50,7 +50,7 @@ def change_prolog(self, **words):
 
     except Exception as e:
         print(e)
-        return "M6/change_prolog: {}".format(e)
+        return
 
 
 def change_epilog(self, **words):
@@ -65,14 +65,16 @@ def change_epilog(self, **words):
             self.set_tool_parameters()
             return INTERP_OK
         else:
-            return "M6 aborted (return code {})".format(self.return_value)
+            emccanon.MESSAGE("M6 aborted (return code {})".format(self.return_value))
+            return
 
     except Exception as e:
-        return "M6/change_epilog: {}".format(e)
+        print("M6/change_epilog: {}".format(e))
+        return
 
 
 def prepare_prolog(self, **words):
-    print("PREPARE_PROLOG")
+    print("PREPARE PROLOG")
     try:
         cblock = self.blocks[self.remap_level]
         if not cblock.t_flag:
@@ -99,6 +101,7 @@ def prepare_prolog(self, **words):
 
 
 def prepare_epilog(self, **words):
+    print("PREPARE EPILOG")
     try:
         if self.return_value > 0:
             self.selected_tool = int(self.params["tool"])
