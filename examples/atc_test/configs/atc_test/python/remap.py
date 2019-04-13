@@ -80,6 +80,8 @@ def m6(self, **words):
         emccanon.MESSAGE("Tool already in spindle")
         return
 
+    emccanon.CLEAR_AUX_OUTPUT_BIT(0)
+
     emccanon.SET_AUX_OUTPUT_VALUE(0, self.selected_tool)
     emccanon.SET_AUX_OUTPUT_BIT(0)
 
