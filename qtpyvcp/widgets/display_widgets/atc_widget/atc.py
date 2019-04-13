@@ -54,14 +54,14 @@ class DynATC(QQuickWidget):
         self.component.newPin('home', "float", "in")
         self.component.newPin('homing', "float", "in")
 
-        self.component.newPin('cw', "float", "in")
-        self.component.newPin('ccw', "float", "in")
+        self.component.newPin('fwd', "bit", "in")
+        self.component.newPin('rev', "bit", "in")
 
         self.component['home'].valueChanged.connect(self.home_message)
         self.component['homing'].valueChanged.connect(self.homing_message)
 
-        self.component['cw'].valueChanged.connect(self.rotate_fw)
-        self.component['ccw'].valueChanged.connect(self.rotate_rev)
+        self.component['fwd'].valueChanged.connect(self.rotate_fw)
+        self.component['rev'].valueChanged.connect(self.rotate_rev)
 
         self.component.ready()
 
@@ -163,13 +163,14 @@ class DynATC(QQuickWidget):
     def rotate_fw(self, *args, **kwargs):
 
         steps = args[0]
+        print(steps)
 
         if not steps:
             return
 
-        self.rotateFwdSig.emit(steps)
+        self.rotateFwdSig.emit(1)
 
-        self.component["cw"].value = 0.0
+        self.component["fwd"].value = False
 
     def rotate_rev(self, *args, **kwargs):
 
@@ -178,7 +179,7 @@ class DynATC(QQuickWidget):
         if not steps:
             return
 
-        self.rotateRevSig.emit(steps)
+        self.rotateRevSig.emit(1)
 
-        self.component["ccw"].value = 0.0
+        self.component["rev"].value = False
 

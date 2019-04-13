@@ -32,12 +32,15 @@ def queuebuster(self, **words):
 
 
 def change_prolog(self, **words):
+    print("CHANGE PROLOG")
     try:
         if self.selected_pocket < 0:
-            return "M6: no tool prepared"
+            emccanon.MESSAGE("M6: no tool prepared")
+            return
 
         if self.cutter_comp_side:
-            return "Cannot change tools with cutter radius compensation on"
+            emccanon.MESSAGE("Cannot change tools with cutter radius compensation on")
+            return
 
         self.params["tool_in_spindle"] = self.current_tool
         self.params["selected_tool"] = self.selected_tool
@@ -46,10 +49,12 @@ def change_prolog(self, **words):
         return INTERP_OK
 
     except Exception as e:
+        print(e)
         return "M6/change_prolog: {}".format(e)
 
 
 def change_epilog(self, **words):
+    print("CHANGE EPILOG")
     try:
         if self.return_value > 0.0:
             # commit change
@@ -67,6 +72,7 @@ def change_epilog(self, **words):
 
 
 def prepare_prolog(self, **words):
+    print("PREPARE_PROLOG")
     try:
         cblock = self.blocks[self.remap_level]
         if not cblock.t_flag:
@@ -107,12 +113,13 @@ def prepare_epilog(self, **words):
 
 
 def m6(self, **words):
-    print("m6 called", words)
 
-    emccanon.SET_AUX_OUTPUT_VALUE(0, 7)
+    print("M6 T{} P{}".format(self.selected_tool, self.selected_pocket))
+
+    emccanon.SET_AUX_OUTPUT_VALUE(0, self.selected_tool)
     emccanon.SET_AUX_OUTPUT_BIT(0)
 
-    print("M6 success")
+    emccanon.CHANGE_TOOL(self.selected_pocket)
 
     return INTERP_OK
 
@@ -126,8 +133,7 @@ def m10(self, **words):
 def m11(self, **words):
     print("m11 called", words)
 
-    command = linuxcnc.command()
-    command.set_digital_output(4, 1)
+    emccanon.SET_AUX_OUTPUT_BIT(0)
 
     return INTERP_EXECUTE_FINISH
 
@@ -135,9 +141,7 @@ def m11(self, **words):
 def m12(self, **words):
     print("m12 called", words)
 
-
-    command = linuxcnc.command()
-    command.set_digital_output(5, 1)
+    emccanon.SET_AUX_OUTPUT_BIT(0)
 
     return INTERP_EXECUTE_FINISH
 

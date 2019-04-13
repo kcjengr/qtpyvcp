@@ -13,3 +13,7 @@ def m11(self, **word):
 
 def m12(self, **word):
     print("m12 oword", word)
+
+
+def on_abort(self, *args, **kwargs):
+    print(args, kwargs)
