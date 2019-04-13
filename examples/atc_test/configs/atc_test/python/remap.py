@@ -18,30 +18,101 @@
 #
 
 import linuxcnc
+import traceback
 
-from interpreter import *
 import emccanon
+from interpreter import INTERP_OK, INTERP_EXECUTE_FINISH
+from util import lineno
 
-# from stdglue import *
 
-COMMAND = linuxcnc.command()
+throw_exceptions = 1 # raises InterpreterException if execute() or read() fail
 
+def queuebuster(self, **words):
+    yield INTERP_EXECUTE_FINISH
 
 
 def change_prolog(self, **words):
-    print("change_prolog", words)
+    try:
+        if self.selected_pocket < 0:
+            return "M6: no tool prepared"
 
-    return INTERP_OK
+        if self.cutter_comp_side:
+            return "Cannot change tools with cutter radius compensation on"
+
+        self.params["tool_in_spindle"] = self.current_tool
+        self.params["selected_tool"] = self.selected_tool
+        self.params["current_pocket"] = self.current_pocket
+        self.params["selected_pocket"] = self.selected_pocket
+        return INTERP_OK
+
+    except Exception as e:
+        return "M6/change_prolog: {}".format(e)
 
 
 def change_epilog(self, **words):
-    print("change_epilog", words)
+    try:
+        if self.return_value > 0.0:
+            # commit change
+            self.selected_pocket =  int(self.params["selected_pocket"])
+            emccanon.CHANGE_TOOL(self.selected_pocket)
+            # cause a sync()
+            self.tool_change_flag = True
+            self.set_tool_parameters()
+            return INTERP_OK
+        else:
+            return "M6 aborted (return code {})".format(self.return_value)
 
-    return INTERP_OK
+    except Exception as e:
+        return "M6/change_epilog: {}".format(e)
+
+
+def prepare_prolog(self, **words):
+    try:
+        cblock = self.blocks[self.remap_level]
+        if not cblock.t_flag:
+            return "T requires a tool number"
+
+        tool = cblock.t_number
+        if tool:
+            (status, pocket) = self.find_tool_pocket(tool)
+            if status != INTERP_OK:
+                return "T{}: pocket not found".format(tool)
+        else:
+            pocket = -1 # this is a T0 - tool unload
+
+        # these variables will be visible in the ngc oword sub
+        # as #<tool> and #<pocket> local variables, and can be
+        # modified there - the epilog will retrieve the changed
+        # values
+        self.params["tool"] = tool
+        self.params["pocket"] = pocket
+
+        return INTERP_OK
+    except Exception as e:
+        return "T{[t]}/prepare_prolog: {}".format(words, e)
+
+
+def prepare_epilog(self, **words):
+    try:
+        if self.return_value > 0:
+            self.selected_tool = int(self.params["tool"])
+            self.selected_pocket = int(self.params["pocket"])
+            emccanon.SELECT_POCKET(self.selected_pocket, self.selected_tool)
+            return INTERP_OK
+        else:
+            return "T%d: aborted (return code %.1f)" % (int(self.params["tool"]),self.return_value)
+
+    except Exception as e:
+        return "T%d/prepare_epilog: {}".format(self.selected_tool, e)
 
 
 def m6(self, **words):
     print("m6 called", words)
+
+    emccanon.SET_AUX_OUTPUT_VALUE(0, 7)
+    emccanon.SET_AUX_OUTPUT_BIT(0)
+
+    print("M6 success")
 
     return INTERP_OK
 
@@ -55,17 +126,20 @@ def m10(self, **words):
 def m11(self, **words):
     print("m11 called", words)
 
-    COMMAND.set_digital_output(4, 1)
+    command = linuxcnc.command()
+    command.set_digital_output(4, 1)
 
-    return INTERP_OK
+    return INTERP_EXECUTE_FINISH
 
 
 def m12(self, **words):
     print("m12 called", words)
 
-    COMMAND.set_digital_output(4, 0)
 
-    return INTERP_OK
+    command = linuxcnc.command()
+    command.set_digital_output(5, 1)
+
+    return INTERP_EXECUTE_FINISH
 
 
 def m13(self, **words):
