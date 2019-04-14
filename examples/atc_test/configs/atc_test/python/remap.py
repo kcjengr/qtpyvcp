@@ -27,6 +27,7 @@ from util import lineno
 
 throw_exceptions = 1 # raises InterpreterException if execute() or read() fail
 
+
 def queuebuster(self, **words):
     yield INTERP_EXECUTE_FINISH
 
