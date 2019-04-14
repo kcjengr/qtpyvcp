@@ -832,11 +832,11 @@ def jog_linear_speed(obj):
 @jog_linear_speed.setter
 def jog_linear_speed(obj, value):
 
-    value = obj.clampValue(value)
     obj.value = obj.clampValue(value)
-    jog_linear_speed.signal.emit(value)
+    jog_linear_speed.signal.emit(obj.value)
+    LOG.debug("Setting jog linear speed: %4.1f", obj.value)
 
-    percentage = int(value * 100 / MAX_JOG_SPEED)
+    percentage = int(obj.value * 100 / MAX_JOG_SPEED)
     jog_linear_speed_percentage.value = percentage
     jog_linear_speed_percentage.signal.emit(percentage)
 
@@ -851,7 +851,7 @@ def jog_linear_speed_percentage(obj):
 
 @jog_linear_speed_percentage.setter
 def jog_linear_speed_percentage(obj, percentage):
-    LOG.debug("Setting Jog Speed Percentage: %d", percentage)
+    LOG.debug("Setting jog linear speed percentage: %d", percentage)
     jog_linear_speed.setValue(float(MAX_JOG_SPEED * percentage / 100))
 
 
@@ -1005,8 +1005,7 @@ class jog:
     @staticmethod
     def set_angular_speed(speed):
         """Set Jog Angular Speed"""
-        jog.angular_speed = float(speed)
-
+        jog_angular_speed.setValue(float(speed))
 
     @staticmethod
     def set_linear_speed_percentage(percentage):
