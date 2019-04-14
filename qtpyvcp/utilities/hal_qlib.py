@@ -25,9 +25,9 @@ class QPin(QObject):
         if tmp != self._val:
             self.valueChanged.emit(tmp)
             if tmp > self._val:
-                self.valueIncreased(tmp)
+                self.valueIncreased.emit(tmp)
             else:
-                self.valueDecreased(tmp)
+                self.valueDecreased.emit(tmp)
             self._val = tmp
 
     @property
