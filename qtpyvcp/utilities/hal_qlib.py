@@ -9,6 +9,8 @@ from qtpy.QtCore import QObject, Signal, QTimer
 
 class QPin(QObject):
     valueChanged = Signal(object)
+    valueIncreased = Signal(object)
+    valueDecreased = Signal(object)
 
     def __init__(self, comp, name, typ, dir):
         super(QPin, self).__init__()
@@ -21,8 +23,12 @@ class QPin(QObject):
     def timerEvent(self, timer):
         tmp = self._pin.get()
         if tmp != self._val:
-            self._val = tmp
             self.valueChanged.emit(tmp)
+            if tmp > self._val:
+                self.valueIncreased.emit(tmp)
+            else:
+                self.valueDecreased.emit(tmp)
+            self._val = tmp
 
     @property
     def value(self):
