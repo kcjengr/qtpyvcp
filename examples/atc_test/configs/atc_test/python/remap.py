@@ -58,7 +58,7 @@ def change_epilog(self, **words):
     try:
         if self.return_value > 0.0:
             # commit change
-            self.selected_pocket =  int(self.params["selected_pocket"])
+            self.selected_pocket = int(self.params["selected_pocket"])
             emccanon.CHANGE_TOOL(self.selected_pocket)
             # cause a sync()
             self.tool_change_flag = True
@@ -84,7 +84,7 @@ def m6(self, **words):
     emccanon.SET_AUX_OUTPUT_VALUE(0, self.selected_pocket)  # tell the carousel which pocket to go, analog pin 0
     emccanon.SET_AUX_OUTPUT_BIT(0)  # immediately go to the selected pocket, digital pin 0
 
-    emccanon.CHANGE_TOOL(self.selected_tool)  # put that tool in the spindle
+    # emccanon.CHANGE_TOOL(self.selected_tool)  # put that tool in the spindle
 
     return INTERP_OK
 
