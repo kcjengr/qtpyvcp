@@ -65,14 +65,14 @@ class DynATC(QQuickWidget):
         self.component.newPin('jog-fwd', "bit", "in")
         self.component.newPin('jog-rev', "bit", "in")
 
-        self.component['home'].valueChanged.connect(self.home_message)
-        self.component['homing'].valueChanged.connect(self.homing_message)
+        self.component['home'].valueIncreased.connect(self.home_message)
+        self.component['homing'].valueIncreased.connect(self.homing_message)
 
-        self.component['goto-fwd'].valueChanged.connect(self.rotate_fw)
-        self.component['goto-rev'].valueChanged.connect(self.rotate_rev)
+        self.component['goto-fwd'].valueIncreased.connect(self.rotate_fw)
+        self.component['goto-rev'].valueIncreased.connect(self.rotate_rev)
 
-        self.component['jog-fwd'].valueChanged.connect(self.jog_fwd)
-        self.component['jog-rev'].valueChanged.connect(self.jog_rev)
+        self.component['jog-fwd'].valueIncreased.connect(self.jog_fwd)
+        self.component['jog-rev'].valueIncreased.connect(self.jog_rev)
 
         self.component.ready()
 
