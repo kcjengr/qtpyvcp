@@ -200,23 +200,11 @@ Rectangle {
     property int prev_pocket: 1;
 
 
-    function rotate(pocket, direction) {
+    function rotate(steps, direction) {
 
         //        console.log("ROTATE")
 
-        var steps = 0
-
-        console.log("prev pocket " + prev_pocket)
-        console.log("pocket " + pocket)
-
-        if (prev_pocket > pocket)
-            steps = prev_pocket - pocket
-        else if (prev_pocket < pocket)
-            steps = pocket - prev_pocket
-
         console.log("ATC STEPS " + steps)
-
-        prev_pocket = pocket
 
         if (direction === 1)
             anim_to = anim_from + (360/12 * steps);
@@ -266,11 +254,11 @@ Rectangle {
         }
 
         onRotateFwdSig: {
-            rotate(pocket, 1);
+            rotate(steps, 1);
         }
 
         onRotateRevSig: {
-            rotate(pocket, -1);
+            rotate(steps, -1);
         }
 
         onHomeMsgSig: {

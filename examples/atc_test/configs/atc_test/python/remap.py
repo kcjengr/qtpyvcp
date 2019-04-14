@@ -72,20 +72,19 @@ def change_epilog(self, **words):
         print("M6/change_epilog: {}".format(e))
         return
 
-def m6(self, **words):
 
-    print("M6 T{} P{}".format(self.selected_tool, self.selected_pocket))
+def m6(self, **words):
 
     if self.selected_tool == self.current_tool:
         emccanon.MESSAGE("Tool already in spindle")
         return
 
-    emccanon.CLEAR_AUX_OUTPUT_BIT(0)
+    emccanon.CLEAR_AUX_OUTPUT_BIT(0)  # reset enable, digital pin 0
 
-    emccanon.SET_AUX_OUTPUT_VALUE(0, self.selected_tool)
-    emccanon.SET_AUX_OUTPUT_BIT(0)
+    emccanon.SET_AUX_OUTPUT_VALUE(0, self.selected_pocket)  # tell the carousel which pocket to go, analog pin 0
+    emccanon.SET_AUX_OUTPUT_BIT(0)  # immediately go to the selected pocket, digital pin 0
 
-    emccanon.CHANGE_TOOL(self.selected_pocket)
+    emccanon.CHANGE_TOOL(self.selected_tool)  # put that tool in the spindle
 
     return INTERP_OK
 
@@ -99,17 +98,17 @@ def m10(self, **words):
 def m11(self, **words):
     print("m11 called", words)
 
-    emccanon.SET_AUX_OUTPUT_BIT(0)
+    emccanon.SET_AUX_OUTPUT_BIT(5)  # jog carousel forward, digital pin 5
 
-    return INTERP_EXECUTE_FINISH
+    return INTERP_OK
 
 
 def m12(self, **words):
     print("m12 called", words)
 
-    emccanon.SET_AUX_OUTPUT_BIT(0)
+    emccanon.SET_AUX_OUTPUT_BIT(6)  # jog carousel reverse, digital pin 6
 
-    return INTERP_EXECUTE_FINISH
+    return INTERP_OK
 
 
 def m13(self, **words):

@@ -16,4 +16,4 @@ def m12(self, **word):
 
 
 def on_abort(self, *args, **kwargs):
-    print(args, kwargs)
+    print("ABORT", args, kwargs)
