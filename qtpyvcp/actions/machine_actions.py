@@ -871,7 +871,7 @@ def jog_mode_incremental(obj):
 
 @jog_mode_incremental.setter
 def jog_mode_incremental(obj, value):
-    LOG.debug("Setting Jog Mode Incremental: %s", value)
+    LOG.debug("Setting jog mode incremental: %s", value)
     obj.value = value
 
 
@@ -969,7 +969,10 @@ class jog:
                     speed = jog_linear_speed.value / 60.0
 
             if distance is None:
-                distance = jog_increment.value
+                if jog_mode_incremental.value:
+                    distance = jog_increment.value
+                else:
+                    distance = 0
 
             velocity = float(speed) * direction
 
@@ -985,7 +988,7 @@ class jog:
             LOG.debug("Setting jog mode to continuous")
         else:
             LOG.debug("Setting jog mode to incremental")
-        jog.continuous = continuous
+        jog.jog_mode_incremental = continuous
 
     @staticmethod
     def set_increment(raw_increment):
@@ -1083,7 +1086,7 @@ class jog_mode:
 
             machine.jog-mode.continuous
         """
-        jog.set_jog_continuous(True)
+        jog_mode_incremental.setValue(False)
 
 
     @staticmethod
@@ -1094,7 +1097,7 @@ class jog_mode:
 
             machine.jog-mode.incremental
         """
-        jog.set_jog_continuous(False)
+        jog_mode_incremental.setValue(True)
 
     @staticmethod
     def toggle():
@@ -1104,10 +1107,7 @@ class jog_mode:
 
             machine.jog-mode.toggle
         """
-        if jog.continuous:
-            jog_mode.incremental()
-        else:
-            jog_mode.continuous()
+        jog_mode_incremental.setValue(not jog_mode_incremental.value)
 
 jog_mode.incremental.ok = jog_mode.continuous.ok = lambda *a, **kw: True
 jog_mode.incremental.bindOk = jog_mode.continuous.bindOk = lambda *a, **kw: True
