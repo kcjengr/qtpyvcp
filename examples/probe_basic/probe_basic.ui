@@ -14080,8 +14080,8 @@ QTabBar::tab:only-one {
                      <rect>
                       <x>330</x>
                       <y>360</y>
-                      <width>191</width>
-                      <height>111</height>
+                      <width>241</width>
+                      <height>50</height>
                      </rect>
                     </property>
                     <property name="styleSheet">
@@ -14089,8 +14089,6 @@ QTabBar::tab:only-one {
     background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
     border: 2px solid black;
     color: white;
-    padding-top: 2px;  
-    padding-bottom: 2px;
     padding-left: 4px;
     padding-right: 4px;
     border-radius: 6px;
@@ -14101,10 +14099,10 @@ QTabBar::tab:only-one {
 QAbstractSpinBox:up-button {
     background-color: transparent #19232D;
     subcontrol-origin: border;
-    subcontrol-position: top right;
+    subcontrol-position: center right;
     width: 50px;
-    border-left: 2px solid black;
-    border-bottom: 1px solid black;
+    height: 60px;
+    border-left: 1px solid black;
     padding-left: 4px;
     padding-right: 4px;
 }
@@ -14113,8 +14111,8 @@ QAbstractSpinBox::up-arrow,
 QAbstractSpinBox::up-arrow:disabled,
 QAbstractSpinBox::up-arrow:off {
     image: url(:/images/up_arrow.png);
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
 }
 
 QAbstractSpinBox::up-arrow:hover {
@@ -14124,10 +14122,10 @@ QAbstractSpinBox::up-arrow:hover {
 QAbstractSpinBox:down-button {
     background-color: transparent #19232D;
     subcontrol-origin: border;
-    subcontrol-position: bottom right;
+    subcontrol-position: center left;
     width: 50px;
-    border-left: 2px solid black;
-    border-top: 1px solid black;
+    height: 60px;
+    border-right: 1px solid black;
     padding-left: 4px;
     padding-right: 4px;
 }
@@ -14136,8 +14134,8 @@ QAbstractSpinBox::down-arrow,
 QAbstractSpinBox::down-arrow:disabled,
 QAbstractSpinBox::down-arrow:off {
     image: url(:/images/down_arrow.png);
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
 }
 
 QAbstractSpinBox::down-arrow:hover {
@@ -14165,10 +14163,10 @@ QAbstractSpinBox:selected {
                    <widget class="QComboBox" name="comboBox">
                     <property name="geometry">
                      <rect>
-                      <x>570</x>
-                      <y>390</y>
-                      <width>271</width>
-                      <height>61</height>
+                      <x>330</x>
+                      <y>250</y>
+                      <width>241</width>
+                      <height>50</height>
                      </rect>
                     </property>
                     <property name="styleSheet">
@@ -14183,6 +14181,7 @@ QSpinBox {
     background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
     padding: 3px;
     min-height: 20px;
+    color: white;
 }
 
 QLineEdit:disabled,
@@ -14221,8 +14220,8 @@ QComboBox::drop-down {
 
 QComboBox::down-arrow {
     image: url(:/images/down_arrow.png);
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
 }
 
 QComboBox::down-arrow:disabled {
@@ -14236,6 +14235,190 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
                     </property>
                     <property name="editable">
                      <bool>false</bool>
+                    </property>
+                   </widget>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+                    <property name="geometry">
+                     <rect>
+                      <x>670</x>
+                      <y>340</y>
+                      <width>81</width>
+                      <height>131</height>
+                     </rect>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QAbstractSpinBox {
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+    border: 2px solid black;
+    color: white;
+    padding-left: 4px;
+    padding-right: 4px;
+    border-radius: 6px;
+    font: 17pt &quot;bebas kai&quot;;
+}
+
+QAbstractSpinBox:up-button {
+    background-color: transparent #19232D;
+    subcontrol-origin: border;
+    subcontrol-position: center top;
+    width: 100px;
+    height: 35px;
+    border-bottom: 1px solid black;
+    padding-left: 4px;
+    padding-right: 4px;    
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+QAbstractSpinBox::up-arrow,
+QAbstractSpinBox::up-arrow:disabled,
+QAbstractSpinBox::up-arrow:off {
+    image: url(:/images/up_arrow.png)1;
+    width: 30px;
+    height: 30px;
+}
+
+QAbstractSpinBox::up-arrow:hover {
+    image: url(:/images/up_arrow.png)1;
+}
+
+QAbstractSpinBox:down-button {
+    background-color: transparent #19232D;
+    subcontrol-origin: margin;
+    subcontrol-position: center bottom;
+    width: 100px;
+    height: 35px;    
+    border-top: 1px solid black;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+QAbstractSpinBox::down-arrow,
+QAbstractSpinBox::down-arrow:disabled,
+QAbstractSpinBox::down-arrow:off {
+    image: url(:/images/down_arrow.png)1;
+    width: 30px;
+    height: 30px;
+}
+
+QAbstractSpinBox::down-arrow:hover {
+    image: url(:/images/down_arrow.png)1;
+}
+
+QAbstractSpinBox:hover{
+    border: 1px solid #148CD2;
+    color: #F0F0F0;
+}
+
+QAbstractSpinBox:selected {
+    background: #1464A0;
+    color: #32414B;
+}
+</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                    <property name="decimals">
+                     <number>4</number>
+                    </property>
+                   </widget>
+                   <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+                    <property name="geometry">
+                     <rect>
+                      <x>640</x>
+                      <y>190</y>
+                      <width>140</width>
+                      <height>90</height>
+                     </rect>
+                    </property>
+                    <property name="layoutDirection">
+                     <enum>Qt::LeftToRight</enum>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QAbstractSpinBox {
+    background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+    border: 2px solid black;
+    color: white;
+    border-radius: 6px;
+    font: 17pt &quot;bebas kai&quot;;
+    padding-top: 9px;
+}
+
+QAbstractSpinBox:up-button {
+    background-color: transparent #19232D;
+    subcontrol-origin: border;
+    subcontrol-position: bottom;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    width: 70px;
+    height: 35px;
+    margin-left: 70px;
+}
+
+QAbstractSpinBox::up-arrow,
+QAbstractSpinBox::up-arrow:disabled,
+QAbstractSpinBox::up-arrow:off {
+    image: url(:/images/up_arrow.png);
+    width: 30px;
+    height: 30px;
+}
+
+QAbstractSpinBox::up-arrow:hover {
+    image: url(:/images/up_arrow.png);
+}
+
+QAbstractSpinBox:down-button {
+    background-color: transparent #19232D;
+    subcontrol-origin: border;
+    subcontrol-position: bottom;
+    border-top: 1px solid black;
+    border-right: 1px solid black;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    width: 70px;
+    height: 35px;
+    margin-right: 70px;
+}
+
+QAbstractSpinBox::down-arrow,
+QAbstractSpinBox::down-arrow:disabled,
+QAbstractSpinBox::down-arrow:off {
+    image: url(:/images/down_arrow.png);
+    width: 30px;
+    height: 30px;
+}
+
+QAbstractSpinBox::down-arrow:hover {
+    border-image: url(:/images/down_arrow.png);
+}
+
+QAbstractSpinBox:hover{
+    border: 1px solid #148CD2;
+    color: #F0F0F0;
+}
+
+QAbstractSpinBox:selected {
+    background: #1464A0;
+    color: #32414B;
+}
+</string>
+                    </property>
+                    <property name="frame">
+                     <bool>true</bool>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignHCenter|Qt::AlignTop</set>
+                    </property>
+                    <property name="showGroupSeparator" stdset="0">
+                     <bool>false</bool>
+                    </property>
+                    <property name="decimals">
+                     <number>4</number>
                     </property>
                    </widget>
                   </widget>
@@ -21033,9 +21216,59 @@ font: 11pt bebas kai;
    <header>qtpyvcp.widgets.input_widgets.jog_increment</header>
   </customwidget>
   <customwidget>
+   <class>FileSystemTable</class>
+   <extends>QTableView</extends>
+   <header>qtpyvcp.widgets.input_widgets.file_system</header>
+  </customwidget>
+  <customwidget>
+   <class>LoadMeter</class>
+   <extends>QProgressBar</extends>
+   <header>qtpyvcp.widgets.display_widgets.load_meter</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.input_widgets.action_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>RemovableDeviceComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.file_system</header>
+  </customwidget>
+  <customwidget>
+   <class>StatusLabel</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.display_widgets.status_label</header>
+  </customwidget>
+  <customwidget>
    <class>RecentFileComboBox</class>
    <extends>QComboBox</extends>
    <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>SubCallButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.subcall_button</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>ToolTable</class>
+   <extends>QTableView</extends>
+   <header>qtpyvcp.widgets.input_widgets.tool_table</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.mdi_button</header>
   </customwidget>
   <customwidget>
    <class>GcodeEditor</class>
@@ -21060,59 +21293,9 @@ font: 11pt bebas kai;
    <header>qtpyvcp.widgets.input_widgets.line_edit</header>
   </customwidget>
   <customwidget>
-   <class>SubCallButton</class>
-   <extends>QPushButton</extends>
-   <header>qtpyvcp.widgets.button_widgets.subcall_button</header>
-  </customwidget>
-  <customwidget>
-   <class>FileSystemTable</class>
-   <extends>QTableView</extends>
-   <header>qtpyvcp.widgets.input_widgets.file_system</header>
-  </customwidget>
-  <customwidget>
-   <class>VCPSettingsSlider</class>
-   <extends>QSlider</extends>
-   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
-  </customwidget>
-  <customwidget>
-   <class>ToolTable</class>
-   <extends>QTableView</extends>
-   <header>qtpyvcp.widgets.input_widgets.tool_table</header>
-  </customwidget>
-  <customwidget>
-   <class>RemovableDeviceComboBox</class>
-   <extends>QComboBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.file_system</header>
-  </customwidget>
-  <customwidget>
-   <class>MDIButton</class>
-   <extends>QPushButton</extends>
-   <header>qtpyvcp.widgets.button_widgets.mdi_button</header>
-  </customwidget>
-  <customwidget>
-   <class>LoadMeter</class>
-   <extends>QProgressBar</extends>
-   <header>qtpyvcp.widgets.display_widgets.load_meter</header>
-  </customwidget>
-  <customwidget>
-   <class>MDIEntry</class>
-   <extends>QLineEdit</extends>
-   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
-  </customwidget>
-  <customwidget>
-   <class>ActionSlider</class>
-   <extends>QSlider</extends>
-   <header>qtpyvcp.widgets.input_widgets.action_slider</header>
-  </customwidget>
-  <customwidget>
    <class>ActionButton</class>
    <extends>QPushButton</extends>
    <header>qtpyvcp.widgets.button_widgets.action_button</header>
-  </customwidget>
-  <customwidget>
-   <class>StatusLabel</class>
-   <extends>QLabel</extends>
-   <header>qtpyvcp.widgets.display_widgets.status_label</header>
   </customwidget>
  </customwidgets>
  <resources>
