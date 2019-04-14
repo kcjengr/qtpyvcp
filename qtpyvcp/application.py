@@ -36,7 +36,8 @@ if API == 'pyside2':
 class VCPApplication(QApplication):
 
     def __init__(self, theme=None, stylesheet=None):
-        super(VCPApplication, self).__init__(qtpyvcp.OPTIONS.command_line_args or [])
+        print qtpyvcp.OPTIONS.command_line_args.split()
+        super(VCPApplication, self).__init__(qtpyvcp.OPTIONS.command_line_args.split() or [])
 
         opts = qtpyvcp.OPTIONS
 
