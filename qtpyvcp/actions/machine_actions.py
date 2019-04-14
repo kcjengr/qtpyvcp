@@ -964,9 +964,9 @@ class jog:
 
             if speed is None:
                 if axis in (3, 4, 5):
-                    speed = jog.angular_speed / 60
+                    speed = jog_angular_speed.value / 60.0
                 else:
-                    speed = jog_linear_speed.value / 60
+                    speed = jog_linear_speed.value / 60.0
 
             if distance is None:
                 distance = jog_increment.value
