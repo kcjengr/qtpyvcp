@@ -62,6 +62,7 @@ O180 IF [#110 GT 0] ; checks if there is a valid tool in the spindle
 
     M10 P[#<open_pocket>] ; move carousel to an open pocket 
     M21 ; puts the tool in spindle away into the open pocket
+    M114 P#<open_pocket> Q#<tool_in_spindle>
     #30 = #<open_pocket>
     ##30 = #110 ; save tool number in pocket
     #5210 = 0 ; empty tool in the spindle
@@ -78,6 +79,7 @@ O200 IF [#100 GT 0] ; selected tool is not tool0
     O205 endif
     
     M22 ;Carousel out
+    M114 P#<next_pocket> Q0
     #25 = #<next_pocket>
     ##25 = 0 ; empty the pocket 
     
@@ -107,8 +109,6 @@ O200 ENDIF
 #5199= #10
 #5200= #11
 #5201= #12
-
-M14
 
 M61 Q#100
 o<toolchange> endsub [1]
