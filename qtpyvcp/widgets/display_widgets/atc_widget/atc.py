@@ -56,6 +56,7 @@ class DynATC(QQuickWidget):
         for i in range(self.pocket_slots):
             pin_name = "pocket-{}".format(i+1)
             self.component.newPin(pin_name, "s32", "in")
+            self.component[pin_name].valueChanged.connect(self.pocket_changed)
 
         self.component.newPin('home', "float", "in")
         self.component.newPin('homing', "float", "in")
@@ -113,7 +114,6 @@ class DynATC(QQuickWidget):
 
         for i in range(self.pocket_slots):
             pin_name = "pocket-{}".format(i+1)
-            print(pin_name)
 
             self.pockets[i + 1] = self.component[pin_name].value
 
@@ -125,6 +125,10 @@ class DynATC(QQuickWidget):
             if 0 < pocket < 13:
                 if tool != 0:
                     self.showToolSig.emit(pocket, tool)
+
+    def pocket_changed(self):
+        self.load_tools()
+        self.draw_tools()
 
     def on_tool_in_spindle(self, tool):
         self.load_tools()
