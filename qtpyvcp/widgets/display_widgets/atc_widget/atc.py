@@ -105,7 +105,6 @@ class DynATC(QQuickWidget):
         pass  # hack to prevent animation glitch when we are on another tab
 
     def load_tools(self):
-
         self.tool_table = TOOLTABLE.getToolTable()
         self.status_tool_table = STATUS.tool_table
 
@@ -139,7 +138,6 @@ class DynATC(QQuickWidget):
         self.draw_tools()
 
     def homing_message(self, *args, **kwargs):
-
         self.homing = args[0]
 
         if self.homing:
@@ -148,7 +146,6 @@ class DynATC(QQuickWidget):
             self.homingMsgSig.emit("")
 
     def home_message(self, *args, **kwargs):
-
         self.home = args[0]
 
         if self.homing:
@@ -157,7 +154,6 @@ class DynATC(QQuickWidget):
             self.homeMsgSig.emit("UN REFERENCED")
 
     def goto(self):
-
         self.component["goto-enable"].value = 0
 
         pocket = self.component["goto"].value
@@ -179,21 +175,16 @@ class DynATC(QQuickWidget):
         steps = self.component["steps"].value
         self.rotate_rev(steps)
 
-
     def rotate_fwd(self, steps):
-
         self.rotateFwdSig.emit(steps)
 
     def rotate_rev(self, steps):
-
         self.rotateRevSig.emit(steps)
 
     def jog_fwd(self, *args, **kwargs):
-
         self.rotateFwdSig.emit(1)
         self.command.set_digital_output(5, 0)
 
     def jog_rev(self, *args, **kwargs):
-
         self.rotateRevSig.emit(1)
         self.command.set_digital_output(6, 0)
