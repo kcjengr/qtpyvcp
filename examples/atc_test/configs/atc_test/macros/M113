@@ -3,7 +3,7 @@
 P=$1
 Q=$2
 
-halcmd setp atcsim.home ${P}
-halcmd setp atcsim.homing ${Q}
+halcmd setp atc-widget.home ${P}
+halcmd setp atc-widget.homing ${Q}
 
 exit 0

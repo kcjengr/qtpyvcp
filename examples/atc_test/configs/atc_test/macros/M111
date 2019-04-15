@@ -2,6 +2,7 @@
 
 P=$1
 
-halcmd setp atcsim.cw ${P}
+halcmd setp atc-widget.steps ${P}
+halcmd setp atc-widget.steps-fwd 1
 
 exit 0

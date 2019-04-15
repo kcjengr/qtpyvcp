@@ -58,9 +58,11 @@ class DynATC(QQuickWidget):
         self.component.newPin('homing', "float", "in")
 
         self.component.newPin("goto", "float", "in")
+        self.component.newPin('goto-enable', "bit", "in")
 
-        self.component.newPin('goto-fwd', "bit", "in")
-        self.component.newPin('goto-rev', "bit", "in")
+        self.component.newPin("steps", "float", "in")
+        self.component.newPin('steps-fwd', "bit", "in")
+        self.component.newPin('steps-rev', "bit", "in")
 
         self.component.newPin('jog-fwd', "bit", "in")
         self.component.newPin('jog-rev', "bit", "in")
@@ -68,8 +70,9 @@ class DynATC(QQuickWidget):
         self.component['home'].valueIncreased.connect(self.home_message)
         self.component['homing'].valueIncreased.connect(self.homing_message)
 
-        self.component['goto-fwd'].valueIncreased.connect(self.rotate_fw)
-        self.component['goto-rev'].valueIncreased.connect(self.rotate_rev)
+        self.component['goto-enable'].valueIncreased.connect(self.goto)
+        self.component['steps-fwd'].valueIncreased.connect(self.steps_fwd)
+        self.component['steps-rev'].valueIncreased.connect(self.steps_rev)
 
         self.component['jog-fwd'].valueIncreased.connect(self.jog_fwd)
         self.component['jog-rev'].valueIncreased.connect(self.jog_rev)
@@ -171,25 +174,35 @@ class DynATC(QQuickWidget):
         else:
             self.homeMsgSig.emit("UN REFERENCED")
 
-    def rotate_fw(self, *args, **kwargs):
+    def goto(self):
+
+        self.component["goto-enable"].value = 0
 
         pocket = self.component["goto"].value
 
         if self.pocket > pocket:
             steps = self.pocket - pocket
+            self.rotate_rev(steps)
         elif self.pocket < pocket:
             steps = pocket - self.pocket
+            self.rotate_fwd(steps)
+
+    def steps_fwd(self):
+        self.component["steps-fwd"].value = 0
+        steps = self.component["steps"].value
+        self.rotate_fwd(steps)
+
+    def steps_rev(self):
+        self.component["steps-rev"].value = 0
+        steps = self.component["steps"].value
+        self.rotate_rev(steps)
+
+
+    def rotate_fwd(self, steps):
 
         self.rotateFwdSig.emit(steps)
 
-    def rotate_rev(self, *args, **kwargs):
-
-        pocket = self.component["goto"].value
-
-        if self.pocket > pocket:
-            steps = self.pocket - pocket
-        elif self.pocket < pocket:
-            steps = pocket - self.pocket
+    def rotate_rev(self, steps):
 
         self.rotateRevSig.emit(steps)
 
