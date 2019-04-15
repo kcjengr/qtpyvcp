@@ -4031,7 +4031,7 @@ padding-right: 10px;
                       <string>[]</string>
                      </property>
                      <property name="MDICommand" stdset="0">
-                      <string>M61 Q0 G49</string>
+                      <string>M61 Q0 G49 #5210 = 0</string>
                      </property>
                     </widget>
                    </item>

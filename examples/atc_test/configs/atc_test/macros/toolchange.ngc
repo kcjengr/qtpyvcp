@@ -111,6 +111,9 @@ O200 ENDIF
 #5201= #12
 
 M61 Q#100
+
+#5210 = #100 ;Set persistent variable to remember tool in spindle after power cycle
+
 o<toolchange> endsub [1]
 
 M2
