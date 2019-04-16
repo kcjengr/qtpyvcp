@@ -221,7 +221,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>6</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="main_tab">
            <attribute name="title">
@@ -11657,6 +11657,9 @@ color: rgb(255, 255, 255);
                           <width>130</width>
                           <height>130</height>
                          </size>
+                        </property>
+                        <property name="filename" stdset="0">
+                         <string>probe_front_left_top_corner.ngc</string>
                         </property>
                         <property name="styleClass" stdset="0">
                          <string>probeButton</string>
