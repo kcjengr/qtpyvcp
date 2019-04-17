@@ -359,6 +359,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(bool)
     def showGrid(self, grid):
         print('show grid')
+        if grid:
+            self.machine_actor.DrawXGridlinesOn()
+            self.machine_actor.DrawYGridlinesOn()
+            self.machine_actor.DrawZGridlinesOn()
+        else:
+            self.machine_actor.DrawXGridlinesOff()
+            self.machine_actor.DrawYGridlinesoff()
+            self.machine_actor.DrawZGridlinesOff()
+
 
     @Slot()
     def toggleProgramBounds(self):
@@ -708,6 +717,11 @@ class Machine:
         cube_axes_actor.SetXUnits(units)
         cube_axes_actor.SetYUnits(units)
         cube_axes_actor.SetZUnits(units)
+
+        cube_axes_actor.DrawXGridlinesOn()
+        cube_axes_actor.DrawYGridlinesOn()
+        cube_axes_actor.DrawZGridlinesOn()
+        cube_axes_actor.SetGridLineLocation(cube_axes_actor.VTK_GRID_LINES_FURTHEST)
 
         self.actor = cube_axes_actor
 
