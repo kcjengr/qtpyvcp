@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+P=$1
+
+halcmd setp atc-widget.goto ${P}
+halcmd setp atc-widget.goto-enable 1
+
+exit 0
