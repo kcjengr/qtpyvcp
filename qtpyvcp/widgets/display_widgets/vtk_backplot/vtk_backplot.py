@@ -721,7 +721,12 @@ class Machine:
         cube_axes_actor.DrawXGridlinesOn()
         cube_axes_actor.DrawYGridlinesOn()
         cube_axes_actor.DrawZGridlinesOn()
+
         cube_axes_actor.SetGridLineLocation(cube_axes_actor.VTK_GRID_LINES_FURTHEST)
+
+        cube_axes_actor.GetXAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
+        cube_axes_actor.GetYAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
+        cube_axes_actor.GetZAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
 
         self.actor = cube_axes_actor
 
