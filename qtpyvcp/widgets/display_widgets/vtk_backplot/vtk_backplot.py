@@ -365,7 +365,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.machine_actor.DrawZGridlinesOn()
         else:
             self.machine_actor.DrawXGridlinesOff()
-            self.machine_actor.DrawYGridlinesoff()
+            self.machine_actor.DrawYGridlinesOff()
             self.machine_actor.DrawZGridlinesOff()
 
 
