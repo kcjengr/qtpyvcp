@@ -355,7 +355,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(bool)
     def alphaBlend(self, alpha):
         print('alpha blend')
-
+    
     @Slot(bool)
     def showGrid(self, grid):
         print('show grid')
@@ -367,7 +367,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.machine_actor.DrawXGridlinesOff()
             self.machine_actor.DrawYGridlinesOff()
             self.machine_actor.DrawZGridlinesOff()
-
 
     @Slot()
     def toggleProgramBounds(self):

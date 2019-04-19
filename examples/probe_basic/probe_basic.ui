@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1924</width>
-    <height>1085</height>
+    <height>1091</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -11488,7 +11488,10 @@ color: rgb(255, 255, 255);
                    <number>0</number>
                   </property>
                   <property name="leftMargin">
-                   <number>30</number>
+                   <number>6</number>
+                  </property>
+                  <property name="rightMargin">
+                   <number>10</number>
                   </property>
                   <item>
                    <widget class="QFrame" name="frame_16">
@@ -11919,39 +11922,939 @@ color: rgb(255, 255, 255);
                    <number>0</number>
                   </property>
                   <property name="bottomMargin">
-                   <number>170</number>
+                   <number>0</number>
                   </property>
                   <item>
-                   <widget class="QLabel" name="label_36">
+                   <widget class="QWidget" name="vtk_control_buttons_2" native="true">
                     <property name="sizePolicy">
-                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                       <horstretch>0</horstretch>
                       <verstretch>0</verstretch>
                      </sizepolicy>
                     </property>
                     <property name="minimumSize">
                      <size>
-                      <width>441</width>
-                      <height>311</height>
+                      <width>90</width>
+                      <height>0</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
-                      <width>441</width>
-                      <height>311</height>
+                      <width>90</width>
+                      <height>16777215</height>
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">image: url(:/images/probe_corner_group_3d_images.png);</string>
+                     <string notr="true">QWidget{
+    background: rgb(32, 36, 37);
+    border: none;
+}</string>
                     </property>
-                    <property name="text">
-                     <string/>
+                    <layout class="QVBoxLayout" name="verticalLayout_14">
+                     <property name="spacing">
+                      <number>6</number>
+                     </property>
+                     <property name="leftMargin">
+                      <number>6</number>
+                     </property>
+                     <property name="rightMargin">
+                      <number>0</number>
+                     </property>
+                     <item>
+                      <widget class="QPushButton" name="iso_view_button_2">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
+QComboBox[editable=&quot;true&quot;]::drop-down {
+    color: white;
+    border-image: url(:/images/pp_border.png);
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+}
+
+QPushButton {
+    font-family: &quot;Bebas Kai&quot;;
+    font-size: 15pt;
+}
+
+QPushButton:disabled {
+    border-color: gray;
+}
+
+/*QPushButton[error=&quot;true&quot;] {
+    border-color: red;
+}*/
+
+QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:pressed {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked[option=&quot;true&quot;] {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>ISO VIEW</string>
+                       </property>
+                       <property name="checkable">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="x_view_button_2">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
+QComboBox[editable=&quot;true&quot;]::drop-down {
+    color: white;
+    border-image: url(:/images/pp_border.png);
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+}
+
+QPushButton {
+    font-family: &quot;Bebas Kai&quot;;
+    font-size: 15pt;
+}
+
+QPushButton:disabled {
+    border-color: gray;
+}
+
+/*QPushButton[error=&quot;true&quot;] {
+    border-color: red;
+}*/
+
+QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:pressed {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked[option=&quot;true&quot;] {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>X View</string>
+                       </property>
+                       <property name="checkable">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="y_view_button_2">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
+QComboBox[editable=&quot;true&quot;]::drop-down {
+    color: white;
+    border-image: url(:/images/pp_border.png);
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+}
+
+QPushButton {
+    font-family: &quot;Bebas Kai&quot;;
+    font-size: 15pt;
+}
+
+QPushButton:disabled {
+    border-color: gray;
+}
+
+/*QPushButton[error=&quot;true&quot;] {
+    border-color: red;
+}*/
+
+QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:pressed {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked[option=&quot;true&quot;] {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>Y View</string>
+                       </property>
+                       <property name="checkable">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="z_view_button_2">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
+QComboBox[editable=&quot;true&quot;]::drop-down {
+    color: white;
+    border-image: url(:/images/pp_border.png);
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+}
+
+QPushButton {
+    font-family: &quot;Bebas Kai&quot;;
+    font-size: 15pt;
+}
+
+QPushButton:disabled {
+    border-color: gray;
+}
+
+/*QPushButton[error=&quot;true&quot;] {
+    border-color: red;
+}*/
+
+QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:pressed {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked[option=&quot;true&quot;] {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>Z View</string>
+                       </property>
+                       <property name="checkable">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_36">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>60</width>
+                         <height>4</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>60</width>
+                         <height>4</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="zoom_in_button_2">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
+QComboBox[editable=&quot;true&quot;]::drop-down {
+    color: white;
+    border-image: url(:/images/pp_border.png);
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+}
+
+QPushButton {
+    font-family: &quot;Bebas Kai&quot;;
+    font-size: 15pt;
+}
+
+QPushButton:disabled {
+    border-color: gray;
+}
+
+/*QPushButton[error=&quot;true&quot;] {
+    border-color: red;
+}*/
+
+QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:pressed {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked[option=&quot;true&quot;] {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>ZOOM +</string>
+                       </property>
+                       <property name="checkable">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="zoom_out_button_2">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
+QComboBox[editable=&quot;true&quot;]::drop-down {
+    color: white;
+    border-image: url(:/images/pp_border.png);
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+}
+
+QPushButton {
+    font-family: &quot;Bebas Kai&quot;;
+    font-size: 15pt;
+}
+
+QPushButton:disabled {
+    border-color: gray;
+}
+
+/*QPushButton[error=&quot;true&quot;] {
+    border-color: red;
+}*/
+
+QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:pressed {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked[option=&quot;true&quot;] {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>ZOOM -</string>
+                       </property>
+                       <property name="checkable">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_62">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>60</width>
+                         <height>4</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>60</width>
+                         <height>4</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="program_zoom_button_2">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
+QComboBox[editable=&quot;true&quot;]::drop-down {
+    color: white;
+    border-image: url(:/images/pp_border.png);
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+}
+
+QPushButton {
+    font-family: &quot;Bebas Kai&quot;;
+    font-size: 15pt;
+}
+
+QPushButton:disabled {
+    border-color: gray;
+}
+
+/*QPushButton[error=&quot;true&quot;] {
+    border-color: red;
+}*/
+
+QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:pressed {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked[option=&quot;true&quot;] {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>PGM EXT</string>
+                       </property>
+                       <property name="checkable">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="machine_zoom_button_2">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
+QComboBox[editable=&quot;true&quot;]::drop-down {
+    color: white;
+    border-image: url(:/images/pp_border.png);
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+}
+
+QPushButton {
+    font-family: &quot;Bebas Kai&quot;;
+    font-size: 15pt;
+}
+
+QPushButton:disabled {
+    border-color: gray;
+}
+
+/*QPushButton[error=&quot;true&quot;] {
+    border-color: red;
+}*/
+
+QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:pressed {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked[option=&quot;true&quot;] {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>MCH EXT</string>
+                       </property>
+                       <property name="checkable">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_63">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>60</width>
+                         <height>4</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>60</width>
+                         <height>4</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="clear_button_2">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
+QComboBox[editable=&quot;true&quot;]::drop-down {
+    color: white;
+    border-image: url(:/images/pp_border.png);
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+}
+
+QPushButton {
+    font-family: &quot;Bebas Kai&quot;;
+    font-size: 15pt;
+}
+
+QPushButton:disabled {
+    border-color: gray;
+}
+
+/*QPushButton[error=&quot;true&quot;] {
+    border-color: red;
+}*/
+
+QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:pressed {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked[option=&quot;true&quot;] {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>CLEAR</string>
+                       </property>
+                       <property name="checkable">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QLabel" name="label_64">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>60</width>
+                         <height>4</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>60</width>
+                         <height>4</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="ortho_button_2">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
+QComboBox[editable=&quot;true&quot;]::drop-down {
+    color: white;
+    border-image: url(:/images/pp_border.png);
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+}
+
+QPushButton {
+    font-family: &quot;Bebas Kai&quot;;
+    font-size: 15pt;
+}
+
+QPushButton:disabled {
+    border-color: gray;
+}
+
+/*QPushButton[error=&quot;true&quot;] {
+    border-color: red;
+}*/
+
+QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:pressed {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked[option=&quot;true&quot;] {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>ORTHO</string>
+                       </property>
+                       <property name="checkable">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="perspective_button_2">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>75</width>
+                         <height>33</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
+QComboBox[editable=&quot;true&quot;]::drop-down {
+    color: white;
+    border-image: url(:/images/pp_border.png);
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    border-width: 2px;
+    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
+}
+
+QPushButton {
+    font-family: &quot;Bebas Kai&quot;;
+    font-size: 15pt;
+}
+
+QPushButton:disabled {
+    border-color: gray;
+}
+
+/*QPushButton[error=&quot;true&quot;] {
+    border-color: red;
+}*/
+
+QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:pressed {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked[option=&quot;true&quot;] {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+QPushButton:checked {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}</string>
+                       </property>
+                       <property name="text">
+                        <string>PSPECT</string>
+                       </property>
+                       <property name="checkable">
+                        <bool>false</bool>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="VTKBackPlot" name="vtk_2">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
                     </property>
-                    <property name="scaledContents">
-                     <bool>true</bool>
+                    <property name="styleSheet">
+                     <string notr="true">VTKBackPlot {
+    border: solid;
+    border-color: white;
+    border-width: 2px;
+    border-radius: 8px;
+}</string>
                     </property>
-                    <property name="indent">
-                     <number>0</number>
+                    <property name="backgroundColor" stdset="0">
+                     <color>
+                      <red>32</red>
+                      <green>36</green>
+                      <blue>37</blue>
+                     </color>
                     </property>
                    </widget>
                   </item>
@@ -14530,7 +15433,7 @@ QAbstractSpinBox:selected {
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -15515,7 +16418,7 @@ border-radius: 6px;
                  <property name="spacing">
                   <number>9</number>
                  </property>
-                 <item row="7" column="0">
+                 <item row="9" column="0">
                   <widget class="ActionButton" name="actionbutton_g54_3">
                    <property name="enabled">
                     <bool>false</bool>
@@ -15554,7 +16457,7 @@ border-radius: 6px;
                    </property>
                   </widget>
                  </item>
-                 <item row="7" column="1">
+                 <item row="9" column="1">
                   <widget class="ActionButton" name="actionbutton_g59_10">
                    <property name="enabled">
                     <bool>false</bool>
@@ -15593,7 +16496,7 @@ border-radius: 6px;
                    </property>
                   </widget>
                  </item>
-                 <item row="11" column="0">
+                 <item row="13" column="0">
                   <widget class="ActionButton" name="actionbutton_g58_3">
                    <property name="enabled">
                     <bool>false</bool>
@@ -15845,7 +16748,7 @@ font-size: 12pt;
                    </property>
                   </widget>
                  </item>
-                 <item row="10" column="0">
+                 <item row="12" column="0">
                   <widget class="ActionButton" name="actionbutton_g57_3">
                    <property name="enabled">
                     <bool>false</bool>
@@ -15884,7 +16787,7 @@ font-size: 12pt;
                    </property>
                   </widget>
                  </item>
-                 <item row="8" column="1">
+                 <item row="10" column="1">
                   <widget class="ActionButton" name="actionbutton_g59_9">
                    <property name="enabled">
                     <bool>false</bool>
@@ -15923,7 +16826,7 @@ font-size: 12pt;
                    </property>
                   </widget>
                  </item>
-                 <item row="9" column="0">
+                 <item row="11" column="0">
                   <widget class="ActionButton" name="actionbutton_g56_3">
                    <property name="enabled">
                     <bool>false</bool>
@@ -15962,7 +16865,7 @@ font-size: 12pt;
                    </property>
                   </widget>
                  </item>
-                 <item row="8" column="0">
+                 <item row="10" column="0">
                   <widget class="ActionButton" name="actionbutton_g55_3">
                    <property name="enabled">
                     <bool>false</bool>
@@ -16001,7 +16904,7 @@ font-size: 12pt;
                    </property>
                   </widget>
                  </item>
-                 <item row="9" column="1">
+                 <item row="11" column="1">
                   <widget class="ActionButton" name="actionbutton_g59_11">
                    <property name="enabled">
                     <bool>false</bool>
@@ -16040,7 +16943,7 @@ font-size: 12pt;
                    </property>
                   </widget>
                  </item>
-                 <item row="10" column="1">
+                 <item row="12" column="1">
                   <widget class="ActionButton" name="actionbutton_g59_8">
                    <property name="enabled">
                     <bool>false</bool>
@@ -16079,7 +16982,7 @@ font-size: 12pt;
                    </property>
                   </widget>
                  </item>
-                 <item row="6" column="1">
+                 <item row="8" column="1">
                   <widget class="QWidget" name="widget_8" native="true">
                    <property name="minimumSize">
                     <size>
@@ -16095,7 +16998,7 @@ font-size: 12pt;
                    </property>
                   </widget>
                  </item>
-                 <item row="6" column="0">
+                 <item row="8" column="0">
                   <widget class="QWidget" name="widget_9" native="true">
                    <property name="minimumSize">
                     <size>
@@ -16111,7 +17014,62 @@ font-size: 12pt;
                    </property>
                   </widget>
                  </item>
+                 <item row="7" column="0">
+                  <widget class="QPushButton" name="plot_grid_button">
+                   <property name="sizePolicy">
+                    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                     <horstretch>0</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="minimumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="maximumSize">
+                    <size>
+                     <width>75</width>
+                     <height>35</height>
+                    </size>
+                   </property>
+                   <property name="font">
+                    <font>
+                     <family>Bebas Kai</family>
+                     <pointsize>12</pointsize>
+                    </font>
+                   </property>
+                   <property name="styleSheet">
+                    <string notr="true">#plot_grid_button{
+font-size: 12pt;
+}</string>
+                   </property>
+                   <property name="text">
+                    <string>PLOT GRID</string>
+                   </property>
+                   <property name="checkable">
+                    <bool>true</bool>
+                   </property>
+                  </widget>
+                 </item>
                 </layout>
+               </widget>
+               <widget class="ProbeSim" name="probesim">
+                <property name="geometry">
+                 <rect>
+                  <x>10</x>
+                  <y>430</y>
+                  <width>161</width>
+                  <height>71</height>
+                 </rect>
+                </property>
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
                </widget>
               </widget>
              </item>
@@ -21244,6 +22202,11 @@ font: 11pt bebas kai;
    <header>qtpyvcp.widgets.input_widgets.file_system</header>
   </customwidget>
   <customwidget>
+   <class>ProbeSim</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.input_widgets.probesim_widget</header>
+  </customwidget>
+  <customwidget>
    <class>StatusLabel</class>
    <extends>QLabel</extends>
    <header>qtpyvcp.widgets.display_widgets.status_label</header>
@@ -21330,12 +22293,12 @@ font: 11pt bebas kai;
    <slot>deleteItem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>738</x>
-     <y>621</y>
+     <x>667</x>
+     <y>594</y>
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21351,7 +22314,7 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21367,7 +22330,7 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21383,7 +22346,7 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21399,7 +22362,7 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21410,12 +22373,12 @@ font: 11pt bebas kai;
    <slot>deleteItem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>146</x>
-     <y>621</y>
+     <x>109</x>
+     <y>594</y>
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21431,7 +22394,7 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21442,12 +22405,12 @@ font: 11pt bebas kai;
    <slot>doFileTransfer()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>610</x>
-     <y>479</y>
+     <x>577</x>
+     <y>409</y>
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21463,7 +22426,7 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21475,11 +22438,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>146</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21491,11 +22454,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>738</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21511,7 +22474,7 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21527,7 +22490,7 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21539,7 +22502,7 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>738</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
     <hint type="destinationlabel">
      <x>1110</x>
@@ -21555,11 +22518,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>738</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1253</x>
-     <y>146</y>
+     <x>1154</x>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21571,11 +22534,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>146</x>
-     <y>146</y>
+     <y>117</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1253</x>
-     <y>146</y>
+     <x>1154</x>
+     <y>117</y>
     </hint>
    </hints>
   </connection>
@@ -21586,12 +22549,12 @@ font: 11pt bebas kai;
    <slot>deleteSelectedTool()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>150</x>
-     <y>616</y>
+     <x>183</x>
+     <y>607</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>151</y>
+     <x>94</x>
+     <y>127</y>
     </hint>
    </hints>
   </connection>
@@ -21618,12 +22581,12 @@ font: 11pt bebas kai;
    <slot>saveToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>815</x>
-     <y>616</y>
+     <x>764</x>
+     <y>607</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>151</y>
+     <x>94</x>
+     <y>127</y>
     </hint>
    </hints>
   </connection>
@@ -21634,12 +22597,12 @@ font: 11pt bebas kai;
    <slot>loadToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>990</x>
-     <y>616</y>
+     <x>929</x>
+     <y>607</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>151</y>
+     <x>94</x>
+     <y>127</y>
     </hint>
    </hints>
   </connection>
@@ -21654,8 +22617,8 @@ font: 11pt bebas kai;
      <y>172</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1473</x>
-     <y>182</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21670,8 +22633,8 @@ font: 11pt bebas kai;
      <y>131</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1461</x>
-     <y>134</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21682,12 +22645,12 @@ font: 11pt bebas kai;
    <slot>addTool()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>350</x>
-     <y>616</y>
+     <x>328</x>
+     <y>607</y>
     </hint>
     <hint type="destinationlabel">
-     <x>150</x>
-     <y>151</y>
+     <x>94</x>
+     <y>127</y>
     </hint>
    </hints>
   </connection>
@@ -21702,8 +22665,8 @@ font: 11pt bebas kai;
      <y>536</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1316</x>
-     <y>376</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21718,8 +22681,8 @@ font: 11pt bebas kai;
      <y>307</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1263</x>
-     <y>447</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21734,8 +22697,8 @@ font: 11pt bebas kai;
      <y>213</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1382</x>
-     <y>245</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21750,8 +22713,8 @@ font: 11pt bebas kai;
      <y>348</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1295</x>
-     <y>498</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21766,8 +22729,8 @@ font: 11pt bebas kai;
      <y>495</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1350</x>
-     <y>622</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21782,8 +22745,8 @@ font: 11pt bebas kai;
      <y>90</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1281</x>
-     <y>304</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21795,11 +22758,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>1760</x>
-     <y>119</y>
+     <y>111</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1545</x>
-     <y>188</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21811,11 +22774,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>1844</x>
-     <y>119</y>
+     <y>111</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1583</x>
-     <y>246</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21827,11 +22790,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>1760</x>
-     <y>166</y>
+     <y>155</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1551</x>
-     <y>292</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21843,11 +22806,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>1844</x>
-     <y>166</y>
+     <y>155</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1528</x>
-     <y>328</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21859,11 +22822,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>1760</x>
-     <y>213</y>
+     <y>198</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1593</x>
-     <y>377</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21875,11 +22838,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>1844</x>
-     <y>213</y>
+     <y>198</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1536</x>
-     <y>415</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21894,8 +22857,8 @@ font: 11pt bebas kai;
      <y>589</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1405</x>
-     <y>554</y>
+     <x>881</x>
+     <y>76</y>
     </hint>
    </hints>
   </connection>
@@ -21910,8 +22873,296 @@ font: 11pt bebas kai;
      <y>630</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1397</x>
-     <y>622</y>
+     <x>881</x>
+     <y>76</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>iso_view_button_2</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_2</receiver>
+   <slot>setViewP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1097</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1220</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_view_button_2</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_2</receiver>
+   <slot>setViewX()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1125</x>
+     <y>168</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1244</x>
+     <y>179</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>y_view_button_2</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_2</receiver>
+   <slot>setViewY()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1105</x>
+     <y>199</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1250</x>
+     <y>210</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>z_view_button_2</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_2</receiver>
+   <slot>setViewZ()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1124</x>
+     <y>249</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1213</x>
+     <y>265</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoom_in_button_2</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_2</receiver>
+   <slot>zoomIn()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1127</x>
+     <y>317</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1224</x>
+     <y>353</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoom_out_button_2</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_2</receiver>
+   <slot>zoomOut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1101</x>
+     <y>360</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1263</x>
+     <y>400</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>perspective_button_2</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_2</receiver>
+   <slot>setViewPersp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1111</x>
+     <y>612</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1263</x>
+     <y>603</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ortho_button_2</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_2</receiver>
+   <slot>setViewOrtho()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1112</x>
+     <y>569</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1217</x>
+     <y>567</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_button_2</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_2</receiver>
+   <slot>clearLivePlot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1116</x>
+     <y>509</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1255</x>
+     <y>519</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_zoom_button_2</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_2</receiver>
+   <slot>setViewMachine()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1107</x>
+     <y>459</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1257</x>
+     <y>461</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_zoom_button_2</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_2</receiver>
+   <slot>printView()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1133</x>
+     <y>426</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1217</x>
+     <y>430</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>plot_grid_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_2</receiver>
+   <slot>showGrid(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1713</x>
+     <y>219</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1632</x>
+     <y>220</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_boundry_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_2</receiver>
+   <slot>toggleProgramBounds()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1718</x>
+     <y>91</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1621</x>
+     <y>127</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_ticks_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_2</receiver>
+   <slot>toggleProgramTicks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1736</x>
+     <y>141</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1620</x>
+     <y>159</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_labels_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_2</receiver>
+   <slot>toggleProgramLabels()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1708</x>
+     <y>188</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1610</x>
+     <y>195</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_labels_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_2</receiver>
+   <slot>toggleMachineLabels()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1794</x>
+     <y>187</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1541</x>
+     <y>188</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_ticks_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_2</receiver>
+   <slot>toggleMachineTicks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1787</x>
+     <y>140</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1580</x>
+     <y>147</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_boundry_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_2</receiver>
+   <slot>toggleMachineBounds()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1792</x>
+     <y>104</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1556</x>
+     <y>107</y>
     </hint>
    </hints>
   </connection>
