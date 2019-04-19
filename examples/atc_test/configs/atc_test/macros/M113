@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+P=$1
+Q=$2
+
+halcmd setp atc-widget.home ${P}
+halcmd setp atc-widget.homing ${Q}
+
+exit 0

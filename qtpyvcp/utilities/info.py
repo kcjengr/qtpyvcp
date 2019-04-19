@@ -11,6 +11,7 @@ import sys
 from linuxcnc import ini
 
 from qtpyvcp import TOP_DIR
+from misc import normalizePath
 
 # Setup logging
 from qtpyvcp.utilities import logger
@@ -313,13 +314,11 @@ class _Info(object):
         return jog_increments
 
     def getSubroutinePath(self):
-        subroutines_path = self.ini.find('RS274NGC', 'SUBROUTINE_PATH')
-        if not subroutines_path:
-            log.info("No subroutine folder or program prefix given in self.ini file")
-            subroutines_path = self.getProgramPrefix()
-        if not subroutines_path:
-            return False
-        return subroutines_path
+        temp = self.ini.find('RS274NGC', 'SUBROUTINE_PATH')
+        if temp is None:
+            log.info("No subroutine path specified in INI file")
+            return self.getProgramPrefix()
+        return normalizePath(temp, os.getenv("CONFIG_DIR", ""))
 
     def getRS274StartCode(self):
         temp = self.ini.find('RS274NGC', 'RS274NGC_STARTUP_CODE')
