@@ -4,15 +4,14 @@ HAL LCD Number
 
 LCD Number for displaying `float` or `s32` HAL pin values.
 
-Generated HAL Pins
-++++++++++++++++++
+.. table:: Generated HAL Pins
 
-===================== ========= =========
-HAL Pin Name          Type      Direction
-===================== ========= =========
-qtpyvcp.lcd.in-i      s32       in
-qtpyvcp.lcd.in-f      float     in
-===================== ========= =========
+    ===================== ========= =========
+    HAL Pin Name          Type      Direction
+    ===================== ========= =========
+    qtpyvcp.lcd.in-i      s32       in
+    qtpyvcp.lcd.in-f      float     in
+    ===================== ========= =========
 """
 
 from qtpy.QtWidgets import QLCDNumber

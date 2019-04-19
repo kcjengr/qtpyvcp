@@ -4,16 +4,15 @@ HAL LED Indicator
 
 LED for indicated the state of `bit` HAL pins.
 
-Generated HAL Pins
-++++++++++++++++++
+.. table:: Generated HAL Pins
 
-========================= ========= =========
-HAL Pin Name              Type      Direction
-========================= ========= =========
-qtpyvcp.led.on            bit       in
-qtpyvcp.led.flash         bit       in
-qtpyvcp.led.flash-rate    u32       out
-========================= ========= =========
+    ========================= ========= =========
+    HAL Pin Name              Type      Direction
+    ========================= ========= =========
+    qtpyvcp.led.on            bit       in
+    qtpyvcp.led.flash         bit       in
+    qtpyvcp.led.flash-rate    u32       out
+    ========================= ========= =========
 """
 
 from qtpyvcp import hal

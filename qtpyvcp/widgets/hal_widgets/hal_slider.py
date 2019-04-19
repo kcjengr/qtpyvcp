@@ -4,16 +4,15 @@ HAL Slider
 
 Slider for setting `u32` or `float` HAL pin values.
 
-Generated HAL Pins
-++++++++++++++++++
+.. table:: Generated HAL Pins
 
-========================= ===== =========
-HAL Pin Name              Type  Direction
-========================= ===== =========
-qtpyvcp.slider.enable     bit   in
-qtpyvcp.slider.out-i      u32   out
-qtpyvcp.slider.out-f      float out
-========================= ===== =========
+    ========================= ===== =========
+    HAL Pin Name              Type  Direction
+    ========================= ===== =========
+    qtpyvcp.slider.enable     bit   in
+    qtpyvcp.slider.out-i      u32   out
+    qtpyvcp.slider.out-f      float out
+    ========================= ===== =========
 """
 
 from qtpy.QtWidgets import QSlider

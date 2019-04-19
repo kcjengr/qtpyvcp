@@ -4,15 +4,14 @@ HAL Button
 
 Button for setting `bit` HAL pin values.
 
-Generated HAL Pins
-++++++++++++++++++
+.. table:: Generated HAL Pins
 
-========================= ===== =========
-HAL Pin Name              Type  Direction
-========================= ===== =========
-qtpyvcp.button.enable     bit   in
-qtpyvcp.button.out        bit   out
-========================= ===== =========
+    ========================= ===== =========
+    HAL Pin Name              Type  Direction
+    ========================= ===== =========
+    qtpyvcp.button.enable     bit   in
+    qtpyvcp.button.out        bit   out
+    ========================= ===== =========
 """
 
 from qtpy.QtCore import Property, QTimer

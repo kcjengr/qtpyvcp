@@ -4,16 +4,15 @@ HAL DoubleSpinBox
 
 DoubleSpinBox for displaying and setting `float` HAL pin values.
 
-Generated HAL Pins
-++++++++++++++++++
+.. table:: Generated HAL Pins
 
-========================= ========= =========
-HAL Pin Name              Type      Direction
-========================= ========= =========
-qtpyvcp.spinbox.enable    bit       in
-qtpyvcp.spinbox.in        float     in
-qtpyvcp.spinbox.out       float     out
-========================= ========= =========
+    ========================= ========= =========
+    HAL Pin Name              Type      Direction
+    ========================= ========= =========
+    qtpyvcp.spinbox.enable    bit       in
+    qtpyvcp.spinbox.in        float     in
+    qtpyvcp.spinbox.out       float     out
+    ========================= ========= =========
 """
 
 from qtpy.QtWidgets import QDoubleSpinBox

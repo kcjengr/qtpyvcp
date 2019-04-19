@@ -4,16 +4,15 @@ HAL CheckBox
 
 CheckBox for displaying and setting `bit` HAL pin values.
 
-Generated HAL Pins
-++++++++++++++++++
+.. table:: Generated HAL Pins
 
-========================= ===== =========
-HAL Pin Name              Type  Direction
-========================= ===== =========
-qtpyvcp.checkbox.enable   bit   in
-qtpyvcp.checkbox.check    bit   in
-qtpyvcp.checkbox.checked  bit   out
-========================= ===== =========
+    ========================= ===== =========
+    HAL Pin Name              Type  Direction
+    ========================= ===== =========
+    qtpyvcp.checkbox.enable   bit   in
+    qtpyvcp.checkbox.check    bit   in
+    qtpyvcp.checkbox.checked  bit   out
+    ========================= ===== =========
 """
 
 from qtpy.QtWidgets import QCheckBox

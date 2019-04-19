@@ -4,16 +4,15 @@ HAL GroupBox
 
 GroupBox that can be enabled/disabled via HAL pins.
 
-Generated HAL Pins
-++++++++++++++++++
+.. table:: Generated HAL Pins
 
-========================= ===== =========
-HAL Pin Name              Type  Direction
-========================= ===== =========
-qtpyvcp.group-box.enable   bit   in
-qtpyvcp.group-box.check    bit   in
-qtpyvcp.group-box.checked  bit   out
-========================= ===== =========
+    ========================= ===== =========
+    HAL Pin Name              Type  Direction
+    ========================= ===== =========
+    qtpyvcp.group-box.enable   bit   in
+    qtpyvcp.group-box.check    bit   in
+    qtpyvcp.group-box.checked  bit   out
+    ========================= ===== =========
 """
 
 from qtpy.QtWidgets import QGroupBox

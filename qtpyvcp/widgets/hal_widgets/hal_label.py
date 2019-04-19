@@ -4,21 +4,20 @@ HAL Label
 
 Label for displaying HAL pin values.
 
-Input pin type is selectable via the ``pinType`` property in designer,
+Input pin type is selectable via the :class:`.pinType` property in designer,
 and can be any valid HAL type (bit, u32, s32, float).
 
-The text format can be specified via the ``textFormat`` property in
+The text format can be specified via the :class:`.textFormat` property in
 designer and can be any valid python style format string.
 
-Generated HAL Pins
-++++++++++++++++++
+.. table:: Generated HAL Pins
 
-========================= =========== =========
-HAL Pin Name              Type        Direction
-========================= =========== =========
-qtpyvcp.label.enable      bit         in
-qtpyvcp.label.in          selecatable in
-========================= =========== =========
+    ========================= =========== =========
+    HAL Pin Name              Type        Direction
+    ========================= =========== =========
+    qtpyvcp.label.enable      bit         in
+    qtpyvcp.label.in          selecatable in
+    ========================= =========== =========
 """
 
 from qtpy.QtWidgets import QLabel
@@ -51,6 +50,11 @@ class HalLabel(QLabel, HALWidget, HalType):
 
     @Property(str)
     def textFormat(self):
+        """Text Format Property
+
+        Args:
+            fmt (str) : A valid python style format string. Defaults to ``%s``.
+        """
         return self._fmt
 
     @textFormat.setter
