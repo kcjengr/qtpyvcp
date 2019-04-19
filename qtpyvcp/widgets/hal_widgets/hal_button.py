@@ -23,7 +23,7 @@ from qtpyvcp.widgets import HALWidget
 
 
 class HalButton(QPushButton, HALWidget):
-    """HAL CheckBox"""
+    """HAL Button"""
     def __init__(self, parent=None):
         super(HalButton, self).__init__(parent)
 
@@ -51,7 +51,10 @@ class HalButton(QPushButton, HALWidget):
 
     @Property(bool)
     def pulseOnPress(self):
-        """Whether to pulse the pin value on press."""
+        """If active, when the button is pressed the ``out`` pin will be `True`
+        for :class:`.pulseDuration` ms, otherwise the ``out`` pin will
+        be `True` for the duration of the button press.
+        """
         return self._pulse
 
     @pulseOnPress.setter
@@ -60,7 +63,7 @@ class HalButton(QPushButton, HALWidget):
 
     @Property(int)
     def pulseDuration(self):
-        """Pulse duration on ms."""
+        """Pulse duration in ms used when :class:`.pulseOnPress` is active."""
         return self._pulse_duration
 
     @pulseDuration.setter
