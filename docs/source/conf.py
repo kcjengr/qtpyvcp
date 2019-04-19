@@ -355,23 +355,6 @@ texinfo_documents = [
 for module in ['linuxcnc', '_hal', 'hal']:
     sys.modules[module] = mock.MagicMock()
 
-    version = '2.8'
-
-    class ini(mock.MagicMock):
-        def find(self, *args, **kwargs):
-            return None
-
-    class command(mock.MagicMock):
-        pass
-
-    class stat(mock.MagicMock):
-        pass
-
-sys.modules['linuxcnc'] = linuxcnc
-sys.modules['hal'] = mock.MagicMock()
-
-print sys.modules
-
 # MagicMock does not work for inheriting, so use our own Mock for PyQt5
 class Mock(object):
     """Mock modules.
