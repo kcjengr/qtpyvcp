@@ -221,7 +221,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>6</number>
           </property>
           <widget class="QWidget" name="main_tab">
            <attribute name="title">
@@ -16009,6 +16009,7 @@ color: rgb(255, 255, 255);
                 <property name="frameShadow">
                  <enum>QFrame::Raised</enum>
                 </property>
+                <zorder>probe_tab_widget_2</zorder>
                </widget>
               </item>
              </layout>
@@ -16049,7 +16050,7 @@ color: rgb(255, 255, 255);
                <enum>QTabWidget::Rounded</enum>
               </property>
               <property name="currentIndex">
-               <number>0</number>
+               <number>7</number>
               </property>
               <property name="iconSize">
                <size>
@@ -16107,388 +16108,372 @@ color: rgb(255, 255, 255);
                     <property name="lineWidth">
                      <number>0</number>
                     </property>
-                    <widget class="QWidget" name="gridLayoutWidget_6">
-                     <property name="geometry">
-                      <rect>
-                       <x>2</x>
-                       <y>2</y>
-                       <width>461</width>
-                       <height>461</height>
-                      </rect>
-                     </property>
-                     <layout class="QGridLayout" name="gridLayout_9">
-                      <property name="sizeConstraint">
-                       <enum>QLayout::SetFixedSize</enum>
-                      </property>
-                      <property name="spacing">
-                       <number>10</number>
-                      </property>
-                      <item row="2" column="1">
-                       <widget class="SubCallButton" name="pushButton_16">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/front_middle_edge.png</normaloff>:/images/front_middle_edge.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>130</width>
-                          <height>130</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="1" column="0">
-                       <widget class="SubCallButton" name="pushButton_28">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/left_side_edge.png</normaloff>:/images/left_side_edge.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>130</width>
-                          <height>130</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="0">
-                       <widget class="SubCallButton" name="pushButton_29">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/front_left_outside_corner.png</normaloff>:/images/front_left_outside_corner.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>130</width>
-                          <height>130</height>
-                         </size>
-                        </property>
-                        <property name="filename" stdset="0">
-                         <string>probe_front_left_top_corner.ngc</string>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="2">
-                       <widget class="SubCallButton" name="pushButton_30">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/back_right_outside_corner.png</normaloff>:/images/back_right_outside_corner.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>130</width>
-                          <height>130</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="2">
-                       <widget class="SubCallButton" name="pushButton_31">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/front_right_outside_corner.png</normaloff>:/images/front_right_outside_corner.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>130</width>
-                          <height>130</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="1" column="1">
-                       <widget class="SubCallButton" name="pushButton_40">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/z_top.png</normaloff>:/images/z_top.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>130</width>
-                          <height>130</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="1">
-                       <widget class="SubCallButton" name="pushButton_41">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/back_middle_outside_edge.png</normaloff>:/images/back_middle_outside_edge.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>130</width>
-                          <height>130</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="1" column="2">
-                       <widget class="SubCallButton" name="pushButton_42">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/right_side_edge.png</normaloff>
-                          <normalon>:/images/right_side_edge.png</normalon>:/images/right_side_edge.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>130</width>
-                          <height>130</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="0">
-                       <widget class="SubCallButton" name="probe_front_left_top_corner_2">
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/back_left_outside_corner.png</normaloff>:/images/back_left_outside_corner.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>130</width>
-                          <height>130</height>
-                         </size>
-                        </property>
-                        <property name="sub_name" stdset="0">
-                         <string>probe_front_left_top_corner</string>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
+                    <layout class="QGridLayout" name="gridLayout_7">
+                     <item row="0" column="0">
+                      <widget class="SubCallButton" name="probe_front_left_top_corner_2">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/back_left_outside_corner.png</normaloff>:/images/back_left_outside_corner.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>130</width>
+                         <height>130</height>
+                        </size>
+                       </property>
+                       <property name="sub_name" stdset="0">
+                        <string>probe_front_left_top_corner</string>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="4">
+                      <widget class="SubCallButton" name="pushButton_30">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/back_right_outside_corner.png</normaloff>:/images/back_right_outside_corner.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>130</width>
+                         <height>130</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="4">
+                      <widget class="SubCallButton" name="pushButton_42">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/right_side_edge.png</normaloff>
+                         <normalon>:/images/right_side_edge.png</normalon>:/images/right_side_edge.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>130</width>
+                         <height>130</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="3">
+                      <widget class="SubCallButton" name="pushButton_40">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/z_top.png</normaloff>:/images/z_top.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>130</width>
+                         <height>130</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="3">
+                      <widget class="SubCallButton" name="pushButton_16">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/front_middle_edge.png</normaloff>:/images/front_middle_edge.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>130</width>
+                         <height>130</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="3">
+                      <widget class="SubCallButton" name="pushButton_41">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/back_middle_outside_edge.png</normaloff>:/images/back_middle_outside_edge.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>130</width>
+                         <height>130</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="0">
+                      <widget class="SubCallButton" name="pushButton_29">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/front_left_outside_corner.png</normaloff>:/images/front_left_outside_corner.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>130</width>
+                         <height>130</height>
+                        </size>
+                       </property>
+                       <property name="filename" stdset="0">
+                        <string>probe_front_left_top_corner.ngc</string>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="2" column="4">
+                      <widget class="SubCallButton" name="pushButton_31">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/front_right_outside_corner.png</normaloff>:/images/front_right_outside_corner.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>130</width>
+                         <height>130</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="SubCallButton" name="pushButton_28">
+                       <property name="sizePolicy">
+                        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                         <horstretch>0</horstretch>
+                         <verstretch>0</verstretch>
+                        </sizepolicy>
+                       </property>
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="styleSheet">
+                        <string notr="true"/>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/left_side_edge.png</normaloff>:/images/left_side_edge.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>130</width>
+                         <height>130</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
                    </widget>
                   </item>
                  </layout>
@@ -16555,17 +16540,14 @@ color: rgb(255, 255, 255);
                </attribute>
                <layout class="QHBoxLayout" name="horizontalLayout_135">
                 <item>
-                 <layout class="QHBoxLayout" name="horizontalLayout_136">
-                  <property name="spacing">
-                   <number>0</number>
-                  </property>
+                 <layout class="QGridLayout" name="gridLayout_15">
                   <property name="leftMargin">
                    <number>10</number>
                   </property>
                   <property name="rightMargin">
                    <number>10</number>
                   </property>
-                  <item>
+                  <item row="0" column="0">
                    <widget class="QFrame" name="frame_41">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -16596,312 +16578,296 @@ color: rgb(255, 255, 255);
                     <property name="frameShadow">
                      <enum>QFrame::Raised</enum>
                     </property>
-                    <widget class="QWidget" name="gridLayoutWidget_7">
-                     <property name="geometry">
-                      <rect>
-                       <x>7</x>
-                       <y>7</y>
-                       <width>451</width>
-                       <height>451</height>
-                      </rect>
-                     </property>
-                     <layout class="QGridLayout" name="gridLayout_10">
-                      <property name="sizeConstraint">
-                       <enum>QLayout::SetFixedSize</enum>
-                      </property>
-                      <property name="spacing">
-                       <number>10</number>
-                      </property>
-                      <item row="2" column="1">
-                       <widget class="SubCallButton" name="pushButton_43">
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/y_minus.png</normaloff>:/images/y_minus.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>125</width>
-                          <height>125</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="0">
-                       <widget class="SubCallButton" name="pushButton_44">
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/inside_back_left_corner.png</normaloff>:/images/inside_back_left_corner.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>125</width>
-                          <height>125</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="2">
-                       <widget class="SubCallButton" name="pushButton_45">
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/inside_back_right_corner.png</normaloff>:/images/inside_back_right_corner.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>125</width>
-                          <height>125</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="0">
-                       <widget class="SubCallButton" name="pushButton_46">
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/inside_front_left_corner.png</normaloff>:/images/inside_front_left_corner.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>125</width>
-                          <height>125</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="2" column="2">
-                       <widget class="SubCallButton" name="pushButton_47">
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/inside_front_right_corner.png</normaloff>:/images/inside_front_right_corner.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>125</width>
-                          <height>125</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="1" column="1">
-                       <widget class="SubCallButton" name="pushButton_48">
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/z_top.png</normaloff>:/images/z_top.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>125</width>
-                          <height>125</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="1" column="0">
-                       <widget class="SubCallButton" name="pushButton_49">
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/x_minus.png</normaloff>:/images/x_minus.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>125</width>
-                          <height>125</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="0" column="1">
-                       <widget class="SubCallButton" name="pushButton_50">
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/y_plus.png</normaloff>:/images/y_plus.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>125</width>
-                          <height>125</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="1" column="2">
-                       <widget class="SubCallButton" name="pushButton_51">
-                        <property name="minimumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>140</width>
-                          <height>140</height>
-                         </size>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/x_plus.png</normaloff>:/images/x_plus.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>125</width>
-                          <height>125</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                     </layout>
-                    </widget>
+                    <layout class="QGridLayout" name="gridLayout_16">
+                     <item row="3" column="4">
+                      <widget class="SubCallButton" name="pushButton_47">
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/inside_front_right_corner.png</normaloff>:/images/inside_front_right_corner.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>125</width>
+                         <height>125</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="3">
+                      <widget class="SubCallButton" name="pushButton_50">
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/y_plus.png</normaloff>:/images/y_plus.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>125</width>
+                         <height>125</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="3">
+                      <widget class="SubCallButton" name="pushButton_43">
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/y_minus.png</normaloff>:/images/y_minus.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>125</width>
+                         <height>125</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="4">
+                      <widget class="SubCallButton" name="pushButton_45">
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/inside_back_right_corner.png</normaloff>:/images/inside_back_right_corner.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>125</width>
+                         <height>125</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="3" column="0">
+                      <widget class="SubCallButton" name="pushButton_46">
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/inside_front_left_corner.png</normaloff>:/images/inside_front_left_corner.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>125</width>
+                         <height>125</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="3">
+                      <widget class="SubCallButton" name="pushButton_48">
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/z_top.png</normaloff>:/images/z_top.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>125</width>
+                         <height>125</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="0" column="0">
+                      <widget class="SubCallButton" name="pushButton_44">
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/inside_back_left_corner.png</normaloff>:/images/inside_back_left_corner.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>125</width>
+                         <height>125</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="0">
+                      <widget class="SubCallButton" name="pushButton_49">
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/x_minus.png</normaloff>:/images/x_minus.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>125</width>
+                         <height>125</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item row="1" column="4">
+                      <widget class="SubCallButton" name="pushButton_51">
+                       <property name="minimumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="maximumSize">
+                        <size>
+                         <width>140</width>
+                         <height>140</height>
+                        </size>
+                       </property>
+                       <property name="text">
+                        <string/>
+                       </property>
+                       <property name="icon">
+                        <iconset resource="probe_basic.qrc">
+                         <normaloff>:/images/x_plus.png</normaloff>:/images/x_plus.png</iconset>
+                       </property>
+                       <property name="iconSize">
+                        <size>
+                         <width>125</width>
+                         <height>125</height>
+                        </size>
+                       </property>
+                       <property name="styleClass" stdset="0">
+                        <string>probeButton</string>
+                       </property>
+                      </widget>
+                     </item>
+                    </layout>
                    </widget>
                   </item>
                  </layout>
@@ -16985,13 +16951,13 @@ color: rgb(255, 255, 255);
                     </property>
                     <property name="minimumSize">
                      <size>
-                      <width>506</width>
+                      <width>465</width>
                       <height>461</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
-                      <width>506</width>
+                      <width>465</width>
                       <height>461</height>
                      </size>
                     </property>
@@ -17006,89 +16972,19 @@ color: rgb(255, 255, 255);
                     <property name="frameShadow">
                      <enum>QFrame::Raised</enum>
                     </property>
-                    <widget class="QWidget" name="gridLayoutWidget_8">
+                    <widget class="QFrame" name="gridFrame_8">
                      <property name="geometry">
                       <rect>
-                       <x>68</x>
-                       <y>3</y>
-                       <width>371</width>
-                       <height>372</height>
+                       <x>53</x>
+                       <y>1</y>
+                       <width>364</width>
+                       <height>364</height>
                       </rect>
                      </property>
-                     <layout class="QGridLayout" name="gridLayout_11" columnstretch="0,0">
+                     <layout class="QGridLayout" name="gridLayout_10">
                       <property name="spacing">
-                       <number>6</number>
+                       <number>10</number>
                       </property>
-                      <item row="0" column="1">
-                       <widget class="SubCallButton" name="pushButton_52">
-                        <property name="minimumSize">
-                         <size>
-                          <width>170</width>
-                          <height>170</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>170</width>
-                          <height>170</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/round_pocket.png</normaloff>:/images/round_pocket.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>145</width>
-                          <height>145</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="1" column="1">
-                       <widget class="SubCallButton" name="pushButton_53">
-                        <property name="minimumSize">
-                         <size>
-                          <width>170</width>
-                          <height>170</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>170</width>
-                          <height>170</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/rect_pocket.png</normaloff>:/images/rect_pocket.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>145</width>
-                          <height>145</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
                       <item row="0" column="0">
                        <widget class="SubCallButton" name="pushButton_54">
                         <property name="minimumSize">
@@ -17117,6 +17013,41 @@ color: rgb(255, 255, 255);
                          <size>
                           <width>170</width>
                           <height>170</height>
+                         </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="SubCallButton" name="pushButton_52">
+                        <property name="minimumSize">
+                         <size>
+                          <width>170</width>
+                          <height>170</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>170</width>
+                          <height>170</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true"/>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="probe_basic.qrc">
+                          <normaloff>:/images/round_pocket.png</normaloff>:/images/round_pocket.png</iconset>
+                        </property>
+                        <property name="iconSize">
+                         <size>
+                          <width>145</width>
+                          <height>145</height>
                          </size>
                         </property>
                         <property name="styleClass" stdset="0">
@@ -17159,14 +17090,49 @@ color: rgb(255, 255, 255);
                         </property>
                        </widget>
                       </item>
+                      <item row="1" column="1">
+                       <widget class="SubCallButton" name="pushButton_53">
+                        <property name="minimumSize">
+                         <size>
+                          <width>170</width>
+                          <height>170</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>170</width>
+                          <height>170</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true"/>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="probe_basic.qrc">
+                          <normaloff>:/images/rect_pocket.png</normaloff>:/images/rect_pocket.png</iconset>
+                        </property>
+                        <property name="iconSize">
+                         <size>
+                          <width>145</width>
+                          <height>145</height>
+                         </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
+                       </widget>
+                      </item>
                      </layout>
                     </widget>
                     <widget class="QFrame" name="frame_8">
                      <property name="geometry">
                       <rect>
                        <x>3</x>
-                       <y>393</y>
-                       <width>500</width>
+                       <y>392</y>
+                       <width>460</width>
                        <height>65</height>
                       </rect>
                      </property>
@@ -17178,13 +17144,13 @@ color: rgb(255, 255, 255);
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>500</width>
+                       <width>460</width>
                        <height>65</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>500</width>
+                       <width>460</width>
                        <height>65</height>
                       </size>
                      </property>
@@ -17241,13 +17207,13 @@ border-radius: 6px;
                          <widget class="QLabel" name="label_70">
                           <property name="minimumSize">
                            <size>
-                            <width>80</width>
+                            <width>50</width>
                             <height>0</height>
                            </size>
                           </property>
                           <property name="maximumSize">
                            <size>
-                            <width>30</width>
+                            <width>50</width>
                             <height>16777215</height>
                            </size>
                           </property>
@@ -17262,7 +17228,7 @@ Background:transparent;
 }</string>
                           </property>
                           <property name="text">
-                           <string>dIAMETER:</string>
+                           <string>DIAM:</string>
                           </property>
                           <property name="alignment">
                            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -17309,13 +17275,13 @@ Background:transparent;
                          <widget class="QLabel" name="label_71">
                           <property name="minimumSize">
                            <size>
-                            <width>40</width>
+                            <width>30</width>
                             <height>0</height>
                            </size>
                           </property>
                           <property name="maximumSize">
                            <size>
-                            <width>40</width>
+                            <width>30</width>
                             <height>16777215</height>
                            </size>
                           </property>
@@ -17377,13 +17343,13 @@ Background:transparent;
                          <widget class="QLabel" name="label_72">
                           <property name="minimumSize">
                            <size>
-                            <width>40</width>
+                            <width>30</width>
                             <height>0</height>
                            </size>
                           </property>
                           <property name="maximumSize">
                            <size>
-                            <width>40</width>
+                            <width>30</width>
                             <height>16777215</height>
                            </size>
                           </property>
@@ -17529,13 +17495,13 @@ Background:transparent;
                     <property name="minimumSize">
                      <size>
                       <width>405</width>
-                      <height>465</height>
+                      <height>461</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
                       <width>405</width>
-                      <height>465</height>
+                      <height>461</height>
                      </size>
                     </property>
                     <property name="styleSheet">
@@ -17549,89 +17515,19 @@ Background:transparent;
                     <property name="frameShadow">
                      <enum>QFrame::Raised</enum>
                     </property>
-                    <widget class="QWidget" name="gridLayoutWidget_9">
+                    <widget class="QFrame" name="gridFrame_9">
                      <property name="geometry">
                       <rect>
-                       <x>19</x>
-                       <y>3</y>
-                       <width>371</width>
-                       <height>372</height>
+                       <x>23</x>
+                       <y>1</y>
+                       <width>364</width>
+                       <height>364</height>
                       </rect>
                      </property>
-                     <layout class="QGridLayout" name="gridLayout_13" columnstretch="0,0">
+                     <layout class="QGridLayout" name="gridLayout_9">
                       <property name="spacing">
-                       <number>6</number>
+                       <number>10</number>
                       </property>
-                      <item row="0" column="1">
-                       <widget class="SubCallButton" name="pushButton_56">
-                        <property name="minimumSize">
-                         <size>
-                          <width>170</width>
-                          <height>170</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>170</width>
-                          <height>170</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/probe_y_valley.png</normaloff>:/images/probe_y_valley.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>150</width>
-                          <height>150</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
-                      <item row="1" column="1">
-                       <widget class="SubCallButton" name="pushButton_57">
-                        <property name="minimumSize">
-                         <size>
-                          <width>170</width>
-                          <height>170</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>170</width>
-                          <height>170</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true"/>
-                        </property>
-                        <property name="text">
-                         <string/>
-                        </property>
-                        <property name="icon">
-                         <iconset resource="probe_basic.qrc">
-                          <normaloff>:/images/probe_y_ridge.png</normaloff>:/images/probe_y_ridge.png</iconset>
-                        </property>
-                        <property name="iconSize">
-                         <size>
-                          <width>150</width>
-                          <height>150</height>
-                         </size>
-                        </property>
-                        <property name="styleClass" stdset="0">
-                         <string>probeButton</string>
-                        </property>
-                       </widget>
-                      </item>
                       <item row="0" column="0">
                        <widget class="SubCallButton" name="pushButton_58">
                         <property name="minimumSize">
@@ -17655,6 +17551,41 @@ Background:transparent;
                         <property name="icon">
                          <iconset resource="probe_basic.qrc">
                           <normaloff>:/images/probe_x_valley.png</normaloff>:/images/probe_x_valley.png</iconset>
+                        </property>
+                        <property name="iconSize">
+                         <size>
+                          <width>150</width>
+                          <height>150</height>
+                         </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="0" column="1">
+                       <widget class="SubCallButton" name="pushButton_56">
+                        <property name="minimumSize">
+                         <size>
+                          <width>170</width>
+                          <height>170</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>170</width>
+                          <height>170</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true"/>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="probe_basic.qrc">
+                          <normaloff>:/images/probe_y_valley.png</normaloff>:/images/probe_y_valley.png</iconset>
                         </property>
                         <property name="iconSize">
                          <size>
@@ -17702,15 +17633,50 @@ Background:transparent;
                         </property>
                        </widget>
                       </item>
+                      <item row="1" column="1">
+                       <widget class="SubCallButton" name="pushButton_57">
+                        <property name="minimumSize">
+                         <size>
+                          <width>170</width>
+                          <height>170</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>170</width>
+                          <height>170</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true"/>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="icon">
+                         <iconset resource="probe_basic.qrc">
+                          <normaloff>:/images/probe_y_ridge.png</normaloff>:/images/probe_y_ridge.png</iconset>
+                        </property>
+                        <property name="iconSize">
+                         <size>
+                          <width>150</width>
+                          <height>150</height>
+                         </size>
+                        </property>
+                        <property name="styleClass" stdset="0">
+                         <string>probeButton</string>
+                        </property>
+                       </widget>
+                      </item>
                      </layout>
                     </widget>
                     <widget class="QFrame" name="frame_9">
                      <property name="geometry">
                       <rect>
                        <x>3</x>
-                       <y>393</y>
+                       <y>392</y>
                        <width>400</width>
-                       <height>70</height>
+                       <height>65</height>
                       </rect>
                      </property>
                      <property name="sizePolicy">
@@ -17722,13 +17688,13 @@ Background:transparent;
                      <property name="minimumSize">
                       <size>
                        <width>400</width>
-                       <height>70</height>
+                       <height>65</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>400</width>
-                       <height>70</height>
+                       <height>65</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -18019,11 +17985,20 @@ Background:transparent;
                       <pointsize>13</pointsize>
                      </font>
                     </property>
+                    <property name="styleSheet">
+                     <string notr="true">QTabWidget QTabBar::tab {
+    margin-top: 5px;
+    margin-bottom: 1px;
+    min-width: 120px;
+    min-height: 25px;
+    font: 13pt &quot;bebas kai&quot;;
+}</string>
+                    </property>
                     <property name="tabPosition">
                      <enum>QTabWidget::South</enum>
                     </property>
                     <property name="currentIndex">
-                     <number>3</number>
+                     <number>7</number>
                     </property>
                     <widget class="QWidget" name="tab_13">
                      <attribute name="title">
@@ -18031,23 +18006,21 @@ Background:transparent;
                      </attribute>
                      <layout class="QHBoxLayout" name="horizontalLayout_146">
                       <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_147">
-                        <item>
-                         <widget class="QLabel" name="label_77">
-                          <property name="minimumSize">
-                           <size>
-                            <width>523</width>
-                            <height>436</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>523</width>
-                            <height>436</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">QLabel{
+                       <widget class="QLabel" name="label_77">
+                        <property name="minimumSize">
+                         <size>
+                          <width>510</width>
+                          <height>436</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>510</width>
+                          <height>436</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
@@ -18055,19 +18028,17 @@ Background:transparent;
     background: rgb(245, 240, 255);
 	image: url(:/images/step_off_width.png);
 }</string>
-                          </property>
-                          <property name="text">
-                           <string/>
-                          </property>
-                          <property name="scaledContents">
-                           <bool>true</bool>
-                          </property>
-                          <property name="indent">
-                           <number>0</number>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="scaledContents">
+                         <bool>true</bool>
+                        </property>
+                        <property name="indent">
+                         <number>0</number>
+                        </property>
+                       </widget>
                       </item>
                      </layout>
                     </widget>
@@ -18077,23 +18048,21 @@ Background:transparent;
                      </attribute>
                      <layout class="QHBoxLayout" name="horizontalLayout_148">
                       <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_149">
-                        <item>
-                         <widget class="QLabel" name="label_78">
-                          <property name="minimumSize">
-                           <size>
-                            <width>541</width>
-                            <height>436</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>541</width>
-                            <height>436</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">QLabel{
+                       <widget class="QLabel" name="label_78">
+                        <property name="minimumSize">
+                         <size>
+                          <width>541</width>
+                          <height>436</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>541</width>
+                          <height>436</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
@@ -18101,138 +18070,219 @@ Background:transparent;
     background: rgb(245, 240, 255);
 	image: url(:/images/extra_probe_depth.png);
 }</string>
-                          </property>
-                          <property name="text">
-                           <string/>
-                          </property>
-                          <property name="scaledContents">
-                           <bool>true</bool>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignCenter</set>
-                          </property>
-                          <property name="wordWrap">
-                           <bool>true</bool>
-                          </property>
-                          <property name="indent">
-                           <number>0</number>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="scaledContents">
+                         <bool>true</bool>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>true</bool>
+                        </property>
+                        <property name="indent">
+                         <number>0</number>
+                        </property>
+                       </widget>
                       </item>
                      </layout>
                     </widget>
                     <widget class="QWidget" name="tab_15">
                      <attribute name="title">
-                      <string>     MAX DISTANCE     </string>
+                      <string>MAX Z DISTANCE</string>
                      </attribute>
-                     <layout class="QHBoxLayout" name="horizontalLayout_150">
+                     <layout class="QHBoxLayout" name="horizontalLayout_39">
                       <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_151">
-                        <item>
-                         <widget class="QLabel" name="label_79">
-                          <property name="minimumSize">
-                           <size>
-                            <width>841</width>
-                            <height>436</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>841</width>
-                            <height>436</height>
-                           </size>
-                          </property>
-                          <property name="autoFillBackground">
-                           <bool>false</bool>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">QLabel{
+                       <widget class="QLabel" name="label_79">
+                        <property name="minimumSize">
+                         <size>
+                          <width>480</width>
+                          <height>436</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>480</width>
+                          <height>436</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
     border-radius: 10px;
+    padding: 10px;
     background: rgb(245, 240, 255);
-	image: url(:/images/max_distance.png);
+	image: url(:/images/max_z_distance.png);
 }</string>
-                          </property>
-                          <property name="frameShape">
-                           <enum>QFrame::NoFrame</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Plain</enum>
-                          </property>
-                          <property name="lineWidth">
-                           <number>0</number>
-                          </property>
-                          <property name="midLineWidth">
-                           <number>0</number>
-                          </property>
-                          <property name="text">
-                           <string/>
-                          </property>
-                          <property name="scaledContents">
-                           <bool>true</bool>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignCenter</set>
-                          </property>
-                          <property name="indent">
-                           <number>0</number>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="scaledContents">
+                         <bool>true</bool>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>true</bool>
+                        </property>
+                        <property name="indent">
+                         <number>0</number>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="tab_4">
+                     <attribute name="title">
+                      <string>MAX XY DISTANCE</string>
+                     </attribute>
+                     <layout class="QHBoxLayout" name="horizontalLayout_34">
+                      <item>
+                       <widget class="QLabel" name="label_105">
+                        <property name="minimumSize">
+                         <size>
+                          <width>510</width>
+                          <height>436</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>510</width>
+                          <height>436</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
+    border-style: solid;
+    border-color: rgb(46, 54, 56);
+    border-width: 3px;
+    border-radius: 10px;
+    padding: 10px;
+    background: rgb(245, 240, 255);
+	image: url(:/images/max_xy_distance.png);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="scaledContents">
+                         <bool>true</bool>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>true</bool>
+                        </property>
+                        <property name="indent">
+                         <number>0</number>
+                        </property>
+                       </widget>
                       </item>
                      </layout>
                     </widget>
                     <widget class="QWidget" name="tab_16">
                      <attribute name="title">
-                      <string>     CLEARANCE     </string>
+                      <string>Z CLEARANCE</string>
                      </attribute>
-                     <layout class="QHBoxLayout" name="horizontalLayout_152">
+                     <layout class="QHBoxLayout" name="horizontalLayout_42">
                       <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_153">
-                        <item>
-                         <widget class="QLabel" name="label_80">
-                          <property name="minimumSize">
-                           <size>
-                            <width>882</width>
-                            <height>436</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>882</width>
-                            <height>436</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">QLabel{
+                       <widget class="QLabel" name="label_80">
+                        <property name="minimumSize">
+                         <size>
+                          <width>490</width>
+                          <height>436</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>490</width>
+                          <height>436</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
     border-radius: 10px;
+    padding: 10px;
     background: rgb(245, 240, 255);
-	image: url(:/images/clearance.png);
+	image: url(:/images/z_clearance.png);
 }</string>
-                          </property>
-                          <property name="text">
-                           <string/>
-                          </property>
-                          <property name="scaledContents">
-                           <bool>true</bool>
-                          </property>
-                          <property name="alignment">
-                           <set>Qt::AlignCenter</set>
-                          </property>
-                          <property name="indent">
-                           <number>0</number>
-                          </property>
-                         </widget>
-                        </item>
-                       </layout>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="scaledContents">
+                         <bool>true</bool>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>true</bool>
+                        </property>
+                        <property name="indent">
+                         <number>0</number>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </widget>
+                    <widget class="QWidget" name="tab_3">
+                     <attribute name="title">
+                      <string>XY CLEARANCE</string>
+                     </attribute>
+                     <layout class="QHBoxLayout" name="horizontalLayout_35">
+                      <item>
+                       <widget class="QLabel" name="label_106">
+                        <property name="minimumSize">
+                         <size>
+                          <width>541</width>
+                          <height>436</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>541</width>
+                          <height>436</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
+    border-style: solid;
+    border-color: rgb(46, 54, 56);
+    border-width: 3px;
+    border-radius: 10px;
+    padding: 10px;
+    background: rgb(245, 240, 255);
+	image: url(:/images/xy_clearance.png);
+}</string>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="scaledContents">
+                         <bool>true</bool>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                        <property name="wordWrap">
+                         <bool>true</bool>
+                        </property>
+                        <property name="indent">
+                         <number>0</number>
+                        </property>
+                       </widget>
                       </item>
                      </layout>
                     </widget>
@@ -27865,1158 +27915,6 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>perspective_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_3</receiver>
-   <slot>setViewPersp()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1714</x>
-     <y>545</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1605</x>
-     <y>544</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>iso_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_3</receiver>
-   <slot>setViewP()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1712</x>
-     <y>113</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1624</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>x_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_3</receiver>
-   <slot>setViewX()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1719</x>
-     <y>163</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1558</x>
-     <y>155</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>y_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_3</receiver>
-   <slot>setViewY()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1693</x>
-     <y>203</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1603</x>
-     <y>200</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoom_in_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_3</receiver>
-   <slot>zoomIn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1695</x>
-     <y>316</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1587</x>
-     <y>306</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>z_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_3</receiver>
-   <slot>setViewZ()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1704</x>
-     <y>246</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1592</x>
-     <y>253</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoom_out_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_3</receiver>
-   <slot>zoomOut()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1712</x>
-     <y>365</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1585</x>
-     <y>371</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>clear_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_3</receiver>
-   <slot>clearLivePlot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1729</x>
-     <y>440</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1566</x>
-     <y>443</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ortho_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_3</receiver>
-   <slot>setViewOrtho()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1707</x>
-     <y>506</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1625</x>
-     <y>510</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>plot_grid_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_3</receiver>
-   <slot>showGrid(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1850</x>
-     <y>425</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1584</x>
-     <y>410</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_labels_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_3</receiver>
-   <slot>toggleMachineLabels()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1796</x>
-     <y>365</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1561</x>
-     <y>388</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_ticks_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_3</receiver>
-   <slot>toggleMachineTicks()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1798</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1603</x>
-     <y>278</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_ticks_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_3</receiver>
-   <slot>toggleProgramTicks()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1794</x>
-     <y>219</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1586</x>
-     <y>227</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_boundry_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_3</receiver>
-   <slot>toggleMachineBounds()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1798</x>
-     <y>162</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1535</x>
-     <y>183</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_labels_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_3</receiver>
-   <slot>toggleProgramLabels()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1818</x>
-     <y>314</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1565</x>
-     <y>324</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_boundry_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_3</receiver>
-   <slot>toggleProgramBounds()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1845</x>
-     <y>110</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1516</x>
-     <y>139</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_zoom_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_3</receiver>
-   <slot>setViewMachine()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1812</x>
-     <y>549</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1549</x>
-     <y>550</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_zoom_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_3</receiver>
-   <slot>printView()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1822</x>
-     <y>504</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1541</x>
-     <y>480</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>iso_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_6</receiver>
-   <slot>setViewP()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1719</x>
-     <y>113</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>x_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_6</receiver>
-   <slot>setViewX()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1710</x>
-     <y>150</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>y_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_6</receiver>
-   <slot>setViewY()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1697</x>
-     <y>202</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>z_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_6</receiver>
-   <slot>setViewZ()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1712</x>
-     <y>256</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoom_in_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_6</receiver>
-   <slot>zoomIn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1698</x>
-     <y>318</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoom_out_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_6</receiver>
-   <slot>zoomOut()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1717</x>
-     <y>355</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>clear_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_6</receiver>
-   <slot>clearLivePlot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1729</x>
-     <y>433</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ortho_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_6</receiver>
-   <slot>setViewOrtho()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1711</x>
-     <y>503</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>perspective_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_6</receiver>
-   <slot>setViewPersp()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1700</x>
-     <y>540</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_zoom_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_6</receiver>
-   <slot>setViewMachine()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1794</x>
-     <y>549</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_zoom_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_6</receiver>
-   <slot>printView()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1796</x>
-     <y>498</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>plot_grid_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_6</receiver>
-   <slot>showGrid(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1782</x>
-     <y>425</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_labels_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_6</receiver>
-   <slot>toggleMachineLabels()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1792</x>
-     <y>370</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_labels_button</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_6</receiver>
-   <slot>toggleProgramLabels()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1800</x>
-     <y>317</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_ticks_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_6</receiver>
-   <slot>toggleMachineTicks()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1802</x>
-     <y>266</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_ticks_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_6</receiver>
-   <slot>toggleProgramTicks()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1785</x>
-     <y>208</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_boundry_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_6</receiver>
-   <slot>toggleMachineBounds()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1806</x>
-     <y>172</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_boundry_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_6</receiver>
-   <slot>toggleProgramBounds()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1802</x>
-     <y>114</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>iso_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_5</receiver>
-   <slot>setViewP()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1709</x>
-     <y>108</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>x_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_5</receiver>
-   <slot>setViewX()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1718</x>
-     <y>166</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>y_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_5</receiver>
-   <slot>setViewY()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1714</x>
-     <y>205</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>z_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_5</receiver>
-   <slot>setViewZ()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1716</x>
-     <y>257</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoom_in_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_5</receiver>
-   <slot>zoomIn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1706</x>
-     <y>310</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoom_out_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_5</receiver>
-   <slot>zoomOut()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1692</x>
-     <y>357</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>clear_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_5</receiver>
-   <slot>clearLivePlot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1725</x>
-     <y>436</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ortho_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_5</receiver>
-   <slot>setViewOrtho()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1699</x>
-     <y>507</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>perspective_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_5</receiver>
-   <slot>setViewPersp()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1701</x>
-     <y>545</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_zoom_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_5</receiver>
-   <slot>setViewMachine()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1796</x>
-     <y>550</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_zoom_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_5</receiver>
-   <slot>printView()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1797</x>
-     <y>509</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>plot_grid_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_5</receiver>
-   <slot>showGrid(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1850</x>
-     <y>425</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_labels_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_5</receiver>
-   <slot>toggleMachineLabels()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1795</x>
-     <y>371</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_labels_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_5</receiver>
-   <slot>toggleProgramLabels()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1812</x>
-     <y>313</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_ticks_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_5</receiver>
-   <slot>toggleMachineTicks()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1788</x>
-     <y>262</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_ticks_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_5</receiver>
-   <slot>toggleProgramTicks()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1798</x>
-     <y>218</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_boundry_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_5</receiver>
-   <slot>toggleMachineBounds()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1787</x>
-     <y>170</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_boundry_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_5</receiver>
-   <slot>toggleProgramBounds()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1802</x>
-     <y>125</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>iso_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_4</receiver>
-   <slot>setViewP()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1724</x>
-     <y>115</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>x_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_4</receiver>
-   <slot>setViewX()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1700</x>
-     <y>167</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>y_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_4</receiver>
-   <slot>setViewY()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1733</x>
-     <y>207</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>z_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_4</receiver>
-   <slot>setViewZ()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1721</x>
-     <y>245</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoom_in_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_4</receiver>
-   <slot>zoomIn()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1704</x>
-     <y>309</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoom_out_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_4</receiver>
-   <slot>zoomOut()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1703</x>
-     <y>354</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>clear_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_4</receiver>
-   <slot>clearLivePlot()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1694</x>
-     <y>440</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ortho_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_4</receiver>
-   <slot>setViewOrtho()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1705</x>
-     <y>502</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>perspective_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_4</receiver>
-   <slot>setViewPersp()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1707</x>
-     <y>534</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_zoom_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_4</receiver>
-   <slot>setViewMachine()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1788</x>
-     <y>547</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_zoom_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_4</receiver>
-   <slot>printView()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1785</x>
-     <y>512</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>plot_grid_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_4</receiver>
-   <slot>showGrid(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1850</x>
-     <y>425</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_labels_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_4</receiver>
-   <slot>toggleMachineLabels()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1800</x>
-     <y>361</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_labels_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_4</receiver>
-   <slot>toggleProgramLabels()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1808</x>
-     <y>307</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_ticks_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_4</receiver>
-   <slot>toggleMachineTicks()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1797</x>
-     <y>266</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_ticks_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_4</receiver>
-   <slot>toggleProgramTicks()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1792</x>
-     <y>225</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>machine_boundry_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_4</receiver>
-   <slot>toggleMachineBounds()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1819</x>
-     <y>177</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>program_boundry_button</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>vtk_4</receiver>
-   <slot>toggleProgramBounds()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1787</x>
-     <y>119</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>724</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>plot_grid_button</sender>
    <signal>clicked(bool)</signal>
    <receiver>vtk</receiver>
@@ -29205,6 +28103,1158 @@ font: 11pt bebas kai;
     <hint type="destinationlabel">
      <x>1640</x>
      <y>471</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>perspective_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_6</receiver>
+   <slot>setViewPersp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1700</x>
+     <y>540</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>perspective_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_3</receiver>
+   <slot>setViewPersp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1714</x>
+     <y>545</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1605</x>
+     <y>544</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>iso_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_3</receiver>
+   <slot>setViewP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1712</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1624</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_3</receiver>
+   <slot>setViewX()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1719</x>
+     <y>163</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1558</x>
+     <y>155</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>y_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_3</receiver>
+   <slot>setViewY()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1693</x>
+     <y>203</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1603</x>
+     <y>200</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoom_in_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_3</receiver>
+   <slot>zoomIn()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1695</x>
+     <y>316</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1587</x>
+     <y>306</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoom_out_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_3</receiver>
+   <slot>zoomOut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1712</x>
+     <y>365</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1585</x>
+     <y>371</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_3</receiver>
+   <slot>clearLivePlot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1729</x>
+     <y>440</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1566</x>
+     <y>443</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>z_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_3</receiver>
+   <slot>setViewZ()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1704</x>
+     <y>246</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1592</x>
+     <y>253</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ortho_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_3</receiver>
+   <slot>setViewOrtho()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1707</x>
+     <y>506</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1625</x>
+     <y>510</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>plot_grid_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_3</receiver>
+   <slot>showGrid(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1850</x>
+     <y>425</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1584</x>
+     <y>410</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_labels_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_3</receiver>
+   <slot>toggleMachineLabels()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1796</x>
+     <y>365</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1561</x>
+     <y>388</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_ticks_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_3</receiver>
+   <slot>toggleMachineTicks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1798</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1603</x>
+     <y>278</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_boundry_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_3</receiver>
+   <slot>toggleMachineBounds()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1798</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1535</x>
+     <y>183</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_ticks_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_3</receiver>
+   <slot>toggleProgramTicks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1794</x>
+     <y>219</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1586</x>
+     <y>227</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_boundry_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_3</receiver>
+   <slot>toggleProgramBounds()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1845</x>
+     <y>110</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1516</x>
+     <y>139</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_labels_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_3</receiver>
+   <slot>toggleProgramLabels()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1818</x>
+     <y>314</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1565</x>
+     <y>324</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_zoom_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_3</receiver>
+   <slot>setViewMachine()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1812</x>
+     <y>549</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1549</x>
+     <y>550</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_zoom_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_3</receiver>
+   <slot>printView()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1822</x>
+     <y>504</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1541</x>
+     <y>480</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>iso_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_6</receiver>
+   <slot>setViewP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1719</x>
+     <y>113</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_6</receiver>
+   <slot>setViewX()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1710</x>
+     <y>150</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>y_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_6</receiver>
+   <slot>setViewY()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1697</x>
+     <y>202</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>z_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_6</receiver>
+   <slot>setViewZ()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1712</x>
+     <y>256</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoom_in_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_6</receiver>
+   <slot>zoomIn()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1698</x>
+     <y>318</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoom_out_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_6</receiver>
+   <slot>zoomOut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1717</x>
+     <y>355</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_6</receiver>
+   <slot>clearLivePlot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1729</x>
+     <y>433</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ortho_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_6</receiver>
+   <slot>setViewOrtho()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1711</x>
+     <y>503</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_zoom_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_6</receiver>
+   <slot>setViewMachine()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1794</x>
+     <y>549</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_zoom_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_6</receiver>
+   <slot>printView()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1796</x>
+     <y>498</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>plot_grid_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_6</receiver>
+   <slot>showGrid(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1782</x>
+     <y>425</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_labels_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_6</receiver>
+   <slot>toggleMachineLabels()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1792</x>
+     <y>370</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_labels_button</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_6</receiver>
+   <slot>toggleProgramLabels()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1800</x>
+     <y>317</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_ticks_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_6</receiver>
+   <slot>toggleMachineTicks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1802</x>
+     <y>266</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_ticks_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_6</receiver>
+   <slot>toggleProgramTicks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1785</x>
+     <y>208</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_boundry_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_6</receiver>
+   <slot>toggleMachineBounds()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1806</x>
+     <y>172</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_boundry_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_6</receiver>
+   <slot>toggleProgramBounds()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1802</x>
+     <y>114</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_5</receiver>
+   <slot>setViewX()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1718</x>
+     <y>166</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>iso_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_5</receiver>
+   <slot>setViewP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1709</x>
+     <y>108</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>y_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_5</receiver>
+   <slot>setViewY()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1714</x>
+     <y>205</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoom_out_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_5</receiver>
+   <slot>zoomOut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1692</x>
+     <y>357</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>z_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_5</receiver>
+   <slot>setViewZ()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1716</x>
+     <y>257</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoom_in_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_5</receiver>
+   <slot>zoomIn()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1706</x>
+     <y>310</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_5</receiver>
+   <slot>clearLivePlot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1725</x>
+     <y>436</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ortho_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_5</receiver>
+   <slot>setViewOrtho()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1699</x>
+     <y>507</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>perspective_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_5</receiver>
+   <slot>setViewPersp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1701</x>
+     <y>545</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_zoom_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_5</receiver>
+   <slot>setViewMachine()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1796</x>
+     <y>550</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_zoom_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_5</receiver>
+   <slot>printView()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1797</x>
+     <y>509</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>plot_grid_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_5</receiver>
+   <slot>showGrid(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1850</x>
+     <y>425</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_labels_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_5</receiver>
+   <slot>toggleMachineLabels()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1795</x>
+     <y>371</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_labels_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_5</receiver>
+   <slot>toggleProgramLabels()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1812</x>
+     <y>313</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_ticks_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_5</receiver>
+   <slot>toggleMachineTicks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1788</x>
+     <y>262</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_ticks_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_5</receiver>
+   <slot>toggleProgramTicks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1798</x>
+     <y>218</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_boundry_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_5</receiver>
+   <slot>toggleProgramBounds()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1802</x>
+     <y>125</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>iso_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_4</receiver>
+   <slot>setViewP()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1724</x>
+     <y>115</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>x_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_4</receiver>
+   <slot>setViewX()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1700</x>
+     <y>167</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_boundry_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_5</receiver>
+   <slot>toggleMachineBounds()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1787</x>
+     <y>170</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>y_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_4</receiver>
+   <slot>setViewY()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1733</x>
+     <y>207</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>z_view_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_4</receiver>
+   <slot>setViewZ()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1721</x>
+     <y>245</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ortho_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_4</receiver>
+   <slot>setViewOrtho()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1705</x>
+     <y>502</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>perspective_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_4</receiver>
+   <slot>setViewPersp()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1707</x>
+     <y>534</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoom_in_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_4</receiver>
+   <slot>zoomIn()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1704</x>
+     <y>309</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>zoom_out_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_4</receiver>
+   <slot>zoomOut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1703</x>
+     <y>354</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>clear_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_4</receiver>
+   <slot>clearLivePlot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1694</x>
+     <y>440</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_zoom_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_4</receiver>
+   <slot>setViewMachine()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1788</x>
+     <y>547</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_zoom_button_3</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_4</receiver>
+   <slot>printView()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1785</x>
+     <y>512</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>plot_grid_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_4</receiver>
+   <slot>showGrid(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1850</x>
+     <y>425</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_labels_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_4</receiver>
+   <slot>toggleMachineLabels()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1800</x>
+     <y>361</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_labels_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_4</receiver>
+   <slot>toggleProgramLabels()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1808</x>
+     <y>307</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_ticks_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_4</receiver>
+   <slot>toggleMachineTicks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1797</x>
+     <y>266</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_ticks_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_4</receiver>
+   <slot>toggleProgramTicks()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1792</x>
+     <y>225</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>machine_boundry_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_4</receiver>
+   <slot>toggleMachineBounds()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1819</x>
+     <y>177</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>program_boundry_button</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>vtk_4</receiver>
+   <slot>toggleProgramBounds()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1787</x>
+     <y>119</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>724</x>
+     <y>124</y>
     </hint>
    </hints>
   </connection>
