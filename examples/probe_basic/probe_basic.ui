@@ -16062,6 +16062,15 @@ QPushButton:selected {
                     <property name="text">
                      <string>OUTSIDE CORNERS</string>
                     </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                    <property name="page" stdset="0">
+                     <number>0</number>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">probetabGroup</string>
+                    </attribute>
                    </widget>
                   </item>
                   <item>
@@ -16100,6 +16109,15 @@ QPushButton:selected {
                     <property name="text">
                      <string>INSIDE CORNERS</string>
                     </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                    <property name="page" stdset="0">
+                     <number>0</number>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">probetabGroup</string>
+                    </attribute>
                    </widget>
                   </item>
                   <item>
@@ -16138,6 +16156,15 @@ QPushButton:selected {
                     <property name="text">
                      <string>BOSS AND POCKET</string>
                     </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                    <property name="page" stdset="0">
+                     <number>0</number>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">probetabGroup</string>
+                    </attribute>
                    </widget>
                   </item>
                   <item>
@@ -16176,6 +16203,15 @@ QPushButton:selected {
                     <property name="text">
                      <string>RIDGE AND VALLEY</string>
                     </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                    <property name="page" stdset="0">
+                     <number>0</number>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">probetabGroup</string>
+                    </attribute>
                    </widget>
                   </item>
                   <item>
@@ -16214,6 +16250,15 @@ QPushButton:selected {
                     <property name="text">
                      <string>ROTARY AXIS</string>
                     </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                    <property name="page" stdset="0">
+                     <number>0</number>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">probetabGroup</string>
+                    </attribute>
                    </widget>
                   </item>
                   <item>
@@ -16252,6 +16297,15 @@ QPushButton:selected {
                     <property name="text">
                      <string>MULTI-AXIS</string>
                     </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                    <property name="page" stdset="0">
+                     <number>0</number>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">probetabGroup</string>
+                    </attribute>
                    </widget>
                   </item>
                   <item>
@@ -16290,6 +16344,15 @@ QPushButton:selected {
                     <property name="text">
                      <string>CALIBRATE</string>
                     </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                    <property name="page" stdset="0">
+                     <number>0</number>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">probetabGroup</string>
+                    </attribute>
                    </widget>
                   </item>
                   <item>
@@ -16328,6 +16391,15 @@ QPushButton:selected {
                     <property name="text">
                      <string>PROBE HELP</string>
                     </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                    <property name="page" stdset="0">
+                     <number>0</number>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">probetabGroup</string>
+                    </attribute>
                    </widget>
                   </item>
                  </layout>
@@ -16374,7 +16446,10 @@ QPushButton:selected {
     font: 13pt &quot;bebas kai&quot;;
 }</string>
                     </property>
-                    <widget class="QWidget" name="probe_tab_widget_2Page1" native="true">
+                    <property name="currentIndex">
+                     <number>0</number>
+                    </property>
+                    <widget class="QWidget" name="probe_tab_widget_2Page1">
                      <layout class="QHBoxLayout" name="horizontalLayout_132">
                       <item>
                        <layout class="QHBoxLayout" name="horizontalLayout_133">
@@ -16793,7 +16868,7 @@ QPushButton:selected {
                       </item>
                      </layout>
                     </widget>
-                    <widget class="QWidget" name="probe_tab_widget_2Page2" native="true">
+                    <widget class="QWidget" name="probe_tab_widget_2Page2">
                      <layout class="QHBoxLayout" name="horizontalLayout_135">
                       <item>
                        <layout class="QGridLayout" name="gridLayout_15">
@@ -17130,7 +17205,7 @@ QPushButton:selected {
                       </item>
                      </layout>
                     </widget>
-                    <widget class="QWidget" name="probe_tab_widget_2Page3" native="true">
+                    <widget class="QWidget" name="probe_tab_widget_2Page3">
                      <layout class="QHBoxLayout" name="horizontalLayout_138">
                       <item>
                        <layout class="QHBoxLayout" name="horizontalLayout_139">
@@ -17616,7 +17691,7 @@ Background:transparent;
                       </item>
                      </layout>
                     </widget>
-                    <widget class="QWidget" name="probe_tab_widget_2Page4" native="true">
+                    <widget class="QWidget" name="probe_tab_widget_2Page4">
                      <layout class="QHBoxLayout" name="horizontalLayout_141">
                       <item>
                        <layout class="QHBoxLayout" name="horizontalLayout_142">
@@ -18034,10 +18109,10 @@ Background:transparent;
                       </item>
                      </layout>
                     </widget>
-                    <widget class="QWidget" name="probe_tab_widget_2Page5" native="true"/>
-                    <widget class="QWidget" name="probe_tab_widget_2Page6" native="true"/>
-                    <widget class="QWidget" name="probe_tab_widget_2Page7" native="true"/>
-                    <widget class="QWidget" name="probe_tab_widget_2Page8" native="true">
+                    <widget class="QWidget" name="probe_tab_widget_2Page5"/>
+                    <widget class="QWidget" name="probe_tab_widget_2Page6"/>
+                    <widget class="QWidget" name="probe_tab_widget_2Page7"/>
+                    <widget class="QWidget" name="probe_tab_widget_2Page8">
                      <layout class="QHBoxLayout" name="horizontalLayout_145">
                       <item>
                        <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -18438,10 +18513,6 @@ Background:transparent;
              </widget>
             </item>
            </layout>
-           <zorder>frame_44</zorder>
-           <zorder></zorder>
-           <zorder>probe_tab_widget_2</zorder>
-           <zorder>widget_13</zorder>
           </widget>
           <widget class="QWidget" name="conversational_tab">
            <attribute name="title">
@@ -27441,7 +27512,7 @@ font: 11pt bebas kai;
   <include location="probe_basic.qrc"/>
   <include location="probe_basic.qrc"/>
   <include location="probe_basic.qrc"/>
-  <include location="../../../../.designer/backup/probe_basic.qrc"/>
+  <include location="probe_basic.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -28550,4 +28621,7 @@ font: 11pt bebas kai;
    <bool>true</bool>
   </property>
  </designerdata>
+ <buttongroups>
+  <buttongroup name="probetabGroup"/>
+ </buttongroups>
 </ui>
