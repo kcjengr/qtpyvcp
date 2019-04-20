@@ -198,7 +198,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         tlo = self.status.tool_offset
         self.tooltip_position = [pos - tlo for pos, tlo in zip(pos[:3], tlo[:3])]
-
+        
         self.tool_actor.SetPosition(self.spindle_position)
         self.path_cache.add_line_point(self.tooltip_position)
         self.update_render()
@@ -208,6 +208,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         path_offset = [n - o for n, o in zip(g5x_offset[:3],
                                              self.original_g5x_offset[:3])]
 
+        transform = vtk.vtkTransform()
+        transform.Translate(*self.tooltip_position)
+
+        self.axes_actor.SetUserTransform(transform)
         self.path_actors[0].SetPosition(*path_offset)
         self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
         self.update_render()
@@ -217,6 +221,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         path_offset = [n - o for n, o in zip(g92_offset[:3],
                                              self.original_g92_offset[:3])]
 
+        transform = vtk.vtkTransform()
+        transform.Translate(*self.tooltip_position)
+
+        self.axes_actor.SetUserTransform(transform)
         self.path_actors[0].SetPosition(*path_offset)
         self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
         self.update_render()
@@ -367,6 +375,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.machine_actor.DrawXGridlinesOff()
             self.machine_actor.DrawYGridlinesOff()
             self.machine_actor.DrawZGridlinesOff()
+        self.update_render()
 
     @Slot()
     def toggleProgramBounds(self):
@@ -720,6 +729,13 @@ class Machine:
         cube_axes_actor.DrawXGridlinesOn()
         cube_axes_actor.DrawYGridlinesOn()
         cube_axes_actor.DrawZGridlinesOn()
+
+        if not IN_DESIGNER:
+            showGrid = INIFILE.find("VTK", "GRID_LINES") or ""
+            if showGrid.lower() in ['false', 'off', 'no', '0']:
+                cube_axes_actor.DrawXGridlinesOff()
+                cube_axes_actor.DrawYGridlinesOff()
+                cube_axes_actor.DrawZGridlinesOff()
 
         cube_axes_actor.SetGridLineLocation(cube_axes_actor.VTK_GRID_LINES_FURTHEST)
 
