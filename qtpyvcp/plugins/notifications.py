@@ -17,8 +17,6 @@ from qtpyvcp.plugins import DataPlugin, DataChannel
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
 
-from qtpyvcp.lib.notify import Notification, Urgency
-
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 
@@ -31,13 +29,9 @@ class Notifications(DataPlugin):
 
         self.messages = []
 
-        self.desktop_notifier = Notification("Demo")
-        self.desktop_notifier.setUrgency(Urgency.NORMAL)
-        self.desktop_notifier.setCategory("device")
-
         self.persistant = persistent
         self.persistent_file = normalizePath(path=persistent_file,
-                                           base=os.getenv('CONFIG_DIR', '~/'))
+                                             base=os.getenv('CONFIG_DIR', '~/'))
 
         self.timer = QTimer()
         self.timer.timeout.connect(self.onTimeout)
@@ -85,7 +79,6 @@ class Notifications(DataPlugin):
         chan.signal.emit(msg)
 
     def captureMessage(self, typ, msg):
-        self.showDesktopNotification(typ, msg)
         self.messages.append({'timestamp': time.time(),
                               'type': typ,
                               'message': msg,
@@ -95,13 +88,6 @@ class Notifications(DataPlugin):
                               'interp_mode': STATUS.interp_state.getString(),
                               }
                              )
-
-    def showDesktopNotification(self, typ, msg):
-        icon = {'error': 'dialog-error',
-                'warn': 'dialog-warning',
-                'info': 'dialog-information',
-                'debug': 'dialog-information'}.get(typ, 'dialog-error')
-        self.desktop_notifier.show(title=typ.capitalize(), body=msg, icon=icon)
 
     def initialise(self):
         if self.persistant and os.path.isfile(self.persistent_file):
