@@ -2,7 +2,7 @@ import os
 import time
 import linuxcnc
 
-from qtpy.QtCore import QTimer, Signal
+from qtpy.QtCore import QTimer, Signal, QFileSystemWatcher
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import DataPlugin, DataChannel
@@ -15,6 +15,7 @@ PREFS = Prefs()
 
 LOG = getLogger(__name__)
 STAT = linuxcnc.stat()
+CMD = linuxcnc.command()
 
 
 class Status(DataPlugin):
@@ -25,6 +26,8 @@ class Status(DataPlugin):
         super(Status, self).__init__()
 
         self.no_force_homing = INFO.noForceHoming()
+
+        self.file_watcher = None
 
         self.max_recent_files = PREFS.getPref("STATUS", "MAX_RECENT_FILES", 10, int)
         files = PREFS.getPref("STATUS", "RECENT_FILES", [], list)
@@ -96,8 +99,18 @@ class Status(DataPlugin):
     def file(self, chan, fname):
         if STAT.interp_state == linuxcnc.INTERP_IDLE \
                 and STAT.call_level == 0:
+
+            if self.file_watcher is not None:
+                self.file_watcher.removePath(chan.value)
+                self.file_watcher.addPath(fname)
+
             chan.value = fname
             chan.signal.emit(fname)
+
+    def updateFile(self, path):
+        LOG.debug("Reloading edited G-Code file: %s", path)
+        self.file.signal.emit(path)
+        CMD.program_open(path)
 
     @DataChannel
     def state(self, chan):
@@ -525,6 +538,12 @@ class Status(DataPlugin):
 
     def initialise(self):
         """Start the periodic update timer."""
+
+        # watch the gcode file for changes and reload as needed
+        self.file_watcher = QFileSystemWatcher()
+        self.file_watcher.addPath(self.file.value)
+        self.file_watcher.fileChanged.connect(self.updateFile)
+
         LOG.debug("Starting periodic updates with %ims cycle time",
                   self._cycle_time)
         self.timer.start(self._cycle_time)
