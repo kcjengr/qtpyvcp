@@ -245,6 +245,7 @@ class ToolTable(QTableView):
 
     @Slot()
     def deleteSelectedTool(self):
+        """Delete the currently selected item"""
         current_row = self.selectedRow()
         if current_row == -1:
             # no row selected
@@ -258,7 +259,20 @@ class ToolTable(QTableView):
         self.tool_model.removeTool(current_row)
 
     @Slot()
+    def selectPrevious(self):
+        """Select the previous item in the view."""
+        self.selectRow(self.selectedRow() - 1)
+        return True
+
+    @Slot()
+    def selectNext(self):
+        """Select the next item in the view."""
+        self.selectRow(self.selectedRow() + 1)
+        return True
+
+    @Slot()
     def clearToolTable(self, confirm=True):
+        """Remove all items from the model"""
         if confirm:
             if not self.confirmAction("Do you want to delete the whole tool table?"):
                 return
@@ -267,10 +281,12 @@ class ToolTable(QTableView):
 
     @Slot()
     def addTool(self):
+        """Appends a new item to the model"""
         self.tool_model.addTool()
         self.selectRow(self.tool_model.rowCount() - 1)
 
     def selectedRow(self):
+        """Returns the row number of the currently selected row, or 0"""
         return self.selectionModel().currentIndex().row()
 
     def confirmAction(self, message):
