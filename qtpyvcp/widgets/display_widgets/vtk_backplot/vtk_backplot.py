@@ -137,7 +137,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
-        self.path_actors = list()
+        self.path_actor = None
+        self.extents_actor = None
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.machine_actor)
@@ -170,8 +171,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.load_program(self._last_filename)
 
     def load_program(self, fname=None):
-        for path_actor in self.path_actors:
-            self.renderer.RemoveActor(path_actor)
+
+        self.renderer.RemoveActor(self.path_actor)
+        self.renderer.RemoveActor(self.extents_actor)
 
         self.original_g5x_offset = self.status.stat.g5x_offset
         self.original_g92_offset = self.status.stat.g92_offset
@@ -188,8 +190,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.AddActor(self.path_actor)
         self.renderer.AddActor(self.extents_actor)
-
-        self.path_actors = (self.path_actor, self.extents_actor)
 
         self.update_render()
 
@@ -208,8 +208,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         path_offset = [n - o for n, o in zip(g5x_offset[:3],
                                              self.original_g5x_offset[:3])]
 
-        self.path_actors[0].SetPosition(*path_offset)
-        self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
+        self.path_actor.SetPosition(*path_offset)
+        self.extents_actor.SetBounds(self.path_actor.GetBounds())
         self.update_render()
 
     def update_g92_offset(self, g92_offset):
@@ -217,8 +217,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         path_offset = [n - o for n, o in zip(g92_offset[:3],
                                              self.original_g92_offset[:3])]
 
-        self.path_actors[0].SetPosition(*path_offset)
-        self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
+        self.path_actor.SetPosition(*path_offset)
+        self.extents_actor.SetBounds(self.path_actor.GetBounds())
         self.update_render()
 
     def update_rotation_xy(self, rotation):
@@ -329,7 +329,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewPath(self):
         print('Path')
-        self.path_actors[1].SetCamera(self.renderer.GetActiveCamera())
+        self.extents_actor.SetCamera(self.renderer.GetActiveCamera())
         self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
@@ -371,44 +371,44 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def toggleProgramBounds(self):
-        if len(self.path_actors) > 0:
-            bounds = self.path_actors[1].GetXAxisVisibility()
+        if self.extents_actor is not None:
+            bounds = self.extents_actor.GetXAxisVisibility()
             if bounds:
-                self.path_actors[1].XAxisVisibilityOff()
-                self.path_actors[1].YAxisVisibilityOff()
-                self.path_actors[1].ZAxisVisibilityOff()
+                self.extents_actor.XAxisVisibilityOff()
+                self.extents_actor.YAxisVisibilityOff()
+                self.extents_actor.ZAxisVisibilityOff()
             else:
-                self.path_actors[1].XAxisVisibilityOn()
-                self.path_actors[1].YAxisVisibilityOn()
-                self.path_actors[1].ZAxisVisibilityOn()
+                self.extents_actor.XAxisVisibilityOn()
+                self.extents_actor.YAxisVisibilityOn()
+                self.extents_actor.ZAxisVisibilityOn()
             self.update_render()
 
     @Slot()
     def toggleProgramTicks(self):
-        if len(self.path_actors) > 0:
-            ticks = self.path_actors[1].GetXAxisTickVisibility()
+        if self.extents_actor is not None:
+            ticks = self.extents_actor.GetXAxisTickVisibility()
             if ticks:
-                self.path_actors[1].XAxisTickVisibilityOff()
-                self.path_actors[1].YAxisTickVisibilityOff()
-                self.path_actors[1].ZAxisTickVisibilityOff()
+                self.extents_actor.XAxisTickVisibilityOff()
+                self.extents_actor.YAxisTickVisibilityOff()
+                self.extents_actor.ZAxisTickVisibilityOff()
             else:
-                self.path_actors[1].XAxisTickVisibilityOn()
-                self.path_actors[1].YAxisTickVisibilityOn()
-                self.path_actors[1].ZAxisTickVisibilityOn()
+                self.extents_actor.XAxisTickVisibilityOn()
+                self.extents_actor.YAxisTickVisibilityOn()
+                self.extents_actor.ZAxisTickVisibilityOn()
             self.update_render()
 
     @Slot()
     def toggleProgramLabels(self):
-        if len(self.path_actors) > 0:
-            labels = self.path_actors[1].GetXAxisLabelVisibility()
+        if self.extents_actor is not None:
+            labels = self.extents_actor.GetXAxisLabelVisibility()
             if labels:
-                self.path_actors[1].XAxisLabelVisibilityOff()
-                self.path_actors[1].YAxisLabelVisibilityOff()
-                self.path_actors[1].ZAxisLabelVisibilityOff()
+                self.extents_actor.XAxisLabelVisibilityOff()
+                self.extents_actor.YAxisLabelVisibilityOff()
+                self.extents_actor.ZAxisLabelVisibilityOff()
             else:
-                self.path_actors[1].XAxisLabelVisibilityOn()
-                self.path_actors[1].YAxisLabelVisibilityOn()
-                self.path_actors[1].ZAxisLabelVisibilityOn()
+                self.extents_actor.XAxisLabelVisibilityOn()
+                self.extents_actor.YAxisLabelVisibilityOn()
+                self.extents_actor.ZAxisLabelVisibilityOn()
             self.update_render()
 
     @Slot()
