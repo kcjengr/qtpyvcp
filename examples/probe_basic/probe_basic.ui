@@ -11485,6 +11485,12 @@ QPushButton:selected {
                     <property name="checkable">
                      <bool>true</bool>
                     </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
                     <property name="page" stdset="0">
                      <number>0</number>
                     </property>
@@ -11532,8 +11538,11 @@ QPushButton:selected {
                     <property name="checkable">
                      <bool>true</bool>
                     </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
                     <property name="page" stdset="0">
-                     <number>0</number>
+                     <number>1</number>
                     </property>
                     <attribute name="buttonGroup">
                      <string notr="true">probetabGroup</string>
@@ -11579,8 +11588,11 @@ QPushButton:selected {
                     <property name="checkable">
                      <bool>true</bool>
                     </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
                     <property name="page" stdset="0">
-                     <number>0</number>
+                     <number>2</number>
                     </property>
                     <attribute name="buttonGroup">
                      <string notr="true">probetabGroup</string>
@@ -11626,8 +11638,11 @@ QPushButton:selected {
                     <property name="checkable">
                      <bool>true</bool>
                     </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
                     <property name="page" stdset="0">
-                     <number>0</number>
+                     <number>3</number>
                     </property>
                     <attribute name="buttonGroup">
                      <string notr="true">probetabGroup</string>
@@ -11673,8 +11688,11 @@ QPushButton:selected {
                     <property name="checkable">
                      <bool>true</bool>
                     </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
                     <property name="page" stdset="0">
-                     <number>0</number>
+                     <number>4</number>
                     </property>
                     <attribute name="buttonGroup">
                      <string notr="true">probetabGroup</string>
@@ -11720,8 +11738,11 @@ QPushButton:selected {
                     <property name="checkable">
                      <bool>true</bool>
                     </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
                     <property name="page" stdset="0">
-                     <number>0</number>
+                     <number>5</number>
                     </property>
                     <attribute name="buttonGroup">
                      <string notr="true">probetabGroup</string>
@@ -11765,6 +11786,9 @@ QPushButton:selected {
                      <string>CALIBRATE</string>
                     </property>
                     <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                    <property name="autoExclusive">
                      <bool>true</bool>
                     </property>
                     <property name="page" stdset="0">
@@ -11812,6 +11836,9 @@ QPushButton:selected {
                      <string>PROBE HELP</string>
                     </property>
                     <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                    <property name="autoExclusive">
                      <bool>true</bool>
                     </property>
                     <property name="page" stdset="0">
