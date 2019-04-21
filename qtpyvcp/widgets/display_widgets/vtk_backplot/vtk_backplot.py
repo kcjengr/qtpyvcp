@@ -253,7 +253,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def update_render(self):
         self.GetRenderWindow().Render()
 
-     def reinitialize_iterator(self):
+    def reinitialize_iterator(self):
         self.interactor.ReInitialize()
 
     @Slot()
