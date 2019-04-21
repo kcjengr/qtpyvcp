@@ -198,7 +198,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         tlo = self.status.tool_offset
         self.tooltip_position = [pos - tlo for pos, tlo in zip(pos[:3], tlo[:3])]
-        
+
         self.tool_actor.SetPosition(self.spindle_position)
         self.path_cache.add_line_point(self.tooltip_position)
         self.update_render()
@@ -209,7 +209,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                                              self.original_g5x_offset[:3])]
 
         transform = vtk.vtkTransform()
-        transform.Translate(*self.tooltip_position)
+        transform.Translate(*g5x_offset[:3])
 
         self.axes_actor.SetUserTransform(transform)
         self.path_actors[0].SetPosition(*path_offset)
@@ -223,7 +223,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                                              self.original_g92_offset[:3])]
 
         transform = vtk.vtkTransform()
-        transform.Translate(*self.tooltip_position)
+        transform.Translate(*g92_offset[:3])
 
         self.axes_actor.SetUserTransform(transform)
         self.path_actors[0].SetPosition(*path_offset)
@@ -368,7 +368,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(bool)
     def alphaBlend(self, alpha):
         print('alpha blend')
-    
+
     @Slot(bool)
     def showGrid(self, grid):
         print('show grid')
