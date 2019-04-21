@@ -215,6 +215,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_actors[0].SetPosition(*path_offset)
         self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
         self.update_render()
+        self.reinitialize_iterator()
 
     def update_g92_offset(self, g92_offset):
         # determine change in g92 offset since path was drawn
@@ -228,6 +229,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_actors[0].SetPosition(*path_offset)
         self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
         self.update_render()
+        self.reinitialize_iterator()
 
     def update_rotation_xy(self, rotation):
         print('Rotation: ', rotation) # in degrees
@@ -250,6 +252,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def update_render(self):
         self.GetRenderWindow().Render()
+
+     def reinitialize_iterator(self):
+        self.interactor.ReInitialize()
 
     @Slot()
     def setViewOrtho(self):
