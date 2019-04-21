@@ -75,11 +75,39 @@ class NotificationWidget(QWidget, VCPWidget):
         self.setLayout(self.main_layout)
 
         self.info_message()
+        self.warn_message()
+        self.error_message()
+        self.debug_message()
 
     def info_message(self):
-        info_notification_item = QStandardItem()
-        info_notification_item.setText('Item text')
+        msg = 'INFO Item text'
+        notification_item = QStandardItem()
+        notification_item.setText(msg)
+        # notification_item.setIcon(some_QIcon)
+        notification_item.setCheckable(True)
+        self.info_notification_model.appendRow(notification_item)
+
+    def warn_message(self):
+        msg = 'WARN Item text'
+        notification_item = QStandardItem()
+        notification_item.setText(msg)
         # sinfo_notification_item.setIcon(some_QIcon)
-        info_notification_item.setCheckable(True)
-        self.info_notification_model.appendRow(info_notification_item)
+        notification_item.setCheckable(True)
+        self.info_notification_model.appendRow(notification_item)
+
+    def error_message(self):
+        msg = 'ERROR Item text'
+        notification_item = QStandardItem()
+        notification_item.setText(msg)
+        # sinfo_notification_item.setIcon(some_QIcon)
+        notification_item.setCheckable(True)
+        self.info_notification_model.appendRow(notification_item)
+
+    def debug_message(self):
+        msg = 'DEBUG Item text'
+        notification_item = QStandardItem()
+        notification_item.setText(msg)
+        # sinfo_notification_item.setIcon(some_QIcon)
+        notification_item.setCheckable(True)
+        self.info_notification_model.appendRow(notification_item)
 
