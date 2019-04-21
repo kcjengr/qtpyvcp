@@ -72,11 +72,11 @@ class NotificationWidget(QWidget, VCPWidget):
         self.notification_channel.error_message.notify(self.on_error_message)
         self.notification_channel.debug_message.notify(self.on_debug_message)
 
-        self.all_button.clicked.connect(self.show_all_stack)
-        self.info_button.clicked.connect(self.show_info_stack)
-        self.warn_button.clicked.connect(self.show_warn_stack)
-        self.error_button.clicked.connect(self.show_error_stack)
-        self.debug_button.clicked.connect(self.show_debug_stack)
+        self.all_button.clicked.connect(self.show_all_notifications)
+        self.info_button.clicked.connect(self.show_info_notifications)
+        self.warn_button.clicked.connect(self.show_warn_notifications)
+        self.error_button.clicked.connect(self.show_error_notifications)
+        self.debug_button.clicked.connect(self.show_debug_notifications)
 
     def on_info_message(self, message):
         msg = 'INFO : {}'.format(message)
@@ -110,18 +110,18 @@ class NotificationWidget(QWidget, VCPWidget):
         notification_item.setEditable(False)
         self.all_notification_model.appendRow(notification_item)
 
-    def show_all_stack(self):
+    def show_all_notifications(self):
         self.notification_name.setText("All Notifications")
 
-    def show_info_stack(self):
+    def show_info_notifications(self):
         self.all_notification_proxyview.hide()
         self.notification_name.setText("Information Notifications")
 
-    def show_warn_stack(self):
+    def show_warn_notifications(self):
         self.notification_name.setText("Warning Notifications")
 
-    def show_error_stack(self):
+    def show_error_notifications(self):
         self.notification_name.setText("Error Notifications")
 
-    def show_debug_stack(self):
+    def show_debug_notifications(self):
         self.notification_name.setText("Debug Notifications")
