@@ -17,7 +17,7 @@
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
 from qtpy.QtGui import QStandardItemModel, QStandardItem, QIcon
-from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QListView, QLabel, QHBoxLayout, QWidget
+from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QListView, QLabel, QHBoxLayout, QWidget, QPushButton
 
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.plugins import getPlugin
@@ -31,62 +31,63 @@ class NotificationWidget(QWidget, VCPWidget):
         self.main_layout = QVBoxLayout()
         self.button_layout = QHBoxLayout()
 
-        self.notification_name = QLabel()
-        self.notification_name.setText("TEST")
+        self.all_button = QPushButton()
+        self.info_button = QPushButton()
+        self.warn_button = QPushButton()
+        self.error_button = QPushButton()
+        self.debug_button = QPushButton()
 
+        self.all_button.setText("all")
+        self.info_button.setText("info")
+        self.warn_button.setText("warn")
+        self.error_button.setText("error")
+        self.debug_button.setText("debug")
+
+        self.button_layout.addWidget(self.all_button)
+        self.button_layout.addWidget(self.info_button)
+        self.button_layout.addWidget(self.warn_button)
+        self.button_layout.addWidget(self.error_button)
+        self.button_layout.addWidget(self.debug_button)
+
+        self.notification_name = QLabel()
+
+        self.all_notification_list = QListView()
         self.info_notification_list = QListView()
         self.warn_notification_list = QListView()
         self.error_notification_list = QListView()
         self.debug_notification_list = QListView()
 
-        self.info_notification_model = QStandardItemModel(self.info_notification_list)
-        # self.info_notification_model.itemChanged.connect(self.info_message)
+        self.all_notification_model = QStandardItemModel(self.all_notification_list)
 
-        self.warn_notification_model = QStandardItemModel(self.warn_notification_list)
-        # self.warn_notification_model.itemChanged.connect(self.info_message)
+        self.all_notification_list.setModel(self.all_notification_model)
 
-        self.error_notification_model = QStandardItemModel(self.error_notification_list)
-        # self.error_notification_model.itemChanged.connect(self.info_message)
+        self.all_notifications = list()
 
-        self.debug_notification_model = QStandardItemModel(self.debug_notification_list)
-        # self.debug_notification_model.itemChanged.connect(self.info_message)
+        self.main_layout.addWidget(self.notification_name)
+        self.main_layout.addWidget(self.all_notifications)
+        self.main_layout.addLayout(self.button_layout)
+
+        self.setLayout(self.main_layout)
 
         self.notification_channel.info_message.notify(self.on_info_message)
         self.notification_channel.warn_message.notify(self.on_warn_message)
         self.notification_channel.error_message.notify(self.on_error_message)
         self.notification_channel.debug_message.notify(self.on_debug_message)
 
-        self.info_notification_list.setModel(self.info_notification_model)
-        self.warn_notification_list.setModel(self.warn_notification_model)
-        self.error_notification_list.setModel(self.error_notification_model)
-        self.debug_notification_list.setModel(self.debug_notification_model)
-
-        self.info_notifications = list()
-        self.warn_notifications = list()
-        self.error_notifications = list()
-        self.debug_notifications = list()
-
-        self.stack = QStackedWidget()
-
-        self.stack.addWidget(self.info_notification_list)
-        self.stack.addWidget(self.warn_notification_list)
-        self.stack.addWidget(self.error_notification_list)
-        self.stack.addWidget(self.debug_notification_list)
-
-        self.main_layout.addWidget(self.notification_name)
-        self.main_layout.addWidget(self.stack)
-        self.main_layout.addLayout(self.button_layout)
-
-        self.setLayout(self.main_layout)
+        self.all_button.clicked.connect(self.show_all_stack)
+        self.info_button.clicked.connect(self.show_info_stack)
+        self.warn_button.clicked.connect(self.show_warn_stack)
+        self.error_button.clicked.connect(self.show_error_stack)
+        self.debug_button.clicked.connect(self.show_debug_stack)
 
     def on_info_message(self, message):
+        print("YORK")
         msg = 'INFO : {}'.format(message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-information'))
         notification_item.setEditable(False)
-        # notification_item.setCheckable(True)
-        self.info_notification_model.appendRow(notification_item)
+        self.all_notification_model.appendRow(notification_item)
 
     def on_warn_message(self, message):
         msg = 'WARNING : {}'.format(message)
@@ -94,8 +95,7 @@ class NotificationWidget(QWidget, VCPWidget):
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-warning'))
         notification_item.setEditable(False)
-        # notification_item.setCheckable(True)
-        self.info_notification_model.appendRow(notification_item)
+        self.all_notification_model.appendRow(notification_item)
 
     def on_error_message(self, message):
         msg = 'ERROR : {}'.format(message)
@@ -103,8 +103,7 @@ class NotificationWidget(QWidget, VCPWidget):
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-error'))
         notification_item.setEditable(False)
-        # notification_item.setCheckable(True)
-        self.info_notification_model.appendRow(notification_item)
+        self.all_notification_model.appendRow(notification_item)
 
     def on_debug_message(self, message):
         msg = 'DEBUG : {}'.format(message)
@@ -112,6 +111,19 @@ class NotificationWidget(QWidget, VCPWidget):
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-question'))
         notification_item.setEditable(False)
-        # notification_item.setCheckable(True)
-        self.info_notification_model.appendRow(notification_item)
+        self.all_notification_model.appendRow(notification_item)
 
+    def show_all_stack(self):
+        self.notification_name.setText("All Notifications")
+
+    def show_info_stack(self):
+        self.notification_name.setText("Information Notifications")
+
+    def show_warn_stack(self):
+        self.notification_name.setText("Warning Notifications")
+
+    def show_error_stack(self):
+        self.notification_name.setText("Error Notifications")
+
+    def show_debug_stack(self):
+        self.notification_name.setText("Debug Notifications")
