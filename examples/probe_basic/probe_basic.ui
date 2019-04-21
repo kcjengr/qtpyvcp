@@ -9649,6 +9649,9 @@ color: rgb(255, 255, 255);
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
+                     <property name="clearButtonEnabled">
+                      <bool>false</bool>
+                     </property>
                     </widget>
                    </item>
                    <item>
@@ -10458,7 +10461,7 @@ color: rgb(255, 255, 255);
                       <number>0</number>
                      </property>
                      <property name="text">
-                      <string>Calibration Dia:</string>
+                      <string>TIP CALIBRATION:</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -10469,7 +10472,7 @@ color: rgb(255, 255, 255);
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="calibration_dia">
+                    <widget class="QLineEdit" name="tip_calibration">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -10582,7 +10585,7 @@ color: rgb(255, 255, 255);
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="step_off_width_2">
+                    <widget class="QLineEdit" name="edge_width">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -11058,7 +11061,7 @@ color: rgb(255, 255, 255);
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="probed_diameter">
+                    <widget class="QLineEdit" name="y_probed_width">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -11250,7 +11253,7 @@ color: rgb(255, 255, 255);
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="y_probed_width">
+                    <widget class="QLineEdit" name="probed_diameter">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -11894,7 +11897,7 @@ QPushButton:selected {
 }</string>
                     </property>
                     <property name="currentIndex">
-                     <number>0</number>
+                     <number>7</number>
                     </property>
                     <widget class="QWidget" name="Page1">
                      <layout class="QHBoxLayout" name="horizontalLayout_132">
@@ -13564,10 +13567,10 @@ Background:transparent;
                       <item>
                        <layout class="QVBoxLayout" name="verticalLayout_21">
                         <property name="bottomMargin">
-                         <number>15</number>
+                         <number>6</number>
                         </property>
                         <item>
-                         <widget class="QTabWidget" name="tabWidget_4">
+                         <widget class="QStackedWidget" name="p">
                           <property name="sizePolicy">
                            <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
                             <horstretch>0</horstretch>
@@ -13589,16 +13592,10 @@ Background:transparent;
     font: 13pt &quot;bebas kai&quot;;
 }</string>
                           </property>
-                          <property name="tabPosition">
-                           <enum>QTabWidget::South</enum>
-                          </property>
                           <property name="currentIndex">
-                           <number>5</number>
+                           <number>0</number>
                           </property>
-                          <widget class="QWidget" name="tab_13">
-                           <attribute name="title">
-                            <string>STEP OFF WIDTH</string>
-                           </attribute>
+                          <widget class="QWidget" name="stackedWidget_4Page1" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_146">
                             <item>
                              <widget class="QLabel" name="label_77">
@@ -13637,10 +13634,7 @@ Background:transparent;
                             </item>
                            </layout>
                           </widget>
-                          <widget class="QWidget" name="tab_14">
-                           <attribute name="title">
-                            <string>EXTRA PROBE DEPTH</string>
-                           </attribute>
+                          <widget class="QWidget" name="stackedWidget_4Page2" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_148">
                             <item>
                              <widget class="QLabel" name="label_78">
@@ -13685,10 +13679,7 @@ Background:transparent;
                             </item>
                            </layout>
                           </widget>
-                          <widget class="QWidget" name="tab_15">
-                           <attribute name="title">
-                            <string>MAX Z DISTANCE</string>
-                           </attribute>
+                          <widget class="QWidget" name="stackedWidget_4Page3" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_39">
                             <item>
                              <widget class="QLabel" name="label_79">
@@ -13734,10 +13725,7 @@ Background:transparent;
                             </item>
                            </layout>
                           </widget>
-                          <widget class="QWidget" name="tab_4">
-                           <attribute name="title">
-                            <string>MAX XY DISTANCE</string>
-                           </attribute>
+                          <widget class="QWidget" name="stackedWidget_4Page4" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_34">
                             <item>
                              <widget class="QLabel" name="label_105">
@@ -13783,10 +13771,7 @@ Background:transparent;
                             </item>
                            </layout>
                           </widget>
-                          <widget class="QWidget" name="tab_16">
-                           <attribute name="title">
-                            <string>Z CLEARANCE</string>
-                           </attribute>
+                          <widget class="QWidget" name="stackedWidget_4Page5" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_42">
                             <item>
                              <widget class="QLabel" name="label_80">
@@ -13832,10 +13817,7 @@ Background:transparent;
                             </item>
                            </layout>
                           </widget>
-                          <widget class="QWidget" name="tab_3">
-                           <attribute name="title">
-                            <string>XY CLEARANCE</string>
-                           </attribute>
+                          <widget class="QWidget" name="stackedWidget_4Page6" native="true">
                            <layout class="QHBoxLayout" name="horizontalLayout_35">
                             <item>
                              <widget class="QLabel" name="label_106">
@@ -13881,16 +13863,601 @@ Background:transparent;
                             </item>
                            </layout>
                           </widget>
-                          <widget class="QWidget" name="tab_18">
-                           <attribute name="title">
-                            <string>PROBE FAST FR</string>
-                           </attribute>
+                          <widget class="QWidget" name="stackedWidget_4Page7" native="true">
+                           <zorder>probe_group_select_2</zorder>
                           </widget>
-                          <widget class="QWidget" name="tab_19">
-                           <attribute name="title">
-                            <string>PROBE SLOW FR</string>
-                           </attribute>
-                          </widget>
+                          <widget class="QWidget" name="stackedWidget_4Page8" native="true"/>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QWidget" name="probe_group_select_2" native="true">
+                          <property name="styleSheet">
+                           <string notr="true">QWidget {
+    font: 13pt &quot;bebas kai&quot;;
+}</string>
+                          </property>
+                          <layout class="QGridLayout" name="gridLayout_2">
+                           <property name="leftMargin">
+                            <number>3</number>
+                           </property>
+                           <property name="topMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="rightMargin">
+                            <number>3</number>
+                           </property>
+                           <property name="bottomMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="horizontalSpacing">
+                            <number>0</number>
+                           </property>
+                           <item row="0" column="0">
+                            <widget class="QPushButton" name="step_off_width_help">
+                             <property name="minimumSize">
+                              <size>
+                               <width>11</width>
+                               <height>37</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QPushButton {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
+    border-style: solid;
+    border-color: black;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-right-width: 1px;
+    border-left-width: 2px;
+    min-width: preferred;
+    min-height: 25;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 0px;
+}
+
+QPushButton:selected, QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:selected {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>STEP OFF WIDTH</string>
+                             </property>
+                             <property name="checkable">
+                              <bool>true</bool>
+                             </property>
+                             <property name="checked">
+                              <bool>true</bool>
+                             </property>
+                             <property name="autoExclusive">
+                              <bool>true</bool>
+                             </property>
+                             <property name="page" stdset="0">
+                              <number>0</number>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="7">
+                            <widget class="QPushButton" name="max_xy_distance_help">
+                             <property name="minimumSize">
+                              <size>
+                               <width>10</width>
+                               <height>37</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QPushButton {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
+    border-style: solid;
+    border-color: black;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    min-width: preferred;
+    min-height: 25;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+QPushButton:selected, QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:selected {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>MAX XY DIST</string>
+                             </property>
+                             <property name="checkable">
+                              <bool>true</bool>
+                             </property>
+                             <property name="autoExclusive">
+                              <bool>true</bool>
+                             </property>
+                             <property name="page" stdset="0">
+                              <number>3</number>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="1">
+                            <widget class="QPushButton" name="extra_probe_depth_help">
+                             <property name="minimumSize">
+                              <size>
+                               <width>10</width>
+                               <height>37</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QPushButton {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
+    border-style: solid;
+    border-color: black;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    min-width: preferred;
+    min-height: 25;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+QPushButton:selected, QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:selected {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>EX PROBE DEPTH</string>
+                             </property>
+                             <property name="checkable">
+                              <bool>true</bool>
+                             </property>
+                             <property name="autoExclusive">
+                              <bool>true</bool>
+                             </property>
+                             <property name="page" stdset="0">
+                              <number>1</number>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="2">
+                            <widget class="QPushButton" name="max_z_distance_help">
+                             <property name="minimumSize">
+                              <size>
+                               <width>10</width>
+                               <height>37</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QPushButton {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
+    border-style: solid;
+    border-color: black;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    min-width: preferred;
+    min-height: 25;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+QPushButton:selected, QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:selected {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>MAX Z DIST</string>
+                             </property>
+                             <property name="checkable">
+                              <bool>true</bool>
+                             </property>
+                             <property name="autoExclusive">
+                              <bool>true</bool>
+                             </property>
+                             <property name="page" stdset="0">
+                              <number>2</number>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="8">
+                            <widget class="QPushButton" name="z_clearance_help">
+                             <property name="minimumSize">
+                              <size>
+                               <width>11</width>
+                               <height>37</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QPushButton {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);    border-style: solid;
+    border-style: solid;
+    border-color: black;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+    border-left-width: 1px;
+    min-width: preferred;
+    min-height: 25;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 4px;
+}
+
+QPushButton:selected, QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:selected {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>Z CLEARANCE</string>
+                             </property>
+                             <property name="checkable">
+                              <bool>true</bool>
+                             </property>
+                             <property name="autoExclusive">
+                              <bool>true</bool>
+                             </property>
+                             <property name="page" stdset="0">
+                              <number>4</number>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="0">
+                            <widget class="QPushButton" name="xy_clearance_help">
+                             <property name="minimumSize">
+                              <size>
+                               <width>11</width>
+                               <height>37</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QPushButton {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
+    border-style: solid;
+    border-color: black;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-right-width: 1px;
+    border-left-width: 2px;
+    min-width: preferred;
+    min-height: 25;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 0px;
+}
+
+QPushButton:selected, QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:selected {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>XY CLEARANCE</string>
+                             </property>
+                             <property name="checkable">
+                              <bool>true</bool>
+                             </property>
+                             <property name="autoExclusive">
+                              <bool>true</bool>
+                             </property>
+                             <property name="page" stdset="0">
+                              <number>5</number>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="1">
+                            <widget class="QPushButton" name="probe_fast_fr_help">
+                             <property name="minimumSize">
+                              <size>
+                               <width>10</width>
+                               <height>37</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QPushButton {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
+    border-style: solid;
+    border-color: black;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    min-width: preferred;
+    min-height: 25;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+QPushButton:selected, QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:selected {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>PROBE FAST FR</string>
+                             </property>
+                             <property name="checkable">
+                              <bool>true</bool>
+                             </property>
+                             <property name="autoExclusive">
+                              <bool>true</bool>
+                             </property>
+                             <property name="page" stdset="0">
+                              <number>6</number>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="2">
+                            <widget class="QPushButton" name="probe_slow_fr_help">
+                             <property name="minimumSize">
+                              <size>
+                               <width>10</width>
+                               <height>37</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QPushButton {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
+    border-style: solid;
+    border-color: black;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    min-width: preferred;
+    min-height: 25;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+QPushButton:selected, QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:selected {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>PROBE SLOW FR</string>
+                             </property>
+                             <property name="checkable">
+                              <bool>true</bool>
+                             </property>
+                             <property name="autoExclusive">
+                              <bool>true</bool>
+                             </property>
+                             <property name="page" stdset="0">
+                              <number>7</number>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="7">
+                            <widget class="QPushButton" name="tip_calibration_help">
+                             <property name="minimumSize">
+                              <size>
+                               <width>10</width>
+                               <height>37</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QPushButton {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
+    border-color: black;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    min-width: preferred;
+    min-height: 25;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+QPushButton:selected, QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:selected {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>TIP CALIBRATION</string>
+                             </property>
+                             <property name="checkable">
+                              <bool>true</bool>
+                             </property>
+                             <property name="checked">
+                              <bool>true</bool>
+                             </property>
+                             <property name="autoExclusive">
+                              <bool>true</bool>
+                             </property>
+                             <property name="page" stdset="0">
+                              <number>8</number>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="8">
+                            <widget class="QPushButton" name="edge_width_help">
+                             <property name="minimumSize">
+                              <size>
+                               <width>11</width>
+                               <height>37</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QPushButton {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
+    border-style: solid;
+    border-color: black;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+    border-left-width: 1px;
+    min-width: preferred;
+    min-height: 25;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 4px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 4px;
+}
+
+QPushButton:selected, QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:selected {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
+}</string>
+                             </property>
+                             <property name="text">
+                              <string>EDGE WIDTH</string>
+                             </property>
+                             <property name="checkable">
+                              <bool>true</bool>
+                             </property>
+                             <property name="autoExclusive">
+                              <bool>true</bool>
+                             </property>
+                             <property name="page" stdset="0">
+                              <number>9</number>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
                          </widget>
                         </item>
                        </layout>
@@ -14855,7 +15422,7 @@ QAbstractSpinBox:selected {
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
