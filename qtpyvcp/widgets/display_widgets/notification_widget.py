@@ -114,7 +114,6 @@ class NotificationWidget(QWidget, VCPWidget):
         self.notification_name.setText("All Notifications")
 
     def show_info_notifications(self):
-        self.all_notification_proxyview.hide()
         self.notification_name.setText("Information Notifications")
 
     def show_warn_notifications(self):
