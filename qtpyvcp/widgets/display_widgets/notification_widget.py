@@ -40,16 +40,16 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_notification_list = QListView()
 
         self.info_notification_model = QStandardItemModel(self.info_notification_list)
-        self.info_notification_model.itemChanged.connect(self.info_message)
+        # self.info_notification_model.itemChanged.connect(self.info_message)
 
         self.warn_notification_model = QStandardItemModel(self.warn_notification_list)
-        self.warn_notification_model.itemChanged.connect(self.info_message)
+        # self.warn_notification_model.itemChanged.connect(self.info_message)
 
         self.error_notification_model = QStandardItemModel(self.error_notification_list)
-        self.error_notification_model.itemChanged.connect(self.info_message)
+        # self.error_notification_model.itemChanged.connect(self.info_message)
 
         self.debug_notification_model = QStandardItemModel(self.debug_notification_list)
-        self.debug_notification_model.itemChanged.connect(self.info_message)
+        # self.debug_notification_model.itemChanged.connect(self.info_message)
 
         self.info_notification_list.setModel(self.info_notification_model)
         self.warn_notification_list.setModel(self.warn_notification_model)
