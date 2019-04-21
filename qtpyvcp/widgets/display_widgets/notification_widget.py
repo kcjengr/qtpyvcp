@@ -16,13 +16,14 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QListView, QLabel, QHBoxLayout
+from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QListView, QLabel,\
+    QHBoxLayout, QWidget
 
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.plugins import getPlugin
 
 
-class NotificationWidget(VCPWidget):
+class NotificationWidget(QWidget, VCPWidget):
     def __init__(self, parent=None):
         super(NotificationWidget, self).__init__(parent)
         self.notification = getPlugin("notifications")
