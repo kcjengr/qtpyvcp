@@ -51,20 +51,18 @@ class NotificationWidget(QWidget, VCPWidget):
 
         self.notification_name = QLabel()
 
-        self.all_notification_list = QListView()
-        self.info_notification_list = QListView()
-        self.warn_notification_list = QListView()
-        self.error_notification_list = QListView()
-        self.debug_notification_list = QListView()
+        self.all_notification_view = QListView()
+        self.all_notification_proxyview = QListView()
 
-        self.all_notification_model = QStandardItemModel(self.all_notification_list)
+        self.all_notification_model = QStandardItemModel(self.all_notification_view)
 
-        self.all_notification_list.setModel(self.all_notification_model)
+        # self.all_notification_view.setModel(self.all_notification_model)
+        self.all_notification_proxyview.setModel(self.all_notification_model)
 
         self.all_notifications = list()
 
         self.main_layout.addWidget(self.notification_name)
-        self.main_layout.addWidget(self.all_notifications)
+        self.main_layout.addWidget(self.all_notification_proxyview)
         self.main_layout.addLayout(self.button_layout)
 
         self.setLayout(self.main_layout)
@@ -81,7 +79,6 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_button.clicked.connect(self.show_debug_stack)
 
     def on_info_message(self, message):
-        print("YORK")
         msg = 'INFO : {}'.format(message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
@@ -117,6 +114,7 @@ class NotificationWidget(QWidget, VCPWidget):
         self.notification_name.setText("All Notifications")
 
     def show_info_stack(self):
+        self.all_notification_proxyview.hide()
         self.notification_name.setText("Information Notifications")
 
     def show_warn_stack(self):
