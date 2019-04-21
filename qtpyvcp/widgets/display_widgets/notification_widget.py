@@ -16,7 +16,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-from qtpy.QtGui import QStandardItemModel, QStandardItem
+from qtpy.QtGui import QStandardItemModel, QStandardItem, QIcon
 from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QListView, QLabel, QHBoxLayout, QWidget
 
 from qtpyvcp.widgets import VCPWidget
@@ -51,6 +51,11 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_notification_model = QStandardItemModel(self.debug_notification_list)
         # self.debug_notification_model.itemChanged.connect(self.info_message)
 
+        self.notification_channel.info_message.notify(self.on_info_message)
+        self.notification_channel.warn_message.notify(self.on_warn_message)
+        self.notification_channel.error_message.notify(self.on_error_message)
+        self.notification_channel.debug_message.notify(self.on_debug_message)
+
         self.info_notification_list.setModel(self.info_notification_model)
         self.warn_notification_list.setModel(self.warn_notification_model)
         self.error_notification_list.setModel(self.error_notification_model)
@@ -74,40 +79,39 @@ class NotificationWidget(QWidget, VCPWidget):
 
         self.setLayout(self.main_layout)
 
-        self.info_message()
-        self.warn_message()
-        self.error_message()
-        self.debug_message()
-
-    def info_message(self):
-        msg = 'INFO Item text'
+    def on_info_message(self, message):
+        msg = 'INFO : {}'.format(message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
-        # notification_item.setIcon(some_QIcon)
-        notification_item.setCheckable(True)
+        notification_item.setIcon(QIcon.fromTheme('dialog-information'))
+        notification_item.setEditable(False)
+        # notification_item.setCheckable(True)
         self.info_notification_model.appendRow(notification_item)
 
-    def warn_message(self):
-        msg = 'WARN Item text'
+    def on_warn_message(self, message):
+        msg = 'WARNING : {}'.format(message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
-        # sinfo_notification_item.setIcon(some_QIcon)
-        notification_item.setCheckable(True)
+        notification_item.setIcon(QIcon.fromTheme('dialog-warning'))
+        notification_item.setEditable(False)
+        # notification_item.setCheckable(True)
         self.info_notification_model.appendRow(notification_item)
 
-    def error_message(self):
-        msg = 'ERROR Item text'
+    def on_error_message(self, message):
+        msg = 'ERROR : {}'.format(message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
-        # sinfo_notification_item.setIcon(some_QIcon)
-        notification_item.setCheckable(True)
+        notification_item.setIcon(QIcon.fromTheme('dialog-error'))
+        notification_item.setEditable(False)
+        # notification_item.setCheckable(True)
         self.info_notification_model.appendRow(notification_item)
 
-    def debug_message(self):
-        msg = 'DEBUG Item text'
+    def on_debug_message(self, message):
+        msg = 'DEBUG : {}'.format(message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
-        # sinfo_notification_item.setIcon(some_QIcon)
-        notification_item.setCheckable(True)
+        notification_item.setIcon(QIcon.fromTheme('dialog-question'))
+        notification_item.setEditable(False)
+        # notification_item.setCheckable(True)
         self.info_notification_model.appendRow(notification_item)
 
