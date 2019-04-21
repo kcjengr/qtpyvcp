@@ -16,8 +16,8 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QListView, QLabel,\
-    QHBoxLayout, QWidget
+from PyQt5.QtGui import QStandardItemModel, QStandardItem # not available on QtPy
+from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QListView, QLabel, QHBoxLayout, QWidget
 
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.plugins import getPlugin
@@ -26,21 +26,53 @@ from qtpyvcp.plugins import getPlugin
 class NotificationWidget(QWidget, VCPWidget):
     def __init__(self, parent=None):
         super(NotificationWidget, self).__init__(parent)
-        self.notification = getPlugin("notifications")
+        self.notification_channel = getPlugin("notifications")
 
         self.main_layout = QVBoxLayout()
         self.button_layout = QHBoxLayout()
 
-        self.notification_name = QLabel("TEST")
+        self.notification_name = QLabel()
+        self.notification_name.setText("TEST")
 
-        self.notification_list = QListView()
+        self.info_notification_list = QListView()
+        self.warn_notification_list = QListView()
+        self.error_notification_list = QListView()
+        self.debug_notification_list = QListView()
+
+        self.info_notification_model = QStandardItemModel(self.info_notification_list)
+        self.info_notification_model.itemChanged.connect(self.info_message)
+
+        self.warn_notification_model = QStandardItemModel(self.warn_notification_list)
+        self.warn_notification_model.itemChanged.connect(self.info_message)
+
+        self.error_notification_model = QStandardItemModel(self.error_notification_list)
+        self.error_notification_model.itemChanged.connect(self.info_message)
+
+        self.debug_notification_model = QStandardItemModel(self.debug_notification_list)
+        self.debug_notification_model.itemChanged.connect(self.info_message)
+
+        self.info_notifications = list()
+        self.warn_notifications = list()
+        self.error_notifications = list()
+        self.debug_notifications = list()
 
         self.stack = QStackedWidget()
 
-        # self.stack.addWidget(self.stack1)
-        # self.stack.addWidget(self.stack2)
-        # self.stack.addWidget(self.stack3)
+        self.stack.addWidget(self.info_notification_list)
+        self.stack.addWidget(self.warn_notification_list)
+        self.stack.addWidget(self.error_notification_list)
+        self.stack.addWidget(self.debug_notification_list)
 
         self.main_layout.addWidget(self.notification_name)
-        self.main_layout.addWidget(self.notification_list)
+        self.main_layout.addWidget(self.stack)
         self.main_layout.addLayout(self.button_layout)
+
+        self.setLayout(self.main_layout)
+
+    def info_message(self):
+        info_notification_item = QStandardItem()
+        info_notification_item.setText('Item text')
+        # sinfo_notification_item.setIcon(some_QIcon)
+        info_notification_item.setCheckable(True)
+        self.info_notification_model.appendRow(info_notification_item)
+
