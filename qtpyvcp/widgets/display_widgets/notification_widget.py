@@ -51,6 +51,11 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_notification_model = QStandardItemModel(self.debug_notification_list)
         self.debug_notification_model.itemChanged.connect(self.info_message)
 
+        self.info_notification_list.setModel(self.info_notification_model)
+        self.warn_notification_list.setModel(self.warn_notification_model)
+        self.error_notification_list.setModel(self.error_notification_model)
+        self.debug_notification_list.setModel(self.debug_notification_model)
+
         self.info_notifications = list()
         self.warn_notifications = list()
         self.error_notifications = list()
@@ -68,6 +73,8 @@ class NotificationWidget(QWidget, VCPWidget):
         self.main_layout.addLayout(self.button_layout)
 
         self.setLayout(self.main_layout)
+
+        self.info_message()
 
     def info_message(self):
         info_notification_item = QStandardItem()
