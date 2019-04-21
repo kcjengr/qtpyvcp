@@ -16,7 +16,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5.QtGui import QStandardItemModel, QStandardItem # not available on QtPy
+from qtpy.QtGui import QStandardItemModel, QStandardItem
 from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QListView, QLabel, QHBoxLayout, QWidget
 
 from qtpyvcp.widgets import VCPWidget
