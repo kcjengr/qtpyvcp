@@ -22,23 +22,24 @@ from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.plugins import getPlugin
 
 
-class NotificationWidget(QVBoxLayout, VCPWidget):
+class NotificationWidget(VCPWidget):
     def __init__(self, parent=None):
         super(NotificationWidget, self).__init__(parent)
         self.notification = getPlugin("notifications")
 
+        self.main_layout = QVBoxLayout()
         self.button_layout = QHBoxLayout()
 
         self.notification_name = QLabel("TEST")
 
         self.notification_list = QListView()
 
-        # self.stack = QStackedWidget()
+        self.stack = QStackedWidget()
 
         # self.stack.addWidget(self.stack1)
         # self.stack.addWidget(self.stack2)
         # self.stack.addWidget(self.stack3)
 
-        self.addWidget(self.notification_name)
-        self.addWidget(self.notification_list)
-        self.addLayout(self.button_layout)
+        self.main_layout.addWidget(self.notification_name)
+        self.main_layout.addWidget(self.notification_list)
+        self.main_layout.addLayout(self.button_layout)
