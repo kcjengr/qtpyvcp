@@ -16,6 +16,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
+from qtpy.QtCore import Qt
 from qtpy.QtGui import QStandardItemModel, QStandardItem, QIcon
 from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QListView, QLabel, QHBoxLayout, QWidget, QPushButton
 
@@ -50,6 +51,8 @@ class NotificationWidget(QWidget, VCPWidget):
         self.button_layout.addWidget(self.debug_button)
 
         self.notification_name = QLabel()
+        self.notification_name.setAlignment(Qt.AlignCenter)
+        self.notification_name.setText("All Notifications")
 
         self.all_notification_view = QListView()
         self.all_notification_proxyview = QListView()
