@@ -9842,7 +9842,7 @@ color: rgb(255, 255, 255);
                       <string/>
                      </property>
                      <property name="text">
-                      <string>30.0</string>
+                      <string>10.0</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -10503,7 +10503,7 @@ color: rgb(255, 255, 255);
 }</string>
                      </property>
                      <property name="text">
-                      <string>0.1500</string>
+                      <string>0.0000</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -11143,7 +11143,7 @@ color: rgb(255, 255, 255);
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="z_probed_pos">
+                    <widget class="QLineEdit" name="y_probed_pos_2">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -11335,7 +11335,7 @@ color: rgb(255, 255, 255);
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="y_probed_pos">
+                    <widget class="QLineEdit" name="z_probed_pos">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -11897,7 +11897,7 @@ QPushButton:selected {
 }</string>
                     </property>
                     <property name="currentIndex">
-                     <number>7</number>
+                     <number>0</number>
                     </property>
                     <widget class="QWidget" name="Page1">
                      <layout class="QHBoxLayout" name="horizontalLayout_132">
@@ -11948,7 +11948,7 @@ QPushButton:selected {
                           </property>
                           <layout class="QGridLayout" name="gridLayout_7">
                            <item row="0" column="0">
-                            <widget class="SubCallButton" name="probe_front_left_top_corner_2">
+                            <widget class="SubCallButton" name="probe_back_left_top_corner">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -11980,7 +11980,7 @@ QPushButton:selected {
                             </widget>
                            </item>
                            <item row="0" column="4">
-                            <widget class="SubCallButton" name="pushButton_30">
+                            <widget class="SubCallButton" name="probe_back_right_top_corner">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -12021,7 +12021,7 @@ QPushButton:selected {
                             </widget>
                            </item>
                            <item row="1" column="4">
-                            <widget class="SubCallButton" name="pushButton_42">
+                            <widget class="SubCallButton" name="probe_right_middle_top_side">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -12063,7 +12063,7 @@ QPushButton:selected {
                             </widget>
                            </item>
                            <item row="1" column="3">
-                            <widget class="SubCallButton" name="pushButton_40">
+                            <widget class="SubCallButton" name="probe_top">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -12104,7 +12104,7 @@ QPushButton:selected {
                             </widget>
                            </item>
                            <item row="2" column="3">
-                            <widget class="SubCallButton" name="pushButton_16">
+                            <widget class="SubCallButton" name="probe_front_middle_top_side">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -12145,7 +12145,7 @@ QPushButton:selected {
                             </widget>
                            </item>
                            <item row="0" column="3">
-                            <widget class="SubCallButton" name="pushButton_41">
+                            <widget class="SubCallButton" name="probe_back_middle_top_side">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -12186,7 +12186,7 @@ QPushButton:selected {
                             </widget>
                            </item>
                            <item row="2" column="0">
-                            <widget class="SubCallButton" name="pushButton_29">
+                            <widget class="SubCallButton" name="probe_front_left_top_corner">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -12230,7 +12230,7 @@ QPushButton:selected {
                             </widget>
                            </item>
                            <item row="2" column="4">
-                            <widget class="SubCallButton" name="pushButton_31">
+                            <widget class="SubCallButton" name="probe_front_right_top_corner">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -12271,7 +12271,7 @@ QPushButton:selected {
                             </widget>
                            </item>
                            <item row="1" column="0">
-                            <widget class="SubCallButton" name="pushButton_28">
+                            <widget class="SubCallButton" name="probe_left_middle_top_side">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -13595,7 +13595,7 @@ Background:transparent;
                           <property name="currentIndex">
                            <number>0</number>
                           </property>
-                          <widget class="QWidget" name="stackedWidget_4Page1" native="true">
+                          <widget class="QWidget" name="stackedWidget_4Page1">
                            <layout class="QHBoxLayout" name="horizontalLayout_146">
                             <item>
                              <widget class="QLabel" name="label_77">
@@ -13634,7 +13634,7 @@ Background:transparent;
                             </item>
                            </layout>
                           </widget>
-                          <widget class="QWidget" name="stackedWidget_4Page2" native="true">
+                          <widget class="QWidget" name="stackedWidget_4Page2">
                            <layout class="QHBoxLayout" name="horizontalLayout_148">
                             <item>
                              <widget class="QLabel" name="label_78">
@@ -13679,7 +13679,7 @@ Background:transparent;
                             </item>
                            </layout>
                           </widget>
-                          <widget class="QWidget" name="stackedWidget_4Page3" native="true">
+                          <widget class="QWidget" name="stackedWidget_4Page3">
                            <layout class="QHBoxLayout" name="horizontalLayout_39">
                             <item>
                              <widget class="QLabel" name="label_79">
@@ -13725,7 +13725,7 @@ Background:transparent;
                             </item>
                            </layout>
                           </widget>
-                          <widget class="QWidget" name="stackedWidget_4Page4" native="true">
+                          <widget class="QWidget" name="stackedWidget_4Page4">
                            <layout class="QHBoxLayout" name="horizontalLayout_34">
                             <item>
                              <widget class="QLabel" name="label_105">
@@ -13771,7 +13771,7 @@ Background:transparent;
                             </item>
                            </layout>
                           </widget>
-                          <widget class="QWidget" name="stackedWidget_4Page5" native="true">
+                          <widget class="QWidget" name="stackedWidget_4Page5">
                            <layout class="QHBoxLayout" name="horizontalLayout_42">
                             <item>
                              <widget class="QLabel" name="label_80">
@@ -13817,7 +13817,7 @@ Background:transparent;
                             </item>
                            </layout>
                           </widget>
-                          <widget class="QWidget" name="stackedWidget_4Page6" native="true">
+                          <widget class="QWidget" name="stackedWidget_4Page6">
                            <layout class="QHBoxLayout" name="horizontalLayout_35">
                             <item>
                              <widget class="QLabel" name="label_106">
@@ -13863,14 +13863,12 @@ Background:transparent;
                             </item>
                            </layout>
                           </widget>
-                          <widget class="QWidget" name="stackedWidget_4Page7" native="true">
-                           <zorder>probe_group_select_2</zorder>
-                          </widget>
-                          <widget class="QWidget" name="stackedWidget_4Page8" native="true"/>
+                          <widget class="QWidget" name="stackedWidget_4Page7"/>
+                          <widget class="QWidget" name="stackedWidget_4Page8"/>
                          </widget>
                         </item>
                         <item>
-                         <widget class="QWidget" name="probe_group_select_2" native="true">
+                         <widget class="QWidget" name="probe_help_Group_select" native="true">
                           <property name="styleSheet">
                            <string notr="true">QWidget {
     font: 13pt &quot;bebas kai&quot;;
@@ -13949,6 +13947,9 @@ QPushButton:selected {
                              <property name="page" stdset="0">
                               <number>0</number>
                              </property>
+                             <attribute name="buttonGroup">
+                              <string notr="true">probehelpGroup</string>
+                             </attribute>
                             </widget>
                            </item>
                            <item row="0" column="7">
@@ -14005,6 +14006,9 @@ QPushButton:selected {
                              <property name="page" stdset="0">
                               <number>3</number>
                              </property>
+                             <attribute name="buttonGroup">
+                              <string notr="true">probehelpGroup</string>
+                             </attribute>
                             </widget>
                            </item>
                            <item row="0" column="1">
@@ -14061,6 +14065,9 @@ QPushButton:selected {
                              <property name="page" stdset="0">
                               <number>1</number>
                              </property>
+                             <attribute name="buttonGroup">
+                              <string notr="true">probehelpGroup</string>
+                             </attribute>
                             </widget>
                            </item>
                            <item row="0" column="2">
@@ -14117,6 +14124,9 @@ QPushButton:selected {
                              <property name="page" stdset="0">
                               <number>2</number>
                              </property>
+                             <attribute name="buttonGroup">
+                              <string notr="true">probehelpGroup</string>
+                             </attribute>
                             </widget>
                            </item>
                            <item row="0" column="8">
@@ -14173,6 +14183,9 @@ QPushButton:selected {
                              <property name="page" stdset="0">
                               <number>4</number>
                              </property>
+                             <attribute name="buttonGroup">
+                              <string notr="true">probehelpGroup</string>
+                             </attribute>
                             </widget>
                            </item>
                            <item row="1" column="0">
@@ -14229,6 +14242,9 @@ QPushButton:selected {
                              <property name="page" stdset="0">
                               <number>5</number>
                              </property>
+                             <attribute name="buttonGroup">
+                              <string notr="true">probehelpGroup</string>
+                             </attribute>
                             </widget>
                            </item>
                            <item row="1" column="1">
@@ -14285,6 +14301,9 @@ QPushButton:selected {
                              <property name="page" stdset="0">
                               <number>6</number>
                              </property>
+                             <attribute name="buttonGroup">
+                              <string notr="true">probehelpGroup</string>
+                             </attribute>
                             </widget>
                            </item>
                            <item row="1" column="2">
@@ -14341,6 +14360,9 @@ QPushButton:selected {
                              <property name="page" stdset="0">
                               <number>7</number>
                              </property>
+                             <attribute name="buttonGroup">
+                              <string notr="true">probehelpGroup</string>
+                             </attribute>
                             </widget>
                            </item>
                            <item row="1" column="7">
@@ -14391,7 +14413,7 @@ QPushButton:selected {
                               <bool>true</bool>
                              </property>
                              <property name="checked">
-                              <bool>true</bool>
+                              <bool>false</bool>
                              </property>
                              <property name="autoExclusive">
                               <bool>true</bool>
@@ -14399,6 +14421,9 @@ QPushButton:selected {
                              <property name="page" stdset="0">
                               <number>8</number>
                              </property>
+                             <attribute name="buttonGroup">
+                              <string notr="true">probehelpGroup</string>
+                             </attribute>
                             </widget>
                            </item>
                            <item row="1" column="8">
@@ -14455,6 +14480,9 @@ QPushButton:selected {
                              <property name="page" stdset="0">
                               <number>9</number>
                              </property>
+                             <attribute name="buttonGroup">
+                              <string notr="true">probehelpGroup</string>
+                             </attribute>
                             </widget>
                            </item>
                           </layout>
@@ -15422,7 +15450,7 @@ QAbstractSpinBox:selected {
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -24288,5 +24316,6 @@ font: 11pt bebas kai;
  </designerdata>
  <buttongroups>
   <buttongroup name="probetabGroup"/>
+  <buttongroup name="probehelpGroup"/>
  </buttongroups>
 </ui>

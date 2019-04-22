@@ -1,6 +1,6 @@
 (author: Chris P)
 (version: 0.2)
-(date: 04/18/2019)
+(date: 04/22/2019)
 
 (Probe front left top corner for x,y,z 0,0,0 position)
 (Start probe position is over front left corner of stock)
@@ -12,18 +12,19 @@ o<probe_front_left_top_corner> sub
   (uses NGCGUI style arg spec)
   (number after "=" in comment is default value)
   #<probe_tool_number> = #1 (=99)
-  #<max_z_distance> = #2    (=0.5000)
-  #<max_xy_distance> = #3   (=0.5000)
-  #<xy_clearance> = #4      (=0.1000)
-  #<z_clearance> = #5       (=0.1000)
-  #<step_off_width> = #6    (=0.5000)
-  #<extra_probe_depth> = #7 (=0.0000)
-  #<probe_slow_fr> = #8     (=5.0)
-  #<probe_fast_fr> = #9     (=10.0)
-  #<tip_calibration> = #10  (=0.0000)
-  #<x_hint> = #11           (=0.0000)
-  #<y_hint> = #12           (=0.0000)
-  #<diameter_hint> = #13    (=1.0000)
+  #<max_z_distance> = #2 (=.5000)
+  #<max_xy_distance> = #3 (=.5000)
+  #<xy_clearance> = #4 (=.1000)
+  #<z_clearance> = #5 (=.1000)
+  #<step_off_width> = #6 (=.5000)
+  #<extra_probe_depth> = #7 (=.0000)
+  #<probe_slow_fr> = #8 (=5)
+  #<probe_fast_fr> = #9 (=10)
+  #<tip_calibration> = #10 (=.0000)
+  #<x_hint> = #11 (=.0000)
+  #<y_hint> = #12 (=.0000)
+  #<diameter_hint> = #13 (=.7500)
+  #<edge_width> = #14 (=.5000)
 
   (Cancel G92 offsets)
   G92.1
@@ -41,8 +42,11 @@ o<probe_front_left_top_corner> sub
   (Probe Diameter)
   #<probe_diameter> = #5410
 
+  (Probe Radius)
+  #<probe_radius> = [#<probe_diameter> / 2]
+
   (Probe Centerline Offset)
-  #<probe_center_offset> = [#5410 / 2 + #<tip_calibration>]
+  #<probe_center_offset> = [#<probe_radius> + #<tip_calibration>]
 
   (Current Z Position including offsets in current program units)
   #<z> = #5422
@@ -186,4 +190,4 @@ o<probe_front_left_top_corner> sub
 
 o<probe_front_left_top_corner> endsub
 
-M2 (end program)
+M02 (end program)
