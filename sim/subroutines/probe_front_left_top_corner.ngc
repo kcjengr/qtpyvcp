@@ -148,7 +148,7 @@ o<probe_front_left_top_corner> sub
   G1 Z-[#<z_clearance> + #<probe_diameter> + #<extra_probe_depth>]
 
   (Current Y Position including offsets in current program units)
-  #<x> = #5421
+  #<y> = #5421
 
   (Initiate Fast Y+ Probe)
   G38.2 Y[#<max_xy_distance>]
@@ -190,4 +190,4 @@ o<probe_front_left_top_corner> sub
 
 o<probe_front_left_top_corner> endsub
 
-M02 (end program)
+M2 (end program)
