@@ -1,0 +1,92 @@
+(author: Chris P)
+(version: 0.3)
+(date: 04/22/19)
+
+(Probe X Minus for X 0 position)
+(Start probe position to the right side edge of stock)
+(inside the max xy distance with the probe tip below the stock top edge)
+(ensure all settings have been set properly according to help diagrams)
+
+o<probe_x_minus> sub
+
+  (uses NGCGUI style arg spec)
+  (number after "=" in comment is default value)
+  #<probe_tool_number> = #1    (=99)
+  #<max_z_distance> = #2       (=0.5000)
+  #<max_xy_distance> = #3      (=0.5000)
+  #<xy_clearance> = #4         (=0.1000)
+  #<z_clearance> = #5          (=0.1000)
+  #<step_off_width> = #6       (=0.5000)
+  #<extra_probe_depth> = #7    (=0.0000)
+  #<probe_slow_fr> = #8        (=0.0)
+  #<probe_fast_fr> = #9        (=10.0)
+  #<calibration_offset> = #10  (=0.0000)
+  #<x_hint> = #11              (=1.0000)
+  #<y_hint> = #12              (=1.0000)
+  #<diameter_hint> = #13       (=1.0000)
+  #<edge_width> = #14          (=0.5000)
+
+  (Cancel G92 offsets)
+  G92.1
+
+  #<workspace_x> = #[5201 + [20 * #5220]]
+  #<workspace_y> = #[5202 + [20 * #5220]]
+  #<workspace_z> = #[5203 + [20 * #5220]]
+
+  (Probe Tool Safety Check)
+  o<110> if [#5400 NE #<probe_tool_number>]
+  (MSG, Specified probe tool #<probe_tool_number> not in spindle, aborting)
+   o<probe_x_minus> return
+  o<110> endif
+
+  (Probe Diameter)
+  #<probe_diameter> = #5410
+
+  (Probe Radius)
+  #<probe_radius> = [#<probe_diameter> / 2]
+
+  (Probe Centerline Offset)
+  #<probe_center_offset> = [#<probe_radius> - #<calibration_offset>]
+
+  (Current Feed Rate)
+  #<feed> = #<_feed>
+
+  (Current X Position including offsets in current program units)
+  #<x> = #5420
+
+  (Initiate Fast X+ Probe)
+  G38.2 X-[#<max_xy_distance>]
+  #<x_probe_fast> = #5061
+
+  (Probe Error check, #5070 will be 0 if failed)
+  o<120> if [#5070 EQ 0]
+    (back to start point and feed)
+    G90
+    G0 X#<x>
+    F#<feed>
+    (return from sub)
+    o<probe_x_minus> return
+  o<120> endif
+
+  (Move to xy_clearance distance for slow probe)
+  G90
+  G0 X[#<x_probe_fast> + #<xy_clearance>]
+
+  (Slow Probe Rule, if Slow Probe FR is set to 0, Slow Probe is Bypassed)
+  o<130> if [#<probe_slow_fr> GT 0]
+    (Initiate Slow X+ Probe)
+    G91
+    F[#<probe_slow_fr>]
+    G38.2 X-[#<xy_clearance> * 2]
+    #<x_probe_slow> = #5061
+    (debug, Probed Pos: #5061 X Pos: #<_x>)
+    G90
+    G0 X[#<x_probe_slow> + #<xy_clearance>]
+  o<130> endif
+
+  (Record X Zero in selected WCO)
+  G10 L2 P#5220 X[#5061 + #<workspace_x> - #<probe_center_offset>]
+
+o<probe_x_minus> endsub
+
+M2 (end program)
