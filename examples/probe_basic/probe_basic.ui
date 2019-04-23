@@ -11473,12 +11473,12 @@ color: rgb(255, 255, 255);
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                     </property>
@@ -11526,12 +11526,12 @@ QPushButton:selected {
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                     </property>
@@ -11576,12 +11576,12 @@ QPushButton:selected {
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                     </property>
@@ -11626,12 +11626,12 @@ QPushButton:selected {
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                     </property>
@@ -11676,12 +11676,12 @@ QPushButton:selected {
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                     </property>
@@ -11726,12 +11726,12 @@ QPushButton:selected {
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                     </property>
@@ -11776,12 +11776,12 @@ QPushButton:selected {
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                     </property>
@@ -11795,7 +11795,7 @@ QPushButton:selected {
                      <bool>true</bool>
                     </property>
                     <property name="page" stdset="0">
-                     <number>0</number>
+                     <number>6</number>
                     </property>
                     <attribute name="buttonGroup">
                      <string notr="true">probetabGroup</string>
@@ -11826,12 +11826,12 @@ QPushButton:selected {
     border-bottom-right-radius: 4px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                     </property>
@@ -11845,7 +11845,7 @@ QPushButton:selected {
                      <bool>true</bool>
                     </property>
                     <property name="page" stdset="0">
-                     <number>0</number>
+                     <number>7</number>
                     </property>
                     <attribute name="buttonGroup">
                      <string notr="true">probetabGroup</string>
@@ -13570,7 +13570,7 @@ Background:transparent;
                          <number>6</number>
                         </property>
                         <item>
-                         <widget class="QStackedWidget" name="p">
+                         <widget class="QStackedWidget" name="probe_help_widget">
                           <property name="sizePolicy">
                            <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
                             <horstretch>0</horstretch>
@@ -13923,12 +13923,12 @@ Background:transparent;
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                              </property>
@@ -13967,7 +13967,6 @@ QPushButton:selected {
     color: white;
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-style: solid;
     border-color: black;
     border-top-width: 2px;
     border-bottom-width: 2px;
@@ -13985,12 +13984,12 @@ QPushButton:selected {
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                              </property>
@@ -14026,7 +14025,6 @@ QPushButton:selected {
     color: white;
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-style: solid;
     border-color: black;
     border-top-width: 2px;
     border-bottom-width: 2px;
@@ -14044,12 +14042,12 @@ QPushButton:selected {
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                              </property>
@@ -14085,7 +14083,6 @@ QPushButton:selected {
     color: white;
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-style: solid;
     border-color: black;
     border-top-width: 2px;
     border-bottom-width: 2px;
@@ -14103,12 +14100,12 @@ QPushButton:selected {
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                              </property>
@@ -14143,7 +14140,7 @@ QPushButton:selected {
     margin-bottom: 2px;
     color: white;
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);    border-style: solid;
+                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
     border-style: solid;
     border-color: black;
     border-top-width: 2px;
@@ -14162,12 +14159,12 @@ QPushButton:selected {
     border-bottom-right-radius: 4px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                              </property>
@@ -14221,12 +14218,12 @@ QPushButton:selected {
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                              </property>
@@ -14262,7 +14259,6 @@ QPushButton:selected {
     color: white;
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-style: solid;
     border-color: black;
     border-top-width: 2px;
     border-bottom-width: 2px;
@@ -14280,12 +14276,12 @@ QPushButton:selected {
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                              </property>
@@ -14321,7 +14317,6 @@ QPushButton:selected {
     color: white;
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-style: solid;
     border-color: black;
     border-top-width: 2px;
     border-bottom-width: 2px;
@@ -14339,12 +14334,12 @@ QPushButton:selected {
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                              </property>
@@ -14397,12 +14392,12 @@ QPushButton:selected {
     border-bottom-right-radius: 0px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                              </property>
@@ -14459,12 +14454,12 @@ QPushButton:selected {
     border-bottom-right-radius: 4px;
 }
 
-QPushButton:selected, QPushButton:hover {
+QPushButton:pressed, QPushButton:hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
                                      stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
-QPushButton:selected {
+QPushButton:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
 }</string>
                              </property>
@@ -14543,6 +14538,11 @@ QPushButton:selected {
                         <horstretch>0</horstretch>
                         <verstretch>0</verstretch>
                        </sizepolicy>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true">QPushButton{
+    min-height: 35px;
+}</string>
                       </property>
                      </widget>
                     </item>
@@ -24315,7 +24315,7 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="probetabGroup"/>
   <buttongroup name="probehelpGroup"/>
+  <buttongroup name="probetabGroup"/>
  </buttongroups>
 </ui>

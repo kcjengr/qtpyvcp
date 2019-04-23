@@ -22,3 +22,7 @@ class ProbeBasic(VCPMainWindow):
     @Slot(QAbstractButton)
     def on_probetabGroup_buttonClicked(self, button):
         self.probe_tab_widget.setCurrentIndex(button.property('page'))
+
+    @Slot(QAbstractButton)
+    def on_probehelpGroup_buttonClicked(self, button):
+        self.probe_help_widget.setCurrentIndex(button.property('page'))

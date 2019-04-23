@@ -19,7 +19,7 @@
 import subprocess
 
 from qtpy.QtCore import QTimer
-from qtpy.QtWidgets import QPushButton, QVBoxLayout, QCheckBox, QWidget
+from qtpy.QtWidgets import QPushButton, QHBoxLayout, QPushButton, QWidget
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities import logger
@@ -36,12 +36,17 @@ class ProbeSim(QWidget):
         self.log = Log
 
         self.close_button = QPushButton("Touch")
-        self.pulse_checkbox = QCheckBox("Pulse")
+        self.close_button.setCheckable(False)
+        self.close_button.setAutoExclusive(False)
+        self.pulse_button = QPushButton("Pulse")
+        self.pulse_button.setCheckable(True)
+        self.pulse_button.setAutoExclusive(False)     
 
-        main_layout = QVBoxLayout()
+
+        main_layout = QHBoxLayout()
 
         main_layout.addWidget(self.close_button)
-        main_layout.addWidget(self.pulse_checkbox)
+        main_layout.addWidget(self.pulse_button)
 
         self.setLayout(main_layout)
         self.setWindowTitle("Simulate touch probe")
@@ -55,7 +60,7 @@ class ProbeSim(QWidget):
 
     def touch_on(self):
 
-        if self.pulse_checkbox.checkState():
+        if self.pulse_button.isChecked():
             self.timer.start(1000)
             subprocess.Popen(['halcmd', 'setp', 'motion.probe-input', '1'])
             
@@ -64,7 +69,7 @@ class ProbeSim(QWidget):
 
     def touch_off(self):
 
-        if self.pulse_checkbox.checkState():
+        if self.pulse_button.isChecked():
             return
 
         subprocess.Popen(['halcmd', 'setp', 'motion.probe-input', '0'])
