@@ -9664,13 +9664,13 @@ color: rgb(255, 255, 255);
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>130</width>
+                       <width>140</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>130</width>
+                       <width>140</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -9859,13 +9859,13 @@ color: rgb(255, 255, 255);
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>130</width>
+                       <width>140</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>130</width>
+                       <width>140</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -10051,13 +10051,13 @@ color: rgb(255, 255, 255);
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>130</width>
+                       <width>140</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>130</width>
+                       <width>140</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -10243,13 +10243,13 @@ color: rgb(255, 255, 255);
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>130</width>
+                       <width>140</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>130</width>
+                       <width>140</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -10435,13 +10435,13 @@ color: rgb(255, 255, 255);
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>130</width>
+                       <width>140</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>130</width>
+                       <width>140</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -10461,7 +10461,7 @@ color: rgb(255, 255, 255);
                       <number>0</number>
                      </property>
                      <property name="text">
-                      <string>TIP CALIBRATION:</string>
+                      <string>Calibration Offset:</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -10472,7 +10472,7 @@ color: rgb(255, 255, 255);
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="tip_calibration">
+                    <widget class="QLineEdit" name="calibration_offset">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -11143,7 +11143,7 @@ color: rgb(255, 255, 255);
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="y_probed_pos_2">
+                    <widget class="QLineEdit" name="y_probed_pos">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
