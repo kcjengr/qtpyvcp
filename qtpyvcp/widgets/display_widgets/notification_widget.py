@@ -45,6 +45,18 @@ class NotificationWidget(QWidget, VCPWidget):
         self.error_button.setText("error")
         self.debug_button.setText("debug")
 
+        self.all_button.setCheckable(True)
+        self.info_button.setCheckable(True)
+        self.warn_button.setCheckable(True)
+        self.error_button.setCheckable(True)
+        self.debug_button.setCheckable(True)
+
+        self.all_button.setChecked(True)
+        self.info_button.setChecked(False)
+        self.warn_button.setChecked(False)
+        self.error_button.setChecked(False)
+        self.debug_button.setChecked(False)
+
         self.button_layout.addWidget(self.all_button)
         self.button_layout.addWidget(self.info_button)
         self.button_layout.addWidget(self.warn_button)
@@ -87,7 +99,7 @@ class NotificationWidget(QWidget, VCPWidget):
     def on_info_message(self, message):
         current_time = self.clock_channel.time
 
-        msg = 'INFO : {} : {}'.format(current_time, message)
+        msg = 'INFO:\nTIME {}\n  {}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-information'))
@@ -97,7 +109,7 @@ class NotificationWidget(QWidget, VCPWidget):
     def on_warn_message(self, message):
         current_time = self.clock_channel.time
 
-        msg = 'WARNING : {} : {}'.format(current_time, message)
+        msg = 'WARNING:\nTIME {}\n  {}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-warning'))
@@ -107,7 +119,7 @@ class NotificationWidget(QWidget, VCPWidget):
     def on_error_message(self, message):
         current_time = self.clock_channel.time
 
-        msg = 'ERROR : {} : {}'.format(current_time, message)
+        msg = 'ERROR:\nTIME {}\n  {}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-error'))
@@ -117,7 +129,7 @@ class NotificationWidget(QWidget, VCPWidget):
     def on_debug_message(self, message):
         current_time = self.clock_channel.time
 
-        msg = 'DEBUG : {} : {}'.format(current_time, message)
+        msg = 'DEBUG\nTIME {}\n  {}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-question'))
@@ -125,25 +137,55 @@ class NotificationWidget(QWidget, VCPWidget):
         self.all_notification_model.appendRow(notification_item)
 
     def show_all_notifications(self):
+        self.all_button.setChecked(True)
+        self.info_button.setChecked(False)
+        self.warn_button.setChecked(False)
+        self.error_button.setChecked(False)
+        self.debug_button.setChecked(False)
+
         self.notification_name.setText("All Notifications")
         self.all_notification_model_proxy.setFilterRegExp(None)
 
     def show_info_notifications(self):
+        self.all_button.setChecked(False)
+        self.info_button.setChecked(True)
+        self.warn_button.setChecked(False)
+        self.error_button.setChecked(False)
+        self.debug_button.setChecked(False)
+
         self.notification_name.setText("Information Notifications")
         self.all_notification_model_proxy.setFilterRegExp(QRegExp("INFO", Qt.CaseSensitive,
                                                           QRegExp.FixedString))
 
     def show_warn_notifications(self):
+        self.all_button.setChecked(False)
+        self.info_button.setChecked(False)
+        self.warn_button.setChecked(True)
+        self.error_button.setChecked(False)
+        self.debug_button.setChecked(False)
+
         self.notification_name.setText("Warning Notifications")
         self.all_notification_model_proxy.setFilterRegExp(QRegExp("WANRNING", Qt.CaseSensitive,
                                                           QRegExp.FixedString))
 
     def show_error_notifications(self):
+        self.all_button.setChecked(False)
+        self.info_button.setChecked(False)
+        self.warn_button.setChecked(False)
+        self.error_button.setChecked(True)
+        self.debug_button.setChecked(False)
+
         self.notification_name.setText("Error Notifications")
         self.all_notification_model_proxy.setFilterRegExp(QRegExp("ERROR", Qt.CaseInsensitive,
                                                           QRegExp.FixedString))
 
     def show_debug_notifications(self):
+        self.all_button.setChecked(False)
+        self.info_button.setChecked(False)
+        self.warn_button.setChecked(False)
+        self.error_button.setChecked(False)
+        self.debug_button.setChecked(True)
+
         self.notification_name.setText("Debug Notifications")
         self.all_notification_model_proxy.setFilterRegExp(QRegExp("DEBUG", Qt.CaseSensitive,
                                                           QRegExp.FixedString))
