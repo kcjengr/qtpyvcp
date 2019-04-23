@@ -16,7 +16,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-from qtpy.QtCore import Qt
+from qtpy.QtCore import Qt, QSortFilterProxyModel, QRegExp
 from qtpy.QtGui import QStandardItemModel, QStandardItem, QIcon
 from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QListView, QLabel, QHBoxLayout, QWidget, QPushButton
 
@@ -55,17 +55,19 @@ class NotificationWidget(QWidget, VCPWidget):
         self.notification_name.setText("All Notifications")
 
         self.all_notification_view = QListView()
-        self.all_notification_proxyview = QListView()
 
         self.all_notification_model = QStandardItemModel(self.all_notification_view)
+        self.all_notification_model_proxy = QSortFilterProxyModel(self.all_notification_view)
+
+        self.all_notification_model_proxy.setSourceModel(self.all_notification_model)
 
         # self.all_notification_view.setModel(self.all_notification_model)
-        self.all_notification_proxyview.setModel(self.all_notification_model)
+        self.all_notification_view.setModel(self.all_notification_model_proxy)
 
         self.all_notifications = list()
 
         self.main_layout.addWidget(self.notification_name)
-        self.main_layout.addWidget(self.all_notification_proxyview)
+        self.main_layout.addWidget(self.all_notification_view)
         self.main_layout.addLayout(self.button_layout)
 
         self.setLayout(self.main_layout)
@@ -115,15 +117,24 @@ class NotificationWidget(QWidget, VCPWidget):
 
     def show_all_notifications(self):
         self.notification_name.setText("All Notifications")
+        self.all_notification_model_proxy.setFilterRegExp(None)
 
     def show_info_notifications(self):
         self.notification_name.setText("Information Notifications")
+        self.all_notification_model_proxy.setFilterRegExp(QRegExp("INFO", Qt.CaseSensitive,
+                                                          QRegExp.FixedString))
 
     def show_warn_notifications(self):
         self.notification_name.setText("Warning Notifications")
+        self.all_notification_model_proxy.setFilterRegExp(QRegExp("WANRNING", Qt.CaseSensitive,
+                                                          QRegExp.FixedString))
 
     def show_error_notifications(self):
         self.notification_name.setText("Error Notifications")
+        self.all_notification_model_proxy.setFilterRegExp(QRegExp("ERROR", Qt.CaseInsensitive,
+                                                          QRegExp.FixedString))
 
     def show_debug_notifications(self):
         self.notification_name.setText("Debug Notifications")
+        self.all_notification_model_proxy.setFilterRegExp(QRegExp("DEBUG", Qt.CaseSensitive,
+                                                          QRegExp.FixedString))
