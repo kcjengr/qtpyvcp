@@ -28,6 +28,7 @@ class NotificationWidget(QWidget, VCPWidget):
     def __init__(self, parent=None):
         super(NotificationWidget, self).__init__(parent)
         self.notification_channel = getPlugin("notifications")
+        self.clock_channel = getPlugin("clock")
 
         self.main_layout = QVBoxLayout()
         self.button_layout = QHBoxLayout()
@@ -84,7 +85,9 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_button.clicked.connect(self.show_debug_notifications)
 
     def on_info_message(self, message):
-        msg = 'INFO : {}'.format(message)
+        current_time = self.clock_channel.time
+
+        msg = 'INFO : {} : {}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-information'))
@@ -92,7 +95,9 @@ class NotificationWidget(QWidget, VCPWidget):
         self.all_notification_model.appendRow(notification_item)
 
     def on_warn_message(self, message):
-        msg = 'WARNING : {}'.format(message)
+        current_time = self.clock_channel.time
+
+        msg = 'WARNING : {} : {}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-warning'))
@@ -100,7 +105,9 @@ class NotificationWidget(QWidget, VCPWidget):
         self.all_notification_model.appendRow(notification_item)
 
     def on_error_message(self, message):
-        msg = 'ERROR : {}'.format(message)
+        current_time = self.clock_channel.time
+
+        msg = 'ERROR : {} : {}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-error'))
@@ -108,7 +115,9 @@ class NotificationWidget(QWidget, VCPWidget):
         self.all_notification_model.appendRow(notification_item)
 
     def on_debug_message(self, message):
-        msg = 'DEBUG : {}'.format(message)
+        current_time = self.clock_channel.time
+
+        msg = 'DEBUG : {} : {}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-question'))
