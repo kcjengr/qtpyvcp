@@ -221,7 +221,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="main_tab">
            <attribute name="title">
@@ -14507,28 +14507,64 @@ QPushButton:checked {
                      <number>9</number>
                     </property>
                     <item>
-                     <widget class="VTKBackPlot" name="vtk_probe">
-                      <property name="sizePolicy">
-                       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                        <horstretch>1</horstretch>
-                        <verstretch>0</verstretch>
-                       </sizepolicy>
-                      </property>
+                     <widget class="QFrame" name="frame">
                       <property name="styleSheet">
-                       <string notr="true">VTKBackPlot {
+                       <string notr="true">QFrame{
+border-style: solid;
+border-color: rgb(186, 189, 182);
+background-color: rgb(32, 36, 37);
+border-width: 2px;
+border-radius: 8px;
+}</string>
+                      </property>
+                      <property name="frameShape">
+                       <enum>QFrame::StyledPanel</enum>
+                      </property>
+                      <property name="frameShadow">
+                       <enum>QFrame::Raised</enum>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_3">
+                       <property name="spacing">
+                        <number>0</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>3</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>3</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>3</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>3</number>
+                       </property>
+                       <item>
+                        <widget class="VTKBackPlot" name="vtk_probe">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                           <horstretch>1</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">VTKBackPlot {
     border: solid;
     border-color: white;
     border-width: 2px;
     border-radius: 8px;
 }</string>
-                      </property>
-                      <property name="backgroundColor" stdset="0">
-                       <color>
-                        <red>32</red>
-                        <green>36</green>
-                        <blue>37</blue>
-                       </color>
-                      </property>
+                         </property>
+                         <property name="backgroundColor" stdset="0">
+                          <color>
+                           <red>32</red>
+                           <green>36</green>
+                           <blue>37</blue>
+                          </color>
+                         </property>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                     <item>
@@ -20207,6 +20243,16 @@ padding: -5px;
                <height>35</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
+             </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
     border-style: transparant;
@@ -20246,6 +20292,16 @@ padding: -5px;
                <width>100</width>
                <height>35</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>9</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
@@ -20298,6 +20354,17 @@ StatusLabel[style=&quot;homing&quot;]{
                <height>35</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <stylestrategy>PreferDefault</stylestrategy>
+               <kerning>false</kerning>
+              </font>
+             </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
     border-style: transparant;
@@ -20309,6 +20376,9 @@ StatusLabel[style=&quot;homing&quot;]{
 	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::RichText</enum>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -20440,6 +20510,16 @@ StatusLabel[style=&quot;homing&quot;]{
                <height>35</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
+             </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
     border-style: transparant;
@@ -20479,6 +20559,16 @@ StatusLabel[style=&quot;homing&quot;]{
                <width>100</width>
                <height>35</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>9</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
@@ -20530,6 +20620,16 @@ StatusLabel[style=&quot;homing&quot;]{
                <width>100</width>
                <height>35</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
@@ -20673,6 +20773,16 @@ StatusLabel[style=&quot;homing&quot;]{
                <height>35</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
+             </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
     border-style: transparant;
@@ -20712,6 +20822,16 @@ StatusLabel[style=&quot;homing&quot;]{
                <width>100</width>
                <height>35</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>9</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
@@ -20763,6 +20883,16 @@ StatusLabel[style=&quot;homing&quot;]{
                <width>100</width>
                <height>35</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
@@ -20905,6 +21035,16 @@ StatusLabel[style=&quot;homing&quot;]{
                <height>35</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
+             </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
     border-style: transparant;
@@ -20944,6 +21084,16 @@ StatusLabel[style=&quot;homing&quot;]{
                <width>100</width>
                <height>35</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>9</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
@@ -20995,6 +21145,16 @@ StatusLabel[style=&quot;homing&quot;]{
                <width>100</width>
                <height>35</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
@@ -21138,6 +21298,16 @@ StatusLabel[style=&quot;homing&quot;]{
                <height>35</height>
               </size>
              </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
+             </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
     border-style: transparant;
@@ -21177,6 +21347,16 @@ StatusLabel[style=&quot;homing&quot;]{
                <width>100</width>
                <height>35</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>9</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
@@ -21228,6 +21408,16 @@ StatusLabel[style=&quot;homing&quot;]{
                <width>100</width>
                <height>35</height>
               </size>
+             </property>
+             <property name="font">
+              <font>
+               <family>Bebas Kai</family>
+               <pointsize>17</pointsize>
+               <weight>50</weight>
+               <italic>false</italic>
+               <bold>false</bold>
+               <kerning>false</kerning>
+              </font>
              </property>
              <property name="styleSheet">
               <string notr="true">StatusLabel{
