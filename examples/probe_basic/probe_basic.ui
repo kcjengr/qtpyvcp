@@ -221,7 +221,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>5</number>
           </property>
           <widget class="QWidget" name="main_tab">
            <attribute name="title">
@@ -11897,7 +11897,7 @@ QPushButton:checked {
 }</string>
                     </property>
                     <property name="currentIndex">
-                     <number>0</number>
+                     <number>2</number>
                     </property>
                     <widget class="QWidget" name="Page1">
                      <layout class="QHBoxLayout" name="horizontalLayout_132">
@@ -11971,8 +11971,8 @@ QPushButton:checked {
                                <height>130</height>
                               </size>
                              </property>
-                             <property name="sub_name" stdset="0">
-                              <string>probe_front_left_top_corner</string>
+                             <property name="filename" stdset="0">
+                              <string>probe_back_left_top_corner.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -12015,13 +12015,16 @@ QPushButton:checked {
                                <height>130</height>
                               </size>
                              </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_back_right_top_corner.ngc</string>
+                             </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
                              </property>
                             </widget>
                            </item>
                            <item row="1" column="4">
-                            <widget class="SubCallButton" name="probe_right_middle_top_side">
+                            <widget class="SubCallButton" name="probe_right_top_side">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -12056,6 +12059,9 @@ QPushButton:checked {
                                <width>130</width>
                                <height>130</height>
                               </size>
+                             </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_right_top_side.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -12098,13 +12104,16 @@ QPushButton:checked {
                                <height>130</height>
                               </size>
                              </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_top.ngc</string>
+                             </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
                              </property>
                             </widget>
                            </item>
                            <item row="2" column="3">
-                            <widget class="SubCallButton" name="probe_front_middle_top_side">
+                            <widget class="SubCallButton" name="probe_front_top_side">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -12139,13 +12148,16 @@ QPushButton:checked {
                                <height>130</height>
                               </size>
                              </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_front_top_side.ngc</string>
+                             </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
                              </property>
                             </widget>
                            </item>
                            <item row="0" column="3">
-                            <widget class="SubCallButton" name="probe_back_middle_top_side">
+                            <widget class="SubCallButton" name="probe_back_top_side">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -12179,6 +12191,9 @@ QPushButton:checked {
                                <width>130</width>
                                <height>130</height>
                               </size>
+                             </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_back_top_side.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -12265,13 +12280,16 @@ QPushButton:checked {
                                <height>130</height>
                               </size>
                              </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_front_right_top_corner.ngc</string>
+                             </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
                              </property>
                             </widget>
                            </item>
                            <item row="1" column="0">
-                            <widget class="SubCallButton" name="probe_left_middle_top_side">
+                            <widget class="SubCallButton" name="probe_left_top_side">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -12305,6 +12323,9 @@ QPushButton:checked {
                                <width>130</width>
                                <height>130</height>
                               </size>
+                             </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_left_top_side.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -12361,7 +12382,7 @@ QPushButton:checked {
                           </property>
                           <layout class="QGridLayout" name="gridLayout_16">
                            <item row="3" column="4">
-                            <widget class="SubCallButton" name="pushButton_47">
+                            <widget class="SubCallButton" name="probe_front_right_inside_corner">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12387,13 +12408,16 @@ QPushButton:checked {
                                <height>125</height>
                               </size>
                              </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_front_right_inside_corner.ngc</string>
+                             </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
                              </property>
                             </widget>
                            </item>
                            <item row="0" column="3">
-                            <widget class="SubCallButton" name="pushButton_50">
+                            <widget class="SubCallButton" name="probe_back_inside_side">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12419,13 +12443,16 @@ QPushButton:checked {
                                <height>125</height>
                               </size>
                              </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_back_inside_side.ngc</string>
+                             </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
                              </property>
                             </widget>
                            </item>
                            <item row="3" column="3">
-                            <widget class="SubCallButton" name="pushButton_43">
+                            <widget class="SubCallButton" name="probe_front_inside_side">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12451,13 +12478,16 @@ QPushButton:checked {
                                <height>125</height>
                               </size>
                              </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_front_inside_side.ngc</string>
+                             </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
                              </property>
                             </widget>
                            </item>
                            <item row="0" column="4">
-                            <widget class="SubCallButton" name="pushButton_45">
+                            <widget class="SubCallButton" name="probe_back_right_inside_corner">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12483,13 +12513,16 @@ QPushButton:checked {
                                <height>125</height>
                               </size>
                              </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_back_right_inside_corner.ngc</string>
+                             </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
                              </property>
                             </widget>
                            </item>
                            <item row="3" column="0">
-                            <widget class="SubCallButton" name="pushButton_46">
+                            <widget class="SubCallButton" name="probe_front_left_inside_corner">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12515,13 +12548,16 @@ QPushButton:checked {
                                <height>125</height>
                               </size>
                              </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_front_left_inside_corner.ngc</string>
+                             </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
                              </property>
                             </widget>
                            </item>
                            <item row="1" column="3">
-                            <widget class="SubCallButton" name="pushButton_48">
+                            <widget class="SubCallButton" name="probe_top_inside">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12547,13 +12583,16 @@ QPushButton:checked {
                                <height>125</height>
                               </size>
                              </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_top.ngc</string>
+                             </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
                              </property>
                             </widget>
                            </item>
                            <item row="0" column="0">
-                            <widget class="SubCallButton" name="pushButton_44">
+                            <widget class="SubCallButton" name="probe_back_left_inside_corner">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12579,13 +12618,16 @@ QPushButton:checked {
                                <height>125</height>
                               </size>
                              </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_back_left_inside_corner.ngc</string>
+                             </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
                              </property>
                             </widget>
                            </item>
                            <item row="1" column="0">
-                            <widget class="SubCallButton" name="pushButton_49">
+                            <widget class="SubCallButton" name="probe_left_inside_side">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12611,13 +12653,16 @@ QPushButton:checked {
                                <height>125</height>
                               </size>
                              </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_left_inside_side.ngc</string>
+                             </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
                              </property>
                             </widget>
                            </item>
                            <item row="1" column="4">
-                            <widget class="SubCallButton" name="pushButton_51">
+                            <widget class="SubCallButton" name="probe_right_inside_side">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12642,6 +12687,9 @@ QPushButton:checked {
                                <width>125</width>
                                <height>125</height>
                               </size>
+                             </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_right_inside_side.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -20300,7 +20348,6 @@ padding: -5px;
                <weight>9</weight>
                <italic>false</italic>
                <bold>false</bold>
-               <kerning>false</kerning>
               </font>
              </property>
              <property name="styleSheet">
@@ -20567,7 +20614,6 @@ StatusLabel[style=&quot;homing&quot;]{
                <weight>9</weight>
                <italic>false</italic>
                <bold>false</bold>
-               <kerning>false</kerning>
               </font>
              </property>
              <property name="styleSheet">
@@ -20830,7 +20876,6 @@ StatusLabel[style=&quot;homing&quot;]{
                <weight>9</weight>
                <italic>false</italic>
                <bold>false</bold>
-               <kerning>false</kerning>
               </font>
              </property>
              <property name="styleSheet">
@@ -21092,7 +21137,6 @@ StatusLabel[style=&quot;homing&quot;]{
                <weight>9</weight>
                <italic>false</italic>
                <bold>false</bold>
-               <kerning>false</kerning>
               </font>
              </property>
              <property name="styleSheet">
@@ -21355,7 +21399,6 @@ StatusLabel[style=&quot;homing&quot;]{
                <weight>9</weight>
                <italic>false</italic>
                <bold>false</bold>
-               <kerning>false</kerning>
               </font>
              </property>
              <property name="styleSheet">
@@ -24505,7 +24548,7 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="probehelpGroup"/>
   <buttongroup name="probetabGroup"/>
+  <buttongroup name="probehelpGroup"/>
  </buttongroups>
 </ui>
