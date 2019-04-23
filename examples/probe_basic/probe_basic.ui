@@ -11897,7 +11897,7 @@ QPushButton:checked {
 }</string>
                     </property>
                     <property name="currentIndex">
-                     <number>2</number>
+                     <number>0</number>
                     </property>
                     <widget class="QWidget" name="Page1">
                      <layout class="QHBoxLayout" name="horizontalLayout_132">
@@ -12417,7 +12417,7 @@ QPushButton:checked {
                             </widget>
                            </item>
                            <item row="0" column="3">
-                            <widget class="SubCallButton" name="probe_back_inside_side">
+                            <widget class="SubCallButton" name="probe_y_plus">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12444,7 +12444,7 @@ QPushButton:checked {
                               </size>
                              </property>
                              <property name="filename" stdset="0">
-                              <string>probe_back_inside_side.ngc</string>
+                              <string>probe_y_plus.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -12479,7 +12479,7 @@ QPushButton:checked {
                               </size>
                              </property>
                              <property name="filename" stdset="0">
-                              <string>probe_front_inside_side.ngc</string>
+                              <string>probe_y_plus.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -12627,7 +12627,7 @@ QPushButton:checked {
                             </widget>
                            </item>
                            <item row="1" column="0">
-                            <widget class="SubCallButton" name="probe_left_inside_side">
+                            <widget class="SubCallButton" name="probe_x_minus">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12654,7 +12654,7 @@ QPushButton:checked {
                               </size>
                              </property>
                              <property name="filename" stdset="0">
-                              <string>probe_left_inside_side.ngc</string>
+                              <string>probe_x_minus.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -12662,7 +12662,7 @@ QPushButton:checked {
                             </widget>
                            </item>
                            <item row="1" column="4">
-                            <widget class="SubCallButton" name="probe_right_inside_side">
+                            <widget class="SubCallButton" name="probe_x_plus">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12689,7 +12689,7 @@ QPushButton:checked {
                               </size>
                              </property>
                              <property name="filename" stdset="0">
-                              <string>probe_right_inside_side.ngc</string>
+                              <string>probe_x_plus.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -17134,6 +17134,7 @@ QComboBox[editable=&quot;true&quot;]::drop-down {
 QPushButton {
     font-family: &quot;Bebas Kai&quot;;
     font-size: 14pt;
+    min-height: 35px;
 }
 
 QPushButton:disabled {
@@ -17188,7 +17189,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17219,7 +17220,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17250,7 +17251,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17281,7 +17282,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17331,7 +17332,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17362,7 +17363,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17412,7 +17413,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17462,7 +17463,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17493,7 +17494,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17537,6 +17538,7 @@ QComboBox[editable=&quot;true&quot;]::drop-down {
 QPushButton {
     font-family: &quot;Bebas Kai&quot;;
     font-size: 14pt;
+    min-height: 35px;
 }
 
 QPushButton:disabled {
@@ -17591,7 +17593,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>85</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17628,7 +17630,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>85</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17684,7 +17686,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>85</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17715,7 +17717,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>85</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17762,7 +17764,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>85</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17793,7 +17795,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>85</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17840,7 +17842,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>85</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17893,7 +17895,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>85</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -17924,7 +17926,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>85</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -24548,7 +24550,7 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="probetabGroup"/>
   <buttongroup name="probehelpGroup"/>
+  <buttongroup name="probetabGroup"/>
  </buttongroups>
 </ui>
