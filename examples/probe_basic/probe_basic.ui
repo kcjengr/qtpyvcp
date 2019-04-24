@@ -3546,7 +3546,7 @@ border-radius: 8px;
 }</string>
                   </property>
                   <property name="text">
-                   <string>T0</string>
+                   <string>T99</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignCenter</set>
@@ -5694,7 +5694,7 @@ border-radius: 6px;
                    <item row="1" column="0">
                     <widget class="ActionButton" name="actionbutton_g54_2">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5733,7 +5733,7 @@ border-radius: 6px;
                    <item row="1" column="1">
                     <widget class="ActionButton" name="actionbutton_g55_2">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5772,7 +5772,7 @@ border-radius: 6px;
                    <item row="1" column="2">
                     <widget class="ActionButton" name="actionbutton_g56_2">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5811,7 +5811,7 @@ border-radius: 6px;
                    <item row="1" column="3">
                     <widget class="ActionButton" name="actionbutton_g57_2">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5850,7 +5850,7 @@ border-radius: 6px;
                    <item row="1" column="4">
                     <widget class="ActionButton" name="actionbutton_g58_2">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5889,7 +5889,7 @@ border-radius: 6px;
                    <item row="2" column="1">
                     <widget class="ActionButton" name="actionbutton_g59_4">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5928,7 +5928,7 @@ border-radius: 6px;
                    <item row="2" column="2">
                     <widget class="ActionButton" name="actionbutton_g59_5">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -5967,7 +5967,7 @@ border-radius: 6px;
                    <item row="2" column="3">
                     <widget class="ActionButton" name="actionbutton_g59_6">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6006,7 +6006,7 @@ border-radius: 6px;
                    <item row="2" column="4">
                     <widget class="ActionButton" name="actionbutton_g59_7">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -9041,7 +9041,7 @@ border-style: none;
 }</string>
                  </property>
                  <property name="text">
-                  <string>T0</string>
+                  <string>T99</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -11897,7 +11897,7 @@ QPushButton:checked {
 }</string>
                     </property>
                     <property name="currentIndex">
-                     <number>0</number>
+                     <number>1</number>
                     </property>
                     <widget class="QWidget" name="Page1">
                      <layout class="QHBoxLayout" name="horizontalLayout_132">
@@ -12452,7 +12452,7 @@ QPushButton:checked {
                             </widget>
                            </item>
                            <item row="3" column="3">
-                            <widget class="SubCallButton" name="probe_front_inside_side">
+                            <widget class="SubCallButton" name="probe_y_minus">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12479,7 +12479,7 @@ QPushButton:checked {
                               </size>
                              </property>
                              <property name="filename" stdset="0">
-                              <string>probe_y_plus.ngc</string>
+                              <string>probe_y_minus.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -16522,7 +16522,7 @@ border-radius: 6px;
                  <item>
                   <widget class="ActionButton" name="actionbutton_g54_3">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -16561,7 +16561,7 @@ border-radius: 6px;
                  <item>
                   <widget class="ActionButton" name="actionbutton_g55_3">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -16600,7 +16600,7 @@ border-radius: 6px;
                  <item>
                   <widget class="ActionButton" name="actionbutton_g56_3">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -16639,7 +16639,7 @@ border-radius: 6px;
                  <item>
                   <widget class="ActionButton" name="actionbutton_g57_3">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -16678,7 +16678,7 @@ border-radius: 6px;
                  <item>
                   <widget class="ActionButton" name="actionbutton_g58_3">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -16717,7 +16717,7 @@ border-radius: 6px;
                  <item>
                   <widget class="ActionButton" name="actionbutton_g59_10">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -16756,7 +16756,7 @@ border-radius: 6px;
                  <item>
                   <widget class="ActionButton" name="actionbutton_g59_9">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -16795,7 +16795,7 @@ border-radius: 6px;
                  <item>
                   <widget class="ActionButton" name="actionbutton_g59_11">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -16834,7 +16834,7 @@ border-radius: 6px;
                  <item>
                   <widget class="ActionButton" name="actionbutton_g59_8">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -19398,7 +19398,7 @@ padding: -5px;
            <item>
             <widget class="MDIButton" name="G43">
              <property name="enabled">
-              <bool>false</bool>
+              <bool>true</bool>
              </property>
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -19909,7 +19909,7 @@ border-radius: 1px;
 }</string>
              </property>
              <property name="text">
-              <string>REFERENCE ALL</string>
+              <string>MACHINE REFERENCED</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:all_axes_homed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'MACHINE REFERENCED' if ch[0] else 'REFERENCE ALL'&quot;, &quot;name&quot;: &quot;reference_all&quot;}]</string>
@@ -20376,7 +20376,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="style" stdset="0">
-              <string>unhomed</string>
+              <string>homed</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=x&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.0.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.0.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
@@ -20642,7 +20642,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="style" stdset="0">
-              <string>unhomed</string>
+              <string>homed</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=y&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.1.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.1.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
@@ -20904,7 +20904,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="style" stdset="0">
-              <string>unhomed</string>
+              <string>homed</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=z&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.2.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.2.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
@@ -21165,7 +21165,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="style" stdset="0">
-              <string>unhomed</string>
+              <string>homed</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=a&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.3.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.3.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
@@ -21427,7 +21427,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="style" stdset="0">
-              <string>unhomed</string>
+              <string>homed</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=b&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.4.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.4.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
@@ -24550,7 +24550,7 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="probehelpGroup"/>
   <buttongroup name="probetabGroup"/>
+  <buttongroup name="probehelpGroup"/>
  </buttongroups>
 </ui>

@@ -1,13 +1,13 @@
 (author: Chris P)
-(version: 0.3)
-(date: 04/22/19)
+(version: 0.1)
+(date: 04/24/19)
 
-(Probe Y minus for y 0 position)
+(Probe Y plus for y 0 position)
 (Start probe position on the front side edge of stock)
 (inside the max xy distance with the probe tip below the stock top edge)
 (ensure all settings have been set properly according to help diagrams)
 
-o<probe_y_minus> sub
+o<probe_y_plus> sub
 
   (uses NGCGUI style arg spec)
   (number after "=" in comment is default value)
@@ -36,7 +36,7 @@ o<probe_y_minus> sub
   (Probe Tool Safety Check)
   o<110> if [#5400 NE #<probe_tool_number>]
   (MSG, Specified probe tool #<probe_tool_number> not in spindle, aborting)
-   o<probe_y_minus> return
+   o<probe_y_plus> return
   o<110> endif
 
   (Probe Diameter)
@@ -56,7 +56,7 @@ o<probe_y_minus> sub
 
   (Initiate Fast y+ Probe)
   F[#<probe_fast_fr>]
-  G38.2 y[#<max_xy_distance>]
+  G38.2 Y[#<max_xy_distance>]
   #<y_probe_fast> = #5062
 
   (Probe Error check, #5070 will be 0 if failed)
@@ -66,7 +66,7 @@ o<probe_y_minus> sub
     G0 Y#<y>
     F#<feed>
     (return from sub)
-    o<probe_y_minus> return
+    o<probe_y_plus> return
   o<120> endif
 
   (Move to xy_clearance distance for slow probe)
@@ -88,6 +88,6 @@ o<probe_y_minus> sub
   (Record Y Zero in selected WCO)
   G10 L2 P#5220 Y[#5062 + #<workspace_y> + #<probe_center_offset>]
 
-o<probe_y_minus> endsub
+o<probe_y_plus> endsub
 
 M2 (end program)
