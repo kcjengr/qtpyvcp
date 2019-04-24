@@ -2,12 +2,12 @@
 (version: 0.1)
 (date: 04/24/19)
 
-(Probe front left inside corner for x,y,z 0,0,0 position)
-(Start probe position is over front left inside corner of stock)
+(Probe front right inside corner for x,y,z 0,0,0 position)
+(Start probe position is over front right inside corner of stock)
 (inside the step off width square and within max z distance)
 (ensure all settings have been set properly according to help diagrams)
 
-o<probe_front_left_inside_corner> sub
+o<probe_front_right_inside_corner> sub
 
   (uses NGCGUI style arg spec)
   (number after "=" in comment is default value)
@@ -36,7 +36,7 @@ o<probe_front_left_inside_corner> sub
   (Probe Tool Safety Check)
   o<110> if [#5400 NE #<probe_tool_number>]
   (MSG, Specified probe tool #<probe_tool_number> not in spindle, aborting)
-   o<probe_front_left_inside_corner> return
+   o<probe_front_right_inside_corner> return
   o<110> endif
 
   (Probe Diameter)
@@ -64,12 +64,12 @@ o<probe_front_left_inside_corner> sub
 
   (Probe Error check, #5070 will be 0 if failed)
   o<120> if [#5070 EQ 0]
-    (back to start point and feed)
+    (front to start point and feed)
     G90
     G0 Z#<z>
     F#<feed>
     (return from sub)
-    o<probe_front_left_inside_corner> return
+    o<probe_front_right_inside_corner> return
   o<120> endif
 
   (Move to z_clearance height for slow probe)
@@ -93,7 +93,7 @@ o<probe_front_left_inside_corner> sub
 
   (Probe X Positioning Move, Traverse Workpiece Top at Z Clearance Height plane)
   G91
-  G0 X[#<step_off_width>] Y[#<step_off_width>]
+  G0 X-[#<step_off_width>] Y[#<step_off_width>]
   (Probe X Positioning Move, to Probing Depth)
   F[#<probe_fast_fr>]
   G1 Z-[#<z_clearance> + #<probe_diameter> + #<extra_probe_depth>]
@@ -101,18 +101,18 @@ o<probe_front_left_inside_corner> sub
   (Current X Position including offsets in current program units)
   #<x_start> = #5420
 
-  (Initiate Fast X- Probe)
-  G38.2 X-[#<max_xy_distance>]
+  (Initiate Fast X+ Probe)
+  G38.2 X[#<max_xy_distance>]
   #<x_probe_fast> = #5061
 
   (Probe Error check, #5070 will be 0 if failed)
   o<140> if [#5070 EQ 0]
-    (back to start point and feed)
+    (front to start point and feed)
     G90
     G0 X[#<x_start>]
     F#<feed>
     (return from sub)
-    o<probe_front_left_inside_corner> return
+    o<probe_front_right_inside_corner> return
   o<140> endif
 
   (Fast Probe Rule, if Slow Probe FR is set to 0, Slow Probe is Bypassed)
@@ -124,12 +124,12 @@ o<probe_front_left_inside_corner> sub
 
   (Slow Probe Rule, if Slow Probe FR is set not 0)
   o<160> if [#<probe_slow_fr> GT 0]
-    (Initiate Slow X- Probe)
+    (Initiate Slow X+ Probe)
     G90
-    G0 X[#<x_probe_fast> + #<xy_clearance>]
+    G0 X[#<x_probe_fast> - #<xy_clearance>]
     G91
     F[#<probe_slow_fr>]
-    G38.2 X-[#<xy_clearance> * 2]
+    G38.2 X[#<xy_clearance> * 2]
     #<x_probe_slow> = #5061
     (debug, Probed Pos: #5061 X Pos: #<_x>)
     G90
@@ -137,7 +137,7 @@ o<probe_front_left_inside_corner> sub
   o<160> endif
 
   (Record X Zero in selected WCO)
-  G10 L2 P#5220 X[#5061 + #<workspace_x> - #<probe_center_offset>]
+  G10 L2 P#5220 X[#5061 + #<workspace_x> + #<probe_center_offset>]
 
   (Current Y Position including offsets in current program units)
   #<y_start> = #5421
@@ -150,12 +150,12 @@ o<probe_front_left_inside_corner> sub
 
   (Probe Error check, #5070 will be 0 if failed)
   o<170> if [#5070 EQ 0]
-    (back to start point and feed)
+    (front to start point and feed)
     G90
     G0 Y#<y_start>
     F#<feed>
     (return from sub)
-    o<probe_front_left_inside_corner> return
+    o<probe_front_right_inside_corner> return
   o<170> endif
 
   (Fast Y Probe Rule, if Slow Probe FR is set to 0, Slow Probe is Bypassed)
@@ -187,6 +187,6 @@ o<probe_front_left_inside_corner> sub
   G0 Z[#<z_clearance>]
   G0 X0.0000 Y0.0000
 
-o<probe_front_left_inside_corner> endsub
+o<probe_front_right_inside_corner> endsub
 
 M2 (end program)
