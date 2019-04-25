@@ -9640,7 +9640,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -9728,7 +9728,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -9835,7 +9835,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="inputMask">
@@ -9923,7 +9923,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -10030,7 +10030,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -10115,7 +10115,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -10222,7 +10222,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -10307,7 +10307,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -10414,7 +10414,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -10499,7 +10499,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -10612,7 +10612,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -10753,7 +10753,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -10838,7 +10838,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -10926,7 +10926,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -11015,7 +11015,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -11100,7 +11100,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -11185,7 +11185,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -11295,7 +11295,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -11380,7 +11380,7 @@ color: rgb(255, 255, 255);
     border-radius: 5px;
     color: black;
     background: white;
-	font: 75 14pt &quot;Bebas Kai&quot;;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -20360,7 +20360,7 @@ padding: -5px;
               <font>
                <family>Bebas Kai</family>
                <pointsize>17</pointsize>
-               <weight>9</weight>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -20373,7 +20373,7 @@ padding: -5px;
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }</string>
              </property>
@@ -20409,7 +20409,7 @@ padding: -5px;
               <font>
                <family>Bebas Kai</family>
                <pointsize>17</pointsize>
-               <weight>9</weight>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -20422,7 +20422,7 @@ padding: -5px;
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }
 
@@ -20469,7 +20469,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <font>
                <family>Bebas Kai</family>
                <pointsize>17</pointsize>
-               <weight>9</weight>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -20482,7 +20482,7 @@ StatusLabel[style=&quot;homing&quot;]{
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }</string>
              </property>
@@ -20623,7 +20623,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <font>
                <family>Bebas Kai</family>
                <pointsize>17</pointsize>
-               <weight>9</weight>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -20636,7 +20636,7 @@ StatusLabel[style=&quot;homing&quot;]{
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }</string>
              </property>
@@ -20672,7 +20672,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <font>
                <family>Bebas Kai</family>
                <pointsize>17</pointsize>
-               <weight>9</weight>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -20685,7 +20685,7 @@ StatusLabel[style=&quot;homing&quot;]{
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }
 
@@ -20732,7 +20732,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <font>
                <family>Bebas Kai</family>
                <pointsize>17</pointsize>
-               <weight>9</weight>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -20745,7 +20745,7 @@ StatusLabel[style=&quot;homing&quot;]{
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }</string>
              </property>
@@ -20883,7 +20883,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <font>
                <family>Bebas Kai</family>
                <pointsize>17</pointsize>
-               <weight>9</weight>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -20896,7 +20896,7 @@ StatusLabel[style=&quot;homing&quot;]{
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }</string>
              </property>
@@ -20992,7 +20992,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <font>
                <family>Bebas Kai</family>
                <pointsize>17</pointsize>
-               <weight>9</weight>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -21005,7 +21005,7 @@ StatusLabel[style=&quot;homing&quot;]{
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }</string>
              </property>
@@ -21142,7 +21142,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <font>
                <family>Bebas Kai</family>
                <pointsize>17</pointsize>
-               <weight>9</weight>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -21155,7 +21155,7 @@ StatusLabel[style=&quot;homing&quot;]{
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }</string>
              </property>
@@ -21191,7 +21191,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <font>
                <family>Bebas Kai</family>
                <pointsize>17</pointsize>
-               <weight>9</weight>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -21204,7 +21204,7 @@ StatusLabel[style=&quot;homing&quot;]{
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }
 
@@ -21251,7 +21251,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <font>
                <family>Bebas Kai</family>
                <pointsize>17</pointsize>
-               <weight>9</weight>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -21264,7 +21264,7 @@ StatusLabel[style=&quot;homing&quot;]{
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }</string>
              </property>
@@ -21402,7 +21402,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <font>
                <family>Bebas Kai</family>
                <pointsize>17</pointsize>
-               <weight>9</weight>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -21415,7 +21415,7 @@ StatusLabel[style=&quot;homing&quot;]{
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }</string>
              </property>
@@ -21451,7 +21451,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <font>
                <family>Bebas Kai</family>
                <pointsize>17</pointsize>
-               <weight>9</weight>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -21464,7 +21464,7 @@ StatusLabel[style=&quot;homing&quot;]{
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }
 
@@ -21511,7 +21511,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <font>
                <family>Bebas Kai</family>
                <pointsize>17</pointsize>
-               <weight>9</weight>
+               <weight>50</weight>
                <italic>false</italic>
                <bold>false</bold>
               </font>
@@ -21524,7 +21524,7 @@ StatusLabel[style=&quot;homing&quot;]{
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
+	font: 17pt &quot;Bebas Kai&quot;;
     padding-right: 2px;
 }</string>
              </property>
