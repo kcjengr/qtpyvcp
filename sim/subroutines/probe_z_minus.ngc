@@ -10,20 +10,11 @@ o<probe_z_minus> sub
 
   (uses NGCGUI style arg spec)
   (number after "=" in comment is default value)
-  #<probe_tool_number> = #1    (=99)
-  #<max_z_distance> = #2       (=0.5000)
-  #<max_xy_distance> = #3      (=0.5000)
-  #<xy_clearance> = #4         (=0.1000)
-  #<z_clearance> = #5          (=0.1000)
-  #<step_off_width> = #6       (=0.5000)
-  #<extra_probe_depth> = #7    (=0.0000)
-  #<probe_slow_fr> = #8        (=0.0)
-  #<probe_fast_fr> = #9        (=10.0)
-  #<calibration_offset> = #10  (=0.0000)
-  #<x_hint> = #11              (=1.0000)
-  #<y_hint> = #12              (=1.0000)
-  #<diameter_hint> = #13       (=1.0000)
-  #<edge_width> = #14          (=0.5000)
+  #<probe_tool_number> = #1
+  #<max_z_distance> = #2
+  #<z_clearance> = #3
+  #<probe_slow_fr> = #4
+  #<probe_fast_fr> = #5
 
   (Current Z Position including offsets in current program units)
   #<z> = #5422

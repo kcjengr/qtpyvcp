@@ -12,19 +12,11 @@ o<probe_x_minus_sub> sub
   (uses NGCGUI style arg spec)
   (number after "=" in comment is default value)
   #<probe_tool_number> = #1
-  #<max_z_distance> = #2
-  #<max_xy_distance> = #3
-  #<xy_clearance> = #4
-  #<z_clearance> = #5
-  #<step_off_width> = #6
-  #<extra_probe_depth> = #7
-  #<probe_slow_fr> = #8
-  #<probe_fast_fr> = #9
-  #<calibration_offset> = #10
-  #<x_hint> = #11
-  #<y_hint> = #12
-  #<diameter_hint> = #13
-  #<edge_width> = #14
+  #<max_xy_distance> = #2
+  #<xy_clearance> = #3
+  #<probe_slow_fr> = #4
+  #<probe_fast_fr> = #5
+  #<calibration_offset> = #6
 
   (Cancel G92 offsets)
   G92.1
