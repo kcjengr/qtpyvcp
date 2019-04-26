@@ -24,9 +24,8 @@ class G5xOffsetHandler(QWidget):
 
     def g5x_keypad(self, widget):
         char = str(widget.text())
-        print(char)
-        text = str(self.ui.g5xOffsetLbl.text()) or 'null'
-        if text != 'null':
+        text = self.ui.g5xOffsetLbl.text() or None
+        if text:
             text += char
         else:
             text = char

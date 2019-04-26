@@ -478,8 +478,8 @@ G5x</string>
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>213</x>
-     <y>335</y>
+     <x>349</x>
+     <y>212</y>
     </hint>
     <hint type="destinationlabel">
      <x>128</x>

@@ -24,8 +24,8 @@ class G92OffsetHandler(QWidget):
 
     def g92_keypad(self, widget):
         char = str(widget.text())
-        text = self.ui.g92OffsetsLbl.text() or 'null'
-        if text != 'null':
+        text = self.ui.g92OffsetsLbl.text() or None
+        if text:
             text += char
         else:
             text = char
