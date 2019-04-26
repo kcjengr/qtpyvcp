@@ -89,7 +89,9 @@ class VCPChooser(QDialog):
                     continue
                 clean.append(line)
 
-            vcp_data.update(yaml.load(''.join(clean)).get('vcp', {}))
+            config = yaml.load(''.join(clean))
+            if config is not None:
+                vcp_data.update(config.get('vcp', {}))
             vcp_name = vcp_data.get('name', entry_point.name)
         else:
             vcp_name = entry_point.name
