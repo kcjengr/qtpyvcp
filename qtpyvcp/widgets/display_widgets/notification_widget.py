@@ -70,6 +70,7 @@ class NotificationWidget(QWidget, VCPWidget):
         self.notification_name.setText("All Notifications")
 
         self.all_notification_view = QListView()
+        self.all_notification_view.setWordWrap(True)
 
         self.all_notification_model = QStandardItemModel(self.all_notification_view)
         self.all_notification_model_proxy = QSortFilterProxyModel(self.all_notification_view)
@@ -103,6 +104,7 @@ class NotificationWidget(QWidget, VCPWidget):
         characters = 0
         message_lines = list()
         for word in message.split(" "):
+
             characters += len(word)
             if characters < width / 10:
                 message_lines.append(word)
@@ -110,7 +112,6 @@ class NotificationWidget(QWidget, VCPWidget):
                 message_lines.append("\n")
                 message_lines.append(word)
                 characters = 0
-        print(message_lines)
         message_lines = " ".join(message_lines)
         return message_lines
 
@@ -119,10 +120,7 @@ class NotificationWidget(QWidget, VCPWidget):
         dt_object = datetime.fromtimestamp(timestamp)
 
         current_time = str(dt_object)
-
-        message_lines = self.cut_line(self.width(), message)
-
-        msg = 'INFO:\nTIME {}\n{}'.format(current_time, message_lines)
+        msg = 'INFO:\nTIME {}\n{}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-information'))
@@ -135,9 +133,8 @@ class NotificationWidget(QWidget, VCPWidget):
 
         current_time = str(dt_object)
 
-        message_lines = self.cut_line(self.width(), message)
 
-        msg = 'WARNING:\nTIME {}\n{}'.format(current_time, message_lines)
+        msg = 'WARNING:\nTIME {}\n{}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-warning'))
@@ -150,10 +147,7 @@ class NotificationWidget(QWidget, VCPWidget):
 
         current_time = str(dt_object)
 
-
-        message_lines = self.cut_line(self.width(), message)
-
-        msg = 'ERROR:\nTIME {}\n{}'.format(current_time, message_lines)
+        msg = 'ERROR:\nTIME {}\n{}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-error'))
@@ -166,9 +160,7 @@ class NotificationWidget(QWidget, VCPWidget):
 
         current_time = str(dt_object)
 
-        message_lines = self.cut_line(self.width(), message)
-
-        msg = 'DEBUG\nTIME {}\n{}'.format(current_time, message_lines)
+        msg = 'DEBUG\nTIME {}\n{}'.format(current_time, message)
         notification_item = QStandardItem()
         notification_item.setText(msg)
         notification_item.setIcon(QIcon.fromTheme('dialog-question'))
