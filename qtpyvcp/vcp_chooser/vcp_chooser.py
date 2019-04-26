@@ -75,10 +75,10 @@ class VCPChooser(QDialog):
 
     def get_vcp_data(self, entry_point):
         vcp_data = {'entry_point_name': entry_point.name}
-        try:
-            vcp = entry_point.load()
-            vcp_config_file = vcp.VCP_CONFIG_FILE
+        vcp = entry_point.load()
+        vcp_config_file = vcp.VCP_CONFIG_FILE
 
+        if os.path.exists(vcp_config_file):
             with open(vcp_config_file, 'r') as fh:
                 lines = fh.readlines()
 
@@ -91,9 +91,7 @@ class VCPChooser(QDialog):
 
             vcp_data.update(yaml.load(''.join(clean)).get('vcp', {}))
             vcp_name = vcp_data.get('name', entry_point.name)
-
-        except:
-            raise 
+        else:
             vcp_name = entry_point.name
 
         self._vcp_data[vcp_name] = vcp_data
