@@ -2,12 +2,12 @@
 (version: 0.1)
 (date: 04/25/19)
 
-(Probe Y Minus direction to locate edge, end at clearance distance)
+(Probe Y Minus direction and set Y 0 in current WCO)
 (Start probe position to the back side edge of stock)
 (inside the max xy distance with the probe tip below the stock top edge)
 (ensure all settings have been set properly according to help diagrams)
 
-o<probe_y_minus> sub
+o<probe_y_minus_wco> sub
 
   (uses NGCGUI style arg spec)
   (number after "=" in comment is default value)
@@ -29,10 +29,12 @@ o<probe_y_minus> sub
   (Cancel G92 offsets)
   G92.1
 
+  #<workspace_y> = #[5202 + [20 * #5220]]
+
   (Probe Tool Safety Check)
   o<110> if [#5400 NE #<probe_tool_number>]
   (MSG, Specified probe tool #<probe_tool_number> not in spindle, aborting)
-   o<probe_y_minus> return
+   o<probe_y_minus_wco> return
   o<110> endif
 
   (Probe Diameter)
@@ -60,7 +62,7 @@ o<probe_y_minus> sub
     G0 Y#<y>
     F[#<probe_fast_fr>]
     (return from sub)
-    o<probe_y_minus> return
+    o<probe_y_minus_wco> return
   o<120> endif
 
   (Move to xy_clearance distance for slow probe)
@@ -79,6 +81,9 @@ o<probe_y_minus> sub
     G0 Y[#<y_minus_probed> + #<xy_clearance>]
   o<130> endif
 
-o<probe_y_minus> endsub
+  (Record Y Zero in selected WCO)
+  G10 L2 P#5220 Y[#5062 + #<workspace_y> - #<probe_center_offset>]
+
+o<probe_y_minus_wco> endsub
 
 M2 (end program)

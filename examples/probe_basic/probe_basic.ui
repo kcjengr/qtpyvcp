@@ -12438,7 +12438,7 @@ QPushButton:checked {
                             </widget>
                            </item>
                            <item row="0" column="3">
-                            <widget class="SubCallButton" name="probe_y_plus">
+                            <widget class="SubCallButton" name="probe_y_plus_wco">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12465,7 +12465,7 @@ QPushButton:checked {
                               </size>
                              </property>
                              <property name="filename" stdset="0">
-                              <string>probe_y_plus.ngc</string>
+                              <string>probe_y_plus_wco.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -12473,7 +12473,7 @@ QPushButton:checked {
                             </widget>
                            </item>
                            <item row="3" column="3">
-                            <widget class="SubCallButton" name="probe_y_minus">
+                            <widget class="SubCallButton" name="probe_y_minus_wco">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12500,7 +12500,7 @@ QPushButton:checked {
                               </size>
                              </property>
                              <property name="filename" stdset="0">
-                              <string>probe_y_minus.ngc</string>
+                              <string>probe_y_minus_wco.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -12578,7 +12578,7 @@ QPushButton:checked {
                             </widget>
                            </item>
                            <item row="1" column="3">
-                            <widget class="SubCallButton" name="probe_top_inside">
+                            <widget class="SubCallButton" name="Probe_z_minus_wco_inside">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12605,7 +12605,7 @@ QPushButton:checked {
                               </size>
                              </property>
                              <property name="filename" stdset="0">
-                              <string>probe_top.ngc</string>
+                              <string>probe_z_minus_wco.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -12648,7 +12648,7 @@ QPushButton:checked {
                             </widget>
                            </item>
                            <item row="1" column="0">
-                            <widget class="SubCallButton" name="probe_x_minus">
+                            <widget class="SubCallButton" name="probe_x_minus_wco">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12675,7 +12675,7 @@ QPushButton:checked {
                               </size>
                              </property>
                              <property name="filename" stdset="0">
-                              <string>probe_x_minus.ngc</string>
+                              <string>probe_x_minus_wco.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -12683,7 +12683,7 @@ QPushButton:checked {
                             </widget>
                            </item>
                            <item row="1" column="4">
-                            <widget class="SubCallButton" name="probe_x_plus">
+                            <widget class="SubCallButton" name="probe_x_plus_wco">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -12710,7 +12710,7 @@ QPushButton:checked {
                               </size>
                              </property>
                              <property name="filename" stdset="0">
-                              <string>probe_x_plus.ngc</string>
+                              <string>probe_x_plus_wco.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -24602,7 +24602,7 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="probehelpGroup"/>
   <buttongroup name="probetabGroup"/>
+  <buttongroup name="probehelpGroup"/>
  </buttongroups>
 </ui>

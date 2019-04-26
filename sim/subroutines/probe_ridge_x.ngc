@@ -1,6 +1,6 @@
 (author: Chris P)
 (version: 0.1)
-(date: 04/24/19)
+(date: 04/25/19)
 
 (Probe Ridge in X Axis to find center and z 0 position)
 (Start probe position is over center of stock in the X axis)
@@ -30,7 +30,6 @@ o<probe_ridge_x> sub
   G92.1
 
   #<workspace_x> = #[5201 + [20 * #5220]]
-  #<workspace_y> = #[5202 + [20 * #5220]]
   #<workspace_z> = #[5203 + [20 * #5220]]
 
   (Probe Tool Safety Check)
@@ -51,48 +50,8 @@ o<probe_ridge_x> sub
   (remove probe tip diam and cal offset from probed width calculations)
   #<probe_diameter_offset> = [#<probe_diameter> - [#<calibration_offset> * 2]]
 
-  (Current Z Position including offsets in current program units)
-  #<z> = #5422
-
-  (Current Feed Rate)
-  #<feed> = #<_feed>
-
-  (Probe Top of Workpiece)
-  G91
-
-  (Initial Fast Z- Probe)
-  F[#<probe_fast_fr>]
-  G38.2 Z-[#<max_z_distance>]
-  #<z_probe_fast> = #5063
-
-  (Probe Error check, #5070 will be 0 if failed)
-  o<120> if [#5070 EQ 0]
-    (back to start point and feed)
-    G90
-    G0 Z#<z>
-    F#<feed>
-    (return from sub)
-    o<probe_ridge_x> return
-  o<120> endif
-
-  (Move to z_clearance height for slow probe)
-  G90
-  G0 Z[#<z_probe_fast> + #<z_clearance>]
-
-  (Slow Probe Rule, if Slow Probe FR is set to 0, Slow Probe is Bypassed)
-  o<130> if [#<probe_slow_fr> GT 0]
-    (Initiate Slow Z- Probe)
-    G91
-    F[#<probe_slow_fr>]
-    G38.2 Z-[#<z_clearance> * 2]
-    #<z_probe_slow> = #5063
-    (debug, Probed Pos: #5063 Z Pos: #<_z>)
-    G90
-    G0 Z[#<z_probe_slow> + #<z_clearance>]
-  o<130> endif
-
-  (Record Z zero in selected WCO)
-  G10 L2 P#5220 Z[#5063 + #<workspace_z>]
+  (Call sub "probe_z_minus_wco" to Probe top of Workpiece)
+  o<probe_z_minus_sub> call [#1][#2][#3][#4][#5][#6][#7][#8][#9][#10][#11][#12][#13][#14]
 
   (Probe X Positioning Move, X hint/2 + Step Off Width)
   G91
@@ -105,35 +64,10 @@ o<probe_ridge_x> sub
   (Current X Position including offsets in current program units)
   #<x> = #5420
 
-  (Initiate Fast X+ Probe)
-  G38.2 X[#<max_xy_distance>]
-  #<x_probe_1> = #5061
+  (Call sub "probe_x_plus" to Probe x+ side of Workpiece)
+  o<probe_x_plus> call [#1][#2][#3][#4][#5][#6][#7][#8][#9][#10][#11][#12][#13][#14]
 
-  (Probe Error check, #5070 will be 0 if failed)
-  o<140> if [#5070 EQ 0]
-    (back to start point and feed)
-    G90
-    G0 X#<x>
-    F#<feed>
-    (return from sub)
-    o<probe_ridge_x> return
-  o<140> endif
-
-  (Move to xy_clearance distance for slow probe)
-  G90
-  G0 X[#<x_probe_1> - #<xy_clearance>]
-
-  (Slow Probe Rule, if Slow Probe FR is not set to 0)
-  o<150> if [#<probe_slow_fr> GT 0]
-    (Initiate Slow X+ Probe)
-    G91
-    F[#<probe_slow_fr>]
-    G38.2 X[#<xy_clearance> * 2]
-    #<x_probe_1> = #5061
-    (debug, Probed Pos: #5061 X Pos: #<_x>)
-    G90
-    G0 X[#<x_probe_1> - #<xy_clearance>]
-  o<150> endif
+  #<x_plus_probed> = #5061
 
   (first side Probe Completion Move to Z Clearance Plane)
   G90
@@ -147,44 +81,16 @@ o<probe_ridge_x> sub
   F[#<probe_fast_fr>]
   G1 Z-[#<z_clearance> + #<probe_diameter> + #<extra_probe_depth>]
 
-  (Current X Position including offsets in current program units)
-  #<x> = #5420
+  (Call sub "probe_x_minus" to Probe x- side of Workpiece)
+  o<probe_x_minus> call [#1][#2][#3][#4][#5][#6][#7][#8][#9][#10][#11][#12][#13][#14]
 
-  (Initiate Fast X+ Probe)
-  G38.2 X-[#<max_xy_distance>]
-  #<x_probe_2> = #5061
-
-  (Probe Error check, #5070 will be 0 if failed)
-  o<160> if [#5070 EQ 0]
-    (back to start point and feed)
-    G90
-    G0 X#<x>
-    F#<feed>
-    (return from sub)
-    o<probe_ridge_x> return
-  o<160> endif
-
-  (Move to xy_clearance distance for slow probe)
-  G90
-  G0 X[#<x_probe_2> + #<xy_clearance>]
-
-  (Slow Probe Rule, if Slow Probe FR is not set to 0)
-  o<170> if [#<probe_slow_fr> GT 0]
-    (Initiate Slow X+ Probe)
-    G91
-    F[#<probe_slow_fr>]
-    G38.2 X-[#<xy_clearance> * 2]
-    #<x_probe_2> = #5061
-    (debug, Probed Pos: #5061 X Pos: #<_x>)
-    G90
-    G0 X[#<x_probe_2> + #<xy_clearance>]
-  o<170> endif
+  #<x_minus_probed> = #5061
 
   (probed center calulation)
-  #<probe_center> = [[#<x_probe_1> + #<x_probe_2>] / 2]
+  #<probe_center> = [[#<x_plus_probed> + #<x_minus_probed>] / 2]
 
   (calculate X Width Probed)
-  #<raw_width> = [#<x_probe_2> - #<x_probe_1>]
+  #<raw_width> = [#<x_minus_probed> - #<x_plus_probed>]
 
   (Completed probed width calculations)
   #<x_probed_width> = [#<raw_width> - #<probe_diameter_offset>]

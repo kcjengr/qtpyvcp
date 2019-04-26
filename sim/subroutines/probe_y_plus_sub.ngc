@@ -2,12 +2,12 @@
 (version: 0.1)
 (date: 04/25/19)
 
-(Probe X plus direction and set X 0 in current WCO)
-(Start probe position to the left side edge of stock)
+(Probe Y plus direction and set Y 0 in current WCO)
+(Start probe position to the front side edge of stock)
 (inside the max xy distance with the probe tip below the stock top edge)
 (ensure all settings have been set properly according to help diagrams)
 
-o<probe_x_plus> sub
+o<probe_y_plus_sub> sub
 
   (uses NGCGUI style arg spec)
   (number after "=" in comment is default value)
@@ -29,10 +29,12 @@ o<probe_x_plus> sub
   (Cancel G92 offsets)
   G92.1
 
+  #<workspace_y> = #[5202 + [20 * #5220]]
+
   (Probe Tool Safety Check)
   o<110> if [#5400 NE #<probe_tool_number>]
   (MSG, Specified probe tool #<probe_tool_number> not in spindle, aborting)
-   o<probe_x_plus> return
+   o<probe_y_plus_sub> return
   o<110> endif
 
   (Probe Diameter)
@@ -44,41 +46,44 @@ o<probe_x_plus> sub
   (Probe Centerline Offset)
   #<probe_center_offset> = [#<probe_radius> - #<calibration_offset>]
 
-  (Current X Position including offsets in current program units)
-  #<x> = #5420
+  (Current Y Position including offsets in current program units)
+  #<y> = #5421
 
-  (Initiate Fast X+ Probe)
+  (Initiate Fast y+ Probe)
   G91
   F[#<probe_fast_fr>]
-  G38.2 X[#<max_xy_distance>]
-  #<x_plus_probed> = #5061
+  G38.2 Y[#<max_xy_distance>]
+  #<y_plus_probed> = #5062
 
   (Probe Error check, #5070 will be 0 if failed)
   o<120> if [#5070 EQ 0]
     (back to start point and feed)
     G90
-    G0 X#<x>
+    G0 Y#<y>
     F[#<probe_fast_fr>]
     (return from sub)
-    o<probe_x_plus> return
+    o<probe_y_plus_sub> return
   o<120> endif
 
   (Move to xy_clearance distance for slow probe)
   G90
-  G0 X[#<x_plus_probed> - #<xy_clearance>]
+  G0 Y[#<y_plus_probed> - #<xy_clearance>]
 
   (Slow Probe Rule, if Slow Probe FR is set to 0, Slow Probe is Bypassed)
   o<130> if [#<probe_slow_fr> GT 0]
-    (Initiate Slow X+ Probe)
+    (Initiate Slow Y+ Probe)
     G91
     F[#<probe_slow_fr>]
-    G38.2 X[#<xy_clearance> * 2]
-    #<x_plus_probed> = #5061
-    (debug, Probed Pos: #5061 X Pos: #<_x>)
+    G38.2 Y[#<xy_clearance> * 2]
+    #<y_plus_probed> = #5062
+    (debug, Probed Pos: #5062 Y Pos: #<_y>)
     G90
-    G0 X[#<x_plus_probed> - #<xy_clearance>]
+    G0 Y[#<y_plus_probed> - #<xy_clearance>]
   o<130> endif
 
-o<probe_x_plus> endsub
+  (Record Y Zero in selected WCO)
+  G10 L2 P#5220 Y[#5062 + #<workspace_y> + #<probe_center_offset>]
+
+o<probe_y_plus_sub> endsub
 
 M2 (end program)

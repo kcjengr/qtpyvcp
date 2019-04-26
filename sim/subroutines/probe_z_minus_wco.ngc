@@ -2,12 +2,11 @@
 (version: 0.1)
 (date: 04/25/19)
 
-(Probe Y Minus direction to locate edge, end at clearance distance)
-(Start probe position to the back side edge of stock)
-(inside the max xy distance with the probe tip below the stock top edge)
+(Probe Z Minus direction and set Z 0 in current WCO)
+(Start probe position is over stock within max z distance)
 (ensure all settings have been set properly according to help diagrams)
 
-o<probe_y_minus> sub
+o<probe_z_minus_wco> sub
 
   (uses NGCGUI style arg spec)
   (number after "=" in comment is default value)
@@ -29,56 +28,52 @@ o<probe_y_minus> sub
   (Cancel G92 offsets)
   G92.1
 
+  #<workspace_z> = #[5203 + [20 * #5220]]
+
   (Probe Tool Safety Check)
   o<110> if [#5400 NE #<probe_tool_number>]
   (MSG, Specified probe tool #<probe_tool_number> not in spindle, aborting)
-   o<probe_y_minus> return
+   o<probe_z_minus_wco> return
   o<110> endif
 
-  (Probe Diameter)
-  #<probe_diameter> = #5410
+  (Current Z Position including offsets in current program units)
+  #<z> = #5422
 
-  (Probe Radius)
-  #<probe_radius> = [#<probe_diameter> / 2]
-
-  (Probe Centerline Offset)
-  #<probe_center_offset> = [#<probe_radius> - #<calibration_offset>]
-
-  (Current Y Position including offsets in current program units)
-  #<y> = #5421
-
-  (Initiate Fast Y- Probe)
+  (Initial Fast Z- Probe)
   G91
   F[#<probe_fast_fr>]
-  G38.2 y-[#<max_xy_distance>]
-  #<y_minus_probed> = #5062
+  G38.2 Z-[#<max_z_distance>]
+  #<z_minus_probed> = #5063
 
   (Probe Error check, #5070 will be 0 if failed)
   o<120> if [#5070 EQ 0]
     (back to start point and feed)
     G90
-    G0 Y#<y>
+    G0 Z#<z>
     F[#<probe_fast_fr>]
     (return from sub)
-    o<probe_y_minus> return
+    o<probe_z_minus_wco> return
   o<120> endif
 
-  (Move to xy_clearance distance for slow probe)
+  (Move to z_clearance height for slow probe)
   G90
-  G0 Y[#<y_minus_probed> + #<xy_clearance>]
+  G0 Z[#<z_minus_probed> + #<z_clearance>]
 
   (Slow Probe Rule, if Slow Probe FR is set to 0, Slow Probe is Bypassed)
   o<130> if [#<probe_slow_fr> GT 0]
-    (Initiate Slow Y- Probe)
+    (Initiate Slow Z- Probe)
     G91
     F[#<probe_slow_fr>]
-    G38.2 Y-[#<xy_clearance> * 2]
-    #<y_minus_probed> = #5062
-    (debug, Probed Pos: #5062 Y Pos: #<_y>)
+    G38.2 Z-[#<z_clearance> * 2]
+    #<z_minus_probed> = #5063
+    (debug, Probed Pos: #5063 Z Pos: #<_z>)
     G90
-    G0 Y[#<y_minus_probed> + #<xy_clearance>]
+    G0 Z[#<z_minus_probed> + #<z_clearance>]
   o<130> endif
 
-o<probe_y_minus> endsub
+  (Record Z zero in selected WCO)
+  G10 L2 P#5220 Z[#5063 + #<workspace_z>]
+
+o<probe_z_minus_wco> endsub
 
 M2 (end program)

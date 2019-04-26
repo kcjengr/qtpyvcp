@@ -7,32 +7,34 @@
 (inside the max xy distance with the probe tip below the stock top edge)
 (ensure all settings have been set properly according to help diagrams)
 
-o<probe_x_plus> sub
+o<probe_x_plus_wco> sub
 
   (uses NGCGUI style arg spec)
   (number after "=" in comment is default value)
-  #<probe_tool_number> = #1
-  #<max_z_distance> = #2
-  #<max_xy_distance> = #3
-  #<xy_clearance> = #4
-  #<z_clearance> = #5
-  #<step_off_width> = #6
-  #<extra_probe_depth> = #7
-  #<probe_slow_fr> = #8
-  #<probe_fast_fr> = #9
-  #<calibration_offset> = #10
-  #<x_hint> = #11
-  #<y_hint> = #12
-  #<diameter_hint> = #13
-  #<edge_width> = #14
+  #<probe_tool_number> = #1    (=99)
+  #<max_z_distance> = #2       (=0.5000)
+  #<max_xy_distance> = #3      (=0.5000)
+  #<xy_clearance> = #4         (=0.1000)
+  #<z_clearance> = #5          (=0.1000)
+  #<step_off_width> = #6       (=0.5000)
+  #<extra_probe_depth> = #7    (=0.0000)
+  #<probe_slow_fr> = #8        (=0.0)
+  #<probe_fast_fr> = #9        (=10.0)
+  #<calibration_offset> = #10  (=0.0000)
+  #<x_hint> = #11              (=1.0000)
+  #<y_hint> = #12              (=1.0000)
+  #<diameter_hint> = #13       (=1.0000)
+  #<edge_width> = #14          (=0.5000)
 
   (Cancel G92 offsets)
   G92.1
 
+  #<workspace_x> = #[5201 + [20 * #5220]]
+
   (Probe Tool Safety Check)
   o<110> if [#5400 NE #<probe_tool_number>]
   (MSG, Specified probe tool #<probe_tool_number> not in spindle, aborting)
-   o<probe_x_plus> return
+   o<probe_x_plus_wco> return
   o<110> endif
 
   (Probe Diameter)
@@ -60,7 +62,7 @@ o<probe_x_plus> sub
     G0 X#<x>
     F[#<probe_fast_fr>]
     (return from sub)
-    o<probe_x_plus> return
+    o<probe_x_plus_wco> return
   o<120> endif
 
   (Move to xy_clearance distance for slow probe)
@@ -79,6 +81,9 @@ o<probe_x_plus> sub
     G0 X[#<x_plus_probed> - #<xy_clearance>]
   o<130> endif
 
-o<probe_x_plus> endsub
+  (Record X Zero in selected WCO)
+  G10 L2 P#5220 X[#5061 + #<workspace_x> + #<probe_center_offset>]
+
+o<probe_x_plus_wco> endsub
 
 M2 (end program)

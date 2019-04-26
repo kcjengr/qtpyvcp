@@ -1,0 +1,37 @@
+
+
+(Call sub "probe_z_minus_wco" to Probe top of Workpiece)
+o<probe_z_minus_sub> call [#1][#2][#3][#4][#5][#6][#7][#8][#9][#10][#11][#12][#13][#14]
+
+
+
+(Call sub "probe_x_plus_sub" to Probe x+ side of Workpiece)
+o<probe_x_plus_sub> call [#1][#2][#3][#4][#5][#6][#7][#8][#9][#10][#11][#12][#13][#14]
+
+
+
+(Call sub "probe_x_minus_sub" to Probe x- side of Workpiece)
+o<probe_x_minus_sub> call [#1][#2][#3][#4][#5][#6][#7][#8][#9][#10][#11][#12][#13][#14]
+
+
+
+(Call sub "probe_y_plus_sub" to Probe y+ side of Workpiece)
+o<probe_y_plus_sub> call [#1][#2][#3][#4][#5][#6][#7][#8][#9][#10][#11][#12][#13][#14]
+
+
+
+(Call sub "probe_y_minus_sub" to Probe y- side of Workpiece)
+o<probe_y_minus_sub> call [#1][#2][#3][#4][#5][#6][#7][#8][#9][#10][#11][#12][#13][#14]
+
+
+
+#<workspace_x> = #[5201 + [20 * #5220]]
+#<workspace_y> = #[5202 + [20 * #5220]]
+#<workspace_z> = #[5203 + [20 * #5220]]
+
+
+
+(Record XYZ zero in selected WCO)
+G10 L2 P#5220 X[#<_x> + #<workspace_x>]
+G10 L2 P#5220 Y[#<_y> + #<workspace_y>]
+G10 L2 P#5220 Z[#<_z> + #<workspace_z> + #<z_clearance>]

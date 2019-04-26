@@ -1,6 +1,6 @@
 (author: Chris P)
 (version: 0.1)
-(date: 04/24/19)
+(date: 04/25/19)
 
 (Probe back left inside corner for x,y,z 0,0,0 position)
 (Start probe position is over back left inside corner of stock)
@@ -29,10 +29,6 @@ o<probe_back_left_inside_corner> sub
   (Cancel G92 offsets)
   G92.1
 
-  #<workspace_x> = #[5201 + [20 * #5220]]
-  #<workspace_y> = #[5202 + [20 * #5220]]
-  #<workspace_z> = #[5203 + [20 * #5220]]
-
   (Probe Tool Safety Check)
   o<110> if [#5400 NE #<probe_tool_number>]
   (MSG, Specified probe tool #<probe_tool_number> not in spindle, aborting)
@@ -42,54 +38,8 @@ o<probe_back_left_inside_corner> sub
   (Probe Diameter)
   #<probe_diameter> = #5410
 
-  (Probe Radius)
-  #<probe_radius> = [#<probe_diameter> / 2]
-
-  (Probe Centerline Offset)
-  #<probe_center_offset> = [#<probe_radius> - #<calibration_offset>]
-
-  (Current Z Position including offsets in current program units)
-  #<z> = #5422
-
-  (Current Feed Rate)
-  #<feed> = #<_feed>
-
-  (Probe Top of Workpiece)
-  G91
-
-  (Initial Fast Z- Probe)
-  F[#<probe_fast_fr>]
-  G38.2 Z-[#<max_z_distance>]
-  #<z_probe_fast> = #5063
-
-  (Probe Error check, #5070 will be 0 if failed)
-  o<120> if [#5070 EQ 0]
-    (back to start point and feed)
-    G90
-    G0 Z#<z>
-    F#<feed>
-    (return from sub)
-    o<probe_back_left_inside_corner> return
-  o<120> endif
-
-  (Move to z_clearance height for slow probe)
-  G90
-  G0 Z[#<z_probe_fast> + #<z_clearance>]
-
-  (Slow Probe Rule, if Slow Probe FR is set to 0, Slow Probe is Bypassed)
-  o<130> if [#<probe_slow_fr> GT 0]
-    (Initiate Slow Z- Probe)
-    G91
-    F[#<probe_slow_fr>]
-    G38.2 Z-[#<z_clearance> * 2]
-    #<z_probe_slow> = #5063
-    (debug, Probed Pos: #5063 Z Pos: #<_z>)
-    G90
-    G0 Z[#<z_probe_slow> + #<z_clearance>]
-  o<130> endif
-
-  (Record Z zero in selected WCO)
-  G10 L2 P#5220 Z[#5063 + #<workspace_z>]
+  (Call sub "probe_z_minus_wco" to Probe top of Workpiece)
+  o<probe_z_minus_sub> call [#1][#2][#3][#4][#5][#6][#7][#8][#9][#10][#11][#12][#13][#14]
 
   (Probe X Positioning Move, Traverse Workpiece Top at Z Clearance Height plane)
   G91
@@ -101,86 +51,22 @@ o<probe_back_left_inside_corner> sub
   (Current X Position including offsets in current program units)
   #<x_start> = #5420
 
-  (Initiate Fast X- Probe)
-  G38.2 X-[#<max_xy_distance>]
-  #<x_probe_fast> = #5061
+  (Call sub "probe_x_minus_sub" to Probe x- side of Workpiece)
+  o<probe_x_minus_sub> call [#1][#2][#3][#4][#5][#6][#7][#8][#9][#10][#11][#12][#13][#14]
 
-  (Probe Error check, #5070 will be 0 if failed)
-  o<140> if [#5070 EQ 0]
-    (back to start point and feed)
-    G90
-    G0 X[#<x_start>]
-    F#<feed>
-    (return from sub)
-    o<probe_back_left_inside_corner> return
-  o<140> endif
-
-  (Fast Probe Rule, if Slow Probe FR is set to 0, Slow Probe is Bypassed)
-  o<150> if [#<probe_slow_fr> EQ 0]
-    (Initiate slow probe bypass)
-    G90
-    G0 X[#<x_start>]
-  o<150> endif  
-
-  (Slow Probe Rule, if Slow Probe FR is set not 0)
-  o<160> if [#<probe_slow_fr> GT 0]
-    (Initiate Slow X- Probe)
-    G90
-    G0 X[#<x_probe_fast> + #<xy_clearance>]
-    G91
-    F[#<probe_slow_fr>]
-    G38.2 X-[#<xy_clearance> * 2]
-    #<x_probe_slow> = #5061
-    (debug, Probed Pos: #5061 X Pos: #<_x>)
-    G90
-    G0 X[#<x_start>]
-  o<160> endif
-
-  (Record X Zero in selected WCO)
-  G10 L2 P#5220 X[#5061 + #<workspace_x> - #<probe_center_offset>]
+  (move to X start Position)
+  G90
+  G0 X[#<x_start>]
 
   (Current Y Position including offsets in current program units)
   #<y_start> = #5421
 
-  (Initiate Fast Y+ Probe)
-  G91
-  F[#<probe_fast_fr>]
-  G38.2 Y[#<max_xy_distance>]
-  #<y_probe_fast> = #5062
+  (Call sub "probe_y_plus_sub" to Probe y+ side of Workpiece)
+  o<probe_y_plus_sub> call [#1][#2][#3][#4][#5][#6][#7][#8][#9][#10][#11][#12][#13][#14]
 
-  (Probe Error check, #5070 will be 0 if failed)
-  o<170> if [#5070 EQ 0]
-    (back to start point and feed)
-    G90
-    G0 Y#<y_start>
-    F#<feed>
-    (return from sub)
-    o<probe_back_left_inside_corner> return
-  o<170> endif
-
-  (Fast Y Probe Rule, if Slow Probe FR is set to 0, Slow Probe is Bypassed)
-  o<180> if [#<probe_slow_fr> EQ 0]
-    (Initiate slow probe bypass)
-    G90
-    G0 Y[#<y_start>]
-  o<180> endif  
-
-  (Slow Probe Rule, if Slow Probe FR is not 0)
-  o<190> if [#<probe_slow_fr> GT 0]
-    (Initiate Slow Y+ Probe)
-    G90
-    G0 Y[#<y_probe_fast> - #<xy_clearance>]
-    G91
-    F[#<probe_slow_fr>]
-    G38.2 Y[#<xy_clearance> * 2]
-    #<y_probe_slow> = #5062
-    (debug, Probed Pos: #5062 Y Pos: #<_y>)
-    G90
-    G0 Y[#<y_start>]
-  o<190> endif
-  
-  (Record Y Zero in selected WCO)
-  G10 L2 P#5220 Y[#5062 + #<workspace_y> + #<probe_center_offset>]
+  (move to Y start Position)
+  G90
+  G0 Y[#<y_start>]
 
   (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
   G90
