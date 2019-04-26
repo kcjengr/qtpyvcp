@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>437</height>
+    <width>365</width>
+    <height>276</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,8 +35,14 @@
       <property name="spacing">
        <number>5</number>
       </property>
-      <item row="1" column="0" colspan="4">
+      <item row="0" column="0" colspan="2">
        <widget class="QLabel" name="label_21">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Set G92 Offsets</string>
         </property>
@@ -45,27 +51,14 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="4">
+      <item row="1" column="0" colspan="2">
        <widget class="QLineEdit" name="g92OffsetsLbl">
         <property name="readOnly">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="4">
-       <spacer name="verticalSpacer_8">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="3" column="0" colspan="4">
+      <item row="2" column="0" colspan="2">
        <widget class="QWidget" name="g92Keypad" native="true">
         <layout class="QGridLayout" name="gridLayout_8">
          <property name="leftMargin">
@@ -85,27 +78,60 @@
          </property>
          <item row="1" column="2">
           <widget class="QPushButton" name="pushButton_107">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>5</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">keypad</string>
+           </attribute>
           </widget>
          </item>
          <item row="1" column="1">
           <widget class="QPushButton" name="pushButton_106">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>4</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">keypad</string>
+           </attribute>
           </widget>
          </item>
          <item row="3" column="1">
           <widget class="QPushButton" name="pushButton_21">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>0</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">keypad</string>
+           </attribute>
           </widget>
          </item>
          <item row="2" column="0">
           <widget class="QPushButton" name="pushButton_35">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -113,34 +139,76 @@
          </item>
          <item row="0" column="3">
           <widget class="QPushButton" name="pushButton_103">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>9</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">keypad</string>
+           </attribute>
           </widget>
          </item>
          <item row="1" column="3">
           <widget class="QPushButton" name="pushButton_108">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>6</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">keypad</string>
+           </attribute>
           </widget>
          </item>
          <item row="0" column="1">
           <widget class="QPushButton" name="pushButton_101">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>7</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">keypad</string>
+           </attribute>
           </widget>
          </item>
          <item row="2" column="1">
           <widget class="QPushButton" name="pushButton_99">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>1</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">keypad</string>
+           </attribute>
           </widget>
          </item>
          <item row="0" column="0">
           <widget class="QPushButton" name="pushButton_100">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -148,6 +216,12 @@
          </item>
          <item row="1" column="0">
           <widget class="QPushButton" name="pushButton_105">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -155,27 +229,60 @@
          </item>
          <item row="0" column="2">
           <widget class="QPushButton" name="pushButton_102">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>8</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">keypad</string>
+           </attribute>
           </widget>
          </item>
          <item row="2" column="3">
           <widget class="QPushButton" name="pushButton_50">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>3</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">keypad</string>
+           </attribute>
           </widget>
          </item>
          <item row="3" column="2">
           <widget class="QPushButton" name="pushButton_31">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>.</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">keypad</string>
+           </attribute>
           </widget>
          </item>
          <item row="4" column="3">
           <widget class="QPushButton" name="g92ClearBtn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>Clear</string>
            </property>
@@ -183,6 +290,12 @@
          </item>
          <item row="4" column="0">
           <widget class="MDIButton" name="mdibutton_11">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>Clear
 G92</string>
@@ -194,6 +307,12 @@ G92</string>
          </item>
          <item row="4" column="2">
           <widget class="QPushButton" name="g92BkspBtn">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>Bksp</string>
            </property>
@@ -201,6 +320,12 @@ G92</string>
          </item>
          <item row="3" column="0">
           <widget class="QPushButton" name="pushButton_22">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -208,20 +333,44 @@ G92</string>
          </item>
          <item row="2" column="2">
           <widget class="QPushButton" name="pushButton_45">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>2</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">keypad</string>
+           </attribute>
           </widget>
          </item>
          <item row="3" column="3">
           <widget class="QPushButton" name="pushButton_104">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>-</string>
            </property>
+           <attribute name="buttonGroup">
+            <string notr="true">keypad</string>
+           </attribute>
           </widget>
          </item>
          <item row="5" column="0">
           <widget class="MDIButton" name="mdibutton_7">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>Set
 X Y Z</string>
@@ -230,6 +379,12 @@ X Y Z</string>
          </item>
          <item row="5" column="1">
           <widget class="MDIButton" name="mdibutton_8">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>Set
 X</string>
@@ -238,6 +393,12 @@ X</string>
          </item>
          <item row="5" column="2">
           <widget class="MDIButton" name="mdibutton_9">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>Set
 Y</string>
@@ -246,6 +407,12 @@ Y</string>
          </item>
          <item row="5" column="3">
           <widget class="MDIButton" name="mdibutton_10">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="text">
             <string>Set
 Z</string>
@@ -275,4 +442,7 @@ Z</string>
  </customwidgets>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="keypad"/>
+ </buttongroups>
 </ui>

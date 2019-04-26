@@ -2,7 +2,7 @@ import os
 
 from qtpy import uic
 from qtpy.QtWidgets import QWidget
-from functools import partial
+
 
 WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 
@@ -19,25 +19,22 @@ class G92OffsetHandler(QWidget):
 
         self.ui = uic.loadUi(os.path.join(WIDGET_PATH, "g92_keypad.ui"), self)
 
-    def setup_g5x(self):
-        self.ui.g92Btns.buttonClicked.connect(partial(self.g92_keypad, self.ui))
-        self.ui.g92BkspBtn.clicked.connect(partial(self.g92_backspace, self.ui))
+        self.ui.keypad.buttonClicked.connect(self.g92_keypad)
+        self.ui.g92BkspBtn.clicked.connect(self.g92_backspace)
 
-    @staticmethod
-    def g92_keypad(parent, button):
-        char = str(button.text())
-        text = parent.g92OffsetsLbl.text() or 'null'
+    def g92_keypad(self, widget):
+        char = str(widget.text())
+        text = self.ui.g92OffsetsLbl.text() or 'null'
         if text != 'null':
             text += char
         else:
             text = char
-        parent.g92OffsetsLbl.setText(text)
+        self.ui.g92OffsetsLbl.setText(text)
 
-    @staticmethod
-    def g92_backspace(parent):
-        if len(parent.g92OffsetsLbl.text()) > 0:
-            text = parent.g92OffsetsLbl.text()[:-1]
-            parent.g92OffsetsLbl.setText(text)
+    def g92_backspace(self, widget):
+        if len(self.ui.g92OffsetsLbl.text()) > 0:
+            text = self.ui.g92OffsetsLbl.text()[:-1]
+            self.ui.g92OffsetsLbl.setText(text)
 
 
 
