@@ -23,10 +23,10 @@ INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 
 COLOR_MAP = {
     'traverse': (188, 252, 201, 75),
-    'arcfeed':  (255, 255, 255, 128),
-    'feed':     (255, 255, 255, 128),
-    'dwell':    (100, 100, 100, 255),
-    'user':     (100, 100, 100, 255),
+    'arcfeed': (255, 255, 255, 128),
+    'feed': (255, 255, 255, 128),
+    'dwell': (100, 100, 100, 255),
+    'user': (100, 100, 100, 255),
 }
 
 
@@ -66,7 +66,7 @@ class VTKCanon(StatCanon):
                 line.GetPointIds().SetId(0, 0)
                 line.GetPointIds().SetId(1, 1)
             else:
-                line.GetPointIds().SetId(0, index-1)
+                line.GetPointIds().SetId(0, index - 1)
                 line.GetPointIds().SetId(1, index)
 
             self.lines.InsertNextCell(line)
@@ -210,11 +210,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         transform = vtk.vtkTransform()
         transform.Translate(*g5x_offset[:3])
-        self.reinitialize_iterator()
 
         self.axes_actor.SetUserTransform(transform)
         self.path_actors[0].SetPosition(*path_offset)
         self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
+
+        self.interactor.ReInitialize()
         self.update_render()
 
     def update_g92_offset(self, g92_offset):
@@ -224,15 +225,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         transform = vtk.vtkTransform()
         transform.Translate(*g92_offset[:3])
-        self.reinitialize_iterator()
 
         self.axes_actor.SetUserTransform(transform)
         self.path_actors[0].SetPosition(*path_offset)
         self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
+
+        self.interactor.ReInitialize()
         self.update_render()
 
     def update_rotation_xy(self, rotation):
-        print('Rotation: ', rotation) # in degrees
+        print('Rotation: ', rotation)  # in degrees
         # ToDo: use transform matrix to rotate existing path?
         # probably not worth it since rotation is not used much ...
         # nasty hack so ensure the positions have updated before loading
@@ -252,9 +254,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def update_render(self):
         self.GetRenderWindow().Render()
-
-    def reinitialize_iterator(self):
-        self.interactor.ReInitialize()
 
     @Slot()
     def setViewOrtho(self):
@@ -290,7 +289,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def setViewY(self):
         self.renderer.GetActiveCamera().SetPosition(0, -1, 0)
         self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
-        self.renderer.GetActiveCamera().SetFocalPoint(0,0,0)
+        self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
         # FIXME ugly hack
         self.renderer.GetActiveCamera().Zoom(1.5)
@@ -313,16 +312,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         print('focal point {}'.format(fp))
         p = self.renderer.GetActiveCamera().GetPosition()
         print('position {}'.format(p))
-        #dist = math.sqrt( (p[0]-fp[0])**2 + (p[1]-fp[1])**2 + (p[2]-fp[2])**2 )
-        #print(dist)
-        #self.renderer.GetActiveCamera().SetPosition(10, -40, -1)
-        #self.renderer.GetActiveCamera().SetViewUp(0.0, 1.0, 0.0)
-        #self.renderer.ResetCamera()
+        # dist = math.sqrt( (p[0]-fp[0])**2 + (p[1]-fp[1])**2 + (p[2]-fp[2])**2 )
+        # print(dist)
+        # self.renderer.GetActiveCamera().SetPosition(10, -40, -1)
+        # self.renderer.GetActiveCamera().SetViewUp(0.0, 1.0, 0.0)
+        # self.renderer.ResetCamera()
         vu = self.renderer.GetActiveCamera().GetViewUp()
         print('view up {}'.format(vu))
         d = self.renderer.GetActiveCamera().GetDistance()
         print('distance {}'.format(d))
-        #self.interactor.ReInitialize()
+        # self.interactor.ReInitialize()
 
     @Slot()
     def setViewZ2(self):
