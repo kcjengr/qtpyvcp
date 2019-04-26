@@ -48,7 +48,7 @@ class DynATCPlugin(_DesignerPlugin):
     def pluginClass(self):
         return DynATC
 
-# from notification_widget import NotificationWidget
-# class NotificationPlugin(_DesignerPlugin):
-#     def pluginClass(self):
-#         return NotificationWidget
+from notification_widget import NotificationWidget
+class NotificationPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return NotificationWidget

@@ -23,12 +23,13 @@ from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QListView, QLabel, QHBox
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.plugins import getPlugin
 
+from datetime import datetime
+from time import time
 
 class NotificationWidget(QWidget, VCPWidget):
     def __init__(self, parent=None):
         super(NotificationWidget, self).__init__(parent)
         self.notification_channel = getPlugin("notifications")
-        self.clock_channel = getPlugin("clock")
 
         self.main_layout = QVBoxLayout()
         self.button_layout = QHBoxLayout()
@@ -97,7 +98,10 @@ class NotificationWidget(QWidget, VCPWidget):
         self.debug_button.clicked.connect(self.show_debug_notifications)
 
     def on_info_message(self, message):
-        current_time = self.clock_channel.time
+        timestamp = time()
+        dt_object = datetime.fromtimestamp(timestamp)
+
+        current_time = str(dt_object)
 
         msg = 'INFO:\nTIME {}\n  {}'.format(current_time, message)
         notification_item = QStandardItem()
@@ -107,7 +111,10 @@ class NotificationWidget(QWidget, VCPWidget):
         self.all_notification_model.appendRow(notification_item)
 
     def on_warn_message(self, message):
-        current_time = self.clock_channel.time
+        timestamp = time()
+        dt_object = datetime.fromtimestamp(timestamp)
+
+        current_time = str(dt_object)
 
         msg = 'WARNING:\nTIME {}\n  {}'.format(current_time, message)
         notification_item = QStandardItem()
@@ -117,7 +124,10 @@ class NotificationWidget(QWidget, VCPWidget):
         self.all_notification_model.appendRow(notification_item)
 
     def on_error_message(self, message):
-        current_time = self.clock_channel.time
+        timestamp = time()
+        dt_object = datetime.fromtimestamp(timestamp)
+
+        current_time = str(dt_object)
 
         msg = 'ERROR:\nTIME {}\n  {}'.format(current_time, message)
         notification_item = QStandardItem()
@@ -127,7 +137,10 @@ class NotificationWidget(QWidget, VCPWidget):
         self.all_notification_model.appendRow(notification_item)
 
     def on_debug_message(self, message):
-        current_time = self.clock_channel.time
+        timestamp = time()
+        dt_object = datetime.fromtimestamp(timestamp)
+
+        current_time = str(dt_object)
 
         msg = 'DEBUG\nTIME {}\n  {}'.format(current_time, message)
         notification_item = QStandardItem()
