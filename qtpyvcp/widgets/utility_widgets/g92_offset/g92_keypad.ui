@@ -441,7 +441,24 @@ Z</string>
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>g92ClearBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>g92OffsetsLbl</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>304</x>
+     <y>203</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>116</x>
+     <y>42</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <buttongroups>
   <buttongroup name="keypad"/>
  </buttongroups>
