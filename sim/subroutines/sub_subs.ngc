@@ -35,3 +35,8 @@ o<probe_y_minus_sub> call [#1][#3][#4][#8][#9][#10]
 G10 L2 P#5220 X[#<_x> + #<workspace_x>]
 G10 L2 P#5220 Y[#<_y> + #<workspace_y>]
 G10 L2 P#5220 Z[#<_z> + #<workspace_z> + #<z_clearance>]
+
+
+#<x_plus_probed> = #5061
+
+#<x_minus_probed> = #5061

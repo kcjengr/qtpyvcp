@@ -61,9 +61,6 @@ o<probe_ridge_x> sub
   F[#<probe_fast_fr>]
   G1 Z-[#<z_clearance> + #<probe_diameter> + #<extra_probe_depth>]
 
-  (Current X Position including offsets in current program units)
-  #<x> = #5420
-
   (Call sub "probe_x_plus" to Probe x+ side of Workpiece)
   o<probe_x_plus> call [#1][#3][#4][#8][#9][#10]
 

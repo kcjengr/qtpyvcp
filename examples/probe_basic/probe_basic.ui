@@ -9732,7 +9732,7 @@ color: rgb(255, 255, 255);
 }</string>
                      </property>
                      <property name="text">
-                      <string>0.1000</string>
+                      <string>0.2500</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -24602,7 +24602,7 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="probetabGroup"/>
   <buttongroup name="probehelpGroup"/>
+  <buttongroup name="probetabGroup"/>
  </buttongroups>
 </ui>
