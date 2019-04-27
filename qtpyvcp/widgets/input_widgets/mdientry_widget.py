@@ -1,20 +1,16 @@
 """MDI Entry """
 
-from qtpy.QtWidgets import QLineEdit, QCompleter, QApplication
-from qtpy.QtCore import Qt, QEvent, QStringListModel, Slot
-from qtpy.QtGui import QKeySequence, QValidator
+from qtpy.QtCore import Qt, QStringListModel, Slot
+from qtpy.QtGui import QValidator
+from qtpy.QtWidgets import QLineEdit, QCompleter
 
-from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.utilities.info import Info
+from qtpyvcp.actions.machine_actions import issue_mdi
+from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
 
 STATUS = getPlugin('status')
-
-from qtpyvcp.core import Info
-
 INFO = Info()
-
-from qtpyvcp.actions.machine_actions import issue_mdi
-
 MDI_HISTORY_FILE = INFO.getMDIHistoryFile()
 
 
@@ -38,11 +34,7 @@ class MDIEntry(QLineEdit, CMDWidget):
         self.validator = Validator(self)
         self.setValidator(self.validator)
 
-        self.loadMDIHystory()
-
         self.returnPressed.connect(self.submit)
-
-        QApplication.instance().aboutToQuit.connect(self.saveMDIHistory)
 
     @Slot()
     def submit(self):
@@ -64,7 +56,7 @@ class MDIEntry(QLineEdit, CMDWidget):
         super(MDIEntry, self).focusInEvent(event)
         self.completer().complete()
 
-    def loadMDIHystory(self):
+    def initialize(self):
         history = []
         try:
             with open(MDI_HISTORY_FILE, 'r') as fh:
@@ -77,17 +69,7 @@ class MDIEntry(QLineEdit, CMDWidget):
             # file does not exist
             pass
 
-    def saveMDIHistory(self):
+    def terminate(self):
         with open(MDI_HISTORY_FILE, 'w') as fh:
             for cmd in self.model.stringList():
                 fh.write(cmd + '\n')
-
-
-if __name__ == "__main__":
-    import sys
-    from qtpy.QtWidgets import QApplication
-
-    app = QApplication(sys.argv)
-    w = MDIEntry()
-    w.show()
-    sys.exit(app.exec_())
