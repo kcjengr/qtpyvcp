@@ -6,7 +6,7 @@ This widget is intended for calling individual MDI commands. Useful for
 `Go To Home`, `Tool Change` and similar actions.
 
 The MDI command can include variables to be expanded from widgets present
-in the active window. For example, to make a `Change Tool` button you could
+in the application. For example, to make a `Change Tool` button you could
 add an MDIButton and a QLineEdit named ``tool_number_entry``. Then set the
 the MDICommand property of the button to::
 
@@ -49,7 +49,7 @@ class MDIButton(VCPButton):
         self.clicked.connect(self.issueMDI)
 
     def issueMDI(self):
-        window = QApplication.instance().activeWindow()
+        widgets = {w.objectName(): w for w in QApplication.allWidgets()}
 
         try:
             cmd = self._mdi_cmd.format(ch=self._data_channels)
@@ -61,16 +61,15 @@ class MDIButton(VCPButton):
         for cmd_word, object_name in vars:
 
             try:
-
                 # get the value from the GUI input widget
-                wid = getattr(window, object_name)
+                widget = widgets[object_name]
 
                 try:
                     # QSpinBox, QSlider, QDial
-                    val = wid.value()
+                    val = widget.value()
                 except AttributeError:
                     # QLabel, QLineEdit
-                    val = wid.text()
+                    val = widget.text()
 
                 cmd = cmd.replace("{}#<{}>".format(cmd_word, object_name),
                                   "{}{}".format(cmd_word, val))
@@ -88,7 +87,7 @@ class MDIButton(VCPButton):
             expanded from UI widgets present in the active window.
 
         Example:
-            Assuming there is a QLineEdit in the active window with the
+            Assuming there is a QLineEdit in the application with the
             objectName ``tool_number_entry``, the ``#<tool_number_entry>``
             variable would be substituted with the current text in the QLineEdit::
 
