@@ -1,0 +1,681 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>380</width>
+    <height>294</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QStackedWidget" name="mdiStack">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="mdiPage_1">
+      <layout class="QVBoxLayout" name="verticalLayout_20">
+       <item>
+        <widget class="VCPWidget" name="mdiWidget">
+         <property name="rules" stdset="0">
+          <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:all_axes_homed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Enable&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_16">
+          <property name="leftMargin">
+           <number>1</number>
+          </property>
+          <property name="topMargin">
+           <number>1</number>
+          </property>
+          <property name="rightMargin">
+           <number>1</number>
+          </property>
+          <property name="bottomMargin">
+           <number>1</number>
+          </property>
+          <property name="spacing">
+           <number>5</number>
+          </property>
+          <item row="8" column="2">
+           <widget class="QPushButton" name="mdiSetLabelsBtn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Setup
+Buttons</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="4">
+           <widget class="QPushButton" name="mdiSendBtn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Send</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="3">
+           <widget class="QPushButton" name="key_8">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>8</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="5" column="3">
+           <widget class="QPushButton" name="key_5">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>5</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="2" column="4">
+           <widget class="QPushButton" name="gcodeParameter_4">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="7" column="4">
+           <widget class="QPushButton" name="key_minus">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>-</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QPushButton" name="gcodeParameter_1">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="2" column="3">
+           <widget class="QPushButton" name="gcodeParameter_3">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="6" column="3">
+           <widget class="QPushButton" name="key_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>2</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="6" column="4">
+           <widget class="QPushButton" name="key_3">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>3</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QPushButton" name="key_G">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>G</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="1" column="1" colspan="4">
+           <widget class="MDIEntry" name="mdiEntry"/>
+          </item>
+          <item row="4" column="1">
+           <widget class="QPushButton" name="key_F">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>F</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="2" column="2">
+           <widget class="QPushButton" name="gcodeParameter_2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QPushButton" name="gcodeParameter_6">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="4" column="4">
+           <widget class="QPushButton" name="key_9">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>9</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QPushButton" name="key_T">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>T</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="5" column="4">
+           <widget class="QPushButton" name="key_6">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>6</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="6" column="1">
+           <widget class="QPushButton" name="key_M">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>M</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="6" column="2">
+           <widget class="QPushButton" name="key_1">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>1</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="4" column="2">
+           <widget class="QPushButton" name="key_7">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>7</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="3" column="4">
+           <widget class="QPushButton" name="gcodeParameter_8">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QPushButton" name="gcodeParameter_5">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QPushButton" name="key_4">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>4</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="7" column="2">
+           <widget class="QPushButton" name="key_0">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>0</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="7" column="3">
+           <widget class="QPushButton" name="key_dot">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>.</string>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="3" column="3">
+           <widget class="QPushButton" name="gcodeParameter_7">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <attribute name="buttonGroup">
+             <string notr="true">mdiKeypad</string>
+            </attribute>
+           </widget>
+          </item>
+          <item row="0" column="1" colspan="4">
+           <widget class="QLabel" name="gcodeDescription">
+            <property name="frameShape">
+             <enum>QFrame::Box</enum>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="3">
+           <widget class="QPushButton" name="mdiBackspace">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Bksp</string>
+            </property>
+            <property name="page" stdset="0">
+             <number>2</number>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="1">
+           <widget class="QPushButton" name="mdiHelpBtn">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Help</string>
+            </property>
+            <property name="page" stdset="0">
+             <number>1</number>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="mdiPage_2">
+      <layout class="QGridLayout" name="gridLayout_39">
+       <item row="1" column="1">
+        <widget class="QPushButton" name="pushButton_23">
+         <property name="text">
+          <string>G Code
+List</string>
+         </property>
+         <property name="page" stdset="0">
+          <number>2</number>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">mdiNavBtns</string>
+         </attribute>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="pushButton_1">
+         <property name="text">
+          <string>Return
+to MDI</string>
+         </property>
+         <property name="page" stdset="0">
+          <number>0</number>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">mdiNavBtns</string>
+         </attribute>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="3">
+        <widget class="QLabel" name="gcodeHelpLabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::Box</enum>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="page_16">
+      <layout class="QGridLayout" name="gridLayout_40">
+       <item row="1" column="4">
+        <widget class="QPushButton" name="gcodeListPageDownBtn">
+         <property name="text">
+          <string>Page
+Down</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="pushButton_113">
+         <property name="text">
+          <string>Return
+to MDI</string>
+         </property>
+         <property name="page" stdset="0">
+          <number>0</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="5">
+        <widget class="QListWidget" name="gcodeHelpListWidget">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="verticalScrollBarPolicy">
+          <enum>Qt::ScrollBarAlwaysOff</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QPushButton" name="gcodeListPageUpBtn">
+         <property name="text">
+          <string>Page
+Up</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QPushButton" name="pushButton_54">
+         <property name="text">
+          <string>Return
+Help</string>
+         </property>
+         <property name="page" stdset="0">
+          <number>1</number>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <spacer name="horizontalSpacer_4">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>VCPWidget</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.containers.widget</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>mdiSendBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>mdiEntry</receiver>
+   <slot>submit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>676</x>
+     <y>518</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>769</x>
+     <y>45</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <buttongroups>
+  <buttongroup name="mdiKeypad"/>
+  <buttongroup name="mdiNavBtns"/>
+ </buttongroups>
+</ui>
