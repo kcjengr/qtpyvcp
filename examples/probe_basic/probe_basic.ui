@@ -11918,7 +11918,7 @@ QPushButton:checked {
 }</string>
                     </property>
                     <property name="currentIndex">
-                     <number>0</number>
+                     <number>2</number>
                     </property>
                     <widget class="QWidget" name="Page1">
                      <layout class="QHBoxLayout" name="horizontalLayout_132">
@@ -12817,7 +12817,7 @@ QPushButton:checked {
                              </widget>
                             </item>
                             <item row="0" column="1">
-                             <widget class="SubCallButton" name="probe_circular_pocket">
+                             <widget class="SubCallButton" name="probe_round_pocket">
                               <property name="minimumSize">
                                <size>
                                 <width>170</width>
@@ -12847,7 +12847,7 @@ QPushButton:checked {
                                </size>
                               </property>
                               <property name="filename" stdset="0">
-                               <string>probe_circular_pocket.ngc</string>
+                               <string>probe_round_pocket.ngc</string>
                               </property>
                               <property name="styleClass" stdset="0">
                                <string>probeButton</string>
