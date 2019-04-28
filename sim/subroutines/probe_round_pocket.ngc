@@ -106,7 +106,9 @@ o<probe_round_pocket> sub
   #<raw_width> = [#<x_plus_probed> - #<x_minus_probed>]
 
   (Completed probed width calculations)
-  #<x_probed_diam> = [#<raw_width> + #<probe_diameter_offset>]
+  #<x_probed_width> = [#<raw_width> + #<probe_diameter_offset>]
+
+  M68 E0 Q[#<x_probed_width>]
 
   (Record X Zero in selected WCO)
   G10 L2 P#5220 X[#<probe_center_x> + #<workspace_x>]
@@ -132,7 +134,13 @@ o<probe_round_pocket> sub
   #<raw_width> = [#<y_plus_probed> - #<y_minus_probed>]
 
   (Completed probed diameter calculations)
-  #<y_probed_diam> = [#<raw_width> + #<probe_diameter_offset>]
+  #<y_probed_width> = [#<raw_width> + #<probe_diameter_offset>]
+
+  M68 E1 Q[#<y_probed_width>]
+
+  #<averaged_diam> = [[#<x_probed_width> + #<y_probed_width>] / 2]
+
+  M68 E2 Q[  #<averaged_diam>]
 
   (Record Y Zero in selected WCO)
   G10 L2 P#5220 y[#<probe_center_y> + #<workspace_y>]
@@ -141,6 +149,7 @@ o<probe_round_pocket> sub
   G90
   G0 Y0.0000
   G0 Z[#<z_clearance>]
+
 
 o<probe_round_pocket> endsub
 

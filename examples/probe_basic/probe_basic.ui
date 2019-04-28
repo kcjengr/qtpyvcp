@@ -10726,7 +10726,7 @@ color: rgb(255, 255, 255);
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="edge_angle">
+                    <widget class="StatusLabel" name="edge_angle">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -10746,7 +10746,7 @@ color: rgb(255, 255, 255);
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
+                      <string notr="true">QLabel {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -10756,17 +10756,11 @@ color: rgb(255, 255, 255);
 	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
-                     <property name="text">
-                      <string/>
-                     </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
-                     <property name="readOnly">
-                      <bool>true</bool>
-                     </property>
-                     <property name="placeholderText">
-                      <string>0.0000</string>
+                     <property name="rules" stdset="0">
+                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;edge_angle&quot;}]</string>
                      </property>
                     </widget>
                    </item>
@@ -10811,7 +10805,7 @@ color: rgb(255, 255, 255);
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="x_probed_width">
+                    <widget class="StatusLabel" name="x_probed_width">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -10831,7 +10825,7 @@ color: rgb(255, 255, 255);
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
+                      <string notr="true">QLabel {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -10841,17 +10835,11 @@ color: rgb(255, 255, 255);
 	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
-                     <property name="text">
-                      <string/>
-                     </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
-                     <property name="readOnly">
-                      <bool>true</bool>
-                     </property>
-                     <property name="placeholderText">
-                      <string>0.0000</string>
+                     <property name="rules" stdset="0">
+                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;x_probed_width&quot;}]</string>
                      </property>
                     </widget>
                    </item>
@@ -10988,7 +10976,7 @@ color: rgb(255, 255, 255);
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="edge_delta">
+                    <widget class="StatusLabel" name="edge_delta">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -11008,7 +10996,7 @@ color: rgb(255, 255, 255);
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
+                      <string notr="true">QLabel {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -11018,17 +11006,11 @@ color: rgb(255, 255, 255);
 	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
-                     <property name="text">
-                      <string/>
-                     </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
-                     <property name="readOnly">
-                      <bool>true</bool>
-                     </property>
-                     <property name="placeholderText">
-                      <string>0.0000</string>
+                     <property name="rules" stdset="0">
+                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;edge_delta&quot;}]</string>
                      </property>
                     </widget>
                    </item>
@@ -11073,7 +11055,7 @@ color: rgb(255, 255, 255);
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="y_probed_width">
+                    <widget class="StatusLabel" name="y_probed_width">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -11093,7 +11075,7 @@ color: rgb(255, 255, 255);
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
+                      <string notr="true">QLabel {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -11103,17 +11085,11 @@ color: rgb(255, 255, 255);
 	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
-                     <property name="text">
-                      <string/>
-                     </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
-                     <property name="readOnly">
-                      <bool>true</bool>
-                     </property>
-                     <property name="placeholderText">
-                      <string>0.0000</string>
+                     <property name="rules" stdset="0">
+                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;y_probed_width&quot;}]</string>
                      </property>
                     </widget>
                    </item>
@@ -11230,22 +11206,10 @@ color: rgb(255, 255, 255);
                    <item>
                     <widget class="QLabel" name="label_102">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>60</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>60</width>
-                       <height>30</height>
-                      </size>
                      </property>
                      <property name="styleSheet">
                       <string notr="true">QLabel{
@@ -11268,7 +11232,7 @@ color: rgb(255, 255, 255);
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLineEdit" name="probed_diameter">
+                    <widget class="StatusLabel" name="avg_diameter">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -11288,7 +11252,7 @@ color: rgb(255, 255, 255);
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
+                      <string notr="true">QLabel {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -11298,17 +11262,11 @@ color: rgb(255, 255, 255);
 	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
-                     <property name="text">
-                      <string/>
-                     </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
-                     <property name="readOnly">
-                      <bool>true</bool>
-                     </property>
-                     <property name="placeholderText">
-                      <string>0.0000</string>
+                     <property name="rules" stdset="0">
+                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;averaged_diam&quot;}]</string>
                      </property>
                     </widget>
                    </item>
@@ -11674,7 +11632,57 @@ QPushButton:checked {
                    </widget>
                   </item>
                   <item>
-                   <widget class="QPushButton" name="rotary_axis">
+                   <widget class="QPushButton" name="rotation_angle">
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    color: white;
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
+    border-style: solid;
+    border-color: black;
+    border-top-width: 2px;
+    border-bottom-width: 2px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    min-width: 10ex;
+    min-height: 25;
+    padding: 2px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+QPushButton:pressed, QPushButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+QPushButton:checked {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>EDGE ANGLE</string>
+                    </property>
+                    <property name="checkable">
+                     <bool>true</bool>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
+                    <property name="page" stdset="0">
+                     <number>4</number>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">probetabGroup</string>
+                    </attribute>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QPushButton" name="rotary_axis_2">
                     <property name="styleSheet">
                      <string notr="true">QPushButton {
     margin-top: 2px;
@@ -11708,56 +11716,6 @@ QPushButton:checked {
                     </property>
                     <property name="text">
                      <string>ROTARY AXIS</string>
-                    </property>
-                    <property name="checkable">
-                     <bool>true</bool>
-                    </property>
-                    <property name="autoExclusive">
-                     <bool>true</bool>
-                    </property>
-                    <property name="page" stdset="0">
-                     <number>4</number>
-                    </property>
-                    <attribute name="buttonGroup">
-                     <string notr="true">probetabGroup</string>
-                    </attribute>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QPushButton" name="multi_axis">
-                    <property name="styleSheet">
-                     <string notr="true">QPushButton {
-    margin-top: 2px;
-    margin-bottom: 2px;
-    color: white;
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-style: solid;
-    border-color: black;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    min-width: 10ex;
-    min-height: 25;
-    padding: 2px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-}
-
-QPushButton:pressed, QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
-}</string>
-                    </property>
-                    <property name="text">
-                     <string>MULTI-AXIS</string>
                     </property>
                     <property name="checkable">
                      <bool>true</bool>
@@ -11918,7 +11876,7 @@ QPushButton:checked {
 }</string>
                     </property>
                     <property name="currentIndex">
-                     <number>2</number>
+                     <number>1</number>
                     </property>
                     <widget class="QWidget" name="Page1">
                      <layout class="QHBoxLayout" name="horizontalLayout_132">
@@ -13670,7 +13628,231 @@ Background:transparent;
                       </item>
                      </layout>
                     </widget>
-                    <widget class="QWidget" name="Page5"/>
+                    <widget class="QWidget" name="Page5">
+                     <widget class="QWidget" name="layoutWidget_4">
+                      <property name="geometry">
+                       <rect>
+                        <x>30</x>
+                        <y>30</y>
+                        <width>485</width>
+                        <height>467</height>
+                       </rect>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_134">
+                       <property name="spacing">
+                        <number>0</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>10</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>10</number>
+                       </property>
+                       <item>
+                        <widget class="QFrame" name="frame_45">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>300</width>
+                           <height>310</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>310</width>
+                           <height>310</height>
+                          </size>
+                         </property>
+                         <property name="styleSheet">
+                          <string notr="true">QFrame {
+    border: none;
+}</string>
+                         </property>
+                         <property name="frameShape">
+                          <enum>QFrame::NoFrame</enum>
+                         </property>
+                         <property name="frameShadow">
+                          <enum>QFrame::Plain</enum>
+                         </property>
+                         <property name="lineWidth">
+                          <number>0</number>
+                         </property>
+                         <layout class="QGridLayout" name="gridLayout_8">
+                          <item row="0" column="0">
+                           <widget class="SubCallButton" name="probe_x_plus_edge_angle">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="minimumSize">
+                             <size>
+                              <width>140</width>
+                              <height>140</height>
+                             </size>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="probe_basic.qrc">
+                              <normaloff>:/images/back_left_outside_corner.png</normaloff>:/images/back_left_outside_corner.png</iconset>
+                            </property>
+                            <property name="iconSize">
+                             <size>
+                              <width>130</width>
+                              <height>130</height>
+                             </size>
+                            </property>
+                            <property name="filename" stdset="0">
+                             <string>probe_x_plus_edge_angle.ngc</string>
+                            </property>
+                            <property name="styleClass" stdset="0">
+                             <string>probeButton</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="0" column="1">
+                           <widget class="SubCallButton" name="probe_y_minus_edge_angle">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="minimumSize">
+                             <size>
+                              <width>140</width>
+                              <height>140</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>140</width>
+                              <height>140</height>
+                             </size>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true"/>
+                            </property>
+                            <property name="text">
+                             <string/>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="probe_basic.qrc">
+                              <normaloff>:/images/back_right_outside_corner.png</normaloff>:/images/back_right_outside_corner.png</iconset>
+                            </property>
+                            <property name="iconSize">
+                             <size>
+                              <width>130</width>
+                              <height>130</height>
+                             </size>
+                            </property>
+                            <property name="filename" stdset="0">
+                             <string>probe_y_minus_edge_angle.ngc</string>
+                            </property>
+                            <property name="styleClass" stdset="0">
+                             <string>probeButton</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="1" column="0">
+                           <widget class="SubCallButton" name="probe_y_plus_edge_angle">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="minimumSize">
+                             <size>
+                              <width>140</width>
+                              <height>140</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>140</width>
+                              <height>140</height>
+                             </size>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true"/>
+                            </property>
+                            <property name="text">
+                             <string/>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="probe_basic.qrc">
+                              <normaloff>:/images/front_left_outside_corner.png</normaloff>:/images/front_left_outside_corner.png</iconset>
+                            </property>
+                            <property name="iconSize">
+                             <size>
+                              <width>130</width>
+                              <height>130</height>
+                             </size>
+                            </property>
+                            <property name="filename" stdset="0">
+                             <string>probe_y_plus_edge_angle.ngc</string>
+                            </property>
+                            <property name="styleClass" stdset="0">
+                             <string>probeButton</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item row="1" column="1">
+                           <widget class="SubCallButton" name="probe_x_minus_edge_angle">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="minimumSize">
+                             <size>
+                              <width>140</width>
+                              <height>140</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>140</width>
+                              <height>140</height>
+                             </size>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true"/>
+                            </property>
+                            <property name="text">
+                             <string/>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="probe_basic.qrc">
+                              <normaloff>:/images/front_right_outside_corner.png</normaloff>:/images/front_right_outside_corner.png</iconset>
+                            </property>
+                            <property name="iconSize">
+                             <size>
+                              <width>130</width>
+                              <height>130</height>
+                             </size>
+                            </property>
+                            <property name="filename" stdset="0">
+                             <string>probe_x_minus_edge_angle.ngc</string>
+                            </property>
+                            <property name="styleClass" stdset="0">
+                             <string>probeButton</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </widget>
                     <widget class="QWidget" name="Page6"/>
                     <widget class="QWidget" name="Page7"/>
                     <widget class="QWidget" name="Page8">
@@ -24602,7 +24784,7 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="probehelpGroup"/>
   <buttongroup name="probetabGroup"/>
+  <buttongroup name="probehelpGroup"/>
  </buttongroups>
 </ui>
