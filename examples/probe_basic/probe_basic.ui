@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1924</width>
-    <height>1150</height>
+    <height>1137</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -10530,6 +10530,30 @@ color: rgb(255, 255, 255);
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_159">
                    <item>
+                    <widget class="QLabel" name="ref_coilumn_header_24">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel{
+    border: none;
+    color: rgb(238, 238, 236);
+    background: transparent;
+	font: 16pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
                     <widget class="QLabel" name="label_107">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -10618,13 +10642,13 @@ color: rgb(255, 255, 255);
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>130</width>
+                       <width>140</width>
                        <height>30</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>130</width>
+                       <width>140</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -11910,7 +11934,10 @@ QPushButton:checked {
                   <item>
                    <layout class="QVBoxLayout" name="verticalLayout_3">
                     <property name="spacing">
-                     <number>0</number>
+                     <number>6</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>9</number>
                     </property>
                     <property name="bottomMargin">
                      <number>9</number>
@@ -11939,7 +11966,7 @@ QPushButton:checked {
                        <string notr="true"/>
                       </property>
                       <property name="currentIndex">
-                       <number>0</number>
+                       <number>2</number>
                       </property>
                       <widget class="QWidget" name="Page1">
                        <layout class="QHBoxLayout" name="horizontalLayout_132">
@@ -12966,7 +12993,7 @@ border-radius: 6px;
                                <number>0</number>
                               </property>
                               <item>
-                               <widget class="QLabel" name="step_increment_label_6">
+                               <widget class="QLabel" name="hint_label">
                                 <property name="minimumSize">
                                  <size>
                                   <width>60</width>
@@ -13463,7 +13490,7 @@ border-radius: 6px;
                                <number>0</number>
                               </property>
                               <item>
-                               <widget class="QLabel" name="step_increment_label_7">
+                               <widget class="QLabel" name="hint_label_2">
                                 <property name="minimumSize">
                                  <size>
                                   <width>115</width>
@@ -14079,225 +14106,262 @@ Background:transparent;
                       <widget class="QWidget" name="Page8">
                        <layout class="QHBoxLayout" name="horizontalLayout_145">
                         <item>
-                         <layout class="QVBoxLayout" name="verticalLayout_21">
-                          <property name="spacing">
-                           <number>0</number>
+                         <widget class="QFrame" name="">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
                           </property>
-                          <property name="bottomMargin">
-                           <number>0</number>
+                          <property name="minimumSize">
+                           <size>
+                            <width>520</width>
+                            <height>480</height>
+                           </size>
                           </property>
-                          <item>
-                           <widget class="QWidget" name="probe_help_Group_select" native="true">
-                            <property name="sizePolicy">
-                             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                              <horstretch>0</horstretch>
-                              <verstretch>0</verstretch>
-                             </sizepolicy>
-                            </property>
-                            <property name="minimumSize">
-                             <size>
-                              <width>0</width>
-                              <height>40</height>
-                             </size>
-                            </property>
-                            <property name="maximumSize">
-                             <size>
-                              <width>16777215</width>
-                              <height>40</height>
-                             </size>
-                            </property>
-                            <property name="styleSheet">
-                             <string notr="true"/>
-                            </property>
-                            <layout class="QHBoxLayout" name="horizontalLayout_44">
-                             <property name="spacing">
-                              <number>12</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>90</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>1</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>90</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>1</number>
-                             </property>
-                             <item>
-                              <widget class="QPushButton" name="probe_help_prev">
-                               <property name="sizePolicy">
-                                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                 <horstretch>0</horstretch>
-                                 <verstretch>0</verstretch>
-                                </sizepolicy>
-                               </property>
-                               <property name="minimumSize">
-                                <size>
-                                 <width>150</width>
-                                 <height>37</height>
-                                </size>
-                               </property>
-                               <property name="maximumSize">
-                                <size>
-                                 <width>150</width>
-                                 <height>37</height>
-                                </size>
-                               </property>
-                               <property name="styleSheet">
-                                <string notr="true">QPushButton{
-    padding-left: 0px;
-    padding-right: 0px;
-    font: 13pt &quot;Bebas Kai&quot;;
+                          <property name="maximumSize">
+                           <size>
+                            <width>520</width>
+                            <height>480</height>
+                           </size>
+                          </property>
+                          <property name="styleSheet">
+                           <string notr="true">QFrame{
+border-style: solid;
+border-color: rgb(206, 209, 202);
+background-color: rgb(51, 57, 59);
+border-width: 2px;
+border-radius: 8px;
 }</string>
-                               </property>
-                               <property name="text">
-                                <string>      PREV PAGE       </string>
-                               </property>
-                               <property name="icon">
-                                <iconset resource="probe_basic.qrc">
-                                 <normaloff>:/images/left_arrow.png</normaloff>:/images/left_arrow.png</iconset>
-                               </property>
-                               <property name="iconSize">
-                                <size>
-                                 <width>16</width>
-                                 <height>16</height>
-                                </size>
-                               </property>
-                               <property name="checkable">
-                                <bool>false</bool>
-                               </property>
-                               <property name="checked">
-                                <bool>false</bool>
-                               </property>
-                               <property name="autoExclusive">
-                                <bool>true</bool>
-                               </property>
-                               <attribute name="buttonGroup">
-                                <string notr="true">probehelpGroup</string>
-                               </attribute>
-                              </widget>
-                             </item>
-                             <item>
-                              <widget class="QPushButton" name="probe_help_next">
-                               <property name="sizePolicy">
-                                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                 <horstretch>0</horstretch>
-                                 <verstretch>0</verstretch>
-                                </sizepolicy>
-                               </property>
-                               <property name="minimumSize">
-                                <size>
-                                 <width>150</width>
-                                 <height>37</height>
-                                </size>
-                               </property>
-                               <property name="maximumSize">
-                                <size>
-                                 <width>150</width>
-                                 <height>37</height>
-                                </size>
-                               </property>
-                               <property name="layoutDirection">
-                                <enum>Qt::RightToLeft</enum>
-                               </property>
-                               <property name="styleSheet">
-                                <string notr="true">QPushButton{
-    padding-left: 0px;
-    padding-right: 0px;
-    font: 13pt &quot;Bebas Kai&quot;;
-}</string>
-                               </property>
-                               <property name="text">
-                                <string>            NEXT PAGE</string>
-                               </property>
-                               <property name="icon">
-                                <iconset resource="probe_basic.qrc">
-                                 <normaloff>:/images/right_arrow.png</normaloff>:/images/right_arrow.png</iconset>
-                               </property>
-                               <property name="iconSize">
-                                <size>
-                                 <width>16</width>
-                                 <height>16</height>
-                                </size>
-                               </property>
-                               <property name="checkable">
-                                <bool>false</bool>
-                               </property>
-                               <property name="autoExclusive">
-                                <bool>true</bool>
-                               </property>
-                               <attribute name="buttonGroup">
-                                <string notr="true">probehelpGroup</string>
-                               </attribute>
-                              </widget>
-                             </item>
-                            </layout>
-                           </widget>
-                          </item>
-                          <item>
-                           <widget class="QStackedWidget" name="probe_help_widget">
-                            <property name="sizePolicy">
-                             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                              <horstretch>0</horstretch>
-                              <verstretch>0</verstretch>
-                             </sizepolicy>
-                            </property>
-                            <property name="minimumSize">
-                             <size>
-                              <width>0</width>
-                              <height>410</height>
-                             </size>
-                            </property>
-                            <property name="maximumSize">
-                             <size>
-                              <width>16777215</width>
-                              <height>420</height>
-                             </size>
-                            </property>
-                            <property name="font">
-                             <font>
-                              <family>Bebas Kai</family>
-                              <pointsize>13</pointsize>
-                             </font>
-                            </property>
-                            <property name="styleSheet">
-                             <string notr="true">QTabWidget QTabBar::tab {
-    margin-top: 5px;
-    margin-bottom: 1px;
-    min-width: preferred;
-    min-height: 25px;
-    font: 13pt &quot;bebas kai&quot;;
-}</string>
-                            </property>
-                            <property name="currentIndex">
-                             <number>0</number>
-                            </property>
-                            <widget class="QWidget" name="stackedWidget_4Page1">
-                             <layout class="QHBoxLayout" name="horizontalLayout_146">
+                          </property>
+                          <layout class="QVBoxLayout" name="verticalLayout_21">
+                           <property name="spacing">
+                            <number>6</number>
+                           </property>
+                           <property name="leftMargin">
+                            <number>1</number>
+                           </property>
+                           <property name="topMargin">
+                            <number>12</number>
+                           </property>
+                           <property name="rightMargin">
+                            <number>3</number>
+                           </property>
+                           <property name="bottomMargin">
+                            <number>1</number>
+                           </property>
+                           <item>
+                            <widget class="QWidget" name="probe_help_Group_select" native="true">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="minimumSize">
+                              <size>
+                               <width>0</width>
+                               <height>40</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>16777215</width>
+                               <height>40</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <layout class="QHBoxLayout" name="horizontalLayout_44">
+                              <property name="leftMargin">
+                               <number>70</number>
+                              </property>
+                              <property name="topMargin">
+                               <number>1</number>
+                              </property>
+                              <property name="rightMargin">
+                               <number>70</number>
+                              </property>
+                              <property name="bottomMargin">
+                               <number>1</number>
+                              </property>
                               <item>
-                               <widget class="QLabel" name="label_77">
+                               <widget class="QPushButton" name="probe_help_prev">
                                 <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                   <horstretch>0</horstretch>
                                   <verstretch>0</verstretch>
                                  </sizepolicy>
                                 </property>
                                 <property name="minimumSize">
                                  <size>
-                                  <width>450</width>
-                                  <height>410</height>
+                                  <width>150</width>
+                                  <height>37</height>
                                  </size>
                                 </property>
                                 <property name="maximumSize">
                                  <size>
-                                  <width>450</width>
-                                  <height>410</height>
+                                  <width>150</width>
+                                  <height>37</height>
                                  </size>
                                 </property>
                                 <property name="styleSheet">
-                                 <string notr="true">QLabel{
+                                 <string notr="true">QPushButton{
+    padding-left: 0px;
+    padding-right: 0px;
+    font: 13pt &quot;Bebas Kai&quot;;
+}</string>
+                                </property>
+                                <property name="text">
+                                 <string>      PREV PAGE       </string>
+                                </property>
+                                <property name="icon">
+                                 <iconset resource="probe_basic.qrc">
+                                  <normaloff>:/images/left_arrow.png</normaloff>:/images/left_arrow.png</iconset>
+                                </property>
+                                <property name="iconSize">
+                                 <size>
+                                  <width>16</width>
+                                  <height>16</height>
+                                 </size>
+                                </property>
+                                <property name="checkable">
+                                 <bool>false</bool>
+                                </property>
+                                <property name="checked">
+                                 <bool>false</bool>
+                                </property>
+                                <property name="autoExclusive">
+                                 <bool>true</bool>
+                                </property>
+                                <attribute name="buttonGroup">
+                                 <string notr="true">probehelpGroup</string>
+                                </attribute>
+                               </widget>
+                              </item>
+                              <item>
+                               <widget class="QPushButton" name="probe_help_next">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>150</width>
+                                  <height>37</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>150</width>
+                                  <height>37</height>
+                                 </size>
+                                </property>
+                                <property name="layoutDirection">
+                                 <enum>Qt::RightToLeft</enum>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true">QPushButton{
+    padding-left: 0px;
+    padding-right: 0px;
+    font: 13pt &quot;Bebas Kai&quot;;
+}</string>
+                                </property>
+                                <property name="text">
+                                 <string>            NEXT PAGE</string>
+                                </property>
+                                <property name="icon">
+                                 <iconset resource="probe_basic.qrc">
+                                  <normaloff>:/images/right_arrow.png</normaloff>:/images/right_arrow.png</iconset>
+                                </property>
+                                <property name="iconSize">
+                                 <size>
+                                  <width>16</width>
+                                  <height>16</height>
+                                 </size>
+                                </property>
+                                <property name="checkable">
+                                 <bool>false</bool>
+                                </property>
+                                <property name="autoExclusive">
+                                 <bool>true</bool>
+                                </property>
+                                <attribute name="buttonGroup">
+                                 <string notr="true">probehelpGroup</string>
+                                </attribute>
+                               </widget>
+                              </item>
+                             </layout>
+                            </widget>
+                           </item>
+                           <item alignment="Qt::AlignTop">
+                            <widget class="QStackedWidget" name="probe_help_widget">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="minimumSize">
+                              <size>
+                               <width>0</width>
+                               <height>410</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>16777215</width>
+                               <height>410</height>
+                              </size>
+                             </property>
+                             <property name="font">
+                              <font>
+                               <family>Bebas Kai</family>
+                               <pointsize>13</pointsize>
+                              </font>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QStackedWidget{
+border: none;
+background: transparent;
+}</string>
+                             </property>
+                             <property name="frameShape">
+                              <enum>QFrame::NoFrame</enum>
+                             </property>
+                             <property name="lineWidth">
+                              <number>0</number>
+                             </property>
+                             <property name="currentIndex">
+                              <number>0</number>
+                             </property>
+                             <widget class="QWidget" name="stackedWidget_4Page1">
+                              <layout class="QHBoxLayout" name="horizontalLayout_146">
+                               <item>
+                                <widget class="QLabel" name="label_77">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>450</width>
+                                   <height>400</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>450</width>
+                                   <height>400</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
@@ -14305,44 +14369,44 @@ Background:transparent;
     background: rgb(245, 240, 255);
 	image: url(:/images/step_off_width.png);
 }</string>
-                                </property>
-                                <property name="text">
-                                 <string/>
-                                </property>
-                                <property name="scaledContents">
-                                 <bool>true</bool>
-                                </property>
-                                <property name="indent">
-                                 <number>0</number>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                            <widget class="QWidget" name="stackedWidget_4Page2">
-                             <layout class="QHBoxLayout" name="horizontalLayout_148">
-                              <item>
-                               <widget class="QLabel" name="label_78">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>500</width>
-                                  <height>400</height>
-                                 </size>
-                                </property>
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>500</width>
-                                  <height>400</height>
-                                 </size>
-                                </property>
-                                <property name="styleSheet">
-                                 <string notr="true">QLabel{
+                                 </property>
+                                 <property name="text">
+                                  <string/>
+                                 </property>
+                                 <property name="scaledContents">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="indent">
+                                  <number>0</number>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                             <widget class="QWidget" name="stackedWidget_4Page2">
+                              <layout class="QHBoxLayout" name="horizontalLayout_148">
+                               <item>
+                                <widget class="QLabel" name="label_78">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>500</width>
+                                   <height>400</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>500</width>
+                                   <height>400</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
@@ -14350,50 +14414,50 @@ Background:transparent;
     background: rgb(245, 240, 255);
 	image: url(:/images/extra_probe_depth.png);
 }</string>
-                                </property>
-                                <property name="text">
-                                 <string/>
-                                </property>
-                                <property name="scaledContents">
-                                 <bool>true</bool>
-                                </property>
-                                <property name="alignment">
-                                 <set>Qt::AlignCenter</set>
-                                </property>
-                                <property name="wordWrap">
-                                 <bool>true</bool>
-                                </property>
-                                <property name="indent">
-                                 <number>0</number>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                            <widget class="QWidget" name="stackedWidget_4Page3">
-                             <layout class="QHBoxLayout" name="horizontalLayout_39">
-                              <item>
-                               <widget class="QLabel" name="label_79">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>440</width>
-                                  <height>400</height>
-                                 </size>
-                                </property>
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>440</width>
-                                  <height>400</height>
-                                 </size>
-                                </property>
-                                <property name="styleSheet">
-                                 <string notr="true">QLabel{
+                                 </property>
+                                 <property name="text">
+                                  <string/>
+                                 </property>
+                                 <property name="scaledContents">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignCenter</set>
+                                 </property>
+                                 <property name="wordWrap">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="indent">
+                                  <number>0</number>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                             <widget class="QWidget" name="stackedWidget_4Page3">
+                              <layout class="QHBoxLayout" name="horizontalLayout_39">
+                               <item>
+                                <widget class="QLabel" name="label_79">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>440</width>
+                                   <height>400</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>440</width>
+                                   <height>400</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
@@ -14402,50 +14466,50 @@ Background:transparent;
     background: rgb(245, 240, 255);
 	image: url(:/images/max_z_distance.png);
 }</string>
-                                </property>
-                                <property name="text">
-                                 <string/>
-                                </property>
-                                <property name="scaledContents">
-                                 <bool>true</bool>
-                                </property>
-                                <property name="alignment">
-                                 <set>Qt::AlignCenter</set>
-                                </property>
-                                <property name="wordWrap">
-                                 <bool>true</bool>
-                                </property>
-                                <property name="indent">
-                                 <number>0</number>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                            <widget class="QWidget" name="stackedWidget_4Page4">
-                             <layout class="QHBoxLayout" name="horizontalLayout_34">
-                              <item>
-                               <widget class="QLabel" name="label_105">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>470</width>
-                                  <height>400</height>
-                                 </size>
-                                </property>
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>470</width>
-                                  <height>400</height>
-                                 </size>
-                                </property>
-                                <property name="styleSheet">
-                                 <string notr="true">QLabel{
+                                 </property>
+                                 <property name="text">
+                                  <string/>
+                                 </property>
+                                 <property name="scaledContents">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignCenter</set>
+                                 </property>
+                                 <property name="wordWrap">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="indent">
+                                  <number>0</number>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                             <widget class="QWidget" name="stackedWidget_4Page4">
+                              <layout class="QHBoxLayout" name="horizontalLayout_34">
+                               <item>
+                                <widget class="QLabel" name="label_105">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>470</width>
+                                   <height>400</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>470</width>
+                                   <height>400</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
@@ -14454,50 +14518,50 @@ Background:transparent;
     background: rgb(245, 240, 255);
 	image: url(:/images/max_xy_distance.png);
 }</string>
-                                </property>
-                                <property name="text">
-                                 <string/>
-                                </property>
-                                <property name="scaledContents">
-                                 <bool>true</bool>
-                                </property>
-                                <property name="alignment">
-                                 <set>Qt::AlignCenter</set>
-                                </property>
-                                <property name="wordWrap">
-                                 <bool>true</bool>
-                                </property>
-                                <property name="indent">
-                                 <number>0</number>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                            <widget class="QWidget" name="stackedWidget_4Page5">
-                             <layout class="QHBoxLayout" name="horizontalLayout_42">
-                              <item>
-                               <widget class="QLabel" name="label_80">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>450</width>
-                                  <height>400</height>
-                                 </size>
-                                </property>
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>450</width>
-                                  <height>400</height>
-                                 </size>
-                                </property>
-                                <property name="styleSheet">
-                                 <string notr="true">QLabel{
+                                 </property>
+                                 <property name="text">
+                                  <string/>
+                                 </property>
+                                 <property name="scaledContents">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignCenter</set>
+                                 </property>
+                                 <property name="wordWrap">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="indent">
+                                  <number>0</number>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                             <widget class="QWidget" name="stackedWidget_4Page5">
+                              <layout class="QHBoxLayout" name="horizontalLayout_42">
+                               <item>
+                                <widget class="QLabel" name="label_80">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>450</width>
+                                   <height>400</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>450</width>
+                                   <height>400</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
@@ -14506,50 +14570,50 @@ Background:transparent;
     background: rgb(245, 240, 255);
 	image: url(:/images/z_clearance.png);
 }</string>
-                                </property>
-                                <property name="text">
-                                 <string/>
-                                </property>
-                                <property name="scaledContents">
-                                 <bool>true</bool>
-                                </property>
-                                <property name="alignment">
-                                 <set>Qt::AlignCenter</set>
-                                </property>
-                                <property name="wordWrap">
-                                 <bool>true</bool>
-                                </property>
-                                <property name="indent">
-                                 <number>0</number>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                            <widget class="QWidget" name="stackedWidget_4Page6">
-                             <layout class="QHBoxLayout" name="horizontalLayout_35">
-                              <item>
-                               <widget class="QLabel" name="label_106">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>480</width>
-                                  <height>400</height>
-                                 </size>
-                                </property>
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>480</width>
-                                  <height>400</height>
-                                 </size>
-                                </property>
-                                <property name="styleSheet">
-                                 <string notr="true">QLabel{
+                                 </property>
+                                 <property name="text">
+                                  <string/>
+                                 </property>
+                                 <property name="scaledContents">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignCenter</set>
+                                 </property>
+                                 <property name="wordWrap">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="indent">
+                                  <number>0</number>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                             <widget class="QWidget" name="stackedWidget_4Page6">
+                              <layout class="QHBoxLayout" name="horizontalLayout_35">
+                               <item>
+                                <widget class="QLabel" name="label_106">
+                                 <property name="sizePolicy">
+                                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                   <horstretch>0</horstretch>
+                                   <verstretch>0</verstretch>
+                                  </sizepolicy>
+                                 </property>
+                                 <property name="minimumSize">
+                                  <size>
+                                   <width>480</width>
+                                   <height>400</height>
+                                  </size>
+                                 </property>
+                                 <property name="maximumSize">
+                                  <size>
+                                   <width>480</width>
+                                   <height>400</height>
+                                  </size>
+                                 </property>
+                                 <property name="styleSheet">
+                                  <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
@@ -14558,31 +14622,32 @@ Background:transparent;
     background: rgb(245, 240, 255);
 	image: url(:/images/xy_clearance.png);
 }</string>
-                                </property>
-                                <property name="text">
-                                 <string/>
-                                </property>
-                                <property name="scaledContents">
-                                 <bool>true</bool>
-                                </property>
-                                <property name="alignment">
-                                 <set>Qt::AlignCenter</set>
-                                </property>
-                                <property name="wordWrap">
-                                 <bool>true</bool>
-                                </property>
-                                <property name="indent">
-                                 <number>0</number>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
+                                 </property>
+                                 <property name="text">
+                                  <string/>
+                                 </property>
+                                 <property name="scaledContents">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="alignment">
+                                  <set>Qt::AlignCenter</set>
+                                 </property>
+                                 <property name="wordWrap">
+                                  <bool>true</bool>
+                                 </property>
+                                 <property name="indent">
+                                  <number>0</number>
+                                 </property>
+                                </widget>
+                               </item>
+                              </layout>
+                             </widget>
+                             <widget class="QWidget" name="stackedWidget_4Page7"/>
+                             <widget class="QWidget" name="stackedWidget_4Page8"/>
                             </widget>
-                            <widget class="QWidget" name="stackedWidget_4Page7"/>
-                            <widget class="QWidget" name="stackedWidget_4Page8"/>
-                           </widget>
-                          </item>
-                         </layout>
+                           </item>
+                          </layout>
+                         </widget>
                         </item>
                        </layout>
                       </widget>
@@ -14633,6 +14698,9 @@ Background:transparent;
                           <string>PROBE WCO</string>
                          </property>
                          <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                         <property name="checked">
                           <bool>true</bool>
                          </property>
                          <property name="autoExclusive">
@@ -15676,7 +15744,7 @@ QAbstractSpinBox:selected {
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -24708,11 +24776,11 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="probehelpGroup"/>
-  <buttongroup name="probetabGroup"/>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="plotviewGroup"/>
   <buttongroup name="plotorthoperspbtnGroup"/>
+  <buttongroup name="probehelpGroup"/>
+  <buttongroup name="probetabGroup"/>
   <buttongroup name="mainorthoperspbtnGroup"/>
+  <buttongroup name="buttonGroup"/>
  </buttongroups>
 </ui>
