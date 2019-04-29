@@ -23,6 +23,19 @@ class ProbeBasic(VCPMainWindow):
     def on_probetabGroup_buttonClicked(self, button):
         self.probe_tab_widget.setCurrentIndex(button.property('page'))
 
-    @Slot(QAbstractButton)
-    def on_probehelpGroup_buttonClicked(self, button):
-        self.probe_help_widget.setCurrentIndex(button.property('page'))
+    # Fwd/Back buttons off the stacked widget
+    def on_probe_help_nextBtn_released(self):
+        lastPage = 7
+        currentIndex = self.probe_help_widget.currentIndex()
+        if currentIndex == lastPage:
+            self.probe_help_widget.setCurrentIndex(0)
+        else:
+            self.probe_help_widget.setCurrentIndex(currentIndex + 1)
+
+    def on_probe_help_prevBtn_released(self):
+        lastPage = 7
+        currentIndex = self.probe_help_widget.currentIndex()
+        if currentIndex == 0:
+            self.probe_help_widget.setCurrentIndex(lastPage)
+        else:
+            self.probe_help_widget.setCurrentIndex(currentIndex - 1)

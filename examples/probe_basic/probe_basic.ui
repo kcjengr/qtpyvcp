@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1924</width>
-    <height>1091</height>
+    <height>1150</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -10515,26 +10515,81 @@ color: rgb(255, 255, 255);
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_159">
                    <item>
-                    <widget class="QLabel" name="ref_coilumn_header_24">
+                    <widget class="QLabel" name="label_107">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>140</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>150</width>
+                       <height>30</height>
+                      </size>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+}</string>
+                     </property>
+                     <property name="lineWidth">
+                      <number>0</number>
+                     </property>
+                     <property name="text">
+                      <string>PROBE MODE:</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                     <property name="indent">
+                      <number>0</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="probe_mode">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
-                      <string/>
+                      <string>0</string>
                      </property>
                      <property name="alignment">
-                      <set>Qt::AlignCenter</set>
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
                     </widget>
                    </item>
@@ -11837,60 +11892,42 @@ QPushButton:checked {
                <item>
                 <widget class="QWidget" name="widget_11" native="true">
                  <layout class="QHBoxLayout" name="horizontalLayout_31">
-                  <property name="topMargin">
-                   <number>9</number>
-                  </property>
-                  <property name="rightMargin">
-                   <number>20</number>
-                  </property>
-                  <property name="bottomMargin">
-                   <number>9</number>
-                  </property>
                   <item>
-                   <widget class="QStackedWidget" name="probe_tab_widget">
-                    <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                      <horstretch>0</horstretch>
-                      <verstretch>0</verstretch>
-                     </sizepolicy>
+                   <layout class="QVBoxLayout" name="verticalLayout_3">
+                    <property name="spacing">
+                     <number>0</number>
                     </property>
-                    <property name="minimumSize">
-                     <size>
-                      <width>550</width>
-                      <height>0</height>
-                     </size>
+                    <property name="bottomMargin">
+                     <number>9</number>
                     </property>
-                    <property name="font">
-                     <font>
-                      <family>Bebas Kai</family>
-                      <pointsize>13</pointsize>
-                     </font>
-                    </property>
-                    <property name="styleSheet">
-                     <string notr="true">QTabWidget QTabBar::tab {
-    margin-top: 5px;
-    margin-bottom: 1px;
-    min-width: preferred;
-    min-height: 25px;
-    font: 13pt &quot;bebas kai&quot;;
-}</string>
-                    </property>
-                    <property name="currentIndex">
-                     <number>1</number>
-                    </property>
-                    <widget class="QWidget" name="Page1">
-                     <layout class="QHBoxLayout" name="horizontalLayout_132">
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_133">
-                        <property name="spacing">
-                         <number>0</number>
-                        </property>
-                        <property name="leftMargin">
-                         <number>10</number>
-                        </property>
-                        <property name="rightMargin">
-                         <number>10</number>
-                        </property>
+                    <item>
+                     <widget class="QStackedWidget" name="probe_tab_widget">
+                      <property name="sizePolicy">
+                       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                        <horstretch>0</horstretch>
+                        <verstretch>0</verstretch>
+                       </sizepolicy>
+                      </property>
+                      <property name="minimumSize">
+                       <size>
+                        <width>550</width>
+                        <height>0</height>
+                       </size>
+                      </property>
+                      <property name="font">
+                       <font>
+                        <family>Bebas Kai</family>
+                        <pointsize>13</pointsize>
+                       </font>
+                      </property>
+                      <property name="styleSheet">
+                       <string notr="true"/>
+                      </property>
+                      <property name="currentIndex">
+                       <number>7</number>
+                      </property>
+                      <widget class="QWidget" name="Page1">
+                       <layout class="QHBoxLayout" name="horizontalLayout_132">
                         <item>
                          <widget class="QFrame" name="frame_40">
                           <property name="sizePolicy">
@@ -12315,20 +12352,10 @@ QPushButton:checked {
                          </widget>
                         </item>
                        </layout>
-                      </item>
-                     </layout>
-                    </widget>
-                    <widget class="QWidget" name="Page2">
-                     <layout class="QHBoxLayout" name="horizontalLayout_135">
-                      <item>
-                       <layout class="QGridLayout" name="gridLayout_15">
-                        <property name="leftMargin">
-                         <number>10</number>
-                        </property>
-                        <property name="rightMargin">
-                         <number>10</number>
-                        </property>
-                        <item row="0" column="0">
+                      </widget>
+                      <widget class="QWidget" name="Page2">
+                       <layout class="QHBoxLayout" name="horizontalLayout_135">
+                        <item>
                          <widget class="QFrame" name="frame_41">
                           <property name="sizePolicy">
                            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -12679,19 +12706,9 @@ QPushButton:checked {
                          </widget>
                         </item>
                        </layout>
-                      </item>
-                     </layout>
-                    </widget>
-                    <widget class="QWidget" name="Page3">
-                     <layout class="QHBoxLayout" name="horizontalLayout_138">
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_139">
-                        <property name="leftMargin">
-                         <number>10</number>
-                        </property>
-                        <property name="rightMargin">
-                         <number>10</number>
-                        </property>
+                      </widget>
+                      <widget class="QWidget" name="Page3">
+                       <layout class="QHBoxLayout" name="horizontalLayout_138">
                         <item>
                          <widget class="QFrame" name="frame_42">
                           <property name="sizePolicy">
@@ -13186,19 +13203,9 @@ Background:transparent;
                          </widget>
                         </item>
                        </layout>
-                      </item>
-                     </layout>
-                    </widget>
-                    <widget class="QWidget" name="Page4">
-                     <layout class="QHBoxLayout" name="horizontalLayout_141">
-                      <item>
-                       <layout class="QHBoxLayout" name="horizontalLayout_142">
-                        <property name="leftMargin">
-                         <number>40</number>
-                        </property>
-                        <property name="rightMargin">
-                         <number>40</number>
-                        </property>
+                      </widget>
+                      <widget class="QWidget" name="Page4">
+                       <layout class="QHBoxLayout" name="horizontalLayout_141">
                         <item>
                          <widget class="QFrame" name="frame_43">
                           <property name="sizePolicy">
@@ -13625,287 +13632,651 @@ Background:transparent;
                          </widget>
                         </item>
                        </layout>
-                      </item>
-                     </layout>
-                    </widget>
-                    <widget class="QWidget" name="Page5">
-                     <widget class="QWidget" name="layoutWidget_4">
-                      <property name="geometry">
-                       <rect>
-                        <x>30</x>
-                        <y>30</y>
-                        <width>485</width>
-                        <height>467</height>
-                       </rect>
-                      </property>
-                      <layout class="QHBoxLayout" name="horizontalLayout_134">
-                       <property name="spacing">
-                        <number>0</number>
-                       </property>
-                       <property name="leftMargin">
-                        <number>10</number>
-                       </property>
-                       <property name="rightMargin">
-                        <number>10</number>
-                       </property>
-                       <item>
-                        <widget class="QFrame" name="frame_45">
-                         <property name="sizePolicy">
-                          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                           <horstretch>0</horstretch>
-                           <verstretch>0</verstretch>
-                          </sizepolicy>
-                         </property>
-                         <property name="minimumSize">
-                          <size>
-                           <width>300</width>
-                           <height>310</height>
-                          </size>
-                         </property>
-                         <property name="maximumSize">
-                          <size>
-                           <width>310</width>
-                           <height>310</height>
-                          </size>
-                         </property>
-                         <property name="styleSheet">
-                          <string notr="true">QFrame {
-    border: none;
-}</string>
-                         </property>
-                         <property name="frameShape">
-                          <enum>QFrame::NoFrame</enum>
-                         </property>
-                         <property name="frameShadow">
-                          <enum>QFrame::Plain</enum>
-                         </property>
-                         <property name="lineWidth">
-                          <number>0</number>
-                         </property>
-                         <layout class="QGridLayout" name="gridLayout_8">
-                          <item row="0" column="0">
-                           <widget class="SubCallButton" name="probe_x_plus_edge_angle">
-                            <property name="sizePolicy">
-                             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                              <horstretch>0</horstretch>
-                              <verstretch>0</verstretch>
-                             </sizepolicy>
-                            </property>
-                            <property name="minimumSize">
-                             <size>
-                              <width>140</width>
-                              <height>140</height>
-                             </size>
-                            </property>
-                            <property name="icon">
-                             <iconset resource="probe_basic.qrc">
-                              <normaloff>:/images/back_left_outside_corner.png</normaloff>:/images/back_left_outside_corner.png</iconset>
-                            </property>
-                            <property name="iconSize">
-                             <size>
-                              <width>130</width>
-                              <height>130</height>
-                             </size>
-                            </property>
-                            <property name="filename" stdset="0">
-                             <string>probe_x_plus_edge_angle.ngc</string>
-                            </property>
-                            <property name="styleClass" stdset="0">
-                             <string>probeButton</string>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="0" column="1">
-                           <widget class="SubCallButton" name="probe_y_minus_edge_angle">
-                            <property name="sizePolicy">
-                             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                              <horstretch>0</horstretch>
-                              <verstretch>0</verstretch>
-                             </sizepolicy>
-                            </property>
-                            <property name="minimumSize">
-                             <size>
-                              <width>140</width>
-                              <height>140</height>
-                             </size>
-                            </property>
-                            <property name="maximumSize">
-                             <size>
-                              <width>140</width>
-                              <height>140</height>
-                             </size>
-                            </property>
-                            <property name="styleSheet">
-                             <string notr="true"/>
-                            </property>
-                            <property name="text">
-                             <string/>
-                            </property>
-                            <property name="icon">
-                             <iconset resource="probe_basic.qrc">
-                              <normaloff>:/images/back_right_outside_corner.png</normaloff>:/images/back_right_outside_corner.png</iconset>
-                            </property>
-                            <property name="iconSize">
-                             <size>
-                              <width>130</width>
-                              <height>130</height>
-                             </size>
-                            </property>
-                            <property name="filename" stdset="0">
-                             <string>probe_y_minus_edge_angle.ngc</string>
-                            </property>
-                            <property name="styleClass" stdset="0">
-                             <string>probeButton</string>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="1" column="0">
-                           <widget class="SubCallButton" name="probe_y_plus_edge_angle">
-                            <property name="sizePolicy">
-                             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                              <horstretch>0</horstretch>
-                              <verstretch>0</verstretch>
-                             </sizepolicy>
-                            </property>
-                            <property name="minimumSize">
-                             <size>
-                              <width>140</width>
-                              <height>140</height>
-                             </size>
-                            </property>
-                            <property name="maximumSize">
-                             <size>
-                              <width>140</width>
-                              <height>140</height>
-                             </size>
-                            </property>
-                            <property name="styleSheet">
-                             <string notr="true"/>
-                            </property>
-                            <property name="text">
-                             <string/>
-                            </property>
-                            <property name="icon">
-                             <iconset resource="probe_basic.qrc">
-                              <normaloff>:/images/front_left_outside_corner.png</normaloff>:/images/front_left_outside_corner.png</iconset>
-                            </property>
-                            <property name="iconSize">
-                             <size>
-                              <width>130</width>
-                              <height>130</height>
-                             </size>
-                            </property>
-                            <property name="filename" stdset="0">
-                             <string>probe_y_plus_edge_angle.ngc</string>
-                            </property>
-                            <property name="styleClass" stdset="0">
-                             <string>probeButton</string>
-                            </property>
-                           </widget>
-                          </item>
-                          <item row="1" column="1">
-                           <widget class="SubCallButton" name="probe_x_minus_edge_angle">
-                            <property name="sizePolicy">
-                             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                              <horstretch>0</horstretch>
-                              <verstretch>0</verstretch>
-                             </sizepolicy>
-                            </property>
-                            <property name="minimumSize">
-                             <size>
-                              <width>140</width>
-                              <height>140</height>
-                             </size>
-                            </property>
-                            <property name="maximumSize">
-                             <size>
-                              <width>140</width>
-                              <height>140</height>
-                             </size>
-                            </property>
-                            <property name="styleSheet">
-                             <string notr="true"/>
-                            </property>
-                            <property name="text">
-                             <string/>
-                            </property>
-                            <property name="icon">
-                             <iconset resource="probe_basic.qrc">
-                              <normaloff>:/images/front_right_outside_corner.png</normaloff>:/images/front_right_outside_corner.png</iconset>
-                            </property>
-                            <property name="iconSize">
-                             <size>
-                              <width>130</width>
-                              <height>130</height>
-                             </size>
-                            </property>
-                            <property name="filename" stdset="0">
-                             <string>probe_x_minus_edge_angle.ngc</string>
-                            </property>
-                            <property name="styleClass" stdset="0">
-                             <string>probeButton</string>
-                            </property>
-                           </widget>
-                          </item>
-                         </layout>
-                        </widget>
-                       </item>
-                      </layout>
-                     </widget>
-                    </widget>
-                    <widget class="QWidget" name="Page6"/>
-                    <widget class="QWidget" name="Page7"/>
-                    <widget class="QWidget" name="Page8">
-                     <layout class="QHBoxLayout" name="horizontalLayout_145">
-                      <item>
-                       <layout class="QVBoxLayout" name="verticalLayout_21">
-                        <property name="bottomMargin">
-                         <number>6</number>
-                        </property>
+                      </widget>
+                      <widget class="QWidget" name="Page5">
+                       <layout class="QHBoxLayout" name="horizontalLayout_4">
                         <item>
-                         <widget class="QStackedWidget" name="probe_help_widget">
+                         <widget class="QFrame" name="frame_45">
                           <property name="sizePolicy">
-                           <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+                           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                             <horstretch>0</horstretch>
                             <verstretch>0</verstretch>
                            </sizepolicy>
                           </property>
-                          <property name="font">
-                           <font>
-                            <family>Bebas Kai</family>
-                            <pointsize>13</pointsize>
-                           </font>
+                          <property name="minimumSize">
+                           <size>
+                            <width>465</width>
+                            <height>465</height>
+                           </size>
+                          </property>
+                          <property name="maximumSize">
+                           <size>
+                            <width>465</width>
+                            <height>465</height>
+                           </size>
                           </property>
                           <property name="styleSheet">
-                           <string notr="true">QTabWidget QTabBar::tab {
+                           <string notr="true">QFrame {
+    border: none;
+}</string>
+                          </property>
+                          <property name="frameShape">
+                           <enum>QFrame::NoFrame</enum>
+                          </property>
+                          <property name="frameShadow">
+                           <enum>QFrame::Plain</enum>
+                          </property>
+                          <property name="lineWidth">
+                           <number>0</number>
+                          </property>
+                          <layout class="QGridLayout" name="gridLayout_8">
+                           <item row="1" column="0">
+                            <widget class="SubCallButton" name="probe_left_top_side_2">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="minimumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="icon">
+                              <iconset resource="probe_basic.qrc">
+                               <normaloff>:/images/probe_top_left_edge_angle_r.png</normaloff>:/images/probe_top_left_edge_angle_r.png</iconset>
+                             </property>
+                             <property name="iconSize">
+                              <size>
+                               <width>130</width>
+                               <height>130</height>
+                              </size>
+                             </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_top_left_edge_angle.ngc</string>
+                             </property>
+                             <property name="styleClass" stdset="0">
+                              <string>probeButton</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="0">
+                            <widget class="SubCallButton" name="probe_corner_x_plus_edge_angle">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="minimumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="icon">
+                              <iconset resource="probe_basic.qrc">
+                               <normaloff>:/images/probe_corner_x_plus_edge_angle_r.png</normaloff>:/images/probe_corner_x_plus_edge_angle_r.png</iconset>
+                             </property>
+                             <property name="iconSize">
+                              <size>
+                               <width>130</width>
+                               <height>130</height>
+                              </size>
+                             </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_corner_x_plus_edge_angle.ngc</string>
+                             </property>
+                             <property name="styleClass" stdset="0">
+                              <string>probeButton</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="2">
+                            <widget class="SubCallButton" name="probe_corner_y_minus_edge_angle">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="minimumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="icon">
+                              <iconset resource="probe_basic.qrc">
+                               <normaloff>:/images/probe_corner_y_minus_edge_angle_r.png</normaloff>:/images/probe_corner_y_minus_edge_angle_r.png</iconset>
+                             </property>
+                             <property name="iconSize">
+                              <size>
+                               <width>130</width>
+                               <height>130</height>
+                              </size>
+                             </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_corner_y_minus_edge_angle.ngc</string>
+                             </property>
+                             <property name="styleClass" stdset="0">
+                              <string>probeButton</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="2" column="0">
+                            <widget class="SubCallButton" name="probe_corner_y_plus_edge_angle">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="minimumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="icon">
+                              <iconset resource="probe_basic.qrc">
+                               <normaloff>:/images/probe_corner_y_plus_edge_angle_r.png</normaloff>:/images/probe_corner_y_plus_edge_angle_r.png</iconset>
+                             </property>
+                             <property name="iconSize">
+                              <size>
+                               <width>130</width>
+                               <height>130</height>
+                              </size>
+                             </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_corner_y_plus_edge_angle.ngc</string>
+                             </property>
+                             <property name="styleClass" stdset="0">
+                              <string>probeButton</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="2" column="2">
+                            <widget class="SubCallButton" name="probe_corner_x_minus_edge_angle">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="minimumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="icon">
+                              <iconset resource="probe_basic.qrc">
+                               <normaloff>:/images/probe_corner_x_minus_edge_angle_r.png</normaloff>:/images/probe_corner_x_minus_edge_angle_r.png</iconset>
+                             </property>
+                             <property name="iconSize">
+                              <size>
+                               <width>130</width>
+                               <height>130</height>
+                              </size>
+                             </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_corner_x_minus_edge_angle.ngc</string>
+                             </property>
+                             <property name="styleClass" stdset="0">
+                              <string>probeButton</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="1">
+                            <widget class="SubCallButton" name="probe_z_minus_edge">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="minimumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="icon">
+                              <iconset resource="probe_basic.qrc">
+                               <normaloff>:/images/z_top_r.png</normaloff>:/images/z_top_r.png</iconset>
+                             </property>
+                             <property name="iconSize">
+                              <size>
+                               <width>130</width>
+                               <height>130</height>
+                              </size>
+                             </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_z_minus_wco.ngc</string>
+                             </property>
+                             <property name="styleClass" stdset="0">
+                              <string>probeButton</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="0" column="1">
+                            <widget class="SubCallButton" name="probe_back_top_edge_angle">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="minimumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="icon">
+                              <iconset resource="probe_basic.qrc">
+                               <normaloff>:/images/probe_top_back_edge_angle_r.png</normaloff>:/images/probe_top_back_edge_angle_r.png</iconset>
+                             </property>
+                             <property name="iconSize">
+                              <size>
+                               <width>130</width>
+                               <height>130</height>
+                              </size>
+                             </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_top_back_edge_angle.ngc</string>
+                             </property>
+                             <property name="styleClass" stdset="0">
+                              <string>probeButton</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="2" column="1">
+                            <widget class="SubCallButton" name="probe_top_front_edge_angle">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="minimumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="icon">
+                              <iconset resource="probe_basic.qrc">
+                               <normaloff>:/images/probe_top_front_edge_angle_r.png</normaloff>:/images/probe_top_front_edge_angle_r.png</iconset>
+                             </property>
+                             <property name="iconSize">
+                              <size>
+                               <width>130</width>
+                               <height>130</height>
+                              </size>
+                             </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_top_front_edge_angle.ngc</string>
+                             </property>
+                             <property name="styleClass" stdset="0">
+                              <string>probeButton</string>
+                             </property>
+                            </widget>
+                           </item>
+                           <item row="1" column="2">
+                            <widget class="SubCallButton" name="probe_top_right_edge_angle">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="minimumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>140</width>
+                               <height>140</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true"/>
+                             </property>
+                             <property name="text">
+                              <string/>
+                             </property>
+                             <property name="icon">
+                              <iconset resource="probe_basic.qrc">
+                               <normaloff>:/images/probe_top_right_edge_angle_r.png</normaloff>:/images/probe_top_right_edge_angle_r.png</iconset>
+                             </property>
+                             <property name="iconSize">
+                              <size>
+                               <width>130</width>
+                               <height>130</height>
+                              </size>
+                             </property>
+                             <property name="filename" stdset="0">
+                              <string>probe_top_right_edge_angle.ngc</string>
+                             </property>
+                             <property name="styleClass" stdset="0">
+                              <string>probeButton</string>
+                             </property>
+                            </widget>
+                           </item>
+                          </layout>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                      <widget class="QWidget" name="Page6"/>
+                      <widget class="QWidget" name="Page7"/>
+                      <widget class="QWidget" name="Page8">
+                       <layout class="QHBoxLayout" name="horizontalLayout_145">
+                        <item>
+                         <layout class="QVBoxLayout" name="verticalLayout_21">
+                          <property name="spacing">
+                           <number>0</number>
+                          </property>
+                          <property name="bottomMargin">
+                           <number>0</number>
+                          </property>
+                          <item>
+                           <widget class="QWidget" name="probe_help_Group_select" native="true">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="minimumSize">
+                             <size>
+                              <width>0</width>
+                              <height>40</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>16777215</width>
+                              <height>40</height>
+                             </size>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true"/>
+                            </property>
+                            <layout class="QGridLayout" name="gridLayout_2">
+                             <property name="leftMargin">
+                              <number>90</number>
+                             </property>
+                             <property name="topMargin">
+                              <number>1</number>
+                             </property>
+                             <property name="rightMargin">
+                              <number>90</number>
+                             </property>
+                             <property name="bottomMargin">
+                              <number>1</number>
+                             </property>
+                             <property name="horizontalSpacing">
+                              <number>12</number>
+                             </property>
+                             <item row="0" column="0">
+                              <widget class="QPushButton" name="probe_help_prev">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="minimumSize">
+                                <size>
+                                 <width>150</width>
+                                 <height>37</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>150</width>
+                                 <height>37</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QPushButton{
+    padding-left: 0px;
+    padding-right: 0px;
+    font: 13pt &quot;Bebas Kai&quot;;
+}</string>
+                               </property>
+                               <property name="text">
+                                <string>      PREV PAGE       </string>
+                               </property>
+                               <property name="icon">
+                                <iconset resource="probe_basic.qrc">
+                                 <normaloff>:/images/left_arrow.png</normaloff>:/images/left_arrow.png</iconset>
+                               </property>
+                               <property name="iconSize">
+                                <size>
+                                 <width>16</width>
+                                 <height>16</height>
+                                </size>
+                               </property>
+                               <property name="checkable">
+                                <bool>false</bool>
+                               </property>
+                               <property name="checked">
+                                <bool>false</bool>
+                               </property>
+                               <property name="autoExclusive">
+                                <bool>true</bool>
+                               </property>
+                               <attribute name="buttonGroup">
+                                <string notr="true">probehelpGroup</string>
+                               </attribute>
+                              </widget>
+                             </item>
+                             <item row="0" column="5">
+                              <widget class="QPushButton" name="probe_help_next">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="minimumSize">
+                                <size>
+                                 <width>150</width>
+                                 <height>37</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>150</width>
+                                 <height>37</height>
+                                </size>
+                               </property>
+                               <property name="layoutDirection">
+                                <enum>Qt::RightToLeft</enum>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QPushButton{
+    padding-left: 0px;
+    padding-right: 0px;
+    font: 13pt &quot;Bebas Kai&quot;;
+}</string>
+                               </property>
+                               <property name="text">
+                                <string>            NEXT PAGE</string>
+                               </property>
+                               <property name="icon">
+                                <iconset resource="probe_basic.qrc">
+                                 <normaloff>:/images/right_arrow.png</normaloff>:/images/right_arrow.png</iconset>
+                               </property>
+                               <property name="iconSize">
+                                <size>
+                                 <width>16</width>
+                                 <height>16</height>
+                                </size>
+                               </property>
+                               <property name="checkable">
+                                <bool>false</bool>
+                               </property>
+                               <property name="autoExclusive">
+                                <bool>true</bool>
+                               </property>
+                               <attribute name="buttonGroup">
+                                <string notr="true">probehelpGroup</string>
+                               </attribute>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QStackedWidget" name="probe_help_widget">
+                            <property name="sizePolicy">
+                             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                              <horstretch>0</horstretch>
+                              <verstretch>0</verstretch>
+                             </sizepolicy>
+                            </property>
+                            <property name="minimumSize">
+                             <size>
+                              <width>0</width>
+                              <height>410</height>
+                             </size>
+                            </property>
+                            <property name="maximumSize">
+                             <size>
+                              <width>16777215</width>
+                              <height>420</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <family>Bebas Kai</family>
+                              <pointsize>13</pointsize>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QTabWidget QTabBar::tab {
     margin-top: 5px;
     margin-bottom: 1px;
     min-width: preferred;
     min-height: 25px;
     font: 13pt &quot;bebas kai&quot;;
 }</string>
-                          </property>
-                          <property name="currentIndex">
-                           <number>0</number>
-                          </property>
-                          <widget class="QWidget" name="stackedWidget_4Page1">
-                           <layout class="QHBoxLayout" name="horizontalLayout_146">
-                            <item>
-                             <widget class="QLabel" name="label_77">
-                              <property name="minimumSize">
-                               <size>
-                                <width>450</width>
-                                <height>410</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>450</width>
-                                <height>410</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">QLabel{
+                            </property>
+                            <property name="currentIndex">
+                             <number>0</number>
+                            </property>
+                            <widget class="QWidget" name="stackedWidget_4Page1">
+                             <layout class="QHBoxLayout" name="horizontalLayout_146">
+                              <item>
+                               <widget class="QLabel" name="label_77">
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>450</width>
+                                  <height>410</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>450</width>
+                                  <height>410</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
@@ -13913,38 +14284,38 @@ Background:transparent;
     background: rgb(245, 240, 255);
 	image: url(:/images/step_off_width.png);
 }</string>
-                              </property>
-                              <property name="text">
-                               <string/>
-                              </property>
-                              <property name="scaledContents">
-                               <bool>true</bool>
-                              </property>
-                              <property name="indent">
-                               <number>0</number>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </widget>
-                          <widget class="QWidget" name="stackedWidget_4Page2">
-                           <layout class="QHBoxLayout" name="horizontalLayout_148">
-                            <item>
-                             <widget class="QLabel" name="label_78">
-                              <property name="minimumSize">
-                               <size>
-                                <width>500</width>
-                                <height>400</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>500</width>
-                                <height>400</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">QLabel{
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="scaledContents">
+                                 <bool>true</bool>
+                                </property>
+                                <property name="indent">
+                                 <number>0</number>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
+                            </widget>
+                            <widget class="QWidget" name="stackedWidget_4Page2">
+                             <layout class="QHBoxLayout" name="horizontalLayout_148">
+                              <item>
+                               <widget class="QLabel" name="label_78">
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>500</width>
+                                  <height>400</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>500</width>
+                                  <height>400</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
@@ -13952,44 +14323,44 @@ Background:transparent;
     background: rgb(245, 240, 255);
 	image: url(:/images/extra_probe_depth.png);
 }</string>
-                              </property>
-                              <property name="text">
-                               <string/>
-                              </property>
-                              <property name="scaledContents">
-                               <bool>true</bool>
-                              </property>
-                              <property name="alignment">
-                               <set>Qt::AlignCenter</set>
-                              </property>
-                              <property name="wordWrap">
-                               <bool>true</bool>
-                              </property>
-                              <property name="indent">
-                               <number>0</number>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </widget>
-                          <widget class="QWidget" name="stackedWidget_4Page3">
-                           <layout class="QHBoxLayout" name="horizontalLayout_39">
-                            <item>
-                             <widget class="QLabel" name="label_79">
-                              <property name="minimumSize">
-                               <size>
-                                <width>440</width>
-                                <height>400</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>440</width>
-                                <height>400</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">QLabel{
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="scaledContents">
+                                 <bool>true</bool>
+                                </property>
+                                <property name="alignment">
+                                 <set>Qt::AlignCenter</set>
+                                </property>
+                                <property name="wordWrap">
+                                 <bool>true</bool>
+                                </property>
+                                <property name="indent">
+                                 <number>0</number>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
+                            </widget>
+                            <widget class="QWidget" name="stackedWidget_4Page3">
+                             <layout class="QHBoxLayout" name="horizontalLayout_39">
+                              <item>
+                               <widget class="QLabel" name="label_79">
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>440</width>
+                                  <height>400</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>440</width>
+                                  <height>400</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
@@ -13998,44 +14369,44 @@ Background:transparent;
     background: rgb(245, 240, 255);
 	image: url(:/images/max_z_distance.png);
 }</string>
-                              </property>
-                              <property name="text">
-                               <string/>
-                              </property>
-                              <property name="scaledContents">
-                               <bool>true</bool>
-                              </property>
-                              <property name="alignment">
-                               <set>Qt::AlignCenter</set>
-                              </property>
-                              <property name="wordWrap">
-                               <bool>true</bool>
-                              </property>
-                              <property name="indent">
-                               <number>0</number>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </widget>
-                          <widget class="QWidget" name="stackedWidget_4Page4">
-                           <layout class="QHBoxLayout" name="horizontalLayout_34">
-                            <item>
-                             <widget class="QLabel" name="label_105">
-                              <property name="minimumSize">
-                               <size>
-                                <width>470</width>
-                                <height>400</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>470</width>
-                                <height>400</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">QLabel{
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="scaledContents">
+                                 <bool>true</bool>
+                                </property>
+                                <property name="alignment">
+                                 <set>Qt::AlignCenter</set>
+                                </property>
+                                <property name="wordWrap">
+                                 <bool>true</bool>
+                                </property>
+                                <property name="indent">
+                                 <number>0</number>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
+                            </widget>
+                            <widget class="QWidget" name="stackedWidget_4Page4">
+                             <layout class="QHBoxLayout" name="horizontalLayout_34">
+                              <item>
+                               <widget class="QLabel" name="label_105">
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>470</width>
+                                  <height>400</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>470</width>
+                                  <height>400</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
@@ -14044,44 +14415,44 @@ Background:transparent;
     background: rgb(245, 240, 255);
 	image: url(:/images/max_xy_distance.png);
 }</string>
-                              </property>
-                              <property name="text">
-                               <string/>
-                              </property>
-                              <property name="scaledContents">
-                               <bool>true</bool>
-                              </property>
-                              <property name="alignment">
-                               <set>Qt::AlignCenter</set>
-                              </property>
-                              <property name="wordWrap">
-                               <bool>true</bool>
-                              </property>
-                              <property name="indent">
-                               <number>0</number>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </widget>
-                          <widget class="QWidget" name="stackedWidget_4Page5">
-                           <layout class="QHBoxLayout" name="horizontalLayout_42">
-                            <item>
-                             <widget class="QLabel" name="label_80">
-                              <property name="minimumSize">
-                               <size>
-                                <width>450</width>
-                                <height>400</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>450</width>
-                                <height>400</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">QLabel{
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="scaledContents">
+                                 <bool>true</bool>
+                                </property>
+                                <property name="alignment">
+                                 <set>Qt::AlignCenter</set>
+                                </property>
+                                <property name="wordWrap">
+                                 <bool>true</bool>
+                                </property>
+                                <property name="indent">
+                                 <number>0</number>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
+                            </widget>
+                            <widget class="QWidget" name="stackedWidget_4Page5">
+                             <layout class="QHBoxLayout" name="horizontalLayout_42">
+                              <item>
+                               <widget class="QLabel" name="label_80">
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>450</width>
+                                  <height>400</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>450</width>
+                                  <height>400</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
@@ -14090,44 +14461,44 @@ Background:transparent;
     background: rgb(245, 240, 255);
 	image: url(:/images/z_clearance.png);
 }</string>
-                              </property>
-                              <property name="text">
-                               <string/>
-                              </property>
-                              <property name="scaledContents">
-                               <bool>true</bool>
-                              </property>
-                              <property name="alignment">
-                               <set>Qt::AlignCenter</set>
-                              </property>
-                              <property name="wordWrap">
-                               <bool>true</bool>
-                              </property>
-                              <property name="indent">
-                               <number>0</number>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </widget>
-                          <widget class="QWidget" name="stackedWidget_4Page6">
-                           <layout class="QHBoxLayout" name="horizontalLayout_35">
-                            <item>
-                             <widget class="QLabel" name="label_106">
-                              <property name="minimumSize">
-                               <size>
-                                <width>480</width>
-                                <height>400</height>
-                               </size>
-                              </property>
-                              <property name="maximumSize">
-                               <size>
-                                <width>480</width>
-                                <height>400</height>
-                               </size>
-                              </property>
-                              <property name="styleSheet">
-                               <string notr="true">QLabel{
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="scaledContents">
+                                 <bool>true</bool>
+                                </property>
+                                <property name="alignment">
+                                 <set>Qt::AlignCenter</set>
+                                </property>
+                                <property name="wordWrap">
+                                 <bool>true</bool>
+                                </property>
+                                <property name="indent">
+                                 <number>0</number>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
+                            </widget>
+                            <widget class="QWidget" name="stackedWidget_4Page6">
+                             <layout class="QHBoxLayout" name="horizontalLayout_35">
+                              <item>
+                               <widget class="QLabel" name="label_106">
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>480</width>
+                                  <height>400</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>480</width>
+                                  <height>400</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true">QLabel{
     border-style: solid;
     border-color: rgb(46, 54, 56);
     border-width: 3px;
@@ -14136,651 +14507,126 @@ Background:transparent;
     background: rgb(245, 240, 255);
 	image: url(:/images/xy_clearance.png);
 }</string>
-                              </property>
-                              <property name="text">
-                               <string/>
-                              </property>
-                              <property name="scaledContents">
-                               <bool>true</bool>
-                              </property>
-                              <property name="alignment">
-                               <set>Qt::AlignCenter</set>
-                              </property>
-                              <property name="wordWrap">
-                               <bool>true</bool>
-                              </property>
-                              <property name="indent">
-                               <number>0</number>
-                              </property>
-                             </widget>
-                            </item>
-                           </layout>
-                          </widget>
-                          <widget class="QWidget" name="stackedWidget_4Page7"/>
-                          <widget class="QWidget" name="stackedWidget_4Page8"/>
-                         </widget>
-                        </item>
-                        <item>
-                         <widget class="QWidget" name="probe_help_Group_select" native="true">
-                          <property name="styleSheet">
-                           <string notr="true">QWidget {
-    font: 13pt &quot;bebas kai&quot;;
-}</string>
-                          </property>
-                          <layout class="QGridLayout" name="gridLayout_2">
-                           <property name="leftMargin">
-                            <number>3</number>
-                           </property>
-                           <property name="topMargin">
-                            <number>1</number>
-                           </property>
-                           <property name="rightMargin">
-                            <number>3</number>
-                           </property>
-                           <property name="bottomMargin">
-                            <number>1</number>
-                           </property>
-                           <property name="horizontalSpacing">
-                            <number>0</number>
-                           </property>
-                           <item row="0" column="0">
-                            <widget class="QPushButton" name="step_off_width_help">
-                             <property name="minimumSize">
-                              <size>
-                               <width>11</width>
-                               <height>37</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QPushButton {
-    margin-top: 2px;
-    margin-bottom: 2px;
-    color: white;
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-style: solid;
-    border-color: black;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-    border-right-width: 1px;
-    border-left-width: 2px;
-    min-width: preferred;
-    min-height: 25;
-    padding-left: 4px;
-    padding-right: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 0px;
-}
-
-QPushButton:pressed, QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
-}</string>
-                             </property>
-                             <property name="text">
-                              <string>STEP OFF WIDTH</string>
-                             </property>
-                             <property name="checkable">
-                              <bool>true</bool>
-                             </property>
-                             <property name="checked">
-                              <bool>true</bool>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                             <property name="page" stdset="0">
-                              <number>0</number>
-                             </property>
-                             <attribute name="buttonGroup">
-                              <string notr="true">probehelpGroup</string>
-                             </attribute>
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="scaledContents">
+                                 <bool>true</bool>
+                                </property>
+                                <property name="alignment">
+                                 <set>Qt::AlignCenter</set>
+                                </property>
+                                <property name="wordWrap">
+                                 <bool>true</bool>
+                                </property>
+                                <property name="indent">
+                                 <number>0</number>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
                             </widget>
-                           </item>
-                           <item row="0" column="7">
-                            <widget class="QPushButton" name="max_xy_distance_help">
-                             <property name="minimumSize">
-                              <size>
-                               <width>10</width>
-                               <height>37</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QPushButton {
-    margin-top: 2px;
-    margin-bottom: 2px;
-    color: white;
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-color: black;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    min-width: preferred;
-    min-height: 25;
-    padding-left: 4px;
-    padding-right: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-}
-
-QPushButton:pressed, QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
-}</string>
-                             </property>
-                             <property name="text">
-                              <string>MAX XY DIST</string>
-                             </property>
-                             <property name="checkable">
-                              <bool>true</bool>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                             <property name="page" stdset="0">
-                              <number>3</number>
-                             </property>
-                             <attribute name="buttonGroup">
-                              <string notr="true">probehelpGroup</string>
-                             </attribute>
-                            </widget>
-                           </item>
-                           <item row="0" column="1">
-                            <widget class="QPushButton" name="extra_probe_depth_help">
-                             <property name="minimumSize">
-                              <size>
-                               <width>10</width>
-                               <height>37</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QPushButton {
-    margin-top: 2px;
-    margin-bottom: 2px;
-    color: white;
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-color: black;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    min-width: preferred;
-    min-height: 25;
-    padding-left: 4px;
-    padding-right: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-}
-
-QPushButton:pressed, QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
-}</string>
-                             </property>
-                             <property name="text">
-                              <string>EX PROBE DEPTH</string>
-                             </property>
-                             <property name="checkable">
-                              <bool>true</bool>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                             <property name="page" stdset="0">
-                              <number>1</number>
-                             </property>
-                             <attribute name="buttonGroup">
-                              <string notr="true">probehelpGroup</string>
-                             </attribute>
-                            </widget>
-                           </item>
-                           <item row="0" column="2">
-                            <widget class="QPushButton" name="max_z_distance_help">
-                             <property name="minimumSize">
-                              <size>
-                               <width>10</width>
-                               <height>37</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QPushButton {
-    margin-top: 2px;
-    margin-bottom: 2px;
-    color: white;
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-color: black;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    min-width: preferred;
-    min-height: 25;
-    padding-left: 4px;
-    padding-right: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-}
-
-QPushButton:pressed, QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
-}</string>
-                             </property>
-                             <property name="text">
-                              <string>MAX Z DIST</string>
-                             </property>
-                             <property name="checkable">
-                              <bool>true</bool>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                             <property name="page" stdset="0">
-                              <number>2</number>
-                             </property>
-                             <attribute name="buttonGroup">
-                              <string notr="true">probehelpGroup</string>
-                             </attribute>
-                            </widget>
-                           </item>
-                           <item row="0" column="8">
-                            <widget class="QPushButton" name="z_clearance_help">
-                             <property name="minimumSize">
-                              <size>
-                               <width>11</width>
-                               <height>37</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QPushButton {
-    margin-top: 2px;
-    margin-bottom: 2px;
-    color: white;
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-style: solid;
-    border-color: black;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-    border-right-width: 2px;
-    border-left-width: 1px;
-    min-width: preferred;
-    min-height: 25;
-    padding-left: 4px;
-    padding-right: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 4px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 4px;
-}
-
-QPushButton:pressed, QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
-}</string>
-                             </property>
-                             <property name="text">
-                              <string>Z CLEARANCE</string>
-                             </property>
-                             <property name="checkable">
-                              <bool>true</bool>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                             <property name="page" stdset="0">
-                              <number>4</number>
-                             </property>
-                             <attribute name="buttonGroup">
-                              <string notr="true">probehelpGroup</string>
-                             </attribute>
-                            </widget>
-                           </item>
-                           <item row="1" column="0">
-                            <widget class="QPushButton" name="xy_clearance_help">
-                             <property name="minimumSize">
-                              <size>
-                               <width>11</width>
-                               <height>37</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QPushButton {
-    margin-top: 2px;
-    margin-bottom: 2px;
-    color: white;
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-style: solid;
-    border-color: black;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-    border-right-width: 1px;
-    border-left-width: 2px;
-    min-width: preferred;
-    min-height: 25;
-    padding-left: 4px;
-    padding-right: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    border-top-left-radius: 4px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 0px;
-}
-
-QPushButton:pressed, QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
-}</string>
-                             </property>
-                             <property name="text">
-                              <string>XY CLEARANCE</string>
-                             </property>
-                             <property name="checkable">
-                              <bool>true</bool>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                             <property name="page" stdset="0">
-                              <number>5</number>
-                             </property>
-                             <attribute name="buttonGroup">
-                              <string notr="true">probehelpGroup</string>
-                             </attribute>
-                            </widget>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="QPushButton" name="probe_fast_fr_help">
-                             <property name="minimumSize">
-                              <size>
-                               <width>10</width>
-                               <height>37</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QPushButton {
-    margin-top: 2px;
-    margin-bottom: 2px;
-    color: white;
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-color: black;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    min-width: preferred;
-    min-height: 25;
-    padding-left: 4px;
-    padding-right: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-}
-
-QPushButton:pressed, QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
-}</string>
-                             </property>
-                             <property name="text">
-                              <string>PROBE FAST FR</string>
-                             </property>
-                             <property name="checkable">
-                              <bool>true</bool>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                             <property name="page" stdset="0">
-                              <number>6</number>
-                             </property>
-                             <attribute name="buttonGroup">
-                              <string notr="true">probehelpGroup</string>
-                             </attribute>
-                            </widget>
-                           </item>
-                           <item row="1" column="2">
-                            <widget class="QPushButton" name="probe_slow_fr_help">
-                             <property name="minimumSize">
-                              <size>
-                               <width>10</width>
-                               <height>37</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QPushButton {
-    margin-top: 2px;
-    margin-bottom: 2px;
-    color: white;
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-color: black;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    min-width: preferred;
-    min-height: 25;
-    padding-left: 4px;
-    padding-right: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-}
-
-QPushButton:pressed, QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
-}</string>
-                             </property>
-                             <property name="text">
-                              <string>PROBE SLOW FR</string>
-                             </property>
-                             <property name="checkable">
-                              <bool>true</bool>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                             <property name="page" stdset="0">
-                              <number>7</number>
-                             </property>
-                             <attribute name="buttonGroup">
-                              <string notr="true">probehelpGroup</string>
-                             </attribute>
-                            </widget>
-                           </item>
-                           <item row="1" column="7">
-                            <widget class="QPushButton" name="tip_calibration_help">
-                             <property name="minimumSize">
-                              <size>
-                               <width>10</width>
-                               <height>37</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QPushButton {
-    margin-top: 2px;
-    margin-bottom: 2px;
-    color: white;
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-color: black;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    min-width: preferred;
-    min-height: 25;
-    padding-left: 4px;
-    padding-right: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 0px;
-}
-
-QPushButton:pressed, QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
-}</string>
-                             </property>
-                             <property name="text">
-                              <string>TIP CALIBRATION</string>
-                             </property>
-                             <property name="checkable">
-                              <bool>true</bool>
-                             </property>
-                             <property name="checked">
-                              <bool>false</bool>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                             <property name="page" stdset="0">
-                              <number>8</number>
-                             </property>
-                             <attribute name="buttonGroup">
-                              <string notr="true">probehelpGroup</string>
-                             </attribute>
-                            </widget>
-                           </item>
-                           <item row="1" column="8">
-                            <widget class="QPushButton" name="edge_width_help">
-                             <property name="minimumSize">
-                              <size>
-                               <width>11</width>
-                               <height>37</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true">QPushButton {
-    margin-top: 2px;
-    margin-bottom: 2px;
-    color: white;
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4e4e4e, stop: 1.0 #3a3a3a);
-    border-style: solid;
-    border-color: black;
-    border-top-width: 2px;
-    border-bottom-width: 2px;
-    border-right-width: 2px;
-    border-left-width: 1px;
-    min-width: preferred;
-    min-height: 25;
-    padding-left: 4px;
-    padding-right: 4px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    border-top-left-radius: 0px;
-    border-top-right-radius: 4px;
-    border-bottom-left-radius: 0px;
-    border-bottom-right-radius: 4px;
-}
-
-QPushButton:pressed, QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(112, 112, 238, 255), stop:0.121053 rgba(123, 123, 232, 255), stop:0.3 rgba(85, 85, 238, 255), stop:0.694737 rgba(85, 85, 238, 255), stop:0.915789 rgba(123, 123, 232, 255), stop:1 rgba(112, 112, 238, 255))
-}</string>
-                             </property>
-                             <property name="text">
-                              <string>EDGE WIDTH</string>
-                             </property>
-                             <property name="checkable">
-                              <bool>true</bool>
-                             </property>
-                             <property name="autoExclusive">
-                              <bool>true</bool>
-                             </property>
-                             <property name="page" stdset="0">
-                              <number>9</number>
-                             </property>
-                             <attribute name="buttonGroup">
-                              <string notr="true">probehelpGroup</string>
-                             </attribute>
-                            </widget>
-                           </item>
-                          </layout>
-                         </widget>
+                            <widget class="QWidget" name="stackedWidget_4Page7"/>
+                            <widget class="QWidget" name="stackedWidget_4Page8"/>
+                           </widget>
+                          </item>
+                         </layout>
                         </item>
                        </layout>
-                      </item>
-                     </layout>
-                    </widget>
-                   </widget>
+                      </widget>
+                     </widget>
+                    </item>
+                    <item>
+                     <widget class="QWidget" name="probeMode" native="true">
+                      <property name="styleSheet">
+                       <string notr="true"/>
+                      </property>
+                      <layout class="QHBoxLayout" name="horizontalLayout_5">
+                       <property name="spacing">
+                        <number>15</number>
+                       </property>
+                       <property name="leftMargin">
+                        <number>57</number>
+                       </property>
+                       <property name="topMargin">
+                        <number>1</number>
+                       </property>
+                       <property name="rightMargin">
+                        <number>57</number>
+                       </property>
+                       <property name="bottomMargin">
+                        <number>20</number>
+                       </property>
+                       <item>
+                        <widget class="QPushButton" name="probe_wco">
+                         <property name="sizePolicy">
+                          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+                           <horstretch>0</horstretch>
+                           <verstretch>0</verstretch>
+                          </sizepolicy>
+                         </property>
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>16777215</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>PROBE WCO</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                         <property name="autoExclusive">
+                          <bool>true</bool>
+                         </property>
+                         <property name="value" stdset="0">
+                          <string>0</string>
+                         </property>
+                         <attribute name="buttonGroup">
+                          <string notr="true">buttonGroup</string>
+                         </attribute>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QPushButton" name="probe_Position_only">
+                         <property name="minimumSize">
+                          <size>
+                           <width>0</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                         <property name="maximumSize">
+                          <size>
+                           <width>16777215</width>
+                           <height>40</height>
+                          </size>
+                         </property>
+                         <property name="text">
+                          <string>PROBE POSITION ONLY</string>
+                         </property>
+                         <property name="checkable">
+                          <bool>true</bool>
+                         </property>
+                         <property name="value" stdset="0">
+                          <string>1</string>
+                         </property>
+                         <attribute name="buttonGroup">
+                          <string notr="true">buttonGroup</string>
+                         </attribute>
+                        </widget>
+                       </item>
+                      </layout>
+                     </widget>
+                    </item>
+                   </layout>
                   </item>
                   <item>
                    <layout class="QVBoxLayout" name="verticalLayout_44">
@@ -23684,12 +23530,12 @@ font: 11pt bebas kai;
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>466</x>
-     <y>734</y>
+     <x>476</x>
+     <y>804</y>
     </hint>
     <hint type="destinationlabel">
-     <x>506</x>
-     <y>747</y>
+     <x>574</x>
+     <y>808</y>
     </hint>
    </hints>
   </connection>
@@ -23700,8 +23546,8 @@ font: 11pt bebas kai;
    <slot>deleteItem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>667</x>
-     <y>594</y>
+     <x>738</x>
+     <y>642</y>
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
@@ -23796,8 +23642,8 @@ font: 11pt bebas kai;
    <slot>deleteItem()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>109</x>
-     <y>594</y>
+     <x>146</x>
+     <y>642</y>
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
@@ -24784,7 +24630,8 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="probetabGroup"/>
+  <buttongroup name="buttonGroup"/>
   <buttongroup name="probehelpGroup"/>
+  <buttongroup name="probetabGroup"/>
  </buttongroups>
 </ui>

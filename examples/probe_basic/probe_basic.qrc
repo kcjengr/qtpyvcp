@@ -10,6 +10,7 @@
     <file>images/left_side_edge.png</file>
     <file>images/right_side_edge.png</file>
     <file>images/z_top.png</file>
+    <file>images/z_top_r.png</file>
     <file>images/inside_back_left_corner.png</file>
     <file>images/inside_back_right_corner.png</file>
     <file>images/inside_front_left_corner.png</file>
@@ -37,6 +38,22 @@
     <file>images/probe_y_valley.png</file>
     <file>images/probe_x_ridge.png</file>
     <file>images/probe_y_ridge.png</file>
+    <file>images/probe_corner_y_plus_edge_angle.png</file>
+    <file>images/probe_corner_y_minus_edge_angle.png</file>
+    <file>images/probe_corner_x_plus_edge_angle.png</file>
+    <file>images/probe_corner_x_minus_edge_angle.png</file>
+    <file>images/probe_top_front_edge_angle.png</file>
+    <file>images/probe_top_left_edge_angle.png</file>
+    <file>images/probe_top_back_edge_angle.png</file>
+    <file>images/probe_top_right_edge_angle.png</file>
+    <file>images/probe_corner_y_plus_edge_angle_r.png</file>
+    <file>images/probe_corner_y_minus_edge_angle_r.png</file>
+    <file>images/probe_corner_x_plus_edge_angle_r.png</file>
+    <file>images/probe_corner_x_minus_edge_angle_r.png</file>
+    <file>images/probe_top_front_edge_angle_r.png</file>
+    <file>images/probe_top_left_edge_angle_r.png</file>
+    <file>images/probe_top_back_edge_angle_r.png</file>
+    <file>images/probe_top_right_edge_angle_r.png</file>
     <file>images/ridge_and_valley_group.png</file>
     <file>images/tool_probe.png</file>
     <file>images/atc_spindle_tool_dimensioned.png</file>
