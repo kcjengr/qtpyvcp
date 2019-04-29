@@ -24,7 +24,7 @@ class ProbeBasic(VCPMainWindow):
         self.probe_tab_widget.setCurrentIndex(button.property('page'))
 
     # Fwd/Back buttons off the stacked widget
-    def on_probe_help_nextBtn_released(self):
+    def on_probe_help_next_released(self):
         lastPage = 7
         currentIndex = self.probe_help_widget.currentIndex()
         if currentIndex == lastPage:
@@ -32,7 +32,7 @@ class ProbeBasic(VCPMainWindow):
         else:
             self.probe_help_widget.setCurrentIndex(currentIndex + 1)
 
-    def on_probe_help_prevBtn_released(self):
+    def on_probe_help_prev_released(self):
         lastPage = 7
         currentIndex = self.probe_help_widget.currentIndex()
         if currentIndex == 0:

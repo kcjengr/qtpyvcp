@@ -1409,8 +1409,17 @@ QPushButton:checked {
                      <string>ORTHO</string>
                     </property>
                     <property name="checkable">
-                     <bool>false</bool>
+                     <bool>true</bool>
                     </property>
+                    <property name="checked">
+                     <bool>true</bool>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">mainorthoperspbtnGroup</string>
+                    </attribute>
                    </widget>
                   </item>
                   <item>
@@ -1479,8 +1488,14 @@ QPushButton:checked {
                      <string>PSPECT</string>
                     </property>
                     <property name="checkable">
-                     <bool>false</bool>
+                     <bool>true</bool>
                     </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
+                    <attribute name="buttonGroup">
+                     <string notr="true">mainorthoperspbtnGroup</string>
+                    </attribute>
                    </widget>
                   </item>
                  </layout>
@@ -11924,7 +11939,7 @@ QPushButton:checked {
                        <string notr="true"/>
                       </property>
                       <property name="currentIndex">
-                       <number>7</number>
+                       <number>0</number>
                       </property>
                       <widget class="QWidget" name="Page1">
                        <layout class="QHBoxLayout" name="horizontalLayout_132">
@@ -14074,7 +14089,7 @@ Background:transparent;
                           <item>
                            <widget class="QWidget" name="probe_help_Group_select" native="true">
                             <property name="sizePolicy">
-                             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                               <horstretch>0</horstretch>
                               <verstretch>0</verstretch>
                              </sizepolicy>
@@ -14094,7 +14109,10 @@ Background:transparent;
                             <property name="styleSheet">
                              <string notr="true"/>
                             </property>
-                            <layout class="QGridLayout" name="gridLayout_2">
+                            <layout class="QHBoxLayout" name="horizontalLayout_44">
+                             <property name="spacing">
+                              <number>12</number>
+                             </property>
                              <property name="leftMargin">
                               <number>90</number>
                              </property>
@@ -14107,10 +14125,7 @@ Background:transparent;
                              <property name="bottomMargin">
                               <number>1</number>
                              </property>
-                             <property name="horizontalSpacing">
-                              <number>12</number>
-                             </property>
-                             <item row="0" column="0">
+                             <item>
                               <widget class="QPushButton" name="probe_help_prev">
                                <property name="sizePolicy">
                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -14164,7 +14179,7 @@ Background:transparent;
                                </attribute>
                               </widget>
                              </item>
-                             <item row="0" column="5">
+                             <item>
                               <widget class="QPushButton" name="probe_help_next">
                                <property name="sizePolicy">
                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -14263,6 +14278,12 @@ Background:transparent;
                              <layout class="QHBoxLayout" name="horizontalLayout_146">
                               <item>
                                <widget class="QLabel" name="label_77">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
                                 <property name="minimumSize">
                                  <size>
                                   <width>450</width>
@@ -14302,6 +14323,12 @@ Background:transparent;
                              <layout class="QHBoxLayout" name="horizontalLayout_148">
                               <item>
                                <widget class="QLabel" name="label_78">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
                                 <property name="minimumSize">
                                  <size>
                                   <width>500</width>
@@ -14347,6 +14374,12 @@ Background:transparent;
                              <layout class="QHBoxLayout" name="horizontalLayout_39">
                               <item>
                                <widget class="QLabel" name="label_79">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
                                 <property name="minimumSize">
                                  <size>
                                   <width>440</width>
@@ -14393,6 +14426,12 @@ Background:transparent;
                              <layout class="QHBoxLayout" name="horizontalLayout_34">
                               <item>
                                <widget class="QLabel" name="label_105">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
                                 <property name="minimumSize">
                                  <size>
                                   <width>470</width>
@@ -14439,6 +14478,12 @@ Background:transparent;
                              <layout class="QHBoxLayout" name="horizontalLayout_42">
                               <item>
                                <widget class="QLabel" name="label_80">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
                                 <property name="minimumSize">
                                  <size>
                                   <width>450</width>
@@ -14485,6 +14530,12 @@ Background:transparent;
                              <layout class="QHBoxLayout" name="horizontalLayout_35">
                               <item>
                                <widget class="QLabel" name="label_106">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
                                 <property name="minimumSize">
                                  <size>
                                   <width>480</width>
@@ -17270,7 +17321,7 @@ QPushButton:checked {
                     <number>20</number>
                    </property>
                    <item>
-                    <widget class="QPushButton" name="iso_view_button_3">
+                    <widget class="QPushButton" name="iso_view_button_plot">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -17298,10 +17349,13 @@ QPushButton:checked {
                      <property name="checkable">
                       <bool>false</bool>
                      </property>
+                     <attribute name="buttonGroup">
+                      <string notr="true">plotviewGroup</string>
+                     </attribute>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="x_view_button_3">
+                    <widget class="QPushButton" name="x_view_button_plot">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -17329,10 +17383,13 @@ QPushButton:checked {
                      <property name="checkable">
                       <bool>false</bool>
                      </property>
+                     <attribute name="buttonGroup">
+                      <string notr="true">plotviewGroup</string>
+                     </attribute>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="y_view_button_3">
+                    <widget class="QPushButton" name="y_view_button_plot">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -17360,10 +17417,13 @@ QPushButton:checked {
                      <property name="checkable">
                       <bool>false</bool>
                      </property>
+                     <attribute name="buttonGroup">
+                      <string notr="true">plotviewGroup</string>
+                     </attribute>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="z_view_button_3">
+                    <widget class="QPushButton" name="z_view_button_plot">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -17391,6 +17451,9 @@ QPushButton:checked {
                      <property name="checkable">
                       <bool>false</bool>
                      </property>
+                     <attribute name="buttonGroup">
+                      <string notr="true">plotviewGroup</string>
+                     </attribute>
                     </widget>
                    </item>
                    <item>
@@ -17413,7 +17476,7 @@ QPushButton:checked {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="zoom_in_button_3">
+                    <widget class="QPushButton" name="zoom_in_button_plot">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -17444,7 +17507,7 @@ QPushButton:checked {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="zoom_out_button_3">
+                    <widget class="QPushButton" name="zoom_out_button_plot">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -17494,7 +17557,7 @@ QPushButton:checked {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="clear_button_3">
+                    <widget class="QPushButton" name="clear_button_plot">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -17544,7 +17607,7 @@ QPushButton:checked {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="ortho_button_3">
+                    <widget class="QPushButton" name="ortho_button_plot">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -17570,12 +17633,21 @@ QPushButton:checked {
                       <string>ORTHO</string>
                      </property>
                      <property name="checkable">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
+                     <property name="checked">
+                      <bool>true</bool>
+                     </property>
+                     <property name="autoExclusive">
+                      <bool>true</bool>
+                     </property>
+                     <attribute name="buttonGroup">
+                      <string notr="true">plotorthoperspbtnGroup</string>
+                     </attribute>
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="perspective_button_3">
+                    <widget class="QPushButton" name="perspective_button_plot">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -17601,8 +17673,14 @@ QPushButton:checked {
                       <string>PSPECT</string>
                      </property>
                      <property name="checkable">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
+                     <property name="autoExclusive">
+                      <bool>true</bool>
+                     </property>
+                     <attribute name="buttonGroup">
+                      <string notr="true">plotorthoperspbtnGroup</string>
+                     </attribute>
                     </widget>
                    </item>
                   </layout>
@@ -17976,7 +18054,7 @@ QPushButton:checked {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="program_zoom_button_3">
+                    <widget class="QPushButton" name="program_zoom_button_plot">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -18007,7 +18085,7 @@ QPushButton:checked {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="machine_zoom_button_3">
+                    <widget class="QPushButton" name="machine_zoom_button_plot">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -23867,11 +23945,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>781</x>
-     <y>172</y>
+     <y>175</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -23883,11 +23961,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>781</x>
-     <y>131</y>
+     <y>133</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -23899,11 +23977,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>781</x>
-     <y>307</y>
+     <y>314</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -23931,11 +24009,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>781</x>
-     <y>536</y>
+     <y>550</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -23947,11 +24025,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>781</x>
-     <y>213</y>
+     <y>217</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -23963,11 +24041,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>781</x>
-     <y>90</y>
+     <y>91</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -23979,11 +24057,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>781</x>
-     <y>495</y>
+     <y>508</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -23995,11 +24073,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>781</x>
-     <y>348</y>
+     <y>356</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -24014,8 +24092,8 @@ font: 11pt bebas kai;
      <y>131</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -24030,8 +24108,8 @@ font: 11pt bebas kai;
      <y>180</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -24062,8 +24140,8 @@ font: 11pt bebas kai;
      <y>278</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -24078,8 +24156,8 @@ font: 11pt bebas kai;
      <y>229</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -24094,8 +24172,8 @@ font: 11pt bebas kai;
      <y>376</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -24110,8 +24188,8 @@ font: 11pt bebas kai;
      <y>327</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -24123,11 +24201,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>781</x>
-     <y>630</y>
+     <y>647</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
@@ -24139,16 +24217,16 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>781</x>
-     <y>589</y>
+     <y>605</y>
     </hint>
     <hint type="destinationlabel">
-     <x>881</x>
-     <y>76</y>
+     <x>1650</x>
+     <y>114</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>iso_view_button_3</sender>
+   <sender>iso_view_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk</receiver>
    <slot>setViewP()</slot>
@@ -24180,7 +24258,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>y_view_button_3</sender>
+   <sender>y_view_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk</receiver>
    <slot>setViewY()</slot>
@@ -24196,7 +24274,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>x_view_button_3</sender>
+   <sender>x_view_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk</receiver>
    <slot>setViewX()</slot>
@@ -24212,23 +24290,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>z_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk</receiver>
-   <slot>setViewZ()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1701</x>
-     <y>258</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1561</x>
-     <y>263</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>zoom_out_button_3</sender>
+   <sender>zoom_out_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk</receiver>
    <slot>zoomOut()</slot>
@@ -24244,7 +24306,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>zoom_in_button_3</sender>
+   <sender>zoom_in_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk</receiver>
    <slot>zoomIn()</slot>
@@ -24260,7 +24322,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>clear_button_3</sender>
+   <sender>clear_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk</receiver>
    <slot>clearLivePlot()</slot>
@@ -24276,7 +24338,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>ortho_button_3</sender>
+   <sender>ortho_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk</receiver>
    <slot>setViewOrtho()</slot>
@@ -24292,7 +24354,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>perspective_button_3</sender>
+   <sender>perspective_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk</receiver>
    <slot>setViewPersp()</slot>
@@ -24308,7 +24370,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>machine_zoom_button_3</sender>
+   <sender>machine_zoom_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk</receiver>
    <slot>setViewMachine()</slot>
@@ -24324,7 +24386,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>program_zoom_button_3</sender>
+   <sender>program_zoom_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk</receiver>
    <slot>printView()</slot>
@@ -24340,7 +24402,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>iso_view_button_3</sender>
+   <sender>iso_view_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk_probe</receiver>
    <slot>setViewP()</slot>
@@ -24356,7 +24418,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>perspective_button_3</sender>
+   <sender>perspective_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk_probe</receiver>
    <slot>setViewPersp()</slot>
@@ -24372,7 +24434,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>x_view_button_3</sender>
+   <sender>x_view_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk_probe</receiver>
    <slot>setViewX()</slot>
@@ -24388,7 +24450,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>y_view_button_3</sender>
+   <sender>y_view_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk_probe</receiver>
    <slot>setViewY()</slot>
@@ -24404,7 +24466,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>zoom_in_button_3</sender>
+   <sender>zoom_in_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk_probe</receiver>
    <slot>zoomIn()</slot>
@@ -24420,7 +24482,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>zoom_out_button_3</sender>
+   <sender>zoom_out_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk_probe</receiver>
    <slot>zoomOut()</slot>
@@ -24436,7 +24498,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>clear_button_3</sender>
+   <sender>clear_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk_probe</receiver>
    <slot>clearLivePlot()</slot>
@@ -24452,23 +24514,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>z_view_button_3</sender>
-   <signal>clicked()</signal>
-   <receiver>vtk_probe</receiver>
-   <slot>setViewZ()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1704</x>
-     <y>246</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1592</x>
-     <y>253</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>ortho_button_3</sender>
+   <sender>ortho_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk_probe</receiver>
    <slot>setViewOrtho()</slot>
@@ -24580,7 +24626,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>machine_zoom_button_3</sender>
+   <sender>machine_zoom_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk_probe</receiver>
    <slot>setViewMachine()</slot>
@@ -24596,7 +24642,7 @@ font: 11pt bebas kai;
    </hints>
   </connection>
   <connection>
-   <sender>program_zoom_button_3</sender>
+   <sender>program_zoom_button_plot</sender>
    <signal>clicked()</signal>
    <receiver>vtk_probe</receiver>
    <slot>printView()</slot>
@@ -24608,6 +24654,38 @@ font: 11pt bebas kai;
     <hint type="destinationlabel">
      <x>1541</x>
      <y>480</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>z_view_button_plot</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk</receiver>
+   <slot>setViewZ()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1701</x>
+     <y>258</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1561</x>
+     <y>263</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>z_view_button_plot</sender>
+   <signal>clicked()</signal>
+   <receiver>vtk_probe</receiver>
+   <slot>setViewZ()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1704</x>
+     <y>246</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1592</x>
+     <y>253</y>
     </hint>
    </hints>
   </connection>
@@ -24630,8 +24708,11 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="probehelpGroup"/>
   <buttongroup name="probetabGroup"/>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="plotviewGroup"/>
+  <buttongroup name="plotorthoperspbtnGroup"/>
+  <buttongroup name="mainorthoperspbtnGroup"/>
  </buttongroups>
 </ui>
