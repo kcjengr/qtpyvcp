@@ -258,13 +258,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewOrtho(self):
         self.renderer.GetActiveCamera().ParallelProjectionOn()
-        self.renderer.ResetCamera()
+        #self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewPersp(self):
         self.renderer.GetActiveCamera().ParallelProjectionOff()
-        self.renderer.ResetCamera()
+        #self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
     @Slot()
