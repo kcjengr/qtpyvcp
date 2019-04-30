@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1924</width>
-    <height>1137</height>
+    <height>1141</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -9172,338 +9172,352 @@ border-style: none;
                 </widget>
                </item>
                <item>
-                <layout class="QGridLayout" name="gridLayout_14">
-                 <property name="topMargin">
-                  <number>3</number>
+                <widget class="QWidget" name="widget" native="true">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
-                 <property name="verticalSpacing">
-                  <number>6</number>
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>140</height>
+                  </size>
                  </property>
-                 <item row="0" column="0">
-                  <widget class="ActionButton" name="actionbutton_19">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>120</width>
-                     <height>32</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>120</width>
-                     <height>38</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
+                 <layout class="QGridLayout" name="gridLayout_14">
+                  <property name="topMargin">
+                   <number>3</number>
+                  </property>
+                  <property name="verticalSpacing">
+                   <number>6</number>
+                  </property>
+                  <item row="0" column="0">
+                   <widget class="ActionButton" name="actionbutton_19">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>120</width>
+                      <height>32</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>120</width>
+                      <height>38</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
-                   </property>
-                   <property name="text">
-                    <string>G54</string>
-                   </property>
-                   <property name="autoExclusive">
-                    <bool>true</bool>
-                   </property>
-                   <property name="actionName" stdset="0">
-                    <string>machine.set-work-coord:G54</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="1">
-                  <widget class="ActionButton" name="actionbutton_20">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>120</width>
-                     <height>32</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>120</width>
-                     <height>38</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
+                    </property>
+                    <property name="text">
+                     <string>G54</string>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
+                    <property name="actionName" stdset="0">
+                     <string>machine.set-work-coord:G54</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="ActionButton" name="actionbutton_20">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>120</width>
+                      <height>32</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>120</width>
+                      <height>38</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
-                   </property>
-                   <property name="text">
-                    <string>G55</string>
-                   </property>
-                   <property name="autoExclusive">
-                    <bool>true</bool>
-                   </property>
-                   <property name="actionName" stdset="0">
-                    <string>machine.set-work-coord:G55</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="0" column="2">
-                  <widget class="ActionButton" name="actionbutton_21">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>120</width>
-                     <height>32</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>120</width>
-                     <height>38</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
+                    </property>
+                    <property name="text">
+                     <string>G55</string>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
+                    <property name="actionName" stdset="0">
+                     <string>machine.set-work-coord:G55</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="2">
+                   <widget class="ActionButton" name="actionbutton_21">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>120</width>
+                      <height>32</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>120</width>
+                      <height>38</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
-                   </property>
-                   <property name="text">
-                    <string>G56</string>
-                   </property>
-                   <property name="autoExclusive">
-                    <bool>true</bool>
-                   </property>
-                   <property name="actionName" stdset="0">
-                    <string>machine.set-work-coord:G56</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="2">
-                  <widget class="ActionButton" name="actionbutton_22">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>120</width>
-                     <height>32</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>120</width>
-                     <height>38</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
+                    </property>
+                    <property name="text">
+                     <string>G56</string>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
+                    <property name="actionName" stdset="0">
+                     <string>machine.set-work-coord:G56</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="2">
+                   <widget class="ActionButton" name="actionbutton_22">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>120</width>
+                      <height>32</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>120</width>
+                      <height>38</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
-                   </property>
-                   <property name="text">
-                    <string>G59</string>
-                   </property>
-                   <property name="autoExclusive">
-                    <bool>true</bool>
-                   </property>
-                   <property name="actionName" stdset="0">
-                    <string>machine.set-work-coord:G59</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="2">
-                  <widget class="ActionButton" name="actionbutton_23">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>120</width>
-                     <height>32</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>120</width>
-                     <height>38</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
+                    </property>
+                    <property name="text">
+                     <string>G59</string>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
+                    <property name="actionName" stdset="0">
+                     <string>machine.set-work-coord:G59</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="2">
+                   <widget class="ActionButton" name="actionbutton_23">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>120</width>
+                      <height>32</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>120</width>
+                      <height>38</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
-                   </property>
-                   <property name="text">
-                    <string>G59.3</string>
-                   </property>
-                   <property name="autoExclusive">
-                    <bool>true</bool>
-                   </property>
-                   <property name="actionName" stdset="0">
-                    <string>machine.set-work-coord:G59.3</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="1">
-                  <widget class="ActionButton" name="actionbutton_24">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>120</width>
-                     <height>32</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>120</width>
-                     <height>38</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
+                    </property>
+                    <property name="text">
+                     <string>G59.3</string>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
+                    <property name="actionName" stdset="0">
+                     <string>machine.set-work-coord:G59.3</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="ActionButton" name="actionbutton_24">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>120</width>
+                      <height>32</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>120</width>
+                      <height>38</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
-                   </property>
-                   <property name="text">
-                    <string>G58</string>
-                   </property>
-                   <property name="autoExclusive">
-                    <bool>true</bool>
-                   </property>
-                   <property name="actionName" stdset="0">
-                    <string>machine.set-work-coord:G58</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="1">
-                  <widget class="ActionButton" name="actionbutton_25">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>120</width>
-                     <height>32</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>120</width>
-                     <height>38</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
+                    </property>
+                    <property name="text">
+                     <string>G58</string>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
+                    <property name="actionName" stdset="0">
+                     <string>machine.set-work-coord:G58</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="1">
+                   <widget class="ActionButton" name="actionbutton_25">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>120</width>
+                      <height>32</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>120</width>
+                      <height>38</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
-                   </property>
-                   <property name="text">
-                    <string>G59.2</string>
-                   </property>
-                   <property name="autoExclusive">
-                    <bool>true</bool>
-                   </property>
-                   <property name="actionName" stdset="0">
-                    <string>machine.set-work-coord:G59.2</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="1" column="0">
-                  <widget class="ActionButton" name="actionbutton_26">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>120</width>
-                     <height>32</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>120</width>
-                     <height>38</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
+                    </property>
+                    <property name="text">
+                     <string>G59.2</string>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
+                    <property name="actionName" stdset="0">
+                     <string>machine.set-work-coord:G59.2</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="ActionButton" name="actionbutton_26">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>120</width>
+                      <height>32</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>120</width>
+                      <height>38</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
-                   </property>
-                   <property name="text">
-                    <string>G57</string>
-                   </property>
-                   <property name="autoExclusive">
-                    <bool>true</bool>
-                   </property>
-                   <property name="actionName" stdset="0">
-                    <string>machine.set-work-coord:G57</string>
-                   </property>
-                  </widget>
-                 </item>
-                 <item row="2" column="0">
-                  <widget class="ActionButton" name="actionbutton_27">
-                   <property name="sizePolicy">
-                    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                     <horstretch>0</horstretch>
-                     <verstretch>0</verstretch>
-                    </sizepolicy>
-                   </property>
-                   <property name="minimumSize">
-                    <size>
-                     <width>120</width>
-                     <height>32</height>
-                    </size>
-                   </property>
-                   <property name="maximumSize">
-                    <size>
-                     <width>120</width>
-                     <height>38</height>
-                    </size>
-                   </property>
-                   <property name="styleSheet">
-                    <string notr="true">QPushButton {
+                    </property>
+                    <property name="text">
+                     <string>G57</string>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
+                    <property name="actionName" stdset="0">
+                     <string>machine.set-work-coord:G57</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="ActionButton" name="actionbutton_27">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>120</width>
+                      <height>32</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>120</width>
+                      <height>38</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton {
    	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
-                   </property>
-                   <property name="text">
-                    <string>G59.1</string>
-                   </property>
-                   <property name="autoExclusive">
-                    <bool>true</bool>
-                   </property>
-                   <property name="actionName" stdset="0">
-                    <string>machine.set-work-coord:G59.1</string>
-                   </property>
-                  </widget>
-                 </item>
-                </layout>
+                    </property>
+                    <property name="text">
+                     <string>G59.1</string>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
+                    <property name="actionName" stdset="0">
+                     <string>machine.set-work-coord:G59.1</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
                </item>
                <item>
                 <widget class="QLabel" name="label_82">
@@ -9563,6 +9577,12 @@ border-style: none;
                  </property>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_154">
+                   <property name="topMargin">
+                    <number>1</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>1</number>
+                   </property>
                    <item>
                     <widget class="QLabel" name="ref_coilumn_header_19">
                      <property name="sizePolicy">
@@ -9638,13 +9658,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -9726,13 +9746,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -9758,6 +9778,12 @@ color: rgb(255, 255, 255);
                  </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_155">
+                   <property name="topMargin">
+                    <number>1</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>1</number>
+                   </property>
                    <item>
                     <widget class="QLabel" name="ref_coilumn_header_20">
                      <property name="sizePolicy">
@@ -9833,13 +9859,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -9921,13 +9947,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -9953,6 +9979,12 @@ color: rgb(255, 255, 255);
                  </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_156">
+                   <property name="topMargin">
+                    <number>1</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>1</number>
+                   </property>
                    <item>
                     <widget class="QLabel" name="ref_coilumn_header_21">
                      <property name="sizePolicy">
@@ -10028,13 +10060,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -10113,13 +10145,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -10145,6 +10177,12 @@ color: rgb(255, 255, 255);
                  </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_157">
+                   <property name="topMargin">
+                    <number>1</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>1</number>
+                   </property>
                    <item>
                     <widget class="QLabel" name="ref_coilumn_header_22">
                      <property name="sizePolicy">
@@ -10220,13 +10258,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -10305,13 +10343,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -10337,6 +10375,12 @@ color: rgb(255, 255, 255);
                  </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_158">
+                   <property name="topMargin">
+                    <number>1</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>1</number>
+                   </property>
                    <item>
                     <widget class="QLabel" name="ref_coilumn_header_23">
                      <property name="sizePolicy">
@@ -10412,13 +10456,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -10434,198 +10478,6 @@ color: rgb(255, 255, 255);
                      </property>
                      <property name="text">
                       <string>0.0000</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="label_93">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>140</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>140</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="baseSize">
-                      <size>
-                       <width>140</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QLabel{
-font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
-}</string>
-                     </property>
-                     <property name="lineWidth">
-                      <number>0</number>
-                     </property>
-                     <property name="text">
-                      <string>Calibration Offset:</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                     </property>
-                     <property name="indent">
-                      <number>0</number>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLineEdit" name="calibration_offset">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>100</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>100</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>0.0000</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                  </layout>
-                 </item>
-                 <item>
-                  <layout class="QHBoxLayout" name="horizontalLayout_159">
-                   <item>
-                    <widget class="QLabel" name="ref_coilumn_header_24">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="label_107">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>140</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>150</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QLabel{
-font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
-}</string>
-                     </property>
-                     <property name="lineWidth">
-                      <number>0</number>
-                     </property>
-                     <property name="text">
-                      <string>PROBE MODE:</string>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                     </property>
-                     <property name="indent">
-                      <number>0</number>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLineEdit" name="probe_mode">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>100</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>100</width>
-                       <height>30</height>
-                      </size>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string>0</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -10689,13 +10541,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>100</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -10779,6 +10631,12 @@ color: rgb(255, 255, 255);
                  </property>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_160">
+                   <property name="topMargin">
+                    <number>1</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>1</number>
+                   </property>
                    <item>
                     <widget class="QLabel" name="label_96">
                      <property name="sizePolicy">
@@ -10795,7 +10653,7 @@ color: rgb(255, 255, 255);
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>130</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -10830,13 +10688,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -10909,13 +10767,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -10991,13 +10849,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -11029,6 +10887,12 @@ color: rgb(255, 255, 255);
                  </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_29">
+                   <property name="topMargin">
+                    <number>1</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>1</number>
+                   </property>
                    <item>
                     <widget class="QLabel" name="label_99">
                      <property name="sizePolicy">
@@ -11045,7 +10909,7 @@ color: rgb(255, 255, 255);
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>130</width>
+                       <width>100</width>
                        <height>30</height>
                       </size>
                      </property>
@@ -11080,13 +10944,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -11159,13 +11023,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -11238,13 +11102,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -11273,37 +11137,113 @@ color: rgb(255, 255, 255);
                  </item>
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_161">
+                   <property name="topMargin">
+                    <number>1</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>1</number>
+                   </property>
                    <item>
-                    <widget class="QLabel" name="ref_coilumn_header_2">
+                    <widget class="QLabel" name="label_107">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>0</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>100</width>
+                       <height>30</height>
+                      </size>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+}</string>
+                     </property>
+                     <property name="lineWidth">
+                      <number>0</number>
+                     </property>
+                     <property name="text">
+                      <string>PROBE MODE:</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                     <property name="indent">
+                      <number>0</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLineEdit" name="probe_mode">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>80</width>
+                       <height>32</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
-                      <string/>
+                      <string>0</string>
                      </property>
                      <property name="alignment">
-                      <set>Qt::AlignCenter</set>
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                     <property name="readOnly">
+                      <bool>true</bool>
                      </property>
                     </widget>
                    </item>
                    <item>
                     <widget class="QLabel" name="label_102">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>60</width>
+                       <height>30</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>60</width>
+                       <height>30</height>
+                      </size>
                      </property>
                      <property name="styleSheet">
                       <string notr="true">QLabel{
@@ -11336,13 +11276,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -11415,13 +11355,13 @@ color: rgb(255, 255, 255);
                      <property name="minimumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>32</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -11966,7 +11906,7 @@ QPushButton:checked {
                        <string notr="true"/>
                       </property>
                       <property name="currentIndex">
-                       <number>2</number>
+                       <number>0</number>
                       </property>
                       <widget class="QWidget" name="Page1">
                        <layout class="QHBoxLayout" name="horizontalLayout_132">
@@ -14102,11 +14042,109 @@ Background:transparent;
                        </layout>
                       </widget>
                       <widget class="QWidget" name="Page6"/>
-                      <widget class="QWidget" name="Page7"/>
+                      <widget class="QWidget" name="Page7">
+                       <widget class="QLineEdit" name="calibration_offset">
+                        <property name="geometry">
+                         <rect>
+                          <x>300</x>
+                          <y>80</y>
+                          <width>100</width>
+                          <height>30</height>
+                         </rect>
+                        </property>
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>100</width>
+                          <height>30</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>100</width>
+                          <height>30</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                        </property>
+                        <property name="text">
+                         <string>0.0000</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                        </property>
+                       </widget>
+                       <widget class="QLabel" name="label_93">
+                        <property name="geometry">
+                         <rect>
+                          <x>150</x>
+                          <y>80</y>
+                          <width>140</width>
+                          <height>30</height>
+                         </rect>
+                        </property>
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>140</width>
+                          <height>30</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>140</width>
+                          <height>30</height>
+                         </size>
+                        </property>
+                        <property name="baseSize">
+                         <size>
+                          <width>140</width>
+                          <height>30</height>
+                         </size>
+                        </property>
+                        <property name="styleSheet">
+                         <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+}</string>
+                        </property>
+                        <property name="lineWidth">
+                         <number>0</number>
+                        </property>
+                        <property name="text">
+                         <string>Calibration Offset:</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                        </property>
+                        <property name="indent">
+                         <number>0</number>
+                        </property>
+                       </widget>
+                      </widget>
                       <widget class="QWidget" name="Page8">
                        <layout class="QHBoxLayout" name="horizontalLayout_145">
                         <item>
-                         <widget class="QFrame" name="">
+                         <widget class="QFrame" name="frame">
                           <property name="sizePolicy">
                            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                             <horstretch>0</horstretch>
@@ -14706,11 +14744,11 @@ background: transparent;
                          <property name="autoExclusive">
                           <bool>true</bool>
                          </property>
-                         <property name="value" stdset="0">
+                         <property name="checkedAction" stdset="0">
                           <string>0</string>
                          </property>
                          <attribute name="buttonGroup">
-                          <string notr="true">buttonGroup</string>
+                          <string notr="true">probemodeGroup</string>
                          </attribute>
                         </widget>
                        </item>
@@ -14734,11 +14772,11 @@ background: transparent;
                          <property name="checkable">
                           <bool>true</bool>
                          </property>
-                         <property name="value" stdset="0">
+                         <property name="checkedAction" stdset="0">
                           <string>1</string>
                          </property>
                          <attribute name="buttonGroup">
-                          <string notr="true">buttonGroup</string>
+                          <string notr="true">probemodeGroup</string>
                          </attribute>
                         </widget>
                        </item>
@@ -15744,7 +15782,7 @@ QAbstractSpinBox:selected {
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -23667,6 +23705,7 @@ font: 11pt bebas kai;
   <include location="probe_basic.qrc"/>
   <include location="probe_basic.qrc"/>
   <include location="probe_basic.qrc"/>
+  <include location="probe_basic.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -24776,11 +24815,11 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
+  <buttongroup name="mainorthoperspbtnGroup"/>
   <buttongroup name="plotviewGroup"/>
   <buttongroup name="plotorthoperspbtnGroup"/>
   <buttongroup name="probehelpGroup"/>
   <buttongroup name="probetabGroup"/>
-  <buttongroup name="mainorthoperspbtnGroup"/>
-  <buttongroup name="buttonGroup"/>
+  <buttongroup name="probemodeGroup"/>
  </buttongroups>
 </ui>

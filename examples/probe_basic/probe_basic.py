@@ -39,3 +39,11 @@ class ProbeBasic(VCPMainWindow):
             self.probe_help_widget.setCurrentIndex(lastPage)
         else:
             self.probe_help_widget.setCurrentIndex(currentIndex - 1)
+
+    @Slot(QAbstractButton)
+    def on_probemodeGroup_buttonClicked(self, button):
+        if button.isChecked():
+            self.probe_mode.setText(button.property('checkedAction'))
+
+
+            
