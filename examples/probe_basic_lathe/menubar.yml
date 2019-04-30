@@ -14,7 +14,7 @@ menubar:
       action:
 
     - title: "&Close"
-      action: program.load:/home/kurt/dev/cnc/qtpyvcp/sim/example_gcode/blank.ngc
+      action: program.clear
 
     - title: "Save &As"
       action:
