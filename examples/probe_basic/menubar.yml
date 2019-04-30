@@ -11,7 +11,7 @@ menubar:
       provider: qtpyvcp.widgets.recent_files_menu:RecentFilesMenu
 
     - title: "&Reload"
-      action:
+      action: program.reload
 
     - title: "&Close"
       action: program.clear
