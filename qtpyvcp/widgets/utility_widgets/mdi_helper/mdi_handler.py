@@ -1,7 +1,10 @@
 import os
 
 from qtpy import uic
+
 from qtpy.QtWidgets import QWidget
+from qtpy.QtCore import QSortFilterProxyModel
+from qtpy.QtGui import QStandardItemModel, QStandardItem, QIcon
 
 from qtpyvcp.widgets.utility_widgets.mdi_helper import mdi_text
 
@@ -25,15 +28,22 @@ class MdiHelperHandler(QWidget):
         self.ui.mdiBackspace.clicked.connect(self.mdi_back_space)
         self.ui.mdiSetLabelsBtn.clicked.connect(self.mdi_set_labels)
         self.ui.mdiSendBtn.clicked.connect(self.mdi_clear)
-        self.ui.gcodeListPageUpBtn.clicked.connect(self.gcode_list_page_up)
-        self.ui.gcodeListPageDownBtn.clicked.connect(self.gcode_list_page_down)
 
         titles = mdi_text.gcode_titles()
 
+        self.gcode_list_model = QStandardItemModel(self.ui.gcodeHelpListView)
+        self.gcode_list_model_proxy = QSortFilterProxyModel(self.ui.gcodeHelpListView)
+
+        self.gcode_list_model_proxy.setSourceModel(self.gcode_list_model)
+
+        self.ui.gcodeHelpListView.setModel(self.gcode_list_model_proxy)
+
         for key, value in sorted(titles.items()):
-            self.ui.gcodeHelpListWidget.addItem("{} {}".format(key, value))
+            self.help_line(key, value)
 
     def mdi_change_page(self, widget):
+
+        print()
         self.ui.mdiStack.setCurrentIndex(widget.property('page'))
 
     def mdi_keypad(self, widget):
@@ -82,24 +92,11 @@ class MdiHelperHandler(QWidget):
             text = self.ui.mdiEntry.text()[:-1]
             self.ui.mdiEntry.setText(text)
 
-    def gcode_list_page_up(self, widget):
-        rows = self.ui.gcodeHelpListWidget.count() - 1
-        current_row = self.ui.gcodeHelpListWidget.currentRow()
-        if current_row:
-            if current_row > 25:
-                self.ui.gcodeHelpListWidget.setCurrentRow(current_row - 25)
-            else:
-                self.ui.gcodeHelpListWidget.setCurrentRow(0)
-        else:
-            self.ui.gcodeHelpListWidget.setCurrentRow(rows)
+    def help_line(self, gcode, help_text):
 
-    def gcode_list_page_down(self, widget):
-        rows = self.ui.gcodeHelpListWidget.count() - 1
-        current_row = self.ui.gcodeHelpListWidget.currentRow()
-        if current_row < rows:
-            if (current_row + 25) < rows:
-                self.ui.gcodeHelpListWidget.setCurrentRow(current_row + 25)
-            else:
-                self.ui.gcodeHelpListWidget.setCurrentRow(rows)
-        else:
-            self.ui.gcodeHelpListWidget.setCurrentRow(0)
+        msg = '{}\t{}'.format(gcode, help_text)
+        item = QStandardItem()
+        item.setText(msg)
+        item.setIcon(QIcon.fromTheme('help-browser'))
+        item.setEditable(False)
+        self.gcode_list_model.appendRow(item)
