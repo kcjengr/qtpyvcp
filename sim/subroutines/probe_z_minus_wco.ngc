@@ -24,6 +24,7 @@ o<probe_z_minus_wco> sub
   #<y_hint> = #12              (=1.0000)
   #<diameter_hint> = #13       (=1.0000)
   #<edge_width> = #14          (=0.5000)
+  #<probe_mode> = #15          (=0)
 
   (Cancel G92 offsets)
   G92.1
@@ -71,8 +72,12 @@ o<probe_z_minus_wco> sub
     G0 Z[#<z_minus_probed> + #<z_clearance>]
   o<130> endif
 
-  (Record Z zero in selected WCO)
-  G10 L2 P#5220 Z[#5063 + #<workspace_z>]
+  (probe mode rule for WCO or probe position measuring only)
+  o<140> if [#<probe_mode> EQ 0]
+    (Record Z zero in selected WCO)
+    G10 L2 P#5220 Z[#5063 + #<workspace_z>]
+    o<probe_z_minus_wco> return
+  o<140> endif
 
 o<probe_z_minus_wco> endsub
 

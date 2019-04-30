@@ -25,6 +25,7 @@ o<probe_valley_y> sub
   #<y_hint> = #12              (=1.0000)
   #<diameter_hint> = #13       (=1.0000)
   #<edge_width> = #14          (=0.5000)
+  #<probe_mode> = #15          (=0)
 
   (Cancel G92 offsets)
   G92.1
@@ -44,7 +45,7 @@ o<probe_valley_y> sub
   #<probe_diameter_offset> = [#<probe_diameter> - [#<calibration_offset> * 2]]
 
   (Call sub "probe_z_minus_sub" to Probe top of Workpiece)
-  o<probe_z_minus_sub> call [#1][#2][#5][#8][#9]
+  o<probe_z_minus_sub> call [#1][#2][#5][#8][#9][#15]
 
   (Probe Y Positioning Move, Step Off Width)
   G91
@@ -53,12 +54,12 @@ o<probe_valley_y> sub
   G1 Z-[#<z_clearance> + #<probe_diameter> + #<extra_probe_depth>]
 
   (Call sub "probe_y_plus" to Probe Y+ side of Workpiece)
-  o<probe_y_plus> call [#1][#3][#4][#8][#9][#10]
+  o<probe_y_plus> call [#1][#3][#4][#8][#9][#10][#15]
 
   #<y_plus_probed> = #5062
 
   (Call sub "probe_y_minus_sub" to Probe Y- side of Workpiece)
-  o<probe_y_minus_sub> call [#1][#3 + #12][#4][#8][#9][#10]
+  o<probe_y_minus_sub> call [#1][#3 + #12][#4][#8][#9][#10][#15]
 
   #<y_minus_probed> = #5062
 
@@ -71,13 +72,17 @@ o<probe_valley_y> sub
   (Completed probed width calculations)
   #<y_probed_width> = [#<raw_width> + #<probe_diameter_offset>]
 
-  (Record Y Zero in selected WCO)
-  G10 L2 P#5220 y[#<probe_center> + #<workspace_y>]
+  (probe mode rule for WCO or probe position measuring only)
+  o<120> if [#<probe_mode> EQ 0]
+    (Record Y Zero in selected WCO)
+    G10 L2 P#5220 Y[#<probe_center> + #<workspace_y>]
+    o<probe_valley_y> return
+  o<120> endif
 
   (Probe Completion Move to Z Clearance Plane, Y Zero)
   G90
-  G0 Z[#<z_clearance>]
-  G0 Y0.0000
+  G0 Z[#5063 + #<z_clearance>]
+  G0 Y[#<probe_center>]
 
 o<probe_valley_y> endsub
 

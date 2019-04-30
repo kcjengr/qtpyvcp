@@ -17,6 +17,7 @@ o<probe_y_minus_sub> sub
   #<probe_slow_fr> = #4
   #<probe_fast_fr> = #5
   #<calibration_offset> = #6
+  #<probe_mode> = #7
 
   (Cancel G92 offsets)
   G92.1
@@ -73,8 +74,14 @@ o<probe_y_minus_sub> sub
     G0 Y[#<y_minus_probed> + #<xy_clearance>]
   o<130> endif
 
+  (probe mode rule for WCO or probe position measuring only)
+  o<140> if [#<probe_mode> EQ 0]
   (Record Y Zero in selected WCO)
   G10 L2 P#5220 Y[#5062 + #<workspace_y> - #<probe_center_offset>]
+    o<probe_y_minus_sub> return
+  o<140> endif
+
+  #<y_minus_zero_edge> = [#5062 - #<probe_center_offset>]
 
 o<probe_y_minus_sub> endsub
 

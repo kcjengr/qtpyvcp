@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1924</width>
-    <height>1089</height>
+    <height>1103</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -12158,7 +12158,7 @@ QPushButton:checked {
                        <string notr="true"/>
                       </property>
                       <property name="currentIndex">
-                       <number>5</number>
+                       <number>0</number>
                       </property>
                       <widget class="QWidget" name="Page1">
                        <layout class="QHBoxLayout" name="horizontalLayout_132">
@@ -24975,11 +24975,11 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="probehelpGroup"/>
-  <buttongroup name="probetabGroup"/>
   <buttongroup name="mainorthoperspbtnGroup"/>
-  <buttongroup name="plotorthoperspbtnGroup"/>
   <buttongroup name="plotviewGroup"/>
+  <buttongroup name="plotorthoperspbtnGroup"/>
+  <buttongroup name="probehelpGroup"/>
   <buttongroup name="probemodeGroup"/>
+  <buttongroup name="probetabGroup"/>
  </buttongroups>
 </ui>
