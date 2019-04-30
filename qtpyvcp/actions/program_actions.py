@@ -1,5 +1,6 @@
 import sys
 import linuxcnc
+import tempfile
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -38,6 +39,16 @@ load.bindOk = lambda *args, **kwargs: True
 
 def reload():
     LOG.error('Reload not implemented yet.')
+
+def clear():
+    """Clear the loaded NC program."""
+    _, blankfile = tempfile.mkstemp(prefix="blank", suffix="ngc")
+    with open(blankfile, 'w') as fp:
+        fp.write("(New Program)\n\n\nM30")
+    load(blankfile, add_to_recents=False)
+
+clear.ok = lambda *args, **kwargs: True
+clear.bindOk = lambda *args, **kwargs: True
 
 def addToRecents(fname):
     files = STATUS.recent_files.getValue()
