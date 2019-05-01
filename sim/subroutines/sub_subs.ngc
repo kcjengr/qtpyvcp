@@ -41,3 +41,8 @@ o<140> endif
 G90
 G0 Z[#<z_minus_probed> + #<z_clearance>]
 G0 X[#<x_plus_probed> + #<probe_center_offset>] Y[#<y_plus_probed> + #<probe_center_offset>]
+
+o<130> if [#<_value_returned> NE 1]
+  (MSG, Missing edge parameter, aborting)
+  o<probe_front_left_top_corner> return
+o<130> endif

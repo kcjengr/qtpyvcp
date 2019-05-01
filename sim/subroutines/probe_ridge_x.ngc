@@ -25,6 +25,7 @@ o<probe_ridge_x> sub
   #<y_hint> = #12              (=1.0000)
   #<diameter_hint> = #13       (=1.0000)
   #<edge_width> = #14          (=0.5000)
+  #<probe_mode> = #15          (=0)
 
   (Cancel G92 offsets)
   G92.1
@@ -51,7 +52,9 @@ o<probe_ridge_x> sub
   #<probe_diameter_offset> = [#<probe_diameter> - [#<calibration_offset> * 2]]
 
   (Call sub "probe_z_minus_sub" to Probe top of Workpiece)
-  o<probe_z_minus_sub> call [#1][#2][#5][#8][#9]
+  o<probe_z_minus_sub> call [#1][#2][#5][#8][#9][#15]
+
+  #<z_finish_height> = #<_value>
 
   (Probe X Positioning Move, X hint/2 + Step Off Width)
   G91
@@ -84,7 +87,7 @@ o<probe_ridge_x> sub
   #<x_minus_probed> = #5061
 
   (probed center calulation)
-  #<probe_center> = [[#<x_plus_probed> + #<x_minus_probed>] / 2]
+  #<probe_x_center> = [[#<x_plus_probed> + #<x_minus_probed>] / 2]
 
   (calculate X Width Probed)
   #<raw_width> = [#<x_minus_probed> - #<x_plus_probed>]
@@ -92,13 +95,24 @@ o<probe_ridge_x> sub
   (Completed probed width calculations)
   #<x_probed_width> = [#<raw_width> - #<probe_diameter_offset>]
 
-  (Record X Zero in selected WCO)
-  G10 L2 P#5220 X[#<probe_center> + #<workspace_x>]
+  (probe mode rules for WCO or probe position measuring only)
+  o<120> if [#<probe_mode> EQ 0]
+    (Record X Zero in selected WCO)
+    G10 L2 P#5220 X[#<probe_x_center> + #<workspace_x>]
+    (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
+    G90
+    G0 Z[#<z_clearance>]
+    G0 X0.0000
+    o<probe_ridge_x> return
+  o<120> endif
 
-  (second side Probe Completion Move to Z Clearance Plane)
-  G90
-  G0 Z[#<z_clearance>]
-  G0 X0.0000
+  o<130> if [#<probe_mode> EQ 1]
+    (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
+    G90
+    G0 Z[#<z_finish_height>]
+    G0 X[#<probe_x_center>]
+    o<probe_ridge_x> return
+  o<130> endif
 
 o<probe_ridge_x> endsub
 

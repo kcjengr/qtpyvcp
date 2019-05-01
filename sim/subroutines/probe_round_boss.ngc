@@ -25,6 +25,7 @@ o<probe_round_boss> sub
   #<diameter_hint> = #12       (=1.0000)
   #<diameter_hint> = #13       (=1.0000)
   #<edge_width> = #14          (=0.5000)
+  #<probe_mode> = #15          (=0)
 
   (Cancel G92 offsets)
   G92.1
@@ -52,7 +53,9 @@ o<probe_round_boss> sub
   #<probe_diameter_offset> = [#<probe_diameter> - [#<calibration_offset> * 2]]
 
   (Call sub "probe_z_minus_sub" to Probe top of Workpiece)
-  o<probe_z_minus_sub> call [#1][#2][#5][#8][#9]
+  o<probe_z_minus_sub> call [#1][#2][#5][#8][#9][#15]
+
+  #<z_finish_height> = #<_value>
 
   (Probe X Positioning Move, Diam hint/2 + Step Off Width)
   G91
@@ -169,13 +172,24 @@ o<probe_round_boss> sub
   (Completed probed width calculations)
   #<x_probed_diam> = [#<raw_width> - #<probe_diameter_offset>]
 
-  (Record X Zero in selected WCO)
-  G10 L2 P#5220 X[#<x_probed_center> + #<workspace_x>]
+  (probe mode rules for WCO or probe position measuring only)
+  o<120> if [#<probe_mode> EQ 0]
+    (Record X Zero in selected WCO)
+    G10 L2 P#5220 X[#<x_probe_center> + #<workspace_x>]
+    (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
+    G90
+    G0 Z[#<z_clearance>]
+    G0 X0.0000
+    o<probe_round_boss> return
+  o<120> endif
 
-  (second side Probe Completion Move to Z Clearance Plane)
-  G90
-  G0 Z[#<z_clearance>]
-  G0 X0.0000
+  o<130> if [#<probe_mode> EQ 1]
+    (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
+    G90
+    G0 Z[#<z_finish_height>]
+    G0 X[#<x_probed_center>]
+    o<probe_round_boss> return
+  o<130> endif
 
   (Probe Y Positioning Move, Diam hint/2 + Step Off Width)
   G91
@@ -216,13 +230,24 @@ o<probe_round_boss> sub
   (Completed probed width calculations)
   #<y_probed_diam> = [#<raw_width> - #<probe_diameter_offset>]
 
-  (Record Y Zero in selected WCO)
-  G10 L2 P#5220 Y[#<y_probed_center> + #<workspace_y>]
+  (probe mode rules for WCO or probe position measuring only)
+  o<120> if [#<probe_mode> EQ 0]
+    (Record Y Zero in selected WCO)
+    G10 L2 P#5220 Y[#<y_probed_center> + #<workspace_y>]
+    (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
+    G90
+    G0 Z[#<z_clearance>]
+    G0 Y0.0000
+    o<probe_round_boss> return
+  o<120> endif
 
-  (second side Probe Completion Move to Z Clearance Plane)
-  G90
-  G0 Z[#<z_clearance>]
-  G0 Y0.0000
+  o<130> if [#<probe_mode> EQ 1]
+    (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
+    G90
+    G0 Z[#<z_finish_height>]
+    G0 X[#<y_probed_center>]
+    o<probe_round_boss> return
+  o<130> endif
 
 o<probe_round_boss> endsub
 
