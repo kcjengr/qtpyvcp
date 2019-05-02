@@ -71,6 +71,8 @@ o<probe_y_minus> sub
     G0 Y[#<y_minus_probed> + #<xy_clearance>]
   o<130> endif
 
-o<probe_y_minus> endsub
+  #<y_minus_zero_edge> = [#5062 - #<probe_center_offset>]
+
+o<probe_y_minus> endsub [#<y_minus_zero_edge>]
 
 M2 (end program)

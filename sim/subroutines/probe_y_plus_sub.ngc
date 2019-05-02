@@ -74,14 +74,14 @@ o<probe_y_plus_sub> sub
     G0 Y[#<y_plus_probed> - #<xy_clearance>]
   o<130> endif
 
+  #<y_plus_zero_edge> = [#5062 + #<probe_center_offset>]
+
   (probe mode rule for WCO or probe position measuring only)
   o<140> if [#<probe_mode> EQ 0]
     (Record Y Zero in selected WCO)
-    G10 L2 P#5220 Y[#5062 + #<workspace_y> + #<probe_center_offset>]
+    G10 L2 P#5220 Y[#<y_plus_zero_edge> + #<workspace_y>]
     o<probe_y_plus_sub> return
   o<140> endif
-
-  #<y_plus_zero_edge> = [#5062 +  #<probe_center_offset>]
 
 o<probe_y_plus_sub> endsub [#<y_plus_zero_edge>]
 

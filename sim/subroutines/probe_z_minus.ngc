@@ -51,6 +51,8 @@ o<probe_z_minus> sub
     G0 Z[#<z_minus_probed> + #<z_clearance>]
   o<130> endif
 
-o<probe_z_minus> endsub
+  #<z_finish_height> = [#<z_minus_probed> + #<z_clearance>]
+
+o<probe_z_minus> endsub [#<z_finish_height>]
 
 M2 (end program)

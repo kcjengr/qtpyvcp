@@ -44,16 +44,23 @@ o<probe_valley_y> sub
   (remove probe tip diam and cal offset from probed width calculations)
   #<probe_diameter_offset> = [#<probe_diameter> - [#<calibration_offset> * 2]]
 
+  #<z_probe_stack> = [#<z_clearance> + #<probe_diameter> + #<extra_probe_depth>]
+
   (Call sub "probe_z_minus_sub" to Probe top of Workpiece)
   o<probe_z_minus_sub> call [#1][#2][#5][#8][#9][#15]
 
   #<z_finish_height> = #<_value>
 
+  o<120> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
+    (MSG, Missing Z Sub returned edge parameter, aborting)
+    o<probe_valley_y> return
+  o<120> endif
+
   (Probe Y Positioning Move, Step Off Width)
   G91
   G0 Y-[#<step_off_width>]
   F[#<probe_fast_fr>]
-  G1 Z-[#<z_clearance> + #<probe_diameter> + #<extra_probe_depth>]
+  G1 Z-[#<z_probe_stack>]
 
   (Call sub "probe_y_plus" to Probe Y+ side of Workpiece)
   o<probe_y_plus> call [#1][#3][#4][#8][#9][#10]
@@ -61,7 +68,7 @@ o<probe_valley_y> sub
   #<y_plus_probed> = #5062
 
   (Call sub "probe_y_minus_sub" to Probe Y- side of Workpiece)
-  o<probe_y_minus_sub> call [#1][#3 + #12][#4][#8][#9][#10]
+  o<probe_y_minus> call [#1][#3 + #12][#4][#8][#9][#10]
 
   #<y_minus_probed> = #5062
 
@@ -74,22 +81,18 @@ o<probe_valley_y> sub
   (Completed probed width calculations)
   #<y_probed_width> = [#<raw_width> + #<probe_diameter_offset>]
 
+  M68 E1 Q[#<y_probed_width>]
+
+  (Probe Completion Move to Z Clearance Plane, and X Zero)
+  G90
+  G0 Y[#<probe_y_center>]
+  G91
+  G0 Z[#<z_probe_stack>]
+
   (probe mode rules for WCO or probe position measuring only)
-  o<120> if [#<probe_mode> EQ 0]
+  o<130> if [#<probe_mode> EQ 0]
     (Record X Zero in selected WCO)
     G10 L2 P#5220 Y[#<probe_y_center> + #<workspace_y>]
-    (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
-    G90
-    G0 Z[#<z_clearance>]
-    G0 Y0.0000
-    o<probe_valley_y> return
-  o<120> endif
-
-  o<130> if [#<probe_mode> EQ 1]
-    (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
-    G90
-    G0 Z[#<z_finish_height>]
-    G0 Y[#<probe_y_center>]
     o<probe_valley_y> return
   o<130> endif
 

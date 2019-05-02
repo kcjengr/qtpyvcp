@@ -72,10 +72,12 @@ o<probe_z_minus_wco> sub
     G0 Z[#<z_minus_probed> + #<z_clearance>]
   o<130> endif
 
+    #<z_finish_height> = [#<z_minus_probed> + #<z_clearance>]
+
   (probe mode rule for WCO or probe position measuring only)
   o<140> if [#<probe_mode> EQ 0]
     (Record Z zero in selected WCO)
-    G10 L2 P#5220 Z[#5063 + #<workspace_z>]
+    G10 L2 P#5220 Z[#<z_minus_probed> + #<workspace_z>]
     o<probe_z_minus_wco> return
   o<140> endif
 

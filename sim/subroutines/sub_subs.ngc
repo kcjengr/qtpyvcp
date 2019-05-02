@@ -37,12 +37,22 @@ o<140> endif
 
 #<probe_mode> = #15          (=0)
 
-(Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
-G90
-G0 Z[#<z_minus_probed> + #<z_clearance>]
-G0 X[#<x_plus_probed> + #<probe_center_offset>] Y[#<y_plus_probed> + #<probe_center_offset>]
 
-o<130> if [#<_value_returned> NE 1]
-  (MSG, Missing edge parameter, aborting)
-  o<probe_front_left_top_corner> return
+
+
+o<120> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
+  (MSG, Missing Z Sub returned edge parameter, aborting)
+  o<probe_> return
+o<120> endif
+
+
+o<130> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
+  (MSG, Missing X Sub returned edge parameter, aborting)
+  o<probe_> return
 o<130> endif
+
+
+o<140> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
+  (MSG, Missing Y Sub returned edge parameter, aborting)
+  o<probe_> return
+o<140> endif

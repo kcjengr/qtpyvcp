@@ -44,6 +44,11 @@ o<Probe_back_top_side> sub
 
   #<z_finish_height> = #<_value>
 
+  o<120> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
+    (MSG, Missing Z Sub returned edge parameter, aborting)
+    o<probe_back_top_side> return
+  o<120> endif
+
   (Probe Y Positioning Move, Step Off Width)
   G91
   G0 Y[#<step_off_width>]
@@ -57,22 +62,27 @@ o<Probe_back_top_side> sub
 
   #<y_minus_zero_edge> = #<_value>
 
+  o<130> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
+    (MSG, Missing Y Sub returned edge parameter, aborting)
+    o<probe_back_top_side> return
+  o<130> endif
+
   (probe mode rules for WCO or probe position measuring only)
-  o<120> if [#<probe_mode> EQ 0]
+  o<140> if [#<probe_mode> EQ 0]
     (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
     G90
     G0 Z[#<z_clearance>]
     G0 Y0.0000
     o<probe_back_top_side> return
-  o<120> endif
+  o<140> endif
 
-  o<130> if [#<probe_mode> EQ 1]
+  o<150> if [#<probe_mode> EQ 1]
     (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
     G90
     G0 Z[#<z_finish_height>]
     G0 Y[#<y_minus_zero_edge>]
     o<Probe_back_top_side> return
-  o<130> endif
+  o<150> endif
 
 o<Probe_back_top_side> endsub
 
