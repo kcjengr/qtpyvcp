@@ -50,13 +50,6 @@ o<probe_round_pocket> sub
   (Call sub "probe_z_minus_sub" to Probe top of Workpiece)
   o<probe_z_minus_sub> call [#1][#2][#5][#8][#9][#15]
 
-  #<z_finish_height> = #<_value>
-
-  o<120> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
-    (MSG, Missing Z Sub returned edge parameter, aborting)
-    o<probe_round_pocket> return
-  o<120> endif
-
   (Probe X Positioning Move, Step Off Width)
   G91
   G0 X[#<step_off_width>]
@@ -153,13 +146,13 @@ o<probe_round_pocket> sub
   G0 Z[#<z_finish_height>]
 
   (probe mode rules for WCO or probe position measuring only)
-  o<130> if [#<probe_mode> EQ 0]
+  o<120> if [#<probe_mode> EQ 0]
     (Record Y Zero in selected WCO)
     G10 L2 P#5220 X[#<probe_center_x> + #<workspace_x>]
     G10 L2 P#5220 Y[#<probe_center_y> + #<workspace_y>]
     (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
     o<probe_round_pocket> return
-  o<130> endif
+  o<120> endif
 
 o<probe_round_pocket> endsub
 

@@ -73,6 +73,12 @@ o<probe_y_minus> sub
 
   #<y_minus_zero_edge> = [#5062 - #<probe_center_offset>]
 
+  (defines the edge as y_probed_position for DRO reporting)
+  #<y_probed_position> = #<y_minus_zero_edge>
+
+  (analog aio output to gui DRO "Y PROBED POSITION")
+  M68 E6 Q[#<y_probed_position>]
+
 o<probe_y_minus> endsub [#<y_minus_zero_edge>]
 
 M2 (end program)

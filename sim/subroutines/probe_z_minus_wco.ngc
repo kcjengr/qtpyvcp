@@ -72,7 +72,13 @@ o<probe_z_minus_wco> sub
     G0 Z[#<z_minus_probed> + #<z_clearance>]
   o<130> endif
 
-    #<z_finish_height> = [#<z_minus_probed> + #<z_clearance>]
+  (defines the edge as z_probed_position for DRO reporting)
+  #<z_probed_position> = #<z_minus_probed>
+
+  (analog aio output to gui DRO "Z PROBED POSITION")
+  M68 E7 Q[#<z_probed_position>]
+
+  #<z_finish_height> = [#<z_minus_probed> + #<z_clearance>]
 
   (probe mode rule for WCO or probe position measuring only)
   o<140> if [#<probe_mode> EQ 0]

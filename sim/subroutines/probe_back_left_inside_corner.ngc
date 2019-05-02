@@ -30,6 +30,9 @@ o<probe_back_left_inside_corner> sub
   (Cancel G92 offsets)
   G92.1
 
+  #<workspace_x> = #[5201 + [20 * #5220]]
+  #<workspace_y> = #[5202 + [20 * #5220]]
+
   (Probe Tool Safety Check)
   o<110> if [#5400 NE #<probe_tool_number>]
   (MSG, Specified probe tool #<probe_tool_number> not in spindle, aborting)
@@ -39,35 +42,34 @@ o<probe_back_left_inside_corner> sub
   (Probe Diameter)
   #<probe_diameter> = #5410
 
+  (Probing depth from the z probed clearance height, used for z moves)
+  #<z_probe_stack> = [#<z_clearance> + #<probe_diameter> + #<extra_probe_depth>]
+
   (Call sub "probe_z_minus_sub" to Probe top of Workpiece)
   o<probe_z_minus_sub> call [#1][#2][#5][#8][#9][#15]
-
-  #<z_finish_height> = #<_value>
-
-  o<120> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
-    (MSG, Missing Z Sub returned edge parameter, aborting)
-    o<probe_back_left_inside_cornerr> return
-  o<120> endif
 
   (Probe X Positioning Move, Traverse Workpiece Top at Z Clearance Height plane)
   G91
   G0 X[#<step_off_width>] Y-[#<step_off_width>]
+
   (Probe X Positioning Move, to Probing Depth)
   F[#<probe_fast_fr>]
-  G1 Z-[#<z_clearance> + #<probe_diameter> + #<extra_probe_depth>]
+  G1 Z-[#<z_probe_stack>]
 
+  G90
   (Current X Position including offsets in current program units)
   #<x_start> = #5420
 
   (Call sub "probe_x_minus_sub" to Probe x- side of Workpiece)
-  o<probe_x_minus_sub> call [#1][#3][#4][#8][#9][#10][#15]
+  o<probe_x_minus> call [#1][#3][#4][#8][#9][#10]
 
   #<x_minus_zero_edge> = #<_value>
 
-  o<130> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
+  (value returned safety check, aborts if no value returned)
+  o<120> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
     (MSG, Missing X Sub returned edge parameter, aborting)
     o<probe_back_left_inside_corner> return
-  o<130> endif
+  o<120> endif
 
   (move to X start Position)
   G90
@@ -76,36 +78,34 @@ o<probe_back_left_inside_corner> sub
   (Current Y Position including offsets in current program units)
   #<y_start> = #5421
 
-  (Call sub "probe_y_plus_sub" to Probe y+ side of Workpiece)
-  o<probe_y_plus_sub> call [#1][#3][#4][#8][#9][#10][#15]
+  (Call sub "probe_y_plus" to Probe y+ side of Workpiece)
+  o<probe_y_plus> call [#1][#3][#4][#8][#9][#10]
 
   #<y_plus_zero_edge> = #<_value>
 
-  o<140> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
+  (value returned safety check, aborts if no value returned)
+  o<130> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
     (MSG, Missing Y Sub returned edge parameter, aborting)
     o<probe_back_left_inside_corner> return
-  o<140> endif
+  o<130> endif
 
   (move to Y start Position)
   G90
   G0 Y[#<y_start>]
 
-  (probe mode rules for WCO or probe position measuring only)
-  o<150> if [#<probe_mode> EQ 0]
-    (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
-    G90
-    G0 Z[#<z_clearance>]
-    G0 X0.0000 Y0.0000
-    o<probe_back_left_inside_corner> return
-  o<150> endif
+  (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
+  G91
+  G0 Z[#<z_probe_stack>]
+  G90
+  G0 X[#<x_minus_zero_edge>] Y[#<y_plus_zero_edge>]
 
-  o<160> if [#<probe_mode> EQ 1]
-    (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
-    G90
-    G0 Z[#<z_finish_height>]
-    G0 X[#<x_minus_zero_edge>] Y[#<y_plus_zero_edge>]
-    o<probe_back_left_inside_corner> return
-  o<160> endif
+  (probe mode rules for WCO or probe position measuring only)
+  o<140> if [#<probe_mode> EQ 0]
+    (Record Zero in selected axes and WCO)
+    G10 L2 P#5220 X[#<x_minus_zero_edge> + #<workspace_x>]
+    G10 L2 P#5220 Y[#<y_plus_zero_edge> + #<workspace_y>]
+    o<probe_rect_pocket> return
+  o<140> endif
 
 o<probe_back_left_inside_corner> endsub
 

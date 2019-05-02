@@ -11128,7 +11128,7 @@ color: rgb(255, 255, 255);
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
                      <property name="rules" stdset="0">
-                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:probed_position&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][0])&quot;, &quot;name&quot;: &quot;x_probed_position&quot;}]</string>
+                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\&quot;.format(ch[0][5])&quot;, &quot;name&quot;: &quot;x_probed_position&quot;}]</string>
                      </property>
                      <property name="format" stdset="0">
                       <string>{}</string>
@@ -11381,7 +11381,7 @@ color: rgb(255, 255, 255);
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
                      <property name="rules" stdset="0">
-                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:probed_position&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][1])&quot;, &quot;name&quot;: &quot;y_probed_position&quot;}]</string>
+                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\&quot;.format(ch[0][6])&quot;, &quot;name&quot;: &quot;y_probed_position&quot;}]</string>
                      </property>
                     </widget>
                    </item>
@@ -11637,7 +11637,7 @@ color: rgb(255, 255, 255);
                       <number>2</number>
                      </property>
                      <property name="rules" stdset="0">
-                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:probed_position&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:.4f}\&quot;.format(ch[0][2])&quot;, &quot;name&quot;: &quot;z_probed_position&quot;}]</string>
+                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\&quot;.format(ch[0][7])&quot;, &quot;name&quot;: &quot;z_probed_position&quot;}]</string>
                      </property>
                     </widget>
                    </item>
@@ -24975,11 +24975,11 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="mainorthoperspbtnGroup"/>
   <buttongroup name="plotviewGroup"/>
-  <buttongroup name="plotorthoperspbtnGroup"/>
   <buttongroup name="probehelpGroup"/>
   <buttongroup name="probemodeGroup"/>
+  <buttongroup name="plotorthoperspbtnGroup"/>
   <buttongroup name="probetabGroup"/>
+  <buttongroup name="mainorthoperspbtnGroup"/>
  </buttongroups>
 </ui>
