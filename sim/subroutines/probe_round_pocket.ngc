@@ -143,7 +143,8 @@ o<probe_round_pocket> sub
 
   G90
   G0 Y[#<probe_center_y>]
-  G0 Z[#<z_finish_height>]
+  G91
+  G0 Z[#<z_probe_stack>]
 
   (probe mode rules for WCO or probe position measuring only)
   o<120> if [#<probe_mode> EQ 0]
