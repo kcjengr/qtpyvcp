@@ -91,7 +91,7 @@ o<probe_rect_boss> sub
   #<probe_x_center> = [[#<x_minus_probed> + #<x_plus_probed>] / 2]
 
   (calculate X Width Probed)
-  #<raw_width> = [#<x_plus_probed> - #<x_minus_probed>]
+  #<raw_width> = [#<x_minus_probed> - #<x_plus_probed>]
 
   (Completed probed width calculations)
   #<x_probed_width> = [#<raw_width> - #<probe_diameter_offset>]
