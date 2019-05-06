@@ -193,7 +193,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.update_render()
 
-    def update_position(self, pos):
+    def update_position(self, pos): # the tool movement
         self.spindle_position = pos[:3]
 
         tlo = self.status.tool_offset
@@ -204,29 +204,41 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     def update_g5x_offset(self, g5x_offset):
-        # determine change in g5x offset since path was drawn
-        path_offset = [n - o for n, o in zip(g5x_offset[:3],
-                                             self.original_g5x_offset[:3])]
+        print('g5x offset')
+        #print(self.status.state)
+        #print(self.status.interp_state)
+        #print(self.status.exec_state)
+        print(self.status.task_mode)
+        if self.status.task_mode == 'MDI':
+            print('G5x Update Started')
+            # determine change in g5x offset since path was drawn
+            path_offset = [n - o for n, o in zip(g5x_offset[:3],
+                                                 self.original_g5x_offset[:3])]
 
-        self.path_actor.SetPosition(*path_offset)
-        self.extents_actor.SetBounds(self.path_actor.GetBounds())
-        self.update_render()
+            self.path_actor.SetPosition(*path_offset)
+            self.extents_actor.SetBounds(self.path_actor.GetBounds())
+            self.update_render()
+            print('G5x Updated')
 
     def update_g92_offset(self, g92_offset):
-        # determine change in g92 offset since path was drawn
-        path_offset = [n - o for n, o in zip(g92_offset[:3],
-                                             self.original_g92_offset[:3])]
+        print('g92 offset')
+        if self.status.task_mode == 'MDI':
+            # determine change in g92 offset since path was drawn
+            path_offset = [n - o for n, o in zip(g92_offset[:3],
+                                                 self.original_g92_offset[:3])]
 
-        self.path_actor.SetPosition(*path_offset)
-        self.extents_actor.SetBounds(self.path_actor.GetBounds())
-        self.update_render()
+            self.path_actor.SetPosition(*path_offset)
+            self.extents_actor.SetBounds(self.path_actor.GetBounds())
+            self.update_render()
 
     def update_rotation_xy(self, rotation):
-        print('Rotation: ', rotation) # in degrees
-        # ToDo: use transform matrix to rotate existing path?
-        # probably not worth it since rotation is not used much ...
-        # nasty hack so ensure the positions have updated before loading
-        QTimer.singleShot(10, self.reload_program)
+        print('rotation')
+        if self.status.task_mode == 'MDI':
+            print('Rotation: ', rotation) # in degrees
+            # ToDo: use transform matrix to rotate existing path?
+            # probably not worth it since rotation is not used much ...
+            # nasty hack so ensure the positions have updated before loading
+            QTimer.singleShot(10, self.reload_program)
 
     def update_tool(self):
         self.renderer.RemoveActor(self.tool_actor)
