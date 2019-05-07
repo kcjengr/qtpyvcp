@@ -9789,7 +9789,7 @@ border-style: none;
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -9826,15 +9826,23 @@ color: rgb(255, 255, 255);
                        <height>31</height>
                       </size>
                      </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::ClickFocus</enum>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QLineEdit {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
 	font: 15pt &quot;Bebas Kai&quot;;
+}
+
+QLineEdit:focus {
+    border-style: solid;
+    border-color: rgb(23, 81, 191);
 }</string>
                      </property>
                      <property name="text">
@@ -9877,7 +9885,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -9914,15 +9922,23 @@ color: rgb(255, 255, 255);
                        <height>31</height>
                       </size>
                      </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::ClickFocus</enum>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QLineEdit {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
 	font: 15pt &quot;Bebas Kai&quot;;
+}
+
+QLineEdit:focus {
+    border-style: solid;
+    border-color: rgb(23, 81, 191);
 }</string>
                      </property>
                      <property name="text">
@@ -9990,7 +10006,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -10027,15 +10043,23 @@ color: rgb(255, 255, 255);
                        <height>31</height>
                       </size>
                      </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::ClickFocus</enum>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QLineEdit {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
 	font: 15pt &quot;Bebas Kai&quot;;
+}
+
+QLineEdit:focus {
+    border-style: solid;
+    border-color: rgb(23, 81, 191);
 }</string>
                      </property>
                      <property name="inputMask">
@@ -10078,7 +10102,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -10115,15 +10139,23 @@ color: rgb(255, 255, 255);
                        <height>31</height>
                       </size>
                      </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::ClickFocus</enum>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QLineEdit {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
 	font: 15pt &quot;Bebas Kai&quot;;
+}
+
+QLineEdit:focus {
+    border-style: solid;
+    border-color: rgb(23, 81, 191);
 }</string>
                      </property>
                      <property name="text">
@@ -10191,7 +10223,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -10228,15 +10260,23 @@ color: rgb(255, 255, 255);
                        <height>31</height>
                       </size>
                      </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::ClickFocus</enum>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QLineEdit {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
 	font: 15pt &quot;Bebas Kai&quot;;
+}
+
+QLineEdit:focus {
+    border-style: solid;
+    border-color: rgb(23, 81, 191);
 }</string>
                      </property>
                      <property name="text">
@@ -10276,7 +10316,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -10313,15 +10353,23 @@ color: rgb(255, 255, 255);
                        <height>31</height>
                       </size>
                      </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::ClickFocus</enum>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QLineEdit {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
 	font: 15pt &quot;Bebas Kai&quot;;
+}
+
+QLineEdit:focus {
+    border-style: solid;
+    border-color: rgb(23, 81, 191);
 }</string>
                      </property>
                      <property name="text">
@@ -10389,7 +10437,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -10426,15 +10474,23 @@ color: rgb(255, 255, 255);
                        <height>31</height>
                       </size>
                      </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::ClickFocus</enum>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QLineEdit {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
 	font: 15pt &quot;Bebas Kai&quot;;
+}
+
+QLineEdit:focus {
+    border-style: solid;
+    border-color: rgb(23, 81, 191);
 }</string>
                      </property>
                      <property name="text">
@@ -10474,7 +10530,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -10511,15 +10567,23 @@ color: rgb(255, 255, 255);
                        <height>31</height>
                       </size>
                      </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::ClickFocus</enum>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QLineEdit {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
 	font: 15pt &quot;Bebas Kai&quot;;
+}
+
+QLineEdit:focus {
+    border-style: solid;
+    border-color: rgb(23, 81, 191);
 }</string>
                      </property>
                      <property name="text">
@@ -10593,7 +10657,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -10630,15 +10694,23 @@ color: rgb(255, 255, 255);
                        <height>31</height>
                       </size>
                      </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::ClickFocus</enum>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QLineEdit {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
 	font: 15pt &quot;Bebas Kai&quot;;
+}
+
+QLineEdit:focus {
+    border-style: solid;
+    border-color: rgb(23, 81, 191);
 }</string>
                      </property>
                      <property name="text">
@@ -10678,7 +10750,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -10715,15 +10787,23 @@ color: rgb(255, 255, 255);
                        <height>31</height>
                       </size>
                      </property>
+                     <property name="focusPolicy">
+                      <enum>Qt::ClickFocus</enum>
+                     </property>
                      <property name="styleSheet">
                       <string notr="true">QLineEdit {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
 	font: 15pt &quot;Bebas Kai&quot;;
+}
+
+QLineEdit:focus {
+    border-style: solid;
+    border-color: rgb(23, 81, 191);
 }</string>
                      </property>
                      <property name="text">
@@ -10834,7 +10914,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="frameShape">
@@ -10877,8 +10957,8 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
@@ -10922,7 +11002,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="frameShape">
@@ -10965,8 +11045,8 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
@@ -11010,7 +11090,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -11050,8 +11130,8 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
@@ -11105,7 +11185,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -11145,8 +11225,8 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
@@ -11187,7 +11267,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -11227,8 +11307,8 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
@@ -11269,7 +11349,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -11309,8 +11389,8 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
@@ -11364,7 +11444,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -11404,8 +11484,8 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLineEdit {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
@@ -11419,7 +11499,7 @@ color: rgb(255, 255, 255);
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
                      <property name="readOnly">
-                      <bool>true</bool>
+                      <bool>false</bool>
                      </property>
                     </widget>
                    </item>
@@ -11446,7 +11526,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -11486,8 +11566,8 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
@@ -11531,7 +11611,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -11571,8 +11651,8 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
@@ -11651,7 +11731,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -11691,8 +11771,8 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
@@ -11739,7 +11819,7 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel{
 font: 75 14pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
+color: white;
 }</string>
                      </property>
                      <property name="lineWidth">
@@ -11779,8 +11859,8 @@ color: rgb(255, 255, 255);
                      <property name="styleSheet">
                       <string notr="true">QLabel {
     border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
@@ -19929,11 +20009,16 @@ padding: -5px;
                  <string notr="true">QLineEdit {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-width: 2px;
     border-radius: 5px;
     color: black;
     background: rgb(235, 235, 235);
 	font: 75 17pt &quot;Bebas Kai&quot;;
+}
+
+QLineEdit:focus {
+    border-style: solid;
+    border-color: rgb(23, 81, 191);
 }</string>
                 </property>
                 <property name="text">
@@ -23472,6 +23557,9 @@ border-radius: 1px;
 	font: 50 17pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
+             <property name="text">
+              <string>0.0</string>
+             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
@@ -25131,10 +25219,10 @@ font: 11pt bebas kai;
  </designerdata>
  <buttongroups>
   <buttongroup name="mainorthoperspbtnGroup"/>
+  <buttongroup name="probemodeGroup"/>
   <buttongroup name="plotorthoperspbtnGroup"/>
   <buttongroup name="probetabGroup"/>
   <buttongroup name="probehelpGroup"/>
-  <buttongroup name="probemodeGroup"/>
   <buttongroup name="plotviewGroup"/>
  </buttongroups>
 </ui>
