@@ -9997,7 +9997,7 @@ color: rgb(255, 255, 255);
                       <number>0</number>
                      </property>
                      <property name="text">
-                      <string>Probe Fast FR:</string>
+                      <string>PROBE FAST FDRATE:</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -10085,7 +10085,7 @@ color: rgb(255, 255, 255);
                       <number>0</number>
                      </property>
                      <property name="text">
-                      <string>Probe Slow FR:</string>
+                      <string>PROBE SLOW FDRATE:</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -11699,11 +11699,20 @@ color: rgb(255, 255, 255);
 	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
+                     <property name="textFormat">
+                      <enum>Qt::RichText</enum>
+                     </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
                      <property name="rules" stdset="0">
-                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;edge_angle&quot;}]</string>
+                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\u00b0\&quot;.format(ch[0][3])&quot;, &quot;name&quot;: &quot;edge_angle&quot;}]</string>
+                     </property>
+                     <property name="format" stdset="0">
+                      <string>{}</string>
+                     </property>
+                     <property name="expression" stdset="0">
+                      <string>val</string>
                      </property>
                     </widget>
                    </item>
@@ -12464,7 +12473,7 @@ QPushButton:checked {
                             </widget>
                            </item>
                            <item row="1" column="3">
-                            <widget class="SubCallButton" name="probe_top">
+                            <widget class="SubCallButton" name="probe_z_minus_wco_edge">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -12500,7 +12509,7 @@ QPushButton:checked {
                               </size>
                              </property>
                              <property name="filename" stdset="0">
-                              <string>probe_top.ngc</string>
+                              <string>probe_z_minus_wco.ngc</string>
                              </property>
                              <property name="styleClass" stdset="0">
                               <string>probeButton</string>
@@ -12942,7 +12951,7 @@ QPushButton:checked {
                             </widget>
                            </item>
                            <item row="1" column="3">
-                            <widget class="SubCallButton" name="Probe_z_minus_wco_inside">
+                            <widget class="SubCallButton" name="probe_z_minus_wco_inside">
                              <property name="minimumSize">
                               <size>
                                <width>140</width>
@@ -14050,7 +14059,7 @@ Background:transparent;
                           </property>
                           <layout class="QGridLayout" name="gridLayout_8">
                            <item row="1" column="0">
-                            <widget class="SubCallButton" name="probe_left_top_side_2">
+                            <widget class="SubCallButton" name="probe_top_left_edge_angle">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -14302,7 +14311,7 @@ Background:transparent;
                             </widget>
                            </item>
                            <item row="0" column="1">
-                            <widget class="SubCallButton" name="probe_back_top_edge_angle">
+                            <widget class="SubCallButton" name="probe_top_back_edge_angle">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -25122,10 +25131,10 @@ font: 11pt bebas kai;
  </designerdata>
  <buttongroups>
   <buttongroup name="mainorthoperspbtnGroup"/>
+  <buttongroup name="plotorthoperspbtnGroup"/>
+  <buttongroup name="probetabGroup"/>
   <buttongroup name="probehelpGroup"/>
   <buttongroup name="probemodeGroup"/>
-  <buttongroup name="probetabGroup"/>
   <buttongroup name="plotviewGroup"/>
-  <buttongroup name="plotorthoperspbtnGroup"/>
  </buttongroups>
 </ui>
