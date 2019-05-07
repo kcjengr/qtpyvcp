@@ -38,7 +38,13 @@ load.ok = lambda *args, **kwargs: True
 load.bindOk = lambda *args, **kwargs: True
 
 def reload():
-    LOG.error('Reload not implemented yet.')
+    """Reload the currently loaded NC program."""
+    stat = linuxcnc.stat()
+    stat.poll()
+    load(stat.file, add_to_recents=False)
+
+reload.ok = lambda *args, **kwargs: True
+reload.bindOk = lambda *args, **kwargs: True
 
 def clear():
     """Clear the loaded NC program."""
