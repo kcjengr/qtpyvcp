@@ -138,14 +138,14 @@ o<probe_corner_y_minus_edge_angle> sub
   G90
   G0 X[#<c1x>] Y[#<c1y>]
 
-  (probe mode rules for WCO or probe position measuring only)
+  (probe mode rules for WCO,Rotation and probe position measuring only)
   o<150> if [#<probe_mode> EQ 0 AND #<wco_rotation> EQ 0]
     (Record Zero in selected axes and WCO)
     G10 L2 P#5220 X[#<c1x> + #<workspace_x>] Y[#<c1y> + #<workspace_y>]
     o<probe_corner_y_minus_edge_angle> return
   o<150> endif
 
-  (probe mode rules for WCO or probe position measuring only)
+  (probe mode rules for WCO,Rotation and probe position measuring only)
   o<160> if [#<probe_mode> EQ 0 AND #<wco_rotation> EQ 1]
     (Record Zero in selected axes and WCO)
     G10 L2 P#5220 X[#<c1x> + #<workspace_x>] Y[#<c1y> + #<workspace_y>] R[#<edge_angle>]

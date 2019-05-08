@@ -86,7 +86,7 @@ o<probe_ridge_y> sub
   #<y_minus_probed> = #5062
 
   (probed center calulation)
-  #<probe_y_center> = [[#<y_plus_probed> + #<y_minus_probed>] / 2]
+  #<y_center_probed> = [[#<y_plus_probed> + #<y_minus_probed>] / 2]
 
   (calculate Y Width Probed)
   #<raw_width> = [#<y_minus_probed> - #<y_plus_probed>]
@@ -96,16 +96,18 @@ o<probe_ridge_y> sub
 
   M68 E1 Q[#<y_probed_width>]
 
+  M68 E11 Q[#<y_center_probed>]
+
   (Probe Completion Move to Z Clearance Plane, and X Zero)
   G91
   G0 Z[#<z_probe_stack>]
   G90
-  G0 Y[#<probe_y_center>]
+  G0 Y[#<y_center_probed>]
 
   (probe mode rules for WCO or probe position measuring only)
   o<120> if [#<probe_mode> EQ 0]
     (Record Y Zero in selected WCO)
-    G10 L2 P#5220 Y[#<probe_y_center> + #<workspace_y>]
+    G10 L2 P#5220 Y[#<y_center_probed> + #<workspace_y>]
     (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
     o<probe_ridge_y> return
   o<120> endif

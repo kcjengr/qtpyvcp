@@ -69,11 +69,13 @@ o<probe_round_pocket> sub
   #<x_plus_probed> = #5061
 
   (probed center calculation)
-  #<probe_center_x> = [[#<x_plus_probed> + #<x_minus_probed>] / 2]
+  #<x_center_probed> = [[#<x_plus_probed> + #<x_minus_probed>] / 2]
+
+  M68 E10 Q[#<x_center_probed>]
 
   (Probe Completion Move to Z Clearance Plane, and X Zero)
   G90
-  G0 X[#<probe_center_x>]
+  G0 X[#<x_center_probed>]
 
   (Call sub "probe_y_plus" to Probe Y+)
   o<probe_y_plus> call [#1][#3 + #13 / 2][#4][#8][#9][#10]
@@ -86,11 +88,13 @@ o<probe_round_pocket> sub
   #<y_minus_probed> = #5062
 
   (probed center calculation)
-  #<probe_center_y> = [[#<y_plus_probed> + #<y_minus_probed>] / 2]
+  #<y_center_probed> = [[#<y_plus_probed> + #<y_minus_probed>] / 2]
+
+  M68 E11 Q[#<y_center_probed>]
 
   (Probe Completion Move to Z Clearance Plane, Y Zero)
   G90
-  G0 Y[#<probe_center_y>]
+  G0 Y[#<y_center_probed>]
 
   (Call sub "probe_x_minus" to Probe x-)
   o<probe_x_minus> call [#1][#3 + #13 / 2][#4][#8][#9][#10]
@@ -103,7 +107,7 @@ o<probe_round_pocket> sub
   #<x_plus_probed> = #5061
 
   (probed center calculation)
-  #<probe_center_x> = [[#<x_plus_probed> + #<x_minus_probed>] / 2]
+  #<x_center_probed> = [[#<x_plus_probed> + #<x_minus_probed>] / 2]
 
   (calculate X Width Probed)
   #<raw_width> = [#<x_plus_probed> - #<x_minus_probed>]
@@ -113,8 +117,10 @@ o<probe_round_pocket> sub
 
   M68 E0 Q[#<x_probed_width>]
 
+  M68 E10 Q[#<x_center_probed>]
+
   G90
-  G0 X[#<probe_center_x>]
+  G0 X[#<x_center_probed>]
 
   (Call sub "probe_y_plus" to Probe Y+)
   o<probe_y_plus> call [#1][#3 + #13 / 2][#4][#8][#9][#10]
@@ -127,7 +133,7 @@ o<probe_round_pocket> sub
   #<y_minus_probed> = #5062
 
   (probed center calculation)
-  #<probe_center_y> = [[#<y_plus_probed> + #<y_minus_probed>] / 2]
+  #<y_center_probed> = [[#<y_plus_probed> + #<y_minus_probed>] / 2]
 
   (calculate Y Width Probed)
   #<raw_width> = [#<y_plus_probed> - #<y_minus_probed>]
@@ -137,20 +143,22 @@ o<probe_round_pocket> sub
 
   M68 E1 Q[#<y_probed_width>]
 
+  M68 E11 Q[#<y_center_probed>]
+
   #<averaged_diam> = [[#<x_probed_width> + #<y_probed_width>] / 2]
 
   M68 E2 Q[#<averaged_diam>]
 
   G90
-  G0 Y[#<probe_center_y>]
+  G0 Y[#<y_center_probed>]
   G91
   G0 Z[#<z_probe_stack>]
 
   (probe mode rules for WCO or probe position measuring only)
   o<120> if [#<probe_mode> EQ 0]
     (Record Y Zero in selected WCO)
-    G10 L2 P#5220 X[#<probe_center_x> + #<workspace_x>]
-    G10 L2 P#5220 Y[#<probe_center_y> + #<workspace_y>]
+    G10 L2 P#5220 X[#<x_center_probed> + #<workspace_x>]
+    G10 L2 P#5220 Y[#<y_center_probed> + #<workspace_y>]
     (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
     o<probe_round_pocket> return
   o<120> endif

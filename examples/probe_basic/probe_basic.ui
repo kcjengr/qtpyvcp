@@ -11422,9 +11422,9 @@ color: white;
                     <number>1</number>
                    </property>
                    <item>
-                    <widget class="QLabel" name="ref_coilumn_header_24">
+                    <widget class="QLabel" name="label_110">
                      <property name="sizePolicy">
-                      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
@@ -11438,42 +11438,6 @@ color: white;
                      <property name="maximumSize">
                       <size>
                        <width>16777215</width>
-                       <height>31</height>
-                      </size>
-                     </property>
-                     <property name="styleSheet">
-                      <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="alignment">
-                      <set>Qt::AlignCenter</set>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="label_110">
-                     <property name="sizePolicy">
-                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                       <horstretch>0</horstretch>
-                       <verstretch>0</verstretch>
-                      </sizepolicy>
-                     </property>
-                     <property name="minimumSize">
-                      <size>
-                       <width>80</width>
-                       <height>31</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>80</width>
                        <height>31</height>
                       </size>
                      </property>
@@ -11621,6 +11585,91 @@ color: white;
                      </property>
                     </widget>
                    </item>
+                   <item>
+                    <widget class="QLabel" name="label_113">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>31</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>80</width>
+                       <height>31</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: white;
+}</string>
+                     </property>
+                     <property name="lineWidth">
+                      <number>0</number>
+                     </property>
+                     <property name="text">
+                      <string>X CENTER:</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                     <property name="indent">
+                      <number>0</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="StatusLabel" name="x_center_probed">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>31</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>80</width>
+                       <height>31</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel {
+    border-style: transparent;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string>0.0000</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                     <property name="margin">
+                      <number>2</number>
+                     </property>
+                     <property name="rules" stdset="0">
+                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\&quot;.format(ch[0][10])&quot;, &quot;name&quot;: &quot;x_center_probed&quot;}]</string>
+                     </property>
+                    </widget>
+                   </item>
                   </layout>
                  </item>
                  <item>
@@ -11638,10 +11687,10 @@ color: white;
                     <number>1</number>
                    </property>
                    <item>
-                    <widget class="QPushButton" name="set_wco_offset_Btn">
+                    <widget class="QLabel" name="label_99">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                       <horstretch>1</horstretch>
+                       <horstretch>0</horstretch>
                        <verstretch>0</verstretch>
                       </sizepolicy>
                      </property>
@@ -11658,26 +11707,61 @@ color: white;
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton{
-    font: 15pt &quot;Bebas Kai&quot;;
-    margin-left: 12px;
-    margin-right: 2px;
+                      <string notr="true">QLabel{
+font: 75 14pt &quot;Bebas Kai&quot;;
+color: white;
 }</string>
                      </property>
+                     <property name="lineWidth">
+                      <number>0</number>
+                     </property>
                      <property name="text">
-                      <string>SET WCO ROTATION</string>
+                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;EDGE DELTA:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
                      </property>
-                     <property name="checkable">
-                      <bool>true</bool>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
-                     <property name="checked">
-                      <bool>false</bool>
+                     <property name="indent">
+                      <number>0</number>
                      </property>
-                     <property name="autoExclusive">
-                      <bool>true</bool>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="StatusLabel" name="edge_delta">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
                      </property>
-                     <property name="default">
-                      <bool>false</bool>
+                     <property name="minimumSize">
+                      <size>
+                       <width>80</width>
+                       <height>31</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>80</width>
+                       <height>31</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel {
+    border-style: transparent;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                     </property>
+                     <property name="rules" stdset="0">
+                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;edge_delta&quot;}]</string>
                      </property>
                     </widget>
                    </item>
@@ -11692,13 +11776,13 @@ color: white;
                      <property name="minimumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>31</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
                        <width>80</width>
-                       <height>30</height>
+                       <height>31</height>
                       </size>
                      </property>
                      <property name="styleSheet">
@@ -11770,7 +11854,7 @@ color: white;
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLabel" name="label_99">
+                    <widget class="QLabel" name="label_114">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -11799,7 +11883,7 @@ color: white;
                       <number>0</number>
                      </property>
                      <property name="text">
-                      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;EDGE DELTA:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                      <string>Y CENTER:</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -11810,7 +11894,7 @@ color: white;
                     </widget>
                    </item>
                    <item>
-                    <widget class="StatusLabel" name="edge_delta">
+                    <widget class="StatusLabel" name="y_center_probed">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -11840,11 +11924,17 @@ color: white;
 	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
+                     <property name="text">
+                      <string>0.0000</string>
+                     </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                      </property>
+                     <property name="margin">
+                      <number>2</number>
+                     </property>
                      <property name="rules" stdset="0">
-                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\&quot;.format(ch[0][4])&quot;, &quot;name&quot;: &quot;edge_delta&quot;}]</string>
+                      <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\&quot;.format(ch[0][11])&quot;, &quot;name&quot;: &quot;y_center_probed&quot;}]</string>
                      </property>
                     </widget>
                    </item>
@@ -12336,7 +12426,7 @@ QPushButton:checked {
                      <number>6</number>
                     </property>
                     <property name="topMargin">
-                     <number>40</number>
+                     <number>15</number>
                     </property>
                     <property name="bottomMargin">
                      <number>0</number>
@@ -12365,7 +12455,7 @@ QPushButton:checked {
                        <string notr="true"/>
                       </property>
                       <property name="currentIndex">
-                       <number>0</number>
+                       <number>4</number>
                       </property>
                       <widget class="QWidget" name="Page1">
                        <layout class="QHBoxLayout" name="horizontalLayout_132">
@@ -14077,422 +14167,528 @@ Background:transparent;
                       <widget class="QWidget" name="Page5">
                        <layout class="QHBoxLayout" name="horizontalLayout_4">
                         <item>
-                         <widget class="QFrame" name="frame_45">
+                         <widget class="QWidget" name="widget_16" native="true">
                           <property name="sizePolicy">
                            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                             <horstretch>0</horstretch>
                             <verstretch>0</verstretch>
                            </sizepolicy>
                           </property>
-                          <property name="minimumSize">
-                           <size>
-                            <width>465</width>
-                            <height>465</height>
-                           </size>
-                          </property>
-                          <property name="maximumSize">
-                           <size>
-                            <width>465</width>
-                            <height>465</height>
-                           </size>
-                          </property>
-                          <property name="styleSheet">
-                           <string notr="true">QFrame {
+                          <layout class="QVBoxLayout" name="verticalLayout_26">
+                           <property name="spacing">
+                            <number>9</number>
+                           </property>
+                           <property name="leftMargin">
+                            <number>0</number>
+                           </property>
+                           <property name="topMargin">
+                            <number>0</number>
+                           </property>
+                           <property name="rightMargin">
+                            <number>0</number>
+                           </property>
+                           <property name="bottomMargin">
+                            <number>0</number>
+                           </property>
+                           <item>
+                            <widget class="QFrame" name="frame_45">
+                             <property name="sizePolicy">
+                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                               <horstretch>0</horstretch>
+                               <verstretch>0</verstretch>
+                              </sizepolicy>
+                             </property>
+                             <property name="minimumSize">
+                              <size>
+                               <width>465</width>
+                               <height>465</height>
+                              </size>
+                             </property>
+                             <property name="maximumSize">
+                              <size>
+                               <width>465</width>
+                               <height>465</height>
+                              </size>
+                             </property>
+                             <property name="styleSheet">
+                              <string notr="true">QFrame {
     border: none;
 }</string>
-                          </property>
-                          <property name="frameShape">
-                           <enum>QFrame::NoFrame</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Plain</enum>
-                          </property>
-                          <property name="lineWidth">
-                           <number>0</number>
-                          </property>
-                          <layout class="QGridLayout" name="gridLayout_8">
-                           <item row="1" column="0">
-                            <widget class="SubCallButton" name="probe_top_left_edge_angle">
+                             </property>
+                             <property name="frameShape">
+                              <enum>QFrame::NoFrame</enum>
+                             </property>
+                             <property name="frameShadow">
+                              <enum>QFrame::Plain</enum>
+                             </property>
+                             <property name="lineWidth">
+                              <number>0</number>
+                             </property>
+                             <layout class="QGridLayout" name="gridLayout_8">
+                              <item row="2" column="0">
+                               <widget class="SubCallButton" name="probe_top_left_edge_angle">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true"/>
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="icon">
+                                 <iconset resource="probe_basic.qrc">
+                                  <normaloff>:/images/probe_top_left_edge_angle_r.png</normaloff>:/images/probe_top_left_edge_angle_r.png</iconset>
+                                </property>
+                                <property name="iconSize">
+                                 <size>
+                                  <width>130</width>
+                                  <height>130</height>
+                                 </size>
+                                </property>
+                                <property name="filename" stdset="0">
+                                 <string>probe_top_left_edge_angle.ngc</string>
+                                </property>
+                                <property name="styleClass" stdset="0">
+                                 <string>probeButton</string>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="3" column="0">
+                               <widget class="SubCallButton" name="probe_corner_y_plus_edge_angle">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true"/>
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="icon">
+                                 <iconset resource="probe_basic.qrc">
+                                  <normaloff>:/images/probe_corner_y_plus_edge_angle_r.png</normaloff>:/images/probe_corner_y_plus_edge_angle_r.png</iconset>
+                                </property>
+                                <property name="iconSize">
+                                 <size>
+                                  <width>130</width>
+                                  <height>130</height>
+                                 </size>
+                                </property>
+                                <property name="filename" stdset="0">
+                                 <string>probe_corner_y_plus_edge_angle.ngc</string>
+                                </property>
+                                <property name="styleClass" stdset="0">
+                                 <string>probeButton</string>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="1" column="0">
+                               <widget class="SubCallButton" name="probe_corner_x_plus_edge_angle">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="icon">
+                                 <iconset resource="probe_basic.qrc">
+                                  <normaloff>:/images/probe_corner_x_plus_edge_angle_r.png</normaloff>:/images/probe_corner_x_plus_edge_angle_r.png</iconset>
+                                </property>
+                                <property name="iconSize">
+                                 <size>
+                                  <width>130</width>
+                                  <height>130</height>
+                                 </size>
+                                </property>
+                                <property name="filename" stdset="0">
+                                 <string>probe_corner_x_plus_edge_angle.ngc</string>
+                                </property>
+                                <property name="styleClass" stdset="0">
+                                 <string>probeButton</string>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="1" column="2">
+                               <widget class="SubCallButton" name="probe_corner_y_minus_edge_angle">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true"/>
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="icon">
+                                 <iconset resource="probe_basic.qrc">
+                                  <normaloff>:/images/probe_corner_y_minus_edge_angle_r.png</normaloff>:/images/probe_corner_y_minus_edge_angle_r.png</iconset>
+                                </property>
+                                <property name="iconSize">
+                                 <size>
+                                  <width>130</width>
+                                  <height>130</height>
+                                 </size>
+                                </property>
+                                <property name="filename" stdset="0">
+                                 <string>probe_corner_y_minus_edge_angle.ngc</string>
+                                </property>
+                                <property name="styleClass" stdset="0">
+                                 <string>probeButton</string>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="2" column="1">
+                               <widget class="SubCallButton" name="probe_z_minus_edge">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true"/>
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="icon">
+                                 <iconset resource="probe_basic.qrc">
+                                  <normaloff>:/images/z_top_r.png</normaloff>:/images/z_top_r.png</iconset>
+                                </property>
+                                <property name="iconSize">
+                                 <size>
+                                  <width>130</width>
+                                  <height>130</height>
+                                 </size>
+                                </property>
+                                <property name="filename" stdset="0">
+                                 <string>probe_z_minus_wco.ngc</string>
+                                </property>
+                                <property name="styleClass" stdset="0">
+                                 <string>probeButton</string>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="3" column="2">
+                               <widget class="SubCallButton" name="probe_corner_x_minus_edge_angle">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true"/>
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="icon">
+                                 <iconset resource="probe_basic.qrc">
+                                  <normaloff>:/images/probe_corner_x_minus_edge_angle_r.png</normaloff>:/images/probe_corner_x_minus_edge_angle_r.png</iconset>
+                                </property>
+                                <property name="iconSize">
+                                 <size>
+                                  <width>130</width>
+                                  <height>130</height>
+                                 </size>
+                                </property>
+                                <property name="filename" stdset="0">
+                                 <string>probe_corner_x_minus_edge_angle.ngc</string>
+                                </property>
+                                <property name="styleClass" stdset="0">
+                                 <string>probeButton</string>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="2" column="2">
+                               <widget class="SubCallButton" name="probe_top_right_edge_angle">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true"/>
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="icon">
+                                 <iconset resource="probe_basic.qrc">
+                                  <normaloff>:/images/probe_top_right_edge_angle_r.png</normaloff>:/images/probe_top_right_edge_angle_r.png</iconset>
+                                </property>
+                                <property name="iconSize">
+                                 <size>
+                                  <width>130</width>
+                                  <height>130</height>
+                                 </size>
+                                </property>
+                                <property name="filename" stdset="0">
+                                 <string>probe_top_right_edge_angle.ngc</string>
+                                </property>
+                                <property name="styleClass" stdset="0">
+                                 <string>probeButton</string>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="1" column="1">
+                               <widget class="SubCallButton" name="probe_top_back_edge_angle">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true"/>
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="icon">
+                                 <iconset resource="probe_basic.qrc">
+                                  <normaloff>:/images/probe_top_back_edge_angle_r.png</normaloff>:/images/probe_top_back_edge_angle_r.png</iconset>
+                                </property>
+                                <property name="iconSize">
+                                 <size>
+                                  <width>130</width>
+                                  <height>130</height>
+                                 </size>
+                                </property>
+                                <property name="filename" stdset="0">
+                                 <string>probe_top_back_edge_angle.ngc</string>
+                                </property>
+                                <property name="styleClass" stdset="0">
+                                 <string>probeButton</string>
+                                </property>
+                               </widget>
+                              </item>
+                              <item row="3" column="1">
+                               <widget class="SubCallButton" name="probe_top_front_edge_angle">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                  <horstretch>0</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>140</width>
+                                  <height>140</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true"/>
+                                </property>
+                                <property name="text">
+                                 <string/>
+                                </property>
+                                <property name="icon">
+                                 <iconset resource="probe_basic.qrc">
+                                  <normaloff>:/images/probe_top_front_edge_angle_r.png</normaloff>:/images/probe_top_front_edge_angle_r.png</iconset>
+                                </property>
+                                <property name="iconSize">
+                                 <size>
+                                  <width>130</width>
+                                  <height>130</height>
+                                 </size>
+                                </property>
+                                <property name="filename" stdset="0">
+                                 <string>probe_top_front_edge_angle.ngc</string>
+                                </property>
+                                <property name="styleClass" stdset="0">
+                                 <string>probeButton</string>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
+                            </widget>
+                           </item>
+                           <item>
+                            <widget class="QWidget" name="widget_17" native="true">
                              <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                                <horstretch>0</horstretch>
                                <verstretch>0</verstretch>
                               </sizepolicy>
                              </property>
                              <property name="minimumSize">
                               <size>
-                               <width>140</width>
-                               <height>140</height>
+                               <width>0</width>
+                               <height>42</height>
                               </size>
                              </property>
                              <property name="maximumSize">
                               <size>
-                               <width>140</width>
-                               <height>140</height>
+                               <width>16777215</width>
+                               <height>42</height>
                               </size>
                              </property>
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="icon">
-                              <iconset resource="probe_basic.qrc">
-                               <normaloff>:/images/probe_top_left_edge_angle_r.png</normaloff>:/images/probe_top_left_edge_angle_r.png</iconset>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>130</width>
-                               <height>130</height>
-                              </size>
-                             </property>
-                             <property name="filename" stdset="0">
-                              <string>probe_top_left_edge_angle.ngc</string>
-                             </property>
-                             <property name="styleClass" stdset="0">
-                              <string>probeButton</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="0">
-                            <widget class="SubCallButton" name="probe_corner_x_plus_edge_angle">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="icon">
-                              <iconset resource="probe_basic.qrc">
-                               <normaloff>:/images/probe_corner_x_plus_edge_angle_r.png</normaloff>:/images/probe_corner_x_plus_edge_angle_r.png</iconset>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>130</width>
-                               <height>130</height>
-                              </size>
-                             </property>
-                             <property name="filename" stdset="0">
-                              <string>probe_corner_x_plus_edge_angle.ngc</string>
-                             </property>
-                             <property name="styleClass" stdset="0">
-                              <string>probeButton</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="2">
-                            <widget class="SubCallButton" name="probe_corner_y_minus_edge_angle">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="icon">
-                              <iconset resource="probe_basic.qrc">
-                               <normaloff>:/images/probe_corner_y_minus_edge_angle_r.png</normaloff>:/images/probe_corner_y_minus_edge_angle_r.png</iconset>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>130</width>
-                               <height>130</height>
-                              </size>
-                             </property>
-                             <property name="filename" stdset="0">
-                              <string>probe_corner_y_minus_edge_angle.ngc</string>
-                             </property>
-                             <property name="styleClass" stdset="0">
-                              <string>probeButton</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="2" column="0">
-                            <widget class="SubCallButton" name="probe_corner_y_plus_edge_angle">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="icon">
-                              <iconset resource="probe_basic.qrc">
-                               <normaloff>:/images/probe_corner_y_plus_edge_angle_r.png</normaloff>:/images/probe_corner_y_plus_edge_angle_r.png</iconset>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>130</width>
-                               <height>130</height>
-                              </size>
-                             </property>
-                             <property name="filename" stdset="0">
-                              <string>probe_corner_y_plus_edge_angle.ngc</string>
-                             </property>
-                             <property name="styleClass" stdset="0">
-                              <string>probeButton</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="2" column="2">
-                            <widget class="SubCallButton" name="probe_corner_x_minus_edge_angle">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="icon">
-                              <iconset resource="probe_basic.qrc">
-                               <normaloff>:/images/probe_corner_x_minus_edge_angle_r.png</normaloff>:/images/probe_corner_x_minus_edge_angle_r.png</iconset>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>130</width>
-                               <height>130</height>
-                              </size>
-                             </property>
-                             <property name="filename" stdset="0">
-                              <string>probe_corner_x_minus_edge_angle.ngc</string>
-                             </property>
-                             <property name="styleClass" stdset="0">
-                              <string>probeButton</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="1">
-                            <widget class="SubCallButton" name="probe_z_minus_edge">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="icon">
-                              <iconset resource="probe_basic.qrc">
-                               <normaloff>:/images/z_top_r.png</normaloff>:/images/z_top_r.png</iconset>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>130</width>
-                               <height>130</height>
-                              </size>
-                             </property>
-                             <property name="filename" stdset="0">
-                              <string>probe_z_minus_wco.ngc</string>
-                             </property>
-                             <property name="styleClass" stdset="0">
-                              <string>probeButton</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="0" column="1">
-                            <widget class="SubCallButton" name="probe_top_back_edge_angle">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="icon">
-                              <iconset resource="probe_basic.qrc">
-                               <normaloff>:/images/probe_top_back_edge_angle_r.png</normaloff>:/images/probe_top_back_edge_angle_r.png</iconset>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>130</width>
-                               <height>130</height>
-                              </size>
-                             </property>
-                             <property name="filename" stdset="0">
-                              <string>probe_top_back_edge_angle.ngc</string>
-                             </property>
-                             <property name="styleClass" stdset="0">
-                              <string>probeButton</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="2" column="1">
-                            <widget class="SubCallButton" name="probe_top_front_edge_angle">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="icon">
-                              <iconset resource="probe_basic.qrc">
-                               <normaloff>:/images/probe_top_front_edge_angle_r.png</normaloff>:/images/probe_top_front_edge_angle_r.png</iconset>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>130</width>
-                               <height>130</height>
-                              </size>
-                             </property>
-                             <property name="filename" stdset="0">
-                              <string>probe_top_front_edge_angle.ngc</string>
-                             </property>
-                             <property name="styleClass" stdset="0">
-                              <string>probeButton</string>
-                             </property>
-                            </widget>
-                           </item>
-                           <item row="1" column="2">
-                            <widget class="SubCallButton" name="probe_top_right_edge_angle">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>140</width>
-                               <height>140</height>
-                              </size>
-                             </property>
-                             <property name="styleSheet">
-                              <string notr="true"/>
-                             </property>
-                             <property name="text">
-                              <string/>
-                             </property>
-                             <property name="icon">
-                              <iconset resource="probe_basic.qrc">
-                               <normaloff>:/images/probe_top_right_edge_angle_r.png</normaloff>:/images/probe_top_right_edge_angle_r.png</iconset>
-                             </property>
-                             <property name="iconSize">
-                              <size>
-                               <width>130</width>
-                               <height>130</height>
-                              </size>
-                             </property>
-                             <property name="filename" stdset="0">
-                              <string>probe_top_right_edge_angle.ngc</string>
-                             </property>
-                             <property name="styleClass" stdset="0">
-                              <string>probeButton</string>
-                             </property>
+                             <layout class="QHBoxLayout" name="horizontalLayout_54">
+                              <property name="spacing">
+                               <number>0</number>
+                              </property>
+                              <property name="leftMargin">
+                               <number>0</number>
+                              </property>
+                              <property name="topMargin">
+                               <number>1</number>
+                              </property>
+                              <property name="rightMargin">
+                               <number>0</number>
+                              </property>
+                              <property name="bottomMargin">
+                               <number>1</number>
+                              </property>
+                              <item>
+                               <widget class="QPushButton" name="set_wco_offset_Btn">
+                                <property name="sizePolicy">
+                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                  <horstretch>1</horstretch>
+                                  <verstretch>0</verstretch>
+                                 </sizepolicy>
+                                </property>
+                                <property name="minimumSize">
+                                 <size>
+                                  <width>400</width>
+                                  <height>38</height>
+                                 </size>
+                                </property>
+                                <property name="maximumSize">
+                                 <size>
+                                  <width>16777215</width>
+                                  <height>38</height>
+                                 </size>
+                                </property>
+                                <property name="styleSheet">
+                                 <string notr="true"/>
+                                </property>
+                                <property name="text">
+                                 <string>SET WCO ROTATION FOR ANGLE PROBE OPERATIONS</string>
+                                </property>
+                                <property name="checkable">
+                                 <bool>true</bool>
+                                </property>
+                                <property name="checked">
+                                 <bool>false</bool>
+                                </property>
+                                <property name="autoExclusive">
+                                 <bool>true</bool>
+                                </property>
+                                <property name="default">
+                                 <bool>false</bool>
+                                </property>
+                               </widget>
+                              </item>
+                             </layout>
                             </widget>
                            </item>
                           </layout>
@@ -24311,7 +24507,7 @@ font: 11pt bebas kai;
   <include location="probe_basic.qrc"/>
   <include location="probe_basic.qrc"/>
   <include location="probe_basic.qrc"/>
-  <include location="../../../../.designer/backup/probe_basic.qrc"/>
+  <include location="probe_basic.qrc"/>
  </resources>
  <connections>
   <connection>
@@ -25421,11 +25617,11 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="plotviewGroup"/>
   <buttongroup name="probetabGroup"/>
+  <buttongroup name="plotorthoperspbtnGroup"/>
+  <buttongroup name="probemodeGroup"/>
   <buttongroup name="mainorthoperspbtnGroup"/>
   <buttongroup name="probehelpGroup"/>
-  <buttongroup name="probemodeGroup"/>
-  <buttongroup name="plotorthoperspbtnGroup"/>
+  <buttongroup name="plotviewGroup"/>
  </buttongroups>
 </ui>

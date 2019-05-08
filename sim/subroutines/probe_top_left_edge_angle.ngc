@@ -26,6 +26,7 @@ o<probe_top_left_edge_angle> sub
   #<diameter_hint> = #13       (=1.0000)
   #<edge_width> = #14          (=0.5000)
   #<probe_mode> = #15          (=0)
+  #<wco_rotation> = #16        (=0)
 
   (Cancel G92 offsets)
   G92.1
@@ -98,13 +99,19 @@ o<probe_top_left_edge_angle> sub
   G90
   G0 X[#<x_plus_zero_edge_start>] Y[#<y_start_position>]
 
-  (probe mode rules for WCO or probe position measuring only)
-  o<140> if [#<probe_mode> EQ 0]
+  (probe mode rules for WCO, Rotation and probe position measuring only)
+  o<140> if [#<probe_mode> EQ 0 AND #<wco_rotation> EQ 0]
     (Record Zero in selected axes and WCO)
-    G10 L2 P#5220 X[#<x_plus_zero_edge_start> + #<workspace_x>]
-    G10 L2 P#5220 Y[#<y_start_position>]
+    G10 L2 P#5220 X[#<x_plus_zero_edge_start> + #<workspace_x>] Y[#<y_start_position>]
     o<probe_top_left_edge_angle> return
   o<140> endif
+
+  (probe mode rules for WCO, Rotation and probe position measuring only)
+  o<150> if [#<probe_mode> EQ 0 AND #<wco_rotation> EQ 1]
+    (Record Zero in selected axes and WCO)
+    G10 L2 P#5220 X[#<x_plus_zero_edge_start> + #<workspace_x>] Y[#<y_start_position>] R[#<edge_angle>]
+    o<probe_top_left_edge_angle> return
+  o<150> endif
 
 o<probe_top_left_edge_angle> endsub
 

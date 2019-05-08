@@ -88,7 +88,7 @@ o<probe_rect_boss> sub
   #<x_minus_probed> = #5061
 
   (probed center calulation)
-  #<probe_x_center> = [[#<x_minus_probed> + #<x_plus_probed>] / 2]
+  #<x_center_probed> = [[#<x_minus_probed> + #<x_plus_probed>] / 2]
 
   (calculate X Width Probed)
   #<raw_width> = [#<x_minus_probed> - #<x_plus_probed>]
@@ -98,10 +98,12 @@ o<probe_rect_boss> sub
 
   M68 E0 Q[#<x_probed_width>]
 
+  M68 E10 Q[#<x_center_probed>]
+
   G91
   G0 Z[#<z_probe_stack>]
   G90
-  G0 X[#<probe_x_center>]
+  G0 X[#<x_center_probed>]
 
   (Probe Y Positioning Move, Y hint/2 + Step Off Width)
   G91
@@ -134,7 +136,7 @@ o<probe_rect_boss> sub
   #<y_minus_probed> = #5062
 
   (probed center calulation)
-  #<probe_y_center> = [[#<y_minus_probed> + #<y_plus_probed>] / 2]
+  #<y_center_probed> = [[#<y_minus_probed> + #<y_plus_probed>] / 2]
 
   (calculate Y Width Probed)
   #<raw_width> = [#<y_minus_probed> - #<y_plus_probed>]
@@ -144,16 +146,17 @@ o<probe_rect_boss> sub
 
   M68 E1 Q[#<y_probed_width>]
 
+  M68 E11 Q[#<y_center_probed>]
+
   G91
   G0 Z[#<z_probe_stack>]
   G90
-  G0 X[#<probe_x_center>] Y[#<probe_y_center>]
+  G0 X[#<x_center_probed>] Y[#<y_center_probed>]
 
   (probe mode rules for WCO or probe position measuring only)
   o<120> if [#<probe_mode> EQ 0]
     (Record XY Zero in selected WCO)
-    G10 L2 P#5220 X[#<probe_x_center> + #<workspace_x>]
-    G10 L2 P#5220 Y[#<probe_y_center> + #<workspace_y>]
+    G10 L2 P#5220 X[#<x_center_probed> + #<workspace_x>] Y[#<y_center_probed> + #<workspace_y>]
     (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
     o<probe_rect_boss> return
   o<120> endif
