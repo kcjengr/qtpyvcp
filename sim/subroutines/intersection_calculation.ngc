@@ -1,0 +1,47 @@
+
+#<c1x> #<c1y>
+
+#<p1x> #<p1y>
+
+#<p2x> #<p2y>
+
+#<p2x> #<p2y>
+
+#<m1> = [#<edge_delta> / #<edge_width>]
+
+#<m2> = [-1] / [#<m1>]
+
+#<edge_delta> = [#<p3y> - #<p2y>]
+
+#<edge_angle> = [ATAN [#<edge_delta>] / [#<edge_width>]]
+
+
+ #<nx> = [#<p3y> - #<p2y>]
+
+ #<ny> = [#<p2x> - #<p3x>]
+
+ #<nl> = [SQRT [#<nx> * #<nx> + #<ny> * #<ny>]]
+
+ #<d> = n0x * p1x + n1y * p1y - n0x * p2x - n0y * p2y
+
+
+
+ #<c1xr> = [#<z1x> + COS[#<edge_angle>] * [#<p1x> - #<z1x>] - SIN[#<edge_angle>] * [#<p1y> - #<z1y>]]
+
+ #<c1yr> = [#<z1y> + SIN[#<edge_angle>] * [#<p2x> - #<z1x>] - COS[#<edge_angle>] * [#<p2y> - #<z1y>]]
+
+ #<c1x> = [#<z1x> + COS[#<edge_angle>] * [#<c1xr> - #<z1x>] - SIN[-#<edge_angle>] * [#<c1yr> - #<z1y>]]
+
+ #<c1y> = [#<z1y> + SIN[#<edge_angle>] * [#<c1xr> - #<z1x>] - COS[-#<edge_angle>] * [#<c1yr> - #<z1y>]]
+
+c1x = p1x + d * n0y
+
+c1y = p1y - d * n0x
+
+d = n0x * p1x + n1y * p1y - n0x * p2x - n0y * p2y
+
+nx = p3y - p2y, ny = p2x - p3x
+
+nx0 = nx / sqrt(nx^2+ny^2)
+
+nx0 = nx / sqrt(nx^2+ny^2), ditto for ny0
