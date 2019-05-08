@@ -45,5 +45,10 @@ class ProbeBasic(VCPMainWindow):
         if button.isChecked():
             self.probe_mode.setText(button.property('checkedAction'))
 
+    def on_set_wco_offset_Btn_clicked(self):
+        if self.set_wco_offset_Btn.isChecked():
+            self.wco_rotation.setText('1')
+        else:
+            self.wco_rotation.setText('0')
 
             
