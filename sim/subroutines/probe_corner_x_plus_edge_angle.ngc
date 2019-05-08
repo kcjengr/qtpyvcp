@@ -2,12 +2,12 @@
 (version: 0.1)
 (date: 05/7/19)
 
-(Probe Corner X minus Edge Angle for x,y,z 0,0,0 position)
-(Start probe position is over front right corner of stock)
+(Probe Corner X plus Edge Angle for x,y,z 0,0,0 position)
+(Start probe position is over back left corner of stock)
 (inside the step off width square and within max z distance)
 (ensure all settings have been set properly according to help diagrams)
 
-o<probe_corner_x_minus_edge_angle> sub
+o<probe_corner_x_plus_edge_angle> sub
 
   (uses NGCGUI style arg spec)
   (number after "=" in comment is default value)
@@ -36,7 +36,7 @@ o<probe_corner_x_minus_edge_angle> sub
   (Probe Tool Safety Check)
   o<110> if [#5400 NE #<probe_tool_number>]
   (MSG, Specified probe tool #<probe_tool_number> not in spindle, aborting)
-   o<probe_corner_x_minus_edge_angle> return
+   o<probe_corner_x_plus_edge_angle> return
   o<110> endif
 
   (Probe Diameter)
@@ -54,7 +54,7 @@ o<probe_corner_x_minus_edge_angle> sub
 
   (Probe X Positioning Move, Step Off Width)
   G91
-  G0 y-[#<step_off_width>]
+  G0 y[#<step_off_width>]
 
   (Probe X Positioning Move, to Probing Depth)
   F[#<probe_fast_fr>]
@@ -62,15 +62,15 @@ o<probe_corner_x_minus_edge_angle> sub
 
   #<p1x> = #5420
 
-  (Call sub "probe_y_plus" to Probe y+ side of Workpiece)
-  o<probe_y_plus> call [#1][#3][#4][#8][#9][#10]
+  (Call sub "probe_y_minus" to Probe y- side of Workpiece)
+  o<probe_y_minus> call [#1][#3][#4][#8][#9][#10]
 
   #<p1y> = #<_value>
 
   (value returned safety check, aborts if no value returned)
   o<120> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
     (MSG, Missing Y Sub returned edge parameter, aborting)
-    o<probe_corner_x_minus_edge_angle> return
+    o<probe_corner_x_plus_edge_angle> return
   o<120> endif
 
   (Probe Y Positioning Move, up to Z clearance plane)
@@ -78,7 +78,7 @@ o<probe_corner_x_minus_edge_angle> sub
   G0 Z[#<z_probe_stack>]
 
   (Probe Y Positioning Move, Traverse Workpiece at Z Clearance plane)
-  G0 X[#<step_off_width>] Y[#<step_off_width>]
+  G0 X-[#<step_off_width>] Y-[#<step_off_width>]
 
   (Probe Y Positioning Move,to Probing Depth)
   F[#<probe_fast_fr>]
@@ -86,36 +86,36 @@ o<probe_corner_x_minus_edge_angle> sub
 
   #<p2y> = #5421
 
-  (Call sub "probe_x_minus" to Probe X- side of Workpiece)
-  o<probe_x_minus> call [#1][#3][#4][#8][#9][#10]
+  (Call sub "probe_x_plus" to Probe X+ side of Workpiece)
+  o<probe_x_plus> call [#1][#3][#4][#8][#9][#10]
 
   #<p2x> = #<_value>
 
   (value returned safety check, aborts if no value returned)
   o<130> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
     (MSG, Missing X Sub returned edge parameter, aborting)
-    o<probe_corner_x_minus_edge_angle> return
+    o<probe_corner_x_plus_edge_angle> return
   o<130> endif
 
   (edge width move to edge second probing point)
   G91
   F[#<probe_fast_fr>]
-  G1 Y[#<edge_width>]
+  G1 Y-[#<edge_width>]
 
   #<p3y> = #5421
 
-  (Call sub "probe_x_minus" to Probe X- side of Workpiece)
-  o<probe_x_minus> call [#1][#3][#4][#8][#9][#10]
+  (Call sub "probe_x_plus" to Probe X+ side of Workpiece)
+  o<probe_x_plus> call [#1][#3][#4][#8][#9][#10]
 
   #<p3x> = #<_value>
 
   (value returned safety check, aborts if no value returned)
   o<140> if [#<probe_mode> EQ 1 AND #<_value_returned> NE 1]
     (MSG, Missing X Sub returned edge parameter, aborting)
-    o<probe_corner_x_minus_edge_angle> return
+    o<probe_corner_x_plus_edge_angle> return
   o<140> endif
 
-  #<edge_delta> = [#<p2x> - #<p3x>]
+  #<edge_delta> = [#<p3x> - #<p2x>]
 
   #<edge_angle> = [ATAN [#<edge_delta>] / [#<edge_width>]]
 
@@ -142,9 +142,9 @@ o<probe_corner_x_minus_edge_angle> sub
     (Record Zero in selected axes and WCO)
     G10 L2 P#5220 X[#<c1x> + #<workspace_x>]
     G10 L2 P#5220 Y[#<c1y> + #<workspace_y>]
-    o<probe_corner_x_minus_edge_angle> return
+    o<probe_corner_x_plus_edge_angle> return
   o<150> endif
 
-o<probe_corner_x_minus_edge_angle> endsub
+o<probe_corner_x_plus_edge_angle> endsub
 
 M2 (end program)

@@ -123,13 +123,13 @@ o<probe_corner_y_minus_edge_angle> sub
 
   M68 E3 Q[#<edge_angle>]
 
-  #<c1xr> = [#<z1x> + COS[#<edge_angle>] * [#<p1x> - #<z1x>] - SIN[#<edge_angle>] * [#<p1y> - #<z1y>]]
+  #<c1xr> = [#<z1x> + [#<p1x> - #<z1x>] * COS[-#<edge_angle>] - [#<p1y> - #<z1y>] * SIN[-#<edge_angle>]]
 
-  #<c1yr> = [#<z1y> + SIN[#<edge_angle>] * [#<p2x> - #<z1x>] - COS[#<edge_angle>] * [#<p2y> - #<z1y>]]
+  #<c1yr> = [#<z1y> + [#<p2x> - #<z1x>] * SIN[-#<edge_angle>] + [#<p2y> - #<z1y>] * COS[-#<edge_angle>]]
 
-  #<c1x> = [#<z1x> + COS[#<edge_angle>] * [#<c1xr> - #<z1x>] - SIN[360 - #<edge_angle>] * [#<c1yr> - #<z1y>]]
+  #<c1x> = [#<z1x> + [#<c1xr> - #<z1x>] * COS[#<edge_angle>] - [#<c1yr> - #<z1y>] * SIN[#<edge_angle>]]
 
-  #<c1y> = [#<z1y> + SIN[#<edge_angle>] * [#<c1xr> - #<z1x>] - COS[360 - #<edge_angle>] * [#<c1yr> - #<z1y>]]
+  #<c1y> = [#<z1y> + [#<c1xr> - #<z1x>] * SIN[#<edge_angle>] + [#<c1yr> - #<z1y>] * COS[#<edge_angle>]]
 
   (Probe Completion Move to Z Clearance Plane, and XY Zero)
   G91

@@ -34,6 +34,14 @@
 
  #<c1y> = [#<z1y> + SIN[#<edge_angle>] * [#<c1xr> - #<z1x>] - COS[-#<edge_angle>] * [#<c1yr> - #<z1y>]]
 
+ #<c1xr> = #<z1x> + [#<p1x> - #<z1x>] * COS[#<edge_angle>] - [#<p1y> - #<z1y>] * SIN[#<edge_angle>]
+
+ #<c1yr> = #<z1y> + [#<p2x> - #<z1x>] * SIN[#<edge_angle>] + [#<p2y> - #<z1y>] * COS[#<edge_angle>]
+
+ #<c1x> = #<z1x> + [#<c1xr> - #<z1x>] * COS[#<edge_angle>] - [#<c1yr> - #<z1y>] * SIN[360 - #<edge_angle>]
+
+ #<c1y> = #<z1y> + [#<c1xr> - #<z1x>] * SIN[#<edge_angle>] + [#<c1yr> - #<z1y>] * COS[360 - #<edge_angle>]
+
 c1x = p1x + d * n0y
 
 c1y = p1y - d * n0x
@@ -45,3 +53,30 @@ nx = p3y - p2y, ny = p2x - p3x
 nx0 = nx / sqrt(nx^2+ny^2)
 
 nx0 = nx / sqrt(nx^2+ny^2), ditto for ny0
+
+#<c1xr> = [#<z1x> + COS[#<edge_angle>] * [#<p2x> - #<z1x>] - SIN[#<edge_angle>] * [#<p2y> - #<z1y>]]
+
+#<c1yr> = [#<z1y> + SIN[#<edge_angle>] * [#<p1x> - #<z1x>] - COS[#<edge_angle>] * [#<p1y> - #<z1y>]]
+
+#<c1x> = [#<z1x> + COS[#<edge_angle>] * [#<c1xr> - #<z1x>] - SIN[360 - #<edge_angle>] * [#<c1yr> - #<z1y>]]
+
+#<c1y> = [#<z1y> + SIN[#<edge_angle>] * [#<c1xr> - #<z1x>] - COS[360 - #<edge_angle>] * [#<c1yr> - #<z1y>]]
+
+
+#<c1xr> = [#<z1x> + [#<p2x> - #<z1x>] * COS[-#<edge_angle>] - [#<p2y> - #<z1y>] * SIN[-#<edge_angle>]]
+
+#<c1yr> = [#<z1y> + [#<p1x> - #<z1x>] * SIN[-#<edge_angle>] + [#<p1y> - #<z1y>] * COS[-#<edge_angle>]]
+
+#<c1x> = [#<z1x> + [#<c1xr> - #<z1x>] * COS[#<edge_angle>] - [#<c1yr> - #<z1y>] * SIN[#<edge_angle>]]
+
+#<c1y> = [#<z1y> + [#<c1xr> - #<z1x>] * SIN[#<edge_angle>] + [#<c1yr> - #<z1y>] * COS[#<edge_angle>]]
+
+
+
+#<c1xr> = [#<z1x> + COS[#<edge_angle>] * [#<p1x> - #<z1x>] - SIN[#<edge_angle>] * [#<p1y> - #<z1y>]]
+
+#<c1yr> = [#<z1y> + SIN[#<edge_angle>] * [#<p2x> - #<z1x>] - COS[#<edge_angle>] * [#<p2y> - #<z1y>]]
+
+#<c1x> = [#<z1x> + COS[#<edge_angle>] * [#<c1xr> - #<z1x>] - SIN[360 - #<edge_angle>] * [#<c1yr> - #<z1y>]]
+
+#<c1y> = [#<z1y> + SIN[#<edge_angle>] * [#<c1xr> - #<z1x>] - COS[360 - #<edge_angle>] * [#<c1yr> - #<z1y>]]
