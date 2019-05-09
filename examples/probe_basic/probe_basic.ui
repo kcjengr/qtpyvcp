@@ -10066,7 +10066,7 @@ QLineEdit:focus {
                       <string/>
                      </property>
                      <property name="text">
-                      <string>10.0</string>
+                      <string>7.0</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -10159,7 +10159,7 @@ QLineEdit:focus {
 }</string>
                      </property>
                      <property name="text">
-                      <string>5.0</string>
+                      <string>0.0</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -12547,7 +12547,7 @@ QPushButton:checked {
                      <number>0</number>
                     </property>
                     <property name="bottomMargin">
-                     <number>0</number>
+                     <number>9</number>
                     </property>
                     <item>
                      <widget class="QStackedWidget" name="probe_tab_widget">
@@ -14827,7 +14827,7 @@ Background:transparent;
                           </property>
                           <property name="maximumSize">
                            <size>
-                            <width>500</width>
+                            <width>520</width>
                             <height>520</height>
                            </size>
                           </property>
@@ -14835,7 +14835,7 @@ Background:transparent;
                            <string notr="true">QFrame{
 border-style: solid;
 border-color: rgb(206, 209, 202);
-background-color: rgb(51, 57, 59);
+background-color: rgb(57, 63, 65);
 border-width: 2px;
 border-radius: 8px;
 }
@@ -14849,75 +14849,101 @@ border-radius: 8px;
                             <number>12</number>
                            </property>
                            <property name="topMargin">
-                            <number>18</number>
+                            <number>12</number>
                            </property>
                            <property name="rightMargin">
                             <number>12</number>
                            </property>
                            <property name="bottomMargin">
-                            <number>15</number>
+                            <number>18</number>
                            </property>
                            <item>
-                            <widget class="QWidget" name="widget_18" native="true">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
+                            <layout class="QHBoxLayout" name="horizontalLayout_61">
+                             <property name="spacing">
+                              <number>12</number>
                              </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>35</height>
-                              </size>
+                             <property name="leftMargin">
+                              <number>20</number>
                              </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>16777215</width>
-                               <height>35</height>
-                              </size>
+                             <property name="topMargin">
+                              <number>3</number>
                              </property>
-                             <property name="layoutDirection">
-                              <enum>Qt::RightToLeft</enum>
+                             <property name="rightMargin">
+                              <number>20</number>
                              </property>
-                             <layout class="QHBoxLayout" name="horizontalLayout_59">
-                              <property name="spacing">
-                               <number>0</number>
-                              </property>
-                              <property name="leftMargin">
-                               <number>80</number>
-                              </property>
-                              <property name="topMargin">
-                               <number>0</number>
-                              </property>
-                              <property name="rightMargin">
-                               <number>80</number>
-                              </property>
-                              <property name="bottomMargin">
-                               <number>0</number>
-                              </property>
-                              <item>
-                               <widget class="VCPLineEdit" name="calibration_offset">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>100</width>
-                                  <height>31</height>
-                                 </size>
-                                </property>
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>100</width>
-                                  <height>31</height>
-                                 </size>
-                                </property>
-                                <property name="styleSheet">
-                                 <string notr="true">VCPLineEdit {
+                             <property name="bottomMargin">
+                              <number>3</number>
+                             </property>
+                             <item>
+                              <widget class="QLabel" name="label_93">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="minimumSize">
+                                <size>
+                                 <width>185</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>185</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="baseSize">
+                                <size>
+                                 <width>140</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLabel{
+border: transparent;
+background: none;
+font: 75 15pt &quot;Bebas Kai&quot;;
+color: rgb(255, 255, 255);
+}</string>
+                               </property>
+                               <property name="lineWidth">
+                                <number>0</number>
+                               </property>
+                               <property name="text">
+                                <string>PROBE CALIBRATION OFFSET:</string>
+                               </property>
+                               <property name="alignment">
+                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                               </property>
+                               <property name="indent">
+                                <number>0</number>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="VCPLineEdit" name="calibration_offset">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="minimumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>35</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>35</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">VCPLineEdit {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -14932,556 +14958,206 @@ VCPLineEdit:focus {
     border-style: solid;
     border-color: rgb(23, 81, 191);
 }</string>
-                                </property>
-                                <property name="text">
-                                 <string>0.0000</string>
-                                </property>
-                                <property name="alignment">
-                                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                                </property>
-                                <property name="readOnly">
-                                 <bool>false</bool>
-                                </property>
-                                <property name="clearButtonEnabled">
-                                 <bool>false</bool>
-                                </property>
-                                <property name="rules" stdset="0">
-                                 <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.4f}\&quot;.format(ch[0][12])&quot;, &quot;name&quot;: &quot;auto_cal_offset&quot;}]</string>
-                                </property>
-                               </widget>
-                              </item>
-                              <item>
-                               <widget class="QLabel" name="label_93">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>180</width>
-                                  <height>30</height>
-                                 </size>
-                                </property>
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>180</width>
-                                  <height>30</height>
-                                 </size>
-                                </property>
-                                <property name="baseSize">
-                                 <size>
-                                  <width>140</width>
-                                  <height>30</height>
-                                 </size>
-                                </property>
-                                <property name="styleSheet">
-                                 <string notr="true">QLabel{
-border: transparent;
-background: none;
-font: 75 15pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
-}</string>
-                                </property>
-                                <property name="lineWidth">
-                                 <number>0</number>
-                                </property>
-                                <property name="text">
-                                 <string>PROBE CALIBRATION OFFSET:</string>
-                                </property>
-                                <property name="alignment">
-                                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                                </property>
-                                <property name="indent">
-                                 <number>0</number>
-                                </property>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                           </item>
-                           <item>
-                            <widget class="QWidget" name="widget_20" native="true">
-                             <property name="sizePolicy">
-                              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-                               <horstretch>0</horstretch>
-                               <verstretch>0</verstretch>
-                              </sizepolicy>
-                             </property>
-                             <property name="minimumSize">
-                              <size>
-                               <width>0</width>
-                               <height>340</height>
-                              </size>
-                             </property>
-                             <property name="maximumSize">
-                              <size>
-                               <width>16777215</width>
-                               <height>340</height>
-                              </size>
-                             </property>
-                             <layout class="QHBoxLayout" name="horizontalLayout_61">
-                              <property name="spacing">
-                               <number>0</number>
-                              </property>
-                              <property name="leftMargin">
-                               <number>0</number>
-                              </property>
-                              <property name="topMargin">
-                               <number>0</number>
-                              </property>
-                              <property name="rightMargin">
-                               <number>0</number>
-                              </property>
-                              <property name="bottomMargin">
-                               <number>0</number>
-                              </property>
-                              <item>
-                               <widget class="QWidget" name="gridWidget_10" native="true">
-                                <property name="sizePolicy">
-                                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                                  <horstretch>0</horstretch>
-                                  <verstretch>0</verstretch>
-                                 </sizepolicy>
-                                </property>
-                                <property name="minimumSize">
-                                 <size>
-                                  <width>320</width>
-                                  <height>320</height>
-                                 </size>
-                                </property>
-                                <property name="maximumSize">
-                                 <size>
-                                  <width>340</width>
-                                  <height>340</height>
-                                 </size>
-                                </property>
-                                <layout class="QGridLayout" name="gridLayout_3">
-                                 <property name="leftMargin">
-                                  <number>1</number>
-                                 </property>
-                                 <property name="topMargin">
-                                  <number>1</number>
-                                 </property>
-                                 <property name="rightMargin">
-                                  <number>1</number>
-                                 </property>
-                                 <property name="bottomMargin">
-                                  <number>1</number>
-                                 </property>
-                                 <item row="1" column="0">
-                                  <widget class="SubCallButton" name="probe_cal_square_boss">
-                                   <property name="minimumSize">
-                                    <size>
-                                     <width>150</width>
-                                     <height>150</height>
-                                    </size>
-                                   </property>
-                                   <property name="maximumSize">
-                                    <size>
-                                     <width>150</width>
-                                     <height>150</height>
-                                    </size>
-                                   </property>
-                                   <property name="styleSheet">
-                                    <string notr="true"/>
-                                   </property>
-                                   <property name="text">
-                                    <string/>
-                                   </property>
-                                   <property name="icon">
-                                    <iconset resource="probe_basic.qrc">
-                                     <normaloff>:/images/probe_cal_square_boss.png</normaloff>:/images/probe_cal_square_boss.png</iconset>
-                                   </property>
-                                   <property name="iconSize">
-                                    <size>
-                                     <width>140</width>
-                                     <height>140</height>
-                                    </size>
-                                   </property>
-                                   <property name="filename" stdset="0">
-                                    <string>probe_cal_square_boss.ngc</string>
-                                   </property>
-                                   <property name="styleClass" stdset="0">
-                                    <string>probeButton</string>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                 <item row="0" column="1">
-                                  <widget class="SubCallButton" name="probe_cal_round_boss">
-                                   <property name="minimumSize">
-                                    <size>
-                                     <width>150</width>
-                                     <height>150</height>
-                                    </size>
-                                   </property>
-                                   <property name="maximumSize">
-                                    <size>
-                                     <width>150</width>
-                                     <height>150</height>
-                                    </size>
-                                   </property>
-                                   <property name="styleSheet">
-                                    <string notr="true"/>
-                                   </property>
-                                   <property name="text">
-                                    <string/>
-                                   </property>
-                                   <property name="icon">
-                                    <iconset resource="probe_basic.qrc">
-                                     <normaloff>:/images/probe_cal_round_boss.png</normaloff>:/images/probe_cal_round_boss.png</iconset>
-                                   </property>
-                                   <property name="iconSize">
-                                    <size>
-                                     <width>140</width>
-                                     <height>140</height>
-                                    </size>
-                                   </property>
-                                   <property name="filename" stdset="0">
-                                    <string>probe_cal_round_boss.ngc</string>
-                                   </property>
-                                   <property name="styleClass" stdset="0">
-                                    <string>probeButton</string>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                 <item row="1" column="1">
-                                  <widget class="SubCallButton" name="probe_cal_square_pocket">
-                                   <property name="minimumSize">
-                                    <size>
-                                     <width>150</width>
-                                     <height>150</height>
-                                    </size>
-                                   </property>
-                                   <property name="maximumSize">
-                                    <size>
-                                     <width>150</width>
-                                     <height>150</height>
-                                    </size>
-                                   </property>
-                                   <property name="styleSheet">
-                                    <string notr="true"/>
-                                   </property>
-                                   <property name="text">
-                                    <string/>
-                                   </property>
-                                   <property name="icon">
-                                    <iconset resource="probe_basic.qrc">
-                                     <normaloff>:/images/probe_cal_square_pocket.png</normaloff>:/images/probe_cal_square_pocket.png</iconset>
-                                   </property>
-                                   <property name="iconSize">
-                                    <size>
-                                     <width>135</width>
-                                     <height>135</height>
-                                    </size>
-                                   </property>
-                                   <property name="filename" stdset="0">
-                                    <string>probe_cal_square_pocket.ngc</string>
-                                   </property>
-                                   <property name="styleClass" stdset="0">
-                                    <string>probeButton</string>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                 <item row="0" column="0">
-                                  <widget class="SubCallButton" name="probe_cal_round_pocket">
-                                   <property name="minimumSize">
-                                    <size>
-                                     <width>150</width>
-                                     <height>150</height>
-                                    </size>
-                                   </property>
-                                   <property name="maximumSize">
-                                    <size>
-                                     <width>150</width>
-                                     <height>150</height>
-                                    </size>
-                                   </property>
-                                   <property name="styleSheet">
-                                    <string notr="true"/>
-                                   </property>
-                                   <property name="text">
-                                    <string/>
-                                   </property>
-                                   <property name="icon">
-                                    <iconset resource="probe_basic.qrc">
-                                     <normaloff>:/images/probe_cal_round_pocket.png</normaloff>:/images/probe_cal_round_pocket.png</iconset>
-                                   </property>
-                                   <property name="iconSize">
-                                    <size>
-                                     <width>135</width>
-                                     <height>135</height>
-                                    </size>
-                                   </property>
-                                   <property name="filename" stdset="0">
-                                    <string>probe_cal_round_pocket.ngc</string>
-                                   </property>
-                                   <property name="styleClass" stdset="0">
-                                    <string>probeButton</string>
-                                   </property>
-                                  </widget>
-                                 </item>
-                                </layout>
-                               </widget>
-                              </item>
-                             </layout>
-                            </widget>
-                           </item>
-                           <item>
-                            <layout class="QHBoxLayout" name="horizontalLayout_56">
-                             <property name="spacing">
-                              <number>0</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>30</number>
-                             </property>
-                             <property name="topMargin">
-                              <number>1</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>30</number>
-                             </property>
-                             <property name="bottomMargin">
-                              <number>1</number>
-                             </property>
-                             <item>
-                              <widget class="QLabel" name="hint_label_3">
-                               <property name="styleSheet">
-                                <string notr="true">QLabel{
-    border-style: none;
-    color: rgb(238, 238, 236);
-	background-color: transparent;
-	font: 15pt &quot;Bebas Kai&quot;;
-}</string>
                                </property>
                                <property name="text">
-                                <string>CALIBRATION WIDTH</string>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignCenter</set>
-                               </property>
-                              </widget>
-                             </item>
-                             <item>
-                              <widget class="QLabel" name="label_76">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>30</width>
-                                 <height>33</height>
-                                </size>
-                               </property>
-                               <property name="maximumSize">
-                                <size>
-                                 <width>30</width>
-                                 <height>33</height>
-                                </size>
-                               </property>
-                               <property name="styleSheet">
-                                <string notr="true">QLabel{
-font: 75 15pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
-padding-right: 1px;
-padding-left: 5px;
-border: transparent;
-Background:transparent;
-}</string>
-                               </property>
-                               <property name="text">
-                                <string>X :</string>
+                                <string>0.000000</string>
                                </property>
                                <property name="alignment">
                                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                                </property>
-                               <property name="indent">
-                                <number>0</number>
+                               <property name="readOnly">
+                                <bool>false</bool>
+                               </property>
+                               <property name="clearButtonEnabled">
+                                <bool>false</bool>
+                               </property>
+                               <property name="rules" stdset="0">
+                                <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:aout&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;{:6.6f}\&quot;.format(ch[0][12])&quot;, &quot;name&quot;: &quot;auto_cal_offset&quot;}]</string>
                                </property>
                               </widget>
                              </item>
                              <item>
-                              <widget class="QLineEdit" name="x_cal_width">
+                              <widget class="MDIButton" name="mdibutton">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
                                <property name="minimumSize">
                                 <size>
-                                 <width>100</width>
-                                 <height>31</height>
+                                 <width>120</width>
+                                 <height>37</height>
                                 </size>
                                </property>
                                <property name="maximumSize">
                                 <size>
-                                 <width>100</width>
-                                 <height>31</height>
+                                 <width>120</width>
+                                 <height>35</height>
                                 </size>
-                               </property>
-                               <property name="styleSheet">
-                                <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 75 15pt &quot;Bebas Kai&quot;;
-    padding-right: 3px;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
                                </property>
                                <property name="text">
-                                <string/>
+                                <string>CLEAR OFFSET</string>
                                </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                               </property>
-                               <property name="placeholderText">
-                                <string>0.0000</string>
-                               </property>
-                              </widget>
-                             </item>
-                             <item>
-                              <widget class="QLabel" name="label_103">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>30</width>
-                                 <height>33</height>
-                                </size>
-                               </property>
-                               <property name="maximumSize">
-                                <size>
-                                 <width>30</width>
-                                 <height>33</height>
-                                </size>
-                               </property>
-                               <property name="styleSheet">
-                                <string notr="true">QLabel{
-font: 75 15pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
-padding-right: 1px;
-padding-left: 5px;
-border: transparent;
-Background:transparent;
-}</string>
-                               </property>
-                               <property name="text">
-                                <string>Y :</string>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                               </property>
-                               <property name="indent">
-                                <number>0</number>
-                               </property>
-                              </widget>
-                             </item>
-                             <item>
-                              <widget class="QLineEdit" name="y_cal_width">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>100</width>
-                                 <height>31</height>
-                                </size>
-                               </property>
-                               <property name="maximumSize">
-                                <size>
-                                 <width>100</width>
-                                 <height>31</height>
-                                </size>
-                               </property>
-                               <property name="styleSheet">
-                                <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 75 15pt &quot;Bebas Kai&quot;;
-    padding-right: 3px;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
-                               </property>
-                               <property name="text">
-                                <string/>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                               </property>
-                               <property name="placeholderText">
-                                <string>0.0000</string>
+                               <property name="MDICommand" stdset="0">
+                                <string>M68 E12 Q0</string>
                                </property>
                               </widget>
                              </item>
                             </layout>
                            </item>
                            <item>
-                            <layout class="QHBoxLayout" name="horizontalLayout_58">
+                            <layout class="QHBoxLayout" name="horizontalLayout_60">
                              <property name="spacing">
-                              <number>0</number>
-                             </property>
-                             <property name="leftMargin">
-                              <number>60</number>
+                              <number>18</number>
                              </property>
                              <property name="topMargin">
-                              <number>1</number>
-                             </property>
-                             <property name="rightMargin">
-                              <number>80</number>
+                              <number>3</number>
                              </property>
                              <property name="bottomMargin">
-                              <number>1</number>
+                              <number>3</number>
                              </property>
                              <item>
-                              <widget class="QLabel" name="hint_label_4">
+                              <widget class="QWidget" name="widget_21" native="true">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
                                <property name="minimumSize">
                                 <size>
-                                 <width>160</width>
-                                 <height>33</height>
+                                 <width>135</width>
+                                 <height>150</height>
                                 </size>
                                </property>
                                <property name="maximumSize">
                                 <size>
-                                 <width>160</width>
-                                 <height>33</height>
+                                 <width>135</width>
+                                 <height>150</height>
                                 </size>
                                </property>
-                               <property name="styleSheet">
-                                <string notr="true">QLabel{
+                               <property name="layoutDirection">
+                                <enum>Qt::LeftToRight</enum>
+                               </property>
+                               <layout class="QFormLayout" name="formLayout_2">
+                                <property name="labelAlignment">
+                                 <set>Qt::AlignCenter</set>
+                                </property>
+                                <property name="formAlignment">
+                                 <set>Qt::AlignCenter</set>
+                                </property>
+                                <property name="horizontalSpacing">
+                                 <number>3</number>
+                                </property>
+                                <property name="verticalSpacing">
+                                 <number>12</number>
+                                </property>
+                                <property name="leftMargin">
+                                 <number>1</number>
+                                </property>
+                                <property name="topMargin">
+                                 <number>1</number>
+                                </property>
+                                <property name="rightMargin">
+                                 <number>1</number>
+                                </property>
+                                <property name="bottomMargin">
+                                 <number>1</number>
+                                </property>
+                                <item row="0" column="0">
+                                 <widget class="QLabel" name="hint_label_4">
+                                  <property name="sizePolicy">
+                                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                   </sizepolicy>
+                                  </property>
+                                  <property name="minimumSize">
+                                   <size>
+                                    <width>135</width>
+                                    <height>31</height>
+                                   </size>
+                                  </property>
+                                  <property name="maximumSize">
+                                   <size>
+                                    <width>135</width>
+                                    <height>31</height>
+                                   </size>
+                                  </property>
+                                  <property name="styleSheet">
+                                   <string notr="true">QLabel{
     border-style: none;
     color: rgb(238, 238, 236);
 	background-color: transparent;
 	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
-                               </property>
-                               <property name="text">
-                                <string>CALIBRATION DIAMETER</string>
-                               </property>
-                               <property name="alignment">
-                                <set>Qt::AlignCenter</set>
-                               </property>
-                              </widget>
-                             </item>
-                             <item>
-                              <widget class="QLineEdit" name="cal_diameter">
-                               <property name="minimumSize">
-                                <size>
-                                 <width>100</width>
-                                 <height>31</height>
-                                </size>
-                               </property>
-                               <property name="maximumSize">
-                                <size>
-                                 <width>100</width>
-                                 <height>31</height>
-                                </size>
-                               </property>
-                               <property name="styleSheet">
-                                <string notr="true">QLineEdit {
+                                  </property>
+                                  <property name="text">
+                                   <string>CALIBRATION DIAM</string>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignCenter</set>
+                                  </property>
+                                 </widget>
+                                </item>
+                                <item row="1" column="0">
+                                 <widget class="QLabel" name="label_116">
+                                  <property name="sizePolicy">
+                                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                   </sizepolicy>
+                                  </property>
+                                  <property name="minimumSize">
+                                   <size>
+                                    <width>38</width>
+                                    <height>31</height>
+                                   </size>
+                                  </property>
+                                  <property name="maximumSize">
+                                   <size>
+                                    <width>38</width>
+                                    <height>31</height>
+                                   </size>
+                                  </property>
+                                  <property name="styleSheet">
+                                   <string notr="true">QLabel{
+font: 14pt &quot;Bebas Kai&quot;;
+color: white;
+border: none;
+}</string>
+                                  </property>
+                                  <property name="lineWidth">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="text">
+                                   <string>DIAM:</string>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                  <property name="indent">
+                                   <number>0</number>
+                                  </property>
+                                 </widget>
+                                </item>
+                                <item row="1" column="1">
+                                 <widget class="QLineEdit" name="cal_diameter">
+                                  <property name="minimumSize">
+                                   <size>
+                                    <width>85</width>
+                                    <height>35</height>
+                                   </size>
+                                  </property>
+                                  <property name="maximumSize">
+                                   <size>
+                                    <width>85</width>
+                                    <height>35</height>
+                                   </size>
+                                  </property>
+                                  <property name="styleSheet">
+                                   <string notr="true">QLineEdit {
     border-style: transparent;
     border-color: rgb(235, 235, 235);
     border-width: 1px;
@@ -15496,15 +15172,572 @@ QLineEdit:focus {
     border-style: solid;
     border-color: rgb(23, 81, 191);
 }</string>
+                                  </property>
+                                  <property name="text">
+                                   <string/>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                  <property name="placeholderText">
+                                   <string>0.0000</string>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="SubCallButton" name="probe_cal_round_pocket">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>150</width>
+                                 <height>150</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>150</width>
+                                 <height>150</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true"/>
                                </property>
                                <property name="text">
                                 <string/>
                                </property>
-                               <property name="alignment">
-                                <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                               <property name="icon">
+                                <iconset resource="probe_basic.qrc">
+                                 <normaloff>:/images/probe_cal_round_pocket.png</normaloff>:/images/probe_cal_round_pocket.png</iconset>
                                </property>
-                               <property name="placeholderText">
-                                <string>0.0000</string>
+                               <property name="iconSize">
+                                <size>
+                                 <width>135</width>
+                                 <height>135</height>
+                                </size>
+                               </property>
+                               <property name="filename" stdset="0">
+                                <string>probe_cal_round_pocket.ngc</string>
+                               </property>
+                               <property name="styleClass" stdset="0">
+                                <string>probeButton</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="SubCallButton" name="probe_cal_round_boss">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>150</width>
+                                 <height>150</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>150</width>
+                                 <height>150</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true"/>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="icon">
+                                <iconset resource="probe_basic.qrc">
+                                 <normaloff>:/images/probe_cal_round_boss.png</normaloff>:/images/probe_cal_round_boss.png</iconset>
+                               </property>
+                               <property name="iconSize">
+                                <size>
+                                 <width>140</width>
+                                 <height>140</height>
+                                </size>
+                               </property>
+                               <property name="filename" stdset="0">
+                                <string>probe_cal_round_boss.ngc</string>
+                               </property>
+                               <property name="styleClass" stdset="0">
+                                <string>probeButton</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item>
+                            <layout class="QHBoxLayout" name="horizontalLayout_56">
+                             <property name="spacing">
+                              <number>9</number>
+                             </property>
+                             <property name="leftMargin">
+                              <number>3</number>
+                             </property>
+                             <property name="topMargin">
+                              <number>3</number>
+                             </property>
+                             <property name="rightMargin">
+                              <number>3</number>
+                             </property>
+                             <property name="bottomMargin">
+                              <number>3</number>
+                             </property>
+                             <item>
+                              <widget class="QPushButton" name="cal_avg_error">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="minimumSize">
+                                <size>
+                                 <width>165</width>
+                                 <height>37</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>165</width>
+                                 <height>37</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true"/>
+                               </property>
+                               <property name="text">
+                                <string>CAL ON AVG XY ERROR</string>
+                               </property>
+                               <property name="checkable">
+                                <bool>true</bool>
+                               </property>
+                               <property name="checked">
+                                <bool>true</bool>
+                               </property>
+                               <property name="autoExclusive">
+                                <bool>true</bool>
+                               </property>
+                               <property name="checkedAction" stdset="0">
+                                <string>0</string>
+                               </property>
+                               <attribute name="buttonGroup">
+                                <string notr="true">xycalbtnGroup</string>
+                               </attribute>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QPushButton" name="cal_x_error">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="minimumSize">
+                                <size>
+                                 <width>140</width>
+                                 <height>37</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>140</width>
+                                 <height>37</height>
+                                </size>
+                               </property>
+                               <property name="text">
+                                <string>CAL ON X ERROR</string>
+                               </property>
+                               <property name="checkable">
+                                <bool>true</bool>
+                               </property>
+                               <property name="checked">
+                                <bool>false</bool>
+                               </property>
+                               <property name="autoExclusive">
+                                <bool>true</bool>
+                               </property>
+                               <property name="checkedAction" stdset="0">
+                                <string>1</string>
+                               </property>
+                               <attribute name="buttonGroup">
+                                <string notr="true">xycalbtnGroup</string>
+                               </attribute>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QPushButton" name="cal_y_error">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="minimumSize">
+                                <size>
+                                 <width>140</width>
+                                 <height>37</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>140</width>
+                                 <height>37</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true"/>
+                               </property>
+                               <property name="text">
+                                <string>CAL ON Y ERROR</string>
+                               </property>
+                               <property name="checkable">
+                                <bool>true</bool>
+                               </property>
+                               <property name="autoExclusive">
+                                <bool>true</bool>
+                               </property>
+                               <property name="checkedAction" stdset="0">
+                                <string>2</string>
+                               </property>
+                               <attribute name="buttonGroup">
+                                <string notr="true">xycalbtnGroup</string>
+                               </attribute>
+                              </widget>
+                             </item>
+                            </layout>
+                           </item>
+                           <item>
+                            <layout class="QHBoxLayout" name="horizontalLayout_62">
+                             <property name="spacing">
+                              <number>18</number>
+                             </property>
+                             <property name="topMargin">
+                              <number>3</number>
+                             </property>
+                             <property name="bottomMargin">
+                              <number>3</number>
+                             </property>
+                             <item>
+                              <widget class="QWidget" name="widget_18" native="true">
+                               <property name="sizePolicy">
+                                <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                                 <horstretch>0</horstretch>
+                                 <verstretch>0</verstretch>
+                                </sizepolicy>
+                               </property>
+                               <property name="minimumSize">
+                                <size>
+                                 <width>135</width>
+                                 <height>150</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>135</width>
+                                 <height>150</height>
+                                </size>
+                               </property>
+                               <layout class="QFormLayout" name="formLayout">
+                                <property name="labelAlignment">
+                                 <set>Qt::AlignCenter</set>
+                                </property>
+                                <property name="formAlignment">
+                                 <set>Qt::AlignCenter</set>
+                                </property>
+                                <property name="verticalSpacing">
+                                 <number>15</number>
+                                </property>
+                                <property name="leftMargin">
+                                 <number>1</number>
+                                </property>
+                                <property name="topMargin">
+                                 <number>0</number>
+                                </property>
+                                <property name="rightMargin">
+                                 <number>1</number>
+                                </property>
+                                <property name="bottomMargin">
+                                 <number>9</number>
+                                </property>
+                                <item row="0" column="0" colspan="2">
+                                 <widget class="QLabel" name="hint_label_3">
+                                  <property name="sizePolicy">
+                                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                   </sizepolicy>
+                                  </property>
+                                  <property name="minimumSize">
+                                   <size>
+                                    <width>135</width>
+                                    <height>31</height>
+                                   </size>
+                                  </property>
+                                  <property name="maximumSize">
+                                   <size>
+                                    <width>135</width>
+                                    <height>31</height>
+                                   </size>
+                                  </property>
+                                  <property name="styleSheet">
+                                   <string notr="true">QLabel{
+    border-style: none;
+    color: rgb(238, 238, 236);
+	background-color: transparent;
+	font: 15pt &quot;Bebas Kai&quot;;
+}</string>
+                                  </property>
+                                  <property name="text">
+                                   <string>CALIBRATION WIDTH</string>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignCenter</set>
+                                  </property>
+                                 </widget>
+                                </item>
+                                <item row="1" column="0">
+                                 <widget class="QLabel" name="label_103">
+                                  <property name="sizePolicy">
+                                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                   </sizepolicy>
+                                  </property>
+                                  <property name="minimumSize">
+                                   <size>
+                                    <width>30</width>
+                                    <height>31</height>
+                                   </size>
+                                  </property>
+                                  <property name="maximumSize">
+                                   <size>
+                                    <width>30</width>
+                                    <height>31</height>
+                                   </size>
+                                  </property>
+                                  <property name="styleSheet">
+                                   <string notr="true">QLabel{
+font: 14pt &quot;Bebas Kai&quot;;
+color: white;
+border: none;
+}</string>
+                                  </property>
+                                  <property name="lineWidth">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="text">
+                                   <string>X :</string>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                  <property name="indent">
+                                   <number>0</number>
+                                  </property>
+                                 </widget>
+                                </item>
+                                <item row="1" column="1">
+                                 <widget class="QLineEdit" name="x_cal_width">
+                                  <property name="minimumSize">
+                                   <size>
+                                    <width>85</width>
+                                    <height>35</height>
+                                   </size>
+                                  </property>
+                                  <property name="maximumSize">
+                                   <size>
+                                    <width>85</width>
+                                    <height>35</height>
+                                   </size>
+                                  </property>
+                                  <property name="styleSheet">
+                                   <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 15pt &quot;Bebas Kai&quot;;
+    padding-right: 3px;
+}
+
+QLineEdit:focus {
+    border-style: solid;
+    border-color: rgb(23, 81, 191);
+}</string>
+                                  </property>
+                                  <property name="text">
+                                   <string/>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                  <property name="placeholderText">
+                                   <string>0.0000</string>
+                                  </property>
+                                 </widget>
+                                </item>
+                                <item row="2" column="0">
+                                 <widget class="QLabel" name="label_107">
+                                  <property name="sizePolicy">
+                                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                                    <horstretch>0</horstretch>
+                                    <verstretch>0</verstretch>
+                                   </sizepolicy>
+                                  </property>
+                                  <property name="minimumSize">
+                                   <size>
+                                    <width>30</width>
+                                    <height>31</height>
+                                   </size>
+                                  </property>
+                                  <property name="maximumSize">
+                                   <size>
+                                    <width>30</width>
+                                    <height>31</height>
+                                   </size>
+                                  </property>
+                                  <property name="styleSheet">
+                                   <string notr="true">QLabel{
+font: 14pt &quot;Bebas Kai&quot;;
+color: white;
+border: none;
+}</string>
+                                  </property>
+                                  <property name="lineWidth">
+                                   <number>0</number>
+                                  </property>
+                                  <property name="text">
+                                   <string>Y :</string>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                  <property name="indent">
+                                   <number>0</number>
+                                  </property>
+                                 </widget>
+                                </item>
+                                <item row="2" column="1">
+                                 <widget class="QLineEdit" name="y_cal_width">
+                                  <property name="minimumSize">
+                                   <size>
+                                    <width>85</width>
+                                    <height>35</height>
+                                   </size>
+                                  </property>
+                                  <property name="maximumSize">
+                                   <size>
+                                    <width>85</width>
+                                    <height>35</height>
+                                   </size>
+                                  </property>
+                                  <property name="styleSheet">
+                                   <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(235, 235, 235);
+    border-width: 1px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 75 15pt &quot;Bebas Kai&quot;;
+    padding-right: 3px;
+}
+
+QLineEdit:focus {
+    border-style: solid;
+    border-color: rgb(23, 81, 191);
+}</string>
+                                  </property>
+                                  <property name="text">
+                                   <string/>
+                                  </property>
+                                  <property name="alignment">
+                                   <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                                  </property>
+                                  <property name="placeholderText">
+                                   <string>0.0000</string>
+                                  </property>
+                                 </widget>
+                                </item>
+                               </layout>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="SubCallButton" name="probe_cal_square_boss">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>150</width>
+                                 <height>150</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>150</width>
+                                 <height>150</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true"/>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="icon">
+                                <iconset resource="probe_basic.qrc">
+                                 <normaloff>:/images/probe_cal_square_boss.png</normaloff>:/images/probe_cal_square_boss.png</iconset>
+                               </property>
+                               <property name="iconSize">
+                                <size>
+                                 <width>140</width>
+                                 <height>140</height>
+                                </size>
+                               </property>
+                               <property name="filename" stdset="0">
+                                <string>probe_cal_square_boss.ngc</string>
+                               </property>
+                               <property name="styleClass" stdset="0">
+                                <string>probeButton</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="SubCallButton" name="probe_cal_square_pocket">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>150</width>
+                                 <height>150</height>
+                                </size>
+                               </property>
+                               <property name="maximumSize">
+                                <size>
+                                 <width>150</width>
+                                 <height>150</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true"/>
+                               </property>
+                               <property name="text">
+                                <string/>
+                               </property>
+                               <property name="icon">
+                                <iconset resource="probe_basic.qrc">
+                                 <normaloff>:/images/probe_cal_square_pocket.png</normaloff>:/images/probe_cal_square_pocket.png</iconset>
+                               </property>
+                               <property name="iconSize">
+                                <size>
+                                 <width>135</width>
+                                 <height>135</height>
+                                </size>
+                               </property>
+                               <property name="filename" stdset="0">
+                                <string>probe_cal_square_pocket.ngc</string>
+                               </property>
+                               <property name="styleClass" stdset="0">
+                                <string>probeButton</string>
                                </property>
                               </widget>
                              </item>
@@ -17011,8 +17244,8 @@ QAbstractSpinBox:selected {
              <rect>
               <x>10</x>
               <y>10</y>
-              <width>240</width>
-              <height>94</height>
+              <width>271</width>
+              <height>141</height>
              </rect>
             </property>
             <property name="styleSheet">
@@ -17037,7 +17270,7 @@ QAbstractSpinBox:selected {
                <item>
                 <widget class="QLabel" name="label_111">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -17050,7 +17283,7 @@ QAbstractSpinBox:selected {
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
+                   <width>200</width>
                    <height>31</height>
                   </size>
                  </property>
@@ -17136,7 +17369,7 @@ QLineEdit:focus {
                <item>
                 <widget class="QLabel" name="label_112">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -17149,7 +17382,7 @@ QLineEdit:focus {
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>150</width>
+                   <width>200</width>
                    <height>31</height>
                   </size>
                  </property>
@@ -17183,6 +17416,108 @@ QLineEdit:focus {
                </item>
                <item>
                 <widget class="QLineEdit" name="wco_rotation">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>31</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>60</width>
+                   <height>31</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLineEdit {
+    border-style: transparent;
+    border-color: rgb(134, 136, 138);
+    border-width: 2px;
+    border-radius: 5px;
+    color: black;
+    background: white;
+	font: 15pt &quot;Bebas Kai&quot;;
+}
+
+QLineEdit:focus {
+    border-style: solid;
+    border-color: rgb(23, 81, 191);
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>0</string>
+                 </property>
+                 <property name="frame">
+                  <bool>false</bool>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="readOnly">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_59">
+               <item>
+                <widget class="QLabel" name="label_115">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>150</width>
+                   <height>31</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>200</width>
+                   <height>31</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QLabel{
+    border-style: none;
+    border-color: rgb(46, 52, 54);
+    border-width: 1px;
+    border-radius: 5px;
+    color: white;
+    background: rgb(46, 52, 54);
+	font: 14pt &quot;Bebas Kai&quot;;
+}</string>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::NoFrame</enum>
+                 </property>
+                 <property name="lineWidth">
+                  <number>0</number>
+                 </property>
+                 <property name="text">
+                  <string>X and Y CAL AXIS SELECTION</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                 </property>
+                 <property name="indent">
+                  <number>0</number>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="sq_cal_axis">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                    <horstretch>0</horstretch>
@@ -26337,11 +26672,12 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="probetabGroup"/>
-  <buttongroup name="mainorthoperspbtnGroup"/>
+  <buttongroup name="xycalbtnGroup"/>
+  <buttongroup name="probemodeGroup"/>
   <buttongroup name="plotorthoperspbtnGroup"/>
   <buttongroup name="probehelpGroup"/>
-  <buttongroup name="probemodeGroup"/>
   <buttongroup name="plotviewGroup"/>
+  <buttongroup name="mainorthoperspbtnGroup"/>
+  <buttongroup name="probetabGroup"/>
  </buttongroups>
 </ui>

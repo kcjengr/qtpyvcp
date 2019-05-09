@@ -59,7 +59,7 @@ o<probe_round_boss> sub
 
   (Probe X Positioning Move, X hint/2 + Step Off Width)
   G91
-  G0 X-[#<diameter_hint>/2 + #<step_off_width>]
+  G0 X-[[#<diameter_hint> / 2] + [#<step_off_width>]]
 
   (Probe X Positioning Move, to Probing Depth)
   F[#<probe_fast_fr>]
@@ -99,7 +99,7 @@ o<probe_round_boss> sub
 
   (Probe Y Positioning Move, Y hint/2 + Step Off Width)
   G91
-  G0 Y-[#<diameter_hint>/2 + #<step_off_width>]
+  G0 Y-[[#<diameter_hint> / 2] + [#<step_off_width>]]
 
   (Probe Y Positioning Move, to Probing Depth)
   F[#<probe_fast_fr>]
@@ -142,7 +142,7 @@ o<probe_round_boss> sub
 
   (Probe X Positioning Move, X hint/2 + Step Off Width)
   G91
-  G0 X-[#<diameter_hint>/2 + #<step_off_width>]
+  G0 X-[[#<diameter_hint> / 2] + [#<step_off_width>]]
 
   (Probe X Positioning Move, to Probing Depth)
   F[#<probe_fast_fr>]
@@ -173,10 +173,14 @@ o<probe_round_boss> sub
   #<x_center_probed> = [[#<x_minus_probed> + #<x_plus_probed>] / 2]
 
   (calculate X Width Probed)
-  #<raw_width> = [#<x_minus_probed> - #<x_plus_probed>]
+  o<120> if [#<x_minus_probed> GT #<x_plus_probed>]
+    #<x_raw_width> = [#<x_minus_probed> - #<x_plus_probed>]
+  o<120> else
+    #<x_raw_width> = [#<x_plus_probed> - #<x_minus_probed>]
+  o<120> endif
 
   (Completed probed width calculations)
-  #<x_probed_width> = [#<raw_width> + #<probe_diameter_offset>]
+  #<x_probed_width> = [#<x_raw_width> - #<probe_diameter_offset>]
 
   M68 E0 Q[#<x_probed_width>]
 
@@ -189,7 +193,7 @@ o<probe_round_boss> sub
 
   (Probe Y Positioning Move, Y hint/2 + Step Off Width)
   G91
-  G0 Y-[#<diameter_hint>/2 + #<step_off_width>]
+  G0 Y-[[#<diameter_hint> / 2] + [#<step_off_width>]]
 
   (Probe Y Positioning Move, to Probing Depth)
   F[#<probe_fast_fr>]
@@ -220,10 +224,14 @@ o<probe_round_boss> sub
   #<y_center_probed> = [[#<y_minus_probed> + #<y_plus_probed>] / 2]
 
   (calculate Y Width Probed)
-  #<raw_width> = [#<y_minus_probed> - #<y_plus_probed>]
+  o<130> if [#<y_minus_probed> GT #<y_plus_probed>]
+    #<y_raw_width> = [#<y_minus_probed> - #<y_plus_probed>]
+  o<130> else
+    #<y_raw_width> = [#<y_plus_probed> - #<y_minus_probed>]
+  o<130> endif
 
   (Completed probed width calculations)
-  #<y_probed_width> = [#<raw_width> - #<probe_diameter_offset>]
+  #<y_probed_width> = [#<y_raw_width> - #<probe_diameter_offset>]
 
   M68 E1 Q[#<y_probed_width>]
 
@@ -238,13 +246,16 @@ o<probe_round_boss> sub
   G90
   G0 X[#<x_center_probed>] Y[#<y_center_probed>]
 
+  #<x_zero> = [#<x_center_probed> + #<workspace_x>]
+
+  #<y_zero> = [#<y_center_probed> + #<workspace_y>]
+
   (probe mode rules for WCO or probe position measuring only)
-  o<120> if [#<probe_mode> EQ 0]
+  o<140> if [#<probe_mode> EQ 0]
     (Record XY Zero in selected WCO)
-    G10 L2 P#5220 X[#<x_center_probed> + #<workspace_x>] Y[#<y_center_probed> + #<workspace_y>]
-    (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
-    o<probe_round_boss> return
-  o<120> endif
+    G10 L2 P#5220 X[#<x_zero>] Y[#<y_zero>]
+    o<probe_cal_round_boss> return
+  o<140> endif
 
 o<probe_round_boss> endsub
 

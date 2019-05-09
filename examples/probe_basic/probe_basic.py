@@ -51,4 +51,9 @@ class ProbeBasic(VCPMainWindow):
         else:
             self.wco_rotation.setText('0')
 
+    @Slot(QAbstractButton)
+    def on_xycalbtnGroup_buttonClicked(self, button):
+        if button.isChecked():
+            self.sq_cal_axis.setText(button.property('checkedAction'))
+
             

@@ -27,6 +27,7 @@ o<probe_cal_round_boss> sub
   #<edge_width> = #14          (=0.5000)
   #<probe_mode> = #15          (=0)
   #<cal_diameter> = #16        (=1.0000)
+  #<sq_cal_axis> = #17         (=0)
 
   (Cancel G92 offsets)
   G92.1
@@ -174,10 +175,14 @@ o<probe_cal_round_boss> sub
   #<x_center_probed> = [[#<x_minus_probed> + #<x_plus_probed>] / 2]
 
   (calculate X Width Probed)
-  #<raw_width> = [#<x_minus_probed> - #<x_plus_probed>]
+  o<120> if [#<x_minus_probed> GT #<x_plus_probed>]
+    #<x_raw_width> = [#<x_minus_probed> - #<x_plus_probed>]
+  o<120> else
+    #<x_raw_width> = [#<x_plus_probed> - #<x_minus_probed>]
+  o<120> endif
 
   (Completed probed width calculations)
-  #<x_probed_width> = [#<raw_width> + #<probe_diameter_offset>]
+  #<x_probed_width> = [#<x_raw_width> - #<probe_diameter_offset>]
 
   M68 E0 Q[#<x_probed_width>]
 
@@ -221,10 +226,15 @@ o<probe_cal_round_boss> sub
   #<y_center_probed> = [[#<y_minus_probed> + #<y_plus_probed>] / 2]
 
   (calculate Y Width Probed)
-  #<raw_width> = [#<y_minus_probed> - #<y_plus_probed>]
+  o<130> if [#<y_minus_probed> GT #<y_plus_probed>]
+    #<y_raw_width> = [#<y_minus_probed> - #<y_plus_probed>]
+  o<130> else
+    #<y_raw_width> = [#<y_plus_probed> - #<y_minus_probed>]
+    o<probe_round_boss> return
+  o<130> endif
 
   (Completed probed width calculations)
-  #<y_probed_width> = [#<raw_width> - #<probe_diameter_offset>]
+  #<y_probed_width> = [#<y_raw_width> - #<probe_diameter_offset>]
 
   M68 E1 Q[#<y_probed_width>]
 
@@ -239,29 +249,44 @@ o<probe_cal_round_boss> sub
   G90
   G0 X[#<x_center_probed>] Y[#<y_center_probed>]
 
-  o<120> if [#<cal_diameter> GT #<averaged_diam>]
+  o<140> if [#<cal_diameter> GT #<x_probed_width>]
     (calculate calibration error and adjust calibration offset)
-    #<cal_error> = [[#<cal_diameter> - #<averaged_diam>] / 2]
-    #<new_cal_offset> = [#<calibration_offset> - #<cal_error>]
-    M68 E12 Q[#<new_cal_offset>]
-    o<probe_cal_round_pocket> return
-  o<120> endif
+    #<x_cal_error> = [[#<cal_diameter> - #<x_probed_width>] / 2]
+    #<new_x_cal_offset> = [#<calibration_offset> - #<x_cal_error>]
+  o<140> else
+    #<x_cal_error> = [[#<x_probed_width> - #<cal_diameter>] / 2]
+    #<new_x_cal_offset> = [#<calibration_offset> + #<x_cal_error>]
+  o<140> endif
 
-  o<130> if [#<cal_diameter> LT #<averaged_diam>]
+  o<150> if [#<cal_diameter> GT #<y_probed_width>]
     (calculate calibration error and adjust calibration offset)
-    #<cal_error> = [[#<averaged_diam> - #<cal_diameter>] / 2]
-    #<new_cal_offset> = [#<calibration_offset> + #<cal_error>]
-    M68 E12 Q[#<new_cal_offset>]
-    o<probe_cal_round_pocket> return
-  o<130> endif
+    #<y_cal_error> = [[#<cal_diameter> - #<y_probed_width>] / 2]
+    #<new_y_cal_offset> = [#<calibration_offset> - #<y_cal_error>]
+  o<150> else
+    #<y_cal_error> = [[#<y_probed_width> - #<cal_diameter>] / 2]
+    #<new_y_cal_offset> = [#<calibration_offset> + #<y_cal_error>]
+  o<150> endif
+
+  #<new_avg_cal_offset> = [[#<new_x_cal_offset> + #<new_y_cal_offset>] / 2]
+
+  o<160> if [#<sq_cal_axis> EQ 0]
+    M68 E12 Q[#<new_avg_cal_offset>]
+  o<160> else if [#<sq_cal_axis> EQ 1]
+    M68 E12 Q[#<new_x_cal_offset>]
+  o<160> else
+    M68 E12 Q[#<new_y_cal_offset>]
+  o<160> endif
+
+  #<x_zero> = [#<x_center_probed> + #<workspace_x>]
+
+  #<y_zero> = [#<y_center_probed> + #<workspace_y>]
 
   (probe mode rules for WCO or probe position measuring only)
-  o<140> if [#<probe_mode> EQ 0]
+  o<170> if [#<probe_mode> EQ 0]
     (Record XY Zero in selected WCO)
-    G10 L2 P#5220 X[#<x_center_probed> + #<workspace_x>] Y[#<y_center_probed> + #<workspace_y>]
-    (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
+    G10 L2 P#5220 X[#<x_zero>] Y[#<y_zero>]
     o<probe_cal_round_boss> return
-  o<140> endif
+  o<170> endif
 
 o<probe_cal_round_boss> endsub
 

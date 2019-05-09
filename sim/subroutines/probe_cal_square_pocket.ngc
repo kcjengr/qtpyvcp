@@ -28,6 +28,7 @@ o<probe_cal_square_pocket> sub
   #<probe_mode> = #15          (=0)
   #<x_cal_width> = #16        (=1.0000)
   #<y_cal_width> = #17        (=1.0000)
+  #<sq_cal_axis> = #18         (=0)
 
   (Cancel G92 offsets)
   G92.1
@@ -117,26 +118,42 @@ o<probe_cal_square_pocket> sub
 
   o<120> if [#<x_cal_width> GT #<x_probed_width>]
     (calculate calibration error and adjust calibration offset)
-    #<cal_error> = [[#<x_cal_width> - #<x_probed_width>] / 2]
-    #<new_cal_offset> = [#<calibration_offset> + #<cal_error>]
-    M68 E12 Q[#<new_cal_offset>]
-    o<probe_cal_square_pocket> return
+    #<x_cal_error> = [[#<x_cal_width> - #<x_probed_width>] / 2]
+    #<new_x_cal_offset> = [#<calibration_offset> + #<x_cal_error>]
+  o<120> else
+    #<x_cal_error> = [[#<x_probed_width> - #<x_cal_width>] / 2]
+    #<new_x_cal_offset> = [#<calibration_offset> - #<x_cal_error>]
   o<120> endif
 
-  o<130> if [#<x_cal_width> LT #<x_probed_width>]
+  o<130> if [#<y_cal_width> GT #<y_probed_width>]
     (calculate calibration error and adjust calibration offset)
-    #<cal_error> = [[#<x_probed_width> - #<x_cal_width>] / 2]
-    #<new_cal_offset> = [#<calibration_offset> - #<cal_error>]
-    M68 E12 Q[#<new_cal_offset>]
-    o<probe_cal_square_pocket> return
+    #<y_cal_error> = [[#<y_cal_width> - #<y_probed_width>] / 2]
+    #<new_y_cal_offset> = [#<calibration_offset> + #<y_cal_error>]
+  o<130> else
+    #<y_cal_error> = [[#<y_probed_width> - #<y_cal_width>] / 2]
+    #<new_y_cal_offset> = [#<calibration_offset> - #<y_cal_error>]
   o<130> endif
 
-  (probe mode rules for WCO or probe position measuring only)
-  o<140> if [#<probe_mode> EQ 0]
-    (Record X Zero in selected WCO)
-    G10 L2 P#5220 X[#<x_center_probed> + #<workspace_x>] Y[#<y_center_probed> + #<workspace_y>]
-    o<probe_cal_square_pocket> return
+  #<new_avg_cal_offset> = [[#<new_x_cal_offset> + #<new_y_cal_offset>] / 2]
+
+  o<140> if [#<sq_cal_axis> EQ 0]
+    M68 E12 Q[#<new_avg_cal_offset>]
+  o<140> else if [#<sq_cal_axis> EQ 1]
+    M68 E12 Q[#<new_x_cal_offset>]
+  o<140> else
+    M68 E12 Q[#<new_y_cal_offset>]
   o<140> endif
+
+  #<x_zero> = [#<x_center_probed> + #<workspace_x>]
+
+  #<y_zero> = [#<y_center_probed> + #<workspace_y>]
+
+  (probe mode rules for WCO or probe position measuring only)
+  o<150> if [#<probe_mode> EQ 0]
+    (Record X Zero in selected WCO)
+    G10 L2 P#5220 X[#<x_zero>] Y[#<y_zero>]
+    o<probe_cal_square_pocket> return
+  o<150> endif
 
 o<probe_cal_square_pocket> endsub
 
