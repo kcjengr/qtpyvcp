@@ -26,7 +26,8 @@ o<probe_cal_square_pocket> sub
   #<diameter_hint> = #13       (=1.0000)
   #<edge_width> = #14          (=0.5000)
   #<probe_mode> = #15          (=0)
-  #<cal_diameter> = #16        (=1.0000)
+  #<x_cal_width> = #16        (=1.0000)
+  #<y_cal_width> = #17        (=1.0000)
 
   (Cancel G92 offsets)
   G92.1
@@ -109,26 +110,26 @@ o<probe_cal_square_pocket> sub
 
   M68 E11 Q[#<y_center_probed>]
 
-  o<120> if [#<cal_diameter> GT #<averaged_diam>]
+  G90
+  G0 Y[#<y_center_probed>]
+  G91
+  G0 Z[#<z_probe_stack>]
+
+  o<120> if [#<x_cal_width> GT #<x_probed_width>]
     (calculate calibration error and adjust calibration offset)
-    #<cal_error> = [[#<cal_diameter> - #<averaged_diam>] / 2]
+    #<cal_error> = [[#<x_cal_width> - #<x_probed_width>] / 2]
     #<new_cal_offset> = [#<calibration_offset> + #<cal_error>]
     M68 E12 Q[#<new_cal_offset>]
     o<probe_cal_square_pocket> return
   o<120> endif
 
-  o<130> if [#<cal_diameter> LT #<averaged_diam>]
+  o<130> if [#<x_cal_width> LT #<x_probed_width>]
     (calculate calibration error and adjust calibration offset)
-    #<cal_error> = [[#<averaged_diam> - #<cal_diameter>] / 2]
+    #<cal_error> = [[#<x_probed_width> - #<x_cal_width>] / 2]
     #<new_cal_offset> = [#<calibration_offset> - #<cal_error>]
     M68 E12 Q[#<new_cal_offset>]
     o<probe_cal_square_pocket> return
   o<130> endif
-
-  G90
-  G0 Y[#<y_center_probed>]
-  G91
-  G0 Z[#<z_probe_stack>]
 
   (probe mode rules for WCO or probe position measuring only)
   o<140> if [#<probe_mode> EQ 0]

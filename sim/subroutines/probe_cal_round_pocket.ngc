@@ -150,6 +150,11 @@ o<probe_cal_round_pocket> sub
 
   M68 E2 Q[#<averaged_diam>]
 
+  G90
+  G0 Y[#<y_center_probed>]
+  G91
+  G0 Z[#<z_probe_stack>]
+
   o<120> if [#<cal_diameter> GT #<averaged_diam>]
     (calculate calibration error and adjust calibration offset)
     #<cal_error> = [[#<cal_diameter> - #<averaged_diam>] / 2]
@@ -165,11 +170,6 @@ o<probe_cal_round_pocket> sub
     M68 E12 Q[#<new_cal_offset>]
     o<probe_cal_round_pocket> return
   o<130> endif
-
-  G90
-  G0 Y[#<y_center_probed>]
-  G91
-  G0 Z[#<z_probe_stack>]
 
   (probe mode rules for WCO or probe position measuring only)
   o<140> if [#<probe_mode> EQ 0]
