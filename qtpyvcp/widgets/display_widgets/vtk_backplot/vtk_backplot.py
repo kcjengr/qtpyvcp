@@ -23,10 +23,10 @@ INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 
 COLOR_MAP = {
     'traverse': (188, 252, 201, 75),
-    'arcfeed':  (255, 255, 255, 128),
-    'feed':     (255, 255, 255, 128),
-    'dwell':    (100, 100, 100, 255),
-    'user':     (100, 100, 100, 255),
+    'arcfeed': (255, 255, 255, 128),
+    'feed': (255, 255, 255, 128),
+    'dwell': (100, 100, 100, 255),
+    'user': (100, 100, 100, 255),
 }
 
 
@@ -57,7 +57,7 @@ class VTKCanon(StatCanon):
 
         index = 0
         for line_type, end_point in self.path_points:
-            # print line_type, end_point
+            # LOG.debug(line_type, end_point)
             self.points.InsertNextPoint(end_point[:3])
             self.colors.InsertNextTypedTuple(self.path_colors[line_type])
 
@@ -66,7 +66,7 @@ class VTKCanon(StatCanon):
                 line.GetPointIds().SetId(0, 0)
                 line.GetPointIds().SetId(1, 1)
             else:
-                line.GetPointIds().SetId(0, index-1)
+                line.GetPointIds().SetId(0, index - 1)
                 line.GetPointIds().SetId(1, index)
 
             self.lines.InsertNextCell(line)
@@ -164,7 +164,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._last_filename = str()
 
     def tlo(self, tlo):
-        print(tlo)
+        LOG.debug(tlo)
 
     @Slot()
     def reload_program(self, *args, **kwargs):
@@ -193,7 +193,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.update_render()
 
-    def update_position(self, pos): # the tool movement
+    def update_position(self, pos):  # the tool movement
         self.spindle_position = pos[:3]
 
         tlo = self.status.tool_offset
@@ -204,13 +204,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     def update_g5x_offset(self, g5x_offset):
-        print('g5x offset')
-        # print(self.status.state)
-        # print(self.status.interp_state)
-        # print(self.status.exec_state)
-        # print(self.status.task_mode)
+        LOG.debug('g5x offset')
+        # LOG.debug(self.status.state)
+        # LOG.debug(self.status.interp_state)
+        # LOG.debug(self.status.exec_state)
+        # LOG.debug(self.status.task_mode)
         if str(self.status.task_mode) == "MDI":
-            print('G5x Update Started')
+            LOG.debug('G5x Update Started')
             # determine change in g5x offset since path was drawn
             path_offset = [n - o for n, o in zip(g5x_offset[:3],
                                                  self.original_g5x_offset[:3])]
@@ -218,10 +218,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.path_actor.SetPosition(*path_offset)
             self.extents_actor.SetBounds(self.path_actor.GetBounds())
             self.update_render()
-            print('G5x Updated')
+            LOG.debug('G5x Updated')
 
     def update_g92_offset(self, g92_offset):
-        print('g92 offset')
+        LOG.debug('g92 offset')
         if str(self.status.task_mode) == "MDI":
             # determine change in g92 offset since path was drawn
             path_offset = [n - o for n, o in zip(g92_offset[:3],
@@ -232,9 +232,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.update_render()
 
     def update_rotation_xy(self, rotation):
-        print('rotation')
+        LOG.debug('rotation')
         if str(self.status.task_mode) == "MDI":
-            print('Rotation: ', rotation)  # in degrees
+            LOG.debug('Rotation: ', rotation)  # in degrees
             # ToDo: use transform matrix to rotate existing path?
             # probably not worth it since rotation is not used much ...
             # nasty hack so ensure the positions have updated before loading
@@ -289,7 +289,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def setViewY(self):
         self.renderer.GetActiveCamera().SetPosition(0, -1, 0)
         self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
-        self.renderer.GetActiveCamera().SetFocalPoint(0,0,0)
+        self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
         # FIXME ugly hack
         self.renderer.GetActiveCamera().Zoom(1.5)
@@ -307,21 +307,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def printView(self):
-        print('print view stats')
+        LOG.debug('LOG.debug view stats')
         fp = self.renderer.GetActiveCamera().GetFocalPoint()
-        print('focal point {}'.format(fp))
+        LOG.debug('focal point {}'.format(fp))
         p = self.renderer.GetActiveCamera().GetPosition()
-        print('position {}'.format(p))
-        #dist = math.sqrt( (p[0]-fp[0])**2 + (p[1]-fp[1])**2 + (p[2]-fp[2])**2 )
-        #print(dist)
-        #self.renderer.GetActiveCamera().SetPosition(10, -40, -1)
-        #self.renderer.GetActiveCamera().SetViewUp(0.0, 1.0, 0.0)
-        #self.renderer.ResetCamera()
+        LOG.debug('position {}'.format(p))
+        # dist = math.sqrt( (p[0]-fp[0])**2 + (p[1]-fp[1])**2 + (p[2]-fp[2])**2 )
+        # LOG.debug(dist)
+        # self.renderer.GetActiveCamera().SetPosition(10, -40, -1)
+        # self.renderer.GetActiveCamera().SetViewUp(0.0, 1.0, 0.0)
+        # self.renderer.ResetCamera()
         vu = self.renderer.GetActiveCamera().GetViewUp()
-        print('view up {}'.format(vu))
+        LOG.debug('view up {}'.format(vu))
         d = self.renderer.GetActiveCamera().GetDistance()
-        print('distance {}'.format(d))
-        #self.interactor.ReInitialize()
+        LOG.debug('distance {}'.format(d))
+        # self.interactor.ReInitialize()
 
     @Slot()
     def setViewZ2(self):
@@ -333,14 +333,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def setViewMachine(self):
-        print('Machine')
+        LOG.debug('Machine')
         self.machine_actor.SetCamera(self.renderer.GetActiveCamera())
         self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewPath(self):
-        print('Path')
+        LOG.debug('Path')
         self.extents_actor.SetCamera(self.renderer.GetActiveCamera())
         self.renderer.ResetCamera()
         self.interactor.ReInitialize()
@@ -366,11 +366,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot(bool)
     def alphaBlend(self, alpha):
-        print('alpha blend')
+        LOG.debug('alpha blend')
 
     @Slot(bool)
     def showGrid(self, grid):
-        print('show grid')
+        LOG.debug('show grid')
         if grid:
             self.machine_actor.DrawXGridlinesOn()
             self.machine_actor.DrawYGridlinesOn()
@@ -379,7 +379,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.machine_actor.DrawXGridlinesOff()
             self.machine_actor.DrawYGridlinesOff()
             self.machine_actor.DrawZGridlinesOff()
-
 
     @Slot()
     def toggleProgramBounds(self):
@@ -508,15 +507,15 @@ class PathBoundaries:
         """
         for k, v in VTKBackPlot.__dict__.items():
             if "function" in str(v):
-                print(k)
+                LOG.debug(k)
 
         for attr_name in dir(VTKBackPlot):
             attr_value = getattr(VTKBackPlot, attr_name)
-            print(attr_name, attr_value, callable(attr_value))
+            LOG.debug(attr_name, attr_value, callable(attr_value))
 
-        print(dir(VTKBackPlot))
+        LOG.debug(dir(VTKBackPlot))
         testit = getattr(VTKBackPlot, '_enableProgramTicks')
-        print('enableProgramTicks {}'.format(testit))
+        LOG.debug('enableProgramTicks {}'.format(testit))
         """
 
         cube_axes_actor = vtk.vtkCubeAxesActor()
