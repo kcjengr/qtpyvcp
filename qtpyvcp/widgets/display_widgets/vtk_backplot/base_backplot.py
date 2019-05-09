@@ -82,6 +82,6 @@ if __name__ == "__main__":
     from qtpyvcp import TOP_DIR
     from base_canon import PrintCanon
     INI_FILE = os.path.join(TOP_DIR, 'sim/xyz.ini')
-    NGC_FILE = os.path.join(TOP_DIR, 'sim/example_gcode/qtpyvcp.ngc')
+    NGC_FILE = os.path.join(TOP_DIR, 'sim/example_gcode/blank.ngc')
     gr = BaseBackPlot(INI_FILE, canon=PrintCanon)
     gr.load(NGC_FILE)

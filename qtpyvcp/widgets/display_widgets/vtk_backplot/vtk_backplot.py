@@ -215,10 +215,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             path_offset = [n - o for n, o in zip(g5x_offset[:3],
                                                  self.original_g5x_offset[:3])]
 
-            self.path_actor.SetPosition(*path_offset)
-            self.extents_actor.SetBounds(self.path_actor.GetBounds())
-            self.update_render()
-            LOG.debug('G5x Updated')
+        transform = vtk.vtkTransform()
+        transform.Translate(*g5x_offset[:3])
+
+        self.axes_actor.SetUserTransform(transform)
+        self.path_actors[0].SetPosition(*path_offset)
+        self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
+
+        self.interactor.ReInitialize()
+        self.update_render()
 
     def update_g92_offset(self, g92_offset):
         LOG.debug('g92 offset')
@@ -227,18 +232,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             path_offset = [n - o for n, o in zip(g92_offset[:3],
                                                  self.original_g92_offset[:3])]
 
-            self.path_actor.SetPosition(*path_offset)
-            self.extents_actor.SetBounds(self.path_actor.GetBounds())
-            self.update_render()
+        transform = vtk.vtkTransform()
+        transform.Translate(*g92_offset[:3])
+
+        self.axes_actor.SetUserTransform(transform)
+        self.path_actors[0].SetPosition(*path_offset)
+        self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
+
+        self.interactor.ReInitialize()
+        self.update_render()
 
     def update_rotation_xy(self, rotation):
-        LOG.debug('rotation')
-        if str(self.status.task_mode) == "MDI":
-            LOG.debug('Rotation: ', rotation)  # in degrees
-            # ToDo: use transform matrix to rotate existing path?
-            # probably not worth it since rotation is not used much ...
-            # nasty hack so ensure the positions have updated before loading
-            QTimer.singleShot(10, self.reload_program)
+        print('Rotation: ', rotation)  # in degrees
+        # ToDo: use transform matrix to rotate existing path?
+        # probably not worth it since rotation is not used much ...
+        # nasty hack so ensure the positions have updated before loading
+        QTimer.singleShot(10, self.reload_program)
 
     def update_tool(self):
         self.renderer.RemoveActor(self.tool_actor)
@@ -258,13 +267,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewOrtho(self):
         self.renderer.GetActiveCamera().ParallelProjectionOn()
-        self.renderer.ResetCamera()
+        #self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewPersp(self):
         self.renderer.GetActiveCamera().ParallelProjectionOff()
-        self.renderer.ResetCamera()
+        #self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
     @Slot()
@@ -311,16 +320,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         fp = self.renderer.GetActiveCamera().GetFocalPoint()
         LOG.debug('focal point {}'.format(fp))
         p = self.renderer.GetActiveCamera().GetPosition()
-        LOG.debug('position {}'.format(p))
+        print('position {}'.format(p))
         # dist = math.sqrt( (p[0]-fp[0])**2 + (p[1]-fp[1])**2 + (p[2]-fp[2])**2 )
-        # LOG.debug(dist)
+        # print(dist)
         # self.renderer.GetActiveCamera().SetPosition(10, -40, -1)
         # self.renderer.GetActiveCamera().SetViewUp(0.0, 1.0, 0.0)
         # self.renderer.ResetCamera()
         vu = self.renderer.GetActiveCamera().GetViewUp()
         LOG.debug('view up {}'.format(vu))
         d = self.renderer.GetActiveCamera().GetDistance()
-        LOG.debug('distance {}'.format(d))
+        print('distance {}'.format(d))
         # self.interactor.ReInitialize()
 
     @Slot()
@@ -379,6 +388,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.machine_actor.DrawXGridlinesOff()
             self.machine_actor.DrawYGridlinesOff()
             self.machine_actor.DrawZGridlinesOff()
+        self.update_render()
 
     @Slot()
     def toggleProgramBounds(self):
@@ -732,6 +742,13 @@ class Machine:
         cube_axes_actor.DrawXGridlinesOn()
         cube_axes_actor.DrawYGridlinesOn()
         cube_axes_actor.DrawZGridlinesOn()
+
+        if not IN_DESIGNER:
+            showGrid = INIFILE.find("VTK", "GRID_LINES") or ""
+            if showGrid.lower() in ['false', 'off', 'no', '0']:
+                cube_axes_actor.DrawXGridlinesOff()
+                cube_axes_actor.DrawYGridlinesOff()
+                cube_axes_actor.DrawZGridlinesOff()
 
         cube_axes_actor.SetGridLineLocation(cube_axes_actor.VTK_GRID_LINES_FURTHEST)
 

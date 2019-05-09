@@ -11,4 +11,4 @@ T9     P9     X0.0     Y0.0     Z1.234   D0.25    ; 1/4" BALL MILL
 T10    P10    X0.0     Y0.0     Z2.5     D0.666   ; coolest tool ever
 T11    P11    X0.0     Y0.0     Z3.125   D0.5     ; 1/2" roughing end mill
 T12    P12    X0.0     Y0.0     Z4.2322  D2.0     ; big khauna cutter
-T99    P13    X0.0     Y0.0     Z5.0     D0.125   ; PROBE TOOL
+T99    P13    X0.0     Y0.0     Z1.0     D0.125   ; PROBE TOOL

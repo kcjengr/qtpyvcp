@@ -1,6 +1,6 @@
 (author: Chris P)
-(version: 0.1)
-(date: 08/02/2018)
+(version: 0.3)
+(date: 04/22/19)
 
 (Probe front left top corner for x,y,z 0,0,0 position)
 (Start probe position is over front left corner of stock)
@@ -11,64 +11,27 @@ o<probe_front_left_top_corner> sub
 
   (uses NGCGUI style arg spec)
   (number after "=" in comment is default value)
-  #<probe_tool_number> = #1 (=99)
-  #<max_z_distance> = #2    (=.5000)
-  #<max_xy_distance> = #3   (=.5000)
-  #<xy_clearance> = #4      (=.1000)
-  #<z_clearance> = #5       (=.1000)
-  #<step_off_width> = #6    (=0 what is this?)
-  #<extra_probe_depth> = #7 (=0)
-  #<probe_slow_fr> = #8     (=5)
-  #<probe_fast_fr> = #9     (=20)
-  #<calibration_dia> = #10  (=.1250)
-  #<x_hint> = #11           (=0)
-  #<y_hint> = #12           (=0)
-  #<diameter_hint> = #13    (=.7500)
+  #<probe_tool_number> = #1    (=99)
+  #<max_z_distance> = #2       (=0.5000)
+  #<max_xy_distance> = #3      (=0.5000)
+  #<xy_clearance> = #4         (=0.1000)
+  #<z_clearance> = #5          (=0.1000)
+  #<step_off_width> = #6       (=0.5000)
+  #<extra_probe_depth> = #7    (=0.0000)
+  #<probe_slow_fr> = #8        (=0.0)
+  #<probe_fast_fr> = #9        (=10.0)
+  #<calibration_offset> = #10  (=0.0000)
+  #<x_hint> = #11              (=1.0000)
+  #<y_hint> = #12              (=1.0000)
+  #<diameter_hint> = #13       (=1.0000)
+  #<edge_width> = #14          (=0.5000)
 
   (Cancel G92 offsets)
   G92.1
 
-  o100 if [#5220 EQ 1]      (G54, 5520 = current work space ID 1-9) 
-    #<workspace_x> = #5221
-    #<workspace_y> = #5222
-    #<workspace_z> = #5223
-  o100 elseif [#5220 EQ 2]  (G55)
-    #<workspace_x> = #5241
-    #<workspace_y> = #5242
-    #<workspace_z> = #5243
-  o100 elseif [#5220 EQ 3]  (G56)
-    #<workspace_x> = #5261
-    #<workspace_y> = #5262
-    #<workspace_z> = #5263
-  o100 elseif [#5220 EQ 4]  (G57)
-    #<workspace_x> = #5281
-    #<workspace_y> = #5282
-    #<workspace_z> = #5283
-  o100 elseif [#5220 EQ 5]  (G58)
-    #<workspace_x> = #5301
-    #<workspace_y> = #5302
-    #<workspace_z> = #5303
-  o100 elseif [#5220 EQ 6]  (G59)
-    #<workspace_x> = #5321
-    #<workspace_y> = #5322
-    #<workspace_z> = #5323
-  o100 elseif [#5220 EQ 7]  (G59.1)
-    #<workspace_x> = #5341
-    #<workspace_y> = #5342
-    #<workspace_z> = #5343
-  o100 elseif [#5220 EQ 8]  (G59.2)
-    #<workspace_x> = #5361
-    #<workspace_y> = #5362
-    #<workspace_z> = #5363
-  o100 elseif [#5220 EQ 9]  (G59.3)
-    #<workspace_x> = #5381
-    #<workspace_y> = #5382
-    #<workspace_z> = #5383
-  o100 else                 (default to G54)
-    #<workspace_x> = #5221
-    #<workspace_y> = #5222
-    #<workspace_z> = #5223
-  o100 endif
+  #<workspace_x> = #[5201 + [20 * #5220]]
+  #<workspace_y> = #[5202 + [20 * #5220]]
+  #<workspace_z> = #[5203 + [20 * #5220]]
 
   (Probe Tool Safety Check)
   o<110> if [#5400 NE #<probe_tool_number>]
@@ -79,8 +42,11 @@ o<probe_front_left_top_corner> sub
   (Probe Diameter)
   #<probe_diameter> = #5410
 
+  (Probe Radius)
+  #<probe_radius> = [#<probe_diameter> / 2]
+
   (Probe Centerline Offset)
-  #<probe_center_offset> = [#<calibration_dia> / 2]
+  #<probe_center_offset> = [#<probe_radius> - #<calibration_offset>]
 
   (Current Z Position including offsets in current program units)
   #<z> = #5422
@@ -167,7 +133,7 @@ o<probe_front_left_top_corner> sub
   o<150> endif
 
   (Record X Zero in selected WCO)
-  G10 L2 P#5220 X[#5061 + #<workspace_x> - #<probe_center_offset>]
+  G10 L2 P#5220 X[#5061 + #<workspace_x> + #<probe_center_offset>]
 
   (Probe Y Positioning Move, up to Z clearance plane)
   G91
@@ -215,7 +181,7 @@ o<probe_front_left_top_corner> sub
   o<170> endif
 
   (Record Y Zero in selected WCO)
-  G10 L2 P#5220 Y[#5062 + #<workspace_y> - #<probe_center_offset>]
+  G10 L2 P#5220 Y[#5062 + #<workspace_y> + #<probe_center_offset>]
 
   (Probe Completion Move to Z Clearance Plane, and X Zero, Y Zero)
   G90
