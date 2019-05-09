@@ -93,6 +93,10 @@
     <file>images/drill_dims_white.png</file>
     <file>images/up_arrow.png</file>
     <file>images/down_arrow.png</file>
+    <file>images/probe_cal_round_boss.png</file>
+    <file>images/probe_cal_round_pocket.png</file>
+    <file>images/probe_cal_square_boss.png</file>
+    <file>images/probe_cal_square_pocket.png</file>
             
 </qresource>
 </RCC>
