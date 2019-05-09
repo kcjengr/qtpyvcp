@@ -164,7 +164,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._last_filename = str()
 
     def tlo(self, tlo):
-        print tlo
+        print(tlo)
 
     @Slot()
     def reload_program(self, *args, **kwargs):
@@ -205,11 +205,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def update_g5x_offset(self, g5x_offset):
         print('g5x offset')
-        #print(self.status.state)
-        #print(self.status.interp_state)
-        #print(self.status.exec_state)
-        print(self.status.task_mode)
-        if self.status.task_mode == 'MDI':
+        # print(self.status.state)
+        # print(self.status.interp_state)
+        # print(self.status.exec_state)
+        # print(self.status.task_mode)
+        if str(self.status.task_mode) == "MDI":
             print('G5x Update Started')
             # determine change in g5x offset since path was drawn
             path_offset = [n - o for n, o in zip(g5x_offset[:3],
@@ -222,7 +222,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def update_g92_offset(self, g92_offset):
         print('g92 offset')
-        if self.status.task_mode == 'MDI':
+        if str(self.status.task_mode) == "MDI":
             # determine change in g92 offset since path was drawn
             path_offset = [n - o for n, o in zip(g92_offset[:3],
                                                  self.original_g92_offset[:3])]
@@ -233,8 +233,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def update_rotation_xy(self, rotation):
         print('rotation')
-        if self.status.task_mode == 'MDI':
-            print('Rotation: ', rotation) # in degrees
+        if str(self.status.task_mode) == "MDI":
+            print('Rotation: ', rotation)  # in degrees
             # ToDo: use transform matrix to rotate existing path?
             # probably not worth it since rotation is not used much ...
             # nasty hack so ensure the positions have updated before loading
