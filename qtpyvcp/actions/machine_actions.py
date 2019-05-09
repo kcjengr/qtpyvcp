@@ -158,12 +158,13 @@ def issue_mdi(command, reset=True):
     """Issue an MDI command.
 
         An MDI command can be issued any time the machine is homed (if not
-        NOT_FORCE_HOMING in the INI) and the interpreter is IDLE.  The task
+        NO_FORCE_HOMING in the INI) and the interpreter is IDLE.  The task
         mode will automatically be switched to MDI prior to issuing the command
         and will be returned to the previous mode when the interpreter becomes IDLE.
 
     Args:
-        command (str) : A valid RS274 gcode command string.
+        command (str) : A valid RS274 gcode command string. Multiple MDI commands
+            can be separated with a ``\n`` and will be issued sequentially.
         rest (bool, optional): Whether to reset the Task Mode to the state
             the machine was in prior to issuing the MDI command.
     """
@@ -179,7 +180,9 @@ def issue_mdi(command, reset=True):
 
     if setTaskMode(linuxcnc.MODE_MDI):
         LOG.info("Issuing MDI command: {}".format(command))
-        CMD.mdi(command)
+        # issue multiple MDI commands separated by \n
+        for cmd in command.strip().split('\n'):
+            CMD.mdi(cmd)
     else:
         LOG.error("Failed to issue MDI command: {}".format(command))
 
