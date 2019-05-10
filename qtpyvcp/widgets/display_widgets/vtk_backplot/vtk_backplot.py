@@ -215,15 +215,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             path_offset = [n - o for n, o in zip(g5x_offset[:3],
                                                  self.original_g5x_offset[:3])]
 
-        transform = vtk.vtkTransform()
-        transform.Translate(*g5x_offset[:3])
+            transform = vtk.vtkTransform()
+            transform.Translate(*g5x_offset[:3])
 
-        self.axes_actor.SetUserTransform(transform)
-        self.path_actors[0].SetPosition(*path_offset)
-        self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
+            self.axes_actor.SetUserTransform(transform)
+            self.path_actor.SetPosition(*path_offset)
+            self.extents_actor.SetBounds(self.path_actor.GetBounds())
 
-        self.interactor.ReInitialize()
-        self.update_render()
+            self.interactor.ReInitialize()
+            self.update_render()
 
     def update_g92_offset(self, g92_offset):
         LOG.debug('g92 offset')
@@ -232,15 +232,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             path_offset = [n - o for n, o in zip(g92_offset[:3],
                                                  self.original_g92_offset[:3])]
 
-        transform = vtk.vtkTransform()
-        transform.Translate(*g92_offset[:3])
+            transform = vtk.vtkTransform()
+            transform.Translate(*g92_offset[:3])
 
-        self.axes_actor.SetUserTransform(transform)
-        self.path_actors[0].SetPosition(*path_offset)
-        self.path_actors[1].SetBounds(self.path_actors[0].GetBounds())
+            self.axes_actor.SetUserTransform(transform)
+            self.path_actor.SetPosition(*path_offset)
+            self.extents_actor.SetBounds(self.path_actor.GetBounds())
 
-        self.interactor.ReInitialize()
-        self.update_render()
+            self.interactor.ReInitialize()
+            self.update_render()
 
     def update_rotation_xy(self, rotation):
         print('Rotation: ', rotation)  # in degrees
