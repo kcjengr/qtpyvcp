@@ -101,8 +101,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._background_color2 = QColor(0, 0, 0)
         self._enableProgramTicks = True
 
+        # Todo: get active part
+
+        self.g5x_offset = [0.0] * 9
+        self.g92_offset = [0.0] * 9
+        self.rotation_offset = 0.0
+
         self.original_g5x_offset = [0.0] * 9
         self.original_g92_offset = [0.0] * 9
+        self.original_rotation_offset = 0.0
 
         self.spindle_position = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
@@ -204,13 +211,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     def update_g5x_offset(self, g5x_offset):
-        LOG.debug('g5x offset')
+        self.g5x_offset = g5x_offset
+        LOG.info('g5x offset')
         # LOG.debug(self.status.state)
         # LOG.debug(self.status.interp_state)
         # LOG.debug(self.status.exec_state)
         # LOG.debug(self.status.task_mode)
         if str(self.status.task_mode) == "MDI":
-            LOG.debug('G5x Update Started')
+            LOG.info('G5x Update Started')
             # determine change in g5x offset since path was drawn
             path_offset = [n - o for n, o in zip(g5x_offset[:3],
                                                  self.original_g5x_offset[:3])]
@@ -226,8 +234,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.update_render()
 
     def update_g92_offset(self, g92_offset):
-        LOG.debug('g92 offset')
+        LOG.info('g92 offset')
         if str(self.status.task_mode) == "MDI":
+            LOG.info('G92 Update Started')
             # determine change in g92 offset since path was drawn
             path_offset = [n - o for n, o in zip(g92_offset[:3],
                                                  self.original_g92_offset[:3])]
@@ -243,11 +252,27 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.update_render()
 
     def update_rotation_xy(self, rotation):
-        print('Rotation: ', rotation)  # in degrees
+        LOG.info("Rotation: {}".format(rotation))  # in degrees
         # ToDo: use transform matrix to rotate existing path?
         # probably not worth it since rotation is not used much ...
+
+        LOG.info('rotate offset: {}'.format(rotation))
+        if str(self.status.task_mode) == "MDI":
+            LOG.info('Rotation Update Started')
+
+            transform = vtk.vtkTransform()
+            transform.Translate(*self.g5x_offset[:3])
+            transform.RotateZ(rotation)
+
+            self.axes_actor.SetUserTransform(transform)
+            self.path_actor.SetUserTransform(transform)
+            self.extents_actor.SetBounds(self.path_actor.GetBounds())
+
+            self.interactor.ReInitialize()
+            self.update_render()
+
         # nasty hack so ensure the positions have updated before loading
-        QTimer.singleShot(10, self.reload_program)
+        # QTimer.singleShot(10, self.reload_program)
 
     def update_tool(self):
         self.renderer.RemoveActor(self.tool_actor)
@@ -267,13 +292,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewOrtho(self):
         self.renderer.GetActiveCamera().ParallelProjectionOn()
-        #self.renderer.ResetCamera()
+        # self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewPersp(self):
         self.renderer.GetActiveCamera().ParallelProjectionOff()
-        #self.renderer.ResetCamera()
+        # self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
     @Slot()
