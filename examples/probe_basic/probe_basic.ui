@@ -1076,11 +1076,7 @@ QComboBox QAbstractItemView{
                 </property>
                 <property name="styleSheet">
                  <string notr="true">.QFrame{
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
     background-color: rgb(51, 57, 59);
-    border-width: 2px;
-    border-radius: 6px;
 }</string>
                 </property>
                 <property name="frameShape">
@@ -1545,11 +1541,7 @@ USB</string>
                 </property>
                 <property name="styleSheet">
                  <string notr="true">.QFrame{
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
     background-color: rgb(51, 57, 59);
-    border-width: 2px;
-    border-radius: 6px;
 }</string>
                 </property>
                 <property name="frameShape">
@@ -1882,11 +1874,7 @@ QHeaderView {
                 </property>
                 <property name="styleSheet">
                  <string notr="true">.QFrame{
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
     background-color: rgb(51, 57, 59);
-    border-width: 2px;
-    border-radius: 6px;
 }</string>
                 </property>
                 <property name="frameShape">
@@ -2148,14 +2136,7 @@ QHeaderView {
                 </property>
                 <property name="styleSheet">
                  <string notr="true">.QFrame{
-    color: rgb(46, 52, 54);
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
     background-color: rgb(51, 57, 59);
-    border-width: 2px;
-    border-radius: 6px;
-    padding-top: 0px;
-    padding-bottom: 0px;
     padding-left: 10px;
     padding-right: 10px;
 }</string>
@@ -2992,7 +2973,7 @@ font: 16pt &quot;Bebas Kai&quot;;
                <number>0</number>
               </property>
               <item>
-               <widget class="QFrame" name="frame_21">
+               <widget class="QWidget" name="widget_21" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
                   <horstretch>1</horstretch>
@@ -3012,15 +2993,7 @@ font: 16pt &quot;Bebas Kai&quot;;
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">QFrame {
-    border: none;
-}</string>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
+                 <string notr="true"/>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_14">
                  <property name="leftMargin">
@@ -3051,14 +3024,8 @@ font: 16pt &quot;Bebas Kai&quot;;
                    </property>
                    <property name="styleSheet">
                     <string notr="true">.QFrame{
-    color: rgb(46, 52, 54);
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
     background-color: rgb(51, 57, 59);
-    border-width: 2px;
     border-radius: 7px;
-    padding-top: 0px;
-    padding-bottom: 0px;
     padding-left: 3px;
     padding-right: 3px;
 }</string>
@@ -3320,14 +3287,7 @@ font: 16pt &quot;Bebas Kai&quot;;
                 </property>
                 <property name="styleSheet">
                  <string notr="true">.QFrame{
-    color: rgb(46, 52, 54);
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
-    border-width: 2px;
-    border-radius: 6px;
     background-color: rgb(51, 57, 59);
-    padding-top: 0px;
-    padding-bottom: 0px;
     padding-left: 10px;
     padding-right: 10px;
 }</string>
@@ -4062,14 +4022,7 @@ font: 16pt &quot;Bebas Kai&quot;;
                 </property>
                 <property name="styleSheet">
                  <string notr="true">.QFrame{
-    color: rgb(46, 52, 54);
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
-    border-width: 2px;
-    border-radius: 6px;
     background-color: rgb(51, 57, 59);
-    padding-top: 0px;
-    padding-bottom: 0px;
     padding-left: 10px;
     padding-right: 10px;
 }</string>
@@ -4313,12 +4266,7 @@ font: 16pt &quot;Bebas Kai&quot;;
                     </property>
                     <property name="styleSheet">
                      <string notr="true">.QFrame{
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
     background-color: rgb(51, 57, 59);
-    border-width: 2px;
-    border-radius: 6px;
-    font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -4867,15 +4815,10 @@ ToolTable {
                    <number>23</number>
                   </property>
                   <item>
-                   <widget class="QWidget" name="widget_2" native="true">
+                   <widget class="QFrame" name="frame_2">
                     <property name="styleSheet">
-                     <string notr="true">.QWidget{
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
+                     <string notr="true">.QFrame{
     background-color: rgb(51, 57, 59);
-    border-width: 2px;
-    border-radius: 6px;
-    font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                     </property>
                    </widget>
@@ -4983,7 +4926,6 @@ border-radius: 6px;
     border-radius: 6px;
     color: rgb(238, 238, 236);
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
-	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_98">
@@ -5119,7 +5061,6 @@ color: rgb(255, 255, 255);
     border-radius: 6px;
     color: rgb(238, 238, 236);
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
-	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_99">
@@ -5255,7 +5196,6 @@ color: rgb(255, 255, 255);
     border-radius: 6px;
     color: rgb(238, 238, 236);
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
-	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                  </property>
                  <layout class="QHBoxLayout" name="horizontalLayout_108">
@@ -5494,11 +5434,7 @@ color: rgb(255, 255, 255);
                 </property>
                 <property name="styleSheet">
                  <string notr="true">.QFrame{
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
     background-color: rgb(51, 57, 59);
-    border-width: 2px;
-    border-radius: 6px;
 }</string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_39">
@@ -6799,12 +6735,7 @@ QHeaderView {
                 </property>
                 <property name="styleSheet">
                  <string notr="true">.QFrame{
-    color: rgb(46, 52, 54);
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
     background-color: rgb(51, 57, 59);
-    border-width: 2px;
-    border-radius: 6px;
 }</string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_33">
@@ -6873,7 +6804,7 @@ QHeaderView {
                    <item row="1" column="0">
                     <widget class="ActionButton" name="actionbutton_g54_2">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6912,7 +6843,7 @@ QHeaderView {
                    <item row="1" column="1">
                     <widget class="ActionButton" name="actionbutton_g55_2">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6951,7 +6882,7 @@ QHeaderView {
                    <item row="1" column="2">
                     <widget class="ActionButton" name="actionbutton_g56_2">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -6990,7 +6921,7 @@ QHeaderView {
                    <item row="1" column="3">
                     <widget class="ActionButton" name="actionbutton_g57_2">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -7029,7 +6960,7 @@ QHeaderView {
                    <item row="1" column="4">
                     <widget class="ActionButton" name="actionbutton_g58_2">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -7068,7 +6999,7 @@ QHeaderView {
                    <item row="2" column="1">
                     <widget class="ActionButton" name="actionbutton_g59_4">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -7107,7 +7038,7 @@ QHeaderView {
                    <item row="2" column="2">
                     <widget class="ActionButton" name="actionbutton_g59_5">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -7146,7 +7077,7 @@ QHeaderView {
                    <item row="2" column="3">
                     <widget class="ActionButton" name="actionbutton_g59_6">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -7185,7 +7116,7 @@ QHeaderView {
                    <item row="2" column="4">
                     <widget class="ActionButton" name="actionbutton_g59_7">
                      <property name="enabled">
-                      <bool>false</bool>
+                      <bool>true</bool>
                      </property>
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -7253,13 +7184,13 @@ QHeaderView {
                     </size>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(176, 179,172);
-border-width: 2px;
-border-radius: 6px;
-background-color: rgb(90, 90, 90);
-padding: -5px;
+                    <string notr="true">.QFrame{
+    border-style: solid;
+    border-color: rgb(176, 179,172);
+    border-width: 2px;
+    border-radius: 6px;
+    background-color: rgb(90, 90, 90);
+    padding: -5px;
 }</string>
                    </property>
                    <property name="frameShape">
@@ -7311,12 +7242,7 @@ padding: -5px;
                         </property>
                         <property name="styleSheet">
                          <string notr="true">QLabel{
-    border-style: none;
-    border-color: none;
-    border-width: 0px;
-    border-radius: 0px;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                         </property>
@@ -7353,12 +7279,7 @@ padding: -5px;
                         </property>
                         <property name="styleSheet">
                          <string notr="true">QLabel{
-    border-style: none;
-    border-color: none;
-    border-width: 0px;
-    border-radius: 0px;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                         </property>
@@ -7395,12 +7316,7 @@ padding: -5px;
                         </property>
                         <property name="styleSheet">
                          <string notr="true">QLabel{
-    border-style: none;
-    border-color: none;
-    border-width: 0px;
-    border-radius: 0px;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                         </property>
@@ -7437,12 +7353,7 @@ padding: -5px;
                         </property>
                         <property name="styleSheet">
                          <string notr="true">QLabel{
-    border-style: none;
-    border-color: none;
-    border-width: 0px;
-    border-radius: 0px;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                         </property>
@@ -7480,12 +7391,7 @@ COORDS</string>
                         </property>
                         <property name="styleSheet">
                          <string notr="true">QLabel{
-    border-style: none;
-    border-color: none;
-    border-width: 0px;
-    border-radius: 0px;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                         </property>
@@ -7523,12 +7429,7 @@ OFFSET</string>
                         </property>
                         <property name="styleSheet">
                          <string notr="true">QLabel{
-    border-style: none;
-    border-color: none;
-    border-width: 0px;
-    border-radius: 0px;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                         </property>
@@ -7566,12 +7467,7 @@ OFFSET</string>
                         </property>
                         <property name="styleSheet">
                          <string notr="true">QLabel{
-    border-style: none;
-    border-color: none;
-    border-width: 0px;
-    border-radius: 0px;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                         </property>
@@ -8607,7 +8503,7 @@ OFFSET</string>
                <number>0</number>
               </property>
               <item>
-               <widget class="QFrame" name="frame_38">
+               <widget class="QWidget" name="widget_38" native="true">
                 <property name="sizePolicy">
                  <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
@@ -8627,13 +8523,7 @@ OFFSET</string>
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">QFrame{
-border-style: none;
-border-color: transparent;
-background-color: transparent;
-border-width: 2px;
-border-radius: 6px;
-}</string>
+                 <string notr="true"/>
                 </property>
                 <widget class="QLabel" name="label_47">
                  <property name="geometry">
@@ -8696,12 +8586,7 @@ border-radius: 6px;
                  </property>
                  <property name="styleSheet">
                   <string notr="true">.QFrame{
-    color: rgb(46, 52, 54);
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
     background-color: rgb(51, 57, 59);
-    border-width: 2px;
-    border-radius: 6px;
 }</string>
                  </property>
                  <widget class="QWidget" name="verticalLayoutWidget_6">
@@ -8845,7 +8730,7 @@ padding-left: 5px;
 }</string>
                        </property>
                        <property name="text">
-                        <string>0.0000</string>
+                        <string>0.000</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -8929,7 +8814,7 @@ padding-left: 5px;
 }</string>
                        </property>
                        <property name="text">
-                        <string>0.0000</string>
+                        <string>0.000</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -9013,7 +8898,7 @@ padding-left: 5px;
 }</string>
                        </property>
                        <property name="text">
-                        <string>0.0000</string>
+                        <string>0.000</string>
                        </property>
                        <property name="alignment">
                         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -9046,7 +8931,7 @@ padding-left: 5px;
            </attribute>
            <layout class="QHBoxLayout" name="horizontalLayout_43">
             <item>
-             <widget class="QFrame" name="frame_44">
+             <widget class="QWidget" name="widget_44" native="true">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
                 <horstretch>1</horstretch>
@@ -9066,18 +8951,7 @@ padding-left: 5px;
                </size>
               </property>
               <property name="styleSheet">
-               <string notr="true">QFrame {
-    border: none;
-}</string>
-              </property>
-              <property name="frameShape">
-               <enum>QFrame::NoFrame</enum>
-              </property>
-              <property name="frameShadow">
-               <enum>QFrame::Plain</enum>
-              </property>
-              <property name="lineWidth">
-               <number>0</number>
+               <string notr="true"/>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout_41">
                <property name="topMargin">
@@ -12519,7 +12393,7 @@ QPushButton:checked {
                       <widget class="QWidget" name="Page1">
                        <layout class="QHBoxLayout" name="horizontalLayout_132">
                         <item>
-                         <widget class="QFrame" name="frame_40">
+                         <widget class="QWidget" name="widget_40" native="true">
                           <property name="sizePolicy">
                            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                             <horstretch>0</horstretch>
@@ -12539,18 +12413,7 @@ QPushButton:checked {
                            </size>
                           </property>
                           <property name="styleSheet">
-                           <string notr="true">QFrame {
-    border: none;
-}</string>
-                          </property>
-                          <property name="frameShape">
-                           <enum>QFrame::NoFrame</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Plain</enum>
-                          </property>
-                          <property name="lineWidth">
-                           <number>0</number>
+                           <string notr="true"/>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_7">
                            <item row="0" column="0">
@@ -12946,7 +12809,7 @@ QPushButton:checked {
                       <widget class="QWidget" name="Page2">
                        <layout class="QHBoxLayout" name="horizontalLayout_135">
                         <item>
-                         <widget class="QFrame" name="frame_41">
+                         <widget class="QWidget" name="widget_41" native="true">
                           <property name="sizePolicy">
                            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                             <horstretch>0</horstretch>
@@ -12969,12 +12832,6 @@ QPushButton:checked {
                            <string notr="true">QFrame {
     border: none;
 }</string>
-                          </property>
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
                           </property>
                           <layout class="QGridLayout" name="gridLayout_16">
                            <item row="3" column="4">
@@ -13300,7 +13157,7 @@ QPushButton:checked {
                       <widget class="QWidget" name="Page3">
                        <layout class="QHBoxLayout" name="horizontalLayout_138">
                         <item>
-                         <widget class="QFrame" name="frame_42">
+                         <widget class="QWidget" name="widget_42" native="true">
                           <property name="sizePolicy">
                            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                             <horstretch>0</horstretch>
@@ -13324,13 +13181,7 @@ QPushButton:checked {
     border: none;
 }</string>
                           </property>
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <widget class="QFrame" name="gridFrame_8">
+                          <widget class="QWidget" name="gridWidget_8" native="true">
                            <property name="geometry">
                             <rect>
                              <x>53</x>
@@ -13529,12 +13380,10 @@ QPushButton:checked {
                            </property>
                            <property name="styleSheet">
                             <string notr="true">.QFrame{
-    color: rgb(46, 52, 54);
     border-style: solid;
     border-color: black;
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
     border-width: 2px;
-    border-radius: 6px;
+	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 }</string>
                            </property>
                            <layout class="QHBoxLayout" name="horizontalLayout_48">
@@ -13793,7 +13642,7 @@ padding-left: 5px;
                       <widget class="QWidget" name="Page4">
                        <layout class="QHBoxLayout" name="horizontalLayout_141">
                         <item>
-                         <widget class="QFrame" name="frame_43">
+                         <widget class="QWidget" name="widget_43" native="true">
                           <property name="sizePolicy">
                            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                             <horstretch>0</horstretch>
@@ -13813,17 +13662,9 @@ padding-left: 5px;
                            </size>
                           </property>
                           <property name="styleSheet">
-                           <string notr="true">QFrame {
-    border: none;
-}</string>
+                           <string notr="true"/>
                           </property>
-                          <property name="frameShape">
-                           <enum>QFrame::StyledPanel</enum>
-                          </property>
-                          <property name="frameShadow">
-                           <enum>QFrame::Raised</enum>
-                          </property>
-                          <widget class="QFrame" name="gridFrame_9">
+                          <widget class="QWidget" name="gridWidget_9" native="true">
                            <property name="geometry">
                             <rect>
                              <x>23</x>
@@ -14019,12 +13860,10 @@ padding-left: 5px;
                            </property>
                            <property name="styleSheet">
                             <string notr="true">.QFrame{
-    color: rgb(46, 52, 54);
     border-style: solid;
     border-color: black;
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
-    border-width: 2px;
-    border-radius: 6px;
+	border-width: 2px;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 }</string>
                            </property>
                            <layout class="QHBoxLayout" name="horizontalLayout_143">
@@ -14241,7 +14080,7 @@ padding-left: 5px;
                             <number>0</number>
                            </property>
                            <item>
-                            <widget class="QFrame" name="frame_45">
+                            <widget class="QWidget" name="widget_45" native="true">
                              <property name="sizePolicy">
                               <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                                <horstretch>0</horstretch>
@@ -14261,18 +14100,7 @@ padding-left: 5px;
                               </size>
                              </property>
                              <property name="styleSheet">
-                              <string notr="true">QFrame {
-    border: none;
-}</string>
-                             </property>
-                             <property name="frameShape">
-                              <enum>QFrame::NoFrame</enum>
-                             </property>
-                             <property name="frameShadow">
-                              <enum>QFrame::Plain</enum>
-                             </property>
-                             <property name="lineWidth">
-                              <number>0</number>
+                              <string notr="true"/>
                              </property>
                              <layout class="QGridLayout" name="gridLayout_8">
                               <item row="2" column="0">
@@ -14768,7 +14596,6 @@ padding-left: 5px;
     border-style: solid;
     border-color: rgb(206, 209, 202);
     background-color: rgb(57, 63, 65);
-    border-width: 2px;
     border-radius: 8px;
 }
 </string>
@@ -15711,7 +15538,6 @@ QLineEdit:focus {
     border-style: solid;
     border-color: rgb(206, 209, 202);
     background-color: rgb(51, 57, 59);
-    border-width: 2px;
     border-radius: 8px;
 }</string>
                           </property>
@@ -16256,11 +16082,8 @@ background: transparent;
                     <item>
                      <widget class="QFrame" name="frame">
                       <property name="styleSheet">
-                       <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(186, 189, 182);
+                       <string notr="true">.QFrame{
 background-color: rgb(32, 36, 37);
-border-width: 2px;
 border-radius: 8px;
 }</string>
                       </property>
@@ -17178,12 +17001,7 @@ QAbstractSpinBox:selected {
             </property>
             <property name="styleSheet">
              <string notr="true">.QFrame{
-    color: rgb(46, 52, 54);
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
-    background-color: rgb(46, 52, 54);
-    border-width: 2px;
-    border-radius: 6px;
+    background-color: rgb(51, 57, 59);
 }</string>
             </property>
             <property name="frameShape">
@@ -17564,11 +17382,7 @@ QLineEdit:focus {
             </property>
             <property name="styleSheet">
              <string notr="true">.QFrame{
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
     background-color: rgb(51, 57, 59);
-    border-width: 2px;
-    border-radius: 6px;
 }</string>
             </property>
             <property name="frameShape">
@@ -18440,11 +18254,7 @@ QLineEdit:focus {
             </property>
             <property name="styleSheet">
              <string notr="true">.QFrame{
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
     background-color: rgb(51, 57, 59);
-    border-width: 2px;
-    border-radius: 6px;
 }</string>
             </property>
             <property name="frameShape">
@@ -18517,7 +18327,7 @@ QLineEdit:focus {
                  <item>
                   <widget class="ActionButton" name="actionbutton_g54_3">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -18556,7 +18366,7 @@ QLineEdit:focus {
                  <item>
                   <widget class="ActionButton" name="actionbutton_g55_3">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -18595,7 +18405,7 @@ QLineEdit:focus {
                  <item>
                   <widget class="ActionButton" name="actionbutton_g56_3">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -18634,7 +18444,7 @@ QLineEdit:focus {
                  <item>
                   <widget class="ActionButton" name="actionbutton_g57_3">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -18673,7 +18483,7 @@ QLineEdit:focus {
                  <item>
                   <widget class="ActionButton" name="actionbutton_g58_3">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -18712,7 +18522,7 @@ QLineEdit:focus {
                  <item>
                   <widget class="ActionButton" name="actionbutton_g59_10">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -18751,7 +18561,7 @@ QLineEdit:focus {
                  <item>
                   <widget class="ActionButton" name="actionbutton_g59_9">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -18790,7 +18600,7 @@ QLineEdit:focus {
                  <item>
                   <widget class="ActionButton" name="actionbutton_g59_11">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -18829,7 +18639,7 @@ QLineEdit:focus {
                  <item>
                   <widget class="ActionButton" name="actionbutton_g59_8">
                    <property name="enabled">
-                    <bool>false</bool>
+                    <bool>true</bool>
                    </property>
                    <property name="sizePolicy">
                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -19049,11 +18859,7 @@ QLineEdit:focus {
             </property>
             <property name="styleSheet">
              <string notr="true">.QFrame{
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
     background-color: rgb(51, 57, 59);
-    border-width: 2px;
-    border-radius: 6px;
 }</string>
             </property>
             <property name="frameShape">
@@ -19184,7 +18990,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19218,7 +19024,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19252,7 +19058,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19286,7 +19092,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19339,7 +19145,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19370,7 +19176,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19420,7 +19226,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19470,7 +19276,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19510,7 +19316,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19615,7 +19421,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19652,7 +19458,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19708,7 +19514,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19739,7 +19545,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19786,7 +19592,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19817,7 +19623,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19864,7 +19670,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19917,7 +19723,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -19948,7 +19754,7 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>37</height>
+                       <height>39</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -20992,14 +20798,7 @@ border-radius: 1px;
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">.QFrame{
-color: rgb(46, 52, 54);
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(46, 52, 54);
-border-width: 2px;
-border-radius: 6px;
-}</string>
+         <string notr="true"/>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_29">
          <property name="spacing">
@@ -21879,7 +21678,7 @@ border-radius: 1px;
 }</string>
              </property>
              <property name="text">
-              <string>REFERENCE ALL</string>
+              <string>MACHINE REFERENCED</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:all_axes_homed&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;'MACHINE REFERENCED' if ch[0] else 'REFERENCE ALL'&quot;, &quot;name&quot;: &quot;reference_all&quot;}]</string>
@@ -21919,12 +21718,6 @@ border-radius: 1px;
         </property>
         <property name="styleSheet">
          <string notr="true">.QFrame{
-    color: rgb(46, 52, 54);
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
-    background-color: rgb(46, 52, 54);
-    border-width: 2px;
-    border-radius: 6px;
     padding-left: 7px;
     padding-right: 7px;
     padding-top: -1px;
@@ -22335,7 +22128,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="style" stdset="0">
-              <string>unhomed</string>
+              <string>homed</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=x&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.0.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.0.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
@@ -22598,7 +22391,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="style" stdset="0">
-              <string>unhomed</string>
+              <string>homed</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=y&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.1.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.1.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
@@ -22858,7 +22651,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="style" stdset="0">
-              <string>unhomed</string>
+              <string>homed</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=z&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.2.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.2.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
@@ -23117,7 +22910,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="style" stdset="0">
-              <string>unhomed</string>
+              <string>homed</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=a&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.3.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.3.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
@@ -23377,7 +23170,7 @@ StatusLabel[style=&quot;homing&quot;]{
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
              <property name="style" stdset="0">
-              <string>unhomed</string>
+              <string>homed</string>
              </property>
              <property name="rules" stdset="0">
               <string>[{&quot;channels&quot;: [{&quot;url&quot;: &quot;position:abs?string&amp;axis=b&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;axis position&quot;}, {&quot;channels&quot;: [{&quot;url&quot;: &quot;status:joint.4.homed&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;status:joint.4.homing&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Style Class&quot;, &quot;expression&quot;: &quot;\&quot;homed\&quot; if ch[0] else \&quot;homing\&quot; if ch[1] else \&quot;unhomed\&quot;&quot;, &quot;name&quot;: &quot;homing indicator&quot;}]</string>
@@ -23490,12 +23283,6 @@ StatusLabel[style=&quot;homing&quot;]{
         </property>
         <property name="styleSheet">
          <string notr="true">.QFrame{
-    color: rgb(46, 52, 54);
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
-    background-color: rgb(46, 52, 54);
-    border-width: 2px;
-    border-radius: 6px;
     padding-left: 7px;
     padding-right: 7px;
 }</string>
@@ -24273,14 +24060,7 @@ border-radius: 4px;
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">.QFrame{
-    color: rgb(46, 52, 54);
-    border-style: solid;
-    border-color: rgb(186, 189, 182);
-    background-color: rgb(46, 52, 54);
-    border-width: 2px;
-    border-radius: 6px;
-}</string>
+         <string notr="true"/>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_27">
          <property name="spacing">
@@ -26508,12 +26288,12 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="probetabGroup"/>
-  <buttongroup name="plotviewGroup"/>
-  <buttongroup name="mainorthoperspbtnGroup"/>
-  <buttongroup name="plotorthoperspbtnGroup"/>
-  <buttongroup name="xycalbtnGroup"/>
   <buttongroup name="probehelpGroup"/>
+  <buttongroup name="probetabGroup"/>
+  <buttongroup name="plotorthoperspbtnGroup"/>
   <buttongroup name="probemodeGroup"/>
+  <buttongroup name="plotviewGroup"/>
+  <buttongroup name="xycalbtnGroup"/>
+  <buttongroup name="mainorthoperspbtnGroup"/>
  </buttongroups>
 </ui>

@@ -116,11 +116,11 @@ QLineEdit:focus {
 }
 
 .QFrame {
-    padding: 0px;
-    border-width: 1px;
-    border-radius: 4px;
+    background-color: rgb(46, 52, 54);
     border-style: solid;
-    border-color: #8A8484;
+    border-color: rgb(186, 189, 182);
+    border-width: 2px;
+    border-radius: 6px;
 }
 
 DROWidget {
