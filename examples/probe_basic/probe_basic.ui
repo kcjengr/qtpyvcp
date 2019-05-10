@@ -221,7 +221,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>6</number>
           </property>
           <widget class="QWidget" name="main_tab">
            <attribute name="title">
@@ -3464,35 +3464,7 @@ font: 16pt &quot;Bebas Kai&quot;;
               <item>
                <widget class="DynATC" name="dynatc">
                 <property name="sizePolicy">
-                 <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-                  <horstretch>1</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QFrame {
-    border: none;
-}</string>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </item>
-            <item>
-             <layout class="QVBoxLayout" name="verticalLayout_19">
-              <property name="spacing">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QFrame" name="frame_4">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
@@ -3508,6 +3480,11 @@ font: 16pt &quot;Bebas Kai&quot;;
                   <width>560</width>
                   <height>560</height>
                  </size>
+                </property>
+                <property name="styleSheet">
+                 <string notr="true">QFrame {
+    border: none;
+}</string>
                 </property>
                 <property name="resizeMode">
                  <enum>QQuickWidget::SizeRootObjectToView</enum>
@@ -18932,10 +18909,10 @@ QAbstractSpinBox:selected {
            <widget class="QFrame" name="frame_2">
             <property name="geometry">
              <rect>
-              <x>10</x>
-              <y>10</y>
+              <x>1340</x>
+              <y>26</y>
               <width>271</width>
-              <height>141</height>
+              <height>161</height>
              </rect>
             </property>
             <property name="styleSheet">
@@ -26957,7 +26934,7 @@ border-radius: 1px;
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1923</width>
+     <width>1924</width>
      <height>27</height>
     </rect>
    </property>
@@ -28372,12 +28349,12 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="xycalbtnGroup"/>
-  <buttongroup name="probemodeGroup"/>
-  <buttongroup name="plotorthoperspbtnGroup"/>
-  <buttongroup name="probehelpGroup"/>
-  <buttongroup name="plotviewGroup"/>
-  <buttongroup name="mainorthoperspbtnGroup"/>
   <buttongroup name="probetabGroup"/>
+  <buttongroup name="probehelpGroup"/>
+  <buttongroup name="plotorthoperspbtnGroup"/>
+  <buttongroup name="probemodeGroup"/>
+  <buttongroup name="xycalbtnGroup"/>
+  <buttongroup name="mainorthoperspbtnGroup"/>
+  <buttongroup name="plotviewGroup"/>
  </buttongroups>
 </ui>
