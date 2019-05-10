@@ -1,8 +1,5 @@
 QMainWindow {
     background: #2e3436
-    /*border-image: url(:/images/dark_background.jpg);*/
-    /*background-image: url(:/images/dark_background.jpg);*/
-    /*background-image: url(:/images/pp_border.png);*/
 }
 
 QsciScintilla {
@@ -18,8 +15,7 @@ QStatusBar {
 
 QPushButton, QComboBox[editable="false"],
 QComboBox[editable="true"]::drop-down {
-    color: white;
-    border-image: url(:/images/pp_border.png);
+    color: white;    
     border-color: black;
     border-style: solid;
     border-radius: 5px;
@@ -83,28 +79,21 @@ SubCallButton[styleClass="probeButton"] :disabled {
     border-color: gray;
 }
 
-/*SubCallButton[styleClass="probeButton"] [error="true"] {
-    border-color: red;
-}*/
-
 SubCallButton[styleClass="probeButton"] :hover {
     background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #ffffff, stop: 1.0 #e1e1e1);
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
 }
 
 SubCallButton[styleClass="probeButton"] :pressed {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
 }
 
 SubCallButton[styleClass="probeButton"] :checked[option="true"] {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
 }
 
 SubCallButton[styleClass="probeButton"] :checked {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #4a6aa7, stop: 1.0 #6f96cd);
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
 }
 
 /* E-Stop button */
@@ -308,7 +297,7 @@ QMenuBar {
     border: 0px solid black;
     color: white;
     font-family: "Bebas Kai";
-    font-size: 12pt; 
+    font-size: 12pt;
 }
 
 QMenuBar:focus {

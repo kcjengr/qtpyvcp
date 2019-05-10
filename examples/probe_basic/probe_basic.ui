@@ -221,7 +221,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>5</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="main_tab">
            <attribute name="title">
@@ -458,9 +458,8 @@ QComboBox QAbstractItemView{
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QWidget{
+                  <string notr="true">.QWidget{
     background: rgb(32, 36, 37);
-    border: none;
 }</string>
                  </property>
                  <layout class="QVBoxLayout" name="verticalLayout_8">
@@ -470,8 +469,14 @@ QComboBox QAbstractItemView{
                   <property name="leftMargin">
                    <number>15</number>
                   </property>
+                  <property name="topMargin">
+                   <number>18</number>
+                  </property>
                   <property name="rightMargin">
                    <number>0</number>
+                  </property>
+                  <property name="bottomMargin">
+                   <number>12</number>
                   </property>
                   <item>
                    <widget class="QPushButton" name="iso_view_button">
@@ -494,46 +499,7 @@ QComboBox QAbstractItemView{
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
-QComboBox[editable=&quot;true&quot;]::drop-down {
-    color: white;
-    border-image: url(:/images/pp_border.png);
-    border-color: black;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 2px;
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
-}
-
-QPushButton {
-    font-family: &quot;Bebas Kai&quot;;
-    font-size: 15pt;
-}
-
-QPushButton:disabled {
-    border-color: gray;
-}
-
-/*QPushButton[error=&quot;true&quot;] {
-    border-color: red;
-}*/
-
-QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:pressed {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked[option=&quot;true&quot;] {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}</string>
+                     <string notr="true"/>
                     </property>
                     <property name="text">
                      <string>ISO VIEW</string>
@@ -564,46 +530,7 @@ QPushButton:checked {
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
-QComboBox[editable=&quot;true&quot;]::drop-down {
-    color: white;
-    border-image: url(:/images/pp_border.png);
-    border-color: black;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 2px;
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
-}
-
-QPushButton {
-    font-family: &quot;Bebas Kai&quot;;
-    font-size: 15pt;
-}
-
-QPushButton:disabled {
-    border-color: gray;
-}
-
-/*QPushButton[error=&quot;true&quot;] {
-    border-color: red;
-}*/
-
-QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:pressed {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked[option=&quot;true&quot;] {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}</string>
+                     <string notr="true"/>
                     </property>
                     <property name="text">
                      <string>X View</string>
@@ -634,46 +561,7 @@ QPushButton:checked {
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
-QComboBox[editable=&quot;true&quot;]::drop-down {
-    color: white;
-    border-image: url(:/images/pp_border.png);
-    border-color: black;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 2px;
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
-}
-
-QPushButton {
-    font-family: &quot;Bebas Kai&quot;;
-    font-size: 15pt;
-}
-
-QPushButton:disabled {
-    border-color: gray;
-}
-
-/*QPushButton[error=&quot;true&quot;] {
-    border-color: red;
-}*/
-
-QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:pressed {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked[option=&quot;true&quot;] {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}</string>
+                     <string notr="true"/>
                     </property>
                     <property name="text">
                      <string>Y View</string>
@@ -704,46 +592,7 @@ QPushButton:checked {
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
-QComboBox[editable=&quot;true&quot;]::drop-down {
-    color: white;
-    border-image: url(:/images/pp_border.png);
-    border-color: black;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 2px;
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
-}
-
-QPushButton {
-    font-family: &quot;Bebas Kai&quot;;
-    font-size: 15pt;
-}
-
-QPushButton:disabled {
-    border-color: gray;
-}
-
-/*QPushButton[error=&quot;true&quot;] {
-    border-color: red;
-}*/
-
-QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:pressed {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked[option=&quot;true&quot;] {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}</string>
+                     <string notr="true"/>
                     </property>
                     <property name="text">
                      <string>Z View</string>
@@ -764,13 +613,13 @@ QPushButton:checked {
                     <property name="minimumSize">
                      <size>
                       <width>60</width>
-                      <height>4</height>
+                      <height>1</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
                       <width>60</width>
-                      <height>4</height>
+                      <height>1</height>
                      </size>
                     </property>
                     <property name="text">
@@ -799,46 +648,7 @@ QPushButton:checked {
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
-QComboBox[editable=&quot;true&quot;]::drop-down {
-    color: white;
-    border-image: url(:/images/pp_border.png);
-    border-color: black;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 2px;
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
-}
-
-QPushButton {
-    font-family: &quot;Bebas Kai&quot;;
-    font-size: 15pt;
-}
-
-QPushButton:disabled {
-    border-color: gray;
-}
-
-/*QPushButton[error=&quot;true&quot;] {
-    border-color: red;
-}*/
-
-QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:pressed {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked[option=&quot;true&quot;] {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}</string>
+                     <string notr="true"/>
                     </property>
                     <property name="text">
                      <string>PAN</string>
@@ -869,46 +679,7 @@ QPushButton:checked {
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
-QComboBox[editable=&quot;true&quot;]::drop-down {
-    color: white;
-    border-image: url(:/images/pp_border.png);
-    border-color: black;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 2px;
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
-}
-
-QPushButton {
-    font-family: &quot;Bebas Kai&quot;;
-    font-size: 15pt;
-}
-
-QPushButton:disabled {
-    border-color: gray;
-}
-
-/*QPushButton[error=&quot;true&quot;] {
-    border-color: red;
-}*/
-
-QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:pressed {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked[option=&quot;true&quot;] {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}</string>
+                     <string notr="true"/>
                     </property>
                     <property name="text">
                      <string>ZOOM +</string>
@@ -939,46 +710,7 @@ QPushButton:checked {
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
-QComboBox[editable=&quot;true&quot;]::drop-down {
-    color: white;
-    border-image: url(:/images/pp_border.png);
-    border-color: black;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 2px;
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
-}
-
-QPushButton {
-    font-family: &quot;Bebas Kai&quot;;
-    font-size: 15pt;
-}
-
-QPushButton:disabled {
-    border-color: gray;
-}
-
-/*QPushButton[error=&quot;true&quot;] {
-    border-color: red;
-}*/
-
-QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:pressed {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked[option=&quot;true&quot;] {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}</string>
+                     <string notr="true"/>
                     </property>
                     <property name="text">
                      <string>ZOOM -</string>
@@ -999,13 +731,13 @@ QPushButton:checked {
                     <property name="minimumSize">
                      <size>
                       <width>60</width>
-                      <height>4</height>
+                      <height>1</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
                       <width>60</width>
-                      <height>4</height>
+                      <height>1</height>
                      </size>
                     </property>
                     <property name="text">
@@ -1034,46 +766,7 @@ QPushButton:checked {
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
-QComboBox[editable=&quot;true&quot;]::drop-down {
-    color: white;
-    border-image: url(:/images/pp_border.png);
-    border-color: black;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 2px;
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
-}
-
-QPushButton {
-    font-family: &quot;Bebas Kai&quot;;
-    font-size: 15pt;
-}
-
-QPushButton:disabled {
-    border-color: gray;
-}
-
-/*QPushButton[error=&quot;true&quot;] {
-    border-color: red;
-}*/
-
-QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:pressed {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked[option=&quot;true&quot;] {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}</string>
+                     <string notr="true"/>
                     </property>
                     <property name="text">
                      <string>PGM EXT</string>
@@ -1104,46 +797,7 @@ QPushButton:checked {
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
-QComboBox[editable=&quot;true&quot;]::drop-down {
-    color: white;
-    border-image: url(:/images/pp_border.png);
-    border-color: black;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 2px;
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
-}
-
-QPushButton {
-    font-family: &quot;Bebas Kai&quot;;
-    font-size: 15pt;
-}
-
-QPushButton:disabled {
-    border-color: gray;
-}
-
-/*QPushButton[error=&quot;true&quot;] {
-    border-color: red;
-}*/
-
-QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:pressed {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked[option=&quot;true&quot;] {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}</string>
+                     <string notr="true"/>
                     </property>
                     <property name="text">
                      <string>MCH EXT</string>
@@ -1164,13 +818,13 @@ QPushButton:checked {
                     <property name="minimumSize">
                      <size>
                       <width>60</width>
-                      <height>4</height>
+                      <height>1</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
                       <width>60</width>
-                      <height>4</height>
+                      <height>1</height>
                      </size>
                     </property>
                     <property name="text">
@@ -1199,46 +853,7 @@ QPushButton:checked {
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string>QPushButton, QComboBox[editable=&quot;false&quot;],
-QComboBox[editable=&quot;true&quot;]::drop-down {
-    color: white;
-    border-image: url(:/images/pp_border.png);
-    border-color: black;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 2px;
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
-}
-
-QPushButton {
-    font-family: &quot;Bebas Kai&quot;;
-    font-size: 15pt;
-}
-
-QPushButton:disabled {
-    border-color: gray;
-}
-
-/*QPushButton[error=&quot;true&quot;] {
-    border-color: red;
-}*/
-
-QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:pressed {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked[option=&quot;true&quot;] {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}</string>
+                     <string/>
                     </property>
                     <property name="text">
                      <string>PATH</string>
@@ -1269,46 +884,7 @@ QPushButton:checked {
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
-QComboBox[editable=&quot;true&quot;]::drop-down {
-    color: white;
-    border-image: url(:/images/pp_border.png);
-    border-color: black;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 2px;
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
-}
-
-QPushButton {
-    font-family: &quot;Bebas Kai&quot;;
-    font-size: 15pt;
-}
-
-QPushButton:disabled {
-    border-color: gray;
-}
-
-/*QPushButton[error=&quot;true&quot;] {
-    border-color: red;
-}*/
-
-QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:pressed {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked[option=&quot;true&quot;] {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}</string>
+                     <string notr="true"/>
                     </property>
                     <property name="text">
                      <string>CLEAR</string>
@@ -1329,13 +905,13 @@ QPushButton:checked {
                     <property name="minimumSize">
                      <size>
                       <width>60</width>
-                      <height>4</height>
+                      <height>1</height>
                      </size>
                     </property>
                     <property name="maximumSize">
                      <size>
                       <width>60</width>
-                      <height>4</height>
+                      <height>1</height>
                      </size>
                     </property>
                     <property name="text">
@@ -1364,46 +940,7 @@ QPushButton:checked {
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
-QComboBox[editable=&quot;true&quot;]::drop-down {
-    color: white;
-    border-image: url(:/images/pp_border.png);
-    border-color: black;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 2px;
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
-}
-
-QPushButton {
-    font-family: &quot;Bebas Kai&quot;;
-    font-size: 15pt;
-}
-
-QPushButton:disabled {
-    border-color: gray;
-}
-
-/*QPushButton[error=&quot;true&quot;] {
-    border-color: red;
-}*/
-
-QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:pressed {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked[option=&quot;true&quot;] {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}</string>
+                     <string notr="true"/>
                     </property>
                     <property name="text">
                      <string>ORTHO</string>
@@ -1443,46 +980,7 @@ QPushButton:checked {
                      </size>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">QPushButton, QComboBox[editable=&quot;false&quot;],
-QComboBox[editable=&quot;true&quot;]::drop-down {
-    color: white;
-    border-image: url(:/images/pp_border.png);
-    border-color: black;
-    border-style: solid;
-    border-radius: 5px;
-    border-width: 2px;
-    background: qlineargradient(spread:pad, x1:0, y1:1, x2:0, y2:0, stop:0 rgba(213, 218, 216, 255), stop:0.169312 rgba(82, 82, 83, 255), stop:0.328042 rgba(72, 70, 73, 255), stop:0.492063 rgba(78, 77, 79, 255), stop:0.703704 rgba(72, 70, 73, 255), stop:0.86 rgba(82, 82, 83, 255), stop:1 rgba(213, 218, 216, 255));
-}
-
-QPushButton {
-    font-family: &quot;Bebas Kai&quot;;
-    font-size: 15pt;
-}
-
-QPushButton:disabled {
-    border-color: gray;
-}
-
-/*QPushButton[error=&quot;true&quot;] {
-    border-color: red;
-}*/
-
-QPushButton:hover {
-    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
-}
-
-QPushButton:pressed {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked[option=&quot;true&quot;] {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}
-
-QPushButton:checked {
-    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
-}</string>
+                     <string notr="true"/>
                     </property>
                     <property name="text">
                      <string>PSPECT</string>
@@ -1577,12 +1075,12 @@ QPushButton:checked {
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
+                 <string notr="true">.QFrame{
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(51, 57, 59);
+    border-width: 2px;
+    border-radius: 6px;
 }</string>
                 </property>
                 <property name="frameShape">
@@ -2046,12 +1544,12 @@ USB</string>
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
+                 <string notr="true">.QFrame{
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(51, 57, 59);
+    border-width: 2px;
+    border-radius: 6px;
 }</string>
                 </property>
                 <property name="frameShape">
@@ -2383,12 +1881,12 @@ QHeaderView {
                  </sizepolicy>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
+                 <string notr="true">.QFrame{
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(51, 57, 59);
+    border-width: 2px;
+    border-radius: 6px;
 }</string>
                 </property>
                 <property name="frameShape">
@@ -2425,13 +1923,8 @@ border-radius: 6px;
                      </property>
                      <property name="styleSheet">
                       <string notr="true">QLabel{
-    border-style: transparant;
-    border-color: rgb(238, 238, 236);
-    border-width: 2px;
-    border-radius: 5px;
     color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
-	font: 17pt &quot;Bebas Kai&quot;;
+  	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -2654,17 +2147,17 @@ border-radius: 6px;
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">QFrame{
-color: rgb(46, 52, 54);
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
-padding-top: 0px;
-padding-bottom: 0px;
-padding-left: 10px;
-padding-right: 10px;
+                 <string notr="true">.QFrame{
+    color: rgb(46, 52, 54);
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(51, 57, 59);
+    border-width: 2px;
+    border-radius: 6px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
 }</string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_7">
@@ -3557,17 +3050,17 @@ font: 16pt &quot;Bebas Kai&quot;;
                     </size>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">QFrame{
-color: rgb(46, 52, 54);
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 7px;
-padding-top: 0px;
-padding-bottom: 0px;
-padding-left: 3px;
-padding-right: 3px;
+                    <string notr="true">.QFrame{
+    color: rgb(46, 52, 54);
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(51, 57, 59);
+    border-width: 2px;
+    border-radius: 7px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 3px;
+    padding-right: 3px;
 }</string>
                    </property>
                    <layout class="QHBoxLayout" name="horizontalLayout_132">
@@ -3826,18 +3319,17 @@ padding-right: 3px;
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">QFrame{
-color: rgb(46, 52, 54);
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
-border-radius: 6px;
-padding-top: 0px;
-padding-bottom: 0px;
-padding-left: 10px;
-padding-right: 10px;
+                 <string notr="true">.QFrame{
+    color: rgb(46, 52, 54);
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    border-width: 2px;
+    border-radius: 6px;
+    background-color: rgb(51, 57, 59);
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
 }</string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_10">
@@ -4569,18 +4061,17 @@ font: 16pt &quot;Bebas Kai&quot;;
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">QFrame{
-color: rgb(46, 52, 54);
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
-border-radius: 6px;
-padding-top: 0px;
-padding-bottom: 0px;
-padding-left: 10px;
-padding-right: 10px;
+                 <string notr="true">.QFrame{
+    color: rgb(46, 52, 54);
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    border-width: 2px;
+    border-radius: 6px;
+    background-color: rgb(51, 57, 59);
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
 }</string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -4821,13 +4312,13 @@ padding-right: 10px;
                      </sizepolicy>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
-font: 15pt &quot;Bebas Kai&quot;;
+                     <string notr="true">.QFrame{
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(51, 57, 59);
+    border-width: 2px;
+    border-radius: 6px;
+    font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                     </property>
                     <layout class="QVBoxLayout" name="verticalLayout_20">
@@ -5378,13 +4869,13 @@ ToolTable {
                   <item>
                    <widget class="QWidget" name="widget_2" native="true">
                     <property name="styleSheet">
-                     <string notr="true">QWidget{
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
-font: 15pt &quot;Bebas Kai&quot;;
+                     <string notr="true">.QWidget{
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(51, 57, 59);
+    border-width: 2px;
+    border-radius: 6px;
+    font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                     </property>
                    </widget>
@@ -5485,7 +4976,7 @@ border-radius: 6px;
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QFrame{
+                  <string notr="true">.QFrame{
     border-style: solid;
     border-color: black;
     border-width: 2px;
@@ -5531,9 +5022,6 @@ border-radius: 6px;
                        <string notr="true">QLabel{
 font: 75 13pt &quot;Bebas Kai&quot;;
 color: rgb(255, 255, 255);
-padding-right: 0px;
-padding-left: 0px;
-border-style: none;
 }</string>
                       </property>
                       <property name="text">
@@ -5624,7 +5112,7 @@ border-style: none;
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QFrame{
+                  <string notr="true">.QFrame{
     border-style: solid;
     border-color: black;
     border-width: 2px;
@@ -5670,9 +5158,6 @@ border-style: none;
                        <string notr="true">QLabel{
 font: 75 13pt &quot;Bebas Kai&quot;;
 color: rgb(255, 255, 255);
-padding-right: 0px;
-padding-left: 0px;
-border-style: none;
 }</string>
                       </property>
                       <property name="text">
@@ -5763,7 +5248,7 @@ border-style: none;
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QFrame{
+                  <string notr="true">.QFrame{
     border-style: solid;
     border-color: black;
     border-width: 2px;
@@ -5809,9 +5294,6 @@ border-style: none;
                        <string notr="true">QLabel{
 font: 75 13pt &quot;Bebas Kai&quot;;
 color: rgb(255, 255, 255);
-padding-right: 0px;
-padding-left: 0px;
-border-style: none;
 }</string>
                       </property>
                       <property name="text">
@@ -6011,12 +5493,12 @@ border-style: none;
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
+                 <string notr="true">.QFrame{
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(51, 57, 59);
+    border-width: 2px;
+    border-radius: 6px;
 }</string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_39">
@@ -7316,13 +6798,13 @@ QHeaderView {
                  </size>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">QFrame{
-color: rgb(46, 52, 54);
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
+                 <string notr="true">.QFrame{
+    color: rgb(46, 52, 54);
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(51, 57, 59);
+    border-width: 2px;
+    border-radius: 6px;
 }</string>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_33">
@@ -8211,7 +7693,6 @@ OFFSET</string>
     border-width: 1px;
     border-radius: 5px;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 18pt &quot;Bebas Kai&quot;;
 }</string>
                        </property>
@@ -8408,7 +7889,6 @@ OFFSET</string>
     border-width: 1px;
     border-radius: 5px;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 18pt &quot;Bebas Kai&quot;;
 }</string>
                        </property>
@@ -8605,7 +8085,6 @@ OFFSET</string>
     border-width: 1px;
     border-radius: 5px;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 18pt &quot;Bebas Kai&quot;;
 }</string>
                        </property>
@@ -8801,7 +8280,6 @@ OFFSET</string>
     border-width: 1px;
     border-radius: 5px;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 18pt &quot;Bebas Kai&quot;;
 }</string>
                        </property>
@@ -8998,7 +8476,6 @@ OFFSET</string>
     border-width: 1px;
     border-radius: 5px;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 18pt &quot;Bebas Kai&quot;;
 }</string>
                        </property>
@@ -9218,13 +8695,13 @@ border-radius: 6px;
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QFrame{
-color: rgb(46, 52, 54);
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
+                  <string notr="true">.QFrame{
+    color: rgb(46, 52, 54);
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(51, 57, 59);
+    border-width: 2px;
+    border-radius: 6px;
 }</string>
                  </property>
                  <widget class="QWidget" name="verticalLayoutWidget_6">
@@ -9322,8 +8799,6 @@ border-radius: 6px;
                        </property>
                        <property name="styleSheet">
                         <string notr="true">QLabel{
-border: none;
-background: transparent;
 font: 75 16pt &quot;Bebas Kai&quot;;
 color: rgb(255, 255, 255);
 padding-right: 1px;
@@ -9408,8 +8883,6 @@ padding-left: 5px;
                        </property>
                        <property name="styleSheet">
                         <string notr="true">QLabel{
-border: none;
-background: transparent;
 font: 75 16pt &quot;Bebas Kai&quot;;
 color: rgb(255, 255, 255);
 padding-right: 1px;
@@ -9494,8 +8967,6 @@ padding-left: 5px;
                        </property>
                        <property name="styleSheet">
                         <string notr="true">QLabel{
-border: none;
-background: transparent;
 font: 75 16pt &quot;Bebas Kai&quot;;
 color: rgb(255, 255, 255);
 padding-right: 1px;
@@ -10246,12 +9717,7 @@ padding-left: 5px;
                       </sizepolicy>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string/>
@@ -10463,12 +9929,7 @@ QLineEdit:focus {
                       </sizepolicy>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string/>
@@ -10680,12 +10141,7 @@ QLineEdit:focus {
                       </sizepolicy>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string/>
@@ -10894,12 +10350,7 @@ QLineEdit:focus {
                       </sizepolicy>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string/>
@@ -11114,12 +10565,7 @@ QLineEdit:focus {
                       </sizepolicy>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string/>
@@ -13068,7 +12514,7 @@ QPushButton:checked {
                        <string notr="true"/>
                       </property>
                       <property name="currentIndex">
-                       <number>6</number>
+                       <number>0</number>
                       </property>
                       <widget class="QWidget" name="Page1">
                        <layout class="QHBoxLayout" name="horizontalLayout_132">
@@ -13911,6 +13357,9 @@ QPushButton:checked {
                                 <height>170</height>
                                </size>
                               </property>
+                              <property name="focusPolicy">
+                               <enum>Qt::WheelFocus</enum>
+                              </property>
                               <property name="styleSheet">
                                <string notr="true"/>
                               </property>
@@ -14079,13 +13528,13 @@ QPushButton:checked {
                             </size>
                            </property>
                            <property name="styleSheet">
-                            <string notr="true">QFrame{
-color: rgb(46, 52, 54);
-border-style: solid;
-border-color: black;
+                            <string notr="true">.QFrame{
+    color: rgb(46, 52, 54);
+    border-style: solid;
+    border-color: black;
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
-border-width: 2px;
-border-radius: 6px;
+    border-width: 2px;
+    border-radius: 6px;
 }</string>
                            </property>
                            <layout class="QHBoxLayout" name="horizontalLayout_48">
@@ -14115,7 +13564,6 @@ border-radius: 6px;
     border-width: 1px;
     border-radius: 5px;
     color: rgb(238, 238, 236);
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                                 </property>
@@ -14147,8 +13595,6 @@ font: 75 15pt &quot;Bebas Kai&quot;;
 color: rgb(255, 255, 255);
 padding-right: 1px;
 padding-left: 5px;
-border: transparent;
-Background:transparent;
 }</string>
                                 </property>
                                 <property name="text">
@@ -14218,8 +13664,6 @@ font: 75 15pt &quot;Bebas Kai&quot;;
 color: rgb(255, 255, 255);
 padding-right: 1px;
 padding-left: 5px;
-border: transparent;
-Background:transparent;
 }</string>
                                 </property>
                                 <property name="text">
@@ -14289,8 +13733,6 @@ font: 75 15pt &quot;Bebas Kai&quot;;
 color: rgb(255, 255, 255);
 padding-right: 1px;
 padding-left: 5px;
-border: transparent;
-Background:transparent;
 }</string>
                                 </property>
                                 <property name="text">
@@ -14576,13 +14018,13 @@ Background:transparent;
                             </size>
                            </property>
                            <property name="styleSheet">
-                            <string notr="true">QFrame{
-color: rgb(46, 52, 54);
-border-style: solid;
-border-color: black;
+                            <string notr="true">.QFrame{
+    color: rgb(46, 52, 54);
+    border-style: solid;
+    border-color: black;
 	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
-border-width: 2px;
-border-radius: 6px;
+    border-width: 2px;
+    border-radius: 6px;
 }</string>
                            </property>
                            <layout class="QHBoxLayout" name="horizontalLayout_143">
@@ -14612,7 +14054,6 @@ border-radius: 6px;
     border-width: 1px;
     border-radius: 5px;
     color: rgb(238, 238, 236);
-	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                                 </property>
@@ -14640,12 +14081,10 @@ border-radius: 6px;
                                 </property>
                                 <property name="styleSheet">
                                  <string notr="true">QLabel{
-font: 75 15pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
-padding-right: 1px;
-padding-left: 5px;
-border: transparent;
-Background:transparent;
+    font: 15pt &quot;Bebas Kai&quot;;
+    color: rgb(255, 255, 255);
+    padding-right: 1px;
+    padding-left: 5px;
 }</string>
                                 </property>
                                 <property name="text">
@@ -14711,12 +14150,10 @@ Background:transparent;
                                 </property>
                                 <property name="styleSheet">
                                  <string notr="true">QLabel{
-font: 75 15pt &quot;Bebas Kai&quot;;
-color: rgb(255, 255, 255);
-padding-right: 1px;
-padding-left: 5px;
-border: transparent;
-Background:transparent;
+    font: 15pt &quot;Bebas Kai&quot;;
+    color: rgb(255, 255, 255);
+    padding-right: 1px;
+    padding-left: 5px;
 }</string>
                                 </property>
                                 <property name="text">
@@ -15327,12 +14764,12 @@ Background:transparent;
                            </size>
                           </property>
                           <property name="styleSheet">
-                           <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(206, 209, 202);
-background-color: rgb(57, 63, 65);
-border-width: 2px;
-border-radius: 8px;
+                           <string notr="true">.QFrame{
+    border-style: solid;
+    border-color: rgb(206, 209, 202);
+    background-color: rgb(57, 63, 65);
+    border-width: 2px;
+    border-radius: 8px;
 }
 </string>
                           </property>
@@ -15397,9 +14834,7 @@ border-radius: 8px;
                                </property>
                                <property name="styleSheet">
                                 <string notr="true">QLabel{
-border: transparent;
-background: none;
-font: 75 15pt &quot;Bebas Kai&quot;;
+font: 15pt &quot;Bebas Kai&quot;;
 color: rgb(255, 255, 255);
 }</string>
                                </property>
@@ -15529,6 +14964,12 @@ VCPLineEdit:focus {
                                  <height>150</height>
                                 </size>
                                </property>
+                               <property name="focusPolicy">
+                                <enum>Qt::StrongFocus</enum>
+                               </property>
+                               <property name="statusTip">
+                                <string/>
+                               </property>
                                <property name="styleSheet">
                                 <string notr="true"/>
                                </property>
@@ -15567,6 +15008,12 @@ VCPLineEdit:focus {
                                  <height>150</height>
                                 </size>
                                </property>
+                               <property name="focusPolicy">
+                                <enum>Qt::StrongFocus</enum>
+                               </property>
+                               <property name="statusTip">
+                                <string/>
+                               </property>
                                <property name="styleSheet">
                                 <string notr="true"/>
                                </property>
@@ -15582,6 +15029,9 @@ VCPLineEdit:focus {
                                  <width>140</width>
                                  <height>140</height>
                                 </size>
+                               </property>
+                               <property name="autoDefault">
+                                <bool>false</bool>
                                </property>
                                <property name="filename" stdset="0">
                                 <string>probe_cal_round_boss.ngc</string>
@@ -15673,9 +15123,7 @@ VCPLineEdit:focus {
                                   </property>
                                   <property name="styleSheet">
                                    <string notr="true">QLabel{
-    border-style: none;
     color: rgb(238, 238, 236);
-	background-color: transparent;
 	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                                   </property>
@@ -15912,6 +15360,12 @@ QLineEdit:focus {
                                  <height>150</height>
                                 </size>
                                </property>
+                               <property name="focusPolicy">
+                                <enum>Qt::StrongFocus</enum>
+                               </property>
+                               <property name="statusTip">
+                                <string/>
+                               </property>
                                <property name="styleSheet">
                                 <string notr="true"/>
                                </property>
@@ -15949,6 +15403,12 @@ QLineEdit:focus {
                                  <width>150</width>
                                  <height>150</height>
                                 </size>
+                               </property>
+                               <property name="focusPolicy">
+                                <enum>Qt::StrongFocus</enum>
+                               </property>
+                               <property name="statusTip">
+                                <string/>
                                </property>
                                <property name="styleSheet">
                                 <string notr="true"/>
@@ -16038,9 +15498,7 @@ QLineEdit:focus {
                                   </property>
                                   <property name="styleSheet">
                                    <string notr="true">QLabel{
-    border-style: none;
     color: rgb(238, 238, 236);
-	background-color: transparent;
 	font: 15pt &quot;Bebas Kai&quot;;
 }</string>
                                   </property>
@@ -16076,7 +15534,6 @@ QLineEdit:focus {
                                    <string notr="true">QLabel{
 font: 14pt &quot;Bebas Kai&quot;;
 color: white;
-border: none;
 }</string>
                                   </property>
                                   <property name="lineWidth">
@@ -16159,7 +15616,6 @@ QLineEdit:focus {
                                    <string notr="true">QLabel{
 font: 14pt &quot;Bebas Kai&quot;;
 color: white;
-border: none;
 }</string>
                                   </property>
                                   <property name="lineWidth">
@@ -16251,12 +15707,12 @@ QLineEdit:focus {
                            </size>
                           </property>
                           <property name="styleSheet">
-                           <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(206, 209, 202);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 8px;
+                           <string notr="true">.QFrame{
+    border-style: solid;
+    border-color: rgb(206, 209, 202);
+    background-color: rgb(51, 57, 59);
+    border-width: 2px;
+    border-radius: 8px;
 }</string>
                           </property>
                           <layout class="QVBoxLayout" name="verticalLayout_21">
@@ -16990,7 +16446,7 @@ QTabBar::tab:only-one {
 }</string>
                   </property>
                   <property name="currentIndex">
-                   <number>2</number>
+                   <number>1</number>
                   </property>
                   <widget class="QWidget" name="spot_drill_tab">
                    <attribute name="title">
@@ -17091,8 +16547,6 @@ QTabBar::tab:only-one {
                        </property>
                        <property name="styleSheet">
                         <string notr="true">QLabel{
-    border: none;
-    background: transparent;
     color: white;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
@@ -17118,8 +16572,6 @@ QTabBar::tab:only-one {
                        </property>
                        <property name="styleSheet">
                         <string notr="true">QLabel{
-    border: none;
-    background: transparent;
     color: white;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
@@ -17235,8 +16687,6 @@ QTabBar::tab:only-one {
                        </property>
                        <property name="styleSheet">
                         <string notr="true">QLabel{
-    border: none;
-    background: transparent;
     color: white;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
@@ -17259,8 +16709,6 @@ QTabBar::tab:only-one {
                        </property>
                        <property name="styleSheet">
                         <string notr="true">QLabel{
-    border: none;
-    background: transparent;
     color: white;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
@@ -17729,7 +17177,7 @@ QAbstractSpinBox:selected {
              </rect>
             </property>
             <property name="styleSheet">
-             <string notr="true">QFrame{
+             <string notr="true">.QFrame{
     color: rgb(46, 52, 54);
     border-style: solid;
     border-color: rgb(186, 189, 182);
@@ -17769,12 +17217,7 @@ QAbstractSpinBox:selected {
                  </property>
                  <property name="styleSheet">
                   <string notr="true">QLabel{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
     color: white;
-    background: rgb(46, 52, 54);
 	font: 14pt &quot;Bebas Kai&quot;;
 }</string>
                  </property>
@@ -17868,12 +17311,7 @@ QLineEdit:focus {
                  </property>
                  <property name="styleSheet">
                   <string notr="true">QLabel{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
     color: white;
-    background: rgb(46, 52, 54);
 	font: 14pt &quot;Bebas Kai&quot;;
 }</string>
                  </property>
@@ -17970,12 +17408,7 @@ QLineEdit:focus {
                  </property>
                  <property name="styleSheet">
                   <string notr="true">QLabel{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
     color: white;
-    background: rgb(46, 52, 54);
 	font: 14pt &quot;Bebas Kai&quot;;
 }</string>
                  </property>
@@ -18108,7 +17541,7 @@ QLineEdit:focus {
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>0</number>
+           <number>2</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -18130,12 +17563,12 @@ QLineEdit:focus {
              </sizepolicy>
             </property>
             <property name="styleSheet">
-             <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
+             <string notr="true">.QFrame{
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(51, 57, 59);
+    border-width: 2px;
+    border-radius: 6px;
 }</string>
             </property>
             <property name="frameShape">
@@ -18735,10 +18168,8 @@ border-radius: 6px;
             </property>
             <property name="styleSheet">
              <string notr="true">QLabel{
-color: white;
-border: none;
-background-color: transparent;
-font: 14pt &quot;Bebas Kai&quot;;
+    color: white;
+    font: 14pt &quot;Bebas Kai&quot;;
 }</string>
             </property>
             <property name="text">
@@ -18789,10 +18220,8 @@ font: 14pt &quot;Bebas Kai&quot;;
                </property>
                <property name="styleSheet">
                 <string notr="true">QLabel{
-color: white;
-border: none;
-background-color: transparent;
-font: 14pt &quot;Bebas Kai&quot;;
+    color: white;
+    font: 75 14pt &quot;Bebas Kai&quot;;
 }</string>
                </property>
                <property name="alignment">
@@ -18828,10 +18257,8 @@ font: 14pt &quot;Bebas Kai&quot;;
                </property>
                <property name="styleSheet">
                 <string notr="true">QLabel{
-color: white;
-border: none;
-background-color: transparent;
-font: 14pt &quot;Bebas Kai&quot;;
+    color: white;
+    font: 75 14pt &quot;Bebas Kai&quot;;
 }</string>
                </property>
                <property name="alignment">
@@ -18899,10 +18326,8 @@ font: 14pt &quot;Bebas Kai&quot;;
                </property>
                <property name="styleSheet">
                 <string notr="true">QLabel{
-color: white;
-border: none;
-background-color: transparent;
-font: 14pt &quot;Bebas Kai&quot;;
+    color: white;
+    font: 75 14pt &quot;Bebas Kai&quot;;
 }</string>
                </property>
                <property name="alignment">
@@ -18938,10 +18363,8 @@ font: 14pt &quot;Bebas Kai&quot;;
                </property>
                <property name="styleSheet">
                 <string notr="true">QLabel{
-color: white;
-border: none;
-background-color: transparent;
-font: 14pt &quot;Bebas Kai&quot;;
+    color: white;
+    font: 75 14pt &quot;Bebas Kai&quot;;
 }</string>
                </property>
                <property name="alignment">
@@ -18989,10 +18412,8 @@ font: 14pt &quot;Bebas Kai&quot;;
             </property>
             <property name="styleSheet">
              <string notr="true">QLabel{
-color: white;
-border: none;
-background-color: transparent;
-font: 14pt &quot;Bebas Kai&quot;;
+    color: white;
+    font: 75 14pt &quot;Bebas Kai&quot;;
 }</string>
             </property>
             <property name="text">
@@ -19018,12 +18439,12 @@ font: 14pt &quot;Bebas Kai&quot;;
              </sizepolicy>
             </property>
             <property name="styleSheet">
-             <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
+             <string notr="true">.QFrame{
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(51, 57, 59);
+    border-width: 2px;
+    border-radius: 6px;
 }</string>
             </property>
             <property name="frameShape">
@@ -19627,12 +19048,12 @@ border-radius: 6px;
              </sizepolicy>
             </property>
             <property name="styleSheet">
-             <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(51, 57, 59);
-border-width: 2px;
-border-radius: 6px;
+             <string notr="true">.QFrame{
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(51, 57, 59);
+    border-width: 2px;
+    border-radius: 6px;
 }</string>
             </property>
             <property name="frameShape">
@@ -19763,12 +19184,12 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>39</height>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>75</width>
+                       <width>85</width>
                        <height>37</height>
                       </size>
                      </property>
@@ -19797,12 +19218,12 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>39</height>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>75</width>
+                       <width>85</width>
                        <height>37</height>
                       </size>
                      </property>
@@ -19831,12 +19252,12 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>39</height>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>75</width>
+                       <width>85</width>
                        <height>37</height>
                       </size>
                      </property>
@@ -19865,12 +19286,12 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>39</height>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>75</width>
+                       <width>85</width>
                        <height>37</height>
                       </size>
                      </property>
@@ -19918,12 +19339,12 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>39</height>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>75</width>
+                       <width>85</width>
                        <height>37</height>
                       </size>
                      </property>
@@ -19949,12 +19370,12 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>39</height>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>75</width>
+                       <width>85</width>
                        <height>37</height>
                       </size>
                      </property>
@@ -19999,12 +19420,12 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>39</height>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>75</width>
+                       <width>85</width>
                        <height>37</height>
                       </size>
                      </property>
@@ -20049,12 +19470,12 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>39</height>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>75</width>
+                       <width>85</width>
                        <height>37</height>
                       </size>
                      </property>
@@ -20089,12 +19510,12 @@ QPushButton:checked {
                      <property name="minimumSize">
                       <size>
                        <width>75</width>
-                       <height>39</height>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>75</width>
+                       <width>85</width>
                        <height>37</height>
                       </size>
                      </property>
@@ -20193,8 +19614,8 @@ QPushButton:checked {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>85</width>
-                       <height>39</height>
+                       <width>75</width>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -20230,8 +19651,8 @@ QPushButton:checked {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>85</width>
-                       <height>39</height>
+                       <width>75</width>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -20286,8 +19707,8 @@ QPushButton:checked {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>85</width>
-                       <height>39</height>
+                       <width>75</width>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -20317,8 +19738,8 @@ QPushButton:checked {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>85</width>
-                       <height>39</height>
+                       <width>75</width>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -20364,8 +19785,8 @@ QPushButton:checked {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>85</width>
-                       <height>39</height>
+                       <width>75</width>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -20395,8 +19816,8 @@ QPushButton:checked {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>85</width>
-                       <height>39</height>
+                       <width>75</width>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -20442,8 +19863,8 @@ QPushButton:checked {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>85</width>
-                       <height>39</height>
+                       <width>75</width>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -20495,8 +19916,8 @@ QPushButton:checked {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>85</width>
-                       <height>39</height>
+                       <width>75</width>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -20526,8 +19947,8 @@ QPushButton:checked {
                      </property>
                      <property name="minimumSize">
                       <size>
-                       <width>85</width>
-                       <height>39</height>
+                       <width>75</width>
+                       <height>37</height>
                       </size>
                      </property>
                      <property name="maximumSize">
@@ -20752,10 +20173,8 @@ QPushButton:checked {
                </property>
                <property name="styleSheet">
                 <string notr="true">QLabel{
-color: white;
-border: none;
-background-color: transparent;
-font: 14pt &quot;Bebas Kai&quot;;
+    color: white;
+    font: 75 14pt &quot;Bebas Kai&quot;;
 }</string>
                </property>
                <property name="alignment">
@@ -20791,10 +20210,8 @@ font: 14pt &quot;Bebas Kai&quot;;
                </property>
                <property name="styleSheet">
                 <string notr="true">QLabel{
-color: white;
-border: none;
-background-color: transparent;
-font: 14pt &quot;Bebas Kai&quot;;
+    color: white;
+    font: 75 14pt &quot;Bebas Kai&quot;;
 }</string>
                </property>
                <property name="alignment">
@@ -20842,10 +20259,8 @@ font: 14pt &quot;Bebas Kai&quot;;
             </property>
             <property name="styleSheet">
              <string notr="true">QLabel{
-color: white;
-border: none;
-background-color: transparent;
-font: 14pt &quot;Bebas Kai&quot;;
+    color: white;
+    font: 75 14pt &quot;Bebas Kai&quot;;
 }</string>
             </property>
             <property name="text">
@@ -20894,13 +20309,13 @@ font: 14pt &quot;Bebas Kai&quot;;
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">QFrame{
-color: rgb(46, 52, 54);
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(46, 52, 54);
-border-width: 2px;
-border-radius: 6px;
+         <string notr="true">.QFrame{
+    color: rgb(46, 52, 54);
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(46, 52, 54);
+    border-width: 2px;
+    border-radius: 6px;
 }</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_28">
@@ -21003,12 +20418,7 @@ border-radius: 6px;
               </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+              <string notr="true"/>
              </property>
              <property name="text">
               <string/>
@@ -21103,12 +20513,7 @@ border-radius: 6px;
               </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+              <string notr="true"/>
              </property>
              <property name="text">
               <string/>
@@ -21200,12 +20605,7 @@ border-radius: 6px;
               </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+              <string notr="true"/>
              </property>
              <property name="text">
               <string/>
@@ -21303,12 +20703,7 @@ border-radius: 6px;
               </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+              <string notr="true"/>
              </property>
              <property name="text">
               <string/>
@@ -21435,12 +20830,7 @@ border-radius: 1px;
               </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+              <string notr="true"/>
              </property>
              <property name="text">
               <string/>
@@ -21472,12 +20862,7 @@ border-radius: 1px;
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
     color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
@@ -21529,12 +20914,7 @@ border-radius: 1px;
               </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true">QLabel{
-    border: none;
-    color: rgb(238, 238, 236);
-    background: transparent;
-	font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+              <string notr="true"/>
              </property>
              <property name="text">
               <string/>
@@ -21612,7 +20992,7 @@ border-radius: 1px;
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">QFrame{
+         <string notr="true">.QFrame{
 color: rgb(46, 52, 54);
 border-style: solid;
 border-color: rgb(186, 189, 182);
@@ -21660,13 +21040,13 @@ border-radius: 6px;
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(176, 179,172);
-border-width: 1px;
-border-radius: 4px;
-background-color: rgb(90, 90, 90);
-padding: -5px;
+              <string notr="true">.QFrame{
+    border-style: solid;
+    border-color: rgb(176, 179,172);
+    border-width: 1px;
+    border-radius: 4px;
+    background-color: rgb(90, 90, 90);
+    padding: -5px;
 }</string>
              </property>
              <property name="frameShape">
@@ -21713,9 +21093,7 @@ padding: -5px;
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QLabel{
-    border: none;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
                 </property>
@@ -22204,13 +21582,8 @@ QLineEdit:focus {
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">QLabel{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
+              <string notr="true">QLabel{   
     color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
 	font: 16pt &quot;Bebas Kai&quot;;
 }
 
@@ -22292,9 +21665,7 @@ QLineEdit:focus {
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel{
-    border: none;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
@@ -22351,12 +21722,7 @@ QLineEdit:focus {
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel{
-    border-style: none;
-    border-color: rgb(46, 52, 54);
-    border-width: 1px;
-    border-radius: 5px;
     color: rgb(238, 238, 236);
-    background: rgb(46, 52, 54);
 	font: 16pt &quot;Bebas Kai&quot;;
 }
 </string>
@@ -22433,9 +21799,7 @@ QLineEdit:focus {
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel{
-    border: none;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
@@ -22554,17 +21918,17 @@ border-radius: 1px;
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">QFrame{
-color: rgb(46, 52, 54);
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(46, 52, 54);
-border-width: 2px;
-border-radius: 6px;
-padding-left: 7px;
-padding-right: 7px;
-padding-top: -1px;
-padding-bottom:-1px;
+         <string notr="true">.QFrame{
+    color: rgb(46, 52, 54);
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(46, 52, 54);
+    border-width: 2px;
+    border-radius: 6px;
+    padding-left: 7px;
+    padding-right: 7px;
+    padding-top: -1px;
+    padding-bottom:-1px;
 }</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -22598,13 +21962,13 @@ padding-bottom:-1px;
             </size>
            </property>
            <property name="styleSheet">
-            <string notr="true">QFrame{
-border-style: solid;
-border-color: rgb(176, 179,172);
-border-width: 1px;
-border-radius: 4px;
-background-color: rgb(90, 90, 90);
-padding: -5px;
+            <string notr="true">.QFrame{
+    border-style: solid;
+    border-color: rgb(176, 179,172);
+    border-width: 1px;
+    border-radius: 4px;
+    background-color: rgb(90, 90, 90);
+    padding: -5px;
 }</string>
            </property>
            <property name="frameShape">
@@ -22645,9 +22009,7 @@ padding: -5px;
               </property>
               <property name="styleSheet">
                <string notr="true">QLabel{
-    border: none;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
               </property>
@@ -22681,9 +22043,7 @@ padding: -5px;
               </property>
               <property name="styleSheet">
                <string notr="true">QLabel{
-    border: none;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
               </property>
@@ -22720,9 +22080,7 @@ padding: -5px;
               </property>
               <property name="styleSheet">
                <string notr="true">QLabel{
-    border: none;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
               </property>
@@ -22756,9 +22114,7 @@ padding: -5px;
               </property>
               <property name="styleSheet">
                <string notr="true">QLabel{
-    border: none;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
               </property>
@@ -22792,9 +22148,7 @@ padding: -5px;
               </property>
               <property name="styleSheet">
                <string notr="true">QLabel{
-    border: none;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
               </property>
@@ -24135,15 +23489,15 @@ StatusLabel[style=&quot;homing&quot;]{
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">QFrame{
-color: rgb(46, 52, 54);
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(46, 52, 54);
-border-width: 2px;
-border-radius: 6px;
-padding-left: 7px;
-padding-right: 7px;
+         <string notr="true">.QFrame{
+    color: rgb(46, 52, 54);
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(46, 52, 54);
+    border-width: 2px;
+    border-radius: 6px;
+    padding-left: 7px;
+    padding-right: 7px;
 }</string>
         </property>
         <layout class="QGridLayout" name="gridLayout">
@@ -24919,13 +24273,13 @@ border-radius: 4px;
          <enum>Qt::NoFocus</enum>
         </property>
         <property name="styleSheet">
-         <string notr="true">QFrame{
-color: rgb(46, 52, 54);
-border-style: solid;
-border-color: rgb(186, 189, 182);
-background-color: rgb(46, 52, 54);
-border-width: 2px;
-border-radius: 6px;
+         <string notr="true">.QFrame{
+    color: rgb(46, 52, 54);
+    border-style: solid;
+    border-color: rgb(186, 189, 182);
+    background-color: rgb(46, 52, 54);
+    border-width: 2px;
+    border-radius: 6px;
 }</string>
         </property>
         <layout class="QVBoxLayout" name="verticalLayout_27">
@@ -25227,9 +24581,7 @@ border-radius: 4px;
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QLabel{
-    border: none;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
                 </property>
@@ -25299,9 +24651,7 @@ border-radius: 4px;
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QLabel{
-    border: none;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
                 </property>
@@ -25338,9 +24688,7 @@ border-radius: 4px;
                 </property>
                 <property name="styleSheet">
                  <string notr="true">QLabel{
-    border: none;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 17pt &quot;Bebas Kai&quot;;
 }
 
@@ -25519,9 +24867,7 @@ border-radius: 1px;
              </property>
              <property name="styleSheet">
               <string notr="true">QLabel{
-    border: none;
     color: rgb(238, 238, 236);
-    background: transparent;
 	font: 17pt &quot;Bebas Kai&quot;;
 }</string>
              </property>
@@ -27162,12 +26508,12 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="probehelpGroup"/>
-  <buttongroup name="plotorthoperspbtnGroup"/>
-  <buttongroup name="xycalbtnGroup"/>
   <buttongroup name="probetabGroup"/>
-  <buttongroup name="probemodeGroup"/>
   <buttongroup name="plotviewGroup"/>
   <buttongroup name="mainorthoperspbtnGroup"/>
+  <buttongroup name="plotorthoperspbtnGroup"/>
+  <buttongroup name="xycalbtnGroup"/>
+  <buttongroup name="probehelpGroup"/>
+  <buttongroup name="probemodeGroup"/>
  </buttongroups>
 </ui>
