@@ -7,6 +7,7 @@ from base_canon import BaseCanon
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
+
 class BaseBackPlot(object):
     def __init__(self, inifile=None, canon=BaseCanon):
 
@@ -52,7 +53,7 @@ class BaseBackPlot(object):
 
         # create the object which handles the canonical motion callbacks
         # (straight_feed, straight_traverse, arc_feed, rigid_tap, etc.)
-        self.canon = self.canon_class(*args, **kwargs)
+        self.canon = self.canon_class
 
         if os.path.exists(self.parameter_file):
             shutil.copy(self.parameter_file, self.temp_parameter_file)
@@ -81,6 +82,7 @@ class BaseBackPlot(object):
 if __name__ == "__main__":
     from qtpyvcp import TOP_DIR
     from base_canon import PrintCanon
+
     INI_FILE = os.path.join(TOP_DIR, 'sim/xyz.ini')
     NGC_FILE = os.path.join(TOP_DIR, 'sim/example_gcode/blank.ngc')
     gr = BaseBackPlot(INI_FILE, canon=PrintCanon)

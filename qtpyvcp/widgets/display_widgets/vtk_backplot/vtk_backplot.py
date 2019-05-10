@@ -94,7 +94,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
 
-        self.canon_class = VTKCanon
+        self.canon_class = VTKCanon()
 
         # properties
         self._background_color = QColor(0, 0, 0)
@@ -144,8 +144,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
-        self.path_actor = None
-        self.extents_actor = None
+        self.path_actor = self.canon_class.get_actor()
+
+        self.extents = PathBoundaries(self.renderer, self.path_actor)
+        self.extents_actor = self.extents.get_actor()
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.machine_actor)
@@ -192,8 +194,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.canon.draw_lines()
         self.path_actor = self.canon.get_actor()
 
-        extents = PathBoundaries(self.renderer, self.path_actor)
-        self.extents_actor = extents.get_actor()
+        self.extents_actor = self.extents.get_actor()
 
         self.renderer.AddActor(self.path_actor)
         self.renderer.AddActor(self.extents_actor)
@@ -228,12 +229,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.axes_actor.SetUserTransform(transform)
             self.path_actor.SetPosition(*path_offset)
-            self.extents_actor.SetBounds(self.path_actor.GetBounds())
+
+            self.extents_actor.SetBounds(*self.path_actor.GetBounds())
 
             self.interactor.ReInitialize()
             self.update_render()
 
     def update_g92_offset(self, g92_offset):
+        self.g92_offset = g92_offset
         LOG.info('g92 offset')
         if str(self.status.task_mode) == "MDI":
             LOG.info('G92 Update Started')
@@ -246,12 +249,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.axes_actor.SetUserTransform(transform)
             self.path_actor.SetPosition(*path_offset)
-            self.extents_actor.SetBounds(self.path_actor.GetBounds())
+            self.extents_actor.SetBounds(*self.path_actor.GetBounds())
 
             self.interactor.ReInitialize()
             self.update_render()
 
     def update_rotation_xy(self, rotation):
+        self.rotation_offset = rotation
         LOG.info("Rotation: {}".format(rotation))  # in degrees
         # ToDo: use transform matrix to rotate existing path?
         # probably not worth it since rotation is not used much ...
@@ -266,7 +270,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.axes_actor.SetUserTransform(transform)
             self.path_actor.SetUserTransform(transform)
-            self.extents_actor.SetBounds(self.path_actor.GetBounds())
+            self.extents_actor.SetBounds(*self.path_actor.GetBounds())
 
             self.interactor.ReInitialize()
             self.update_render()

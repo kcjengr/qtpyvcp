@@ -53,7 +53,7 @@ class BaseCanon(object):
         self.tlo_v = 0.0
         self.tlo_w = 0.0
 
-        self.tool_offsets = (0.0, ) * 9
+        self.tool_offsets = (0.0,) * 9
 
         # G92/G52 offsets
         self.g92_offset_x = 0.0
@@ -361,4 +361,4 @@ class PrintCanon(BaseCanon):
         print "arc_feed %.4g %.4g  %.4g %.4g %.4g  %.4g  %.4g %.4g %.4g" % args
 
     def get_axis_mask(self):
-        return 7 # XYZ
+        return 7  # XYZ
