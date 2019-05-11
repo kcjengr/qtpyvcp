@@ -53,7 +53,7 @@ class BaseBackPlot(object):
 
         # create the object which handles the canonical motion callbacks
         # (straight_feed, straight_traverse, arc_feed, rigid_tap, etc.)
-        self.canon = self.canon_class
+        self.canon = self.canon_class(*args, **kwargs)
 
         if os.path.exists(self.parameter_file):
             shutil.copy(self.parameter_file, self.temp_parameter_file)

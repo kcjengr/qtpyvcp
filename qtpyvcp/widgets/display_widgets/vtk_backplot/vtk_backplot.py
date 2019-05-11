@@ -94,7 +94,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
 
-        self.canon_class = VTKCanon()
+        self.canon_class = VTKCanon
 
         # properties
         self._background_color = QColor(0, 0, 0)
@@ -144,7 +144,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
-        self.path_actor = self.canon_class.get_actor()
+        self.canon = self.canon_class()
+
+        self.path_actor = self.canon.get_actor()
 
         self.extents = PathBoundaries(self.renderer, self.path_actor)
         self.extents_actor = self.extents.get_actor()
@@ -184,6 +186,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.RemoveActor(self.path_actor)
         self.renderer.RemoveActor(self.extents_actor)
 
+        self.original_rotation_offset = self.status.rotation_xy
         self.original_g5x_offset = self.status.stat.g5x_offset
         self.original_g92_offset = self.status.stat.g92_offset
 
@@ -266,7 +269,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             transform = vtk.vtkTransform()
             transform.Translate(*self.g5x_offset[:3])
-            transform.RotateZ(rotation)
+            transform.RotateZ(self.rotation_offset)
 
             self.axes_actor.SetUserTransform(transform)
             self.path_actor.SetUserTransform(transform)
