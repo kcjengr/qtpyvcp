@@ -140,16 +140,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
-
         self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
-        self.canon = self.canon_class()
+        if not IN_DESIGNER:
+            self.canon = self.canon_class()
+            self.path_actor = self.canon.get_actor()
 
-        self.path_actor = self.canon.get_actor()
-
-        self.extents = PathBoundaries(self.renderer, self.path_actor)
-        self.extents_actor = self.extents.get_actor()
+            self.extents = PathBoundaries(self.renderer, self.path_actor)
+            self.extents_actor = self.extents.get_actor()
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.machine_actor)
