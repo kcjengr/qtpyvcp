@@ -22,6 +22,9 @@
     <pointsize>11</pointsize>
    </font>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::ClickFocus</enum>
+  </property>
   <property name="windowTitle">
    <string>Probe Basic</string>
   </property>
@@ -395,7 +398,10 @@ QComboBox QAbstractItemView{
                   <property name="font">
                    <font>
                     <family>Bebas Kai</family>
-                    <pointsize>14</pointsize>
+                    <pointsize>15</pointsize>
+                    <weight>50</weight>
+                    <italic>false</italic>
+                    <bold>false</bold>
                    </font>
                   </property>
                   <property name="focusPolicy">
@@ -2212,7 +2218,7 @@ QHeaderView {
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="QLineEdit" name="lineEdit_3">
+                    <widget class="QLineEdit" name="insert_atc_tool_input">
                      <property name="enabled">
                       <bool>true</bool>
                      </property>
@@ -2235,15 +2241,7 @@ QHeaderView {
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
-}</string>
+                      <string notr="true">font: 17pt;</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -2251,7 +2249,7 @@ QHeaderView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="ActionButton" name="m01_break_button_4">
+                    <widget class="ActionButton" name="insert_atc_tool">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -2306,7 +2304,7 @@ QHeaderView {
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="ActionButton" name="m01_break_button_8">
+                    <widget class="ActionButton" name="delete_all_atc_tools">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -2339,7 +2337,7 @@ QHeaderView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="ActionButton" name="m01_break_button_9">
+                    <widget class="ActionButton" name="delete_single_tool">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>100</horstretch>
@@ -2414,7 +2412,9 @@ QHeaderView {
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">font: 16pt &quot;Bebas Kai&quot;;</string>
+                      <string notr="true">MDIButton {
+    font: 16pt &quot;Bebas Kai&quot;;
+}</string>
                      </property>
                      <property name="text">
                       <string> ATC REV</string>
@@ -2504,7 +2504,7 @@ font: 16pt &quot;Bebas Kai&quot;;
                     <number>2</number>
                    </property>
                    <item>
-                    <widget class="SubCallButton" name="subcallbutton_10">
+                    <widget class="MDIButton" name="subcallbutton_11">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>1</horstretch>
@@ -2524,8 +2524,8 @@ font: 16pt &quot;Bebas Kai&quot;;
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QPushButton {
-   	font: 16pt &quot;Bebas Kai&quot;;
+                      <string notr="true">MDIButton {
+    font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
                      <property name="text">
@@ -2535,13 +2535,19 @@ font: 16pt &quot;Bebas Kai&quot;;
                       <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/left_arrow.png</normaloff>:/images/left_arrow.png</iconset>
                      </property>
-                     <property name="sub_name" stdset="0">
-                      <string>retractatc.ngc</string>
+                     <property name="iconSize">
+                      <size>
+                       <width>20</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                     <property name="MDICommand" stdset="0">
+                      <string>m22</string>
                      </property>
                     </widget>
                    </item>
                    <item>
-                    <widget class="SubCallButton" name="subcallbutton_11">
+                    <widget class="MDIButton" name="subcallbutton_5">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                        <horstretch>1</horstretch>
@@ -2564,9 +2570,9 @@ font: 16pt &quot;Bebas Kai&quot;;
                       <enum>Qt::RightToLeft</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">SubCallButton {
+                      <string notr="true">MDIButton {
     text-align: right;
-    padding-right: 12px;
+    padding-right: 10px;
    	font: 16pt &quot;Bebas Kai&quot;;
 }</string>
                      </property>
@@ -2577,8 +2583,14 @@ font: 16pt &quot;Bebas Kai&quot;;
                       <iconset resource="probe_basic.qrc">
                        <normaloff>:/images/right_arrow.png</normaloff>:/images/right_arrow.png</iconset>
                      </property>
-                     <property name="sub_name" stdset="0">
-                      <string>extendatc.ngc</string>
+                     <property name="iconSize">
+                      <size>
+                       <width>20</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                     <property name="MDICommand" stdset="0">
+                      <string>m21</string>
                      </property>
                     </widget>
                    </item>
@@ -2622,7 +2634,9 @@ font: 16pt &quot;Bebas Kai&quot;;
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">font: 16pt &quot;Bebas Kai&quot;;</string>
+                      <string notr="true">MDIButton {
+    font: 16pt &quot;Bebas Kai&quot;;
+}</string>
                      </property>
                      <property name="text">
                       <string>DRAWBAR LOOSE</string>
@@ -2804,7 +2818,9 @@ font: 16pt &quot;Bebas Kai&quot;;
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">font: 16pt &quot;Bebas Kai&quot;;</string>
+                      <string notr="true">MDIButton {
+    font: 16pt &quot;Bebas Kai&quot;;
+}</string>
                      </property>
                      <property name="text">
                       <string>REF CAROUSEL</string>
@@ -2914,7 +2930,10 @@ font: 16pt &quot;Bebas Kai&quot;;
                 <property name="font">
                  <font>
                   <family>Bebas Kai</family>
-                  <pointsize>14</pointsize>
+                  <pointsize>15</pointsize>
+                  <weight>50</weight>
+                  <italic>false</italic>
+                  <bold>false</bold>
                  </font>
                 </property>
                 <property name="focusPolicy">
@@ -3392,15 +3411,7 @@ font: 16pt &quot;Bebas Kai&quot;;
                       </size>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
-}</string>
+                      <string notr="true">font: 17pt;</string>
                      </property>
                      <property name="alignment">
                       <set>Qt::AlignCenter</set>
@@ -3756,9 +3767,9 @@ font: 16pt &quot;Bebas Kai&quot;;
                         <colorrole role="Button">
                          <brush brushstyle="SolidPattern">
                           <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>235</blue>
+                           <red>255</red>
+                           <green>255</green>
+                           <blue>255</blue>
                           </color>
                          </brush>
                         </colorrole>
@@ -3783,18 +3794,36 @@ font: 16pt &quot;Bebas Kai&quot;;
                         <colorrole role="Base">
                          <brush brushstyle="SolidPattern">
                           <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>235</blue>
+                           <red>255</red>
+                           <green>255</green>
+                           <blue>255</blue>
                           </color>
                          </brush>
                         </colorrole>
                         <colorrole role="Window">
                          <brush brushstyle="SolidPattern">
                           <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>235</blue>
+                           <red>255</red>
+                           <green>255</green>
+                           <blue>255</blue>
+                          </color>
+                         </brush>
+                        </colorrole>
+                        <colorrole role="Highlight">
+                         <brush brushstyle="SolidPattern">
+                          <color alpha="255">
+                           <red>65</red>
+                           <green>84</green>
+                           <blue>255</blue>
+                          </color>
+                         </brush>
+                        </colorrole>
+                        <colorrole role="HighlightedText">
+                         <brush brushstyle="SolidPattern">
+                          <color alpha="255">
+                           <red>255</red>
+                           <green>255</green>
+                           <blue>255</blue>
                           </color>
                          </brush>
                         </colorrole>
@@ -3812,9 +3841,9 @@ font: 16pt &quot;Bebas Kai&quot;;
                         <colorrole role="Button">
                          <brush brushstyle="SolidPattern">
                           <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>235</blue>
+                           <red>255</red>
+                           <green>255</green>
+                           <blue>255</blue>
                           </color>
                          </brush>
                         </colorrole>
@@ -3839,18 +3868,36 @@ font: 16pt &quot;Bebas Kai&quot;;
                         <colorrole role="Base">
                          <brush brushstyle="SolidPattern">
                           <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>235</blue>
+                           <red>255</red>
+                           <green>255</green>
+                           <blue>255</blue>
                           </color>
                          </brush>
                         </colorrole>
                         <colorrole role="Window">
                          <brush brushstyle="SolidPattern">
                           <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>235</blue>
+                           <red>255</red>
+                           <green>255</green>
+                           <blue>255</blue>
+                          </color>
+                         </brush>
+                        </colorrole>
+                        <colorrole role="Highlight">
+                         <brush brushstyle="SolidPattern">
+                          <color alpha="255">
+                           <red>65</red>
+                           <green>84</green>
+                           <blue>255</blue>
+                          </color>
+                         </brush>
+                        </colorrole>
+                        <colorrole role="HighlightedText">
+                         <brush brushstyle="SolidPattern">
+                          <color alpha="255">
+                           <red>255</red>
+                           <green>255</green>
+                           <blue>255</blue>
                           </color>
                          </brush>
                         </colorrole>
@@ -3868,9 +3915,9 @@ font: 16pt &quot;Bebas Kai&quot;;
                         <colorrole role="Button">
                          <brush brushstyle="SolidPattern">
                           <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>235</blue>
+                           <red>255</red>
+                           <green>255</green>
+                           <blue>255</blue>
                           </color>
                          </brush>
                         </colorrole>
@@ -3895,18 +3942,36 @@ font: 16pt &quot;Bebas Kai&quot;;
                         <colorrole role="Base">
                          <brush brushstyle="SolidPattern">
                           <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>235</blue>
+                           <red>255</red>
+                           <green>255</green>
+                           <blue>255</blue>
                           </color>
                          </brush>
                         </colorrole>
                         <colorrole role="Window">
                          <brush brushstyle="SolidPattern">
                           <color alpha="255">
-                           <red>235</red>
-                           <green>235</green>
-                           <blue>235</blue>
+                           <red>255</red>
+                           <green>255</green>
+                           <blue>255</blue>
+                          </color>
+                         </brush>
+                        </colorrole>
+                        <colorrole role="Highlight">
+                         <brush brushstyle="SolidPattern">
+                          <color alpha="255">
+                           <red>65</red>
+                           <green>84</green>
+                           <blue>255</blue>
+                          </color>
+                         </brush>
+                        </colorrole>
+                        <colorrole role="HighlightedText">
+                         <brush brushstyle="SolidPattern">
+                          <color alpha="255">
+                           <red>255</red>
+                           <green>255</green>
+                           <blue>255</blue>
                           </color>
                          </brush>
                         </colorrole>
@@ -3917,7 +3982,7 @@ font: 16pt &quot;Bebas Kai&quot;;
                       <font>
                        <family>Bebas Kai</family>
                        <pointsize>17</pointsize>
-                       <weight>9</weight>
+                       <weight>50</weight>
                        <italic>false</italic>
                        <bold>false</bold>
                       </font>
@@ -3929,15 +3994,7 @@ font: 16pt &quot;Bebas Kai&quot;;
                       <enum>Qt::NoContextMenu</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
-}</string>
+                      <string notr="true">font: 17pt;</string>
                      </property>
                      <property name="text">
                       <string>0</string>
@@ -5320,7 +5377,10 @@ color: rgb(255, 255, 255);
                  <property name="font">
                   <font>
                    <family>Bebas Kai</family>
-                   <pointsize>14</pointsize>
+                   <pointsize>15</pointsize>
+                   <weight>50</weight>
+                   <italic>false</italic>
+                   <bold>false</bold>
                   </font>
                  </property>
                  <property name="focusPolicy">
@@ -6683,7 +6743,10 @@ QHeaderView {
                 <property name="font">
                  <font>
                   <family>Bebas Kai</family>
-                  <pointsize>14</pointsize>
+                  <pointsize>15</pointsize>
+                  <weight>50</weight>
+                  <italic>false</italic>
+                  <bold>false</bold>
                  </font>
                 </property>
                 <property name="focusPolicy">
@@ -9662,20 +9725,7 @@ color: white;
                       <enum>Qt::ClickFocus</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(134, 136, 138);
-    border-width: 2px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string>99</string>
@@ -9758,20 +9808,7 @@ color: white;
                       <enum>Qt::ClickFocus</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(134, 136, 138);
-    border-width: 2px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string>0.2500</string>
@@ -9874,20 +9911,7 @@ color: white;
                       <enum>Qt::ClickFocus</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(134, 136, 138);
-    border-width: 2px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="inputMask">
                       <string/>
@@ -9970,20 +9994,7 @@ color: white;
                       <enum>Qt::ClickFocus</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(134, 136, 138);
-    border-width: 2px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string>0.0</string>
@@ -10086,20 +10097,7 @@ color: white;
                       <enum>Qt::ClickFocus</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(134, 136, 138);
-    border-width: 2px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string>1.0000</string>
@@ -10179,20 +10177,7 @@ color: white;
                       <enum>Qt::ClickFocus</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(134, 136, 138);
-    border-width: 2px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string>0.1000</string>
@@ -10295,20 +10280,7 @@ color: white;
                       <enum>Qt::ClickFocus</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(134, 136, 138);
-    border-width: 2px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string>1.0000</string>
@@ -10388,20 +10360,7 @@ color: white;
                       <enum>Qt::ClickFocus</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(134, 136, 138);
-    border-width: 2px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string>0.1000</string>
@@ -10510,20 +10469,7 @@ color: white;
                       <enum>Qt::ClickFocus</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(134, 136, 138);
-    border-width: 2px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string>0.0000</string>
@@ -10603,20 +10549,7 @@ color: white;
                       <enum>Qt::ClickFocus</enum>
                      </property>
                      <property name="styleSheet">
-                      <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(134, 136, 138);
-    border-width: 2px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string>0.5000</string>
@@ -11931,7 +11864,10 @@ color: white;
                  <property name="font">
                   <font>
                    <family>Bebas Kai</family>
-                   <pointsize>14</pointsize>
+                   <pointsize>15</pointsize>
+                   <weight>50</weight>
+                   <italic>false</italic>
+                   <bold>false</bold>
                   </font>
                  </property>
                  <property name="focusPolicy">
@@ -13564,16 +13500,11 @@ padding-left: 5px;
                                   <height>40</height>
                                  </size>
                                 </property>
+                                <property name="focusPolicy">
+                                 <enum>Qt::ClickFocus</enum>
+                                </property>
                                 <property name="styleSheet">
-                                 <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 75 15pt &quot;Bebas Kai&quot;;
-}</string>
+                                 <string notr="true"/>
                                 </property>
                                 <property name="text">
                                  <string/>
@@ -13633,16 +13564,11 @@ padding-left: 5px;
                                   <height>40</height>
                                  </size>
                                 </property>
+                                <property name="focusPolicy">
+                                 <enum>Qt::ClickFocus</enum>
+                                </property>
                                 <property name="styleSheet">
-                                 <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 75 15pt &quot;Bebas Kai&quot;;
-}</string>
+                                 <string notr="true"/>
                                 </property>
                                 <property name="text">
                                  <string/>
@@ -13702,16 +13628,11 @@ padding-left: 5px;
                                   <height>40</height>
                                  </size>
                                 </property>
+                                <property name="focusPolicy">
+                                 <enum>Qt::ClickFocus</enum>
+                                </property>
                                 <property name="styleSheet">
-                                 <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 75 15pt &quot;Bebas Kai&quot;;
-}</string>
+                                 <string notr="true"/>
                                 </property>
                                 <property name="text">
                                  <string/>
@@ -14044,16 +13965,11 @@ padding-left: 5px;
                                   <height>40</height>
                                  </size>
                                 </property>
+                                <property name="focusPolicy">
+                                 <enum>Qt::ClickFocus</enum>
+                                </property>
                                 <property name="styleSheet">
-                                 <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 75 15pt &quot;Bebas Kai&quot;;
-}</string>
+                                 <string notr="true"/>
                                 </property>
                                 <property name="text">
                                  <string/>
@@ -14113,16 +14029,11 @@ padding-left: 5px;
                                   <height>40</height>
                                  </size>
                                 </property>
+                                <property name="focusPolicy">
+                                 <enum>Qt::ClickFocus</enum>
+                                </property>
                                 <property name="styleSheet">
-                                 <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 75 15pt &quot;Bebas Kai&quot;;
-}</string>
+                                 <string notr="true"/>
                                 </property>
                                 <property name="text">
                                  <string/>
@@ -14881,22 +14792,11 @@ color: rgb(255, 255, 255);
                                  <height>35</height>
                                 </size>
                                </property>
+                               <property name="focusPolicy">
+                                <enum>Qt::ClickFocus</enum>
+                               </property>
                                <property name="styleSheet">
-                                <string notr="true">VCPLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 75 15pt &quot;Bebas Kai&quot;;
-    padding-right: 3px;
-}
-
-VCPLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                                <string notr="true"/>
                                </property>
                                <property name="text">
                                 <string>0.000000</string>
@@ -15164,24 +15064,12 @@ VCPLineEdit:focus {
                                     <height>35</height>
                                    </size>
                                   </property>
+                                  <property name="focusPolicy">
+                                   <enum>Qt::ClickFocus</enum>
+                                  </property>
                                   <property name="styleSheet">
-                                   <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 75 15pt &quot;Bebas Kai&quot;;
-    padding-right: 3px;
-    margin-left: 20px;
-    margin-right:20px;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                                   <string notr="true">margin-right: 14px;
+margin-left: 14px;</string>
                                   </property>
                                   <property name="text">
                                    <string/>
@@ -15573,25 +15461,17 @@ color: white;
                                     <height>35</height>
                                    </size>
                                   </property>
+                                  <property name="focusPolicy">
+                                   <enum>Qt::ClickFocus</enum>
+                                  </property>
                                   <property name="styleSheet">
-                                   <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 75 15pt &quot;Bebas Kai&quot;;
-    padding-right: 3px;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                                   <string notr="true"/>
                                   </property>
                                   <property name="text">
                                    <string/>
+                                  </property>
+                                  <property name="cursorPosition">
+                                   <number>0</number>
                                   </property>
                                   <property name="alignment">
                                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -15655,22 +15535,11 @@ color: white;
                                     <height>35</height>
                                    </size>
                                   </property>
+                                  <property name="focusPolicy">
+                                   <enum>Qt::ClickFocus</enum>
+                                  </property>
                                   <property name="styleSheet">
-                                   <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 75 15pt &quot;Bebas Kai&quot;;
-    padding-right: 3px;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                                   <string notr="true"/>
                                   </property>
                                   <property name="text">
                                    <string/>
@@ -17256,20 +17125,7 @@ QAbstractSpinBox:selected {
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(134, 136, 138);
-    border-width: 2px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>0</string>
@@ -17278,7 +17134,7 @@ QLineEdit:focus {
                   <bool>false</bool>
                  </property>
                  <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  <set>Qt::AlignCenter</set>
                  </property>
                  <property name="readOnly">
                   <bool>true</bool>
@@ -17353,20 +17209,7 @@ QLineEdit:focus {
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(134, 136, 138);
-    border-width: 2px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>0</string>
@@ -17375,7 +17218,7 @@ QLineEdit:focus {
                   <bool>false</bool>
                  </property>
                  <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  <set>Qt::AlignCenter</set>
                  </property>
                  <property name="readOnly">
                   <bool>true</bool>
@@ -17450,20 +17293,7 @@ QLineEdit:focus {
                   </size>
                  </property>
                  <property name="styleSheet">
-                  <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(134, 136, 138);
-    border-width: 2px;
-    border-radius: 5px;
-    color: black;
-    background: white;
-	font: 15pt &quot;Bebas Kai&quot;;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                  <string notr="true"/>
                  </property>
                  <property name="text">
                   <string>0</string>
@@ -17472,7 +17302,7 @@ QLineEdit:focus {
                   <bool>false</bool>
                  </property>
                  <property name="alignment">
-                  <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                  <set>Qt::AlignCenter</set>
                  </property>
                  <property name="readOnly">
                   <bool>true</bool>
@@ -21124,9 +20954,9 @@ border-radius: 1px;
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>235</red>
-                      <green>235</green>
-                      <blue>235</blue>
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -21151,18 +20981,36 @@ border-radius: 1px;
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>235</red>
-                      <green>235</green>
-                      <blue>235</blue>
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>235</red>
-                      <green>235</green>
-                      <blue>235</blue>
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Highlight">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>65</red>
+                      <green>84</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="HighlightedText">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -21180,9 +21028,9 @@ border-radius: 1px;
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>235</red>
-                      <green>235</green>
-                      <blue>235</blue>
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -21207,18 +21055,36 @@ border-radius: 1px;
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>235</red>
-                      <green>235</green>
-                      <blue>235</blue>
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>235</red>
-                      <green>235</green>
-                      <blue>235</blue>
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Highlight">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>65</red>
+                      <green>84</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="HighlightedText">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -21236,9 +21102,9 @@ border-radius: 1px;
                    <colorrole role="Button">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>235</red>
-                      <green>235</green>
-                      <blue>235</blue>
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -21263,18 +21129,36 @@ border-radius: 1px;
                    <colorrole role="Base">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>235</red>
-                      <green>235</green>
-                      <blue>235</blue>
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
                      </color>
                     </brush>
                    </colorrole>
                    <colorrole role="Window">
                     <brush brushstyle="SolidPattern">
                      <color alpha="255">
-                      <red>235</red>
-                      <green>235</green>
-                      <blue>235</blue>
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="Highlight">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>65</red>
+                      <green>84</green>
+                      <blue>255</blue>
+                     </color>
+                    </brush>
+                   </colorrole>
+                   <colorrole role="HighlightedText">
+                    <brush brushstyle="SolidPattern">
+                     <color alpha="255">
+                      <red>255</red>
+                      <green>255</green>
+                      <blue>255</blue>
                      </color>
                     </brush>
                    </colorrole>
@@ -21285,7 +21169,7 @@ border-radius: 1px;
                  <font>
                   <family>Bebas Kai</family>
                   <pointsize>17</pointsize>
-                  <weight>9</weight>
+                  <weight>50</weight>
                   <italic>false</italic>
                   <bold>false</bold>
                  </font>
@@ -21297,20 +21181,7 @@ border-radius: 1px;
                  <enum>Qt::NoContextMenu</enum>
                 </property>
                 <property name="styleSheet">
-                 <string notr="true">QLineEdit {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 2px;
-    border-radius: 5px;
-    color: black;
-    background: rgb(235, 235, 235);
-	font: 75 17pt &quot;Bebas Kai&quot;;
-}
-
-QLineEdit:focus {
-    border-style: solid;
-    border-color: rgb(23, 81, 191);
-}</string>
+                 <string notr="true">font: 17pt;</string>
                 </property>
                 <property name="text">
                  <string>0</string>
@@ -25387,11 +25258,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>738</x>
-     <y>627</y>
+     <y>630</y>
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25407,7 +25278,7 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25423,7 +25294,7 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25439,7 +25310,7 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25455,7 +25326,7 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25467,11 +25338,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>854</x>
-     <y>621</y>
+     <y>630</y>
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25483,11 +25354,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>146</x>
-     <y>627</y>
+     <y>630</y>
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25498,12 +25369,12 @@ font: 11pt bebas kai;
    <slot>doFileTransfer()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>577</x>
-     <y>409</y>
+     <x>610</x>
+     <y>485</y>
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25519,7 +25390,7 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25531,11 +25402,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>146</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25551,7 +25422,7 @@ font: 11pt bebas kai;
     </hint>
     <hint type="destinationlabel">
      <x>738</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25563,11 +25434,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>738</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25579,7 +25450,7 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>738</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
      <x>1110</x>
@@ -25595,11 +25466,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>262</x>
-     <y>621</y>
+     <y>630</y>
     </hint>
     <hint type="destinationlabel">
      <x>146</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25611,11 +25482,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>738</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1154</x>
-     <y>117</y>
+     <x>1253</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25627,11 +25498,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>146</x>
-     <y>117</y>
+     <y>146</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1154</x>
-     <y>117</y>
+     <x>1253</x>
+     <y>146</y>
     </hint>
    </hints>
   </connection>
@@ -25642,12 +25513,12 @@ font: 11pt bebas kai;
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>183</x>
-     <y>607</y>
+     <x>1426</x>
+     <y>177</y>
     </hint>
     <hint type="destinationlabel">
-     <x>94</x>
-     <y>127</y>
+     <x>1480</x>
+     <y>178</y>
     </hint>
    </hints>
   </connection>
@@ -25658,12 +25529,12 @@ font: 11pt bebas kai;
    <slot>deleteSelectedTool()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>200</x>
+     <x>198</x>
      <y>618</y>
     </hint>
     <hint type="destinationlabel">
-     <x>167</x>
-     <y>175</y>
+     <x>156</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25674,12 +25545,12 @@ font: 11pt bebas kai;
    <slot>saveToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>764</x>
-     <y>607</y>
+     <x>806</x>
+     <y>618</y>
     </hint>
     <hint type="destinationlabel">
-     <x>94</x>
-     <y>127</y>
+     <x>133</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25690,12 +25561,12 @@ font: 11pt bebas kai;
    <slot>loadToolTable()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>929</x>
-     <y>607</y>
+     <x>978</x>
+     <y>618</y>
     </hint>
     <hint type="destinationlabel">
-     <x>94</x>
-     <y>127</y>
+     <x>133</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25710,8 +25581,8 @@ font: 11pt bebas kai;
      <y>175</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25726,8 +25597,8 @@ font: 11pt bebas kai;
      <y>133</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25742,8 +25613,8 @@ font: 11pt bebas kai;
      <y>314</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25754,12 +25625,12 @@ font: 11pt bebas kai;
    <slot>addTool()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>328</x>
-     <y>607</y>
+     <x>350</x>
+     <y>618</y>
     </hint>
     <hint type="destinationlabel">
-     <x>94</x>
-     <y>127</y>
+     <x>133</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25774,8 +25645,8 @@ font: 11pt bebas kai;
      <y>550</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25790,8 +25661,8 @@ font: 11pt bebas kai;
      <y>217</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25806,8 +25677,8 @@ font: 11pt bebas kai;
      <y>91</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25822,8 +25693,8 @@ font: 11pt bebas kai;
      <y>508</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25838,8 +25709,8 @@ font: 11pt bebas kai;
      <y>356</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25850,12 +25721,12 @@ font: 11pt bebas kai;
    <slot>toggleProgramBounds()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1850</x>
-     <y>131</y>
+     <x>1835</x>
+     <y>148</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25866,12 +25737,12 @@ font: 11pt bebas kai;
    <slot>toggleMachineBounds()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1850</x>
-     <y>180</y>
+     <x>1835</x>
+     <y>193</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25882,8 +25753,8 @@ font: 11pt bebas kai;
    <slot>toggleProgramBounds()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1845</x>
-     <y>110</y>
+     <x>1835</x>
+     <y>148</y>
     </hint>
     <hint type="destinationlabel">
      <x>1516</x>
@@ -25898,12 +25769,12 @@ font: 11pt bebas kai;
    <slot>toggleMachineTicks()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1850</x>
-     <y>278</y>
+     <x>1835</x>
+     <y>295</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25914,12 +25785,12 @@ font: 11pt bebas kai;
    <slot>toggleProgramTicks()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1850</x>
-     <y>229</y>
+     <x>1835</x>
+     <y>250</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25930,12 +25801,12 @@ font: 11pt bebas kai;
    <slot>toggleMachineLabels()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1850</x>
-     <y>376</y>
+     <x>1835</x>
+     <y>397</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25946,12 +25817,12 @@ font: 11pt bebas kai;
    <slot>toggleProgramLabels()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1850</x>
-     <y>327</y>
+     <x>1835</x>
+     <y>352</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25963,11 +25834,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>781</x>
-     <y>647</y>
+     <y>644</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -25979,11 +25850,11 @@ font: 11pt bebas kai;
    <hints>
     <hint type="sourcelabel">
      <x>781</x>
-     <y>605</y>
+     <y>602</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1650</x>
-     <y>114</y>
+     <x>1630</x>
+     <y>152</y>
     </hint>
    </hints>
   </connection>
@@ -26010,8 +25881,8 @@ font: 11pt bebas kai;
    <slot>showGrid(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1850</x>
-     <y>425</y>
+     <x>1835</x>
+     <y>454</y>
     </hint>
     <hint type="destinationlabel">
      <x>1579</x>
@@ -26158,8 +26029,8 @@ font: 11pt bebas kai;
      <y>496</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1640</x>
-     <y>471</y>
+     <x>1630</x>
+     <y>509</y>
     </hint>
    </hints>
   </connection>
@@ -26174,8 +26045,8 @@ font: 11pt bebas kai;
      <y>113</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1621</x>
-     <y>232</y>
+     <x>1607</x>
+     <y>345</y>
     </hint>
    </hints>
   </connection>
@@ -26286,8 +26157,8 @@ font: 11pt bebas kai;
      <y>506</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1621</x>
-     <y>562</y>
+     <x>1607</x>
+     <y>582</y>
     </hint>
    </hints>
   </connection>
@@ -26314,8 +26185,8 @@ font: 11pt bebas kai;
    <slot>showGrid(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1850</x>
-     <y>425</y>
+     <x>1835</x>
+     <y>454</y>
     </hint>
     <hint type="destinationlabel">
      <x>1584</x>
@@ -26471,12 +26342,12 @@ font: 11pt bebas kai;
  </designerdata>
  <buttongroups>
   <buttongroup name="probemodeGroup"/>
-  <buttongroup name="plotviewGroup"/>
-  <buttongroup name="proberoutinebtnGroup"/>
-  <buttongroup name="probehelpGroup"/>
-  <buttongroup name="plotorthoperspbtnGroup"/>
+  <buttongroup name="probetabGroup"/>
   <buttongroup name="xycalbtnGroup"/>
   <buttongroup name="mainorthoperspbtnGroup"/>
-  <buttongroup name="probetabGroup"/>
+  <buttongroup name="plotorthoperspbtnGroup"/>
+  <buttongroup name="probehelpGroup"/>
+  <buttongroup name="plotviewGroup"/>
+  <buttongroup name="proberoutinebtnGroup"/>
  </buttongroups>
 </ui>

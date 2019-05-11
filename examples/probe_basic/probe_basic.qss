@@ -75,17 +75,24 @@ ActionButton[action_id="0"]:checked {
     background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(226, 64, 64, 255), stop:0.446154 rgba(204, 0, 0, 255), stop:0.764103 rgba(225, 67, 67, 255), stop:1 rgba(249, 142, 142, 255));
 }
 
+VCPLineEdit,
 QLineEdit {
-    border-style: solid;
-    border-color: transparent;
+    border-style: transparent;
+    border-color: rgb(134, 136, 138);
     border-width: 2px;
     border-radius: 5px;
     color: black;
     background: white;
+    selection-color: white;
+    selection-background-color: rgb(65, 84, 255);
+    font: 15pt "Bebas Kai";
+    padding-right: 2px;
 }
 
 QLineEdit:focus {
-    border-color: #4a6aa7;
+    border-style: solid;
+    border-width: 3px;
+    border-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
 }
 
 .QFrame {
