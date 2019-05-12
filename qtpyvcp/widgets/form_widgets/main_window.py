@@ -262,6 +262,7 @@ class VCPMainWindow(QMainWindow):
     def focusChangedEvent(self, old_w, new_w):
         if issubclass(new_w.__class__, QLineEdit):
             print "QLineEdit got focus: ", new_w
+            QTimer.singleShot(0, new_w.selectAll)
 
 # ==============================================================================
 #  menu action slots
