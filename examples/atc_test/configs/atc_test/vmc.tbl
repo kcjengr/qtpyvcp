@@ -13,4 +13,4 @@ T11    P11    X0.0     Y0.0     Z3.75    D0.3125  ; tool 11
 T12    P12    X0.0     Y0.0     Z4.0     D0.25    ; tool 12
 T13    P13    X0.0     Y0.0     Z2.75    D1.25    ; tool 13
 T14    P14    X0.0     Y0.0     Z3.155   D0.75    ; TOOL 14
-T99999 P99999 X0.0     Y0.0     Z3.0     D0.25    ; tool 99999
+T99    P15    X0.0     Y0.0     Z1.0     D0.125   ; TOUCH PROBE
