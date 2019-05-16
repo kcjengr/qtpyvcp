@@ -6,11 +6,17 @@
 # load the vismach model
 loadusr -W ./vmcgui
 
+loadrt mult2 count=3
+
 loadrt wcomp names=xlim,ylim,zlim,armsw,drawsw,locksw
 loadrt mux2 names=armpos,drawpos,lockpos,mux2.0
 loadrt mux4 names=cardir
 loadrt sum2 names=carpos,spindlepos
 loadrt limit2 names=armlim,drawlim,locklim,spindlelim
+
+addf mult2.0 servo-thread
+addf mult2.1 servo-thread
+addf mult2.2 servo-thread
 
 addf xlim servo-thread
 addf ylim servo-thread
@@ -18,6 +24,10 @@ addf zlim servo-thread
 
 addf carpos servo-thread
 addf cardir servo-thread
+
+setp mult2.0.in0 25.4
+setp mult2.1.in0 25.4
+setp mult2.2.in0 25.4
 
 setp xlim.max 12.04
 setp xlim.min -12.04
@@ -33,9 +43,16 @@ net y-neg-lim ylim.under
 net z-pos-lim zlim.over
 net z-neg-lim zlim.under
 
-net x-pos xlim.in vmcgui.X
-net y-pos ylim.in vmcgui.Y
-net z-pos zlim.in vmcgui.Z
+
+net x-pos xlim.in mult2.0.in1
+net x-conv mult2.0.out vmcgui.X
+
+net y-pos ylim.in mult2.1.in1
+net y-conv mult2.1.out vmcgui.Y
+
+net z-pos zlim.in mult2.2.in1
+net z-conv mult2.2.out vmcgui.Z
+
 
 #simulated arm
 setp vmcgui.arm -20
