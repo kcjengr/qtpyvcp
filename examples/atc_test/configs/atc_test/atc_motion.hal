@@ -19,12 +19,12 @@
 net atcw-home-in-float atc-widget.home <= motion.digital-out-10
 net atcw-homimg-in-float atc-widget.homing <= motion.digital-out-11
 
-# net atc-goto-in-float motion.analog-out-12 => atc-widget.goto
-# net atc-goto-enable-in-bit motion.digital-out-10 => atc-widget.goto-enable
+net atc-goto-in-float atc-widget.goto <= motion.analog-out-10
+net atc-goto-enable-in-bit atc-widget.goto-enable <= motion.digital-out-12
 
-# net atc-steps-in-float motion.analog-out-13 => atc-widget.steps
-# net atc-steps-fwd-in-bit motion.digital-out-11 => atc-widget.steps-fwd
-# net atc-steps-rev-in-bit motion.digital-out-12 => atc-widget.steps-rev
+net atc-steps-in-float atc-widget.steps <= motion.analog-out-11
+net atc-steps-fwd-in-bit atc-widget.steps-fwd <= motion.digital-out-13
+net atc-steps-rev-in-bit atc-widget.steps-rev <= motion.digital-out-14
 
-# net atc-jog-fwd-in-bit motion.digital-out-13 => atc-widget.jog-fwd
-# net atc-jog-rev-in-bit motion.digital-out-14 => atc-widget.jog-rev
+net atc-jog-fwd-in-bit atc-widget.jog-fwd <= motion.digital-out-15
+net atc-jog-rev-in-bit atc-widget.jog-rev <= motion.digital-out-16
