@@ -1,0 +1,30 @@
+# this allows to move the carousel widget from gcode using motion pins
+#
+# analog pins
+#
+# 10 > goto
+# 11 > steps
+#
+# digital pins
+#
+# 10 > home
+# 11 > homing
+# 12 > goto-enable
+# 13 > steps-fwd
+# 14 > steps-rev
+# 15 > jog-fwd
+# 16 > jog-rev
+
+
+net atcw-home-in-float atc-widget.home <= motion.digital-out-10
+net atcw-homimg-in-float atc-widget.homing <= motion.digital-out-11
+
+# net atc-goto-in-float motion.analog-out-12 => atc-widget.goto
+# net atc-goto-enable-in-bit motion.digital-out-10 => atc-widget.goto-enable
+
+# net atc-steps-in-float motion.analog-out-13 => atc-widget.steps
+# net atc-steps-fwd-in-bit motion.digital-out-11 => atc-widget.steps-fwd
+# net atc-steps-rev-in-bit motion.digital-out-12 => atc-widget.steps-rev
+
+# net atc-jog-fwd-in-bit motion.digital-out-13 => atc-widget.jog-fwd
+# net atc-jog-rev-in-bit motion.digital-out-14 => atc-widget.jog-rev

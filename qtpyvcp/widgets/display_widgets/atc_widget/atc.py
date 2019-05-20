@@ -58,8 +58,8 @@ class DynATC(QQuickWidget):
             self.component.newPin(pin_name, "s32", "in")
             self.component[pin_name].valueChanged.connect(self.pocket_changed)
 
-        self.component.newPin('home', "float", "in")
-        self.component.newPin('homing', "float", "in")
+        self.component.newPin('home', "bit", "in")
+        self.component.newPin('homing', "bit", "in")
 
         self.component.newPin("goto", "float", "in")
         self.component.newPin('goto-enable', "bit", "in")
