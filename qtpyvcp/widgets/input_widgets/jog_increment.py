@@ -69,7 +69,7 @@ class JogIncrementWidget(QWidget):
                     enable_default = False
 
                     button.setDefault(True)
-                    button.setDown(True)
+                    button.setChecked(True)
 
                 hBox.addWidget(button)
 
