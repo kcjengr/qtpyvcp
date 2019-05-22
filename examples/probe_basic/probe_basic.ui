@@ -1929,6 +1929,51 @@ QHeaderView {
                   </layout>
                  </item>
                  <item>
+                  <layout class="QHBoxLayout" name="horizontalLayout_136">
+                   <item>
+                    <widget class="QLabel" name="file_absolute_path">
+                     <property name="enabled">
+                      <bool>true</bool>
+                     </property>
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize">
+                      <size>
+                       <width>300</width>
+                       <height>25</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize">
+                      <size>
+                       <width>16777215</width>
+                       <height>25</height>
+                      </size>
+                     </property>
+                     <property name="styleSheet">
+                      <string notr="true">QLabel{
+    border-style: solid;
+    border-radius: 4px;
+    border-color: transparent;
+    color: black;
+  	background-color: white;
+    font: 16pt &quot;Bebas Kai&quot;;
+}</string>
+                     </property>
+                     <property name="text">
+                      <string/>
+                     </property>
+                     <property name="alignment">
+                      <set>Qt::AlignCenter</set>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                 <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_128">
                    <item>
                     <widget class="GcodeEditor" name="gcodeeditor_2">
@@ -1977,6 +2022,9 @@ QHeaderView {
                      </property>
                      <property name="text">
                       <string>EDIT G-CODE</string>
+                     </property>
+                     <property name="checkable">
+                      <bool>true</bool>
                      </property>
                     </widget>
                    </item>
@@ -17358,7 +17406,7 @@ QAbstractSpinBox:selected {
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>2</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
