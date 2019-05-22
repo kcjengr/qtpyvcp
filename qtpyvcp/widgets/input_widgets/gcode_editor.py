@@ -27,7 +27,7 @@
 import sys
 import os
 
-from qtpy.QtCore import Property, QObject, Slot
+from qtpy.QtCore import Property, QObject, Slot, QFile
 from qtpy.QtGui import QFont, QFontMetrics, QColor
 
 from qtpyvcp.utilities import logger
@@ -255,6 +255,7 @@ class GcodeEditor(EditorBase, QObject):
     def __init__(self, parent=None):
         super(GcodeEditor, self).__init__(parent)
 
+        self.filename = ""
         self._last_filename = None
         self.auto_show_mdi = True
         self.last_line = None
@@ -280,6 +281,14 @@ class GcodeEditor(EditorBase, QObject):
             self.setReadOnly(False)
         else:
             self.setReadOnly(True)
+
+    @Slot(str)
+    def setFilename(self, path):
+        self.filename = path
+
+    # @Slot(str)
+    # def saveAs(self, filename):
+    #     q_file = QFile()
 
     @Property(str)
     def backgroundcolor(self):

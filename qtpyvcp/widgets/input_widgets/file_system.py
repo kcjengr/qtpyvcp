@@ -87,6 +87,7 @@ class FileSystemTable(QTableView, TableType):
 
     gcodeFileSelected = Signal(bool)
     filePreviewText = Signal(str)
+    fileNamePreviewText = Signal(str)
     transferFileRequest = Signal(str)
     rootChanged = Signal(str)
 
@@ -143,9 +144,11 @@ class FileSystemTable(QTableView, TableType):
             with open(path, 'r') as fh:
                 content = fh.read()
             self.filePreviewText.emit(content)
+            self.fileNamePreviewText.emit(path)
         else:
             self.gcodeFileSelected.emit(False)
             self.filePreviewText.emit('')
+            self.fileNamePreviewText.emit('')
 
     @Slot()
     def openSelectedItem(self, index=None):
