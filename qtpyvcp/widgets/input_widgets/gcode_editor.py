@@ -27,7 +27,7 @@
 import sys
 import os
 
-from qtpy.QtCore import Property, QObject
+from qtpy.QtCore import Property, QObject, Slot
 from qtpy.QtGui import QFont, QFontMetrics, QColor
 
 from qtpyvcp.utilities import logger
@@ -273,6 +273,13 @@ class GcodeEditor(EditorBase, QObject):
 
         self._marginbackgroundcolor = ''
         self.marginbackgroundcolor = self._marginbackgroundcolor
+
+    @Slot(bool)
+    def setEditable(self, state):
+        if state:
+            self.setReadOnly(False)
+        else:
+            self.setReadOnly(True)
 
     @Property(str)
     def backgroundcolor(self):
