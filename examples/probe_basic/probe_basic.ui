@@ -1961,7 +1961,7 @@ QHeaderView {
                  <item>
                   <layout class="QHBoxLayout" name="horizontalLayout_129">
                    <item>
-                    <widget class="QPushButton" name="edit_gcode_button_4">
+                    <widget class="QPushButton" name="edit_gcode_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -1994,7 +1994,7 @@ QHeaderView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="pushButton_2">
+                    <widget class="QPushButton" name="find_replace_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -2027,7 +2027,7 @@ QHeaderView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="pushButton">
+                    <widget class="QPushButton" name="save_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -2060,7 +2060,7 @@ QHeaderView {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="pushButton_3">
+                    <widget class="QPushButton" name="save_as_button">
                      <property name="sizePolicy">
                       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
                        <horstretch>0</horstretch>
@@ -26374,12 +26374,12 @@ font: 11pt bebas kai;
  </designerdata>
  <buttongroups>
   <buttongroup name="xycalbtnGroup"/>
+  <buttongroup name="proberoutinebtnGroup"/>
   <buttongroup name="probemodeGroup"/>
-  <buttongroup name="plotviewGroup"/>
   <buttongroup name="mainorthoperspbtnGroup"/>
   <buttongroup name="probehelpGroup"/>
+  <buttongroup name="plotviewGroup"/>
   <buttongroup name="plotorthoperspbtnGroup"/>
-  <buttongroup name="proberoutinebtnGroup"/>
   <buttongroup name="probetabGroup"/>
  </buttongroups>
 </ui>
