@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-P=$1
-
-halcmd setp atc-widget.steps ${P}
-halcmd setp atc-widget.steps-fwd 1
-
-exit 0

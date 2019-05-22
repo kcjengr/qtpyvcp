@@ -55,11 +55,11 @@ class DynATC(QQuickWidget):
 
         for i in range(self.pocket_slots):
             pin_name = "pocket-{}".format(i+1)
-            self.component.newPin(pin_name, "s32", "in")
+            self.component.newPin(pin_name, "float", "in")
             self.component[pin_name].valueChanged.connect(self.pocket_changed)
 
-        self.component.newPin('home', "float", "in")
-        self.component.newPin('homing', "float", "in")
+        self.component.newPin('home', "bit", "in")
+        self.component.newPin('homing', "bit", "in")
 
         self.component.newPin("goto", "float", "in")
         self.component.newPin('goto-enable', "bit", "in")
@@ -117,7 +117,7 @@ class DynATC(QQuickWidget):
             self.pockets[i + 1] = self.component[pin_name].value
 
     def draw_tools(self):
-        for i in range(1, 13):
+        for i in range(1, self.pocket_slots+1):
             self.hideToolSig.emit(i)
 
         for pocket, tool in self.pockets.items():
@@ -154,7 +154,7 @@ class DynATC(QQuickWidget):
             self.homeMsgSig.emit("UN REFERENCED")
 
     def goto(self):
-        self.component["goto-enable"].value = 0
+        # self.component["goto-enable"].value = 0
 
         pocket = self.component["goto"].value
 
@@ -166,12 +166,12 @@ class DynATC(QQuickWidget):
             self.rotate_fwd(steps)
 
     def steps_fwd(self):
-        self.component["steps-fwd"].value = 0
+        # self.component["steps-fwd"].value = 0
         steps = self.component["steps"].value
         self.rotate_fwd(steps)
 
     def steps_rev(self):
-        self.component["steps-rev"].value = 0
+        # self.component["steps-rev"].value = 0
         steps = self.component["steps"].value
         self.rotate_rev(steps)
 
@@ -183,8 +183,6 @@ class DynATC(QQuickWidget):
 
     def jog_fwd(self, *args, **kwargs):
         self.rotateFwdSig.emit(1)
-        self.command.set_digital_output(5, 0)
 
     def jog_rev(self, *args, **kwargs):
         self.rotateRevSig.emit(1)
-        self.command.set_digital_output(6, 0)
