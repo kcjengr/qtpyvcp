@@ -263,7 +263,7 @@ class GcodeEditor(EditorBase, QObject):
         self.last_line = None
         # self.setEolVisibility(True)
 
-        self._editor = False
+        self.editor = False
 
         # QSS Hack
 
