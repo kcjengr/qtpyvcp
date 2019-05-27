@@ -379,6 +379,9 @@ QComboBox QAbstractItemView{
                   <property name="focusPolicy">
                    <enum>Qt::NoFocus</enum>
                   </property>
+                  <property name="editor" stdset="0">
+                   <bool>false</bool>
+                  </property>
                  </widget>
                 </item>
                 <item>
@@ -1995,6 +1998,9 @@ QHeaderView {
 	border-style: solid;
 	background-color: rgb(238, 238, 236);
 }</string>
+                     </property>
+                     <property name="editor" stdset="0">
+                      <bool>true</bool>
                      </property>
                     </widget>
                    </item>

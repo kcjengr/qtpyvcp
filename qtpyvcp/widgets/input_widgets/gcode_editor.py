@@ -27,8 +27,10 @@
 import sys
 import os
 
+
 from qtpy.QtCore import Property, QObject, Slot, QFile
 from qtpy.QtGui import QFont, QFontMetrics, QColor
+from qtpy.QtWidgets import QInputDialog, QLineEdit
 
 from qtpyvcp.utilities import logger
 
@@ -261,12 +263,6 @@ class GcodeEditor(EditorBase, QObject):
         self.last_line = None
         # self.setEolVisibility(True)
 
-        STATUS.file.notify(self.load_program)
-        STATUS.motion_line.onValueChanged(self.highlight_line)
-        # STATUS.connect('line-changed', self.highlight_line)
-        # if self.idle_line_reset:
-        #     STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))
-
         # QSS Hack
 
         self._backgroundcolor = ''
@@ -286,9 +282,26 @@ class GcodeEditor(EditorBase, QObject):
     def setFilename(self, path):
         self.filename = path
 
-    # @Slot(str)
-    # def saveAs(self, filename):
-    #     q_file = QFile()
+    @Slot()
+    def saveAs(self):
+        filename = self.save_as_dialog(self.filename)
+        original_file = QFile(self.filename)
+        new_file = QFile(filename)
+
+    @Property(bool)
+    def editor(self):
+        return self._editor
+
+    @editor.setter
+    def editor(self, enabled):
+        self._editor = enabled
+        if not self._editor:
+            STATUS.file.notify(self.load_program)
+            STATUS.motion_line.onValueChanged(self.highlight_line)
+
+            # STATUS.connect('line-changed', self.highlight_line)
+            # if self.idle_line_reset:
+            #     STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))
 
     @Property(str)
     def backgroundcolor(self):
@@ -408,6 +421,13 @@ class GcodeEditor(EditorBase, QObject):
 
     auto_show_mdi_status = Property(bool, get_auto_show_mdi, set_auto_show_mdi, reset_auto_show_mdi)
 
+    def save_as_dialog(self, filename):
+        text, ok_pressed = QInputDialog.getText(self, "Save as", "New name:", QLineEdit.Normal, filename)
+
+        if ok_pressed and text != '':
+            return text
+        else:
+            return False
 
 # ==============================================================================
 # For testing
