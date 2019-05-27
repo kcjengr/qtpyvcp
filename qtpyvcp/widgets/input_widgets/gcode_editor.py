@@ -28,7 +28,7 @@ import sys
 import os
 
 
-from qtpy.QtCore import Property, QObject, Slot, QFile
+from qtpy.QtCore import Property, QObject, Slot, QFile, QFileInfo, QTextStream
 from qtpy.QtGui import QFont, QFontMetrics, QColor
 from qtpy.QtWidgets import QInputDialog, QLineEdit
 
@@ -285,10 +285,33 @@ class GcodeEditor(EditorBase, QObject):
         self.filename = path
 
     @Slot()
+    def save(self):
+        save_file = QFile(self.filename)
+
+        result = save_file.open(QFile.WriteOnly)
+        if result:
+            savestream = QTextStream(save_file)
+            savestream << self.text()
+
+            save_file.close()
+
+
+    @Slot()
     def saveAs(self):
-        filename = self.save_as_dialog(self.filename)
-        original_file = QFile(self.filename)
-        new_file = QFile(filename)
+        file_name = self.save_as_dialog(self.filename)
+
+        original_file = QFileInfo(self.filename)
+        path = original_file.path()
+
+        new_absolute_path = os.path.join(path, file_name)
+        new_file = QFile(new_absolute_path)
+
+        result = new_file.open(QFile.WriteOnly)
+        if result:
+            savestream = QTextStream(new_file)
+            savestream << self.text()
+
+            new_file.close()
 
     @Property(bool)
     def editor(self):

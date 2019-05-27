@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1924</width>
-    <height>1100</height>
+    <height>1103</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -26437,6 +26437,38 @@ font: 11pt bebas kai;
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>save_as_button</sender>
+   <signal>clicked()</signal>
+   <receiver>gcodeeditor_2</receiver>
+   <slot>saveAs()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1521</x>
+     <y>615</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1525</x>
+     <y>453</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>save_button</sender>
+   <signal>clicked()</signal>
+   <receiver>gcodeeditor_2</receiver>
+   <slot>save()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1439</x>
+     <y>621</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1438</x>
+     <y>476</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <designerdata>
   <property name="gridDeltaX">
@@ -26456,13 +26488,13 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="probetabGroup"/>
-  <buttongroup name="xycalbtnGroup"/>
-  <buttongroup name="probehelpGroup"/>
   <buttongroup name="plotviewGroup"/>
   <buttongroup name="plotorthoperspbtnGroup"/>
-  <buttongroup name="probemodeGroup"/>
-  <buttongroup name="proberoutinebtnGroup"/>
+  <buttongroup name="probehelpGroup"/>
   <buttongroup name="mainorthoperspbtnGroup"/>
+  <buttongroup name="proberoutinebtnGroup"/>
+  <buttongroup name="probetabGroup"/>
+  <buttongroup name="xycalbtnGroup"/>
+  <buttongroup name="probemodeGroup"/>
  </buttongroups>
 </ui>
