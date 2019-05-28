@@ -299,6 +299,9 @@ class GcodeEditor(EditorBase, QObject):
     @Slot()
     def saveAs(self):
         file_name = self.save_as_dialog(self.filename)
+        
+        if file_name is False:
+            return
 
         original_file = QFileInfo(self.filename)
         path = original_file.path()
@@ -308,8 +311,8 @@ class GcodeEditor(EditorBase, QObject):
 
         result = new_file.open(QFile.WriteOnly)
         if result:
-            savestream = QTextStream(new_file)
-            savestream << self.text()
+            save_stream = QTextStream(new_file)
+            save_stream << self.text()avestream << self.text()
 
             new_file.close()
 
