@@ -26469,6 +26469,22 @@ font: 11pt bebas kai;
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>find_replace_button</sender>
+   <signal>clicked()</signal>
+   <receiver>gcodeeditor_2</receiver>
+   <slot>find_replace()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1335</x>
+     <y>622</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1309</x>
+     <y>485</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <designerdata>
   <property name="gridDeltaX">
@@ -26488,13 +26504,13 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="plotviewGroup"/>
   <buttongroup name="plotorthoperspbtnGroup"/>
   <buttongroup name="probehelpGroup"/>
-  <buttongroup name="mainorthoperspbtnGroup"/>
-  <buttongroup name="proberoutinebtnGroup"/>
-  <buttongroup name="probetabGroup"/>
-  <buttongroup name="xycalbtnGroup"/>
   <buttongroup name="probemodeGroup"/>
+  <buttongroup name="proberoutinebtnGroup"/>
+  <buttongroup name="xycalbtnGroup"/>
+  <buttongroup name="plotviewGroup"/>
+  <buttongroup name="probetabGroup"/>
+  <buttongroup name="mainorthoperspbtnGroup"/>
  </buttongroups>
 </ui>
