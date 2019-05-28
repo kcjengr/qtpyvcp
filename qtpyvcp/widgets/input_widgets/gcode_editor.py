@@ -393,9 +393,6 @@ class GcodeEditor(EditorBase, QObject):
         if file_name is False:
             return
 
-        if file_name is False:
-            return
-
         original_file = QFileInfo(self.filename)
         path = original_file.path()
 
