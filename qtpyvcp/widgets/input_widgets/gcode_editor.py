@@ -312,9 +312,7 @@ class GcodeEditor(EditorBase, QObject):
         result = new_file.open(QFile.WriteOnly)
         if result:
             save_stream = QTextStream(new_file)
-            save_stream << self.text()avestream << self.text()
-
-            new_file.close()
+            save_stream << self.text()
 
     @Property(bool)
     def editor(self):
