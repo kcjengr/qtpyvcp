@@ -30,6 +30,7 @@ class HalButton(QPushButton, HALWidget):
 
         self._enable_pin = None
         self._pressed_pin = None
+        self._checked_pin = None
 
         self._pulse = False
         self._pulse_duration = 100
@@ -37,6 +38,7 @@ class HalButton(QPushButton, HALWidget):
 
         self.pressed.connect(self.onPress)
         self.released.connect(self.onRelease)
+        self.toggled.connect(self.onCheckedStateChanged)
 
     def onPress(self):
         if self._pressed_pin is not None:
@@ -47,6 +49,10 @@ class HalButton(QPushButton, HALWidget):
     def onRelease(self):
         if self._pressed_pin is not None:
             self._pressed_pin.value = False
+
+    def onCheckedStateChanged(self, checked):
+        if self._checked_pin is not None:
+            self._checked_pin.value = checked
 
     @Property(bool)
     def pulseOnPress(self):
@@ -80,6 +86,10 @@ class HalButton(QPushButton, HALWidget):
 
         # add button.out HAL pin
         self._pressed_pin = comp.addPin(obj_name + ".out", "bit", "out")
+
+        # add checkbox.checked HAL pin
+        self._checked_pin = comp.addPin(obj_name + ".checked", "bit", "out")
+        self._checked_pin.value = self.isChecked()
 
         if self._pulse:
             self.pulse_timer = QTimer()
