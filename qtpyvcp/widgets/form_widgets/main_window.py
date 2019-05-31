@@ -254,7 +254,7 @@ class VCPMainWindow(QMainWindow):
             #print 'Unhandled key release event'
 
     def mousePressEvent(self, event):
-        print 'Button press'
+        #print 'Button press'
         focused_widget = self.focusWidget()
         if focused_widget is not None:
             focused_widget.clearFocus()
