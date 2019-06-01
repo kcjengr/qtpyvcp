@@ -238,23 +238,23 @@ class EditorBase(QsciScintilla):
     def find_text_occurences(self, text):
         """Return byte positions of start and end of all 'text' occurences in the document"""
 
-        textLen = len(text)
-        endPos = self.SendScintilla(QsciScintilla.SCI_GETLENGTH)
+        text_len = len(text)
+        end_pos = self.SendScintilla(QsciScintilla.SCI_GETLENGTH)
         self.SendScintilla(QsciScintilla.SCI_SETTARGETSTART, 0)
-        self.SendScintilla(QsciScintilla.SCI_SETTARGETEND, endPos)
+        self.SendScintilla(QsciScintilla.SCI_SETTARGETEND, end_pos)
 
         occurences = []
 
-        match = self.SendScintilla(QsciScintilla.SCI_SEARCHINTARGET, textLen, text)
+        match = self.SendScintilla(QsciScintilla.SCI_SEARCHINTARGET, text_len, text)
         while match != -1:
-            matchEnd = self.SendScintilla(QsciScintilla.SCI_GETTARGETEND)
-            occurences.append((match, matchEnd))
+            match_end = self.SendScintilla(QsciScintilla.SCI_GETTARGETEND)
+            occurences.append((match, match_end))
             # -- if there's a match, the target is modified so we shift its start
             # -- and restore its end --
-            self.SendScintilla(QsciScintilla.SCI_SETTARGETSTART, matchEnd)
-            self.SendScintilla(QsciScintilla.SCI_SETTARGETEND, endPos)
+            self.SendScintilla(QsciScintilla.SCI_SETTARGETSTART, match_end)
+            self.SendScintilla(QsciScintilla.SCI_SETTARGETEND, end_pos)
             # -- find it again in the new (reduced) target --
-            match = self.SendScintilla(QsciScintilla.SCI_SEARCHINTARGET, textLen, text)
+            match = self.SendScintilla(QsciScintilla.SCI_SEARCHINTARGET, text_len, text)
 
         return occurences
 
@@ -275,6 +275,7 @@ class EditorBase(QsciScintilla):
             # self.SendScintilla(Qsci.QsciScintilla.SCI_SETSTYLING,
             #                    textLen,
             #                    styles["HIGHLIGHT"][0])
+
         self.highlit = occurences
 
     def clear_highlights(self):
@@ -295,8 +296,9 @@ class EditorBase(QsciScintilla):
             if highlight_all:
                 self.clear_highlights()
                 self.highlight_occurences(text)
+
             if from_start:
-                self.setCursorPosition(0)
+                self.setCursorPosition(0, 0)
 
             match = self.findFirst(text, re, cs, wo, wrap, forward, line, index, show)
 
@@ -307,12 +309,28 @@ class EditorBase(QsciScintilla):
         if text is not None and sub is not None:
             self.clear_highlights()
             self.highlight_occurences(text)
+
             if from_start:
-                self.setCursorPosition(0)
+                self.setCursorPosition(0, 0)
 
             match = self.findFirst(text, re, cs, wo, wrap, forward, line, index, show)
             if match:
                 self.replace(sub)
+
+    def text_replace_all(self, text, sub, from_start, re=False,
+                         cs=True, wo=False, wrap=True, forward=True,
+                         line=-1, index=-1, show=True):
+
+        if text is not None and sub is not None:
+            self.clear_highlights()
+            self.highlight_occurences(text)
+
+            if from_start:
+                self.setCursorPosition(0, 0)
+
+            # match = self.findFirst(text, re, cs, wo, wrap, forward, line, index, show)
+            # if match:
+            #     self.replace(sub)
 
     # must set lexer paper background color _and_ editor background color it seems
     def set_background_color(self, color):
@@ -379,7 +397,7 @@ class GcodeEditor(EditorBase, QObject):
     @Slot()
     def saveAs(self):
         file_name = self.save_as_dialog(self.filename)
-        
+
         if file_name is False:
             return
 
@@ -413,9 +431,7 @@ class GcodeEditor(EditorBase, QObject):
     def replace_all_text(self, find_text, replace_text):
         from_start = True
         if find_text != "" and replace_text != "":
-            for occurrence in self.find_text_occurences(find_text):
-                pass
-                # self.text_replace(find_text, occurrence, from_start)
+            self.text_replace_all(find_text, find_text, from_start)
 
     @Property(bool)
     def editor(self):
@@ -627,9 +643,9 @@ class FindReplaceDialog(QDialog):
         self.close_button.clicked.connect(self.hide_dialog)
 
     def find_text(self):
-
         find_text = self.find_input.text()
         highlight = self.highlight_result.isChecked()
+
         self.parent.search_text(find_text, highlight)
 
     def replace_text(self):
@@ -642,11 +658,13 @@ class FindReplaceDialog(QDialog):
         find_text = self.find_input.text()
         replace_text = self.replace_input.text()
 
-        self.parent.replace_text(find_text, replace_text)
+        if find_text == "":
+            return
+
+        self.parent.replace_all_text(find_text, replace_text)
 
     def hide_dialog(self):
         self.hide()
-
 
 # ==============================================================================
 # For testing
