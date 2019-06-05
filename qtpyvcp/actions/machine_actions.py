@@ -868,7 +868,7 @@ def jog_angular_speed(obj, value):
     obj.value = value
 
 
-@setting('machine.jog.mode-incremental')
+@setting('machine.jog.mode-incremental', default_value=True)
 def jog_mode_incremental(obj):
     return obj.value
 
