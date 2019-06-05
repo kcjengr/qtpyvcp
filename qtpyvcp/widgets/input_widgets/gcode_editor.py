@@ -246,6 +246,7 @@ class EditorBase(QsciScintilla):
         occurences = []
 
         match = self.SendScintilla(QsciScintilla.SCI_SEARCHINTARGET, text_len, text)
+        print(match)
         while match != -1:
             match_end = self.SendScintilla(QsciScintilla.SCI_GETTARGETEND)
             occurences.append((match, match_end))
@@ -323,10 +324,12 @@ class EditorBase(QsciScintilla):
 
         if text is not None and sub is not None:
             self.clear_highlights()
-            self.highlight_occurences(text)
 
-            if from_start:
-                self.setCursorPosition(0, 0)
+            self.SendScintilla(QsciScintilla.SCI_SETTARGETSTART, 0)
+            end_pos = self.SendScintilla(QsciScintilla.SCI_GETLENGTH)
+            self.SendScintilla(QsciScintilla.SCI_SETTARGETEND, end_pos)
+
+            print(self.SendScintilla(QsciScintilla.SCI_SEARCHINTARGET, len(text), text))
 
             # match = self.findFirst(text, re, cs, wo, wrap, forward, line, index, show)
             # if match:
@@ -363,7 +366,7 @@ class GcodeEditor(EditorBase, QObject):
         self.last_line = None
         # self.setEolVisibility(True)
 
-        self.editor = False
+        self.is_editor = False
 
         self.dialog = FindReplaceDialog(parent=self)
 
@@ -434,13 +437,13 @@ class GcodeEditor(EditorBase, QObject):
             self.text_replace_all(find_text, find_text, from_start)
 
     @Property(bool)
-    def editor(self):
-        return self._editor
+    def is_editor(self):
+        return self._is_editor
 
-    @editor.setter
-    def editor(self, enabled):
-        self._editor = enabled
-        if not self._editor:
+    @is_editor.setter
+    def is_editor(self, enabled):
+        self._is_editor = enabled
+        if not self._is_editor:
             STATUS.file.notify(self.load_program)
             STATUS.motion_line.onValueChanged(self.highlight_line)
 
