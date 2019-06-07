@@ -44,14 +44,14 @@ from qtpyvcp.utilities.logger import initBaseLogger
 LCNC_VERSION_ERROR_MSG = """
 \033[31mERROR:\033[0m Unsupported LinuxCNC version
 
-QtPyVCP only supports LinuxCNC 2.8, current version is {}. If you have
-LinuxCNC installed as a RIP make sure you have activated the run-in-place 
-environment by running:\n"
+QtPyVCP only supports LinuxCNC 2.8, current version is {}.
+If you have LinuxCNC installed as a RIP make sure you have
+activated the run-in-place environment by running:\n"
 
     $ . <linuxcnc-rip-dir>/scripts/rip-environment
 
-Otherwise you will need to install LinuxCNC 2.8, info on how to do that
-can be found here: https://gnipsel.com/linuxcnc/uspace/
+Otherwise you will need to install LinuxCNC 2.8, info on how
+to do that can be found here: https://gnipsel.com/linuxcnc/uspace/
 """.strip()
 
 INSTALLED_ERROR_MSG = """
@@ -61,7 +61,7 @@ The specified VCP appears to be installed in the `python2.7/site-packages`
 directory. Please set up a development install to edit the VCP.
 """.strip()
 
-if not linuxcnc.version.startswith('2.8'):
+if linuxcnc.version.startswith('2.7'):
     print LCNC_VERSION_ERROR_MSG.format(linuxcnc.version)
     sys.exit(1)
 
