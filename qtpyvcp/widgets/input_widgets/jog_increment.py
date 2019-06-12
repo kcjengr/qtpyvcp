@@ -48,9 +48,12 @@ class JogIncrementWidget(QWidget):
         if parent is None and not standalone:
             return
 
+        enable_default = True
+
         increments = INFO.getIncrements()
         for increment in increments:
             button = LEDButton()
+
             button.setCheckable(True)
             button.setAutoExclusive(True)
             button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
@@ -61,6 +64,13 @@ class JogIncrementWidget(QWidget):
                 # print '[', raw_increment, ']'
                 button.setText(raw_increment)
                 button.clicked.connect(self.setJogIncrement)
+
+                if enable_default:
+                    enable_default = False
+
+                    button.setDefault(True)
+                    button.setChecked(True)
+
                 hBox.addWidget(button)
 
         self.placeLed()
@@ -127,6 +137,7 @@ class JogIncrementWidget(QWidget):
     alignment = Property(Qt.Alignment, getAlignment, setAlignment)
     orientation = Property(Qt.Orientation, getOrientation, setOrientation)
     layoutSpacing = Property(int, getLayoutSpacing, setLayoutSpacing)
+
 
 if __name__ == "__main__":
     import sys

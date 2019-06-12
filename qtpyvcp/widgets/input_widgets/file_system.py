@@ -5,7 +5,7 @@ import psutil
 
 from qtpy.QtCore import Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevice
 from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, \
-    QApplication, QAbstractItemView
+    QApplication, QAbstractItemView, QInputDialog, QLineEdit
 
 from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.utilities.info import Info
@@ -15,6 +15,7 @@ from qtpyvcp.lib.decorators import deprecated
 LOG = getLogger(__name__)
 
 IN_DESIGNER = os.getenv('DESIGNER') != None
+
 
 class TableType(object):
     Local = 0
@@ -84,9 +85,9 @@ class FileSystemTable(QTableView, TableType):
         from PyQt5.QtCore import Q_ENUMS
         Q_ENUMS(TableType)
 
-
     gcodeFileSelected = Signal(bool)
     filePreviewText = Signal(str)
+    fileNamePreviewText = Signal(str)
     transferFileRequest = Signal(str)
     rootChanged = Signal(str)
 
@@ -143,9 +144,11 @@ class FileSystemTable(QTableView, TableType):
             with open(path, 'r') as fh:
                 content = fh.read()
             self.filePreviewText.emit(content)
+            self.fileNamePreviewText.emit(path)
         else:
             self.gcodeFileSelected.emit(False)
             self.filePreviewText.emit('')
+            self.fileNamePreviewText.emit('')
 
     @Slot()
     def openSelectedItem(self, index=None):
@@ -215,6 +218,32 @@ class FileSystemTable(QTableView, TableType):
         return True
 
     @Slot()
+    def rename(self):
+        """renames the selected file or folder"""
+        index = self.selectionModel().currentIndex()
+        path = self.model.filePath(index)
+        if path:
+            file_info = QFileInfo(path)
+
+            if file_info.isFile():
+                filename = self.rename_dialog("file")
+
+                if filename:
+                    q_file = QFile(path)
+                    file_info.absolutePath()
+                    new_path = os.path.join(file_info.absolutePath(), str(filename))
+                    q_file.rename(new_path)
+
+            elif file_info.isDir():
+                filename = self.rename_dialog("directory")
+
+                if filename:
+                    directory = QDir(path)
+                    file_info.absolutePath()
+                    new_path = os.path.join(file_info.absolutePath(), str(filename))
+                    directory.rename(path, new_path)
+
+    @Slot()
     def newFile(self):
         """Create a new empty file"""
         path = self.model.filePath(self.rootIndex())
@@ -256,14 +285,14 @@ class FileSystemTable(QTableView, TableType):
         index = self.selectionModel().currentIndex()
         path = self.model.filePath(index)
         if path:
-            fileInfo = QFileInfo(path)
-            if fileInfo.isFile():
+            file_info = QFileInfo(path)
+            if file_info.isFile():
                 if not self.ask_dialog("Do you wan't to delete the selected file?"):
                     return
-                file = QFile(path)
-                file.remove()
+                q_file = QFile(path)
+                q_file.remove()
 
-            elif fileInfo.isDir():
+            elif file_info.isDir():
                 if not self.ask_dialog("Do you wan't to delete the selected directory?"):
                     return
                 directory = QDir(path)
@@ -394,5 +423,13 @@ class FileSystemTable(QTableView, TableType):
                                    QMessageBox.No)
         if box == QMessageBox.Yes:
             return True
+        else:
+            return False
+
+    def rename_dialog(self, data_type):
+        text, ok_pressed = QInputDialog.getText(self.parent, "Rename", "New {} name:".format(data_type), QLineEdit.Normal, "")
+
+        if ok_pressed and text != '':
+            return text
         else:
             return False

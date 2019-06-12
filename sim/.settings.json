@@ -1,3 +1,4 @@
 {
+    "machine.jog.increment": 0.09999999999999999, 
     "machine.jog.linear-speed": 600.0
 }

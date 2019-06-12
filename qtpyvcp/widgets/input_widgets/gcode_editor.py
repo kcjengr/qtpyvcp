@@ -27,8 +27,9 @@
 import sys
 import os
 
-from qtpy.QtCore import Property, QObject
+from qtpy.QtCore import Property, QObject, Slot, QFile, QFileInfo, QTextStream, Signal
 from qtpy.QtGui import QFont, QFontMetrics, QColor
+from qtpy.QtWidgets import QInputDialog, QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QCheckBox
 
 from qtpyvcp.utilities import logger
 
@@ -41,9 +42,11 @@ except ImportError as e:
     sys.exit(1)
 
 from qtpyvcp.plugins import getPlugin
+
 STATUS = getPlugin('status')
 
 from qtpyvcp.core import Info
+
 INFO = Info()
 
 
@@ -227,8 +230,110 @@ class EditorBase(QsciScintilla):
         # default gray background
         self.set_background_color('#C0C0C0')
 
+        self.highlit = None
+
         # not too small
         # self.setMinimumSize(200, 100)
+
+    def find_text_occurences(self, text):
+        """Return byte positions of start and end of all 'text' occurences in the document"""
+
+        text_len = len(text)
+        end_pos = self.SendScintilla(QsciScintilla.SCI_GETLENGTH)
+        self.SendScintilla(QsciScintilla.SCI_SETTARGETSTART, 0)
+        self.SendScintilla(QsciScintilla.SCI_SETTARGETEND, end_pos)
+
+        occurences = []
+
+        match = self.SendScintilla(QsciScintilla.SCI_SEARCHINTARGET, text_len, text)
+        print(match)
+        while match != -1:
+            match_end = self.SendScintilla(QsciScintilla.SCI_GETTARGETEND)
+            occurences.append((match, match_end))
+            # -- if there's a match, the target is modified so we shift its start
+            # -- and restore its end --
+            self.SendScintilla(QsciScintilla.SCI_SETTARGETSTART, match_end)
+            self.SendScintilla(QsciScintilla.SCI_SETTARGETEND, end_pos)
+            # -- find it again in the new (reduced) target --
+            match = self.SendScintilla(QsciScintilla.SCI_SEARCHINTARGET, text_len, text)
+
+        return occurences
+
+    def highlight_occurences(self, text):
+
+        occurences = self.find_text_occurences(text)
+        text_len = len(text)
+        self.SendScintilla(QsciScintilla.SCI_SETSTYLEBITS, 8)
+        for occs in occurences:
+            self.SendScintilla(QsciScintilla.SCI_SETINDICATORCURRENT, 0)
+            self.SendScintilla(QsciScintilla.SCI_INDICATORFILLRANGE,
+                               occs[0], text_len)
+
+            # -- this is somewhat buggy : it was meant to change the color
+            # -- but somewhy the colouring suddenly changes colour.
+
+            # self.SendScintilla(Qsci.QsciScintilla.SCI_STARTSTYLING, occs[0], 0xFF)
+            # self.SendScintilla(Qsci.QsciScintilla.SCI_SETSTYLING,
+            #                    textLen,
+            #                    styles["HIGHLIGHT"][0])
+
+        self.highlit = occurences
+
+    def clear_highlights(self):
+        if self.highlit is None:
+            return
+
+        for occs in self.highlit:
+            self.SendScintilla(QsciScintilla.SCI_SETINDICATORCURRENT, 0)
+            self.SendScintilla(QsciScintilla.SCI_INDICATORCLEARRANGE,
+                               occs[0], occs[1] - occs[0])
+        self.highlit = None
+
+    def text_search(self, text, from_start, highlight_all, re=False,
+                    cs=True, wo=False, wrap=True, forward=True,
+                    line=-1, index=-1, show=True):
+
+        if text is not None:
+            if highlight_all:
+                self.clear_highlights()
+                self.highlight_occurences(text)
+
+            if from_start:
+                self.setCursorPosition(0, 0)
+
+            match = self.findFirst(text, re, cs, wo, wrap, forward, line, index, show)
+
+    def text_replace(self, text, sub, from_start, re=False,
+                     cs=True, wo=False, wrap=True, forward=True,
+                     line=-1, index=-1, show=True):
+
+        if text is not None and sub is not None:
+            self.clear_highlights()
+            self.highlight_occurences(text)
+
+            if from_start:
+                self.setCursorPosition(0, 0)
+
+            match = self.findFirst(text, re, cs, wo, wrap, forward, line, index, show)
+            if match:
+                self.replace(sub)
+
+    def text_replace_all(self, text, sub, from_start, re=False,
+                         cs=True, wo=False, wrap=True, forward=True,
+                         line=-1, index=-1, show=True):
+
+        if text is not None and sub is not None:
+            self.clear_highlights()
+
+            self.SendScintilla(QsciScintilla.SCI_SETTARGETSTART, 0)
+            end_pos = self.SendScintilla(QsciScintilla.SCI_GETLENGTH)
+            self.SendScintilla(QsciScintilla.SCI_SETTARGETEND, end_pos)
+
+            print(self.SendScintilla(QsciScintilla.SCI_SEARCHINTARGET, len(text), text))
+
+            # match = self.findFirst(text, re, cs, wo, wrap, forward, line, index, show)
+            # if match:
+            #     self.replace(sub)
 
     # must set lexer paper background color _and_ editor background color it seems
     def set_background_color(self, color):
@@ -255,24 +360,96 @@ class GcodeEditor(EditorBase, QObject):
     def __init__(self, parent=None):
         super(GcodeEditor, self).__init__(parent)
 
+        self.filename = ""
         self._last_filename = None
         self.auto_show_mdi = True
         self.last_line = None
         # self.setEolVisibility(True)
 
-        STATUS.file.notify(self.load_program)
-        STATUS.motion_line.onValueChanged(self.highlight_line)
-        # STATUS.connect('line-changed', self.highlight_line)
-        # if self.idle_line_reset:
-        #     STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))
+        self.is_editor = False
+
+        self.dialog = FindReplaceDialog(parent=self)
 
         # QSS Hack
 
-        self._backgroundcolor = ''
-        self.backgroundcolor = self._backgroundcolor
+        self.backgroundcolor = ''
+        self.marginbackgroundcolor = ''
 
-        self._marginbackgroundcolor = ''
-        self.marginbackgroundcolor = self._marginbackgroundcolor
+    @Slot(bool)
+    def setEditable(self, state):
+        if state:
+            self.setReadOnly(False)
+        else:
+            self.setReadOnly(True)
+
+    @Slot(str)
+    def setFilename(self, path):
+        self.filename = path
+
+    @Slot()
+    def save(self):
+        save_file = QFile(self.filename)
+
+        result = save_file.open(QFile.WriteOnly)
+        if result:
+            save_stream = QTextStream(save_file)
+            save_stream << self.text()
+
+            save_file.close()
+
+    @Slot()
+    def saveAs(self):
+        file_name = self.save_as_dialog(self.filename)
+
+        if file_name is False:
+            return
+
+        original_file = QFileInfo(self.filename)
+        path = original_file.path()
+
+        new_absolute_path = os.path.join(path, file_name)
+        new_file = QFile(new_absolute_path)
+
+        result = new_file.open(QFile.WriteOnly)
+        if result:
+            save_stream = QTextStream(new_file)
+            save_stream << self.text()
+
+            new_file.close()
+
+    @Slot()
+    def find_replace(self):
+        self.dialog.show()
+
+    def search_text(self, find_text, highlight_all):
+        from_start = False
+        if find_text != "":
+            self.text_search(find_text, from_start, highlight_all)
+
+    def replace_text(self, find_text, replace_text):
+        from_start = False
+        if find_text != "" and replace_text != "":
+            self.text_replace(find_text, replace_text, from_start)
+
+    def replace_all_text(self, find_text, replace_text):
+        from_start = True
+        if find_text != "" and replace_text != "":
+            self.text_replace_all(find_text, find_text, from_start)
+
+    @Property(bool)
+    def is_editor(self):
+        return self._is_editor
+
+    @is_editor.setter
+    def is_editor(self, enabled):
+        self._is_editor = enabled
+        if not self._is_editor:
+            STATUS.file.notify(self.load_program)
+            STATUS.motion_line.onValueChanged(self.highlight_line)
+
+            # STATUS.connect('line-changed', self.highlight_line)
+            # if self.idle_line_reset:
+            #     STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))
 
     @Property(str)
     def backgroundcolor(self):
@@ -392,16 +569,115 @@ class GcodeEditor(EditorBase, QObject):
 
     auto_show_mdi_status = Property(bool, get_auto_show_mdi, set_auto_show_mdi, reset_auto_show_mdi)
 
+    # simple input dialog for save as
+    def save_as_dialog(self, filename):
+        text, ok_pressed = QInputDialog.getText(self, "Save as", "New name:", QLineEdit.Normal, filename)
+
+        if ok_pressed and text != '':
+            return text
+        else:
+            return False
+
+
+# more complex dialog required by find replace
+class FindReplaceDialog(QDialog):
+    def __init__(self, parent):
+        super(FindReplaceDialog, self).__init__(parent)
+
+        self.parent = parent
+        self.setWindowTitle("Find Replace")
+        self.setFixedSize(400, 200)
+
+        main_layout = QVBoxLayout()
+
+        find_layout = QHBoxLayout()
+        replace_layout = QHBoxLayout()
+        options_layout = QHBoxLayout()
+        buttons_layout = QHBoxLayout()
+
+        find_label = QLabel()
+        find_label.setText("Find:")
+
+        self.find_input = QLineEdit()
+
+        find_layout.addWidget(find_label)
+        find_layout.addWidget(self.find_input)
+
+        replace_label = QLabel()
+        replace_label.setText("Replace:")
+
+        self.replace_input = QLineEdit()
+
+        replace_layout.addWidget(replace_label)
+        replace_layout.addWidget(self.replace_input)
+
+        self.close_button = QPushButton()
+        self.close_button.setText("Close")
+
+        self.find_button = QPushButton()
+        self.find_button.setText("Find")
+
+        self.replace_button = QPushButton()
+        self.replace_button.setText("Replace")
+
+        self.all_button = QPushButton()
+        self.all_button.setText("Replace All")
+
+        buttons_layout.addWidget(self.close_button)
+        buttons_layout.addWidget(self.find_button)
+        buttons_layout.addWidget(self.replace_button)
+        buttons_layout.addWidget(self.all_button)
+
+        self.highlight_result = QCheckBox()
+        self.highlight_result.setText("highlight results")
+
+        options_layout.addWidget(self.highlight_result)
+
+        main_layout.addLayout(find_layout)
+        main_layout.addLayout(replace_layout)
+        main_layout.addLayout(options_layout)
+        main_layout.addLayout(buttons_layout)
+
+        self.setLayout(main_layout)
+
+        self.find_button.clicked.connect(self.find_text)
+        self.replace_button.clicked.connect(self.replace_text)
+        self.all_button.clicked.connect(self.replace_all_text)
+        self.close_button.clicked.connect(self.hide_dialog)
+
+    def find_text(self):
+        find_text = self.find_input.text()
+        highlight = self.highlight_result.isChecked()
+
+        self.parent.search_text(find_text, highlight)
+
+    def replace_text(self):
+        find_text = self.find_input.text()
+        replace_text = self.replace_input.text()
+
+        self.parent.replace_text(find_text, replace_text)
+
+    def replace_all_text(self):
+        find_text = self.find_input.text()
+        replace_text = self.replace_input.text()
+
+        if find_text == "":
+            return
+
+        self.parent.replace_all_text(find_text, replace_text)
+
+    def hide_dialog(self):
+        self.hide()
 
 # ==============================================================================
 # For testing
 # ==============================================================================
-if __name__ == "__main__":
-    from PyQt4.QtGui import QApplication
-
-    app = QApplication(sys.argv)
-    editor = GcodeEditor(standalone=True)
-    editor.show()
-
-    editor.setText(open(sys.argv[0]).read())
-    app.exec_()
+# if __name__ == "__main__":
+#     from qtpy.QtGui import QApplication
+#
+#     app = QApplication(sys.argv)
+#     editor = GcodeEditor(standalone=True)
+#     editor.show()
+#
+#     editor.setText(open(sys.argv[0]).read())
+#     app.exec_()
