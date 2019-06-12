@@ -966,7 +966,6 @@ class jog:
 
         if speed == 0 or direction == 0:
             if getSetting('machine.jog.increment').getValue() == 0:
-                print("STOP")
                 CMD.jog(linuxcnc.JOG_STOP, 0, axis)
         else:
 
@@ -987,10 +986,6 @@ class jog:
             if distance == 0:
                 CMD.jog(linuxcnc.JOG_CONTINUOUS, 0, axis, velocity)
             else:
-
-                print(abs(velocity))
-                print(direction)
-                print(distance)
                 if direction > 0:
                     end_position = POSITION.rel.getValue()[axis] + distance
                 else:
