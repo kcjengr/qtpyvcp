@@ -37,9 +37,9 @@ See the [documentation](https://kcjengr.github.io/qtpyvcp/).
 * Python 2.7
 * PyQt5 or PySide2
 
-QtPyVCP is developed and tested using the LinuxCNC Debian 9 (stretch)
+QtPyVCP is developed and tested using the LinuxCNC Debian 9 x64 (stretch)
 [Live ISO](http://www.linuxcnc.org/testing-stretch-rtpreempt/). It should run
-on any system that can have PyQt5 installed, but Debian 9 is the only OS
+on any system that can have PyQt5 installed, but Debian 9 x64 is the only OS
 that is officially supported.
 
 
