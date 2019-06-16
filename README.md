@@ -7,6 +7,7 @@
 [![Chat on IRC ][irc-badge]](https://kiwiirc.com/client/irc.kiwiirc.com/hazzy)
 [![Chat on Matrix ][matrix-badge]](https://riot.im/app/#/room/#qtpyvcp:matrix.org)
 [![Chat on Gitter ][gitter-badge]](https://gitter.im/kcjengr/qtpyvcp)
+[![Chat on Discord ][discord-badge]](https://discord.gg/463hMhd)
 
 QtPyVCP is a Qt and Python based framework for building virtual control panels
 for the LinuxCNC machine control.
@@ -28,6 +29,7 @@ See the [documentation](https://kcjengr.github.io/qtpyvcp/).
 * [Freenode IRC](http://webchat.freenode.net/?channels=%23hazzy) (#hazzy)
 * [The Matrix](https://riot.im/app/#/room/#qtpyvcp:matrix.org) (#qtpyvcp:matrix.org)
 * [Gitter](https://gitter.im/KurtJacobson/hazzy)
+* [Discord](https://discord.gg/463hMhd)
 * [Issue Tracker](https://github.com/kcjengr/qtpyvcp/issues)
 
 
@@ -62,3 +64,4 @@ This software is released under the GPLv2.
 [irc-badge]: https://img.shields.io/badge/Chat%20on%20IRC-%23hazzy-green.svg
 [matrix-badge]: https://img.shields.io/badge/Chat%20on%20Matrix-%23qtpyvcp%3Amatrix.org-green.svg
 [gitter-badge]: https://img.shields.io/badge/Chat%20on%20Gitter-%23kcjengr/qtpyvcp-green.svg
+[discord-badge]: https://img.shields.io/discord/587006691162325008.svg?label=Discord
