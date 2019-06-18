@@ -167,7 +167,6 @@ class ToolModel(QStandardItemModel):
             tnum = 1
 
         row = len(self._tool_table) - 1
-        print tnum, row
 
         if row == 56:
             # max 56 tools
