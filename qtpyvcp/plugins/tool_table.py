@@ -299,7 +299,7 @@ class ToolTable(DataPlugin):
         # import json
         # print json.dumps(table, sort_keys=True, indent=4)
 
-        # self.tool_table_changed.emit(table)
+        self.tool_table_changed.emit(table)
         return table.copy()
 
     def getToolTable(self):
