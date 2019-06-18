@@ -12,7 +12,7 @@ from qtpyvcp import actions
 from qtpyvcp.utilities import logger
 from qtpyvcp.core import Prefs, Info
 from qtpyvcp.plugins import getPlugin
-from qtpyvcp.widgets.dialogs import showDialog
+from qtpyvcp.widgets.dialogs import showDialog as _showDialog
 from qtpyvcp.vcp_launcher import _initialize_object_from_dict
 
 LOG = logger.getLogger(__name__)
@@ -113,7 +113,8 @@ class VCPMainWindow(QMainWindow):
         with open(stylesheet, 'r') as fh:
             self.setStyleSheet(fh.read())
 
-    def getMenuAction(self, menu_action, title='notitle', action_name='noaction'):
+    def getMenuAction(self, menu_action, title='notitle', action_name='noaction',
+                      args=[], kwargs={}):
         # ToDo: Clean this up, it is very hacky
         env = {'app': QApplication.instance(),
                'win': self,
@@ -124,7 +125,10 @@ class VCPMainWindow(QMainWindow):
             try:
                 mod, action = action_name.split('.', 1)
                 method = getattr(env.get(mod, self), action)
-                menu_action.triggered.connect(method)
+                if menu_action.isCheckable():
+                    menu_action.triggered.connect(method)
+                else:
+                    menu_action.triggered.connect(lambda checked: method(*args, **kwargs))
                 return
             except:
                 pass
@@ -167,6 +171,8 @@ class VCPMainWindow(QMainWindow):
                 title = item.get('title') or ''
                 items = item.get('items')
                 provider = item.get('provider')
+                args = item.get('args') or []
+                kwargs = item.get('kwargs') or {}
 
                 if items is not None:
                     new_menu = QMenu(parent=self, title=title)
@@ -180,7 +186,9 @@ class VCPMainWindow(QMainWindow):
 
                 else:
                     act = QAction(parent=self, text=title)
-                    self.getMenuAction(act, title, item.get('action'))
+                    self.getMenuAction(act, title, item.get('action'),
+                                       item.get('args', []),
+                                       item.get('kwargs', {}))
                     act.setShortcut(item.get('shortcut', ''))
                     menu.addAction(act)
 
@@ -270,11 +278,11 @@ class VCPMainWindow(QMainWindow):
 
     @Slot()
     def openFile(self):
-        showDialog('open_file')
+        _showDialog('open_file')
 
     @Slot(str)
     def showDialog(self, dialog_name):
-        showDialog(dialog_name)
+        _showDialog(dialog_name)
 
 # ==============================================================================
 # menu functions
