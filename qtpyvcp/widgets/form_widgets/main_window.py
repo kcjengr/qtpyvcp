@@ -34,7 +34,6 @@ class VCPMainWindow(QMainWindow):
         self.setWindowTitle(title)
 
         self.app = QApplication.instance()
-        self.status = getPlugin('status')
 
         self.confirm_exit = confirm_exit if opts.confirm_exit is None else opts.confirm_exit
 
