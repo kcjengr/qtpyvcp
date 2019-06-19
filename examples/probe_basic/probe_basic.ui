@@ -224,7 +224,7 @@ bottom-margin: 0px;
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="main_tab">
            <attribute name="title">
@@ -10699,6 +10699,65 @@ color: white;
                    </widget>
                   </item>
                   <item>
+                   <widget class="SubCallButton" name="reset_all_data">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>120</width>
+                      <height>27</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>120</width>
+                      <height>27</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">.SubCallButton{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+	font: 14pt &quot;Bebas Kai&quot;;
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
+}
+
+.SubCallButton:disabled {
+    border-color: gray;
+}
+
+.SubCallButton:hover {
+    background:  qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                     stop: 0 #A19E9E, stop: 1.0 #5C5959);
+}
+
+.SubCallButton:pressed {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+.SubCallButton:checked[option=&quot;true&quot;] {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}
+
+.SubCallButton:checked {
+    background:  qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(85, 85, 238, 255), stop:0.544974 rgba(90, 91, 239, 255), stop:1 rgba(126, 135, 243, 255));
+}</string>
+                    </property>
+                    <property name="text">
+                     <string>RESET ALL DATA</string>
+                    </property>
+                    <property name="filename" stdset="0">
+                     <string>reset_all_data.ngc</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
                    <widget class="SubCallButton" name="x_data_reset1">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -14629,96 +14688,7 @@ padding-left: 5px;
                         </item>
                        </layout>
                       </widget>
-                      <widget class="QWidget" name="Page6">
-                       <widget class="MDIButton" name="y_data_reset">
-                        <property name="geometry">
-                         <rect>
-                          <x>110</x>
-                          <y>270</y>
-                          <width>110</width>
-                          <height>27</height>
-                         </rect>
-                        </property>
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>110</width>
-                          <height>27</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>110</width>
-                          <height>27</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">QPushButton {
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-	font: 14pt &quot;Bebas Kai&quot;;
-  	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
-}</string>
-                        </property>
-                        <property name="text">
-                         <string>Y DATA RESET</string>
-                        </property>
-                        <property name="MDICommand" stdset="0">
-                         <string>M68E1Q0\nM68E2Q0\nM68E3Q0M68E4Q0\nM68E6Q0\nM68E7Q0\nM68E9Q0\nM68E11Q0</string>
-                        </property>
-                       </widget>
-                       <widget class="MDIButton" name="x_data_reset">
-                        <property name="geometry">
-                         <rect>
-                          <x>110</x>
-                          <y>240</y>
-                          <width>110</width>
-                          <height>27</height>
-                         </rect>
-                        </property>
-                        <property name="sizePolicy">
-                         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                          <horstretch>0</horstretch>
-                          <verstretch>0</verstretch>
-                         </sizepolicy>
-                        </property>
-                        <property name="minimumSize">
-                         <size>
-                          <width>110</width>
-                          <height>27</height>
-                         </size>
-                        </property>
-                        <property name="maximumSize">
-                         <size>
-                          <width>110</width>
-                          <height>27</height>
-                         </size>
-                        </property>
-                        <property name="styleSheet">
-                         <string notr="true">QPushButton {
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-top-right-radius: 0px;
-    border-bottom-right-radius: 0px;
-	font: 14pt &quot;Bebas Kai&quot;;
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgb(81, 86, 85), stop:0.489795 rgb(99, 102, 102), stop:0.699799 rgb(85, 88, 94), stop:0.90444 rgb(77, 84, 86), stop:0.160246 rgb(83, 84, 91), stop:1 rgb(109, 115, 118));
-}</string>
-                        </property>
-                        <property name="text">
-                         <string>X DATA RESET</string>
-                        </property>
-                        <property name="MDICommand" stdset="0">
-                         <string>M68E0Q0\nM68E2Q0\nM68E3Q0\nM68E4Q0\nM68E5Q0\nM68E7Q0\nM68E8Q0\nM68E10Q0</string>
-                        </property>
-                       </widget>
-                      </widget>
+                      <widget class="QWidget" name="Page6"/>
                       <widget class="QWidget" name="Page7">
                        <layout class="QHBoxLayout" name="horizontalLayout_55">
                         <item>
@@ -17422,7 +17392,7 @@ QAbstractSpinBox:selected {
            <enum>QTabWidget::South</enum>
           </property>
           <property name="currentIndex">
-           <number>1</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="tabWidget_24Page1">
            <attribute name="title">
@@ -26504,13 +26474,13 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
-  <buttongroup name="proberoutinebtnGroup"/>
-  <buttongroup name="plotviewGroup"/>
-  <buttongroup name="xycalbtnGroup"/>
-  <buttongroup name="mainorthoperspbtnGroup"/>
   <buttongroup name="probehelpGroup"/>
-  <buttongroup name="probetabGroup"/>
-  <buttongroup name="probemodeGroup"/>
+  <buttongroup name="xycalbtnGroup"/>
+  <buttongroup name="plotviewGroup"/>
+  <buttongroup name="mainorthoperspbtnGroup"/>
+  <buttongroup name="proberoutinebtnGroup"/>
   <buttongroup name="plotorthoperspbtnGroup"/>
+  <buttongroup name="probemodeGroup"/>
+  <buttongroup name="probetabGroup"/>
  </buttongroups>
 </ui>
