@@ -1,9 +1,0 @@
-o<clear_offset> sub
-
-  M68 E12 Q0
-
-  #5172 = 0
-
-o<clear_offset> endsub
-
-M2 (end program)

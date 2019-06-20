@@ -48,43 +48,30 @@ class JogIncrementWidget(QWidget):
         if parent is None and not standalone:
             return
 
+        enable_default = True
+
         increments = INFO.getIncrements()
-        current_increment = getSetting('machine.jog.increment').getValue()
-        print(current_increment)
-
-        if current_increment == 0:
-            current_increment = "JOG"
-
-        print(increments)
-
         for increment in increments:
-
-            if increment == 0:
-                continue
-
-            if increment.startswith("."):
-                temp_increment = "0{}".format(increment)
-            else:
-                temp_increment = increment
-
-            temp_increment = temp_increment.replace("in", "", 1)
-
-            raw_increment = increment.strip()
-
             button = LEDButton()
 
             button.setCheckable(True)
             button.setAutoExclusive(True)
             button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             button.setMinimumSize(50, 42)
-            button.setText(raw_increment)
 
-            button.clicked.connect(self.setJogIncrement)
+            if increment != 0:
+                raw_increment = increment.strip()
+                # print '[', raw_increment, ']'
+                button.setText(raw_increment)
+                button.clicked.connect(self.setJogIncrement)
 
-            if temp_increment == str(current_increment):
-                button.setChecked(True)
+                if enable_default:
+                    enable_default = False
 
-            hBox.addWidget(button)
+                    button.setDefault(True)
+                    button.setChecked(True)
+
+                hBox.addWidget(button)
 
         self.placeLed()
 

@@ -7,11 +7,9 @@ from qtpyvcp.utilities.settings import setting
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
-from qtpyvcp.utilities.settings import getSetting
 from qtpyvcp.actions.base_actions import setTaskMode
 from qtpyvcp.plugins import getPlugin
 
-POSITION = getPlugin('position')
 STATUS = getPlugin('status')
 STAT = STATUS.stat
 
@@ -952,8 +950,6 @@ class jog:
             distance (float, optional) : Desired jog distance, continuous if 0.00.
         """
 
-        print(axis, direction, speed, distance)
-
         if isinstance(direction, str):
             direction = {'neg': -1, 'pos': 1}.get(direction.lower(), 0)
 
@@ -965,8 +961,8 @@ class jog:
             CMD.teleop_enable(1)
 
         if speed == 0 or direction == 0:
-            if getSetting('machine.jog.increment').getValue() == 0:
-                CMD.jog(linuxcnc.JOG_STOP, 0, axis)
+            CMD.jog(linuxcnc.JOG_STOP, 0, axis)
+
         else:
 
             if speed is None:
@@ -986,11 +982,6 @@ class jog:
             if distance == 0:
                 CMD.jog(linuxcnc.JOG_CONTINUOUS, 0, axis, velocity)
             else:
-                if direction > 0:
-                    end_position = POSITION.rel.getValue()[axis] + distance
-                else:
-                    end_position = POSITION.rel.getValue()[axis] - distance
-
                 CMD.jog(linuxcnc.JOG_INCREMENT, 0, axis, velocity, distance)
 
     @staticmethod
