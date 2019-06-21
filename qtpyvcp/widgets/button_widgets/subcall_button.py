@@ -26,10 +26,20 @@ class SubCallButton(VCPButton):
         parent (QWidget, optional) : The parent widget of the button, or None.
         filename (str, optional) : The filename of the NGCGUI style subroutine
             the button should call, including any extension. The subroutine must
-            be on the subroutine path specified in the INI.
+            be on the subroutine path specified in the INI. The name of the
+            subroutine must match exactly the sub/endsub name. The parameter
+            #<parameter1> if found in the VCP the value from that widget will be
+            used instead of the default value. If you don't have a default value
+            you must have a widget by the same name.
 
-    Todo:
-        Add NGCGUI subroutine file format example.
+    example.ngc
+    o<example> sub
+    #<parameter1> = #1
+    #<parameter2> = #2 (=default_value)
+    
+    ;Body of the subroutine
+    
+    o<example> endsub
     """
     def __init__(self, parent=None, filename=''):
         super(SubCallButton, self).__init__(parent)
