@@ -30,7 +30,8 @@ class SubCallButton(VCPButton):
             subroutine must match exactly the sub/endsub name. The parameter
             #<parameter1> if found in the VCP the value from that widget will be
             used instead of the default value. If you don't have a default value
-            you must have a widget by the same name.
+            you must have a widget by the same name. The widget can be a line
+            edit, a spin box or a double spin box.
 
     example.ngc
     o<example> sub
