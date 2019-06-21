@@ -11,4 +11,5 @@ QtPyVCP components available in the Qt Designer
    action_buttons
    action_sliders
    status_items
+   subcallbutton
 
