@@ -32,15 +32,16 @@ class SubCallButton(VCPButton):
             used instead of the default value. If you don't have a default value
             you must have a widget by the same name. The widget can be a line
             edit, a spin box or a double spin box.
+    ::
 
-    example.ngc
-    o<example> sub
-    #<parameter1> = #1
-    #<parameter2> = #2 (=default_value)
-    
-    ;Body of the subroutine
-    
-    o<example> endsub
+        example.ngc
+        o<example> sub
+        #<parameter1> = #1
+        #<parameter2> = #2 (=default_value)
+
+        ;Body of the subroutine
+
+        o<example> endsub
     """
     def __init__(self, parent=None, filename=''):
         super(SubCallButton, self).__init__(parent)
