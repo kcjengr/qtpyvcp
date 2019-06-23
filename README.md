@@ -32,6 +32,10 @@ See the [documentation](https://kcjengr.github.io/qtpyvcp/).
 * [Discord](https://discord.gg/463hMhd)
 * [Issue Tracker](https://github.com/kcjengr/qtpyvcp/issues)
 
+## Hardware requirements
+
+* CPU architecture 64 bits 
+* Graphics card that supports at least OpenGl 1.30
 
 ## Dependancies
 
