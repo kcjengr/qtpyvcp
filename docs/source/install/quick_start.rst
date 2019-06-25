@@ -2,17 +2,20 @@
 Quick Start
 ===========
 
-These instructions will install the current release of `QtPyVCP` including
-sample configurations for LinuxCNC and the GUI builder Qt Designer with the
-QtPyVCP widgets as well as the dependencies needed to run QtPyVCP.
+These instructions will install the current release of `QtPyVCP`, including
+sample configurations for LinuxCNC and Qt Designer for editing VCPs.
 
 **Requirements**
 
-Debian 9 64 bit or Linux Mint 19 64 bit with LinuxCNC 2.8 (master) installed,
-either system wide or as a Run In Place (RIP) built from source.
+* Debian 9 (Stretch) or Linux Mint 19, 64 bit
+* LinuxCNC 2.8 or later, installed either system wide or as a Run In Place (RIP) built from source.
+* Graphics card that supports at least OpenGL 1.50
 
-Instructions for installing on Debian 9 (stretch) and other distros can be
-found here: https://gnipsel.com/linuxcnc/uspace/debian9-emc.html
+.. Note::
+    QtPyVCP requires a 64bit operating systems, 32bit systems are **not** supported.
+
+Instructions for installing LinuxCNC on Debian 9 (stretch) and other distros
+can be found here: https://gnipsel.com/linuxcnc/uspace/debian9-emc.html
 
 
 **Install dependencies**
@@ -33,8 +36,7 @@ QtPyVCP specific sim configs to ``~/linuxcnc/configs/sim.qtpyvcp``.
 
 **Upgrade QtPyVCP**
 
-As improvements are made to QtPyVCP you an upgrade your pip install with the
-following
+As improvements are made to QtPyVCP you can upgrade the pip install with
 ::
 
   pip install git+https://github.com/kcjengr/qtpyvcp.git --upgrade
