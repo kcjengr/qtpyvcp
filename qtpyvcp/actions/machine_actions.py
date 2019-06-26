@@ -952,8 +952,6 @@ class jog:
             distance (float, optional) : Desired jog distance, continuous if 0.00.
         """
 
-        print(axis, direction, speed, distance)
-
         if isinstance(direction, str):
             direction = {'neg': -1, 'pos': 1}.get(direction.lower(), 0)
 
@@ -965,7 +963,7 @@ class jog:
             CMD.teleop_enable(1)
 
         if speed == 0 or direction == 0:
-            if getSetting('machine.jog.increment').getValue() == 0:
+            if getSetting('machine.jog.increment').getValue() == 0 or not jog_mode_incremental.value:
                 CMD.jog(linuxcnc.JOG_STOP, 0, axis)
         else:
 
