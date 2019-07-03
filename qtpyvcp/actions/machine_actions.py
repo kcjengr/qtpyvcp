@@ -1,4 +1,6 @@
 import linuxcnc
+import os
+
 from qtpy.QtWidgets import QComboBox
 
 from qtpyvcp.utilities.settings import setting
@@ -11,6 +13,7 @@ from qtpyvcp.utilities.settings import getSetting
 from qtpyvcp.actions.base_actions import setTaskMode
 from qtpyvcp.plugins import getPlugin
 
+INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 POSITION = getPlugin('position')
 STATUS = getPlugin('status')
 STAT = STATUS.stat
@@ -19,6 +22,7 @@ from qtpyvcp.utilities.info import Info
 INFO = Info()
 CMD = linuxcnc.command()
 
+UI_JOG_MODE = INIFILE.find("DISPLAY", "UI_JOG_MODE") or False
 
 # -------------------------------------------------------------------------
 # E-STOP action
@@ -963,7 +967,10 @@ class jog:
             CMD.teleop_enable(1)
 
         if speed == 0 or direction == 0:
-            if getSetting('machine.jog.increment').getValue() == 0 or not jog_mode_incremental.value:
+            if UI_JOG_MODE:
+                if getSetting('machine.jog.increment').getValue() == 0 or not jog_mode_incremental.value:
+                    CMD.jog(linuxcnc.JOG_STOP, 0, axis)
+            else:
                 CMD.jog(linuxcnc.JOG_STOP, 0, axis)
         else:
 
