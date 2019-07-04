@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1071</width>
-    <height>295</height>
+    <width>1073</width>
+    <height>298</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -21,25 +21,25 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="sizeConstraint">
     <enum>QLayout::SetFixedSize</enum>
    </property>
    <property name="leftMargin">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
-    <number>5</number>
+    <number>0</number>
    </property>
    <item>
-    <widget class="QFrame" name="frame">
+    <widget class="QFrame" name="vkb_buttons">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
        <horstretch>0</horstretch>
@@ -48,22 +48,22 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>1061</width>
-       <height>285</height>
+       <width>1073</width>
+       <height>298</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>1061</width>
-       <height>285</height>
+       <width>1073</width>
+       <height>298</height>
       </size>
      </property>
      <property name="styleSheet">
       <string notr="true">QFrame{ 
     border-style: solid;
-    border-width: 2px;
+    border-width: 4px;
     border-color: rgb(136, 138, 133);
-    border-radius: 8px;
+    border-radius: 0px;
     background: rgb(46, 52, 54);    
 }</string>
      </property>
@@ -76,6 +76,18 @@
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="spacing">
        <number>7</number>
+      </property>
+      <property name="leftMargin">
+       <number>15</number>
+      </property>
+      <property name="topMargin">
+       <number>15</number>
+      </property>
+      <property name="rightMargin">
+       <number>15</number>
+      </property>
+      <property name="bottomMargin">
+       <number>15</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -105,21 +117,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>`</string>
@@ -149,21 +154,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>16</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>1</string>
@@ -193,21 +191,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>16</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>2</string>
@@ -237,21 +228,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>16</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>3</string>
@@ -281,21 +265,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>16</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>4</string>
@@ -325,21 +302,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>16</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>5</string>
@@ -369,21 +339,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>16</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>6</string>
@@ -413,21 +376,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>16</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>7</string>
@@ -457,21 +413,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>16</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>8</string>
@@ -501,21 +450,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>16</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>9</string>
@@ -545,21 +487,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>16</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 16pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>0</string>
@@ -589,21 +524,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>-</string>
@@ -633,21 +561,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>=</string>
@@ -677,21 +598,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>BACK</string>
@@ -702,7 +616,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_85">
+         <widget class="VKBKey" name="insert">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -734,11 +648,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(66, 116, 191);
-    color: white;
-    font: 13pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>INSERT</string>
@@ -746,10 +656,13 @@
           <property name="key" stdset="0">
            <string>Ins</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>blue_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton">
+         <widget class="VKBKey" name="np7">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -771,7 +684,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
+            <pointsize>18</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -781,19 +694,18 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>7</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_2">
+         <widget class="VKBKey" name="np8">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -815,7 +727,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
+            <pointsize>18</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -825,19 +737,18 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>8</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_3">
+         <widget class="VKBKey" name="np9">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -859,7 +770,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
+            <pointsize>18</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -869,19 +780,18 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>9</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_16">
+         <widget class="VKBKey" name="divide">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -913,17 +823,16 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(76, 126, 201);
-    color: white;
-    font: 20pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>÷</string>
           </property>
           <property name="key" stdset="0">
            <string>/</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>symbols</string>
           </property>
          </widget>
         </item>
@@ -957,21 +866,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>TAB</string>
@@ -982,7 +884,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_22">
+         <widget class="VKBKey" name="q">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1004,29 +906,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string/>
           </property>
           <property name="text">
            <string>Q</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_31">
+         <widget class="VKBKey" name="w">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1048,29 +946,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>W</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_34">
+         <widget class="VKBKey" name="e">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1092,29 +986,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>E</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_35">
+         <widget class="VKBKey" name="r">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1136,29 +1026,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>R</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_36">
+         <widget class="VKBKey" name="t">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1180,29 +1066,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: rgba(47, 55, 254, 230);
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>T</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_blue</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_44">
+         <widget class="VKBKey" name="y">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1224,29 +1106,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: rgb(45, 46, 49);
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>Y</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_black</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_45">
+         <widget class="VKBKey" name="u">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1268,29 +1146,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>U</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_43">
+         <widget class="VKBKey" name="i">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1312,29 +1186,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>I</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_37">
+         <widget class="VKBKey" name="o">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1356,29 +1226,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>O</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_38">
+         <widget class="VKBKey" name="p">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1400,24 +1266,20 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>P</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -1444,21 +1306,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>[</string>
@@ -1488,21 +1343,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>]</string>
@@ -1532,21 +1380,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>\</string>
@@ -1554,7 +1395,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_79">
+         <widget class="VKBKey" name="del">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1586,11 +1427,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(66, 116, 191);
-    color: white;
-    font: 13pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>DEL</string>
@@ -1598,10 +1435,13 @@
           <property name="key" stdset="0">
            <string>Del</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>blue_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_4">
+         <widget class="VKBKey" name="np4">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1623,7 +1463,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
+            <pointsize>18</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1633,19 +1473,18 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>4</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_5">
+         <widget class="VKBKey" name="np5">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1667,7 +1506,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
+            <pointsize>18</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1677,19 +1516,18 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>5</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_6">
+         <widget class="VKBKey" name="np6">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1711,7 +1549,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
+            <pointsize>18</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1721,19 +1559,18 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>6</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_17">
+         <widget class="VKBKey" name="multiply">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1765,17 +1602,16 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(76, 126, 201);
-    color: white;
-    font: 20pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>×</string>
           </property>
           <property name="key" stdset="0">
            <string>*</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>symbols</string>
           </property>
          </widget>
         </item>
@@ -1809,21 +1645,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>CAPS</string>
@@ -1831,7 +1660,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_49">
+         <widget class="VKBKey" name="a">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1853,29 +1682,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>A</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_58">
+         <widget class="VKBKey" name="s">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1897,29 +1722,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: rgba(47, 55, 254, 230);
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>S</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_blue</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_51">
+         <widget class="VKBKey" name="d">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1941,29 +1762,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>D</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_52">
+         <widget class="VKBKey" name="f">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1985,29 +1802,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: rgba(47, 55, 254, 230);
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>F</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_blue</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_53">
+         <widget class="VKBKey" name="g">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2029,29 +1842,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: rgba(47, 55, 254, 230);
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>G</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_blue</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_54">
+         <widget class="VKBKey" name="h">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2073,29 +1882,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>H</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_55">
+         <widget class="VKBKey" name="j">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2117,29 +1922,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>J</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_50">
+         <widget class="VKBKey" name="k">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2161,29 +1962,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>K</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_59">
+         <widget class="VKBKey" name="l">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2205,24 +2002,20 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>L</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -2249,21 +2042,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>;</string>
@@ -2293,21 +2079,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>'</string>
@@ -2337,21 +2116,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>ENTER</string>
@@ -2359,7 +2131,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_83">
+         <widget class="VKBKey" name="home">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2391,11 +2163,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(66, 116, 191);
-    color: white;
-    font: 13pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>HOME</string>
@@ -2403,10 +2171,13 @@
           <property name="key" stdset="0">
            <string>Home</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>blue_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_7">
+         <widget class="VKBKey" name="np1">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2428,7 +2199,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
+            <pointsize>18</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -2438,19 +2209,18 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>1</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_8">
+         <widget class="VKBKey" name="np2">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2472,7 +2242,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
+            <pointsize>18</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -2482,19 +2252,18 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>2</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_9">
+         <widget class="VKBKey" name="np3">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2516,7 +2285,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
+            <pointsize>18</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -2526,19 +2295,18 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>3</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_18">
+         <widget class="VKBKey" name="subtract">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2570,17 +2338,16 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(76, 126, 201);
-    color: white;
-    font: 20pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>−</string>
           </property>
           <property name="key" stdset="0">
            <string>-</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>symbols</string>
           </property>
          </widget>
         </item>
@@ -2614,21 +2381,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>SHIFT</string>
@@ -2639,7 +2399,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_66">
+         <widget class="VKBKey" name="z">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2661,29 +2421,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: rgb(45, 46, 49);
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>Z</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_black</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_65">
+         <widget class="VKBKey" name="x">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2705,29 +2461,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: rgb(45, 46, 49);
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>X</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_black</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_77">
+         <widget class="VKBKey" name="c">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2749,29 +2501,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>C</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_76">
+         <widget class="VKBKey" name="v">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2793,29 +2541,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>V</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_64">
+         <widget class="VKBKey" name="b">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2837,29 +2581,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>B</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_61">
+         <widget class="VKBKey" name="n">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2881,29 +2621,25 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>N</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_62">
+         <widget class="VKBKey" name="m">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -2925,24 +2661,20 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: rgba(47, 55, 254, 230);
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>M</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_blue</string>
           </property>
          </widget>
         </item>
@@ -2969,21 +2701,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>,</string>
@@ -3013,21 +2738,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>.</string>
@@ -3057,21 +2775,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>/</string>
@@ -3101,21 +2812,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>shift</string>
@@ -3123,7 +2827,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_82">
+         <widget class="VKBKey" name="up_arrow">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -3155,11 +2859,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string/>
@@ -3177,10 +2877,13 @@
           <property name="key" stdset="0">
            <string>Up</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_84">
+         <widget class="VKBKey" name="end">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -3212,11 +2915,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(66, 116, 191);
-    color: white;
-    font: 13pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>END</string>
@@ -3224,10 +2923,13 @@
           <property name="key" stdset="0">
            <string>End</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>blue_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_10">
+         <widget class="VKBKey" name="np0">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -3249,7 +2951,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
+            <pointsize>18</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -3259,14 +2961,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>0</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -3293,21 +2994,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>17</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 17pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>.</string>
@@ -3337,21 +3031,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string/>
@@ -3369,7 +3056,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_19">
+         <widget class="VKBKey" name="add">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -3401,17 +3088,16 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(76, 126, 201);
-    color: white;
-    font: 20pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>+</string>
           </property>
           <property name="key" stdset="0">
            <string>+</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>symbols</string>
           </property>
          </widget>
         </item>
@@ -3445,21 +3131,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>CTRL</string>
@@ -3489,21 +3168,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>ALT</string>
@@ -3511,7 +3183,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_72">
+         <widget class="VKBKey" name="space">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>1</horstretch>
@@ -3543,14 +3215,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(117, 118, 119);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string/>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -3577,21 +3248,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>FN</string>
@@ -3621,21 +3285,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>CTRL</string>
@@ -3643,7 +3300,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_78">
+         <widget class="VKBKey" name="left_arrow">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -3675,11 +3332,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string/>
@@ -3697,10 +3350,13 @@
           <property name="key" stdset="0">
            <string>Left</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_81">
+         <widget class="VKBKey" name="down_arrow">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -3732,11 +3388,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string/>
@@ -3754,10 +3406,13 @@
           <property name="key" stdset="0">
            <string>Down</string>
           </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
+          </property>
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_80">
+         <widget class="VKBKey" name="right_arrow">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -3789,11 +3444,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string/>
@@ -3810,6 +3461,9 @@
           </property>
           <property name="key" stdset="0">
            <string>Right</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -3842,21 +3496,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>CANCEL</string>
@@ -3889,21 +3536,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string>VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string/>
           </property>
           <property name="text">
            <string>in/mm</string>
@@ -3933,21 +3573,14 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
-            <weight>50</weight>
-            <italic>false</italic>
-            <bold>false</bold>
+            <pointsize>15</pointsize>
            </font>
           </property>
           <property name="focusPolicy">
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>ENTER</string>
@@ -3966,14 +3599,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>VBKModifierKey</class>
-   <extends>QPushButton</extends>
-   <header>qtpyvcp.widgets.virtual_keyboards.vkb_modifier_key</header>
-  </customwidget>
-  <customwidget>
    <class>VKBKey</class>
    <extends>QPushButton</extends>
    <header>qtpyvcp.widgets.virtual_keyboards.vkb_key</header>
+  </customwidget>
+  <customwidget>
+   <class>VBKModifierKey</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.virtual_keyboards.vkb_modifier_key</header>
   </customwidget>
  </customwidgets>
  <resources>

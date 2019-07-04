@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>277</width>
-    <height>285</height>
+    <width>289</width>
+    <height>297</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -21,7 +21,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
-    <number>5</number>
+    <number>0</number>
    </property>
    <property name="sizeConstraint">
     <enum>QLayout::SetFixedSize</enum>
@@ -48,22 +48,22 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>277</width>
-       <height>285</height>
+       <width>289</width>
+       <height>297</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>277</width>
-       <height>285</height>
+       <width>289</width>
+       <height>297</height>
       </size>
      </property>
      <property name="styleSheet">
       <string notr="true">QFrame{ 
     border-style: solid;
-    border-width: 2px;
+    border-width: 4px;
     border-color: rgb(136, 138, 133);
-    border-radius: 4px;
+    border-radius: 0px;
     background: rgb(46, 52, 54);    
 }</string>
      </property>
@@ -76,6 +76,18 @@
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="spacing">
        <number>7</number>
+      </property>
+      <property name="leftMargin">
+       <number>15</number>
+      </property>
+      <property name="topMargin">
+       <number>15</number>
+      </property>
+      <property name="rightMargin">
+       <number>15</number>
+      </property>
+      <property name="bottomMargin">
+       <number>15</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -127,11 +139,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 12pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>CANCEL</string>
@@ -174,14 +182,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>7</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -218,14 +225,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>8</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -262,14 +268,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>9</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -306,14 +311,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(66, 116, 175);
-    color: white;
-    font: 20pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>÷</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>symbols</string>
           </property>
          </widget>
         </item>
@@ -357,11 +361,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 12pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>in/mm</string>
@@ -401,14 +401,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>4</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -445,14 +444,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>5</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -489,14 +487,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>6</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -533,14 +530,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(66, 116, 175);
-    color: white;
-    font: 20pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>×</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>symbols</string>
           </property>
          </widget>
         </item>
@@ -584,11 +580,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(66, 116, 175);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string/>
@@ -605,6 +597,9 @@
           </property>
           <property name="key" stdset="0">
            <string>Up</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>blue_white</string>
           </property>
          </widget>
         </item>
@@ -641,14 +636,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>1</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -685,14 +679,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>2</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -729,14 +722,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>3</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -773,14 +765,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(66, 116, 175);
-    color: white;
-    font: 20pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>−</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>symbols</string>
           </property>
          </widget>
         </item>
@@ -824,11 +815,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(66, 116, 175);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string/>
@@ -845,6 +832,9 @@
           </property>
           <property name="key" stdset="0">
            <string>Down</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>blue_white</string>
           </property>
          </widget>
         </item>
@@ -881,14 +871,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(147, 148, 149);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>0</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>light_white</string>
           </property>
          </widget>
         </item>
@@ -925,11 +914,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>.</string>
@@ -969,11 +954,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string/>
@@ -1029,14 +1010,13 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(66, 116, 175);
-    color: white;
-    font: 20pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>+</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>symbols</string>
           </property>
          </widget>
         </item>
@@ -1080,11 +1060,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(66, 116, 175);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string/>
@@ -1101,6 +1077,9 @@
           </property>
           <property name="key" stdset="0">
            <string>Left</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>blue_white</string>
           </property>
          </widget>
         </item>
@@ -1137,11 +1116,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(66, 116, 175);
-    color: white;
-    font: 18pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string/>
@@ -1158,6 +1133,9 @@
           </property>
           <property name="key" stdset="0">
            <string>Right</string>
+          </property>
+          <property name="buttonColorGroup" stdset="0">
+           <string>blue_white</string>
           </property>
          </widget>
         </item>
@@ -1206,11 +1184,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>DEL</string>
@@ -1253,11 +1227,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">VKBKey{ 
-    background: rgb(97, 98, 99);
-    color: white;
-    font: 14pt &quot;Bebas Kai&quot;;
-}</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>ENTER</string>
