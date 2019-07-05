@@ -95,7 +95,7 @@
          <number>7</number>
         </property>
         <item>
-         <widget class="VKBKey" name="pushButton_15">
+         <widget class="VKBKey" name="cancel">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -150,7 +150,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton">
+         <widget class="VKBKey" name="np7">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -193,7 +193,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_2">
+         <widget class="VKBKey" name="np8">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -236,7 +236,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_3">
+         <widget class="VKBKey" name="np9">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -279,7 +279,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_16">
+         <widget class="VKBKey" name="divide">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -329,7 +329,7 @@
          <number>7</number>
         </property>
         <item>
-         <widget class="VKBKey" name="pushButton_20">
+         <widget class="VKBKey" name="in_mm">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -369,7 +369,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_4">
+         <widget class="VKBKey" name="np4">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -412,7 +412,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_5">
+         <widget class="VKBKey" name="np5">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -455,7 +455,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_6">
+         <widget class="VKBKey" name="np6">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -498,7 +498,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_17">
+         <widget class="VKBKey" name="multiply">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -548,7 +548,7 @@
          <number>7</number>
         </property>
         <item>
-         <widget class="VKBKey" name="pushButton_82">
+         <widget class="VKBKey" name="up_arrow">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -604,7 +604,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_7">
+         <widget class="VKBKey" name="np1">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -647,7 +647,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_8">
+         <widget class="VKBKey" name="np2">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -690,7 +690,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_9">
+         <widget class="VKBKey" name="np3">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -733,7 +733,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_18">
+         <widget class="VKBKey" name="subtract">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -783,7 +783,7 @@
          <number>7</number>
         </property>
         <item>
-         <widget class="VKBKey" name="pushButton_81">
+         <widget class="VKBKey" name="down_arrow">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -839,7 +839,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_10">
+         <widget class="VKBKey" name="np0">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -882,7 +882,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_11">
+         <widget class="VKBKey" name="decimal">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -922,7 +922,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_12">
+         <widget class="VKBKey" name="backspace">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -978,7 +978,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_19">
+         <widget class="VKBKey" name="add">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1028,7 +1028,7 @@
          <number>7</number>
         </property>
         <item>
-         <widget class="VKBKey" name="pushButton_78">
+         <widget class="VKBKey" name="left_arrow">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1084,7 +1084,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_80">
+         <widget class="VKBKey" name="right_arrow">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1140,7 +1140,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_21">
+         <widget class="VKBKey" name="del">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -1195,7 +1195,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="pushButton_13">
+         <widget class="VKBKey" name="enter">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
