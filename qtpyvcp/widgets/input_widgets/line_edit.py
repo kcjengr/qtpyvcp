@@ -4,7 +4,7 @@ Line Edit
 """
 
 from qtpy.QtCore import Property
-from qtpy.QtWidgets import QLineEdit
+from qtpy.QtWidgets import QLineEdit  # , QIntValidator, QDoubleValidator
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
@@ -25,6 +25,7 @@ class VCPLineEdit(QLineEdit, CMDWidget):
         super(VCPLineEdit, self).__init__(parent)
 
         self._action_name = ''
+        self.input_type = "default"
 
         self.returnPressed.connect(self.onReturnPressed)
 

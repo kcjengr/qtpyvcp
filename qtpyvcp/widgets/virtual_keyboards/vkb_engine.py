@@ -22,15 +22,18 @@ class VKBEngine(QObject):
         self.app = QApplication.instance()
 
         self._modifiers = Qt.NoModifier
+        self.current_vkb = None
 
         self.app.focusChanged.connect(self.focusChangedEvent)
 
     def focusChangedEvent(self, old_w, new_w):
         if issubclass(new_w.__class__, QLineEdit):
-            print "QLineEdit got focus: ", new_w
-            getKeyboard('default').show()
+            print("QLineEdit got focus: ", new_w.input_type)
+            self.current_vkb = getKeyboard(new_w.input_type)
+            self.current_vkb.show()
         else:
-            getKeyboard('default').hide()
+            if self.current_vkb:
+                self.current_vkb.hide()
 
     def emulateKeyPress(self, key_seq=None, modifiers=None):
         widget = self.sender()

@@ -1,5 +1,5 @@
 
-from qtpy.QtCore import Qt, QStringListModel, Slot
+from qtpy.QtCore import Qt, QStringListModel, Slot, Property
 from qtpy.QtGui import QValidator
 from qtpy.QtWidgets import QLineEdit, QCompleter
 
@@ -26,6 +26,8 @@ class MDIEntry(QLineEdit, CMDWidget):
     """
     def __init__(self, parent=None):
         super(MDIEntry, self).__init__(parent)
+
+        self.input_type = "default"
 
         self.model = QStringListModel()
 
@@ -76,3 +78,21 @@ class MDIEntry(QLineEdit, CMDWidget):
         with open(MDI_HISTORY_FILE, 'w') as fh:
             for cmd in self.model.stringList():
                 fh.write(cmd + '\n')
+
+    @Property(str)
+    def inputType(self):
+        """The type of the inupt the entry should accept.
+
+        Returns:
+            str : The entry type.
+        """
+        return self._input_type
+
+    @inputType.setter
+    def inputType(self, input_type):
+        self._input_type = input_type
+
+        # if self._input_type == "integer":
+        #     self.setValidator(QIntValidator())
+        # elif self._input_type == "decimal":
+        #     self.setValidator(QDoubleValidator())
