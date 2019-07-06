@@ -27,7 +27,7 @@ class MDIEntry(QLineEdit, CMDWidget):
     def __init__(self, parent=None):
         super(MDIEntry, self).__init__(parent)
 
-        self.input_type = "default"
+        self._input_type = "default"
 
         self.model = QStringListModel()
 

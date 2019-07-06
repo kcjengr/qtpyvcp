@@ -4,6 +4,9 @@ from qtpy.QtCore import Qt, QObject, Signal, Slot, QEvent
 from qtpy.QtWidgets import QApplication, QLineEdit
 
 from qtpyvcp.widgets.virtual_keyboards import getKeyboard
+from qtpyvcp.widgets.input_widgets.mdientry_widget import MDIEntry
+from qtpyvcp.widgets.input_widgets.line_edit import VCPLineEdit
+
 
 class VKBEngine(QObject):
 
@@ -27,9 +30,18 @@ class VKBEngine(QObject):
         self.app.focusChanged.connect(self.focusChangedEvent)
 
     def focusChangedEvent(self, old_w, new_w):
-        if issubclass(new_w.__class__, QLineEdit):
-            print("QLineEdit got focus: ", new_w.input_type)
-            self.current_vkb = getKeyboard(new_w.input_type)
+        if isinstance(new_w, MDIEntry):
+            print("QLineEdit got focus: ", new_w.inputType)
+            if self.current_vkb:
+                self.current_vkb.hide()
+            self.current_vkb = getKeyboard(new_w.inputType)
+            self.current_vkb.show()
+
+        elif isinstance(new_w, VCPLineEdit):
+            print("QLineEdit got focus: ", new_w.inputType)
+            if self.current_vkb:
+                self.current_vkb.hide()
+            self.current_vkb = getKeyboard(new_w.inputType)
             self.current_vkb.show()
         else:
             if self.current_vkb:

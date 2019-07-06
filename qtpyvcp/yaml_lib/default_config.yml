@@ -92,8 +92,7 @@ virtual_keyboards:
 #      overrides:
 #        esc:
   mdi:
-    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
-    args: []
+    provider: qtpyvcp.widgets.virtual_keyboards.vkb_base:VKBBase
     kwargs:
       ui_file: {{ file.dir }}/../widgets/dialogs/mdi_keyboard.ui
 #      frameless: True
@@ -101,11 +100,10 @@ virtual_keyboards:
 #      overrides:
 #        esc:
 
-  integer:
-    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
-    args: []
+  int:
+    provider: qtpyvcp.widgets.virtual_keyboards.vkb_base:VKBBase
     kwargs:
-      ui_file: {{ file.dir }}/../widgets/dialogs/integer_keypad.ui
+      ui_file: {{ file.dir }}/../widgets/dialogs/int_keypad.ui
 #      frameless: True
 #      modal: False
 #      overrides:

@@ -25,7 +25,7 @@ class VCPLineEdit(QLineEdit, CMDWidget):
         super(VCPLineEdit, self).__init__(parent)
 
         self._action_name = ''
-        self.input_type = "default"
+        self._input_type = "default"
 
         self.returnPressed.connect(self.onReturnPressed)
 
