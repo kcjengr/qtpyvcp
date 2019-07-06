@@ -46,3 +46,8 @@ class HalGroupBoxPlugin(_DesignerPlugin):
         return HalGroupBox
     def isContainer(self):
         return True
+
+from qtpyvcp.widgets.hal_widgets.hal_plot import HalPlot
+class HalPlotPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return HalPlot
