@@ -94,6 +94,7 @@ setup(
         'HiYaPyCo',
         'pyopengl',
         'vtk',
+        'pyqtgraph',
     ],
     entry_points={
         'console_scripts': [
