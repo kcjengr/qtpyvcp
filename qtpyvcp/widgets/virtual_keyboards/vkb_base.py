@@ -3,6 +3,7 @@ from qtpy import uic
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QDialog
 
+
 class VKBBase(QDialog):
     def __init__(self, parent=None, ui_file=None):
         super(VKBBase, self).__init__(parent)

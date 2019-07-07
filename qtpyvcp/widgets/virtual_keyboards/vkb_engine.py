@@ -1,7 +1,7 @@
 
 from qtpy.QtGui import QKeySequence, QKeyEvent
 from qtpy.QtCore import Qt, QObject, Signal, Slot, QEvent
-from qtpy.QtWidgets import QApplication, QLineEdit
+from qtpy.QtWidgets import QApplication, QLineEdit, QSpinBox, QDoubleSpinBox
 
 from qtpyvcp.widgets.virtual_keyboards import getKeyboard
 from qtpyvcp.widgets.input_widgets.mdientry_widget import MDIEntry
@@ -25,27 +25,45 @@ class VKBEngine(QObject):
         self.app = QApplication.instance()
 
         self._modifiers = Qt.NoModifier
-        self.current_vkb = None
+        self._active_vkb = None
+        self._receiver = None
 
         self.app.focusChanged.connect(self.focusChangedEvent)
 
     def focusChangedEvent(self, old_w, new_w):
-        if isinstance(new_w, MDIEntry):
-            print("QLineEdit got focus: ", new_w.inputType)
-            if self.current_vkb:
-                self.current_vkb.hide()
-            self.current_vkb = getKeyboard(new_w.inputType)
-            self.current_vkb.show()
 
-        elif isinstance(new_w, VCPLineEdit):
-            print("QLineEdit got focus: ", new_w.inputType)
-            if self.current_vkb:
-                self.current_vkb.hide()
-            self.current_vkb = getKeyboard(new_w.inputType)
-            self.current_vkb.show()
+        if isinstance(new_w, QLineEdit):
+            print("QLineEdit got focus: ", new_w)
+            input_type = new_w.property('inputType') or 'default'
+            self.activateVKB(new_w, input_type)
+
+        elif isinstance(new_w, QSpinBox):
+            print("QSpinBox got focus: ", new_w)
+            input_type = new_w.property('inputType') or 'int'
+            self.activateVKB(new_w.lineEdit(), input_type)
+
+        elif isinstance(new_w, QDoubleSpinBox):
+            print("QDoubleSpinBox got focus: ", new_w)
+            input_type = new_w.property('inputType') or 'float'
+            self.activateVKB(new_w.lineEdit(), input_type)
+
         else:
-            if self.current_vkb:
-                self.current_vkb.hide()
+            if self._active_vkb:
+                self._active_vkb.hide()
+
+            self._active_vkb = None
+            self._receiver = None
+
+    def activateVKB(self, line_edit, input_type):
+
+        if self._active_vkb:
+            self._active_vkb.hide()
+
+        self._receiver = line_edit
+
+        self._active_vkb = getKeyboard(input_type)
+        self._active_vkb.show()
+
 
     def emulateKeyPress(self, key_seq=None, modifiers=None):
         widget = self.sender()
