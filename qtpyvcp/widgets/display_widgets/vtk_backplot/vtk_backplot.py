@@ -34,6 +34,10 @@ class VTKCanon(StatCanon):
     def __init__(self, colors=COLOR_MAP, *args, **kwargs):
         super(VTKCanon, self).__init__(*args, **kwargs)
 
+        self.status = STATUS
+
+        self.units = str(self.status.program_units)
+
         self.path_colors = colors
 
         # Create a vtkUnsignedCharArray container and store the colors in it
@@ -51,7 +55,16 @@ class VTKCanon(StatCanon):
         self.append_path_point = self.path_points.append
 
     def add_path_point(self, line_type, start_point, end_point):
-        self.append_path_point((line_type, end_point[:3]))
+        if self.units == "mm":
+            point_list = list()
+            for point in end_point:
+                point *= 25.4
+                point_list.append(point)
+
+            self.append_path_point((line_type, point_list[:3]))
+
+        else:
+            self.append_path_point((line_type, end_point[:3]))
 
     def draw_lines(self):
 
@@ -724,6 +737,7 @@ class Machine:
 
         x_max = axis[0]["max_position_limit"]
         x_min = axis[0]["min_position_limit"]
+
         y_max = axis[1]["max_position_limit"]
         y_min = axis[1]["min_position_limit"]
 
@@ -795,6 +809,16 @@ class Machine:
 
 class Axes:
     def __init__(self):
+
+        self.status = STATUS
+
+        units = str(self.status.program_units)
+
+        if units == "mm":
+            self.length = 10.0
+        else:
+            self.length = 1.0
+
         transform = vtk.vtkTransform()
         transform.Translate(0.0, 0.0, 0.0)  # Z up
 
@@ -804,6 +828,8 @@ class Axes:
         self.actor.AxisLabelsOff()
         self.actor.SetShaftType(vtk.vtkAxesActor.CYLINDER_SHAFT)
 
+        self.actor.SetTotalLength(self.length, self.length, self.length)
+
     def get_actor(self):
         return self.actor
 
@@ -811,7 +837,14 @@ class Axes:
 class Tool:
     def __init__(self, tool, offset):
 
-        self.height = 2.0
+        self.status = STATUS
+
+        units = str(self.status.program_units)
+
+        if units == "mm":
+            self.height = 25.0
+        else:
+            self.height = 2.0
 
         transform = vtk.vtkTransform()
 
