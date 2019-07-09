@@ -32,7 +32,7 @@ Log = logger.getLogger(__name__)
 class OffsetsDialog(QDialog):
 
     def __init__(self, parent=None):
-        super(OffsetsDialog, self).__init__(parent=parent, flags=Qt.Popup)
+        super(OffsetsDialog, self).__init__(parent=parent)
 
         self.info = Info()
         self.log = Log
@@ -87,6 +87,8 @@ class OffsetsDialog(QDialog):
 
         set_button.clicked.connect(self.set_method)
         close_button.clicked.connect(self.close_method)
+
+        self.setWindowFlags(Qt.Popup)
 
     def set_method(self):
         system = self.system_combo.currentData()

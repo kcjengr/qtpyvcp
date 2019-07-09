@@ -24,6 +24,7 @@ class VCPSettingsSlider(QSlider, VCPAbstractSettingsWidget):
     """Settings Slider"""
     def __init__(self, parent):
         super(VCPSettingsSlider, self).__init__(parent=parent)
+        self._setting_name = ''
 
     def setDisplayValue(self, value):
         self.blockSignals(True)
