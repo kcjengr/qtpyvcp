@@ -611,7 +611,7 @@
            <string>BACK</string>
           </property>
           <property name="key" stdset="0">
-           <string>Backspace</string>
+           <string>Ctrl+C</string>
           </property>
          </widget>
         </item>
@@ -1632,13 +1632,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>87</width>
+            <width>96</width>
             <height>45</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>87</width>
+            <width>96</width>
             <height>45</height>
            </size>
           </property>
@@ -2103,13 +2103,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>110</width>
+            <width>102</width>
             <height>45</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>110</width>
+            <width>102</width>
             <height>45</height>
            </size>
           </property>
@@ -2368,13 +2368,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>115</width>
+            <width>120</width>
             <height>45</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>115</width>
+            <width>120</width>
             <height>45</height>
            </size>
           </property>
@@ -2799,13 +2799,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>78</width>
+            <width>79</width>
             <height>45</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>82</width>
+            <width>79</width>
             <height>45</height>
            </size>
           </property>
@@ -2865,8 +2865,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="../../../examples/probe_basic/probe_basic.qrc">
-            <normaloff>:/images/up_arrow.png</normaloff>:/images/up_arrow.png</iconset>
+           <iconset>
+            <normaloff>../../../examples/probe_basic/images/up_arrow.png</normaloff>../../../examples/probe_basic/images/up_arrow.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -3044,8 +3044,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="../../../examples/probe_basic/probe_basic.qrc">
-            <normaloff>:/images/backspace.png</normaloff>:/images/backspace.png</iconset>
+           <iconset>
+            <normaloff>../../../examples/probe_basic/images/backspace.png</normaloff>../../../examples/probe_basic/images/backspace.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -3192,13 +3192,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>423</width>
+            <width>425</width>
             <height>45</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>423</width>
+            <width>425</width>
             <height>16777215</height>
            </size>
           </property>
@@ -3338,8 +3338,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="../../../examples/probe_basic/probe_basic.qrc">
-            <normaloff>:/images/left_arrow.png</normaloff>:/images/left_arrow.png</iconset>
+           <iconset>
+            <normaloff>../../../examples/probe_basic/images/left_arrow.png</normaloff>../../../examples/probe_basic/images/left_arrow.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -3394,8 +3394,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="../../../examples/probe_basic/probe_basic.qrc">
-            <normaloff>:/images/down_arrow.png</normaloff>:/images/down_arrow.png</iconset>
+           <iconset>
+            <normaloff>../../../examples/probe_basic/images/down_arrow.png</normaloff>../../../examples/probe_basic/images/down_arrow.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -3450,8 +3450,8 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset resource="../../../examples/probe_basic/probe_basic.qrc">
-            <normaloff>:/images/right_arrow.png</normaloff>:/images/right_arrow.png</iconset>
+           <iconset>
+            <normaloff>../../../examples/probe_basic/images/right_arrow.png</normaloff>../../../examples/probe_basic/images/right_arrow.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -3468,7 +3468,7 @@
          </widget>
         </item>
         <item>
-         <widget class="VKBKey" name="cancel">
+         <widget class="VKBKey" name="esc">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -3477,8 +3477,14 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>50</width>
+            <width>60</width>
             <height>45</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>63</width>
+            <height>16777215</height>
            </size>
           </property>
           <property name="sizeIncrement">
@@ -3506,7 +3512,7 @@
            <string notr="true"/>
           </property>
           <property name="text">
-           <string>CANCEL</string>
+           <string>ESC</string>
           </property>
           <property name="key" stdset="0">
            <string>Esc</string>
@@ -3523,13 +3529,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>50</width>
+            <width>60</width>
             <height>45</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>16777215</width>
+            <width>63</width>
             <height>45</height>
            </size>
           </property>
@@ -3560,13 +3566,13 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>50</width>
+            <width>60</width>
             <height>45</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>16777215</width>
+            <width>63</width>
             <height>45</height>
            </size>
           </property>
