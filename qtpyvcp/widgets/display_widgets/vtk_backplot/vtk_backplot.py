@@ -100,6 +100,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._background_color = QColor(0, 0, 0)
         self._background_color2 = QColor(0, 0, 0)
         self._enableProgramTicks = True
+        self._enableMachineGrid = True
 
         # Todo: get active part
 
@@ -172,6 +173,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.line = None
         self._last_filename = str()
+
 
     def tlo(self, tlo):
         LOG.debug(tlo)
@@ -539,6 +541,24 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @enableProgramTicks.setter
     def enableProgramTicks(self, enable):
         self._enableProgramTicks = enable
+
+    @Property(bool)
+    def enableMachineGrid(self):
+        return self._enableMachineGrid
+
+    @enableMachineGrid.setter
+    def enableMachineGrid(self, enable):
+        self._enableMachineGrid = enable
+
+        if self._enableMachineGrid:
+            self.machine_actor.DrawXGridlinesOn()
+            self.machine_actor.DrawYGridlinesOn()
+            self.machine_actor.DrawZGridlinesOn()
+        else:
+            self.machine_actor.DrawXGridlinesOff()
+            self.machine_actor.DrawYGridlinesOff()
+            self.machine_actor.DrawZGridlinesOff()
+        self.update_render()
 
 
 class PathBoundaries:
