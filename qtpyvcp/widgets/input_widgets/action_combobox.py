@@ -3,6 +3,7 @@ from qtpy.QtCore import Property
 
 from qtpyvcp.actions import bindWidget
 
+
 class ActionComboBox(QComboBox):
     """General purpose combobox for triggering QtPyVCP actions.
 
