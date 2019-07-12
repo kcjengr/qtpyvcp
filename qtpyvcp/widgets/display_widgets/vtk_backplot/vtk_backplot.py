@@ -96,12 +96,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.canon_class = VTKCanon
 
-        # properties
-        self._background_color = QColor(0, 0, 0)
-        self._background_color2 = QColor(0, 0, 0)
-        self._enableProgramTicks = True
-        self._enableMachineGrid = True
-
         # Todo: get active part
 
         self.g5x_offset = [0.0] * 9
@@ -148,9 +142,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.canon = self.canon_class()
             self.path_actor = self.canon.get_actor()
 
-            self.extents = PathBoundaries(self.renderer, self.path_actor)
-            self.extents_actor = self.extents.get_actor()
+        else:
+            # dummy actor to make designer to happy
+            self.path_actor = vtk.vtkActor()
 
+        self.extents = PathBoundaries(self.renderer, self.path_actor)
+        self.extents_actor = self.extents.get_actor()
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.machine_actor)
         self.renderer.AddActor(self.axes_actor)
@@ -174,6 +171,33 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.line = None
         self._last_filename = str()
 
+        # properties that require VTK stuff initialized
+
+        self._background_color = QColor(0, 0, 0)
+        self._background_color2 = QColor(0, 0, 0)
+
+        # Fixme: program properties doesn't work may require a loaded path
+
+        self._enableProgramLabels = False
+        self._enableProgramBounds = True
+        self._enableProgramTicks = False
+
+        self._enableMachineLabels = False
+        self._enableMachineGrid = True
+        self._enableMachineBounds = True
+        self._enableMachineTicks = False
+
+        self.backgroundColor = self._background_color
+        self.backgroundColor2 = self._background_color2
+
+        self.enableProgramLabels = self._enableProgramLabels
+        self.enableProgramBounds = self._enableProgramBounds
+        self.enableProgramTicks = self._enableProgramTicks
+
+        self.enableMachineLabels = self._enableMachineLabels
+        self.enableMachineGrid = self._enableMachineGrid
+        self.enableMachineBounds = self._enableMachineBounds
+        self.enableMachineTicks = self._enableMachineTicks
 
     def tlo(self, tlo):
         LOG.debug(tlo)
@@ -296,6 +320,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def update_render(self):
         self.GetRenderWindow().Render()
+
+    # Slots
 
     @Slot()
     def setViewOrtho(self):
@@ -504,6 +530,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.machine_actor.ZAxisLabelVisibilityOn()
         self.update_render()
 
+    # Properties
+
     @Property(QColor)
     def backgroundColor(self):
         return self._background_color
@@ -535,12 +563,80 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     @Property(bool)
+    def enableProgramBounds(self):
+        return self._enableProgramBounds
+
+    @enableProgramBounds.setter
+    def enableProgramBounds(self, enable):
+        self._enableProgramBounds = enable
+
+        if self._enableProgramBounds:
+            self.extents_actor.XAxisVisibilityOn()
+            self.extents_actor.YAxisVisibilityOn()
+            self.extents_actor.ZAxisVisibilityOn()
+        else:
+            self.extents_actor.XAxisVisibilityOff()
+            self.extents_actor.YAxisVisibilityOff()
+            self.extents_actor.ZAxisVisibilityOff()
+
+        self.update_render()
+
+    @Property(bool)
     def enableProgramTicks(self):
         return self._enableProgramTicks
 
     @enableProgramTicks.setter
     def enableProgramTicks(self, enable):
         self._enableProgramTicks = enable
+
+        if self._enableProgramTicks:
+            self.machine_actor.XAxisTickVisibilityOff()
+            self.machine_actor.YAxisTickVisibilityOff()
+            self.machine_actor.ZAxisTickVisibilityOff()
+        else:
+            self.machine_actor.XAxisTickVisibilityOn()
+            self.machine_actor.YAxisTickVisibilityOn()
+            self.machine_actor.ZAxisTickVisibilityOn()
+
+        self.update_render()
+
+    @Property(bool)
+    def enableProgramLabels(self):
+        return self._enableProgramLabels
+
+    @enableProgramLabels.setter
+    def enableProgramLabels(self, enable):
+        self._enableProgramLabels = enable
+
+        if self._enableProgramLabels:
+            self.extents_actor.XAxisLabelVisibilityOn()
+            self.extents_actor.YAxisLabelVisibilityOn()
+            self.extents_actor.ZAxisLabelVisibilityOn()
+        else:
+            self.extents_actor.XAxisLabelVisibilityOff()
+            self.extents_actor.YAxisLabelVisibilityOff()
+            self.extents_actor.ZAxisLabelVisibilityOff()
+
+        self.update_render()
+
+    @Property(bool)
+    def enableMachineLabels(self):
+        return self._enableMachineLabels
+
+    @enableMachineLabels.setter
+    def enableMachineLabels(self, enable):
+        self._enableMachineLabels = enable
+
+        if self._enableMachineLabels:
+            self.machine_actor.XAxisLabelVisibilityOn()
+            self.machine_actor.YAxisLabelVisibilityOn()
+            self.machine_actor.ZAxisLabelVisibilityOn()
+        else:
+            self.machine_actor.XAxisLabelVisibilityOff()
+            self.machine_actor.YAxisLabelVisibilityOff()
+            self.machine_actor.ZAxisLabelVisibilityOff()
+
+        self.update_render()
 
     @Property(bool)
     def enableMachineGrid(self):
@@ -558,6 +654,47 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.machine_actor.DrawXGridlinesOff()
             self.machine_actor.DrawYGridlinesOff()
             self.machine_actor.DrawZGridlinesOff()
+
+        self.update_render()
+
+    @Property(bool)
+    def enableMachineBounds(self):
+        return self._enableMachineBounds
+
+    @enableMachineBounds.setter
+    def enableMachineBounds(self, enable):
+        self._enableMachineBounds = enable
+
+        if self._enableMachineBounds:
+            self.machine_actor.XAxisVisibilityOn()
+            self.machine_actor.YAxisVisibilityOn()
+            self.machine_actor.ZAxisVisibilityOn()
+        else:
+            self.machine_actor.XAxisVisibilityOff()
+            self.machine_actor.YAxisVisibilityOff()
+            self.machine_actor.ZAxisVisibilityOff()
+
+        self.update_render()
+
+    @Property(bool)
+    def enableMachineTicks(self):
+        return self._enableMachineTicks
+
+    @enableMachineTicks.setter
+    def enableMachineTicks(self, enable):
+        self._enableMachineTicks = enable
+
+        if self._enableMachineTicks:
+            self.machine_actor.XAxisTickVisibilityOn()
+            self.machine_actor.YAxisTickVisibilityOn()
+            self.machine_actor.ZAxisTickVisibilityOn()
+        else:
+            self.machine_actor.XAxisTickVisibilityOff()
+            self.machine_actor.YAxisTickVisibilityOff()
+            self.machine_actor.ZAxisTickVisibilityOff()
+
+        self.update_render()
+
         self.update_render()
 
 
