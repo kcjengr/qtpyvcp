@@ -372,8 +372,8 @@ class GcodeEditor(EditorBase, QObject):
 
         # QSS Hack
 
-        self.backgroundcolor = ''
-        self.marginbackgroundcolor = ''
+        self.backgroundcolor = QColor(255, 255, 255)
+        self.marginbackgroundcolor = QColor(255, 255, 255)
 
     @Slot(bool)
     def setEditable(self, state):
@@ -451,7 +451,7 @@ class GcodeEditor(EditorBase, QObject):
             # if self.idle_line_reset:
             #     STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))
 
-    @Property(str)
+    @Property(QColor)
     def backgroundcolor(self):
         """Property to set the background color of the GCodeEditor (str).
 
@@ -464,7 +464,7 @@ class GcodeEditor(EditorBase, QObject):
         self._backgroundcolor = color
         self.set_background_color(color)
 
-    @Property(str)
+    @Property(QColor)
     def marginbackgroundcolor(self):
         """Property to set the background color of the GCodeEditor margin (str).
 
