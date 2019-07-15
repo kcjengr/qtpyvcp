@@ -95,10 +95,7 @@ def bindWidget(widget, action):
         else:
             widget.clicked.connect(lambda: method(*args, **kwargs))
 
-    elif isinstance(widget, QSlider) or isinstance(widget, QSpinBox):
-        widget.valueChanged.connect(method)
-
-    elif isinstance(widget, QDial) or isinstance(widget, QSpinBox):
+    elif isinstance(widget, QSlider) or isinstance(widget, QSpinBox) or isinstance(widget, QDial):
         widget.valueChanged.connect(method)
 
     elif isinstance(widget, QComboBox):
