@@ -47,7 +47,7 @@ class Message(QWidget):
             padding: 0;
             """)
         self.buttonClose = QPushButton(self)
-        # self.buttonClose.setIcon(QIcon("res/close1.png"))
+        self.buttonClose.setIcon(QIcon.fromTheme("window-close"))
         self.buttonClose.setFixedSize(32, 32)
         self.layout().addWidget(self.titleLabel, 0, 0)
         self.layout().addWidget(self.messageLabel, 1, 0)
