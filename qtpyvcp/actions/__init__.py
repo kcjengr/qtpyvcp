@@ -1,6 +1,6 @@
 import os
 import sys
-from qtpy.QtWidgets import QAction, QPushButton, QCheckBox, QSlider, QSpinBox, QComboBox
+from qtpy.QtWidgets import QAction, QPushButton, QCheckBox, QSlider, QSpinBox, QComboBox, QDial
 
 import machine_actions as machine
 import program_actions as program
@@ -95,7 +95,7 @@ def bindWidget(widget, action):
         else:
             widget.clicked.connect(lambda: method(*args, **kwargs))
 
-    elif isinstance(widget, QSlider) or isinstance(widget, QSpinBox):
+    elif isinstance(widget, QSlider) or isinstance(widget, QSpinBox) or isinstance(widget, QDial):
         widget.valueChanged.connect(method)
 
     elif isinstance(widget, QComboBox):

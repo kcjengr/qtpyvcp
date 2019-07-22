@@ -48,6 +48,11 @@ class ActionSliderPlugin(_DesignerPlugin):
     def pluginClass(self):
         return ActionSlider
 
+from action_dial import ActionDial
+class ActionDialPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return ActionDial
+
 from action_combobox import ActionComboBox
 class ActionComboBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
