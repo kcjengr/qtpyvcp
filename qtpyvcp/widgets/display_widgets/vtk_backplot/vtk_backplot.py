@@ -11,15 +11,19 @@ from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities import logger
+from qtpyvcp.utilities.info import Info
 
 from base_canon import StatCanon
 from base_backplot import BaseBackPlot
+
+INFO = Info()
 
 LOG = logger.getLogger(__name__)
 STATUS = getPlugin('status')
 TOOLTABLE = getPlugin('tooltable')
 IN_DESIGNER = os.getenv('DESIGNER', False)
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
+MACHINE_UNITS = 2 if INFO.getIsMachineMetric() else 1
 
 COLOR_MAP = {
     'traverse': (188, 252, 201, 75),
@@ -36,7 +40,7 @@ class VTKCanon(StatCanon):
 
         self.status = STATUS
 
-        self.units = str(self.status.program_units)
+        self.units = MACHINE_UNITS
 
         self.path_colors = colors
 
@@ -55,7 +59,7 @@ class VTKCanon(StatCanon):
         self.append_path_point = self.path_points.append
 
     def add_path_point(self, line_type, start_point, end_point):
-        if self.units == "mm":
+        if self.units == 2:
             point_list = list()
             for point in end_point:
                 point *= 25.4
@@ -130,6 +134,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.parent = parent
         self.status = STATUS
         self.stat = STATUS.stat
+
+        self.units = MACHINE_UNITS
 
         self.axis = self.stat.axis
 
@@ -811,10 +817,9 @@ class Axes:
     def __init__(self):
 
         self.status = STATUS
+        self.units = MACHINE_UNITS
 
-        units = str(self.status.program_units)
-
-        if units == "mm":
+        if self.units == 2:
             self.length = 10.0
         else:
             self.length = 1.0
@@ -838,11 +843,10 @@ class Tool:
     def __init__(self, tool, offset):
 
         self.status = STATUS
+        self.units = MACHINE_UNITS
 
-        units = str(self.status.program_units)
-
-        if units == "mm":
-            self.height = 25.0
+        if self.units == 2:
+            self.height = 25.4 * 2.0
         else:
             self.height = 2.0
 
@@ -856,8 +860,8 @@ class Tool:
             transform.RotateWXYZ(90, 0, 1, 0)
         else:
             source = vtk.vtkCylinderSource()
-            source.SetHeight(1)
-            source.SetCenter(-offset[0], .5 - offset[2], offset[1])
+            source.SetHeight(self.height / 2)
+            source.SetCenter(-offset[0], self.height / 4 - offset[2], offset[1])
             source.SetRadius(tool.diameter / 2)
             transform.RotateWXYZ(90, 1, 0, 0)
 
