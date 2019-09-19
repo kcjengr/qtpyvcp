@@ -1,5 +1,5 @@
-recursive-include examples *.yml *.yaml *.ui *.qss *qrc
-recursive-include qtpyvcp *.yml *.yaml *.ui *.qss *qrc
+recursive-include examples *.yml *.yaml *.ui *.qss *qrc *.qml
+recursive-include qtpyvcp *.yml *.yaml *.ui *.qss *qrc *.qml
 recursive-include video_tests
 include versioneer.py
 include qtpyvcp/_version.py
