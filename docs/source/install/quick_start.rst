@@ -26,7 +26,7 @@ can be found here: https://gnipsel.com/linuxcnc/uspace/debian9-emc.html
 **Install QtPyVCP**
 ::
 
-  pip install git+https://github.com/kcjengr/qtpyvcp.git
+  pip install qtpyvcp
 
 This will install QtPyVCP along with the examples, and will add
 QtPyVCP specific sim configs to ``~/linuxcnc/configs/sim.qtpyvcp``.
@@ -39,7 +39,7 @@ QtPyVCP specific sim configs to ``~/linuxcnc/configs/sim.qtpyvcp``.
 As improvements are made to QtPyVCP you can upgrade the pip install with
 ::
 
-  pip install git+https://github.com/kcjengr/qtpyvcp.git --upgrade
+  pip install qtpyvcp.git --upgrade
 
 **Launch a SIM config**
 
