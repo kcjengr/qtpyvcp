@@ -39,7 +39,7 @@ QtPyVCP specific sim configs to ``~/linuxcnc/configs/sim.qtpyvcp``.
 As improvements are made to QtPyVCP you can upgrade the pip install with
 ::
 
-  pip install qtpyvcp.git --upgrade
+  pip install --upgrade qtpyvcp
 
 **Launch a SIM config**
 
