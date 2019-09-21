@@ -18,7 +18,7 @@
 
 from qtpy.QtCore import Qt, QSortFilterProxyModel, QRegExp
 from qtpy.QtGui import QStandardItemModel, QStandardItem, QIcon
-from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QListView, QLabel, QHBoxLayout, QWidget, QPushButton
+from qtpy.QtWidgets import QVBoxLayout, QStackedWidget, QLabel, QListView, QHBoxLayout, QWidget, QPushButton
 
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.plugins import getPlugin

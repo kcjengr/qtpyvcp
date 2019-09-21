@@ -409,7 +409,7 @@ QComboBox QAbstractItemView{
                   </property>
                   <layout class="QHBoxLayout" name="horizontalLayout_16">
                    <property name="spacing">
-                    <number>6</number>
+                    <number>3</number>
                    </property>
                    <property name="leftMargin">
                     <number>0</number>
@@ -476,9 +476,9 @@ QComboBox QAbstractItemView{
                      </property>
                      <property name="styleSheet">
                       <string notr="true">QLabel {
-    border-style: transparent;
-    border-color: rgb(235, 235, 235);
-    border-width: 1px;
+    border-style: white;
+    border-color: white;
+    border-width: 0px;
     border-radius: 5px;
     color: black;
     background: white;
@@ -17419,10 +17419,10 @@ QAbstractSpinBox:selected {
            <widget class="QFrame" name="frame_38">
             <property name="geometry">
              <rect>
-              <x>10</x>
+              <x>11</x>
               <y>10</y>
               <width>800</width>
-              <height>500</height>
+              <height>600</height>
              </rect>
             </property>
             <property name="sizePolicy">
@@ -17434,13 +17434,13 @@ QAbstractSpinBox:selected {
             <property name="minimumSize">
              <size>
               <width>800</width>
-              <height>500</height>
+              <height>600</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
               <width>800</width>
-              <height>500</height>
+              <height>600</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -17459,7 +17459,16 @@ QAbstractSpinBox:selected {
               <number>5</number>
              </property>
              <item>
-              <widget class="NotificationWidget" name="notificationwidget"/>
+              <widget class="NotificationWidget" name="notificationwidget">
+               <property name="styleSheet">
+                <string notr="true">QLabel {
+    font-family: &quot;Bebas Kai&quot;;
+    color: white;
+    font-size: 16pt;
+}
+</string>
+               </property>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -20812,18 +20821,18 @@ border-radius: 1px;
             <widget class="QPushButton" name="pushButton">
              <property name="minimumSize">
               <size>
-               <width>100</width>
+               <width>120</width>
                <height>35</height>
               </size>
              </property>
              <property name="maximumSize">
               <size>
-               <width>100</width>
+               <width>120</width>
                <height>35</height>
               </size>
              </property>
              <property name="text">
-              <string>NOTIFICATION</string>
+              <string>NOTIFICATIONS</string>
              </property>
             </widget>
            </item>
@@ -26562,13 +26571,13 @@ font: 11pt bebas kai;
   </property>
  </designerdata>
  <buttongroups>
+  <buttongroup name="proberoutinebtnGroup"/>
+  <buttongroup name="plotviewGroup"/>
   <buttongroup name="xycalbtnGroup"/>
-  <buttongroup name="probehelpGroup"/>
   <buttongroup name="probetabGroup"/>
+  <buttongroup name="probemodeGroup"/>
+  <buttongroup name="probehelpGroup"/>
   <buttongroup name="plotorthoperspbtnGroup"/>
   <buttongroup name="mainorthoperspbtnGroup"/>
-  <buttongroup name="plotviewGroup"/>
-  <buttongroup name="proberoutinebtnGroup"/>
-  <buttongroup name="probemodeGroup"/>
  </buttongroups>
 </ui>
