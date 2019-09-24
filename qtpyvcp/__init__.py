@@ -73,7 +73,7 @@ DEFAULT_CONFIG_FILE = os.path.join(QTPYVCP_DIR, 'yaml_lib/default_config.yml')
 # globals
 CONFIG = {}
 OPTIONS = DotDict()
-PLUGINS = OrderedDict()  # Ordered dict so
+PLUGINS = OrderedDict()  # Ordered dict so can terminate in order initiated
 DIALOGS = {}
 WINDOWS = {}
 SETTINGS = {}
