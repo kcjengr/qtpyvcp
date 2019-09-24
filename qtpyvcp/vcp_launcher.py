@@ -10,6 +10,7 @@ import qtpyvcp
 from qtpyvcp import hal
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import loadDataPlugins
+from qtpyvcp.utilities.settings import addSetting
 from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog, IGNORE_LIST
 
 from qtpyvcp.utilities.info import Info
@@ -76,6 +77,12 @@ def launch_application(opts, config):
     LOG.debug('Loading windows')
     loadWindows(config['windows'])
     log_time('done loading windows')
+
+    print ("#"*70)
+    for k, v in qtpyvcp.CONFIG['settings'].items():
+        print k, v
+        addSetting(k, **v)
+
 
     LOG.debug('Initializing widgets')
     app.initialiseWidgets()

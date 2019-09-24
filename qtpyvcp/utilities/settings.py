@@ -13,12 +13,17 @@ def setSetting(id, value):
         raise ValueError("The setting '%s' does not exist" % id)
 
 
+def addSetting(id, **kwargs):
+    # SETTINGS[id] = Setting(kwargs)
+    print SETTINGS
+
+
 class Setting(QObject):
 
     signal = Signal(object)
 
     def __init__(self, fget=None, fset=None, freset=None, default_value=False,
-                 max_value=None, min_value=None, persistent=True, doc=None):
+                 max_value=None, min_value=None, persistent=True, description=None):
         super(Setting, self).__init__()
 
         self.fget = fget
@@ -35,9 +40,9 @@ class Setting(QObject):
 
         self.instance = None
 
-        if doc is None and fget is not None:
-            doc = fget.__doc__
-        self.__doc__ = doc
+        if description is None and fget is not None:
+            description = fget.__doc__
+        self.__doc__ = description
 
     def getValue(self, *args, **kwargs):
         """Setting value get method."""
@@ -116,7 +121,7 @@ def setting(id, default_value=False, max_value=None, min_value=None, persistent=
                       max_value=max_value,
                       min_value=min_value,
                       persistent=persistent,
-                      doc=func.__doc__)
+                      description=func.__doc__)
 
         SETTINGS[id] = obj
         return obj
