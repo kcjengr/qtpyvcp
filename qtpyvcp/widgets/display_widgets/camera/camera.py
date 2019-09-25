@@ -170,8 +170,8 @@ class Camera(QWidget):
 
             self.updateCaptureMode()
             self.camera.start()
-        except:
-            pass
+        except Exception as e:
+            print(e)
 
     def keyPressEvent(self, event):
         if event.isAutoRepeat():
