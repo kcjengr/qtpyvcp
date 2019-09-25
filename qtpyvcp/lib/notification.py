@@ -24,7 +24,7 @@ from datetime import datetime
 
 from qtpy.QtCore import Qt, Signal
 from qtpy.QtGui import QIcon
-from qtpy.QtWidgets import QWidget, QGridLayout, QLabel, QPushButton, QDesktopWidget, QVBoxLayout, QApplication
+from qtpy.QtWidgets import QWidget, QGridLayout, QLabel, QPushButton, QDesktopWidget, QVBoxLayout, QApplication, QDialog
 
 
 class Message(QWidget):
@@ -54,12 +54,11 @@ class Message(QWidget):
         self.layout().addWidget(self.buttonClose, 0, 1, 2, 1)
 
 
-class Notification(QWidget):
+class Notification(QDialog):
     signNotifyClose = Signal(str)
 
     def __init__(self, parent=None):
-        super(QWidget, self).__init__(parent)
-
+        super(Notification, self).__init__(parent=parent)
         time = datetime.now()
 
         current_time = "{}:{}".format(time.hour, time.minute)
