@@ -14,6 +14,7 @@ from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.plugins import DataPlugin, DataChannel
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.lib.notification import Notification
 
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
@@ -26,6 +27,7 @@ class Notifications(DataPlugin):
         self.error_channel = linuxcnc.error_channel()
 
         self.messages = []
+        self.notification_dispatcher = None
 
         self.persistant = persistent
         self.persistent_file = normalizePath(path=persistent_file,
@@ -47,9 +49,10 @@ class Notifications(DataPlugin):
     def error_message(self, chan):
         return chan.value or ''
 
-    def captureMessage(self, typ, msg):
+    def captureMessage(self, m_type, msg):
+        self.notification_dispatcher.setNotify(m_type, msg)
         self.messages.append({'timestamp': time.time(),
-                              'message_type': typ,
+                              'message_type': m_type,
                               'message_text': msg,
                               'operator_id': '',
                               'loaded_file': STATUS.file.getValue(),
@@ -92,6 +95,9 @@ class Notifications(DataPlugin):
             LOG.error(msg)
 
     def initialise(self):
+
+        self.notification_dispatcher = Notification()
+
         if self.persistant and os.path.isfile(self.persistent_file):
             with open(self.persistent_file, 'r') as fh:
                 try:
