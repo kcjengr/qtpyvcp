@@ -29,6 +29,7 @@ class VCPLineEdit(QLineEdit, CMDWidget):
         self.returnPressed.connect(self.onReturnPressed)
 
     def onReturnPressed(self):
+        self.clearFocus()
         LOG.debug("Action entry activated with text: %s", self.text())
 
     @Property(str)
