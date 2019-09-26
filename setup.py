@@ -6,7 +6,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 from qtpyvcp.tools.qcompile import compile
-compile(['examples/probe_basic',])
+
+# compile(['examples/probe_basic',])
 
 
 if os.getenv('DEB_BUILD') == 'true' or os.getenv('USER') == 'root':
@@ -16,7 +17,7 @@ if os.getenv('DEB_BUILD') == 'true' or os.getenv('USER') == 'root':
         ('/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/', [
             'pyqt5designer/Qt5.7.1-64bit/libpyqt5_py2.so',
             'pyqt5designer/Qt5.7.1-64bit/libpyqt5_py3.so']),
-        ('/usr/share/fonts/truetype/bebaskai', ['examples/probe_basic/fonts/BebasKai.ttf'])
+        # ('/usr/share/fonts/truetype/bebaskai', ['examples/probe_basic/fonts/BebasKai.ttf'])
     ]
 
     # list of (destination, source_dir) tuples
@@ -35,7 +36,7 @@ else:
     # list of (destination, source_file) tuples
     DATA_FILES = [
         ('~/', ['scripts/.xsessionrc',]),
-        ('~/.local/share/fonts/truetype/bebaskai', ['examples/probe_basic/fonts/BebasKai.ttf']),
+        # ('~/.local/share/fonts/truetype/bebaskai', ['examples/probe_basic/fonts/BebasKai.ttf']),
         ('~/linuxcnc/nc_files/.qtpyvcp', ['sim/example_gcode/qtpyvcp.ngc'])
     ]
 
@@ -105,9 +106,6 @@ setup(
             # example VCPs
             'mini=examples.mini:main',
             'brender=examples.brender:main',
-            'probebasic=examples.probe_basic:main',
-            'probebasic_vertical=examples.probe_basic_vertical:main',
-            'probebasic_lathe=examples.probe_basic_lathe:main',
 
             # test VCPs
             'vtk_test=video_tests.vtk_test:main',
@@ -118,9 +116,9 @@ setup(
         'qtpyvcp.example_vcp': [
             'mini=examples.mini',
             'brender=examples.brender',
-            'probebasic=examples.probe_basic',
-            'probe_basic_vertical=examples.probe_basic_vertical',
-            'probe_basic_lathe=examples.probe_basic_lathe',
+            # 'probebasic=examples.probe_basic',
+            # 'probe_basic_vertical=examples.probe_basic_vertical',
+            # 'probe_basic_lathe=examples.probe_basic_lathe',
         ],
         'qtpyvcp.test_vcp': [
             'vtk_test=video_tests.vtk_test',
