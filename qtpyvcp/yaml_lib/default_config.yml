@@ -32,6 +32,9 @@ data_plugins:
   tooltable:
     provider: qtpyvcp.plugins.tool_table:ToolTable
 
+  offsettable:
+    provider: qtpyvcp.plugins.offset_table:OffsetTable
+
   notifications:
     provider: qtpyvcp.plugins.notifications:Notifications
     kwargs:
