@@ -115,13 +115,13 @@ class OffsetTable(DataPlugin):
         if not os.path.exists(self.tool_table_file):
             return
 
-        self.loadToolTable()
+        self.loadOffsetTable()
 
         self.current_tool.setValue(self.OFFSET_TABLE[STATUS.tool_in_spindle.getValue()])
 
         # update signals
         STATUS.tool_in_spindle.notify(self.setCurrentToolNumber)
-        STATUS.tool_table.notify(lambda *args: self.loadToolTable())
+        STATUS.tool_table.notify(lambda *args: self.loadOffsetTable())
 
     @DataChannel
     def current_tool(self, chan, item=None):
@@ -200,7 +200,7 @@ class OffsetTable(DataPlugin):
             self.fs_watcher.addPath(self.tool_table_file)
 
         # reload with the new data
-        tool_table = self.loadToolTable()
+        tool_table = self.loadOffsetTable()
         self.offset_table_changed.emit(tool_table)
 
     def iterTools(self, tool_table=None, columns=None):
@@ -210,16 +210,16 @@ class OffsetTable(DataPlugin):
             tool_data = tool_table[tool]
             yield [tool_data[key] for key in columns]
 
-    def loadToolTable(self, tool_file=None):
+    def loadOffsetTable(self, tool_file=None):
 
         if tool_file is None:
             tool_file = self.tool_table_file
 
         if not os.path.exists(tool_file):
             if IN_DESIGNER:
-                lorum_tooltable = makeLorumIpsumToolTable()
-                self.current_tool.setValue(lorum_tooltable)
-                return lorum_tooltable
+                lorum_offsettable = makeLorumIpsumOffsetTable()
+                self.current_tool.setValue(lorum_offsettable)
+                return lorum_offsettable
             LOG.critical("Tool table file does not exist: {}".format(tool_file))
             return {}
 
