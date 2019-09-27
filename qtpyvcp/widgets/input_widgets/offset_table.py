@@ -108,7 +108,7 @@ class OffsetModel(QStandardItemModel):
         self.setRowCount(9)  # (self.rowCount())
 
         # self.status.tool_in_spindle.notify(self.refreshModel)
-        # self.ot.tool_table_changed.connect(self.updateModel)
+        self.ot.offset_table_changed.connect(self.updateModel)
 
     def refreshModel(self):
         # refresh model so current row gets highlighted

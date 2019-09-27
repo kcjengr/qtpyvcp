@@ -1,24 +1,19 @@
-"""Offset Table data plugin.
+"""
+Offset Table data plugin.
 
-Exposes all the info available in the tool table. Watches the
-tool table file for changes and re-loads as needed.
+Exposes all the info available in the Offset table. Watches the
+offset table for changes and re-loads as needed.
 
-Tool Table YAML configuration:
+Offset Table YAML configuration:
 
 .. code-block:: yaml
 
     data_plugins:
-      tooltable:
+      offsettable:
         kwargs:
           # specify the columns that should be read and writen to the
-          # tooltable file. To use all columns set to: TPXYZABCUVWDIJQR
-          columns: PTDZR
-          # specify text to be added before the tool table data
-          file_header_template: |
-            LinuxCNC Tool Table
-            -------------------
-
-            QtPyVCP will preserve comments before the opening semicolon.
+          # tooltable file. To use all columns set to: ABCUVWXYZ
+          columns: XYZAB
 """
 
 import os
@@ -27,7 +22,7 @@ from datetime import datetime
 
 import linuxcnc
 
-from qtpy.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
+from qtpy.QtCore import QFileSystemWatcher, QTimer, Signal
 
 import qtpyvcp
 from qtpyvcp.utilities.info import Info
@@ -76,15 +71,28 @@ NO_TOOL = merge(DEFAULT_OFFSET, {'T': 0, 'R': 'No Tool Loaded'})
 # """
 
 COLUMN_LABELS = {
-    'A': 'A Offset',
-    'B': 'B Offset',
-    'C': 'C Offset',
-    'U': 'U Offset',
-    'V': 'V Offset',
-    'W': 'W Offset',
-    'X': 'X Offset',
-    'Y': 'Y Offset',
-    'Z': 'Z Offset',
+    'A': 'A',
+    'B': 'B',
+    'C': 'C',
+    'U': 'U',
+    'V': 'V',
+    'W': 'W',
+    'X': 'X',
+    'Y': 'Y',
+    'Z': 'Z',
+}
+
+ROW_LABELS = {
+    'P0': 'G53',
+    'P1': 'G54',
+    'P2': 'G55',
+    'P3': 'G56',
+    'P4': 'G57',
+    'P5': 'G58',
+    'P6': 'G59',
+    'P7': 'G59.1',
+    'P8': 'G59.2',
+    'P9': 'G59.3',
 }
 
 
@@ -98,30 +106,28 @@ class OffsetTable(DataPlugin):
     OFFSET_TABLE = {0: NO_TOOL}
     DEFAULT_OFFSET = DEFAULT_OFFSET
     COLUMN_LABELS = COLUMN_LABELS
+    ROW_LABELS = ROW_LABELS
 
     offset_table_changed = Signal(dict)
 
     def __init__(self, columns='ABCUVWXYZ', file_header_template=None):
         super(OffsetTable, self).__init__()
 
-        self.fs_watcher = None
-        self.orig_header_lines = []
-        self.file_header_template = file_header_template or ''
+        self.status = STATUS
+
         self.columns = self.validateColumns(columns) or [c for c in 'ABCUVWXYZ']
 
         self.setCurrentToolNumber(0)
 
-        self.tool_table_file = INFO.getToolTableFile()
-        if not os.path.exists(self.tool_table_file):
-            return
+        self.g5x_offset = None
 
         self.loadOffsetTable()
 
         self.current_tool.setValue(self.OFFSET_TABLE[STATUS.tool_in_spindle.getValue()])
 
         # update signals
-        STATUS.tool_in_spindle.notify(self.setCurrentToolNumber)
-        STATUS.tool_table.notify(lambda *args: self.loadOffsetTable())
+        # STATUS.tool_in_spindle.notify(self.setCurrentToolNumber)
+        self.status.tool_table.notify(lambda *args: self.loadOffsetTable())
 
     @DataChannel
     def current_tool(self, chan, item=None):
@@ -153,9 +159,10 @@ class OffsetTable(DataPlugin):
         return self.OFFSET_TABLE[STAT.tool_in_spindle].get(item[0].upper())
 
     def initialise(self):
-        self.fs_watcher = QFileSystemWatcher()
-        self.fs_watcher.addPath(self.tool_table_file)
-        self.fs_watcher.fileChanged.connect(self.onToolTableFileChanged)
+        pass
+        # self.fs_watcher = QFileSystemWatcher()
+        # self.fs_watcher.addPath(self.tool_table_file)
+        # self.fs_watcher.fileChanged.connect(self.onToolTableFileChanged)
 
     @staticmethod
     def validateColumns(columns):
@@ -210,65 +217,20 @@ class OffsetTable(DataPlugin):
             tool_data = tool_table[tool]
             yield [tool_data[key] for key in columns]
 
-    def loadOffsetTable(self, tool_file=None):
+    def loadOffsetTable(self):
 
-        if tool_file is None:
-            tool_file = self.tool_table_file
+        self.g5x_offset = self.status.stat.g5x_offset
 
-        if not os.path.exists(tool_file):
-            if IN_DESIGNER:
-                lorum_offsettable = makeLorumIpsumOffsetTable()
-                self.current_tool.setValue(lorum_offsettable)
-                return lorum_offsettable
-            LOG.critical("Tool table file does not exist: {}".format(tool_file))
-            return {}
-
-        with open(tool_file, 'r') as fh:
-            lines = [line.strip() for line in fh.readlines()]
-
-        # find opening colon, and get header data so it can be restored
-        for rlnum, line in enumerate(reversed(lines)):
-            if line.startswith(';'):
-                lnum = len(lines) - rlnum
-                raw_header = lines[:lnum]
-                lines = lines[lnum:]
-
-                self.orig_header_lines = list(takewhile(lambda l:
-                                                        not l.strip() == '---' and
-                                                        not l.startswith(';Tool'), raw_header))
-                break
+        header = "XYZABCUVW"
 
         table = {0: NO_TOOL, }
-        for line in lines:
+        offset = DEFAULT_OFFSET.copy()
 
-            data, sep, comment = line.partition(';')
+        for index, axis_offset in enumerate(self.g5x_offset):
+            print(index, axis_offset)
+            offset[header[index]] = axis_offset
 
-            tool = DEFAULT_OFFSET.copy()
-            for item in data.split():
-                descriptor = item[0]
-                if descriptor in 'TPXYZABCUVWDIJQR':
-                    value = item.lstrip(descriptor)
-                    if descriptor in ('T', 'P', 'Q'):
-                        try:
-                            tool[descriptor] = int(value)
-                        except:
-                            LOG.error('Error converting value to int: {}'.format(value))
-                            break
-                    else:
-                        try:
-                            tool[descriptor] = float(value)
-                        except:
-                            LOG.error('Error converting value to float: {}'.format(value))
-                            break
-
-            tool['R'] = comment.strip()
-
-            tnum = tool['T']
-            if tnum == -1:
-                continue
-
-            # add the tool to the table
-            table[tnum] = tool
+        table[0] = offset
 
         # update tooltable
         self.__class__.OFFSET_TABLE = table
