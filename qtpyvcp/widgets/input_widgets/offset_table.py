@@ -238,7 +238,7 @@ class OffsetTable(QTableView):
 
         # Appearance/Behaviour settings
         self.setSortingEnabled(True)
-        self.verticalHeader().hide()
+        # self.verticalHeader().hide()
         self.setAlternatingRowColors(True)
         self.setSelectionBehavior(QTableView.SelectRows)
         self.setSelectionMode(QTableView.SingleSelection)
