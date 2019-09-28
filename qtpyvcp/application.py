@@ -9,6 +9,7 @@ import inspect
 from pkg_resources import iter_entry_points
 
 from qtpy import API
+from qtpy.QtGui import QFontDatabase
 from qtpy.QtCore import QTimer, Slot, Qt
 from qtpy.QtWidgets import QApplication, QStyleFactory
 
@@ -35,7 +36,7 @@ if API == 'pyside2':
 
 class VCPApplication(QApplication):
 
-    def __init__(self, theme=None, stylesheet=None):
+    def __init__(self, theme=None, stylesheet=None, custom_fonts=[]):
         app_args = (qtpyvcp.OPTIONS.command_line_args or "").split()
         super(VCPApplication, self).__init__(app_args)
 
@@ -55,6 +56,10 @@ class VCPApplication(QApplication):
         stylesheet = opts.stylesheet or stylesheet
         if stylesheet is not None:
             self.loadStylesheet(stylesheet)
+
+        if custom_fonts:
+            for font in custom_fonts:
+                self.loadFont(font)
 
         # self.window = self.loadVCPMainWindow(opts, vcp_file)
         # if self.window is not None:
@@ -177,6 +182,14 @@ class VCPApplication(QApplication):
         LOG.info("Loading QSS stylesheet file: yellow<{}>".format(stylesheet))
         with open(stylesheet, 'r') as fh:
             self.setStyleSheet(fh.read())
+
+    def loadFont(self, font_path):
+        """Loads a font file into the font database. The path can specify the
+        location of a font file or a qresource."""
+        LOG.debug("Loading custom font: %s" % font_path)
+        res = QFontDatabase.addApplicationFont(font_path)
+        if res != 0:
+            LOG.error("Failed to load font: %s", font_path)
 
     @Slot()
     def logPerformance(self):
