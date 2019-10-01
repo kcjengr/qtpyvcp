@@ -16,6 +16,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
+
 from qtpy.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
 from qtpy.QtGui import QStandardItemModel, QColor, QBrush
 from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, QSpinBox, QLineEdit, QMessageBox
@@ -48,26 +49,7 @@ class ItemDelegate(QStyledItemDelegate):
         # ToDo: set dec placed for IN and MM machines
         col = self._columns[index.column()]
 
-        if col == 'R':
-            editor = QLineEdit(parent)
-            editor.setFrame(False)
-            margins = editor.textMargins()
-            padding = editor.fontMetrics().width(self._padding) + 1
-            margins.setLeft(margins.left() + padding)
-            editor.setTextMargins(margins)
-            return editor
-
-        elif col in 'TPQ':
-            editor = QSpinBox(parent)
-            editor.setFrame(False)
-            editor.setAlignment(Qt.AlignCenter)
-            if col == 'Q':
-                editor.setMaximum(9)
-            else:
-                editor.setMaximum(99999)
-            return editor
-
-        elif col in 'XYZABCUVWD':
+        if col in 'ABCUVWXYZR':
             editor = QDoubleSpinBox(parent)
             editor.setFrame(False)
             editor.setAlignment(Qt.AlignCenter)
@@ -77,15 +59,6 @@ class ItemDelegate(QStyledItemDelegate):
             editor.setRange(-1000, 1000)
             return editor
 
-        elif col in 'IJ':
-            editor = QDoubleSpinBox(parent)
-            editor.setFrame(False)
-            editor.setAlignment(Qt.AlignCenter)
-            editor.setDecimals(2)
-            # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
-            editor.setProperty('stepType', 1)  # stepType was added in 5.12
-            return editor
-
         return None
 
 
@@ -93,8 +66,31 @@ class OffsetModel(QStandardItemModel):
     def __init__(self, parent=None):
         super(OffsetModel, self).__init__(parent)
 
-        self.status = getPlugin('status')
-        self.stat = self.status.stat
+        self.column_labels = {
+            'A': 0,
+            'B': 1,
+            'C': 2,
+            'U': 3,
+            'V': 4,
+            'W': 5,
+            'X': 6,
+            'Y': 7,
+            'Z': 8,
+            'R': 9
+        }
+
+        self.row_labels = [
+            'G54',
+            'G55',
+            'G56',
+            'G57',
+            'G58',
+            'G59',
+            'G59.1',
+            'G59.2',
+            'G59.3'
+        ]
+
         self.ot = getPlugin('offsettable')
 
         self.current_row_color = QColor(Qt.darkGreen)
@@ -142,32 +138,28 @@ class OffsetModel(QStandardItemModel):
 
     def data(self, index, role=Qt.DisplayRole):
         if role == Qt.DisplayRole or role == Qt.EditRole:
-            key = self._columns[index.column()]
-            tnum = sorted(self._offset_table)[index.row() + 1]
-            return self._offset_table[tnum][key]
 
-        elif role == Qt.TextAlignmentRole:
-            col = self._columns[index.column()]
-            if col == 'R':  # Remark
-                return Qt.AlignVCenter | Qt.AlignLeft
-            elif col in 'TPQ':  # Integers (Tool, Pocket, Orient)
-                return Qt.AlignVCenter | Qt.AlignCenter
-            else:  # All the other floats
-                return Qt.AlignVCenter | Qt.AlignRight
+            key = self._columns[index.column()]
+            key_index = self.column_labels[key]
+
+            offset_num = sorted(self._offset_table)[index.row() + 1]
+
+            return self._offset_table[offset_num][key_index]
 
         elif role == Qt.TextColorRole:
-            tnum = sorted(self._offset_table)[index.row() + 1]
-            if self.stat.tool_in_spindle == tnum:
-                return QBrush(self.current_row_color)
-            else:
-                return QStandardItemModel.data(self, index, role)
+            return QStandardItemModel.data(self, index, role)
 
         return QStandardItemModel.data(self, index, role)
 
     def setData(self, index, value, role):
+
         key = self._columns[index.column()]
+        key_index = self.column_labels[key]
+
         tnum = sorted(self._offset_table)[index.row() + 1]
-        self._offset_table[tnum][key] = value
+        offset_index = self.row_labels[tnum]
+
+        self._offset_table[offset_index][key_index] = value
         return True
 
     def removeOffset(self, row):
@@ -237,7 +229,7 @@ class OffsetTable(QTableView):
         self._current_row_color = QColor('sage')
 
         # Appearance/Behaviour settings
-        self.setSortingEnabled(True)
+        self.setSortingEnabled(False)
         # self.verticalHeader().hide()
         self.setAlternatingRowColors(True)
         self.setSelectionBehavior(QTableView.SelectRows)

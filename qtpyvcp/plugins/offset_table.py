@@ -46,17 +46,17 @@ def merge(a, b):
 
 
 DEFAULT_OFFSET = {
-    'A': 0.0,
-    'B': 0.0,
-    'C': 0.0,
-    'U': 0.0,
-    'V': 0.0,
-    'W': 0.0,
-    'X': 0.0,
-    'Y': 0.0,
-    'Z': 0.0,
-}
-
+            0: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            1: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            2: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            3: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            4: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            5: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            6: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            7: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            8: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            9: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        }
 NO_TOOL = merge(DEFAULT_OFFSET, {'T': 0, 'R': 'No Tool Loaded'})
 
 # FILE_HEADER = """
@@ -80,10 +80,10 @@ COLUMN_LABELS = {
     'X': 'X',
     'Y': 'Y',
     'Z': 'Z',
+    'R': 'R'
 }
 
 ROW_LABELS = {
-    'P0': 'G53',
     'P1': 'G54',
     'P2': 'G55',
     'P3': 'G56',
@@ -110,20 +110,25 @@ class OffsetTable(DataPlugin):
 
     offset_table_changed = Signal(dict)
 
-    def __init__(self, columns='ABCUVWXYZ', file_header_template=None):
+    def __init__(self, columns='ABCUVWXYZR', file_header_template=None):
         super(OffsetTable, self).__init__()
+
+        self.inifile = os.getenv("INI_FILE_NAME")
+        self.ini = linuxcnc.ini(self.inifile)
+        self.config_dir = os.path.dirname(self.inifile)
+
+        param_file = self.ini.find("RS274NGC", "PARAMETER_FILE")
+        self.parameter_file = os.path.join(self.config_dir, param_file)
 
         self.status = STATUS
 
-        self.columns = self.validateColumns(columns) or [c for c in 'ABCUVWXYZ']
+        self.columns = self.validateColumns(columns) or [c for c in 'ABCUVWXYZR']
 
         self.setCurrentToolNumber(0)
 
-        self.g5x_offset = None
+        self.g5x_offset_table = DEFAULT_OFFSET.copy()
 
         self.loadOffsetTable()
-
-        self.current_tool.setValue(self.OFFSET_TABLE[STATUS.tool_in_spindle.getValue()])
 
         # update signals
         # STATUS.tool_in_spindle.notify(self.setCurrentToolNumber)
@@ -135,15 +140,15 @@ class OffsetTable(DataPlugin):
 
         Available items:
 
-        * X -- x offset
-        * Y -- y offset
-        * Z -- z offset
         * A -- a offset
         * B -- b offset
         * C -- c offset
         * U -- u offset
         * V -- v offset
         * W -- w offset
+        * X -- x offset
+        * Y -- y offset
+        * Z -- z offset
 
         Rules channel syntax::
 
@@ -182,7 +187,7 @@ class OffsetTable(DataPlugin):
             return
 
         return [col for col in [col.strip().upper() for col in columns]
-                if col in 'TPXYZABCUVWDIJQR' and not col == '']
+                if col in 'ABCUVWXYZR' and not col == '']
 
     def newOffset(self, tnum=None):
         """Get a dict of default tool values for a new tool."""
@@ -219,29 +224,37 @@ class OffsetTable(DataPlugin):
 
     def loadOffsetTable(self):
 
-        self.g5x_offset = self.status.stat.g5x_offset
+        with open(self.parameter_file, 'r') as fh:
+            for line in fh:
+                param, data = int(line.split()[0]), float(line.split()[1])
 
-        header = "XYZABCUVW"
-
-        table = {0: NO_TOOL, }
-        offset = DEFAULT_OFFSET.copy()
-
-        for index, axis_offset in enumerate(self.g5x_offset):
-            print(index, axis_offset)
-            offset[header[index]] = axis_offset
-
-        table[0] = offset
+                if 5230 >= param >= 5221:
+                    self.g5x_offset_table.get(0)[param - 5221] = data
+                elif 5250 >= param >= 5241:
+                    self.g5x_offset_table.get(2)[param - 5241] = data
+                elif 5270 >= param >= 5261:
+                    self.g5x_offset_table.get(3)[param - 5261] = data
+                elif 5290 >= param >= 5281:
+                    self.g5x_offset_table.get(4)[param - 5281] = data
+                elif 5310 >= param >= 5301:
+                    self.g5x_offset_table.get(5)[param - 5301] = data
+                elif 5320 >= param >= 5321:
+                    self.g5x_offset_table.get(6)[param - 5321] = data
+                elif 5350 >= param >= 5341:
+                    self.g5x_offset_table.get(7)[param - 5341] = data
+                elif 5370 >= param >= 5361:
+                    self.g5x_offset_table.get(8)[param - 5361] = data
+                elif 5390 >= param >= 5381:
+                    self.g5x_offset_table.get(9)[param - 5381] = data
 
         # update tooltable
-        self.__class__.OFFSET_TABLE = table
-
-        self.current_tool.setValue(self.OFFSET_TABLE[STATUS.tool_in_spindle.getValue()])
+        self.__class__.OFFSET_TABLE = self.g5x_offset_table
 
         # import json
         # print json.dumps(table, sort_keys=True, indent=4)
 
-        self.offset_table_changed.emit(table)
-        return table.copy()
+        self.offset_table_changed.emit(self.g5x_offset_table)
+        return self.g5x_offset_table.copy()
 
     def getOffsetTable(self):
         return self.OFFSET_TABLE.copy()
