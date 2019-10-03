@@ -91,15 +91,15 @@ NO_TOOL = merge(DEFAULT_OFFSET, {'T': 0, 'R': 'No Tool Loaded'})
 # """
 
 COLUMN_LABELS = {
+    'X': 'X',
+    'Y': 'Y',
+    'Z': 'Z',
     'A': 'A',
     'B': 'B',
     'C': 'C',
     'U': 'U',
     'V': 'V',
     'W': 'W',
-    'X': 'X',
-    'Y': 'Y',
-    'Z': 'Z',
     'R': 'R'
 }
 
@@ -131,11 +131,11 @@ class OffsetTable(DataPlugin):
     offset_table_changed = Signal(dict)
     active_offset_changed = Signal(int)
 
-    def __init__(self, columns='ABCUVWXYZR', file_header_template=None):
+    def __init__(self, columns='XYZABCUVWR', file_header_template=None):
         super(OffsetTable, self).__init__()
 
         file_name = INFO.getParameterFile()
-        
+
         self.parameter_file = None
         if file_name:
             self.parameter_file = os.path.join(os.path.dirname(os.path.realpath(file_name)), file_name)
@@ -144,7 +144,7 @@ class OffsetTable(DataPlugin):
 
         self.status = STATUS
 
-        self.columns = self.validateColumns(columns) or [c for c in 'ABCUVWXYZR']
+        self.columns = self.validateColumns(columns) or [c for c in 'XYZABCUVWR']
 
         self.active_offset = 0
         self.setCurrentOffsetNumber(0)
@@ -163,15 +163,15 @@ class OffsetTable(DataPlugin):
 
         Available items:
 
+        * X -- x offset
+        * Y -- y offset
+        * Z -- z offset
         * A -- a offset
         * B -- b offset
         * C -- c offset
         * U -- u offset
         * V -- v offset
         * W -- w offset
-        * X -- x offset
-        * Y -- y offset
-        * Z -- z offset
         * R -- r offset
 
         Rules channel syntax::
@@ -209,7 +209,7 @@ class OffsetTable(DataPlugin):
             return
 
         return [col for col in [col.strip().upper() for col in columns]
-                if col in 'ABCUVWXYZR' and not col == '']
+                if col in 'XYZABCUVWR' and not col == '']
 
     def newOffset(self, tnum=None):
         """Get a dict of default tool values for a new tool."""

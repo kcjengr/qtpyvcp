@@ -49,7 +49,7 @@ class ItemDelegate(QStyledItemDelegate):
         # ToDo: set dec placed for IN and MM machines
         col = self._columns[index.column()]
 
-        if col in 'ABCUVWXYZR':
+        if col in 'XYZABCUVWR':
             editor = QDoubleSpinBox(parent)
             editor.setFrame(False)
             editor.setAlignment(Qt.AlignCenter)
@@ -67,15 +67,15 @@ class OffsetModel(QStandardItemModel):
         super(OffsetModel, self).__init__(parent)
 
         self.column_labels = {
-            'A': 0,
-            'B': 1,
-            'C': 2,
-            'U': 3,
-            'V': 4,
-            'W': 5,
-            'X': 6,
-            'Y': 7,
-            'Z': 8,
+            'X': 0,
+            'Y': 1,
+            'Z': 2,
+            'A': 3,
+            'B': 4,
+            'C': 5,
+            'U': 6,
+            'V': 7,
+            'W': 8,
             'R': 9
         }
 
@@ -316,7 +316,7 @@ class OffsetTable(QTableView):
 
     @displayColumns.setter
     def displayColumns(self, columns):
-        self._columns = [col for col in columns.upper() if col in 'ABCUVWXYZR']
+        self._columns = [col for col in columns.upper() if col in 'XYZABCUVWR']
         self.offset_model.setColumns(self._columns)
         self.itemDelegate().setColumns(self._columns)
 
