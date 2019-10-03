@@ -129,17 +129,22 @@ class OffsetTable(DataPlugin):
     ROW_LABELS = ROW_LABELS
 
     offset_table_changed = Signal(dict)
+    active_offset_changed = Signal(int)
 
     def __init__(self, columns='ABCUVWXYZR', file_header_template=None):
         super(OffsetTable, self).__init__()
 
-        self.parameter_file = INFO.getParameterFile()
+        file_name = INFO.getParameterFile()
+        self.parameter_file = os.path.join(os.path.dirname(os.path.realpath(file_name)), file_name)
+
+        self.fs_watcher = None
 
         self.status = STATUS
 
         self.columns = self.validateColumns(columns) or [c for c in 'ABCUVWXYZR']
 
-        self.setCurrentToolNumber(0)
+        self.active_offset = 0
+        self.setCurrentOffsetNumber(0)
 
         self.g5x_offset_table = DEFAULT_OFFSET.copy()
 
@@ -150,8 +155,8 @@ class OffsetTable(DataPlugin):
         self.status.tool_table.notify(lambda *args: self.loadOffsetTable())
 
     @DataChannel
-    def current_tool(self, chan, item=None):
-        """Current Tool Info
+    def current_offset(self, chan, item=None):
+        """Current Offset Info
 
         Available items:
 
@@ -164,12 +169,13 @@ class OffsetTable(DataPlugin):
         * X -- x offset
         * Y -- y offset
         * Z -- z offset
+        * R -- r offset
 
         Rules channel syntax::
 
-            tooltable:current_tool
-            tooltable:current_tool?X
-            tooltable:current_tool?x_offset
+            offsettable:current_offset
+            offsettable:current_offset?X
+            offsettable:current_offset?x_offset
 
         :param item: the name of the tool data item to get
         :return: dict, int, float, str
@@ -179,8 +185,7 @@ class OffsetTable(DataPlugin):
         return self.OFFSET_TABLE[STAT.tool_in_spindle].get(item[0].upper())
 
     def initialise(self):
-        self.fs_watcher = QFileSystemWatcher()
-        self.fs_watcher.addPath(self.parameter_file)
+        self.fs_watcher = QFileSystemWatcher([self.parameter_file])
         self.fs_watcher.fileChanged.connect(self.onParamsFileChanged)
 
     @staticmethod
@@ -217,8 +222,8 @@ class OffsetTable(DataPlugin):
         # a bit to ensure the new data has been writen out.
         QTimer.singleShot(50, self.reloadOffsetTable)
 
-    def setCurrentToolNumber(self, tool_num):
-        self.current_tool.setValue(self.OFFSET_TABLE[tool_num])
+    def setCurrentOffsetNumber(self, offset_num):
+        self.current_offset.setValue(self.OFFSET_TABLE[offset_num])
 
     def reloadOffsetTable(self):
         # rewatch the file if it stop being watched because it was deleted
@@ -229,16 +234,18 @@ class OffsetTable(DataPlugin):
         offset_table = self.loadOffsetTable()
         self.offset_table_changed.emit(offset_table)
 
-    def iterTools(self, tool_table=None, columns=None):
-        tool_table = tool_table or self.OFFSET_TABLE
+    def iterTools(self, offset_table=None, columns=None):
+        offset_table = offset_table or self.OFFSET_TABLE
         columns = self.validateColumns(columns) or self.columns
-        for tool in sorted(tool_table.iterkeys()):
-            tool_data = tool_table[tool]
-            yield [tool_data[key] for key in columns]
+        for offset in sorted(offset_table.iterkeys()):
+            offset_data = offset_table[offset]
+            yield [offset_data[key] for key in columns]
 
     def loadOffsetTable(self):
-        if self.parameter_file:
 
+        self.active_offset = STATUS.stat.g5x_index
+
+        if self.parameter_file:
             with open(self.parameter_file, 'r') as fh:
                 for line in fh:
                     param, data = int(line.split()[0]), float(line.split()[1])
@@ -262,7 +269,7 @@ class OffsetTable(DataPlugin):
                     elif 5390 >= param >= 5381:
                         self.g5x_offset_table.get(9)[param - 5381] = data
 
-        # update tooltable
+        # update offset table
         self.__class__.OFFSET_TABLE = self.g5x_offset_table
 
         # import json
@@ -274,82 +281,85 @@ class OffsetTable(DataPlugin):
     def getOffsetTable(self):
         return self.OFFSET_TABLE.copy()
 
-    def saveToolTable(self, tool_table, columns=None, tool_file=None):
-        """Write tooltable data to file.
+    def getActiveOffset(self):
+        return self.active_offset
 
-        Args:
-            tool_table (dict) : Dictionary of dictionaries containing
-                the tool data to write to the file.
-            columns (str | list) : A list of data columns to write.
-                If `None` will use the value of ``self.columns``.
-            tool_file (str) : Path to write the tooltable too.
-                Defaults to ``self.tool_table_file``.
-        """
-
-        columns = self.validateColumns(columns) or self.columns
-
-        if tool_file is None:
-            tool_file = self.tool_table_file
-
-        lines = []
-        header_lines = []
-
-        # restore file header
-        if self.file_header_template:
-            try:
-                header_lines = self.file_header_template.format(
-                    version=qtpyvcp.__version__,
-                    datetime=datetime.now()).lstrip().splitlines()
-                header_lines.append('')  # extra new line before table header
-            except:
-                pass
-
-        if self.orig_header_lines:
-            try:
-                self.orig_header_lines.extend(header_lines[header_lines.index('---'):])
-                header_lines = self.orig_header_lines
-            except ValueError:
-                header_lines = self.orig_header_lines
-
-        lines.extend(header_lines)
-
-        # create the table header
-        items = []
-        for col in columns:
-            if col == 'R':
-                continue
-            w = (6 if col in 'TPQ' else 8) - 1 if col == self.columns[0] else 0
-            items.append('{:<{w}}'.format(COLUMN_LABELS[col], w=w))
-
-        items.append('Remark')
-        lines.append(';' + ' '.join(items))
-
-        # add the tools
-        for tool_num in sorted(tool_table.iterkeys())[1:]:
-            items = []
-            tool_data = tool_table[tool_num]
-            for col in columns:
-                if col == 'R':
-                    continue
-                items.append('{col}{val:<{w}}'
-                             .format(col=col,
-                                     val=tool_data[col],
-                                     w=6 if col in 'TPQ' else 8))
-
-            comment = tool_data.get('R', '')
-            if comment is not '':
-                items.append('; ' + comment)
-
-            lines.append(''.join(items))
-
-        # for line in lines:
-        #     print line
-
-        # write to file
-        with open(tool_file, 'w') as fh:
-            fh.write('\n'.join(lines))
-            fh.write('\n')  # new line at end of file
-            fh.flush()
-            os.fsync(fh.fileno())
-
-        CMD.load_tool_table()
+    # def saveToolTable(self, tool_table, columns=None, tool_file=None):
+    #     """Write tooltable data to file.
+    #
+    #     Args:
+    #         tool_table (dict) : Dictionary of dictionaries containing
+    #             the tool data to write to the file.
+    #         columns (str | list) : A list of data columns to write.
+    #             If `None` will use the value of ``self.columns``.
+    #         tool_file (str) : Path to write the tooltable too.
+    #             Defaults to ``self.tool_table_file``.
+    #     """
+    #
+    #     columns = self.validateColumns(columns) or self.columns
+    #
+    #     if tool_file is None:
+    #         tool_file = self.tool_table_file
+    #
+    #     lines = []
+    #     header_lines = []
+    #
+    #     # restore file header
+    #     if self.file_header_template:
+    #         try:
+    #             header_lines = self.file_header_template.format(
+    #                 version=qtpyvcp.__version__,
+    #                 datetime=datetime.now()).lstrip().splitlines()
+    #             header_lines.append('')  # extra new line before table header
+    #         except:
+    #             pass
+    #
+    #     if self.orig_header_lines:
+    #         try:
+    #             self.orig_header_lines.extend(header_lines[header_lines.index('---'):])
+    #             header_lines = self.orig_header_lines
+    #         except ValueError:
+    #             header_lines = self.orig_header_lines
+    #
+    #     lines.extend(header_lines)
+    #
+    #     # create the table header
+    #     items = []
+    #     for col in columns:
+    #         if col == 'R':
+    #             continue
+    #         w = (6 if col in 'TPQ' else 8) - 1 if col == self.columns[0] else 0
+    #         items.append('{:<{w}}'.format(COLUMN_LABELS[col], w=w))
+    #
+    #     items.append('Remark')
+    #     lines.append(';' + ' '.join(items))
+    #
+    #     # add the tools
+    #     for tool_num in sorted(tool_table.iterkeys())[1:]:
+    #         items = []
+    #         tool_data = tool_table[tool_num]
+    #         for col in columns:
+    #             if col == 'R':
+    #                 continue
+    #             items.append('{col}{val:<{w}}'
+    #                          .format(col=col,
+    #                                  val=tool_data[col],
+    #                                  w=6 if col in 'TPQ' else 8))
+    #
+    #         comment = tool_data.get('R', '')
+    #         if comment is not '':
+    #             items.append('; ' + comment)
+    #
+    #         lines.append(''.join(items))
+    #
+    #     # for line in lines:
+    #     #     print line
+    #
+    #     # write to file
+    #     with open(tool_file, 'w') as fh:
+    #         fh.write('\n'.join(lines))
+    #         fh.write('\n')  # new line at end of file
+    #         fh.flush()
+    #         os.fsync(fh.fileno())
+    #
+    #     CMD.load_tool_table()

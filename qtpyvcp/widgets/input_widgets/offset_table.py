@@ -98,6 +98,8 @@ class OffsetModel(QStandardItemModel):
         self._columns = self.ot.columns
         self._column_labels = self.ot.COLUMN_LABELS
 
+        self.active_offset = self.ot.getActiveOffset()
+
         self._offset_table = self.ot.getOffsetTable()
 
         self.setColumnCount(self.columnCount())
@@ -142,9 +144,12 @@ class OffsetModel(QStandardItemModel):
             key = self._columns[index.column()]
             key_index = self.column_labels[key]
 
-            offset_num = sorted(self._offset_table)[index.row() + 1]
+            offset_num = sorted(self._offset_table)[index.row()]
 
             return self._offset_table[offset_num][key_index]
+
+        elif role == Qt.TextAlignmentRole:
+            return Qt.AlignVCenter | Qt.AlignRight
 
         elif role == Qt.TextColorRole:
             return QStandardItemModel.data(self, index, role)
@@ -229,7 +234,7 @@ class OffsetTable(QTableView):
         self._current_row_color = QColor('sage')
 
         # Appearance/Behaviour settings
-        self.setSortingEnabled(False)
+        self.setSortingEnabled(True)
         # self.verticalHeader().hide()
         self.setAlternatingRowColors(True)
         self.setSelectionBehavior(QTableView.SelectRows)
