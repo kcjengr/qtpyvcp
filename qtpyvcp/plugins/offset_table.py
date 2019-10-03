@@ -54,8 +54,6 @@ STATUS = getPlugin('status')
 STAT = STATUS.stat
 INFO = Info()
 
-IN_DESIGNER = os.getenv('DESIGNER', False)
-
 
 def merge(a, b):
     """Shallow merge two dictionaries"""
@@ -256,21 +254,21 @@ class OffsetTable(DataPlugin):
                     if 5230 >= param >= 5221:
                         self.g5x_offset_table.get(0)[param - 5221] = data
                     elif 5250 >= param >= 5241:
-                        self.g5x_offset_table.get(2)[param - 5241] = data
+                        self.g5x_offset_table.get(1)[param - 5241] = data
                     elif 5270 >= param >= 5261:
-                        self.g5x_offset_table.get(3)[param - 5261] = data
+                        self.g5x_offset_table.get(2)[param - 5261] = data
                     elif 5290 >= param >= 5281:
-                        self.g5x_offset_table.get(4)[param - 5281] = data
+                        self.g5x_offset_table.get(3)[param - 5281] = data
                     elif 5310 >= param >= 5301:
-                        self.g5x_offset_table.get(5)[param - 5301] = data
-                    elif 5320 >= param >= 5321:
-                        self.g5x_offset_table.get(6)[param - 5321] = data
+                        self.g5x_offset_table.get(4)[param - 5301] = data
+                    elif 5330 >= param >= 5321:
+                        self.g5x_offset_table.get(5)[param - 5321] = data
                     elif 5350 >= param >= 5341:
-                        self.g5x_offset_table.get(7)[param - 5341] = data
+                        self.g5x_offset_table.get(6)[param - 5341] = data
                     elif 5370 >= param >= 5361:
-                        self.g5x_offset_table.get(8)[param - 5361] = data
+                        self.g5x_offset_table.get(7)[param - 5361] = data
                     elif 5390 >= param >= 5381:
-                        self.g5x_offset_table.get(9)[param - 5381] = data
+                        self.g5x_offset_table.get(8)[param - 5381] = data
 
         # update offset table
         self.__class__.OFFSET_TABLE = self.g5x_offset_table
