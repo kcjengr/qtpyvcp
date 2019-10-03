@@ -75,7 +75,7 @@ DEFAULT_OFFSET = {
             9: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 }
 
-NO_TOOL = merge(DEFAULT_OFFSET, {'T': 0, 'R': 'No Tool Loaded'})
+NO_TOOL = merge(DEFAULT_OFFSET, {'T': 0, 'R': 'No Tool Loaded'})  # FIXME Requires safe removal
 
 # FILE_HEADER = """
 # LinuxCNC Tool Table
@@ -144,8 +144,7 @@ class OffsetTable(DataPlugin):
 
         self.columns = self.validateColumns(columns) or [c for c in 'XYZABCUVWR']
 
-        self.active_offset = 0
-        self.setCurrentOffsetNumber(0)
+        self.setCurrentOffsetNumber(1)
 
         self.g5x_offset_table = DEFAULT_OFFSET.copy()
 
@@ -153,7 +152,9 @@ class OffsetTable(DataPlugin):
 
         # update signals
         # STATUS.tool_in_spindle.notify(self.setCurrentToolNumber)
-        self.status.tool_table.notify(lambda *args: self.loadOffsetTable())
+        # self.status.offset_table.notify(lambda *args: self.loadOffsetTable())
+
+        self.status.g5x_index.notify(self.setCurrentOffsetNumber)
 
     @DataChannel
     def current_offset(self, chan, item=None):
@@ -182,8 +183,8 @@ class OffsetTable(DataPlugin):
         :return: dict, int, float, str
         """
         if item is None:
-            return self.OFFSET_TABLE[STAT.tool_in_spindle]
-        return self.OFFSET_TABLE[STAT.tool_in_spindle].get(item[0].upper())
+            return self.OFFSET_TABLE[STAT.g5x_index]
+        return self.OFFSET_TABLE[STAT.g5x_index].get(item[0].upper())
 
     def initialise(self):
         self.fs_watcher = QFileSystemWatcher([self.parameter_file])
@@ -224,7 +225,8 @@ class OffsetTable(DataPlugin):
         QTimer.singleShot(50, self.reloadOffsetTable)
 
     def setCurrentOffsetNumber(self, offset_num):
-        self.current_offset.setValue(self.OFFSET_TABLE[offset_num])
+        self.current_offset.setValue(offset_num)
+        self.active_offset_changed.emit(offset_num)
 
     def reloadOffsetTable(self):
         # rewatch the file if it stop being watched because it was deleted
@@ -243,8 +245,6 @@ class OffsetTable(DataPlugin):
             yield [offset_data[key] for key in columns]
 
     def loadOffsetTable(self):
-
-        self.active_offset = STATUS.stat.g5x_index
 
         if self.parameter_file:
             with open(self.parameter_file, 'r') as fh:
@@ -277,13 +277,11 @@ class OffsetTable(DataPlugin):
         # print json.dumps(table, sort_keys=True, indent=4)
 
         self.offset_table_changed.emit(self.g5x_offset_table)
+
         return self.g5x_offset_table.copy()
 
     def getOffsetTable(self):
         return self.OFFSET_TABLE.copy()
-
-    def getActiveOffset(self):
-        return self.active_offset
 
     # def saveToolTable(self, tool_table, columns=None, tool_file=None):
     #     """Write tooltable data to file.

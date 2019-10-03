@@ -98,8 +98,6 @@ class OffsetModel(QStandardItemModel):
         self._columns = self.ot.columns
         self._column_labels = self.ot.COLUMN_LABELS
 
-        self.active_offset = self.ot.getActiveOffset()
-
         self._offset_table = self.ot.getOffsetTable()
 
         self.setColumnCount(self.columnCount())
@@ -200,7 +198,7 @@ class OffsetModel(QStandardItemModel):
         return True
 
     def clearOffsetTable(self):
-        self.beginRemoveRows(QModelIndex(), 0, 100)
+        self.beginRemoveRows(QModelIndex(), 0, 9)
         # delete all but the spindle, which can't be deleted
         self._offset_table = {0: self._offset_table[0]}
         self.endRemoveRows()
@@ -242,6 +240,8 @@ class OffsetTable(QTableView):
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
 
+        self.offset_model.ot.active_offset_changed.connect(self.selectRow)
+
     @Slot()
     def saveOffsetTable(self):
         if not self.confirmAction("Do you want to save changes and\n"
@@ -256,20 +256,20 @@ class OffsetTable(QTableView):
             return
         self.offset_model.loadOffsetTable()
 
-    @Slot()
-    def deleteSelectedOffset(self):
-        """Delete the currently selected item"""
-        current_row = self.selectedRow()
-        if current_row == -1:
-            # no row selected
-            return
-
-        odata = self.offset_model.offsetDataFromRow(current_row)
-        if not self.confirmAction("Are you sure you want to delete offset {odata[T]}?\n"
-                                  "{odata[R]}".format(tdata=odata)):
-            return
-
-        self.offset_model.removeOffset(current_row)
+    # @Slot()
+    # def deleteSelectedOffset(self):
+    #     """Delete the currently selected item"""
+    #     current_row = self.selectedRow()
+    #     if current_row == -1:
+    #         # no row selected
+    #         return
+    #
+    #     odata = self.offset_model.offsetDataFromRow(current_row)
+    #     if not self.confirmAction("Are you sure you want to delete offset {odata[T]}?\n"
+    #                               "{odata[R]}".format(tdata=odata)):
+    #         return
+    #
+    #     self.offset_model.removeOffset(current_row)
 
     @Slot()
     def selectPrevious(self):
