@@ -1,3 +1,21 @@
+#   Copyright (c) 2018 Kurt Jacobson
+#      <kurtcjacobson@gmail.com>
+#
+#   This file is part of QtPyVCP.
+#
+#   QtPyVCP is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   QtPyVCP is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
+
 """
 Offset Table data plugin.
 
@@ -29,6 +47,7 @@ from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 
+
 CMD = linuxcnc.command()
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
@@ -56,7 +75,8 @@ DEFAULT_OFFSET = {
             7: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             8: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             9: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        }
+}
+
 NO_TOOL = merge(DEFAULT_OFFSET, {'T': 0, 'R': 'No Tool Loaded'})
 
 # FILE_HEADER = """
@@ -113,12 +133,7 @@ class OffsetTable(DataPlugin):
     def __init__(self, columns='ABCUVWXYZR', file_header_template=None):
         super(OffsetTable, self).__init__()
 
-        self.inifile = os.getenv("INI_FILE_NAME")
-        self.ini = linuxcnc.ini(self.inifile)
-        self.config_dir = os.path.dirname(self.inifile)
-
-        param_file = self.ini.find("RS274NGC", "PARAMETER_FILE")
-        self.parameter_file = os.path.join(self.config_dir, param_file)
+        self.parameter_file = INFO.getParameterFile()
 
         self.status = STATUS
 
@@ -164,10 +179,9 @@ class OffsetTable(DataPlugin):
         return self.OFFSET_TABLE[STAT.tool_in_spindle].get(item[0].upper())
 
     def initialise(self):
-        pass
-        # self.fs_watcher = QFileSystemWatcher()
-        # self.fs_watcher.addPath(self.tool_table_file)
-        # self.fs_watcher.fileChanged.connect(self.onToolTableFileChanged)
+        self.fs_watcher = QFileSystemWatcher()
+        self.fs_watcher.addPath(self.parameter_file)
+        self.fs_watcher.fileChanged.connect(self.onParamsFileChanged)
 
     @staticmethod
     def validateColumns(columns):
@@ -197,23 +211,23 @@ class OffsetTable(DataPlugin):
         new_tool.update({'T': tnum, 'P': tnum, 'R': 'New Tool'})
         return new_tool
 
-    def onToolTableFileChanged(self, path):
-        LOG.debug('Tool Table file changed: {}'.format(path))
+    def onParamsFileChanged(self, path):
+        LOG.debug('Params file changed: {}'.format(path))
         # ToolEdit deletes the file and then rewrites it, so wait
         # a bit to ensure the new data has been writen out.
-        QTimer.singleShot(50, self.reloadToolTable)
+        QTimer.singleShot(50, self.reloadOffsetTable)
 
     def setCurrentToolNumber(self, tool_num):
         self.current_tool.setValue(self.OFFSET_TABLE[tool_num])
 
-    def reloadToolTable(self):
+    def reloadOffsetTable(self):
         # rewatch the file if it stop being watched because it was deleted
-        if self.tool_table_file not in self.fs_watcher.files():
-            self.fs_watcher.addPath(self.tool_table_file)
+        if self.parameter_file not in self.fs_watcher.files():
+            self.fs_watcher.addPath(self.parameter_file)
 
         # reload with the new data
-        tool_table = self.loadOffsetTable()
-        self.offset_table_changed.emit(tool_table)
+        offset_table = self.loadOffsetTable()
+        self.offset_table_changed.emit(offset_table)
 
     def iterTools(self, tool_table=None, columns=None):
         tool_table = tool_table or self.OFFSET_TABLE
@@ -223,29 +237,30 @@ class OffsetTable(DataPlugin):
             yield [tool_data[key] for key in columns]
 
     def loadOffsetTable(self):
+        if self.parameter_file:
 
-        with open(self.parameter_file, 'r') as fh:
-            for line in fh:
-                param, data = int(line.split()[0]), float(line.split()[1])
+            with open(self.parameter_file, 'r') as fh:
+                for line in fh:
+                    param, data = int(line.split()[0]), float(line.split()[1])
 
-                if 5230 >= param >= 5221:
-                    self.g5x_offset_table.get(0)[param - 5221] = data
-                elif 5250 >= param >= 5241:
-                    self.g5x_offset_table.get(2)[param - 5241] = data
-                elif 5270 >= param >= 5261:
-                    self.g5x_offset_table.get(3)[param - 5261] = data
-                elif 5290 >= param >= 5281:
-                    self.g5x_offset_table.get(4)[param - 5281] = data
-                elif 5310 >= param >= 5301:
-                    self.g5x_offset_table.get(5)[param - 5301] = data
-                elif 5320 >= param >= 5321:
-                    self.g5x_offset_table.get(6)[param - 5321] = data
-                elif 5350 >= param >= 5341:
-                    self.g5x_offset_table.get(7)[param - 5341] = data
-                elif 5370 >= param >= 5361:
-                    self.g5x_offset_table.get(8)[param - 5361] = data
-                elif 5390 >= param >= 5381:
-                    self.g5x_offset_table.get(9)[param - 5381] = data
+                    if 5230 >= param >= 5221:
+                        self.g5x_offset_table.get(0)[param - 5221] = data
+                    elif 5250 >= param >= 5241:
+                        self.g5x_offset_table.get(2)[param - 5241] = data
+                    elif 5270 >= param >= 5261:
+                        self.g5x_offset_table.get(3)[param - 5261] = data
+                    elif 5290 >= param >= 5281:
+                        self.g5x_offset_table.get(4)[param - 5281] = data
+                    elif 5310 >= param >= 5301:
+                        self.g5x_offset_table.get(5)[param - 5301] = data
+                    elif 5320 >= param >= 5321:
+                        self.g5x_offset_table.get(6)[param - 5321] = data
+                    elif 5350 >= param >= 5341:
+                        self.g5x_offset_table.get(7)[param - 5341] = data
+                    elif 5370 >= param >= 5361:
+                        self.g5x_offset_table.get(8)[param - 5361] = data
+                    elif 5390 >= param >= 5381:
+                        self.g5x_offset_table.get(9)[param - 5381] = data
 
         # update tooltable
         self.__class__.OFFSET_TABLE = self.g5x_offset_table
