@@ -135,7 +135,10 @@ class OffsetTable(DataPlugin):
         super(OffsetTable, self).__init__()
 
         file_name = INFO.getParameterFile()
-        self.parameter_file = os.path.join(os.path.dirname(os.path.realpath(file_name)), file_name)
+        
+        self.parameter_file = None
+        if file_name:
+            self.parameter_file = os.path.join(os.path.dirname(os.path.realpath(file_name)), file_name)
 
         self.fs_watcher = None
 
