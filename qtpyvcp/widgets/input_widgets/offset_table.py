@@ -234,7 +234,7 @@ class OffsetTable(QTableView):
         self._current_row_color = QColor('sage')
 
         # Appearance/Behaviour settings
-        self.setSortingEnabled(True)
+        self.setSortingEnabled(False)
         # self.verticalHeader().hide()
         self.setAlternatingRowColors(True)
         self.setSelectionBehavior(QTableView.SelectRows)
