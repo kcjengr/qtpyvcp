@@ -110,7 +110,7 @@ ROW_LABELS = {
     'P6': 'G59',
     'P7': 'G59.1',
     'P8': 'G59.2',
-    'P9': 'G59.3',
+    'P9': 'G59.3'
 }
 
 
@@ -147,6 +147,7 @@ class OffsetTable(DataPlugin):
         self.setCurrentOffsetNumber(1)
 
         self.g5x_offset_table = DEFAULT_OFFSET.copy()
+        self.current_index = STATUS.stat.g5x_index
 
         self.loadOffsetTable()
 
@@ -182,9 +183,7 @@ class OffsetTable(DataPlugin):
         :param item: the name of the tool data item to get
         :return: dict, int, float, str
         """
-        if item is None:
-            return self.OFFSET_TABLE[STAT.g5x_index]
-        return self.OFFSET_TABLE[STAT.g5x_index].get(item[0].upper())
+        return self.current_offset
 
     def initialise(self):
         self.fs_watcher = QFileSystemWatcher([self.parameter_file])
@@ -226,6 +225,7 @@ class OffsetTable(DataPlugin):
 
     def setCurrentOffsetNumber(self, offset_num):
         self.current_offset.setValue(offset_num)
+        self.current_index = offset_num
         self.active_offset_changed.emit(offset_num)
 
     def reloadOffsetTable(self):

@@ -150,7 +150,16 @@ class OffsetModel(QStandardItemModel):
             return Qt.AlignVCenter | Qt.AlignRight
 
         elif role == Qt.TextColorRole:
-            return QStandardItemModel.data(self, index, role)
+
+            offset = index.row() + 1
+
+            if self.ot.current_index == offset:
+
+                return QBrush(self.current_row_color)
+
+            else:
+
+                return QStandardItemModel.data(self, index, role)
 
         return QStandardItemModel.data(self, index, role)
 
@@ -240,8 +249,6 @@ class OffsetTable(QTableView):
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
 
-        self.offset_model.ot.active_offset_changed.connect(self.selectRow)
-
     @Slot()
     def saveOffsetTable(self):
         if not self.confirmAction("Do you want to save changes and\n"
@@ -271,17 +278,17 @@ class OffsetTable(QTableView):
     #
     #     self.offset_model.removeOffset(current_row)
 
-    @Slot()
-    def selectPrevious(self):
-        """Select the previous item in the view."""
-        self.selectRow(self.selectedRow() - 1)
-        return True
+    # @Slot()
+    # def selectPrevious(self):
+    #     """Select the previous item in the view."""
+    #     self.selectRow(self.selectedRow() - 1)
+    #     return True
 
-    @Slot()
-    def selectNext(self):
-        """Select the next item in the view."""
-        self.selectRow(self.selectedRow() + 1)
-        return True
+    # @Slot()
+    # def selectNext(self):
+    #     """Select the next item in the view."""
+    #     self.selectRow(self.selectedRow() + 1)
+    #     return True
 
     @Slot()
     def clearOffsetTable(self, confirm=True):
