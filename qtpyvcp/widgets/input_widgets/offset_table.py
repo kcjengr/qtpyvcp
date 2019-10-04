@@ -251,7 +251,7 @@ class OffsetTable(QTableView):
         self.setAlternatingRowColors(True)
         self.setSelectionBehavior(QTableView.SelectRows)
         self.setSelectionMode(QTableView.SingleSelection)
-        self.horizontalHeader().setStretchLastSection(True)
+        self.horizontalHeader().setStretchLastSection(False)
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
 
     @Slot()
