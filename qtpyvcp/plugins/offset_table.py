@@ -101,17 +101,17 @@ COLUMN_LABELS = {
     'R': 'R'
 }
 
-ROW_LABELS = {
-    'P1': 'G54',
-    'P2': 'G55',
-    'P3': 'G56',
-    'P4': 'G57',
-    'P5': 'G58',
-    'P6': 'G59',
-    'P7': 'G59.1',
-    'P8': 'G59.2',
-    'P9': 'G59.3'
-}
+ROW_LABELS = [
+    'G54',
+    'G55',
+    'G56',
+    'G57',
+    'G58',
+    'G59',
+    'G59.1',
+    'G59.2',
+    'G59.3'
+]
 
 
 def makeLorumIpsumOffsetTable():
@@ -143,6 +143,7 @@ class OffsetTable(DataPlugin):
         self.status = STATUS
 
         self.columns = self.validateColumns(columns) or [c for c in 'XYZABCUVWR']
+        self.rows = ROW_LABELS
 
         self.setCurrentOffsetNumber(1)
 

@@ -96,7 +96,10 @@ class OffsetModel(QStandardItemModel):
         self.current_row_color = QColor(Qt.darkGreen)
 
         self._columns = self.ot.columns
+        self._rows = self.ot.rows
+
         self._column_labels = self.ot.COLUMN_LABELS
+        self._row_labels = self.ot.ROW_LABELS
 
         self._offset_table = self.ot.getOffsetTable()
 
@@ -124,6 +127,8 @@ class OffsetModel(QStandardItemModel):
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role == Qt.DisplayRole and orientation == Qt.Horizontal:
             return self._column_labels[self._columns[section]]
+        elif role == Qt.DisplayRole and orientation == Qt.Vertical:
+            return self._row_labels[section]
 
         return QStandardItemModel.headerData(self, section, orientation, role)
 
