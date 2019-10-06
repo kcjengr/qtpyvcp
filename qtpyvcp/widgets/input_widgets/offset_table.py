@@ -66,31 +66,6 @@ class OffsetModel(QStandardItemModel):
     def __init__(self, parent=None):
         super(OffsetModel, self).__init__(parent)
 
-        self.column_labels = {
-            'X': 0,
-            'Y': 1,
-            'Z': 2,
-            'A': 3,
-            'B': 4,
-            'C': 5,
-            'U': 6,
-            'V': 7,
-            'W': 8,
-            'R': 9
-        }
-
-        self.row_labels = [
-            'G54',
-            'G55',
-            'G56',
-            'G57',
-            'G58',
-            'G59',
-            'G59.1',
-            'G59.2',
-            'G59.3'
-        ]
-
         self.ot = getPlugin('offsettable')
 
         self.current_row_color = QColor(Qt.darkGreen)
@@ -104,9 +79,8 @@ class OffsetModel(QStandardItemModel):
         self._offset_table = self.ot.getOffsetTable()
 
         self.setColumnCount(self.columnCount())
-        self.setRowCount(9)  # (self.rowCount())
+        self.setRowCount(len(self._rows))  # (self.rowCount())
 
-        # self.status.tool_in_spindle.notify(self.refreshModel)
         self.ot.offset_table_changed.connect(self.updateModel)
 
     def refreshModel(self):
@@ -126,7 +100,7 @@ class OffsetModel(QStandardItemModel):
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role == Qt.DisplayRole and orientation == Qt.Horizontal:
-            return self._column_labels[self._columns[section]]
+            return self._column_labels[section]
         elif role == Qt.DisplayRole and orientation == Qt.Vertical:
             return self._row_labels[section]
 
@@ -136,7 +110,7 @@ class OffsetModel(QStandardItemModel):
         return len(self._columns)
 
     def rowCount(self, parent=None):
-        return len(self._offset_table) - 1
+        return len(self._rows)
 
     def flags(self, index):
         return Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemIsEditable
@@ -144,12 +118,9 @@ class OffsetModel(QStandardItemModel):
     def data(self, index, role=Qt.DisplayRole):
         if role == Qt.DisplayRole or role == Qt.EditRole:
 
-            key = self._columns[index.column()]
-            key_index = self.column_labels[key]
-
             offset_num = sorted(self._offset_table)[index.row()]
 
-            return self._offset_table[offset_num][key_index]
+            return self._offset_table[offset_num][index.column()]
 
         elif role == Qt.TextAlignmentRole:
             return Qt.AlignVCenter | Qt.AlignRight
@@ -173,10 +144,9 @@ class OffsetModel(QStandardItemModel):
         key = self._columns[index.column()]
         key_index = self.column_labels[key]
 
-        tnum = sorted(self._offset_table)[index.row() + 1]
-        offset_index = self.row_labels[tnum]
+        o_num = sorted(self._offset_table)[index.row()]
 
-        self._offset_table[offset_index][key_index] = value
+        self._offset_table[o_num][key_index] = value
         return True
 
     def removeOffset(self, row):
@@ -247,7 +217,6 @@ class OffsetTable(QTableView):
 
         # Appearance/Behaviour settings
         self.setSortingEnabled(False)
-        # self.verticalHeader().hide()
         self.setAlternatingRowColors(True)
         self.setSelectionBehavior(QTableView.SelectRows)
         self.setSelectionMode(QTableView.SingleSelection)

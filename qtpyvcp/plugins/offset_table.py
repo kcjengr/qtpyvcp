@@ -37,6 +37,7 @@ Offset Table YAML configuration:
 import os
 from itertools import takewhile
 from datetime import datetime
+from pprint import pprint
 
 import linuxcnc
 
@@ -71,8 +72,7 @@ DEFAULT_OFFSET = {
             5: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
             6: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
             7: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            8: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            9: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+            8: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
 }
 
 NO_TOOL = merge(DEFAULT_OFFSET, {'T': 0, 'R': 'No Tool Loaded'})  # FIXME Requires safe removal
@@ -88,18 +88,18 @@ NO_TOOL = merge(DEFAULT_OFFSET, {'T': 0, 'R': 'No Tool Loaded'})  # FIXME Requir
 #
 # """
 
-COLUMN_LABELS = {
-    'X': 'X',
-    'Y': 'Y',
-    'Z': 'Z',
-    'A': 'A',
-    'B': 'B',
-    'C': 'C',
-    'U': 'U',
-    'V': 'V',
-    'W': 'W',
-    'R': 'R'
-}
+COLUMN_LABELS = [
+    'X',
+    'Y',
+    'Z',
+    'A',
+    'B',
+    'C',
+    'U',
+    'V',
+    'W',
+    'R'
+]
 
 ROW_LABELS = [
     'G54',
@@ -284,17 +284,18 @@ class OffsetTable(DataPlugin):
     def getOffsetTable(self):
         return self.OFFSET_TABLE.copy()
 
-    # def saveToolTable(self, tool_table, columns=None, tool_file=None):
-    #     """Write tooltable data to file.
-    #
-    #     Args:
-    #         tool_table (dict) : Dictionary of dictionaries containing
-    #             the tool data to write to the file.
-    #         columns (str | list) : A list of data columns to write.
-    #             If `None` will use the value of ``self.columns``.
-    #         tool_file (str) : Path to write the tooltable too.
-    #             Defaults to ``self.tool_table_file``.
-    #     """
+    def saveOffsetTable(self, offset_table, columns=None):
+        """ Stores the offset table in memory.
+
+        Args:
+            offset_table (dict) : Dictionary of dictionaries containing
+                the tool data to write to the file.
+            columns (str | list) : A list of data columns to write.
+                If `None` will use the value of ``self.columns``.
+        """
+
+        pprint(offset_table)
+        print(columns)
     #
     #     columns = self.validateColumns(columns) or self.columns
     #
