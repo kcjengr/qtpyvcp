@@ -19,7 +19,7 @@
 
 from qtpy.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
 from qtpy.QtGui import QStandardItemModel, QColor, QBrush
-from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, QSpinBox, QLineEdit, QMessageBox
+from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, QMessageBox
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
@@ -178,7 +178,7 @@ class OffsetModel(QStandardItemModel):
         return self._offset_table[o_num]
 
     def saveOffsetTable(self):
-        self.ot.saveOffsetTable(self._offset_table)
+        self.ot.saveOffsetTable(self._offset_table, self._columns)
         return True
 
     def clearOffsetTable(self):
@@ -201,19 +201,19 @@ class OffsetTable(QTableView):
 
         self.offset_model = OffsetModel(self)
 
-        self.item_delegate = ItemDelegate(columns=self.offset_model._columns)
-        self.setItemDelegate(self.item_delegate)
+        # Properties
+        self._columns = self.offset_model._columns
+        self._confirm_actions = False
+        self._current_row_color = QColor('sage')
 
         self.proxy_model = QSortFilterProxyModel()
         self.proxy_model.setFilterKeyColumn(0)
         self.proxy_model.setSourceModel(self.offset_model)
 
-        self.setModel(self.proxy_model)
+        self.item_delegate = ItemDelegate(columns=self._columns)
+        self.setItemDelegate(self.item_delegate)
 
-        # Properties
-        self._columns = self.offset_model._columns
-        self._confirm_actions = False
-        self._current_row_color = QColor('sage')
+        self.setModel(self.proxy_model)
 
         # Appearance/Behaviour settings
         self.setSortingEnabled(False)
@@ -226,13 +226,13 @@ class OffsetTable(QTableView):
     @Slot()
     def saveOffsetTable(self):
         if not self.confirmAction("Do you want to save changes and\n"
-                                  "load tool table into LinuxCNC?"):
+                                  "load offset table into LinuxCNC?"):
             return
         self.offset_model.saveOffsetTable()
 
     @Slot()
     def loadOffsetTable(self):
-        if not self.confirmAction("Do you want to re-load the tool table?\n"
+        if not self.confirmAction("Do you want to re-load the offset table?\n"
                                   "All unsaved changes will be lost."):
             return
         self.offset_model.loadOffsetTable()
