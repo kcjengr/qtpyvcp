@@ -282,11 +282,11 @@ class OffsetTable(DataPlugin):
         for index in range(len(self.rows)):
             mdi_list = list()
             mdi_list.append("G10 L2")
-            mdi_list.append("P{}".format(index))
+            mdi_list.append("P{}".format(index+1))
 
             for axis in columns:
                 mdi_list.append("{}{}".format(axis, self.g5x_offset_table[index][columns.index(axis)]))
 
             mdi_command = " ".join(mdi_list)
 
-            print(mdi_command)
+            issue_mdi(mdi_command)
