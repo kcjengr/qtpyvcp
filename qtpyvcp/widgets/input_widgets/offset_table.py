@@ -141,52 +141,34 @@ class OffsetModel(QStandardItemModel):
         return QStandardItemModel.data(self, index, role)
 
     def setData(self, index, value, role):
+        rows_index = index.column()
+        columns_index = index.row()
 
-        key = self._columns[index.column()]
-        key_index = self.column_labels[key]
+        self._offset_table[columns_index][rows_index] = value
 
-        o_num = sorted(self._offset_table)[index.row()]
-
-        self._offset_table[o_num][key_index] = value
         return True
 
-    def removeOffset(self, row):
-        self.beginRemoveRows(QModelIndex(), row, row)
-        tnum = sorted(self._offset_table)[row + 1]
-        del self._offset_table[tnum]
-        self.endRemoveRows()
-        return True
+    def clearRow(self, row):
 
-    def addOffset(self):
-        try:
-            tnum = sorted(self._offset_table)[-1] + 1
-        except IndexError:
-            tnum = 1
+        for i in range(len(self._columns)):
+            self._offset_table[row][i] = 0.0
 
-        row = len(self._offset_table) - 1
+        self.refreshModel()
 
-        if row == 9:
-            # max 9 tools
-            return False
+    def clearRows(self):
 
-        self.beginInsertRows(QModelIndex(), row, row)
-        self._offset_table[tnum] = self.ot.newOffset(tnum=tnum)
-        self.endInsertRows()
-        return True
+        for i in range(len(self._rows)):
+            for j in range(len(self._columns)):
+                self._offset_table[i][j] = 0.0
+
+        self.refreshModel()
 
     def offsetDataFromRow(self, row):
         o_num = sorted(self._offset_table)[row]
         return self._offset_table[o_num]
 
     def saveOffsetTable(self):
-        self.ot.saveOffsetTable(self._offset_table, self._columns)
-        return True
-
-    def clearOffsetTable(self):
-        self.beginRemoveRows(QModelIndex(), 0, 9)
-        # delete all but the spindle, which can't be deleted
-        self._offset_table = {0: self._offset_table[0]}
-        self.endRemoveRows()
+        self.ot.saveOffsetTable(self._offset_table, columns=self._columns)
         return True
 
     def loadOffsetTable(self):
@@ -226,13 +208,14 @@ class OffsetTable(QTableView):
         self.horizontalHeader().setStretchLastSection(False)
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
 
-        STATUS.all_axes_homed.notify(self.handle_home)
+        STATUS.all_axes_homed.notify(self.handle_home_signal)
 
-    def handle_home(self, all_axes):
+    def handle_home_signal(self, all_axes):
         if all_axes:
             self.setEnabled(True)
         else:
             self.setEnabled(False)
+
     @Slot()
     def saveOffsetTable(self):
 
@@ -249,20 +232,18 @@ class OffsetTable(QTableView):
             return
         self.offset_model.loadOffsetTable()
 
-    # @Slot()
-    # def deleteSelectedOffset(self):
-    #     """Delete the currently selected item"""
-    #     current_row = self.selectedRow()
-    #     if current_row == -1:
-    #         # no row selected
-    #         return
-    #
-    #     odata = self.offset_model.offsetDataFromRow(current_row)
-    #     if not self.confirmAction("Are you sure you want to delete offset {odata[T]}?\n"
-    #                               "{odata[R]}".format(tdata=odata)):
-    #         return
-    #
-    #     self.offset_model.removeOffset(current_row)
+    @Slot()
+    def deleteSelectedOffset(self):
+        """Delete the currently selected item"""
+        current_row = self.selectedRow()
+        if current_row == -1:
+            # no row selected
+            return
+
+        if not self.confirmAction("Are you sure you want to delete offset {}?".format(current_row)):
+            return
+
+        self.offset_model.clearRow(current_row)
 
     # @Slot()
     # def selectPrevious(self):
@@ -283,7 +264,7 @@ class OffsetTable(QTableView):
             if not self.confirmAction("Do you want to delete the whole offsets table?"):
                 return
 
-        self.offset_model.clearOffsetTable()
+        self.offset_model.clearRows()
 
     def selectedRow(self):
         """Returns the row number of the currently selected row, or 0"""

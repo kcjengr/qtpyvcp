@@ -61,58 +61,45 @@ def merge(a, b):
     return r
 
 
-DEFAULT_OFFSET = {
-            0: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            1: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            2: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            3: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            4: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            5: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            6: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            7: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            8: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
-}
-
-NO_TOOL = merge(DEFAULT_OFFSET, {'T': 0, 'R': 'No Tool Loaded'})  # FIXME Requires safe removal
-
-
-COLUMN_LABELS = [
-    'X',
-    'Y',
-    'Z',
-    'A',
-    'B',
-    'C',
-    'U',
-    'V',
-    'W',
-    'R'
-]
-
-ROW_LABELS = [
-    'G54',
-    'G55',
-    'G56',
-    'G57',
-    'G58',
-    'G59',
-    'G59.1',
-    'G59.2',
-    'G59.3'
-]
-
-
-def makeLorumIpsumOffsetTable():
-    return {i: merge(DEFAULT_OFFSET,
-                     {'T': i, 'P': i, 'R': 'Lorum Ipsum ' + str(i)})
-            for i in range(10)}
-
-
 class OffsetTable(DataPlugin):
-    OFFSET_TABLE = {0: NO_TOOL}
-    DEFAULT_OFFSET = DEFAULT_OFFSET
-    COLUMN_LABELS = COLUMN_LABELS
-    ROW_LABELS = ROW_LABELS
+    DEFAULT_OFFSET = {
+        0: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        1: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        2: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        3: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        4: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        5: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        6: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        7: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        8: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    }
+
+    NO_TOOL = merge(DEFAULT_OFFSET, {'T': 0, 'R': 'No Tool Loaded'})  # FIXME Requires safe removal
+
+    COLUMN_LABELS = [
+        'X',
+        'Y',
+        'Z',
+        'A',
+        'B',
+        'C',
+        'U',
+        'V',
+        'W',
+        'R'
+    ]
+
+    ROW_LABELS = [
+        'G54',
+        'G55',
+        'G56',
+        'G57',
+        'G58',
+        'G59',
+        'G59.1',
+        'G59.2',
+        'G59.3'
+    ]
 
     offset_table_changed = Signal(dict)
     active_offset_changed = Signal(int)
@@ -132,11 +119,11 @@ class OffsetTable(DataPlugin):
         self.status = STATUS
 
         self.columns = self.validateColumns(columns) or [c for c in 'XYZABCUVWR']
-        self.rows = ROW_LABELS
+        self.rows = self.ROW_LABELS
 
         self.setCurrentOffsetNumber(1)
 
-        self.g5x_offset_table = DEFAULT_OFFSET.copy()
+        self.g5x_offset_table = self.DEFAULT_OFFSET.copy()
         self.current_index = STATUS.stat.g5x_index
 
         self.loadOffsetTable()
@@ -195,13 +182,13 @@ class OffsetTable(DataPlugin):
         return [col for col in [col.strip().upper() for col in columns]
                 if col in 'XYZABCUVWR' and not col == '']
 
-    def newOffset(self, tnum=None):
-        """Get a dict of default tool values for a new tool."""
-        if tnum is None:
-            tnum = len(self.OFFSET_TABLE)
-        new_tool = DEFAULT_OFFSET.copy()
-        new_tool.update({'T': tnum, 'P': tnum, 'R': 'New Tool'})
-        return new_tool
+    # def newOffset(self, tnum=None):
+    #     """Get a dict of default tool values for a new tool."""
+    #     if tnum is None:
+    #         tnum = len(self.OFFSET_TABLE)
+    #     new_tool = self.DEFAULT_OFFSET.copy()
+    #     new_tool.update({'T': tnum, 'P': tnum, 'R': 'New Tool'})
+    #     return new_tool
 
     def onParamsFileChanged(self, path):
         LOG.debug('Params file changed: {}'.format(path))
@@ -256,20 +243,17 @@ class OffsetTable(DataPlugin):
                     elif 5390 >= param >= 5381:
                         self.g5x_offset_table.get(8)[param - 5381] = data
 
-        # update offset table
-        self.__class__.OFFSET_TABLE = self.g5x_offset_table
-
-        # import json
-        # print json.dumps(table, sort_keys=True, indent=4)
-
         self.offset_table_changed.emit(self.g5x_offset_table)
 
         return self.g5x_offset_table.copy()
 
     def getOffsetTable(self):
-        return self.OFFSET_TABLE.copy()
+        return self.g5x_offset_table
 
-    def saveOffsetTable(self, offset_table, columns=None):
+    def getDefaultData(self):
+        return self.DEFAULT_OFFSET.copy()
+
+    def saveOffsetTable(self, offset_table, columns):
         """ Stores the offset table in memory.
 
         Args:
@@ -278,6 +262,7 @@ class OffsetTable(DataPlugin):
             columns (str | list) : A list of data columns to write.
                 If `None` will use the value of ``self.columns``.
         """
+        self.g5x_offset_table = offset_table
 
         for index in range(len(self.rows)):
             mdi_list = list()
