@@ -24,6 +24,7 @@ from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, QMes
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
 
+STATUS = getPlugin('status')
 LOG = getLogger(__name__)
 
 
@@ -199,6 +200,8 @@ class OffsetTable(QTableView):
     def __init__(self, parent=None):
         super(OffsetTable, self).__init__(parent)
 
+        self.setEnabled(False)
+
         self.offset_model = OffsetModel(self)
 
         # Properties
@@ -223,6 +226,13 @@ class OffsetTable(QTableView):
         self.horizontalHeader().setStretchLastSection(False)
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
 
+        STATUS.all_axes_homed.notify(self.handle_home)
+
+    def handle_home(self, all_axes):
+        if all_axes:
+            self.setEnabled(True)
+        else:
+            self.setEnabled(False)
     @Slot()
     def saveOffsetTable(self):
         if not self.confirmAction("Do you want to save changes and\n"
