@@ -101,7 +101,7 @@ class OffsetModel(QStandardItemModel):
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role == Qt.DisplayRole and orientation == Qt.Horizontal:
-            return self._column_labels[section]
+            return self._columns[section]
         elif role == Qt.DisplayRole and orientation == Qt.Vertical:
             return self._row_labels[section]
 
