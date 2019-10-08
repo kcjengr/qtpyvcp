@@ -235,10 +235,12 @@ class OffsetTable(QTableView):
             self.setEnabled(False)
     @Slot()
     def saveOffsetTable(self):
-        if not self.confirmAction("Do you want to save changes and\n"
-                                  "load offset table into LinuxCNC?"):
-            return
-        self.offset_model.saveOffsetTable()
+
+        if self.isEnabled():
+            if not self.confirmAction("Do you want to save changes and\n"
+                                      "load offset table into LinuxCNC?"):
+                return
+            self.offset_model.saveOffsetTable()
 
     @Slot()
     def loadOffsetTable(self):
