@@ -154,16 +154,18 @@ class OffsetModel(QStandardItemModel):
 
     def clearRow(self, row):
 
-        for i in range(len(self._columns)):
-            self._offset_table[row][i] = 0.0
+        for col in range(len(self._columns)):
+            index_column = self._column_labels.index(self._columns[col])
+            self._offset_table[row][index_column] = 0.0
 
         self.refreshModel()
 
     def clearRows(self):
 
-        for i in range(len(self._rows)):
-            for j in range(len(self._columns)):
-                self._offset_table[i][j] = 0.0
+        for row in range(len(self._rows)):
+            for col in range(len(self._columns)):
+                index_column = self._column_labels.index(self._columns[col])
+                self._offset_table[row][index_column] = 0.0
 
         self.refreshModel()
 
