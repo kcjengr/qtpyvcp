@@ -90,3 +90,11 @@ class VCPSettingsCheckBoxPlugin(_DesignerPlugin):
         return VCPSettingsCheckBox
     def objectName(self):
         return 'settings_checkbox'
+
+from offset_table import OffsetTable
+class OffsetTablePlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return OffsetTable
+
+    def objectName(self):
+        return 'offset_table'
