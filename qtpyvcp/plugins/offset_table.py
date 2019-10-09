@@ -245,13 +245,10 @@ class OffsetTable(DataPlugin):
 
         self.offset_table_changed.emit(self.g5x_offset_table)
 
-        return self.g5x_offset_table.copy()
+        return self.g5x_offset_table
 
     def getOffsetTable(self):
         return self.g5x_offset_table
-
-    def getDefaultData(self):
-        return self.DEFAULT_OFFSET.copy()
 
     def saveOffsetTable(self, offset_table, columns):
         """ Stores the offset table in memory.
@@ -269,8 +266,11 @@ class OffsetTable(DataPlugin):
             mdi_list.append("G10 L2")
             mdi_list.append("P{}".format(index+1))
 
-            for axis in columns:
-                mdi_list.append("{}{}".format(axis, self.g5x_offset_table[index][columns.index(axis)]))
+            for char in columns:
+
+                column_index = self.columns.index(char)
+
+                mdi_list.append("{}{}".format(char, self.g5x_offset_table[index][column_index]))
 
             mdi_command = " ".join(mdi_list)
 

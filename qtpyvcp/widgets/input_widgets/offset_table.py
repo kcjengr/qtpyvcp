@@ -119,9 +119,10 @@ class OffsetModel(QStandardItemModel):
     def data(self, index, role=Qt.DisplayRole):
         if role == Qt.DisplayRole or role == Qt.EditRole:
 
-            offset_num = sorted(self._offset_table)[index.row()]
+            column_index = self._columns[index.column()]
+            index_column = self._column_labels.index(column_index)
 
-            return self._offset_table[offset_num][index.column()]
+            return self._offset_table[index.row()][index_column]
 
         elif role == Qt.TextAlignmentRole:
             return Qt.AlignVCenter | Qt.AlignRight
@@ -141,10 +142,13 @@ class OffsetModel(QStandardItemModel):
         return QStandardItemModel.data(self, index, role)
 
     def setData(self, index, value, role):
-        rows_index = index.column()
-        columns_index = index.row()
+        columns_index = index.column()
+        rows_index = index.row()
 
-        self._offset_table[columns_index][rows_index] = value
+        column_index = self._columns[index.column()]
+        index_column = self._column_labels.index(column_index)
+
+        self._offset_table[rows_index][index_column] = value
 
         return True
 
