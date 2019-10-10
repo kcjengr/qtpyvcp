@@ -208,7 +208,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.original_g5x_offset = self.status.stat.g5x_offset
         self.original_g92_offset = self.status.stat.g92_offset
 
-        self.load(fname)
+        if fname:
+            self.load(fname)
+
         if self.canon is None:
             return
 
