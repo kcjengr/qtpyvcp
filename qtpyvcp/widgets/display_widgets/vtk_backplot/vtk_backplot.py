@@ -159,6 +159,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.axes = Axes()
         self.axes_actor = self.axes.get_actor()
 
+        # transform = vtk.vtkTransform()
+        # transform.Translate(*self.g5x_offset[:3])
+        # transform.RotateZ(self.rotation_offset)
+        # self.axes_actor.SetUserTransform(transform)
+
         self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
         self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
@@ -206,7 +211,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.RemoveActor(self.path_actor)
         self.renderer.RemoveActor(self.extents_actor)
 
-        self.original_rotation_offset = self.status.rotation_xy
+        self.original_rotation_offset = self.status.stat.rotation_xy
         self.original_g5x_offset = self.status.stat.g5x_offset
         self.original_g92_offset = self.status.stat.g92_offset
 
