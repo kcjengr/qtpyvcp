@@ -122,13 +122,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         # Todo: get active part
 
-        self.g5x_offset = self.status.g5x_offset()
-        self.g92_offset = self.status.g92_offset()
-        self.rotation_offset = self.status.rotation_xy()
+        self.g5x_offset = [0.0] * 9
+        self.g92_offset = [0.0] * 9
+        self.rotation_offset = 0.0
 
-        self.original_g5x_offset = copy(self.g5x_offset)
-        self.original_g92_offset = copy(self.g92_offset)
-        self.original_rotation_offset = copy(self.rotation_offset)
+        self.original_g5x_offset = [0.0] * 9
+        self.original_g92_offset = [0.0] * 9
+        self.original_rotation_offset = 0.0
 
         self.spindle_position = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
@@ -255,7 +255,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             path_offset = [n - o for n, o in zip(g5x_offset[:3], self.original_g5x_offset[:3])]
 
             transform = vtk.vtkTransform()
-            transform.Translate(*g5x_offset[:3])
+            transform.Translate(self.g5x_offset[0], self.g5x_offset[1], self.g5x_offset[2])
             transform.RotateZ(self.rotation_offset)
 
             self.axes_actor.SetUserTransform(transform)
@@ -277,7 +277,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             path_offset = [n - o for n, o in zip(g92_offset[:3], self.original_g92_offset[:3])]
 
             transform = vtk.vtkTransform()
-            transform.Translate(*g92_offset[:3])
+            transform.Translate(self.g5x_offset[0], self.g5x_offset[1], self.g5x_offset[2])
             transform.RotateZ(self.rotation_offset)
 
             self.axes_actor.SetUserTransform(transform)
@@ -300,7 +300,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             LOG.info('Rotation Update Started')
 
             transform = vtk.vtkTransform()
-            transform.Translate(*self.g5x_offset[:3])
+            transform.Translate(self.g5x_offset[0], self.g5x_offset[1], self.g5x_offset[2])
             transform.RotateZ(self.rotation_offset)
 
             self.axes_actor.SetUserTransform(transform)
