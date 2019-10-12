@@ -251,7 +251,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # LOG.debug(self.status.exec_state)
         # LOG.debug(self.status.task_mode)
         if str(self.status.task_mode) == "MDI":
-            print(g5x_offset)
 
             self.g5x_offset = g5x_offset
             # LOG.info('G5x Update Started')
