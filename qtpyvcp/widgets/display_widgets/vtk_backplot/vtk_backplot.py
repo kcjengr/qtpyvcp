@@ -38,6 +38,7 @@ class VTKCanon(StatCanon):
     def __init__(self, colors=COLOR_MAP, *args, **kwargs):
         super(VTKCanon, self).__init__(*args, **kwargs)
 
+        self.status = STATUS
         self.units = MACHINE_UNITS
 
         self.path_colors = colors
@@ -109,7 +110,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
 
+        self.parent = parent
         self.status = STATUS
+        self.stat = STATUS.stat
 
         self.canon_class = VTKCanon
 
@@ -131,10 +134,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.spindle_position = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
-
-        self.parent = parent
-        self.status = STATUS
-        self.stat = STATUS.stat
 
         self.units = MACHINE_UNITS
 
@@ -173,13 +172,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.path_actor = self.canon.get_actor()
 
             self.path_actor.SetPosition(*self.g5x_offset[:3])
-
             self.extents = PathBoundaries(self.renderer, self.path_actor)
             self.extents_actor = self.extents.get_actor()
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.machine_actor)
         self.renderer.AddActor(self.axes_actor)
+        self.renderer.AddActor(self.path_actor)
         self.renderer.AddActor(self.path_cache_actor)
 
         self.renderer.ResetCamera()
@@ -253,6 +252,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # LOG.debug(self.status.exec_state)
         # LOG.debug(self.status.task_mode)
         if str(self.status.task_mode) == "MDI":
+            print(g5x_offset)
 
             self.g5x_offset = g5x_offset
             LOG.info('G5x Update Started')
