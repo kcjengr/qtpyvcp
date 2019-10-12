@@ -245,7 +245,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     def update_g5x_offset(self, g5x_offset):
-        LOG.info('g5x offset')
+        # LOG.info('g5x offset')
         # LOG.debug(self.status.state)
         # LOG.debug(self.status.interp_state)
         # LOG.debug(self.status.exec_state)
@@ -254,7 +254,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             print(g5x_offset)
 
             self.g5x_offset = g5x_offset
-            LOG.info('G5x Update Started')
+            # LOG.info('G5x Update Started')
             # determine change in g5x offset since path was drawn
 
             path_offset = [n - o for n, o in zip(g5x_offset[:3], self.original_g5x_offset[:3])]
@@ -272,12 +272,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.update_render()
 
     def update_g92_offset(self, g92_offset):
-        LOG.info('g92 offset')
+        # LOG.info('g92 offset')
         if str(self.status.task_mode) == "MDI":
 
             self.g92_offset = g92_offset
 
-            LOG.info('G92 Update Started')
+            # LOG.info('G92 Update Started')
             # determine change in g92 offset since path was drawn
 
             path_offset = [n - o for n, o in zip(g92_offset[:3], self.original_g92_offset[:3])]
@@ -294,16 +294,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.update_render()
 
     def update_rotation_xy(self, rotation):
-        LOG.info("Rotation: {}".format(rotation))  # in degrees
+        # LOG.info("Rotation: {}".format(rotation))  # in degrees
         # ToDo: use transform matrix to rotate existing path?
         # probably not worth it since rotation is not used much ...
 
-        LOG.info('rotate offset: {}'.format(rotation))
+        # LOG.info('rotate offset: {}'.format(rotation))
         if str(self.status.task_mode) == "MDI":
 
             self.rotation_offset = rotation
 
-            LOG.info('Rotation Update Started')
+            # LOG.info('Rotation Update Started')
 
             transform = vtk.vtkTransform()
             transform.Translate(*self.g5x_offset[:3])
