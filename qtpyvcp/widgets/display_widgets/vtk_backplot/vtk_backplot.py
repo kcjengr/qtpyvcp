@@ -39,7 +39,6 @@ class VTKCanon(StatCanon):
         super(VTKCanon, self).__init__(*args, **kwargs)
 
         self.status = STATUS
-
         self.units = MACHINE_UNITS
 
         self.path_colors = colors
@@ -111,6 +110,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
 
+        self.parent = parent
+        self.status = STATUS
+        self.stat = STATUS.stat
+
         self.canon_class = VTKCanon
 
         # properties
@@ -120,9 +123,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         # Todo: get active part
 
-        self.g5x_offset = [0.0] * 9
-        self.g92_offset = [0.0] * 9
-        self.rotation_offset = 0.0
+        self.g5x_offset = self.stat.g5x_offset
+        self.g92_offset = self.stat.g92_offset
+        self.rotation_offset = self.stat.rotation_xy
 
         self.original_g5x_offset = [0.0] * 9
         self.original_g92_offset = [0.0] * 9
@@ -130,10 +133,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.spindle_position = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
-
-        self.parent = parent
-        self.status = STATUS
-        self.stat = STATUS.stat
 
         self.units = MACHINE_UNITS
 
@@ -157,6 +156,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.axes = Axes()
         self.axes_actor = self.axes.get_actor()
 
+        transform = vtk.vtkTransform()
+        transform.Translate(*self.g5x_offset[:3])
+        transform.RotateZ(self.rotation_offset)
+        self.axes_actor.SetUserTransform(transform)
+
         self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
         self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
@@ -166,8 +170,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.canon = self.canon_class()
             self.path_actor = self.canon.get_actor()
 
+            self.path_actor.SetPosition(*self.g5x_offset[:3])
             self.extents = PathBoundaries(self.renderer, self.path_actor)
             self.extents_actor = self.extents.get_actor()
+
+            self.renderer.AddActor(self.extents_actor)
+            self.renderer.AddActor(self.path_actor)
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.machine_actor)
@@ -204,19 +212,23 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.RemoveActor(self.path_actor)
         self.renderer.RemoveActor(self.extents_actor)
 
-        self.original_rotation_offset = self.status.rotation_xy
-        self.original_g5x_offset = self.status.stat.g5x_offset
-        self.original_g92_offset = self.status.stat.g92_offset
+        self.original_rotation_offset = self.stat.rotation_xy
+        self.original_g5x_offset = self.stat.g5x_offset
+        self.original_g92_offset = self.stat.g92_offset
 
-        self.load(fname)
+        if fname:
+            self.load(fname)
+
         if self.canon is None:
             return
 
         self.canon.draw_lines()
-        self.path_actor = self.canon.get_actor()
 
+        self.axes_actor = self.axes.get_actor()
+        self.path_actor = self.canon.get_actor()
         self.extents_actor = self.extents.get_actor()
 
+        self.renderer.AddActor(self.axes_actor)
         self.renderer.AddActor(self.path_actor)
         self.renderer.AddActor(self.extents_actor)
 
@@ -233,20 +245,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     def update_g5x_offset(self, g5x_offset):
-        self.g5x_offset = g5x_offset
-        LOG.info('g5x offset')
+        # LOG.info('g5x offset')
         # LOG.debug(self.status.state)
         # LOG.debug(self.status.interp_state)
         # LOG.debug(self.status.exec_state)
         # LOG.debug(self.status.task_mode)
         if str(self.status.task_mode) == "MDI":
-            LOG.info('G5x Update Started')
+
+            self.g5x_offset = g5x_offset
+            # LOG.info('G5x Update Started')
             # determine change in g5x offset since path was drawn
-            path_offset = [n - o for n, o in zip(g5x_offset[:3],
-                                                 self.original_g5x_offset[:3])]
+
+            path_offset = [n - o for n, o in zip(g5x_offset[:3], self.original_g5x_offset[:3])]
 
             transform = vtk.vtkTransform()
-            transform.Translate(*g5x_offset[:3])
+            transform.Translate(*self.g5x_offset[:3])
+            transform.RotateZ(self.rotation_offset)
 
             self.axes_actor.SetUserTransform(transform)
             self.path_actor.SetPosition(*path_offset)
@@ -257,16 +271,19 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.update_render()
 
     def update_g92_offset(self, g92_offset):
-        self.g92_offset = g92_offset
-        LOG.info('g92 offset')
+        # LOG.info('g92 offset')
         if str(self.status.task_mode) == "MDI":
-            LOG.info('G92 Update Started')
+
+            self.g92_offset = g92_offset
+
+            # LOG.info('G92 Update Started')
             # determine change in g92 offset since path was drawn
-            path_offset = [n - o for n, o in zip(g92_offset[:3],
-                                                 self.original_g92_offset[:3])]
+
+            path_offset = [n - o for n, o in zip(g92_offset[:3], self.original_g92_offset[:3])]
 
             transform = vtk.vtkTransform()
-            transform.Translate(*g92_offset[:3])
+            transform.Translate(*self.g5x_offset[:3])
+            transform.RotateZ(self.rotation_offset)
 
             self.axes_actor.SetUserTransform(transform)
             self.path_actor.SetPosition(*path_offset)
@@ -276,14 +293,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.update_render()
 
     def update_rotation_xy(self, rotation):
-        self.rotation_offset = rotation
-        LOG.info("Rotation: {}".format(rotation))  # in degrees
+        # LOG.info("Rotation: {}".format(rotation))  # in degrees
         # ToDo: use transform matrix to rotate existing path?
         # probably not worth it since rotation is not used much ...
 
-        LOG.info('rotate offset: {}'.format(rotation))
+        # LOG.info('rotate offset: {}'.format(rotation))
         if str(self.status.task_mode) == "MDI":
-            LOG.info('Rotation Update Started')
+
+            self.rotation_offset = rotation
+
+            # LOG.info('Rotation Update Started')
 
             transform = vtk.vtkTransform()
             transform.Translate(*self.g5x_offset[:3])
