@@ -174,10 +174,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.extents = PathBoundaries(self.renderer, self.path_actor)
             self.extents_actor = self.extents.get_actor()
 
+            self.renderer.AddActor(self.extents_actor)
+            self.renderer.AddActor(self.path_actor)
+
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.machine_actor)
         self.renderer.AddActor(self.axes_actor)
-        self.renderer.AddActor(self.path_actor)
         self.renderer.AddActor(self.path_cache_actor)
 
         self.renderer.ResetCamera()
