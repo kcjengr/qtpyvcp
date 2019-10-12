@@ -1,9 +1,10 @@
 import os
 import json
 
-from qtpyvcp import SETTINGS
+from qtpyvcp import SETTINGS, CONFIG
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.utilities.settings import addSetting
 from qtpyvcp.plugins import DataPlugin, DataChannel
 
 LOG = getLogger(__name__)
@@ -15,6 +16,10 @@ class Settings(DataPlugin):
 
         self.channels = SETTINGS
         self.settings = {}
+
+        # load settings defined in YAML file
+        for setting_name, kwargs in CONFIG['settings'].items():
+            addSetting(setting_name, **kwargs)
 
         self.persistence_file = normalizePath(path=persistence_file,
                                               base=os.getenv('CONFIG_DIR', '~/'))

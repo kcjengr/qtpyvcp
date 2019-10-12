@@ -14,8 +14,7 @@ def setSetting(id, value):
 
 
 def addSetting(id, **kwargs):
-    # SETTINGS[id] = Setting(kwargs)
-    print SETTINGS
+    SETTINGS[id] = Setting(**kwargs)
 
 
 class Setting(QObject):

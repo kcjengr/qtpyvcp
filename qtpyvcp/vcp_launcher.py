@@ -78,12 +78,6 @@ def launch_application(opts, config):
     loadWindows(config['windows'])
     log_time('done loading windows')
 
-    print ("#"*70)
-    for k, v in qtpyvcp.CONFIG['settings'].items():
-        print k, v
-        addSetting(k, **v)
-
-
     LOG.debug('Initializing widgets')
     app.initialiseWidgets()
     log_time('done initializing widgets')
