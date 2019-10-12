@@ -122,7 +122,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._enableProgramTicks = True
 
         # Todo: get active part
-        self.stat.poll()
 
         self.g5x_offset = self.stat.g5x_offset
         self.g92_offset = self.stat.g92_offset
@@ -210,8 +209,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.RemoveActor(self.path_actor)
         self.renderer.RemoveActor(self.extents_actor)
-
-        self.stat.poll()
 
         self.original_rotation_offset = self.stat.rotation_xy
         self.original_g5x_offset = self.stat.g5x_offset
