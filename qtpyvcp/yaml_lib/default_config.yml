@@ -79,21 +79,8 @@ application:
 #    stylesheet: {{ file.dir }}/widgets/default_stylesheet.qss   # application wide stylesheet
 
 settings:
-
-  touch-probe.diameter:
-      default_value: 2
-      persistent: true
-      min_value: 0
-      max_value: 10
-
-  touch-probe.calibration.x:
-    default_value: 0
+  touch-probe.diameter-offset:
+    default_value: 0.0
     persistent: true
-
-  touch-probe.calibration.y:
-    default_value: 0
-    persistent: true
-
-  touch-probe.calibration.z:
-    default_value: 0
-    persistent: true
+    min_value: 0
+    max_value: 1
