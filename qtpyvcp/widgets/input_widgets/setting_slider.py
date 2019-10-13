@@ -1,5 +1,6 @@
 from qtpy.QtCore import Property
-from qtpy.QtWidgets import QSlider, QSpinBox, QDoubleSpinBox, QCheckBox
+from qtpy.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox
+from qtpy.QtGui import QIntValidator, QDoubleValidator
 
 from qtpyvcp import SETTINGS
 from qtpyvcp.widgets import VCPWidget
@@ -20,8 +21,74 @@ class VCPAbstractSettingsWidget(VCPWidget):
         self._setting_name = name
 
 
+class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
+    """Settings LineEdit"""
+
+    DEFAULT_RULE_PROPERTY = 'Enable'
+    RULE_PROPERTIES = VCPAbstractSettingsWidget.RULE_PROPERTIES.copy()
+    RULE_PROPERTIES.update({
+        'Text': ['setText', str],
+    })
+
+    def __init__(self, parent):
+        super(VCPSettingsLineEdit, self).__init__(parent=parent)
+        self._setting_name = ''
+        self._text_format = '%s'
+
+    def setDisplayValue(self, text):
+        self.blockSignals(True)
+        self.setText(self._text_format % text)
+        self.blockSignals(False)
+
+    def initialize(self):
+        self._setting = SETTINGS.get(self._setting_name)
+        if self._setting is not None:
+
+            val = self._setting.getValue()
+
+            validator = None
+            if type(val) == int:
+                validator = QIntValidator()
+            elif type(val) == float:
+                validator = QDoubleValidator()
+
+            self.setValidator(validator)
+
+            self.setDisplayValue(self._setting.getValue())
+            self._setting.notify(self.setDisplayValue)
+
+            self.editingFinished.connect(self.onEditingFinished)
+
+    def onEditingFinished(self):
+        value = self._setting.normalizeValue(self.text())
+        self.setDisplayValue(value)
+        self._setting.setValue(value)
+
+    @Property(str)
+    def textFormat(self):
+        return self._text_format
+
+    @textFormat.setter
+    def textFormat(self, text_fmt):
+        if self._setting_name is not "":
+            setting = SETTINGS.get(self._setting_name)
+            try:
+                str = text_fmt % setting.getValue()
+            except ValueError:
+                return
+
+        self._text_format = text_fmt
+
+
 class VCPSettingsSlider(QSlider, VCPAbstractSettingsWidget):
     """Settings Slider"""
+
+    DEFAULT_RULE_PROPERTY = 'Enable'
+    RULE_PROPERTIES = VCPAbstractSettingsWidget.RULE_PROPERTIES.copy()
+    RULE_PROPERTIES.update({
+        'Value': ['setValue', int],
+    })
+
     def __init__(self, parent):
         super(VCPSettingsSlider, self).__init__(parent=parent)
         self._setting_name = ''
@@ -46,6 +113,13 @@ class VCPSettingsSlider(QSlider, VCPAbstractSettingsWidget):
 
 class VCPSettingsSpinBox(QSpinBox, VCPAbstractSettingsWidget):
     """Settings SpinBox"""
+
+    DEFAULT_RULE_PROPERTY = 'Enable'
+    RULE_PROPERTIES = VCPAbstractSettingsWidget.RULE_PROPERTIES.copy()
+    RULE_PROPERTIES.update({
+        'Value': ['setValue', int],
+    })
+
     def __init__(self, parent):
         super(VCPSettingsSpinBox, self).__init__(parent=parent)
 
@@ -69,6 +143,13 @@ class VCPSettingsSpinBox(QSpinBox, VCPAbstractSettingsWidget):
 
 class VCPSettingsDoubleSpinBox(QDoubleSpinBox, VCPAbstractSettingsWidget):
     """Settings DoubleSpinBox"""
+
+    DEFAULT_RULE_PROPERTY = 'Enable'
+    RULE_PROPERTIES = VCPAbstractSettingsWidget.RULE_PROPERTIES.copy()
+    RULE_PROPERTIES.update({
+        'Value': ['setValue', float],
+    })
+
     def __init__(self, parent):
         super(VCPSettingsDoubleSpinBox, self).__init__(parent=parent)
 
@@ -92,6 +173,13 @@ class VCPSettingsDoubleSpinBox(QDoubleSpinBox, VCPAbstractSettingsWidget):
 
 class VCPSettingsCheckBox(QCheckBox, VCPAbstractSettingsWidget):
     """Settings CheckBox"""
+
+    DEFAULT_RULE_PROPERTY = 'Enable'
+    RULE_PROPERTIES = VCPAbstractSettingsWidget.RULE_PROPERTIES.copy()
+    RULE_PROPERTIES.update({
+        'Checked': ['setChecked', bool],
+    })
+
     def __init__(self, parent):
         super(VCPSettingsCheckBox, self).__init__(parent=parent)
 

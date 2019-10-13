@@ -63,6 +63,13 @@ class ProbeSimPlugin(_DesignerPlugin):
     def pluginClass(self):
         return ProbeSim
 
+from setting_slider import VCPSettingsLineEdit
+class VCPSettingsLineEditPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return VCPSettingsLineEdit
+    def objectName(self):
+        return 'settings_lineedit'
+
 from setting_slider import VCPSettingsSlider
 class VCPSettingsSliderPlugin(_DesignerPlugin):
     def pluginClass(self):

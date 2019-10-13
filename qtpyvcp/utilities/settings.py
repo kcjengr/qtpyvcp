@@ -29,6 +29,8 @@ class Setting(QObject):
         self.fset = fset
         self.freset = freset
 
+        self.value_type = type(default_value)
+
         self.max_value = max_value
         self.min_value = min_value
 
@@ -52,7 +54,9 @@ class Setting(QObject):
     def setValue(self, value):
         """Setting value set method."""
         if self.fset is None:
-            self.value = self.clampValue(value)
+            value = self.value_type(value)
+            if self.value_type in (int, float):
+                self.value = self.clampValue(value)
             self.signal.emit(value)
         else:
             self.fset(self.instance, self, value)
@@ -70,6 +74,15 @@ class Setting(QObject):
         if self.min_value is not None:
             value = max(value, self.min_value)
         return value
+
+    def normalizeValue(self, value):
+        if type(value) != self.value_type:
+            try:
+                value = self.value_type(value)
+            except ValueError:
+                value = self.value
+
+        return self.clampValue(value)
 
     def getter(self, fget):
         def inner(*args, **kwargs):
