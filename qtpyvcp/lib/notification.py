@@ -63,7 +63,7 @@ class Notification(QDialog):
 
         current_time = "{}:{}".format(time.hour, time.minute)
 
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.SplashScreen)
+        self.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.WindowSystemMenuHint)
 
         resolution = QDesktopWidget().screenGeometry(-1)
         screenWidth = resolution.width()
@@ -79,6 +79,7 @@ class Notification(QDialog):
         m.buttonClose.clicked.connect(self.onClicked)
         self.nMessages += 1
         self.show()
+        self.raise_()
 
     def onClicked(self):
         self.mainLayout.removeWidget(self.sender().parent())
