@@ -93,9 +93,9 @@ class OffsetsDialog(QDialog):
     def set_method(self):
         system = self.system_combo.currentData()
         axis = self.axis_combo.currentData()
-        coords = self.coords_input.text()
+        coords = self.coords_input.value()
 
-        offset_mdi = "G10 L20 {} {}{}".format(system, axis, coords)
+        offset_mdi = "G10 L20 {} {}{:f}".format(system, axis, coords)
 
         if issue_mdi.ok():
             issue_mdi(offset_mdi)
