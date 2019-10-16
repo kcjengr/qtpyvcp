@@ -240,7 +240,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         tlo = self.status.tool_offset
         self.tooltip_position = [pos - tlo for pos, tlo in zip(pos[:3], tlo[:3])]
 
-        self.tool_actor.SetPosition(self.spindle_position)
+        # self.spindle_actor.SetPosition(self.spindle_position)
+        self.tool_actor.SetPosition(self.tooltip_position)
         self.path_cache.add_line_point(self.tooltip_position)
         self.update_render()
 
@@ -250,7 +251,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # LOG.debug(self.status.interp_state)
         # LOG.debug(self.status.exec_state)
         # LOG.debug(self.status.task_mode)
-        if str(self.status.task_mode) == "MDI":
+
+        if str(self.status.task_mode) == "MDI" or str(self.status.task_mode) == "Auto":
 
             self.g5x_offset = g5x_offset
             # LOG.info('G5x Update Started')
@@ -272,7 +274,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def update_g92_offset(self, g92_offset):
         # LOG.info('g92 offset')
-        if str(self.status.task_mode) == "MDI":
+        if str(self.status.task_mode) == "MDI" or str(self.status.task_mode) == "Auto":
 
             self.g92_offset = g92_offset
 
