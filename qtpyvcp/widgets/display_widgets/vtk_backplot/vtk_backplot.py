@@ -123,6 +123,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         # Todo: get active part
 
+        self.g5x_index = self.stat.g5x_index
         self.g5x_offset = self.stat.g5x_offset
         self.g92_offset = self.stat.g92_offset
         self.rotation_offset = self.stat.rotation_xy
@@ -190,6 +191,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.status.file.notify(self.load_program)
         self.status.position.notify(self.update_position)
 
+        self.status.g5x_index.notify(self.update_g5x_index)
         self.status.g5x_offset.notify(self.update_g5x_offset)
         self.status.g92_offset.notify(self.update_g92_offset)
         self.status.rotation_xy.notify(self.update_rotation_xy)
@@ -234,6 +236,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.update_render()
 
+
     def update_position(self, pos):  # the tool movement
         self.spindle_position = pos[:3]
 
@@ -245,6 +248,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_cache.add_line_point(self.tooltip_position)
         self.update_render()
 
+    def update_g5x_index(self, index):
+        self.g5x_index = index
+
     def update_g5x_offset(self, g5x_offset):
         # LOG.info('g5x offset')
         # LOG.debug(self.status.state)
@@ -252,7 +258,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # LOG.debug(self.status.exec_state)
         # LOG.debug(self.status.task_mode)
 
-        if str(self.status.task_mode) == "MDI" or str(self.status.task_mode) == "Auto":
+        print(self.status.gcodes)
+
+        if str(self.status.task_mode) == "MDI":
 
             self.g5x_offset = g5x_offset
             # LOG.info('G5x Update Started')
@@ -265,9 +273,28 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             transform.RotateZ(self.rotation_offset)
 
             self.axes_actor.SetUserTransform(transform)
-            self.path_actor.SetPosition(*path_offset)
+            # self.path_actor.SetPosition(*path_offset)
+            #
+            # self.extents_actor.SetBounds(*self.path_actor.GetBounds())
 
-            self.extents_actor.SetBounds(*self.path_actor.GetBounds())
+            self.interactor.ReInitialize()
+            self.update_render()
+
+        elif str(self.status.task_mode) == "Auto":
+            self.g5x_offset = g5x_offset
+            # LOG.info('G5x Update Started')
+            # determine change in g5x offset since path was drawn
+
+            path_offset = [n - o for n, o in zip(g5x_offset[:3], self.original_g5x_offset[:3])]
+
+            transform = vtk.vtkTransform()
+            transform.Translate(*self.g5x_offset[:3])
+            transform.RotateZ(self.rotation_offset)
+
+            self.axes_actor.SetUserTransform(transform)
+            # self.path_actor.SetPosition(*path_offset)
+            #
+            # self.extents_actor.SetBounds(*self.path_actor.GetBounds())
 
             self.interactor.ReInitialize()
             self.update_render()
