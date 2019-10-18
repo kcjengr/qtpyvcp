@@ -42,6 +42,10 @@ class BaseCanon(object):
         self.min_extents_notool = [9e99, 9e99, 9e99]
         self.max_extents_notool = [-9e99, -9e99, -9e99]
 
+        # origins
+
+        self.origin_list = list()
+
         # tool length offsets
         self.tlo_x = 0.0
         self.tlo_y = 0.0
@@ -103,6 +107,10 @@ class BaseCanon(object):
         # 'speed', 'spindle', 'stopping', 'tool_length_offset', 'toolchange',
         self.state = st
         self.seq_num = self.state.sequence_number
+
+        if self.state.origin and self.state.origin not in self.origin_list:
+            self.origin_list.append(self.state.origin)
+
 
     def calc_extents(self):
         self.min_extents, self.max_extents, self.min_extents_notool, \
@@ -327,38 +335,38 @@ class StatCanon(BaseCanon):
 
 class PrintCanon(BaseCanon):
     def set_g5x_offset(self, *args):
-        print "set_g5x_offset", args
+        print("set_g5x_offset", args)
 
     def set_g92_offset(self, *args):
-        print "set_g92_offset", args
+        print("set_g92_offset", args)
 
     def next_line(self, state):
-        print "next_line", state.sequence_number
+        print("next_line", state.sequence_number)
         self.state = state
 
     def set_plane(self, plane):
-        print "set plane", plane
+        print("set plane", plane)
 
     def set_feed_rate(self, arg):
-        print "set feed rate", arg
+        print("set feed rate", arg)
 
     def comment(self, arg):
-        print "#", arg
+        print("#", arg)
 
     def straight_traverse(self, *args):
-        print "straight_traverse %.4g %.4g %.4g  %.4g %.4g %.4g   %.4g %.4g %.4g" % args
+        print("straight_traverse %.4g %.4g %.4g  %.4g %.4g %.4g   %.4g %.4g %.4g" % args)
 
     def straight_feed(self, *args):
-        print "straight_feed %.4g %.4g %.4g  %.4g %.4g %.4g  %.4g %.4g %.4g" % args
+        print("straight_feed %.4g %.4g %.4g  %.4g %.4g %.4g  %.4g %.4g %.4g" % args)
 
     def dwell(self, arg):
         if arg < .1:
-            print "dwell %f ms" % (1000 * arg)
+            print("dwell %f ms" % (1000 * arg))
         else:
-            print "dwell %f seconds" % arg
+            print("dwell %f seconds" % arg)
 
     def arc_feed(self, *args):
-        print "arc_feed %.4g %.4g  %.4g %.4g %.4g  %.4g  %.4g %.4g %.4g" % args
+        print("arc_feed %.4g %.4g  %.4g %.4g %.4g  %.4g  %.4g %.4g %.4g" % args)
 
     def get_axis_mask(self):
         return 7  # XYZ
