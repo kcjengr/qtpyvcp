@@ -42,10 +42,6 @@ class BaseCanon(object):
         self.min_extents_notool = [9e99, 9e99, 9e99]
         self.max_extents_notool = [-9e99, -9e99, -9e99]
 
-        # origins
-
-        self.origin_list = list()
-
         # tool length offsets
         self.tlo_x = 0.0
         self.tlo_y = 0.0
@@ -107,9 +103,6 @@ class BaseCanon(object):
         # 'speed', 'spindle', 'stopping', 'tool_length_offset', 'toolchange',
         self.state = st
         self.seq_num = self.state.sequence_number
-
-        if self.state.origin and self.state.origin not in self.origin_list:
-            self.origin_list.append(self.state.origin)
 
 
     def calc_extents(self):
