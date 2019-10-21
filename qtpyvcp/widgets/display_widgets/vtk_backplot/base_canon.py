@@ -65,7 +65,7 @@ class BaseCanon(object):
         self.g92_offset_u = 0.0
         self.g92_offset_v = 0.0
         self.g92_offset_w = 0.0
-        self.g5x_index = 1
+        self.origin = 540
 
         # g5x offsets
         self.g5x_offset_x = 0.0
@@ -138,7 +138,7 @@ class BaseCanon(object):
         return [x, y, z, a, b, c, u, v, w]
 
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
-        self.g5x_index = index
+        self.origin = index
         self.g5x_offset_x = x
         self.g5x_offset_y = y
         self.g5x_offset_z = z

@@ -43,7 +43,17 @@ class PathActor(vtk.vtkActor):
         self.origin_index = None
         self.origin_cords = None
 
-    def set_orgin_index(self, index):
+        # Create a vtkUnsignedCharArray container and store the colors in it
+        self.colors = vtk.vtkUnsignedCharArray()
+        self.colors.SetNumberOfComponents(4)
+
+        self.points = vtk.vtkPoints()
+        self.lines = vtk.vtkCellArray()
+
+        self.poly_data = vtk.vtkPolyData()
+        self.data_mapper = vtk.vtkPolyDataMapper()
+
+    def set_origin_index(self, index):
         self.origin_index = index
 
     def get_origin_index(self):
@@ -67,16 +77,6 @@ class VTKCanon(StatCanon):
 
         self.path_actors = dict()
 
-        # Create a vtkUnsignedCharArray container and store the colors in it
-        self.colors = vtk.vtkUnsignedCharArray()
-        self.colors.SetNumberOfComponents(4)
-
-        self.points = vtk.vtkPoints()
-        self.lines = vtk.vtkCellArray()
-
-        self.poly_data = vtk.vtkPolyData()
-        self.data_mapper = vtk.vtkPolyDataMapper()
-
         self.path_points = dict()
 
     def next_line(self, st):
@@ -90,7 +90,9 @@ class VTKCanon(StatCanon):
 
         if self.state.origin and self.state.origin not in self.path_actors.keys():
             self.path_actors[self.state.origin] = PathActor()
+            self.path_actors[self.state.origin].set_origin_index(self.state.origin)
             self.path_points[self.state.origin] = list()
+            self.origin = self.state.origin
 
     def add_path_point(self, line_type, start_point, end_point):
         if self.units == 2:
@@ -99,9 +101,9 @@ class VTKCanon(StatCanon):
                 point *= 25.4
                 point_list.append(point)
 
-            self.path_points[self.state.origin].append((line_type, point_list[:3]))
+            self.path_points[self.origin].append((line_type, point_list[:3]))
         else:
-            self.path_points[self.state.origin].append((line_type, end_point[:3]))
+            self.path_points[self.origin].append((line_type, end_point[:3]))
 
     def draw_lines(self):
         for origin, data in self.path_points.items():
@@ -109,8 +111,8 @@ class VTKCanon(StatCanon):
 
             for line_type, end_point in data:
                 # LOG.debug(line_type, end_point)
-                self.points.InsertNextPoint(end_point[:3])
-                self.colors.InsertNextTypedTuple(self.path_colors[line_type])
+                self.path_actors[origin].points.InsertNextPoint(end_point[:3])
+                self.path_actors[origin].colors.InsertNextTypedTuple(self.path_colors[line_type])
 
                 line = vtk.vtkLine()
                 if index == 0:
@@ -120,22 +122,19 @@ class VTKCanon(StatCanon):
                     line.GetPointIds().SetId(0, index - 1)
                     line.GetPointIds().SetId(1, index)
 
-                self.lines.InsertNextCell(line)
+                self.path_actors[origin].lines.InsertNextCell(line)
 
                 index += 1
 
             # free up memory, lots of it for big files
-            self.path_points[origin] = list()
+            # self.path_points[origin] = list()
 
-            self.poly_data.SetPoints(self.points)
-            self.poly_data.SetLines(self.lines)
-
-            self.poly_data.GetCellData().SetScalars(self.colors)
-
-            self.data_mapper.SetInputData(self.poly_data)
-            self.data_mapper.Update()
-
-            self.path_actors[origin].SetMapper(self.data_mapper)
+            self.path_actors[origin].poly_data.SetPoints(self.path_actors[origin].points)
+            self.path_actors[origin].poly_data.SetLines(self.path_actors[origin].lines)
+            self.path_actors[origin].poly_data.GetCellData().SetScalars(self.path_actors[origin].colors)
+            self.path_actors[origin].data_mapper.SetInputData(self.path_actors[origin].poly_data)
+            self.path_actors[origin].data_mapper.Update()
+            self.path_actors[origin].SetMapper(self.path_actors[origin].data_mapper)
 
     def get_path_actors(self):
         return self.path_actors
@@ -161,8 +160,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.g5x_index = self.stat.g5x_index
         self.g5x_offset_table = OFFSETTABLE.getOffsetTable()
 
-        print(self.g5x_offset_table)
-
         self.index_map = dict()
         self.index_map[1] = 540
         self.index_map[2] = 550
@@ -173,6 +170,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.index_map[7] = 591
         self.index_map[8] = 592
         self.index_map[9] = 593
+
+        self.g5x_index = 0
+        self.move_offset = False
 
         self.g5x_offset = self.stat.g5x_offset
         self.g92_offset = self.stat.g92_offset
@@ -222,9 +222,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.path_actors = self.canon.get_path_actors()
 
             for origin, actor in self.path_actors.items():
-                print("initial actors")
-                print(origin, actor)
-                actor.SetPosition(*self.g5x_offset[:3])
+                actor.SetPosition(*self.g5x_offset_table[0])
                 # self.extents = PathBoundaries(self.renderer, actor)
                 # self.extents_actor = self.extents.get_actor()
                 #
@@ -265,8 +263,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def load_program(self, fname=None):
 
         for origin, actor in self.path_actors.items():
-            print("remove actor")
-            print(origin, actor)
             self.renderer.RemoveActor(actor)
             # self.renderer.RemoveActor(self.extents_actor)
 
@@ -289,10 +285,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.AddActor(self.axes_actor)
 
         for origin, actor in self.path_actors.items():
-            print("add actor")
-            print(origin, actor)
-            path_position = self.g5x_offset_table[self.g5x_index]
-            actor.SetPosition(*path_position[:3])
+
+            # new_index = 0
+            #
+            # for index, mapped_origin in self.index_map.items():
+            #     if mapped_origin == origin:
+            #         new_index = index - 1
+            # path_position = self.g5x_offset_table[new_index]
+            #
+            # actor.SetPosition(*path_position[:3])
             self.renderer.AddActor(actor)
         # self.renderer.AddActor(self.extents_actor)
 
@@ -310,22 +311,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     def update_g5x_index(self, index):
+        if self.g5x_index != index:
+            self.move_offset = True  # flag: determines if path was moved or updated
         self.g5x_index = index
 
     def update_g5x_offset(self, g5x_offset):
 
         self.g5x_offset = g5x_offset
 
-        print(self.g5x_index)
-        print(self.index_map[self.g5x_index])
-
-        if self.path_actors.has_key(self.index_map[self.g5x_index]):
-            path_offset = [n - o for n, o in zip(g5x_offset[:3], self.original_g5x_offset[:3])]
-
-            self.path_actors[self.index_map[self.g5x_index]].SetPosition(*path_offset)
+        if self.move_offset:
+            if self.path_actors.has_key(self.index_map[self.g5x_index]):
+                # path_offset = [n - o for n, o in zip(g5x_offset[:3], self.original_g5x_offset[:3])]
+                self.path_actors[self.index_map[self.g5x_index]].SetPosition(*g5x_offset[:3])
 
         transform = vtk.vtkTransform()
-        transform.Translate(*self.g5x_offset[:3])
+        transform.Translate(*g5x_offset[:3])
         transform.RotateZ(self.rotation_offset)
 
         self.axes_actor.SetUserTransform(transform)
