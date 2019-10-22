@@ -171,8 +171,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.index_map[8] = 592
         self.index_map[9] = 593
 
-        self.g5x_index = 0
-        self.move_offset = False
+        self.g5x_index = 1
 
         self.g5x_offset = self.stat.g5x_offset
         self.g92_offset = self.stat.g92_offset
@@ -217,16 +216,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
+        self.extents = dict()
+        self.show_extents = bool()
+
         if not IN_DESIGNER:
             self.canon = self.canon_class()
             self.path_actors = self.canon.get_path_actors()
 
             for origin, actor in self.path_actors.items():
                 actor.SetPosition(*self.g5x_offset_table[0])
-                # self.extents = PathBoundaries(self.renderer, actor)
-                # self.extents_actor = self.extents.get_actor()
-                #
-                # self.renderer.AddActor(self.extents_actor)
+                extents = PathBoundaries(self.renderer, actor)
+                extents_actor = extents.get_actor()
+
+                self.extents[origin] = extents_actor
+
+                self.renderer.AddActor(extents_actor)
                 self.renderer.AddActor(actor)
 
         self.renderer.AddActor(self.tool_actor)
@@ -264,7 +268,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         for origin, actor in self.path_actors.items():
             self.renderer.RemoveActor(actor)
-            # self.renderer.RemoveActor(self.extents_actor)
+            self.renderer.RemoveActor(self.extents[origin])
 
         self.original_rotation_offset = self.stat.rotation_xy
         self.original_g5x_offset = self.stat.g5x_offset
@@ -280,7 +284,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.axes_actor = self.axes.get_actor()
         self.path_actors = self.canon.get_path_actors()
-        # self.extents_actor = self.extents.get_actor()
 
         self.renderer.AddActor(self.axes_actor)
 
@@ -294,6 +297,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # path_position = self.g5x_offset_table[new_index]
             #
             # actor.SetPosition(*path_position[:3])
+
+            extents = PathBoundaries(self.renderer, actor)
+            extents_actor = extents.get_actor()
+
+            if self.show_extents:
+                extents_actor.XAxisVisibilityOn()
+                extents_actor.YAxisVisibilityOn()
+                extents_actor.ZAxisVisibilityOn()
+            else:
+                extents_actor.XAxisVisibilityOff()
+                extents_actor.YAxisVisibilityOff()
+                extents_actor.ZAxisVisibilityOff()
+
+            self.extents[origin] = extents_actor
+            self.renderer.AddActor(self.extents[origin])
+
             self.renderer.AddActor(actor)
         # self.renderer.AddActor(self.extents_actor)
 
@@ -311,28 +330,32 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     def update_g5x_index(self, index):
-        if self.g5x_index != index:
-            self.move_offset = True  # flag: determines if path was moved or updated
         self.g5x_index = index
 
     def update_g5x_offset(self, g5x_offset):
-
         self.g5x_offset = g5x_offset
-
-        if self.move_offset:
-            if self.path_actors.has_key(self.index_map[self.g5x_index]):
-                # path_offset = [n - o for n, o in zip(g5x_offset[:3], self.original_g5x_offset[:3])]
-                self.path_actors[self.index_map[self.g5x_index]].SetPosition(*g5x_offset[:3])
 
         transform = vtk.vtkTransform()
         transform.Translate(*g5x_offset[:3])
         transform.RotateZ(self.rotation_offset)
 
+        if self.index_map[self.g5x_index] in self.path_actors.keys():
+            # path_offset = [n - o for n, o in zip(g5x_offset[:3], self.original_g5x_offset[:3])]
+            origin = self.index_map[self.g5x_index]
+
+            path_actor = self.path_actors[origin]
+            path_actor.SetUserTransform(transform)
+
+            extents = PathBoundaries(self.renderer, path_actor)
+            extents_actor = extents.get_actor()
+
+            extents_actor.SetPosition(*g5x_offset[:3])
+
+
         self.axes_actor.SetUserTransform(transform)
 
         self.interactor.ReInitialize()
         self.update_render()
-
 
     def update_g92_offset(self, g92_offset):
         # LOG.info('g92 offset')
@@ -524,19 +547,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.machine_actor.DrawZGridlinesOff()
         self.update_render()
 
-    @Slot()
-    def toggleProgramBounds(self):
-        if self.extents_actor is not None:
-            bounds = self.extents_actor.GetXAxisVisibility()
-            if bounds:
-                self.extents_actor.XAxisVisibilityOff()
-                self.extents_actor.YAxisVisibilityOff()
-                self.extents_actor.ZAxisVisibilityOff()
-            else:
-                self.extents_actor.XAxisVisibilityOn()
-                self.extents_actor.YAxisVisibilityOn()
-                self.extents_actor.ZAxisVisibilityOn()
-            self.update_render()
+    @Slot(bool)
+    def toggleProgramBounds(self, show):
+        self.show_extents = show
+        for origin, actor in self.path_actors.items():
+            extents_actor = self.extents[origin]
+            if extents_actor is not None:
+                if show:
+                    extents_actor.XAxisVisibilityOn()
+                    extents_actor.YAxisVisibilityOn()
+                    extents_actor.ZAxisVisibilityOn()
+                else:
+                    extents_actor.XAxisVisibilityOff()
+                    extents_actor.YAxisVisibilityOff()
+                    extents_actor.ZAxisVisibilityOff()
+                self.update_render()
 
     @Slot()
     def toggleProgramTicks(self):
