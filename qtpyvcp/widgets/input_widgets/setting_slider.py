@@ -35,6 +35,11 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         self._setting_name = ''
         self._text_format = '%s'
 
+        self.returnPressed.connect(self.onReturnPressed)
+
+    def onReturnPressed(self):
+        self.clearFocus()
+
     def setDisplayValue(self, text):
         self.blockSignals(True)
         self.setText(self._text_format % text)
