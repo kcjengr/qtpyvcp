@@ -171,8 +171,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.index_map[8] = 592
         self.index_map[9] = 593
 
-        self.g5x_index = 1
-
         self.g5x_offset = self.stat.g5x_offset
         self.g92_offset = self.stat.g92_offset
         self.rotation_offset = self.stat.rotation_xy
@@ -224,7 +222,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.path_actors = self.canon.get_path_actors()
 
             for origin, actor in self.path_actors.items():
-                actor.SetPosition(*self.g5x_offset_table[0])
+                # actor.SetPosition(*self.g5x_offset_table[0])
                 extents = PathBoundaries(self.renderer, actor)
                 extents_actor = extents.get_actor()
 
@@ -246,10 +244,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.status.file.notify(self.load_program)
         self.status.position.notify(self.update_position)
 
-        self.status.g5x_index.notify(self.update_g5x_index)
-        self.status.g5x_offset.notify(self.update_g5x_offset)
-        self.status.g92_offset.notify(self.update_g92_offset)
-        self.status.rotation_xy.notify(self.update_rotation_xy)
+        # self.status.g5x_index.notify(self.update_g5x_index)
+        # self.status.g5x_offset.notify(self.update_g5x_offset)
+        # self.status.g92_offset.notify(self.update_g92_offset)
+        # self.status.rotation_xy.notify(self.update_rotation_xy)
+
+        OFFSETTABLE.offset_table_changed.connect(self.update_path_position)
+        OFFSETTABLE.active_offset_changed.connect(self.update_axes_position)
 
         self.status.tool_offset.notify(self.update_tool)
         self.status.tool_table.notify(self.update_tool)
@@ -270,10 +271,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.RemoveActor(actor)
             self.renderer.RemoveActor(self.extents[origin])
 
-        self.original_rotation_offset = self.stat.rotation_xy
-        self.original_g5x_offset = self.stat.g5x_offset
-        self.original_g92_offset = self.stat.g92_offset
-
         if fname:
             self.load(fname)
 
@@ -288,6 +285,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.AddActor(self.axes_actor)
 
         for origin, actor in self.path_actors.items():
+
+            print(self.g5x_offset_table)
+
+            # self.original_rotation_offset = self.stat.rotation_xy
+            self.original_g5x_offset = self.g5x_offset_table[index]
+            # self.original_g92_offset = self.stat.g92_offset
 
             # new_index = 0
             #
@@ -329,28 +332,42 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_cache.add_line_point(self.tooltip_position)
         self.update_render()
 
-    def update_g5x_index(self, index):
-        self.g5x_index = index
+    def update_path_position(self, table):
 
-    def update_g5x_offset(self, g5x_offset):
-        self.g5x_offset = g5x_offset
+        self.g5x_offset_table = table
+        index = self.g5x_index
+
+        position = table[index-1]
+
 
         transform = vtk.vtkTransform()
-        transform.Translate(*g5x_offset[:3])
+        transform.Translate(*position[:3])
         transform.RotateZ(self.rotation_offset)
 
-        if self.index_map[self.g5x_index] in self.path_actors.keys():
-            # path_offset = [n - o for n, o in zip(g5x_offset[:3], self.original_g5x_offset[:3])]
-            origin = self.index_map[self.g5x_index]
+        self.axes_actor.SetUserTransform(transform)
+
+        origin = self.index_map[index]
+        if origin in self.path_actors.keys():
+            path_offset = [n - o for n, o in zip(position[:3], self.original_g5x_offset[:3])]
 
             path_actor = self.path_actors[origin]
-            path_actor.SetUserTransform(transform)
+            path_actor.SetPosition(*path_offset[:3])
 
             extents = PathBoundaries(self.renderer, path_actor)
             extents_actor = extents.get_actor()
 
-            extents_actor.SetPosition(*g5x_offset[:3])
+            # extents_actor.SetPosition(*g5x_offset[:3])
 
+        self.interactor.ReInitialize()
+        self.update_render()
+
+    def update_axes_position(self, index):
+        self.g5x_index = index
+        position = self.g5x_offset_table[index-1]
+
+        transform = vtk.vtkTransform()
+        transform.Translate(*position[:3])
+        transform.RotateZ(self.rotation_offset)
 
         self.axes_actor.SetUserTransform(transform)
 
