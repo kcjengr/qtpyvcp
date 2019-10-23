@@ -116,6 +116,11 @@ def launch_designer(opts=DotDict()):
             print "Error loading YAML config file:"
             raise
 
+        from qtpyvcp.utilities.settings import addSetting
+        for k, v in CONFIG['settings'].items():
+            print k, v
+            addSetting(k, **v)
+
         # add to path so that QtDesginer can load it when it starts
         os.environ['VCP_CONFIG_FILES'] = fname + ':' + os.getenv('VCP_CONFIG_FILES', '')
 

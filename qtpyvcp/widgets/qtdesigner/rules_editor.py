@@ -17,7 +17,7 @@ import webbrowser
 from qtpy import uic
 from qtpy import QtWidgets, QtCore, QtDesigner
 
-from qtpyvcp import PLUGINS, SETTINGS
+from qtpyvcp import PLUGINS
 from qtpyvcp.plugins import DataChannel, getPlugin
 from qtpyvcp.utilities.settings import Setting
 from plugin_extension import _PluginExtension

@@ -77,3 +77,10 @@ application:
   provider: qtpyvcp.application:VCPApplication
   kwargs:
 #    stylesheet: {{ file.dir }}/widgets/default_stylesheet.qss   # application wide stylesheet
+
+settings:
+  touch-probe.diameter-offset:
+    default_value: 0.0
+    persistent: true
+    min_value: 0
+    max_value: 1

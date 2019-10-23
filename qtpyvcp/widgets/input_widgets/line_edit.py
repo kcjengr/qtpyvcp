@@ -46,3 +46,9 @@ class VCPLineEdit(QLineEdit, CMDWidget):
         self._action_name = action_name
         # ToDo: activate action on enter
         # bindWidget(self, action_name)
+
+    def initialize(self):
+        pass
+
+    def terminate(self):
+        pass
