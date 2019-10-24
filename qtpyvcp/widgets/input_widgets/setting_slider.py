@@ -29,20 +29,32 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
     RULE_PROPERTIES.update({
         'Text': ['setText', str],
     })
+    RULE_PROPERTIES.update({
+        'Value': ['storeRuleSetting', float],
+    })
 
     def __init__(self, parent):
         super(VCPSettingsLineEdit, self).__init__(parent=parent)
         self._setting_name = ''
-        self._text_format = '%s'
+        self._text_format = '{:4f}'
+        self._tmp_value = None
 
         self.returnPressed.connect(self.onReturnPressed)
+
+    def storeRuleSetting(self, text):
+        if self._setting is not None:
+            value = self._setting.normalizeValue(text)
+            self.setDisplayValue(value)
+            self._setting.setValue(value)
+        else:
+            self._tmp_value = text
 
     def onReturnPressed(self):
         self.clearFocus()
 
     def setDisplayValue(self, text):
         self.blockSignals(True)
-        self.setText(self._text_format % text)
+        self.setText(self._text_format.format(text))
         self.blockSignals(False)
 
     def initialize(self):
@@ -59,7 +71,12 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
             self.setValidator(validator)
 
-            self.setDisplayValue(self._setting.getValue())
+            if self._tmp_value:
+                self.setDisplayValue(self._tmp_value)
+                self._setting.setValue(self._tmp_value)
+            else:
+                self.setDisplayValue(self._setting.getValue())
+
             self._setting.notify(self.setDisplayValue)
 
             self.editingFinished.connect(self.onEditingFinished)
@@ -78,7 +95,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         if self._setting_name is not "":
             setting = SETTINGS.get(self._setting_name)
             try:
-                str = text_fmt % setting.getValue()
+                str = text_fmt.format(setting.getValue())
             except ValueError:
                 return
 
