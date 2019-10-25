@@ -213,7 +213,11 @@ class VCPSettingsCheckBox(QCheckBox, VCPAbstractSettingsWidget):
     def initialize(self):
         self._setting = SETTINGS.get(self._setting_name)
         if self._setting is not None:
-            self.setDisplayChecked(self._setting.getValue())
+
+            value = self._setting.getValue()
+
+            self.setDisplayChecked(value)
+            self.toggled.emit(value)
 
             self._setting.notify(self.setDisplayChecked)
             self.toggled.connect(self._setting.setValue)
