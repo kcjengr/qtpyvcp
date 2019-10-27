@@ -317,9 +317,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             index = self.origin_map[origin]
             path_position = self.g5x_offset_table[index - 1]
 
-            print(path_position)
-            #
-            actor.SetPosition(*path_position[:3])
+            path_transform = vtk.vtkTransform()
+            path_transform.Translate(*path_position[:3])
+            path_transform.RotateZ(path_position[9])
+
+            actor.SetUserTransform(path_transform)
 
             extents = PathBoundaries(self.renderer, actor)
             extents_actor = extents.get_actor()
@@ -353,7 +355,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     def update_path_position(self, table):
-        print("UPDATE PATH POSITION")
 
         self.g5x_offset_table = table
         index = self.g5x_index
@@ -362,7 +363,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         transform = vtk.vtkTransform()
         transform.Translate(*position[:3])
-        transform.RotateZ(self.rotation_offset)
+        transform.RotateZ(position[9])
 
         self.axes_actor.SetUserTransform(transform)
 
@@ -371,9 +372,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # path_offset = [n - o for n, o in zip(position[:3], self.original_g5x_offset[:3])]
 
             index = self.origin_map[origin]
-            print(origin, index)
-            path_offset = self.g5x_offset_table[index-1]
-            actor.SetPosition(*path_offset[:3])
+            path_offset = self.g5x_offset_table[index - 1]
+
+            path_transform = vtk.vtkTransform()
+            path_transform.Translate(*path_offset[:3])
+            path_transform.RotateZ(path_offset[9])
+
+            actor.SetUserTransform(path_transform)
 
             # extents = PathBoundaries(self.renderer, actor)
             # extents_actor = extents.get_actor()
