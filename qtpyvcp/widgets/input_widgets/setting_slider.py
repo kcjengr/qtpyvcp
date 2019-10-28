@@ -28,8 +28,6 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
     RULE_PROPERTIES = VCPAbstractSettingsWidget.RULE_PROPERTIES.copy()
     RULE_PROPERTIES.update({
         'Text': ['setText', str],
-    })
-    RULE_PROPERTIES.update({
         'Value': ['storeRuleSetting', float],
     })
 
