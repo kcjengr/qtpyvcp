@@ -91,6 +91,7 @@ class VTKCanon(StatCanon):
         self.path_points = dict()
 
     def rotate_and_translate(self, x, y, z, a, b, c, u, v, w):
+        # override function to handle it in vtk back plot
         return x, y, z, a, b, c, u, v, w
 
     def next_line(self, st):
@@ -122,7 +123,6 @@ class VTKCanon(StatCanon):
     def draw_lines(self):
         for origin, data in self.path_points.items():
             index = 0
-
             for line_type, end_point in data:
                 # LOG.debug(line_type, end_point)
                 self.path_actors[origin].points.InsertNextPoint(end_point[:3])
@@ -359,7 +359,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.g5x_offset_table = table
         index = self.g5x_index
 
-        position = table[index-1]
+        position = table[index - 1]
 
         transform = vtk.vtkTransform()
         transform.Translate(*position[:3])
@@ -368,7 +368,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.axes_actor.SetUserTransform(transform)
 
         for origin, actor in self.path_actors.items():
-
             # path_offset = [n - o for n, o in zip(position[:3], self.original_g5x_offset[:3])]
 
             index = self.origin_map[origin]
@@ -390,7 +389,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def update_axes_position(self, index):
         self.g5x_index = index
-        position = self.g5x_offset_table[index-1]
+        position = self.g5x_offset_table[index - 1]
 
         transform = vtk.vtkTransform()
         transform.Translate(*position[:3])
