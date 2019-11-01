@@ -13,17 +13,23 @@ def setSetting(id, value):
         raise ValueError("The setting '%s' does not exist" % id)
 
 
+def addSetting(id, **kwargs):
+    SETTINGS[id] = Setting(**kwargs)
+
+
 class Setting(QObject):
 
     signal = Signal(object)
 
     def __init__(self, fget=None, fset=None, freset=None, default_value=False,
-                 max_value=None, min_value=None, persistent=True, doc=None):
+                 max_value=None, min_value=None, persistent=True, description=None):
         super(Setting, self).__init__()
 
         self.fget = fget
         self.fset = fset
         self.freset = freset
+
+        self.value_type = type(default_value)
 
         self.max_value = max_value
         self.min_value = min_value
@@ -35,9 +41,9 @@ class Setting(QObject):
 
         self.instance = None
 
-        if doc is None and fget is not None:
-            doc = fget.__doc__
-        self.__doc__ = doc
+        if description is None and fget is not None:
+            description = fget.__doc__
+        self.__doc__ = description
 
     def getValue(self, *args, **kwargs):
         """Setting value get method."""
@@ -48,7 +54,9 @@ class Setting(QObject):
     def setValue(self, value):
         """Setting value set method."""
         if self.fset is None:
-            self.value = self.clampValue(value)
+            value = self.value_type(value)
+            if self.value_type in (int, float):
+                self.value = self.clampValue(value)
             self.signal.emit(value)
         else:
             self.fset(self.instance, self, value)
@@ -66,6 +74,15 @@ class Setting(QObject):
         if self.min_value is not None:
             value = max(value, self.min_value)
         return value
+
+    def normalizeValue(self, value):
+        if type(value) != self.value_type:
+            try:
+                value = self.value_type(value)
+            except ValueError:
+                value = self.value
+
+        return self.clampValue(value)
 
     def getter(self, fget):
         def inner(*args, **kwargs):
@@ -116,7 +133,7 @@ def setting(id, default_value=False, max_value=None, min_value=None, persistent=
                       max_value=max_value,
                       min_value=min_value,
                       persistent=persistent,
-                      doc=func.__doc__)
+                      description=func.__doc__)
 
         SETTINGS[id] = obj
         return obj
