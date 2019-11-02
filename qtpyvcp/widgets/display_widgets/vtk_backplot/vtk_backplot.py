@@ -342,6 +342,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.RemoveActor(actor)
             self.renderer.RemoveActor(extents)
 
+        self.path_actors = OrderedDict()
+
         if fname:
             self.load(fname)
 
