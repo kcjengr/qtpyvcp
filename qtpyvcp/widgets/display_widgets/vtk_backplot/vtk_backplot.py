@@ -353,6 +353,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.RemoveActor(actor)
             self.renderer.RemoveActor(extents)
 
+        self.path_actors.clear()
+
         if fname:
             self.load(fname)
 
