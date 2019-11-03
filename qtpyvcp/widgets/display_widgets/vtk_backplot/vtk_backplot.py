@@ -88,9 +88,8 @@ class VTKCanon(StatCanon):
         self.status = STATUS
         self.units = MACHINE_UNITS
 
-        self.origin = 540
-
         self.index_map = dict()
+
         self.index_map[1] = 540
         self.index_map[2] = 550
         self.index_map[3] = 560
@@ -104,6 +103,12 @@ class VTKCanon(StatCanon):
         self.path_colors = colors
         self.path_actors = OrderedDict()
         self.path_points = OrderedDict()
+
+        origin = 540
+
+        self.path_actors[origin] = PathActor()
+        self.path_points[origin] = list()
+        self.origin = origin
 
     def rotate_and_translate(self, x, y, z, a, b, c, u, v, w):
         # override function to handle it in vtk back plot
@@ -145,8 +150,10 @@ class VTKCanon(StatCanon):
             path_points.append((line_type, line))
 
     def draw_lines(self):
+        print("DRAW LINES")
 
         for origin, data in self.path_points.items():
+            print(origin)
 
             path_actor = self.path_actors.get(origin)
 
@@ -175,6 +182,7 @@ class VTKCanon(StatCanon):
                 index += 1
 
             if end_point:
+                print("INSERT END POINT")
                 path_actor.points.InsertNextPoint(end_point[:3])
                 path_actor.colors.InsertNextTypedTuple(self.path_colors[last_line_type])
 
@@ -185,7 +193,8 @@ class VTKCanon(StatCanon):
                 path_actor.lines.InsertNextCell(line)
 
             # free up memory, lots of it for big files
-            # self.path_points[origin] = list()
+
+            self.path_points[self.origin] = list()
 
             path_actor.poly_data.SetPoints(path_actor.points)
             path_actor.poly_data.SetLines(path_actor.lines)
@@ -333,16 +342,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def load_program(self, fname=None):
 
-        for origin, actor in self.path_actors.items():
+        print("LOAD")
 
+        for origin, actor in self.path_actors.items():
+            print("REMOVE ACTOR")
             axes = actor.get_axes()
             extents = self.extents[origin]
 
             self.renderer.RemoveActor(axes)
             self.renderer.RemoveActor(actor)
             self.renderer.RemoveActor(extents)
-
-        self.path_actors = OrderedDict()
 
         if fname:
             self.load(fname)
@@ -358,6 +367,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.AddActor(self.axes_actor)
 
         for origin, actor in self.path_actors.items():
+            print("ADD ACTOR")
 
             axes = actor.get_axes()
 
@@ -383,11 +393,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 extents_actor.YAxisVisibilityOff()
                 extents_actor.ZAxisVisibilityOff()
 
-            self.extents[origin] = extents_actor
-
             self.renderer.AddActor(axes)
-            self.renderer.AddActor(self.extents[origin])
+            self.renderer.AddActor(extents_actor)
             self.renderer.AddActor(actor)
+
+            self.extents[origin] = extents_actor
 
         self.update_render()
 
