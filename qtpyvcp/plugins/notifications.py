@@ -69,7 +69,23 @@ class Notifications(DataPlugin):
         if not error:
             return
 
-        kind, msg = error
+        kind, msg_text = error
+
+        message_words = msg_text.split(' ')
+
+        index = 1
+        max_words = 10
+        tmp_message = list()
+
+        for word in message_words:
+            tmp_message.append(word)
+            if index == max_words:
+                tmp_message.append('\n')
+                index = 1
+            else:
+                index += 1
+
+        msg = ' '.join(tmp_message)
 
         if msg == "" or msg is None:
             msg = "No message text set."
