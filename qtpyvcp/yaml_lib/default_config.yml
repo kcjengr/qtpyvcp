@@ -38,6 +38,10 @@ data_plugins:
   notifications:
     provider: qtpyvcp.plugins.notifications:Notifications
     kwargs:
+      # show notification popups
+      enabled: True
+      # "native" or "dbus"
+      mode: native
       # whether to save messages on exit
       persistent: True
       # where to save, relative to config dir

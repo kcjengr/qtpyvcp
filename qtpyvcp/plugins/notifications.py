@@ -14,15 +14,18 @@ from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.plugins import DataPlugin, DataChannel
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
-from qtpyvcp.lib.notification import Notification
+from qtpyvcp.lib.native_notification import NativeNotification
 
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 
 
 class Notifications(DataPlugin):
-    def __init__(self, persistent=True, persistent_file='.qtpyvcp_messages.json'):
+    def __init__(self, enabled=True, mode="native", persistent=True, persistent_file='.qtpyvcp_messages.json'):
         super(Notifications, self).__init__()
+
+        self.enabled = enabled
+        self.mode = mode
 
         self.error_channel = linuxcnc.error_channel()
 
@@ -50,7 +53,10 @@ class Notifications(DataPlugin):
         return chan.value or ''
 
     def captureMessage(self, m_type, msg):
-        self.notification_dispatcher.setNotify(m_type, msg)
+
+        if self.enabled:
+            self.notification_dispatcher.setNotify(m_type, msg)
+
         self.messages.append({'timestamp': time.time(),
                               'message_type': m_type,
                               'message_text': msg,
@@ -112,7 +118,13 @@ class Notifications(DataPlugin):
 
     def initialise(self):
 
-        self.notification_dispatcher = Notification()
+        if self.enabled:
+            if self.mode == "native":
+                self.notification_dispatcher = NativeNotification()
+            elif self.mode == "dbus":
+                pass
+            else:
+                raise Exception("error notification mode {}".format(self.mode))
 
         if self.persistant and os.path.isfile(self.persistent_file):
             with open(self.persistent_file, 'r') as fh:

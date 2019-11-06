@@ -54,11 +54,11 @@ class Message(QWidget):
         self.layout().addWidget(self.buttonClose, 0, 1, 2, 1)
 
 
-class Notification(QDialog):
+class NativeNotification(QDialog):
     signNotifyClose = Signal(str)
 
     def __init__(self, parent=None):
-        super(Notification, self).__init__(parent=parent)
+        super(NativeNotification, self).__init__(parent=parent)
         time = datetime.now()
 
         current_time = "{}:{}".format(time.hour, time.minute)
@@ -99,7 +99,7 @@ class Example(QWidget):
         btn = QPushButton("Send Notify", self)
         self.layout().addWidget(btn)
 
-        self.notification = Notification()
+        self.notification = NativeNotification()
         btn.clicked.connect(self.notify)
 
     def notify(self):
