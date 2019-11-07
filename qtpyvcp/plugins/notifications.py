@@ -15,6 +15,7 @@ from qtpyvcp.plugins import DataPlugin, DataChannel
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.lib.native_notification import NativeNotification
+from qtpyvcp.lib.dbus_notification import DBusNotification
 
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
@@ -122,7 +123,7 @@ class Notifications(DataPlugin):
             if self.mode == "native":
                 self.notification_dispatcher = NativeNotification()
             elif self.mode == "dbus":
-                pass
+                self.notification_dispatcher = DBusNotification("qtpyvcp")
             else:
                 raise Exception("error notification mode {}".format(self.mode))
 

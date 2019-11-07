@@ -94,7 +94,7 @@ def _onNotificationClosed(nid, reason):
     del NOTIFICATIONS[nid]
 
 
-class Notification(object):
+class DBusNotification(object):
     """Notification object"""
 
     id = 0
@@ -149,6 +149,9 @@ class Notification(object):
 
         NOTIFICATIONS[self.id] = self
         return True
+
+    def setNotify(self, title, message):
+        self.show(title, message)
 
     def close(self):
         """Ask the notification server to close the notification"""
@@ -271,7 +274,7 @@ if __name__ == "__main__":
 
     # Initialize the DBus connection to the notification server
     # Initialize a new notification object
-    n = Notification("Demo")
+    n = DBusNotification("Demo")
     n.setUrgency(Urgency.NORMAL)
     n.setCategory("device")
     n.setIconPath("dialog-error")
