@@ -22,6 +22,15 @@ STATUS = getPlugin('status')
 
 
 class Notifications(DataPlugin):
+    """
+    Notification data plugin
+
+    Args:
+        enabled (bool, optional):                      Enable or disable notification popups (Default = True)
+        mode (str, optional):                          native or dbus (Default = 'native')
+        persistent (bool, optional):                   Store notifications in a file (Default = True)
+        persistent_file (str, optional):               Path to the save file (Default = '.qtpyvcp_messages.json')
+    """
     def __init__(self, enabled=True, mode="native", persistent=True, persistent_file='.qtpyvcp_messages.json'):
         super(Notifications, self).__init__()
 
