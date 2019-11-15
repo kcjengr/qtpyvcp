@@ -52,7 +52,7 @@ class PathActor(vtk.vtkActor):
             self.length = 0.5
 
         self.axes = Axes()
-        self.axes_actor = self.axes.actor
+        self.axes_actor = self.axes.get_actor()
         self.axes_actor.SetTotalLength(self.length, self.length, self.length)
 
         # Create a vtkUnsignedCharArray container and store the colors in it
