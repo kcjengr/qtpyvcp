@@ -1,7 +1,6 @@
 import os
 
 from collections import OrderedDict
-from pprint import pprint
 
 import linuxcnc
 
@@ -150,10 +149,8 @@ class VTKCanon(StatCanon):
             path_points.append((line_type, line))
 
     def draw_lines(self):
-        print("DRAW LINES")
 
         for origin, data in self.path_points.items():
-            print(origin)
 
             path_actor = self.path_actors.get(origin)
 
@@ -182,7 +179,6 @@ class VTKCanon(StatCanon):
                 index += 1
 
             if end_point:
-                print("INSERT END POINT")
                 path_actor.points.InsertNextPoint(end_point[:3])
                 path_actor.colors.InsertNextTypedTuple(self.path_colors[last_line_type])
 
@@ -342,10 +338,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def load_program(self, fname=None):
 
-        print("LOAD")
-
         for origin, actor in self.path_actors.items():
-            print("REMOVE ACTOR")
             axes = actor.get_axes()
             extents = self.extents[origin]
 
@@ -370,7 +363,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.AddActor(self.axes_actor)
 
         for origin, actor in self.path_actors.items():
-            print("ADD ACTOR")
 
             axes = actor.get_axes()
 
