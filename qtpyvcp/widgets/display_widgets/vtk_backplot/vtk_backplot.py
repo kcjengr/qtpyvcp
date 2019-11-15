@@ -286,7 +286,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
-        self.extents = dict()
+        self.extents = OrderedDict()
         self.show_extents = bool()
 
         if not IN_DESIGNER:
@@ -354,6 +354,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.RemoveActor(extents)
 
         self.path_actors.clear()
+        self.extents.clear()
 
         if fname:
             self.load(fname)
