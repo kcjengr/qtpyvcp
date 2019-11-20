@@ -403,7 +403,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.tooltip_position = [pos - tlo for pos, tlo in zip(pos[:3], tlo[:3])]
 
         # self.spindle_actor.SetPosition(self.spindle_position)
-        self.tool_actor.SetPosition(self.tooltip_position)
+        self.tool_actor.SetPosition(self.spindle_position)
         self.path_cache.add_line_point(self.tooltip_position)
         self.update_render()
 
