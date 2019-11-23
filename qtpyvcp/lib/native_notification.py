@@ -69,7 +69,9 @@ class NativeNotification(QDialog):
         screenWidth = resolution.width()
         screenHeight = resolution.height()
 
+        self.maxMessages = 5
         self.nMessages = 0
+        self.activeMessages = []
         self.mainLayout = QVBoxLayout(self)
         self.move(screenWidth, 0)
 
@@ -78,17 +80,31 @@ class NativeNotification(QDialog):
         self.mainLayout.insertWidget(0, m)
         m.buttonClose.clicked.connect(self.onClicked)
         self.nMessages += 1
+        self.activeMessages.append(m)
+
+        if len(self.activeMessages) > self.maxMessages:
+            m = self.activeMessages.pop()
+            self.mainLayout.removeWidget(m)
+            m.deleteLater()
+            self.nMessages -= 1
+
         self.show()
         self.raise_()
 
     def onClicked(self):
-        self.mainLayout.removeWidget(self.sender().parent())
-        self.sender().parent().deleteLater()
+        m = self.sender().parent()
+        self.mainLayout.removeWidget(m)
+        self.activeMessages.remove(m)
+        m.deleteLater()
         self.nMessages -= 1
         self.adjustSize()
         if self.nMessages == 0:
             self.close()
 
+
+    def popNotify(self):
+        """Removes the last notification in the list"""
+        pass
 
 class Example(QWidget):
     counter = 0
