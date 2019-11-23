@@ -75,7 +75,7 @@ class NativeNotification(QDialog):
 
     def setNotify(self, title, message):
         m = Message(title, message, self)
-        self.mainLayout.addWidget(m)
+        self.mainLayout.insertWidget(0, m)
         m.buttonClose.clicked.connect(self.onClicked)
         self.nMessages += 1
         self.show()
