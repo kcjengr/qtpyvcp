@@ -92,7 +92,7 @@ class Notifications(DataPlugin):
         message_words = msg_text.split(' ')
 
         index = 1
-        max_words = 10
+        max_words = 5
         tmp_message = list()
 
         for word in message_words:
