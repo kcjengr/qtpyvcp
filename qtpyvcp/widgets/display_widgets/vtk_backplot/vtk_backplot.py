@@ -107,20 +107,35 @@ class VTKCanon(StatCanon):
 
         self.path_actors[origin] = PathActor()
         self.path_points[origin] = list()
+
         self.origin = origin
+        self.previous_origin = origin
+
+        self.ignore_next = False  # hacky way to ignore the second point next to a offset change
 
     def rotate_and_translate(self, x, y, z, a, b, c, u, v, w):
         # override function to handle it in vtk back plot
         return x, y, z, a, b, c, u, v, w
 
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
+
         origin = self.index_map[index]
         if origin not in self.path_actors.keys():
             self.path_actors[origin] = PathActor()
             self.path_points[origin] = list()
+            self.previous_origin = self.origin
             self.origin = origin
 
     def add_path_point(self, line_type, start_point, end_point):
+
+        if self.ignore_next is True:
+            self.ignore_next = False
+            return
+
+        if self.previous_origin != self.origin:
+            self.previous_origin = self.origin
+            self.ignore_next = True
+            return
 
         path_points = self.path_points.get(self.origin)
 
