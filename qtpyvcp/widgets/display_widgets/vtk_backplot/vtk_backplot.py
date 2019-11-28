@@ -411,6 +411,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(extents_actor)
             self.renderer.AddActor(actor)
 
+            self.offset_axes[origin] = axes
             self.extents[origin] = extents_actor
 
         self.update_render()
