@@ -123,8 +123,10 @@ class VTKCanon(StatCanon):
         if origin not in self.path_actors.keys():
             self.path_actors[origin] = PathActor()
             self.path_points[origin] = list()
+
             self.previous_origin = self.origin
             self.origin = origin
+
 
     def add_path_point(self, line_type, start_point, end_point):
 
@@ -182,7 +184,6 @@ class VTKCanon(StatCanon):
                 last_line_type = line_type
 
                 path_actor.points.InsertNextPoint(start_point[:3])
-
                 path_actor.colors.InsertNextTypedTuple(self.path_colors[line_type])
 
                 line = vtk.vtkLine()
@@ -198,8 +199,8 @@ class VTKCanon(StatCanon):
                 path_actor.colors.InsertNextTypedTuple(self.path_colors[last_line_type])
 
                 line = vtk.vtkLine()
-                line.GetPointIds().SetId(0, index)
-                line.GetPointIds().SetId(1, index + 1)
+                line.GetPointIds().SetId(0, index - 1)
+                line.GetPointIds().SetId(1, index)
 
                 path_actor.lines.InsertNextCell(line)
 
