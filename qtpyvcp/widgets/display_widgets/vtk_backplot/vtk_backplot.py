@@ -298,6 +298,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
+        self.offset_axes = OrderedDict()
         self.extents = OrderedDict()
         self.show_extents = bool()
 
@@ -312,6 +313,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                 axes = actor.get_axes()
 
+                self.offset_axes[origin] = axes
                 self.extents[origin] = extents_actor
 
                 self.renderer.AddActor(axes)
@@ -363,6 +365,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.RemoveActor(extents)
 
         self.path_actors.clear()
+        self.offset_axes.clear()
         self.extents.clear()
 
         if fname:
