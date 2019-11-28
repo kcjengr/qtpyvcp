@@ -443,6 +443,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         for origin, actor in self.path_actors.items():
             # path_offset = [n - o for n, o in zip(position[:3], self.original_g5x_offset[:3])]
 
+            old_extents = self.extents[origin]
+            self.renderer.RemoveActor(old_extents)
+
             axes = actor.get_axes()
 
             index = self.origin_map[origin]
@@ -455,10 +458,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             axes.SetUserTransform(path_transform)
             actor.SetUserTransform(path_transform)
 
-            # extents = PathBoundaries(self.renderer, actor)
-            # extents_actor = extents.get_actor()
-            #
-            # # extents_actor.SetPosition(*g5x_offset[:3])
+            extents = PathBoundaries(self.renderer, actor)
+            extents_actor = extents.get_actor()
+
+            if self.show_extents:
+                extents_actor.XAxisVisibilityOn()
+                extents_actor.YAxisVisibilityOn()
+                extents_actor.ZAxisVisibilityOn()
+            else:
+                extents_actor.XAxisVisibilityOff()
+                extents_actor.YAxisVisibilityOff()
+                extents_actor.ZAxisVisibilityOff()
+                
+            self.renderer.AddActor(extents_actor)
+
+            self.extents[origin] = extents_actor
 
         self.interactor.ReInitialize()
         self.update_render()
@@ -684,31 +698,35 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def toggleProgramTicks(self):
-        if self.extents_actor is not None:
-            ticks = self.extents_actor.GetXAxisTickVisibility()
-            if ticks:
-                self.extents_actor.XAxisTickVisibilityOff()
-                self.extents_actor.YAxisTickVisibilityOff()
-                self.extents_actor.ZAxisTickVisibilityOff()
-            else:
-                self.extents_actor.XAxisTickVisibilityOn()
-                self.extents_actor.YAxisTickVisibilityOn()
-                self.extents_actor.ZAxisTickVisibilityOn()
-            self.update_render()
+        for origin, actor in self.path_actors.items():
+            extents = self.extents[origin]
+            if extents is not None:
+                ticks = extents.GetXAxisTickVisibility()
+                if ticks:
+                    extents.XAxisTickVisibilityOff()
+                    extents.YAxisTickVisibilityOff()
+                    extents.ZAxisTickVisibilityOff()
+                else:
+                    extents.XAxisTickVisibilityOn()
+                    extents.YAxisTickVisibilityOn()
+                    extents.ZAxisTickVisibilityOn()
+                self.update_render()
 
     @Slot()
     def toggleProgramLabels(self):
-        if self.extents_actor is not None:
-            labels = self.extents_actor.GetXAxisLabelVisibility()
-            if labels:
-                self.extents_actor.XAxisLabelVisibilityOff()
-                self.extents_actor.YAxisLabelVisibilityOff()
-                self.extents_actor.ZAxisLabelVisibilityOff()
-            else:
-                self.extents_actor.XAxisLabelVisibilityOn()
-                self.extents_actor.YAxisLabelVisibilityOn()
-                self.extents_actor.ZAxisLabelVisibilityOn()
-            self.update_render()
+        for origin, actor in self.path_actors.items():
+            extents = self.extents[origin]
+            if extents is not None:
+                labels = extents.GetXAxisLabelVisibility()
+                if labels:
+                    extents.XAxisLabelVisibilityOff()
+                    extents.YAxisLabelVisibilityOff()
+                    extents.ZAxisLabelVisibilityOff()
+                else:
+                    extents.XAxisLabelVisibilityOn()
+                    extents.YAxisLabelVisibilityOn()
+                    extents.ZAxisLabelVisibilityOn()
+                self.update_render()
 
     @Slot()
     def toggleMachineBounds(self):
