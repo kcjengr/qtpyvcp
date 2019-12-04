@@ -950,13 +950,16 @@ class jog:
             distance (float, optional) : Desired jog distance, continuous if 0.00.
         """
 
+        # check if it even makes sense to try to jog
+        if STAT.task_state != linuxcnc.STATE_ON or STAT.task_mode != linuxcnc.MODE_MANUAL:
+            return
+
         if isinstance(direction, str):
             direction = {'neg': -1, 'pos': 1}.get(direction.lower(), 0)
 
         axis = getAxisNumber(axis)
 
         # must be in teleoperating mode to jog.
-        # ToDo: probably need to do some checks to make sure it is OK to jog
         if STAT.motion_mode != linuxcnc.TRAJ_MODE_TELEOP:
             CMD.teleop_enable(1)
 
