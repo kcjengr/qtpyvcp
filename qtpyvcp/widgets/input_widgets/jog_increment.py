@@ -56,6 +56,7 @@ class JogIncrementWidget(QWidget):
 
             button.setCheckable(True)
             button.setAutoExclusive(True)
+            button.setFocusPolicy(Qt.NoFocus)
             button.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
             button.setMinimumSize(50, 42)
 
