@@ -28,14 +28,16 @@ class Notifications(DataPlugin):
     Args:
         enabled (bool, optional):                      Enable or disable notification popups (Default = True)
         mode (str, optional):                          native or dbus (Default = 'native')
+        max_messages (int, optional)                   Max number of notification popups to show.
         persistent (bool, optional):                   Store notifications in a file (Default = True)
         persistent_file (str, optional):               Path to the save file (Default = '.qtpyvcp_messages.json')
     """
-    def __init__(self, enabled=True, mode="native", persistent=True, persistent_file='.qtpyvcp_messages.json'):
+    def __init__(self, enabled=True, mode="native", max_messages=5, persistent=True, persistent_file='.qtpyvcp_messages.json'):
         super(Notifications, self).__init__()
 
         self.enabled = enabled
         self.mode = mode
+        self.max_messages = max_messages
 
         self.error_channel = linuxcnc.error_channel()
 
@@ -90,7 +92,7 @@ class Notifications(DataPlugin):
         message_words = msg_text.split(' ')
 
         index = 1
-        max_words = 10
+        max_words = 5
         tmp_message = list()
 
         for word in message_words:
@@ -131,6 +133,7 @@ class Notifications(DataPlugin):
         if self.enabled:
             if self.mode == "native":
                 self.notification_dispatcher = NativeNotification()
+                self.notification_dispatcher.maxMessages = self.max_messages
             elif self.mode == "dbus":
                 self.notification_dispatcher = DBusNotification("qtpyvcp")
             else:
