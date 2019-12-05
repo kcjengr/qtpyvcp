@@ -71,7 +71,7 @@ class NativeNotification(QDialog):
 
         self.maxMessages = 5
         self.nMessages = 0
-        self.activeMessages = []
+        self.activeMessages = list()
         self.mainLayout = QVBoxLayout(self)
         self.move(screenWidth, 0)
 
@@ -80,13 +80,14 @@ class NativeNotification(QDialog):
         self.mainLayout.insertWidget(0, m)
         m.buttonClose.clicked.connect(self.onClicked)
         self.nMessages += 1
-        self.activeMessages.append(m)
 
-        if len(self.activeMessages) > self.maxMessages:
-            m = self.activeMessages.pop()
-            self.mainLayout.removeWidget(m)
-            m.deleteLater()
+        if self.nMessages > self.maxMessages:
+            prev_message = self.activeMessages.pop(0)
+            self.mainLayout.removeWidget(prev_message)
+            prev_message.deleteLater()
             self.nMessages -= 1
+
+        self.activeMessages.append(m)
 
         self.show()
         self.raise_()
@@ -117,11 +118,11 @@ class Example(QWidget):
 
         self.notification = NativeNotification()
         btn.clicked.connect(self.notify)
-
+        self.index = 0
     def notify(self):
         self.notification.setNotify("BroadCast System",
-                                    "This is a test of the broadcast system.")
-
+                                    "This is a test of the broadcast system.{}".format(self.index))
+        self.index += 1
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
