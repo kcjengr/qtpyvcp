@@ -178,7 +178,8 @@ class ToolModel(QStandardItemModel):
         return True
 
     def toolDataFromRow(self, row):
-        tnum = sorted(self._tool_table)[row]
+        """Returns dictionary of tool data"""
+        tnum = sorted(self._tool_table)[row + 1]
         return self._tool_table[tnum]
 
     def saveToolTable(self):
@@ -251,8 +252,8 @@ class ToolTable(QTableView):
             return
 
         tdata = self.tool_model.toolDataFromRow(current_row)
-        if not self.confirmAction("Are you sure you want to delete T{tdata[T]}?\n"
-                                  "{tdata[R]}".format(tdata=tdata)):
+        if not self.confirmAction('Are you sure you want to delete T{tdata[T]}?\n'
+                                  '"{tdata[R]}"'.format(tdata=tdata)):
             return
 
         self.tool_model.removeTool(current_row)
