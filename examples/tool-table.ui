@@ -37,6 +37,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="pushButton_7">
+          <property name="text">
+           <string>Load Selected Tool</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="pushButton_3">
           <property name="text">
            <string>Reload Table</string>
@@ -150,8 +157,8 @@
    <slot>deleteSelectedTool()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>287</x>
-     <y>380</y>
+     <x>284</x>
+     <y>397</y>
     </hint>
     <hint type="destinationlabel">
      <x>288</x>
@@ -198,8 +205,8 @@
    <slot>selectPrevious()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>680</x>
-     <y>111</y>
+     <x>742</x>
+     <y>143</y>
     </hint>
     <hint type="destinationlabel">
      <x>598</x>
@@ -214,12 +221,28 @@
    <slot>selectNext()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>694</x>
-     <y>317</y>
+     <x>742</x>
+     <y>367</y>
     </hint>
     <hint type="destinationlabel">
      <x>627</x>
      <y>316</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_7</sender>
+   <signal>clicked()</signal>
+   <receiver>tooltable</receiver>
+   <slot>loadSelectedTool()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>356</x>
+     <y>386</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>348</x>
+     <y>335</y>
     </hint>
    </hints>
   </connection>
