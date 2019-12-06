@@ -173,8 +173,13 @@ def _load_vcp_from_entry_point(vcp_name, opts):
 
     try:
         vcp = entry_points[vcp_name.lower()].load()
-    except:
-        return False
+    except KeyError:
+        LOG.exception("Failed to find entry point: {}".format(vcp_name))
+    except Exception as e:
+        LOG.debug(e)
+        LOG.exception("Failed to load entry point: {}".format(vcp_name))
+    else:
+        vcp.main(opts)
 
     LOG.info("Loading VCP from entry point: {}".format(vcp_name))
     vcp.main(opts)
