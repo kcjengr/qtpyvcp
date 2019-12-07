@@ -5,6 +5,10 @@ from qtpy.QtCore import Property, Signal, Slot, QTimer
 from qtpy.QtGui import QColor
 
 import vtk
+# https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1
+import vtk.qt
+vtk.qt.QVTKRWIBase = "QGLWidget"
+
 from vtk.util.colors import tomato, yellow, mint
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
