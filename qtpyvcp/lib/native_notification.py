@@ -102,10 +102,10 @@ class NativeNotification(QDialog):
         if self.nMessages == 0:
             self.close()
 
-
     def popNotify(self):
         """Removes the last notification in the list"""
         pass
+
 
 class Example(QWidget):
     counter = 0
@@ -119,10 +119,12 @@ class Example(QWidget):
         self.notification = NativeNotification()
         btn.clicked.connect(self.notify)
         self.index = 0
+
     def notify(self):
         self.notification.setNotify("BroadCast System",
                                     "This is a test of the broadcast system.{}".format(self.index))
         self.index += 1
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

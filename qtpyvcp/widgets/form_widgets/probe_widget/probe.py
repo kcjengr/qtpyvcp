@@ -13,10 +13,10 @@
 #   You should have received a copy of the GNU General Public License
 #   along with This program.  If not, see <http://www.gnu.org/licenses/>.
 
-import os       # For file path manipulation
-import linuxcnc # For commanding linuxcnc
+import os  # For file path manipulation
+import linuxcnc  # For commanding linuxcnc
 
-from qtpyvcp.lib.notify import Notification, Urgency, init
+from qtpyvcp.plugins.notifications import Notifications
 
 from qtpy import uic, QtWidgets
 from qtpyvcp.utilities.info import Info
@@ -31,6 +31,7 @@ SUBROUTINE_PATH = INFO.getSubroutinePath()
 CMD = linuxcnc.command()
 STAT = linuxcnc.stat()
 
+
 class SubCaller(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
@@ -41,12 +42,9 @@ class SubCaller(QtWidgets.QWidget):
         if parent is None:
             return
 
-        self. ui = uic.loadUi(os.path.join(PARENT_DIR, "probe.ui"), self)
+        self.ui = uic.loadUi(os.path.join(PARENT_DIR, "probe.ui"), self)
 
-        self.notification = Notification("ProbeScreen")
-        self.notification.setUrgency(Urgency.NORMAL)
-        self.notification.setCategory("device")
-        self.notification.setIconPath("/usr/share/icons/Tango/scalable/status/dialog-error.svg")
+        self.notification = Notifications()
 
         for filename in os.listdir(SUBROUTINE_PATH):
             filename_and_ext = os.path.splitext(filename)
@@ -67,17 +65,15 @@ class SubCaller(QtWidgets.QWidget):
             if line.startswith('(ARGS,'):
                 args_format = line.strip('(ARGS,').strip().strip(')')
 
-                args =  self.getArgs()
+                args = self.getArgs()
                 arg_str = args_format.format(**args)
 
         cmd_str = "o<{}> call {}".format(subname, arg_str)
 
         # Print the command to the terminal so the user can see what is happening
-        print "Calling MDI command: ", cmd_str
+        print("Calling MDI command: {}".format(cmd_str))
 
-        # self.status_label.setStyleSheet("QStatusBar{color:black}")
-        # self.status_label.setText("Probing ...")
-        self.notification.show("Probing ...")
+        self.notification.setNotify("Probe", "Probing...")
 
         # Set the LinuxCNC mode to MDI
         CMD.mode(linuxcnc.MODE_MDI)
@@ -85,27 +81,27 @@ class SubCaller(QtWidgets.QWidget):
         # Issue the MDI command to call the sub
         CMD.mdi(cmd_str)
         CMD.wait_complete(10000)
-        print 'Done'
+        print('Done')
         STAT.poll()
         if STAT.probe_tripped:
             # self.status_label.setStyleSheet("QStatusBar{color:green}")
             # self.status_label.setText("Probing finished successfully")
 
-            self.notification.show("Probing finished successfully")
+            self.notification.setNotify("Probe", "Probing finished successfully")
 
             self.onProbeSuccess()
         else:
             # self.status_label.setStyleSheet("QStatusBar{color:red}")
             # self.status_label.setText("ERROR: Probe move finished without making contact")
 
-            self.notification.show("ERROR: Probe move finished without making contact")
+            self.notification.setNotify("Probe", "ERROR: Probe move finished without making contact")
 
     def onProbeSuccess(self):
         probed_pos = STAT.probed_position
 
         for anum, aletter in enumerate('xyz'):
             pos_str = "{:6.4f}".format(probed_pos[anum])
-            print "Probed {} pos: {}".format(aletter.upper(), pos_str)
+            print("Probed {} pos: {}".format(aletter.upper(), pos_str))
             getattr(self, '{}_probed_pos'.format(aletter)).setText(pos_str)
 
     def getArgs(self):
@@ -119,6 +115,7 @@ class SubCaller(QtWidgets.QWidget):
 
 if __name__ == '__main__':
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
 
     sub_caller = SubCaller()
