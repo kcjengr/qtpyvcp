@@ -119,7 +119,8 @@ default_menubar:
 
   - title: About
     items:
-      - title: About Mini
       - title: About QtPyVCP
+        action: win.showDialog
+        args: [about_qtpyvcp]
       - title: About Qt
         action: app.aboutQt

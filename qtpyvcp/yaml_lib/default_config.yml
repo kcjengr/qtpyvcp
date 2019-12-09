@@ -64,6 +64,9 @@ dialogs:
   probe_sim:
     provider: qtpyvcp.widgets.dialogs.probesim_dialog:ProbeSim
 
+  about_qtpyvcp:
+    provider: qtpyvcp.widgets.dialogs.about_dialog:AboutDialog
+
 virtual_keyboards:
   default:
     provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
