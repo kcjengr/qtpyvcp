@@ -15,7 +15,9 @@
 #
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
+from pprint import pprint
 
+from qtpy import uic
 from qtpy.QtWidgets import QVBoxLayout, QDialog, QDialogButtonBox, QLabel
 
 
@@ -23,26 +25,34 @@ class AboutDialog(QDialog):
     def __init__(self, *args, **kwargs):
         super(AboutDialog, self).__init__()
 
-        self.setFixedSize(600, 200)
-        self.setWindowTitle("About QtPyVCP")
+        self.ui_file = kwargs.get('ui_file')
 
-        self.layout = QVBoxLayout()
-        self.setLayout(self.layout)
+        if self.ui_file:
+            uic.loadUi(self.ui_file, self)
+        else:
 
-        self.button_box = QDialogButtonBox(QDialogButtonBox.Ok)
-        self.button_box.accepted.connect(self.close)
+            self.setFixedSize(600, 200)
 
-        self.about_text = QLabel()
-        self.about_text.setText(
-            """
-            <center>
-            QtPyVCP is a Qt and Python based framework for LinuxCNC.<br />
-            Copyright (c) 2019 Kurt Jacobson<br />
-            https://qtpyvcp.kcjengr.com/
-            </center>
-            """
-        )
+            self.setWindowTitle("About QtPyVCP")
 
-        self.layout.addWidget(self.about_text)
-        self.layout.addWidget(self.button_box)
+            self.layout = QVBoxLayout()
+            self.setLayout(self.layout)
+
+            self.button_box = QDialogButtonBox(QDialogButtonBox.Ok)
+            self.button_box.accepted.connect(self.close)
+
+            self.about_text = QLabel()
+
+            self.about_text.setText(
+                """
+                <center>
+                QtPyVCP is a Qt and Python based framework for LinuxCNC.<br />
+                Copyright (c) 2019 Kurt Jacobson<br />
+                https://qtpyvcp.kcjengr.com/
+                </center>
+                """
+            )
+
+            self.layout.addWidget(self.about_text)
+            self.layout.addWidget(self.button_box)
 
