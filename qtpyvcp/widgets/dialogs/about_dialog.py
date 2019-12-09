@@ -32,8 +32,8 @@ class AboutDialog(QDialog):
         self.button_box = QDialogButtonBox(QDialogButtonBox.Ok)
         self.button_box.accepted.connect(self.close)
 
-        about_text = QLabel()
-        about_text.setText(
+        self.about_text = QLabel()
+        self.about_text.setText(
             """
             <center>
             QtPyVCP is a Qt and Python based framework for LinuxCNC.<br />
@@ -43,6 +43,6 @@ class AboutDialog(QDialog):
             """
         )
 
-        self.layout.addWidget(about_text)
+        self.layout.addWidget(self.about_text)
         self.layout.addWidget(self.button_box)
 
