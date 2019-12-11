@@ -110,6 +110,8 @@ def load_vcp(opts):
         return
 
     vcp_path = os.path.realpath(os.path.join(os.getenv('OLDPWD', '~'), vcp))
+    LOG.info("Attempting to load {}".format(vcp_path))
+
     if os.path.exists(vcp_path):
 
         if os.path.isfile(vcp_path):
@@ -132,8 +134,8 @@ def load_vcp(opts):
         if _load_vcp_from_entry_point(vcp, opts):
             return
 
-    LOG.error("Could not load the specified VCP, make sure that the name or"
-              "file path is correct.")
+    LOG.error("Could not load {}, make sure that the name or "
+              "file path is correct.".format(vcp_path))
 
 
 def _load_vcp_from_yaml_file(yaml_file, opts):
