@@ -165,7 +165,7 @@ def issue_mdi(command, reset=True):
     Args:
         command (str) : A valid RS274 gcode command string. Multiple MDI commands
             can be separated with a ``;`` and will be issued sequentially.
-        rest (bool, optional): Whether to reset the Task Mode to the state
+        reset (bool, optional): Whether to reset the Task Mode to the state
             the machine was in prior to issuing the MDI command.
     """
     if reset:
