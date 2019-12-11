@@ -57,14 +57,31 @@ def _spindle_bindOk(speed=None, spindle=0, widget=None):
 def forward(speed=None, spindle=0):
     """Turn a spindle ON in the *FORWARD* direction.
 
+    ActionButton syntax to start spindle 0 CW
+    ::
+
+        spindle.forward
+
+    ActionButton syntax to start spindle 1 CW
+    ::
+
+        spindle.1.forward
+
+
+    ActionButton syntax to start spindle 0 CW at 1800 RPM
+    ::
+
+        spindle.forward:1800
+
     Args:
-        speed (float, optional) : The requested speed to spin the spindle at.
+        speed (int, optional) : The requested speed to spin the spindle at.
             If ``speed`` is not specified the current interpreter speed setting
             (as set by the last S word) is used, taking into account the
             value of the spindle override if it is enabled.
         spindle (int, optional) : The number of the spindle to turn ON. If
             ``spindle`` is not specified spindle 0 is assumed.
     """
+
     if speed is None:
         speed = getSpeed()
     CMD.spindle(linuxcnc.SPINDLE_FORWARD, speed, spindle)
