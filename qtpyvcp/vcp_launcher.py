@@ -177,9 +177,9 @@ def _load_vcp_from_entry_point(vcp_name, opts):
     else:
         vcp.main(opts)
 
-    LOG.info("Loading VCP from entry point: {}".format(vcp_name))
-    vcp.main(opts)
-    return True
+        LOG.info("Loading VCP from entry point: {}".format(vcp_name))
+        vcp.main(opts)
+        return True
 
 
 def _get_object_by_referance(object_ref):
