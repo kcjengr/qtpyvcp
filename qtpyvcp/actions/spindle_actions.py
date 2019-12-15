@@ -145,7 +145,7 @@ def faster(spindle=0):
         spindle (int, optional) : The number of the spindle to increase the
             speed of. If ``spindle`` is not specified spindle 0 is assumed.
     """
-    CMD.spindle(linuxcnc.SPINDLE_INCREASE)
+    CMD.spindle(linuxcnc.SPINDLE_INCREASE, spindle)
 
 faster.ok = _spindle_ok
 faster.bindOk = _spindle_bindOk
@@ -158,7 +158,7 @@ def slower(spindle=0):
         spindle (int, optional) : The number of the spindle to decrease the
             speed of. If ``spindle`` is not specified spindle 0 is assumed.
     """
-    CMD.spindle(linuxcnc.SPINDLE_DECREASE)
+    CMD.spindle(linuxcnc.SPINDLE_DECREASE, spindle)
 
 slower.ok = _spindle_ok
 slower.bindOk = _spindle_bindOk

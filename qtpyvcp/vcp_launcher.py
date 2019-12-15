@@ -110,30 +110,26 @@ def load_vcp(opts):
         return
 
     vcp_path = os.path.realpath(os.path.join(os.getenv('OLDPWD', '~'), vcp))
-    if os.path.exists(vcp_path):
+    if os.path.isfile(vcp_path):
 
-        if os.path.isfile(vcp_path):
-            directory, filename = os.path.split(vcp_path)
-            name, ext = os.path.splitext(filename)
+        LOG.debug("Attempting to load VCP from file: {}".format(vcp_path))
 
-            if ext.lower() in ['.yaml', '.yml']:
-                _load_vcp_from_yaml_file(vcp_path, opts)
-                return
+        directory, filename = os.path.split(vcp_path)
+        name, ext = os.path.splitext(filename)
 
-            elif ext.lower() == '.ui':
-                _load_vcp_from_ui_file(vcp_path, opts)
-                return
-
-        elif os.path.isdir(vcp_path):
-            LOG.info("VCP is a directory")
-            # TODO: Load from a directory if it has a __main__.py entry point
-
-    else:
-        if _load_vcp_from_entry_point(vcp, opts):
+        if ext.lower() in ['.yaml', '.yml']:
+            _load_vcp_from_yaml_file(vcp_path, opts)
             return
 
-    LOG.error("Could not load the specified VCP, make sure that the name or"
-              "file path is correct.")
+        elif ext.lower() == '.ui':
+            _load_vcp_from_ui_file(vcp_path, opts)
+            return
+
+    if _load_vcp_from_entry_point(vcp, opts):
+        return
+
+    LOG.error("Could not load {}, make sure that the name or "
+              "file path is correct.".format(vcp_path))
 
 
 def _load_vcp_from_yaml_file(yaml_file, opts):
@@ -181,9 +177,9 @@ def _load_vcp_from_entry_point(vcp_name, opts):
     else:
         vcp.main(opts)
 
-    LOG.info("Loading VCP from entry point: {}".format(vcp_name))
-    vcp.main(opts)
-    return True
+        LOG.info("Loading VCP from entry point: {}".format(vcp_name))
+        vcp.main(opts)
+        return True
 
 
 def _get_object_by_referance(object_ref):
