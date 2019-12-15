@@ -162,6 +162,13 @@ def issue_mdi(command, reset=True):
         mode will automatically be switched to MDI prior to issuing the command
         and will be returned to the previous mode when the interpreter becomes IDLE.
 
+        ActionButton syntax to issue G0 X5:
+        ::
+
+            machine.issue_mdi:G0X5
+
+        It is simpler to use the MDIButton, examples in the Widgets section.
+
     Args:
         command (str) : A valid RS274 gcode command string. Multiple MDI commands
             can be separated with a ``;`` and will be issued sequentially.
