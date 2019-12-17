@@ -239,8 +239,10 @@ class EditorBase(QsciScintilla):
 
         # context menu
 
+        self.enable_run_action = actions.program_actions._run_ok()
+
         self.menu = QMenu(self)
-        self.menu.addAction("run from here", self.run_from_here)
+        self.menu.addAction(self.tr("run from here"), self.run_from_here)
 
         self.menu.addSeparator()
 
@@ -248,12 +250,17 @@ class EditorBase(QsciScintilla):
         self.menu.addAction(self.tr('Copy'), self.copy)
         self.menu.addAction(self.tr('Paste'), self.paste)
 
+        self.menu.actions()[0].setEnabled(self.enable_run_action)
+
     def contextMenuEvent(self, ev):
         """
         Protected method to show our own context menu.
 
         @param ev context menu event (QContextMenuEvent)
         """
+        self.enable_run_action = actions.program_actions._run_ok()
+        self.menu.actions()[0].setEnabled(self.enable_run_action)
+
         self.menu.popup(ev.globalPos())
         ev.accept()
 
