@@ -26,10 +26,12 @@
 
 import sys
 import os
+from pprint import pprint
 
 from qtpy.QtCore import Property, QObject, Slot, QFile, QFileInfo, QTextStream, Signal
 from qtpy.QtGui import QFont, QFontMetrics, QColor
-from qtpy.QtWidgets import QInputDialog, QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QCheckBox
+from qtpy.QtWidgets import QInputDialog, QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QCheckBox, QMenu
+from qtpyvcp import actions
 
 from qtpyvcp.utilities import logger
 
@@ -234,6 +236,31 @@ class EditorBase(QsciScintilla):
 
         # not too small
         # self.setMinimumSize(200, 100)
+
+        # context menu
+
+        self.menu = QMenu(self)
+        self.menu.addAction("run from here", self.run_from_here)
+
+        self.menu.addSeparator()
+
+        self.menu.addAction(self.tr('Cut'), self.cut)
+        self.menu.addAction(self.tr('Copy'), self.copy)
+        self.menu.addAction(self.tr('Paste'), self.paste)
+
+    def contextMenuEvent(self, ev):
+        """
+        Protected method to show our own context menu.
+
+        @param ev context menu event (QContextMenuEvent)
+        """
+        self.menu.popup(ev.globalPos())
+        ev.accept()
+
+    def run_from_here(self, *args, **kwargs):
+
+        line, _ = self.getCursorPosition()
+        actions.program_actions.run(line)
 
     def find_text_occurences(self, text):
         """Return byte positions of start and end of all 'text' occurences in the document"""
