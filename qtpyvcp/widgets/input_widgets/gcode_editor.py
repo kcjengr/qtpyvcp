@@ -267,7 +267,7 @@ class EditorBase(QsciScintilla):
     def run_from_here(self, *args, **kwargs):
 
         line, _ = self.getCursorPosition()
-        actions.program_actions.run(line)
+        actions.program_actions.run(line + 1)
 
     def find_text_occurences(self, text):
         """Return byte positions of start and end of all 'text' occurences in the document"""
