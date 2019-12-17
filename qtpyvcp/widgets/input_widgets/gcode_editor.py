@@ -183,6 +183,7 @@ class GcodeLexer(QsciLexerCustom):
 # ==============================================================================
 class EditorBase(QsciScintilla):
     ARROW_MARKER_NUM = 8
+    FocusLine = Signal(int)
 
     def __init__(self, parent=None):
         super(EditorBase, self).__init__(parent)
@@ -251,6 +252,11 @@ class EditorBase(QsciScintilla):
         self.menu.addAction(self.tr('Paste'), self.paste)
 
         self.menu.actions()[0].setEnabled(self.enable_run_action)
+
+        self.cursorPositionChanged.connect(self.send_position)
+
+    def send_position(self, line, col):
+        self.FocusLine.emit(line + 1)
 
     def contextMenuEvent(self, ev):
         """
