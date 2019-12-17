@@ -27,6 +27,9 @@ POSITION = getPlugin('position')
 
 from qtpyvcp.widgets import VCPWidget
 
+from qtpyvcp.utilities import logger
+LOG = logger.getLogger(__name__)
+
 IN_DESIGNER = os.getenv('DESIGNER') != None
 
 class Axis(object):
@@ -57,6 +60,8 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
     def __init__(self, parent=None):
         super(DROWidget, self).__init__(parent)
 
+        self.log = logger.getLogger(__name__)
+
         self._axis_number = Axis.X
         self._ref_typ = RefType.Absolute
 
@@ -75,8 +80,7 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
             self._format = self._imperial_format
         else:
             self._format = self._metric_format
-        self.update(
-            getattr(POSITION, RefType.toString(self._ref_typ)).getValue())
+        self.update(getattr(POSITION, RefType.toString(self._ref_typ)).getValue())
 
     def initialize(self):
         getattr(POSITION, RefType.toString(self._ref_typ)).notify(self.update)
@@ -119,9 +123,12 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
     def metricTemplate(self, value):
         try:
             value % 12.456789
-        except ValueError:
+        except ValueError as va:
+            self.log.debug(va)
             return
         self._metric_format = value
+        self._format = self._metric_format
+        self.update(getattr(POSITION, RefType.toString(self._ref_typ)).getValue())
 
     @Property(str)
     def imperialTemplate(self):
@@ -131,10 +138,12 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
     def imperialTemplate(self, value):
         try:
             value % 12.456789
-        except ValueError:
+        except ValueError as va:
+            self.log.debug(va)
             return
         self._imperial_format = value
-
+        self._format = self._imperial_format
+        self.update(getattr(POSITION, RefType.toString(self._ref_typ)).getValue())
 
 if __name__ == "__main__":
     import sys
