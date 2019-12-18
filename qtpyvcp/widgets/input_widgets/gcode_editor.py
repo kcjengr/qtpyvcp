@@ -240,10 +240,12 @@ class EditorBase(QsciScintilla):
 
         # context menu
 
+        self.focused_line = 1
+
         self.enable_run_action = actions.program_actions._run_ok()
 
         self.menu = QMenu(self)
-        self.menu.addAction(self.tr("run from here"), self.run_from_here)
+        self.menu.addAction(self.tr("run from line {}".format(self.focused_line)), self.run_from_here)
 
         self.menu.addSeparator()
 
@@ -251,12 +253,14 @@ class EditorBase(QsciScintilla):
         self.menu.addAction(self.tr('Copy'), self.copy)
         self.menu.addAction(self.tr('Paste'), self.paste)
 
-        self.menu.actions()[0].setEnabled(self.enable_run_action)
+        self.run_action = self.menu.actions()[0]  # FIXME picks the first action run from here, should not be by index
+        self.run_action.setEnabled(self.enable_run_action)
 
-        self.cursorPositionChanged.connect(self.send_position)
+        self.cursorPositionChanged.connect(self.on_cursor_changed)
 
-    def send_position(self, line, col):
-        self.FocusLine.emit(line + 1)
+    def on_cursor_changed(self, line, col):
+        self.focused_line = line + 1
+        self.FocusLine.emit(self.focused_line)
 
     def contextMenuEvent(self, ev):
         """
@@ -264,8 +268,10 @@ class EditorBase(QsciScintilla):
 
         @param ev context menu event (QContextMenuEvent)
         """
+
         self.enable_run_action = actions.program_actions._run_ok()
-        self.menu.actions()[0].setEnabled(self.enable_run_action)
+        self.run_action.setText("run from line {}".format(self.focused_line))
+        self.run_action.setEnabled(self.enable_run_action)
 
         self.menu.popup(ev.globalPos())
         ev.accept()
