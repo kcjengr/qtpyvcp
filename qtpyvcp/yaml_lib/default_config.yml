@@ -24,6 +24,11 @@ data_plugins:
       serialization_method: pickle
       # persistence_file: .vcp_data.json
 
+  hal:
+    provider: qtpyvcp.plugins.hal_status:HALStatus
+#    kwargs:
+#      cycle_time: 75
+
   settings:
     provider: qtpyvcp.plugins.settings:Settings
 
