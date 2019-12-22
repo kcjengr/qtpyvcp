@@ -22,10 +22,10 @@ from qtpyvcp.utilities.logger import getLogger
 log = getLogger(__name__)
 
 
-class HalLoadMeter(BarIndicator, HALWidget):
+class HalBarIndicator(BarIndicator, HALWidget):
     """HAL LOAD METER"""
     def __init__(self, parent=None):
-        super(HalLoadMeter, self).__init__(parent)
+        super(HalBarIndicator, self).__init__(parent)
 
         self._value_pin = None
         self._enabled_pin = None
