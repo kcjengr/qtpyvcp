@@ -51,3 +51,8 @@ from qtpyvcp.widgets.hal_widgets.hal_plot import HalPlot
 class HalPlotPlugin(_DesignerPlugin):
     def pluginClass(self):
         return HalPlot
+
+from qtpyvcp.widgets.hal_widgets.hal_load_meter import HalLoadMeter
+class HalLoadMeterPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return HalLoadMeter
