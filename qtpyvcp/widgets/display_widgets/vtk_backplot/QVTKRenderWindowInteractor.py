@@ -51,7 +51,7 @@ Changes by Ruben de Bruin, Aug. 2019
 try:
     import vtk.qt
     PyQtImpl = vtk.qt.PyQtImpl
-except ImportError:
+except:
     pass
 
 # Check whether a specific QVTKRenderWindowInteractor base
@@ -60,7 +60,7 @@ QVTKRWIBase = "QWidget"
 try:
     import vtk.qt
     QVTKRWIBase = vtk.qt.QVTKRWIBase
-except ImportError:
+except:
     pass
 
 from vtk.vtkRenderingCore import vtkGenericRenderWindowInteractor, vtkRenderWindow
