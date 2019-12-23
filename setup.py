@@ -91,10 +91,10 @@ setup(
         'pyqtgraph',
     ],
 
-    extras_require={
-        'vtk': ["vtk"]
-    },
-    
+    optional=[
+        'vtk'
+    ],
+
     entry_points={
         'console_scripts': [
             'qtpyvcp=qtpyvcp:main',
