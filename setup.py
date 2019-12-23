@@ -88,9 +88,13 @@ setup(
         'psutil',
         'HiYaPyCo',
         'pyopengl',
-        'vtk',
         'pyqtgraph',
     ],
+
+    extras_require={
+        'vtk': ["vtk"]
+    },
+    
     entry_points={
         'console_scripts': [
             'qtpyvcp=qtpyvcp:main',
