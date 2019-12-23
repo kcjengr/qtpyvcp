@@ -11,15 +11,14 @@ import vtk
 try:
     import vtk.qt
     vtk.qt.QVTKRWIBase = "QGLWidget"
-except:
-    print("no vtk qt support")
+except ImportError:
+    pass
 
 from vtk.util.colors import tomato, yellow, mint
 try:
     from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
-except:
+except importError:
     print("no vtk qt support")
-
     print("using bundled")
     from .QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 

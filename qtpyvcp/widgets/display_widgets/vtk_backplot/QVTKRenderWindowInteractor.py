@@ -49,8 +49,8 @@ Changes by Ruben de Bruin, Aug. 2019
 
 # Check whether a specific PyQt implementation was chosen
 try:
-    import vtkmodules.qt
-    PyQtImpl = vtkmodules.qt.PyQtImpl
+    import vtk.qt
+    PyQtImpl = vtk.qt.PyQtImpl
 except ImportError:
     pass
 
@@ -58,12 +58,12 @@ except ImportError:
 # class was chosen, can be set to "QGLWidget"
 QVTKRWIBase = "QWidget"
 try:
-    import vtkmodules.qt
-    QVTKRWIBase = vtkmodules.qt.QVTKRWIBase
+    import vtk.qt
+    QVTKRWIBase = vtk.qt.QVTKRWIBase
 except ImportError:
     pass
 
-from vtkmodules.vtkRenderingCore import vtkGenericRenderWindowInteractor, vtkRenderWindow
+from vtk.vtkRenderingCore import vtkGenericRenderWindowInteractor, vtkRenderWindow
 
 if PyQtImpl is None:
     # Autodetect the PyQt implementation to use
@@ -543,11 +543,11 @@ class QVTKRenderWindowInteractor(QVTKRWIBaseClass):
 def QVTKRenderWidgetConeExample():
     """A simple example that uses the QVTKRenderWindowInteractor class."""
 
-    from vtkmodules.vtkFiltersSources import vtkConeSource
-    from vtkmodules.vtkRenderingCore import vtkActor, vtkPolyDataMapper, vtkRenderer
+    from vtk.vtkFiltersSources import vtkConeSource
+    from vtk.vtkRenderingCore import vtkActor, vtkPolyDataMapper, vtkRenderer
     # load implementations for rendering and interaction factory classes
-    import vtkmodules.vtkRenderingOpenGL2
-    import vtkmodules.vtkInteractionStyle
+    import vtk.vtkRenderingOpenGL2
+    import vtk.vtkInteractionStyle
 
     # every QT app needs an app
     app = QApplication(['QVTKRenderWindowInteractor'])
