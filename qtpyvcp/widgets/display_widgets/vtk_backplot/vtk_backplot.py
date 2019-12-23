@@ -6,11 +6,22 @@ from qtpy.QtGui import QColor
 
 import vtk
 # https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1
-import vtk.qt
-vtk.qt.QVTKRWIBase = "QGLWidget"
+
+
+try:
+    import vtk.qt
+    vtk.qt.QVTKRWIBase = "QGLWidget"
+except:
+    print("no vtk qt support")
 
 from vtk.util.colors import tomato, yellow, mint
-from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+try:
+    from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+except:
+    print("no vtk qt support")
+
+    print("using bundled")
+    from .QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets import VCPWidget
