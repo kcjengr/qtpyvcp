@@ -162,10 +162,17 @@ def issue_mdi(command, reset=True):
         mode will automatically be switched to MDI prior to issuing the command
         and will be returned to the previous mode when the interpreter becomes IDLE.
 
+        ActionButton syntax to issue G0 X5:
+        ::
+
+            machine.issue_mdi:G0X5
+
+        It is simpler to use the MDIButton, examples in the Widgets section.
+
     Args:
         command (str) : A valid RS274 gcode command string. Multiple MDI commands
             can be separated with a ``;`` and will be issued sequentially.
-        rest (bool, optional): Whether to reset the Task Mode to the state
+        reset (bool, optional): Whether to reset the Task Mode to the state
             the machine was in prior to issuing the MDI command.
     """
     if reset:
@@ -950,13 +957,16 @@ class jog:
             distance (float, optional) : Desired jog distance, continuous if 0.00.
         """
 
+        # check if it even makes sense to try to jog
+        if STAT.task_state != linuxcnc.STATE_ON or STAT.task_mode != linuxcnc.MODE_MANUAL:
+            return
+
         if isinstance(direction, str):
             direction = {'neg': -1, 'pos': 1}.get(direction.lower(), 0)
 
         axis = getAxisNumber(axis)
 
         # must be in teleoperating mode to jog.
-        # ToDo: probably need to do some checks to make sure it is OK to jog
         if STAT.motion_mode != linuxcnc.TRAJ_MODE_TELEOP:
             CMD.teleop_enable(1)
 

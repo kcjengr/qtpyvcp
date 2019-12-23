@@ -14,15 +14,30 @@ from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.plugins import DataPlugin, DataChannel
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
-from qtpyvcp.lib.notification import Notification
+from qtpyvcp.lib.native_notification import NativeNotification
+from qtpyvcp.lib.dbus_notification import DBusNotification
 
 LOG = getLogger(__name__)
 STATUS = getPlugin('status')
 
 
 class Notifications(DataPlugin):
-    def __init__(self, persistent=True, persistent_file='.qtpyvcp_messages.json'):
+    """
+    Notification data plugin
+
+    Args:
+        enabled (bool, optional):                      Enable or disable notification popups (Default = True)
+        mode (str, optional):                          native or dbus (Default = 'native')
+        max_messages (int, optional)                   Max number of notification popups to show.
+        persistent (bool, optional):                   Store notifications in a file (Default = True)
+        persistent_file (str, optional):               Path to the save file (Default = '.qtpyvcp_messages.json')
+    """
+    def __init__(self, enabled=True, mode="native", max_messages=5, persistent=True, persistent_file='.qtpyvcp_messages.json'):
         super(Notifications, self).__init__()
+
+        self.enabled = enabled
+        self.mode = mode
+        self.max_messages = max_messages
 
         self.error_channel = linuxcnc.error_channel()
 
@@ -50,7 +65,10 @@ class Notifications(DataPlugin):
         return chan.value or ''
 
     def captureMessage(self, m_type, msg):
-        self.notification_dispatcher.setNotify(m_type, msg)
+
+        if self.enabled:
+            self.notification_dispatcher.setNotify(m_type, msg)
+
         self.messages.append({'timestamp': time.time(),
                               'message_type': m_type,
                               'message_text': msg,
@@ -69,7 +87,23 @@ class Notifications(DataPlugin):
         if not error:
             return
 
-        kind, msg = error
+        kind, msg_text = error
+
+        message_words = msg_text.split(' ')
+
+        index = 1
+        max_words = 5
+        tmp_message = list()
+
+        for word in message_words:
+            tmp_message.append(word)
+            if index == max_words:
+                tmp_message.append('\n')
+                index = 1
+            else:
+                index += 1
+
+        msg = ' '.join(tmp_message)
 
         if msg == "" or msg is None:
             msg = "No message text set."
@@ -96,7 +130,14 @@ class Notifications(DataPlugin):
 
     def initialise(self):
 
-        self.notification_dispatcher = Notification()
+        if self.enabled:
+            if self.mode == "native":
+                self.notification_dispatcher = NativeNotification()
+                self.notification_dispatcher.maxMessages = self.max_messages
+            elif self.mode == "dbus":
+                self.notification_dispatcher = DBusNotification("qtpyvcp")
+            else:
+                raise Exception("error notification mode {}".format(self.mode))
 
         if self.persistant and os.path.isfile(self.persistent_file):
             with open(self.persistent_file, 'r') as fh:

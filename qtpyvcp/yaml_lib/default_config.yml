@@ -38,6 +38,12 @@ data_plugins:
   notifications:
     provider: qtpyvcp.plugins.notifications:Notifications
     kwargs:
+      # show notification popups
+      enabled: True
+      # "native" or "dbus"
+      mode: native
+      # max number of notifications to show
+      max_messages: 5
       # whether to save messages on exit
       persistent: True
       # where to save, relative to config dir
@@ -57,6 +63,9 @@ dialogs:
 
   probe_sim:
     provider: qtpyvcp.widgets.dialogs.probesim_dialog:ProbeSim
+
+  about_qtpyvcp:
+    provider: qtpyvcp.widgets.dialogs.about_dialog:AboutDialog
 
 virtual_keyboards:
   default:

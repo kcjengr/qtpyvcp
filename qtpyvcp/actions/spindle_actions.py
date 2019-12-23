@@ -57,14 +57,31 @@ def _spindle_bindOk(speed=None, spindle=0, widget=None):
 def forward(speed=None, spindle=0):
     """Turn a spindle ON in the *FORWARD* direction.
 
+    ActionButton syntax to start spindle 0 CW (spindle 0 is default)
+    ::
+
+        spindle.forward
+
+    ActionButton syntax to start spindle 1 CW
+    ::
+
+        spindle.1.forward
+
+
+    ActionButton syntax to start spindle 0 CW at 1800 RPM
+    ::
+
+        spindle.forward:1800
+
     Args:
-        speed (float, optional) : The requested speed to spin the spindle at.
+        speed (int, optional) : The requested speed to spin the spindle at.
             If ``speed`` is not specified the current interpreter speed setting
             (as set by the last S word) is used, taking into account the
             value of the spindle override if it is enabled.
         spindle (int, optional) : The number of the spindle to turn ON. If
             ``spindle`` is not specified spindle 0 is assumed.
     """
+
     if speed is None:
         speed = getSpeed()
     CMD.spindle(linuxcnc.SPINDLE_FORWARD, speed, spindle)
@@ -83,6 +100,22 @@ forward.bindOk = _spindle_forward_bindOk
 
 def reverse(speed=None, spindle=0):
     """Turn a spindle ON in the *REVERSE* direction.
+
+    ActionButton syntax to start spindle 0 CCW (spindle 0 is default)
+    ::
+
+        spindle.reverse
+
+    ActionButton syntax to start spindle 1 CCW
+    ::
+
+        spindle.1.reverse
+
+
+    ActionButton syntax to start spindle 0 CCW at 1800 RPM
+    ::
+
+        spindle.reverse:1800
 
     Args:
         speed (float, optional) : The requested speed to spin the spindle at.
@@ -111,6 +144,16 @@ reverse.bindOk = _spindle_reverse_bindOk
 def off(spindle=0):
     """Turn a spindle OFF.
 
+    ActionButton syntax to stop spindle 0 (spindle 0 is default)
+    ::
+
+        spindle.stop
+
+    ActionButton syntax to stop spindle 1
+    ::
+
+        spindle.1.stop
+
     Args:
         spindle (int, optional) : The number of the spindle to turn OFF. If
             ``spindle`` is not specified spindle 0 is assumed.
@@ -124,11 +167,21 @@ off.bindOk = _spindle_bindOk
 def faster(spindle=0):
     """Increase spindle speed by 100rpm.
 
+    ActionButton syntax to increase spindle 0 speed (spindle 0 is default)
+    ::
+
+        spindle.faster
+
+    ActionButton syntax to increase spindle 1
+    ::
+
+        spindle.1.faster
+
     Args:
         spindle (int, optional) : The number of the spindle to increase the
             speed of. If ``spindle`` is not specified spindle 0 is assumed.
     """
-    CMD.spindle(linuxcnc.SPINDLE_INCREASE)
+    CMD.spindle(linuxcnc.SPINDLE_INCREASE, spindle)
 
 faster.ok = _spindle_ok
 faster.bindOk = _spindle_bindOk
@@ -137,11 +190,22 @@ faster.bindOk = _spindle_bindOk
 def slower(spindle=0):
     """Decrease spindle speed by 100rpm.
 
+    ActionButton syntax to decrease spindle 0 speed (spindle 0 is default)
+    ::
+
+        spindle.slower
+
+    ActionButton syntax to decrease spindle 1 speed
+    ::
+
+        spindle.1.slower
+
+
     Args:
         spindle (int, optional) : The number of the spindle to decrease the
             speed of. If ``spindle`` is not specified spindle 0 is assumed.
     """
-    CMD.spindle(linuxcnc.SPINDLE_DECREASE)
+    CMD.spindle(linuxcnc.SPINDLE_DECREASE, spindle)
 
 slower.ok = _spindle_ok
 slower.bindOk = _spindle_bindOk
@@ -310,6 +374,16 @@ class brake:
     def on(spindle=0):
         """Set spindle brake ON.
 
+        ActionButton syntax to engage spindle 0 brake (spindle 0 is default)
+        ::
+
+            spindle.brake.on
+
+        ActionButton syntax to engage spindle 1 brake
+        ::
+
+            spindle.1.brake.on
+
         Args:
             spindle (int, optional) : The number of the spindle to apply the
                 override to. If ``spindle`` is not specified spindle 0 is assumed.
@@ -320,6 +394,17 @@ class brake:
     def off(spindle=0):
         """Set spindle brake OFF.
 
+        ActionButton syntax to disengage spindle 0 brake (spindle 0 is default)
+        ::
+
+            spindle.brake.off
+
+        ActionButton syntax to disengage spindle 1 brake
+        ::
+
+            spindle.1.brake.off
+
+
         Args:
             spindle (int, optional) : The number of the spindle to apply the
                 override to. If ``spindle`` is not specified spindle 0 is assumed.
@@ -329,6 +414,16 @@ class brake:
     @staticmethod
     def toggle(spindle=0):
         """Toggle spindle brake ON/OFF.
+
+        ActionButton syntax to toggle spindle 0 brake (spindle 0 is default)
+        ::
+
+            spindle.brake.toggle
+
+        ActionButton syntax to toggle spindle 1 brake
+        ::
+
+            spindle.1.brake.toggle
 
         Args:
             spindle (int, optional) : The number of the spindle to apply the

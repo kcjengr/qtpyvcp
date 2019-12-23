@@ -39,12 +39,14 @@ class NotificationWidget(QWidget, VCPWidget):
         self.warn_button = QPushButton()
         self.error_button = QPushButton()
         self.debug_button = QPushButton()
+        self.clear_button = QPushButton()
 
         self.all_button.setText("all")
         self.info_button.setText("info")
         self.warn_button.setText("warn")
         self.error_button.setText("error")
         self.debug_button.setText("debug")
+        self.clear_button.setText("clear")
 
         self.all_button.setCheckable(True)
         self.info_button.setCheckable(True)
@@ -58,11 +60,14 @@ class NotificationWidget(QWidget, VCPWidget):
         self.error_button.setChecked(False)
         self.debug_button.setChecked(False)
 
+        self.clear_button.clicked.connect(self.clear_all_notifications)
+
         self.button_layout.addWidget(self.all_button)
         self.button_layout.addWidget(self.info_button)
         self.button_layout.addWidget(self.warn_button)
         self.button_layout.addWidget(self.error_button)
         self.button_layout.addWidget(self.debug_button)
+        self.button_layout.addWidget(self.clear_button)
 
         self.notification_name = QLabel()
         self.notification_name.setAlignment(Qt.AlignCenter)
@@ -202,3 +207,6 @@ class NotificationWidget(QWidget, VCPWidget):
         self.notification_name.setText("Debug Notifications")
         self.all_notification_model_proxy.setFilterRegExp(QRegExp("DEBUG", Qt.CaseSensitive,
                                                           QRegExp.FixedString))
+
+    def clear_all_notifications(self):
+        self.all_notification_model.clear()

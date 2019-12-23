@@ -3,6 +3,8 @@ from qtpy.QtGui import QStandardItemModel, QColor, QBrush
 from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, \
      QSpinBox, QLineEdit, QMessageBox
 
+from qtpyvcp.actions.machine_actions import issue_mdi
+
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
 
@@ -178,7 +180,8 @@ class ToolModel(QStandardItemModel):
         return True
 
     def toolDataFromRow(self, row):
-        tnum = sorted(self._tool_table)[row]
+        """Returns dictionary of tool data"""
+        tnum = sorted(self._tool_table)[row + 1]
         return self._tool_table[tnum]
 
     def saveToolTable(self):
@@ -251,8 +254,8 @@ class ToolTable(QTableView):
             return
 
         tdata = self.tool_model.toolDataFromRow(current_row)
-        if not self.confirmAction("Are you sure you want to delete T{tdata[T]}?\n"
-                                  "{tdata[R]}".format(tdata=tdata)):
+        if not self.confirmAction('Are you sure you want to delete T{tdata[T]}?\n'
+                                  '"{tdata[R]}"'.format(tdata=tdata)):
             return
 
         self.tool_model.removeTool(current_row)
@@ -283,6 +286,18 @@ class ToolTable(QTableView):
         """Appends a new item to the model"""
         self.tool_model.addTool()
         self.selectRow(self.tool_model.rowCount() - 1)
+
+    @Slot()
+    def loadSelectedTool(self):
+        """Loads the currently selected tool"""
+        # see: https://forum.linuxcnc.org/41-guis/36042?start=50#151820
+        current_row = self.selectedRow()
+        if current_row == -1:
+            # no row selected
+            return
+
+        tnum = self.tool_model.toolDataFromRow(current_row)['T']
+        issue_mdi("T%s M6" % tnum)
 
     def selectedRow(self):
         """Returns the row number of the currently selected row, or 0"""

@@ -72,7 +72,7 @@ def run(start_line=0):
     ActionButton syntax::
 
         program.run
-        program.run?line=n
+        program.run:line
 
     Args:
         start_line (int, optional) : The line to start program from. Defaults to 0.

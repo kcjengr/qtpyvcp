@@ -97,9 +97,10 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
     opts = DotDict({arg.strip('-<>').replace('-', '_') : convType(value) for arg, value in raw_args.items()})
 
     # read options from INI file and merge with cmd line options
-    ini_file = ini(normalizePath(opts.ini, os.path.expanduser('~/linuxcnc/configs')))
+    ini_file = normalizePath(opts.ini, os.path.expanduser('~/linuxcnc/configs'))
+    ini_obj = ini(ini_file)
     for k, v in opts.iteritems():
-        ini_val = ini_file.find('DISPLAY', k.upper().replace('-', '_'))
+        ini_val = ini_obj.find('DISPLAY', k.upper().replace('-', '_'))
         if ini_val is None:
             continue
 
@@ -112,6 +113,11 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
         # then prefer the cmd line value
         elif v is not None:
             continue
+
+        # If a VCP is specified in the INI as a .ui or .yaml file the path
+        # should be relative to the config dir rather then the $PWD.
+        if k.lower() == 'vcp' and ini_val.lower().split('.')[-1] in ['ui', 'yml', 'yaml']:
+            ini_val = normalizePath(ini_val, os.path.dirname(ini_file))
 
         opts[k] = convType(ini_val)
 
