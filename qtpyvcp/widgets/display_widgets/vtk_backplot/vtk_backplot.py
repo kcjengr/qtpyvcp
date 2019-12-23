@@ -17,7 +17,7 @@ except ImportError:
 from vtk.util.colors import tomato, yellow, mint
 try:
     from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
-except importError:
+except ImportError:
     print("no vtk qt support")
     print("using bundled")
     from .QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
