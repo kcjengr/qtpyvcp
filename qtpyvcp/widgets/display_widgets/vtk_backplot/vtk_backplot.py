@@ -421,13 +421,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     def update_position(self, pos):  # the tool movement
+
         self.spindle_position = pos[:3]
+
+        tool_transform = vtk.vtkTransform()
+        tool_transform.Translate(*self.spindle_position)
+        tool_transform.RotateX(-pos[3])
+        tool_transform.RotateY(-pos[4])
+        tool_transform.RotateZ(-pos[5])
+
+        self.tool_actor.SetUserTransform(tool_transform)
 
         tlo = self.status.tool_offset
         self.tooltip_position = [pos - tlo for pos, tlo in zip(pos[:3], tlo[:3])]
 
         # self.spindle_actor.SetPosition(self.spindle_position)
-        self.tool_actor.SetPosition(self.spindle_position)
+        # self.tool_actor.SetPosition(self.spindle_position)
         self.path_cache.add_line_point(self.tooltip_position)
         self.update_render()
 
@@ -1105,7 +1114,7 @@ class Tool:
         if tool.id == 0 or tool.diameter < .05:
             source = vtk.vtkConeSource()
             source.SetHeight(self.height / 2)
-            source.SetCenter(-self.height / 4 + offset[2], -offset[1], -offset[0])
+            source.SetCenter(-self.height / 4 - offset[2], -offset[1], -offset[0])
             source.SetRadius(self.height / 4)
             transform.RotateWXYZ(90, 0, 1, 0)
         else:
