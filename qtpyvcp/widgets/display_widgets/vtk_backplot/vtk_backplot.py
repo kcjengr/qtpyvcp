@@ -268,6 +268,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.original_rotation_offset = 0.0
 
         self.spindle_position = (0.0, 0.0, 0.0)
+        self.spindle_rotation = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
 
         self.units = MACHINE_UNITS
@@ -420,20 +421,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.update_render()
 
-    def update_position(self, pos):  # the tool movement
+    def update_position(self, position):  # the tool movement
 
-        self.spindle_position = pos[:3]
+        self.spindle_position = position[:3]
+        self.spindle_rotation = position[3:6]
 
         tool_transform = vtk.vtkTransform()
         tool_transform.Translate(*self.spindle_position)
-        tool_transform.RotateX(-pos[3])
-        tool_transform.RotateY(-pos[4])
-        tool_transform.RotateZ(-pos[5])
+        tool_transform.RotateX(-self.spindle_rotation[0])
+        tool_transform.RotateY(-self.spindle_rotation[1])
+        tool_transform.RotateZ(-self.spindle_rotation[2])
 
         self.tool_actor.SetUserTransform(tool_transform)
 
         tlo = self.status.tool_offset
-        self.tooltip_position = [pos - tlo for pos, tlo in zip(pos[:3], tlo[:3])]
+        self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]
 
         # self.spindle_actor.SetPosition(self.spindle_position)
         # self.tool_actor.SetPosition(self.spindle_position)
@@ -558,7 +560,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
-        self.tool_actor.SetPosition(self.spindle_position)
+        tool_transform = vtk.vtkTransform()
+        tool_transform.Translate(*self.spindle_position)
+        tool_transform.RotateX(-self.spindle_rotation[0])
+        tool_transform.RotateY(-self.spindle_rotation[1])
+        tool_transform.RotateZ(-self.spindle_rotation[2])
+
+        self.tool_actor.SetUserTransform(tool_transform)
 
         self.renderer.AddActor(self.tool_actor)
 
