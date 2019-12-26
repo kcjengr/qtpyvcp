@@ -62,7 +62,7 @@ Install Dev Dependencies
 
 Development dependencies (in addition to those listed in the :doc:`Quick Start <quick_start>`) ::
 
-  sudo apt install qttools5.dev qttools5-dev-tools python-pip
+  sudo apt install qttools5.dev qttools5-dev-tools wheel
 
 For building documentation::
 
