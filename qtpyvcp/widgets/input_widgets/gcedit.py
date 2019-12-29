@@ -6,7 +6,7 @@ from PyQt5.QtGui import (QIcon, QFontDatabase, QFont, QColor, QPainter,
 	QTextFormat, QSyntaxHighlighter, QTextCharFormat)
 from PyQt5.QtCore import (QRect, Qt, QRegularExpression)
 
-from qtpy.QtCore import Slot
+from qtpy.QtCore import Slot, Signal, Property
 
 class gCodeHighlight(QSyntaxHighlighter):
 	def __init__(self, parent=None):
@@ -190,6 +190,10 @@ class gCodeEdit(QPlainTextEdit):
 		self.cursorPositionChanged.connect(self.highlightLine)
 		self.gCodeHighlighter = gCodeHighlight(self.document())
 
+		self._backgroundcolor = QColor(255,255,255)
+		self.pallet = self.viewport().palette()
+		self.pallet.setColor(self.viewport().backgroundRole(), self._backgroundcolor)
+		self.viewport().setPalette(self.pallet)
 
 		# for testing
 		test_text = """(Group 0)
@@ -237,6 +241,17 @@ M7 M8 M9 ; Coolant
 			self.setReadOnly(False)
 			print('setReadOnly(False)')
 
+	@Property(QColor)
+	def backgroundcolor(self):
+		return self._backgroundcolor
+
+	@backgroundcolor.setter
+	def backgroundcolor(self, color):
+		self._backgroundcolor = color
+		#self.set_background_color(color)
+		#self.setStyleSheet('background-color: {}'.format(color))
+		self.pallet.setColor(self.viewport().backgroundRole(), color)
+		self.viewport().setPalette(self.pallet)
 
 	def resizeEvent(self, *e):
 		cr = self.contentsRect()
