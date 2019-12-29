@@ -229,13 +229,13 @@ M7 M8 M9 ; Coolant
 		self.show()
 
 	@Slot(bool)
-	def setEditable(self, state):
+	def EditorReadOnly(self, state):
 		if state:
-			self.setReadOnly(False)
-			print('setReadOnly(False)')
-		else:
 			self.setReadOnly(True)
 			print('setReadOnly(True)')
+		else:
+			self.setReadOnly(False)
+			print('setReadOnly(False)')
 
 
 	def resizeEvent(self, *e):
