@@ -87,6 +87,10 @@ This will create a setup.py development install and will add command line script
 ``~/.local/bin/`` for launching QtPyVCP, the example VCPs and the command line tools.
 
 .. note ::
+    If the pip install fails make sure you uninstall before trying to install
+    again. ``pip uninstall qtpyvcp``
+
+.. note ::
     On Debian 9 (Stretch) ``~/.local/bin/`` is not on the PATH due to a regression in bash.
     This prevents being able to launch qtpyvcp from the command line or being able to use it
     as the ``[DISPLAY]DISPLAY`` directive in the LinuxCNC INI file. For a single shell session
