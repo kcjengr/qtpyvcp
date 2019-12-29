@@ -1,4 +1,3 @@
-#!/usr/bin/python2
 
 import sys
 from PyQt5.QtWidgets import (QApplication, QPlainTextEdit,
@@ -6,6 +5,8 @@ from PyQt5.QtWidgets import (QApplication, QPlainTextEdit,
 from PyQt5.QtGui import (QIcon, QFontDatabase, QFont, QColor, QPainter,
 	QTextFormat, QSyntaxHighlighter, QTextCharFormat)
 from PyQt5.QtCore import (QRect, Qt, QRegularExpression)
+
+from qtpy.QtCore import Slot
 
 class gCodeHighlight(QSyntaxHighlighter):
 	def __init__(self, parent=None):
@@ -226,6 +227,16 @@ M7 M8 M9 ; Coolant
 """
 		self.setPlainText(test_text)
 		self.show()
+
+	@Slot(bool)
+	def setEditable(self, state):
+		if state:
+			self.setReadOnly(False)
+			print('setReadOnly(False)')
+		else:
+			self.setReadOnly(True)
+			print('setReadOnly(True)')
+
 
 	def resizeEvent(self, *e):
 		cr = self.contentsRect()
