@@ -177,8 +177,8 @@ class gCodeHighlight(QSyntaxHighlighter):
 				index = result.capturedStart()
 
 class gCodeEdit(QPlainTextEdit):
-	def __init__(self):
-		super(gcedit, self).__init__()
+	def __init__(self, parent=None):
+		super(gCodeEdit, self).__init__(parent)
 		self.setGeometry(50, 50, 800, 640)
 		self.setWindowTitle("PyQt5 g Code Editor")
 		self.setWindowIcon(QIcon('/usr/share/pixmaps/linuxcncicon.png'))
