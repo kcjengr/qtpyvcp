@@ -1,12 +1,13 @@
 
 import sys
 from PyQt5.QtWidgets import (QApplication, QPlainTextEdit,
-	QTextEdit, QWidget)
+	QTextEdit, QWidget, QMenu)
 from PyQt5.QtGui import (QIcon, QFontDatabase, QFont, QColor, QPainter,
 	QTextFormat, QSyntaxHighlighter, QTextCharFormat)
 from PyQt5.QtCore import (QRect, Qt, QRegularExpression)
 
 from qtpy.QtCore import Slot, Signal, Property
+from qtpyvcp import actions
 
 class gCodeHighlight(QSyntaxHighlighter):
 	def __init__(self, parent=None):
@@ -178,6 +179,8 @@ class gCodeHighlight(QSyntaxHighlighter):
 				index = result.capturedStart()
 
 class gCodeEdit(QPlainTextEdit):
+	focusLine = Signal(int)
+
 	def __init__(self, parent=None):
 		super(gCodeEdit, self).__init__(parent)
 		self.setGeometry(50, 50, 800, 640)
@@ -194,6 +197,21 @@ class gCodeEdit(QPlainTextEdit):
 		self.pallet = self.viewport().palette()
 		self.pallet.setColor(self.viewport().backgroundRole(), self._backgroundcolor)
 		self.viewport().setPalette(self.pallet)
+
+		# context menu
+		self.focused_line = 1
+		self.enable_run_action = actions.program_actions._run_ok()
+		self.menu = QMenu(self)
+		self.menu.addAction(self.tr("run from line {}".format(self.focused_line)), self.run_from_here)
+		self.menu.addSeparator()
+		self.menu.addAction(self.tr('Cut'), self.cut)
+		self.menu.addAction(self.tr('Copy'), self.copy)
+		self.menu.addAction(self.tr('Paste'), self.paste)
+		# FIXME picks the first action run from here, should not be by index
+		self.run_action = self.menu.actions()[0]
+		self.run_action.setEnabled(self.enable_run_action)
+		self.cursorPositionChanged.connect(self.on_cursor_changed)
+
 
 		# for testing
 		test_text = """(Group 0)
@@ -253,6 +271,21 @@ M7 M8 M9 ; Coolant
 		self.pallet.setColor(self.viewport().backgroundRole(), color)
 		self.viewport().setPalette(self.pallet)
 
+	def on_cursor_changed(self):
+		self.focused_line = self.textCursor().blockNumber() + 1
+		self.focusLine.emit(self.focused_line)
+
+	def contextMenuEvent(self, event):
+		self.enable_run_action = actions.program_actions._run_ok()
+		self.run_action.setText("run from line {}".format(self.focused_line))
+		self.run_action.setEnabled(self.enable_run_action)
+		self.menu.popup(event.globalPos())
+		event.accept()
+
+	def run_from_here(self, *args, **kwargs):
+		line, _ = self.getCursorPosition()
+		actions.program_actions.run(line + 1)
+
 	def resizeEvent(self, *e):
 		cr = self.contentsRect()
 		rec = QRect(cr.left(), cr.top(), self.lineNumbers.getWidth(), cr.height())
@@ -261,9 +294,9 @@ M7 M8 M9 ; Coolant
 
 	def highlightLine(self): # highlights current line, find a way not to use QTextEdit
 			newCurrentLineNumber = self.textCursor().blockNumber()
-			if newCurrentLineNumber != self.currentLine:                
+			if newCurrentLineNumber != self.currentLine:
 				self.currentLine = newCurrentLineNumber
-				selectedLine = QTextEdit.ExtraSelection() 
+				selectedLine = QTextEdit.ExtraSelection()
 				selectedLine.format.setBackground(QColor('#d5d8dc'))
 				selectedLine.format.setProperty(QTextFormat.FullWidthSelection, True)
 				selectedLine.cursor = self.textCursor()
