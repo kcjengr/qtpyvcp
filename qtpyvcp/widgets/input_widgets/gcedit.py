@@ -3,7 +3,7 @@ import sys
 from PyQt5.QtWidgets import (QApplication, QPlainTextEdit,
 	QTextEdit, QWidget, QMenu)
 from PyQt5.QtGui import (QIcon, QFontDatabase, QFont, QColor, QPainter,
-	QTextFormat, QSyntaxHighlighter, QTextCharFormat)
+	QTextFormat, QSyntaxHighlighter, QTextCharFormat, QTextCursor)
 from PyQt5.QtCore import (QRect, Qt, QRegularExpression)
 
 from qtpy.QtCore import Slot, Signal, Property
@@ -190,10 +190,13 @@ class gCodeEdit(QPlainTextEdit):
 		self.status = STATUS
 		# if a program is loaded into LinuxCNC display that file
 		self.status.file.notify(self.load_program)
+		self.status.motion_line.onValueChanged(self.changeCursorPosition)
+
 		self.setGeometry(50, 50, 800, 640)
 		self.setWindowTitle("PyQt5 g Code Editor")
 		self.setWindowIcon(QIcon('/usr/share/pixmaps/linuxcncicon.png'))
-		self.setFont(QFont("DejaVu Sans Mono", 12))
+		self._setfont = QFont("DejaVu Sans Mono", 12)
+		self.setFont(self._setfont)
 		self.lineNumbers = self.NumberBar(self)
 		self.currentLine = None
 		self.currentLineColor = self.palette().alternateBase()
@@ -232,6 +235,15 @@ class gCodeEdit(QPlainTextEdit):
 			self.setReadOnly(False)
 			print('setReadOnly(False)')
 
+	@Property(QFont)
+	def setfont(self):
+		return self._setfont
+
+	@setfont.setter
+	def setfont(self, font):
+		print(font)
+		self.setFont(font)
+
 	@Property(QColor)
 	def backgroundcolor(self):
 		return self._backgroundcolor
@@ -249,6 +261,11 @@ class gCodeEdit(QPlainTextEdit):
 			with open(fname) as f:
 				gcode = f.read()
 			self.setPlainText(gcode)
+
+	def changeCursorPosition(self, line):
+		#print(line)
+		cursor = QTextCursor(self.document().findBlockByLineNumber(line))
+		self.setTextCursor(cursor)
 
 	def on_cursor_changed(self):
 		self.focused_line = self.textCursor().blockNumber() + 1
