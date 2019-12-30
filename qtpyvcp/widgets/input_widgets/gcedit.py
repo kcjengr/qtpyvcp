@@ -9,6 +9,10 @@ from PyQt5.QtCore import (QRect, Qt, QRegularExpression)
 from qtpy.QtCore import Slot, Signal, Property
 from qtpyvcp import actions
 
+from qtpyvcp.plugins import getPlugin
+STATUS = getPlugin('status')
+
+
 class gCodeHighlight(QSyntaxHighlighter):
 	def __init__(self, parent=None):
 		super(gCodeHighlight, self).__init__(parent)
@@ -183,6 +187,9 @@ class gCodeEdit(QPlainTextEdit):
 
 	def __init__(self, parent=None):
 		super(gCodeEdit, self).__init__(parent)
+		self.status = STATUS
+		# if a program is loaded into LinuxCNC display that file
+		self.status.file.notify(self.load_program)
 		self.setGeometry(50, 50, 800, 640)
 		self.setWindowTitle("PyQt5 g Code Editor")
 		self.setWindowIcon(QIcon('/usr/share/pixmaps/linuxcncicon.png'))
@@ -212,6 +219,8 @@ class gCodeEdit(QPlainTextEdit):
 		self.run_action.setEnabled(self.enable_run_action)
 		self.cursorPositionChanged.connect(self.on_cursor_changed)
 
+		# file operations
+		gCodeFileName = ''
 
 		# for testing
 		test_text = """(Group 0)
@@ -247,7 +256,7 @@ M3 M4 M5 ; Spindle
 M6 ; Tool Change
 M7 M8 M9 ; Coolant
 """
-		self.setPlainText(test_text)
+		#self.setPlainText(test_text)
 		self.show()
 
 	@Slot(bool)
@@ -270,6 +279,12 @@ M7 M8 M9 ; Coolant
 		#self.setStyleSheet('background-color: {}'.format(color))
 		self.pallet.setColor(self.viewport().backgroundRole(), color)
 		self.viewport().setPalette(self.pallet)
+
+	def load_program(self, fname=None):
+		if fname:
+			with open(fname) as f:
+				gcode = f.read()
+			self.setPlainText(gcode)
 
 	def on_cursor_changed(self):
 		self.focused_line = self.textCursor().blockNumber() + 1
