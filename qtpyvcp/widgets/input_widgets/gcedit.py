@@ -41,7 +41,7 @@ class gCodeHighlight(QSyntaxHighlighter):
 		group2Format.setForeground(QColor('#FFA500')) # Orange
 		group2Format.setFontWeight(QFont.Bold)
 		group2Patterns = ['G17', 'G18', 'G19',\
-			'G17.1', '18.1', 'G19.1']
+			'G17.1', 'G18.1', 'G19.1']
 
 		# Modal Group 3 Distance Mode
 		group3Format = QTextCharFormat()
