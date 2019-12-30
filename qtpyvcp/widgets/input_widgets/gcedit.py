@@ -221,42 +221,6 @@ class gCodeEdit(QPlainTextEdit):
 
 		# file operations
 		gCodeFileName = ''
-
-		# for testing
-		test_text = """(Group 0)
-G4 G10 G28 G30 G52 G53 G92 G92.1 G92.2 G92.3
-(Group 1)
-G0 G1 G2 G3 G33 G38.2 G38.3 G38.4 G73 G76 G80 G81 G82 G83 G84 G85 G86 G87 G88 G89
-(Group 2)
-G17 G18 G19 G17.1 G18.1 G19.1
-(Group 3)
-G90 G91 ; comment
-(Group 4)
-G90.1 G91.1
-(Group 5)
-G93 G94 G95
-(Group 6)
-G20 G21
-(Group 7)
-G40 G41 G42 G41.1 G42.1
-(Group 8)
-G43 G43.1 G49
-(Group 10)
-G98 G99
-(Group 12)
-G54 G55 G56 G57 G58 G59 G59.1 G59.2 G59.3
-(Group 13)
-G61 G61.1 G64
-(Group 14)
-G96 G97
-(Group 15)
-G7 G8
-M0 M1 (Program Pause) M2 M30 M60 ; Program End
-M3 M4 M5 ; Spindle
-M6 ; Tool Change
-M7 M8 M9 ; Coolant
-"""
-		#self.setPlainText(test_text)
 		self.show()
 
 	@Slot(bool)
