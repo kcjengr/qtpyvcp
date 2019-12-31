@@ -25,19 +25,35 @@ class estop:
     """E-Stop action group"""
     @staticmethod
     def activate():
-        """Set E-Stop active"""
+        """Set E-Stop active
+
+        ActionButton syntax::
+
+            machine.estop.activate
+        """
         LOG.debug("Setting state red<ESTOP>")
         CMD.state(linuxcnc.STATE_ESTOP)
 
     @staticmethod
     def reset():
-        """Resets E-Stop"""
+        """Resets E-Stop
+
+        ActionButton syntax::
+
+            machine.estop.reset
+        """
         LOG.debug("Setting state green<ESTOP_RESET>")
         CMD.state(linuxcnc.STATE_ESTOP_RESET)
 
     @staticmethod
     def toggle():
-        """Toggles E-Stop state"""
+        """Toggles E-Stop state
+
+        ActionButton syntax::
+
+            machine.estop.toggle
+        """
+
         if estop.is_activated():
             estop.reset()
         else:
@@ -628,11 +644,11 @@ class home:
         """Home a specific axis
 
         Args:
-            axis (int | str) : Either the axis letter or number to home.
+            axis (int | str) : one of (xyzabcuvw or 012345678)
 
-        ActionButton syntax::
+        ActionButton syntax to home the X axis::
 
-            machine.home.axis:axis
+            machine.home.axis:x
         """
         axis = getAxisLetter(axis)
         if axis.lower() == 'all':
@@ -647,11 +663,11 @@ class home:
         """Home a specific joint
 
         Args:
-            jnum (int) : The number of the joint to home.
+            jnum (int) : one of (012345678)
 
-        ActionButton syntax::
+        ActionButton syntax to home joint 0::
 
-            machine.home.joint:jnum
+            machine.home.joint:0
         """
         LOG.info("Homing joint: {}".format(jnum))
         _home_joint(jnum)
@@ -722,11 +738,11 @@ class unhome:
         """Unhome a specific axis
 
         Args:
-            axis (int | str) : Either the axis letter or number to home.
+            axis (int | str) : one of (xyzabcuvw or 012345678)
 
-        ActionButton syntax::
+        ActionButton syntax to unhome the X axis::
 
-            machine.unhome.axis:axis
+            machine.unhome.axis:x
         """
         axis = getAxisLetter(axis)
         if axis.lower() == 'all': # not sure what this is copied from home
@@ -743,9 +759,9 @@ class unhome:
         Args:
             jnum (int) : The number of the joint to home.
 
-        ActionButton syntax::
+        ActionButton syntax to unhome the joint 0::
 
-            machine.unhome.joint:jnum
+            machine.unhome.joint:0
         """
         LOG.info("Unhoming joint: {}".format(jnum))
         _unhome_joint(jnum)
