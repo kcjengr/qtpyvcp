@@ -8,18 +8,11 @@ QtPyVCP custom widget documentation.
    :maxdepth: 2
 
    base_widget
+   input/index
    buttons/index
    containers/index
-   hal_widgets/index
-
-
-Dialogs
--------
-.. toctree::
-   :maxdepth: 1
-
-   dialogs/base_dialog
-
+   hal/index
+   dialogs/index
 
 Menus
 -----

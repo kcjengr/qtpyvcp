@@ -22,7 +22,10 @@ underscores replaced by dashes.
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_double_spinbox
     :members:
 
-.. automodule:: qtpyvcp.widgets.hal_widgets.hal_slider
+.. automodule:: qtpyvcp.widgets.hal_widgets.hal_float_dro
+    :members:
+
+.. automodule:: qtpyvcp.widgets.hal_widgets.hal_groupbox
     :members:
 
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_label
@@ -31,8 +34,19 @@ underscores replaced by dashes.
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_lcd
     :members:
 
-.. automodule:: qtpyvcp.widgets.hal_widgets.hal_groupbox
-    :members:
-
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_led
     :members:
+
+.. automodule:: qtpyvcp.widgets.hal_widgets.hal_s32_dro
+    :members:
+
+.. automodule:: qtpyvcp.widgets.hal_widgets.hal_u32_dro
+    :members:
+
+.. automodule:: qtpyvcp.widgets.hal_widgets.hal_slider
+    :members:
+
+
+
+
+

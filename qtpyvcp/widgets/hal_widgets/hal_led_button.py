@@ -1,3 +1,8 @@
+"""
+HAL LED Button
+--------------
+"""
+
 #!/usr/bin/env python
 
 from qtpy.QtWidgets import QPushButton
@@ -11,7 +16,7 @@ hal_status = HALStatus()
 
 
 class HALLEDButton(QPushButton):
-
+    """HAL LED Button"""
     def __init__(self, parent=None):
         super(HALLEDButton, self).__init__(parent)
 

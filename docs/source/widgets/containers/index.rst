@@ -1,8 +1,8 @@
-==========
 Containers
-==========
+----------
 
-.. toctree::
-   :maxdepth: 1
+.. automodule:: qtpyvcp.widgets.containers.frame
+    :members:
 
-   frame
+.. automodule:: qtpyvcp.widgets.containers.widget
+    :members:

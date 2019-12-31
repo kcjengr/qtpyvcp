@@ -1,20 +1,4 @@
-"""
-MDI Button
-----------
 
-This widget is intended for calling individual MDI commands. Useful for
-`Go To Home`, `Tool Change` and similar actions.
-
-The MDI command can include variables to be expanded from widgets present
-in the active window. For example, to make a `Change Tool` button you could
-add an MDIButton and a QLineEdit named ``tool_number_entry``. Then set the
-the MDICommand property of the button to::
-
-  T#<tool_number_entry> M6 G43
-
-When the button is pressed ``#<tool_number_entry>`` will be substituted with
-the current text in the QLineEdit.
-"""
 
 import re
 
@@ -33,7 +17,24 @@ LOG = logger.getLogger(__name__)
 PARSE_VARS = re.compile(r'(\w)#<([^>]+)>', re.I)
 
 class MDIButton(VCPButton):
-    """Button for issuing MDI commands.
+    """
+    MDI Button
+    ----------
+
+    This widget is intended for calling individual MDI commands. Useful for
+    `Go To Home`, `Tool Change` and similar actions.
+
+    The MDI command can include variables to be expanded from widgets present
+    in the active window. For example, to make a `Change Tool` button you could
+    add an MDIButton and a QLineEdit named ``tool_number_entry``. Then set the
+    the MDICommand property of the button to::
+
+      T#<tool_number_entry> M6 G43
+
+    When the button is pressed ``#<tool_number_entry>`` will be substituted with
+    the current text in the QLineEdit.
+
+    Button for issuing MDI commands.
 
     Args:
         parent (QWidget, optional) : The parent widget of the button, or None.

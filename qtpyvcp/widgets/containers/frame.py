@@ -1,16 +1,15 @@
-"""
-VCP Frame
----------
-
-A frame widget that can be controlled via rules.
-"""
 
 from qtpy.QtWidgets import QFrame
 from qtpyvcp.widgets.base_widgets import VCPWidget
 
 
 class VCPFrame(QFrame, VCPWidget):
-    """VCPFrame"""
+    """VCPFrame
+
+    VCP Frame
+
+    A frame widget that can be controlled via rules.
+    """
 
     DEFAULT_RULE_PROPERTY = 'Enable'
 

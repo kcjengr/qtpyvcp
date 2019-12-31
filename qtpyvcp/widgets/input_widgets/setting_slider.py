@@ -101,7 +101,11 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
 
 class VCPSettingsSlider(QSlider, VCPAbstractSettingsWidget):
-    """Settings Slider"""
+    """Settings Slider
+
+       Set action options
+
+    """
 
     DEFAULT_RULE_PROPERTY = 'Enable'
     RULE_PROPERTIES = VCPAbstractSettingsWidget.RULE_PROPERTIES.copy()
