@@ -183,6 +183,9 @@ class gCodeHighlight(QSyntaxHighlighter):
 				index = result.capturedStart()
 
 class gCodeEdit(QPlainTextEdit):
+	"""
+	g Code Editor using QPlainTextEdit for speed in loading
+	"""
 	focusLine = Signal(int)
 
 	def __init__(self, parent=None):
@@ -228,6 +231,9 @@ class gCodeEdit(QPlainTextEdit):
 
 	@Slot(bool)
 	def EditorReadOnly(self, state):
+		"""
+		Set to Read Only to disable editing
+		"""
 		if state:
 			self.setReadOnly(True)
 		else:
