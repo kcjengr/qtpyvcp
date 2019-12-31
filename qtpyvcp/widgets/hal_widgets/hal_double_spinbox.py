@@ -1,19 +1,4 @@
-"""
-HAL DoubleSpinBox
------------------
 
-DoubleSpinBox for displaying and setting `float` HAL pin values.
-
-.. table:: Generated HAL Pins
-
-    ========================= ========= =========
-    HAL Pin Name              Type      Direction
-    ========================= ========= =========
-    qtpyvcp.spinbox.enable    bit       in
-    qtpyvcp.spinbox.in        float     in
-    qtpyvcp.spinbox.out       float     out
-    ========================= ========= =========
-"""
 
 from qtpy.QtWidgets import QDoubleSpinBox
 from qtpy.QtCore import QEvent
@@ -23,7 +8,20 @@ from qtpyvcp.widgets import HALWidget
 
 
 class HalDoubleSpinBox(QDoubleSpinBox, HALWidget):
-    """HAL DoubleSpinBox"""
+    """HAL DoubleSpinBox
+
+    DoubleSpinBox for displaying and setting `float` HAL pin values.
+
+    .. table:: Generated HAL Pins
+
+        ========================= ========= =========
+        HAL Pin Name              Type      Direction
+        ========================= ========= =========
+        qtpyvcp.spinbox.enable    bit       in
+        qtpyvcp.spinbox.in        float     in
+        qtpyvcp.spinbox.out       float     out
+        ========================= ========= =========
+    """
     def __init__(self, parent=None):
         super(HalDoubleSpinBox, self).__init__(parent)
 

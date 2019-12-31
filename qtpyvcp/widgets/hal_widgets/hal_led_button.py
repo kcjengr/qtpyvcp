@@ -1,13 +1,7 @@
-"""
-HAL LED Button
---------------
-"""
-
-#!/usr/bin/env python
 
 from qtpy.QtWidgets import QPushButton
-from qtpy.QtCore import *
-from qtpy.QtGui import *
+from qtpy.QtCore import Qt, Slot, Property, Signal
+from qtpy.QtGui import QColor
 
 from qtpyvcp.utilities.obj_status import HALStatus
 from qtpyvcp.widgets.base_widgets.led_widget import LEDWidget

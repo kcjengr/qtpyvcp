@@ -1,19 +1,4 @@
-"""
-HAL CheckBox
-------------
 
-CheckBox for displaying and setting `bit` HAL pin values.
-
-.. table:: Generated HAL Pins
-
-    ========================= ===== =========
-    HAL Pin Name              Type  Direction
-    ========================= ===== =========
-    qtpyvcp.checkbox.enable   bit   in
-    qtpyvcp.checkbox.check    bit   in
-    qtpyvcp.checkbox.checked  bit   out
-    ========================= ===== =========
-"""
 
 from qtpy.QtWidgets import QCheckBox
 from qtpy.QtCore import Property, QEvent
@@ -23,7 +8,20 @@ from qtpyvcp.widgets import HALWidget
 
 
 class HalCheckBox(QCheckBox, HALWidget):
-    """HAL CheckBox"""
+    """HAL CheckBox
+
+    CheckBox for displaying and setting `bit` HAL pin values.
+
+    .. table:: Generated HAL Pins
+
+        ========================= ===== =========
+        HAL Pin Name              Type  Direction
+        ========================= ===== =========
+        qtpyvcp.checkbox.enable   bit   in
+        qtpyvcp.checkbox.check    bit   in
+        qtpyvcp.checkbox.checked  bit   out
+        ========================= ===== =========
+    """
     def __init__(self, parent=None):
         super(HalCheckBox, self).__init__(parent)
 

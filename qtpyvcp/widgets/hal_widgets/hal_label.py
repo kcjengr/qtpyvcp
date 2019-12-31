@@ -1,24 +1,3 @@
-"""
-HAL Label
----------
-
-Label for displaying HAL pin values.
-
-Input pin type is selectable via the :class:`.pinType` property in designer,
-and can be any valid HAL type (bit, u32, s32, float).
-
-The text format can be specified via the :class:`.textFormat` property in
-designer and can be any valid python style format string.
-
-.. table:: Generated HAL Pins
-
-    ========================= =========== =========
-    HAL Pin Name              Type        Direction
-    ========================= =========== =========
-    qtpyvcp.label.enable      bit         in
-    qtpyvcp.label.in          selecatable in
-    ========================= =========== =========
-"""
 
 from qtpy.QtWidgets import QLabel
 from qtpy.QtCore import Property, Q_ENUMS
@@ -30,8 +9,25 @@ from . import HalType
 
 
 class HalLabel(QLabel, HALWidget, HalType):
-    """HAL Label"""
+    """HAL Label
 
+    Label for displaying HAL pin values.
+
+    Input pin type is selectable via the :class:`.pinType` property in designer,
+    and can be any valid HAL type (bit, u32, s32, float).
+
+    The text format can be specified via the :class:`.textFormat` property in
+    designer and can be any valid python style format string.
+
+    .. table:: Generated HAL Pins
+
+        ========================= =========== =========
+        HAL Pin Name              Type        Direction
+        ========================= =========== =========
+        qtpyvcp.label.enable      bit         in
+        qtpyvcp.label.in          selecatable in
+        ========================= =========== =========
+    """
     Q_ENUMS(HalType)
 
     def __init__(self, parent=None):

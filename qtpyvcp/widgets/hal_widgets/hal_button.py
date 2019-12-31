@@ -1,18 +1,3 @@
-"""
-HAL Button
-----------
-
-Button for setting `bit` HAL pin values.
-
-.. table:: Generated HAL Pins
-
-    ========================= ===== =========
-    HAL Pin Name              Type  Direction
-    ========================= ===== =========
-    qtpyvcp.button.enable     bit   in
-    qtpyvcp.button.out        bit   out
-    ========================= ===== =========
-"""
 
 from qtpy.QtCore import Property, QTimer
 from qtpy.QtWidgets import QPushButton
@@ -22,7 +7,19 @@ from qtpyvcp.widgets import HALWidget
 
 
 class HalButton(QPushButton, HALWidget):
-    """HAL Button"""
+    """HAL Button
+
+    Button for setting `bit` HAL pin values.
+
+    .. table:: Generated HAL Pins
+
+        ========================= ===== =========
+        HAL Pin Name              Type  Direction
+        ========================= ===== =========
+        qtpyvcp.button.enable     bit   in
+        qtpyvcp.button.out        bit   out
+        ========================= ===== =========
+    """
     def __init__(self, parent=None):
         super(HalButton, self).__init__(parent)
 

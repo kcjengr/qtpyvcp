@@ -1,18 +1,3 @@
-"""
-HAL LCD Number
---------------
-
-LCD Number for displaying `float` or `s32` HAL pin values.
-
-.. table:: Generated HAL Pins
-
-    ===================== ========= =========
-    HAL Pin Name          Type      Direction
-    ===================== ========= =========
-    qtpyvcp.lcd.in-i      s32       in
-    qtpyvcp.lcd.in-f      float     in
-    ===================== ========= =========
-"""
 
 from qtpy.QtWidgets import QLCDNumber
 from qtpy.QtCore import Property
@@ -22,7 +7,20 @@ from qtpyvcp.widgets import HALWidget
 
 
 class HalLCDNumber(QLCDNumber, HALWidget):
-    """HAL LCD Number"""
+    """HAL LCD Number
+
+    LCD Number for displaying `float` or `s32` HAL pin values.
+
+    .. table:: Generated HAL Pins
+
+        ===================== ========= =========
+        HAL Pin Name          Type      Direction
+        ===================== ========= =========
+        qtpyvcp.lcd.in-i      s32       in
+        qtpyvcp.lcd.in-f      float     in
+        ===================== ========= =========
+    """
+
     def __init__(self, parent=None):
         super(HalLCDNumber, self).__init__(parent)
 

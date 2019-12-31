@@ -1,24 +1,3 @@
-"""
-HAL SpinBox
------------
-
-SpinBox for displaying and setting `u32` and `s32` HAL pin values.
-
-.. table:: Generated HAL Pins
-
-    ========================= ========= =========
-    HAL Pin Name              Type      Direction
-    ========================= ========= =========
-    qtpyvcp.spinbox.enable    s32 | u32 in
-    qtpyvcp.spinbox.in        s32 | u32 in
-    qtpyvcp.spinbox.out       s32 | u32 out
-    ========================= ========= =========
-
-Note:
-    If the ``minimum`` value property is set to 0 or greater a u32 HAL pin will
-    be created, if the ``minumum`` value is less than 0 then a s32 HAL pin will
-    be created.
-"""
 
 from qtpy.QtWidgets import QSpinBox
 from qtpy.QtCore import QEvent
@@ -28,7 +7,25 @@ from qtpyvcp.widgets import HALWidget
 
 
 class HalQSpinBox(QSpinBox, HALWidget):
-    """HAL SpinBox"""
+    """HAL SpinBox
+
+    SpinBox for displaying and setting `u32` and `s32` HAL pin values.
+
+    .. table:: Generated HAL Pins
+
+        ========================= ========= =========
+        HAL Pin Name              Type      Direction
+        ========================= ========= =========
+        qtpyvcp.spinbox.enable    s32 | u32 in
+        qtpyvcp.spinbox.in        s32 | u32 in
+        qtpyvcp.spinbox.out       s32 | u32 out
+        ========================= ========= =========
+
+    Note:
+        If the ``minimum`` value property is set to 0 or greater a u32 HAL pin will
+        be created, if the ``minumum`` value is less than 0 then a s32 HAL pin will
+        be created.
+    """
     def __init__(self, parent=None):
         super(HalQSpinBox, self).__init__(parent)
 

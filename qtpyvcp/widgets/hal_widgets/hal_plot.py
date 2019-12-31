@@ -1,21 +1,3 @@
-"""
-HAL Plot
----------
-
-Plot for displaying HAL pin values.
-
-Input pin type is HAL type ( float).
-
-Up to four HAL pin values can be plotted
-
-.. table:: Generated HAL Pins
-
-    ========================= =========== =========
-    HAL Pin Name              Type        Direction
-    ========================= =========== =========
-    qtpyvcp.seriesXname.in     float          in
-    ========================= =========== =========
-"""
 
 import os
 
@@ -44,8 +26,22 @@ class TimeAxisItem(pg.AxisItem):
 
 
 class HalPlot(QWidget, HALWidget):
-    """HAL testing"""
+    """HAL Plot
 
+    Plot for displaying HAL pin values.
+
+    Input pin type is HAL type ( float).
+
+    Up to four HAL pin values can be plotted
+
+    .. table:: Generated HAL Pins
+
+        ========================= =========== =========
+        HAL Pin Name              Type        Direction
+        ========================= =========== =========
+        qtpyvcp.seriesXname.in     float          in
+        ========================= =========== =========
+    """
 
     def __init__(self, parent=None):
         super(HalPlot, self).__init__(parent)

@@ -1,19 +1,3 @@
-"""
-HAL LED Indicator
------------------
-
-LED for indicated the state of `bit` HAL pins.
-
-.. table:: Generated HAL Pins
-
-    ========================= ========= =========
-    HAL Pin Name              Type      Direction
-    ========================= ========= =========
-    qtpyvcp.led.on            bit       in
-    qtpyvcp.led.flash         bit       in
-    qtpyvcp.led.flash-rate    u32       out
-    ========================= ========= =========
-"""
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget
@@ -25,7 +9,20 @@ log = getLogger(__name__)
 
 
 class HalLedIndicator(LEDWidget, HALWidget):
-    """HAL LED"""
+    """HAL LED
+
+    LED for indicated the state of `bit` HAL pins.
+
+    .. table:: Generated HAL Pins
+
+        ========================= ========= =========
+        HAL Pin Name              Type      Direction
+        ========================= ========= =========
+        qtpyvcp.led.on            bit       in
+        qtpyvcp.led.flash         bit       in
+        qtpyvcp.led.flash-rate    u32       out
+        ========================= ========= =========
+    """
     def __init__(self, parent=None):
         super(HalLedIndicator, self).__init__(parent)
 
