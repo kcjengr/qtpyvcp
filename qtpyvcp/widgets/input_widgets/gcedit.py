@@ -3,7 +3,7 @@ import sys
 from PyQt5.QtWidgets import (QApplication, QPlainTextEdit,
 	QTextEdit, QWidget, QMenu)
 from PyQt5.QtGui import (QIcon, QFontDatabase, QFont, QColor, QPainter,
-	QTextFormat, QSyntaxHighlighter, QTextCharFormat, QTextCursor)
+	QTextFormat, QSyntaxHighlighter, QTextCharFormat, QTextCursor, QFontInfo)
 from PyQt5.QtCore import (QRect, Qt, QRegularExpression)
 
 from qtpy.QtCore import Slot, Signal, Property
@@ -230,10 +230,8 @@ class gCodeEdit(QPlainTextEdit):
 	def EditorReadOnly(self, state):
 		if state:
 			self.setReadOnly(True)
-			print('setReadOnly(True)')
 		else:
 			self.setReadOnly(False)
-			print('setReadOnly(False)')
 
 	@Property(QFont)
 	def setfont(self):
@@ -241,7 +239,8 @@ class gCodeEdit(QPlainTextEdit):
 
 	@setfont.setter
 	def setfont(self, font):
-		print(font)
+		self._setfont = font
+		print(font.family())
 		self.setFont(font)
 
 	@Property(QColor)
@@ -251,8 +250,6 @@ class gCodeEdit(QPlainTextEdit):
 	@backgroundcolor.setter
 	def backgroundcolor(self, color):
 		self._backgroundcolor = color
-		#self.set_background_color(color)
-		#self.setStyleSheet('background-color: {}'.format(color))
 		self.pallet.setColor(self.viewport().backgroundRole(), color)
 		self.viewport().setPalette(self.pallet)
 
