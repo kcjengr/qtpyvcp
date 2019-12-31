@@ -86,7 +86,7 @@ class Status(DataPlugin):
     recent_files = DataChannel(doc='List of recently loaded files', settable=True, data=[])
 
     @DataChannel
-    def on(self):
+    def on(self, chan):
         """True if machine power is ON."""
         return STAT.task_state == linuxcnc.STATE_ON
 
