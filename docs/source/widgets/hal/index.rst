@@ -22,9 +22,6 @@ underscores replaced by dashes.
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_double_spinbox
     :members:
 
-.. automodule:: qtpyvcp.widgets.hal_widgets.hal_float_dro
-    :members:
-
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_groupbox
     :members:
 
