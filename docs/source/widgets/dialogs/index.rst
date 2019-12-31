@@ -4,9 +4,6 @@ Dialogs
 .. automodule:: qtpyvcp.widgets.dialogs.about_dialog
     :members:
 
-.. automodule:: qtpyvcp.widgets.dialogs.base_dialog
-    :members:
-
 .. automodule:: qtpyvcp.widgets.dialogs.error_dialog
     :members:
 
