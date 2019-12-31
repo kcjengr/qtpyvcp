@@ -1,5 +1,4 @@
 
-
 import re
 
 from qtpy.QtCore import Property
@@ -19,7 +18,6 @@ PARSE_VARS = re.compile(r'(\w)#<([^>]+)>', re.I)
 class MDIButton(VCPButton):
     """
     MDI Button
-    ----------
 
     This widget is intended for calling individual MDI commands. Useful for
     `Go To Home`, `Tool Change` and similar actions.
