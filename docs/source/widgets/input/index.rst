@@ -3,6 +3,9 @@ Input Widgets
 
 Input Widgets
 
+.. automodule:: qtpyvcp.widgets.input_widgets.gcedit
+    :members:
+
 .. automodule:: qtpyvcp.widgets.input_widgets.mdientry_widget
     :members:
 
