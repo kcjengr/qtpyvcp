@@ -966,6 +966,10 @@ class jog:
     def axis(axis, direction=0, speed=None, distance=None):
         """Jog an axis.
 
+        Action Button Syntax to jog the X axis in the positive direction::
+
+            machine.jog.axis:x,pos
+
         Args:
             axis (str | int) : Either the letter or number of the axis to jog.
             direction (str | int) : pos or +1 for positive, neg or -1 for negative.
