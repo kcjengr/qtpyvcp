@@ -103,7 +103,9 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 class VCPSettingsSlider(QSlider, VCPAbstractSettingsWidget):
     """Settings Slider
 
-       Set action options
+       Set action options like::
+
+           machine.jog.linear-speed
 
     """
 

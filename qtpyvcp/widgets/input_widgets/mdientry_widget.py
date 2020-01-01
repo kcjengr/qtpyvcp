@@ -1,4 +1,3 @@
-"""MDI Entry """
 
 from qtpy.QtCore import Qt, QStringListModel, Slot
 from qtpy.QtGui import QValidator
@@ -21,6 +20,10 @@ class Validator(QValidator):
 
 
 class MDIEntry(QLineEdit, CMDWidget):
+    """MDI Entry
+    
+    Input any valid g Code. Enter sends the g Code.
+    """
     def __init__(self, parent=None):
         super(MDIEntry, self).__init__(parent)
 
