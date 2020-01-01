@@ -1,0 +1,49 @@
+# Include the QtPyVCP default menubar.
+{% include "default_menubar.yml" %}
+
+qtdesigner:
+  ui_file: ( windows.mainwindow.kwargs.ui_file )
+  qss_file: ( application.kwargs.stylesheet )
+
+vcp:
+  name: actions
+  version: v0.0.1
+  author: John Thornton
+  description: >
+    Actions GUI shows all the QtPyVCP actions
+    that are available and the syntax needed
+    to use those actions with Action Buttons
+    and Status Labels
+
+
+    Examples of what to included here:
+      * All QtPyVCP Actions
+      * Simulation and Demo
+
+data_plugins:
+  status:
+    kwargs:
+      cycle_time: 75
+
+windows:
+
+  mainwindow:
+    # Specify the class to use for the VCP's mainwindow
+    #   Format: package.module:class
+    provider: actions.mainwindow:MyMainWindow
+
+    # Keyword arguments to pass when initializing the class.
+    kwargs:
+      # Specify the mainwindow menubar as the default.
+      menu: ( default_menubar )
+      # Specify the UI file to load the window layout from.
+      ui_file: {{ file.dir }}/ui/mainwindow.ui
+      # Specify a stylesheet to use only for mainwindow.
+      stylesheet: null
+      # Set the window title from from the date in the vcp section above.
+      title: ( vcp.name ) ( vcp.version)
+
+application:
+  kwargs:
+    # Specify the application wide stylesheet.
+    stylesheet: {{ file.dir }}/ui/style.qss
