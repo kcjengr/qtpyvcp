@@ -147,12 +147,12 @@ def off(spindle=0):
     ActionButton syntax to stop spindle 0 (spindle 0 is default)
     ::
 
-        spindle.stop
+        spindle.off
 
     ActionButton syntax to stop spindle 1
     ::
 
-        spindle.1.stop
+        spindle.1.off
 
     Args:
         spindle (int, optional) : The number of the spindle to turn OFF. If
