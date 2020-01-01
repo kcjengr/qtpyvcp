@@ -70,7 +70,7 @@ Now in the .yml config file add your dialog to the `dialogs` section.
 **Dialogs from Python:**
 
 If your dialog is complicated enough to require python code, you can
-inherit the :doc:`BaseDialog </widgets/dialogs/base_dialog>` and create
+inherit the :doc:`BaseDialog </widgets/dialogs/index>` and create
 your own dialog provider class.
 
 Create a new file named `my_dialog.py` with the content:
