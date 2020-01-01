@@ -19,19 +19,34 @@ class flood:
     """Flood Actions Group"""
     @staticmethod
     def on():
-        """Turns Flood coolant ON"""
+        """Turns Flood coolant ON
+
+        ActionButton syntax::
+
+            coolant.flood.on
+        """
         LOG.debug("Turning Flood coolant green<ON>")
         CMD.flood(linuxcnc.FLOOD_ON)
 
     @staticmethod
     def off():
-        """Turns Flood coolant OFF"""
+        """Turns Flood coolant OFF
+
+        ActionButton syntax::
+
+            coolant.flood.off
+        """
         LOG.debug("Turning Flood coolant red<OFF>")
         CMD.flood(linuxcnc.FLOOD_OFF)
 
     @staticmethod
     def toggle():
-        """Toggles Flood coolant ON/OFF"""
+        """Toggles Flood coolant ON/OFF
+
+        ActionButton syntax::
+
+            coolant.flood.toggle
+        """
         if STAT.flood == linuxcnc.FLOOD_ON:
             flood.off()
         else:
@@ -41,19 +56,34 @@ class mist:
     """Mist Actions Group"""
     @staticmethod
     def on():
-        """Turns Mist coolant ON"""
+        """Turns Mist coolant ON
+
+        ActionButton syntax::
+
+            coolant.mist.on
+        """
         LOG.debug("Turning Mist coolant green<ON>")
         CMD.mist(linuxcnc.MIST_ON)
 
     @staticmethod
     def off():
-        """Turns Mist coolant OFF"""
+        """Turns Mist coolant OFF
+
+        ActionButton syntax::
+
+            coolant.mist.off
+        """
         LOG.debug("Turning Mist coolant red<OFF>")
         CMD.mist(linuxcnc.MIST_OFF)
 
     @staticmethod
     def toggle():
-        """Toggles Mist coolant ON/OFF"""
+        """Toggles Mist coolant ON/OFF
+
+        ActionButton syntax::
+
+            coolant.mist.toggle
+        """
         if STAT.mist == linuxcnc.MIST_ON:
             mist.off()
         else:
