@@ -1,30 +1,4 @@
-"""
-Base Dialog
------------
 
-This is intended to be used as a base class for custom dialogs, as well
-as a provider for use in YAML config files. This allows loading custom
-dialogs from .ui files without needing to write any python code.
-
-You can launch dialogs using a :doc:`Dialog Button </widgets/buttons/dialog_button>` or
-from a window menu item.
-
-Example:
-
-    YAML config for loading a custom dialog called `my_dialog` from a .ui
-    file named ``my_diloag.ui`` located in the same dir as the .yml file::
-
-        dialogs:
-          my_dialog:
-            provider: qtpyvcp.widgets.dialogs.base_dialog:BaseDialog
-            kwargs:
-              ui_file: {{ file.dir }}/my_dialog.ui
-              title: My Dialog Title    # optional, set the dialog title
-              modal: false              # optional, whether the dialog is modal
-              popup: false              # optional, whether the dialog is a popup
-              frameless: false          # optional, whether the dialog is frameless
-              stay_on_top: true         # optional, whether the dialog stays on top
-"""
 
 import os
 
@@ -37,7 +11,33 @@ from qtpyvcp.utilities.logger import getLogger
 LOG = getLogger(__name__)
 
 class BaseDialog(QDialog):
-    """Base QtPyVCP dialog class.
+    """Base Dialog
+
+    Base QtPyVCP dialog class.
+
+    This is intended to be used as a base class for custom dialogs, as well
+    as a provider for use in YAML config files. This allows loading custom
+    dialogs from .ui files without needing to write any python code.
+
+    You can launch dialogs using a 
+    :doc:`Dialog Button </widgets/buttons/index>` or
+    from a window menu item.
+
+    Example:
+
+        YAML config for loading a custom dialog called `my_dialog` from a .ui
+        file named ``my_diloag.ui`` located in the same dir as the .yml file::
+
+            dialogs:
+              my_dialog:
+                provider: qtpyvcp.widgets.dialogs.base_dialog:BaseDialog
+                kwargs:
+                  ui_file: {{ file.dir }}/my_dialog.ui
+                  title: My Dialog Title    # optional, set the dialog title
+                  modal: false              # optional, whether the dialog is modal
+                  popup: false              # optional, whether the dialog is a popup
+                  frameless: false          # optional, whether the dialog is frameless
+                  stay_on_top: true         # optional, whether the dialog stays on top
 
     Args:
         parent (QWidget, optional) : The dialog's parent window, or None.
