@@ -95,6 +95,6 @@ And in your .yml config file specify the custom provider:
 
 
 This custom provider will accept all the same kwarg options as the
-:doc:`BaseDialog </widgets/dialogs/base_dialog>`, but will allow you
+:doc:`BaseDialog </widgets/dialogs/index>`, but will allow you
 to use python code to add more advanced functionality than you could
 with .ui file dialog.
