@@ -38,7 +38,12 @@ load.ok = lambda *args, **kwargs: True
 load.bindOk = lambda *args, **kwargs: True
 
 def reload():
-    """Reload the currently loaded NC program."""
+    """Reload the currently loaded NC program
+
+    ActionButton syntax::
+
+        program.reload
+    """
     stat = linuxcnc.stat()
     stat.poll()
     load(stat.file, add_to_recents=False)
@@ -47,7 +52,13 @@ reload.ok = lambda *args, **kwargs: True
 reload.bindOk = lambda *args, **kwargs: True
 
 def clear():
-    """Clear the loaded NC program."""
+    """Clear the loaded NC program
+
+    ActionButton syntax::
+
+        program.clear
+    """
+
     _, blankfile = tempfile.mkstemp(prefix="blank", suffix="ngc")
     with open(blankfile, 'w') as fp:
         fp.write("(New Program)\n\n\nM30")
