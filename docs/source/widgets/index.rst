@@ -13,6 +13,7 @@ QtPyVCP custom widget documentation.
    containers/index
    hal/index
    dialogs/index
+   rules
 
 Menus
 -----
