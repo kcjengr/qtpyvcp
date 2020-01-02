@@ -74,7 +74,7 @@ both will be Green then Home All</string>
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>4</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -1239,7 +1239,7 @@ single pin</string>
            <item row="1" column="0">
             <widget class="ActionButton" name="actionbutton_52">
              <property name="text">
-              <string>Lanuch</string>
+              <string>Launch</string>
              </property>
              <property name="actionName" stdset="0">
               <string>tool_actions.halscope</string>
