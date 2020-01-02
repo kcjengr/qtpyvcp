@@ -136,6 +136,13 @@ Expressions
 
 Any valid Python expression will work in the `Expression` box.
 
+Decisions can use if/else type of python expressions. Syntax for rules
+is do this if channel is true else to that. You could use that to set
+a button label text or a status label.
+::
+
+  'On' if ch[0] else 'Off'
+
 Some examples:
 
 To change a number variable from channel 0 to a string we use the python
