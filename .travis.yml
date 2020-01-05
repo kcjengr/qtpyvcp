@@ -3,6 +3,7 @@ python: "2.7"
 
 install:
 - pip install sphinx sphinx_rtd_theme mock
+- pip install git+https://github.com/KurtJacobson/sphinx-gitstamp#moreInfo
 - pip install --upgrade setuptools
 - sudo apt-get install pyqt5-dev-tools
 
