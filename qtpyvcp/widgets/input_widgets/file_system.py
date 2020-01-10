@@ -1,9 +1,10 @@
 import os
 import subprocess
-import threading
 
-import pyudev
 import psutil
+
+from pyudev.pyqt5 import MonitorObserver
+from pyudev import Context, Monitor
 
 from qtpy.QtCore import Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevice
 from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, \
@@ -13,6 +14,8 @@ from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.lib.decorators import deprecated
+
+
 
 LOG = getLogger(__name__)
 
@@ -32,63 +35,42 @@ class RemovableDeviceComboBox(QComboBox):
 
         # self.refreshDeviceList()
 
-        self.context = pyudev.Context()
-        self.monitor = pyudev.Monitor.from_netlink(self.context)
-        self.monitor.filter_by(subsystem='usb')
+        self.context = Context()
+
+        self.monitor = Monitor.from_netlink(self.context)
+        self.observer = MonitorObserver(self.monitor)
+        self.observer.deviceEvent.connect(self.test)
         self.monitor.start()
 
-        # this is module level logger, can be ignored
-
-        print("Starting to monitor for usb")
-
-        thread = threading.Thread(target=self._work)
-        thread.daemon = True
-        thread.start()
-
-    def _work(self):
-        """ Runs the actual loop to detect the events """
-        for device in iter(self.monitor.poll, None):
-            print("Got USB event: %s", device.action)
-            self.refreshDeviceList()
-            # if device.action == 'add':
-            #     # some function to run on insertion of usb
-            #     self.on_created()
-            # else:
-            #     # some function to run on removal of usb
-            #     self.on_deleted()
-
-    def showEvent(self, event=None):
-        self.refreshDeviceList()
-
-    def showPopup(self):
-        # refresh the device list just before showing popup
-        self.refreshDeviceList()
-        super(RemovableDeviceComboBox, self).showPopup()
+    def test(self, *args, **kwargs):
+        print(args, kwargs)
 
     @Slot()
     def refreshDeviceList(self):
-        # clear existing items
+
         self.clear()
 
         removable = [device for device in self.context.list_devices(subsystem='block', DEVTYPE='disk') if
-                     device.attributes.asstring('removable') == "1"]
+                     device.attributes.asstring('removable') == '1']
 
         for device in removable:
+
             partitions = [device.device_node for device in
                           self.context.list_devices(subsystem='block', DEVTYPE='partition', parent=device)]
 
-            print("All removable partitions: {}".format(", ".join(partitions)))
-            print("Mounted removable partitions:")
+            # print("All removable partitions: {}".format(", ".join(partitions)))
+            #
+            # print("Mounted removable partitions:")
+
             for p in psutil.disk_partitions():
                 if p.device in partitions:
-                    print("  {}: {}".format(p.device, p.mountpoint))
-                    # self.model.append_item(p.mountpoint)
+                    # print("Mounted partition: {}: {}".format(p.device, p.mountpoint))
                     self.addItem(p.mountpoint, p.device)
 
         if not self.count():
             self.addItem("No Device Found", "NONONONONO")
 
-        self.setCurrentIndex(0)
+        self.setCurrentIndex(1)
 
     @Slot()
     def ejectDevice(self):
@@ -106,7 +88,6 @@ class RemovableDeviceComboBox(QComboBox):
 
 
 class FileSystemTable(QTableView, TableType):
-
     if IN_DESIGNER:
         from PyQt5.QtCore import Q_ENUMS
         Q_ENUMS(TableType)
@@ -453,7 +434,8 @@ class FileSystemTable(QTableView, TableType):
             return False
 
     def rename_dialog(self, data_type):
-        text, ok_pressed = QInputDialog.getText(self.parent, "Rename", "New {} name:".format(data_type), QLineEdit.Normal, "")
+        text, ok_pressed = QInputDialog.getText(self.parent, "Rename", "New {} name:".format(data_type),
+                                                QLineEdit.Normal, "")
 
         if ok_pressed and text != '':
             return text
