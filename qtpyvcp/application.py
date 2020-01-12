@@ -191,6 +191,20 @@ class VCPApplication(QApplication):
         if res != 0:
             LOG.error("Failed to load font: %s", font_path)
 
+    def getWidget(self, name):
+        """Searches for a widget by name in the application windows.
+
+        Args:
+            name (str) : ObjectName of the widget.
+
+        Returns: QWidget
+        """
+        for win_name, obj in qtpyvcp.WINDOWS.items():
+            if hasattr(obj, name):
+                return getattr(obj, name)
+
+        raise AttributeError("Could not find widget with name: %s" % name)
+
     @Slot()
     def logPerformance(self):
         """Logs total CPU usage (in percent), as well as per-thread usage.

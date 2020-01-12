@@ -2,12 +2,28 @@
 Notifications Plugin
 --------------------
 
-Plugin to handle error status notifications.
+Plugin to handle error and status notifications.
+
+Supports evaluating arbitrary python expressions placed in gcode DEBUG statements.
+
+
+    ::
+
+        example.ngc
+        #1 = 12.345
+
+        ; this will set my_label's text to the value of variable #1
+        (DEBUG, EVAL[vcp.getWidget{"my_label"}.setText{'%4.2f' % #1}])
+
+        ; this will change the text color of my_label to red
+        (DEBUG, EVAL[vcp.getWidget{"my_label"}.setStyleSheet{"color: red"}])
 """
 import os
 import json
 import time
 import linuxcnc
+
+from qtpy.QtWidgets import QApplication
 
 from qtpyvcp.utilities.misc import normalizePath
 
@@ -88,6 +104,7 @@ class Notifications(DataPlugin):
             return
 
         kind, msg_text = error
+        msg_text = msg_text.strip()
 
         message_words = msg_text.split(' ')
 
@@ -119,9 +136,23 @@ class Notifications(DataPlugin):
             LOG.debug(msg)
 
         elif kind in [linuxcnc.NML_DISPLAY, linuxcnc.OPERATOR_DISPLAY]:
-            self.info_message.setValue(msg)
-            self.captureMessage('info', msg)
-            LOG.info(msg)
+
+            if msg_text.lower().startswith('eval['):
+                exp = msg_text[5:].strip(']')
+                exp = exp.replace('{', '(').replace('}', ')')
+
+                LOG.debug("Evaluating gcode DEBUG expression: '%s'", exp)
+
+                try:
+                    app = QApplication.instance()
+                    eval(exp, {"vcp": app})
+                except Exception:
+                    LOG.exception("Error evaluating DEBUG expression: '%s'", exp)
+
+            else:
+                self.info_message.setValue(msg)
+                self.captureMessage('info', msg)
+                LOG.info(msg)
 
         else:
             self.info_message.setValue(msg)

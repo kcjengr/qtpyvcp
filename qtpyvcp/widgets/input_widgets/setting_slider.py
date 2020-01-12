@@ -28,7 +28,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
     RULE_PROPERTIES = VCPAbstractSettingsWidget.RULE_PROPERTIES.copy()
     RULE_PROPERTIES.update({
         'Text': ['setText', str],
-        'Value': ['storeRuleSetting', float],
+        'Value': ['setValue', float],
     })
 
     def __init__(self, parent):
@@ -39,7 +39,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
         self.returnPressed.connect(self.onReturnPressed)
 
-    def storeRuleSetting(self, text):
+    def setValue(self, text):
         if self._setting is not None:
             value = self._setting.normalizeValue(text)
             self.setDisplayValue(value)
