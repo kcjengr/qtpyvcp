@@ -55,14 +55,13 @@ class StatusLabel(QLabel, VCPWidget):
     def expression(self, expression):
         self._expression = expression
         try:
-            self._exp = eval('lambda val: ' + self._expression, {})
+            self._compiled_exp = eval('lambda val: ' + self._expression, {})
         except:
-            LOG.exception("Python expression is not valid: {}"
-                                            .format(self._expression))
+            LOG.exception("Python expression is not valid: %s", self._expression)
 
     @Slot(str)
     @Slot(int)
     @Slot(bool)
     @Slot(float)
     def setValue(self, value):
-        self.setText(self._format.format(self._exp(value)))
+        self.setText(self._format.format(self._compiled_exp(value)))
