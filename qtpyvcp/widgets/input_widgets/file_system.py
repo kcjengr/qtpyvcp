@@ -4,7 +4,7 @@ import subprocess
 import psutil
 
 from pyudev.pyqt5 import MonitorObserver
-from pyudev import Context, Monitor
+from pyudev import Context, Monitor, Devices
 
 from qtpy.QtCore import Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevice
 from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, \
@@ -14,7 +14,6 @@ from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.lib.decorators import deprecated
-
 
 
 LOG = getLogger(__name__)
@@ -29,26 +28,54 @@ class TableType(object):
 
 class RemovableDeviceComboBox(QComboBox):
     """ComboBox for choosing from a list of removable devices."""
+    usbPresent = Signal(bool)
 
     def __init__(self, parent=None):
         super(RemovableDeviceComboBox, self).__init__(parent)
 
-        # self.refreshDeviceList()
+        self.info = Info()
+        self._program_prefix = self.info.getProgramPrefix()
+        self.usb_present = False
+
+        self.usbPresent.emit(self.usb_present)
 
         self.context = Context()
 
         self.monitor = Monitor.from_netlink(self.context)
+        self.monitor.filter_by(subsystem='block')
+
         self.observer = MonitorObserver(self.monitor)
-        self.observer.deviceEvent.connect(self.test)
+        self.observer.deviceEvent.connect(self.usb_handler)
+
         self.monitor.start()
 
-    def test(self, *args, **kwargs):
-        print(args, kwargs)
+        self.refreshDeviceList()
+
+    def usb_handler(self, device):
+
+        if device.action == "add":
+            if device.device_type == 'partition':
+
+                partitions = [device.device_node for device in
+                              self.context.list_devices(subsystem='block', DEVTYPE='partition', parent=device)]
+
+                for p in partitions:
+                    os.system("udisksctl mount --block-device {}".format(p))
+
+                    # self.addItem(device.get('ID_FS_LABEL'), device.get(''))
+                    # self.setCurrentIndex(0)
+
+        self.refreshDeviceList()
+
 
     @Slot()
     def refreshDeviceList(self):
 
+        self.usb_present = False
+
         self.clear()
+
+        self.addItem(self._program_prefix, self._program_prefix)
 
         removable = [device for device in self.context.list_devices(subsystem='block', DEVTYPE='disk') if
                      device.attributes.asstring('removable') == '1']
@@ -64,27 +91,34 @@ class RemovableDeviceComboBox(QComboBox):
 
             for p in psutil.disk_partitions():
                 if p.device in partitions:
-                    # print("Mounted partition: {}: {}".format(p.device, p.mountpoint))
+                    print("Mounted partition: {}: {}".format(p.device, p.mountpoint))
                     self.addItem(p.mountpoint, p.device)
+                    self.usb_present = True
 
-        if not self.count():
-            self.addItem("No Device Found", "NONONONONO")
+        self.setCurrentIndex(0)
 
-        self.setCurrentIndex(1)
+        self.usbPresent.emit(self.usb_present)
 
     @Slot()
     def ejectDevice(self):
-        mount_point = self.currentData()
 
-        if mount_point == "NONONONONO":
+        if not self.usb_present:
+            print("USB NOT PRESENT")
             return
 
-        os.system("udisksctl unmount --block-device {}".format(mount_point))
-        os.system("udisksctl power-off --block-device {}".format(mount_point))
+        index = self.currentIndex()
+
+        if index == 0:
+            print("CANT UMOUNT HOME")
+            return
+
+        device = self.itemData(index)
+
+        os.system("udisksctl unmount --block-device {}".format(device))
+        os.system("udisksctl power-off --block-device {}".format(device))
 
         self.refreshDeviceList()
 
-        self.setCurrentIndex(0)
 
 
 class FileSystemTable(QTableView, TableType):
