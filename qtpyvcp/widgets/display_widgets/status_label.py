@@ -64,5 +64,5 @@ class StatusLabel(QLabel, VCPWidget):
     @Slot(int)
     @Slot(bool)
     @Slot(float)
-    def setFormatedValue(self, value):
+    def setValue(self, value):
         self.setText(self._format.format(self._exp(value)))
