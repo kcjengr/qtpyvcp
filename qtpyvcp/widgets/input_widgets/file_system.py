@@ -93,7 +93,7 @@ class RemovableDeviceComboBox(QComboBox):
 
             for p in psutil.disk_partitions():
                 if p.device in partitions:
-                    print("Mounted partition: {}: {}".format(p.device, p.mountpoint))
+                    # print("Mounted partition: {}: {}".format(p.device, p.mountpoint))
                     self.addItem(p.mountpoint, p.device)
                     self.usb_present = True
                     part_index += 1
@@ -106,16 +106,18 @@ class RemovableDeviceComboBox(QComboBox):
     def ejectDevice(self):
 
         if not self.usb_present:
-            print("USB NOT PRESENT")
+            # print("USB NOT PRESENT")
             return
 
         index = self.currentIndex()
 
         if index == 0:
-            print("CANT UMOUNT HOME")
+            # print("CANT UMOUNT HOME")
             return
 
         device = self.itemData(index)
+
+        self.setCurrentIndex(0)
 
         os.system("udisksctl unmount --block-device {}".format(device))
         os.system("udisksctl power-off --block-device {}".format(device))
