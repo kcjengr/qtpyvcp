@@ -80,6 +80,8 @@ class RemovableDeviceComboBox(QComboBox):
         removable = [device for device in self.context.list_devices(subsystem='block', DEVTYPE='disk') if
                      device.attributes.asstring('removable') == '1']
 
+        part_index = 0
+
         for device in removable:
 
             partitions = [device.device_node for device in
@@ -94,8 +96,9 @@ class RemovableDeviceComboBox(QComboBox):
                     print("Mounted partition: {}: {}".format(p.device, p.mountpoint))
                     self.addItem(p.mountpoint, p.device)
                     self.usb_present = True
+                    part_index += 1
 
-        self.setCurrentIndex(0)
+        self.setCurrentIndex(part_index)
 
         self.usbPresent.emit(self.usb_present)
 
@@ -118,7 +121,6 @@ class RemovableDeviceComboBox(QComboBox):
         os.system("udisksctl power-off --block-device {}".format(device))
 
         self.refreshDeviceList()
-
 
 
 class FileSystemTable(QTableView, TableType):
