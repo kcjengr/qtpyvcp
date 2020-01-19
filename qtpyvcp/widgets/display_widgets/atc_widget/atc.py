@@ -33,7 +33,7 @@ class DynATC(QQuickWidget):
     rotateRevSig = Signal(int, arguments=['steps'])
 
     showToolSig = Signal(int, int, arguments=['pocket', 'tool_num'])
-    hideToolSig = Signal(int, arguments=['tool_num'])
+    hideToolSig = Signal(int, arguments=['pocket'])
 
     homeMsgSig = Signal(str, arguments=["message"])
     homingMsgSig = Signal(str, arguments=["message"])
@@ -49,39 +49,40 @@ class DynATC(QQuickWidget):
         self.home = 0
         self.homing = 0
         self.pocket_slots = 12
-        self.component = QComponent("atc-widget")
 
-        # define pocket pins to store tools
-
-        for i in range(self.pocket_slots):
-            pin_name = "pocket-{}".format(i+1)
-            self.component.newPin(pin_name, "float", "in")
-            self.component[pin_name].valueChanged.connect(self.pocket_changed)
-
-        self.component.newPin('home', "bit", "in")
-        self.component.newPin('homing', "bit", "in")
-
-        self.component.newPin("goto", "float", "in")
-        self.component.newPin('goto-enable', "bit", "in")
-
-        self.component.newPin("steps", "float", "in")
-        self.component.newPin('steps-fwd', "bit", "in")
-        self.component.newPin('steps-rev', "bit", "in")
-
-        self.component.newPin('jog-fwd', "bit", "in")
-        self.component.newPin('jog-rev', "bit", "in")
-
-        self.component['home'].valueIncreased.connect(self.home_message)
-        self.component['homing'].valueIncreased.connect(self.homing_message)
-
-        self.component['goto-enable'].valueIncreased.connect(self.goto)
-        self.component['steps-fwd'].valueIncreased.connect(self.steps_fwd)
-        self.component['steps-rev'].valueIncreased.connect(self.steps_rev)
-
-        self.component['jog-fwd'].valueIncreased.connect(self.jog_fwd)
-        self.component['jog-rev'].valueIncreased.connect(self.jog_rev)
-
-        self.component.ready()
+        # self.component = QComponent("atc-widget")
+        #
+        # # define pocket pins to store tools
+        #
+        # for i in range(self.pocket_slots):
+        #     pin_name = "pocket-{}".format(i+1)
+        #     self.component.newPin(pin_name, "float", "in")
+        #     self.component[pin_name].valueChanged.connect(self.pocket_changed)
+        #
+        # self.component.newPin('home', "bit", "in")
+        # self.component.newPin('homing', "bit", "in")
+        #
+        # self.component.newPin("goto", "float", "in")
+        # self.component.newPin('goto-enable', "bit", "in")
+        #
+        # self.component.newPin("steps", "float", "in")
+        # self.component.newPin('steps-fwd', "bit", "in")
+        # self.component.newPin('steps-rev', "bit", "in")
+        #
+        # self.component.newPin('jog-fwd', "bit", "in")
+        # self.component.newPin('jog-rev', "bit", "in")
+        #
+        # self.component['home'].valueIncreased.connect(self.home_message)
+        # self.component['homing'].valueIncreased.connect(self.homing_message)
+        #
+        # self.component['goto-enable'].valueIncreased.connect(self.goto)
+        # self.component['steps-fwd'].valueIncreased.connect(self.steps_fwd)
+        # self.component['steps-rev'].valueIncreased.connect(self.steps_rev)
+        #
+        # self.component['jog-fwd'].valueIncreased.connect(self.jog_fwd)
+        # self.component['jog-rev'].valueIncreased.connect(self.jog_rev)
+        #
+        # self.component.ready()
 
         self.engine().rootContext().setContextProperty("atc_spiner", self)
         qml_path = os.path.join(WIDGET_PATH, "atc.qml")
@@ -94,48 +95,35 @@ class DynATC(QQuickWidget):
         self.pockets = dict()
         self.tools = None
 
-        self.load_tools()
-        self.draw_tools()
+        for pocket in range(1, 13):
+            self.hideToolSig.emit(pocket)
 
         STATUS.tool_table.notify(self.load_tools)
         STATUS.pocket_prepped.notify(self.on_pocket_prepped)
         STATUS.tool_in_spindle.notify(self.on_tool_in_spindle)
 
     def hideEvent(self, *args, **kwargs):
-        pass  # hack to prevent animation glitch when we are on another tab
+        pass  # hack to prevent animation glitch when we are on another tab FIXME
 
     def load_tools(self):
-        self.tool_table = TOOLTABLE.getToolTable()
-        self.status_tool_table = STATUS.tool_table
-
-        self.pockets = dict()
-        self.tools = dict()
-
-        for i in range(self.pocket_slots):
-            pin_name = "pocket-{}".format(i+1)
-
-            self.pockets[i + 1] = self.component[pin_name].value
-
-    def draw_tools(self):
         for i in range(1, self.pocket_slots+1):
             self.hideToolSig.emit(i)
 
         for pocket, tool in self.pockets.items():
-            if 0 < pocket < 13:
-                if tool != 0:
-                    self.showToolSig.emit(pocket, tool)
+            self.store_tool(pocket, tool)
 
-    def pocket_changed(self):
-        self.load_tools()
-        self.draw_tools()
+    def store_tool(self, pocket, tool):
+        self.pockets[pocket] = tool
+        if tool != 0:
+            self.showToolSig.emit(pocket, tool)
+        else:
+            self.hideToolSig.emit(pocket)
 
     def on_tool_in_spindle(self, tool):
         self.load_tools()
-        self.draw_tools()
 
     def on_pocket_prepped(self, pocket_num):
         self.load_tools()
-        self.draw_tools()
 
     def homing_message(self, *args, **kwargs):
         self.homing = args[0]
@@ -153,10 +141,7 @@ class DynATC(QQuickWidget):
         else:
             self.homeMsgSig.emit("UN REFERENCED")
 
-    def goto(self):
-        # self.component["goto-enable"].value = 0
-
-        pocket = self.component["goto"].value
+    def goto(self, pocket):
 
         if self.pocket > pocket:
             steps = self.pocket - pocket
@@ -165,14 +150,10 @@ class DynATC(QQuickWidget):
             steps = pocket - self.pocket
             self.rotate_fwd(steps)
 
-    def steps_fwd(self):
-        # self.component["steps-fwd"].value = 0
-        steps = self.component["steps"].value
+    def steps_fwd(self, steps):
         self.rotate_fwd(steps)
 
-    def steps_rev(self):
-        # self.component["steps-rev"].value = 0
-        steps = self.component["steps"].value
+    def steps_rev(self, steps):
         self.rotate_rev(steps)
 
     def rotate_fwd(self, steps):
@@ -181,8 +162,8 @@ class DynATC(QQuickWidget):
     def rotate_rev(self, steps):
         self.rotateRevSig.emit(steps)
 
-    def jog_fwd(self, *args, **kwargs):
+    def jog_fwd(self):
         self.rotateFwdSig.emit(1)
 
-    def jog_rev(self, *args, **kwargs):
+    def jog_rev(self):
         self.rotateRevSig.emit(1)

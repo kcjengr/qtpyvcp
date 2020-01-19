@@ -245,7 +245,7 @@ Rectangle {
         target: atc_spiner;
 
         onHideToolSig: {
-            tool_slot.itemAt(tool_num - 1).state = "hidden";
+            tool_slot.itemAt(pocket - 1).state = "hidden";
         }
 
         onShowToolSig: {
