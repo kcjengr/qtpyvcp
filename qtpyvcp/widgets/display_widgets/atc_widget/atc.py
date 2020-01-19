@@ -125,21 +125,8 @@ class DynATC(QQuickWidget):
     def on_pocket_prepped(self, pocket_num):
         self.load_tools()
 
-    def homing_message(self, *args, **kwargs):
-        self.homing = args[0]
-
-        if self.homing:
-            self.homingMsgSig.emit("REFERENCING")
-        else:
-            self.homingMsgSig.emit("")
-
-    def home_message(self, *args, **kwargs):
-        self.home = args[0]
-
-        if self.homing:
-            self.homeMsgSig.emit("")
-        else:
-            self.homeMsgSig.emit("UN REFERENCED")
+    def atc_message(self, msg=""):
+        self.homeMsgSig.emit(msg)
 
     def goto(self, pocket):
 
