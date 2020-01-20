@@ -106,8 +106,11 @@ class DynATC(QQuickWidget):
         pass  # hack to prevent animation glitch when we are on another tab FIXME
 
     def load_tools(self):
+        print("load_tools")
         for i in range(1, self.pocket_slots+1):
             self.hideToolSig.emit(i)
+
+
 
         for pocket, tool in self.pockets.items():
             self.store_tool(pocket, tool)
@@ -120,28 +123,15 @@ class DynATC(QQuickWidget):
             self.hideToolSig.emit(pocket)
 
     def on_tool_in_spindle(self, tool):
+        print("tool_in_spindle", tool)
         self.load_tools()
 
     def on_pocket_prepped(self, pocket_num):
+        print("on_pocket_prepped", pocket_num)
         self.load_tools()
 
     def atc_message(self, msg=""):
         self.homeMsgSig.emit(msg)
-
-    def goto(self, pocket):
-
-        if self.pocket > pocket:
-            steps = self.pocket - pocket
-            self.rotate_rev(steps)
-        elif self.pocket < pocket:
-            steps = pocket - self.pocket
-            self.rotate_fwd(steps)
-
-    def steps_fwd(self, steps):
-        self.rotate_fwd(steps)
-
-    def steps_rev(self, steps):
-        self.rotate_rev(steps)
 
     def rotate_fwd(self, steps):
         self.rotateFwdSig.emit(steps)
