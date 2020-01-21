@@ -134,8 +134,8 @@ class DynATC(QQuickWidget):
     def atc_message(self, msg=""):
         self.homeMsgSig.emit(msg)
 
-    def rotate_fwd(self, steps):
+    def rotate_cw(self, steps):
         self.rotateCWSig.emit(steps)
 
-    def rotate_rev(self, steps):
+    def rotate_ccw(self, steps):
         self.rotateCCWSig.emit(steps)
