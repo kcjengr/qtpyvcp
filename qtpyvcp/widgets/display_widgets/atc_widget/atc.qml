@@ -253,11 +253,11 @@ Rectangle {
             tool_slot.itemAt(pocket - 1).state = "visible";
         }
 
-        onRotateFwdSig: {
+        onRotateCWSig: {
             rotate(steps, 1);
         }
 
-        onRotateRevSig: {
+        onRotateCCWSig: {
             rotate(steps, -1);
         }
 

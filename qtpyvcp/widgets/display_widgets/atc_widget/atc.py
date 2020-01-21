@@ -29,8 +29,8 @@ class DynATC(QQuickWidget):
 
     # toolInSpindleSig = Signal(int, arguments=['tool_num'])
 
-    rotateFwdSig = Signal(int, arguments=['steps'])
-    rotateRevSig = Signal(int, arguments=['steps'])
+    rotateCWSig = Signal(int, arguments=['steps'])
+    rotateCCWSig = Signal(int, arguments=['steps'])
 
     showToolSig = Signal(int, int, arguments=['pocket', 'tool_num'])
     hideToolSig = Signal(int, arguments=['pocket'])
@@ -110,10 +110,11 @@ class DynATC(QQuickWidget):
         for i in range(1, self.pocket_slots+1):
             self.hideToolSig.emit(i)
 
-
-
         for pocket, tool in self.pockets.items():
-            self.store_tool(pocket, tool)
+            if tool != 0:
+                self.showToolSig.emit(pocket, tool)
+            else:
+                self.hideToolSig.emit(pocket)
 
     def store_tool(self, pocket, tool):
         self.pockets[pocket] = tool
@@ -134,13 +135,7 @@ class DynATC(QQuickWidget):
         self.homeMsgSig.emit(msg)
 
     def rotate_fwd(self, steps):
-        self.rotateFwdSig.emit(steps)
+        self.rotateCWSig.emit(steps)
 
     def rotate_rev(self, steps):
-        self.rotateRevSig.emit(steps)
-
-    def jog_fwd(self):
-        self.rotateFwdSig.emit(1)
-
-    def jog_rev(self):
-        self.rotateRevSig.emit(1)
+        self.rotateCCWSig.emit(steps)
