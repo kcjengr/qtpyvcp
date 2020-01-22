@@ -32,8 +32,8 @@ class DynATC(QQuickWidget):
     rotateCWSig = Signal(int, arguments=['steps'])
     rotateCCWSig = Signal(int, arguments=['steps'])
 
-    showToolSig = Signal(int, int, arguments=['pocket', 'tool_num'])
-    hideToolSig = Signal(int, arguments=['pocket'])
+    showToolSig = Signal(float, float, arguments=['pocket', 'tool_num'])
+    hideToolSig = Signal(float, arguments=['pocket'])
 
     homeMsgSig = Signal(str, arguments=["message"])
     homingMsgSig = Signal(str, arguments=["message"])
@@ -97,10 +97,10 @@ class DynATC(QQuickWidget):
 
         for pocket in range(1, 13):
             self.hideToolSig.emit(pocket)
-
-        STATUS.tool_table.notify(self.load_tools)
-        STATUS.pocket_prepped.notify(self.on_pocket_prepped)
-        STATUS.tool_in_spindle.notify(self.on_tool_in_spindle)
+        #
+        # STATUS.tool_table.notify(self.load_tools)
+        # STATUS.pocket_prepped.notify(self.on_pocket_prepped)
+        # STATUS.tool_in_spindle.notify(self.on_tool_in_spindle)
 
     def hideEvent(self, *args, **kwargs):
         pass  # hack to prevent animation glitch when we are on another tab FIXME
@@ -116,11 +116,16 @@ class DynATC(QQuickWidget):
             else:
                 self.hideToolSig.emit(pocket)
 
-    def store_tool(self, pocket, tool):
-        self.pockets[pocket] = tool
-        if tool != 0:
-            self.showToolSig.emit(pocket, tool)
+    def store_tool(self, pocket, tool_num):
+        self.pockets[pocket] = tool_num
+        #
+        # print(type(pocket), pocket)
+        # print(type(tool_num), tool_num)
+        if tool_num != 0:
+            print("show tool {} at pocket {}".format(tool_num, pocket))
+            self.showToolSig.emit(pocket, tool_num)
         else:
+            print("Hide tool at pocket {}".format(pocket))
             self.hideToolSig.emit(pocket)
 
     def on_tool_in_spindle(self, tool):
