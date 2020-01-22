@@ -204,7 +204,7 @@ Rectangle {
 
         //        console.log("ROTATE")
 
-        console.log("ATC STEPS " + steps)
+        // console.log("ATC STEPS " + steps)
 
         if (direction === 1)
             anim_to = anim_from + (360/12 * steps);
@@ -245,7 +245,7 @@ Rectangle {
         target: atc_spiner;
 
         onHideToolSig: {
-            tool_slot.itemAt(tool_num - 1).state = "hidden";
+            tool_slot.itemAt(pocket - 1).state = "hidden";
         }
 
         onShowToolSig: {
@@ -253,19 +253,15 @@ Rectangle {
             tool_slot.itemAt(pocket - 1).state = "visible";
         }
 
-        onRotateFwdSig: {
-            rotate(steps, 1);
+        onRotateSig: {
+            rotate(steps, direction);
         }
 
-        onRotateRevSig: {
+        onRotateCCWSig: {
             rotate(steps, -1);
         }
 
         onHomeMsgSig: {
-            msg_text.text = message;
-        }
-
-        onHomingMsgSig: {
             msg_text.text = message;
         }
     }
