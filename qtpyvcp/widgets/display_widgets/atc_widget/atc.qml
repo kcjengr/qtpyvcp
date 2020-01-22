@@ -204,7 +204,7 @@ Rectangle {
 
         //        console.log("ROTATE")
 
-        console.log("ATC STEPS " + steps)
+        // console.log("ATC STEPS " + steps)
 
         if (direction === 1)
             anim_to = anim_from + (360/12 * steps);
