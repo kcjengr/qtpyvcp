@@ -257,10 +257,6 @@ Rectangle {
             rotate(steps, direction);
         }
 
-        onRotateCCWSig: {
-            rotate(steps, -1);
-        }
-
         onHomeMsgSig: {
             msg_text.text = message;
         }
