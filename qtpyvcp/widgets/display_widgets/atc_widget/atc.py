@@ -25,18 +25,13 @@ WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 
 
 class DynATC(QQuickWidget):
-    moveToPocketSig = Signal(int, int, arguments=['previous_pocket', 'pocket_num'])
 
-    # toolInSpindleSig = Signal(int, arguments=['tool_num'])
-
-    rotateCWSig = Signal(int, arguments=['steps'])
-    rotateCCWSig = Signal(int, arguments=['steps'])
+    rotateSig = Signal(int, int, arguments=['steps', 'direction'])
 
     showToolSig = Signal(float, float, arguments=['pocket', 'tool_num'])
     hideToolSig = Signal(float, arguments=['pocket'])
 
     homeMsgSig = Signal(str, arguments=["message"])
-    homingMsgSig = Signal(str, arguments=["message"])
 
     def __init__(self, parent=None):
         super(DynATC, self).__init__(parent)
@@ -49,40 +44,6 @@ class DynATC(QQuickWidget):
         self.home = 0
         self.homing = 0
         self.pocket_slots = 12
-
-        # self.component = QComponent("atc-widget")
-        #
-        # # define pocket pins to store tools
-        #
-        # for i in range(self.pocket_slots):
-        #     pin_name = "pocket-{}".format(i+1)
-        #     self.component.newPin(pin_name, "float", "in")
-        #     self.component[pin_name].valueChanged.connect(self.pocket_changed)
-        #
-        # self.component.newPin('home', "bit", "in")
-        # self.component.newPin('homing', "bit", "in")
-        #
-        # self.component.newPin("goto", "float", "in")
-        # self.component.newPin('goto-enable', "bit", "in")
-        #
-        # self.component.newPin("steps", "float", "in")
-        # self.component.newPin('steps-fwd', "bit", "in")
-        # self.component.newPin('steps-rev', "bit", "in")
-        #
-        # self.component.newPin('jog-fwd', "bit", "in")
-        # self.component.newPin('jog-rev', "bit", "in")
-        #
-        # self.component['home'].valueIncreased.connect(self.home_message)
-        # self.component['homing'].valueIncreased.connect(self.homing_message)
-        #
-        # self.component['goto-enable'].valueIncreased.connect(self.goto)
-        # self.component['steps-fwd'].valueIncreased.connect(self.steps_fwd)
-        # self.component['steps-rev'].valueIncreased.connect(self.steps_rev)
-        #
-        # self.component['jog-fwd'].valueIncreased.connect(self.jog_fwd)
-        # self.component['jog-rev'].valueIncreased.connect(self.jog_rev)
-        #
-        # self.component.ready()
 
         self.engine().rootContext().setContextProperty("atc_spiner", self)
         qml_path = os.path.join(WIDGET_PATH, "atc.qml")
@@ -97,16 +58,12 @@ class DynATC(QQuickWidget):
 
         for pocket in range(1, 13):
             self.hideToolSig.emit(pocket)
-        #
-        # STATUS.tool_table.notify(self.load_tools)
-        # STATUS.pocket_prepped.notify(self.on_pocket_prepped)
-        # STATUS.tool_in_spindle.notify(self.on_tool_in_spindle)
 
     def hideEvent(self, *args, **kwargs):
         pass  # hack to prevent animation glitch when we are on another tab FIXME
 
     def load_tools(self):
-        print("load_tools")
+        # print("load_tools")
         for i in range(1, self.pocket_slots+1):
             self.hideToolSig.emit(i)
 
@@ -122,25 +79,17 @@ class DynATC(QQuickWidget):
         # print(type(pocket), pocket)
         # print(type(tool_num), tool_num)
         if tool_num != 0:
-            print("show tool {} at pocket {}".format(tool_num, pocket))
+            # print("show tool {} at pocket {}".format(tool_num, pocket))
             self.showToolSig.emit(pocket, tool_num)
         else:
-            print("Hide tool at pocket {}".format(pocket))
+            # print("Hide tool at pocket {}".format(pocket))
             self.hideToolSig.emit(pocket)
-
-    def on_tool_in_spindle(self, tool):
-        print("tool_in_spindle", tool)
-        self.load_tools()
-
-    def on_pocket_prepped(self, pocket_num):
-        print("on_pocket_prepped", pocket_num)
-        self.load_tools()
 
     def atc_message(self, msg=""):
         self.homeMsgSig.emit(msg)
 
-    def rotate_cw(self, steps):
-        self.rotateCWSig.emit(steps)
-
-    def rotate_ccw(self, steps):
-        self.rotateCCWSig.emit(steps)
+    def rotate(self, steps, direction):
+        if direction == "cw":
+            self.rotateSig.emit(steps, 1)
+        elif direction == "ccw":
+            self.rotateSig.emit(steps, -1)

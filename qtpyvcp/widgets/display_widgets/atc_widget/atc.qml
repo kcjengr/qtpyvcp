@@ -253,8 +253,8 @@ Rectangle {
             tool_slot.itemAt(pocket - 1).state = "visible";
         }
 
-        onRotateCWSig: {
-            rotate(steps, 1);
+        onRotateSig: {
+            rotate(steps, direction);
         }
 
         onRotateCCWSig: {
@@ -262,10 +262,6 @@ Rectangle {
         }
 
         onHomeMsgSig: {
-            msg_text.text = message;
-        }
-
-        onHomingMsgSig: {
             msg_text.text = message;
         }
     }
