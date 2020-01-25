@@ -55,7 +55,7 @@ class VCPApplication(QApplication):
 
         stylesheet = opts.stylesheet or stylesheet
         if stylesheet is not None:
-            self.loadStylesheet(stylesheet)
+            self.loadStylesheet(stylesheet, opts.develop)
 
         if custom_fonts:
             for font in custom_fonts:
@@ -172,16 +172,27 @@ class VCPApplication(QApplication):
         # initialize and return the VCPMainWindow subclass
         return cls(opts=opts)
 
-    def loadStylesheet(self, stylesheet):
+    def loadStylesheet(self, stylesheet, watch=False):
         """Loads a QSS stylesheet file containing styles to be applied
         to specific Qt and/or QtPyVCP widget classes.
 
         Args:
             stylesheet (str) : Path to the .qss stylesheet to load.
+            watch (bool) : Whether to watch and re-load on .qss file changes.
         """
+
+        def load(path):
+            with open(path, 'r') as fh:
+                self.setStyleSheet(fh.read())
+
         LOG.info("Loading QSS stylesheet file: yellow<{}>".format(stylesheet))
-        with open(stylesheet, 'r') as fh:
-            self.setStyleSheet(fh.read())
+        load(stylesheet)
+
+        if watch:
+            from qtpy.QtCore import QFileSystemWatcher
+            self.qss_file_watcher = QFileSystemWatcher()
+            self.qss_file_watcher.addPath(stylesheet)
+            self.qss_file_watcher.fileChanged.connect(load)
 
     def loadFont(self, font_path):
         """Loads a font file into the font database. The path can specify the
