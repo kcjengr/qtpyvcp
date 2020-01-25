@@ -35,6 +35,7 @@ Application Options:
   --qt-api=(pyqt5 | pyqt | pyside2 | pyside)
                        Specify the Qt Python binding to use.
   --perfmon            Monitor and log system performance.
+  --develop            Development mode. Enables live reloading of QSS styles.
   --command_line_args <args>...
                        Additional args passed to the QtApplication.
 
