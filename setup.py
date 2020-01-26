@@ -35,7 +35,9 @@ else:
 
     # list of (destination, source_dir) tuples
     DATA_DIRS = [
-        ('~/linuxcnc', 'linuxcnc'),
+        ('~/linuxcnc/configs/sim.qtpyvcp', 'linuxcnc/configs/sim.qtpyvcp'),
+        ('~/linuxcnc/nc_files/qtpyvcp', 'linuxcnc/nc_files/qtpyvcp'),
+
         # ('~/linuxcnc/vcps', 'examples'),
     ]
 
