@@ -17,7 +17,7 @@ if os.getenv('DEB_BUILD') == 'true' or os.getenv('USER') == 'root':
 
     # list of (destination, source_dir) tuples
     DATA_DIRS = [
-        ('/usr/share/doc/linuxcnc/examples/sample-configs/sim/qtpyvcp', 'sim'),
+        ('/usr/share/doc/linuxcnc/examples/sample-configs/sim', 'linuxcnc/configs'),
     ]
 
     if os.getenv('USER') == 'root':
@@ -31,12 +31,11 @@ else:
     # list of (destination, source_file) tuples
     DATA_FILES = [
         ('~/', ['scripts/.xsessionrc',]),
-        ('~/linuxcnc/nc_files/.qtpyvcp', ['sim/example_gcode/qtpyvcp.ngc'])
     ]
 
     # list of (destination, source_dir) tuples
     DATA_DIRS = [
-        ('~/linuxcnc/configs/sim.qtpyvcp', 'sim'),
+        ('~/linuxcnc', 'linuxcnc'),
         # ('~/linuxcnc/vcps', 'examples'),
     ]
 
