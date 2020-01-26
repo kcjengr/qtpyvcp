@@ -47,6 +47,7 @@ class OffsetsDialog(QDialog):
         system_msg = QLabel("Coordinate System:")
 
         self.coords_input = QDoubleSpinBox()
+        self.coords_input.setDecimals(4)
         self.coords_input.setRange(-999999, 999999)
 
         self.system_combo = QComboBox()
