@@ -7,21 +7,25 @@ At this point you should have the dependencies satisfied and QtPyVCP installed.
 Launching a sim config
 ^^^^^^^^^^^^^^^^^^^^^^
 Several sim configurations are included with QtPyVCP, they should have been
-copied to your `~/linuxcnc/configs` directory when you installed QtPyVCP.
+copied to your `~/linuxcnc` directory when you installed QtPyVCP. If not
+run `$ cp -r linuxcnc $HOME` from the qtpyvcp directory to install them.
 
 
 **Included sim configs**::
 
-  sim
+  sim.qtpyvcp
+  ├── hal-widgets.ini
+  ├── xyz.ini
+  ├── xyz3s.ini
+  ├── xyz-metric.ini
+  ├── xyzab.ini
   ├── xyzb.ini
   ├── xyzcw.ini
-  ├── xyz.ini
-  ├── xyz-metric.ini
   └── xyzy-gantry.ini
 
 To launch the basic XYZ sim machine run::
 
-  linuxcnc sim/xyz.ini
+  linuxcnc ~/linuxcnc/configs/sim.qtpyvcp/xyz.ini
 
 This should start LinuxCNC and show the VCP chooser with a list of
 available VCPs.
@@ -35,7 +39,7 @@ available VCPs.
 
 To skip the VCP chooser and launch a VCP directly you can specify the name of
 the desired VCP on the command line. For example to launch the Mini VCP:
-``linuxcnc sim/xyz.ini mini``
+``linuxcnc ~/linuxcnc/configs/sim.qtpyvcp/xyz.ini mini``
 
 
 INI Configuration
