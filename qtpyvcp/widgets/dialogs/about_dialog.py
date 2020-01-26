@@ -15,7 +15,6 @@
 #
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
-from pprint import pprint
 
 from qtpy import uic
 from qtpy.QtWidgets import QVBoxLayout, QDialog, QDialogButtonBox, QLabel
@@ -42,13 +41,13 @@ class AboutDialog(QDialog):
             self.button_box.accepted.connect(self.close)
 
             self.about_text = QLabel()
-
+            self.about_text.setOpenExternalLinks(True)
             self.about_text.setText(
                 """
                 <center>
                 QtPyVCP is a Qt and Python based framework for LinuxCNC.<br />
-                Copyright (c) 2019 Kurt Jacobson<br />
-                https://qtpyvcp.kcjengr.com/
+                Copyright (c) 2018 - 2020 Kurt Jacobson<br />
+                <a href="https://www.qtpyvcp.com">https://www.qtpyvcp.com</a>
                 </center>
                 """
             )
