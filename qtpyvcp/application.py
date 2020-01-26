@@ -189,6 +189,7 @@ class VCPApplication(QApplication):
         load(stylesheet)
 
         if watch:
+            LOG.info("In develop mode, changes to QSS file will automatically be applied")
             from qtpy.QtCore import QFileSystemWatcher
             self.qss_file_watcher = QFileSystemWatcher()
             self.qss_file_watcher.addPath(stylesheet)
