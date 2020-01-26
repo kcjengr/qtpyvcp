@@ -30,7 +30,7 @@ sim/*.old
 *.deb
 
 # persistent data files 
-sim/*messages.json
-sim/*settings.json
+*messages.json
+*settings.json
 
 *messages.json
