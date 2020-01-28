@@ -18,18 +18,14 @@ Supports evaluating arbitrary python expressions placed in gcode DEBUG statement
         ; this will change the text color of my_label to red
         (DEBUG, EVAL[vcp.getWidget{"my_label"}.setStyleSheet{"color: red"}])
 """
-import os
-import json
+
 import time
 import linuxcnc
 
 from qtpy.QtWidgets import QApplication
 
-from qtpyvcp.utilities.misc import normalizePath
-
-from qtpyvcp.plugins import DataPlugin, DataChannel
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.plugins import getPlugin
+from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 from qtpyvcp.lib.native_notification import NativeNotification
 from qtpyvcp.lib.dbus_notification import DBusNotification
 
@@ -45,10 +41,10 @@ class Notifications(DataPlugin):
         enabled (bool, optional):                      Enable or disable notification popups (Default = True)
         mode (str, optional):                          native or dbus (Default = 'native')
         max_messages (int, optional)                   Max number of notification popups to show.
-        persistent (bool, optional):                   Store notifications in a file (Default = True)
-        persistent_file (str, optional):               Path to the save file (Default = '.qtpyvcp_messages.json')
+        persistent (bool, optional):                   Save notifications on shutdown (Default = True)
     """
-    def __init__(self, enabled=True, mode="native", max_messages=5, persistent=True, persistent_file='.qtpyvcp_messages.json'):
+    def __init__(self, enabled=True, mode="native", max_messages=5,
+                 persistent=True, **kwargs):
         super(Notifications, self).__init__()
 
         self.enabled = enabled
@@ -60,9 +56,9 @@ class Notifications(DataPlugin):
         self.messages = []
         self.notification_dispatcher = None
 
-        self.persistant = persistent
-        self.persistent_file = normalizePath(path=persistent_file,
-                                             base=os.getenv('CONFIG_DIR', '~/'))
+        self.persistent = persistent
+
+        self.data_manager = getPlugin('persistent_data_manager')
 
     @DataChannel
     def debug_message(self, chan):
@@ -170,17 +166,11 @@ class Notifications(DataPlugin):
             else:
                 raise Exception("error notification mode {}".format(self.mode))
 
-        if self.persistant and os.path.isfile(self.persistent_file):
-            with open(self.persistent_file, 'r') as fh:
-                try:
-                    self.messages = json.loads(fh.read())
-                except:
-                    LOG.exception("Error loading messages from JSON file")
+        if self.persistent:
+            self.messages = self.data_manager.getData('messages', [])
 
         self.startTimer(200)
 
     def terminate(self):
-        if self.persistant:
-            LOG.debug("Saving messages to %s", self.persistent_file)
-            with open(self.persistent_file, 'w') as fh:
-                fh.write(json.dumps(self.messages, indent=4, sort_keys=True))
+        if self.persistent:
+            self.data_manager.setData('messages', self.messages)
