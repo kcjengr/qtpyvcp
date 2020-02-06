@@ -5,6 +5,8 @@ import os
 
 from base_canon import BaseCanon
 
+from qtpyvcp.lib.dbus_notification import DBusNotification
+
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
 
@@ -14,6 +16,8 @@ class BaseBackPlot(object):
         inifile = inifile or os.getenv("INI_FILE_NAME")
         if inifile is None or not os.path.isfile(inifile) and not IN_DESIGNER:
             raise ValueError("Invalid INI file: %s", inifile)
+
+        self.notification = DBusNotification("BackPlot")
 
         self.canon_class = canon
         self.canon = None
@@ -67,12 +71,14 @@ class BaseBackPlot(object):
         # THIS IS WHERE IT ALL HAPPENS: load_preview will execute the code,
         # call back to the canon with motion commands, and record a history
         # of all the movements.
-        result, seq = gcode.parse(filename, self.canon, unitcode, initcode)
 
+        result, seq = gcode.parse(filename, self.canon, unitcode, initcode)
+        
         if result > gcode.MIN_ERROR:
             msg = gcode.strerror(result)
             fname = os.path.basename(filename)
-            raise SyntaxError("Error in %s line %i: %s" % (fname, seq - 1, msg))
+
+            self.notification.setNotify("RS274 interpreter", "Error in {} line {}\n{}".format(fname, seq - 1, msg))
 
         # clean up temp var file and the backup
         os.unlink(self.temp_parameter_file)

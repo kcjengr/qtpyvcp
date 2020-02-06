@@ -41,7 +41,7 @@ data_plugins:
       # show notification popups
       enabled: True
       # "native" or "dbus"
-      mode: native
+      mode: dbus
       # max number of notifications to show
       max_messages: 5
       # whether to save messages on exit
