@@ -208,7 +208,6 @@ class OffsetTable(DataPlugin):
 
         # reload with the new data
         offset_table = self.loadOffsetTable()
-        self.offset_table_changed.emit(offset_table)
 
     def iterTools(self, offset_table=None, columns=None):
         offset_table = offset_table or self.OFFSET_TABLE

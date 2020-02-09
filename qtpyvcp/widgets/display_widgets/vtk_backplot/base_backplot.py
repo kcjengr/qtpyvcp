@@ -67,6 +67,7 @@ class BaseBackPlot(object):
         # THIS IS WHERE IT ALL HAPPENS: load_preview will execute the code,
         # call back to the canon with motion commands, and record a history
         # of all the movements.
+
         result, seq = gcode.parse(filename, self.canon, unitcode, initcode)
 
         if result > gcode.MIN_ERROR:
