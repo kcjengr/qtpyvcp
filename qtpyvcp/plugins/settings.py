@@ -1,28 +1,25 @@
-import os
-import json
+"""Settings Plugin"""
 
 from qtpyvcp import SETTINGS, CONFIG
-from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.utilities.settings import addSetting
-from qtpyvcp.plugins import DataPlugin, DataChannel
+from qtpyvcp.plugins import DataPlugin, getPlugin
 
 LOG = getLogger(__name__)
 
 
 class Settings(DataPlugin):
-    def __init__(self, persistence_file='.settings.json'):
+    def __init__(self, **kwargs):
         super(Settings, self).__init__()
 
         self.channels = SETTINGS
         self.settings = {}
 
+        self.data_manager = getPlugin('persistent_data_manager')
+
         # load settings defined in YAML file
         for setting_name, kwargs in CONFIG['settings'].items():
             addSetting(setting_name, **kwargs)
-
-        self.persistence_file = normalizePath(path=persistence_file,
-                                              base=os.getenv('CONFIG_DIR', '~/'))
 
     def getChannel(self, url):
 
@@ -35,13 +32,7 @@ class Settings(DataPlugin):
         return chan_obj, chan_exp
 
     def initialise(self):
-        if os.path.isfile(self.persistence_file):
-            with open(self.persistence_file, 'r') as fh:
-                try:
-                    self.settings = json.loads(fh.read())
-                except:
-                    LOG.exception("Error loading persistent settings from %s",
-                                  self.persistence_file)
+        self.data_manager.getData('settings', {})
 
         for key, value in self.settings.items():
             try:
@@ -50,7 +41,6 @@ class Settings(DataPlugin):
                 pass
 
     def terminate(self):
-        LOG.debug("Saving persistent settings to %s", self.persistence_file)
         settings = {}
         for key, obj in SETTINGS.items():
             if obj.persistent == True:
@@ -58,5 +48,4 @@ class Settings(DataPlugin):
                 if obj.default_value != value:
                     settings[key] = value
 
-        with open(self.persistence_file, 'w') as fh:
-            fh.write(json.dumps(settings, indent=4, sort_keys=True))
+        self.data_manager.setData('settings', settings)

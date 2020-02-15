@@ -71,8 +71,8 @@ class Status(DataPlugin):
             for chan, obj in spindle.channels.items():
                 self.channels['spindle.{}.{}'.format(spindle.snum, chan)] = obj
 
-        self.all_axes_homed.setValue(STAT.homed)
         self.homed.notify(self.all_axes_homed.setValue)
+        self.enabled.notify(self.all_axes_homed.setValue)
 
         # Set up the periodic update timer
         self.timer = QTimer()
@@ -507,6 +507,11 @@ class Status(DataPlugin):
 
         True if all axes are homed or if [TRAJ]NO_FORCE_HOMING set in INI.
 
+        If [TRAJ]NO_FORCE_HOMING is set in the INI the value will be come
+        true as soon as the machine is turned on and the signal will be emitted,
+        otherwise the signal will be emitted once all the axes defined in the
+        INI have been homed.
+
         :returns: all homed
         :rtype: bool
         """
@@ -515,15 +520,18 @@ class Status(DataPlugin):
     @all_axes_homed.setter
     def all_axes_homed(self, chan, homed):
         if self.no_force_homing:
-            chan.value = True
+            all_homed = True
         else:
             for anum in INFO.AXIS_NUMBER_LIST:
-                if homed[anum] is not 1:
-                    chan.value = False
+                if STAT.homed[anum] is not 1:
+                    all_homed = False
                     break
             else:
-                chan.value = True
-        chan.signal.emit(chan.value)
+                all_homed = True
+
+        if all_homed != chan.value:
+            chan.value = all_homed
+            chan.signal.emit(chan.value)
 
     # this is used by File "qtpyvcp/qtpyvcp/actions/program_actions.py",
     # line 83, in _run_ok elif not STATUS.allHomed():
