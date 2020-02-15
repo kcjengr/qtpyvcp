@@ -13,7 +13,6 @@ class Settings(DataPlugin):
         super(Settings, self).__init__()
 
         self.channels = SETTINGS
-        self.settings = {}
 
         self.data_manager = getPlugin('persistent_data_manager')
 
@@ -32,9 +31,9 @@ class Settings(DataPlugin):
         return chan_obj, chan_exp
 
     def initialise(self):
-        self.data_manager.getData('settings', {})
+        settings = self.data_manager.getData('settings', {})
 
-        for key, value in self.settings.items():
+        for key, value in settings.items():
             try:
                 SETTINGS[key].setValue(value)
             except KeyError:
