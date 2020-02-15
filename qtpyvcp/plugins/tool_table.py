@@ -32,6 +32,7 @@ from qtpy.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
 import qtpyvcp
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 
 CMD = linuxcnc.command()
@@ -115,13 +116,17 @@ class ToolTable(DataPlugin):
 
     tool_table_changed = Signal(dict)
 
-    def __init__(self, columns='TPXYZDR', file_header_template=None):
+    def __init__(self, columns='TPXYZDR', file_header_template=None,
+                 remember_tool_in_spindle=True):
         super(ToolTable, self).__init__()
 
         self.fs_watcher = None
         self.orig_header_lines = []
         self.file_header_template = file_header_template or ''
+        self.remember_tool_in_spindle = remember_tool_in_spindle
         self.columns = self.validateColumns(columns) or [c for c in 'TPXYZDR']
+
+        self.data_manager = getPlugin('persistent_data_manager')
 
         self.setCurrentToolNumber(0)
 
@@ -137,6 +142,17 @@ class ToolTable(DataPlugin):
         STATUS.tool_in_spindle.notify(self.setCurrentToolNumber)
         STATUS.tool_table.notify(lambda *args: self.loadToolTable())
 
+        STATUS.all_axes_homed.notify(self.reload_tool)
+
+    def reload_tool(self):
+        if self.remember_tool_in_spindle and STATUS.all_axes_homed.value and STATUS.enabled.value:
+            tnum = self.data_manager.getData('tool-in-spindle', 0)
+            LOG.debug("reload_tool: tool in spindle: %i new tool: %i" % (STAT.tool_in_spindle, tnum))
+            if STAT.tool_in_spindle == 0 and tnum != STAT.tool_in_spindle:
+                LOG.info("Reloading tool in spindle:", tnum)
+                cmd = "M61 Q{0} G43".format(tnum)
+                # give LinuxCNC time to switch modes
+                QTimer.singleShot(200, lambda: issue_mdi(cmd))
 
     @DataChannel
     def current_tool(self, chan, item=None):
@@ -177,6 +193,9 @@ class ToolTable(DataPlugin):
         self.fs_watcher = QFileSystemWatcher()
         self.fs_watcher.addPath(self.tool_table_file)
         self.fs_watcher.fileChanged.connect(self.onToolTableFileChanged)
+
+    def terminate(self):
+        self.data_manager.setData('tool-in-spindle', STAT.tool_in_spindle)
 
     @staticmethod
     def validateColumns(columns):
