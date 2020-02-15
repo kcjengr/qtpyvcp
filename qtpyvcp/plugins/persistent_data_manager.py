@@ -47,7 +47,8 @@ class PersistentDataManager(DataPlugin):
         if self.serialization_method == 'json':
             str_data = self.serializer.dumps(self.data, indent=4, sort_keys=True)
         else:
-            str_data = self.serializer.dumps(self.data)
+            str_data = self.serializer.dumps(self.data,
+                                             protocol=self.serializer.HIGHEST_PROTOCOL)
 
         with open(self.persistence_file, 'w') as fh:
             fh.write(str_data)
