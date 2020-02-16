@@ -3,6 +3,8 @@ from qtpy.QtGui import QKeySequence, QKeyEvent
 from qtpy.QtCore import Qt, QObject, Signal, Slot, QEvent
 from qtpy.QtWidgets import QApplication, QLineEdit, QSpinBox, QDoubleSpinBox
 
+from qtpyvcp.utilities.settings import getSetting, setSetting
+
 from qtpyvcp.widgets.virtual_keyboards import getKeyboard
 from qtpyvcp.widgets.input_widgets.mdientry_widget import MDIEntry
 from qtpyvcp.widgets.input_widgets.line_edit import VCPLineEdit
@@ -28,11 +30,20 @@ class VKBEngine(QObject):
         self._active_vkb = None
         self._receiver = None
 
-        if self._enabled:
-            self.app.focusChanged.connect(self.focusChangedEvent)
+        self.app.focusChanged.connect(self.focusChangedEvent)
 
+        self._enabled_setting = getSetting("virtual-keyboard.enable")
+        if self._enabled_setting:
+            self._enabled_setting.notify(self.enable_vkb)
+
+    def enable_vkb(self, enabled):
+        print(enabled)
+        self._enabled = enabled
 
     def focusChangedEvent(self, old_w, new_w):
+
+        if not self._enabled:
+            return
 
         if isinstance(new_w, QLineEdit):
             print("QLineEdit got focus: ", new_w)
