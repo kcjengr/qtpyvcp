@@ -83,6 +83,8 @@ dialogs:
 virtual_keyboards:
   engine:
     provider: qtpyvcp.widgets.virtual_keyboards.vkb_engine:VKBEngine
+    kwargs:
+      enabled: True
 
   default:
     provider: qtpyvcp.widgets.virtual_keyboards.vkb_base:VKBBase

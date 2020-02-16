@@ -19,16 +19,18 @@ class VKBEngine(QObject):
     modifierChanged = Signal(int)
     shiftStateChanged = Signal(bool)
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, enabled=True):
         super(VKBEngine, self).__init__(parent)
 
         self.app = QApplication.instance()
-
+        self._enabled = enabled
         self._modifiers = Qt.NoModifier
         self._active_vkb = None
         self._receiver = None
 
-        self.app.focusChanged.connect(self.focusChangedEvent)
+        if self._enabled:
+            self.app.focusChanged.connect(self.focusChangedEvent)
+
 
     def focusChangedEvent(self, old_w, new_w):
 
