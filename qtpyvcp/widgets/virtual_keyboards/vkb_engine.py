@@ -1,4 +1,6 @@
 
+import os
+
 from qtpy.QtGui import QKeySequence, QKeyEvent
 from qtpy.QtCore import Qt, QObject, Signal, Slot, QEvent
 from qtpy.QtWidgets import QApplication, QLineEdit, QSpinBox, QDoubleSpinBox
@@ -29,6 +31,10 @@ class VKBEngine(QObject):
         self._modifiers = Qt.NoModifier
         self._active_vkb = None
         self._receiver = None
+
+        # don't need the VKB in QtDesigner
+        if os.getenv("DESIGNER", False):
+            return
 
         self.app.focusChanged.connect(self.focusChangedEvent)
 
