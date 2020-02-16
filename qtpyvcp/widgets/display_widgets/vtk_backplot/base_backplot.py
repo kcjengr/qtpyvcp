@@ -13,7 +13,7 @@ IN_DESIGNER = os.getenv('DESIGNER', False)
 class BaseBackPlot(object):
     def __init__(self, inifile=None, canon=BaseCanon):
 
-        self.notification = NativeNotification("BackPlot")
+        self.notification = NativeNotification()
 
         inifile = inifile or os.getenv("INI_FILE_NAME")
         if inifile is None or not os.path.isfile(inifile) and not IN_DESIGNER:
@@ -51,7 +51,7 @@ class BaseBackPlot(object):
 
         if filename is None or not os.path.isfile(filename):
             self.canon = None
-            self.notification.setNotify("RS274 interpreter", "Can't load backplot, invalid file: {}".format(filename))
+            self.notification.setNotify("3D plot", "Can't load backplot, invalid file: {}".format(filename))
             # raise ValueError("Can't load backplot, invalid file: {}".format(filename))
 
         self.last_filename = filename
@@ -78,7 +78,7 @@ class BaseBackPlot(object):
         if result > gcode.MIN_ERROR:
             msg = gcode.strerror(result)
             fname = os.path.basename(filename)
-            self.notification.setNotify("RS274 interpreter", "Error in {} line {}\n{}".format(fname, seq - 1, msg))
+            self.notification.setNotify("3D plot", "Error in {} line {}\n{}".format(fname, seq - 1, msg))
             # raise SyntaxError("Error in %s line %i: %s" % (fname, seq - 1, msg))
 
         # clean up temp var file and the backup
