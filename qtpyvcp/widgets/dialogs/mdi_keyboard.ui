@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>345</width>
-    <height>390</height>
+    <width>470</width>
+    <height>520</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -48,14 +48,14 @@
      </property>
      <property name="minimumSize">
       <size>
-       <width>345</width>
-       <height>390</height>
+       <width>470</width>
+       <height>520</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>345</width>
-       <height>390</height>
+       <width>470</width>
+       <height>520</height>
       </size>
      </property>
      <property name="styleSheet">
@@ -75,7 +75,7 @@
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="spacing">
-       <number>7</number>
+       <number>10</number>
       </property>
       <property name="leftMargin">
        <number>15</number>
@@ -94,13 +94,13 @@
         <property name="minimumSize">
          <size>
           <width>0</width>
-          <height>35</height>
+          <height>45</height>
          </size>
         </property>
         <property name="maximumSize">
          <size>
           <width>16777215</width>
-          <height>35</height>
+          <height>45</height>
          </size>
         </property>
         <property name="styleSheet">
@@ -114,12 +114,15 @@
 	font: 75 15pt &quot;Bebas Kai&quot;;
 }</string>
         </property>
+        <property name="clearButtonEnabled">
+         <bool>false</bool>
+        </property>
        </widget>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <property name="spacing">
-         <number>7</number>
+         <number>10</number>
         </property>
         <item>
          <widget class="VKBKey" name="G">
@@ -131,20 +134,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -171,20 +174,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -211,20 +214,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -254,20 +257,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -297,20 +300,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -340,20 +343,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>20</pointsize>
+            <pointsize>22</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -378,7 +381,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <property name="spacing">
-         <number>7</number>
+         <number>10</number>
         </property>
         <item>
          <widget class="VKBKey" name="T">
@@ -390,20 +393,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -430,20 +433,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -470,20 +473,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -513,20 +516,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -556,20 +559,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -599,20 +602,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>20</pointsize>
+            <pointsize>22</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -637,7 +640,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <property name="spacing">
-         <number>7</number>
+         <number>10</number>
         </property>
         <item>
          <widget class="VKBKey" name="M">
@@ -649,20 +652,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -689,20 +692,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -729,20 +732,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -772,20 +775,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -815,20 +818,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -858,20 +861,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>20</pointsize>
+            <pointsize>22</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -896,7 +899,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <property name="spacing">
-         <number>7</number>
+         <number>10</number>
         </property>
         <item>
          <widget class="VKBKey" name="S">
@@ -908,20 +911,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -948,20 +951,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -988,20 +991,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>14</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1028,14 +1031,14 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
@@ -1071,20 +1074,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1094,7 +1097,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">font: 12pt &quot;Bebas Kai&quot;;</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>SPACE</string>
@@ -1117,20 +1120,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>20</pointsize>
+            <pointsize>22</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1155,7 +1158,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <property name="spacing">
-         <number>7</number>
+         <number>10</number>
         </property>
         <item>
          <widget class="VKBKey" name="F">
@@ -1167,20 +1170,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1207,20 +1210,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1247,14 +1250,14 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
@@ -1276,13 +1279,13 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>../../../examples/probe_basic/images/up_arrow.png</normaloff>../../../examples/probe_basic/images/up_arrow.png</iconset>
+           <iconset resource="../../../../probe_basic/probe_basic/probe_basic.qrc">
+            <normaloff>:/images/up_arrow.png</normaloff>:/images/up_arrow.png</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>21</width>
-            <height>21</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
           <property name="key" stdset="0">
@@ -1303,20 +1306,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1326,7 +1329,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">font: 12pt &quot;Bebas Kai&quot;;</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>in/mm</string>
@@ -1343,14 +1346,14 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
@@ -1377,8 +1380,8 @@
           </property>
           <property name="iconSize">
            <size>
-            <width>35</width>
-            <height>35</height>
+            <width>50</width>
+            <height>50</height>
            </size>
           </property>
           <property name="key" stdset="0">
@@ -1396,14 +1399,14 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="sizeIncrement">
@@ -1421,7 +1424,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1431,7 +1434,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">font: 12pt &quot;Bebas Kai&quot;;</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>DEL</string>
@@ -1446,7 +1449,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_7">
         <property name="spacing">
-         <number>7</number>
+         <number>10</number>
         </property>
         <item>
          <widget class="VKBKey" name="P">
@@ -1458,20 +1461,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>18</pointsize>
+            <pointsize>20</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1498,14 +1501,14 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
@@ -1527,13 +1530,13 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>../../../examples/probe_basic/images/left_arrow.png</normaloff>../../../examples/probe_basic/images/left_arrow.png</iconset>
+           <iconset resource="../../../../probe_basic/probe_basic/probe_basic.qrc">
+            <normaloff>:/images/left_arrow.png</normaloff>:/images/left_arrow.png</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>21</width>
-            <height>21</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
           <property name="key" stdset="0">
@@ -1554,14 +1557,14 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
@@ -1583,13 +1586,13 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>../../../examples/probe_basic/images/down_arrow.png</normaloff>../../../examples/probe_basic/images/down_arrow.png</iconset>
+           <iconset resource="../../../../probe_basic/probe_basic/probe_basic.qrc">
+            <normaloff>:/images/down_arrow.png</normaloff>:/images/down_arrow.png</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>21</width>
-            <height>21</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
           <property name="key" stdset="0">
@@ -1610,14 +1613,14 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
@@ -1639,13 +1642,13 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset>
-            <normaloff>../../../examples/probe_basic/images/right_arrow.png</normaloff>../../../examples/probe_basic/images/right_arrow.png</iconset>
+           <iconset resource="../../../../probe_basic/probe_basic/probe_basic.qrc">
+            <normaloff>:/images/right_arrow.png</normaloff>:/images/right_arrow.png</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>21</width>
-            <height>21</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
           <property name="key" stdset="0">
@@ -1666,14 +1669,14 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="sizeIncrement">
@@ -1691,7 +1694,7 @@
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1701,7 +1704,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">font: 12pt &quot;Bebas Kai&quot;;</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>ESC</string>
@@ -1721,20 +1724,20 @@
           </property>
           <property name="minimumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="maximumSize">
            <size>
-            <width>45</width>
-            <height>45</height>
+            <width>60</width>
+            <height>60</height>
            </size>
           </property>
           <property name="font">
            <font>
             <family>Bebas Kai</family>
-            <pointsize>12</pointsize>
+            <pointsize>14</pointsize>
             <weight>50</weight>
             <italic>false</italic>
             <bold>false</bold>
@@ -1744,7 +1747,7 @@
            <enum>Qt::NoFocus</enum>
           </property>
           <property name="styleSheet">
-           <string notr="true">font: 12pt &quot;Bebas Kai&quot;;</string>
+           <string notr="true"/>
           </property>
           <property name="text">
            <string>ENTER</string>
@@ -1769,7 +1772,7 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="../../../examples/probe_basic/probe_basic.qrc"/>
+  <include location="../../../../probe_basic/probe_basic/probe_basic.qrc"/>
  </resources>
  <connections/>
 </ui>
