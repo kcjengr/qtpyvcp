@@ -109,8 +109,7 @@ class VCPMainWindow(QMainWindow):
             stylesheet (str) : Path to a .qss stylesheet
         """
         LOG.info("Loading QSS stylesheet file: yellow<{}>".format(stylesheet))
-        with open(stylesheet, 'r') as fh:
-            self.setStyleSheet(fh.read())
+        self.setStyleSheet("file:///" + stylesheet)
 
     def getMenuAction(self, menu_action, title='notitle', action_name='noaction',
                       args=[], kwargs={}):

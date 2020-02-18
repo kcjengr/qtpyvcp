@@ -182,18 +182,16 @@ class VCPApplication(QApplication):
         """
 
         def load(path):
-            with open(path, 'r') as fh:
-                self.setStyleSheet(fh.read())
+            LOG.info("Loading global stylesheet: yellow<{}>".format(stylesheet))
+            self.setStyleSheet("file:///" + path)
 
-        LOG.info("Loading QSS stylesheet file: yellow<{}>".format(stylesheet))
+            if watch:
+                from qtpy.QtCore import QFileSystemWatcher
+                self.qss_file_watcher = QFileSystemWatcher()
+                self.qss_file_watcher.addPath(stylesheet)
+                self.qss_file_watcher.fileChanged.connect(load)
+
         load(stylesheet)
-
-        if watch:
-            LOG.info("In develop mode, changes to QSS file will automatically be applied")
-            from qtpy.QtCore import QFileSystemWatcher
-            self.qss_file_watcher = QFileSystemWatcher()
-            self.qss_file_watcher.addPath(stylesheet)
-            self.qss_file_watcher.fileChanged.connect(load)
 
     def loadFont(self, font_path):
         """Loads a font file into the font database. The path can specify the
