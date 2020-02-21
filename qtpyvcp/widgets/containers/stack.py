@@ -21,7 +21,7 @@ class VCPAbstractStackedWidget(VCPWidget):
         self._setting_name = name
 
 
-class VCPStackedWidget(QStackedWidget, VCPWidget):
+class VCPStackedWidget(QStackedWidget, VCPAbstractStackedWidget):
     """VCPStackedWidget
 
     VCP Stacked Widget
@@ -31,7 +31,7 @@ class VCPStackedWidget(QStackedWidget, VCPWidget):
     DEFAULT_RULE_PROPERTY = 'Enable'
     RULE_PROPERTIES = VCPAbstractStackedWidget.RULE_PROPERTIES.copy()
     RULE_PROPERTIES.update({
-        'currentIndex': ['setValue', int],
+        'currentIndex': ['setIndexValue', int],
     })
 
     def __init__(self, parnet):
@@ -39,17 +39,5 @@ class VCPStackedWidget(QStackedWidget, VCPWidget):
 
     def setIndexValue(self, value):
         self.blockSignals(True)
-        self.setValue(value)
+        self.setCurrentIndex(value)
         self.blockSignals(False)
-
-    def initialize(self):
-        self._setting = SETTINGS.get(self._setting_name)
-        if self._setting is not None:
-            if self._setting.max_value is not None:
-                self.setMaximum(self._setting.max_value)
-            if self._setting.min_value is not None:
-                self.setMinimum(self._setting.min_value)
-
-            self.setIndexValue(self._setting.getValue())
-            self._setting.notify(self.setIndexValue)
-            self.valueChanged.connect(self._setting.setValue)
