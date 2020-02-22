@@ -83,6 +83,7 @@ class ToolModel(QStandardItemModel):
         self.tt = getPlugin('tooltable')
 
         self.current_tool_color = QColor(Qt.darkGreen)
+        self.current_tool_bg = None
 
         self._columns = self.tt.columns
         self._column_labels = self.tt.COLUMN_LABELS
@@ -144,6 +145,13 @@ class ToolModel(QStandardItemModel):
             tnum = sorted(self._tool_table)[index.row() + 1]
             if self.stat.tool_in_spindle == tnum:
                 return QBrush(self.current_tool_color)
+            else:
+                return QStandardItemModel.data(self, index, role)
+
+        elif role == Qt.BackgroundRole and self.current_tool_bg is not None:
+            tnum = sorted(self._tool_table)[index.row() + 1]
+            if self.stat.tool_in_spindle == tnum:
+                return QBrush(self.current_tool_bg)
             else:
                 return QStandardItemModel.data(self, index, role)
 
@@ -221,6 +229,7 @@ class ToolTable(QTableView):
         self._columns = self.tool_model._columns
         self._confirm_actions = False
         self._current_tool_color = QColor('sage')
+        self._current_tool_bg = None
 
         # Appearance/Behaviour settings
         self.setSortingEnabled(True)
@@ -342,6 +351,15 @@ class ToolTable(QTableView):
     @currentToolColor.setter
     def currentToolColor(self, color):
         self.tool_model.current_tool_color = color
+
+    @Property(QColor)
+    def currentToolBackground(self):
+        return self.tool_model.current_tool_bg or QColor()
+
+    @currentToolBackground.setter
+    def currentToolBackground(self, color):
+        self.tool_model.current_tool_bg = color
+
 
     def insertToolAbove(self):
         # it does not make sense to insert tools, since the numbering
