@@ -229,7 +229,7 @@ class ToolTable(DataPlugin):
         if tnum is None:
             tnum = len(self.TOOL_TABLE)
         new_tool = DEFAULT_TOOL.copy()
-        new_tool.update({'T': tnum, 'P': tnum, 'R': 'New Tool'})
+        new_tool.update({'T': tnum, 'R': 'New Tool'})
         return new_tool
 
     def onToolTableFileChanged(self, path):
