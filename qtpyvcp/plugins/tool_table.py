@@ -22,6 +22,7 @@ Tool Table YAML configuration:
 """
 
 import os
+import re
 from itertools import takewhile
 from datetime import datetime
 
@@ -101,6 +102,12 @@ COLUMN_LABELS = {
     'Y': 'Y Offset',
     'Z': 'Z Offset',
 }
+
+# Column formats when writing tool table
+INT_COLUMN_WIDTH = 6
+FLOAT_COLUMN_WIDTH = 12
+FLOAT_DECIMAL_PLACES = 6
+
 
 def makeLorumIpsumToolTable():
     return {i: merge(DEFAULT_TOOL,
@@ -282,12 +289,13 @@ class ToolTable(DataPlugin):
         for line in lines:
 
             data, sep, comment = line.partition(';')
+            items = re.findall(r"([A-Z]+[0-9.+-]+)", data.replace(' ', ''))
 
             tool = DEFAULT_TOOL.copy()
-            for item in data.split():
+            for item in items:
                 descriptor = item[0]
                 if descriptor in 'TPXYZABCUVWDIJQR':
-                    value = item.lstrip(descriptor)
+                    value = item[1:]
                     if descriptor in ('T', 'P', 'Q'):
                         try:
                             tool[descriptor] = int(value)
@@ -368,7 +376,8 @@ class ToolTable(DataPlugin):
         for col in columns:
             if col == 'R':
                 continue
-            w = (6 if col in 'TPQ' else 8) - 1 if col == self.columns[0] else 0
+            w = (INT_COLUMN_WIDTH if col in 'TPQ' else FLOAT_COLUMN_WIDTH) - \
+                (1 if col == self.columns[0] else 0)
             items.append('{:<{w}}'.format(COLUMN_LABELS[col], w=w))
 
         items.append('Remark')
@@ -381,10 +390,17 @@ class ToolTable(DataPlugin):
             for col in columns:
                 if col == 'R':
                     continue
-                items.append('{col}{val:<{w}}'
-                             .format(col=col,
-                                     val=tool_data[col],
-                                     w=6 if col in 'TPQ' else 8))
+                if col in 'TPQ':
+                    items.append('{col}{val:<{w}}'
+                                 .format(col=col,
+                                         val=tool_data[col],
+                                         w=INT_COLUMN_WIDTH))
+                else:
+                    items.append('{col}{val:<+{w}.{d}f}'
+                                 .format(col=col,
+                                         val=tool_data[col],
+                                         w=FLOAT_COLUMN_WIDTH,
+                                         d=FLOAT_DECIMAL_PLACES))
 
             comment = tool_data.get('R', '')
             if comment is not '':
