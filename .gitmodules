@@ -1,0 +1,3 @@
+[submodule "installer"]
+	path = installer
+	url = https://github.com/kcjengr/installer.git
