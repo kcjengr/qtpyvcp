@@ -235,9 +235,6 @@ def getSpeed(spindle=0):
     if raw_speed == 0:
         raw_speed = abs(DEFAULT_SPEED)
 
-    if STAT.spindle[spindle]['override_enabled']:
-        return raw_speed * STAT.spindle[spindle]['override']
-
     return raw_speed
 
 #==============================================================================
