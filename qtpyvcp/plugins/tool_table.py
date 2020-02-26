@@ -156,7 +156,7 @@ class ToolTable(DataPlugin):
             tnum = self.data_manager.getData('tool-in-spindle', 0)
             LOG.debug("reload_tool: tool in spindle: %i new tool: %i" % (STAT.tool_in_spindle, tnum))
             if STAT.tool_in_spindle == 0 and tnum != STAT.tool_in_spindle:
-                LOG.info("Reloading tool in spindle:", tnum)
+                LOG.info("Reloading tool in spindle: %i", tnum)
                 cmd = "M61 Q{0} G43".format(tnum)
                 # give LinuxCNC time to switch modes
                 QTimer.singleShot(200, lambda: issue_mdi(cmd))
