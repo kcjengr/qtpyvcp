@@ -353,13 +353,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.status.file.notify(self.load_program)
         self.status.position.notify(self.update_position)
 
-        # self.status.g5x_index.notify(self.update_g95x_index)
-        self.status.g5x_offset.notify(self.update_g95x_offset)
+        # self.status.g5x_index.notify(self.update_g5x_index)
+        self.status.g5x_offset.notify(self.update_g5x_offset)
         self.status.g92_offset.notify(self.update_g92_offset)
         # self.status.rotation_xy.notify(self.update_rotation_xy)
 
         OFFSETTABLE.offset_table_changed.connect(self.on_offset_table_changed)
-        OFFSETTABLE.active_offset_changed.connect(self.update_g95x_index)
+        OFFSETTABLE.active_offset_changed.connect(self.update_g5x_index)
 
         self.status.tool_offset.notify(self.update_tool)
         self.status.tool_table.notify(self.update_tool)
@@ -460,7 +460,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def on_offset_table_changed(self, table):
         self.path_position_table = table
 
-    def update_g95x_offset(self, offset):
+    def update_g5x_offset(self, offset):
 
         transform = vtk.vtkTransform()
         transform.Translate(*offset[:3])
@@ -506,7 +506,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.interactor.ReInitialize()
         self.update_render()
 
-    def update_g95x_index(self, index):
+    def update_g5x_index(self, index):
         self.g5x_index = index
         position = self.path_position_table[index - 1]
 
