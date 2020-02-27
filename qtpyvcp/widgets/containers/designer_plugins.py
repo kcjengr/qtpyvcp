@@ -13,3 +13,10 @@ class VCPWidgetPlugin(_DesignerPlugin):
         return VCPWidget
     def isContainer(self):
         return True
+
+from stack import VCPStackedWidget
+class VCPStackedWidgetPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return VCPStackedWidget
+    def isContainer(self):
+        return True
