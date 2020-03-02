@@ -17,7 +17,7 @@ LOG = logger.getLogger(__name__)
 # if a group is not present it will be an empty string
 PARSE_POSITIONAL_ARGS = re.compile(r' *# *<([a-z0-9_-]+)> *= *#([0-9]+) *(?:\(= *([0-9.+-]+[0-9.]*?|) *(.*)\))?', re.I)
 
-SUBROUTINE_PATH = INFO.getSubroutinePath()
+SUBROUTINE_SEARCH_DIRS = INFO.getSubroutineSearchDirs()
 
 class SubCallButton(VCPButton):
     """Button for calling ngc subroutines.
@@ -54,9 +54,14 @@ class SubCallButton(VCPButton):
     def callSub(self):
         window = qApp.activeWindow()
 
-        subfile = os.path.join(SUBROUTINE_PATH, self._filename)
-        if not os.path.isfile(subfile):
-            LOG.error('Subroutine file does not exist: yellow<{}>'.format(subfile))
+        subfile = None
+        for dir in SUBROUTINE_SEARCH_DIRS:
+            subfile = os.path.join(dir, self._filename)
+            if os.path.isfile(subfile):
+                break
+
+        if subfile is None:
+            LOG.error('Subroutine file could not be found: yellow<{}>'.format(self._filename))
             return False
 
         with open(subfile, 'r') as fh:

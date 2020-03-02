@@ -241,7 +241,7 @@ class _Info(object):
     def getProgramPrefix(self):
         path = self.ini.find('DISPLAY', 'PROGRAM_PREFIX')
         if path:
-            path = os.path.expanduser(path)
+            path = normalizePath(path, os.getenv("CONFIG_DIR"))
             if os.path.exists(path):
                 return path
             else:
@@ -318,7 +318,19 @@ class _Info(object):
         if temp is None:
             log.info("No subroutine path specified in INI file")
             return self.getProgramPrefix()
-        return normalizePath(temp, os.getenv("CONFIG_DIR", ""))
+        return temp
+
+    def getSubroutineSearchDirs(self):
+        config_dir = os.getenv("CONFIG_DIR", "")
+        dirs = [self.getProgramPrefix(),]
+        temp = self.ini.find('RS274NGC', 'SUBROUTINE_PATH')
+        if temp is None:
+            log.info("No subroutine path specified in INI file")
+        else:
+            for path in temp.strip(':').split(':'):
+                dirs.append(normalizePath(path, config_dir))
+
+        return dirs
 
     def getRS274StartCode(self):
         temp = self.ini.find('RS274NGC', 'RS274NGC_STARTUP_CODE')
