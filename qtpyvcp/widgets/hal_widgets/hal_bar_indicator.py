@@ -1,8 +1,8 @@
 """
-HAL LOAD METER Indicator
+HAL PROGRESS BAR Indicator
 -----------------
 
-LOAD METER for indicate the value of `float` HAL pins.
+Progress bar for indicate the value of `float` HAL pins.
 
 .. table:: Generated HAL Pins
 
@@ -23,7 +23,7 @@ log = getLogger(__name__)
 
 
 class HalBarIndicator(BarIndicator, HALWidget):
-    """HAL LOAD METER"""
+    """HAL PROGRESS BAR"""
     def __init__(self, parent=None):
         super(HalBarIndicator, self).__init__(parent)
 
