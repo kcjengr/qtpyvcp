@@ -20,6 +20,9 @@ class BarIndicator(QProgressBar):
         self._border_radius = 2
         self._border_width = 1
 
+    def setValue(self, value):
+        self.setFormat(str(self.format().encode("utf-8")).format(value))
+
     def paintEvent(self, event):
 
         bw = float(self._border_width)
