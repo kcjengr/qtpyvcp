@@ -105,3 +105,11 @@ class OffsetTablePlugin(_DesignerPlugin):
 
     def objectName(self):
         return 'offset_table'
+
+from offset_widget import OffsetsWidget
+class OffsetsWidgetPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return OffsetsWidget
+
+    def objectName(self):
+        return 'offsets_widget'
