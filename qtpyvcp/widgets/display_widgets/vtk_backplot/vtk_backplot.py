@@ -280,16 +280,23 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.axis = self.stat.axis
 
-        self.nav_style = vtk.vtkInteractorStyleTrackballCamera()
 
         self.camera = vtk.vtkCamera()
         self.camera.ParallelProjectionOn()
 
         self.renderer = vtk.vtkRenderer()
         self.renderer.SetActiveCamera(self.camera)
-        self.GetRenderWindow().AddRenderer(self.renderer)
-        self.SetInteractorStyle(self.nav_style)
-        self.interactor = self.GetRenderWindow().GetInteractor()
+
+        self.renderer_window = self.GetRenderWindow()
+        self.renderer_window.AddRenderer(self.renderer)
+
+        # self.nav_style = vtk.vtkInteractorStyleTrackballCamera()
+        # self.SetInteractorStyle(self.nav_style)
+
+        self.interactor = self.renderer_window.GetInteractor()
+        self.interactor.SetInteractorStyle(None)
+        self.interactor.SetRenderWindow(self.renderer_window)
+
 
         self.machine = Machine(self.axis)
         self.machine_actor = self.machine.get_actor()
@@ -347,7 +354,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.ResetCamera()
 
+        self.interactor.AddObserver("LeftButtonPressEvent", self.button_event)
+        self.interactor.AddObserver("LeftButtonReleaseEvent", self.button_event)
+        self.interactor.AddObserver("MiddleButtonPressEvent", self.button_event)
+        self.interactor.AddObserver("MiddleButtonReleaseEvent", self.button_event)
+        self.interactor.AddObserver("RightButtonPressEvent", self.button_event)
+        self.interactor.AddObserver("RightButtonReleaseEvent", self.button_event)
+        self.interactor.AddObserver("MouseMoveEvent", self.mouse_move)
+        self.interactor.AddObserver("KeyPressEvent", self.keypress)
+
         self.interactor.Initialize()
+        self.renderer_window.Render()
         self.interactor.Start()
 
         self.status.file.notify(self.load_program)
@@ -366,6 +383,160 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.line = None
         self._last_filename = str()
+
+        # Add the observers to watch for particular events. These invoke
+        # Python functions.
+        self.rotating = 0
+        self.panning = 0
+        self.zooming = 0
+
+        self.pan_mode = False
+
+    # Handle the mouse button events.
+    def button_event(self, obj, event):
+        print("button event {}".format(event))
+
+        if event == "LeftButtonPressEvent":
+            if self.pan_mode is True:
+                self.panning = 1
+            else:
+                self.rotating = 1
+
+        elif event == "LeftButtonReleaseEvent":
+            if self.pan_mode is True:
+                self.panning = 0
+            else:
+                self.rotating = 0
+
+        elif event == "MiddleButtonPressEvent":
+            if self.pan_mode is True:
+                self.rotating = 1
+            else:
+                self.panning = 1
+
+        elif event == "MiddleButtonReleaseEvent":
+            if self.pan_mode is True:
+                self.rotating = 0
+            else:
+                self.panning = 0
+
+        elif event == "RightButtonPressEvent":
+            self.zooming = 1
+        elif event == "RightButtonReleaseEvent":
+            self.zooming = 0
+
+    # General high-level logic
+    def mouse_move(self, obj, event):
+        lastXYpos = self.interactor.GetLastEventPosition()
+        lastX = lastXYpos[0]
+        lastY = lastXYpos[1]
+
+        xypos = self.interactor.GetEventPosition()
+        x = xypos[0]
+        y = xypos[1]
+
+        center = self.renderer_window.GetSize()
+        centerX = center[0] / 2.0
+        centerY = center[1] / 2.0
+
+        if self.rotating:
+            self.rotate(self.renderer, self.renderer.GetActiveCamera(), x, y, lastX, lastY, centerX, centerY)
+        elif self.panning:
+            self.pan(self.renderer, self.renderer.GetActiveCamera(), x, y, lastX, lastY, centerX, centerY)
+        elif self.zooming:
+            self.dolly(self.renderer, self.renderer.GetActiveCamera(), x, y, lastX, lastY, centerX, centerY)
+
+    def keypress(self, obj, event):
+        key = obj.GetKeySym()
+        if key == "w":
+            self.wireframe()
+        elif key == "s":
+            self.surface()
+
+    # Routines that translate the events into camera motions.
+
+    # This one is associated with the left mouse button. It translates x
+    # and y relative motions into camera azimuth and elevation commands.
+    def rotate(self, renderer, camera, x, y, lastX, lastY, centerX, centerY):
+        camera.Azimuth(lastX - x)
+        camera.Elevation(lastY - y)
+        camera.OrthogonalizeViewUp()
+        self.renderer_window.Render()
+
+    # Pan translates x-y motion into translation of the focal point and
+    # position.
+    def pan(self, renderer, camera, x, y, lastX, lastY, centerX, centerY):
+        FPoint = camera.GetFocalPoint()
+        FPoint0 = FPoint[0]
+        FPoint1 = FPoint[1]
+        FPoint2 = FPoint[2]
+
+        PPoint = camera.GetPosition()
+        PPoint0 = PPoint[0]
+        PPoint1 = PPoint[1]
+        PPoint2 = PPoint[2]
+
+        renderer.SetWorldPoint(FPoint0, FPoint1, FPoint2, 1.0)
+        renderer.WorldToDisplay()
+        DPoint = renderer.GetDisplayPoint()
+        focalDepth = DPoint[2]
+
+        APoint0 = centerX + (x - lastX)
+        APoint1 = centerY + (y - lastY)
+
+        renderer.SetDisplayPoint(APoint0, APoint1, focalDepth)
+        renderer.DisplayToWorld()
+        RPoint = renderer.GetWorldPoint()
+        RPoint0 = RPoint[0]
+        RPoint1 = RPoint[1]
+        RPoint2 = RPoint[2]
+        RPoint3 = RPoint[3]
+
+        if RPoint3 != 0.0:
+            RPoint0 = RPoint0 / RPoint3
+            RPoint1 = RPoint1 / RPoint3
+            RPoint2 = RPoint2 / RPoint3
+
+        camera.SetFocalPoint((FPoint0 - RPoint0) / 2.0 + FPoint0,
+                             (FPoint1 - RPoint1) / 2.0 + FPoint1,
+                             (FPoint2 - RPoint2) / 2.0 + FPoint2)
+        camera.SetPosition((FPoint0 - RPoint0) / 2.0 + PPoint0,
+                           (FPoint1 - RPoint1) / 2.0 + PPoint1,
+                           (FPoint2 - RPoint2) / 2.0 + PPoint2)
+        self.renderer_window.Render()
+
+    # Dolly converts y-motion into a camera dolly commands.
+    def dolly(self, renderer, camera, x, y, lastX, lastY, centerX, centerY):
+        dollyFactor = pow(1.02, (0.5 * (y - lastY)))
+        if camera.GetParallelProjection():
+            parallelScale = camera.GetParallelScale() * dollyFactor
+            camera.SetParallelScale(parallelScale)
+        else:
+            camera.Dolly(dollyFactor)
+            renderer.ResetCameraClippingRange()
+
+        self.renderer_window.Render()
+
+    # Wireframe sets the representation of all actors to wireframe.
+    def wireframe(self):
+        actors = self.renderer.GetActors()
+        actors.InitTraversal()
+        actor = actors.GetNextItem()
+        while actor:
+            actor.GetProperty().SetRepresentationToWireframe()
+            actor = actors.GetNextItem()
+
+        self.renderer_window.Render()
+
+    # Surface sets the representation of all actors to surface.
+    def surface(self):
+        actors = self.renderer.GetActors()
+        actors.InitTraversal()
+        actor = actors.GetNextItem()
+        while actor:
+            actor.GetProperty().SetRepresentationToSurface()
+            actor = actors.GetNextItem()
+        self.renderer_window.Render()
 
     def tlo(self, tlo):
         LOG.debug(tlo)
@@ -709,6 +880,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_cache_actor = self.path_cache.get_actor()
         self.renderer.AddActor(self.path_cache_actor)
         self.update_render()
+
+    @Slot(bool)
+    def enable_panning(self, enabled):
+        self.pan_mode = enabled
 
     @Slot()
     def zoomIn(self):
