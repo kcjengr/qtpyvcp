@@ -156,7 +156,7 @@ class FileSystemTable(QTableView, TableType):
 
         self.ini = linuxcnc.ini(self.INI_FILE)
 
-        self.nc_files_path = self.ini.find("DISPLAY", "PROGRAM_PREFIX")
+        self.nc_files_path = self.ini.find("DISPLAY", "PROGRAM_PREFIX") or "~/linuxcnc/nc_files"
         self.doubleClicked.connect(self.openSelectedItem)
         self.selected_row = None
         self.clipboard = QApplication.clipboard()
