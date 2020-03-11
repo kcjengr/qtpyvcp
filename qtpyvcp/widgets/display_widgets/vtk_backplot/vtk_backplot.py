@@ -362,6 +362,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.interactor.AddObserver("RightButtonReleaseEvent", self.button_event)
         self.interactor.AddObserver("MouseMoveEvent", self.mouse_move)
         self.interactor.AddObserver("KeyPressEvent", self.keypress)
+        self.interactor.AddObserver("MouseWheelForwardEvent", self.mouse_scroll_forward)
+        self.interactor.AddObserver("MouseWheelBackwardEvent", self.mouse_scroll_backward)
 
         self.interactor.Initialize()
         self.renderer_window.Render()
@@ -394,7 +396,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     # Handle the mouse button events.
     def button_event(self, obj, event):
-        print("button event {}".format(event))
+        LOG.debug("button event {}".format(event))
 
         if event == "LeftButtonPressEvent":
             if self.pan_mode is True:
@@ -424,6 +426,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.zooming = 1
         elif event == "RightButtonReleaseEvent":
             self.zooming = 0
+
+    def mouse_scroll_backward(self, obj, event):
+        self.zoomOut()
+
+    def mouse_scroll_forward(self, obj, event):
+        self.zoomIn()
 
     # General high-level logic
     def mouse_move(self, obj, event):
@@ -514,6 +522,33 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         else:
             camera.Dolly(dollyFactor)
             renderer.ResetCameraClippingRange()
+
+        self.renderer_window.Render()
+
+    def zoom_in_scroll(self, *args, **kwargs):
+
+        camera = self.renderer.GetActiveCamera()
+        if camera.GetParallelProjection():
+            parallelScale = camera.GetParallelScale() * 1.1
+            camera.SetParallelScale(parallelScale)
+        else:
+            camera.Zoom(1.1)
+            self.renderer.ResetCameraClippingRange()
+            self.camera.Zoom(1.1)
+
+        self.renderer_window.Render()
+
+    @Slot()
+    def zoom_out_scroll(self, *args, **kwargs):
+
+        camera = self.renderer.GetActiveCamera()
+        if camera.GetParallelProjection():
+            parallelScale = camera.GetParallelScale() * 0.9
+            camera.SetParallelScale(parallelScale)
+        else:
+            camera.Zoom(1.1)
+            self.renderer.ResetCameraClippingRange()
+            self.camera.Zoom(0.9)
 
         self.renderer_window.Render()
 
@@ -887,13 +922,30 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def zoomIn(self):
-        self.renderer.GetActiveCamera().Zoom(1.1)
-        self.interactor.ReInitialize()
+
+        camera = self.renderer.GetActiveCamera()
+        if camera.GetParallelProjection():
+            parallelScale = camera.GetParallelScale() * 1.1
+            camera.SetParallelScale(parallelScale)
+        else:
+            self.renderer.ResetCameraClippingRange()
+            camera.Zoom(1.1)
+
+        self.renderer_window.Render()
 
     @Slot()
     def zoomOut(self):
-        self.renderer.GetActiveCamera().Zoom(0.9)
-        self.interactor.ReInitialize()
+
+        camera = self.renderer.GetActiveCamera()
+        if camera.GetParallelProjection():
+            parallelScale = camera.GetParallelScale() * 0.9
+            camera.SetParallelScale(parallelScale)
+        else:
+            self.renderer.ResetCameraClippingRange()
+            camera.Zoom(0.9)
+
+        self.renderer_window.Render()
+
 
     @Slot(bool)
     def alphaBlend(self, alpha):
