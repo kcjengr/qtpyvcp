@@ -1,6 +1,7 @@
 import os
 import subprocess
 
+import linuxcnc
 import psutil
 
 from pyudev.pyqt5 import MonitorObserver
@@ -126,6 +127,7 @@ class RemovableDeviceComboBox(QComboBox):
 
 
 class FileSystemTable(QTableView, TableType):
+
     if IN_DESIGNER:
         from PyQt5.QtCore import Q_ENUMS
         Q_ENUMS(TableType)
@@ -135,6 +137,8 @@ class FileSystemTable(QTableView, TableType):
     fileNamePreviewText = Signal(str)
     transferFileRequest = Signal(str)
     rootChanged = Signal(str)
+
+    INI_FILE = os.environ.get("INI_FILE_NAME")
 
     def __init__(self, parent=None):
         super(FileSystemTable, self).__init__(parent)
@@ -149,6 +153,10 @@ class FileSystemTable(QTableView, TableType):
 
         self.parent = parent
         self.path_data = dict()
+
+        self.ini = linuxcnc.ini(self.INI_FILE)
+
+        self.nc_files_path = self.ini.find("DISPLAY", "PROGRAM_PREFIX")
         self.doubleClicked.connect(self.openSelectedItem)
         self.selected_row = None
         self.clipboard = QApplication.clipboard()
@@ -387,13 +395,13 @@ class FileSystemTable(QTableView, TableType):
     @Slot()
     def viewNCFilesDirectory(self):
         # ToDo: Make preset user definable
-        path = os.path.expanduser('~/linuxcnc/nc_files')
+        path = os.path.expanduser(self.nc_files_path)
         self.setRootPath(path)
 
     @Slot()
     def viewPresetDirectory(self):
         # ToDo: Make preset user definable
-        preset = os.path.expanduser('~/linuxcnc/nc_files')
+        preset = os.path.expanduser(self.nc_files_path)
         self.setRootPath(preset)
 
     @Slot()
