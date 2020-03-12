@@ -505,12 +505,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             RPoint1 = RPoint1 / RPoint3
             RPoint2 = RPoint2 / RPoint3
 
-        camera.SetFocalPoint((FPoint0 - RPoint0) / 2.0 + FPoint0,
-                             (FPoint1 - RPoint1) / 2.0 + FPoint1,
-                             (FPoint2 - RPoint2) / 2.0 + FPoint2)
-        camera.SetPosition((FPoint0 - RPoint0) / 2.0 + PPoint0,
-                           (FPoint1 - RPoint1) / 2.0 + PPoint1,
-                           (FPoint2 - RPoint2) / 2.0 + PPoint2)
+        camera.SetFocalPoint((FPoint0 - RPoint0) / 1.0 + FPoint0,
+                             (FPoint1 - RPoint1) / 1.0 + FPoint1,
+                             (FPoint2 - RPoint2) / 1.0 + FPoint2)
+        camera.SetPosition((FPoint0 - RPoint0) / 1.0 + PPoint0,
+                           (FPoint1 - RPoint1) / 1.0 + PPoint1,
+                           (FPoint2 - RPoint2) / 1.0 + PPoint2)
         self.renderer_window.Render()
 
     # Dolly converts y-motion into a camera dolly commands.
@@ -522,33 +522,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         else:
             camera.Dolly(dollyFactor)
             renderer.ResetCameraClippingRange()
-
-        self.renderer_window.Render()
-
-    def zoom_in_scroll(self, *args, **kwargs):
-
-        camera = self.renderer.GetActiveCamera()
-        if camera.GetParallelProjection():
-            parallelScale = camera.GetParallelScale() * 1.1
-            camera.SetParallelScale(parallelScale)
-        else:
-            camera.Zoom(1.1)
-            self.renderer.ResetCameraClippingRange()
-            self.camera.Zoom(1.1)
-
-        self.renderer_window.Render()
-
-    @Slot()
-    def zoom_out_scroll(self, *args, **kwargs):
-
-        camera = self.renderer.GetActiveCamera()
-        if camera.GetParallelProjection():
-            parallelScale = camera.GetParallelScale() * 0.9
-            camera.SetParallelScale(parallelScale)
-        else:
-            camera.Zoom(1.1)
-            self.renderer.ResetCameraClippingRange()
-            self.camera.Zoom(0.9)
 
         self.renderer_window.Render()
 
