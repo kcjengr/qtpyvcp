@@ -808,6 +808,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
         self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
+        self.renderer.GetActiveCamera().Zoom(1.1)
         self.interactor.ReInitialize()
 
     @Slot()
@@ -837,7 +838,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
         # FIXME ugly hack
-        self.renderer.GetActiveCamera().Zoom(1.5)
+        self.renderer.GetActiveCamera().Zoom(2)
         self.interactor.ReInitialize()
 
     @Slot()
