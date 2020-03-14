@@ -15,31 +15,34 @@ class BarIndicator(QProgressBar):
                             u'0.8, 255, 255, 0',
                             u'1.0, 255, 0, 0',]
 
+        self._value = 65.0
+        self._minimum = 0.0
+        self._maximum = 100.0
         self._text_color = QColor(0, 0, 0)
         self._border_color = Qt.gray
         self._border_radius = 2
         self._border_width = 1
 
-    def setValue(self, value):
-        self.setFormat(str(self.format().encode("utf-8")).format(value))
+        self.setFormat('{p}%')
 
     def paintEvent(self, event):
 
         bw = float(self._border_width)
         br = self._border_radius
 
-        val = self.value()
+        val = self.value
+        print "value", val
         if self.orientation() == Qt.Horizontal:
-            w = QStyle.sliderPositionFromValue(self.minimum(), self.maximum(), val, self.width())
+            w = self.sliderPositionFromValue(self.minimum, self.maximum, val, self.width())
             h = self.height()
             rect = QRectF(bw / 2, bw / 2, w - bw, h - bw)
         else:
-            w = self.width()
-            h = self.height() - QStyle.sliderPositionFromValue(self.minimum(), self.maximum(), val, self.height())
-            rect = QRectF(bw / 2, h - bw / 2, w - bw, self.height() - bw)
+            h = self.sliderPositionFromValue(self.minimum, self.maximum, val, self.height())
+            rect = QRectF(0, self.height(), self.width(), - h)
+
 
         p = QPainter(self)
-        p.setRenderHint(QPainter.Antialiasing);
+        p.setRenderHint(QPainter.Antialiasing)
 
         # draw the load meter value bar
         p.setPen(Qt.transparent)
@@ -70,6 +73,48 @@ class BarIndicator(QProgressBar):
         else:
             self.gradient.setStart(0, self.height())
             self.gradient.setFinalStop(0, 0)
+
+
+    def sliderPositionFromValue(self, min, max, val, span, upsideDown=False):
+        return span * (val / max - min)
+
+
+    def getValue(self):
+        return self._value
+
+    def setValue(self, value):
+        if value >= self.minimum and value <= self.maximum:
+            self._value = value
+            self.update()
+
+    value = Property(float, fget=getValue, fset=setValue)
+
+    @Property(float)
+    def minimum(self):
+        return self._minimum
+
+    @minimum.setter
+    def minimum(self, min_val):
+        self._minimum = min_val
+        self.update()
+
+    @Property(float)
+    def maximum(self):
+        return self._maximum
+
+    @maximum.setter
+    def maximum(self, max_val):
+        self._maximum = max_val
+        self.update()
+
+
+    def text(self):
+        values = {'p': 65, 'v': self._value}
+        print self.format()
+        try:
+            return str(self.format()).format(**values)
+        except:
+            return self.format()
 
     # border width
     @Property('QStringList')
@@ -139,5 +184,5 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     w = BarIndicator()
     w.show()
-    w.setValue(100)
+    w.setValue(65)
     sys.exit(app.exec_())
