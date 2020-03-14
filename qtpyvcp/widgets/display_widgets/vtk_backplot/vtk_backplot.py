@@ -877,7 +877,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewPath(self):
         LOG.debug('Path')
-        self.extents_actor.SetCamera(self.renderer.GetActiveCamera())
+        
+        active_offset = self.index_map[self.g5x_index]
+        self.extents[active_offset].SetCamera(self.renderer.GetActiveCamera())
         self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
