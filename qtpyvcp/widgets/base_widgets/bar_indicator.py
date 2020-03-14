@@ -31,7 +31,6 @@ class BarIndicator(QProgressBar):
         br = self._border_radius
 
         val = self.value
-        print "value", val
         if self.orientation() == Qt.Horizontal:
             w = self.sliderPositionFromValue(self.minimum, self.maximum, val, self.width())
             h = self.height()
@@ -39,7 +38,6 @@ class BarIndicator(QProgressBar):
         else:
             h = self.sliderPositionFromValue(self.minimum, self.maximum, val, self.height())
             rect = QRectF(0, self.height(), self.width(), - h)
-
 
         p = QPainter(self)
         p.setRenderHint(QPainter.Antialiasing)
@@ -74,20 +72,18 @@ class BarIndicator(QProgressBar):
             self.gradient.setStart(0, self.height())
             self.gradient.setFinalStop(0, 0)
 
-
     def sliderPositionFromValue(self, min, max, val, span, upsideDown=False):
         return span * (val / max - min)
 
-
-    def getValue(self):
+    @Property(float)
+    def value(self):
         return self._value
 
-    def setValue(self, value):
+    @value.setter
+    def value(self, value):
         if value >= self.minimum and value <= self.maximum:
             self._value = value
             self.update()
-
-    value = Property(float, fget=getValue, fset=setValue)
 
     @Property(float)
     def minimum(self):
@@ -106,7 +102,6 @@ class BarIndicator(QProgressBar):
     def maximum(self, max_val):
         self._maximum = max_val
         self.update()
-
 
     def text(self):
         values = {'p': self._value * 100 / self._maximum, 'v': self._value}
@@ -143,7 +138,7 @@ class BarIndicator(QProgressBar):
         return self._text_color
 
     @textColor.setter
-    def setTextColor(self, text_color):
+    def textColor(self, text_color):
         self._text_color = text_color
         self.update()
 
@@ -176,6 +171,7 @@ class BarIndicator(QProgressBar):
     def borderWidth(self, border_width):
         self._border_width = border_width
         self.update()
+
 
 if __name__ == "__main__":
     import sys
