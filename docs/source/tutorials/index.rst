@@ -11,4 +11,5 @@ Tutorials for using QtPyVCP and for creating VCP's
    basic_vcp
    widget_rules
    components
+   misc
 
