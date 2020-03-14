@@ -104,7 +104,8 @@ class BarIndicator(QProgressBar):
         self.update()
 
     def text(self):
-        values = {'p': self._value * 100 / self._maximum, 'v': self._value}
+        values = {'v': self._value,
+                  'p': int((self._value * 100 / self._maximum) + .5)}
         try:
             return self.format().encode("utf-8").format(**values)
         except:
