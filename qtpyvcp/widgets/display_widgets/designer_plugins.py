@@ -53,8 +53,12 @@ class NotificationPlugin(_DesignerPlugin):
     def pluginClass(self):
         return NotificationWidget
 
-
 from opencv_widget.opencv_widget import OpenCVWidget
 class OpenCVPlugin(_DesignerPlugin):
     def pluginClass(self):
         return OpenCVWidget
+
+from svg_slicer.svg_slicer_widget import SvgWidget
+class SvgWidget(_DesignerPlugin):
+    def pluginClass(self):
+        return SvgWidget
