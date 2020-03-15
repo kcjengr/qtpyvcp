@@ -49,6 +49,7 @@ building complex VCPs.
 
    QtPyVCP GitHub <https://github.com/kcjengr/qtpyvcp>
    LinuxCNC Github <https://github.com/linuxcnc/linuxcnc>
+   LinuxCNC Forum <https://forum.linuxcnc.org/qtpyvcp>
 
 
 Indices and tables

@@ -1,4 +1,4 @@
-![](docs/source/_static/qtpyvcp_logo_small.png)
+![](https://www.qtpyvcp.com/_static/qtpyvcp_logo_small.png)
 
 # QtPyVCP - QtPy Virtual Control Panel
 [![Travis CI][Travis-badge]](https://travis-ci.org/kcjengr/qtpyvcp)
@@ -22,15 +22,19 @@ building complex VCPs.
 See the [documentation](https://kcjengr.github.io/qtpyvcp/).
 
 
-## Resources
+## Development
 
-* [Development](https://github.com/kcjengr/qtpyvcp/)
-* [Documentation](https://kcjengr.github.io/qtpyvcp/)
+* [GitHub Repo](https://github.com/kcjengr/qtpyvcp/)
+* [Issue Tracker](https://github.com/kcjengr/qtpyvcp/issues)
+
+## Documentation and Help
+
+* [Documentation](https://www.qtpyvcp.com)
+* [LinuxCNC Forum](https://forum.linuxcnc.org/qtpyvcp)
 * [Freenode IRC](http://webchat.freenode.net/?channels=%23hazzy) (#hazzy)
 * [The Matrix](https://riot.im/app/#/room/#qtpyvcp:matrix.org) (#qtpyvcp:matrix.org)
 * [Gitter](https://gitter.im/kcjengr/qtpyvcp)
 * [Discord](https://discord.gg/463hMhd)
-* [Issue Tracker](https://github.com/kcjengr/qtpyvcp/issues)
 
 
 ## Dependancies
