@@ -3,7 +3,7 @@ import sys
 import cv2
 
 from qtpy.QtGui import QImage, QPixmap
-from qtpy.QtCore import Qt, QSize, QTimer
+from qtpy.QtCore import Qt, QSize, QTimer, Slot
 from qtpy.QtWidgets import QLabel
 
 
@@ -32,15 +32,15 @@ class OpenCVWidget(QLabel):
 
         self.video_size = QSize(w, h)
 
-        # Green color in BGR
-        self.line_color = (255, 255, 0)
+        # Green color in RGB
+        self.line_color = (255, 127, 0)
 
         # Line thickness of 9 px
         self.line_thickness = 1
 
         self._h_lines = 0
         self._v_lines = 0
-        self._c_radious = 0
+        self._c_radius = 25
 
         self.setScaledContents(True)
         self.setMinimumSize(w, h)
@@ -76,10 +76,30 @@ class OpenCVWidget(QLabel):
         w = self.video_size.width()
         h = self.video_size.height()
 
-        cv2.line(frame, (w / 2, 0), (w / 2, h), self.line_color, self.line_thickness)
-        cv2.line(frame, (0, h / 2), (w, h / 2), self.line_color, self.line_thickness)
+        cv2.line(frame,
+                 ((w / 2) + self._v_lines, 0),
+                 ((w / 2) + self._v_lines, h),
+                 self.line_color, self.line_thickness)
 
-        cv2.circle(frame, (w / 2, h / 2), 25, self.line_color, self.line_thickness)
+        cv2.line(frame,
+                 (0, (h / 2) - self._h_lines),
+                 (w, (h / 2) - self._h_lines),
+                 self.line_color, self.line_thickness)
+
+        if self._c_radius > 1:
+            cv2.circle(frame, ((w / 2) + self._v_lines, (h / 2) - self._h_lines), self._c_radius, self.line_color, self.line_thickness)
+
+    @Slot(int)
+    def setHorizontalLine(self, value):
+        self._h_lines = value
+
+    @Slot(int)
+    def setVerticalLine(self, value):
+        self._v_lines = value
+
+    @Slot(int)
+    def setCenterRadius(self, value):
+        self._c_radius = value
 
 
 if __name__ == "__main__":
