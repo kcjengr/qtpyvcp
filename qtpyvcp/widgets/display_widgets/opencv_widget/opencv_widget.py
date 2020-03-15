@@ -15,15 +15,9 @@ IN_DESIGNER = os.getenv('DESIGNER', False)
 class OpenCVWidget(QWidget):
 
     def __init__(self, parent=None):
-        super(OpenCVWidget, self).__init__()
-        if not IN_DESIGNER:
-            self.video_size = QSize(320, 240)
-            self.setup_ui()
-            self.setup_camera()
+        super(OpenCVWidget, self).__init__(parent)
 
-    def setup_ui(self):
-        """Initialize widgets.
-        """
+        self.video_size = QSize(320, 240)
         self.image_label = QLabel()
         self.image_label.setFixedSize(self.video_size)
 
@@ -31,6 +25,8 @@ class OpenCVWidget(QWidget):
         self.main_layout.addWidget(self.image_label)
 
         self.setLayout(self.main_layout)
+        if not IN_DESIGNER:
+            self.setup_camera()
 
     def setup_camera(self):
         """Initialize camera.
