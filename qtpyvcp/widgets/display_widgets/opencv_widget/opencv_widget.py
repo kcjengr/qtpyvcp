@@ -2,11 +2,10 @@ import os
 import sys
 import cv2
 
-from qtpy.QtGui import QImage, QPixmap, QPainter, QPen
+from qtpy.QtGui import QImage, QPixmap
 from qtpy.QtCore import Qt, QSize, QTimer
 from qtpy.QtWidgets import QLabel
 
-from qtpyvcp.widgets import VCPWidget
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
@@ -33,6 +32,16 @@ class OpenCVWidget(QLabel):
 
         self.video_size = QSize(w, h)
 
+        # Green color in BGR
+        self.line_color = (255, 255, 0)
+
+        # Line thickness of 9 px
+        self.line_thickness = 1
+
+        self._h_lines = 0
+        self._v_lines = 0
+        self._c_radious = 0
+
         self.setScaledContents(True)
         self.setMinimumSize(w, h)
 
@@ -54,29 +63,23 @@ class OpenCVWidget(QLabel):
         if result is True:
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             frame = cv2.flip(frame, 1)
+
+            self.draw_crosshairs(frame)
+
             image = QImage(frame, frame.shape[1], frame.shape[0],
                            frame.strides[0], QImage.Format_RGB888)
 
-            image = self.draw_crosshairs(image)
-
             self.setPixmap(QPixmap.fromImage(image))
 
-    def draw_crosshairs(self, image):
-        pen = QPen()
-        painter = QPainter(image)
-        pen.setWidth(1)
-        pen.setColor(Qt.yellow)
-        painter.setPen(pen)
+    def draw_crosshairs(self, frame):
 
         w = self.video_size.width()
         h = self.video_size.height()
 
-        painter.drawLine(w / 2, 0, w / 2, h)
-        painter.drawLine(0, h / 2, w, h / 2)
-        painter.drawEllipse((w / 2) - 25, (h / 2) - 25, 50, 50)
-        painter.end()
+        cv2.line(frame, (w / 2, 0), (w / 2, h), self.line_color, self.line_thickness)
+        cv2.line(frame, (0, h / 2), (w, h / 2), self.line_color, self.line_thickness)
 
-        return image
+        cv2.circle(frame, (w / 2, h / 2), 25, self.line_color, self.line_thickness)
 
 
 if __name__ == "__main__":
