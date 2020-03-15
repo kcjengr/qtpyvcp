@@ -1,29 +1,30 @@
-from qtpy.QtCore import Qt, Property, QRectF
+from qtpy.QtCore import Qt, Property, QRectF, QSize
 from qtpy.QtGui import QColor, QLinearGradient, QPainter, QPen
-from qtpy.QtWidgets import QProgressBar, QStyle
+from qtpy.QtWidgets import QWidget, QSizePolicy
 
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 
-class BarIndicator(QProgressBar):
+class BarIndicator(QWidget):
     """docstring for BarIndicator"""
     def __init__(self, parent=None):
         super(BarIndicator, self).__init__(parent)
 
-        self.barGradient = [u'0.0, 0, 255, 0',
-                            u'0.8, 255, 255, 0',
-                            u'1.0, 255, 0, 0',]
-
-        self._value = 65.0
+        self._value = 100
         self._minimum = 0.0
         self._maximum = 100.0
+        self._format = '{p}%'
+        self._orientation = Qt.Horizontal
+
         self._text_color = QColor(0, 0, 0)
         self._border_color = Qt.gray
         self._border_radius = 2
         self._border_width = 1
 
-        self.setFormat('{p}%')
+        self.barGradient = [u'0.0, 0, 255, 0',
+                            u'0.8, 255, 255, 0',
+                            u'1.0, 255, 0, 0',]
 
     def paintEvent(self, event):
 
@@ -31,7 +32,7 @@ class BarIndicator(QProgressBar):
         br = self._border_radius
 
         val = self.value
-        if self.orientation() == Qt.Horizontal:
+        if self._orientation == Qt.Horizontal:
             w = self.sliderPositionFromValue(self.minimum, self.maximum, val, self.width())
             h = self.height()
             rect = QRectF(bw / 2, bw / 2, w - bw, h - bw)
@@ -58,14 +59,17 @@ class BarIndicator(QProgressBar):
 
         # draw the load percentage text
         p.setPen(self._text_color)
-        if self.orientation() == Qt.Vertical:
+        if self.orientation == Qt.Vertical:
             p.rotate(-90)
             p.drawText(-self.height(), 0, self.height(), self.width(), Qt.AlignCenter, self.text())
         else:
             p.drawText(0,0, self.width(), self.height(), Qt.AlignCenter, self.text())
 
+    def minimumSizeHint(self):
+        return QSize(30, 30)
+
     def resizeEvent(self, event):
-        if self.orientation() == Qt.Horizontal:
+        if self._orientation == Qt.Horizontal:
             self.gradient.setStart(0, 0)
             self.gradient.setFinalStop(self.width(), 0)
         else:
@@ -74,6 +78,9 @@ class BarIndicator(QProgressBar):
 
     def sliderPositionFromValue(self, min, max, val, span, upsideDown=False):
         return span * (val / max - min)
+
+    def setValue(self, val):
+        self.value = val
 
     @Property(float)
     def value(self):
@@ -103,13 +110,38 @@ class BarIndicator(QProgressBar):
         self._maximum = max_val
         self.update()
 
+    @Property(str)
+    def format(self):
+        return self._format
+
+    @format.setter
+    def format(self, fmt):
+        self._format = fmt
+
+    @Property(Qt.Orientation)
+    def orientation(self):
+        return self._orientation
+
+    @orientation.setter
+    def orientation(self, orient):
+        if orient == self._orientation:
+            return
+
+        if orient == Qt.Horizontal:
+            self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        else:
+            self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+
+        self._orientation = orient
+        self.update()
+
     def text(self):
         values = {'v': self._value,
                   'p': int((self._value * 100 / self._maximum) + .5)}
         try:
-            return self.format().encode("utf-8").format(**values)
+            return self.format.encode("utf-8").format(**values)
         except:
-            return self.format()
+            return self.format
 
     # border width
     @Property('QStringList')
