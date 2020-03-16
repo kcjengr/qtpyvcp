@@ -20,10 +20,14 @@ class OpenCVWidget(QLabel):
 
         self.setAttribute(Qt.WA_OpaquePaintEvent, True)
 
-        self._enable_crosshairs = True
-        self._enable_edge = True
-
         if not IN_DESIGNER:
+
+            self._enable_edge = True
+
+            self._edge_min_threshold = 190
+            self._edge_max_threshold = 200
+
+            self._enable_crosshairs = True
 
             self._line_color = (255, 127, 0)  # R G B
 
@@ -68,7 +72,7 @@ class OpenCVWidget(QLabel):
         if result is True:
 
             if self._enable_edge is True:
-                frame = cv2.Canny(frame, 190, 200)
+                frame = cv2.Canny(frame, self._edge_min_threshold, self._edge_max_threshold)
 
                 if self._enable_crosshairs is True:
                     self.draw_crosshairs(frame)
@@ -128,6 +132,14 @@ class OpenCVWidget(QLabel):
     @Slot(bool)
     def enableEdge(self, enabled):
         self._enable_edge = enabled
+
+    @Slot(int)
+    def setEdgeMinThreshold(self, value):
+        self._edge_min_threshold = value
+
+    @Slot(int)
+    def setEdgeMaxThreshold(self, value):
+        self._edge_max_threshold = value
 
 
 if __name__ == "__main__":
