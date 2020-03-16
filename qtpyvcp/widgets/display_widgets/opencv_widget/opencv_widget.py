@@ -2,6 +2,7 @@ import os
 import sys
 import cv2
 
+
 from qtpy.QtGui import QImage, QPixmap
 from qtpy.QtCore import Qt, QSize, QTimer, Slot
 from qtpy.QtWidgets import QLabel
@@ -19,8 +20,22 @@ class OpenCVWidget(QLabel):
 
         self.setAttribute(Qt.WA_OpaquePaintEvent, True)
 
+        self._enable_crosshairs = True
+        self._enable_edge = True
+
         if not IN_DESIGNER:
+
+            self._line_color = (255, 127, 0)  # R G B
+
+            self._line_thickness = 1
+
+            self._h_lines = 0
+            self._v_lines = 0
+            self._c_radius = 25
+
             self.setup_camera()
+
+    # Video
 
     def setup_camera(self):
         """Initialize camera.
@@ -31,16 +46,6 @@ class OpenCVWidget(QLabel):
         h = self.capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
         self.video_size = QSize(w, h)
-
-        # Green color in RGB
-        self.line_color = (255, 127, 0)
-
-        # Line thickness of 9 px
-        self.line_thickness = 1
-
-        self._h_lines = 0
-        self._v_lines = 0
-        self._c_radius = 25
 
         self.setScaledContents(True)
         self.setMinimumSize(w, h)
@@ -61,15 +66,28 @@ class OpenCVWidget(QLabel):
         result, frame = self.capture.read()
 
         if result is True:
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            frame = cv2.flip(frame, 1)
 
-            self.draw_crosshairs(frame)
+            if self._enable_edge is True:
+                frame = cv2.Canny(frame, 190, 200)
 
-            image = QImage(frame, frame.shape[1], frame.shape[0],
-                           frame.strides[0], QImage.Format_RGB888)
+                if self._enable_crosshairs is True:
+                    self.draw_crosshairs(frame)
+
+                image = QImage(frame.data, self.video_size.width(), self.video_size.height(), QImage.Format_Indexed8)
+
+            else:
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                frame = cv2.flip(frame, 1)
+
+                if self._enable_crosshairs is True:
+                    self.draw_crosshairs(frame)
+
+                image = QImage(frame, frame.shape[1], frame.shape[0],
+                               frame.strides[0], QImage.Format_RGB888)
 
             self.setPixmap(QPixmap.fromImage(image))
+
+    # Helpers
 
     def draw_crosshairs(self, frame):
 
@@ -79,15 +97,17 @@ class OpenCVWidget(QLabel):
         cv2.line(frame,
                  ((w / 2) + self._v_lines, 0),
                  ((w / 2) + self._v_lines, h),
-                 self.line_color, self.line_thickness)
+                 self._line_color, self._line_thickness)
 
         cv2.line(frame,
                  (0, (h / 2) - self._h_lines),
                  (w, (h / 2) - self._h_lines),
-                 self.line_color, self.line_thickness)
+                 self._line_color, self._line_thickness)
 
         if self._c_radius > 1:
-            cv2.circle(frame, ((w / 2) + self._v_lines, (h / 2) - self._h_lines), self._c_radius, self.line_color, self.line_thickness)
+            cv2.circle(frame, ((w / 2) + self._v_lines, (h / 2) - self._h_lines), self._c_radius, self._line_color, self._line_thickness)
+
+    # Slots
 
     @Slot(int)
     def setHorizontalLine(self, value):
@@ -100,6 +120,14 @@ class OpenCVWidget(QLabel):
     @Slot(int)
     def setCenterRadius(self, value):
         self._c_radius = value
+
+    @Slot(bool)
+    def enableCrosshairs(self, enabled):
+        self._enable_crosshairs = enabled
+
+    @Slot(bool)
+    def enableEdge(self, enabled):
+        self._enable_edge = enabled
 
 
 if __name__ == "__main__":
