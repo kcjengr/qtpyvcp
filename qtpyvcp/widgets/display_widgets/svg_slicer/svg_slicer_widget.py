@@ -11,8 +11,8 @@ IN_DESIGNER = os.getenv('DESIGNER', False)
 
 class SvgWidget(QSvgWidget):
 
-    def __init__(self):
-        super(SvgWidget, self).__init__()
+    def __init__(self, parent=None):
+        super(SvgWidget, self).__init__(parent)
 
         svg_str = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
         <svg width="300" height="300" viewBox="0 0 300 300" id="smile" version="1.1">
@@ -29,8 +29,8 @@ class SvgWidget(QSvgWidget):
         """
 
         svg_bytes = bytearray(svg_str, encoding='utf-8')
-
-        self.renderer().load(svg_bytes)
+        filename = "blender.svg"
+        self.renderer().load(filename)
         self.setGeometry(100, 100, 300, 300)
 
 

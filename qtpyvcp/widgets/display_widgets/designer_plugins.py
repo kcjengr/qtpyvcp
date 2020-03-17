@@ -59,6 +59,6 @@ class OpenCVPlugin(_DesignerPlugin):
         return OpenCVWidget
 
 from svg_slicer.svg_slicer_widget import SvgWidget
-class SvgWidget(_DesignerPlugin):
+class SvgWidgetPlugin(_DesignerPlugin):
     def pluginClass(self):
         return SvgWidget
