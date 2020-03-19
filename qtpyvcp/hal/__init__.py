@@ -29,9 +29,12 @@ Example:
 
 """
 
+from qtpyvcp.utilities.logger import getLogger
+
 from hal_qlib import QComponent, QPin
 
 COMPONENTS = {}
+LOG = getLogger(__name__)
 
 
 def component(name):
@@ -50,10 +53,15 @@ def getComponent(name='qtpyvcp'):
     Returns:
         QComponent : An existing or new HAL component.
     """
+
     try:
-        return COMPONENTS[name]
+        comp = COMPONENTS[name]
+        LOG.debug("Using existing HAL component: %s", name)
     except KeyError:
-        return component(name)
+        LOG.info("Creating new HAL component: %s", name)
+        comp = component(name)
+
+    return comp
 
 
 if __name__ == "__main__":

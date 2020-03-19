@@ -6,6 +6,10 @@ import hal
 
 from qtpy.QtCore import QObject, Signal, QTimer
 
+from qtpyvcp.utilities.logger import getLogger
+
+LOG = getLogger(__name__)
+
 
 class QPin(QObject):
     """QPin
@@ -82,6 +86,8 @@ class QComponent(QObject):
         pin_type = self.type_map.get(type.lower())
         pin_dir = self.dir_map.get(direction.lower())
 
+        LOG.debug("Adding HAL pin: %s.%s (%s %s)", self.name, name, type, direction)
+
         pin = QPin(self._comp, name, pin_type, pin_dir)
         self._pins[name] = pin
         return pin
@@ -119,8 +125,8 @@ def main():
         print("Value Changed", new_val)
 
     c = QComponent('test')
-    c.newPin('input', "s32", "in")
-    c.newPin('float_in', "s32", "in")
+    c.addPin('input', "s32", "in")
+    c.addPin('float_in', "s32", "in")
     c.getPin('input').valueChanged.connect(printChange)
     c.ready()
 
