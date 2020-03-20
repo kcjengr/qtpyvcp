@@ -1,6 +1,6 @@
 from qtpy.QtCore import Qt, Property, Slot, QRectF, QSize
 from qtpy.QtGui import QColor, QLinearGradient, QPainter, QPen
-from qtpy.QtWidgets import QWidget, QSizePolicy
+from qtpy.QtWidgets import QWidget, QSizePolicy, QWIDGETSIZE_MAX
 
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -15,55 +15,128 @@ class BarIndicatorBase(QWidget):
         self._minimum = 0.0
         self._maximum = 100.0
         self._format = '{p}%'
-        self._orientation = Qt.Horizontal
 
         self._text_color = QColor(0, 0, 0)
         self._border_color = Qt.gray
         self._border_radius = 2
         self._border_width = 1
 
+        self._painter = QPainter()
+
+        self._orientation = Qt.Horizontal
+        self._bar_width = self.height()
+        self._bar_length = self.width()
+
+        self._painter_rotation = None
+        self._painter_translation_y = None
+        self._painter_translation_x = None
+        self._painter_scale_x = None
+        self._flip_translation_y = None
+        self._flip_scale_y = None
+
+
+        self._inverted_appearance = False
+        self._flip_scale = False
+        self._scale_height = 30
+        self._origin_at_zero = False
+        self._origin_position = 0
+
         self.barGradient = [u'0.0, 0, 255, 0',
                             u'0.8, 255, 255, 0',
                             u'1.0, 255, 0, 0',]
 
+    def adjustTransformation(self):
+        """This method sets parameters for the widget transformations (needed
+        for orientation, flipping and appearance inversion).
+        """
+        self.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)  # Unset fixed size
+        if self._orientation == Qt.Horizontal:
+            self._bar_width = self.height()
+            self._bar_length = self.width()
+            self._painter_translation_y = 0
+            self._painter_rotation = 0
+            self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+            self.setFixedHeight(self._scale_height)
+        elif self._orientation == Qt.Vertical:
+            # Invert dimensions for paintEvent()
+            self._bar_width = self.width()
+            self._bar_length = self.height()
+            self._painter_translation_y = self._bar_length
+            self._painter_rotation = -90
+            self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+            self.setFixedWidth(self._scale_height)
+
+        if self._inverted_appearance:
+            self._painter_translation_x = self._bar_width
+            self._painter_scale_x = -1
+        else:
+            self._painter_translation_x = 0
+            self._painter_scale_x = 1
+
+        if self._flip_scale:
+            self._flip_translation_y = self._bar_length
+            self._flip_scale_y = -1
+        else:
+            self._flip_translation_y = 0
+            self._flip_scale_y = 1
+
+
     def paintEvent(self, event):
+
+        self.adjustTransformation()
+        self._painter.begin(self)
+        self._painter.translate(0, self._painter_translation_y) # Draw vertically if needed
+        self._painter.rotate(self._painter_rotation)
+        self._painter.translate(self._painter_translation_x, 0) # Invert appearance if needed
+        self._painter.scale(self._painter_scale_x, 1)
+
+        self._painter.translate(0, self._flip_translation_y)     # Invert scale if needed
+        self._painter.scale(1, self._flip_scale_y)
+
+        self._painter.setRenderHint(QPainter.Antialiasing)
+
+        self.drawBackground()
+
+        self._painter.end()
+
+
+    def drawBackground(self):
 
         bw = float(self._border_width)
         br = self._border_radius
 
-        val = self.value
-        if self._orientation == Qt.Horizontal:
-            w = self.sliderPositionFromValue(self.minimum, self.maximum, val, self.width())
-            h = self.height()
-            rect = QRectF(bw / 2, bw / 2, w - bw, h - bw)
-        else:
-            h = self.sliderPositionFromValue(self.minimum, self.maximum, val, self.height())
-            rect = QRectF(0, self.height(), self.width(), - h)
+        print self._bar_length
+        print self._painter_translation_y
+        print self._painter_rotation
 
-        p = QPainter(self)
-        p.setRenderHint(QPainter.Antialiasing)
+        w = self.sliderPositionFromValue(self.minimum, self.maximum, self._value, self._bar_length)
+        h = self._scale_height
+        rect = QRectF(bw / 2, bw / 2, w - bw, h - bw)
+
+        p = self._painter
 
         # draw the load meter value bar
         p.setPen(Qt.transparent)
         p.setBrush(self.gradient)
+
         p.drawRoundedRect(rect, br, br)
 
-        # draw the border
-        p.setBrush(Qt.transparent)
-        border_pen = QPen()
-        border_pen.setWidth(bw)
-        border_pen.setColor(self._border_color)
-        p.setPen(border_pen)
-        rect = QRectF(bw / 2, bw / 2, self.width() - bw, self.height() - bw)
-        p.drawRoundedRect(rect, br, br)
-
-        # draw the load percentage text
-        p.setPen(self._text_color)
-        if self.orientation == Qt.Vertical:
-            p.rotate(-90)
-            p.drawText(-self.height(), 0, self.height(), self.width(), Qt.AlignCenter, self.text())
-        else:
-            p.drawText(0,0, self.width(), self.height(), Qt.AlignCenter, self.text())
+        # # draw the border
+        # p.setBrush(Qt.transparent)
+        # border_pen = QPen()
+        # border_pen.setWidth(bw)
+        # border_pen.setColor(self._border_color)
+        # p.setPen(border_pen)
+        # rect = QRectF(bw / 2, bw / 2, self.width() - bw, self.height() - bw)
+        # p.drawRoundedRect(rect, br, br)
+        #
+        # # draw the load percentage text
+        # p.setPen(self._text_color)
+        # if self.orientation == Qt.Vertical:
+        #     p.rotate(-90)
+        #     p.drawText(-self.height(), 0, self.height(), self.width(), Qt.AlignCenter, self.text())
+        # else:
+        #     p.drawText(0, 0, self.width(), self.height(), Qt.AlignCenter, self.text())
 
     def minimumSizeHint(self):
         return QSize(30, 30)
@@ -130,10 +203,7 @@ class BarIndicatorBase(QWidget):
         if orient == self._orientation:
             return
 
-        if orient == Qt.Horizontal:
-            self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        else:
-            self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
+        self.adjustTransformation()
 
         self._orientation = orient
         self.update()
