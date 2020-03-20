@@ -79,6 +79,8 @@ class BarIndicator(QWidget):
     def sliderPositionFromValue(self, min, max, val, span, upsideDown=False):
         return span * (val / max - min)
 
+    @Slot(int)
+    @Slot(float)
     def setValue(self, val):
         self.value = val
 
