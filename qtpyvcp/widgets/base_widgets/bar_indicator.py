@@ -1,4 +1,4 @@
-from qtpy.QtCore import Qt, Property, QRectF, QSize
+from qtpy.QtCore import Qt, Property, Slot, QRectF, QSize
 from qtpy.QtGui import QColor, QLinearGradient, QPainter, QPen
 from qtpy.QtWidgets import QWidget, QSizePolicy
 
