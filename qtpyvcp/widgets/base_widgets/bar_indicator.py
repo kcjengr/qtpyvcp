@@ -6,10 +6,10 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 
-class BarIndicator(QWidget):
+class BarIndicatorBase(QWidget):
     """docstring for BarIndicator"""
     def __init__(self, parent=None):
-        super(BarIndicator, self).__init__(parent)
+        super(BarIndicatorBase, self).__init__(parent)
 
         self._value = 100
         self._minimum = 0.0
@@ -213,7 +213,7 @@ if __name__ == "__main__":
     import sys
     from qtpy.QtWidgets import QApplication
     app = QApplication(sys.argv)
-    w = BarIndicator()
+    w = BarIndicatorBase()
     w.show()
     w.setValue(65)
     sys.exit(app.exec_())

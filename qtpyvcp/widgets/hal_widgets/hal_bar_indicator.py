@@ -18,14 +18,14 @@ Bar for indicating the value of `float` HAL pins.
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget
-from qtpyvcp.widgets.base_widgets.bar_indicator import BarIndicator
+from qtpyvcp.widgets.base_widgets.bar_indicator import BarIndicatorBase
 
 # Setup logging
 from qtpyvcp.utilities.logger import getLogger
 log = getLogger(__name__)
 
 
-class HalBarIndicator(BarIndicator, HALWidget):
+class HalBarIndicator(BarIndicatorBase, HALWidget):
     """HAL Bar Indicator"""
     def __init__(self, parent=None):
         super(HalBarIndicator, self).__init__(parent)

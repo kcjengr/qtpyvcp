@@ -4,13 +4,13 @@ Bar Indicator
 """
 
 from qtpyvcp.widgets import VCPWidget
-from qtpyvcp.widgets.base_widgets.bar_indicator import BarIndicator
+from qtpyvcp.widgets.base_widgets.bar_indicator import BarIndicatorBase
 
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 
-class BarIndicator(BarIndicator, VCPWidget):
+class BarIndicator(BarIndicatorBase, VCPWidget):
     """General purpose bars style indicator.
 
     Args:
