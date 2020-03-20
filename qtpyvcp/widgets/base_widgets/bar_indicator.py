@@ -81,6 +81,7 @@ class BarIndicator(QWidget):
 
     @Slot(int)
     @Slot(float)
+    @Slot(object)
     def setValue(self, val):
         self.value = val
 
