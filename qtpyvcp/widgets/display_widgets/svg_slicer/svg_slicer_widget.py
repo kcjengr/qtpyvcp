@@ -1,9 +1,16 @@
 import sys
+from xml.dom import minidom
+
+from qtpy.QtCore import Slot
 from qtpy.QtWidgets import QApplication, QWidget, QVBoxLayout
 from qtpy.QtSvg import QSvgWidget, QSvgRenderer
 
 
 import os
+
+from qtpyvcp.plugins import getPlugin
+
+STATUS = getPlugin('status')
 
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
@@ -14,28 +21,65 @@ class SvgWidget(QSvgWidget):
     def __init__(self, parent=None):
         super(SvgWidget, self).__init__(parent)
 
-        svg_str = """<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-        <svg width="300" height="300" viewBox="0 0 300 300" id="smile" version="1.1">
-            <path
-                style="fill:#ffaaaa"
-                d="M 150,0 A 150,150 0 0 0 0,150 150,150 0 0 0 150,300 150,150 0 0 0 
-                    300,150 150,150 0 0 0 150,0 Z M 72,65 A 21,29.5 0 0 1 93,94.33 
-                    21,29.5 0 0 1 72,124 21,29.5 0 0 1 51,94.33 21,29.5 0 0 1 72,65 Z 
-                    m 156,0 a 21,29.5 0 0 1 21,29.5 21,29.5 0 0 1 -21,29.5 21,29.5 0 0 1 
-                    -21,-29.5 21,29.5 0 0 1 21,-29.5 z m -158.75,89.5 161.5,0 c 0,44.67 
-                    -36.125,80.75 -80.75,80.75 -44.67,0 -80.75,-36.125 -80.75,-80.75 z"
-            />
-        </svg>
-        """
+        self.status = STATUS
 
-        svg_bytes = bytearray(svg_str, encoding='utf-8')
-        filename = "blender.svg"
-        self.renderer().load(filename)
+        self._svg_header = """<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg width="23.838" height="23.838" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:slic3r="http://slic3r.org/namespaces/slic3r">
+"""
+        self._svg_end = "</svg>"
+        self._current_layer = 0
+
+        self._file_name = ""
+        self._layers = None
+
+        self.status.file.notify(self.load_file)
+        
         self.setGeometry(100, 100, 300, 300)
 
+    def get_layers(self):
+        xmldoc = minidom.parse(self._file_name)
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    win = SvgWidget()
-    win.show()
-    sys.exit(app.exec_())
+        assert isinstance(xmldoc, minidom.Document)
+
+        _layers = []
+        for node in xmldoc.getElementsByTagName('g'):
+            _layers.append(node)
+
+        return _layers
+
+    def select_layers(self):
+        xmldoc = minidom.parse(self._file_name)
+
+        assert isinstance(xmldoc, minidom.Document)
+
+        svg_data = None
+
+        # for all group nodes...
+        for node in xmldoc.getElementsByTagName('g'):
+            if int(node.attributes['id'].value.lstrip('layer')) == self._current_layer:
+                svg_data = node.toxml()
+                break
+
+        return svg_data
+
+    def load_file(self, file_name):
+        self._file_name = file_name
+        self._layers = self.get_layers()
+
+        layer = self.select_layers()
+
+        svg_file = "{}{}\n{}".format(self._svg_header, layer, self._svg_end)
+
+        svg_bytes = bytearray(svg_file, encoding='utf-8')
+        # self.renderer().load(svg_bytes)
+
+    @Slot(int)
+    def selectLayer(self, layer):
+        self._current_layer = layer
+        layer = self.select_layers()
+
+        svg_file = "{}{}\n{}".format(self._svg_header, layer, self._svg_end)
+
+        svg_bytes = bytearray(svg_file, encoding='utf-8')
+        self.renderer().load(svg_bytes)
