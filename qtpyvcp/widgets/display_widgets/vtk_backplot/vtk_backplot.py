@@ -280,9 +280,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.axis = self.stat.axis
 
-
         self.camera = vtk.vtkCamera()
         self.camera.ParallelProjectionOn()
+
+        near = 0.001
+        far = 100
+
+        self.camera.SetClippingRange(near, far)
 
         self.renderer = vtk.vtkRenderer()
         self.renderer.SetActiveCamera(self.camera)
@@ -469,6 +473,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         camera.Azimuth(lastX - x)
         camera.Elevation(lastY - y)
         camera.OrthogonalizeViewUp()
+        camera.SetClippingRange(0.001, 100)
         self.renderer_window.Render()
 
     # Pan translates x-y motion into translation of the focal point and
