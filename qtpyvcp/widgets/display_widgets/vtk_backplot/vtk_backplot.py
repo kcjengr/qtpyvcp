@@ -280,9 +280,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.axis = self.stat.axis
 
-
         self.camera = vtk.vtkCamera()
         self.camera.ParallelProjectionOn()
+
+        near = 0.001
+        far = 100
+
+        self.camera.SetClippingRange(near, far)
 
         self.renderer = vtk.vtkRenderer()
         self.renderer.SetActiveCamera(self.camera)
@@ -300,7 +304,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.machine = Machine(self.axis)
         self.machine_actor = self.machine.get_actor()
-        self.machine_actor.SetCamera(self.renderer.GetActiveCamera())
+        self.machine_actor.SetCamera(self.camera)
 
         self.axes = Axes()
         self.axes_actor = self.axes.get_actor()
@@ -335,7 +339,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                 actor.SetUserTransform(actor_transform)
 
-                extents = PathBoundaries(self.renderer, actor)
+                extents = PathBoundaries(self.camera, actor)
                 extents_actor = extents.get_actor()
 
                 axes = actor.get_axes()
@@ -448,11 +452,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         centerY = center[1] / 2.0
 
         if self.rotating:
-            self.rotate(self.renderer, self.renderer.GetActiveCamera(), x, y, lastX, lastY, centerX, centerY)
+            self.rotate(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
         elif self.panning:
-            self.pan(self.renderer, self.renderer.GetActiveCamera(), x, y, lastX, lastY, centerX, centerY)
+            self.pan(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
         elif self.zooming:
-            self.dolly(self.renderer, self.renderer.GetActiveCamera(), x, y, lastX, lastY, centerX, centerY)
+            self.dolly(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
 
     def keypress(self, obj, event):
         key = obj.GetKeySym()
@@ -469,7 +473,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         camera.Azimuth(lastX - x)
         camera.Elevation(lastY - y)
         camera.OrthogonalizeViewUp()
+        camera.SetClippingRange(0.001, 100)
         self.renderer_window.Render()
+        self.renderer.ResetCamera()
+        self.interactor.ReInitialize()
 
     # Pan translates x-y motion into translation of the focal point and
     # position.
@@ -596,7 +603,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             axes.SetUserTransform(path_transform)
             actor.SetUserTransform(path_transform)
 
-            extents = PathBoundaries(self.renderer, actor)
+            extents = PathBoundaries(self.camera, actor)
             extents_actor = extents.get_actor()
 
             if self.show_extents:
@@ -670,7 +677,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 axes.SetUserTransform(path_transform)
                 actor.SetUserTransform(path_transform)
 
-            extents = PathBoundaries(self.renderer, actor)
+            extents = PathBoundaries(self.camera, actor)
             extents_actor = extents.get_actor()
 
             if self.show_extents:
@@ -728,7 +735,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 axes.SetUserTransform(path_transform)
                 actor.SetUserTransform(path_transform)
 
-                extents = PathBoundaries(self.renderer, actor)
+                extents = PathBoundaries(self.camera, actor)
                 extents_actor = extents.get_actor()
 
                 if self.show_extents:
@@ -801,85 +808,85 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def setViewOrtho(self):
-        self.renderer.GetActiveCamera().ParallelProjectionOn()
+        self.camera.ParallelProjectionOn()
         # self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewPersp(self):
-        self.renderer.GetActiveCamera().ParallelProjectionOff()
+        self.camera.ParallelProjectionOff()
         # self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewP(self):
-        self.renderer.GetActiveCamera().SetPosition(1, -1, 1)
-        self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
-        self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
+        self.camera.SetPosition(1, -1, 1)
+        self.camera.SetViewUp(0, 0, 1)
+        self.camera.SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
-        self.renderer.GetActiveCamera().Zoom(1.1)
+        self.camera.Zoom(1.1)
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewX(self):
-        self.renderer.GetActiveCamera().SetPosition(1, 0, 0)
-        self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
-        self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
+        self.camera.SetPosition(1, 0, 0)
+        self.camera.SetViewUp(0, 0, 1)
+        self.camera.SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
         # FIXME ugly hack
-        self.renderer.GetActiveCamera().Zoom(1.5)
+        self.camera.Zoom(1.5)
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewY(self):
-        self.renderer.GetActiveCamera().SetPosition(0, -1, 0)
-        self.renderer.GetActiveCamera().SetViewUp(0, 0, 1)
-        self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
+        self.camera.SetPosition(0, -1, 0)
+        self.camera.SetViewUp(0, 0, 1)
+        self.camera.SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
         # FIXME ugly hack
-        self.renderer.GetActiveCamera().Zoom(1.5)
+        self.camera.Zoom(1.5)
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewZ(self):
-        self.renderer.GetActiveCamera().SetPosition(0, 0, 1)
-        self.renderer.GetActiveCamera().SetViewUp(0, 1, 0)
-        self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
+        self.camera.SetPosition(0, 0, 1)
+        self.camera.SetViewUp(0, 1, 0)
+        self.camera.SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
         # FIXME ugly hack
-        self.renderer.GetActiveCamera().Zoom(2)
+        self.camera.Zoom(2)
         self.interactor.ReInitialize()
 
     @Slot()
     def printView(self):
         LOG.debug('LOG.debug view stats')
-        fp = self.renderer.GetActiveCamera().GetFocalPoint()
+        fp = self.camera.GetFocalPoint()
         LOG.debug('focal point {}'.format(fp))
-        p = self.renderer.GetActiveCamera().GetPosition()
+        p = self.camera.GetPosition()
         print('position {}'.format(p))
         # dist = math.sqrt( (p[0]-fp[0])**2 + (p[1]-fp[1])**2 + (p[2]-fp[2])**2 )
         # print(dist)
-        # self.renderer.GetActiveCamera().SetPosition(10, -40, -1)
-        # self.renderer.GetActiveCamera().SetViewUp(0.0, 1.0, 0.0)
+        # self.camera.SetPosition(10, -40, -1)
+        # self.camera.SetViewUp(0.0, 1.0, 0.0)
         # self.renderer.ResetCamera()
-        vu = self.renderer.GetActiveCamera().GetViewUp()
+        vu = self.camera.GetViewUp()
         LOG.debug('view up {}'.format(vu))
-        d = self.renderer.GetActiveCamera().GetDistance()
+        d = self.camera.GetDistance()
         print('distance {}'.format(d))
         # self.interactor.ReInitialize()
 
     @Slot()
     def setViewZ2(self):
-        self.renderer.GetActiveCamera().SetPosition(0, 0, 1)
-        self.renderer.GetActiveCamera().SetViewUp(1, 0, 0)
-        self.renderer.GetActiveCamera().SetFocalPoint(0, 0, 0)
+        self.camera.SetPosition(0, 0, 1)
+        self.camera.SetViewUp(1, 0, 0)
+        self.camera.SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewMachine(self):
         LOG.debug('Machine')
-        self.machine_actor.SetCamera(self.renderer.GetActiveCamera())
+        self.machine_actor.SetCamera(self.camera)
         self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
@@ -888,7 +895,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug('Path')
         
         active_offset = self.index_map[self.g5x_index]
-        self.extents[active_offset].SetCamera(self.renderer.GetActiveCamera())
+        self.extents[active_offset].SetCamera(self.camera)
         self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
@@ -908,7 +915,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def zoomIn(self):
 
-        camera = self.renderer.GetActiveCamera()
+        camera = self.camera
         if camera.GetParallelProjection():
             parallelScale = camera.GetParallelScale() * 0.9
             camera.SetParallelScale(parallelScale)
@@ -921,7 +928,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def zoomOut(self):
 
-        camera = self.renderer.GetActiveCamera()
+        camera = self.camera
         if camera.GetParallelProjection():
             parallelScale = camera.GetParallelScale() * 1.1
             camera.SetParallelScale(parallelScale)
@@ -1076,7 +1083,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
 
 class PathBoundaries:
-    def __init__(self, renderer, path_actor):
+    def __init__(self, camera, path_actor):
         self.path_actor = path_actor
 
         """
@@ -1097,7 +1104,7 @@ class PathBoundaries:
 
         cube_axes_actor.SetBounds(self.path_actor.GetBounds())
 
-        cube_axes_actor.SetCamera(renderer.GetActiveCamera())
+        cube_axes_actor.SetCamera(camera)
 
         cube_axes_actor.SetXLabelFormat("%6.3f")
         cube_axes_actor.SetYLabelFormat("%6.3f")
@@ -1380,7 +1387,7 @@ class Tool:
             source.SetRadius(tool.diameter / 2)
             transform.RotateWXYZ(90, 1, 0, 0)
 
-        source.SetResolution(128)
+        source.SetResolution(64)
 
         transform_filter = vtk.vtkTransformPolyDataFilter()
         transform_filter.SetTransform(transform)
