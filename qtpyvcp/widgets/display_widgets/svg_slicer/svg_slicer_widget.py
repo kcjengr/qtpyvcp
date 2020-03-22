@@ -33,9 +33,7 @@ class SvgWidget(QSvgWidget):
         self._file_name = ""
         self._layers = None
 
-        self.status.file.notify(self.load_file)
-        
-        self.setGeometry(100, 100, 300, 300)
+        self.status.file.notify(self.load)
 
     def get_layers(self):
         xmldoc = minidom.parse(self._file_name)
@@ -63,23 +61,22 @@ class SvgWidget(QSvgWidget):
 
         return svg_data
 
-    def load_file(self, file_name):
+    def draw(self):
+        layer = self.select_layers()
+        svg_file = "{}{}\n{}".format(self._svg_header, layer, self._svg_end)
+        svg_bytes = bytearray(svg_file, encoding='utf-8')
+        
+        self.renderer().load(svg_bytes)
+
+    def load(self, file_name):
         self._file_name = file_name
         self._layers = self.get_layers()
 
-        layer = self.select_layers()
-
-        svg_file = "{}{}\n{}".format(self._svg_header, layer, self._svg_end)
-
-        svg_bytes = bytearray(svg_file, encoding='utf-8')
-        # self.renderer().load(svg_bytes)
+        self.draw()
 
     @Slot(int)
     def selectLayer(self, layer):
         self._current_layer = layer
-        layer = self.select_layers()
 
-        svg_file = "{}{}\n{}".format(self._svg_header, layer, self._svg_end)
+        self.draw()
 
-        svg_bytes = bytearray(svg_file, encoding='utf-8')
-        self.renderer().load(svg_bytes)
