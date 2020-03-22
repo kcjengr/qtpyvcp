@@ -1,7 +1,7 @@
 # examples/things.py
 
 # import thread module
-from _thread import *
+from thread import *
 import threading
 
 # Let's get this party started!
@@ -45,14 +45,23 @@ class VcpApi(DataPlugin):
 
         clock = getPlugin('clock')
         status = getPlugin('status')
+        offsets = getPlugin('offsettable')
+        positions = getPlugin('position')
+        tools = getPlugin('tooltable')
 
         # Resources are represented by long-lived class instances
         self.clock = Channel(clock)
         self.status = Channel(status)
+        self.offsets = Channel(offsets)
+        self.positions = Channel(positions)
+        self.tools = Channel(tools)
 
         # things will handle all requests to the '/things' URL path
         api.add_route('/clock', self.clock)
         api.add_route('/status', self.status)
+        api.add_route('/offsets', self.offsets)
+        api.add_route('/positions', self.positions)
+        api.add_route('/tools', self.tools)
 
         host = "0.0.0.0"
         port = 1337
