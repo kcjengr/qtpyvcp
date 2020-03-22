@@ -1,10 +1,23 @@
-# examples/things.py
+#   Copyright (c) 2020 Kurt Jacobson
+#      <kurtcjacobson@gmail.com>
+#
+#   This file is part of QtPyVCP.
+#
+#   QtPyVCP is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 2 of the License, or
+#   (at your option) any later version.
+#
+#   QtPyVCP is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-# import thread module
+
 from thread import *
-import threading
-
-# Let's get this party started!
 
 from wsgiref.simple_server import make_server
 import falcon
@@ -15,9 +28,6 @@ from qtpyvcp.utilities.logger import getLogger
 LOG = getLogger(__name__)
 
 
-# Falcon follows the REST architectural style, meaning (among
-# other things) that you think in terms of resources and state
-# transitions, which map to HTTP verbs.
 class Channel:
     def __init__(self, plugin):
         self.plugin = plugin
@@ -29,9 +39,7 @@ class Channel:
 
         resp_data = self.plugin.getChannel(channel)[0]
 
-
-
-        resp.status = falcon.HTTP_200  # This is the default status
+        resp.status = falcon.HTTP_200
         resp.body = str(resp_data)
 
 
@@ -39,8 +47,6 @@ class VcpApi(DataPlugin):
     def __init__(self):
         super(VcpApi, self).__init__()
 
-        # falcon.API instances are callable WSGI apps
-        # in larger applications the app is created in a separate file
         api = falcon.API()
 
         clock = getPlugin('clock')
@@ -49,14 +55,12 @@ class VcpApi(DataPlugin):
         positions = getPlugin('position')
         tools = getPlugin('tooltable')
 
-        # Resources are represented by long-lived class instances
         self.clock = Channel(clock)
         self.status = Channel(status)
         self.offsets = Channel(offsets)
         self.positions = Channel(positions)
         self.tools = Channel(tools)
 
-        # things will handle all requests to the '/things' URL path
         api.add_route('/clock', self.clock)
         api.add_route('/status', self.status)
         api.add_route('/offsets', self.offsets)
