@@ -22,7 +22,8 @@ from thread import *
 from wsgiref.simple_server import make_server
 import falcon
 
-from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin, loadDataPlugins
+from qtpyvcp import PLUGINS
+from qtpyvcp.plugins import DataPlugin
 from qtpyvcp.utilities.logger import getLogger
 
 LOG = getLogger(__name__)
@@ -39,7 +40,7 @@ class Channel:
 
         resp_data = self.plugin.getChannel(channel)[0]
 
-        resp.status = falcon.HTTP_200
+        resp.status = falcon.HTTP_200  # This is the default status
         resp.body = str(resp_data)
 
 
@@ -49,23 +50,9 @@ class VcpApi(DataPlugin):
 
         api = falcon.API()
 
-        clock = getPlugin('clock')
-        status = getPlugin('status')
-        offsets = getPlugin('offsettable')
-        positions = getPlugin('position')
-        tools = getPlugin('tooltable')
-
-        self.clock = Channel(clock)
-        self.status = Channel(status)
-        self.offsets = Channel(offsets)
-        self.positions = Channel(positions)
-        self.tools = Channel(tools)
-
-        api.add_route('/clock', self.clock)
-        api.add_route('/status', self.status)
-        api.add_route('/offsets', self.offsets)
-        api.add_route('/positions', self.positions)
-        api.add_route('/tools', self.tools)
+        for name, obj in PLUGINS.iteritems():
+            setattr(self, name, Channel(obj))
+            api.add_route('/{}'.format(name), getattr(self, name))
 
         host = "0.0.0.0"
         port = 1337
