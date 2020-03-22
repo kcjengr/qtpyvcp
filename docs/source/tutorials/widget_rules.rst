@@ -138,3 +138,22 @@ false. The expression reads like this `set the label text to X Homed if channel
 
     Rule to set label text according to homed status.
 
+Style Class
+***********
+
+To use the Style Class create a style in the css file and use the rule to set
+or unset that style. The following is placed in the ui/style.css file.
+::
+
+  StatusLabel[style='red_text']{
+    color:red;
+  }
+
+  StatusLabel[style='green_text']{
+    color:green;
+  }
+
+.. figure:: images/rules-04.png
+
+   Rule to set the text color based on the homed status of axis 0
+
