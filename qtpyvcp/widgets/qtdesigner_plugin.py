@@ -41,16 +41,17 @@ from qtpyvcp.widgets.hal_widgets.designer_plugins import *
 from qtpyvcp.widgets.containers.designer_plugins import *
 
 # load external designer plugins
-# FixMe: The module path is not correct, so the class definition
-#        used in the UI file is not importable.
 from pkg_resources import iter_entry_points
 
 for entry_point in iter_entry_points(group='qtpyvcp.widgets'):
 
+    group_name = entry_point.name
     mod = entry_point.load()
 
     for name in dir(mod):
         if name.startswith('_'):
             continue
 
-        globals()[name] = getattr(mod, name)
+        plugin_cls = getattr(mod, name)
+        plugin_cls.group_name = group_name
+        globals()[name] = plugin_cls
