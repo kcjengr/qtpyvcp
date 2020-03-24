@@ -7,16 +7,18 @@ container. For example if you had a tool in spindle offset tab you could put a
 container in the tab and set the rule to only enable it if a tool is loaded in
 the spindle.
 
-Widget Container
-^^^^^^^^^^^^^^^^
+VCP Widget
+^^^^^^^^^^
 
-The `Widget Container` is a transparent container.
+The `VCP Widget` is a transparent container. You can specify the layout
+in a container by dropping another widget into the container then right click in
+the `VCP Widget` in an empty spot and select the layout you want.
 
 
-Frame Container
-^^^^^^^^^^^^^^^
+VCP Frame
+^^^^^^^^^
 
-The `Frame Container` usually has a frame around it. This can be useful to help
+The `VCP Frame` container usually has a frame around it. This can be useful to help
 you focus on a section and to differentiate controls from each other.
 
 Usage
