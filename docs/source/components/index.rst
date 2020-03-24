@@ -11,6 +11,7 @@ QtPyVCP components available in the Qt Designer
    action_sliders
    backplot
    containers
+   stacked_widget
    status_items
    subcallbutton
 
