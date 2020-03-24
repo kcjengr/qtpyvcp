@@ -34,3 +34,7 @@ sim/*.old
 *settings.json
 *messages.json
 *.pickle
+
+*.temp
+
+*.bak
