@@ -16,6 +16,8 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
+
 from opcua import Server
 from opcua.common.events import Event
 
@@ -53,12 +55,16 @@ class OpcUA(DataPlugin):
         # get Objects node, this is where we should put our nodes
         self.objects = self.server.get_objects_node()
 
+        opc_ua_objects = dict()
+
         LOG.debug("objects folder: {}".format(self.objects))
+
         for name, obj in PLUGINS.items():
-            myobject = self.objects.add_object(self.idx, name)
-            # myvar = myobject.add_variable(idx, "MyVariable", [16, 56])
-            # myprop = myobject.add_property(idx, "myprop", 9.9)
-            # myfolder = myobject.add_folder(idx, "myfolder")
+            opc_ua_objects[name] = self.objects.add_folder(self.idx, name)
+            for chan_name, chan_obj in obj.channels.items():
+                opc_ua_objects[name].add_folder(self.idx, chan_name)
+                # myprop = opc_ua_objects[name].add_property(idx, "myprop", 9.9)
+                # myfolder = opc_ua_objects[name].add_folder(idx, "myfolder")
 
         # uncomment next lines to subscribe to changes on server side
         # sclt = SubHandler()
@@ -69,6 +75,17 @@ class OpcUA(DataPlugin):
         # embed()
 
     def initialise(self):
+        # optional: setup logging
+        logging.basicConfig(level=logging.WARN)
+        logger = logging.getLogger("opcua.address_space")
+        logger.setLevel(logging.DEBUG)
+        logger = logging.getLogger("opcua.internal_server")
+        logger.setLevel(logging.DEBUG)
+        logger = logging.getLogger("opcua.binary_server_asyncio")
+        logger.setLevel(logging.DEBUG)
+        logger = logging.getLogger("opcua.uaprocessor")
+        logger.setLevel(logging.DEBUG)
+
         LOG.debug("Starting OPC UA server at: %s", self.endpoint)
         self.server.start()
 
