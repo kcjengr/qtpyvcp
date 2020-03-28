@@ -15,10 +15,10 @@
 #
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
-
+import datetime
 import logging
 
-from opcua import Server
+from opcua import Server, ua
 from opcua.common.events import Event
 
 # from IPython import embed
@@ -62,7 +62,22 @@ class OpcUA(DataPlugin):
         for name, obj in PLUGINS.items():
             opc_ua_objects[name] = self.objects.add_folder(self.idx, name)
             for chan_name, chan_obj in obj.channels.items():
-                opc_ua_objects[name].add_folder(self.idx, chan_name)
+                if isinstance(chan_obj.value, datetime.datetime):
+                    opc_ua_objects[name].add_variable(self.idx, chan_name, chan_obj.value)
+                elif isinstance(chan_obj.value, int):
+                    opc_ua_objects[name].add_variable(self.idx, chan_name, chan_obj.value)
+                elif isinstance(chan_obj.value, float):
+                    opc_ua_objects[name].add_variable(self.idx, chan_name, chan_obj.value, ua.VariantType.Float)
+                elif isinstance(chan_obj.value, list) or isinstance(chan_obj.value, tuple):
+                    print("LIST OR TUPLE", chan_name)
+                    folder = opc_ua_objects[name].add_folder(self.idx, chan_name)
+                    for index, val in enumerate(chan_obj.value):
+                        print(chan_obj.value)
+                        if isinstance(chan_obj.value, int):
+                            folder.add_variable(self.idx, "{}.{}".format(chan_name, index), chan_obj.value)
+                        elif isinstance(chan_obj.value, float):
+                            folder.add_variable(self.idx, "{}.{}".format(chan_name, index), chan_obj.value, ua.VariantType.Float)
+
                 # myprop = opc_ua_objects[name].add_property(idx, "myprop", 9.9)
                 # myfolder = opc_ua_objects[name].add_folder(idx, "myfolder")
 
