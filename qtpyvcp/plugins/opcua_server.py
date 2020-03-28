@@ -40,7 +40,9 @@ class OpcUA(DataPlugin):
         address = '0.0.0.0'
         port = 4840
 
-        self.server.set_endpoint("opc.tcp://{}:{}/qtpyvcp/server/".format(address, port))
+        self.endpoint = "opc.tcp://{}:{}/qtpyvcp/server/".format(address, port)
+
+        self.server.set_endpoint(self.endpoint)
 
         self.server.set_server_name("QtPyVCP OpcUa Server")
 
@@ -67,4 +69,9 @@ class OpcUA(DataPlugin):
         # embed()
 
     def initialise(self):
+        LOG.debug("Starting OPC UA server at: %s", self.endpoint)
         self.server.start()
+
+    def terminate(self):
+        LOG.debug("Stopping OPC UA server...")
+        self.server.stop()
