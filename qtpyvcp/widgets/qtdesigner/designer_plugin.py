@@ -8,6 +8,8 @@ from rules_editor import RulesEditorExtension
 
 class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 
+    group_name = None
+
     def __init__(self, parent=None):
         super(_DesignerPlugin, self).__init__(parent=parent)
         self.initialized = False
@@ -48,8 +50,14 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
 
     # Override to set the QtDesigner widget box group heading
     def group(self):
-        group = self.pluginClass().__module__.split('.')[2].split('_')[0].capitalize()
-        return "QtPyVCP - {}".format(group)
+        if self.group_name is None:
+            try:
+                tmp = self.pluginClass().__module__.split('.')[2].split('_')[0].capitalize()
+                return "QtPyVCP - {}".format(tmp)
+            except:
+                return "QtPyVCP - Undefined"
+        else:
+            return self.group_name
 
     # Override to set initial QtDesigner property values
     def domXml(self):
