@@ -26,7 +26,9 @@ for entry_point in iter_entry_points(group='qtpyvcp.widgets'):
                 plugin_cls.group_name = group_name
                 globals()[name] = plugin_cls
             except Exception as e:
-                LOG.exception("Error while loading custom widget plugin '%s'.", name, exc_info=e)
+                LOG.exception("Error while loading custom widget plugin '%s'.",
+                              name, exc_info=e)
 
     except Exception as e:
-        LOG.exception("Error while trying to load custom widget package '%s'.", group_name, exc_info=e)
+        LOG.exception("Error while trying to load custom widget package '%s'.",
+                      group_name, exc_info=e)
