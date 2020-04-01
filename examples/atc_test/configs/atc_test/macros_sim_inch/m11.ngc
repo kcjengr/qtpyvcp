@@ -16,8 +16,8 @@ O110 if [#5171 NE 1]
       M13
 O110 endif
 
-M68 E10 Q#<Steps_to_move> (tells the atc widget how many steps to move)
-M64 P13 (sets the direction and start moving)
+(tells the atc widget how many steps to move and start moving reverse)
+(DEBUG, EVAL[vcp.getWidget{"dynatc"}.rotate{#<Steps_to_move>, "cw"}])
 
 M64 P4 ; Move atc motor REV
 
