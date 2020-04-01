@@ -71,6 +71,7 @@ class Status(DataPlugin):
             for chan, obj in spindle.channels.items():
                 self.channels['spindle.{}.{}'.format(spindle.snum, chan)] = obj
 
+        self.all_axes_homed.value = False
         self.homed.notify(self.all_axes_homed.setValue)
         self.enabled.notify(self.all_axes_homed.setValue)
 
