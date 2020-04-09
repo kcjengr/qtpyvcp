@@ -57,8 +57,8 @@ log_time("in script")
 
 
 def launch_application(opts, config):
-    qtpyvcp.OPTIONS.update(opts)
-    qtpyvcp.CONFIG.update(config)
+    qtpyvcp.app.OPTIONS.update(opts)
+    qtpyvcp.app.CONFIG.update(config)
 
     hal_comp = hal.component('qtpyvcp')
 
@@ -150,7 +150,7 @@ def _load_vcp_from_ui_file(ui_file, opts):
     from qtpyvcp.utilities.config_loader import load_config_files
     cfg_files = [opts.config_file or '']
     cfg_files.extend(os.getenv('VCP_CONFIG_FILES', '').split(':'))
-    cfg_files.append(qtpyvcp.DEFAULT_CONFIG_FILE)
+    cfg_files.append(qtpyvcp.app.DEFAULT_CONFIG_FILE)
     config = load_config_files(*cfg_files)
     kwargs = config['windows']['mainwindow'].get('kwargs', {})
     kwargs.update({'ui_file': ui_file})
@@ -209,7 +209,7 @@ def loadWindows(windows):
     for window_id, window_dict in windows.items():
 
         window = _initialize_object_from_dict(window_dict)
-        qtpyvcp.WINDOWS[window_id] = window
+        qtpyvcp.app.WINDOWS[window_id] = window
 
         # show the window by default
         if window_dict.get('show', True):
@@ -220,4 +220,4 @@ def loadDialogs(dialogs):
     for dialogs_id, dialogs_dict in dialogs.items():
 
         inst = _initialize_object_from_dict(dialogs_dict)
-        qtpyvcp.DIALOGS[dialogs_id] = inst
+        qtpyvcp.app.DIALOGS[dialogs_id] = inst

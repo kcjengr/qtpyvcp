@@ -37,12 +37,12 @@ if API == 'pyside2':
 class VCPApplication(QApplication):
 
     def __init__(self, theme=None, stylesheet=None, custom_fonts=[]):
-        app_args = (qtpyvcp.OPTIONS.command_line_args or "").split()
+        app_args = (qtpyvcp.app.OPTIONS.command_line_args or "").split()
         super(VCPApplication, self).__init__(app_args)
 
-        opts = qtpyvcp.OPTIONS
+        opts = qtpyvcp.app.OPTIONS
 
-        from qtpyvcp.core import Prefs, Info
+        from qtpyvcp.utilities.prefs import Prefs, Info
         self.info = Info()
         self.prefs = Prefs()
         self.status = getPlugin('status')
@@ -248,14 +248,14 @@ class VCPApplication(QApplication):
                     LOG.exception('Error terminating %s widget', w)
 
     def initialiseDataPlugins(self):
-        for plugin, obj in qtpyvcp.PLUGINS.items():
+        for plugin, obj in qtpyvcp.app.PLUGINS.items():
             LOG.debug("Initializing %s plugin", plugin)
             obj.initialise()
 
     def terminateDataPlugins(self):
         # terminate in reverse order, this is to prevent problems
         # when terminating plugins that used other plugins.
-        for plugin, obj in reversed(qtpyvcp.PLUGINS.items()):
+        for plugin, obj in reversed(qtpyvcp.app.PLUGINS.items()):
             LOG.debug("Terminating %s plugin", plugin)
             try:
                 # try so that other plugins are terminated properly

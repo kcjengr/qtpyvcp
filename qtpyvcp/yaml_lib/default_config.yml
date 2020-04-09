@@ -85,7 +85,7 @@ virtual_keyboards:
       modal: False
 
 application:
-  provider: qtpyvcp.application:VCPApplication
+  provider: qtpyvcp.app.application:VCPApplication
   kwargs:
 #    stylesheet: {{ file.dir }}/widgets/default_stylesheet.qss   # application wide stylesheet
 

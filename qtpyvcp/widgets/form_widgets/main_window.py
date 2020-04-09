@@ -10,10 +10,10 @@ from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, \
 import qtpyvcp
 from qtpyvcp import actions
 from qtpyvcp.utilities import logger
-from qtpyvcp.core import Prefs, Info
+from qtpyvcp.utilities.prefs import Prefs, Info
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets.dialogs import showDialog as _showDialog
-from qtpyvcp.vcp_launcher import _initialize_object_from_dict
+from qtpyvcp.app.launcher import _initialize_object_from_dict
 
 LOG = logger.getLogger(__name__)
 PREFS = Prefs()
@@ -29,7 +29,7 @@ class VCPMainWindow(QMainWindow):
         super(VCPMainWindow, self).__init__(parent)
 
         if opts is None:
-            opts = qtpyvcp.OPTIONS
+            opts = qtpyvcp.app.OPTIONS
 
         self.setWindowTitle(title)
 
@@ -52,7 +52,7 @@ class VCPMainWindow(QMainWindow):
                 pass
 
             if menu == 'default':
-                menu = qtpyvcp.CONFIG.get('default_menubar', [])
+                menu = qtpyvcp.app.CONFIG.get('default_menubar', [])
 
             self.setMenuBar(self.buildMenuBar(menu))
 

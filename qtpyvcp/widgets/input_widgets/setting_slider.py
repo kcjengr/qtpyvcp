@@ -2,7 +2,7 @@ from qtpy.QtCore import Property
 from qtpy.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox
 from qtpy.QtGui import QIntValidator, QDoubleValidator
 
-from qtpyvcp import SETTINGS
+from qtpyvcp.app import SETTINGS
 from qtpyvcp.widgets import VCPWidget
 
 

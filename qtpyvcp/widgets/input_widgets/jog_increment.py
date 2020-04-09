@@ -22,7 +22,7 @@ from qtpy.QtGui import QColor
 from qtpy.QtCore import Qt, Slot, Property
 from qtpy.QtWidgets import QWidget, QBoxLayout, QSizePolicy
 
-from qtpyvcp.core import Info
+from qtpyvcp.utilities.info import Info
 from qtpyvcp.actions.machine_actions import jog
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import getSetting, setSetting

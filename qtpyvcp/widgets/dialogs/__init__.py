@@ -1,6 +1,6 @@
 from qtpy.QtWidgets import QApplication, QMessageBox
 
-from qtpyvcp import DIALOGS
+from qtpyvcp.app import DIALOGS
 from qtpyvcp.utilities.logger import getLogger
 
 LOG = getLogger(__name__)
