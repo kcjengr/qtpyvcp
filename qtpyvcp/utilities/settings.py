@@ -170,9 +170,9 @@ if __name__ == "__main__":
     print repr(speed)
     speed.setValue(12.0)
     print speed.value
-    speed.setValue(13.0)
+    getSetting('jog.speed').setValue(13.0)
     print speed.value
-    speed.setValue(14.0)
+    setSetting('jog.speed', 14.0)
     print speed.value
 
 
@@ -207,8 +207,8 @@ if __name__ == "__main__":
 
     print SETTINGS
 
-    SETTINGS['test.setting'].setValue(False)
+    getSetting('test.setting').setValue(False)
     print t.on.value
 
-    SETTINGS['jog.speed'].setValue(42.0)
+    setSetting('jog.speed', 42.0)
     print SETTINGS['jog.speed'].value
