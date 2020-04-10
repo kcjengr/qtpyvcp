@@ -15,7 +15,6 @@ from qtpy.QtQuickWidgets import QQuickWidget
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities import logger
-from qtpyvcp.utilities.hal_qlib import QComponent
 
 LOG = logger.getLogger(__name__)
 STATUS = getPlugin('status')
