@@ -43,8 +43,8 @@ def getHalStatus():
     return pin_dict
 
 
-class HALPin(QObject):
-    """HALPin object, represents a single LinuxCNC HAL pin, enables reading.
+class HalPin(QObject):
+    """HalPin object, represents a single LinuxCNC HAL pin, enables reading.
         writing and connecting slots to be called when the HAL pin value changes.
 
     Attributes:
@@ -59,7 +59,7 @@ class HALPin(QObject):
     valueChanged = Signal([bool], [float], [int])
 
     def __init__(self, pin_name, pin_type, pin_direction, pin_value):
-        """Initializes a new HALPin object
+        """Initializes a new HalPin object
 
         Args:
             pin_name (str):      the HAL pin name
@@ -67,7 +67,7 @@ class HALPin(QObject):
             pin_direction (str): the pin direction, IN, OUT, or I/O
             pin_value (str):     the initial value of the HAL pin
         """
-        super(HALPin, self).__init__()
+        super(HalPin, self).__init__()
 
         self.pin_name = pin_name
         self.type = HAL_TYPE_MAP.get(pin_type)
@@ -137,10 +137,10 @@ class HALPin(QObject):
         return self.type(value)
 
 
-class HALStatus(DataPlugin):
+class HalStatus(DataPlugin):
     """docstring for StatusPoller"""
     def __init__(self):
-        super(HALStatus, self).__init__()
+        super(HalStatus, self).__init__()
 
         self.cycle_time = 100
         self.linuxcnc_is_alive = False
@@ -179,8 +179,6 @@ class HALStatus(DataPlugin):
         return pin, pin.getValue
 
     # halcmd can take 200ms or more to run, so run poll updates in a thread
-    # so as not to slow the server requests for hal pins and sigs will read
-    # the results from the most recent update
     def hal_poll_thread(self):
 
         while True:
@@ -253,6 +251,6 @@ class HALStatus(DataPlugin):
             pin_direction = pin_data[2].strip()
             pin_value = pin_data[3].strip()
             LOG.debug("Adding new HALStatusItem for pin '{}'".format(pin_name))
-            si = HALPin(pin_name, pin_type, pin_direction, pin_value)
+            si = HalPin(pin_name, pin_type, pin_direction, pin_value)
             self.status_items[pin_name] = si
         return si

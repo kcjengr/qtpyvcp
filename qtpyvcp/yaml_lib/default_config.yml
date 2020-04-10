@@ -25,7 +25,7 @@ data_plugins:
       # persistence_file: .vcp_data.json
 
   hal:
-    provider: qtpyvcp.plugins.hal_status:HALStatus
+    provider: qtpyvcp.plugins.hal_status:HalStatus
 #    kwargs:
 #      cycle_time: 75
 
