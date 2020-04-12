@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from qtpy.QtWidgets import QApplication, QMessageBox
 
 from qtpyvcp import DIALOGS
@@ -7,18 +5,33 @@ from qtpyvcp.utilities.logger import getLogger
 
 LOG = getLogger(__name__)
 
-def showDialog(dialog_name):
+
+def getDialog(name):
+    """Get dialog instance from name.
+
+    Args:
+        name (str) : The dialog name as defined in the YAML file.
+
+    Returns:
+        A dialog instance, or None.
+    """
+    try:
+        return DIALOGS[name]
+    except KeyError:
+        LOG.error("The requested dialog '{}' was not found.".format(name))
+
+
+def showDialog(name):
     """Show Dialog
 
     Args:
-        dialog_name (str) : The name of the dialog to show.
+        name (str) : The name of the dialog to show.
     """
 
-    dialog = DIALOGS.get(dialog_name)
+    dialog = getDialog(name)
 
     if dialog is None:
-        LOG.error("The requested dialog '{}' was not found.".format(dialog_name))
-        msg = "The requested dialog <b>{}</b> was not found.".format(dialog_name)
+        msg = "The requested dialog <b>{}</b> was not found.".format(name)
         QMessageBox.critical(None, "Dialog not found!", msg)
         return
 
