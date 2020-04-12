@@ -102,7 +102,8 @@ class Status(DataPlugin):
                 and STAT.call_level == 0:
 
             if self.file_watcher is not None:
-                self.file_watcher.removePath(chan.value)
+                if self.file_watcher.files():
+                    self.file_watcher.removePath(chan.value)
                 self.file_watcher.addPath(fname)
 
             chan.value = fname
@@ -550,7 +551,8 @@ class Status(DataPlugin):
 
         # watch the gcode file for changes and reload as needed
         self.file_watcher = QFileSystemWatcher()
-        self.file_watcher.addPath(self.file.value)
+        if self.file.value:
+            self.file_watcher.addPath(self.file.value)
         self.file_watcher.fileChanged.connect(self.updateFile)
 
         LOG.debug("Starting periodic updates with %ims cycle time",
