@@ -17,7 +17,7 @@ import qtpyvcp
 
 from qtpyvcp.utilities.logger import initBaseLogger
 from qtpyvcp.plugins import getPlugin
-from qtpyvcp.widgets.base_widgets.base_widget import QtPyVCPBaseWidget
+from qtpyvcp.widgets.base_widgets.base_widget import VCPPrimitiveWidget
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
 # initialize logging. If a base logger was already initialized in a startup
@@ -235,13 +235,13 @@ class VCPApplication(QApplication):
 
     def initialiseWidgets(self):
         for w in self.allWidgets():
-            if isinstance(w, QtPyVCPBaseWidget):
+            if isinstance(w, VCPPrimitiveWidget):
                 w.initialize()
 
     def terminateWidgets(self):
         LOG.debug("Terminating widgets")
         for w in self.allWidgets():
-            if isinstance(w, QtPyVCPBaseWidget):
+            if isinstance(w, VCPPrimitiveWidget):
                 try:
                     w.terminate()
                 except Exception:

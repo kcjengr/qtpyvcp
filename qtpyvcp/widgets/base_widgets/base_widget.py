@@ -27,12 +27,29 @@ class ChanList(list):
     def __getitem__(self, index):
         return super(ChanList, self).__getitem__(index)()
 
-class QtPyVCPBaseWidget(object):
+
+class VCPPrimitiveWidget(object):
+    """VCPPrimitiveWidget.
+
+    Class on which all QtPyVCP widgets should be based.
+    """
+    def __init__(self, parent=None):
+        super(VCPPrimitiveWidget, self).__init__()
+
+    def initialize(self):
+        """This method is called right before the main application starts."""
+        pass
+
+    def terminate(self):
+        """This method is called right before the main application ends."""
+        pass
+
+
+class VCPBaseWidget(VCPPrimitiveWidget):
     """QtPyVCP Base Widget.
 
-    Class on which all other QtPyVCP widgets are based.
     This class handles the rules and other things that
-    apply to all QtPyVCP widgets regardless of use.
+    apply to QtPyVCP widgets regardless of use.
     """
     IN_DESIGNER = os.getenv('DESIGNER') != None
 
@@ -46,7 +63,7 @@ class QtPyVCPBaseWidget(object):
     }
 
     def __init__(self, parent=None):
-        super(QtPyVCPBaseWidget, self).__init__()
+        super(VCPBaseWidget, self).__init__()
         self._rules = '[]'
         self._style = ''
         self._data_channels = []
@@ -149,14 +166,8 @@ class QtPyVCPBaseWidget(object):
             for trigger in triggers:
                 trigger(exp)
 
-    def initialize(self):
-        pass
 
-    def terminate(self):
-        pass
-
-
-class VCPWidget(QtPyVCPBaseWidget):
+class VCPWidget(VCPBaseWidget):
     """VCP Widget
 
     This is a general purpose widget for displaying data
@@ -165,7 +176,7 @@ class VCPWidget(QtPyVCPBaseWidget):
     def __init__(self, parent=None):
         super(VCPWidget, self).__init__()
 
-class CMDWidget(QtPyVCPBaseWidget):
+class CMDWidget(VCPBaseWidget):
     """Command Widget
 
     This widget should be used as the base class for all widgets
@@ -175,7 +186,7 @@ class CMDWidget(QtPyVCPBaseWidget):
     def __init__(self, parent=None):
         super(CMDWidget, self).__init__()
 
-class HALWidget(QtPyVCPBaseWidget):
+class HALWidget(VCPBaseWidget):
     """HAL Widget
 
     This widget should be used as the base class for HAL widgets.
