@@ -1,25 +1,25 @@
 import os
+
 from qtpy.QtWidgets import QComboBox
 
-from qtpyvcp.plugins import getPlugin
-STATUS = getPlugin('status')
-
-# from qtpyvcp.utilities import action
 from qtpyvcp.actions.program_actions import load as loadProgram
-from qtpyvcp.widgets.dialogs.open_file_dialog import OpenFileDialog
+from qtpyvcp.plugins import getPlugin
+from qtpyvcp.widgets.dialogs import getDialog
+
 
 class RecentFileComboBox(QComboBox):
     def __init__(self, parent=None):
         super(RecentFileComboBox, self).__init__(parent)
 
-        self.file_dialog = OpenFileDialog()
+        self.status = getPlugin('status')
+        self.file_dialog = getDialog('open_file')
 
         self.activated.connect(self.onItemActivated)
-        self.updateRecentFiles(STATUS.recent_files)
+        self.updateRecentFiles(self.status.recent_files)
 
         self.insertItem(0, 'No File Loaded', None)
         self.setCurrentIndex(0)
-        STATUS.recent_files.notify(self.updateRecentFiles)
+        self.status.recent_files.notify(self.updateRecentFiles)
 
     def updateRecentFiles(self, recent_files):
         self.clear()
@@ -27,7 +27,7 @@ class RecentFileComboBox(QComboBox):
             self.addItem(os.path.basename(file), file)
 
         # Add separator and item to launch the file dialog
-        self.insertSeparator(len(STATUS.recent_files.getValue()))
+        self.insertSeparator(len(self.status.recent_files.getValue()))
         self.addItem("Browse for files ...", 'browse_files')
 
     def onItemActivated(self):
