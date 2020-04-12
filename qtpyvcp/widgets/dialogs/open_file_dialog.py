@@ -1,11 +1,6 @@
-import os
-import sys
-
 
 from qtpy import QtCore
-from qtpy.QtGui import QIcon
-from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QMessageBox, QFileDialog
+from qtpy.QtWidgets import QFileDialog
 
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -15,10 +10,11 @@ INFO = Info()
 
 from qtpyvcp.actions.program_actions import load as loadProgram
 
-class _OpenFileDialog(QFileDialog):
-    """docstring for OpenFileDialog"""
+
+class OpenFileDialog(QFileDialog):
+    """NGC file chooser dialog."""
     def __init__(self, parent=None):
-        super(_OpenFileDialog, self).__init__(parent)
+        super(OpenFileDialog, self).__init__(parent)
 
         nc_file_dir = INFO.getProgramPrefix()
         nc_file_types = INFO.getQtFilefilter()
@@ -43,10 +39,3 @@ class _OpenFileDialog(QFileDialog):
             return
         loadProgram(path)
         self.hide()
-
-class OpenFileDialog(_OpenFileDialog):
-    _instance = None
-    def __new__(cls, *args, **kwargs):
-        if not cls._instance:
-            cls._instance = _OpenFileDialog(*args, **kwargs)
-        return cls._instance
