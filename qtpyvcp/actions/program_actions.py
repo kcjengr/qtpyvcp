@@ -71,7 +71,7 @@ def addToRecents(fname):
     files = STATUS.recent_files.getValue()
     if fname in files:
         files.remove(fname)
-        files.insert(0, fname)
+    files.insert(0, fname)
     STATUS.recent_files.setValue(files[:STATUS.max_recent_files])
 
 # -------------------------------------------------------------------------
