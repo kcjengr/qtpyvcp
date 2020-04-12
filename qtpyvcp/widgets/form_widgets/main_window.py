@@ -10,13 +10,12 @@ from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, \
 import qtpyvcp
 from qtpyvcp import actions
 from qtpyvcp.utilities import logger
-from qtpyvcp.utilities.prefs import Prefs, Info
+from qtpyvcp.utilities.info import Info
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets.dialogs import showDialog as _showDialog
 from qtpyvcp.app.launcher import _initialize_object_from_dict
 
 LOG = logger.getLogger(__name__)
-PREFS = Prefs()
 INFO = Info()
 
 
