@@ -2,5 +2,5 @@
 Application
 ===========
 
-.. automodule:: qtpyvcp.application
+.. automodule:: qtpyvcp.app.application
     :members:
