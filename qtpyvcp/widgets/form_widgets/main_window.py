@@ -28,7 +28,7 @@ class VCPMainWindow(QMainWindow):
         super(VCPMainWindow, self).__init__(parent)
 
         if opts is None:
-            opts = qtpyvcp.app.OPTIONS
+            opts = qtpyvcp.OPTIONS
 
         self.setWindowTitle(title)
 
@@ -51,7 +51,7 @@ class VCPMainWindow(QMainWindow):
                 pass
 
             if menu == 'default':
-                menu = qtpyvcp.app.CONFIG.get('default_menubar', [])
+                menu = qtpyvcp.CONFIG.get('default_menubar', [])
 
             self.setMenuBar(self.buildMenuBar(menu))
 

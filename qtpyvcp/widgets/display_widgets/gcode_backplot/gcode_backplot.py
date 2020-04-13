@@ -37,7 +37,7 @@ from qtpyvcp.plugins import getPlugin
 
 STATUS = getPlugin('status')
 
-from qtpyvcp.core import Info
+from qtpyvcp.utilities.info import Info
 
 INFO = Info()
 

@@ -1,6 +1,6 @@
 """Settings Plugin"""
 
-from qtpyvcp.app import SETTINGS, CONFIG
+from qtpyvcp import SETTINGS, CONFIG
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.utilities.settings import addSetting
 from qtpyvcp.plugins import DataPlugin, getPlugin

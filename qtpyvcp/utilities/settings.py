@@ -1,5 +1,5 @@
 from qtpy.QtCore import QObject, Signal
-from qtpyvcp.app import SETTINGS
+from qtpyvcp import SETTINGS
 
 
 def getSetting(id, default=None):

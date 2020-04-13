@@ -57,8 +57,8 @@ log_time("in script")
 
 
 def launch_application(opts, config):
-    qtpyvcp.app.OPTIONS.update(opts)
-    qtpyvcp.app.CONFIG.update(config)
+    qtpyvcp.OPTIONS.update(opts)
+    qtpyvcp.CONFIG.update(config)
 
     hal_comp = hal.component('qtpyvcp')
 
@@ -209,7 +209,7 @@ def loadWindows(windows):
     for window_id, window_dict in windows.items():
 
         window = _initialize_object_from_dict(window_dict)
-        qtpyvcp.app.WINDOWS[window_id] = window
+        qtpyvcp.WINDOWS[window_id] = window
 
         # show the window by default
         if window_dict.get('show', True):
@@ -220,4 +220,4 @@ def loadDialogs(dialogs):
     for dialogs_id, dialogs_dict in dialogs.items():
 
         inst = _initialize_object_from_dict(dialogs_dict)
-        qtpyvcp.app.DIALOGS[dialogs_id] = inst
+        qtpyvcp.DIALOGS[dialogs_id] = inst

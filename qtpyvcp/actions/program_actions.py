@@ -494,42 +494,43 @@ import tempfile, atexit, shutil
 
 FILTER_TEMP = None
 
-def openFilterProgram(self, fname, flt):
+def openFilterProgram(infile, prog_name):
     temp_dir = _mktemp()
-    tmp = os.path.join(temp_dir, os.path.basename(fname))
-    print 'temp', temp_dir
-    flt = FilterProgram(flt, fname, tmp, lambda r: r or self._loadFilterResult(tmp))
+    outfile = os.path.join(temp_dir, os.path.basename(infile) + ".ngc")
+    FilterProgram(prog_name, infile, outfile, lambda r: r or _loadFilterResult(outfile))
 
-def _loadFilterResult(self, fname):
+def _loadFilterResult(fname):
     if fname:
         CMD.program_open(fname)
 
-def _mktemp(self):
+def _mktemp():
     global FILTER_TEMP
     if FILTER_TEMP is not None:
         return FILTER_TEMP
     FILTER_TEMP = tempfile.mkdtemp(prefix='emcflt-', suffix='.d')
     atexit.register(lambda: shutil.rmtree(FILTER_TEMP))
+    return FILTER_TEMP
 
 # slightly reworked code from gladevcp
 # loads a filter program and collects the result
 progress_re = re.compile("^FILTER_PROGRESS=(\\d*)$")
 class FilterProgram:
-    def __init__(self, program_filter, infilename, outfilename, callback=None):
+    def __init__(self, prog_name, infile, outfile, callback=None):
         import subprocess
-        outfile = open(outfilename, "w")
-        infilename_q = infilename.replace("'", "'\\''")
+        outfile = open(outfile, "w")
+        infile = infile.replace("'", "'\\''")
+
         env = dict(os.environ)
         env['AXIS_PROGRESS_BAR'] = '1'
-        p = subprocess.Popen(["sh", "-c", "%s '%s'" % (program_filter, infilename_q)],
-                              stdin=subprocess.PIPE,
-                              stdout=outfile,
-                              stderr=subprocess.PIPE,
-                              env=env)
-        p.stdin.close()  # No input for you
-        self.p = p
+        self.p = subprocess.Popen(["sh", "-c", "%s '%s'" % (prog_name, infile)],
+                                  stdin=subprocess.PIPE,
+                                  stdout=outfile,
+                                  stderr=subprocess.PIPE,
+                                  env=env)
+
+        self.p.stdin.close()  # No input for you
         self.stderr_text = []
-        self.program_filter = program_filter
+        self.program_filter = prog_name
         self.callback = callback
         # self.gid = STATUS.onValueChanged('periodic', self.update)
         #progress = Progress(1, 100)
@@ -541,7 +542,7 @@ class FilterProgram:
             STATUS.disconnect(self.gid)
             return False
 
-        r,w,x = select.select([self.p.stderr], [], [], 0)
+        r, w, x = select.select([self.p.stderr], [], [], 0)
         if not r:
             return True
         stderr_line = self.p.stderr.readline()

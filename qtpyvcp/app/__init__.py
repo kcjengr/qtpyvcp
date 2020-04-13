@@ -59,23 +59,10 @@ Note:
 """
 
 import os
-from collections import OrderedDict
 
 import qtpyvcp
-from qtpyvcp.lib.types import DotDict
 
-QTPYVCP_DIR = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
-TOP_DIR = os.path.dirname(QTPYVCP_DIR)
-
-DEFAULT_CONFIG_FILE = os.path.join(QTPYVCP_DIR, 'yaml_lib/default_config.yml')
-
-# globals
-CONFIG = {}
-OPTIONS = DotDict()
-PLUGINS = OrderedDict()  # Ordered dict so can terminate in order initiated
-DIALOGS = {}
-WINDOWS = {}
-SETTINGS = {}
+DEFAULT_CONFIG_FILE = os.path.join(qtpyvcp.QTPYVCP_DIR, 'yaml_lib/default_config.yml')
 
 
 def main():

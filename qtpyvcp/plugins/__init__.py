@@ -5,7 +5,7 @@ and maintains a global registry of plugin protocols vs. plugin instances.
 """
 import importlib
 
-from qtpyvcp.app import PLUGINS
+from qtpyvcp import PLUGINS
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins.plugin import DataPlugin, DataChannel
 
