@@ -62,8 +62,6 @@ import os
 
 import qtpyvcp
 
-DEFAULT_CONFIG_FILE = os.path.join(qtpyvcp.QTPYVCP_DIR, 'yaml_lib/default_config.yml')
-
 
 def main():
     """QtPyVCP Main entry point
@@ -118,7 +116,7 @@ def run(opts, config_file=None):
         config_files.append(config_file)
 
         # default config file has lowest priority
-        config_files.append(DEFAULT_CONFIG_FILE)
+        config_files.append(qtpyvcp.DEFAULT_CONFIG_FILE)
 
         from qtpyvcp.utilities.config_loader import load_config_files
         config = load_config_files(*config_files)
