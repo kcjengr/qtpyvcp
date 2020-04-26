@@ -475,7 +475,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         camera.OrthogonalizeViewUp()
         camera.SetClippingRange(0.001, 100)
         self.renderer_window.Render()
-        self.renderer.ResetCamera()
+        # self.renderer.ResetCamera()
         self.interactor.ReInitialize()
 
     # Pan translates x-y motion into translation of the focal point and
