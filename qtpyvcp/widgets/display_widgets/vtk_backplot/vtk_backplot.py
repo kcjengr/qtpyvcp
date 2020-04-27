@@ -554,16 +554,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer_window.Render()
 
     def tlo(self, tlo):
-        LOG.info(tlo)
+        LOG.debug(tlo)
 
     @Slot()
     def reload_program(self, *args, **kwargs):
-        LOG.info("reload_program")
+        LOG.debug("reload_program")
         self.load_program(self._last_filename)
 
     def load_program(self, fname=None):
 
-        LOG.info("load_program")
+        LOG.debug("load_program")
         for origin, actor in self.path_actors.items():
             axes = actor.get_axes()
             extents = self.extents[origin]
@@ -646,11 +646,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     def on_offset_table_changed(self, table):
-        LOG.info("on_offset_table_changed")
+        LOG.debug("on_offset_table_changed")
         self.path_position_table = table
 
     def update_g5x_offset(self, offset):
-        LOG.info("update_g5x_offset")
+        LOG.debug("update_g5x_offset")
 
         transform = vtk.vtkTransform()
         transform.Translate(*offset[:3])
@@ -697,7 +697,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     def update_g5x_index(self, index):
-        LOG.info("update_g5x_index")
+        LOG.debug("update_g5x_index")
         self.g5x_index = index
         position = self.path_position_table[index - 1]
 
@@ -712,7 +712,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def update_g92_offset(self, g92_offset):
 
-        LOG.info("update_g92_offset")
+        LOG.debug("update_g92_offset")
         if str(self.status.task_mode) == "MDI" or str(self.status.task_mode) == "Auto":
 
             self.g92_offset = g92_offset
@@ -720,7 +720,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             path_offset = list(map(add, self.g92_offset, self.original_g92_offset))
 
             for origin, actor in self.path_actors.items():
-                # LOG.info('G92 Update Started')
+                # LOG.debug('G92 Update Started')
                 # determine change in g92 offset since path was drawn
                 index = self.origin_map[origin] - 1
 
@@ -759,14 +759,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     #
     #     self.rotation_offset = rotation
     #
-    #     # LOG.info("Rotation: {}".format(rotation))  # in degrees
+    #     # LOG.debug("Rotation: {}".format(rotation))  # in degrees
     #     # ToDo: use transform matrix to rotate existing path?
     #     # probably not worth it since rotation is not used much ...
     #
-    #     # LOG.info('rotate offset: {}'.format(rotation))
+    #     # LOG.debug('rotate offset: {}'.format(rotation))
     #     if str(self.status.task_mode) == "MDI":
     #
-    #         # LOG.info('Rotation Update Started')
+    #         # LOG.debug('Rotation Update Started')
     #
     #         transform = vtk.vtkTransform()
     #         transform.Translate(*self.g5x_offset[:3])
@@ -784,7 +784,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def update_tool(self):
 
-        LOG.info("update_tool")
+        LOG.debug("update_tool")
 
         self.renderer.RemoveActor(self.tool_actor)
 
