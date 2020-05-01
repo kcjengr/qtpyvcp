@@ -17,6 +17,8 @@
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
 import os
+import linuxcnc
+INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 
 from qtpy.QtWidgets import QLabel
 from qtpy.QtCore import Slot, Property
@@ -73,8 +75,8 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
         self._metric_format = '%10.3f'
         self._imperial_format = '%9.4f'
 
-        units = STATUS.program_units
-        if units == 'in':
+        units = INIFILE.find("TRAJ", "LINEAR_UNITS") or "inch"
+        if units == 'inch':
             self._format = self._imperial_format
         else:
             self._format = self._metric_format
