@@ -12,7 +12,6 @@ class RecentFileComboBox(QComboBox):
         super(RecentFileComboBox, self).__init__(parent)
 
         self.status = getPlugin('status')
-        self.file_dialog = getDialog('open_file')
 
         self.activated.connect(self.onItemActivated)
         self.updateRecentFiles(self.status.recent_files)
@@ -33,7 +32,7 @@ class RecentFileComboBox(QComboBox):
     def onItemActivated(self):
         data = self.currentData()
         if data == 'browse_files':
-            self.file_dialog.show()
+            getDialog('open_file').show()
         elif data is None:
             pass
         else:
