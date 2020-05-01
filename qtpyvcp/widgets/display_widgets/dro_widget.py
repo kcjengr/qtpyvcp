@@ -22,24 +22,29 @@ from qtpy.QtWidgets import QLabel
 from qtpy.QtCore import Slot, Property
 
 from qtpyvcp.plugins import getPlugin
+
 STATUS = getPlugin('status')
 POSITION = getPlugin('position')
 
 from qtpyvcp.widgets import VCPWidget
 
 from qtpyvcp.utilities import logger
+
 LOG = logger.getLogger(__name__)
 
 IN_DESIGNER = os.getenv('DESIGNER') != None
+
 
 class Axis(object):
     ALL = -1
     X, Y, Z, A, B, C, U, V, W = range(9)
 
+
 class Units(object):
-    Program = 0 # Use program units
-    Inch = 1    # CANON_UNITS_INCHES=1
+    Program = 0  # Use program units
+    Inch = 1  # CANON_UNITS_INCHES=1
     Metric = 2  # CANON_UNITS_MM=2
+
 
 class RefType(object):
     Absolute = 0
@@ -50,8 +55,8 @@ class RefType(object):
     def toString(self, ref_type):
         return ['abs', 'rel', 'dtg'][ref_type]
 
-class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
 
+class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
     from PyQt5.QtCore import Q_ENUMS
     Q_ENUMS(Axis)
     Q_ENUMS(RefType)
@@ -67,7 +72,12 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
 
         self._metric_format = '%10.3f'
         self._imperial_format = '%9.4f'
-        self._format = self._imperial_format
+
+        units = STATUS.program_units
+        if units == 'in':
+            self._format = self._imperial_format
+        else:
+            self._format = self._metric_format
 
         self.update(POSITION.abs.getValue())
         STATUS.program_units.notify(self.onUnitsChanged, 'string')
@@ -110,6 +120,7 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
 
     def getDiamterMode(self):
         return self._diameter_mode
+
     @Slot(bool)
     def setDiamterMode(self, diameter_mode):
         self._diameter_mode = diameter_mode
@@ -145,9 +156,11 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
         self._format = self._imperial_format
         self.update(getattr(POSITION, RefType.toString(self._ref_typ)).getValue())
 
+
 if __name__ == "__main__":
     import sys
     from qtpy.QtWidgets import QApplication
+
     app = QApplication(sys.argv)
     w = DROWidget()
     w.show()
