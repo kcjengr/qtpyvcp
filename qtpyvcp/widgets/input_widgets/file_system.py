@@ -11,6 +11,7 @@ from qtpy.QtCore import Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevic
 from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, \
     QApplication, QAbstractItemView, QInputDialog, QLineEdit
 
+from qtpyvcp.plugins import getPlugin
 from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
@@ -30,101 +31,45 @@ class TableType(object):
 class RemovableDeviceComboBox(QComboBox):
     """ComboBox for choosing from a list of removable devices."""
     usbPresent = Signal(bool)
+    currentPathChanged = Signal(str)
+    currentDeviceEjectable = Signal(bool)
 
     def __init__(self, parent=None):
         super(RemovableDeviceComboBox, self).__init__(parent)
 
+        self.setSizeAdjustPolicy(QComboBox.AdjustToContents)
+
+        self._sdm = getPlugin('storage_device_manager')
+        self._sdm.removable_devices.notify(self.onRemovableDevicesChanged)
+
         self.info = Info()
         self._program_prefix = self.info.getProgramPrefix()
-        self.usb_present = False
 
-        self.usbPresent.emit(self.usb_present)
+        self.currentTextChanged.connect(self.onCurrentTextChanged)
 
-        self.context = Context()
+        # initialize device list
+        self.onRemovableDevicesChanged(self._sdm.removable_devices.value)
 
-        self.monitor = Monitor.from_netlink(self.context)
-        self.monitor.filter_by(subsystem='block')
+    def onCurrentTextChanged(self, text):
+        data = self.currentData()
+        if data:
+            self.currentPathChanged.emit(data.get('path', '/'))
+            self.currentDeviceEjectable.emit(data.get('removable', False))
 
-        self.observer = MonitorObserver(self.monitor)
-        self.observer.deviceEvent.connect(self.usb_handler)
-
-        self.monitor.start()
-
-        self.refreshDeviceList()
-
-    def usb_handler(self, device):
-
-        if device.action == "add":
-            if device.device_type == 'partition':
-
-                partitions = [device.device_node for device in
-                              self.context.list_devices(subsystem='block', DEVTYPE='partition', parent=device)]
-
-                for p in partitions:
-                    os.system("udisksctl mount --block-device {}".format(p))
-
-                    # self.addItem(device.get('ID_FS_LABEL'), device.get(''))
-                    # self.setCurrentIndex(0)
-
-        self.refreshDeviceList()
-
-
-    @Slot()
-    def refreshDeviceList(self):
-
-        self.usb_present = False
-
+    def onRemovableDevicesChanged(self, devices):
         self.clear()
 
-        self.addItem(self._program_prefix, self._program_prefix)
+        self.addItem("Home", {'path': os.path.expanduser('~/')})
+        self.addItem("NC Files", {'path': self._program_prefix})
 
-        removable = [device for device in self.context.list_devices(subsystem='block', DEVTYPE='disk') if
-                     device.attributes.asstring('removable') == '1']
-
-        part_index = 0
-
-        for device in removable:
-
-            partitions = [device.device_node for device in
-                          self.context.list_devices(subsystem='block', DEVTYPE='partition', parent=device)]
-
-            # print("All removable partitions: {}".format(", ".join(partitions)))
-            #
-            # print("Mounted removable partitions:")
-
-            for p in psutil.disk_partitions():
-                if p.device in partitions:
-                    # print("Mounted partition: {}: {}".format(p.device, p.mountpoint))
-                    self.addItem(p.mountpoint, p.device)
-                    self.usb_present = True
-                    part_index += 1
-
-        self.setCurrentIndex(part_index)
-
-        self.usbPresent.emit(self.usb_present)
+        for devices_node, device_data in devices.items():
+            self.addItem(device_data.get('label', 'Unknown'), device_data)
 
     @Slot()
     def ejectDevice(self):
-
-        if not self.usb_present:
-            # print("USB NOT PRESENT")
-            return
-
-        index = self.currentIndex()
-
-        if index == 0:
-            # print("CANT UMOUNT HOME")
-            return
-
-        device = self.itemData(index)
-
-        self.setCurrentIndex(0)
-
-        os.system("udisksctl unmount --block-device {}".format(device))
-        os.system("udisksctl power-off --block-device {}".format(device))
-
-        self.refreshDeviceList()
-
+        data = self.currentData()
+        if data:
+            self._sdm.ejectDevice(data.get('device'))
 
 class FileSystemTable(QTableView, TableType):
 

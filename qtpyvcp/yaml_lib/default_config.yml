@@ -51,6 +51,9 @@ data_plugins:
       # whether to save messages on exit
       persistent: True
 
+  storage_device_manager:
+    provider: qtpyvcp.plugins.storage_device_manager:StorageDeviceManger
+
 dialogs:
   open_file:
     provider: qtpyvcp.widgets.dialogs.open_file_dialog:OpenFileDialog
