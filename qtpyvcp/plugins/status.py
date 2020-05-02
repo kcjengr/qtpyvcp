@@ -104,15 +104,17 @@ class Status(DataPlugin):
             if self.file_watcher is not None:
                 if self.file_watcher.files():
                     self.file_watcher.removePath(chan.value)
-                self.file_watcher.addPath(fname)
+                if os.path.isfile(fname):
+                    self.file_watcher.addPath(fname)
 
             chan.value = fname
             chan.signal.emit(fname)
 
     def updateFile(self, path):
         LOG.debug("Reloading edited G-Code file: %s", path)
-        self.file.signal.emit(path)
-        CMD.program_open(path)
+        if os.path.isfile(path):
+            self.file.signal.emit(path)
+            CMD.program_open(path)
 
     @DataChannel
     def state(self, chan):
