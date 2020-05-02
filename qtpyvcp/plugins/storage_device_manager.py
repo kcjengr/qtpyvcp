@@ -4,16 +4,15 @@ import os
 
 import psutil
 
-from collections import defaultdict
-
 from pyudev.pyqt5 import MonitorObserver
-from pyudev import Context, Monitor, Devices
-
-from qtpy.QtCore import Signal
+from pyudev import Context, Monitor, Device
 
 from qtpyvcp import SETTINGS, CONFIG
+from qtpyvcp.widgets.dialogs import askQuestion
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
+
+from qtpyvcp.actions.program_actions import clear as loadEmptyProgram
 
 LOG = getLogger(__name__)
 
@@ -23,11 +22,6 @@ def dictDiff(d1, d2):
 
 
 class StorageDeviceManger(DataPlugin):
-
-    # removable_devices = DataChannel(dict)
-    # removableDeviceAdded = DataChannel()
-    # removableDeviceRemoved = DataChannel()
-
     def __init__(self, **kwargs):
         super(StorageDeviceManger, self).__init__()
 
@@ -37,6 +31,8 @@ class StorageDeviceManger(DataPlugin):
         self.monitor = None
         self.observer = None
 
+        self.status = getPlugin('status')
+
     @DataChannel
     def removable_devices(self, chan):
         return chan.value or {}
@@ -45,14 +41,14 @@ class StorageDeviceManger(DataPlugin):
 
         if device.action == "add":
             if device['DEVTYPE'] == 'partition':
-                print "Adding device: ", device.device_node
+                LOG.debug("Adding device: s%", device.device_node)
                 # mount new partition
                 os.system("udisksctl mount --block-device {}".format(device.device_node))
                 self.updateRemovableDevices()
 
         elif device.action == "remove":
             if device['DEVTYPE'] == 'partition':
-                print "Removing device: ", device.device_node
+                LOG.debug("Removing device: %s", device.device_node)
                 self.updateRemovableDevices()
 
     def updateRemovableDevices(self):
@@ -84,13 +80,25 @@ class StorageDeviceManger(DataPlugin):
 
         device_info = self.removable_devices.value.get(device, {})
         if device_info.get('removable', False):
+            device_path = device_info.get('path', '')
+            loaded_program = self.status.stat.file
+            if loaded_program and loaded_program.startswith(device_path):
+                title = "WARNING: Device in use!"
+                msg = "The currently loaded G-Code file is located on the device " \
+                      "you are tyring to eject. If you continue the file will be " \
+                      "unloaded before trying to eject the device.\n\n" \
+                      "Do you want to continue?"
+
+                if not askQuestion(title, msg):
+                    return
+
+                loadEmptyProgram()
+
             device = device_info['device']
             os.system("udisksctl unmount --block-device {}".format(device))
             os.system("udisksctl power-off --block-device {}".format(device))
 
     def initialise(self):
-        print "Initializing Removable Storage Device Manager..."
-
         self.context = Context()
 
         self.monitor = Monitor.from_netlink(self.context)
@@ -101,8 +109,6 @@ class StorageDeviceManger(DataPlugin):
         self.monitor.start()
 
         self.updateRemovableDevices()
-
-        # print self.removable_devices
 
     def terminate(self):
         pass
