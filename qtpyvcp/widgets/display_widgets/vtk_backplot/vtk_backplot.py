@@ -283,7 +283,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera = vtk.vtkCamera()
         self.camera.ParallelProjectionOn()
 
-        self.clipping_range_far = 0.0
+        self.clipping_range_near = 0.01
+        self.clipping_range_far = 10.0
 
         units = INIFILE.find("TRAJ", "LINEAR_UNITS") or "inch"
         if units in ["in", "inch", "inchs"]:
