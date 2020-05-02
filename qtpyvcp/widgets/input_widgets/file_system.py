@@ -62,8 +62,9 @@ class RemovableDeviceComboBox(QComboBox):
         self.addItem("Home", {'path': os.path.expanduser('~/')})
         self.addItem("NC Files", {'path': self._program_prefix})
 
-        for devices_node, device_data in devices.items():
-            self.addItem(device_data.get('label', 'Unknown'), device_data)
+        if devices:
+            for devices_node, device_data in devices.items():
+                self.addItem(device_data.get('label', 'Unknown'), device_data)
 
     @Slot()
     def ejectDevice(self):
