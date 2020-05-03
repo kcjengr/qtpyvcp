@@ -283,10 +283,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera = vtk.vtkCamera()
         self.camera.ParallelProjectionOn()
 
-        near = 0.001
-        far = 100
+        self.clipping_range_near = 0.01
+        self.clipping_range_far = 10.0
 
-        self.camera.SetClippingRange(near, far)
+        units = INIFILE.find("TRAJ", "LINEAR_UNITS") or "inch"
+        if units in ["in", "inch", "inchs"]:
+            self.clipping_range_near = 0.001
+            self.clipping_range_far = 100.0
+        elif units in ["mm", "metric"]:
+            self.clipping_range_near = 0.1
+            self.clipping_range_far = 10000.0
+
+        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
 
         self.renderer = vtk.vtkRenderer()
         self.renderer.SetActiveCamera(self.camera)
@@ -473,7 +481,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         camera.Azimuth(lastX - x)
         camera.Elevation(lastY - y)
         camera.OrthogonalizeViewUp()
-        camera.SetClippingRange(0.001, 100)
+        camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
         self.renderer_window.Render()
         # self.renderer.ResetCamera()
         self.interactor.ReInitialize()
