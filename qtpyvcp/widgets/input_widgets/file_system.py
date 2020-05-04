@@ -50,6 +50,10 @@ class RemovableDeviceComboBox(QComboBox):
         # initialize device list
         self.onRemovableDevicesChanged(self._sdm.removable_devices.value)
 
+    def showEvent(self, event=None):
+        data = self.currentData() or {}
+        self.currentDeviceEjectable.emit(data.get('removable', False))
+
     def onCurrentTextChanged(self, text):
         data = self.currentData()
         if data:
