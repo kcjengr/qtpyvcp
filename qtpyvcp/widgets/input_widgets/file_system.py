@@ -93,8 +93,6 @@ class FileSystemTable(QTableView, TableType):
     transferFileRequest = Signal(str)
     rootChanged = Signal(str)
 
-    INI_FILE = os.environ.get("INI_FILE_NAME")
-
     def __init__(self, parent=None):
         super(FileSystemTable, self).__init__(parent)
 
@@ -109,10 +107,6 @@ class FileSystemTable(QTableView, TableType):
         self.parent = parent
         self.path_data = dict()
 
-        self.ini = linuxcnc.ini(self.INI_FILE)
-
-        self.nc_files_path = self.ini.find("DISPLAY", "PROGRAM_PREFIX") or "~/linuxcnc/nc_files"
-        self.doubleClicked.connect(self.openSelectedItem)
         self.selected_row = None
         self.clipboard = QApplication.clipboard()
 
@@ -131,8 +125,8 @@ class FileSystemTable(QTableView, TableType):
         self.selection_model.selectionChanged.connect(self.onSelectionChanged)
 
         self.info = Info()
-        self.editor = self.info.getEditor()
-        self._nc_file_dir = self.info.getProgramPrefix()
+        self.nc_file_editor = self.info.getEditor()
+        self.nc_file_dir = self.info.getProgramPrefix()
         self.nc_file_exts = self.info.getProgramExtentions()
         self.setRootPath(self._nc_file_dir)
 
@@ -190,7 +184,7 @@ class FileSystemTable(QTableView, TableType):
         selection = self.getSelection()
         if selection is not None:
             path = self.model.filePath(selection[0])
-            subprocess.Popen([self.editor, path])
+            subprocess.Popen([self.nc_file_editor, path])
         return False
 
     @Slot()
@@ -350,13 +344,13 @@ class FileSystemTable(QTableView, TableType):
     @Slot()
     def viewNCFilesDirectory(self):
         # ToDo: Make preset user definable
-        path = os.path.expanduser(self.nc_files_path)
+        path = os.path.expanduser(self._nc_files_dir)
         self.setRootPath(path)
 
     @Slot()
     def viewPresetDirectory(self):
         # ToDo: Make preset user definable
-        preset = os.path.expanduser(self.nc_files_path)
+        preset = os.path.expanduser(self._nc_files_dir)
         self.setRootPath(preset)
 
     @Slot()
@@ -398,7 +392,7 @@ class FileSystemTable(QTableView, TableType):
     def tableType(self, table_type):
         self._table_type = table_type
         if table_type == TableType.Local:
-            self.setRootPath(self._nc_file_dir)
+            self.setRootPath(self.nc_file_dir)
         else:
             self.setRootPath('/media/')
 
