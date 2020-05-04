@@ -92,6 +92,7 @@ class FileSystemTable(QTableView, TableType):
     fileNamePreviewText = Signal(str)
     transferFileRequest = Signal(str)
     rootChanged = Signal(str)
+    atDeviceRoot = Signal(bool)
 
     def __init__(self, parent=None):
         super(FileSystemTable, self).__init__(parent)
@@ -124,14 +125,26 @@ class FileSystemTable(QTableView, TableType):
         self.selection_model = self.selectionModel()
         self.selection_model.selectionChanged.connect(self.onSelectionChanged)
 
+        # open selected item on double click or enter pressed
+        self.activated.connect(self.openSelectedItem)
+
         self.info = Info()
         self.nc_file_editor = self.info.getEditor()
         self.nc_file_dir = self.info.getProgramPrefix()
         self.nc_file_exts = self.info.getProgramExtentions()
-        self.setRootPath(self._nc_file_dir)
+
+        self.setRootPath(self.nc_file_dir)
+
+        self.model.rootPathChanged.connect(self.onRootPathChanged)
 
     def showEvent(self, event=None):
-        self.rootChanged.emit(self._nc_file_dir)
+        root_path = self.model.rootPath()
+        self.rootChanged.emit(root_path)
+        self.atDeviceRoot.emit(os.path.ismount(root_path))
+
+    def onRootPathChanged(self, path):
+        print "root path changed: ", path
+        self.atDeviceRoot.emit(os.path.ismount(path))
 
     def onSelectionChanged(self, selected, deselected):
 
@@ -326,11 +339,15 @@ class FileSystemTable(QTableView, TableType):
         directory = file_info.dir()
         new_path = directory.absolutePath()
 
+        if os.path.ismount(path):
+            return
+
         currentRoot = self.rootIndex()
 
         self.model.setRootPath(new_path)
         self.setRootIndex(currentRoot.parent())
         self.rootChanged.emit(new_path)
+
 
     @Slot()
     @deprecated(replaced_by='viewParentDirectory')
