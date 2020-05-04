@@ -41,6 +41,7 @@ class RemovableDeviceComboBox(QComboBox):
 
         self._sdm = getPlugin('storage_device_manager')
         self._sdm.removable_devices.notify(self.onRemovableDevicesChanged)
+        self._sdm.new_device.notify(self.onNewDeviceAdded)
 
         self.info = Info()
         self._program_prefix = self.info.getProgramPrefix()
@@ -69,6 +70,10 @@ class RemovableDeviceComboBox(QComboBox):
         if devices:
             for devices_node, device_data in devices.items():
                 self.addItem(device_data.get('label', 'Unknown'), device_data)
+
+    def onNewDeviceAdded(self, device):
+        self.setCurrentText(device.get('label'))
+
 
     @Slot()
     def ejectDevice(self):

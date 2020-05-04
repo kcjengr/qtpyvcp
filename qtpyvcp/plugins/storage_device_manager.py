@@ -25,7 +25,7 @@ class StorageDeviceManger(DataPlugin):
     def __init__(self, **kwargs):
         super(StorageDeviceManger, self).__init__()
 
-        self._device_list = dict()
+        self._new_device = None
 
         self.context = None
         self.monitor = None
@@ -37,6 +37,10 @@ class StorageDeviceManger(DataPlugin):
     def removable_devices(self, chan):
         return chan.value or {}
 
+    @DataChannel
+    def new_device(self, chan):
+        return chan.value or {}
+
     def _onDeviceEvent(self, device):
 
         if device.action == "add":
@@ -44,6 +48,7 @@ class StorageDeviceManger(DataPlugin):
                 LOG.debug("Adding device: s%", device.device_node)
                 # mount new partition
                 os.system("udisksctl mount --block-device {}".format(device.device_node))
+                self._new_device = device.device_node
                 self.updateRemovableDevices()
 
         elif device.action == "remove":
@@ -57,6 +62,7 @@ class StorageDeviceManger(DataPlugin):
                    self.context.list_devices(subsystem='block', DEVTYPE='disk') if
                    disk.attributes.asstring('removable') == "1"]
 
+        new_device_info = dict()
         removable_devices = dict()
         for disk in disks:
             partitions = [partition.device_node for partition in
@@ -74,7 +80,14 @@ class StorageDeviceManger(DataPlugin):
 
                     removable_devices[partition.device] = info
 
+                    if partition.device == self._new_device:
+                        new_device_info = info
+
         self.removable_devices.setValue(removable_devices)
+        self.new_device.setValue(new_device_info)
+
+        # reset new device
+        self._new_device = None
 
     def ejectDevice(self, device):
 
