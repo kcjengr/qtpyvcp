@@ -64,12 +64,16 @@ class RemovableDeviceComboBox(QComboBox):
     def onRemovableDevicesChanged(self, devices):
         self.clear()
 
-        self.addItem("Home", {'path': os.path.expanduser('~/')})
-        self.addItem("NC Files", {'path': self._program_prefix})
+        # self.blockSignals(True)
+
+        for label, path in self._sdm._file_locations.items():
+            self.addItem(label, {'path': os.path.expanduser(path)})
 
         if devices:
             for devices_node, device_data in devices.items():
                 self.addItem(device_data.get('label', 'Unknown'), device_data)
+
+        # self.blockSignals(False)
 
     def onNewDeviceAdded(self, device):
         self.setCurrentText(device.get('label'))
@@ -143,7 +147,6 @@ class FileSystemTable(QTableView, TableType):
         self.atDeviceRoot.emit(os.path.ismount(root_path))
 
     def onRootPathChanged(self, path):
-        print "root path changed: ", path
         self.atDeviceRoot.emit(os.path.ismount(path))
 
     def onSelectionChanged(self, selected, deselected):

@@ -53,6 +53,12 @@ data_plugins:
 
   storage_device_manager:
     provider: qtpyvcp.plugins.storage_device_manager:StorageDeviceManger
+    kwargs:
+      file_locations:
+        # format is: Location Name: path
+        Home: ~/
+        Desktop: ~/Desktop
+        NC Files: ~/linuxcnc/nc_files
 
 dialogs:
   open_file:

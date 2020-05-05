@@ -22,8 +22,10 @@ def dictDiff(d1, d2):
 
 
 class StorageDeviceManger(DataPlugin):
-    def __init__(self, **kwargs):
+    def __init__(self, file_locations=None, **kwargs):
         super(StorageDeviceManger, self).__init__()
+
+        self._file_locations = file_locations
 
         self._new_device = None
 
