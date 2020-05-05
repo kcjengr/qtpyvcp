@@ -3,7 +3,7 @@ import re
 from qtpy.QtWidgets import qApp
 from qtpy.QtCore import Property
 
-from qtpyvcp.core import Info
+from qtpyvcp.utilities.info import Info
 INFO = Info()
 
 from qtpyvcp.widgets import VCPButton

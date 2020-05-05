@@ -42,7 +42,7 @@ class VCPApplication(QApplication):
 
         opts = qtpyvcp.OPTIONS
 
-        from qtpyvcp.core import Prefs, Info
+        from qtpyvcp.utilities.prefs import Prefs, Info
         self.info = Info()
         self.prefs = Prefs()
         self.status = getPlugin('status')

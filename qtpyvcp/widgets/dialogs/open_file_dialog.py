@@ -7,7 +7,7 @@ from qtpyvcp.widgets import VCPPrimitiveWidget
 
 LOG = getLogger(__name__)
 
-from qtpyvcp.core import Info
+from qtpyvcp.utilities.info import Info
 INFO = Info()
 
 from qtpyvcp.actions.program_actions import load as loadProgram

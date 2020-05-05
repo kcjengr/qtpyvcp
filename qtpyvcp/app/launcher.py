@@ -150,7 +150,7 @@ def _load_vcp_from_ui_file(ui_file, opts):
     from qtpyvcp.utilities.config_loader import load_config_files
     cfg_files = [opts.config_file or '']
     cfg_files.extend(os.getenv('VCP_CONFIG_FILES', '').split(':'))
-    cfg_files.append(qtpyvcp.DEFAULT_CONFIG_FILE)
+    cfg_files.append(qtpyvcp.app.DEFAULT_CONFIG_FILE)
     config = load_config_files(*cfg_files)
     kwargs = config['windows']['mainwindow'].get('kwargs', {})
     kwargs.update({'ui_file': ui_file})

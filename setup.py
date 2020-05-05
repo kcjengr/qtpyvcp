@@ -94,7 +94,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'qtpyvcp=qtpyvcp:main',
+            'qtpyvcp=qtpyvcp.app:main',
             'qcompile=qtpyvcp.tools.qcompile:main',
             'editvcp=qtpyvcp.tools.editvcp:main',
 
