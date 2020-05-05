@@ -1,18 +1,15 @@
 import os
-import time
 import linuxcnc
 
-from qtpy.QtCore import QTimer, Signal, QFileSystemWatcher
+from qtpy.QtCore import QTimer, QFileSystemWatcher
 
 from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.app.runtime_config import RuntimeConfig
 from qtpyvcp.plugins import DataPlugin, DataChannel
 
 from qtpyvcp.utilities.info import Info
-from qtpyvcp.utilities.prefs import Prefs
 
 INFO = Info()
-PREFS = Prefs()
-
 LOG = getLogger(__name__)
 STAT = linuxcnc.stat()
 CMD = linuxcnc.command()
@@ -29,9 +26,12 @@ class Status(DataPlugin):
 
         self.file_watcher = None
 
-        self.max_recent_files = PREFS.getPref("STATUS", "MAX_RECENT_FILES", 10, int)
-        files = PREFS.getPref("STATUS", "RECENT_FILES", [], list)
-        self.recent_files = [file for file in files if os.path.exists(file)]
+        # recent files
+        self.max_recent_files = 10
+        with RuntimeConfig('~/.axis_preferences') as rc:
+            files = rc.get('DEFAULT', 'recentfiles', default=[])
+        files = [file for file in files if os.path.exists(file)]
+        self.recent_files.setValue(files)
 
         self.jog_increment = 0  # jog
         self.step_jog_increment = INFO.getIncrements()[0]
@@ -561,8 +561,8 @@ class Status(DataPlugin):
 
     def terminate(self):
         """Save persistent settings on terminate."""
-        PREFS.setPref("STATUS", "RECENT_FILES", self.recent_files.value)
-        PREFS.setPref("STATUS", "MAX_RECENT_FILES", self.max_recent_files)
+        with RuntimeConfig('~/.axis_preferences') as rc:
+            rc.set('DEFAULT', 'recentfiles', self.recent_files.value)
 
     def _periodic(self):
 
