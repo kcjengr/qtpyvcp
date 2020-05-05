@@ -13,7 +13,7 @@ from pyudev import Context, Monitor, Device
 
 from qtpyvcp import SETTINGS, CONFIG
 from qtpyvcp.widgets.dialogs import askQuestion
-from qtpyvcp.utilities.logger import getLogger, setLogLevel
+from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 
 from qtpyvcp.actions.program_actions import clear as loadEmptyProgram
