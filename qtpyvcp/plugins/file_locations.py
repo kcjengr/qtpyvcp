@@ -1,4 +1,8 @@
-"""Storage Device Manager Plugin"""
+"""File Locations Plugins
+
+This plugins keeps track of and manages NC file locations, including removable
+devices. It will be expanded to support network locations in the future.
+"""
 
 import os
 
@@ -9,7 +13,7 @@ from pyudev import Context, Monitor, Device
 
 from qtpyvcp import SETTINGS, CONFIG
 from qtpyvcp.widgets.dialogs import askQuestion
-from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.utilities.logger import getLogger, setLogLevel
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 
 from qtpyvcp.actions.program_actions import clear as loadEmptyProgram
@@ -17,15 +21,12 @@ from qtpyvcp.actions.program_actions import clear as loadEmptyProgram
 LOG = getLogger(__name__)
 
 
-def dictDiff(d1, d2):
-    return set(d2.keys()) - set(d1.keys())
+class FileLocations(DataPlugin):
+    def __init__(self, local_folders=None, network_folders=None, **kwargs):
+        super(FileLocations, self).__init__()
 
-
-class StorageDeviceManger(DataPlugin):
-    def __init__(self, file_locations=None, **kwargs):
-        super(StorageDeviceManger, self).__init__()
-
-        self._file_locations = file_locations
+        self.local_folders = local_folders or {}
+        self.network_folders = network_folders or {}
 
         self._new_device = None
 
@@ -47,7 +48,7 @@ class StorageDeviceManger(DataPlugin):
 
         if device.action == "add":
             if device['DEVTYPE'] == 'partition':
-                LOG.debug("Adding device: s%", device.device_node)
+                LOG.debug("Adding device: %s", device.device_node)
                 # mount new partition
                 os.system("udisksctl mount --block-device {}".format(device.device_node))
                 self._new_device = device.device_node

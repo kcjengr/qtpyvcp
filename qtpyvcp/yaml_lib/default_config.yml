@@ -51,14 +51,15 @@ data_plugins:
       # whether to save messages on exit
       persistent: True
 
-  storage_device_manager:
-    provider: qtpyvcp.plugins.storage_device_manager:StorageDeviceManger
+  file_locations:
+    provider: qtpyvcp.plugins.file_locations:FileLocations
     kwargs:
-      file_locations:
-        # format is: Location Name: path
+      local_folders:
+        # format: Location Name: path
         Home: ~/
         Desktop: ~/Desktop
         NC Files: ~/linuxcnc/nc_files
+      network_folders:
 
 dialogs:
   open_file:

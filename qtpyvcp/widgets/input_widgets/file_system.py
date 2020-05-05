@@ -39,9 +39,9 @@ class RemovableDeviceComboBox(QComboBox):
 
         self.setSizeAdjustPolicy(QComboBox.AdjustToContents)
 
-        self._sdm = getPlugin('storage_device_manager')
-        self._sdm.removable_devices.notify(self.onRemovableDevicesChanged)
-        self._sdm.new_device.notify(self.onNewDeviceAdded)
+        self._file_locations = getPlugin('file_locations')
+        self._file_locations.removable_devices.notify(self.onRemovableDevicesChanged)
+        self._file_locations.new_device.notify(self.onNewDeviceAdded)
 
         self.info = Info()
         self._program_prefix = self.info.getProgramPrefix()
@@ -49,7 +49,7 @@ class RemovableDeviceComboBox(QComboBox):
         self.currentTextChanged.connect(self.onCurrentTextChanged)
 
         # initialize device list
-        self.onRemovableDevicesChanged(self._sdm.removable_devices.value)
+        self.onRemovableDevicesChanged(self._file_locations.removable_devices.value)
 
     def showEvent(self, event=None):
         data = self.currentData() or {}
@@ -64,16 +64,14 @@ class RemovableDeviceComboBox(QComboBox):
     def onRemovableDevicesChanged(self, devices):
         self.clear()
 
-        # self.blockSignals(True)
-
-        for label, path in self._sdm._file_locations.items():
+        for label, path in self._file_locations.local_folders.items():
             self.addItem(label, {'path': os.path.expanduser(path)})
+
+        self.insertSeparator(100)
 
         if devices:
             for devices_node, device_data in devices.items():
                 self.addItem(device_data.get('label', 'Unknown'), device_data)
-
-        # self.blockSignals(False)
 
     def onNewDeviceAdded(self, device):
         self.setCurrentText(device.get('label'))
@@ -83,7 +81,7 @@ class RemovableDeviceComboBox(QComboBox):
     def ejectDevice(self):
         data = self.currentData()
         if data:
-            self._sdm.ejectDevice(data.get('device'))
+            self._file_locations.ejectDevice(data.get('device'))
 
 class FileSystemTable(QTableView, TableType):
 
