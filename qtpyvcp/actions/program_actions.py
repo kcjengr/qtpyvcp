@@ -22,11 +22,16 @@ from qtpyvcp.actions.base_actions import setTaskMode
 #==============================================================================
 
 def load(fname, add_to_recents=True):
+    if not fname:
+        # load a blank file. Maybe should load [DISPLAY] OPEN_FILE
+        clear()
+
     setTaskMode(linuxcnc.MODE_AUTO)
     filter_prog = INFO.getFilterProgram(fname)
     if not filter_prog:
         LOG.debug('Loading NC program: %s', fname)
         CMD.program_open(fname.encode('utf-8'))
+        CMD.wait_complete()
     else:
         LOG.debug('Loading file with filter program: %s', fname)
         openFilterProgram(fname, filter_prog)
@@ -46,7 +51,9 @@ def reload():
     """
     stat = linuxcnc.stat()
     stat.poll()
-    load(stat.file, add_to_recents=False)
+    fname = stat.file
+    if os.path.exists(fname):
+        load(stat.file, add_to_recents=False)
 
 reload.ok = lambda *args, **kwargs: True
 reload.bindOk = lambda *args, **kwargs: True
@@ -59,7 +66,7 @@ def clear():
         program.clear
     """
 
-    _, blankfile = tempfile.mkstemp(prefix="blank", suffix="ngc")
+    _, blankfile = tempfile.mkstemp(prefix="new_program_", suffix=".ngc")
     with open(blankfile, 'w') as fp:
         fp.write("(New Program)\n\n\nM30")
     load(blankfile, add_to_recents=False)

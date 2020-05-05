@@ -51,6 +51,17 @@ data_plugins:
       # whether to save messages on exit
       persistent: True
 
+  file_locations:
+    provider: qtpyvcp.plugins.file_locations:FileLocations
+    kwargs:
+      default_location: NC Files
+      local_locations:
+        # format: Location Name: path
+        Home: ~/
+        Desktop: ~/Desktop
+        NC Files: ~/linuxcnc/nc_files
+      network_locations:
+
 dialogs:
   open_file:
     provider: qtpyvcp.widgets.dialogs.open_file_dialog:OpenFileDialog

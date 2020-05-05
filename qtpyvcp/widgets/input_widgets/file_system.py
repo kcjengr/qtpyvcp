@@ -11,6 +11,7 @@ from qtpy.QtCore import Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevic
 from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, \
     QApplication, QAbstractItemView, QInputDialog, QLineEdit
 
+from qtpyvcp.plugins import getPlugin
 from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
@@ -30,101 +31,65 @@ class TableType(object):
 class RemovableDeviceComboBox(QComboBox):
     """ComboBox for choosing from a list of removable devices."""
     usbPresent = Signal(bool)
+    currentPathChanged = Signal(str)
+    currentDeviceEjectable = Signal(bool)
 
     def __init__(self, parent=None):
         super(RemovableDeviceComboBox, self).__init__(parent)
 
+        self.setSizeAdjustPolicy(QComboBox.AdjustToContents)
+
+        self._file_locations = getPlugin('file_locations')
+        self._file_locations.removable_devices.notify(self.onRemovableDevicesChanged)
+        self._file_locations.new_device.notify(self.onNewDeviceAdded)
+
         self.info = Info()
         self._program_prefix = self.info.getProgramPrefix()
-        self.usb_present = False
 
-        self.usbPresent.emit(self.usb_present)
+        self.currentTextChanged.connect(self.onCurrentTextChanged)
 
-        self.context = Context()
+        # initialize device list
+        self.onRemovableDevicesChanged(self._file_locations.removable_devices.value)
 
-        self.monitor = Monitor.from_netlink(self.context)
-        self.monitor.filter_by(subsystem='block')
+    def showEvent(self, event=None):
+        self.setCurrentText(self._file_locations.default_location)
+        data = self.currentData() or {}
+        self.currentDeviceEjectable.emit(data.get('removable', False))
 
-        self.observer = MonitorObserver(self.monitor)
-        self.observer.deviceEvent.connect(self.usb_handler)
+    def onCurrentTextChanged(self, text):
+        data = self.currentData()
+        if data:
+            self.currentPathChanged.emit(data.get('path', '/'))
+            self.currentDeviceEjectable.emit(data.get('removable', False))
 
-        self.monitor.start()
+    def onRemovableDevicesChanged(self, devices):
 
-        self.refreshDeviceList()
-
-    def usb_handler(self, device):
-
-        if device.action == "add":
-            if device.device_type == 'partition':
-
-                partitions = [device.device_node for device in
-                              self.context.list_devices(subsystem='block', DEVTYPE='partition', parent=device)]
-
-                for p in partitions:
-                    os.system("udisksctl mount --block-device {}".format(p))
-
-                    # self.addItem(device.get('ID_FS_LABEL'), device.get(''))
-                    # self.setCurrentIndex(0)
-
-        self.refreshDeviceList()
-
-
-    @Slot()
-    def refreshDeviceList(self):
-
-        self.usb_present = False
+        self.blockSignals(True)
 
         self.clear()
 
-        self.addItem(self._program_prefix, self._program_prefix)
+        for label, path in self._file_locations.local_locations.items():
+            self.addItem(label, {'path': os.path.expanduser(path)})
 
-        removable = [device for device in self.context.list_devices(subsystem='block', DEVTYPE='disk') if
-                     device.attributes.asstring('removable') == '1']
+        self.insertSeparator(100)
 
-        part_index = 0
+        if devices:
+            for devices_node, device_data in devices.items():
+                self.addItem(device_data.get('label', 'Unknown'), device_data)
 
-        for device in removable:
+        self.blockSignals(False)
 
-            partitions = [device.device_node for device in
-                          self.context.list_devices(subsystem='block', DEVTYPE='partition', parent=device)]
-
-            # print("All removable partitions: {}".format(", ".join(partitions)))
-            #
-            # print("Mounted removable partitions:")
-
-            for p in psutil.disk_partitions():
-                if p.device in partitions:
-                    # print("Mounted partition: {}: {}".format(p.device, p.mountpoint))
-                    self.addItem(p.mountpoint, p.device)
-                    self.usb_present = True
-                    part_index += 1
-
-        self.setCurrentIndex(part_index)
-
-        self.usbPresent.emit(self.usb_present)
+    def onNewDeviceAdded(self, device):
+        if device:
+            self.setCurrentText(device.get('label'))
+        else:
+            self.setCurrentText(self._file_locations.default_location)
 
     @Slot()
     def ejectDevice(self):
-
-        if not self.usb_present:
-            # print("USB NOT PRESENT")
-            return
-
-        index = self.currentIndex()
-
-        if index == 0:
-            # print("CANT UMOUNT HOME")
-            return
-
-        device = self.itemData(index)
-
-        self.setCurrentIndex(0)
-
-        os.system("udisksctl unmount --block-device {}".format(device))
-        os.system("udisksctl power-off --block-device {}".format(device))
-
-        self.refreshDeviceList()
-
+        data = self.currentData()
+        if data:
+            self._file_locations.ejectDevice(data.get('device'))
 
 class FileSystemTable(QTableView, TableType):
 
@@ -137,8 +102,7 @@ class FileSystemTable(QTableView, TableType):
     fileNamePreviewText = Signal(str)
     transferFileRequest = Signal(str)
     rootChanged = Signal(str)
-
-    INI_FILE = os.environ.get("INI_FILE_NAME")
+    atDeviceRoot = Signal(bool)
 
     def __init__(self, parent=None):
         super(FileSystemTable, self).__init__(parent)
@@ -154,10 +118,6 @@ class FileSystemTable(QTableView, TableType):
         self.parent = parent
         self.path_data = dict()
 
-        self.ini = linuxcnc.ini(self.INI_FILE)
-
-        self.nc_files_path = self.ini.find("DISPLAY", "PROGRAM_PREFIX") or "~/linuxcnc/nc_files"
-        self.doubleClicked.connect(self.openSelectedItem)
         self.selected_row = None
         self.clipboard = QApplication.clipboard()
 
@@ -175,14 +135,25 @@ class FileSystemTable(QTableView, TableType):
         self.selection_model = self.selectionModel()
         self.selection_model.selectionChanged.connect(self.onSelectionChanged)
 
+        # open selected item on double click or enter pressed
+        self.activated.connect(self.openSelectedItem)
+
         self.info = Info()
-        self.editor = self.info.getEditor()
-        self._nc_file_dir = self.info.getProgramPrefix()
+        self.nc_file_editor = self.info.getEditor()
+        self.nc_file_dir = self.info.getProgramPrefix()
         self.nc_file_exts = self.info.getProgramExtentions()
-        self.setRootPath(self._nc_file_dir)
+
+        self.setRootPath(self.nc_file_dir)
+
+        self.model.rootPathChanged.connect(self.onRootPathChanged)
 
     def showEvent(self, event=None):
-        self.rootChanged.emit(self._nc_file_dir)
+        root_path = self.model.rootPath()
+        self.rootChanged.emit(root_path)
+        self.atDeviceRoot.emit(os.path.ismount(root_path))
+
+    def onRootPathChanged(self, path):
+        self.atDeviceRoot.emit(os.path.ismount(path))
 
     def onSelectionChanged(self, selected, deselected):
 
@@ -235,7 +206,7 @@ class FileSystemTable(QTableView, TableType):
         selection = self.getSelection()
         if selection is not None:
             path = self.model.filePath(selection[0])
-            subprocess.Popen([self.editor, path])
+            subprocess.Popen([self.nc_file_editor, path])
         return False
 
     @Slot()
@@ -377,11 +348,15 @@ class FileSystemTable(QTableView, TableType):
         directory = file_info.dir()
         new_path = directory.absolutePath()
 
+        if os.path.ismount(path):
+            return
+
         currentRoot = self.rootIndex()
 
         self.model.setRootPath(new_path)
         self.setRootIndex(currentRoot.parent())
         self.rootChanged.emit(new_path)
+
 
     @Slot()
     @deprecated(replaced_by='viewParentDirectory')
@@ -395,13 +370,13 @@ class FileSystemTable(QTableView, TableType):
     @Slot()
     def viewNCFilesDirectory(self):
         # ToDo: Make preset user definable
-        path = os.path.expanduser(self.nc_files_path)
+        path = os.path.expanduser(self._nc_files_dir)
         self.setRootPath(path)
 
     @Slot()
     def viewPresetDirectory(self):
         # ToDo: Make preset user definable
-        preset = os.path.expanduser(self.nc_files_path)
+        preset = os.path.expanduser(self._nc_files_dir)
         self.setRootPath(preset)
 
     @Slot()
@@ -443,7 +418,7 @@ class FileSystemTable(QTableView, TableType):
     def tableType(self, table_type):
         self._table_type = table_type
         if table_type == TableType.Local:
-            self.setRootPath(self._nc_file_dir)
+            self.setRootPath(self.nc_file_dir)
         else:
             self.setRootPath('/media/')
 

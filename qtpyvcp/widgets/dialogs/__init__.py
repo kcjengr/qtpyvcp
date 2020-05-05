@@ -40,3 +40,25 @@ def showDialog(name):
     win = QApplication.instance().activeWindow()
     win_pos = win.mapToGlobal(win.rect().center())
     dialog.move(win_pos.x() - dialog.width() / 2, win_pos.y() - dialog.height() / 2)
+
+
+def askQuestion(title='', message='', parent=None):
+    """Ask Question
+
+    Args:
+        title (str) : The title of the dialog window.
+        message (str) : The message to show in the dialog.
+        parent (QWidget) : The window to use as the dialog parent. If None
+            the currently active application window will be used.
+
+    Returns:
+        True if the user answered Yes, False if No. None if no answer.
+    """
+    parent = parent or QApplication.instance().activeWindow()
+    reply = QMessageBox.question(parent, title, message,
+                                 QMessageBox.Yes,
+                                 QMessageBox.No)
+    if reply == QMessageBox.Yes:
+        return True
+    elif reply == QMessageBox.No:
+        return False
