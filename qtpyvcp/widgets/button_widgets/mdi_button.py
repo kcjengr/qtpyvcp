@@ -13,7 +13,8 @@ LOG = logger.getLogger(__name__)
 # input format: T#<object_name> M6 G43
 # result: [("T", "object_name")]
 # if a group is not present it will be an empty string
-PARSE_VARS = re.compile(r'(\w)#<([^>]+)>', re.I)
+PARSE_VARS = re.compile(r'([A-Z0-9_-]*)#<([^>]+)>', re.I)
+
 
 class MDIButton(VCPButton):
     """
