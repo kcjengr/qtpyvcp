@@ -52,6 +52,7 @@ class RemovableDeviceComboBox(QComboBox):
         self.onRemovableDevicesChanged(self._file_locations.removable_devices.value)
 
     def showEvent(self, event=None):
+        self.setCurrentText(self._file_locations.default_location)
         data = self.currentData() or {}
         self.currentDeviceEjectable.emit(data.get('removable', False))
 
@@ -62,9 +63,12 @@ class RemovableDeviceComboBox(QComboBox):
             self.currentDeviceEjectable.emit(data.get('removable', False))
 
     def onRemovableDevicesChanged(self, devices):
+
+        self.blockSignals(True)
+
         self.clear()
 
-        for label, path in self._file_locations.local_folders.items():
+        for label, path in self._file_locations.local_locations.items():
             self.addItem(label, {'path': os.path.expanduser(path)})
 
         self.insertSeparator(100)
@@ -73,9 +77,13 @@ class RemovableDeviceComboBox(QComboBox):
             for devices_node, device_data in devices.items():
                 self.addItem(device_data.get('label', 'Unknown'), device_data)
 
-    def onNewDeviceAdded(self, device):
-        self.setCurrentText(device.get('label'))
+        self.blockSignals(False)
 
+    def onNewDeviceAdded(self, device):
+        if device:
+            self.setCurrentText(device.get('label'))
+        else:
+            self.setCurrentText(self._file_locations.default_location)
 
     @Slot()
     def ejectDevice(self):

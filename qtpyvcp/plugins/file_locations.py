@@ -22,11 +22,14 @@ LOG = getLogger(__name__)
 
 
 class FileLocations(DataPlugin):
-    def __init__(self, local_folders=None, network_folders=None, **kwargs):
+    def __init__(self, local_locations=None, network_locations=None,
+                 default_location=None, **kwargs):
         super(FileLocations, self).__init__()
 
-        self.local_folders = local_folders or {}
-        self.network_folders = network_folders or {}
+        self.local_locations = local_locations or {}
+        self.network_locations = network_locations or {}
+
+        self.default_location = default_location
 
         self._new_device = None
 

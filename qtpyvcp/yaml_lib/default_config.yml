@@ -54,12 +54,13 @@ data_plugins:
   file_locations:
     provider: qtpyvcp.plugins.file_locations:FileLocations
     kwargs:
-      local_folders:
+      default_location: NC Files
+      local_locations:
         # format: Location Name: path
         Home: ~/
         Desktop: ~/Desktop
         NC Files: ~/linuxcnc/nc_files
-      network_folders:
+      network_locations:
 
 dialogs:
   open_file:
