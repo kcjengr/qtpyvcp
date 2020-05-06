@@ -1141,7 +1141,7 @@ class PathBoundaries:
                 cube_axes_actor.YAxisTickVisibilityOff()
                 cube_axes_actor.ZAxisTickVisibilityOff()
             programLabel = INIFILE.find("VTK", "PROGRAM_LABELS") or ""
-            if programTicks.lower() in ['false', 'off', 'no', '0']:
+            if programLabel.lower() in ['false', 'off', 'no', '0']:
                 cube_axes_actor.XAxisLabelVisibilityOff()
                 cube_axes_actor.YAxisLabelVisibilityOff()
                 cube_axes_actor.ZAxisLabelVisibilityOff()
