@@ -51,7 +51,7 @@ class FileLocations(DataPlugin):
 
         if device.action == "add":
             if device['DEVTYPE'] == 'partition':
-                LOG.debug("Adding device: %s", device.device_node)
+                self.log.info("Adding device: %s", device.device_node)
                 # mount new partition
                 os.system("udisksctl mount --block-device {}".format(device.device_node))
                 self._new_device = device.device_node
@@ -59,7 +59,7 @@ class FileLocations(DataPlugin):
 
         elif device.action == "remove":
             if device['DEVTYPE'] == 'partition':
-                LOG.debug("Removing device: %s", device.device_node)
+                self.log.debug("Removing device: %s", device.device_node)
                 self.updateRemovableDevices()
 
     def updateRemovableDevices(self):

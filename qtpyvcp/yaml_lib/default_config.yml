@@ -53,6 +53,7 @@ data_plugins:
 
   file_locations:
     provider: qtpyvcp.plugins.file_locations:FileLocations
+    log_level: debug
     kwargs:
       default_location: NC Files
       local_locations:

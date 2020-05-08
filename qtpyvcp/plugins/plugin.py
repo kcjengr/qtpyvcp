@@ -1,6 +1,7 @@
 import inspect
+
 from qtpy.QtCore import QObject, Signal
-from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.utilities.logger import getLogger, logLevelFromName
 
 LOG = getLogger(__name__)
 
@@ -17,6 +18,8 @@ class DataPlugin(QObject):
 
         self.channels = {name: obj for name, obj in
                          inspect.getmembers(self, isDataChan)}
+
+        self._log = None
 
     def getChannel(self, url):
         """Get data channel from URL.
@@ -55,6 +58,24 @@ class DataPlugin(QObject):
             return None, None
 
         return chan_obj, chan_exp
+
+    def setLogLevel(self, level):
+        """Set plugin log level.
+
+        Args:
+            level (str, int) : Log level (DEBUG | INFO | ERROR | CRITICAL)
+        """
+        if level:
+            if isinstance(level, basestring):
+                level = logLevelFromName(level)
+            self.log.setLevel(level)
+
+    @property
+    def log(self):
+        if self._log is None:
+            self._log = getLogger(self.__module__)
+            return self._log
+        return self._log
 
     def initialise(self):
         """Initialize the data plugin.

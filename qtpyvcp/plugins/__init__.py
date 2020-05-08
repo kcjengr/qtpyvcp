@@ -49,7 +49,9 @@ def loadDataPlugins(plugins):
                         )
 
         try:
-            PLUGINS[protocol] = plugin(*args, **kwargs)
+            obj = plugin(*args, **kwargs)
+            obj.setLogLevel(plugin_dict.get('log_level'))
+            PLUGINS[protocol] = obj
         except TypeError:
             LOG.critical("Error initializing plugin: {}(*{}, **{})".format(object_ref, args, kwargs))
             raise
