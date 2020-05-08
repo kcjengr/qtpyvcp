@@ -19,15 +19,6 @@ import os
 import logging
 from linuxcnc import ini
 
-LOG_LEVEL_MAPPING = {
-    "DEBUG": logging.DEBUG,
-    "INFO": logging.INFO,
-    "WARNING": logging.WARNING,
-    "WARN": logging.WARNING, # alias, to be consistent with log.warn
-    "ERROR": logging.ERROR,
-    "CRITICAL": logging.CRITICAL
-}
-
 # Our custom colorizing formatter for the terminal handler
 from qtpyvcp.lib.colored_formatter import ColoredFormatter
 from qtpyvcp.utilities.misc import normalizePath
@@ -49,15 +40,19 @@ def getLogger(name):
     name = '{1}'.format(BASE_LOGGER_NAME, name)
     return logging.getLogger(name.replace('qtpyvcp', BASE_LOGGER_NAME))
 
+# Get an integer log level from a level name
+def logLevelFromName(level_name):
+    return logging._checkLevel(level_name.upper())
+
 # Set global logging level
-def setGlobalLevel(level_str):
+def setGlobalLevel(log_level):
     base_log = logging.getLogger(BASE_LOGGER_NAME)
     try:
-        base_log.setLevel(LOG_LEVEL_MAPPING[level_str.upper()])
-        base_log.info('Base log level set to {}'.format(level_str))
+        base_log.setLevel()
+        base_log.info('Base log level set to {}'.format(log_level))
     except KeyError:
         base_log.error("Log level '{}' is not valid, base log level not changed." \
-            .format(level_str))
+            .format(log_level))
 
 # Initialize the base logger
 def initBaseLogger(name, log_file=None, log_level="DEBUG"):
@@ -78,7 +73,7 @@ def initBaseLogger(name, log_file=None, log_level="DEBUG"):
     base_log = logging.getLogger(BASE_LOGGER_NAME)
 
     try:
-        base_log.setLevel(LOG_LEVEL_MAPPING[log_level.upper()])
+        base_log.setLevel(logLevelFromName(log_level))
     except KeyError:
         raise ValueError("Log level '{}' is not valid.".format(log_level))
 

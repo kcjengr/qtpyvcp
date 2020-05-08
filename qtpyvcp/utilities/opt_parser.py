@@ -187,7 +187,7 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
 
     LOG.info("QtPyVCP Version: %s", QTPYVCP_VERSION)
 
-    if LOG.getEffectiveLevel() == logger.LOG_LEVEL_MAPPING['DEBUG']:
+    if LOG.getEffectiveLevel() == logger.logLevelFromName("DEBUG"):
         import qtpy
         LOG.debug("Qt Version: %s", qtpy.QT_VERSION)
         LOG.debug("Qt API: %s", qtpy.QT_API)

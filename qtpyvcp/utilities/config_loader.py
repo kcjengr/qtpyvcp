@@ -4,7 +4,7 @@ import hiyapyco
 from jinja2.nativetypes import NativeEnvironment
 from jinja2 import Environment, FileSystemLoader, Undefined, make_logging_undefined
 
-from qtpyvcp.utilities.logger import getLogger, LOG_LEVEL_MAPPING
+from qtpyvcp.utilities.logger import getLogger, logLevelFromName
 
 LOG = getLogger(__name__)
 
@@ -49,7 +49,7 @@ def load_config_files(*files):
                              interpolate=True,
                              failonmissingfiles=True)
 
-    if LOG.getEffectiveLevel() == LOG_LEVEL_MAPPING['DEBUG']:
+    if LOG.getEffectiveLevel() == logLevelFromName("DEBUG"):
         LOG.debug("Merged YAML config:\n\n%s\n",
                   hiyapyco.dump(cfg_dict,
                                 default_flow_style=False))
