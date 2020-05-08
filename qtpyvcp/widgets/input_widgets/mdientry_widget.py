@@ -1,5 +1,5 @@
 
-from qtpy.QtCore import Qt, QStringListModel, Slot
+from qtpy.QtCore import Qt, Slot
 from qtpy.QtGui import QValidator
 from qtpy.QtWidgets import QLineEdit, QCompleter
 
@@ -10,7 +10,6 @@ from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
 
 STATUS = getPlugin('status')
 INFO = Info()
-MDI_HISTORY_FILE = INFO.getMDIHistoryFile()
 
 
 class Validator(QValidator):
@@ -21,17 +20,16 @@ class Validator(QValidator):
 
 class MDIEntry(QLineEdit, CMDWidget):
     """MDI Entry
-    
+
     Input any valid g Code. Enter sends the g Code.
     """
     def __init__(self, parent=None):
         super(MDIEntry, self).__init__(parent)
 
-        self.model = QStringListModel()
 
         completer = QCompleter()
         completer.setCaseSensitivity(Qt.CaseInsensitive)
-        completer.setModel(self.model)
+        completer.setModel(STATUS.mdi_history())
         self.setCompleter(completer)
 
         self.validator = Validator(self)
@@ -44,10 +42,7 @@ class MDIEntry(QLineEdit, CMDWidget):
         cmd = str(self.text()).strip()
         issue_mdi(cmd)
         self.setText('')
-        cmds = self.model.stringList()
-        if cmd not in cmds:
-            cmds.append(cmd)
-            self.model.setStringList(cmds)
+        STATUS.mdi_history_add(cmd)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Up or event.key() == Qt.Key_Down:
@@ -60,19 +55,7 @@ class MDIEntry(QLineEdit, CMDWidget):
         self.completer().complete()
 
     def initialize(self):
-        history = []
-        try:
-            with open(MDI_HISTORY_FILE, 'r') as fh:
-                lines = fh.readlines()
-            for line in lines:
-                line = line.strip()
-                history.append(line)
-            self.model.setStringList(history)
-        except:
-            # file does not exist
-            pass
+        pass
 
     def terminate(self):
-        with open(MDI_HISTORY_FILE, 'w') as fh:
-            for cmd in self.model.stringList():
-                fh.write(cmd + '\n')
+        pass

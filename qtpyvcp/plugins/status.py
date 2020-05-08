@@ -1,7 +1,7 @@
 import os
 import linuxcnc
 
-from qtpy.QtCore import QTimer, QFileSystemWatcher
+from qtpy.QtCore import QTimer, QFileSystemWatcher, QStringListModel
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.app.runtime_config import RuntimeConfig
@@ -32,6 +32,21 @@ class Status(DataPlugin):
             files = rc.get('DEFAULT', 'recentfiles', default=[])
         files = [file for file in files if os.path.exists(file)]
         self.recent_files.setValue(files)
+
+        # MDI history list
+        self.mdi_cmds = QStringListModel()
+        mdi_history = []
+        try:
+            with open(INFO.getMDIHistoryFile(), 'r') as fh:
+                mdi_lines = fh.readlines()
+            for mdi_line in mdi_lines:
+                mdi_line = mdi_line.strip()
+                mdi_history.append(mdi_line)
+            self.mdi_cmds.setStringList(mdi_history)
+        except:
+            # file does not exist
+            pass
+
 
         self.jog_increment = 0  # jog
         self.step_jog_increment = INFO.getIncrements()[0]
@@ -537,6 +552,36 @@ class Status(DataPlugin):
             chan.value = all_homed
             chan.signal.emit(chan.value)
 
+
+    #
+    # MDI history managment
+    #
+    def mdi_history(self):
+        """Get MDI history model object
+
+        :returns: MDI history model
+        :rtype: QStringListModel
+        """
+        return self.mdi_cmds
+
+    def mdi_history_list(self):
+        """Get MDI history as a string list
+
+        :returns: MDI history list of strings
+        :rtype: list
+        """
+        return self.mdi_cmds.stringList()
+
+    def mdi_history_add(self, cmd):
+        """Add MDI command to history if net new"""
+        cmd = cmd.strip()
+        cmds = self.mdi_cmds.stringList()
+        if cmd not in cmds:
+            cmds.append(cmd)
+            self.mdi_cmds.setStringList(cmds)
+
+
+
     # this is used by File "qtpyvcp/qtpyvcp/actions/program_actions.py",
     # line 83, in _run_ok elif not STATUS.allHomed():
 
@@ -565,6 +610,10 @@ class Status(DataPlugin):
         """Save persistent settings on terminate."""
         with RuntimeConfig('~/.axis_preferences') as rc:
             rc.set('DEFAULT', 'recentfiles', self.recent_files.value)
+        # save out MDI history
+        with open(INFO.getMDIHistoryFile(), 'w') as fh:
+            for cmd in self.mdi_cmds.stringList():
+                fh.write(cmd + '\n')
 
     def _periodic(self):
 

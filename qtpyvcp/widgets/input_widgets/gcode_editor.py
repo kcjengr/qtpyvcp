@@ -32,6 +32,9 @@ from qtpy.QtGui import QFont, QFontMetrics, QColor
 from qtpy.QtWidgets import QInputDialog, QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QCheckBox
 
 from qtpyvcp.utilities import logger
+from qtpyvcp.plugins import getPlugin
+from qtpyvcp.utilities.info import Info
+
 
 LOG = logger.getLogger(__name__)
 
@@ -41,12 +44,7 @@ except ImportError as e:
     LOG.critical("Can't import QsciScintilla - is package python-pyqt5.qsci installed?", exc_info=e)
     sys.exit(1)
 
-from qtpyvcp.plugins import getPlugin
-
 STATUS = getPlugin('status')
-
-from qtpyvcp.utilities.info import Info
-
 INFO = Info()
 
 
@@ -375,6 +373,11 @@ class GcodeEditor(EditorBase, QObject):
         self.backgroundcolor = ''
         self.marginbackgroundcolor = ''
 
+        # register with the status:task_mode channel to
+        # drive the mdi auto show behaviour
+        STATUS.task_mode.notify(self.onMdiChanged)
+        self.prev_taskmode = STATUS.task_mode
+
     @Slot(bool)
     def setEditable(self, state):
         if state:
@@ -388,21 +391,27 @@ class GcodeEditor(EditorBase, QObject):
 
     @Slot()
     def save(self):
+        self.filename = str(STATUS.file)
+
         save_file = QFile(self.filename)
 
         result = save_file.open(QFile.WriteOnly)
         if result:
             save_stream = QTextStream(save_file)
             save_stream << self.text()
-
             save_file.close()
+        else:
+            print("save error")
+
 
     @Slot()
     def saveAs(self):
         file_name = self.save_as_dialog(self.filename)
 
         if file_name is False:
+            print("saveAs file name error")
             return
+        self.filename = str(STATUS.file)
 
         original_file = QFileInfo(self.filename)
         path = original_file.path()
@@ -414,8 +423,8 @@ class GcodeEditor(EditorBase, QObject):
         if result:
             save_stream = QTextStream(new_file)
             save_stream << self.text()
-
             new_file.close()
+
 
     @Slot()
     def find_replace(self):
@@ -486,6 +495,16 @@ class GcodeEditor(EditorBase, QObject):
         # self.zoomTo(6)
         self.setCursorPosition(0, 0)
 
+    def onMdiChanged(self, mode):
+        if self.auto_show_mdi:
+            if (mode == 1 or mode == 2) and self.prev_taskmode == 3:
+                print('Manual or Auto mode active')
+                self.reload_last()
+            elif mode == 3:
+                print('MDI mode active')
+                self.load_mdi()
+        self.prev_taskmode = mode
+
     # when switching from MDI to AUTO we need to reload the
     # last (linuxcnc loaded) program.
     def reload_last(self):
@@ -493,19 +512,19 @@ class GcodeEditor(EditorBase, QObject):
         self.setCursorPosition(0, 0)
 
     # With the auto_show__mdi option, MDI history is shown
+    # Allow linkage in Designer for manual force load, for
+    # example to link with a MDI submit/send button
+    @Slot()
     def load_mdi(self):
-        self.load_text(INFO.MDI_HISTORY_PATH)
-        self._last_filename = INFO.MDI_HISTORY_PATH
-        # print 'font point size', self.font().pointSize()
-        # self.zoomTo(10)
-        # print 'font point size', self.font().pointSize()
+        mdi_history = '\n'.join(STATUS.mdi_history_list())
+        self.setText(mdi_history)
         self.setCursorPosition(self.lines(), 0)
 
     # With the auto_show__mdi option, MDI history is shown
-    def load_manual(self):
-        if STATUS.is_man_mode():
-            self.load_text(INFO.MACHINE_LOG_HISTORY_PATH)
-            self.setCursorPosition(self.lines(), 0)
+    #def load_manual(self):
+    #    if STATUS.is_man_mode():
+    #        self.load_text(INFO.MACHINE_LOG_HISTORY_PATH)
+    #        self.setCursorPosition(self.lines(), 0)
 
     def load_text(self, fname):
         try:
