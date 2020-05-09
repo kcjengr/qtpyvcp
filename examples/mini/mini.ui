@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>636</width>
-    <height>822</height>
+    <height>884</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -613,6 +613,11 @@
    <class>VCPSettingsSpinBox</class>
    <extends>QSpinBox</extends>
    <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VKBKey</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.virtual_keyboards.vkb_key</header>
   </customwidget>
   <customwidget>
    <class>MDIEntry</class>
