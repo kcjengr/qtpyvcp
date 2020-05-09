@@ -89,14 +89,14 @@ virtual_keyboards:
   default:
     provider: qtpyvcp.widgets.virtual_keyboards.vkb_base:VKBBase
     kwargs:
-      ui_file: {{ file.dir }}/../widgets/dialogs/full_keyboard.ui
+      ui_file: {{ file.dir }}/../widgets/virtual_keyboards/full_keyboard.ui
 #      modal: False
 #      overrides:
 #        esc:
   mdi:
     provider: qtpyvcp.widgets.virtual_keyboards.vkb_base:VKBBase
     kwargs:
-      ui_file: {{ file.dir }}/../widgets/dialogs/mdi_keyboard.ui
+      ui_file: {{ file.dir }}/../widgets/virtual_keyboards/mdi_keyboard.ui
 #      frameless: True
 #      modal: False
 #      overrides:
@@ -105,7 +105,7 @@ virtual_keyboards:
   int:
     provider: qtpyvcp.widgets.virtual_keyboards.vkb_base:VKBBase
     kwargs:
-      ui_file: {{ file.dir }}/../widgets/dialogs/int_keypad.ui
+      ui_file: {{ file.dir }}/../widgets/virtual_keyboards/int_entry.ui
 #      frameless: True
 #      modal: False
 #      overrides:
