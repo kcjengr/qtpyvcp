@@ -378,6 +378,8 @@ class GcodeEditor(EditorBase, QObject):
         STATUS.task_mode.notify(self.onMdiChanged)
         self.prev_taskmode = STATUS.task_mode
 
+        self.cursorPositionChanged.connect(self.line_changed)
+
     @Slot(bool)
     def setEditable(self, state):
         if state:
@@ -505,11 +507,6 @@ class GcodeEditor(EditorBase, QObject):
                 self.load_mdi()
         self.prev_taskmode = mode
 
-    # when switching from MDI to AUTO we need to reload the
-    # last (linuxcnc loaded) program.
-    def reload_last(self):
-        self.load_text(STATUS.old['file'])
-        self.setCursorPosition(0, 0)
 
     # With the auto_show__mdi option, MDI history is shown
     # Allow linkage in Designer for manual force load, for
@@ -520,11 +517,18 @@ class GcodeEditor(EditorBase, QObject):
         self.setText(mdi_history)
         self.setCursorPosition(self.lines(), 0)
 
+
     # With the auto_show__mdi option, MDI history is shown
     #def load_manual(self):
     #    if STATUS.is_man_mode():
     #        self.load_text(INFO.MACHINE_LOG_HISTORY_PATH)
     #        self.setCursorPosition(self.lines(), 0)
+
+    # when switching from MDI to AUTO we need to reload the
+    # last (linuxcnc loaded) program.
+    def reload_last(self):
+        self.load_text(STATUS.old['file'])
+        self.setCursorPosition(0, 0)
 
     def load_text(self, fname):
         try:
@@ -560,7 +564,7 @@ class GcodeEditor(EditorBase, QObject):
         # LOG.debug('Line changed: {}'.format(STATUS.is_auto_mode()))
         self.line_text = str(self.text(line)).strip()
         self.line = line
-        if STATUS.is_mdi_mode() and STATUS.is_auto_running() is False:
+        if STATUS.is_mdi_mode() and self.auto_show_mdi and STATUS.is_auto_running() is False:
             STATUS.emit('mdi-line-selected', self.line_text, self._last_filename)
 
     def select_lineup(self):
