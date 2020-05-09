@@ -57,6 +57,8 @@ class Setting(QObject):
             value = self.value_type(value)
             if self.value_type in (int, float):
                 self.value = self.clampValue(value)
+            else:
+                self.value = value
             self.signal.emit(value)
         else:
             self.fset(self.instance, self, value)

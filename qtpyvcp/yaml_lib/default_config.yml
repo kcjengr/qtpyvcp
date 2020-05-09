@@ -21,7 +21,7 @@ data_plugins:
     provider: qtpyvcp.plugins.persistent_data_manager:PersistentDataManager
     kwargs:
       # serialization method to use: json or pickle
-      serialization_method: pickle
+      serialization_method: json
       # persistence_file: .vcp_data.json
 
   settings:
@@ -122,3 +122,7 @@ settings:
     persistent: true
     min_value: 0
     max_value: 1
+
+  virtual-keyboard.enable:
+    default_value: true
+    persistent: true

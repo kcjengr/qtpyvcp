@@ -5,11 +5,14 @@ from qtpy.QtGui import QKeySequence, QKeyEvent
 from qtpy.QtCore import Qt, QObject, Signal, Slot, QEvent
 from qtpy.QtWidgets import QApplication, QLineEdit, QSpinBox, QDoubleSpinBox
 
+from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.utilities.settings import getSetting, setSetting
 
 from qtpyvcp.widgets.virtual_keyboards import getKeyboard
 from qtpyvcp.widgets.input_widgets.mdientry_widget import MDIEntry
 from qtpyvcp.widgets.input_widgets.line_edit import VCPLineEdit
+
+LOG = getLogger(__name__)
 
 
 class VKBEngine(QObject):
@@ -27,8 +30,8 @@ class VKBEngine(QObject):
         super(VKBEngine, self).__init__(parent)
 
         self.app = QApplication.instance()
-        self._enabled = enabled
         self._modifiers = Qt.NoModifier
+        self._enabled = enabled
         self._active_vkb = None
         self._receiver = None
 
@@ -36,14 +39,16 @@ class VKBEngine(QObject):
         if os.getenv("DESIGNER", False):
             return
 
-        self.app.focusChanged.connect(self.focusChangedEvent)
-
         self._enabled_setting = getSetting("virtual-keyboard.enable")
         if self._enabled_setting:
-            self._enabled_setting.notify(self.enable_vkb)
+            self.enableVKB(self._enabled_setting.value)
+            self._enabled_setting.notify(self.enableVKB)
 
-    def enable_vkb(self, enabled):
-        print(enabled)
+        # connect signals
+        self.app.focusChanged.connect(self.focusChangedEvent)
+
+    def enableVKB(self, enabled):
+        LOG.debug("Setting VKB enabled: %s", enabled)
         self._enabled = enabled
 
     def focusChangedEvent(self, old_w, new_w):
@@ -83,7 +88,6 @@ class VKBEngine(QObject):
         self._active_vkb = getKeyboard(input_type)
         self._active_vkb.show()
 
-
     def emulateKeyPress(self, key_seq=None, modifiers=None):
         widget = self.sender()
 
@@ -111,17 +115,14 @@ class VKBEngine(QObject):
         release_event = QKeyEvent(QEvent.KeyRelease, key_seq[0], self._modifiers)
         self.app.sendEvent(receiver, release_event)
 
-
     def setShifted(self, shifted):
         self._shifted = shifted
         self.shiftStateChanged.emit(shifted)
-
 
     def toKeyCode(self, seq):
 
         if isinstance(seq, basestring):
             seq = QKeySequence(seq)
-
 
         # We should only working with a single key here
         if seq.count() == 1:
