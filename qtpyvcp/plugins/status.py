@@ -33,6 +33,11 @@ class Status(DataPlugin):
         files = [file for file in files if os.path.exists(file)]
         self.recent_files.setValue(files)
 
+        # MDI history
+        self._max_mdi_history_length = 100
+        self._mdi_history_file = INFO.getMDIHistoryFile()
+        self.loadMdiHistory(self._mdi_history_file)
+
         self.jog_increment = 0  # jog
         self.step_jog_increment = INFO.getIncrements()[0]
         self.jog_mode = True
@@ -85,6 +90,55 @@ class Status(DataPlugin):
                                self.on.setValue(ts == linuxcnc.STATE_ON))
 
     recent_files = DataChannel(doc='List of recently loaded files', settable=True, data=[])
+
+    def loadMdiHistory(self, fname):
+        """Load MDI history from file."""
+        mdi_history = []
+        if os.path.isfile(fname):
+            with open(fname, 'r') as fh:
+                for line in fh.readlines():
+                    line = line.strip()
+                    mdi_history.append(line)
+
+        mdi_history.reverse()
+        self.mdi_history.setValue(mdi_history)
+
+    def saveMdiHistory(self, fname):
+        """Write MDI history to file."""
+        with open(fname, 'w') as fh:
+            cmds = self.mdi_history.value
+            cmds.reverse()
+            print cmds
+            for cmd in cmds:
+                fh.write(cmd + '\n')
+
+    @DataChannel
+    def mdi_history(self, chan):
+        """List of recently issued MDI commands.
+            Commands are stored in reverse chronological order, with the
+            newest command at the front of the list, and oldest at the end.
+            When the list exceeds the length given by MAX_MDI_COMMANDS the
+            oldest entries will be dropped.
+
+            Duplicate commands will be removed, so the most recently issued
+            command will always be at the front of the list.
+        """
+        return chan.value
+
+    @mdi_history.setter
+    def mdi_history(self, chan, new_value):
+        if isinstance(new_value, list):
+            chan.value = new_value[:self._max_mdi_history_length]
+        else:
+            cmd = str(new_value.strip())
+            cmds = chan.value
+            if cmd in cmds:
+                cmds.remove(cmd)
+
+            cmds.insert(0, new_value)
+            chan.value = cmds[:self._max_mdi_history_length]
+
+        chan.signal.emit(chan.value)
 
     @DataChannel
     def on(self, chan):
@@ -562,9 +616,14 @@ class Status(DataPlugin):
         self.timer.start(self._cycle_time)
 
     def terminate(self):
-        """Save persistent settings on terminate."""
+        """Save persistent data on terminate."""
+
+        # save recent files
         with RuntimeConfig('~/.axis_preferences') as rc:
             rc.set('DEFAULT', 'recentfiles', self.recent_files.value)
+
+        # save MDI history
+        self.saveMdiHistory(self._mdi_history_file)
 
     def _periodic(self):
 

@@ -44,10 +44,7 @@ class MDIEntry(QLineEdit, CMDWidget):
         cmd = str(self.text()).strip()
         issue_mdi(cmd)
         self.setText('')
-        cmds = self.model.stringList()
-        if cmd not in cmds:
-            cmds.append(cmd)
-            self.model.setStringList(cmds)
+        STATUS.mdi_history.setValue(cmd)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Up or event.key() == Qt.Key_Down:
@@ -60,19 +57,9 @@ class MDIEntry(QLineEdit, CMDWidget):
         self.completer().complete()
 
     def initialize(self):
-        history = []
-        try:
-            with open(MDI_HISTORY_FILE, 'r') as fh:
-                lines = fh.readlines()
-            for line in lines:
-                line = line.strip()
-                history.append(line)
-            self.model.setStringList(history)
-        except:
-            # file does not exist
-            pass
+        history = STATUS.mdi_history.value
+        self.model.setStringList(history)
+        STATUS.mdi_history.notify(self.model.setStringList)
 
     def terminate(self):
-        with open(MDI_HISTORY_FILE, 'w') as fh:
-            for cmd in self.model.stringList():
-                fh.write(cmd + '\n')
+        pass
