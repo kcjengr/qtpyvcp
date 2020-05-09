@@ -4,7 +4,7 @@
 QtPyVCP - Qt and Python based Virtual Control Panel framework for LinuxCNC.
 
 Usage:
-  qtpyvcp --ini=INI [<vcp>] [options]
+  qtpyvcp --ini INI [<vcp>] [options]
   qtpyvcp (-h | --help)
   qtpyvcp (-v | --version)
 
@@ -12,15 +12,12 @@ Required Arguments:
   --ini INI            Path to INI file, relative to ~/linuxcnc/configs.
 
 Display  Options:
-  --vcp VCP            The name of the VCP to launch. If not specified a
-                       graphical chooser dialog will be shown.
   --theme THEME        The Qt theme to use, defaults to system theme.
   --stylesheet STYLESHEET
                        Path to QSS file containing styles to be applied
                        to specific Qt and/or QtPyVCP widget classes.
-  --size WIDTHxHEIGHT
-                       Initial size of the window in pixels.
-  --position XPOSxYPOS
+  --size WIDTHxHEIGHT  Initial size of the window in pixels.
+  --position XPOSxYPOS 
                        Initial position of the window, specified as the
                        coordinates of the top left corner of the window
                        relative to the top left corner of the screen.
@@ -33,11 +30,10 @@ Display  Options:
 
 Application Options:
   --log-level=(DEBUG | INFO | WARN | ERROR | CRITICAL)
-                       Sets the log level. Default INFO
-  --config-file=FILE   Specifies the YML config file.
-  --log-file=FILE      Specifies the log file. Overrides INI setting.
-  --pref-file=FILE     Specifies the preference file. Overrides INI setting.
-  --qt-api=(pyqt5 | pyqt | pyside2 | pyside)
+                       Sets the log level. Default INFO.
+  --config-file PATH   Specify the YML config file relative to $CONFIG_DIR.
+  --log-file PATH      Specify the log file relative to $CONFIG_DIR.
+  --qt-api (pyqt5 | pyqt | pyside2 | pyside)
                        Specify the Qt Python binding to use.
   --perfmon            Monitor and log system performance.
   --develop            Development mode. Enables live reloading of QSS styles.
