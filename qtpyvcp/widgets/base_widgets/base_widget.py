@@ -119,12 +119,11 @@ class VCPBaseWidget(VCPPrimitiveWidget):
     @rules.setter
     def rules(self, rules):
         self._rules = rules or '[]'
-        self.registerRules()
+        # self.registerRules()
 
     def registerRules(self):
         rules = json.loads(self._rules)
         for rule in rules:
-            # print rule
             ch = ChanList()
             triggers = []
             for chan in rule['channels']:
@@ -160,11 +159,16 @@ class VCPBaseWidget(VCPPrimitiveWidget):
             try:
                 exp()
             except:
-                LOG.exception('Error calling rules expression:')
+                print self
+                print self.objectName()
+                LOG.exception('Error calling rules expression for rule %s:', rule)
                 continue
 
             for trigger in triggers:
                 trigger(exp)
+
+    def initialize(self):
+        self.registerRules()
 
 
 class VCPWidget(VCPBaseWidget):
