@@ -123,7 +123,7 @@ class ToolTable(DataPlugin):
 
     tool_table_changed = Signal(dict)
 
-    def __init__(self, columns='TPXYZDR', file_header_template=None,
+    def __init__(self, columns='TPXYZIJDQR', file_header_template=None,
                  remember_tool_in_spindle=True):
         super(ToolTable, self).__init__()
 
@@ -131,7 +131,7 @@ class ToolTable(DataPlugin):
         self.orig_header_lines = []
         self.file_header_template = file_header_template or ''
         self.remember_tool_in_spindle = remember_tool_in_spindle
-        self.columns = self.validateColumns(columns) or [c for c in 'TPXYZDR']
+        self.columns = self.validateColumns(columns) or [c for c in 'TPXYZIJDQR']
 
         self.data_manager = getPlugin('persistent_data_manager')
 
