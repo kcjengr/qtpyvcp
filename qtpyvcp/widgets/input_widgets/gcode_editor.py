@@ -375,10 +375,10 @@ class GcodeEditor(EditorBase, QObject):
 
         # register with the status:task_mode channel to
         # drive the mdi auto show behaviour
-        STATUS.task_mode.notify(self.onMdiChanged)
-        self.prev_taskmode = STATUS.task_mode
+        #STATUS.task_mode.notify(self.onMdiChanged)
+        #self.prev_taskmode = STATUS.task_mode
 
-        self.cursorPositionChanged.connect(self.line_changed)
+        #self.cursorPositionChanged.connect(self.line_changed)
 
     @Slot(bool)
     def setEditable(self, state):
@@ -497,38 +497,6 @@ class GcodeEditor(EditorBase, QObject):
         # self.zoomTo(6)
         self.setCursorPosition(0, 0)
 
-    def onMdiChanged(self, mode):
-        if self.auto_show_mdi:
-            if (mode == 1 or mode == 2) and self.prev_taskmode == 3:
-                print('Manual or Auto mode active')
-                self.reload_last()
-            elif mode == 3:
-                print('MDI mode active')
-                self.load_mdi()
-        self.prev_taskmode = mode
-
-
-    # With the auto_show__mdi option, MDI history is shown
-    # Allow linkage in Designer for manual force load, for
-    # example to link with a MDI submit/send button
-    @Slot()
-    def load_mdi(self):
-        mdi_history = '\n'.join(STATUS.mdi_history_list())
-        self.setText(mdi_history)
-        self.setCursorPosition(self.lines(), 0)
-
-
-    # With the auto_show__mdi option, MDI history is shown
-    #def load_manual(self):
-    #    if STATUS.is_man_mode():
-    #        self.load_text(INFO.MACHINE_LOG_HISTORY_PATH)
-    #        self.setCursorPosition(self.lines(), 0)
-
-    # when switching from MDI to AUTO we need to reload the
-    # last (linuxcnc loaded) program.
-    def reload_last(self):
-        self.load_text(STATUS.old['file'])
-        self.setCursorPosition(0, 0)
 
     def load_text(self, fname):
         try:
@@ -560,13 +528,6 @@ class GcodeEditor(EditorBase, QObject):
     def set_line_number(self, line):
         pass
 
-    def line_changed(self, line, index):
-        # LOG.debug('Line changed: {}'.format(STATUS.is_auto_mode()))
-        self.line_text = str(self.text(line)).strip()
-        self.line = line
-        if STATUS.is_mdi_mode() and self.auto_show_mdi and STATUS.is_auto_running() is False:
-            STATUS.emit('mdi-line-selected', self.line_text, self._last_filename)
-
     def select_lineup(self):
         line, col = self.getCursorPosition()
         LOG.debug(line)
@@ -579,18 +540,6 @@ class GcodeEditor(EditorBase, QObject):
         self.setCursorPosition(line + 1, 0)
         self.highlight_line(line + 1)
 
-    # designer recognized getter/setters
-    # auto_show_mdi status
-    def set_auto_show_mdi(self, data):
-        self.auto_show_mdi = data
-
-    def get_auto_show_mdi(self):
-        return self.auto_show_mdi
-
-    def reset_auto_show_mdi(self):
-        self.auto_show_mdi = True
-
-    auto_show_mdi_status = Property(bool, get_auto_show_mdi, set_auto_show_mdi, reset_auto_show_mdi)
 
     # simple input dialog for save as
     def save_as_dialog(self, filename):
