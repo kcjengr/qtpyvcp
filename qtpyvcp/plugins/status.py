@@ -108,7 +108,6 @@ class Status(DataPlugin):
         with open(fname, 'w') as fh:
             cmds = self.mdi_history.value
             cmds.reverse()
-            print cmds
             for cmd in cmds:
                 fh.write(cmd + '\n')
 
