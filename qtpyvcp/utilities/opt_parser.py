@@ -5,6 +5,7 @@ Usage:
   {vcp_cmd} --ini INI [options]
   {vcp_cmd} (-h | --help)
   {vcp_cmd} (-v | --version)
+  {vcp_cmd} (-i | --info)
 
 Required Arguments:
   --ini INI            Path to INI file, relative to ~/linuxcnc/configs.
@@ -40,7 +41,8 @@ Application Options:
 
 General Options:
   -h --help            Show this help and exit.
-  -v --version         Show version.
+  -v --version         Show version and exit.
+  -i --info            Show system info and exit.
 
 Note:
   When specifying {vcp_name} in the INI using [DISPLAY]DISPLAY={vcp_cmd} [...]
@@ -75,6 +77,10 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
     doc = doc.format(vcp_name=vcp_name, vcp_cmd=vcp_cmd)
 
     raw_args = docopt(doc, version=version_str)
+
+    if raw_args.get('--info'):
+        printSystemInfo()
+        sys.exit()
 
     def convType(val):
         if isinstance(val, basestring):
@@ -197,3 +203,82 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
                   json.dumps(opts, sort_keys=True, indent=4))
 
     return opts
+
+def printSystemInfo():
+
+    system_info = """
+    QtPyVCP Info
+        Version:        {qtpyvcp_version}
+    
+    LinuxCNC Info
+        Version:        {lcnc_version}
+    
+    Qt Info
+        Qt Version:     {qt_version}
+        Qt API:         {qt_api}
+        Qt API Version: {api_version}
+    
+    System Info
+        Description:    {dist}
+        Kernel:         {kernel}
+        Version:        {version}
+        Ram:            {ram}
+    
+    CPU Info
+        Vendor ID:      {cpu_model}
+        Architecture:   {architecture}
+        Cores:          {cpu_cores} ({locical_cores} logical)
+    
+    Network
+        Hostname:       {hostname}
+        IP Address:     {ip_address}
+        MAC Address:    {mac_address}
+    """
+
+    import qtpy
+    import subprocess
+    import linuxcnc
+    import qtpyvcp
+    import platform, socket, re, uuid, psutil
+
+    _cpuinfo = {}
+    try:
+        raw = (subprocess.check_output("lscpu -J", shell=True).strip()).decode()
+        data = json.loads(raw)['lscpu']
+        _cpuinfo = {
+        d['field'].lower().replace(' ', '_').replace('(s)', 's').replace(':', ''):
+        d['data'] for d in data}
+    except:
+        pass
+
+    def cpuinfo(item):
+        return _cpuinfo.get(item, '')
+
+    print system_info.format(
+        qtpyvcp_version=qtpyvcp.__version__,
+
+        # linuxcnc info
+        lcnc_version=linuxcnc.version,
+
+        # qt info
+        qt_version=qtpy.QT_VERSION,
+        qt_api=qtpy.API_NAME,
+        api_version=qtpy.PYQT_VERSION or qtpy.PYSIDE_VERSION,
+
+        # system info
+        dist=subprocess.check_output(['lsb_release', '-d']).strip().split('\t')[1],
+        kernel=platform.release(),
+        version=platform.version(),
+        ram=str(round(psutil.virtual_memory().total / (1024.0 ** 3))) + " GB",
+
+        # CPU info
+        cpu_model=cpuinfo('model_name'),
+        cpu_cores=psutil.cpu_count(logical=False),
+        architecture=platform.processor(),
+        locical_cores=psutil.cpu_count(logical=True),
+
+        # network info
+        hostname=socket.gethostname(),
+        ip_address=socket.gethostbyname(socket.gethostname()),
+        mac_address=':'.join(re.findall('..', '%012x' % uuid.getnode())),
+    )

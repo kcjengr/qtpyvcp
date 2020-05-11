@@ -7,6 +7,7 @@ Usage:
   qtpyvcp --ini INI [<vcp>] [options]
   qtpyvcp (-h | --help)
   qtpyvcp (-v | --version)
+  qtpyvcp (-i | --info)
 
 Required Arguments:
   --ini INI            Path to INI file, relative to ~/linuxcnc/configs.
@@ -45,7 +46,8 @@ General Options:
                        was specified it will be ignored. Useful for overriding
                        a VCP specified in an INI file.
   -h --help            Show this help and exit.
-  -v --version         Show version.
+  -v --version         Show version and exit.
+  -i --info            Show system info and exit.
 
 Note:
   When specifying QtPyVCP in the INI using [DISPLAY]DISPLAY=qtpyvcp [...]
