@@ -1380,7 +1380,7 @@ class Axes:
         self.actor = vtk.vtkAxesActor()
         self.actor.SetUserTransform(transform)
 
-        self.actor.AxisLabelsOn()
+        self.actor.AxisLabelsOff()
         self.actor.SetShaftType(vtk.vtkAxesActor.CYLINDER_SHAFT)
 
         self.actor.SetTotalLength(self.length, self.length, self.length)
