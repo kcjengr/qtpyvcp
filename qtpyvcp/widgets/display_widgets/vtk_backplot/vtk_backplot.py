@@ -326,7 +326,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
-        self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset, self._lathe_plotter)
+        self.tool = Tool(self.stat.tool_table[1], self.stat.tool_offset, self._lathe_plotter)
         self.tool_actor = self.tool.get_actor()
 
         self.offset_axes = OrderedDict()
@@ -1395,6 +1395,17 @@ class Tool:
         self.status = STATUS
         self.units = MACHINE_UNITS
 
+        tool_orientation_table = [0,
+                                  135,
+                                  45,
+                                  315,
+                                  225,
+                                  180,
+                                  90,
+                                  0,
+                                  270]
+
+
         if self.units == 2:
             self.height = 25.4 * 2.0
         else:
@@ -1408,7 +1419,7 @@ class Tool:
             source.SetCenter(-self.height / 4 - offset[2], -offset[1], -offset[0])
             source.SetRadius(self.height / 4)
             if lathe is True:
-                transform.RotateWXYZ(180, 0, 1, 0)
+                transform.RotateWXYZ(tool_orientation_table[tool.orientation] + 90, 0, 1, 0)
             else:
                 transform.RotateWXYZ(90, 0, 1, 0)
         else:
@@ -1417,7 +1428,7 @@ class Tool:
             source.SetCenter(-offset[0], self.height / 4 - offset[2], offset[1])
             source.SetRadius(tool.diameter / 2)
             if lathe is True:
-                transform.RotateWXYZ(90, 0, 1, 0)
+                transform.RotateWXYZ(180, 1, 0, 0)
             else:
                 transform.RotateWXYZ(90, 1, 0, 0)
 
