@@ -232,6 +232,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
 
+        self._lathe_plotter = False
         self.parent = parent
         self.status = STATUS
         self.stat = STATUS.stat
@@ -294,6 +295,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.clipping_range_near = 0.1
             self.clipping_range_far = 10000.0
 
+
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
 
         self.renderer = vtk.vtkRenderer()
@@ -314,7 +316,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.machine_actor = self.machine.get_actor()
         self.machine_actor.SetCamera(self.camera)
 
-        self.axes = Axes()
+        self.axes = Axes(self._lathe_plotter)
         self.axes_actor = self.axes.get_actor()
 
         transform = vtk.vtkTransform()
@@ -324,7 +326,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
-        self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
+        self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset, self._lathe_plotter)
         self.tool_actor = self.tool.get_actor()
 
         self.offset_axes = OrderedDict()
@@ -796,7 +798,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.RemoveActor(self.tool_actor)
 
-        self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
+        self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset, self._lathe_plotter)
         self.tool_actor = self.tool.get_actor()
 
         tool_transform = vtk.vtkTransform()
@@ -839,6 +841,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def setViewX(self):
         self.camera.SetPosition(1, 0, 0)
         self.camera.SetViewUp(0, 0, 1)
+        self.camera.SetFocalPoint(0, 0, 0)
+        self.renderer.ResetCamera()
+        # FIXME ugly hack
+        self.camera.Zoom(1.5)
+        self.interactor.ReInitialize()
+
+    @Slot()
+    def setViewXZ(self):
+        self.camera.SetPosition(0, -1, 0)
+        self.camera.SetViewUp(-1, 0, 0)
         self.camera.SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
         # FIXME ugly hack
@@ -1088,6 +1100,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @enableProgramTicks.setter
     def enableProgramTicks(self, enable):
         self._enableProgramTicks = enable
+
+    @Property(bool)
+    def lathe_plotter(self):
+        return self._lathe_plotter
+
+    @lathe_plotter.setter
+    def lathe_plotter(self, mode):
+        self._lathe_plotter = mode
 
 
 class PathBoundaries:
@@ -1344,7 +1364,7 @@ class Machine:
 
 
 class Axes:
-    def __init__(self):
+    def __init__(self, lathe=False):
 
         self.status = STATUS
         self.units = MACHINE_UNITS
@@ -1360,7 +1380,7 @@ class Axes:
         self.actor = vtk.vtkAxesActor()
         self.actor.SetUserTransform(transform)
 
-        self.actor.AxisLabelsOff()
+        self.actor.AxisLabelsOn()
         self.actor.SetShaftType(vtk.vtkAxesActor.CYLINDER_SHAFT)
 
         self.actor.SetTotalLength(self.length, self.length, self.length)
@@ -1370,7 +1390,7 @@ class Axes:
 
 
 class Tool:
-    def __init__(self, tool, offset):
+    def __init__(self, tool, offset, lathe=False):
 
         self.status = STATUS
         self.units = MACHINE_UNITS
@@ -1387,13 +1407,19 @@ class Tool:
             source.SetHeight(self.height / 2)
             source.SetCenter(-self.height / 4 - offset[2], -offset[1], -offset[0])
             source.SetRadius(self.height / 4)
-            transform.RotateWXYZ(90, 0, 1, 0)
+            if lathe is True:
+                transform.RotateWXYZ(180, 0, 1, 0)
+            else:
+                transform.RotateWXYZ(90, 0, 1, 0)
         else:
             source = vtk.vtkCylinderSource()
             source.SetHeight(self.height / 2)
             source.SetCenter(-offset[0], self.height / 4 - offset[2], offset[1])
             source.SetRadius(tool.diameter / 2)
-            transform.RotateWXYZ(90, 1, 0, 0)
+            if lathe is True:
+                transform.RotateWXYZ(90, 0, 1, 0)
+            else:
+                transform.RotateWXYZ(90, 1, 0, 0)
 
         source.SetResolution(64)
 
