@@ -227,7 +227,8 @@ def printSystemInfo():
     CPU Info
         Vendor ID:      {cpu_model}
         Architecture:   {architecture}
-        Cores:          {cpu_cores} ({locical_cores} logical)
+        Physical Cores: {cpu_cores}
+        Logical Cores:  {logical_cores}
     
     Network
         Hostname:       {hostname}
@@ -235,24 +236,22 @@ def printSystemInfo():
         MAC Address:    {mac_address}
     """
 
-    import qtpy
     import subprocess
+    import platform
+    import socket
+    import re
+    import uuid
+    import psutil
+
     import linuxcnc
+    import qtpy
     import qtpyvcp
-    import platform, socket, re, uuid, psutil
 
-    _cpuinfo = {}
-    try:
-        raw = (subprocess.check_output("lscpu -J", shell=True).strip()).decode()
-        data = json.loads(raw)['lscpu']
-        _cpuinfo = {
-        d['field'].lower().replace(' ', '_').replace('(s)', 's').replace(':', ''):
-        d['data'] for d in data}
-    except:
-        pass
-
-    def cpuinfo(item):
-        return _cpuinfo.get(item, '')
+    def getProcessorModelName():
+        info = subprocess.check_output("cat /proc/cpuinfo", shell=True).strip()
+        for line in info.split("\n"):
+            if "model name" in line:
+                return re.sub(".*model name.*:", "", line, 1).strip()
 
     print system_info.format(
         qtpyvcp_version=qtpyvcp.__version__,
@@ -272,10 +271,10 @@ def printSystemInfo():
         ram=str(round(psutil.virtual_memory().total / (1024.0 ** 3))) + " GB",
 
         # CPU info
-        cpu_model=cpuinfo('model_name'),
-        cpu_cores=psutil.cpu_count(logical=False),
+        cpu_model=getProcessorModelName(),
         architecture=platform.processor(),
-        locical_cores=psutil.cpu_count(logical=True),
+        cpu_cores=psutil.cpu_count(logical=False),
+        logical_cores=psutil.cpu_count(logical=True),
 
         # network info
         hostname=socket.gethostname(),
