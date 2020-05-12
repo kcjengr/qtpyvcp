@@ -1,5 +1,5 @@
 
-from qtpy.QtCore import Qt, Slot
+from qtpy.QtCore import Qt, Slot, Property
 from qtpy.QtGui import QValidator
 from qtpy.QtWidgets import QLineEdit, QCompleter
 
@@ -26,9 +26,10 @@ class MDIEntry(QLineEdit, CMDWidget):
     def __init__(self, parent=None):
         super(MDIEntry, self).__init__(parent)
 
-
+        self.mdi_history_size = 10
         completer = QCompleter()
         completer.setCaseSensitivity(Qt.CaseInsensitive)
+        #completer.setCompletionMode(QCompleter.UnfilteredPopupCompletion)
         completer.setModel(STATUS.mdi_history())
         self.setCompleter(completer)
 
@@ -37,12 +38,20 @@ class MDIEntry(QLineEdit, CMDWidget):
 
         self.returnPressed.connect(self.submit)
 
+    @Property(int)
+    def mdi_history_size(self):
+        return self._mdi_history_size
+
+    @mdi_history_size.setter
+    def mdi_history_size(self, size):
+        self._mdi_history_size = size
+
     @Slot()
     def submit(self):
         cmd = str(self.text()).strip()
         issue_mdi(cmd)
         self.setText('')
-        STATUS.mdi_history_add(cmd)
+        STATUS.mdi_history_add(cmd, self._mdi_history_size)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Up or event.key() == Qt.Key_Down:

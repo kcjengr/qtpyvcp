@@ -572,12 +572,14 @@ class Status(DataPlugin):
         """
         return self.mdi_cmds.stringList()
 
-    def mdi_history_add(self, cmd):
+    def mdi_history_add(self, cmd, size=10):
         """Add MDI command to history if net new"""
         cmd = cmd.strip()
         cmds = self.mdi_cmds.stringList()
         if cmd not in cmds:
-            cmds.append(cmd)
+            cmds.insert(0,cmd)
+            if len(cmds) > size:
+                cmds.pop()
             self.mdi_cmds.setStringList(cmds)
 
 
