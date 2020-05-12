@@ -1,7 +1,7 @@
 import os
 import linuxcnc
 
-from qtpy.QtCore import QTimer, QFileSystemWatcher, QStringListModel
+from qtpy.QtCore import QTimer, QFileSystemWatcher
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.app.runtime_config import RuntimeConfig
@@ -591,37 +591,6 @@ class Status(DataPlugin):
             chan.signal.emit(chan.value)
 
 
-    #
-    # MDI history managment
-    #
-    def mdi_history(self):
-        """Get MDI history model object
-
-        :returns: MDI history model
-        :rtype: QStringListModel
-        """
-        return self.mdi_cmds
-
-    def mdi_history_list(self):
-        """Get MDI history as a string list
-
-        :returns: MDI history list of strings
-        :rtype: list
-        """
-        return self.mdi_cmds.stringList()
-
-    def mdi_history_add(self, cmd, size=10):
-        """Add MDI command to history if net new"""
-        cmd = cmd.strip()
-        cmds = self.mdi_cmds.stringList()
-        if cmd not in cmds:
-            cmds.insert(0,cmd)
-            if len(cmds) > size:
-                cmds.pop()
-            self.mdi_cmds.setStringList(cmds)
-
-
-
     # this is used by File "qtpyvcp/qtpyvcp/actions/program_actions.py",
     # line 83, in _run_ok elif not STATUS.allHomed():
 
@@ -652,10 +621,6 @@ class Status(DataPlugin):
         # save recent files
         with RuntimeConfig('~/.axis_preferences') as rc:
             rc.set('DEFAULT', 'recentfiles', self.recent_files.value)
-        # save out MDI history
-        with open(INFO.getMDIHistoryFile(), 'w') as fh:
-            for cmd in self.mdi_cmds.stringList():
-                fh.write(cmd + '\n')
 
         # save MDI history
         self.saveMdiHistory(self._mdi_history_file)
