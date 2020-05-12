@@ -51,7 +51,7 @@ class MDIEntry(QLineEdit, CMDWidget):
         cmd = str(self.text()).strip()
         issue_mdi(cmd)
         self.setText('')
-        STATUS.mdi_history_add(cmd, self._mdi_history_size)
+        STATUS.mdi_history.setValue(cmd)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Up or event.key() == Qt.Key_Down:
@@ -64,7 +64,9 @@ class MDIEntry(QLineEdit, CMDWidget):
         self.completer().complete()
 
     def initialize(self):
-        pass
+        history = STATUS.mdi_history.value
+        self.model.setStringList(history)
+        STATUS.mdi_history.notify(self.model.setStringList)
 
     def terminate(self):
         pass

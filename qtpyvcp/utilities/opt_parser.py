@@ -2,20 +2,21 @@
 {vcp_name} - A QtPyVCP based Virtual Control Panel for LinuxCNC.
 
 Usage:
-  {vcp_cmd} --ini=INI [options]
+  {vcp_cmd} --ini INI [options]
   {vcp_cmd} (-h | --help)
   {vcp_cmd} (-v | --version)
+  {vcp_cmd} (-i | --info)
 
 Required Arguments:
   --ini INI            Path to INI file, relative to ~/linuxcnc/configs.
 
 Display  Options:
-  --theme=THEME        The Qt theme to use, defaults to system theme.
-  --stylesheet=STYLESHEET
+  --theme THEME        The Qt theme to use, defaults to system theme.
+  --stylesheet STYLESHEET
                        Path to QSS file containing styles to be applied
                        to specific Qt and/or QtPyVCP widget classes.
-  --size=WIDTHxHEIGHT  Initial size of the window in pixels.
-  --position=XPOSxYPOS
+  --size WIDTHxHEIGHT  Initial size of the window in pixels.
+  --position XPOSxYPOS
                        Initial position of the window, specified as the
                        coordinates of the top left corner of the window
                        relative to the top left corner of the screen.
@@ -29,10 +30,9 @@ Display  Options:
 Application Options:
   --log-level=(DEBUG | INFO | WARN | ERROR | CRITICAL)
                        Sets the log level. Default INFO.
-  --config-file=FILE   Specifies the YML config file.
-  --log-file=FILE      Specifies the log file. Overrides INI setting.
-  --pref-file=FILE     Specifies the preference file. Overrides INI setting.
-  --qt-api=(pyqt5 | pyqt | pyside2 | pyside)
+  --config-file PATH   Specify the YML config file relative to $CONFIG_DIR.
+  --log-file PATH      Specify the log file relative to $CONFIG_DIR.
+  --qt-api (pyqt5 | pyqt | pyside2 | pyside)
                        Specify the Qt Python binding to use.
   --perfmon            Monitor and log system performance.
   --develop            Development mode. Enables live reloading of QSS styles.
@@ -41,7 +41,8 @@ Application Options:
 
 General Options:
   -h --help            Show this help and exit.
-  -v --version         Show version.
+  -v --version         Show version and exit.
+  -i --info            Show system info and exit.
 
 Note:
   When specifying {vcp_name} in the INI using [DISPLAY]DISPLAY={vcp_cmd} [...]
@@ -76,6 +77,10 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
     doc = doc.format(vcp_name=vcp_name, vcp_cmd=vcp_cmd)
 
     raw_args = docopt(doc, version=version_str)
+
+    if raw_args.get('--info'):
+        printSystemInfo()
+        sys.exit()
 
     def convType(val):
         if isinstance(val, basestring):
@@ -198,3 +203,81 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
                   json.dumps(opts, sort_keys=True, indent=4))
 
     return opts
+
+def printSystemInfo():
+
+    system_info = """
+    QtPyVCP Info
+        Version:        {qtpyvcp_version}
+    
+    LinuxCNC Info
+        Version:        {lcnc_version}
+    
+    Qt Info
+        Qt Version:     {qt_version}
+        Qt API:         {qt_api}
+        Qt API Version: {api_version}
+    
+    System Info
+        Description:    {dist}
+        Kernel:         {kernel}
+        Version:        {version}
+        Ram:            {ram}
+    
+    CPU Info
+        Vendor ID:      {cpu_model}
+        Architecture:   {architecture}
+        Physical Cores: {cpu_cores}
+        Logical Cores:  {logical_cores}
+    
+    Network
+        Hostname:       {hostname}
+        IP Address:     {ip_address}
+        MAC Address:    {mac_address}
+    """
+
+    import subprocess
+    import platform
+    import socket
+    import re
+    import uuid
+    import psutil
+
+    import linuxcnc
+    import qtpy
+    import qtpyvcp
+
+    def getProcessorModelName():
+        info = subprocess.check_output("cat /proc/cpuinfo", shell=True).strip()
+        for line in info.split("\n"):
+            if "model name" in line:
+                return re.sub(".*model name.*:", "", line, 1).strip()
+
+    print system_info.format(
+        qtpyvcp_version=qtpyvcp.__version__,
+
+        # linuxcnc info
+        lcnc_version=linuxcnc.version,
+
+        # qt info
+        qt_version=qtpy.QT_VERSION,
+        qt_api=qtpy.API_NAME,
+        api_version=qtpy.PYQT_VERSION or qtpy.PYSIDE_VERSION,
+
+        # system info
+        dist=subprocess.check_output(['lsb_release', '-d']).strip().split('\t')[1],
+        kernel=platform.release(),
+        version=platform.version(),
+        ram=str(round(psutil.virtual_memory().total / (1024.0 ** 3))) + " GB",
+
+        # CPU info
+        cpu_model=getProcessorModelName(),
+        architecture=platform.processor(),
+        cpu_cores=psutil.cpu_count(logical=False),
+        logical_cores=psutil.cpu_count(logical=True),
+
+        # network info
+        hostname=socket.gethostname(),
+        ip_address=socket.gethostbyname(socket.gethostname()),
+        mac_address=':'.join(re.findall('..', '%012x' % uuid.getnode())),
+    )
