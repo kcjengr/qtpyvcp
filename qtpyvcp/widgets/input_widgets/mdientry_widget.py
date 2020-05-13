@@ -1,7 +1,7 @@
 
 from qtpy.QtCore import Qt, Slot, Property, QStringListModel
 from qtpy.QtGui import QValidator
-from qtpy.QtWidgets import QLineEdit, QCompleter
+from qtpy.QtWidgets import QLineEdit, QListWidgetItem, QCompleter
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
@@ -52,6 +52,11 @@ class MDIEntry(QLineEdit, CMDWidget):
         issue_mdi(cmd)
         self.setText('')
         STATUS.mdi_history.setValue(cmd)
+
+    @Slot(QListWidgetItem)
+    def setMDIText(self, listItem):
+        if listItem is not None:
+            self.setText(listItem.text())
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Up or event.key() == Qt.Key_Down:

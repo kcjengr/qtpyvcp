@@ -24,34 +24,48 @@ class MDIHistory(QListWidget, CMDWidget):
         #self.returnPressed.connect(self.submit)
 
 
-    @Slot()
     def submit(self):
         cmd = str(self.text()).strip()
         issue_mdi(cmd)
-        self.setText('')
         STATUS.mdi_history.setValue(cmd)
+
 
     def rowClicked(self):
         print('item clicked in list: {}'.format(self.currentItem().text()))
 
+
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Up or event.key() == Qt.Key_Down:
-            pass
+        row = self.currentRow()
+        if event.key() == Qt.Key_Up:
+            if row > 0:
+                row -= 1
+        elif event.key() == Qt.Key_Down:
+            if row < self.count()-1:
+                row += 1
         else:
             super(MDIHistory, self).keyPressEvent(event)
+
+        self.setCurrentRow(row)
+
 
     def focusInEvent(self, event):
         super(MDIHistory, self).focusInEvent(event)
         pass
 
+
     def setHistory(self, stringList):
         print('Clear and load history to list')
+        self.clear()
+        self.addItems(stringList)
+
+
 
     def initialize(self):
         history = STATUS.mdi_history.value
         self.addItems(history)
         self.clicked.connect(self.rowClicked)
         STATUS.mdi_history.notify(self.setHistory)
+
 
     def terminate(self):
         pass
