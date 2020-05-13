@@ -1,5 +1,5 @@
 
-from qtpy.QtCore import Qt, Slot, Property
+from qtpy.QtCore import Qt, Slot, Property, QStringListModel
 from qtpy.QtGui import QValidator
 from qtpy.QtWidgets import QLineEdit, QCompleter
 
@@ -29,8 +29,8 @@ class MDIEntry(QLineEdit, CMDWidget):
         self.mdi_history_size = 10
         completer = QCompleter()
         completer.setCaseSensitivity(Qt.CaseInsensitive)
-        #completer.setCompletionMode(QCompleter.UnfilteredPopupCompletion)
-        completer.setModel(STATUS.mdi_history())
+        self.model = QStringListModel()
+        completer.setModel(self.model)
         self.setCompleter(completer)
 
         self.validator = Validator(self)
