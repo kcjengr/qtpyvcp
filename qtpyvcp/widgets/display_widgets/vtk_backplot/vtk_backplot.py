@@ -38,6 +38,8 @@ OFFSETTABLE = getPlugin('offsettable')
 IN_DESIGNER = os.getenv('DESIGNER', False)
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 MACHINE_UNITS = 2 if INFO.getIsMachineMetric() else 1
+LATHE = bool(INIFILE.find("DISPLAY", "LATHE"))
+
 
 COLOR_MAP = {
     'traverse': (188, 252, 201, 75),
@@ -232,7 +234,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
 
-        self._lathe_plotter = False
         self.parent = parent
         self.status = STATUS
         self.stat = STATUS.stat
@@ -316,7 +317,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.machine_actor = self.machine.get_actor()
         self.machine_actor.SetCamera(self.camera)
 
-        self.axes = Axes(self._lathe_plotter)
+        self.axes = Axes()
         self.axes_actor = self.axes.get_actor()
 
         transform = vtk.vtkTransform()
@@ -326,7 +327,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
-        self.tool = Tool(self.stat.tool_table[1], self.stat.tool_offset, self._lathe_plotter)
+        self.tool = Tool(self.stat.tool_table[1], self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
         self.offset_axes = OrderedDict()
@@ -798,7 +799,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.RemoveActor(self.tool_actor)
 
-        self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset, self._lathe_plotter)
+        self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
         tool_transform = vtk.vtkTransform()
@@ -1101,14 +1102,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def enableProgramTicks(self, enable):
         self._enableProgramTicks = enable
 
-    @Property(bool)
-    def lathe_plotter(self):
-        return self._lathe_plotter
-
-    @lathe_plotter.setter
-    def lathe_plotter(self, mode):
-        self._lathe_plotter = mode
-
 
 class PathBoundaries:
     def __init__(self, camera, path_actor):
@@ -1364,7 +1357,7 @@ class Machine:
 
 
 class Axes:
-    def __init__(self, lathe=False):
+    def __init__(self):
 
         self.status = STATUS
         self.units = MACHINE_UNITS
@@ -1381,7 +1374,7 @@ class Axes:
         self.actor.SetUserTransform(transform)
 
         self.actor.AxisLabelsOff()
-        self.actor.SetShaftType(vtk.vtkAxesActor.CYLINDER_SHAFT)
+        self.actor.SetShaftType(vtk.vtkAxesActor.LINE_SHAFT)
 
         self.actor.SetTotalLength(self.length, self.length, self.length)
 
@@ -1390,10 +1383,12 @@ class Axes:
 
 
 class Tool:
-    def __init__(self, tool, offset, lathe=False):
+    def __init__(self, tool, offset):
 
         self.status = STATUS
         self.units = MACHINE_UNITS
+        self.lathe = LATHE
+        print(self.lathe)
 
         tool_orientation_table = [0,
                                   135,
@@ -1404,7 +1399,6 @@ class Tool:
                                   90,
                                   0,
                                   270]
-
 
         if self.units == 2:
             self.height = 25.4 * 2.0
@@ -1418,7 +1412,7 @@ class Tool:
             source.SetHeight(self.height / 2)
             source.SetCenter(-self.height / 4 - offset[2], -offset[1], -offset[0])
             source.SetRadius(self.height / 4)
-            if lathe is True:
+            if self.lathe is True:
                 transform.RotateWXYZ(tool_orientation_table[tool.orientation] + 90, 0, 1, 0)
             else:
                 transform.RotateWXYZ(90, 0, 1, 0)
@@ -1427,8 +1421,9 @@ class Tool:
             source.SetHeight(self.height / 2)
             source.SetCenter(-offset[0], self.height / 4 - offset[2], offset[1])
             source.SetRadius(tool.diameter / 2)
-            if lathe is True:
-                transform.RotateWXYZ(180, 1, 0, 0)
+            if self.lathe is True:
+                transform.RotateWXYZ(90, 1, 0, 0)
+                transform.RotateWXYZ(-tool_orientation_table[tool.orientation], 0, 0, 1)
             else:
                 transform.RotateWXYZ(90, 1, 0, 0)
 
