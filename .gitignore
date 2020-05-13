@@ -15,13 +15,12 @@
 .idea/
 *~
 *#
+*.temp
+*.bak
 
 # Compiled Qt resource and ui files
 *_rc.py
 *_ui.py
-
-# update INI backups
-sim/*.old
 
 # sphinx
 /docs/build
@@ -29,12 +28,9 @@ sim/*.old
 # debian packages
 *.deb
 
+# update INI backups
+linuxcnc/configs/**/*.old
+
 # persistent data files 
-*messages.json
-*settings.json
-*messages.json
-*.pickle
-
-*.temp
-
-*.bak
+linuxcnc/configs/**/.*.json
+linuxcnc/configs/**/.*.pickle
