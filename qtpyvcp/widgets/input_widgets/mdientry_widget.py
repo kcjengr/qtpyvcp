@@ -68,7 +68,6 @@ class MDIEntry(QLineEdit, CMDWidget):
         self.model.setStringList(history)
         STATUS.max_mdi_history_length = self.mdi_history_size
         STATUS.mdi_history.notify(self.model.setStringList)
-        print('mdi history size: {}'.format(STATUS.max_mdi_history_length))
 
     def terminate(self):
         pass
