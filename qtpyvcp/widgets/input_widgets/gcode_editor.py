@@ -32,6 +32,9 @@ from qtpy.QtGui import QFont, QFontMetrics, QColor
 from qtpy.QtWidgets import QInputDialog, QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QCheckBox
 
 from qtpyvcp.utilities import logger
+from qtpyvcp.plugins import getPlugin
+from qtpyvcp.utilities.info import Info
+
 
 LOG = logger.getLogger(__name__)
 
@@ -41,12 +44,7 @@ except ImportError as e:
     LOG.critical("Can't import QsciScintilla - is package python-pyqt5.qsci installed?", exc_info=e)
     sys.exit(1)
 
-from qtpyvcp.plugins import getPlugin
-
 STATUS = getPlugin('status')
-
-from qtpyvcp.utilities.info import Info
-
 INFO = Info()
 
 
@@ -375,6 +373,13 @@ class GcodeEditor(EditorBase, QObject):
         self.backgroundcolor = ''
         self.marginbackgroundcolor = ''
 
+        # register with the status:task_mode channel to
+        # drive the mdi auto show behaviour
+        #STATUS.task_mode.notify(self.onMdiChanged)
+        #self.prev_taskmode = STATUS.task_mode
+
+        #self.cursorPositionChanged.connect(self.line_changed)
+
     @Slot(bool)
     def setEditable(self, state):
         if state:
@@ -388,21 +393,27 @@ class GcodeEditor(EditorBase, QObject):
 
     @Slot()
     def save(self):
+        self.filename = str(STATUS.file)
+
         save_file = QFile(self.filename)
 
         result = save_file.open(QFile.WriteOnly)
         if result:
             save_stream = QTextStream(save_file)
             save_stream << self.text()
-
             save_file.close()
+        else:
+            print("save error")
+
 
     @Slot()
     def saveAs(self):
         file_name = self.save_as_dialog(self.filename)
 
         if file_name is False:
+            print("saveAs file name error")
             return
+        self.filename = str(STATUS.file)
 
         original_file = QFileInfo(self.filename)
         path = original_file.path()
@@ -414,8 +425,8 @@ class GcodeEditor(EditorBase, QObject):
         if result:
             save_stream = QTextStream(new_file)
             save_stream << self.text()
-
             new_file.close()
+
 
     @Slot()
     def find_replace(self):
@@ -486,26 +497,6 @@ class GcodeEditor(EditorBase, QObject):
         # self.zoomTo(6)
         self.setCursorPosition(0, 0)
 
-    # when switching from MDI to AUTO we need to reload the
-    # last (linuxcnc loaded) program.
-    def reload_last(self):
-        self.load_text(STATUS.old['file'])
-        self.setCursorPosition(0, 0)
-
-    # With the auto_show__mdi option, MDI history is shown
-    def load_mdi(self):
-        self.load_text(INFO.MDI_HISTORY_PATH)
-        self._last_filename = INFO.MDI_HISTORY_PATH
-        # print 'font point size', self.font().pointSize()
-        # self.zoomTo(10)
-        # print 'font point size', self.font().pointSize()
-        self.setCursorPosition(self.lines(), 0)
-
-    # With the auto_show__mdi option, MDI history is shown
-    def load_manual(self):
-        if STATUS.is_man_mode():
-            self.load_text(INFO.MACHINE_LOG_HISTORY_PATH)
-            self.setCursorPosition(self.lines(), 0)
 
     def load_text(self, fname):
         try:
@@ -537,13 +528,6 @@ class GcodeEditor(EditorBase, QObject):
     def set_line_number(self, line):
         pass
 
-    def line_changed(self, line, index):
-        # LOG.debug('Line changed: {}'.format(STATUS.is_auto_mode()))
-        self.line_text = str(self.text(line)).strip()
-        self.line = line
-        if STATUS.is_mdi_mode() and STATUS.is_auto_running() is False:
-            STATUS.emit('mdi-line-selected', self.line_text, self._last_filename)
-
     def select_lineup(self):
         line, col = self.getCursorPosition()
         LOG.debug(line)
@@ -556,18 +540,6 @@ class GcodeEditor(EditorBase, QObject):
         self.setCursorPosition(line + 1, 0)
         self.highlight_line(line + 1)
 
-    # designer recognized getter/setters
-    # auto_show_mdi status
-    def set_auto_show_mdi(self, data):
-        self.auto_show_mdi = data
-
-    def get_auto_show_mdi(self):
-        return self.auto_show_mdi
-
-    def reset_auto_show_mdi(self):
-        self.auto_show_mdi = True
-
-    auto_show_mdi_status = Property(bool, get_auto_show_mdi, set_auto_show_mdi, reset_auto_show_mdi)
 
     # simple input dialog for save as
     def save_as_dialog(self, filename):

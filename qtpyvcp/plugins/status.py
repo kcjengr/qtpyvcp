@@ -590,6 +590,7 @@ class Status(DataPlugin):
             chan.value = all_homed
             chan.signal.emit(chan.value)
 
+
     # this is used by File "qtpyvcp/qtpyvcp/actions/program_actions.py",
     # line 83, in _run_ok elif not STATUS.allHomed():
 
