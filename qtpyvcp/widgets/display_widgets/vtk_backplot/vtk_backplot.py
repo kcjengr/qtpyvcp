@@ -237,6 +237,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.parent = parent
         self.status = STATUS
         self.stat = STATUS.stat
+        self.lathe = LATHE
 
         self.canon_class = VTKCanon
 
@@ -408,6 +409,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.zooming = 0
 
         self.pan_mode = False
+
+        if self.lathe is True:
+            self.setViewXZ()
 
     # Handle the mouse button events.
     def button_event(self, obj, event):
@@ -1388,7 +1392,6 @@ class Tool:
         self.status = STATUS
         self.units = MACHINE_UNITS
         self.lathe = LATHE
-        print(self.lathe)
 
         tool_orientation_table = [0,
                                   135,
