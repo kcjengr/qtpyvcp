@@ -26,7 +26,7 @@ class MDIEntry(QLineEdit, CMDWidget):
     def __init__(self, parent=None):
         super(MDIEntry, self).__init__(parent)
 
-        self.mdi_history_size = 10
+        self.mdi_history_size = 100
         completer = QCompleter()
         completer.setCaseSensitivity(Qt.CaseInsensitive)
         self.model = QStringListModel()
@@ -66,7 +66,9 @@ class MDIEntry(QLineEdit, CMDWidget):
     def initialize(self):
         history = STATUS.mdi_history.value
         self.model.setStringList(history)
+        STATUS.max_mdi_history_length = self.mdi_history_size
         STATUS.mdi_history.notify(self.model.setStringList)
+        print('mdi history size: {}'.format(STATUS.max_mdi_history_length))
 
     def terminate(self):
         pass
