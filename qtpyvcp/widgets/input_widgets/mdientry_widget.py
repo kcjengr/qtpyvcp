@@ -1,5 +1,5 @@
 
-from qtpy.QtCore import Qt, QStringListModel, Slot
+from qtpy.QtCore import Qt, Slot, Property, QStringListModel
 from qtpy.QtGui import QValidator
 from qtpy.QtWidgets import QLineEdit, QCompleter
 
@@ -10,7 +10,6 @@ from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
 
 STATUS = getPlugin('status')
 INFO = Info()
-MDI_HISTORY_FILE = INFO.getMDIHistoryFile()
 
 
 class Validator(QValidator):
@@ -21,16 +20,16 @@ class Validator(QValidator):
 
 class MDIEntry(QLineEdit, CMDWidget):
     """MDI Entry
-    
+
     Input any valid g Code. Enter sends the g Code.
     """
     def __init__(self, parent=None):
         super(MDIEntry, self).__init__(parent)
 
-        self.model = QStringListModel()
-
+        self.mdi_history_size = 100
         completer = QCompleter()
         completer.setCaseSensitivity(Qt.CaseInsensitive)
+        self.model = QStringListModel()
         completer.setModel(self.model)
         self.setCompleter(completer)
 
@@ -38,6 +37,14 @@ class MDIEntry(QLineEdit, CMDWidget):
         self.setValidator(self.validator)
 
         self.returnPressed.connect(self.submit)
+
+    @Property(int)
+    def mdi_history_size(self):
+        return self._mdi_history_size
+
+    @mdi_history_size.setter
+    def mdi_history_size(self, size):
+        self._mdi_history_size = size
 
     @Slot()
     def submit(self):
@@ -59,6 +66,7 @@ class MDIEntry(QLineEdit, CMDWidget):
     def initialize(self):
         history = STATUS.mdi_history.value
         self.model.setStringList(history)
+        STATUS.max_mdi_history_length = self.mdi_history_size
         STATUS.mdi_history.notify(self.model.setStringList)
 
     def terminate(self):
