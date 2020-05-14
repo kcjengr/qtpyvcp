@@ -14,6 +14,7 @@ import vtk
 # https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1
 
 import vtk.qt
+
 vtk.qt.QVTKRWIBase = "QGLWidget"
 
 # Fix end
@@ -40,7 +41,6 @@ INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 MACHINE_UNITS = 2 if INFO.getIsMachineMetric() else 1
 LATHE = bool(INIFILE.find("DISPLAY", "LATHE"))
 
-
 COLOR_MAP = {
     'traverse': (188, 252, 201, 75),
     'arcfeed': (255, 255, 255, 128),
@@ -56,6 +56,7 @@ class PathActor(vtk.vtkActor):
         self.origin_index = None
         self.origin_cords = None
         self.units = MACHINE_UNITS
+        self.lathe = LATHE
 
         if self.units == 2:
             self.length = 5.0
@@ -64,7 +65,10 @@ class PathActor(vtk.vtkActor):
 
         self.axes = Axes()
         self.axes_actor = self.axes.get_actor()
-        self.axes_actor.SetTotalLength(self.length, self.length, self.length)
+        if self.lathe is True:
+            self.axes_actor.SetTotalLength(self.length, 0, self.length)
+        else:
+            self.axes_actor.SetTotalLength(self.length, self.length, self.length)
 
         # Create a vtkUnsignedCharArray container and store the colors in it
         self.colors = vtk.vtkUnsignedCharArray()
@@ -137,7 +141,6 @@ class VTKCanon(StatCanon):
 
             self.previous_origin = self.origin
             self.origin = origin
-
 
     def add_path_point(self, line_type, start_point, end_point):
 
@@ -297,7 +300,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.clipping_range_near = 0.1
             self.clipping_range_far = 10000.0
 
-
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
 
         self.renderer = vtk.vtkRenderer()
@@ -312,7 +314,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.interactor = self.renderer_window.GetInteractor()
         self.interactor.SetInteractorStyle(None)
         self.interactor.SetRenderWindow(self.renderer_window)
-
 
         self.machine = Machine(self.axis)
         self.machine_actor = self.machine.get_actor()
@@ -340,7 +341,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.path_actors = self.canon.get_path_actors()
 
             for origin, actor in self.path_actors.items():
-
                 index = self.origin_map[origin]
 
                 actor_position = self.path_position_table[index - 1]
@@ -684,7 +684,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             axes = actor.get_axes()
 
             if path_index == self.g5x_index:
-
                 path_transform = vtk.vtkTransform()
                 path_transform.Translate(*offset[:3])
                 path_transform.RotateWXYZ(*offset[5:9])
@@ -703,7 +702,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 extents_actor.XAxisVisibilityOff()
                 extents_actor.YAxisVisibilityOff()
                 extents_actor.ZAxisVisibilityOff()
-                
+
             self.renderer.AddActor(extents_actor)
 
             self.extents[origin] = extents_actor
@@ -768,7 +767,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.interactor.ReInitialize()
             self.update_render()
-
 
     # def update_rotation_xy(self, rotation):
     #
@@ -918,7 +916,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewPath(self):
         LOG.debug('Path')
-        
+
         active_offset = self.index_map[self.g5x_index]
         self.extents[active_offset].SetCamera(self.camera)
         self.renderer.ResetCamera()
@@ -962,7 +960,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             camera.Zoom(1.1)
 
         self.renderer_window.Render()
-
 
     @Slot(bool)
     def alphaBlend(self, alpha):
@@ -1363,6 +1360,8 @@ class Machine:
 class Axes:
     def __init__(self):
 
+        self.lathe = LATHE
+
         self.status = STATUS
         self.units = MACHINE_UNITS
 
@@ -1378,9 +1377,13 @@ class Axes:
         self.actor.SetUserTransform(transform)
 
         self.actor.AxisLabelsOff()
-        self.actor.SetShaftType(vtk.vtkAxesActor.LINE_SHAFT)
+        self.actor.SetShaftTypeToLine()
+        self.actor.SetTipTypeToCone()
 
-        self.actor.SetTotalLength(self.length, self.length, self.length)
+        if self.lathe is True:
+            self.actor.SetTotalLength(self.length, 0, self.length)
+        else:
+            self.actor.SetTotalLength(self.length, self.length, self.length)
 
     def get_actor(self):
         return self.actor
