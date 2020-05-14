@@ -329,7 +329,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
-        self.tool = Tool(self.stat.tool_table[1], self.stat.tool_offset)
+        self.tool = Tool(self.stat.tool_table, self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
         self.offset_axes = OrderedDict()
@@ -387,6 +387,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.status.file.notify(self.load_program)
         self.status.position.notify(self.update_position)
+        self.status.motion_type.notify(self.motion_type)
 
         # self.status.g5x_index.notify(self.update_g5x_index)
         self.status.g5x_offset.notify(self.update_g5x_offset)
@@ -639,6 +640,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.update_render()
 
+    def motion_type(self, value):
+        if value == linuxcnc.MOTION_TYPE_TOOLCHANGE:
+            self.update_tool()
+
+
     def update_position(self, position):  # the tool movement
 
         self.spindle_position = position[:3]
@@ -801,7 +807,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.RemoveActor(self.tool_actor)
 
-        self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
+        self.tool = Tool(self.stat.tool_table, self.stat.tool_offset)
         self.tool_actor = self.tool.get_actor()
 
         tool_transform = vtk.vtkTransform()
@@ -1390,11 +1396,12 @@ class Axes:
 
 
 class Tool:
-    def __init__(self, tool, offset):
+    def __init__(self, tool_table, offset):
 
         self.status = STATUS
         self.units = MACHINE_UNITS
         self.lathe = LATHE
+        tool = tool_table[0]
 
         tool_orientation_table = [0,
                                   135,
