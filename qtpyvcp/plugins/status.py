@@ -129,10 +129,10 @@ class Status(DataPlugin):
         if isinstance(new_value, list):
             chan.value = new_value[:self._max_mdi_history_length]
         else:
-            cmd = str(new_value.strip())
+            #cmd = str(new_value.strip())
             cmds = chan.value
-            if cmd in cmds:
-                cmds.remove(cmd)
+            #if cmd in cmds:
+            #    cmds.remove(cmd)
 
             cmds.insert(0, new_value)
             chan.value = cmds[:self._max_mdi_history_length]
