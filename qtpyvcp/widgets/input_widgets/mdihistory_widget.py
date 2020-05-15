@@ -90,6 +90,20 @@ class MDIHistory(QListWidget, CMDWidget):
             self.heart_beat_timer.start()
 
     @Slot()
+    def clear_queue(self):
+        """Clear queue items yet to be run."""
+        list_length = self.count()-1
+        while list_length >= 0:
+            row_item = self.item(list_length)
+            row_item_data = row_item.data(MDIHistory.MDQQ_ROLE)
+
+            if row_item_data == MDIHistory.MDIQ_TODO:
+                row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_DONE)
+                row_item.setIcon(QIcon())
+
+            list_length -= 1
+
+    @Slot()
     def run_from_selection(self):
         """Start running MDI from the selected row back to top."""
         row = self.currentRow()
@@ -156,7 +170,6 @@ class MDIHistory(QListWidget, CMDWidget):
             row_item.setIcon(QIcon())
             self.addItem(row_item)
 
-
     def heart_beat(self):
         """Supports heart beat on the MDI History execution queue.
         Issue the next command from the queue.
@@ -206,7 +219,6 @@ class MDIHistory(QListWidget, CMDWidget):
         # use a 1 second timer
         self.heart_beat_timer.start(1000)
         self.heart_beat_timer.timeout.connect(self.heart_beat)
-
 
     def terminate(self):
         """Teardown processing."""
