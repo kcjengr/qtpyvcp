@@ -56,9 +56,12 @@ class MDIHistory(QListWidget, CMDWidget):
     def __init__(self, parent=None):
         super(MDIHistory, self).__init__(parent)
 
+        # name and widget handle for MDI cmd entry widget
         self.mdi_entryline_name = None
         self.mdi_entry_widget = None
+
         self.heart_beat_timer = None
+
         self.icon_run_name = 'media-playback-start'
         self.icon_run = QIcon.fromTheme(self.icon_run_name)
         self.icon_waiting_name = 'media-playback-pause'
@@ -89,7 +92,7 @@ class MDIHistory(QListWidget, CMDWidget):
     @Slot()
     def run_from_selection(self):
         """Start running MDI from the selected row back to top."""
-        row = self.currentRow() - 1
+        row = self.currentRow()
         # from selected row loop back to top and set ready for run
         while row >= 0:
             row_item = self.item(row)
@@ -99,10 +102,7 @@ class MDIHistory(QListWidget, CMDWidget):
 
     @Slot()
     def submit(self):
-        """Issue the next command from the queue.
-        Double check machine is in ok state to accept next command.
-        Issue the command and if success mark command as being active.
-        Mark last command as done.
+        """Put a new command on the queue for later execution.
         """
         # put the new command on the queue
         cmd = str(self.mdi_entry_widget.text()).strip()
@@ -112,12 +112,15 @@ class MDIHistory(QListWidget, CMDWidget):
         row_item.setIcon(self.icon_waiting)
         self.insertItem(0, row_item)
 
+        # put the command onto the status channel mdi history
+        STATUS.mdi_history.setValue(cmd)
+
         # now clear down the mdi entry text ready for new input
         self.mdi_entry_widget.clear()
 
     def row_clicked(self):
         """Item row clicked."""
-        print 'item clicked in list: {}'.format(self.currentItem().text())
+        pass
 
     def key_press_event(self, event):
         """Key movement processing.
@@ -155,11 +158,15 @@ class MDIHistory(QListWidget, CMDWidget):
 
 
     def heart_beat(self):
-        """Supports heart beat on the MDI History execution queue."""
+        """Supports heart beat on the MDI History execution queue.
+        Issue the next command from the queue.
+        Double check machine is in ok state to accept next command.
+        Issue the command and if success mark command as being active.
+        Mark last command as done.
+        """
         # check if machine is idle and ready to run another command
         if STAT.interp_state != linuxcnc.INTERP_IDLE:
-            # RS274NGC interpreter not in a state to execute
-            print
+            # RS274NGC interpreter not in a state to execute, bail
             return
 
         # scan for the next command to execute from bottom up.
@@ -173,12 +180,10 @@ class MDIHistory(QListWidget, CMDWidget):
                 row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_DONE)
                 row_item.setIcon(QIcon())
 
-
             elif row_item_data == MDIHistory.MDIQ_TODO:
                 cmd = str(row_item.text()).strip()
                 row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_RUNNING)
                 row_item.setIcon(self.icon_run)
-                print "Item found to execute on: {}".format(cmd)
                 issue_mdi(cmd)
                 break
 
@@ -190,14 +195,15 @@ class MDIHistory(QListWidget, CMDWidget):
         self.set_history(history)
         self.clicked.connect(self.row_clicked)
 
-        # get handle to windows list and seach through them
+        # Get handle to windows list and seach through them
         # for the widget referenced in mdi_entryline_name
         for win_name, obj in qtpyvcp.WINDOWS.items():
             if hasattr(obj, self.mdi_entryline_name):
                 self.mdi_entry_widget = getattr(obj, self.mdi_entryline_name)
 
-        # setup the basic timer system as a heart beat on the queue
+        # Setup the basic timer system as a heart beat on the queue
         self.heart_beat_timer = QTimer(self)
+        # use a 1 second timer
         self.heart_beat_timer.start(1000)
         self.heart_beat_timer.timeout.connect(self.heart_beat)
 
