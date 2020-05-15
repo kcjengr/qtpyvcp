@@ -119,7 +119,9 @@ class Status(DataPlugin):
             When the list exceeds the length given by MAX_MDI_COMMANDS the
             oldest entries will be dropped.
 
-            Duplicate commands will be removed, so the most recently issued
+            Duplicate commands will not be removed, so that MDI History
+            can be replayed via the queue meachanisim from a point in
+            the history forward. The most recently issued
             command will always be at the front of the list.
         """
         return chan.value
