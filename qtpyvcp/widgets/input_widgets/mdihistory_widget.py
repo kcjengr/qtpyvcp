@@ -19,6 +19,7 @@ ToDo:
 """
 
 from qtpy.QtCore import Qt, Slot, Property, QTimer
+from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import QListWidget
 from qtpy.QtWidgets import QListWidgetItem
 
@@ -59,6 +60,8 @@ class MDIHistory(QListWidget, CMDWidget):
         self.mdi_entryline_name = None
         self.mdi_entry_widget = None
         self.heart_beat_timer = None
+        self.icon_run_name = 'media-playback-start'
+        self.icon_waiting_name = 'media-playback-pause'
 
         #self.returnPressed.connect(self.submit)
 
@@ -72,6 +75,16 @@ class MDIHistory(QListWidget, CMDWidget):
         """Set the name for Designer"""
         self._mdi_entryline_name = object_name
 
+    @Slot(bool)
+    def toggle_queue(self, toggle):
+        """Toggle queue pause.
+        Starting point is the queue is active.
+        """
+        if toggle:
+            self.heart_beat_timer.stop()
+        else:
+            self.heart_beat_timer.start()
+
     @Slot()
     def submit(self):
         """Issue the next command from the queue.
@@ -84,6 +97,7 @@ class MDIHistory(QListWidget, CMDWidget):
         row_item = QListWidgetItem()
         row_item.setText(cmd)
         row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_TODO)
+        row_item.setIcon(QIcon.fromTheme(self.icon_waiting_name))
         self.insertItem(0, row_item)
 
         # now clear down the mdi entry text ready for new input
@@ -124,6 +138,7 @@ class MDIHistory(QListWidget, CMDWidget):
             row_item = QListWidgetItem()
             row_item.setText(item)
             row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_DONE)
+            row_item.setIcon(QIcon())
             self.addItem(row_item)
 
 
@@ -144,10 +159,13 @@ class MDIHistory(QListWidget, CMDWidget):
             if row_item_data == MDIHistory.MDIQ_RUNNING:
                 # machine is in idle state so the running command is done
                 row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_DONE)
+                row_item.setIcon(QIcon())
+
 
             elif row_item_data == MDIHistory.MDIQ_TODO:
                 cmd = str(row_item.text()).strip()
                 row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_RUNNING)
+                row_item.setIcon(QIcon.fromTheme(self.icon_run_name))
                 print "Item found to execute on: {}".format(cmd)
                 issue_mdi(cmd)
                 break
