@@ -37,7 +37,6 @@ STAT = STATUS.stat
 INFO = Info()
 
 
-
 class MDIHistory(QListWidget, CMDWidget):
     """MDI History and Queuing Widget.
 
@@ -61,7 +60,9 @@ class MDIHistory(QListWidget, CMDWidget):
         self.mdi_entry_widget = None
         self.heart_beat_timer = None
         self.icon_run_name = 'media-playback-start'
+        self.icon_run = QIcon.fromTheme(self.icon_run_name)
         self.icon_waiting_name = 'media-playback-pause'
+        self.icon_waiting = QIcon.fromTheme(self.icon_waiting_name)
 
         #self.returnPressed.connect(self.submit)
 
@@ -86,6 +87,17 @@ class MDIHistory(QListWidget, CMDWidget):
             self.heart_beat_timer.start()
 
     @Slot()
+    def run_from_selection(self):
+        """Start running MDI from the selected row back to top."""
+        row = self.currentRow() - 1
+        # from selected row loop back to top and set ready for run
+        while row >= 0:
+            row_item = self.item(row)
+            row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_TODO)
+            row_item.setIcon(self.icon_waiting)
+            row -= 1
+
+    @Slot()
     def submit(self):
         """Issue the next command from the queue.
         Double check machine is in ok state to accept next command.
@@ -97,7 +109,7 @@ class MDIHistory(QListWidget, CMDWidget):
         row_item = QListWidgetItem()
         row_item.setText(cmd)
         row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_TODO)
-        row_item.setIcon(QIcon.fromTheme(self.icon_waiting_name))
+        row_item.setIcon(self.icon_waiting)
         self.insertItem(0, row_item)
 
         # now clear down the mdi entry text ready for new input
@@ -165,7 +177,7 @@ class MDIHistory(QListWidget, CMDWidget):
             elif row_item_data == MDIHistory.MDIQ_TODO:
                 cmd = str(row_item.text()).strip()
                 row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_RUNNING)
-                row_item.setIcon(QIcon.fromTheme(self.icon_run_name))
+                row_item.setIcon(self.icon_run)
                 print "Item found to execute on: {}".format(cmd)
                 issue_mdi(cmd)
                 break
