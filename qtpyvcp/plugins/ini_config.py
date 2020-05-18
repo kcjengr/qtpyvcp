@@ -20,22 +20,17 @@ import os
 from ConfigParser import ConfigParser
 from collections import OrderedDict
 
-from qtpyvcp import PLUGINS
 from qtpyvcp.plugins import DataPlugin
-from qtpyvcp.utilities.logger import getLogger
-
-LOG = getLogger(__name__)
-
 
 class MultiOrderedDict(OrderedDict):
     def __setitem__(self, key, value):
-        # print(key, value)
+
         if key in self.keys():
             items = self.get(key)
             new = None
             if isinstance(value, list):
                 new = value[0]
-            if new and new not in items:
+            if new is not None and new not in items:
                 items.append(new)
         else:
             super(MultiOrderedDict, self).__setitem__(key, value)
@@ -47,23 +42,24 @@ class IniConfig(DataPlugin):
 
         self.config = ConfigParser(dict_type=MultiOrderedDict)
 
-        self.ini_file = os.path.abspath(ini_file or
-                                        os.environ.get("INI_FILE_NAME"))
+        self.ini_file = os.path.abspath(ini_file or os.environ.get("INI_FILE_NAME"))
 
-        self.sections = list()
+    def getChannel(self, url):
+        print(url)
+        try:
+            chan_obj = [url]
+            chan_exp = chan_obj.getValue
+        except KeyError:
+            return None, None
+
+        return chan_obj, chan_exp
 
     def initialise(self):
         self.config.read(self.ini_file)
 
         for section in self.config.sections():
-            print(section)
             for option in self.config.items(section):
-                print(option)
-                
-            self.sections.append(section)
-
-
-
+                self.log.debug("SECTION = {0} | OPTION = {1[0]} | VALUE {1[1]}".format(section, option))
 
     def terminate(self):
         pass
