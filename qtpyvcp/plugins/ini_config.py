@@ -29,13 +29,13 @@ LOG = getLogger(__name__)
 
 class MultiOrderedDict(OrderedDict):
     def __setitem__(self, key, value):
+        # print(key, value)
         if key in self.keys():
             items = self.get(key)
+            new = None
             if isinstance(value, list):
                 new = value[0]
-            else:
-                new = value
-            if new not in items:
+            if new and new not in items:
                 items.append(new)
         else:
             super(MultiOrderedDict, self).__setitem__(key, value)
@@ -59,7 +59,7 @@ class IniConfig(DataPlugin):
             print(section)
             for option in self.config.items(section):
                 print(option)
-
+                
             self.sections.append(section)
 
 
