@@ -1418,10 +1418,10 @@ class Tool:
         else:
             self.height = 2.0
 
-        transform = vtk.vtkTransform()
-
         if self.lathe is True:
-            if tool.id == 0 or tool.diameter < .05:
+            if tool.id == 0 or tool.diameter == 0:
+                transform = vtk.vtkTransform()
+
                 source = vtk.vtkConeSource()
                 source.SetHeight(self.height / 2)
                 source.SetCenter(-self.height / 4 - offset[2], -offset[1], -offset[0])
@@ -1440,15 +1440,40 @@ class Tool:
                 mapper.SetInputConnection(transform_filter.GetOutputPort())
             else:
 
-                print(tool.orientation)
-                # Create a circle
-                source = vtk.vtkRegularPolygonSource()
-                # Comment this line to generate a disk instead of a circle.
-                
-                source.SetNumberOfSides(64)
-                source.SetRadius(tool.diameter/2)
+                root = vtk.vtkMultiBlockDataSet()
+                branch = vtk.vtkMultiBlockDataSet()
 
-                print(tool.orientation)
+                root.SetBlock(0, branch)
+
+                root_source = vtk.vtkRegularPolygonSource()
+                root_source.SetNumberOfSides(64)
+                root_source.SetRadius(tool.diameter/2)
+
+                # Setup four points
+                points = vtk.vtkPoints()
+                points.InsertNextPoint((0.0, 0.0, 0.0))
+                points.InsertNextPoint((1.0, 0.0, 0.0))
+                points.InsertNextPoint((1.0, 0.0, 1.0))
+                points.InsertNextPoint((0.0, 0.0, 1.0))
+
+                # Create the polygon
+                polygon = vtk.vtkPolygon()
+                polygon.GetPointIds().SetNumberOfIds(4)  # make a quad
+                polygon.GetPointIds().SetId(0, 0)
+                polygon.GetPointIds().SetId(1, 1)
+                polygon.GetPointIds().SetId(2, 2)
+                polygon.GetPointIds().SetId(3, 3)
+
+                # Add the polygon to a list of polygons
+                polygons = vtk.vtkCellArray()
+                polygons.InsertNextCell(polygon)
+
+                # Create a PolyData
+                polygon_poly_data = vtk.vtkPolyData()
+                polygon_poly_data.SetPoints(points)
+                polygon_poly_data.SetPolys(polygons)
+
+
                 if tool.orientation == 1:
                     control_point_x = -tool.diameter/2
                     control_point_z = +tool.diameter/2
@@ -1479,20 +1504,32 @@ class Tool:
                 else:
                     control_point_x = 0.0
                     control_point_z = 0.0
-                print("center", control_point_x, control_point_z)
-                source.SetCenter(control_point_z, control_point_x, 0)
 
-                transform.RotateWXYZ(90, 1, 0, 0)
-                transform_filter = vtk.vtkTransformPolyDataFilter()
-                transform_filter.SetTransform(transform)
-                transform_filter.SetInputConnection(source.GetOutputPort())
-                transform_filter.Update()
+                root_source.SetCenter(control_point_z, control_point_x, 0.0)
 
-                #  Visualize
+                root_source.Update()
+
+                root_transform = vtk.vtkTransform()
+                root_transform.RotateWXYZ(90, 1, 0, 0)
+                root_transform_filter = vtk.vtkTransformPolyDataFilter()
+                root_transform_filter.SetTransform(root_transform)
+                root_transform_filter.SetInputConnection(root_source.GetOutputPort())
+                root_transform_filter.Update()
+
+                root_transform_filter.Update()
+
+                root.SetBlock(1, root_transform_filter.GetOutput())
+                branch.SetBlock(0, polygon_poly_data)
+
+                geometry = vtk.vtkCompositeDataGeometryFilter()
+                geometry.SetInputData(root)
+
                 mapper = vtk.vtkPolyDataMapper()
-                mapper.SetInputConnection(transform_filter.GetOutputPort())
+                mapper.SetInputConnection(geometry.GetOutputPort())
         else:
             if tool.id == 0 or tool.diameter < .05:
+                transform = vtk.vtkTransform()
+
                 source = vtk.vtkConeSource()
                 source.SetHeight(self.height / 2)
                 source.SetCenter(-self.height / 4 - offset[2], -offset[1], -offset[0])
@@ -1508,6 +1545,8 @@ class Tool:
                 mapper = vtk.vtkPolyDataMapper()
                 mapper.SetInputConnection(transform_filter.GetOutputPort())
             else:
+                transform = vtk.vtkTransform()
+
                 source = vtk.vtkCylinderSource()
                 source.SetHeight(self.height / 2)
                 source.SetCenter(-offset[0], self.height / 4 - offset[2], offset[1])
