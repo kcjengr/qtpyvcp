@@ -115,6 +115,15 @@ class MDIHistory(QListWidget, CMDWidget):
             row -= 1
 
     @Slot()
+    def run_selection(self):
+        """Run the selected row only."""
+        row = self.currentRow()
+        # from selected row loop back to top and set ready for run
+        row_item = self.item(row)
+        row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_TODO)
+        row_item.setIcon(self.icon_waiting)
+
+    @Slot()
     def submit(self):
         """Put a new command on the queue for later execution.
         """
