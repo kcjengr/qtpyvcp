@@ -1420,36 +1420,81 @@ class Tool:
 
         transform = vtk.vtkTransform()
 
-        if tool.id == 0 or tool.diameter < .05:
-            source = vtk.vtkConeSource()
-            source.SetHeight(self.height / 2)
-            source.SetCenter(-self.height / 4 - offset[2], -offset[1], -offset[0])
-            source.SetRadius(self.height / 4)
-            if self.lathe is True:
+        if self.lathe is True:
+            if tool.id == 0 or tool.diameter < .05:
+                source = vtk.vtkConeSource()
+                source.SetHeight(self.height / 2)
+                source.SetCenter(-self.height / 4 - offset[2], -offset[1], -offset[0])
+                source.SetRadius(self.height / 4)
+                source.SetResolution(64)
+
                 transform.RotateWXYZ(tool_orientation_table[tool.orientation] + 90, 0, 1, 0)
+
+                transform_filter = vtk.vtkTransformPolyDataFilter()
+                transform_filter.SetTransform(transform)
+                transform_filter.SetInputConnection(source.GetOutputPort())
+                transform_filter.Update()
+
+                # Create a mapper
+                mapper = vtk.vtkPolyDataMapper()
+                mapper.SetInputConnection(transform_filter.GetOutputPort())
             else:
-                transform.RotateWXYZ(90, 0, 1, 0)
+
+                points = vtk.vtkPoints()
+                points.InsertNextPoint(0.0, 0.0, 0.0)
+                points.InsertNextPoint(1.0, 0.0, 0.0)
+                points.InsertNextPoint(1.0, 0.0, 1.0)
+                points.InsertNextPoint(0.0, 0.0, 1.0)
+
+                polygon = vtk.vtkPolygon()
+                polygon.GetPointIds().SetNumberOfIds(4)  # make a quad
+                polygon.GetPointIds().SetId(0, 0)
+                polygon.GetPointIds().SetId(1, 1)
+                polygon.GetPointIds().SetId(2, 2)
+                polygon.GetPointIds().SetId(3, 3)
+
+                polygons = vtk.vtkCellArray()
+                polygons.InsertNextCell(polygon)
+
+                polygonPolyData = vtk.vtkPolyData()
+                polygonPolyData.SetPoints(points)
+                polygonPolyData.SetPolys(polygons)
+
+                # Create a mapper
+                mapper = vtk.vtkPolyDataMapper()
+                mapper.SetInputData(polygonPolyData)
         else:
-            source = vtk.vtkCylinderSource()
-            source.SetHeight(self.height / 2)
-            source.SetCenter(-offset[0], self.height / 4 - offset[2], offset[1])
-            source.SetRadius(tool.diameter / 2)
-            if self.lathe is True:
-                transform.RotateWXYZ(90, 1, 0, 0)
-                transform.RotateWXYZ(-tool_orientation_table[tool.orientation], 0, 0, 1)
+            if tool.id == 0 or tool.diameter < .05:
+                source = vtk.vtkConeSource()
+                source.SetHeight(self.height / 2)
+                source.SetCenter(-self.height / 4 - offset[2], -offset[1], -offset[0])
+                source.SetRadius(self.height / 4)
+                source.SetResolution(64)
+                transform.RotateWXYZ(90, 0, 1, 0)
+                transform_filter = vtk.vtkTransformPolyDataFilter()
+                transform_filter.SetTransform(transform)
+                transform_filter.SetInputConnection(source.GetOutputPort())
+                transform_filter.Update()
+
+                # Create a mapper
+                mapper = vtk.vtkPolyDataMapper()
+                mapper.SetInputConnection(transform_filter.GetOutputPort())
             else:
+                source = vtk.vtkCylinderSource()
+                source.SetHeight(self.height / 2)
+                source.SetCenter(-offset[0], self.height / 4 - offset[2], offset[1])
+                source.SetRadius(tool.diameter / 2)
+                source.SetResolution(64)
                 transform.RotateWXYZ(90, 1, 0, 0)
 
-        source.SetResolution(64)
+                transform_filter = vtk.vtkTransformPolyDataFilter()
+                transform_filter.SetTransform(transform)
+                transform_filter.SetInputConnection(source.GetOutputPort())
+                transform_filter.Update()
 
-        transform_filter = vtk.vtkTransformPolyDataFilter()
-        transform_filter.SetTransform(transform)
-        transform_filter.SetInputConnection(source.GetOutputPort())
-        transform_filter.Update()
-
-        # Create a mapper
-        mapper = vtk.vtkPolyDataMapper()
-        mapper.SetInputConnection(transform_filter.GetOutputPort())
+                # Create a mapper
+                mapper = vtk.vtkPolyDataMapper()
+                mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         # Create an actor
         self.actor = vtk.vtkActor()
