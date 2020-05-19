@@ -1444,7 +1444,7 @@ class Tool:
                 # Create a circle
                 source = vtk.vtkRegularPolygonSource()
                 # Comment this line to generate a disk instead of a circle.
-                source.GeneratePolygonOff()
+                
                 source.SetNumberOfSides(64)
                 source.SetRadius(tool.diameter/2)
 
