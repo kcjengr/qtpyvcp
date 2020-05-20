@@ -34,6 +34,12 @@ linuxcnc/configs/**/*.old
 # persistent data files 
 linuxcnc/configs/**/.*.json
 linuxcnc/configs/**/.*.pickle
+<<<<<<< HEAD
 qtpyvcp/.project
 qtpyvcp/.pydevproject
 qtpyvcp/.settings/
+=======
+qtpyvcp/.settings/
+qtpyvcp/.pydevproject
+qtpyvcp/.project
+>>>>>>> MDI-History-and-Queue-Widget
