@@ -104,6 +104,13 @@ class MDIHistory(QListWidget, CMDWidget):
             list_length -= 1
 
     @Slot()
+    def clear_selection(self):
+        """Remove the selected line"""
+        row = self.currentRow()
+        self.takeItem(row)
+        STATUS.mdi_remove_entry(row)
+
+    @Slot()
     def run_from_selection(self):
         """Start running MDI from the selected row back to top."""
         row = self.currentRow()
