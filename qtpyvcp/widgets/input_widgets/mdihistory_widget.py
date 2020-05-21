@@ -111,7 +111,7 @@ class MDIHistory(QListWidget, CMDWidget):
         STATUS.mdi_remove_entry(row)
 
     @Slot()
-    def run_from_selection(self):
+    def runFromSelection(self):
         """Start running MDI from the selected row back to top."""
         row = self.currentRow()
         # from selected row loop back to top and set ready for run
