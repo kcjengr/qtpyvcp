@@ -70,7 +70,7 @@ class MDIHistory(QListWidget, CMDWidget):
         #self.returnPressed.connect(self.submit)
 
     @Property(str)
-    def mdi_entryline_name(self):
+    def MDIEntryName(self):
         """Return name of entry object to Designer"""
         return self._mdi_entryline_name
 
