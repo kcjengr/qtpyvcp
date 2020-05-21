@@ -122,7 +122,7 @@ class MDIHistory(QListWidget, CMDWidget):
             row -= 1
 
     @Slot()
-    def run_selection(self):
+    def runSelection(self):
         """Run the selected row only."""
         row = self.currentRow()
         # from selected row loop back to top and set ready for run
