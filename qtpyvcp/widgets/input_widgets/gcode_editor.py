@@ -34,6 +34,10 @@ from qtpy.QtWidgets import QInputDialog, QLineEdit, QDialog, QHBoxLayout, QVBoxL
 from qtpyvcp.utilities import logger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
+from logilab.common.fileutils import lines
+
+from qtpyvcp.actions.program_actions import load as loadProgram
+from qtpyvcp.actions.program_actions import reload as reLoadProgram
 
 
 LOG = logger.getLogger(__name__)
@@ -69,12 +73,6 @@ class GcodeLexer(QsciLexerCustom):
         }
         for key, value in self._styles.iteritems():
             setattr(self, value, key)
-        font = QFont()
-        font.setFamily('Ubuntu Mono')
-        font.setFixedPitch(True)
-        font.setPointSize(14)
-        font.setBold(True)
-        self.setFont(font, 2)
 
     # Paper sets the background color of each style of text
     def setPaperBackground(self, color, style=None):
@@ -186,18 +184,25 @@ class EditorBase(QsciScintilla):
         self.idle_line_reset = False
         # don't allow editing by default
         self.setReadOnly(True)
+
         # Set the default font
         font = QFont()
         font.setFamily('Ubuntu Mono')
         font.setFixedPitch(True)
         font.setPointSize(14)
-        self.setFont(font)
+        #self.setFont(font)
         self.setMarginsFont(font)
+
+        # Set custom gcode lexer
+        self.lexer = GcodeLexer(self)
+        self.lexer.setDefaultFont(font)
+        self.setLexer(self.lexer)
+
 
         # Margin 0 is used for line numbers
         fontmetrics = QFontMetrics(font)
         self.setMarginsFont(font)
-        self.setMarginWidth(0, fontmetrics.width("0000") + 6)
+        self.setMarginWidth(0, fontmetrics.width("0") + 6)
         self.setMarginLineNumbers(0, True)
         self.setMarginsBackgroundColor(QColor("#cccccc"))
 
@@ -219,11 +224,6 @@ class EditorBase(QsciScintilla):
         # Current line visible with special background color
         self.setCaretLineVisible(True)
         self.setCaretLineBackgroundColor(QColor("#ffe4e4"))
-
-        # Set custom gcode lexer
-        self.lexer = GcodeLexer(self)
-        self.lexer.setDefaultFont(font)
-        self.setLexer(self.lexer)
 
         # default gray background
         self.set_background_color('#C0C0C0')
@@ -393,15 +393,26 @@ class GcodeEditor(EditorBase, QObject):
 
     @Slot()
     def save(self):
+        reload_file = True
         self.filename = str(STATUS.file)
+        # determine of have a file name
+        if self.filename == '':
+            reload_file = False
+            self.filename = '/tmp/gcode_tmp.ngc'
 
+        # save out the file
         save_file = QFile(self.filename)
-
         result = save_file.open(QFile.WriteOnly)
         if result:
             save_stream = QTextStream(save_file)
             save_stream << self.text()
             save_file.close()
+            # file save worked, now either load fresh or reload
+            if reload_file:
+                reLoadProgram()
+            else:
+                loadProgram(self.filename)
+
         else:
             print("save error")
 
@@ -488,6 +499,13 @@ class GcodeEditor(EditorBase, QObject):
         self._marginbackgroundcolor = color
         self.set_margin_background_color(color)
 
+    def setNumberGutter(self, lines):
+        """Set the gutter width based on the number of lines"""
+        font = self.lexer.defaultFont()
+        fontmetrics = QFontMetrics(font)
+        self.setMarginWidth(0, fontmetrics.width(str(lines)) + 6)
+
+
     def load_program(self, fname=None):
         if fname is None:
             fname = self._last_filename
@@ -506,6 +524,10 @@ class GcodeEditor(EditorBase, QObject):
             LOG.error('File path is not valid: {}'.format(fname))
             self.setText('')
             return
+
+        # get the number of lines in the file and set new gutter width
+        line_count = len(self.text().split('\n'))
+        self.setNumberGutter(line_count)
 
         self.last_line = None
         self.ensureCursorVisible()
