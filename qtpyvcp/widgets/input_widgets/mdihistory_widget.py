@@ -90,7 +90,7 @@ class MDIHistory(QListWidget, CMDWidget):
             self.heart_beat_timer.start()
 
     @Slot()
-    def clear_queue(self):
+    def clearQueue(self):
         """Clear queue items yet to be run."""
         list_length = self.count()-1
         while list_length >= 0:
