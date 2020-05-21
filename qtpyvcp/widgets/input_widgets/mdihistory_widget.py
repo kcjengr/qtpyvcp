@@ -70,17 +70,17 @@ class MDIHistory(QListWidget, CMDWidget):
         #self.returnPressed.connect(self.submit)
 
     @Property(str)
-    def MDIEntryName(self):
+    def mdiEntrylineName(self):
         """Return name of entry object to Designer"""
-        return self._mdi_entryline_name
+        return self.mdi_entryline_name
 
-    @mdi_entryline_name.setter
-    def mdi_entryline_name(self, object_name):
+    @mdiEntrylineName.setter
+    def mdiEntrylineName(self, object_name):
         """Set the name for Designer"""
-        self._mdi_entryline_name = object_name
+        self.mdi_entryline_name = object_name
 
     @Slot(bool)
-    def toggle_queue(self, toggle):
+    def toggleQueue(self, toggle):
         """Toggle queue pause.
         Starting point is the queue is active.
         """
@@ -186,7 +186,7 @@ class MDIHistory(QListWidget, CMDWidget):
             row_item.setIcon(QIcon())
             self.addItem(row_item)
 
-    def heart_beat(self):
+    def heartBeat(self):
         """Supports heart beat on the MDI History execution queue.
         Issue the next command from the queue.
         Double check machine is in ok state to accept next command.
@@ -234,7 +234,7 @@ class MDIHistory(QListWidget, CMDWidget):
         self.heart_beat_timer = QTimer(self)
         # use a 1 second timer
         self.heart_beat_timer.start(1000)
-        self.heart_beat_timer.timeout.connect(self.heart_beat)
+        self.heart_beat_timer.timeout.connect(self.heartBeat)
 
     def terminate(self):
         """Teardown processing."""
