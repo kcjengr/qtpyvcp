@@ -34,3 +34,6 @@ linuxcnc/configs/**/*.old
 # persistent data files 
 linuxcnc/configs/**/.*.json
 linuxcnc/configs/**/.*.pickle
+qtpyvcp/.settings/
+qtpyvcp/.pydevproject
+qtpyvcp/.project

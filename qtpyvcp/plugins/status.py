@@ -119,7 +119,9 @@ class Status(DataPlugin):
             When the list exceeds the length given by MAX_MDI_COMMANDS the
             oldest entries will be dropped.
 
-            Duplicate commands will be removed, so the most recently issued
+            Duplicate commands will not be removed, so that MDI History
+            can be replayed via the queue meachanisim from a point in
+            the history forward. The most recently issued
             command will always be at the front of the list.
         """
         return chan.value
@@ -129,15 +131,23 @@ class Status(DataPlugin):
         if isinstance(new_value, list):
             chan.value = new_value[:self._max_mdi_history_length]
         else:
-            cmd = str(new_value.strip())
+            #cmd = str(new_value.strip())
             cmds = chan.value
-            if cmd in cmds:
-                cmds.remove(cmd)
+            #if cmd in cmds:
+            #    cmds.remove(cmd)
 
             cmds.insert(0, new_value)
             chan.value = cmds[:self._max_mdi_history_length]
 
         chan.signal.emit(chan.value)
+
+    def mdi_remove_entry(self, mdi_index):
+        """Remove the indicated cmd by index reference"""
+        # TODO: This has some potential code redundancy. Follow above pattern
+        chan = self.mdi_history
+        cmds = chan.value
+        del cmds[mdi_index]
+        chan.signal.emit(cmds)
 
     @DataChannel
     def on(self, chan):

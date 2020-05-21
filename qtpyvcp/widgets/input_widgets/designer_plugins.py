@@ -13,6 +13,11 @@ class MDIEntryPlugin(_DesignerPlugin):
     def toolTip(self):
         return "MDI command entry"
 
+from mdihistory_widget import MDIHistory
+class MDIHistoryPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return MDIHistory
+
 from gcode_editor import GcodeEditor
 class GcodeEditorPlugin(_DesignerPlugin):
     def pluginClass(self):
