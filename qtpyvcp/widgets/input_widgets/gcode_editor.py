@@ -70,9 +70,9 @@ class GcodeLexer(QsciLexerCustom):
         for key, value in self._styles.iteritems():
             setattr(self, value, key)
         font = QFont()
-        font.setFamily('Courier')
+        font.setFamily('Ubuntu Mono')
         font.setFixedPitch(True)
-        font.setPointSize(10)
+        font.setPointSize(14)
         font.setBold(True)
         self.setFont(font, 2)
 
@@ -188,9 +188,9 @@ class EditorBase(QsciScintilla):
         self.setReadOnly(True)
         # Set the default font
         font = QFont()
-        font.setFamily('Courier')
+        font.setFamily('Ubuntu Mono')
         font.setFixedPitch(True)
-        font.setPointSize(10)
+        font.setPointSize(14)
         self.setFont(font)
         self.setMarginsFont(font)
 
