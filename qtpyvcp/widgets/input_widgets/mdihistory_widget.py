@@ -148,7 +148,7 @@ class MDIHistory(QListWidget, CMDWidget):
         # now clear down the mdi entry text ready for new input
         self.mdi_entry_widget.clear()
 
-    def row_clicked(self):
+    def rowClicked(self):
         """Item row clicked."""
         pass
 
