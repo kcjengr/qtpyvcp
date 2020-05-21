@@ -152,7 +152,7 @@ class MDIHistory(QListWidget, CMDWidget):
         """Item row clicked."""
         pass
 
-    def key_press_event(self, event):
+    def keyPressEvent(self, event):
         """Key movement processing.
         Arrow keys move the selected list item up/down
         Return key generates a submit situation by making the item as
