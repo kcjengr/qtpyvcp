@@ -70,17 +70,17 @@ class MDIHistory(QListWidget, CMDWidget):
         #self.returnPressed.connect(self.submit)
 
     @Property(str)
-    def mdi_entryline_name(self):
+    def mdiEntrylineName(self):
         """Return name of entry object to Designer"""
-        return self._mdi_entryline_name
+        return self.mdi_entryline_name
 
-    @mdi_entryline_name.setter
-    def mdi_entryline_name(self, object_name):
+    @mdiEntrylineName.setter
+    def mdiEntrylineName(self, object_name):
         """Set the name for Designer"""
-        self._mdi_entryline_name = object_name
+        self.mdi_entryline_name = object_name
 
     @Slot(bool)
-    def toggle_queue(self, toggle):
+    def toggleQueue(self, toggle):
         """Toggle queue pause.
         Starting point is the queue is active.
         """
@@ -90,7 +90,7 @@ class MDIHistory(QListWidget, CMDWidget):
             self.heart_beat_timer.start()
 
     @Slot()
-    def clear_queue(self):
+    def clearQueue(self):
         """Clear queue items yet to be run."""
         list_length = self.count()-1
         while list_length >= 0:
@@ -104,14 +104,14 @@ class MDIHistory(QListWidget, CMDWidget):
             list_length -= 1
 
     @Slot()
-    def clear_selection(self):
+    def removeSelectedItem(self):
         """Remove the selected line"""
         row = self.currentRow()
         self.takeItem(row)
         STATUS.mdi_remove_entry(row)
 
     @Slot()
-    def run_from_selection(self):
+    def runFromSelection(self):
         """Start running MDI from the selected row back to top."""
         row = self.currentRow()
         # from selected row loop back to top and set ready for run
@@ -122,7 +122,7 @@ class MDIHistory(QListWidget, CMDWidget):
             row -= 1
 
     @Slot()
-    def run_selection(self):
+    def runSelection(self):
         """Run the selected row only."""
         row = self.currentRow()
         # from selected row loop back to top and set ready for run
@@ -148,11 +148,11 @@ class MDIHistory(QListWidget, CMDWidget):
         # now clear down the mdi entry text ready for new input
         self.mdi_entry_widget.clear()
 
-    def row_clicked(self):
+    def rowClicked(self):
         """Item row clicked."""
         pass
 
-    def key_press_event(self, event):
+    def keyPressEvent(self, event):
         """Key movement processing.
         Arrow keys move the selected list item up/down
         Return key generates a submit situation by making the item as
@@ -174,7 +174,7 @@ class MDIHistory(QListWidget, CMDWidget):
     #    super(MDIHistory, self).focusInEvent(event)
     #    pass
 
-    def set_history(self, items_list):
+    def setHistory(self, items_list):
         """Clear and reset the history in the list.
         item_list is a list of strings."""
         print 'Clear and load history to list'
@@ -186,7 +186,7 @@ class MDIHistory(QListWidget, CMDWidget):
             row_item.setIcon(QIcon())
             self.addItem(row_item)
 
-    def heart_beat(self):
+    def heartBeat(self):
         """Supports heart beat on the MDI History execution queue.
         Issue the next command from the queue.
         Double check machine is in ok state to accept next command.
@@ -221,20 +221,20 @@ class MDIHistory(QListWidget, CMDWidget):
     def initialize(self):
         """Load up starting data and set signal connections."""
         history = STATUS.mdi_history.value
-        self.set_history(history)
-        self.clicked.connect(self.row_clicked)
+        self.setHistory(history)
+        self.clicked.connect(self.rowClicked)
 
         # Get handle to windows list and seach through them
         # for the widget referenced in mdi_entryline_name
         for win_name, obj in qtpyvcp.WINDOWS.items():
             if hasattr(obj, self.mdi_entryline_name):
                 self.mdi_entry_widget = getattr(obj, self.mdi_entryline_name)
-
+                break
         # Setup the basic timer system as a heart beat on the queue
         self.heart_beat_timer = QTimer(self)
         # use a 1 second timer
         self.heart_beat_timer.start(1000)
-        self.heart_beat_timer.timeout.connect(self.heart_beat)
+        self.heart_beat_timer.timeout.connect(self.heartBeat)
 
     def terminate(self):
         """Teardown processing."""
