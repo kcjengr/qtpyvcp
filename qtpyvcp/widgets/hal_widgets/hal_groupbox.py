@@ -16,6 +16,7 @@ class HalGroupBox(QGroupBox, HALWidget):
         HAL Pin Name              Type  Direction
         ========================= ===== =========
         qtpyvcp.group-box.enable   bit   in
+        qtpyvcp.group-box.visible  bit   in
         qtpyvcp.group-box.check    bit   in
         qtpyvcp.group-box.checked  bit   out
         ========================= ===== =========
@@ -25,6 +26,7 @@ class HalGroupBox(QGroupBox, HALWidget):
         super(HalGroupBox, self).__init__(parent)
 
         self._enable_pin = None
+        self._visible_pin = None
         self._check_pin = None
         self._checked_pin = None
 
@@ -40,8 +42,13 @@ class HalGroupBox(QGroupBox, HALWidget):
 
         # add group-box.enable HAL pin
         self._enable_pin = comp.addPin(obj_name + ".enable", "bit", "in")
-        self._enable_pin.value = self.isEnabled()
-        self._enable_pin.valueChanged.connect(self.setEnabled)
+        self._enable_pin.value = self.isVisible()
+        self._enable_pin.valueChanged.connect(self.setVisible)
+
+        # add group-box.visible HAL pin
+        self._visible_pin = comp.addPin(obj_name + ".visible", "bit", "in")
+        self._visible_pin.value = self.isEnabled()
+        self._visible_pin.valueChanged.connect(self.setEnabled)
 
         if self.isCheckable():
             # add group-box.check HAL pin
