@@ -104,7 +104,7 @@ class MDIHistory(QListWidget, CMDWidget):
             list_length -= 1
 
     @Slot()
-    def clear_selection(self):
+    def clearSelection(self):
         """Remove the selected line"""
         row = self.currentRow()
         self.takeItem(row)
