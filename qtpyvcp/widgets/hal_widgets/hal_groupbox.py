@@ -42,13 +42,13 @@ class HalGroupBox(QGroupBox, HALWidget):
 
         # add group-box.enable HAL pin
         self._enable_pin = comp.addPin(obj_name + ".enable", "bit", "in")
-        self._enable_pin.value = self.isVisible()
-        self._enable_pin.valueChanged.connect(self.setVisible)
+        self._enable_pin.value = self.isEnabled()
+        self._enable_pin.valueChanged.connect(self.setEnabled)
 
         # add group-box.visible HAL pin
         self._visible_pin = comp.addPin(obj_name + ".visible", "bit", "in")
-        self._visible_pin.value = self.isEnabled()
-        self._visible_pin.valueChanged.connect(self.setEnabled)
+        self._visible_pin.value = self.isVisible()
+        self._visible_pin.valueChanged.connect(self.setVisible)
 
         if self.isCheckable():
             # add group-box.check HAL pin
