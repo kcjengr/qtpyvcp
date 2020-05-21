@@ -36,3 +36,7 @@ linuxcnc/configs/**/.*.json
 linuxcnc/configs/**/.*.pickle
 qtpyvcp/.project
 qtpyvcp/.pydevproject
+<<<<<<< HEAD
+=======
+qtpyvcp/.settings/
+>>>>>>> 77cbd02... updated ignore.
