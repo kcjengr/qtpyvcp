@@ -104,7 +104,7 @@ class MDIHistory(QListWidget, CMDWidget):
             list_length -= 1
 
     @Slot()
-    def clearSelection(self):
+    def removeSelectedItem(self):
         """Remove the selected line"""
         row = self.currentRow()
         self.takeItem(row)
@@ -221,8 +221,8 @@ class MDIHistory(QListWidget, CMDWidget):
     def initialize(self):
         """Load up starting data and set signal connections."""
         history = STATUS.mdi_history.value
-        self.set_history(history)
-        self.clicked.connect(self.row_clicked)
+        self.setHistory(history)
+        self.clicked.connect(self.rowClicked)
 
         # Get handle to windows list and seach through them
         # for the widget referenced in mdi_entryline_name
