@@ -29,7 +29,8 @@ import os
 
 from qtpy.QtCore import Property, QObject, Slot, QFile, QFileInfo, QTextStream, Signal
 from qtpy.QtGui import QFont, QFontMetrics, QColor
-from qtpy.QtWidgets import QInputDialog, QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QCheckBox
+from qtpy.QtWidgets import QInputDialog, QFileDialog
+from qtpy.QtWidgets import QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QCheckBox
 
 from qtpyvcp.utilities import logger
 from qtpyvcp.plugins import getPlugin
@@ -423,7 +424,10 @@ class GcodeEditor(EditorBase, QObject):
 
     @Slot()
     def saveAs(self):
-        file_name = self.save_as_dialog(self.filename)
+        #file_name = self.save_as_dialog(self.filename)
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, _ = QFileDialog.getSaveFileName(self,"Save As","","All Files (*);;NGC Files (*.ngc)", options=options)
 
         if file_name is False:
             print("saveAs file name error")
