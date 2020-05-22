@@ -141,6 +141,14 @@ class Status(DataPlugin):
 
         chan.signal.emit(chan.value)
 
+    def mdi_remove_entry(self, mdi_index):
+        """Remove the indicated cmd by index reference"""
+        # TODO: This has some potential code redundancy. Follow above pattern
+        chan = self.mdi_history
+        cmds = chan.value
+        del cmds[mdi_index]
+        chan.signal.emit(cmds)
+
     @DataChannel
     def on(self, chan):
         """True if machine power is ON."""
