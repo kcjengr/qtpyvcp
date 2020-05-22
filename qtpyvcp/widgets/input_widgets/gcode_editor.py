@@ -211,7 +211,7 @@ class EditorBase(QsciScintilla):
         # setting marker margin width to zero make the marker highlight line
         self.setMarginWidth(1, 10)
         self.marginClicked.connect(self.on_margin_clicked)
-        self.markerDefine(QsciScintilla.RightArrow,
+        self.markerDefine(QsciScintilla.RightTriangle,
                           self.ARROW_MARKER_NUM)
         self.setMarkerBackgroundColor(QColor("#ffe4e4"),
                                       self.ARROW_MARKER_NUM)
@@ -373,6 +373,8 @@ class GcodeEditor(EditorBase, QObject):
         self.backgroundcolor = ''
         self.marginbackgroundcolor = ''
 
+        self.active_line_background_color = ''
+
         # register with the status:task_mode channel to
         # drive the mdi auto show behaviour
         #STATUS.task_mode.notify(self.onMdiChanged)
@@ -499,12 +501,23 @@ class GcodeEditor(EditorBase, QObject):
         self._marginbackgroundcolor = color
         self.set_margin_background_color(color)
 
+    @Property(str)
+    def activeLineBackgroundColor(self):
+        """Property to set the background color of the active line.
+        The active line is where the caret is within the file.
+        """
+        return self.active_line_background_color
+
+    @activeLineBackgroundColor.setter
+    def activeLineBackgroundColor(self, color):
+        self.active_line_background_color = color
+        self.setCaretLineBackgroundColor(QColor(color))
+
     def setNumberGutter(self, lines):
         """Set the gutter width based on the number of lines"""
         font = self.lexer.defaultFont()
         fontmetrics = QFontMetrics(font)
         self.setMarginWidth(0, fontmetrics.width(str(lines)) + 6)
-
 
     def load_program(self, fname=None):
         if fname is None:
