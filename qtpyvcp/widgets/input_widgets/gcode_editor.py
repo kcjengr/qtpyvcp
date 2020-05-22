@@ -213,7 +213,8 @@ class EditorBase(QsciScintilla):
         self.marginClicked.connect(self.on_margin_clicked)
         self.markerDefine(QsciScintilla.RightTriangle,
                           self.ARROW_MARKER_NUM)
-        self.setMarkerBackgroundColor(QColor("#ffe4e4"),
+        #  #ffe4e4
+        self.setMarkerBackgroundColor(QColor("slate"),
                                       self.ARROW_MARKER_NUM)
 
         # Brace matching: enable for a brace immediately before or after
@@ -375,6 +376,8 @@ class GcodeEditor(EditorBase, QObject):
 
         self.active_line_background_color = ''
 
+        self.linesChanged.connect(self.linesHaveChanged)
+
         # register with the status:task_mode channel to
         # drive the mdi auto show behaviour
         #STATUS.task_mode.notify(self.onMdiChanged)
@@ -418,7 +421,6 @@ class GcodeEditor(EditorBase, QObject):
         else:
             print("save error")
 
-
     @Slot()
     def saveAs(self):
         file_name = self.save_as_dialog(self.filename)
@@ -439,7 +441,6 @@ class GcodeEditor(EditorBase, QObject):
             save_stream = QTextStream(new_file)
             save_stream << self.text()
             new_file.close()
-
 
     @Slot()
     def find_replace(self):
@@ -528,7 +529,6 @@ class GcodeEditor(EditorBase, QObject):
         # self.zoomTo(6)
         self.setCursorPosition(0, 0)
 
-
     def load_text(self, fname):
         try:
             fp = os.path.expanduser(fname)
@@ -539,8 +539,7 @@ class GcodeEditor(EditorBase, QObject):
             return
 
         # get the number of lines in the file and set new gutter width
-        line_count = len(self.text().split('\n'))
-        self.setNumberGutter(line_count)
+        self.setNumberGutter(self.lines())
 
         self.last_line = None
         self.ensureCursorVisible()
@@ -563,6 +562,14 @@ class GcodeEditor(EditorBase, QObject):
     def set_line_number(self, line):
         pass
 
+    def linesHaveChanged(self):
+        """When new lines are detected assess if the number
+        column margin needs to be increased to accomodate the
+        larger number length.
+        """
+        # get the number of lines in the file and set new gutter width
+        self.setNumberGutter(self.lines())
+
     def select_lineup(self):
         line, col = self.getCursorPosition()
         LOG.debug(line)
@@ -575,16 +582,14 @@ class GcodeEditor(EditorBase, QObject):
         self.setCursorPosition(line + 1, 0)
         self.highlight_line(line + 1)
 
-
-    # simple input dialog for save as
     def save_as_dialog(self, filename):
+    # simple input dialog for save as
         text, ok_pressed = QInputDialog.getText(self, "Save as", "New name:", QLineEdit.Normal, filename)
 
         if ok_pressed and text != '':
             return text
         else:
             return False
-
 
 # more complex dialog required by find replace
 class FindReplaceDialog(QDialog):
