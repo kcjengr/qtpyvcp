@@ -631,9 +631,8 @@ class Status(DataPlugin):
         LOG.debug("Starting periodic updates with %ims cycle time",
                   self._cycle_time)
         self.timer.start(self._cycle_time)
-        
+
         self.forceUpdateStaticChannelMembers()
-        
 
     def terminate(self):
         """Save persistent data on terminate."""
