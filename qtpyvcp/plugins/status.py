@@ -617,6 +617,7 @@ class Status(DataPlugin):
         gui rules.  This needs to be done with consideration to the
         data structure so as to not "break" things.
         """
+        # TODO: add to this list as needed. Possible to externalise via yaml?
         self.old['axes'] = None
 
     def initialise(self):
