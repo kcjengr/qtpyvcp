@@ -195,7 +195,8 @@ class VCPApplication(QApplication):
         location of a font file or a qresource."""
         LOG.debug("Loading custom font: %s" % font_path)
         res = QFontDatabase.addApplicationFont(font_path)
-        if res != 0:
+        # per QT docs -1 is error and 0+ is index to font loaded for later use
+        if res < 0:
             LOG.error("Failed to load font: %s", font_path)
 
     def getWidget(self, name):
