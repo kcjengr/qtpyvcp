@@ -23,6 +23,10 @@
 # See also:
 # http://pyqt.sourceforge.net/Docs/QScintilla2/index.html
 # https://qscintilla.com/
+#
+# Additions/Contributions by:
+# Donb9261 (Don Bozarth - Linuxcnc Forums): many lexer improvements
+# Joco (James Walker - james.walker.nz@me.com)
 
 import sys
 import os
@@ -35,6 +39,8 @@ from qtpy.QtWidgets import QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel,
 from qtpyvcp.utilities import logger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.widgets.base_widgets.base_widget import VCPBaseWidget
+
 from logilab.common.fileutils import lines
 
 from qtpyvcp.actions.program_actions import load as loadProgram
@@ -65,12 +71,20 @@ class GcodeLexer(QsciLexerCustom):
         if parent is None and not standalone:
             return
 
+        # Lexer style key
         self._styles = {
             0: 'Default',
             1: 'Comment',
             2: 'Key',
             3: 'Assignment',
             4: 'Value',
+            5: 'MCODE',
+            6: 'FEED',
+            7: 'MSG',
+            8: 'SCODE',
+            9: 'PCODE',
+           10: 'TCODE',
+           11: 'HCODE',
         }
         for key, value in self._styles.iteritems():
             setattr(self, value, key)
@@ -78,7 +92,7 @@ class GcodeLexer(QsciLexerCustom):
     # Paper sets the background color of each style of text
     def setPaperBackground(self, color, style=None):
         if style is None:
-            for i in range(0, 5):
+            for i in range(0, 12):
                 self.setPaper(color, i)
         else:
             self.setPaper(color, style)
@@ -87,16 +101,32 @@ class GcodeLexer(QsciLexerCustom):
         return self._styles.get(style, '')
 
     def defaultColor(self, style):
+        # Define colors for lexer styles.
+        # TODO: move color definitions to linuxcnc confog INI file
         if style == self.Default:
-            return QColor('#000000')  # black
+            return QColor('#FFFFFF')  ### black # Edited
         elif style == self.Comment:
-            return QColor('#000000')  # black
+            return QColor('#fcf803')  ### black
         elif style == self.Key:
-            return QColor('#0000CC')  # blue
+            return QColor('#52ceff')  ### cyan
         elif style == self.Assignment:
-            return QColor('#CC0000')  # red
+            return QColor('#fa5f5f')  ### red
         elif style == self.Value:
-            return QColor('#00CC00')  # green
+            return QColor('#00CC00')  ### green
+        elif style == self.MCODE:
+            return QColor('#f736d7')  ### magenta
+        elif style == self.FEED:
+            return QColor('#f7ce36')  ### orange
+        elif style == self.MSG:
+            return QColor('#03fc20')  ### lt green
+        elif style == self.SCODE:
+            return QColor('#03fcc2')  ### teal
+        elif style == self.PCODE:
+            return QColor('#be4dff')  ### lt purple
+        elif style == self.TCODE:
+            return QColor('#ff8fdb')  ### pink
+        elif style == self.HCODE:
+            return QColor('#87b3ff')  ### lt blue        
         return QsciLexerCustom.defaultColor(self, style)
 
     def styleText(self, start, end):
@@ -157,6 +187,34 @@ class GcodeLexer(QsciLexerCustom):
                     else:
                         set_style(1, self.Comment)
                     continue
+                elif char == 'MSG':
+                    graymode = True
+                    set_style(1, self.MSG)
+                    continue
+                elif char == 'M':
+                    graymode = False
+                    set_style(1, self.MCODE)
+                    continue
+                elif char == 'F':
+                    graymode = False
+                    set_style(1, self.FEED)
+                    continue
+                elif char == 'S':
+                    graymode = False
+                    set_style(1, self.SCODE)
+                    continue
+                elif char == 'P':
+                    graymode = False
+                    set_style(1, self.PCODE)
+                    continue
+                elif char == 'T':
+                    graymode = False
+                    set_style(1, self.TCODE)
+                    continue
+                elif char == 'H':
+                    graymode = False
+                    set_style(1, self.HCODE)
+                    continue
                 elif char in ('%', '<', '>', '#', '='):
                     state = self.Assignment
                 elif char in ('[', ']'):
@@ -188,11 +246,9 @@ class EditorBase(QsciScintilla):
 
         # Set the default font
         font = QFont()
-        font.setFamily('Ubuntu Mono')
+        font.setFamily('Courier')
         font.setFixedPitch(True)
         font.setPointSize(14)
-        #self.setFont(font)
-        self.setMarginsFont(font)
 
         # Set custom gcode lexer
         self.lexer = GcodeLexer(self)
@@ -354,7 +410,7 @@ class EditorBase(QsciScintilla):
 # ==============================================================================
 # Gcode widget
 # ==============================================================================
-class GcodeEditor(EditorBase, QObject):
+class GcodeEditor(EditorBase, QObject, VCPBaseWidget):
     ARROW_MARKER_NUM = 8
 
     def __init__(self, parent=None):
@@ -374,8 +430,9 @@ class GcodeEditor(EditorBase, QObject):
 
         self.backgroundcolor = ''
         self.marginbackgroundcolor = ''
-
         self.active_line_background_color = ''
+
+        self.default_font_name = ''
 
         self.linesChanged.connect(self.linesHaveChanged)
 
@@ -518,10 +575,46 @@ class GcodeEditor(EditorBase, QObject):
         self.active_line_background_color = color
         self.setCaretLineBackgroundColor(QColor(color))
 
-    def setNumberGutter(self, lines):
-        """Set the gutter width based on the number of lines"""
+    @Property(str)
+    def editorDefaultFont(self):
+        """Return the name of the  default font used by the editor.
+        Also supports Designer integration. 
+        """
+        return self.default_font_name
+
+    @editorDefaultFont.setter
+    def editorDefaultFont(self, font_name='Courier'):
+        """Set the default font name used by the editor.
+        Also create the needed font objects and assign to Lexer to create
+        new default font to be used by the editor.
+        """
+        # Set the default font
+        self.default_font_name = font_name
+
+    @Slot()
+    def refreshEditorFont(self):
+        """Taking the new default font and build a new lexer instance.
+        Apply the new lexer to the editor.
+        """
+        # Note that if you do not create a new lexer the
+        # the font does not get applied/used.
+        font = QFont()
+        font.setFamily(self.default_font_name)
+        font.setFixedPitch(True)
+        font.setPointSize(14)
+        self.lexer = GcodeLexer(self)
+        self.lexer.setDefaultFont(font)
+        self.setLexer(self.lexer)
+        # rebuild gutter for new font
+        self.setNumberGutter(self.lines())
+        # set the gutter font to be aligned to main font
+        self.setMarginsFont(font)
+
+    def setNumberGutter(self, lines=0):
+        """Set the gutter width based on the number of lines in the text"""
         font = self.lexer.defaultFont()
         fontmetrics = QFontMetrics(font)
+        self.setMarginsFont(font)
         self.setMarginWidth(0, fontmetrics.width(str(lines)) + 6)
 
     def load_program(self, fname=None):
@@ -568,8 +661,8 @@ class GcodeEditor(EditorBase, QObject):
 
     def linesHaveChanged(self):
         """When new lines are detected assess if the number
-        column margin needs to be increased to accomodate the
-        larger number length.
+        column margin needs to be increased to accommodate a
+        potentially larger number width.
         """
         # get the number of lines in the file and set new gutter width
         self.setNumberGutter(self.lines())
@@ -594,6 +687,11 @@ class GcodeEditor(EditorBase, QObject):
             return text
         else:
             return False
+
+    def initialize(self):
+        # Refresh the lexer font after everything is loaded.
+        # This allows the setting from Designer to be properly applied.
+        self.refreshEditorFont()
 
 # more complex dialog required by find replace
 class FindReplaceDialog(QDialog):
