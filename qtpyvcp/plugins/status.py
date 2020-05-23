@@ -612,6 +612,14 @@ class Status(DataPlugin):
                 return False
         return True
 
+    def forceUpdateStaticChannelMembers(self):
+        """Static items need a force update to operate properly with the
+        gui rules.  This needs to be done with consideration to the
+        data structure so as to not "break" things.
+        """
+        # TODO: add to this list as needed. Possible to externalise via yaml?
+        self.old['axes'] = None
+
     def initialise(self):
         """Start the periodic update timer."""
 
@@ -624,6 +632,8 @@ class Status(DataPlugin):
         LOG.debug("Starting periodic updates with %ims cycle time",
                   self._cycle_time)
         self.timer.start(self._cycle_time)
+
+        self.forceUpdateStaticChannelMembers()
 
     def terminate(self):
         """Save persistent data on terminate."""
