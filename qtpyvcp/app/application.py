@@ -250,7 +250,6 @@ class VCPApplication(QApplication):
         self._spindle_override_reset = comp.addPin(obj_name + ".reset", "bit", "in")
         self._spindle_override_reset.valueChanged.connect(spindle_override.reset)
 
-
     def terminateWidgets(self):
         LOG.debug("Terminating widgets")
         for w in self.allWidgets():
