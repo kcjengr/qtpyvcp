@@ -37,3 +37,4 @@ linuxcnc/configs/**/.*.pickle
 qtpyvcp/.settings/
 qtpyvcp/.pydevproject
 qtpyvcp/.project
+qtpyvcp/venv/
