@@ -239,7 +239,6 @@ class VCPApplication(QApplication):
                 w.initialize()
 
     def initialiseFrameworkExposedHalPins(self):
-        print 'Init framwork exposed HAL pins'
         comp = hal.COMPONENTS['qtpyvcp']
         obj_name = 'feed-override'
         self._feed_override_reset = comp.addPin(obj_name + ".reset", "bit", "in")
