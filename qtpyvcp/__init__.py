@@ -1,4 +1,4 @@
-#import sys;sys.path.append(r'/root/.p2/pool/plugins/org.python.pydev.core_7.5.0.202001101138/pysrc')
+# LiClipse debug start.  Uncomment the next line to enable debugger connection.
 #import pydevd;pydevd.settrace()
 
 import os
