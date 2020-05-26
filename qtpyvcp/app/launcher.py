@@ -82,6 +82,10 @@ def launch_application(opts, config):
     app.initialiseWidgets()
     log_time('done initializing widgets')
 
+    LOG.debug('Initalizing framework exposed HAL pins')
+    app.initialiseFrameworkExposedHalPins()
+    log_time('done initalizing framework exposed HAL pins')
+
     hal_comp.ready()
 
     # load any post GUI hal file

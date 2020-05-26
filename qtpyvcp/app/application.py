@@ -15,6 +15,9 @@ from qtpy.QtWidgets import QApplication, QStyleFactory
 
 import qtpyvcp
 
+from qtpyvcp import hal
+from qtpyvcp.actions.machine_actions import feed_override, rapid_override
+from qtpyvcp.actions.spindle_actions import override as spindle_override
 from qtpyvcp.utilities.logger import initBaseLogger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets.base_widgets.base_widget import VCPPrimitiveWidget
@@ -234,6 +237,20 @@ class VCPApplication(QApplication):
         for w in self.allWidgets():
             if isinstance(w, VCPPrimitiveWidget):
                 w.initialize()
+
+    def initialiseFrameworkExposedHalPins(self):
+        print 'Init framwork exposed HAL pins'
+        comp = hal.COMPONENTS['qtpyvcp']
+        obj_name = 'feed-override'
+        self._feed_override_reset = comp.addPin(obj_name + ".reset", "bit", "in")
+        self._feed_override_reset.valueChanged.connect(feed_override.reset)
+        obj_name = 'rapid-override'
+        self._rapid_override_reset = comp.addPin(obj_name + ".reset", "bit", "in")
+        self._rapid_override_reset.valueChanged.connect(rapid_override.reset)
+        obj_name = 'spindle-override'
+        self._spindle_override_reset = comp.addPin(obj_name + ".reset", "bit", "in")
+        self._spindle_override_reset.valueChanged.connect(spindle_override.reset)
+
 
     def terminateWidgets(self):
         LOG.debug("Terminating widgets")
