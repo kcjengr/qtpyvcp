@@ -1370,6 +1370,7 @@ class Axes:
 
         self.status = STATUS
         self.units = MACHINE_UNITS
+        self.axis_mask = self.status.stat.axis_mask
 
         if self.units == 2:
             self.length = 10.0
@@ -1386,8 +1387,14 @@ class Axes:
         self.actor.SetShaftTypeToLine()
         self.actor.SetTipTypeToCone()
 
-        if self.lathe is True:
+        # Lathe modes
+        if self.axis_mask == 3:
+            self.actor.SetTotalLength(self.length, self.length, 0)
+        elif self.axis_mask == 5:
             self.actor.SetTotalLength(self.length, 0, self.length)
+        elif self.axis_mask == 6:
+            self.actor.SetTotalLength(0, self.length, self.length)
+        # Mill mode
         else:
             self.actor.SetTotalLength(self.length, self.length, self.length)
 
@@ -1454,7 +1461,6 @@ class Tool:
             mapper = vtk.vtkPolyDataMapper()
             mapper.SetInputConnection(transform_filter.GetOutputPort())
 
-            
         else:
             if tool.id == 0 or tool.diameter < .05:
                 transform = vtk.vtkTransform()
