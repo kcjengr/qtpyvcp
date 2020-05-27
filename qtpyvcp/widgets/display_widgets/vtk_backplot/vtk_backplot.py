@@ -1419,113 +1419,42 @@ class Tool:
             self.height = 2.0
 
         if self.lathe is True:
-            if tool.id == 0 or tool.diameter == 0:
-                transform = vtk.vtkTransform()
+            transform = vtk.vtkTransform()
 
-                source = vtk.vtkConeSource()
-                source.SetHeight(self.height / 2)
-                source.SetCenter(-self.height / 4 - offset[2], -offset[1], -offset[0])
-                source.SetRadius(self.height / 4)
-                source.SetResolution(64)
+            # Setup three points
+            points = vtk.vtkPoints()
+            points.InsertNextPoint((0.0, 0.0, 0.0))
+            points.InsertNextPoint((-0.35, 0.0, 0.1))
+            points.InsertNextPoint((-0.35, 0.0, -0.1))
 
-                transform.RotateWXYZ(tool_orientation_table[tool.orientation] + 90, 0, 1, 0)
+            # Create the polygon
+            polygon = vtk.vtkPolygon()
+            polygon.GetPointIds().SetNumberOfIds(3)  # make a quad
+            polygon.GetPointIds().SetId(0, 0)
+            polygon.GetPointIds().SetId(1, 1)
+            polygon.GetPointIds().SetId(2, 2)
 
-                transform_filter = vtk.vtkTransformPolyDataFilter()
-                transform_filter.SetTransform(transform)
-                transform_filter.SetInputConnection(source.GetOutputPort())
-                transform_filter.Update()
+            # Add the polygon to a list of polygons
+            polygons = vtk.vtkCellArray()
+            polygons.InsertNextCell(polygon)
 
-                # Create a mapper
-                mapper = vtk.vtkPolyDataMapper()
-                mapper.SetInputConnection(transform_filter.GetOutputPort())
-            else:
+            # Create a PolyData
+            polygon_poly_data = vtk.vtkPolyData()
+            polygon_poly_data.SetPoints(points)
+            polygon_poly_data.SetPolys(polygons)
 
-                root = vtk.vtkMultiBlockDataSet()
-                branch = vtk.vtkMultiBlockDataSet()
+            transform.RotateWXYZ(tool_orientation_table[tool.orientation] + 90, 0, 1, 0)
 
-                root.SetBlock(0, branch)
+            transform_filter = vtk.vtkTransformPolyDataFilter()
+            transform_filter.SetTransform(transform)
+            transform_filter.SetInputData(polygon_poly_data)
+            transform_filter.Update()
 
-                root_source = vtk.vtkRegularPolygonSource()
-                root_source.SetNumberOfSides(64)
-                root_source.SetRadius(tool.diameter/2)
+            # Create a mapper
+            mapper = vtk.vtkPolyDataMapper()
+            mapper.SetInputConnection(transform_filter.GetOutputPort())
 
-                # Setup four points
-                points = vtk.vtkPoints()
-                points.InsertNextPoint((0.0, 0.0, 0.0))
-                points.InsertNextPoint((1.0, 0.0, 0.0))
-                points.InsertNextPoint((1.0, 0.0, 1.0))
-                points.InsertNextPoint((0.0, 0.0, 1.0))
-
-                # Create the polygon
-                polygon = vtk.vtkPolygon()
-                polygon.GetPointIds().SetNumberOfIds(4)  # make a quad
-                polygon.GetPointIds().SetId(0, 0)
-                polygon.GetPointIds().SetId(1, 1)
-                polygon.GetPointIds().SetId(2, 2)
-                polygon.GetPointIds().SetId(3, 3)
-
-                # Add the polygon to a list of polygons
-                polygons = vtk.vtkCellArray()
-                polygons.InsertNextCell(polygon)
-
-                # Create a PolyData
-                polygon_poly_data = vtk.vtkPolyData()
-                polygon_poly_data.SetPoints(points)
-                polygon_poly_data.SetPolys(polygons)
-
-
-                if tool.orientation == 1:
-                    control_point_x = -tool.diameter/2
-                    control_point_z = +tool.diameter/2
-                elif tool.orientation == 2:
-                    control_point_x = +tool.diameter/2
-                    control_point_z = +tool.diameter/2
-                elif tool.orientation == 3:
-                    control_point_x = +tool.diameter/2
-                    control_point_z = -tool.diameter/2
-                elif tool.orientation == 4:
-                    control_point_x = -tool.diameter/2
-                    control_point_z = -tool.diameter/2
-                elif tool.orientation == 5:
-                    control_point_x = -tool.diameter/2
-                    control_point_z = 0.0
-                elif tool.orientation == 6:
-                    control_point_x = 0.0
-                    control_point_z = +tool.diameter/2
-                elif tool.orientation == 7:
-                    control_point_x = +tool.diameter/2
-                    control_point_z = 0.0
-                elif tool.orientation == 8:
-                    control_point_x = 0.0
-                    control_point_z = -tool.diameter/2
-                elif tool.orientation == 9:
-                    control_point_x = 0.0
-                    control_point_z = 0.0
-                else:
-                    control_point_x = 0.0
-                    control_point_z = 0.0
-
-                root_source.SetCenter(control_point_z, control_point_x, 0.0)
-
-                root_source.Update()
-
-                root_transform = vtk.vtkTransform()
-                root_transform.RotateWXYZ(90, 1, 0, 0)
-                root_transform_filter = vtk.vtkTransformPolyDataFilter()
-                root_transform_filter.SetTransform(root_transform)
-                root_transform_filter.SetInputConnection(root_source.GetOutputPort())
-                root_transform_filter.Update()
-
-                root_transform_filter.Update()
-
-                root.SetBlock(1, root_transform_filter.GetOutput())
-                branch.SetBlock(0, polygon_poly_data)
-
-                geometry = vtk.vtkCompositeDataGeometryFilter()
-                geometry.SetInputData(root)
-
-                mapper = vtk.vtkPolyDataMapper()
-                mapper.SetInputConnection(geometry.GetOutputPort())
+            
         else:
             if tool.id == 0 or tool.diameter < .05:
                 transform = vtk.vtkTransform()
