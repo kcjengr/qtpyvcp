@@ -1418,7 +1418,6 @@ class Tool:
             self.height = 2.0
 
         if self.lathe is True:
-            transform = vtk.vtkTransform()
 
             tool_orientation_table = [0, 135, 45, 315, 225, 180, 90, 0, 270]
 
@@ -1479,16 +1478,17 @@ class Tool:
             polygon_poly_data.SetPoints(points)
             polygon_poly_data.SetPolys(polygons)
 
-            transform.RotateWXYZ(0, 0, 1, 0)
-
-            transform_filter = vtk.vtkTransformPolyDataFilter()
-            transform_filter.SetTransform(transform)
-            transform_filter.SetInputData(polygon_poly_data)
-            transform_filter.Update()
+            # transform = vtk.vtkTransform()
+            # transform.RotateWXYZ(0, 0, 1, 0)
+            #
+            # transform_filter = vtk.vtkTransformPolyDataFilter()
+            # transform_filter.SetTransform(transform)
+            # transform_filter.SetInputData(polygon_poly_data)
+            # transform_filter.Update()
 
             # Create a mapper
             mapper = vtk.vtkPolyDataMapper()
-            mapper.SetInputConnection(transform_filter.GetOutputPort())
+            mapper.SetInputData(polygon_poly_data)
 
         else:
             if tool.id == 0 or tool.diameter < .05:
