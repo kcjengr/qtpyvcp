@@ -1421,43 +1421,44 @@ class Tool:
 
             tool_orientation_table = [0, 135, 45, 315, 225, 180, 90, 0, 270]
 
-            x_pol = 0
-            z_pol = 0
+            positive = 1
+            negative = -1
+
+            x_pol = None
+            z_pol = None
 
             if tool_orientation_table[tool.orientation] in range(0, 90):
                 # z is positive and x is negative
-                x_pol = -1
-                z_pol = 1
+                x_pol = negative
+                z_pol = positive
             elif tool_orientation_table[tool.orientation] in range(90, 180):
                 # z is negative and x is negative
-                x_pol = -1
-                z_pol = -1
+                x_pol = negative
+                z_pol = negative
             elif tool_orientation_table[tool.orientation] in range(180, 270):
                 # z is negative and x is positive
-                x_pol = 1
-                z_pol = -1
+                x_pol = positive
+                z_pol = negative
             elif tool_orientation_table[tool.orientation] in range(270, 360):
                 # z is positive and x is positive
-                x_pol = 1
-                z_pol = 1
-
-            def get_points():
-                pass
+                x_pol = positive
+                z_pol = positive
 
             A = radians(tool.frontangle)
             B = radians(tool.backangle)
             C = 0.35
 
-            p1_x = C*sin(A) + offset[0] * x_pol
-            p1_z = C*cos(A) + offset[2] * z_pol
+            p1_x = (C*sin(A) + offset[0]) * x_pol
+            p1_z = (C*cos(A) + offset[2]) * z_pol
 
-            p2_x = C*sin(B) + offset[0] * x_pol
-            p2_z = C*cos(B) + offset[2] * z_pol
+            p2_x = (C*sin(B) + offset[0]) * x_pol
+            p2_z = (C*cos(B) + offset[2]) * z_pol
 
-            print(p1_x, p1_z)
-            print(p2_x, p2_z)
+            LOG.debug("Front Angle Point P1 X = {} P1 Z = {}".format(p1_x, p1_z))
+            LOG.debug("Back Angle Point  P2 X = {} P2 Z = {}".format(p2_x, p2_z))
 
-            print(offset)
+            LOG.debug("offsets")
+            LOG.debug(offset)
 
             # Setup three points
             points = vtk.vtkPoints()
