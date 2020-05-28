@@ -1424,16 +1424,20 @@ class Tool:
 
             if tool_orientation_table[tool.orientation] in range(0, 90):
                 # z is positive and x is negative
-                pass
-            elif tool_orientation_table[tool.orientation] in range(91, 180):
+                x_pol = -1
+                z_pol = 1
+            elif tool_orientation_table[tool.orientation] in range(90, 180):
                 # z is negative and x is negative
-                pass
-            elif tool_orientation_table[tool.orientation] in range(181, 270):
+                x_pol = -1
+                z_pol = -1
+            elif tool_orientation_table[tool.orientation] in range(180, 270):
                 # z is negative and x is positive
-                pass
-            elif tool_orientation_table[tool.orientation] in range(271, 360):
+                x_pol = 1
+                z_pol = -1
+            elif tool_orientation_table[tool.orientation] in range(270, 360):
                 # z is positive and x is positive
-                pass
+                x_pol = 1
+                z_pol = 1
 
             def get_points():
                 pass
@@ -1451,11 +1455,13 @@ class Tool:
             print(p1_x, p1_z)
             print(p2_x, p2_z)
 
+            print(offset)
+
             # Setup three points
             points = vtk.vtkPoints()
-            points.InsertNextPoint((0.0, 0.0, 0.0))
-            points.InsertNextPoint((p1_z, 0.0, p1_x))
-            points.InsertNextPoint((p2_z, 0.0, p2_x))
+            points.InsertNextPoint((offset[2], 0.0, offset[0]))
+            points.InsertNextPoint((p1_x + offset[0] * x_pol, 0.0, p1_z + offset[2] * z_pol))
+            points.InsertNextPoint((p2_x + offset[0] * x_pol, 0.0, p2_z + offset[2] * z_pol))
 
             # Create the polygon
             polygon = vtk.vtkPolygon()
@@ -1473,7 +1479,7 @@ class Tool:
             polygon_poly_data.SetPoints(points)
             polygon_poly_data.SetPolys(polygons)
 
-            transform.RotateWXYZ(-90, 0, 1, 0)
+            transform.RotateWXYZ(0, 0, 1, 0)
 
             transform_filter = vtk.vtkTransformPolyDataFilter()
             transform_filter.SetTransform(transform)
