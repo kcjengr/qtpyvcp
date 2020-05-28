@@ -1502,7 +1502,7 @@ class Tool:
 
                 source = vtk.vtkConeSource()
                 source.SetHeight(self.height / 2)
-                source.SetCenter(-self.height / 4 - offset[2], -offset[1], -offset[0])
+                source.SetCenter(-self.height / 4 - tool.zoffset, -tool.yoffset, -tool.xoffset)
                 source.SetRadius(self.height / 4)
                 source.SetResolution(64)
                 transform.RotateWXYZ(90, 0, 1, 0)
@@ -1519,7 +1519,7 @@ class Tool:
 
                 source = vtk.vtkCylinderSource()
                 source.SetHeight(self.height / 2)
-                source.SetCenter(-offset[0], self.height / 4 - offset[2], offset[1])
+                source.SetCenter(-tool.xoffset, self.height / 4 - tool.zoffset, tool.yoffset)
                 source.SetRadius(tool.diameter / 2)
                 source.SetResolution(64)
                 transform.RotateWXYZ(90, 1, 0, 0)
