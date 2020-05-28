@@ -1421,6 +1421,9 @@ class Tool:
 
             tool_orientation_table = [0, 135, 45, 315, 225, 180, 90, 0, 270]
 
+            x_pol = 0
+            z_pol = 0
+
             if tool_orientation_table[tool.orientation] in range(0, 90):
                 # z is positive and x is negative
                 x_pol = -1
@@ -1445,11 +1448,11 @@ class Tool:
             B = radians(tool.backangle)
             C = 0.35
 
-            p1_x = C*sin(A)
-            p1_z = C*cos(A)
+            p1_x = C*sin(A) + offset[0] * x_pol
+            p1_z = C*cos(A) + offset[2] * z_pol
 
-            p2_x = C*sin(B)
-            p2_z = C*cos(B)
+            p2_x = C*sin(B) + offset[0] * x_pol
+            p2_z = C*cos(B) + offset[2] * z_pol
 
             print(p1_x, p1_z)
             print(p2_x, p2_z)
@@ -1458,9 +1461,9 @@ class Tool:
 
             # Setup three points
             points = vtk.vtkPoints()
-            points.InsertNextPoint((offset[2], 0.0, offset[0]))
-            points.InsertNextPoint((p1_x + offset[0] * x_pol, 0.0, p1_z + offset[2] * z_pol))
-            points.InsertNextPoint((p2_x + offset[0] * x_pol, 0.0, p2_z + offset[2] * z_pol))
+            points.InsertNextPoint((offset[0], 0.0, offset[2]))
+            points.InsertNextPoint((p1_x, 0.0, p1_z))
+            points.InsertNextPoint((p2_x, 0.0, p2_z))
 
             # Create the polygon
             polygon = vtk.vtkPolygon()
