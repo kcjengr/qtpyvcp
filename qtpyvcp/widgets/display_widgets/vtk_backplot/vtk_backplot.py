@@ -1448,23 +1448,25 @@ class Tool:
             B = radians(tool.backangle)
             C = 0.35
 
-            p1_x = (C*sin(A) + offset[0]) * x_pol
-            p1_z = (C*cos(A) + offset[2]) * z_pol
+            p1_x = C*sin(A) * x_pol
+            p1_z = C*cos(A) * z_pol
 
-            p2_x = (C*sin(B) + offset[0]) * x_pol
-            p2_z = (C*cos(B) + offset[2]) * z_pol
+            p2_x = C*sin(B) * x_pol
+            p2_z = C*cos(B) * z_pol
 
-            LOG.debug("Front Angle Point P1 X = {} P1 Z = {}".format(p1_x, p1_z))
-            LOG.debug("Back Angle Point  P2 X = {} P2 Z = {}".format(p2_x, p2_z))
+            LOG.debug("Drawing Lathe tool id {}".format(tool.id))
 
-            LOG.debug("offsets")
+            LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(tool.frontangle, p1_x, p1_z))
+            LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(tool.backangle, p2_x, p2_z))
+
+            LOG.debug("Tool offsets")
             LOG.debug(offset)
 
             # Setup three points
             points = vtk.vtkPoints()
-            points.InsertNextPoint((offset[0], 0.0, offset[2]))
-            points.InsertNextPoint((p1_x, 0.0, p1_z))
-            points.InsertNextPoint((p2_x, 0.0, p2_z))
+            points.InsertNextPoint((tool.xoffset, 0.0, tool.zoffset))
+            points.InsertNextPoint((p1_x + tool.xoffset, 0.0, p1_z + tool.zoffset))
+            points.InsertNextPoint((p2_x + tool.xoffset, 0.0, p2_z + tool.zoffset))
 
             # Create the polygon
             polygon = vtk.vtkPolygon()
