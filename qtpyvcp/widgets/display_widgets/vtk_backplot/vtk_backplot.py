@@ -1,4 +1,5 @@
 import os
+from math import cos, sin, radians
 
 from operator import add
 from collections import OrderedDict
@@ -1410,15 +1411,6 @@ class Tool:
         self.lathe = LATHE
         tool = tool_table[0]
 
-        tool_orientation_table = [0,
-                                  135,
-                                  45,
-                                  315,
-                                  225,
-                                  180,
-                                  90,
-                                  0,
-                                  270]
 
         if self.units == 2:
             self.height = 25.4 * 2.0
@@ -1428,11 +1420,42 @@ class Tool:
         if self.lathe is True:
             transform = vtk.vtkTransform()
 
+            tool_orientation_table = [0, 135, 45, 315, 225, 180, 90, 0, 270]
+
+            if tool_orientation_table[tool.orientation] in range(0, 90):
+                # z is positive and x is negative
+                pass
+            elif tool_orientation_table[tool.orientation] in range(91, 180):
+                # z is negative and x is negative
+                pass
+            elif tool_orientation_table[tool.orientation] in range(181, 270):
+                # z is negative and x is positive
+                pass
+            elif tool_orientation_table[tool.orientation] in range(271, 360):
+                # z is positive and x is positive
+                pass
+
+            def get_points():
+                pass
+
+            A = radians(tool.frontangle)
+            B = radians(tool.backangle)
+            C = 0.35
+
+            p1_x = C*sin(A)
+            p1_z = C*cos(A)
+
+            p2_x = C*sin(B)
+            p2_z = C*cos(B)
+
+            print(p1_x, p1_z)
+            print(p2_x, p2_z)
+
             # Setup three points
             points = vtk.vtkPoints()
             points.InsertNextPoint((0.0, 0.0, 0.0))
-            points.InsertNextPoint((-0.35, 0.0, 0.1))
-            points.InsertNextPoint((-0.35, 0.0, -0.1))
+            points.InsertNextPoint((p1_z, 0.0, p1_x))
+            points.InsertNextPoint((p2_z, 0.0, p2_x))
 
             # Create the polygon
             polygon = vtk.vtkPolygon()
@@ -1450,7 +1473,7 @@ class Tool:
             polygon_poly_data.SetPoints(points)
             polygon_poly_data.SetPolys(polygons)
 
-            transform.RotateWXYZ(tool_orientation_table[tool.orientation] + 90, 0, 1, 0)
+            transform.RotateWXYZ(-90, 0, 1, 0)
 
             transform_filter = vtk.vtkTransformPolyDataFilter()
             transform_filter.SetTransform(transform)
