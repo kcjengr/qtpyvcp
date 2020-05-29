@@ -41,8 +41,6 @@ from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.widgets.base_widgets.base_widget import VCPBaseWidget
 
-from logilab.common.fileutils import lines
-
 from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.actions.program_actions import reload as reLoadProgram
 
