@@ -1436,132 +1436,163 @@ class Tool:
                 mapper = vtk.vtkPolyDataMapper()
                 mapper.SetInputConnection(transform_filter.GetOutputPort())
             else:
+                if tool.orientation == 9:
 
-                positive = 1
-                negative = -1
+                    radius = tool.diameter / 2
 
-                fa_x_pol = None
-                fa_z_pol = None
+                    # Setup four points
+                    points = vtk.vtkPoints()
+                    points.InsertNextPoint(radius, 0.0, 0.0)
+                    points.InsertNextPoint(radius, 0.0, 1.0)
+                    points.InsertNextPoint(-radius, 0.0, 1.0)
+                    points.InsertNextPoint(-radius, 0.0, 0.0)
 
-                ba_x_pol = None
-                ba_z_pol = None
+                    # Create the polygon
+                    polygon = vtk.vtkPolygon()
+                    polygon.GetPointIds().SetNumberOfIds(4)  # make a quad
+                    polygon.GetPointIds().SetId(0, 0)
+                    polygon.GetPointIds().SetId(1, 1)
+                    polygon.GetPointIds().SetId(2, 2)
+                    polygon.GetPointIds().SetId(3, 3)
 
-                if tool.orientation == 1:
-                    fa_x_pol = negative
-                    fa_z_pol = negative
+                    # Add the polygon to a list of polygons
+                    polygons = vtk.vtkCellArray()
+                    polygons.InsertNextCell(polygon)
 
-                    ba_x_pol = negative
-                    ba_z_pol = negative
+                    # Create a PolyData
+                    polygonPolyData = vtk.vtkPolyData()
+                    polygonPolyData.SetPoints(points)
+                    polygonPolyData.SetPolys(polygons)
 
-                elif tool.orientation == 2:
-                    fa_x_pol = negative
-                    fa_z_pol = positive
-
-                    ba_x_pol = negative
-                    ba_z_pol = positive
-
-                elif tool.orientation == 3:
-                    fa_x_pol = positive
-                    fa_z_pol = positive
-
-                    ba_x_pol = positive
-                    ba_z_pol = positive
-
-                elif tool.orientation == 4:
-                    fa_x_pol = positive
-                    fa_z_pol = negative
-
-                    ba_x_pol = positive
-                    ba_z_pol = negative
-
-                elif tool.orientation == 5:
-                    fa_x_pol = positive
-                    fa_z_pol = negative
-
-                    ba_x_pol = negative
-                    ba_z_pol = positive
-
-                elif tool.orientation == 6:
-                    fa_x_pol = negative
-                    fa_z_pol = positive
-
-                    ba_x_pol = negative
-                    ba_z_pol = negative
-
-                elif tool.orientation == 7:
-                    fa_x_pol = positive
-                    fa_z_pol = positive
-
-                    ba_x_pol = negative
-                    ba_z_pol = positive
-
-                elif tool.orientation == 8:
-                    fa_x_pol = positive
-                    fa_z_pol = positive
-
-                    ba_x_pol = positive
-                    ba_z_pol = negative
+                    # Create a mapper and actor
+                    mapper = vtk.vtkPolyDataMapper()
+                    mapper.SetInputData(polygonPolyData)
                 else:
-                    fa_x_pol = 0.0
-                    fa_z_pol = 0.0
+                    positive = 1
+                    negative = -1
 
-                    ba_x_pol = 0.0
-                    ba_z_pol = 0.0
+                    fa_x_pol = None
+                    fa_z_pol = None
 
-                A = radians(float(tool.frontangle))
-                B = radians(float(tool.backangle))
-                C = 0.35
+                    ba_x_pol = None
+                    ba_z_pol = None
 
-                p1_x = abs(C * sin(A))
-                p1_z = abs(C * cos(A))
+                    if tool.orientation == 1:
+                        fa_x_pol = negative
+                        fa_z_pol = negative
 
-                p2_x = abs(C * sin(B))
-                p2_z = abs(C * cos(B))
+                        ba_x_pol = negative
+                        ba_z_pol = negative
 
-                p1_x_pos = p1_x * fa_x_pol
-                p1_z_pos = p1_z * fa_z_pol
+                    elif tool.orientation == 2:
+                        fa_x_pol = negative
+                        fa_z_pol = positive
 
-                p2_x_pos = p2_x * ba_x_pol
-                p2_z_pos = p2_z * ba_z_pol
+                        ba_x_pol = negative
+                        ba_z_pol = positive
 
-                LOG.debug("Drawing Lathe tool id {}".format(tool.id))
+                    elif tool.orientation == 3:
+                        fa_x_pol = positive
+                        fa_z_pol = positive
 
-                LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool.frontangle), p1_x_pos, p1_z_pos))
-                LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool.backangle), p2_x_pos, p2_z_pos))
+                        ba_x_pol = positive
+                        ba_z_pol = positive
 
-                # Setup three points
-                points = vtk.vtkPoints()
-                points.InsertNextPoint((tool.xoffset, 0.0, tool.zoffset))
-                points.InsertNextPoint((p1_x_pos + tool.xoffset, 0.0, p1_z_pos + tool.zoffset))
-                points.InsertNextPoint((p2_x_pos + tool.xoffset, 0.0, p2_z_pos + tool.zoffset))
+                    elif tool.orientation == 4:
+                        fa_x_pol = positive
+                        fa_z_pol = negative
 
-                # Create the polygon
-                polygon = vtk.vtkPolygon()
-                polygon.GetPointIds().SetNumberOfIds(3)  # make a quad
-                polygon.GetPointIds().SetId(0, 0)
-                polygon.GetPointIds().SetId(1, 1)
-                polygon.GetPointIds().SetId(2, 2)
+                        ba_x_pol = positive
+                        ba_z_pol = negative
 
-                # Add the polygon to a list of polygons
-                polygons = vtk.vtkCellArray()
-                polygons.InsertNextCell(polygon)
+                    elif tool.orientation == 5:
+                        fa_x_pol = positive
+                        fa_z_pol = negative
 
-                # Create a PolyData
-                polygon_poly_data = vtk.vtkPolyData()
-                polygon_poly_data.SetPoints(points)
-                polygon_poly_data.SetPolys(polygons)
+                        ba_x_pol = negative
+                        ba_z_pol = positive
 
-                transform = vtk.vtkTransform()
-                transform.RotateWXYZ(180, 0, 0, 1)
+                    elif tool.orientation == 6:
+                        fa_x_pol = negative
+                        fa_z_pol = positive
 
-                transform_filter = vtk.vtkTransformPolyDataFilter()
-                transform_filter.SetTransform(transform)
-                transform_filter.SetInputData(polygon_poly_data)
-                transform_filter.Update()
+                        ba_x_pol = negative
+                        ba_z_pol = negative
 
-                # Create a mapper
-                mapper = vtk.vtkPolyDataMapper()
-                mapper.SetInputConnection(transform_filter.GetOutputPort())
+                    elif tool.orientation == 7:
+                        fa_x_pol = positive
+                        fa_z_pol = positive
+
+                        ba_x_pol = negative
+                        ba_z_pol = positive
+
+                    elif tool.orientation == 8:
+                        fa_x_pol = positive
+                        fa_z_pol = positive
+
+                        ba_x_pol = positive
+                        ba_z_pol = negative
+                    else:
+                        fa_x_pol = 0.0
+                        fa_z_pol = 0.0
+
+                        ba_x_pol = 0.0
+                        ba_z_pol = 0.0
+
+                    A = radians(float(tool.frontangle))
+                    B = radians(float(tool.backangle))
+                    C = 0.35
+
+                    p1_x = abs(C * sin(A))
+                    p1_z = abs(C * cos(A))
+
+                    p2_x = abs(C * sin(B))
+                    p2_z = abs(C * cos(B))
+
+                    p1_x_pos = p1_x * fa_x_pol
+                    p1_z_pos = p1_z * fa_z_pol
+
+                    p2_x_pos = p2_x * ba_x_pol
+                    p2_z_pos = p2_z * ba_z_pol
+
+                    LOG.debug("Drawing Lathe tool id {}".format(tool.id))
+
+                    LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool.frontangle), p1_x_pos, p1_z_pos))
+                    LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool.backangle), p2_x_pos, p2_z_pos))
+
+                    # Setup three points
+                    points = vtk.vtkPoints()
+                    points.InsertNextPoint((tool.xoffset, 0.0, tool.zoffset))
+                    points.InsertNextPoint((p1_x_pos + tool.xoffset, 0.0, p1_z_pos + tool.zoffset))
+                    points.InsertNextPoint((p2_x_pos + tool.xoffset, 0.0, p2_z_pos + tool.zoffset))
+
+                    # Create the polygon
+                    polygon = vtk.vtkPolygon()
+                    polygon.GetPointIds().SetNumberOfIds(3)  # make a quad
+                    polygon.GetPointIds().SetId(0, 0)
+                    polygon.GetPointIds().SetId(1, 1)
+                    polygon.GetPointIds().SetId(2, 2)
+
+                    # Add the polygon to a list of polygons
+                    polygons = vtk.vtkCellArray()
+                    polygons.InsertNextCell(polygon)
+
+                    # Create a PolyData
+                    polygon_poly_data = vtk.vtkPolyData()
+                    polygon_poly_data.SetPoints(points)
+                    polygon_poly_data.SetPolys(polygons)
+
+                    transform = vtk.vtkTransform()
+                    transform.RotateWXYZ(180, 0, 0, 1)
+
+                    transform_filter = vtk.vtkTransformPolyDataFilter()
+                    transform_filter.SetTransform(transform)
+                    transform_filter.SetInputData(polygon_poly_data)
+                    transform_filter.Update()
+
+                    # Create a mapper
+                    mapper = vtk.vtkPolyDataMapper()
+                    mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         else:
             if tool.id == 0 or tool.diameter < .05:
