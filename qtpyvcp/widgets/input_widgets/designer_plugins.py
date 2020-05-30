@@ -107,6 +107,15 @@ from offset_table import OffsetTable
 class OffsetTablePlugin(_DesignerPlugin):
     def pluginClass(self):
         return OffsetTable
-
     def objectName(self):
         return 'offset_table'
+
+from dro_line_edit import DROLineEdit
+from qtpyvcp.widgets.qtdesigner.dro_editor import DroEditorExtension
+class DROLineEdit_Plugin(_DesignerPlugin):
+    def pluginClass(self):
+        return DROLineEdit
+    def objectName(self):
+        return 'dro_entry'
+    def designerExtensions(self):
+        return [DroEditorExtension,]
