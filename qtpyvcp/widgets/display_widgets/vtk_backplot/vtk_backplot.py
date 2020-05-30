@@ -30,7 +30,7 @@ from qtpyvcp.utilities.info import Info
 
 from base_canon import StatCanon
 from base_backplot import BaseBackPlot
-
+from more_itertools import numeric_range
 INFO = Info()
 
 LOG = logger.getLogger(__name__)
@@ -1427,62 +1427,75 @@ class Tool:
             p2_x_pol = None
             p2_z_pol = None
 
-            if tool.frontangle == 0:
-                pass
-            elif tool.frontangle in range(1, 89):
+            LOG.debug("tool front angle = {}".format(tool.frontangle))
+
+            if tool.frontangle == 0.0:
+                p1_x_pol = positive
+                p1_z_pol = 0
+            elif tool.frontangle in numeric_range(0.001, 89.999, 0.001):
                 LOG.debug("z is positive and x is negative")
                 p1_x_pol = negative
+            elif tool.frontangle == 90.0:
+                p1_x_pol = 0
+                p1_z_pol = negative
                 p1_z_pol = positive
-            elif tool.frontangle == 90:
-                pass
-            elif tool.frontangle in range(91, 179):
+            elif tool.frontangle in numeric_range(90.001, 179.999, 0.001):
                 LOG.debug("z is negative and x is negative")
                 p1_x_pol = negative
                 p1_z_pol = negative
-            elif tool.frontangle == 180:
-                pass
-            elif tool.frontangle in range(181, 269):
+            elif tool.frontangle == 180.0:
+                p1_x_pol = negative
+                p1_z_pol = 0
+            elif tool.frontangle in numeric_range(180.001, 269.999, 0.001):
                 LOG.debug("z is negative and x is positive")
                 p1_x_pol = positive
                 p1_z_pol = negative
-            elif tool.frontangle == 270:
-                pass
-            elif tool.frontangle in range(271, 359):
+            elif tool.frontangle == 270.0:
+                p1_x_pol = 0
+                p1_z_pol = positive
+            elif tool.frontangle in numeric_range(270.001, 359.999, 0.001):
                 LOG.debug("z is positive and x is positive")
                 p1_x_pol = positive
                 p1_z_pol = positive
-            elif tool.frontangle == 360:
-                pass
+            elif tool.frontangle == 360.0:
+                p1_x_pol = positive
+                p1_z_pol = 0
 
-            if tool.frontangle == 0:
-                pass
-            if tool.backangle in range(1, 89):
+            LOG.debug("tool back angle = {}".format(tool.backangle))
+            if tool.backangle == 0.0:
+                p2_x_pol = positive
+                p2_z_pol = 0
+            if tool.backangle in numeric_range(0.001, 89.999, 0.001):
                 LOG.debug("z is positive and x is negative")
                 p2_x_pol = negative
                 p2_z_pol = positive
-            elif tool.frontangle == 90:
-                pass
-            elif tool.backangle in range(91, 179):
+            elif tool.backangle == 90.0:
+                p2_x_pol = 0
+                p2_z_pol = negative
+            elif tool.backangle in numeric_range(90.001, 179.999, 0.001):
                 LOG.debug("z is negative and x is negative")
                 p2_x_pol = negative
                 p2_z_pol = negative
-            elif tool.frontangle == 180:
-                pass
-            elif tool.backangle in range(181, 269):
+            elif tool.backangle == 180.0:
+                p2_x_pol = negative
+                p2_z_pol = 0
+            elif tool.backangle in numeric_range(180.001, 269.999, 0.001):
                 LOG.debug("z is negative and x is positive")
                 p2_x_pol = positive
                 p2_z_pol = negative
-            elif tool.frontangle == 270:
-                pass
-            elif tool.backangle in range(271, 59):
+            elif tool.backangle == 270.0:
+                p2_x_pol = 0
+                p2_z_pol = positive
+            elif tool.backangle in numeric_range(270.001, 359.999, 0.001):
                 LOG.debug("z is positive and x is positive")
                 p2_x_pol = positive
                 p2_z_pol = positive
-            elif tool.frontangle == 360:
-                pass
+            elif tool.backangle == 360.0:
+                p2_x_pol = positive
+                p2_z_pol = 0
 
-            A = radians(tool.frontangle)
-            B = radians(tool.backangle)
+            A = radians(float(tool.frontangle))
+            B = radians(float(tool.backangle))
             C = 0.35
 
             p1_x = abs(C * sin(A))
@@ -1499,8 +1512,8 @@ class Tool:
 
             LOG.debug("Drawing Lathe tool id {}".format(tool.id))
 
-            LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(tool.frontangle, p1_x_pos, p1_z_pos))
-            LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(tool.backangle, p2_x_pos, p2_z_pos))
+            LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool.frontangle), p1_x_pos, p1_z_pos))
+            LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool.backangle), p2_x_pos, p2_z_pos))
 
             # Setup three points
             points = vtk.vtkPoints()
