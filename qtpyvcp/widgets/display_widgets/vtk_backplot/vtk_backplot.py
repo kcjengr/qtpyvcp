@@ -1442,10 +1442,10 @@ class Tool:
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint(radius, 0.0, 0.0)
-                    points.InsertNextPoint(radius, 0.0, 1.0)
-                    points.InsertNextPoint(-radius, 0.0, 1.0)
-                    points.InsertNextPoint(-radius, 0.0, 0.0)
+                    points.InsertNextPoint([radius, 0.0, 0.0])
+                    points.InsertNextPoint([radius, 0.0, 1.0])
+                    points.InsertNextPoint([-radius, 0.0, 1.0])
+                    points.InsertNextPoint([-radius, 0.0, 0.0])
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -1454,7 +1454,6 @@ class Tool:
                     quad.GetPointIds().SetId(1, 1)
                     quad.GetPointIds().SetId(2, 2)
                     quad.GetPointIds().SetId(3, 3)
-
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
