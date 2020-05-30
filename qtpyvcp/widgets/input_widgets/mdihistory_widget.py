@@ -227,7 +227,7 @@ class MDIHistory(QListWidget, CMDWidget):
         # Get handle to windows list and seach through them
         # for the widget referenced in mdi_entryline_name
         for win_name, obj in qtpyvcp.WINDOWS.items():
-            if hasattr(obj, self.mdi_entryline_name):
+            if hasattr(obj, str(self.mdi_entryline_name)):
                 self.mdi_entry_widget = getattr(obj, self.mdi_entryline_name)
                 break
         # Setup the basic timer system as a heart beat on the queue
