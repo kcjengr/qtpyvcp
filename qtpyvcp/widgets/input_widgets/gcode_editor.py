@@ -31,10 +31,12 @@
 import sys
 import os
 
-from qtpy.QtCore import Property, QObject, Slot, QFile, QFileInfo, QTextStream, Signal
+from qtpy.QtCore import Property, Slot, Signal
+from qtpy.QtCore import QObject, QFile, QFileInfo, QTextStream
 from qtpy.QtGui import QFont, QFontMetrics, QColor
-from qtpy.QtWidgets import QInputDialog, QFileDialog
-from qtpy.QtWidgets import QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QCheckBox
+from qtpy.QtWidgets import QInputDialog, QFileDialog, QDialog
+from qtpy.QtWidgets import QLineEdit, QLabel, QPushButton, QCheckBox
+from qtpy.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from qtpyvcp.utilities import logger
 from qtpyvcp.plugins import getPlugin
@@ -86,6 +88,12 @@ class GcodeLexer(QsciLexerCustom):
         }
         for key, value in self._styles.iteritems():
             setattr(self, value, key)
+
+        # set default colors
+        for key, value in self._styles.iteritems():
+            color_name = '{}_color'.format(value)
+            color_value = self.defaultColor(key)
+            setattr(self, color_name, color_value)
 
     # Paper sets the background color of each style of text
     def setPaperBackground(self, color, style=None):
@@ -237,6 +245,7 @@ class EditorBase(QsciScintilla):
 
     def __init__(self, parent=None):
         super(EditorBase, self).__init__(parent)
+
         # linuxcnc defaults
         self.idle_line_reset = False
         # don't allow editing by default
@@ -288,6 +297,80 @@ class EditorBase(QsciScintilla):
 
         # not too small
         # self.setMinimumSize(200, 100)
+
+    @Property(str)
+    def backgroundcolor(self):
+        """Property to set the background color of the GCodeEditor (str).
+
+        sets the background color of the GCodeEditor
+        """
+        try:
+            return self._backgroundcolor
+        except AttributeError:
+            # define default background color and return it
+            color = 'lightgray'
+            self._backgroundcolor = color
+            self.set_background_color(color)
+
+    @backgroundcolor.setter
+    def backgroundcolor(self, color):
+        self._backgroundcolor = color
+        self.set_background_color(color)
+
+    @Property(str)
+    def marginbackgroundcolor(self):
+        """Property to set the background color of the GCodeEditor margin (str).
+        sets the background color of the GCodeEditor margin
+        """
+        try:
+            return self._marginbackgroundcolor
+        except AttributeError:
+            color = 'gray'
+            self._marginbackgroundcolor = color
+            self.set_margin_background_color(color)
+
+    @marginbackgroundcolor.setter
+    def marginbackgroundcolor(self, color):
+        self._marginbackgroundcolor = color
+        self.set_margin_background_color(color)
+
+    @Property(str)
+    def activeLineBackgroundColor(self):
+        """Property to set the background color of the active line.
+        The active line is where the caret is within the file.
+        """
+        try:
+            return self._active_line_background_color
+        except AttributeError:
+            color = 'yellow'
+            self._active_line_background_color = color
+            self.setCaretLineBackgroundColor(QColor(color))
+
+    @activeLineBackgroundColor.setter
+    def activeLineBackgroundColor(self, color):
+        self._active_line_background_color = color
+        self.setCaretLineBackgroundColor(QColor(color))
+
+    @Property(str)
+    def editorDefaultFont(self):
+        """Return the name of the  default font used by the editor.
+        Also supports Designer integration. 
+        """
+        try:
+            return self._default_font_name
+        except AttributeError:
+            self._default_font_name = 'Courier'
+            return self._default_font_name
+
+    @editorDefaultFont.setter
+    def editorDefaultFont(self, font_name='Courier'):
+        """Set the default font name used by the editor.
+        Also create the needed font objects and assign to Lexer to create
+        new default font to be used by the editor.
+        """
+        # Set the default font
+        self._default_font_name = font_name
+
 
     def find_text_occurences(self, text):
         """Return byte positions of start and end of all 'text' occurences in the document"""
@@ -414,6 +497,8 @@ class GcodeEditor(EditorBase, QObject, VCPBaseWidget):
     def __init__(self, parent=None):
         super(GcodeEditor, self).__init__(parent)
 
+        self._qssTest = 0
+
         self.filename = ""
         self._last_filename = None
         self.auto_show_mdi = True
@@ -424,14 +509,6 @@ class GcodeEditor(EditorBase, QObject, VCPBaseWidget):
 
         self.dialog = FindReplaceDialog(parent=self)
 
-        # QSS Hack
-
-        self.backgroundcolor = ''
-        self.marginbackgroundcolor = ''
-        self.active_line_background_color = ''
-
-        self.default_font_name = ''
-
         self.linesChanged.connect(self.linesHaveChanged)
 
         # register with the status:task_mode channel to
@@ -440,6 +517,19 @@ class GcodeEditor(EditorBase, QObject, VCPBaseWidget):
         #self.prev_taskmode = STATUS.task_mode
 
         #self.cursorPositionChanged.connect(self.line_changed)
+
+    @Property(int)
+    def qssTest(self):
+        try:
+            return self._qssTest
+        except AttributeError:
+            self._qssTest = 0
+            return self._qssTest
+
+    @qssTest.setter
+    def qssTest(self, value):
+        self._qssTest = value
+
 
     @Slot(bool)
     def setEditable(self, state):
@@ -535,60 +625,6 @@ class GcodeEditor(EditorBase, QObject, VCPBaseWidget):
             # if self.idle_line_reset:
             #     STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))
 
-    @Property(str)
-    def backgroundcolor(self):
-        """Property to set the background color of the GCodeEditor (str).
-
-        sets the background color of the GCodeEditor
-        """
-        return self._backgroundcolor
-
-    @backgroundcolor.setter
-    def backgroundcolor(self, color):
-        self._backgroundcolor = color
-        self.set_background_color(color)
-
-    @Property(str)
-    def marginbackgroundcolor(self):
-        """Property to set the background color of the GCodeEditor margin (str).
-
-        sets the background color of the GCodeEditor margin
-        """
-        return self._marginbackgroundcolor
-
-    @marginbackgroundcolor.setter
-    def marginbackgroundcolor(self, color):
-        self._marginbackgroundcolor = color
-        self.set_margin_background_color(color)
-
-    @Property(str)
-    def activeLineBackgroundColor(self):
-        """Property to set the background color of the active line.
-        The active line is where the caret is within the file.
-        """
-        return self.active_line_background_color
-
-    @activeLineBackgroundColor.setter
-    def activeLineBackgroundColor(self, color):
-        self.active_line_background_color = color
-        self.setCaretLineBackgroundColor(QColor(color))
-
-    @Property(str)
-    def editorDefaultFont(self):
-        """Return the name of the  default font used by the editor.
-        Also supports Designer integration. 
-        """
-        return self.default_font_name
-
-    @editorDefaultFont.setter
-    def editorDefaultFont(self, font_name='Courier'):
-        """Set the default font name used by the editor.
-        Also create the needed font objects and assign to Lexer to create
-        new default font to be used by the editor.
-        """
-        # Set the default font
-        self.default_font_name = font_name
-
     @Slot()
     def refreshEditorFont(self):
         """Taking the new default font and build a new lexer instance.
@@ -597,7 +633,7 @@ class GcodeEditor(EditorBase, QObject, VCPBaseWidget):
         # Note that if you do not create a new lexer the
         # the font does not get applied/used.
         font = QFont()
-        font.setFamily(self.default_font_name)
+        font.setFamily(self.editorDefaultFont)
         font.setFixedPitch(True)
         font.setPointSize(14)
         self.lexer = GcodeLexer(self)
