@@ -1427,19 +1427,19 @@ class Tool:
             z_pol = None
 
             if tool_orientation_table[tool.orientation] in range(0, 90):
-                # z is positive and x is negative
+                LOG.debug("z is positive and x is negative")
                 x_pol = negative
                 z_pol = positive
-            elif tool_orientation_table[tool.orientation] in range(91, 180):
-                # z is negative and x is negative
+            elif tool_orientation_table[tool.orientation] in range(90, 180):
+                LOG.debug("z is negative and x is negative")
                 x_pol = negative
                 z_pol = negative
-            elif tool_orientation_table[tool.orientation] in range(181, 270):
-                # z is negative and x is positive
+            elif tool_orientation_table[tool.orientation] in range(180, 270):
+                LOG.debug("z is negative and x is positive")
                 x_pol = positive
                 z_pol = negative
-            elif tool_orientation_table[tool.orientation] in range(271, 360):
-                # z is positive and x is positive
+            elif tool_orientation_table[tool.orientation] in range(270, 360):
+                LOG.debug("z is positive and x is positive")
                 x_pol = positive
                 z_pol = positive
 
