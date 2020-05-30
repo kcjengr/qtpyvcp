@@ -1419,199 +1419,149 @@ class Tool:
 
         if self.lathe is True:
 
-            positive = 1
-            negative = -1
+            if tool.id == 0 or tool.id == -1:
+                polygonSource = vtk.vtkRegularPolygonSource()
+                polygonSource.SetNumberOfSides(64)
+                polygonSource.SetRadius(0.035)
+                polygonSource.SetCenter(0.0, 0.0, 0.0)
 
-            fa_x_pol = None
-            fa_z_pol = None
+                transform = vtk.vtkTransform()
+                transform.RotateWXYZ(90, 1, 0, 0)
 
-            ba_x_pol = None
-            ba_z_pol = None
+                transform_filter = vtk.vtkTransformPolyDataFilter()
+                transform_filter.SetTransform(transform)
+                transform_filter.SetInputConnection(polygonSource.GetOutputPort())
+                transform_filter.Update()
 
-            if tool.orientation == 1:
-                fa_x_pol = negative
-                fa_z_pol = negative
-
-                ba_x_pol = negative
-                ba_z_pol = negative
-
-            elif tool.orientation == 2:
-                fa_x_pol = negative
-                fa_z_pol = positive
-
-                ba_x_pol = negative
-                ba_z_pol = positive
-
-            elif tool.orientation == 3:
-                fa_x_pol = positive
-                fa_z_pol = positive
-
-                ba_x_pol = positive
-                ba_z_pol = positive
-
-            elif tool.orientation == 4:
-                fa_x_pol = positive
-                fa_z_pol = negative
-
-                ba_x_pol = positive
-                ba_z_pol = negative
-
-            elif tool.orientation == 5:
-                fa_x_pol = positive
-                fa_z_pol = negative
-
-                ba_x_pol = negative
-                ba_z_pol = positive
-
-            elif tool.orientation == 6:
-                fa_x_pol = negative
-                fa_z_pol = positive
-
-                ba_x_pol = negative
-                ba_z_pol = negative
-
-            elif tool.orientation == 7:
-                fa_x_pol = positive
-                fa_z_pol = positive
-
-                ba_x_pol = negative
-                ba_z_pol = positive
-
-            elif tool.orientation == 8:
-                fa_x_pol = positive
-                fa_z_pol = positive
-
-                ba_x_pol = positive
-                ba_z_pol = negative
+                mapper = vtk.vtkPolyDataMapper()
+                mapper.SetInputConnection(transform_filter.GetOutputPort())
             else:
-                fa_x_pol = 0.0
-                fa_z_pol = 0.0
 
-                ba_x_pol = 0.0
-                ba_z_pol = 0.0
+                positive = 1
+                negative = -1
 
+                fa_x_pol = None
+                fa_z_pol = None
 
+                ba_x_pol = None
+                ba_z_pol = None
 
-            # LOG.debug("tool front angle = {}".format(tool.frontangle))
-            # if tool.frontangle == 0.0:
-            #     p1_x_pol = positive
-            #     p1_z_pol = 0
-            # elif tool.frontangle in numeric_range(0.001, 89.999, 0.001):
-            #     LOG.debug("z is positive and x is negative")
-            #     p1_x_pol = negative
-            # elif tool.frontangle == 90.0:
-            #     p1_x_pol = 0
-            #     p1_z_pol = negative
-            #     p1_z_pol = positive
-            # elif tool.frontangle in numeric_range(90.001, 179.999, 0.001):
-            #     LOG.debug("z is negative and x is negative")
-            #     p1_x_pol = negative
-            #     p1_z_pol = negative
-            # elif tool.frontangle == 180.0:
-            #     p1_x_pol = negative
-            #     p1_z_pol = 0
-            # elif tool.frontangle in numeric_range(180.001, 269.999, 0.001):
-            #     LOG.debug("z is negative and x is positive")
-            #     p1_x_pol = positive
-            #     p1_z_pol = negative
-            # elif tool.frontangle == 270.0:
-            #     p1_x_pol = 0
-            #     p1_z_pol = positive
-            # elif tool.frontangle in numeric_range(270.001, 359.999, 0.001):
-            #     LOG.debug("z is positive and x is positive")
-            #     p1_x_pol = positive
-            #     p1_z_pol = positive
-            # elif tool.frontangle == 360.0:
-            #     p1_x_pol = positive
-            #     p1_z_pol = 0
-            #
-            # LOG.debug("tool back angle = {}".format(tool.backangle))
-            # if tool.backangle == 0.0:
-            #     p2_x_pol = positive
-            #     p2_z_pol = 0
-            # if tool.backangle in numeric_range(0.001, 89.999, 0.001):
-            #     LOG.debug("z is positive and x is negative")
-            #     p2_x_pol = negative
-            #     p2_z_pol = positive
-            # elif tool.backangle == 90.0:
-            #     p2_x_pol = 0
-            #     p2_z_pol = negative
-            # elif tool.backangle in numeric_range(90.001, 179.999, 0.001):
-            #     LOG.debug("z is negative and x is negative")
-            #     p2_x_pol = negative
-            #     p2_z_pol = negative
-            # elif tool.backangle == 180.0:
-            #     p2_x_pol = negative
-            #     p2_z_pol = 0
-            # elif tool.backangle in numeric_range(180.001, 269.999, 0.001):
-            #     LOG.debug("z is negative and x is positive")
-            #     p2_x_pol = positive
-            #     p2_z_pol = negative
-            # elif tool.backangle == 270.0:
-            #     p2_x_pol = 0
-            #     p2_z_pol = positive
-            # elif tool.backangle in numeric_range(270.001, 359.999, 0.001):
-            #     LOG.debug("z is positive and x is positive")
-            #     p2_x_pol = positive
-            #     p2_z_pol = positive
-            # elif tool.backangle == 360.0:
-            #     p2_x_pol = positive
-            #     p2_z_pol = 0
+                if tool.orientation == 1:
+                    fa_x_pol = negative
+                    fa_z_pol = negative
 
-            A = radians(float(tool.frontangle))
-            B = radians(float(tool.backangle))
-            C = 0.35
+                    ba_x_pol = negative
+                    ba_z_pol = negative
 
-            p1_x = abs(C * sin(A))
-            p1_z = abs(C * cos(A))
+                elif tool.orientation == 2:
+                    fa_x_pol = negative
+                    fa_z_pol = positive
 
-            p2_x = abs(C * sin(B))
-            p2_z = abs(C * cos(B))
+                    ba_x_pol = negative
+                    ba_z_pol = positive
 
-            p1_x_pos = p1_x * fa_x_pol
-            p1_z_pos = p1_z * fa_z_pol
+                elif tool.orientation == 3:
+                    fa_x_pol = positive
+                    fa_z_pol = positive
 
-            p2_x_pos = p2_x * ba_x_pol
-            p2_z_pos = p2_z * ba_z_pol
+                    ba_x_pol = positive
+                    ba_z_pol = positive
 
-            LOG.debug("Drawing Lathe tool id {}".format(tool.id))
+                elif tool.orientation == 4:
+                    fa_x_pol = positive
+                    fa_z_pol = negative
 
-            LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool.frontangle), p1_x_pos, p1_z_pos))
-            LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool.backangle), p2_x_pos, p2_z_pos))
+                    ba_x_pol = positive
+                    ba_z_pol = negative
 
-            # Setup three points
-            points = vtk.vtkPoints()
-            points.InsertNextPoint((tool.xoffset, 0.0, tool.zoffset))
-            points.InsertNextPoint((p1_x_pos + tool.xoffset, 0.0, p1_z_pos + tool.zoffset))
-            points.InsertNextPoint((p2_x_pos + tool.xoffset, 0.0, p2_z_pos + tool.zoffset))
+                elif tool.orientation == 5:
+                    fa_x_pol = positive
+                    fa_z_pol = negative
 
-            # Create the polygon
-            polygon = vtk.vtkPolygon()
-            polygon.GetPointIds().SetNumberOfIds(3)  # make a quad
-            polygon.GetPointIds().SetId(0, 0)
-            polygon.GetPointIds().SetId(1, 1)
-            polygon.GetPointIds().SetId(2, 2)
+                    ba_x_pol = negative
+                    ba_z_pol = positive
 
-            # Add the polygon to a list of polygons
-            polygons = vtk.vtkCellArray()
-            polygons.InsertNextCell(polygon)
+                elif tool.orientation == 6:
+                    fa_x_pol = negative
+                    fa_z_pol = positive
 
-            # Create a PolyData
-            polygon_poly_data = vtk.vtkPolyData()
-            polygon_poly_data.SetPoints(points)
-            polygon_poly_data.SetPolys(polygons)
+                    ba_x_pol = negative
+                    ba_z_pol = negative
 
-            transform = vtk.vtkTransform()
-            transform.RotateWXYZ(180, 0, 0, 1)
+                elif tool.orientation == 7:
+                    fa_x_pol = positive
+                    fa_z_pol = positive
 
-            transform_filter = vtk.vtkTransformPolyDataFilter()
-            transform_filter.SetTransform(transform)
-            transform_filter.SetInputData(polygon_poly_data)
-            transform_filter.Update()
+                    ba_x_pol = negative
+                    ba_z_pol = positive
 
-            # Create a mapper
-            mapper = vtk.vtkPolyDataMapper()
-            mapper.SetInputConnection(transform_filter.GetOutputPort())
+                elif tool.orientation == 8:
+                    fa_x_pol = positive
+                    fa_z_pol = positive
+
+                    ba_x_pol = positive
+                    ba_z_pol = negative
+                else:
+                    fa_x_pol = 0.0
+                    fa_z_pol = 0.0
+
+                    ba_x_pol = 0.0
+                    ba_z_pol = 0.0
+
+                A = radians(float(tool.frontangle))
+                B = radians(float(tool.backangle))
+                C = 0.35
+
+                p1_x = abs(C * sin(A))
+                p1_z = abs(C * cos(A))
+
+                p2_x = abs(C * sin(B))
+                p2_z = abs(C * cos(B))
+
+                p1_x_pos = p1_x * fa_x_pol
+                p1_z_pos = p1_z * fa_z_pol
+
+                p2_x_pos = p2_x * ba_x_pol
+                p2_z_pos = p2_z * ba_z_pol
+
+                LOG.debug("Drawing Lathe tool id {}".format(tool.id))
+
+                LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool.frontangle), p1_x_pos, p1_z_pos))
+                LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool.backangle), p2_x_pos, p2_z_pos))
+
+                # Setup three points
+                points = vtk.vtkPoints()
+                points.InsertNextPoint((tool.xoffset, 0.0, tool.zoffset))
+                points.InsertNextPoint((p1_x_pos + tool.xoffset, 0.0, p1_z_pos + tool.zoffset))
+                points.InsertNextPoint((p2_x_pos + tool.xoffset, 0.0, p2_z_pos + tool.zoffset))
+
+                # Create the polygon
+                polygon = vtk.vtkPolygon()
+                polygon.GetPointIds().SetNumberOfIds(3)  # make a quad
+                polygon.GetPointIds().SetId(0, 0)
+                polygon.GetPointIds().SetId(1, 1)
+                polygon.GetPointIds().SetId(2, 2)
+
+                # Add the polygon to a list of polygons
+                polygons = vtk.vtkCellArray()
+                polygons.InsertNextCell(polygon)
+
+                # Create a PolyData
+                polygon_poly_data = vtk.vtkPolyData()
+                polygon_poly_data.SetPoints(points)
+                polygon_poly_data.SetPolys(polygons)
+
+                transform = vtk.vtkTransform()
+                transform.RotateWXYZ(180, 0, 0, 1)
+
+                transform_filter = vtk.vtkTransformPolyDataFilter()
+                transform_filter.SetTransform(transform)
+                transform_filter.SetInputData(polygon_poly_data)
+                transform_filter.Update()
+
+                # Create a mapper
+                mapper = vtk.vtkPolyDataMapper()
+                mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         else:
             if tool.id == 0 or tool.diameter < .05:
