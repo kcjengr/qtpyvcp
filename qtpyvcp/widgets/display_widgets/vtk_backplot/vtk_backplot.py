@@ -330,7 +330,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
-        self.tool = Tool(self.stat.tool_table, self.stat.tool_offset)
+        self.tool = Tool(self.stat.tool_table)
         self.tool_actor = self.tool.get_actor()
 
         self.offset_axes = OrderedDict()
@@ -808,7 +808,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.RemoveActor(self.tool_actor)
 
-        self.tool = Tool(self.stat.tool_table, self.stat.tool_offset)
+        self.tool = Tool(self.stat.tool_table)
         self.tool_actor = self.tool.get_actor()
 
         tool_transform = vtk.vtkTransform()
@@ -1404,7 +1404,7 @@ class Axes:
 
 
 class Tool:
-    def __init__(self, tool_table, offset):
+    def __init__(self, tool_table):
 
         self.status = STATUS
         self.units = MACHINE_UNITS
@@ -1447,19 +1447,16 @@ class Tool:
             B = radians(tool.backangle)
             C = 0.35
 
-            p1_x = (C * sin(A)) * x_pol
-            p1_z = (C * cos(A)) * z_pol
+            p1_x = (abs(C * sin(A))) * x_pol
+            p1_z = (abs(C * cos(A))) * z_pol
 
-            p2_x = (C * sin(B)) * x_pol
-            p2_z = (C * cos(B)) * z_pol
+            p2_x = (abs(C * sin(B))) * x_pol
+            p2_z = (abs(C * cos(B))) * z_pol
 
             LOG.debug("Drawing Lathe tool id {}".format(tool.id))
 
             LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(tool.frontangle, p1_x, p1_z))
             LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(tool.backangle, p2_x, p2_z))
-
-            LOG.debug("Tool offsets FIXME This doesn't refresh on tool table save")
-            LOG.debug(offset)
 
             # Setup three points
             points = vtk.vtkPoints()
