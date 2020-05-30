@@ -1418,51 +1418,95 @@ class Tool:
 
         if self.lathe is True:
 
-            tool_orientation_table = [0, 135, 45, 315, 225, 180, 90, 0, 270]
-
             positive = 1
             negative = -1
 
-            x_pol = None
-            z_pol = None
+            p1_x_pol = None
+            p1_z_pol = None
 
-            if tool_orientation_table[tool.orientation] in range(0, 90):
+            p2_x_pol = None
+            p2_z_pol = None
+
+            if tool.frontangle == 0:
+                pass
+            elif tool.frontangle in range(1, 89):
                 LOG.debug("z is positive and x is negative")
-                x_pol = negative
-                z_pol = positive
-            elif tool_orientation_table[tool.orientation] in range(90, 180):
+                p1_x_pol = negative
+                p1_z_pol = positive
+            elif tool.frontangle == 90:
+                pass
+            elif tool.frontangle in range(91, 179):
                 LOG.debug("z is negative and x is negative")
-                x_pol = negative
-                z_pol = negative
-            elif tool_orientation_table[tool.orientation] in range(180, 270):
+                p1_x_pol = negative
+                p1_z_pol = negative
+            elif tool.frontangle == 180:
+                pass
+            elif tool.frontangle in range(181, 269):
                 LOG.debug("z is negative and x is positive")
-                x_pol = positive
-                z_pol = negative
-            elif tool_orientation_table[tool.orientation] in range(270, 360):
+                p1_x_pol = positive
+                p1_z_pol = negative
+            elif tool.frontangle == 270:
+                pass
+            elif tool.frontangle in range(271, 359):
                 LOG.debug("z is positive and x is positive")
-                x_pol = positive
-                z_pol = positive
+                p1_x_pol = positive
+                p1_z_pol = positive
+            elif tool.frontangle == 360:
+                pass
+
+            if tool.frontangle == 0:
+                pass
+            if tool.backangle in range(1, 89):
+                LOG.debug("z is positive and x is negative")
+                p2_x_pol = negative
+                p2_z_pol = positive
+            elif tool.frontangle == 90:
+                pass
+            elif tool.backangle in range(91, 179):
+                LOG.debug("z is negative and x is negative")
+                p2_x_pol = negative
+                p2_z_pol = negative
+            elif tool.frontangle == 180:
+                pass
+            elif tool.backangle in range(181, 269):
+                LOG.debug("z is negative and x is positive")
+                p2_x_pol = positive
+                p2_z_pol = negative
+            elif tool.frontangle == 270:
+                pass
+            elif tool.backangle in range(271, 59):
+                LOG.debug("z is positive and x is positive")
+                p2_x_pol = positive
+                p2_z_pol = positive
+            elif tool.frontangle == 360:
+                pass
 
             A = radians(tool.frontangle)
             B = radians(tool.backangle)
             C = 0.35
 
-            p1_x = (abs(C * sin(A))) * x_pol
-            p1_z = (abs(C * cos(A))) * z_pol
+            p1_x = abs(C * sin(A))
+            p1_z = abs(C * cos(A))
 
-            p2_x = (abs(C * sin(B))) * x_pol
-            p2_z = (abs(C * cos(B))) * z_pol
+            p2_x = abs(C * sin(B))
+            p2_z = abs(C * cos(B))
+
+            p1_x_pos = p1_x * p1_x_pol
+            p1_z_pos = p1_z * p1_z_pol
+
+            p2_x_pos = p2_x * p2_x_pol
+            p2_z_pos = p2_z * p2_z_pol
 
             LOG.debug("Drawing Lathe tool id {}".format(tool.id))
 
-            LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(tool.frontangle, p1_x, p1_z))
-            LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(tool.backangle, p2_x, p2_z))
+            LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(tool.frontangle, p1_x_pos, p1_z_pos))
+            LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(tool.backangle, p2_x_pos, p2_z_pos))
 
             # Setup three points
             points = vtk.vtkPoints()
             points.InsertNextPoint((tool.xoffset, 0.0, tool.zoffset))
-            points.InsertNextPoint((p1_x + tool.xoffset, 0.0, p1_z + tool.zoffset))
-            points.InsertNextPoint((p2_x + tool.xoffset, 0.0, p2_z + tool.zoffset))
+            points.InsertNextPoint((p1_x_pos + tool.xoffset, 0.0, p1_z_pos + tool.zoffset))
+            points.InsertNextPoint((p2_x_pos + tool.xoffset, 0.0, p2_z_pos + tool.zoffset))
 
             # Create the polygon
             polygon = vtk.vtkPolygon()
@@ -1481,7 +1525,7 @@ class Tool:
             polygon_poly_data.SetPolys(polygons)
 
             transform = vtk.vtkTransform()
-            transform.RotateWXYZ(180, 0, 0, 1)
+            transform.RotateWXYZ(0, 0, 0, 1)
 
             transform_filter = vtk.vtkTransformPolyDataFilter()
             transform_filter.SetTransform(transform)
@@ -1490,7 +1534,7 @@ class Tool:
 
             # Create a mapper
             mapper = vtk.vtkPolyDataMapper()
-            mapper.SetInputConnection(transform_filter.GetOutputPort())
+            mapper.SetInputData(polygon_poly_data)
 
         else:
             if tool.id == 0 or tool.diameter < .05:
