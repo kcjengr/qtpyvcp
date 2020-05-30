@@ -1602,7 +1602,7 @@ class Tool:
             polygon_poly_data.SetPolys(polygons)
 
             transform = vtk.vtkTransform()
-            transform.RotateWXYZ(0, 0, 0, 1)
+            transform.RotateWXYZ(180, 0, 0, 1)
 
             transform_filter = vtk.vtkTransformPolyDataFilter()
             transform_filter.SetTransform(transform)
@@ -1611,7 +1611,7 @@ class Tool:
 
             # Create a mapper
             mapper = vtk.vtkPolyDataMapper()
-            mapper.SetInputData(polygon_poly_data)
+            mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         else:
             if tool.id == 0 or tool.diameter < .05:
