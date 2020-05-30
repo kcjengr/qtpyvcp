@@ -1448,16 +1448,17 @@ class Tool:
                     points.InsertNextPoint(-radius, 0.0, 0.0)
 
                     # Create the polygon
-                    polygon = vtk.vtkPolygon()
-                    polygon.GetPointIds().SetNumberOfIds(4)  # make a quad
-                    polygon.GetPointIds().SetId(0, 0)
-                    polygon.GetPointIds().SetId(1, 1)
-                    polygon.GetPointIds().SetId(2, 2)
-                    polygon.GetPointIds().SetId(3, 3)
+                    # Create a quad on the four points
+                    quad = vtk.vtkQuad()
+                    quad.GetPointIds().SetId(0, 0)
+                    quad.GetPointIds().SetId(1, 1)
+                    quad.GetPointIds().SetId(2, 2)
+                    quad.GetPointIds().SetId(3, 3)
+
 
                     # Add the polygon to a list of polygons
                     polygons = vtk.vtkCellArray()
-                    polygons.InsertNextCell(polygon)
+                    polygons.InsertNextCell(quad)
 
                     # Create a PolyData
                     polygonPolyData = vtk.vtkPolyData()
