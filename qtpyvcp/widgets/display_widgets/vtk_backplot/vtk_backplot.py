@@ -1471,12 +1471,6 @@ class Tool:
                     positive = 1
                     negative = -1
 
-                    fa_x_pol = None
-                    fa_z_pol = None
-
-                    ba_x_pol = None
-                    ba_z_pol = None
-
                     if tool.orientation == 1:
                         fa_x_pol = negative
                         fa_z_pol = negative
