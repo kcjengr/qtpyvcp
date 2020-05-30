@@ -1411,7 +1411,6 @@ class Tool:
         self.lathe = LATHE
         tool = tool_table[0]
 
-
         if self.units == 2:
             self.height = 25.4 * 2.0
         else:
@@ -1431,15 +1430,15 @@ class Tool:
                 # z is positive and x is negative
                 x_pol = negative
                 z_pol = positive
-            elif tool_orientation_table[tool.orientation] in range(90, 180):
+            elif tool_orientation_table[tool.orientation] in range(91, 180):
                 # z is negative and x is negative
                 x_pol = negative
                 z_pol = negative
-            elif tool_orientation_table[tool.orientation] in range(180, 270):
+            elif tool_orientation_table[tool.orientation] in range(181, 270):
                 # z is negative and x is positive
                 x_pol = positive
                 z_pol = negative
-            elif tool_orientation_table[tool.orientation] in range(270, 360):
+            elif tool_orientation_table[tool.orientation] in range(271, 360):
                 # z is positive and x is positive
                 x_pol = positive
                 z_pol = positive
@@ -1448,18 +1447,18 @@ class Tool:
             B = radians(tool.backangle)
             C = 0.35
 
-            p1_x = C*sin(A) * x_pol
-            p1_z = C*cos(A) * z_pol
+            p1_x = (C * sin(A)) * x_pol
+            p1_z = (C * cos(A)) * z_pol
 
-            p2_x = C*sin(B) * x_pol
-            p2_z = C*cos(B) * z_pol
+            p2_x = (C * sin(B)) * x_pol
+            p2_z = (C * cos(B)) * z_pol
 
             LOG.debug("Drawing Lathe tool id {}".format(tool.id))
 
             LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(tool.frontangle, p1_x, p1_z))
             LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(tool.backangle, p2_x, p2_z))
 
-            LOG.debug("Tool offsets")
+            LOG.debug("Tool offsets FIXME This doesn't refresh on tool table save")
             LOG.debug(offset)
 
             # Setup three points
@@ -1484,17 +1483,17 @@ class Tool:
             polygon_poly_data.SetPoints(points)
             polygon_poly_data.SetPolys(polygons)
 
-            # transform = vtk.vtkTransform()
-            # transform.RotateWXYZ(0, 0, 1, 0)
-            #
-            # transform_filter = vtk.vtkTransformPolyDataFilter()
-            # transform_filter.SetTransform(transform)
-            # transform_filter.SetInputData(polygon_poly_data)
-            # transform_filter.Update()
+            transform = vtk.vtkTransform()
+            transform.RotateWXYZ(180, 0, 0, 1)
+
+            transform_filter = vtk.vtkTransformPolyDataFilter()
+            transform_filter.SetTransform(transform)
+            transform_filter.SetInputData(polygon_poly_data)
+            transform_filter.Update()
 
             # Create a mapper
             mapper = vtk.vtkPolyDataMapper()
-            mapper.SetInputData(polygon_poly_data)
+            mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         else:
             if tool.id == 0 or tool.diameter < .05:
