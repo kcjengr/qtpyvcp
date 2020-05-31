@@ -90,10 +90,10 @@ class GcodeLexer(QsciLexerCustom):
             setattr(self, value, key)
 
         # set default colors
-        for key, value in self._styles.iteritems():
-            color_name = '{}_color'.format(value)
-            color_value = self.defaultColor(key)
-            setattr(self, color_name, color_value)
+        #for key, value in self._styles.iteritems():
+        #    color_name = '_{}_color'.format(value)
+        #    color_value = self.defaultColor(key)
+        #    setattr(self, color_name, color_value)
 
     # Paper sets the background color of each style of text
     def setPaperBackground(self, color, style=None):
@@ -260,6 +260,11 @@ class EditorBase(QsciScintilla):
         # Set custom gcode lexer
         self.lexer = GcodeLexer(self)
         self.lexer.setDefaultFont(font)
+        # all lexer setup needs to be done before assigning lexer to editor
+        # as this initiates all the internal callbacks from editor to lexer
+        # that hard sets the highlighting colors used for styles defined
+        # in the lexer. This means that changes to colors will not apply
+        # until a new setLexer call is made.
         self.setLexer(self.lexer)
 
 
@@ -291,7 +296,7 @@ class EditorBase(QsciScintilla):
         self.setCaretLineBackgroundColor(QColor("#ffe4e4"))
 
         # default gray background
-        self.set_background_color('#C0C0C0')
+        #self.set_background_color('#C0C0C0')
 
         self.highlit = None
 
@@ -301,7 +306,6 @@ class EditorBase(QsciScintilla):
     @Property(str)
     def backgroundcolor(self):
         """Property to set the background color of the GCodeEditor (str).
-
         sets the background color of the GCodeEditor
         """
         try:
@@ -316,6 +320,11 @@ class EditorBase(QsciScintilla):
     def backgroundcolor(self, color):
         self._backgroundcolor = color
         self.set_background_color(color)
+
+    # must set lexer paper background color _and_ editor background color it seems
+    def set_background_color(self, color):
+        self.SendScintilla(QsciScintilla.SCI_STYLESETBACK, QsciScintilla.STYLE_DEFAULT, QColor(color))
+        self.lexer.setPaperBackground(QColor(color))
 
     @Property(str)
     def marginbackgroundcolor(self):
@@ -333,6 +342,9 @@ class EditorBase(QsciScintilla):
     def marginbackgroundcolor(self, color):
         self._marginbackgroundcolor = color
         self.set_margin_background_color(color)
+
+    def set_margin_background_color(self, color):
+        self.setMarginsBackgroundColor(QColor(color))
 
     @Property(str)
     def activeLineBackgroundColor(self):
@@ -368,9 +380,35 @@ class EditorBase(QsciScintilla):
         Also create the needed font objects and assign to Lexer to create
         new default font to be used by the editor.
         """
-        # Set the default font
-        self._default_font_name = font_name
+        try:
+            if self._default_font_name != font_name:
+                # Set the default font
+                self._default_font_name = font_name
+                # force font refresh
+                self.refreshEditorFont()
+        except AttributeError:
+                self._default_font_name = font_name
+                # force font refresh
+                self.refreshEditorFont()
 
+    @Slot()
+    def refreshEditorFont(self):
+        """Taking the new default font and build a new lexer instance.
+        Apply the new lexer to the editor.
+        """
+        # Note that if you do not create a new lexer the
+        # the font does not get applied/used.
+        font = QFont()
+        font.setFamily(self._default_font_name)
+        font.setFixedPitch(True)
+        font.setPointSize(14)
+        self.lexer = GcodeLexer(self)
+        self.lexer.setDefaultFont(font)
+        self.setLexer(self.lexer)
+        # rebuild gutter for new font
+        self.setNumberGutter(self.lines())
+        # set the gutter font to be aligned to main font
+        self.setMarginsFont(font)
 
     def find_text_occurences(self, text):
         """Return byte positions of start and end of all 'text' occurences in the document"""
@@ -471,14 +509,6 @@ class EditorBase(QsciScintilla):
             # match = self.findFirst(text, re, cs, wo, wrap, forward, line, index, show)
             # if match:
             #     self.replace(sub)
-
-    # must set lexer paper background color _and_ editor background color it seems
-    def set_background_color(self, color):
-        self.SendScintilla(QsciScintilla.SCI_STYLESETBACK, QsciScintilla.STYLE_DEFAULT, QColor(color))
-        self.lexer.setPaperBackground(QColor(color))
-
-    def set_margin_background_color(self, color):
-        self.setMarginsBackgroundColor(QColor(color))
 
     def on_margin_clicked(self, nmargin, nline, modifiers):
         # Toggle marker for the line the margin was clicked on
@@ -625,25 +655,6 @@ class GcodeEditor(EditorBase, QObject, VCPBaseWidget):
             # if self.idle_line_reset:
             #     STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))
 
-    @Slot()
-    def refreshEditorFont(self):
-        """Taking the new default font and build a new lexer instance.
-        Apply the new lexer to the editor.
-        """
-        # Note that if you do not create a new lexer the
-        # the font does not get applied/used.
-        font = QFont()
-        font.setFamily(self.editorDefaultFont)
-        font.setFixedPitch(True)
-        font.setPointSize(14)
-        self.lexer = GcodeLexer(self)
-        self.lexer.setDefaultFont(font)
-        self.setLexer(self.lexer)
-        # rebuild gutter for new font
-        self.setNumberGutter(self.lines())
-        # set the gutter font to be aligned to main font
-        self.setMarginsFont(font)
-
     def setNumberGutter(self, lines=0):
         """Set the gutter width based on the number of lines in the text"""
         font = self.lexer.defaultFont()
@@ -725,7 +736,8 @@ class GcodeEditor(EditorBase, QObject, VCPBaseWidget):
     def initialize(self):
         # Refresh the lexer font after everything is loaded.
         # This allows the setting from Designer to be properly applied.
-        self.refreshEditorFont()
+        #self.refreshEditorFont()
+        pass
 
 # more complex dialog required by find replace
 class FindReplaceDialog(QDialog):
