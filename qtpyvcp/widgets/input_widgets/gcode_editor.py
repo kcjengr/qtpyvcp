@@ -287,16 +287,36 @@ class GcodeLexer(QsciLexerCustom):
 
 
 # ==============================================================================
-# Base editor class
+# Gcode Editor Widget
 # ==============================================================================
-class EditorBase(QsciScintilla):
+class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     ARROW_MARKER_NUM = 8
 
     def __init__(self, parent=None):
-        super(EditorBase, self).__init__(parent)
+        super(GcodeEditor, self).__init__(parent)
 
         # supress certain events until the vcp initalize event
         self._framework_initalize = False
+
+        # Defaults for: syntax coloring
+        self._syntaxColorDefault = '#FFFFFF'
+        self._syntaxColorComment = '#fcf803'
+        self._syntaxColorKey = '#52ceff'
+        self._syntaxColorAssignment = '#fa5f5f'
+        self._syntaxColorValue = '#00CC00'
+        self._syntaxColorMcode = '#f736d7'
+        self._syntaxColorFeed = '#f7ce36'
+        self._syntaxColorMsg = '#03fc20'
+        self._syntaxColorScode = '#03fcc2'
+        self._syntaxColorPcode = '#be4dff'
+        self._syntaxColorTcode = '#ff8fdb'
+        self._syntaxColorHcode = '#87b3ff'
+        #back grounds
+        self._backgroundcolor = 'lightgray'
+        self._marginbackgroundcolor = 'gray'
+        self._active_line_background_color = 'gray'
+        # font
+        self._default_font_name = 'Courier'
 
         # linuxcnc defaults
         self.idle_line_reset = False
@@ -356,6 +376,28 @@ class EditorBase(QsciScintilla):
         # not too small
         # self.setMinimumSize(200, 100)
 
+        # ------- from higher level class ------
+        self._qssTest = 0
+
+        self.filename = ""
+        self._last_filename = None
+        self.auto_show_mdi = True
+        self.last_line = None
+        # self.setEolVisibility(True)
+
+        self.is_editor = False
+
+        self.dialog = FindReplaceDialog(parent=self)
+
+        self.linesChanged.connect(self.linesHaveChanged)
+
+        # register with the status:task_mode channel to
+        # drive the mdi auto show behaviour
+        #STATUS.task_mode.notify(self.onMdiChanged)
+        #self.prev_taskmode = STATUS.task_mode
+
+        #self.cursorPositionChanged.connect(self.line_changed)
+
     @Property(int)
     def qssTest(self):
         try:
@@ -369,13 +411,10 @@ class EditorBase(QsciScintilla):
         self._qssTest = value
 
     ## Expose gcode syntax highlighting colors to QSS and probably to Designer
+
     @Property(str)
     def syntaxColorDefault(self):
-        try:
-            return self._syntaxColorDefault
-        except AttributeError:
-            self._syntaxColorDefault = '#FFFFFF'
-            return self._syntaxColorDefault
+        return self._syntaxColorDefault
 
     @syntaxColorDefault.setter
     def syntaxColorDefault(self, color):
@@ -383,11 +422,7 @@ class EditorBase(QsciScintilla):
 
     @Property(str)
     def syntaxColorComment(self):
-        try:
-            return self._syntaxColorComment
-        except AttributeError:
-            self._syntaxColorComment = '#fcf803'
-            return self._syntaxColorComment
+        return self._syntaxColorComment
 
     @syntaxColorComment.setter
     def syntaxColorComment(self, color):
@@ -395,11 +430,7 @@ class EditorBase(QsciScintilla):
 
     @Property(str)
     def syntaxColorKey(self):
-        try:
-            return self._syntaxColorKey
-        except AttributeError:
-            self._syntaxColorKey = '#52ceff'
-            return self._syntaxColorKey
+        return self._syntaxColorKey
 
     @syntaxColorKey.setter
     def syntaxColorKey(self, color):
@@ -407,11 +438,7 @@ class EditorBase(QsciScintilla):
 
     @Property(str)
     def syntaxColorAssignment(self):
-        try:
-            return self._syntaxColorAssignment
-        except AttributeError:
-            self._syntaxColorAssignment = '#fa5f5f'
-            return self._syntaxColorAssignment
+        return self._syntaxColorAssignment
 
     @syntaxColorAssignment.setter
     def syntaxColorAssignment(self, color):
@@ -419,11 +446,7 @@ class EditorBase(QsciScintilla):
 
     @Property(str)
     def syntaxColorValue(self):
-        try:
-            return self._syntaxColorValue
-        except AttributeError:
-            self._syntaxColorValue = '#00CC00'
-            return self._syntaxColorValue
+        return self._syntaxColorValue
 
     @syntaxColorValue.setter
     def syntaxColorValue(self, color):
@@ -431,11 +454,7 @@ class EditorBase(QsciScintilla):
 
     @Property(str)
     def syntaxColorMcode(self):
-        try:
-            return self._syntaxColorMcode
-        except AttributeError:
-            self._syntaxColorMcode = '#f736d7'
-            return self._syntaxColorMcode
+        return self._syntaxColorMcode
 
     @syntaxColorMcode.setter
     def syntaxColorMcode(self, color):
@@ -443,11 +462,7 @@ class EditorBase(QsciScintilla):
 
     @Property(str)
     def syntaxColorFeed(self):
-        try:
-            return self._syntaxColorFeed
-        except AttributeError:
-            self._syntaxColorFeed = '#f7ce36'
-            return self._syntaxColorFeed
+        return self._syntaxColorFeed
 
     @syntaxColorFeed.setter
     def syntaxColorFeed(self, color):
@@ -455,11 +470,7 @@ class EditorBase(QsciScintilla):
 
     @Property(str)
     def syntaxColorMsg(self):
-        try:
-            return self._syntaxColorMsg
-        except AttributeError:
-            self._syntaxColorMsg = '#03fc20'
-            return self._syntaxColorMsg
+        return self._syntaxColorMsg
 
     @syntaxColorMsg.setter
     def syntaxColorMsg(self, color):
@@ -467,11 +478,7 @@ class EditorBase(QsciScintilla):
 
     @Property(str)
     def syntaxColorScode(self):
-        try:
-            return self._syntaxColorScode
-        except AttributeError:
-            self._syntaxColorScode = '#03fcc2'
-            return self._syntaxColorScode
+        return self._syntaxColorScode
 
     @syntaxColorScode.setter
     def syntaxColorScode(self, color):
@@ -479,11 +486,7 @@ class EditorBase(QsciScintilla):
 
     @Property(str)
     def syntaxColorPcode(self):
-        try:
-            return self._syntaxColorPcode
-        except AttributeError:
-            self._syntaxColorPcode = '#be4dff'
-            return self._syntaxColorPcode
+        return self._syntaxColorPcode
 
     @syntaxColorPcode.setter
     def syntaxColorPcode(self, color):
@@ -491,11 +494,7 @@ class EditorBase(QsciScintilla):
 
     @Property(str)
     def syntaxColorTcode(self):
-        try:
-            return self._syntaxColorTcode
-        except AttributeError:
-            self._syntaxColorTcode = '#ff8fdb'
-            return self._syntaxColorTcode
+        return self._syntaxColorTcode
 
     @syntaxColorTcode.setter
     def syntaxColorTcode(self, color):
@@ -503,11 +502,7 @@ class EditorBase(QsciScintilla):
 
     @Property(str)
     def syntaxColorHcode(self):
-        try:
-            return self._syntaxColorHcode
-        except AttributeError:
-            self._syntaxColorHcode = '#87b3ff'
-            return self._syntaxColorHcode
+        return self._syntaxColorHcode
 
     @syntaxColorHcode.setter
     def syntaxColorHcode(self, color):
@@ -518,14 +513,7 @@ class EditorBase(QsciScintilla):
         """Property to set the background color of the GCodeEditor (str).
         sets the background color of the GCodeEditor
         """
-        try:
-            return self._backgroundcolor
-        except AttributeError:
-            # define default background color and return it
-            color = 'lightgray'
-            self._backgroundcolor = color
-            #self.set_background_color(color)
-            return self._backgroundcolor
+        return self._backgroundcolor
 
     @backgroundcolor.setter
     def backgroundcolor(self, color):
@@ -533,6 +521,7 @@ class EditorBase(QsciScintilla):
         self.set_background_color(color)
 
     # must set lexer paper background color _and_ editor background color it seems
+    
     def set_background_color(self, color):
         if not self._framework_initalize:
             return
@@ -544,13 +533,7 @@ class EditorBase(QsciScintilla):
         """Property to set the background color of the GCodeEditor margin (str).
         sets the background color of the GCodeEditor margin
         """
-        try:
-            return self._marginbackgroundcolor
-        except AttributeError:
-            color = 'gray'
-            self._marginbackgroundcolor = color
-            #self.set_margin_background_color(color)
-            return self._marginbackgroundcolor
+        return self._marginbackgroundcolor
 
     @marginbackgroundcolor.setter
     def marginbackgroundcolor(self, color):
@@ -565,13 +548,13 @@ class EditorBase(QsciScintilla):
         """Property to set the background color of the active line.
         The active line is where the caret is within the file.
         """
-        try:
-            return self._active_line_background_color
-        except AttributeError:
-            color = 'yellow'
-            self._active_line_background_color = color
-            self.setCaretLineBackgroundColor(QColor(color))
-            return self._active_line_background_color
+        #try:
+        return self._active_line_background_color
+        #except AttributeError:
+        #    color = 'yellow'
+        #    self._active_line_background_color = color
+        #    self.setCaretLineBackgroundColor(QColor(color))
+        #    return self._active_line_background_color
 
     @activeLineBackgroundColor.setter
     def activeLineBackgroundColor(self, color):
@@ -583,11 +566,7 @@ class EditorBase(QsciScintilla):
         """Return the name of the  default font used by the editor.
         Also supports Designer integration. 
         """
-        try:
-            return self._default_font_name
-        except AttributeError:
-            self._default_font_name = 'Courier'
-            return self._default_font_name
+        return self._default_font_name
 
     @editorDefaultFont.setter
     def editorDefaultFont(self, font_name='Courier'):
@@ -736,37 +715,6 @@ class EditorBase(QsciScintilla):
             self.markerDelete(nline, self.ARROW_MARKER_NUM)
         else:
             self.markerAdd(nline, self.ARROW_MARKER_NUM)
-
-
-# ==============================================================================
-# Gcode widget
-# ==============================================================================
-class GcodeEditor(EditorBase, QObject, VCPBaseWidget):
-    ARROW_MARKER_NUM = 8
-
-    def __init__(self, parent=None):
-        super(GcodeEditor, self).__init__(parent)
-
-        self._qssTest = 0
-
-        self.filename = ""
-        self._last_filename = None
-        self.auto_show_mdi = True
-        self.last_line = None
-        # self.setEolVisibility(True)
-
-        self.is_editor = False
-
-        self.dialog = FindReplaceDialog(parent=self)
-
-        self.linesChanged.connect(self.linesHaveChanged)
-
-        # register with the status:task_mode channel to
-        # drive the mdi auto show behaviour
-        #STATUS.task_mode.notify(self.onMdiChanged)
-        #self.prev_taskmode = STATUS.task_mode
-
-        #self.cursorPositionChanged.connect(self.line_changed)
 
     @Slot(bool)
     def setEditable(self, state):
@@ -947,6 +895,11 @@ class GcodeEditor(EditorBase, QObject, VCPBaseWidget):
         self.refreshEditorFont()
 
 # more complex dialog required by find replace
+
+
+# ==============================================================================
+# Find and replace Dialog
+# ==============================================================================
 class FindReplaceDialog(QDialog):
     def __init__(self, parent):
         super(FindReplaceDialog, self).__init__(parent)
