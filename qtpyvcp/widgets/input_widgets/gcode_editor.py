@@ -111,76 +111,40 @@ class GcodeLexer(QsciLexerCustom):
         # Define colors for lexer styles.
         # TODO: move color definitions to linuxcnc confog INI file
         if style == self.Default:
-            try:
-                color = self.parent().syntaxColorDefault
-            except AttributeError:
-                color = '#FFFFFF'
+            color = self.parent().syntaxColorDefault
             return QColor(color)  ### black # Edited
         elif style == self.Comment:
-            try:
-                color = self.parent().syntaxColorComment
-            except AttributeError:
-                color = '#fcf803'
+            color = self.parent().syntaxColorComment
             return QColor(color)  ### black
         elif style == self.Key:
-            try:
-                color = self.parent().syntaxColorKey
-            except AttributeError:
-                color = '#52ceff'
+            color = self.parent().syntaxColorKey
             return QColor(color)  ### cyan
         elif style == self.Assignment:
-            try:
-                color = self.parent().syntaxColorAssignment
-            except AttributeError:
-                color = '#fa5f5f'
+            color = self.parent().syntaxColorAssignment
             return QColor(color)  ### red
         elif style == self.Value:
-            try:
-                color = self.parent().syntaxColorValue
-            except AttributeError:
-                color = '#00CC00'
+            color = self.parent().syntaxColorValue
             return QColor(color)  ### green
         elif style == self.MCODE:
-            try:
-                color = self.parent().syntaxColorMcode
-            except AttributeError:
-                color = '#f736d7'
+            color = self.parent().syntaxColorMcode
             return QColor(color)  ### magenta
         elif style == self.FEED:
-            try:
-                color = self.parent().syntaxColorFeed
-            except AttributeError:
-                color = '#f7ce36'
+            color = self.parent().syntaxColorFeed
             return QColor(color)  ### orange
         elif style == self.MSG:
-            try:
-                color = self.parent().syntaxColorMsg
-            except AttributeError:
-                color = '#03fc20'
+            color = self.parent().syntaxColorMsg
             return QColor(color)  ### lt green
         elif style == self.SCODE:
-            try:
-                color = self.parent().syntaxColorScode
-            except AttributeError:
-                color = '#03fcc2'
+            color = self.parent().syntaxColorScode
             return QColor(color)  ### teal
         elif style == self.PCODE:
-            try:
-                color = self.parent().syntaxColorPcode
-            except AttributeError:
-                color = '#be4dff'
+            color = self.parent().syntaxColorPcode
             return QColor(color)  ### lt purpl
         elif style == self.TCODE:
-            try:
-                color = self.parent().syntaxColorTcode
-            except AttributeError:
-                color = '#ff8fdb'
+            color = self.parent().syntaxColorTcode
             return QColor(color)  ### pink
         elif style == self.HCODE:
-            try:
-                color = self.parent().syntaxColorHcode
-            except AttributeError:
-                color = '#87b3ff'
+            color = self.parent().syntaxColorHcode
             return QColor(color)  ### lt blue
         return QsciLexerCustom.defaultColor(self, style)
 
@@ -312,8 +276,8 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
         self._syntaxColorTcode = '#ff8fdb'
         self._syntaxColorHcode = '#87b3ff'
         #back grounds
-        self._backgroundcolor = 'lightgray'
-        self._marginbackgroundcolor = 'gray'
+        self._backgroundcolor = '#303030'
+        self._marginbackgroundcolor = '#D9DADB'
         self._active_line_background_color = 'gray'
         # font
         self._default_font_name = 'Courier'
@@ -398,20 +362,6 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
 
         #self.cursorPositionChanged.connect(self.line_changed)
 
-    @Property(int)
-    def qssTest(self):
-        try:
-            return self._qssTest
-        except AttributeError:
-            self._qssTest = 0
-            return self._qssTest
-
-    @qssTest.setter
-    def qssTest(self, value):
-        self._qssTest = value
-
-    ## Expose gcode syntax highlighting colors to QSS and probably to Designer
-
     @Property(str)
     def syntaxColorDefault(self):
         return self._syntaxColorDefault
@@ -419,6 +369,9 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     @syntaxColorDefault.setter
     def syntaxColorDefault(self, color):
         self._syntaxColorDefault = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.Default)
 
     @Property(str)
     def syntaxColorComment(self):
@@ -427,6 +380,9 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     @syntaxColorComment.setter
     def syntaxColorComment(self, color):
         self._syntaxColorComment = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.Comment)
 
     @Property(str)
     def syntaxColorKey(self):
@@ -435,6 +391,9 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     @syntaxColorKey.setter
     def syntaxColorKey(self, color):
         self._syntaxColorKey = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.Key)
 
     @Property(str)
     def syntaxColorAssignment(self):
@@ -443,6 +402,9 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     @syntaxColorAssignment.setter
     def syntaxColorAssignment(self, color):
         self._syntaxColorAssignment = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.Assignment)
 
     @Property(str)
     def syntaxColorValue(self):
@@ -451,6 +413,9 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     @syntaxColorValue.setter
     def syntaxColorValue(self, color):
         self._syntaxColorValue = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.Value)
 
     @Property(str)
     def syntaxColorMcode(self):
@@ -459,6 +424,9 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     @syntaxColorMcode.setter
     def syntaxColorMcode(self, color):
         self._syntaxColorMcode = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.MCODE)
 
     @Property(str)
     def syntaxColorFeed(self):
@@ -467,6 +435,9 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     @syntaxColorFeed.setter
     def syntaxColorFeed(self, color):
         self._syntaxColorFeed = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.FEED)
 
     @Property(str)
     def syntaxColorMsg(self):
@@ -475,6 +446,9 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     @syntaxColorMsg.setter
     def syntaxColorMsg(self, color):
         self._syntaxColorMsg = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.MSG)
 
     @Property(str)
     def syntaxColorScode(self):
@@ -483,6 +457,9 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     @syntaxColorScode.setter
     def syntaxColorScode(self, color):
         self._syntaxColorScode = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.SCODE)
 
     @Property(str)
     def syntaxColorPcode(self):
@@ -491,6 +468,9 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     @syntaxColorPcode.setter
     def syntaxColorPcode(self, color):
         self._syntaxColorPcode = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.PCODE)
 
     @Property(str)
     def syntaxColorTcode(self):
@@ -499,6 +479,9 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     @syntaxColorTcode.setter
     def syntaxColorTcode(self, color):
         self._syntaxColorTcode = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.TCODE)
 
     @Property(str)
     def syntaxColorHcode(self):
@@ -507,6 +490,9 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     @syntaxColorHcode.setter
     def syntaxColorHcode(self, color):
         self._syntaxColorHcode = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.HCODE)
 
     @Property(str)
     def backgroundcolor(self):
