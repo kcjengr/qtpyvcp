@@ -27,7 +27,30 @@
 # Additions/Contributions by:
 # Donb9261 (Don Bozarth - Linuxcnc Forums): many lexer improvements
 # Joco (James Walker - james.walker.nz@me.com)
+"""
+Gcode editor/viewer widget.
 
+Exposed QSS properties than can be used for style control.
+
+GcodeEditor {
+    qproperty-backgroundColor:          #303030;
+    qproperty-marginBackgroundColor:    #D9DADB;
+    qproperty-activeLineBackgroundColor: darkgray;
+    qproperty-editorDefaultFont:        "Ubuntu Mono";
+
+    qproperty-syntaxColorDefault:       #EFFBEF;
+    qproperty-syntaxColorComment:       #fcf803;
+    qproperty-syntaxColorKey:           #52ceff;
+    qproperty-syntaxColorAssignment:    #fa5f5f;
+    qproperty-syntaxColorValue:         #00CC00;
+    qproperty-syntaxColorMcode:         #f736d7;
+    qproperty-syntaxColorMsg:           #03fc20;
+    qproperty-syntaxColorScode:         #03fcc2;
+    qproperty-syntaxColorPcode:         #be4dff;
+    qproperty-syntaxColorTcode:         #ff8fdb;
+    qproperty-syntaxColorHcode:         #87b3ff;
+}
+"""
 import sys
 import os
 
@@ -269,11 +292,11 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
         self._syntaxColorTcode = '#ff8fdb'
         self._syntaxColorHcode = '#87b3ff'
         #back grounds
-        self._backgroundcolor = '#303030'
-        self._marginbackgroundcolor = '#D9DADB'
-        self._active_line_background_color = 'gray'
+        self._backgroundColor = '#303030'
+        self._marginBackgroundColor = '#D9DADB'
+        self._activeLineBackgroundColor = 'gray'
         # font
-        self._default_font_name = 'Courier'
+        self._editorDefaultFont = 'Courier'
 
         # linuxcnc defaults
         self.idle_line_reset = False
@@ -461,37 +484,37 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
         self.lexer.setColor(QColor(color), self.lexer.HCODE)
 
     @Property(str)
-    def backgroundcolor(self):
+    def backgroundColor(self):
         """Property to set the background color of the GCodeEditor (str).
         sets the background color of the GCodeEditor
         """
-        return self._backgroundcolor
+        return self._backgroundColor
 
-    @backgroundcolor.setter
-    def backgroundcolor(self, color):
-        self._backgroundcolor = color
-        self.set_background_color(color)
+    @backgroundColor.setter
+    def backgroundColor(self, color):
+        self._backgroundColor = color
+        self.setBackgroundColor(color)
 
     # must set lexer paper background color _and_ editor background color it seems
-    def set_background_color(self, color):
+    def setBackgroundColor(self, color):
         if not self._framework_initalize:
             return
         self.SendScintilla(QsciScintilla.SCI_STYLESETBACK, QsciScintilla.STYLE_DEFAULT, QColor(color))
         self.lexer.setPaperBackground(QColor(color))
 
     @Property(str)
-    def marginbackgroundcolor(self):
+    def marginBackgroundColor(self):
         """Property to set the background color of the GCodeEditor margin (str).
         sets the background color of the GCodeEditor margin
         """
-        return self._marginbackgroundcolor
+        return self._marginBackgroundColor
 
-    @marginbackgroundcolor.setter
-    def marginbackgroundcolor(self, color):
-        self._marginbackgroundcolor = color
-        self.set_margin_background_color(color)
+    @marginBackgroundColor.setter
+    def marginBackgroundColor(self, color):
+        self._marginBackgroundColor = color
+        self.setMarginBackgroundColor(color)
 
-    def set_margin_background_color(self, color):
+    def setMarginBackgroundColor(self, color):
         self.setMarginsBackgroundColor(QColor(color))
 
     @Property(str)
@@ -499,11 +522,11 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
         """Property to set the background color of the active line.
         The active line is where the caret is within the file.
         """
-        return self._active_line_background_color
+        return self._activeLineBackgroundColor
 
     @activeLineBackgroundColor.setter
     def activeLineBackgroundColor(self, color):
-        self._active_line_background_color = color
+        self._activeLineBackgroundColor = color
         self.setCaretLineBackgroundColor(QColor(color))
 
     @Property(str)
@@ -511,7 +534,7 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
         """Return the name of the  default font used by the editor.
         Also supports Designer integration. 
         """
-        return self._default_font_name
+        return self._editorDefaultFont
 
     @editorDefaultFont.setter
     def editorDefaultFont(self, font_name='Courier'):
@@ -520,13 +543,13 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
         new default font to be used by the editor.
         """
         try:
-            if self._default_font_name != font_name:
+            if self._editorDefaultFont != font_name:
                 # Set the default font
-                self._default_font_name = font_name
+                self._editorDefaultFont = font_name
                 # force font refresh
                 self.refreshEditorFont()
         except AttributeError:
-                self._default_font_name = font_name
+                self._editorDefaultFont = font_name
                 # force font refresh
                 self.refreshEditorFont()
 
@@ -541,7 +564,7 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
         # Note that if you do not create a new lexer the
         # the font does not get applied/used.
         font = QFont()
-        font.setFamily(self._default_font_name)
+        font.setFamily(self._editorDefaultFont)
         font.setFixedPitch(True)
         font.setPointSize(14)
         # we need to create a new lexer and set it as active on the editor
