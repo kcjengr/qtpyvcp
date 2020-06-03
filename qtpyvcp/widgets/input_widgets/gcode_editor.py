@@ -89,13 +89,6 @@ class GcodeLexer(QsciLexerCustom):
         for key, value in self._styles.iteritems():
             setattr(self, value, key)
 
-        # set default colors
-        #for key, value in self._styles.iteritems():
-        #    color_name = '_{}_color'.format(value)
-        #    color_value = self.defaultColor(key)
-        #    setattr(self, color_name, color_value)
-
-
     # Paper sets the background color of each style of text
     def setPaperBackground(self, color, style=None):
         if style is None:
@@ -259,7 +252,7 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     def __init__(self, parent=None):
         super(GcodeEditor, self).__init__(parent)
 
-        # supress certain events until the vcp initalize event
+        # stop certain events until the vcp initalize event
         self._framework_initalize = False
 
         # Defaults for: syntax coloring
@@ -286,31 +279,13 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
         self.idle_line_reset = False
         # don't allow editing by default
         self.setReadOnly(True)
-
-        # Set the default font
-        font = QFont()
-        font.setFamily('Courier')
-        font.setFixedPitch(True)
-        font.setPointSize(14)
-
-        # Set custom gcode lexer
-        #self.lexer = GcodeLexer(self)
-        #self.lexer.setDefaultFont(font)
-
-        # all lexer setup needs to be done before assigning lexer to editor
+        # NOTE: all lexer setup needs to be done before assigning lexer to editor
         # as this initiates all the internal callbacks from editor to lexer
         # that hard sets the highlighting colors used for styles defined
         # in the lexer. This means that changes to colors will not apply
         # until a new setLexer call is made.
-        #self.setLexer(self.lexer)
 
-
-        # Margin 0 is used for line numbers
-        fontmetrics = QFontMetrics(font)
-        self.setMarginsFont(font)
-        self.setMarginWidth(0, fontmetrics.width("0") + 6)
         self.setMarginLineNumbers(0, True)
-        self.setMarginsBackgroundColor(QColor("#cccccc"))
 
         # Clickable margin 1 for showing markers
         self.setMarginSensitivity(1, True)
@@ -325,24 +300,15 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
 
         # Brace matching: enable for a brace immediately before or after
         # the current position
-        #
         self.setBraceMatching(QsciScintilla.SloppyBraceMatch)
 
         # Current line visible with special background color
         self.setCaretLineVisible(True)
         self.setCaretLineBackgroundColor(QColor("#ffe4e4"))
 
-        # default gray background
-        #self.set_background_color('#C0C0C0')
-
         self.highlit = None
 
-        # not too small
-        # self.setMinimumSize(200, 100)
-
         # ------- from higher level class ------
-        self._qssTest = 0
-
         self.filename = ""
         self._last_filename = None
         self.auto_show_mdi = True
@@ -507,7 +473,6 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
         self.set_background_color(color)
 
     # must set lexer paper background color _and_ editor background color it seems
-    
     def set_background_color(self, color):
         if not self._framework_initalize:
             return
@@ -534,13 +499,7 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
         """Property to set the background color of the active line.
         The active line is where the caret is within the file.
         """
-        #try:
         return self._active_line_background_color
-        #except AttributeError:
-        #    color = 'yellow'
-        #    self._active_line_background_color = color
-        #    self.setCaretLineBackgroundColor(QColor(color))
-        #    return self._active_line_background_color
 
     @activeLineBackgroundColor.setter
     def activeLineBackgroundColor(self, color):
@@ -796,7 +755,7 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
             # if self.idle_line_reset:
             #     STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))
 
-    def setNumberGutter(self, lines=0):
+    def setNumberGutter(self, lines=1):
         """Set the gutter width based on the number of lines in the text"""
         font = self.lexer.defaultFont()
         fontmetrics = QFontMetrics(font)
@@ -879,6 +838,7 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
         # This allows the setting from Designer to be properly applied.
         self._framework_initalize = True
         self.refreshEditorFont()
+        self.setNumberGutter()
 
 # more complex dialog required by find replace
 
