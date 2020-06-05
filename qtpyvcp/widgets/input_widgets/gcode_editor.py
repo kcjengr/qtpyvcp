@@ -115,7 +115,7 @@ class GcodeLexer(QsciLexerCustom):
     # Paper sets the background color of each style of text
     def setPaperBackground(self, color, style=None):
         if style is None:
-            for i in range(0, 12):
+            for i in range(0, 11):
                 self.setPaper(color, i)
         else:
             self.setPaper(color, style)
@@ -292,7 +292,7 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
         self._syntaxColorTcode = '#ff8fdb'
         self._syntaxColorHcode = '#87b3ff'
         #back grounds
-        self._backgroundColor = '#303030'
+        self._backgroundColor = '#2e3436'
         self._marginBackgroundColor = '#D9DADB'
         self._activeLineBackgroundColor = 'gray'
         # font
@@ -571,11 +571,13 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
         # reusing a the existing lexer does not cause a refresh of setup
         self.lexer = GcodeLexer(self)
         self.lexer.setDefaultFont(font)
+        self.setBackgroundColor(self._backgroundColor)
         self.setLexer(self.lexer)
         # rebuild gutter for new font
         self.setNumberGutter(self.lines())
         # set the gutter font to be aligned to main font
         self.setMarginsFont(font)
+        self.setCaretLineBackgroundColor(QColor(self._activeLineBackgroundColor))
 
     def find_text_occurences(self, text):
         """Return byte positions of start and end of all 'text' occurences in the document"""
@@ -859,9 +861,10 @@ class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     def initialize(self):
         # Refresh the lexer font after everything is loaded.
         # This allows the setting from Designer to be properly applied.
+        #print 'gcode_editor initalize start'
         self._framework_initalize = True
         self.refreshEditorFont()
-        self.setNumberGutter()
+        #print 'gcode_editor initalize end'
 
 # more complex dialog required by find replace
 
