@@ -91,7 +91,7 @@ class ToolModel(QStandardItemModel):
         self._tool_table = self.tt.getToolTable()
 
         self.setColumnCount(self.columnCount())
-        self.setRowCount(56)  # (self.rowCount())
+        self.setRowCount(1000)  # (self.rowCount())
 
         self.status.tool_in_spindle.notify(self.refreshModel)
         self.tt.tool_table_changed.connect(self.updateModel)
