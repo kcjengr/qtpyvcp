@@ -63,6 +63,9 @@ data_plugins:
         NC Files: ~/linuxcnc/nc_files
       network_locations:
 
+    exportedhal:
+        provider: qtpyvcp.plugins.exported_hal:ExportedHal
+
 dialogs:
   open_file:
     provider: qtpyvcp.widgets.dialogs.open_file_dialog:OpenFileDialog
