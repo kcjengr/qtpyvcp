@@ -61,9 +61,9 @@ class PathActor(vtk.vtkActor):
         self.lathe = LATHE
 
         if self.units == 2:
-            self.length = 5.0
+            self.length = 2.5
         else:
-            self.length = 0.5
+            self.length = 0.25
 
         self.axes = Axes()
         self.axes_actor = self.axes.get_actor()
@@ -1375,9 +1375,9 @@ class Axes:
         self.axis_mask = self.status.stat.axis_mask
 
         if self.units == 2:
-            self.length = 10.0
+            self.length = 5.0
         else:
-            self.length = 1.0
+            self.length = 0.5
 
         transform = vtk.vtkTransform()
         transform.Translate(0.0, 0.0, 0.0)  # Z up
@@ -1441,9 +1441,9 @@ class Tool:
                     # Setup four points
                     points = vtk.vtkPoints()
                     points.InsertNextPoint([0.0, 0.0, 0.0])
-                    points.InsertNextPoint([2.0, 0.0, 0.0])
-                    points.InsertNextPoint([2.0, 0.0, -0.2])
-                    points.InsertNextPoint([0.0, 0.0, -0.2])
+                    points.InsertNextPoint([0.5, 0.0, 0.0])
+                    points.InsertNextPoint([0.5, 0.0, -0.05])
+                    points.InsertNextPoint([0.0, 0.0, -0.05])
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -1471,9 +1471,9 @@ class Tool:
                     # Setup four points
                     points = vtk.vtkPoints()
                     points.InsertNextPoint([0.0, 0.0, 0.0])
-                    points.InsertNextPoint([0.0, 0.0, 0.2])
-                    points.InsertNextPoint([2.0, 0.0, 0.2])
-                    points.InsertNextPoint([2.0, 0.0, 0.0])
+                    points.InsertNextPoint([0.0, 0.0, 0.05])
+                    points.InsertNextPoint([0.5, 0.0, 0.05])
+                    points.InsertNextPoint([0.5, 0.0, 0.0])
 
                     # Create the polygon
                     # Create a quad on the four points
