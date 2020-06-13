@@ -105,10 +105,6 @@ class BarIndicatorBase(QWidget):
         bw = float(self._border_width)
         br = self._border_radius
 
-        print self._bar_length
-        print self._painter_translation_y
-        print self._painter_rotation
-
         w = self.sliderPositionFromValue(self.minimum, self.maximum, self._value, self._bar_length)
         h = self._scale_height
         rect = QRectF(bw / 2, bw / 2, w - bw, h - bw)
@@ -222,7 +218,7 @@ class BarIndicatorBase(QWidget):
         except:
             return self.format
 
-    # border width
+    # ToDo: Make this a QLinearGradient
     @Property('QStringList')
     def barGradient(self):
         return self._gradient_def
