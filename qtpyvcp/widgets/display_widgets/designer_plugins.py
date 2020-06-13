@@ -28,10 +28,10 @@ class CameraPlugin(_DesignerPlugin):
     def isContainer(self):
         return True
 
-from load_meter import LoadMeter
+from bar_indicator import BarIndicator
 class LoadMeterPlugin(_DesignerPlugin):
     def pluginClass(self):
-        return LoadMeter
+        return BarIndicator
 
 from status_led import StatusLED
 class StatusLEDPlugin(_DesignerPlugin):
