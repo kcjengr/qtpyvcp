@@ -121,22 +121,28 @@ class BarIndicatorBase(QWidget):
 
         p.drawRoundedRect(rect, br, br)
 
-        # # draw the border
-        # p.setBrush(Qt.transparent)
-        # border_pen = QPen()
-        # border_pen.setWidth(bw)
-        # border_pen.setColor(self._border_color)
-        # p.setPen(border_pen)
-        # rect = QRectF(bw / 2, bw / 2, self.width() - bw, self.height() - bw)
-        # p.drawRoundedRect(rect, br, br)
-        #
-        # # draw the load percentage text
-        # p.setPen(self._text_color)
-        # if self.orientation == Qt.Vertical:
-        #     p.rotate(-90)
-        #     p.drawText(-self.height(), 0, self.height(), self.width(), Qt.AlignCenter, self.text())
-        # else:
-        #     p.drawText(0, 0, self.width(), self.height(), Qt.AlignCenter, self.text())
+        # draw the border
+        p.setBrush(Qt.transparent)
+        border_pen = QPen()
+        border_pen.setWidth(bw)
+        border_pen.setColor(self._border_color)
+        p.setPen(border_pen)
+        # deal with orientation
+        if self._orientation == Qt.Horizontal:
+            rect = QRectF(bw / 2, bw / 2, self.width() - bw, self.height() - bw)
+        else:
+            # must be Qt.Vertical
+            rect = QRectF(bw / 2, bw / 2, self.height() - bw, self.width() - bw)
+
+        p.drawRoundedRect(rect, br, br)
+
+        # draw the load percentage text
+        p.setPen(self._text_color)
+        if self.orientation == Qt.Vertical:
+            #p.rotate(15)
+            p.drawText(0, 0, self.height(), self.width(), Qt.AlignCenter, self.text())
+        else:
+            p.drawText(0, 0, self.width(), self.height(), Qt.AlignCenter, self.text())
 
     def minimumSizeHint(self):
         return QSize(30, 30)
@@ -146,8 +152,8 @@ class BarIndicatorBase(QWidget):
             self.gradient.setStart(0, 0)
             self.gradient.setFinalStop(self.width(), 0)
         else:
-            self.gradient.setStart(0, self.height())
-            self.gradient.setFinalStop(0, 0)
+            self.gradient.setStart(0, 0)
+            self.gradient.setFinalStop(self.height(), 0)
 
     def sliderPositionFromValue(self, min, max, val, span, upsideDown=False):
         return span * (val / max - min)
@@ -282,8 +288,10 @@ class BarIndicatorBase(QWidget):
 if __name__ == "__main__":
     import sys
     from qtpy.QtWidgets import QApplication
+
     app = QApplication(sys.argv)
     w = BarIndicatorBase()
+    #w.orientation = Qt.Vertical
     w.show()
     w.setValue(65)
     sys.exit(app.exec_())
