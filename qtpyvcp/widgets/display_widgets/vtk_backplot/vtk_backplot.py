@@ -1436,7 +1436,67 @@ class Tool:
                 mapper = vtk.vtkPolyDataMapper()
                 mapper.SetInputConnection(transform_filter.GetOutputPort())
             else:
-                if tool.orientation == 9:
+                if tool.orientation == 1 and tool.frontangle == 90 and tool.backangle == 90:
+
+                    # Setup four points
+                    points = vtk.vtkPoints()
+                    points.InsertNextPoint([0.0, 0.0, 0.0])
+                    points.InsertNextPoint([2.0, 0.0, 0.0])
+                    points.InsertNextPoint([2.0, 0.0, -0.2])
+                    points.InsertNextPoint([0.0, 0.0, -0.2])
+
+                    # Create the polygon
+                    # Create a quad on the four points
+                    quad = vtk.vtkQuad()
+                    quad.GetPointIds().SetId(0, 0)
+                    quad.GetPointIds().SetId(1, 1)
+                    quad.GetPointIds().SetId(2, 2)
+                    quad.GetPointIds().SetId(3, 3)
+
+                    # Add the polygon to a list of polygons
+                    polygons = vtk.vtkCellArray()
+                    polygons.InsertNextCell(quad)
+
+                    # Create a PolyData
+                    polygonPolyData = vtk.vtkPolyData()
+                    polygonPolyData.SetPoints(points)
+                    polygonPolyData.SetPolys(polygons)
+
+                    # Create a mapper and actor
+                    mapper = vtk.vtkPolyDataMapper()
+                    mapper.SetInputData(polygonPolyData)
+
+                elif tool.orientation == 2 and tool.frontangle == 90 and tool.backangle == 90:
+
+                    # Setup four points
+                    points = vtk.vtkPoints()
+                    points.InsertNextPoint([0.0, 0.0, 0.0])
+                    points.InsertNextPoint([0.0, 0.0, 0.2])
+                    points.InsertNextPoint([2.0, 0.0, 0.2])
+                    points.InsertNextPoint([2.0, 0.0, 0.0])
+
+                    # Create the polygon
+                    # Create a quad on the four points
+                    quad = vtk.vtkQuad()
+                    quad.GetPointIds().SetId(0, 0)
+                    quad.GetPointIds().SetId(1, 1)
+                    quad.GetPointIds().SetId(2, 2)
+                    quad.GetPointIds().SetId(3, 3)
+
+                    # Add the polygon to a list of polygons
+                    polygons = vtk.vtkCellArray()
+                    polygons.InsertNextCell(quad)
+
+                    # Create a PolyData
+                    polygonPolyData = vtk.vtkPolyData()
+                    polygonPolyData.SetPoints(points)
+                    polygonPolyData.SetPolys(polygons)
+
+                    # Create a mapper and actor
+                    mapper = vtk.vtkPolyDataMapper()
+                    mapper.SetInputData(polygonPolyData)
+
+                elif tool.orientation == 9:
 
                     radius = tool.diameter / 2
 
