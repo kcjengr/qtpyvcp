@@ -92,7 +92,10 @@ DEFAULT_STYLES = {
     'comment': {
         'color': '#fcf803',
     },
-    'assigment': {
+    'message': {
+        'color': '#03fc20',
+    },
+    'assignment': {
         'color': '#fa5f5f',
     },
     'key': {
@@ -111,6 +114,15 @@ DEFAULT_STYLES = {
         'color': '#f7ce36',
     },
     'Scode': {
+        'color': '#03fcc2',
+    },
+    'Pcode': {
+        'color': '#03fcc2',
+    },
+    'Tcode': {
+        'color': '#03fcc2',
+    },
+    'Hcode': {
         'color': '#03fcc2',
     },
 }
@@ -256,8 +268,7 @@ class GcodeLexer(QsciLexerCustom):
             if sys.hexversion >= 0x02060000:
                 # faster when styling big files, but needs python 2.6
                 source = bytearray(end - start)
-                editor.SendScintilla(
-                    editor.SCI_GETTEXTRANGE, start, end, source)
+                editor.SendScintilla(editor.SCI_GETTEXTRANGE, start, end, source)
             else:
                 source = unicode(editor.text()).encode('utf-8')[start:end]
         if not source:
@@ -270,8 +281,9 @@ class GcodeLexer(QsciLexerCustom):
             pos = editor.SendScintilla(editor.SCI_GETLINEENDPOSITION, index - 1)
             state = editor.SendScintilla(editor.SCI_GETSTYLEAT, pos)
         else:
-            state = 0
+            state = self.default_syntax_style
 
+        set_style = self.setStyling
         self.startStyling(start, 0x1f)
 
         # scintilla always asks to style whole lines
@@ -281,61 +293,63 @@ class GcodeLexer(QsciLexerCustom):
             graymode = False
             msg = ('msg' in line.lower() or 'debug' in line.lower())
             for char in str(line):
+                char = char.upper()
                 # print char
                 if char == '(':
                     graymode = True
-                    self.setCharStyle('comment')
+                    set_style(1, self.comment_syntax_style)
                     continue
                 elif char == ')':
                     graymode = False
-                    self.setCharStyle('comment')
+                    set_style(1, self.comment_syntax_style)
                     continue
                 elif graymode:
                     if msg and char.lower() in ('m', 's', 'g', ',', 'd', 'e', 'b', 'u'):
-                        self.setCharStyle('assignment')
+                        set_style(1, self.assignment_syntax_style)
                         if char == ',':
                             msg = False
                     else:
-                        self.setCharStyle('comment')
+                        set_style(1, self.comment_syntax_style)
                     continue
                 elif char == 'MSG':
                     graymode = True
-                    self.setCharStyle('message')
+                    set_style(1, self.message_syntax_style)
                     continue
                 elif char == 'M':
                     graymode = False
-                    self.setCharStyle('Mcode')
+                    set_style(1, self.Mcode_syntax_style)
                     continue
                 elif char == 'F':
                     graymode = False
-                    self.setCharStyle('Fcode')
+                    set_style(1, self.Fcode_syntax_style)
                     continue
                 elif char == 'S':
                     graymode = False
-                    self.setCharStyle('Scode')
+                    set_style(1, self.Scode_syntax_style)
                     continue
                 elif char == 'P':
                     graymode = False
-                    self.setCharStyle('Pcode')
+                    set_style(1, self.Pcode_syntax_style)
                     continue
                 elif char == 'T':
                     graymode = False
-                    self.setCharStyle('Tcode')
+                    set_style(1, self.Tcode_syntax_style)
                     continue
                 elif char == 'H':
                     graymode = False
-                    self.setCharStyle('Hcode')
+                    set_style(1, self.Hcode_syntax_style)
                     continue
                 elif char in ('%', '<', '>', '#', '='):
-                    self.setCharStyle('assignment')
+                    state = self.assignment_syntax_style
                 elif char in ('[', ']'):
-                    self.setCharStyle('value')
+                    state = self.value_syntax_style
                 elif char.isalpha():
-                    self.setCharStyle('key')
+                    state = self.key_syntax_style
                 elif char.isdigit():
-                    self.setCharStyle('default')
+                    state = self.default_syntax_style
                 else:
-                    self.setCharStyle('default')
+                    state = self.default_syntax_style
+                set_style(1, state)
 
             # folding implementation goes here
             index += 1
@@ -351,6 +365,8 @@ class GcodeLexer(QsciLexerCustom):
 
     def addStyle(self, style, color=None, paper=None, font=None):
         self._style_to_id_maping[style] = self._style_counter
+
+        setattr(self, style + "_syntax_style", self._style_counter)
 
         if color:
             self.setColor(color, self._style_counter)
