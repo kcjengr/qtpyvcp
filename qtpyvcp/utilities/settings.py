@@ -113,9 +113,12 @@ class Setting(QObject):
         self.freset = inner
         return self
 
-    def notify(self, slot):
+    def notify(self, slot, update=True):
         # print 'Connecting %s to slot %s' % (self._signal, slot)
         self.signal.connect(slot)
+
+        if update:
+            slot(self.value)
 
     def __get__(self, instance, owner):
         self.instance = instance
