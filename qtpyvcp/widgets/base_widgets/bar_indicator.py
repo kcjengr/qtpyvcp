@@ -160,6 +160,16 @@ class BarIndicatorBase(QWidget):
     def setValue(self, val):
         self.value = val
 
+    @Slot(int)
+    @Slot(float)
+    def setMinimum(self, min):
+        self.minimum = min
+
+    @Slot(int)
+    @Slot(float)
+    def setMaximum(self, max):
+        self.maximum = max
+
     @Property(float)
     def value(self):
         return self._value
