@@ -29,7 +29,7 @@ class CameraPlugin(_DesignerPlugin):
         return True
 
 from bar_indicator import BarIndicator
-class LoadMeterPlugin(_DesignerPlugin):
+class BarIndicatorPlugin(_DesignerPlugin):
     def pluginClass(self):
         return BarIndicator
 
