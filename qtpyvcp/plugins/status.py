@@ -112,6 +112,41 @@ class Status(DataPlugin):
                 fh.write(cmd + '\n')
 
     @DataChannel
+    def axis_mask(self, chan, format='int'):
+        """Axes as configured in the [TRAJ]COORDINATES INI option.
+
+        To return the string in a status label::
+
+            status:axis_mask
+            status:axis_mask?string
+            status:axis_mask?list
+
+        :returns: the configured axes
+        :rtype: int, list, str
+        """
+
+        if format == 'list':
+
+            mask = '{0:09b}'.format(self.stat.axis_mask or 7)
+
+            axis_list = []
+            for anum, enabled in enumerate(mask[::-1]):
+                if enabled == '1':
+                    axis_list.append(anum)
+
+            return axis_list
+
+        return self.stat.axis_mask
+
+    @axis_mask.tostring
+    def axis_mask(self, chan):
+        axes = ''
+        for anum in self.axis_mask.getValue(format='list'):
+            axes += 'XYZABCUVW'[anum]
+
+        return axes
+
+    @DataChannel
     def mdi_history(self, chan):
         """List of recently issued MDI commands.
             Commands are stored in reverse chronological order, with the
