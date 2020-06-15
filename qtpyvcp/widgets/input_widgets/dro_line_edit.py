@@ -7,7 +7,7 @@ DROLineEdit
 from qtpy.QtCore import Property
 from qtpy.QtWidgets import QLineEdit
 
-from qtpyvcp.widgets.base_widgets.dro_base_widget import DROBaseWidget
+from qtpyvcp.widgets.base_widgets.dro_base_widget import DROBaseWidget, LatheMode
 from qtpyvcp.actions.machine_actions import issue_mdi
 
 from qtpyvcp.utilities import logger
@@ -33,6 +33,11 @@ class DROLineEdit(QLineEdit, DROBaseWidget):
             val = float(self.text().strip().replace('mm', '').replace('in', ''))
             g5x_index = self.status.stat.g5x_index
             axis = 'XYZABCUVW'[self._anum]
+
+            if self._lathe_mode == LatheMode.Diameter and not self._g7_active:
+                val = val / 2
+            elif self._lathe_mode == LatheMode.Radius and self._g7_active:
+                val = val * 2
 
             cmd = 'G10 L20 P{0:d} {1}{2:.12f}'.format(g5x_index, axis, val)
             issue_mdi(cmd)

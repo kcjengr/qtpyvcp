@@ -35,8 +35,12 @@ class DroEditor(QDialog):
 
         self.axisCombo.setCurrentIndex(self.widget.axisNumber)
         self.refTypCombo.setCurrentIndex(self.widget.referenceType)
+
         self.inFmtEntry.setText(self.widget.inchFormat)
-        self.mmFmtEntry.setText(self.widget.metricFormat)
+        self.mmFmtEntry.setText(self.widget.millimeterFormat)
+        self.degFmtEntry.setText(self.widget.degreeFormat)
+
+        self.latheModeCombo.setCurrentIndex(self.widget.latheMode)
 
         bb = self.buttonBox
         bb.button(QDialogButtonBox.Apply).setDefault(True)
@@ -46,14 +50,21 @@ class DroEditor(QDialog):
     @Slot()
     def accept(self):
         """Commit changes"""
-        self.setProperty('axisNumber', self.axisCombo.currentIndex())
-        self.setProperty('referenceType', self.refTypCombo.currentIndex())
-        self.setProperty('inchFormat', self.inFmtEntry.text())
-        self.setProperty('metricFormat', self.mmFmtEntry.text())
+        # general options
+        self.setCursorProperty('axisNumber', self.axisCombo.currentIndex())
+        self.setCursorProperty('referenceType', self.refTypCombo.currentIndex())
+
+        # format options
+        self.setCursorProperty('inchFormat', self.inFmtEntry.text())
+        self.setCursorProperty('millimeterFormat', self.mmFmtEntry.text())
+        self.setCursorProperty('degreeFormat', self.degFmtEntry.text())
+
+        # lathe options
+        self.setCursorProperty('latheMode', self.latheModeCombo.currentIndex())
 
         self.close()
 
-    def setProperty(self, prop_name, value):
+    def setCursorProperty(self, prop_name, value):
         form = QDesignerFormWindowInterface.findFormWindow(self.widget)
         if form:
             form.cursor().setProperty(prop_name, value)

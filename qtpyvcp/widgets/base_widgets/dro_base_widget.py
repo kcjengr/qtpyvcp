@@ -12,7 +12,10 @@ from qtpyvcp.utilities.settings import getSetting
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities import logger
 
+from qtpyvcp.utilities.info import Info
+
 LOG = logger.getLogger(__name__)
+INFO = Info()
 
 class Axis(object):
     ALL = -1
@@ -35,6 +38,12 @@ class RefType(object):
         return ['abs', 'rel', 'dtg'][ref_type]
 
 
+class LatheMode(object):
+    Auto = 0
+    Radius = 1
+    Diameter = 2
+
+
 class DROBaseWidget(VCPWidget):
     """DROBaseWidget
 
@@ -51,7 +60,7 @@ class DROBaseWidget(VCPWidget):
         self._ref_typ = RefType.Relative
         self._mm_fmt = '%10.3f'
         self._in_fmt = '%9.4f'
-        self._deg_fmt = '%10.3f' #'%(deg) %(min)\' %(sec)"'
+        self._deg_fmt = '%10.2f' #'%(deg) %(min)\' %(sec)"'
 
         self._use_global_fmt_settings = True
 
@@ -62,9 +71,12 @@ class DROBaseWidget(VCPWidget):
 
         self._angular_axis = False
 
+        # lathe
+        self._is_lathe = INFO.getIsLathe()
+        self._g7_active = False
+        self._lathe_mode = LatheMode.Auto  # latheDiameterMode
 
         self._fmt = self._in_fmt
-        self._conv = 1
 
         self.updateValue()
 
@@ -98,6 +110,9 @@ class DROBaseWidget(VCPWidget):
         getattr(self.pos, RefType.toString(self._ref_typ)).notify(self.updateValue)
         self.updateValue()
 
+        if self._is_lathe:
+            self.status.gcodes.notify(self.updateDiameterMode)
+
         if self._use_global_fmt_settings:
 
             self.in_fmt_setting = getSetting('dro.inch-format')
@@ -111,12 +126,23 @@ class DROBaseWidget(VCPWidget):
             except AttributeError:  # settings not found
                 pass
 
+    def updateDiameterMode(self, gcodes):
+        self._g7_active = 'G7' in gcodes
+        self.updateValue()
+
     def updateValue(self, pos=None):
         """Update the displayed position."""
         if pos is None:
             pos = getattr(self.pos, RefType.toString(self._ref_typ)).getValue()
 
-        self.setText(self._fmt % pos[self._anum])
+        if self._lathe_mode == LatheMode.Auto and self._g7_active:
+            self.setText(self._fmt % (pos[self._anum] * 2))
+
+        elif self._lathe_mode == LatheMode.Diameter:
+            self.setText(self._fmt % (pos[self._anum] * 2))
+
+        else:
+            self.setText(self._fmt % pos[self._anum])
 
     @Property(int)
     def referenceType(self):
@@ -206,3 +232,28 @@ class DROBaseWidget(VCPWidget):
     @useGlobalDroFormatSettings.setter
     def useGlobalDroFormatSettings(self, use_fmt_settings):
         self._use_global_fmt_settings = use_fmt_settings
+
+    @Property(int)
+    def latheMode(self):
+        return self._lathe_mode
+
+    @latheMode.setter
+    def latheMode(self, mode):
+        self._lathe_mode = max(0, min(mode, 2))
+        self.updateValue()
+
+    @Slot(int)
+    def setLatheMode(self, mode):
+        self.latheMode = mode
+
+    @Slot()
+    def latheDiameterMode(self):
+        self.latheMode = LatheMode.Diameter
+
+    @Slot()
+    def latheRadiusMode(self):
+        self.latheMode = LatheMode.Radius
+
+    @Slot()
+    def latheAutoMode(self):
+        self.latheMode = LatheMode.Auto
