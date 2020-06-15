@@ -37,6 +37,8 @@ LOG = logger.getLogger(__name__)
 IN_DESIGNER = os.getenv('DESIGNER') != None
 
 
+from qtpyvcp.lib.decorators import deprecated
+
 class Axis(object):
     ALL = -1
     X, Y, Z, A, B, C, U, V, W = range(9)
@@ -58,6 +60,7 @@ class RefType(object):
         return ['abs', 'rel', 'dtg'][ref_type]
 
 
+@deprecated(reason='new DRO implementation', replaced_by='DroLabel')
 class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
     from PyQt5.QtCore import Q_ENUMS
     Q_ENUMS(Axis)

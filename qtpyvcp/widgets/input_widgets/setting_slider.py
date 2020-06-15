@@ -39,6 +39,16 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
         self.returnPressed.connect(self.onReturnPressed)
 
+    def formatValue(self, value):
+        if self._setting.value_type in (int, float):
+            return self._text_format.format(value)
+
+        if isinstance(value, basestring):
+            return value
+
+        else:
+            return str(value)
+
     def setValue(self, text):
         if self._setting is not None:
             value = self._setting.normalizeValue(text)
@@ -50,9 +60,15 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
     def onReturnPressed(self):
         self.clearFocus()
 
-    def setDisplayValue(self, text):
+    def setDisplayValue(self, value):
         self.blockSignals(True)
-        self.setText(self._text_format.format(text))
+
+        if value == self._setting.default_value:
+            self.setText('')
+
+        else:
+            self.setText(self.formatValue(value))
+
         self.blockSignals(False)
 
     def initialize(self):
@@ -74,6 +90,8 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
                 self._setting.setValue(self._tmp_value)
             else:
                 self.setDisplayValue(self._setting.getValue())
+
+            self.setPlaceholderText(self.formatValue(self._setting.default_value))
 
             self._setting.notify(self.setDisplayValue)
 

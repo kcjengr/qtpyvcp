@@ -230,11 +230,13 @@ axes
 .. _axis_mask:
 
 axis_mask
-    mask of axis available [TRAJ]COORDINATES ini parameter
+    axes as configured in the [TRAJ]COORDINATES INI parameter
 
     | the sum of the axes X=1, Y=2, Z=4, A=8, B=16, C=32, U=64, V=128, W=256
-    | syntax ``status:axis_mask`` returns int
-    | syntax ``status:axis_mask?string`` returns str
+    | syntax ``status:axis_mask`` returns int bit mask
+    | syntax ``status:axis_mask?list`` returns list of axis numbers ``[0, 1, 2]``
+    | syntax ``status:axis_mask?string`` returns string of axis letters ``XYZ``
+
 
 :ref:`return to the status items list <status_list>`
 

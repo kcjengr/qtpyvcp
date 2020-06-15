@@ -22,7 +22,8 @@ class Setting(QObject):
     signal = Signal(object)
 
     def __init__(self, fget=None, fset=None, freset=None, default_value=False,
-                 max_value=None, min_value=None, persistent=True, description=None):
+                 max_value=None, min_value=None, persistent=True, description=None,
+                 value_type=None):
         super(Setting, self).__init__()
 
         self.fget = fget
@@ -30,11 +31,12 @@ class Setting(QObject):
         self.freset = freset
 
         self.value_type = type(default_value)
+        if value_type is not None:
+            self.value_type = __builtins__.get(value_type, str)
 
         self.max_value = max_value
         self.min_value = min_value
 
-        self.value_type = type(default_value)
         self.value = self.default_value = default_value
 
         self.persistent = persistent
@@ -111,9 +113,12 @@ class Setting(QObject):
         self.freset = inner
         return self
 
-    def notify(self, slot):
+    def notify(self, slot, update=True):
         # print 'Connecting %s to slot %s' % (self._signal, slot)
         self.signal.connect(slot)
+
+        if update:
+            slot(self.value)
 
     def __get__(self, instance, owner):
         self.instance = instance

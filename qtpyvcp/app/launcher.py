@@ -10,7 +10,6 @@ import qtpyvcp
 from qtpyvcp import hal
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import loadDataPlugins
-from qtpyvcp.utilities.settings import addSetting
 from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog, IGNORE_LIST
 
 from qtpyvcp.utilities.info import Info
