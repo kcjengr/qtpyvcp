@@ -135,11 +135,12 @@ class DROBaseWidget(VCPWidget):
         if pos is None:
             pos = getattr(self.pos, RefType.toString(self._ref_typ)).getValue()
 
-        if self._lathe_mode == LatheMode.Auto and self._g7_active:
-            self.setText(self._fmt % (pos[self._anum] * 2))
-
-        elif self._lathe_mode == LatheMode.Diameter:
-            self.setText(self._fmt % (pos[self._anum] * 2))
+        if self._is_lathe and self._anum == Axis.X:
+            if self._lathe_mode == LatheMode.Diameter or \
+                    (self._lathe_mode == LatheMode.Auto and self._g7_active):
+                self.setText(self._fmt % (pos[self._anum] * 2))
+            else:
+                self.setText(self._fmt % pos[self._anum])
 
         else:
             self.setText(self._fmt % pos[self._anum])
