@@ -1,4 +1,5 @@
 import os
+from math import cos, sin, radians
 
 from operator import add
 from collections import OrderedDict
@@ -14,6 +15,7 @@ import vtk
 # https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1
 
 import vtk.qt
+
 vtk.qt.QVTKRWIBase = "QGLWidget"
 
 # Fix end
@@ -28,6 +30,7 @@ from qtpyvcp.utilities.info import Info
 
 from base_canon import StatCanon
 from base_backplot import BaseBackPlot
+from more_itertools import numeric_range
 
 INFO = Info()
 
@@ -38,6 +41,7 @@ OFFSETTABLE = getPlugin('offsettable')
 IN_DESIGNER = os.getenv('DESIGNER', False)
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 MACHINE_UNITS = 2 if INFO.getIsMachineMetric() else 1
+LATHE = bool(INIFILE.find("DISPLAY", "LATHE"))
 
 COLOR_MAP = {
     'traverse': (188, 252, 201, 75),
@@ -54,15 +58,19 @@ class PathActor(vtk.vtkActor):
         self.origin_index = None
         self.origin_cords = None
         self.units = MACHINE_UNITS
+        self.lathe = LATHE
 
         if self.units == 2:
-            self.length = 5.0
+            self.length = 2.5
         else:
-            self.length = 0.5
+            self.length = 0.25
 
         self.axes = Axes()
         self.axes_actor = self.axes.get_actor()
-        self.axes_actor.SetTotalLength(self.length, self.length, self.length)
+        if self.lathe is True:
+            self.axes_actor.SetTotalLength(self.length, 0, self.length)
+        else:
+            self.axes_actor.SetTotalLength(self.length, self.length, self.length)
 
         # Create a vtkUnsignedCharArray container and store the colors in it
         self.colors = vtk.vtkUnsignedCharArray()
@@ -135,7 +143,6 @@ class VTKCanon(StatCanon):
 
             self.previous_origin = self.origin
             self.origin = origin
-
 
     def add_path_point(self, line_type, start_point, end_point):
 
@@ -235,6 +242,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.parent = parent
         self.status = STATUS
         self.stat = STATUS.stat
+        self.lathe = LATHE
 
         self.canon_class = VTKCanon
 
@@ -309,7 +317,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.interactor.SetInteractorStyle(None)
         self.interactor.SetRenderWindow(self.renderer_window)
 
-
         self.machine = Machine(self.axis)
         self.machine_actor = self.machine.get_actor()
         self.machine_actor.SetCamera(self.camera)
@@ -324,7 +331,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
-        self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
+        self.tool = Tool(self.stat.tool_table)
         self.tool_actor = self.tool.get_actor()
 
         self.offset_axes = OrderedDict()
@@ -336,7 +343,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.path_actors = self.canon.get_path_actors()
 
             for origin, actor in self.path_actors.items():
-
                 index = self.origin_map[origin]
 
                 actor_position = self.path_position_table[index - 1]
@@ -383,6 +389,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.status.file.notify(self.load_program)
         self.status.position.notify(self.update_position)
+        self.status.motion_type.notify(self.motion_type)
 
         # self.status.g5x_index.notify(self.update_g5x_index)
         self.status.g5x_offset.notify(self.update_g5x_offset)
@@ -405,6 +412,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.zooming = 0
 
         self.pan_mode = False
+
+        if self.lathe is True:
+            self.setViewXZ()
 
     # Handle the mouse button events.
     def button_event(self, obj, event):
@@ -632,6 +642,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.update_render()
 
+    def motion_type(self, value):
+        if value == linuxcnc.MOTION_TYPE_TOOLCHANGE:
+            self.update_tool()
+
+
     def update_position(self, position):  # the tool movement
 
         self.spindle_position = position[:3]
@@ -677,7 +692,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             axes = actor.get_axes()
 
             if path_index == self.g5x_index:
-
                 path_transform = vtk.vtkTransform()
                 path_transform.Translate(*offset[:3])
                 path_transform.RotateWXYZ(*offset[5:9])
@@ -696,7 +710,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 extents_actor.XAxisVisibilityOff()
                 extents_actor.YAxisVisibilityOff()
                 extents_actor.ZAxisVisibilityOff()
-                
+
             self.renderer.AddActor(extents_actor)
 
             self.extents[origin] = extents_actor
@@ -762,7 +776,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.interactor.ReInitialize()
             self.update_render()
 
-
     # def update_rotation_xy(self, rotation):
     #
     #     self.rotation_offset = rotation
@@ -796,7 +809,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.RemoveActor(self.tool_actor)
 
-        self.tool = Tool(self.stat.tool_table[0], self.stat.tool_offset)
+        self.tool = Tool(self.stat.tool_table)
         self.tool_actor = self.tool.get_actor()
 
         tool_transform = vtk.vtkTransform()
@@ -839,6 +852,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def setViewX(self):
         self.camera.SetPosition(1, 0, 0)
         self.camera.SetViewUp(0, 0, 1)
+        self.camera.SetFocalPoint(0, 0, 0)
+        self.renderer.ResetCamera()
+        # FIXME ugly hack
+        self.camera.Zoom(1.5)
+        self.interactor.ReInitialize()
+
+    @Slot()
+    def setViewXZ(self):
+        self.camera.SetPosition(0, -1, 0)
+        self.camera.SetViewUp(-1, 0, 0)
         self.camera.SetFocalPoint(0, 0, 0)
         self.renderer.ResetCamera()
         # FIXME ugly hack
@@ -901,7 +924,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewPath(self):
         LOG.debug('Path')
-        
+
         active_offset = self.index_map[self.g5x_index]
         self.extents[active_offset].SetCamera(self.camera)
         self.renderer.ResetCamera()
@@ -945,7 +968,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             camera.Zoom(1.1)
 
         self.renderer_window.Render()
-
 
     @Slot(bool)
     def alphaBlend(self, alpha):
@@ -1346,13 +1368,16 @@ class Machine:
 class Axes:
     def __init__(self):
 
+        self.lathe = LATHE
+
         self.status = STATUS
         self.units = MACHINE_UNITS
+        self.axis_mask = self.status.stat.axis_mask
 
         if self.units == 2:
-            self.length = 10.0
+            self.length = 5.0
         else:
-            self.length = 1.0
+            self.length = 0.5
 
         transform = vtk.vtkTransform()
         transform.Translate(0.0, 0.0, 0.0)  # Z up
@@ -1361,50 +1386,364 @@ class Axes:
         self.actor.SetUserTransform(transform)
 
         self.actor.AxisLabelsOff()
-        self.actor.SetShaftType(vtk.vtkAxesActor.CYLINDER_SHAFT)
+        self.actor.SetShaftTypeToLine()
+        self.actor.SetTipTypeToCone()
 
-        self.actor.SetTotalLength(self.length, self.length, self.length)
+        # Lathe modes
+        if self.axis_mask == 3:
+            self.actor.SetTotalLength(self.length, self.length, 0)
+        elif self.axis_mask == 5:
+            self.actor.SetTotalLength(self.length, 0, self.length)
+        elif self.axis_mask == 6:
+            self.actor.SetTotalLength(0, self.length, self.length)
+        # Mill mode
+        else:
+            self.actor.SetTotalLength(self.length, self.length, self.length)
 
     def get_actor(self):
         return self.actor
 
 
 class Tool:
-    def __init__(self, tool, offset):
+    def __init__(self, tool_table):
 
         self.status = STATUS
         self.units = MACHINE_UNITS
+        self.lathe = LATHE
+        tool = tool_table[0]
 
         if self.units == 2:
             self.height = 25.4 * 2.0
         else:
             self.height = 2.0
 
-        transform = vtk.vtkTransform()
+        if self.lathe is True:
 
-        if tool.id == 0 or tool.diameter < .05:
-            source = vtk.vtkConeSource()
-            source.SetHeight(self.height / 2)
-            source.SetCenter(-self.height / 4 - offset[2], -offset[1], -offset[0])
-            source.SetRadius(self.height / 4)
-            transform.RotateWXYZ(90, 0, 1, 0)
+            if tool.id == 0 or tool.id == -1:
+                polygonSource = vtk.vtkRegularPolygonSource()
+                polygonSource.SetNumberOfSides(64)
+                polygonSource.SetRadius(0.035)
+                polygonSource.SetCenter(0.0, 0.0, 0.0)
+
+                transform = vtk.vtkTransform()
+                transform.RotateWXYZ(90, 1, 0, 0)
+
+                transform_filter = vtk.vtkTransformPolyDataFilter()
+                transform_filter.SetTransform(transform)
+                transform_filter.SetInputConnection(polygonSource.GetOutputPort())
+                transform_filter.Update()
+
+                mapper = vtk.vtkPolyDataMapper()
+                mapper.SetInputConnection(transform_filter.GetOutputPort())
+            else:
+                if tool.orientation == 1 and tool.frontangle == 90 and tool.backangle == 90:
+
+                    # Setup four points
+                    points = vtk.vtkPoints()
+                    points.InsertNextPoint([0.0, 0.0, 0.0])
+                    points.InsertNextPoint([0.5, 0.0, 0.0])
+                    points.InsertNextPoint([0.5, 0.0, -0.05])
+                    points.InsertNextPoint([0.0, 0.0, -0.05])
+
+                    # Create the polygon
+                    # Create a quad on the four points
+                    quad = vtk.vtkQuad()
+                    quad.GetPointIds().SetId(0, 0)
+                    quad.GetPointIds().SetId(1, 1)
+                    quad.GetPointIds().SetId(2, 2)
+                    quad.GetPointIds().SetId(3, 3)
+
+                    # Add the polygon to a list of polygons
+                    polygons = vtk.vtkCellArray()
+                    polygons.InsertNextCell(quad)
+
+                    # Create a PolyData
+                    polygonPolyData = vtk.vtkPolyData()
+                    polygonPolyData.SetPoints(points)
+                    polygonPolyData.SetPolys(polygons)
+
+                    # Create a mapper and actor
+                    mapper = vtk.vtkPolyDataMapper()
+                    mapper.SetInputData(polygonPolyData)
+
+                elif tool.orientation == 2 and tool.frontangle == 90 and tool.backangle == 90:
+
+                    # Setup four points
+                    points = vtk.vtkPoints()
+                    points.InsertNextPoint([0.0, 0.0, 0.0])
+                    points.InsertNextPoint([0.0, 0.0, 0.05])
+                    points.InsertNextPoint([0.5, 0.0, 0.05])
+                    points.InsertNextPoint([0.5, 0.0, 0.0])
+
+                    # Create the polygon
+                    # Create a quad on the four points
+                    quad = vtk.vtkQuad()
+                    quad.GetPointIds().SetId(0, 0)
+                    quad.GetPointIds().SetId(1, 1)
+                    quad.GetPointIds().SetId(2, 2)
+                    quad.GetPointIds().SetId(3, 3)
+
+                    # Add the polygon to a list of polygons
+                    polygons = vtk.vtkCellArray()
+                    polygons.InsertNextCell(quad)
+
+                    # Create a PolyData
+                    polygonPolyData = vtk.vtkPolyData()
+                    polygonPolyData.SetPoints(points)
+                    polygonPolyData.SetPolys(polygons)
+
+                    # Create a mapper and actor
+                    mapper = vtk.vtkPolyDataMapper()
+                    mapper.SetInputData(polygonPolyData)
+
+                elif tool.orientation == 3 and tool.frontangle == 90 and tool.backangle == 90:
+
+                    # Setup four points
+                    points = vtk.vtkPoints()
+                    points.InsertNextPoint([0.0, 0.0, 0.0])
+                    points.InsertNextPoint([0.0, 0.0, 0.05])
+                    points.InsertNextPoint([-0.5, 0.0, 0.05])
+                    points.InsertNextPoint([-0.5, 0.0, 0.0])
+
+                    # Create the polygon
+                    # Create a quad on the four points
+                    quad = vtk.vtkQuad()
+                    quad.GetPointIds().SetId(0, 0)
+                    quad.GetPointIds().SetId(1, 1)
+                    quad.GetPointIds().SetId(2, 2)
+                    quad.GetPointIds().SetId(3, 3)
+
+                    # Add the polygon to a list of polygons
+                    polygons = vtk.vtkCellArray()
+                    polygons.InsertNextCell(quad)
+
+                    # Create a PolyData
+                    polygonPolyData = vtk.vtkPolyData()
+                    polygonPolyData.SetPoints(points)
+                    polygonPolyData.SetPolys(polygons)
+
+                    # Create a mapper and actor
+                    mapper = vtk.vtkPolyDataMapper()
+                    mapper.SetInputData(polygonPolyData)
+
+                elif tool.orientation == 4 and tool.frontangle == 90 and tool.backangle == 90:
+
+                    # Setup four points
+                    points = vtk.vtkPoints()
+                    points.InsertNextPoint([0.0, 0.0, 0.0])
+                    points.InsertNextPoint([0.0, 0.0, -0.05])
+                    points.InsertNextPoint([-0.5, 0.0, -0.05])
+                    points.InsertNextPoint([-0.5, 0.0, 0.0])
+
+                    # Create the polygon
+                    # Create a quad on the four points
+                    quad = vtk.vtkQuad()
+                    quad.GetPointIds().SetId(0, 0)
+                    quad.GetPointIds().SetId(1, 1)
+                    quad.GetPointIds().SetId(2, 2)
+                    quad.GetPointIds().SetId(3, 3)
+
+                    # Add the polygon to a list of polygons
+                    polygons = vtk.vtkCellArray()
+                    polygons.InsertNextCell(quad)
+
+                    # Create a PolyData
+                    polygonPolyData = vtk.vtkPolyData()
+                    polygonPolyData.SetPoints(points)
+                    polygonPolyData.SetPolys(polygons)
+
+                    # Create a mapper and actor
+                    mapper = vtk.vtkPolyDataMapper()
+                    mapper.SetInputData(polygonPolyData)
+
+                elif tool.orientation == 9:
+
+                    radius = tool.diameter / 2
+
+                    # Setup four points
+                    points = vtk.vtkPoints()
+                    points.InsertNextPoint([radius, 0.0, 0.0])
+                    points.InsertNextPoint([radius, 0.0, 1.0])
+                    points.InsertNextPoint([-radius, 0.0, 1.0])
+                    points.InsertNextPoint([-radius, 0.0, 0.0])
+
+                    # Create the polygon
+                    # Create a quad on the four points
+                    quad = vtk.vtkQuad()
+                    quad.GetPointIds().SetId(0, 0)
+                    quad.GetPointIds().SetId(1, 1)
+                    quad.GetPointIds().SetId(2, 2)
+                    quad.GetPointIds().SetId(3, 3)
+
+                    # Add the polygon to a list of polygons
+                    polygons = vtk.vtkCellArray()
+                    polygons.InsertNextCell(quad)
+
+                    # Create a PolyData
+                    polygonPolyData = vtk.vtkPolyData()
+                    polygonPolyData.SetPoints(points)
+                    polygonPolyData.SetPolys(polygons)
+
+                    # Create a mapper and actor
+                    mapper = vtk.vtkPolyDataMapper()
+                    mapper.SetInputData(polygonPolyData)
+                else:
+                    positive = 1
+                    negative = -1
+
+                    if tool.orientation == 1:
+                        fa_x_pol = negative
+                        fa_z_pol = negative
+
+                        ba_x_pol = negative
+                        ba_z_pol = negative
+
+                    elif tool.orientation == 2:
+                        fa_x_pol = negative
+                        fa_z_pol = positive
+
+                        ba_x_pol = negative
+                        ba_z_pol = positive
+
+                    elif tool.orientation == 3:
+                        fa_x_pol = positive
+                        fa_z_pol = positive
+
+                        ba_x_pol = positive
+                        ba_z_pol = positive
+
+                    elif tool.orientation == 4:
+                        fa_x_pol = positive
+                        fa_z_pol = negative
+
+                        ba_x_pol = positive
+                        ba_z_pol = negative
+
+                    elif tool.orientation == 5:
+                        fa_x_pol = positive
+                        fa_z_pol = negative
+
+                        ba_x_pol = negative
+                        ba_z_pol = positive
+
+                    elif tool.orientation == 6:
+                        fa_x_pol = negative
+                        fa_z_pol = positive
+
+                        ba_x_pol = negative
+                        ba_z_pol = negative
+
+                    elif tool.orientation == 7:
+                        fa_x_pol = positive
+                        fa_z_pol = positive
+
+                        ba_x_pol = negative
+                        ba_z_pol = positive
+
+                    elif tool.orientation == 8:
+                        fa_x_pol = positive
+                        fa_z_pol = positive
+
+                        ba_x_pol = positive
+                        ba_z_pol = negative
+                    else:
+                        fa_x_pol = 0.0
+                        fa_z_pol = 0.0
+
+                        ba_x_pol = 0.0
+                        ba_z_pol = 0.0
+
+                    A = radians(float(tool.frontangle))
+                    B = radians(float(tool.backangle))
+                    C = 0.35
+
+                    p1_x = abs(C * sin(A))
+                    p1_z = abs(C * cos(A))
+
+                    p2_x = abs(C * sin(B))
+                    p2_z = abs(C * cos(B))
+
+                    p1_x_pos = p1_x * fa_x_pol
+                    p1_z_pos = p1_z * fa_z_pol
+
+                    p2_x_pos = p2_x * ba_x_pol
+                    p2_z_pos = p2_z * ba_z_pol
+
+                    LOG.debug("Drawing Lathe tool id {}".format(tool.id))
+
+                    LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool.frontangle), p1_x_pos, p1_z_pos))
+                    LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool.backangle), p2_x_pos, p2_z_pos))
+
+                    # Setup three points
+                    points = vtk.vtkPoints()
+                    points.InsertNextPoint((tool.xoffset, 0.0, tool.zoffset))
+                    points.InsertNextPoint((p1_x_pos + tool.xoffset, 0.0, p1_z_pos + tool.zoffset))
+                    points.InsertNextPoint((p2_x_pos + tool.xoffset, 0.0, p2_z_pos + tool.zoffset))
+
+                    # Create the polygon
+                    polygon = vtk.vtkPolygon()
+                    polygon.GetPointIds().SetNumberOfIds(3)  # make a quad
+                    polygon.GetPointIds().SetId(0, 0)
+                    polygon.GetPointIds().SetId(1, 1)
+                    polygon.GetPointIds().SetId(2, 2)
+
+                    # Add the polygon to a list of polygons
+                    polygons = vtk.vtkCellArray()
+                    polygons.InsertNextCell(polygon)
+
+                    # Create a PolyData
+                    polygon_poly_data = vtk.vtkPolyData()
+                    polygon_poly_data.SetPoints(points)
+                    polygon_poly_data.SetPolys(polygons)
+
+                    transform = vtk.vtkTransform()
+                    transform.RotateWXYZ(180, 0, 0, 1)
+
+                    transform_filter = vtk.vtkTransformPolyDataFilter()
+                    transform_filter.SetTransform(transform)
+                    transform_filter.SetInputData(polygon_poly_data)
+                    transform_filter.Update()
+
+                    # Create a mapper
+                    mapper = vtk.vtkPolyDataMapper()
+                    mapper.SetInputConnection(transform_filter.GetOutputPort())
+
         else:
-            source = vtk.vtkCylinderSource()
-            source.SetHeight(self.height / 2)
-            source.SetCenter(-offset[0], self.height / 4 - offset[2], offset[1])
-            source.SetRadius(tool.diameter / 2)
-            transform.RotateWXYZ(90, 1, 0, 0)
+            if tool.id == 0 or tool.diameter < .05:
+                transform = vtk.vtkTransform()
 
-        source.SetResolution(64)
+                source = vtk.vtkConeSource()
+                source.SetHeight(self.height / 2)
+                source.SetCenter(-self.height / 4 - tool.zoffset, -tool.yoffset, -tool.xoffset)
+                source.SetRadius(self.height / 4)
+                source.SetResolution(64)
+                transform.RotateWXYZ(90, 0, 1, 0)
+                transform_filter = vtk.vtkTransformPolyDataFilter()
+                transform_filter.SetTransform(transform)
+                transform_filter.SetInputConnection(source.GetOutputPort())
+                transform_filter.Update()
 
-        transform_filter = vtk.vtkTransformPolyDataFilter()
-        transform_filter.SetTransform(transform)
-        transform_filter.SetInputConnection(source.GetOutputPort())
-        transform_filter.Update()
+                # Create a mapper
+                mapper = vtk.vtkPolyDataMapper()
+                mapper.SetInputConnection(transform_filter.GetOutputPort())
+            else:
+                transform = vtk.vtkTransform()
 
-        # Create a mapper
-        mapper = vtk.vtkPolyDataMapper()
-        mapper.SetInputConnection(transform_filter.GetOutputPort())
+                source = vtk.vtkCylinderSource()
+                source.SetHeight(self.height / 2)
+                source.SetCenter(-tool.xoffset, self.height / 4 - tool.zoffset, tool.yoffset)
+                source.SetRadius(tool.diameter / 2)
+                source.SetResolution(64)
+                transform.RotateWXYZ(90, 1, 0, 0)
+
+                transform_filter = vtk.vtkTransformPolyDataFilter()
+                transform_filter.SetTransform(transform)
+                transform_filter.SetInputConnection(source.GetOutputPort())
+                transform_filter.Update()
+
+                # Create a mapper
+                mapper = vtk.vtkPolyDataMapper()
+                mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         # Create an actor
         self.actor = vtk.vtkActor()

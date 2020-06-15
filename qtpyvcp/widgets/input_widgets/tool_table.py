@@ -66,7 +66,9 @@ class ItemDelegate(QStyledItemDelegate):
             editor = QDoubleSpinBox(parent)
             editor.setFrame(False)
             editor.setAlignment(Qt.AlignCenter)
-            editor.setDecimals(2)
+            editor.setMaximum(360.0)
+            editor.setMinimum(0.0)
+            editor.setDecimals(4)
             # editor.setStepType(QSpinBox.AdaptiveDecimalStepType)
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
             return editor
