@@ -1,4 +1,5 @@
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
+from qtpyvcp.widgets.qtdesigner.designer_plugin import RulesEditorExtension
 
 from status_label import StatusLabel
 class StatusLabelPlugin(_DesignerPlugin):
@@ -16,7 +17,7 @@ class DROLabel_Plugin(_DesignerPlugin):
     def pluginClass(self):
         return DROLabel
     def designerExtensions(self):
-        return [DroEditorExtension,]
+        return [DroEditorExtension, RulesEditorExtension]
 
 from gcode_backplot.gcode_backplot import GcodeBackplot
 class GcodeBackPlotPlugin(_DesignerPlugin):

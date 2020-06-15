@@ -1,4 +1,5 @@
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
+from qtpyvcp.widgets.qtdesigner.designer_plugin import RulesEditorExtension
 
 from line_edit import VCPLineEdit
 class VCPLineEditPlugin(_DesignerPlugin):
@@ -118,4 +119,4 @@ class DROLineEdit_Plugin(_DesignerPlugin):
     def objectName(self):
         return 'dro_entry'
     def designerExtensions(self):
-        return [DroEditorExtension,]
+        return [DroEditorExtension, RulesEditorExtension]
