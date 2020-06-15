@@ -118,7 +118,10 @@ class Setting(QObject):
         self.signal.connect(slot)
 
         if update:
-            slot(self.value)
+            try:
+                slot(self.value)
+            except:
+                pass
 
     def __get__(self, instance, owner):
         self.instance = instance
