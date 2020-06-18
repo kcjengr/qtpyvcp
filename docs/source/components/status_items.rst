@@ -1156,6 +1156,19 @@ rotation_xy
 settings
     current interpreter settings
 
+    returns a tuple of floats
+
+    ===== ======
+    index value
+    ===== ======
+    0     sequence number
+    1     F word value (feed)
+    2     S word value (speed)
+    3     G64 P value (blend tolerance)
+    4     G64 P value (blend tolerance)
+    3     G64 Q value (naive CAM tolerance)
+    ===== ======
+
     | syntax ``status:settings`` returns tuple of floats
     | syntax ``status:settings?string`` returns str
 
