@@ -91,6 +91,7 @@ setup(
         'pyopengl',
         'vtk',
         'pyqtgraph',
+        'more-itertools',
     ],
     entry_points={
         'console_scripts': [
