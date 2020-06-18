@@ -184,6 +184,13 @@ class Status(DataPlugin):
         del cmds[mdi_index]
         chan.signal.emit(cmds)
 
+    def mdi_swap_entries(self, index1, index2):
+        """Swicth two entries about."""
+        chan = self.mdi_history
+        cmds = chan.value
+        cmds[index2], cmds[index1] = cmds[index1], cmds[index2]
+        chan.signal.emit(cmds)
+
     @DataChannel
     def on(self, chan):
         """True if machine power is ON."""
