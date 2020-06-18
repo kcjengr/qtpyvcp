@@ -17,6 +17,7 @@ ToDo:
     * be able to select a row and run commands from that point upwards
 
 """
+import os
 
 from qtpy.QtCore import Qt, Slot, Property, QTimer
 from qtpy.QtGui import QIcon
@@ -153,6 +154,16 @@ class MDIHistory(QListWidget, CMDWidget):
         pass
 
     @Slot()
+    def copySelectionToGcodeEditor(self):
+        fname = '/tmp/mdi_gcode.ngc'
+        selection = self.selectedItems()
+        with open(fname, 'w') as fh:
+            for item in selection:
+                cmd = str(item.text()).strip()
+                fh.write(cmd + '\n')
+            fh.write('M2\n')
+
+    @Slot()
     def moveRowItemUp(self):
         row = self.currentRow()
         if row == 0:
@@ -160,6 +171,7 @@ class MDIHistory(QListWidget, CMDWidget):
         item = self.takeItem(row)
         self.insertItem(row-1, item)
         self.setCurrentRow(row-1)
+        STATUS.mdi_swap_entries(row, row-1)
 
     @Slot()
     def moveRowItemDown(self):
@@ -169,7 +181,8 @@ class MDIHistory(QListWidget, CMDWidget):
         item = self.takeItem(row)
         self.insertItem(row+1, item)
         self.setCurrentRow(row+1)
-
+        STATUS.mdi_swap_entries(row, row+1)
+        
     def keyPressEvent(self, event):
         """Key movement processing.
         Arrow keys move the selected list item up/down
