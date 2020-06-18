@@ -1411,7 +1411,6 @@ class Tool:
         self.units = MACHINE_UNITS
         self.lathe = LATHE
         tool = tool_table[0]
-
         if self.units == 2:
             self.height = 25.4 * 2.0
         else:
@@ -1676,9 +1675,12 @@ class Tool:
 
                     # Setup three points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((tool.xoffset, 0.0, tool.zoffset))
-                    points.InsertNextPoint((p1_x_pos + tool.xoffset, 0.0, p1_z_pos + tool.zoffset))
-                    points.InsertNextPoint((p2_x_pos + tool.xoffset, 0.0, p2_z_pos + tool.zoffset))
+                    # points.InsertNextPoint((0.0, 0.0, 0.0))
+                    # points.InsertNextPoint((p1_x_pos, 0.0, p1_z_pos))
+                    # points.InsertNextPoint((p2_x_pos, 0.0, p2_z_pos))
+                    points.InsertNextPoint((+tool.xoffset, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((p1_x_pos + tool.xoffset, 0.0, p1_z_pos - tool.zoffset))
+                    points.InsertNextPoint((p2_x_pos + tool.xoffset, 0.0, p2_z_pos - tool.zoffset))
 
                     # Create the polygon
                     polygon = vtk.vtkPolygon()
