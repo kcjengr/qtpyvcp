@@ -28,6 +28,7 @@ import qtpyvcp
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.actions.machine_actions import issue_mdi
+from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
 
 import linuxcnc
@@ -162,6 +163,7 @@ class MDIHistory(QListWidget, CMDWidget):
                 cmd = str(item.text()).strip()
                 fh.write(cmd + '\n')
             fh.write('M2\n')
+        loadProgram(fname)
 
     @Slot()
     def moveRowItemUp(self):
