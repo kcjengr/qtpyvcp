@@ -33,6 +33,10 @@ data_plugins:
       report_actual_pos: True
       use_program_units: True
 
+  calculator:
+    provider: qtpyvcp.plugins.calculator:Calculator
+
+
   tooltable:
     provider: qtpyvcp.plugins.tool_table:ToolTable
 

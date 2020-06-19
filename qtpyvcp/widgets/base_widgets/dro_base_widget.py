@@ -108,7 +108,6 @@ class DROBaseWidget(VCPWidget):
 
     def initialize(self):
         getattr(self.pos, RefType.toString(self._ref_typ)).notify(self.updateValue)
-        self.updateValue()
 
         if self._is_lathe:
             self.status.gcodes.notify(self.updateDiameterMode)
@@ -125,6 +124,9 @@ class DROBaseWidget(VCPWidget):
                 self.deg_fmt_setting.notify(lambda fmt: self.setProperty('degreeFormat', fmt))
             except AttributeError:  # settings not found
                 pass
+
+        # do the initial update
+        self.updateValue()
 
     def updateDiameterMode(self, gcodes):
         self._g7_active = 'G7' in gcodes
