@@ -1440,10 +1440,10 @@ class Tool:
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint([0.0, 0.0, 0.0])
-                    points.InsertNextPoint([0.5, 0.0, 0.0])
-                    points.InsertNextPoint([0.5, 0.0, -0.05])
-                    points.InsertNextPoint([0.0, 0.0, -0.05])
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset - 0.05))
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset - 0.05))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -1470,10 +1470,10 @@ class Tool:
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint([0.0, 0.0, 0.0])
-                    points.InsertNextPoint([0.0, 0.0, 0.05])
-                    points.InsertNextPoint([0.5, 0.0, 0.05])
-                    points.InsertNextPoint([0.5, 0.0, 0.0])
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset + 0.05))
+                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset + 0.05))
+                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -1500,10 +1500,10 @@ class Tool:
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint([0.0, 0.0, 0.0])
-                    points.InsertNextPoint([0.0, 0.0, 0.05])
-                    points.InsertNextPoint([-0.5, 0.0, 0.05])
-                    points.InsertNextPoint([-0.5, 0.0, 0.0])
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset + 0.05 ))
+                    points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset + 0.05))
+                    points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -1530,10 +1530,10 @@ class Tool:
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint([0.0, 0.0, 0.0])
-                    points.InsertNextPoint([0.0, 0.0, -0.05])
-                    points.InsertNextPoint([-0.5, 0.0, -0.05])
-                    points.InsertNextPoint([-0.5, 0.0, 0.0])
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset - 0.05))
+                    points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset - 0.05))
+                    points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -1562,10 +1562,10 @@ class Tool:
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint([radius, 0.0, 0.0])
-                    points.InsertNextPoint([radius, 0.0, 1.0])
-                    points.InsertNextPoint([-radius, 0.0, 1.0])
-                    points.InsertNextPoint([-radius, 0.0, 0.0])
+                    points.InsertNextPoint((-tool.xoffset + radius, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-tool.xoffset + radius, 0.0, -tool.zoffset + 1.0))
+                    points.InsertNextPoint((-tool.xoffset - radius, 0.0, -tool.zoffset + 1.0))
+                    points.InsertNextPoint((-tool.xoffset - radius, 0.0, -tool.zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -1676,9 +1676,9 @@ class Tool:
 
                     # Setup three points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((tool.xoffset, 0.0, tool.zoffset))
-                    points.InsertNextPoint((p1_x_pos + tool.xoffset, 0.0, p1_z_pos + tool.zoffset))
-                    points.InsertNextPoint((p2_x_pos + tool.xoffset, 0.0, p2_z_pos + tool.zoffset))
+                    points.InsertNextPoint((tool.xoffset, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((tool.xoffset + p1_x_pos, 0.0, p1_z_pos - tool.zoffset))
+                    points.InsertNextPoint((tool.xoffset + p2_x_pos, 0.0, p2_z_pos - tool.zoffset))
 
                     # Create the polygon
                     polygon = vtk.vtkPolygon()
