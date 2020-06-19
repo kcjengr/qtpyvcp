@@ -1165,8 +1165,7 @@ settings
     1     F word value (feed)
     2     S word value (speed)
     3     G64 P value (blend tolerance)
-    4     G64 P value (blend tolerance)
-    3     G64 Q value (naive CAM tolerance)
+    4     G64 Q value (naive CAM tolerance)
     ===== ======
 
     | syntax ``status:settings`` returns tuple of floats
