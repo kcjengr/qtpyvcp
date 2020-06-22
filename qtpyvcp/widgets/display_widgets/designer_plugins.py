@@ -61,3 +61,8 @@ from notification_widget import NotificationWidget
 class NotificationPlugin(_DesignerPlugin):
     def pluginClass(self):
         return NotificationWidget
+
+from active_gcodes_table import ActiveGcodesTable
+class GcodeReferenceTable_Plugin(_DesignerPlugin):
+    def pluginClass(self):
+        return ActiveGcodesTable
