@@ -90,6 +90,12 @@ class BarIndicatorBase(QWidget):
 
         self.drawBackground()
 
+        if self._border_width > 0:
+            self.drawBorder()
+
+        if self._format is not '':
+            self.drawText()
+
         self._painter.end()
 
     def drawBackground(self):
@@ -109,12 +115,18 @@ class BarIndicatorBase(QWidget):
 
         p.drawRoundedRect(rect, br, br)
 
-        # draw the border
+    def drawBorder(self):
+        p = self._painter
+
+        bw = float(self._border_width)
+        br = self._border_radius
+
         p.setBrush(Qt.transparent)
         border_pen = QPen()
         border_pen.setWidth(bw)
         border_pen.setColor(self._border_color)
         p.setPen(border_pen)
+
         # deal with orientation
         if self._orientation == Qt.Horizontal:
             rect = QRectF(bw / 2, bw / 2, self.width() - bw, self.height() - bw)
@@ -123,6 +135,9 @@ class BarIndicatorBase(QWidget):
             rect = QRectF(bw / 2, bw / 2, self.height() - bw, self.width() - bw)
 
         p.drawRoundedRect(rect, br, br)
+
+    def drawText(self):
+        p = self._painter
 
         # draw the load percentage text
         p.setPen(self._text_color)
