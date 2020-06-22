@@ -34,10 +34,8 @@ class BarIndicatorBase(QWidget):
         self._flip_translation_y = None
         self._flip_scale_y = None
 
-
         self._inverted_appearance = False
         self._flip_scale = False
-        self._scale_height = 30
         self._origin_at_zero = False
         self._origin_position = 0
 
@@ -49,22 +47,18 @@ class BarIndicatorBase(QWidget):
         """This method sets parameters for the widget transformations (needed
         for orientation, flipping and appearance inversion).
         """
-        self.setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX)  # Unset fixed size
         if self._orientation == Qt.Horizontal:
             self._bar_width = self.height()
             self._bar_length = self.width()
             self._painter_translation_y = 0
             self._painter_rotation = 0
-            self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-            self.setFixedHeight(self._scale_height)
+
         elif self._orientation == Qt.Vertical:
             # Invert dimensions for paintEvent()
             self._bar_width = self.width()
             self._bar_length = self.height()
             self._painter_translation_y = self._bar_length
             self._painter_rotation = -90
-            self.setSizePolicy(QSizePolicy.Fixed, QSizePolicy.Expanding)
-            self.setFixedWidth(self._scale_height)
 
         if self._inverted_appearance:
             self._painter_translation_x = self._bar_width
@@ -80,7 +74,6 @@ class BarIndicatorBase(QWidget):
             self._flip_translation_y = 0
             self._flip_scale_y = 1
 
-
     def paintEvent(self, event):
 
         self.adjustTransformation()
@@ -90,7 +83,7 @@ class BarIndicatorBase(QWidget):
         self._painter.translate(self._painter_translation_x, 0) # Invert appearance if needed
         self._painter.scale(self._painter_scale_x, 1)
 
-        self._painter.translate(0, self._flip_translation_y)     # Invert scale if needed
+        self._painter.translate(0, self._flip_translation_y)    # Invert scale if needed
         self._painter.scale(1, self._flip_scale_y)
 
         self._painter.setRenderHint(QPainter.Antialiasing)
@@ -99,14 +92,13 @@ class BarIndicatorBase(QWidget):
 
         self._painter.end()
 
-
     def drawBackground(self):
 
         bw = float(self._border_width)
         br = self._border_radius
 
         w = self.sliderPositionFromValue(self.minimum, self.maximum, self._value, self._bar_length)
-        h = self._scale_height
+        h = self._bar_width
         rect = QRectF(bw / 2, bw / 2, w - bw, h - bw)
 
         p = self._painter
@@ -135,7 +127,6 @@ class BarIndicatorBase(QWidget):
         # draw the load percentage text
         p.setPen(self._text_color)
         if self.orientation == Qt.Vertical:
-            #p.rotate(15)
             p.drawText(0, 0, self.height(), self.width(), Qt.AlignCenter, self.text())
         else:
             p.drawText(0, 0, self.width(), self.height(), Qt.AlignCenter, self.text())
@@ -205,6 +196,7 @@ class BarIndicatorBase(QWidget):
     @format.setter
     def format(self, fmt):
         self._format = fmt
+        self.update()
 
     @Property(Qt.Orientation)
     def orientation(self):
@@ -215,9 +207,8 @@ class BarIndicatorBase(QWidget):
         if orient == self._orientation:
             return
 
-        self.adjustTransformation()
-
         self._orientation = orient
+        self.adjustTransformation()
         self.update()
 
     def text(self):
