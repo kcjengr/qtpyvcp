@@ -1,14 +1,25 @@
- # QtPyVCP Action Examples
+# QtPyVCP Action Examples
 
-This VCP has examples of all the actions. You can run as a simulation by
-copying the action configuration directory from the configs directory.
+This VCP has examples of all the QtPyVCP actions.
 
-1) Install with pip:
-   Open a terminal in the action directory then
-  `pip install -e .`
+## Running
 
-2) Edit the layout in QtDesigner by opening a terminal in actions/actions
-  `editvcp actions`
+Launch the QtPyVCP XYZ mill sim config
 
-3) You can have this open in the Designer and copy the widgets you want
-   to your GUI.
+`linuxcnc linuxcnc/configs/sim.qtpyvcp/xyz.ini`
+
+Click the choose file button in the VCP chooser.
+From the examples/actions folder select the config.yml file.
+
+
+## Editing
+
+To open the actions UI file in QtDesiugner run
+
+`editvcp examples/actions/config.yml`
+
+
+You can leave this open in the QtDesigner and copy the widgets you want to your GUI.
+
+
+**Note:** Above commands should be run from the QtPyVCP install dir.

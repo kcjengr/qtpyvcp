@@ -64,7 +64,7 @@ def process_templates(files):
 
     expanded_templates = []
     for file in files:
-        file_dir, file_name = os.path.split(file)
+        file_dir, file_name = os.path.split(os.path.realpath(file))
         template = env.get_template(file_name)
         result = template.render({'file': {'path': file, 'dir': file_dir, 'name': file_name},
                                   'env': os.environ,
