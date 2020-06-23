@@ -47,7 +47,7 @@ class HalQSpinBox(QSpinBox, HALWidget):
 
     def initialize(self):
         comp = hal.COMPONENTS['qtpyvcp']
-        obj_name = str(self.objectName()).replace('_', '-')
+        obj_name = self.getPinBaseName()
 
         if self.minimum() < 0:
             pin_typ = 's32'

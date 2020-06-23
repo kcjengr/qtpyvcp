@@ -9,7 +9,7 @@ all other QtPyVCP widgets are based.
 import os
 import json
 
-from qtpy.QtCore import Property
+from qtpy.QtCore import Property, Slot
 from qtpy.QtWidgets import QPushButton
 
 from qtpyvcp.plugins import getPlugin
@@ -195,6 +195,29 @@ class HALWidget(VCPBaseWidget):
     def __init__(self, parent=None):
         super(HALWidget, self).__init__()
 
+        self._hal_object_name = None
+
+    @Property(str)
+    def pinBaseName(self):
+        """The base name to use for the generated HAL pins.
+
+        If not specified the widgets objectName will be used.
+
+        Returns:
+            str
+        """
+        if self._hal_object_name is None:
+            return str(self.objectName()).replace('_', '-')
+        return self._hal_object_name
+
+    @pinBaseName.setter
+    def pinBaseName(self, name):
+        # ToDO: Validate HAL pin name
+        self._hal_object_name = name
+
+    @Slot()
+    def getPinBaseName(self):
+        return self.pinBaseName
 
 class VCPButton(QPushButton, CMDWidget):
     """VCP Button Widget

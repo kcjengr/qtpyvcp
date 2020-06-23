@@ -38,7 +38,7 @@ class HalSlider(QSlider, HALWidget):
 
     def initialize(self):
         comp = hal.COMPONENTS['qtpyvcp']
-        obj_name = str(self.objectName()).replace('_', '-')
+        obj_name = self.getPinBaseName()
 
         # add slider.enable HAL pin
         self._enable_pin = comp.addPin(obj_name + ".enable", "bit", "in")

@@ -38,7 +38,7 @@ class HalBarIndicator(BarIndicatorBase, HALWidget):
 
     def initialize(self):
         comp = hal.getComponent('qtpyvcp')
-        obj_name = str(self.objectName()).replace('_', '-')
+        obj_name = self.getPinBaseName()
 
         if self.minimum < 0:
             int_pin_typ = 's32'
