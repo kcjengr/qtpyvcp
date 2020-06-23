@@ -73,7 +73,7 @@ class HalButton(QPushButton, HALWidget):
         self._pulse_duration = duration
 
     def initialize(self):
-        comp = hal.COMPONENTS['qtpyvcp']
+        comp = hal.getComponent()
         obj_name = self.getPinBaseName()
 
         # add button.enable HAL pin

@@ -41,7 +41,7 @@ class HalCheckBox(QCheckBox, HALWidget):
             self._checked_pin.value = checked
 
     def initialize(self):
-        comp = hal.COMPONENTS['qtpyvcp']
+        comp = hal.getComponent()
         obj_name = self.getPinBaseName()
 
         # add checkbox.enable HAL pin

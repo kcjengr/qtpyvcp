@@ -37,7 +37,7 @@ class HalGroupBox(QGroupBox, HALWidget):
             self._checked_pin.value = checked
 
     def initialize(self):
-        comp = hal.COMPONENTS['qtpyvcp']
+        comp = hal.getComponent()
         obj_name = self.getPinBaseName()
 
         # add group-box.enable HAL pin

@@ -37,7 +37,7 @@ class HalBarIndicator(BarIndicatorBase, HALWidget):
         self._max_val_pin = None
 
     def initialize(self):
-        comp = hal.getComponent('qtpyvcp')
+        comp = hal.getComponent()
         obj_name = self.getPinBaseName()
 
         if self.minimum < 0:

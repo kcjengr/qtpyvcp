@@ -46,7 +46,7 @@ class HalLCDNumber(QLCDNumber, HALWidget):
         self.setValue(0)
 
     def initialize(self):
-        comp = hal.COMPONENTS['qtpyvcp']
+        comp = hal.getComponent()
         obj_name = self.getPinBaseName()
 
         # add lcd-dro.in HAL pin

@@ -76,7 +76,7 @@ class HalLabel(QLabel, HALWidget, HalType):
             pass
 
     def initialize(self):
-        comp = hal.COMPONENTS['qtpyvcp']
+        comp = hal.getComponent()
         obj_name = self.getPinBaseName()
 
         # add label.enable HAL pin

@@ -46,7 +46,7 @@ class HalQSpinBox(QSpinBox, HALWidget):
             self._value_pin.value = checked
 
     def initialize(self):
-        comp = hal.COMPONENTS['qtpyvcp']
+        comp = hal.getComponent()
         obj_name = self.getPinBaseName()
 
         if self.minimum() < 0:
