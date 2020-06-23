@@ -125,12 +125,12 @@ def launch_designer(opts=DotDict()):
         os.environ['VCP_CONFIG_FILES'] = fname + ':' + os.getenv('VCP_CONFIG_FILES', '')
 
         if data is not None:
-            yml_dir = os.path.dirname(fname)
+            yml_dir = os.path.realpath(os.path.dirname(fname))
 
             # prefer command line ui file
             ui_file = opts.ui_file or data.get('ui_file')
             if ui_file is not None:
-                ui_file = os.path.realpath(os.path.join(yml_dir, ui_file))
+                ui_file = os.path.join(yml_dir, ui_file)
                 cmd.append(ui_file)
                 print "Loading UI file:", ui_file
             else:
@@ -139,7 +139,7 @@ def launch_designer(opts=DotDict()):
             # prefer command line qss file
             qss_file = opts.qss_file or data.get('qss_file')
             if qss_file is not None:
-                qss_file = os.path.realpath(os.path.join(yml_dir, qss_file))
+                qss_file = os.path.join(yml_dir, qss_file)
                 os.environ['QSS_STYLESHEET'] = qss_file
                 print "Loading QSS file:", qss_file
             else:
