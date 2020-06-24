@@ -23,17 +23,51 @@
 # See also:
 # http://pyqt.sourceforge.net/Docs/QScintilla2/index.html
 # https://qscintilla.com/
+#
+# Additions/Contributions by:
+# Donb9261 (Don Bozarth - Linuxcnc Forums): many lexer improvements
+# Joco (James Walker - james.walker.nz@me.com)
+"""
+Gcode editor/viewer widget.
 
+Exposed QSS properties than can be used for style control.
+
+GcodeEditor {
+    qproperty-backgroundColor:          #303030;
+    qproperty-marginBackgroundColor:    #D9DADB;
+    qproperty-activeLineBackgroundColor: darkgray;
+    qproperty-editorDefaultFont:        "Ubuntu Mono";
+
+    qproperty-syntaxColorDefault:       #EFFBEF;
+    qproperty-syntaxColorComment:       #fcf803;
+    qproperty-syntaxColorKey:           #52ceff;
+    qproperty-syntaxColorAssignment:    #fa5f5f;
+    qproperty-syntaxColorValue:         #00CC00;
+    qproperty-syntaxColorMcode:         #f736d7;
+    qproperty-syntaxColorMsg:           #03fc20;
+    qproperty-syntaxColorScode:         #03fcc2;
+    qproperty-syntaxColorPcode:         #be4dff;
+    qproperty-syntaxColorTcode:         #ff8fdb;
+    qproperty-syntaxColorHcode:         #87b3ff;
+}
+"""
 import sys
 import os
 
-from qtpy.QtCore import Property, QObject, Slot, QFile, QFileInfo, QTextStream, Signal
+from qtpy.QtCore import Property, Slot, Signal
+from qtpy.QtCore import QObject, QFile, QFileInfo, QTextStream
 from qtpy.QtGui import QFont, QFontMetrics, QColor
-from qtpy.QtWidgets import QInputDialog, QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QCheckBox
+from qtpy.QtWidgets import QInputDialog, QFileDialog, QDialog
+from qtpy.QtWidgets import QLineEdit, QLabel, QPushButton, QCheckBox
+from qtpy.QtWidgets import QHBoxLayout, QVBoxLayout
 
 from qtpyvcp.utilities import logger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.widgets.base_widgets.base_widget import VCPBaseWidget
+
+from qtpyvcp.actions.program_actions import load as loadProgram
+from qtpyvcp.actions.program_actions import reload as reLoadProgram
 
 
 LOG = logger.getLogger(__name__)
@@ -60,26 +94,28 @@ class GcodeLexer(QsciLexerCustom):
         if parent is None and not standalone:
             return
 
+        # Lexer style key
         self._styles = {
             0: 'Default',
             1: 'Comment',
             2: 'Key',
             3: 'Assignment',
             4: 'Value',
+            5: 'MCODE',
+            6: 'FEED',
+            7: 'MSG',
+            8: 'SCODE',
+            9: 'PCODE',
+           10: 'TCODE',
+           11: 'HCODE',
         }
         for key, value in self._styles.iteritems():
             setattr(self, value, key)
-        font = QFont()
-        font.setFamily('Courier')
-        font.setFixedPitch(True)
-        font.setPointSize(10)
-        font.setBold(True)
-        self.setFont(font, 2)
 
     # Paper sets the background color of each style of text
     def setPaperBackground(self, color, style=None):
         if style is None:
-            for i in range(0, 5):
+            for i in range(0, 11):
                 self.setPaper(color, i)
         else:
             self.setPaper(color, style)
@@ -88,16 +124,44 @@ class GcodeLexer(QsciLexerCustom):
         return self._styles.get(style, '')
 
     def defaultColor(self, style):
+        # Define colors for lexer styles.
+        # TODO: move color definitions to linuxcnc confog INI file
         if style == self.Default:
-            return QColor('#000000')  # black
+            color = self.parent().syntaxColorDefault
+            return QColor(color)  ### black # Edited
         elif style == self.Comment:
-            return QColor('#000000')  # black
+            color = self.parent().syntaxColorComment
+            return QColor(color)  ### black
         elif style == self.Key:
-            return QColor('#0000CC')  # blue
+            color = self.parent().syntaxColorKey
+            return QColor(color)  ### cyan
         elif style == self.Assignment:
-            return QColor('#CC0000')  # red
+            color = self.parent().syntaxColorAssignment
+            return QColor(color)  ### red
         elif style == self.Value:
-            return QColor('#00CC00')  # green
+            color = self.parent().syntaxColorValue
+            return QColor(color)  ### green
+        elif style == self.MCODE:
+            color = self.parent().syntaxColorMcode
+            return QColor(color)  ### magenta
+        elif style == self.FEED:
+            color = self.parent().syntaxColorFeed
+            return QColor(color)  ### orange
+        elif style == self.MSG:
+            color = self.parent().syntaxColorMsg
+            return QColor(color)  ### lt green
+        elif style == self.SCODE:
+            color = self.parent().syntaxColorScode
+            return QColor(color)  ### teal
+        elif style == self.PCODE:
+            color = self.parent().syntaxColorPcode
+            return QColor(color)  ### lt purpl
+        elif style == self.TCODE:
+            color = self.parent().syntaxColorTcode
+            return QColor(color)  ### pink
+        elif style == self.HCODE:
+            color = self.parent().syntaxColorHcode
+            return QColor(color)  ### lt blue
         return QsciLexerCustom.defaultColor(self, style)
 
     def styleText(self, start, end):
@@ -158,6 +222,34 @@ class GcodeLexer(QsciLexerCustom):
                     else:
                         set_style(1, self.Comment)
                     continue
+                elif char == 'MSG':
+                    graymode = True
+                    set_style(1, self.MSG)
+                    continue
+                elif char == 'M':
+                    graymode = False
+                    set_style(1, self.MCODE)
+                    continue
+                elif char == 'F':
+                    graymode = False
+                    set_style(1, self.FEED)
+                    continue
+                elif char == 'S':
+                    graymode = False
+                    set_style(1, self.SCODE)
+                    continue
+                elif char == 'P':
+                    graymode = False
+                    set_style(1, self.PCODE)
+                    continue
+                elif char == 'T':
+                    graymode = False
+                    set_style(1, self.TCODE)
+                    continue
+                elif char == 'H':
+                    graymode = False
+                    set_style(1, self.HCODE)
+                    continue
                 elif char in ('%', '<', '>', '#', '='):
                     state = self.Assignment
                 elif char in ('[', ']'):
@@ -175,63 +267,317 @@ class GcodeLexer(QsciLexerCustom):
 
 
 # ==============================================================================
-# Base editor class
+# Gcode Editor Widget
 # ==============================================================================
-class EditorBase(QsciScintilla):
+class GcodeEditor(QsciScintilla, QObject, VCPBaseWidget):
     ARROW_MARKER_NUM = 8
 
     def __init__(self, parent=None):
-        super(EditorBase, self).__init__(parent)
+        super(GcodeEditor, self).__init__(parent)
+
+        # stop certain events until the vcp initalize event
+        self._framework_initalize = False
+
+        # Defaults for: syntax coloring
+        self._syntaxColorDefault = '#FFFFFF'
+        self._syntaxColorComment = '#fcf803'
+        self._syntaxColorKey = '#52ceff'
+        self._syntaxColorAssignment = '#fa5f5f'
+        self._syntaxColorValue = '#00CC00'
+        self._syntaxColorMcode = '#f736d7'
+        self._syntaxColorFeed = '#f7ce36'
+        self._syntaxColorMsg = '#03fc20'
+        self._syntaxColorScode = '#03fcc2'
+        self._syntaxColorPcode = '#be4dff'
+        self._syntaxColorTcode = '#ff8fdb'
+        self._syntaxColorHcode = '#87b3ff'
+        #back grounds
+        self._backgroundColor = '#2e3436'
+        self._marginBackgroundColor = '#D9DADB'
+        self._activeLineBackgroundColor = 'gray'
+        # font
+        self._editorDefaultFont = 'Courier'
+
         # linuxcnc defaults
         self.idle_line_reset = False
         # don't allow editing by default
         self.setReadOnly(True)
-        # Set the default font
-        font = QFont()
-        font.setFamily('Courier')
-        font.setFixedPitch(True)
-        font.setPointSize(10)
-        self.setFont(font)
-        self.setMarginsFont(font)
+        # NOTE: all lexer setup needs to be done before assigning lexer to editor
+        # as this initiates all the internal callbacks from editor to lexer
+        # that hard sets the highlighting colors used for styles defined
+        # in the lexer. This means that changes to colors will not apply
+        # until a new setLexer call is made.
 
-        # Margin 0 is used for line numbers
-        fontmetrics = QFontMetrics(font)
-        self.setMarginsFont(font)
-        self.setMarginWidth(0, fontmetrics.width("0000") + 6)
         self.setMarginLineNumbers(0, True)
-        self.setMarginsBackgroundColor(QColor("#cccccc"))
 
         # Clickable margin 1 for showing markers
         self.setMarginSensitivity(1, True)
         # setting marker margin width to zero make the marker highlight line
         self.setMarginWidth(1, 10)
         self.marginClicked.connect(self.on_margin_clicked)
-        self.markerDefine(QsciScintilla.RightArrow,
+        self.markerDefine(QsciScintilla.RightTriangle,
                           self.ARROW_MARKER_NUM)
-        self.setMarkerBackgroundColor(QColor("#ffe4e4"),
+        #  #ffe4e4
+        self.setMarkerBackgroundColor(QColor("slate"),
                                       self.ARROW_MARKER_NUM)
 
         # Brace matching: enable for a brace immediately before or after
         # the current position
-        #
         self.setBraceMatching(QsciScintilla.SloppyBraceMatch)
 
         # Current line visible with special background color
         self.setCaretLineVisible(True)
         self.setCaretLineBackgroundColor(QColor("#ffe4e4"))
 
-        # Set custom gcode lexer
-        self.lexer = GcodeLexer(self)
-        self.lexer.setDefaultFont(font)
-        self.setLexer(self.lexer)
-
-        # default gray background
-        self.set_background_color('#C0C0C0')
-
         self.highlit = None
 
-        # not too small
-        # self.setMinimumSize(200, 100)
+        # ------- from higher level class ------
+        self.filename = ""
+        self._last_filename = None
+        self.auto_show_mdi = True
+        self.last_line = None
+        # self.setEolVisibility(True)
+
+        self.is_editor = False
+
+        self.dialog = FindReplaceDialog(parent=self)
+
+        self.linesChanged.connect(self.linesHaveChanged)
+
+        # register with the status:task_mode channel to
+        # drive the mdi auto show behaviour
+        #STATUS.task_mode.notify(self.onMdiChanged)
+        #self.prev_taskmode = STATUS.task_mode
+
+        #self.cursorPositionChanged.connect(self.line_changed)
+
+    @Property(str)
+    def syntaxColorDefault(self):
+        return self._syntaxColorDefault
+
+    @syntaxColorDefault.setter
+    def syntaxColorDefault(self, color):
+        self._syntaxColorDefault = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.Default)
+
+    @Property(str)
+    def syntaxColorComment(self):
+        return self._syntaxColorComment
+
+    @syntaxColorComment.setter
+    def syntaxColorComment(self, color):
+        self._syntaxColorComment = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.Comment)
+
+    @Property(str)
+    def syntaxColorKey(self):
+        return self._syntaxColorKey
+
+    @syntaxColorKey.setter
+    def syntaxColorKey(self, color):
+        self._syntaxColorKey = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.Key)
+
+    @Property(str)
+    def syntaxColorAssignment(self):
+        return self._syntaxColorAssignment
+
+    @syntaxColorAssignment.setter
+    def syntaxColorAssignment(self, color):
+        self._syntaxColorAssignment = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.Assignment)
+
+    @Property(str)
+    def syntaxColorValue(self):
+        return self._syntaxColorValue
+
+    @syntaxColorValue.setter
+    def syntaxColorValue(self, color):
+        self._syntaxColorValue = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.Value)
+
+    @Property(str)
+    def syntaxColorMcode(self):
+        return self._syntaxColorMcode
+
+    @syntaxColorMcode.setter
+    def syntaxColorMcode(self, color):
+        self._syntaxColorMcode = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.MCODE)
+
+    @Property(str)
+    def syntaxColorFeed(self):
+        return self._syntaxColorFeed
+
+    @syntaxColorFeed.setter
+    def syntaxColorFeed(self, color):
+        self._syntaxColorFeed = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.FEED)
+
+    @Property(str)
+    def syntaxColorMsg(self):
+        return self._syntaxColorMsg
+
+    @syntaxColorMsg.setter
+    def syntaxColorMsg(self, color):
+        self._syntaxColorMsg = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.MSG)
+
+    @Property(str)
+    def syntaxColorScode(self):
+        return self._syntaxColorScode
+
+    @syntaxColorScode.setter
+    def syntaxColorScode(self, color):
+        self._syntaxColorScode = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.SCODE)
+
+    @Property(str)
+    def syntaxColorPcode(self):
+        return self._syntaxColorPcode
+
+    @syntaxColorPcode.setter
+    def syntaxColorPcode(self, color):
+        self._syntaxColorPcode = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.PCODE)
+
+    @Property(str)
+    def syntaxColorTcode(self):
+        return self._syntaxColorTcode
+
+    @syntaxColorTcode.setter
+    def syntaxColorTcode(self, color):
+        self._syntaxColorTcode = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.TCODE)
+
+    @Property(str)
+    def syntaxColorHcode(self):
+        return self._syntaxColorHcode
+
+    @syntaxColorHcode.setter
+    def syntaxColorHcode(self, color):
+        self._syntaxColorHcode = color
+        if not self._framework_initalize:
+            return
+        self.lexer.setColor(QColor(color), self.lexer.HCODE)
+
+    @Property(str)
+    def backgroundColor(self):
+        """Property to set the background color of the GCodeEditor (str).
+        sets the background color of the GCodeEditor
+        """
+        return self._backgroundColor
+
+    @backgroundColor.setter
+    def backgroundColor(self, color):
+        self._backgroundColor = color
+        self.setBackgroundColor(color)
+
+    # must set lexer paper background color _and_ editor background color it seems
+    def setBackgroundColor(self, color):
+        if not self._framework_initalize:
+            return
+        self.SendScintilla(QsciScintilla.SCI_STYLESETBACK, QsciScintilla.STYLE_DEFAULT, QColor(color))
+        self.lexer.setPaperBackground(QColor(color))
+
+    @Property(str)
+    def marginBackgroundColor(self):
+        """Property to set the background color of the GCodeEditor margin (str).
+        sets the background color of the GCodeEditor margin
+        """
+        return self._marginBackgroundColor
+
+    @marginBackgroundColor.setter
+    def marginBackgroundColor(self, color):
+        self._marginBackgroundColor = color
+        self.setMarginBackgroundColor(color)
+
+    def setMarginBackgroundColor(self, color):
+        self.setMarginsBackgroundColor(QColor(color))
+
+    @Property(str)
+    def activeLineBackgroundColor(self):
+        """Property to set the background color of the active line.
+        The active line is where the caret is within the file.
+        """
+        return self._activeLineBackgroundColor
+
+    @activeLineBackgroundColor.setter
+    def activeLineBackgroundColor(self, color):
+        self._activeLineBackgroundColor = color
+        self.setCaretLineBackgroundColor(QColor(color))
+
+    @Property(str)
+    def editorDefaultFont(self):
+        """Return the name of the  default font used by the editor.
+        Also supports Designer integration. 
+        """
+        return self._editorDefaultFont
+
+    @editorDefaultFont.setter
+    def editorDefaultFont(self, font_name='Courier'):
+        """Set the default font name used by the editor.
+        Also create the needed font objects and assign to Lexer to create
+        new default font to be used by the editor.
+        """
+        try:
+            if self._editorDefaultFont != font_name:
+                # Set the default font
+                self._editorDefaultFont = font_name
+                # force font refresh
+                self.refreshEditorFont()
+        except AttributeError:
+                self._editorDefaultFont = font_name
+                # force font refresh
+                self.refreshEditorFont()
+
+    @Slot()
+    def refreshEditorFont(self):
+        """Taking the new default font and build a new lexer instance.
+        Apply the new lexer to the editor.
+        """
+        # we do not want this to fire until the vcp initalize event
+        if not self._framework_initalize:
+            return
+        # Note that if you do not create a new lexer the
+        # the font does not get applied/used.
+        font = QFont()
+        font.setFamily(self._editorDefaultFont)
+        font.setFixedPitch(True)
+        font.setPointSize(14)
+        # we need to create a new lexer and set it as active on the editor
+        # reusing a the existing lexer does not cause a refresh of setup
+        self.lexer = GcodeLexer(self)
+        self.lexer.setDefaultFont(font)
+        self.setBackgroundColor(self._backgroundColor)
+        self.setLexer(self.lexer)
+        # rebuild gutter for new font
+        self.setNumberGutter(self.lines())
+        # set the gutter font to be aligned to main font
+        self.setMarginsFont(font)
+        self.setCaretLineBackgroundColor(QColor(self._activeLineBackgroundColor))
 
     def find_text_occurences(self, text):
         """Return byte positions of start and end of all 'text' occurences in the document"""
@@ -333,52 +679,12 @@ class EditorBase(QsciScintilla):
             # if match:
             #     self.replace(sub)
 
-    # must set lexer paper background color _and_ editor background color it seems
-    def set_background_color(self, color):
-        self.SendScintilla(QsciScintilla.SCI_STYLESETBACK, QsciScintilla.STYLE_DEFAULT, QColor(color))
-        self.lexer.setPaperBackground(QColor(color))
-
-    def set_margin_background_color(self, color):
-        self.setMarginsBackgroundColor(QColor(color))
-
     def on_margin_clicked(self, nmargin, nline, modifiers):
         # Toggle marker for the line the margin was clicked on
         if self.markersAtLine(nline) != 0:
             self.markerDelete(nline, self.ARROW_MARKER_NUM)
         else:
             self.markerAdd(nline, self.ARROW_MARKER_NUM)
-
-
-# ==============================================================================
-# Gcode widget
-# ==============================================================================
-class GcodeEditor(EditorBase, QObject):
-    ARROW_MARKER_NUM = 8
-
-    def __init__(self, parent=None):
-        super(GcodeEditor, self).__init__(parent)
-
-        self.filename = ""
-        self._last_filename = None
-        self.auto_show_mdi = True
-        self.last_line = None
-        # self.setEolVisibility(True)
-
-        self.is_editor = False
-
-        self.dialog = FindReplaceDialog(parent=self)
-
-        # QSS Hack
-
-        self.backgroundcolor = ''
-        self.marginbackgroundcolor = ''
-
-        # register with the status:task_mode channel to
-        # drive the mdi auto show behaviour
-        #STATUS.task_mode.notify(self.onMdiChanged)
-        #self.prev_taskmode = STATUS.task_mode
-
-        #self.cursorPositionChanged.connect(self.line_changed)
 
     @Slot(bool)
     def setEditable(self, state):
@@ -393,22 +699,35 @@ class GcodeEditor(EditorBase, QObject):
 
     @Slot()
     def save(self):
+        reload_file = True
         self.filename = str(STATUS.file)
+        # determine of have a file name
+        if self.filename == '':
+            reload_file = False
+            self.filename = '/tmp/gcode_tmp.ngc'
 
+        # save out the file
         save_file = QFile(self.filename)
-
         result = save_file.open(QFile.WriteOnly)
         if result:
             save_stream = QTextStream(save_file)
             save_stream << self.text()
             save_file.close()
+            # file save worked, now either load fresh or reload
+            if reload_file:
+                reLoadProgram()
+            else:
+                loadProgram(self.filename)
+
         else:
             print("save error")
 
-
     @Slot()
     def saveAs(self):
-        file_name = self.save_as_dialog(self.filename)
+        #file_name = self.save_as_dialog(self.filename)
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        file_name, _ = QFileDialog.getSaveFileName(self,"Save As","","All Files (*);;NGC Files (*.ngc)", options=options)
 
         if file_name is False:
             print("saveAs file name error")
@@ -426,7 +745,6 @@ class GcodeEditor(EditorBase, QObject):
             save_stream = QTextStream(new_file)
             save_stream << self.text()
             new_file.close()
-
 
     @Slot()
     def find_replace(self):
@@ -462,31 +780,12 @@ class GcodeEditor(EditorBase, QObject):
             # if self.idle_line_reset:
             #     STATUS.connect('interp_idle', lambda w: self.set_line_number(None, 0))
 
-    @Property(str)
-    def backgroundcolor(self):
-        """Property to set the background color of the GCodeEditor (str).
-
-        sets the background color of the GCodeEditor
-        """
-        return self._backgroundcolor
-
-    @backgroundcolor.setter
-    def backgroundcolor(self, color):
-        self._backgroundcolor = color
-        self.set_background_color(color)
-
-    @Property(str)
-    def marginbackgroundcolor(self):
-        """Property to set the background color of the GCodeEditor margin (str).
-
-        sets the background color of the GCodeEditor margin
-        """
-        return self._marginbackgroundcolor
-
-    @marginbackgroundcolor.setter
-    def marginbackgroundcolor(self, color):
-        self._marginbackgroundcolor = color
-        self.set_margin_background_color(color)
+    def setNumberGutter(self, lines=1):
+        """Set the gutter width based on the number of lines in the text"""
+        font = self.lexer.defaultFont()
+        fontmetrics = QFontMetrics(font)
+        self.setMarginsFont(font)
+        self.setMarginWidth(0, fontmetrics.width(str(lines)) + 6)
 
     def load_program(self, fname=None):
         if fname is None:
@@ -497,7 +796,6 @@ class GcodeEditor(EditorBase, QObject):
         # self.zoomTo(6)
         self.setCursorPosition(0, 0)
 
-
     def load_text(self, fname):
         try:
             fp = os.path.expanduser(fname)
@@ -506,6 +804,9 @@ class GcodeEditor(EditorBase, QObject):
             LOG.error('File path is not valid: {}'.format(fname))
             self.setText('')
             return
+
+        # get the number of lines in the file and set new gutter width
+        self.setNumberGutter(self.lines())
 
         self.last_line = None
         self.ensureCursorVisible()
@@ -528,6 +829,14 @@ class GcodeEditor(EditorBase, QObject):
     def set_line_number(self, line):
         pass
 
+    def linesHaveChanged(self):
+        """When new lines are detected assess if the number
+        column margin needs to be increased to accommodate a
+        potentially larger number width.
+        """
+        # get the number of lines in the file and set new gutter width
+        self.setNumberGutter(self.lines())
+
     def select_lineup(self):
         line, col = self.getCursorPosition()
         LOG.debug(line)
@@ -540,9 +849,8 @@ class GcodeEditor(EditorBase, QObject):
         self.setCursorPosition(line + 1, 0)
         self.highlight_line(line + 1)
 
-
-    # simple input dialog for save as
     def save_as_dialog(self, filename):
+    # simple input dialog for save as
         text, ok_pressed = QInputDialog.getText(self, "Save as", "New name:", QLineEdit.Normal, filename)
 
         if ok_pressed and text != '':
@@ -550,8 +858,20 @@ class GcodeEditor(EditorBase, QObject):
         else:
             return False
 
+    def initialize(self):
+        # Refresh the lexer font after everything is loaded.
+        # This allows the setting from Designer to be properly applied.
+        #print 'gcode_editor initalize start'
+        self._framework_initalize = True
+        self.refreshEditorFont()
+        #print 'gcode_editor initalize end'
 
 # more complex dialog required by find replace
+
+
+# ==============================================================================
+# Find and replace Dialog
+# ==============================================================================
 class FindReplaceDialog(QDialog):
     def __init__(self, parent):
         super(FindReplaceDialog, self).__init__(parent)
