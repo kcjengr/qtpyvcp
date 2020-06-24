@@ -36,21 +36,18 @@ GcodeEditor {
     qproperty-backgroundColor:          #303030;
     qproperty-marginBackgroundColor:    #D9DADB;
     qproperty-activeLineBackgroundColor: darkgray;
-    qproperty-editorDefaultFont:        "Ubuntu Mono";
 
-    qproperty-syntaxColorDefault:       #EFFBEF;
-    qproperty-syntaxColorComment:       #fcf803;
-    qproperty-syntaxColorKey:           #52ceff;
-    qproperty-syntaxColorAssignment:    #fa5f5f;
-    qproperty-syntaxColorValue:         #00CC00;
-    qproperty-syntaxColorMcode:         #f736d7;
-    qproperty-syntaxColorMsg:           #03fc20;
-    qproperty-syntaxColorScode:         #03fcc2;
-    qproperty-syntaxColorPcode:         #be4dff;
-    qproperty-syntaxColorTcode:         #ff8fdb;
-    qproperty-syntaxColorHcode:         #87b3ff;
+    qproperty-defaultColor:     #EFFBEF;
+    qproperty-defaultPaper:     Defaults to widget background color
+    qproperty-defaultFont:      Defaults to widget or application font
+
+    qproperty-commentColor:     #fcf803;
+    qproperty-commentPaper:     Defaults to defaultPaper;
+    qproperty-commentFont:      Defaults to defaultFont;
+    ...
 }
 """
+
 import sys
 import os
 
@@ -90,7 +87,7 @@ DEFAULT_STYLES = {
         'color': 'black',
     },
     'comment': {
-        'color': '#fcf803',
+        'color': 'grey',
     },
     'message': {
         'color': '#03fc20',
@@ -152,14 +149,13 @@ class ColorProperty(Property):
         widget.updateLexer()
 
     def getter(self, widget):
-        return self._color
-        # if self._color is not None:
-        #     return self._color
-        # return widget.property('defaultColor') or DEFAULT_COLOR
+        if self._color is not None:
+            return self._color
+        return widget.property('defaultColor') or DEFAULT_COLOR
 
-    # def reset(self, widget):
-    #     """Set color to None to use default color."""
-    #     self._color = None
+    def reset(self, widget):
+        """Set color to None to use default color."""
+        self._color = None
 
 
 class PaperProperty(Property):
@@ -232,9 +228,7 @@ class FontProperty(Property):
         """Set font to None to use default font."""
         self._font = None
 
-# ==============================================================================
-# Simple custom lexer for Gcode
-# ==============================================================================
+
 class GcodeLexer(QsciLexerCustom):
     def __init__(self, parent=None, standalone=False):
         super(GcodeLexer, self).__init__(parent)
@@ -249,9 +243,6 @@ class GcodeLexer(QsciLexerCustom):
 
     def description(self, style):
         return "Style " + str(style)
-
-    # def defaultColor(self, style):
-    #     return QsciLexerCustom.defaultColor(self, style)
 
     def styleText(self, start, end):
         editor = self.editor()
@@ -412,6 +403,7 @@ class GcodeEditor(QsciScintilla, VCPBaseWidget):
         self._background = QColor('#2e3436')
         self._margin_background = QColor('#D9DADB')
         self._current_line_background = QColor('gray')
+        self._active_line_background = QColor('yellow')
 
         # linuxcnc defaults
         self.idle_line_reset = False
@@ -474,22 +466,6 @@ class GcodeEditor(QsciScintilla, VCPBaseWidget):
     # def setProperty(self, *args, **kwargs):
     #     print args, kwargs
 
-    # @Property(QColor)
-    # def backgroundColor(self):
-    #     """Property to set the background color of the GCodeEditor (str).
-    #     sets the background color of the GCodeEditor
-    #     """
-    #     return self._background
-    #
-    # @backgroundColor.setter
-    # def backgroundColor(self, color):
-    #     self._background = color
-    #
-    #     self.SendScintilla(QsciScintilla.SCI_STYLESETBACK,
-    #                        QsciScintilla.STYLE_DEFAULT, color)
-    #
-    #     self.updateLexer()
-
     @Property(QColor)
     def marginBackgroundColor(self):
         """Property to set the background color of the GCodeEditor margin (str).
@@ -507,11 +483,11 @@ class GcodeEditor(QsciScintilla, VCPBaseWidget):
         """Property to set the background color of the active line.
         The active line is where the caret is within the file.
         """
-        return self._current_line_background
+        return self._active_line_background
 
     @activeLineBackgroundColor.setter
     def activeLineBackgroundColor(self, color):
-        self._current_line_background = color
+        self._active_line_background = color
         self.updateLexer()
 
     @Slot()
@@ -537,15 +513,18 @@ class GcodeEditor(QsciScintilla, VCPBaseWidget):
         # rebuild gutter for new font
         self.setNumberGutter(self.lines())
         # set the gutter font to be aligned to main font
+        self.setMarginsFont(font)
+        self.setCaretLineBackgroundColor(self._active_line_background)
+
+        # rebuild gutter for new font
+        self.setNumberGutter(self.lines())
+        # set the gutter font to be aligned to main font
         self.setMarginsBackgroundColor(self._margin_background)
         self.setMarginsFont(self.property('defaultFont') or DEFAULT_FONT)
-
-        self.setCaretLineBackgroundColor(self._current_line_background)
 
         self.SendScintilla(QsciScintilla.SCI_STYLESETBACK,
                            QsciScintilla.STYLE_DEFAULT,
                            self.property('defaultPaper') or DEFAULT_PAPER)
-
 
     def find_text_occurences(self, text):
         """Return byte positions of start and end of all 'text' occurences in the document"""
@@ -832,6 +811,7 @@ class GcodeEditor(QsciScintilla, VCPBaseWidget):
         #print 'gcode_editor initalize start'
         self._framework_initalize = True
         self.updateLexer()
+
 
 # more complex dialog required by find replace
 
