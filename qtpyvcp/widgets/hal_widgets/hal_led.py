@@ -30,8 +30,8 @@ class HalLedIndicator(LEDWidget, HALWidget):
         self._enabled_pin = None
 
     def initialize(self):
-        comp = hal.COMPONENTS['qtpyvcp']
-        obj_name = str(self.objectName()).replace('_', '-')
+        comp = hal.getComponent()
+        obj_name = self.getPinBaseName()
 
         # add led.on HAL pin
         self._on_pin = comp.addPin(obj_name + ".on", "bit", "in")

@@ -467,10 +467,9 @@ class HalPlot(QWidget, HALWidget):
         self._s4style = series4style
         self.setSeries()
 
-
     def initialize(self):
-        comp = hal.COMPONENTS['qtpyvcp']
-        obj_name = str(self.objectName()).replace('_', '-')
+        comp = hal.getComponent()
+        obj_name = self.getPinBaseName()
 
         # add HAL pins
         if self._s1enable:

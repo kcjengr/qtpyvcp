@@ -37,8 +37,8 @@ class HalSlider(QSlider, HALWidget):
             self._float_value_pin.value = val / 100.0
 
     def initialize(self):
-        comp = hal.COMPONENTS['qtpyvcp']
-        obj_name = str(self.objectName()).replace('_', '-')
+        comp = hal.getComponent()
+        obj_name = self.getPinBaseName()
 
         # add slider.enable HAL pin
         self._enable_pin = comp.addPin(obj_name + ".enable", "bit", "in")

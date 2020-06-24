@@ -42,8 +42,8 @@ class HalDoubleSpinBox(QDoubleSpinBox, HALWidget):
             self._value_pin.value = checked
 
     def initialize(self):
-        comp = hal.COMPONENTS['qtpyvcp']
-        obj_name = str(self.objectName()).replace('_', '-')
+        comp = hal.getComponent()
+        obj_name = self.getPinBaseName()
 
         # add spinbox.enabled HAL pin
         self._enabled_pin = comp.addPin(obj_name + ".enable", "bit", "in")
