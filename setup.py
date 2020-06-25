@@ -112,6 +112,7 @@ setup(
         'qtpyvcp.example_vcp': [
             'mini=examples.mini',
             'brender=examples.brender',
+            'actions=examples.actions',
         ],
         'qtpyvcp.test_vcp': [
             'vtk_test=video_tests.vtk_test',

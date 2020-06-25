@@ -6,7 +6,7 @@ qtdesigner:
   qss_file: ( application.kwargs.stylesheet )
 
 vcp:
-  name: actions
+  name: Actions
   version: v0.0.1
   author: John Thornton
   description: >
@@ -23,6 +23,7 @@ vcp:
 windows:
   mainwindow:
     kwargs:
+      title: QtPyVCP Example VCP - Actions
       # Specify the UI file to load the window layout from.
       ui_file: {{ file.dir }}/ui/mainwindow.ui
 
