@@ -118,7 +118,6 @@ def launch_designer(opts=DotDict()):
 
         from qtpyvcp.utilities.settings import addSetting
         for k, v in CONFIG['settings'].items():
-            print k, v
             addSetting(k, **v)
 
         # add to path so that QtDesginer can load it when it starts
