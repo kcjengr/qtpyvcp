@@ -110,8 +110,6 @@ from setting_slider import VCPSettingsCheckBox
 class VCPSettingsCheckBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
         return VCPSettingsCheckBox
-    def objectName(self):
-        return 'settings_checkbox'
     def designerExtensions(self):
         return [SettingSelectorExtension, RulesEditorExtension]
     def domXml(self):
