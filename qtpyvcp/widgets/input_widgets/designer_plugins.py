@@ -114,6 +114,13 @@ class VCPSettingsCheckBoxPlugin(_DesignerPlugin):
         return 'settings_checkbox'
     def designerExtensions(self):
         return [SettingSelectorExtension, RulesEditorExtension]
+    def domXml(self):
+        return """
+        <widget class="VCPSettingsCheckBox" name="settings_checkbox">
+          <property name="text">
+            <string>CheckBox</string>
+          </property>
+        </widget>"""
 
 from offset_table import OffsetTable
 class OffsetTablePlugin(_DesignerPlugin):
