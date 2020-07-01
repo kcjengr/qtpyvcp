@@ -70,11 +70,14 @@ class ProbeSimPlugin(_DesignerPlugin):
         return ProbeSim
 
 from setting_slider import VCPSettingsLineEdit
+from qtpyvcp.widgets.qtdesigner.settings_selector import SettingSelectorExtension
 class VCPSettingsLineEditPlugin(_DesignerPlugin):
     def pluginClass(self):
         return VCPSettingsLineEdit
     def objectName(self):
         return 'settings_lineedit'
+    def designerExtensions(self):
+        return [SettingSelectorExtension, RulesEditorExtension]
 
 from setting_slider import VCPSettingsSlider
 class VCPSettingsSliderPlugin(_DesignerPlugin):
@@ -82,6 +85,8 @@ class VCPSettingsSliderPlugin(_DesignerPlugin):
         return VCPSettingsSlider
     def objectName(self):
         return 'settings_slider'
+    def designerExtensions(self):
+        return [SettingSelectorExtension, RulesEditorExtension]
 
 from setting_slider import VCPSettingsSpinBox
 class VCPSettingsSpinBoxPlugin(_DesignerPlugin):
@@ -89,6 +94,8 @@ class VCPSettingsSpinBoxPlugin(_DesignerPlugin):
         return VCPSettingsSpinBox
     def objectName(self):
         return 'settings_spinbox'
+    def designerExtensions(self):
+        return [SettingSelectorExtension, RulesEditorExtension]
 
 from setting_slider import VCPSettingsDoubleSpinBox
 class VCPSettingsDoubleSpinBoxPlugin(_DesignerPlugin):
@@ -96,6 +103,8 @@ class VCPSettingsDoubleSpinBoxPlugin(_DesignerPlugin):
         return VCPSettingsDoubleSpinBox
     def objectName(self):
         return 'settings_double_spinbox'
+    def designerExtensions(self):
+        return [SettingSelectorExtension, RulesEditorExtension]
 
 from setting_slider import VCPSettingsCheckBox
 class VCPSettingsCheckBoxPlugin(_DesignerPlugin):
@@ -103,6 +112,8 @@ class VCPSettingsCheckBoxPlugin(_DesignerPlugin):
         return VCPSettingsCheckBox
     def objectName(self):
         return 'settings_checkbox'
+    def designerExtensions(self):
+        return [SettingSelectorExtension, RulesEditorExtension]
 
 from offset_table import OffsetTable
 class OffsetTablePlugin(_DesignerPlugin):
