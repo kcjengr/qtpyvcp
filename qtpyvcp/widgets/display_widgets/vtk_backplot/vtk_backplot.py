@@ -470,7 +470,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         centerY = center[1] / 2.0
 
         if self.rotating:
-            self.rotate(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
+            if self.lathe is True:
+                self.pan(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
+            else:   
+                self.rotate(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
         elif self.panning:
             self.pan(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
         elif self.zooming:
