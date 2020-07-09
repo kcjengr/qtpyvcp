@@ -9,9 +9,8 @@ import os
 import psutil
 
 from pyudev.pyqt5 import MonitorObserver
-from pyudev import Context, Monitor, Device
+from pyudev import Context, Monitor
 
-from qtpyvcp import SETTINGS, CONFIG
 from qtpyvcp.widgets.dialogs import askQuestion
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
