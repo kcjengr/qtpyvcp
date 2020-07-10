@@ -12,7 +12,7 @@ from qtpyvcp.plugins.base_plugins import Plugin, DataPlugin, DataChannel
 
 LOG = getLogger(__name__)
 
-PLUGINS = OrderedDict()
+_PLUGINS = OrderedDict()  # Ordered dict so we can initialize/terminate in order
 
 
 def registerPlugin(plugin_id, plugin_inst):
@@ -23,11 +23,11 @@ def registerPlugin(plugin_id, plugin_inst):
         plugin_inst(plugin_inst) : The plugin instance to register.
     """
 
-    if plugin_id in PLUGINS:
+    if plugin_id in _PLUGINS:
         LOG.warning("Replacing {} with {} for use with '{}' plugin"
-                    .format(PLUGINS[plugin_id].__class__, plugin_inst.__class__, plugin_id))
+                    .format(_PLUGINS[plugin_id].__class__, plugin_inst.__class__, plugin_id))
 
-    PLUGINS[plugin_id] = plugin_inst
+    _PLUGINS[plugin_id] = plugin_inst
 
 
 def registerPluginFromClass(plugin_id, plugin_cls, args=[], kwargs={}):
@@ -79,14 +79,19 @@ def getPlugin(plugin_id):
         ValueError if no plugin matching ``plugin_id`` is found.
     """
     try:
-        return PLUGINS[plugin_id]
+        return _PLUGINS[plugin_id]
     except KeyError:
         raise ValueError("Failed to find plugin with ID: {}.".format(plugin_id))
 
 
+def iterPlugins():
+    """Returns an iter for the plugins dict."""
+    return _PLUGINS.__iter__()
+
+
 def initialisePlugins():
     """Initialize all registered plugins"""
-    for plugin_id, plugin_inst in PLUGINS.items():
+    for plugin_id, plugin_inst in _PLUGINS.items():
         LOG.debug("Initializing '%s' plugin", plugin_id)
         plugin_inst.initialise()
 
@@ -95,7 +100,7 @@ def terminatePlugins():
     """Terminate all registered plugins"""
     # terminate in reverse order, this is to prevent problems
     # when terminating plugins that make use of other plugins.
-    for plugin_id, plugin_inst in reversed(PLUGINS.items()):
+    for plugin_id, plugin_inst in reversed(_PLUGINS.items()):
         LOG.debug("Terminating '%s' plugin", plugin_id)
         try:
             # try so that other plugins are terminated properly

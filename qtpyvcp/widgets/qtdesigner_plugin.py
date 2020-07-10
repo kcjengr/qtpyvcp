@@ -30,8 +30,8 @@ os.environ['VCP_CONFIG_FILES'] = os.getenv('VCP_CONFIG_FILES', '') + \
 from qtpyvcp.utilities.config_loader import load_config_files_from_env
 CONFIG.update(load_config_files_from_env())
 
-from qtpyvcp.plugins import loadDataPlugins
-loadDataPlugins(CONFIG['data_plugins'])
+from qtpyvcp.app.launcher import loadPlugins
+loadPlugins(CONFIG['data_plugins'])
 
 from qtpyvcp.widgets.form_widgets.designer_plugins import *
 from qtpyvcp.widgets.button_widgets.designer_plugins import *
