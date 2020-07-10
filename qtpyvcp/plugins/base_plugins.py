@@ -6,11 +6,45 @@ from qtpyvcp.utilities.logger import getLogger, logLevelFromName
 LOG = getLogger(__name__)
 
 
+class Plugin(QObject):
+    """QtPyVCP Plugin base class."""
+    def __init__(self):
+        super(Plugin, self).__init__()
+
+        self._log = None
+        self._initialized = False
+
+    @property
+    def log(self):
+        if self._log is None:
+            self._log = getLogger(self.__module__)
+            return self._log
+        return self._log
+
+    def initialise(self):
+        """Initialize the plugin.
+
+        This method is called after the main event loop has started. Any timers
+        or threads used by the plugin should be started here.
+
+        This method should set ``self._initialized`` to true if successfully.
+        """
+        self._initialized = True
+
+    def terminate(self):
+        """Terminate the plugin.
+
+        This is called right before the main event loop exits. Any cleanup
+        of the plugin should be done here, such as saving persistent data.
+        """
+        pass
+
+
 def isDataChan(obj):
     return isinstance(obj, DataChannel)
 
 
-class DataPlugin(QObject):
+class DataPlugin(Plugin):
     """DataPlugin."""
 
     def __init__(self):
@@ -18,8 +52,6 @@ class DataPlugin(QObject):
 
         self.channels = {name: obj for name, obj in
                          inspect.getmembers(self, isDataChan)}
-
-        self._log = None
 
     def getChannel(self, url):
         """Get data channel from URL.
@@ -69,29 +101,6 @@ class DataPlugin(QObject):
             if isinstance(level, basestring):
                 level = logLevelFromName(level)
             self.log.setLevel(level)
-
-    @property
-    def log(self):
-        if self._log is None:
-            self._log = getLogger(self.__module__)
-            return self._log
-        return self._log
-
-    def initialise(self):
-        """Initialize the data plugin.
-
-        This method is called after the main event loop has started. Any timers
-        or threads used by the plugin should be started here.
-        """
-        pass
-
-    def terminate(self):
-        """Terminate the data plugin.
-
-        This is called right before the main event loop exits. Any cleanup
-        of the plugin should be done here, such as saving persistent data.
-        """
-        pass
 
 
 class DataChannel(QObject):

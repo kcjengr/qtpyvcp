@@ -2,12 +2,12 @@ import os
 
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.plugins import DataPlugin
+from qtpyvcp.plugins import Plugin
 
 LOG = getLogger(__name__)
 
 
-class PersistentDataManager(DataPlugin):
+class PersistentDataManager(Plugin):
     def __init__(self, serialization_method='pickle', persistence_file=None):
         super(PersistentDataManager, self).__init__()
 

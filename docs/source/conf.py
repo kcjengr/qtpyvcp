@@ -425,8 +425,9 @@ Mock.mock_modules('qtpy',
                   'docopt',
                   'dbus')
 
-import qtpyvcp
-qtpyvcp.PLUGINS = mock.MagicMock()
+import qtpyvcp.plugins
+qtpyvcp.plugins._PLUGINS = mock.MagicMock()
+qtpyvcp.plugins.iterPlugins = mock.MagicMock()
 qtpyvcp.WINDOWS = mock.MagicMock()
 qtpyvcp.OPTIONS = mock.MagicMock()
 qtpyvcp.DIALOGS = mock.MagicMock()

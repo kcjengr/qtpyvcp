@@ -9,7 +9,7 @@ from qtpy.QtWidgets import QApplication
 import qtpyvcp
 from qtpyvcp import hal
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.plugins import loadDataPlugins
+from qtpyvcp.plugins import registerPluginFromClass
 from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog, IGNORE_LIST
 
 from qtpyvcp.utilities.info import Info
@@ -62,7 +62,7 @@ def launch_application(opts, config):
     hal_comp = hal.component('qtpyvcp')
 
     LOG.debug('Loading data plugings')
-    loadDataPlugins(config['data_plugins'])
+    loadPlugins(config['data_plugins'])
     log_time('done loading data plugins')
 
     LOG.debug('Initializing app')
@@ -202,6 +202,20 @@ def _initialize_object_from_dict(object_dict, parent=None):
         kwargs.update({'parent': parent})
 
     return obj(*args, **kwargs)
+
+
+def loadPlugins(plugins):
+    for plugin_id, plugin_dict in plugins.items():
+
+        try:
+            cls = plugin_dict['provider']
+        except KeyError:
+            raise ValueError("No provider class specified for %s plugin" % plugin_id)
+
+        args = plugin_dict.get('args', [])
+        kwargs = plugin_dict.get('kwargs', {})
+
+        registerPluginFromClass(plugin_id=plugin_id, plugin_cls=cls, args=args, kwargs=kwargs)
 
 
 def loadWindows(windows):

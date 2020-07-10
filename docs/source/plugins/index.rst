@@ -5,7 +5,7 @@ Data Plugins
 .. toctree::
    :maxdepth: 1
 
-   plugin
+   base_plugins
    status
    positions
    tool_table

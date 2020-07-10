@@ -16,7 +16,7 @@ from qtpy.QtWidgets import QApplication, QStyleFactory
 import qtpyvcp
 
 from qtpyvcp.utilities.logger import initBaseLogger
-from qtpyvcp.plugins import getPlugin
+from qtpyvcp.plugins import initialisePlugins, terminatePlugins, getPlugin
 from qtpyvcp.widgets.base_widgets.base_widget import VCPPrimitiveWidget
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
@@ -44,7 +44,8 @@ class VCPApplication(QApplication):
 
         self.status = getPlugin('status')
 
-        self.initialiseDataPlugins()
+        # initialize plugins
+        initialisePlugins()
 
         theme = opts.theme or theme
         if theme is not None:
@@ -228,7 +229,7 @@ class VCPApplication(QApplication):
 
     def terminate(self):
         self.terminateWidgets()
-        self.terminateDataPlugins()
+        terminatePlugins()
 
     def initialiseWidgets(self):
         for w in self.allWidgets():
@@ -243,20 +244,3 @@ class VCPApplication(QApplication):
                     w.terminate()
                 except Exception:
                     LOG.exception('Error terminating %s widget', w)
-
-    def initialiseDataPlugins(self):
-        for plugin, obj in qtpyvcp.PLUGINS.items():
-            LOG.debug("Initializing %s plugin", plugin)
-            obj.initialise()
-
-    def terminateDataPlugins(self):
-        # terminate in reverse order, this is to prevent problems
-        # when terminating plugins that used other plugins.
-        for plugin, obj in reversed(qtpyvcp.PLUGINS.items()):
-            LOG.debug("Terminating %s plugin", plugin)
-            try:
-                # try so that other plugins are terminated properly
-                # even if one of them fails.
-                obj.terminate()
-            except Exception:
-                LOG.exception('Error terminating %s plugin', plugin)

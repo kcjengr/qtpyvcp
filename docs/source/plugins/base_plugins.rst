@@ -2,5 +2,5 @@
 Base Plugins
 ============
 
-.. automodule:: qtpyvcp.plugins.plugin
+.. automodule:: qtpyvcp.plugins.base_plugins
     :members:

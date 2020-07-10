@@ -10,7 +10,7 @@ ToDO: look to further yaml configuration options
 """
 
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.plugins import DataPlugin
+from qtpyvcp.plugins import Plugin
 
 from qtpyvcp import hal
 from qtpyvcp.actions.machine_actions import feed_override, rapid_override
@@ -20,7 +20,7 @@ from qtpyvcp.actions.spindle_actions import override as spindle_override
 LOG = getLogger(__name__)
 
 
-class ExportedHal(DataPlugin):
+class ExportedHal(Plugin):
     def __init__(self, **kwargs):
         super(ExportedHal, self).__init__()
 
@@ -39,6 +39,7 @@ class ExportedHal(DataPlugin):
     def initialise(self):
         LOG.debug('Initalizing framework exposed HAL pins')
         self.initialiseFrameworkExposedHalPins()
+        self._initialized = True
 
     def terminate(self):
         pass
