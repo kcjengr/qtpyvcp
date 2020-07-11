@@ -49,7 +49,7 @@ class Status(DataPlugin):
         except:
             pass
 
-        excluded_items = ['axis', 'joint', 'spindle', 'poll', 'command', 'debug']
+        excluded_items = ['axis', 'joint', 'spindle', 'poll']
 
         self.old = {}
         # initialize data channels
