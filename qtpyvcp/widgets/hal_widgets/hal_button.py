@@ -18,6 +18,7 @@ class HalButton(QPushButton, HALWidget):
         ========================= ===== =========
         qtpyvcp.button.enable     bit   in
         qtpyvcp.button.out        bit   out
+        qtpyvcp.button.io         bit   io
         ========================= ===== =========
     """
     def __init__(self, parent=None):
@@ -28,6 +29,7 @@ class HalButton(QPushButton, HALWidget):
         self._enable_pin = None
         self._pressed_pin = None
         self._checked_pin = None
+        self._activated_pin = None
 
         self._pulse = False
         self._pulse_duration = 100
@@ -40,12 +42,16 @@ class HalButton(QPushButton, HALWidget):
     def onPress(self):
         if self._pressed_pin is not None:
             self._pressed_pin.value = True
+        if self._activated_pin is not None:
+            self._activated_pin.value = True
         if self._pulse:
             self.pulse_timer.start(self._pulse_duration)
 
     def onRelease(self):
         if self._pressed_pin is not None:
             self._pressed_pin.value = False
+        if self._activated_pin is not None:
+            self._activated_pin.value = False
 
     def onCheckedStateChanged(self, checked):
         if self._checked_pin is not None:
@@ -83,6 +89,11 @@ class HalButton(QPushButton, HALWidget):
 
         # add button.out HAL pin
         self._pressed_pin = comp.addPin(obj_name + ".out", "bit", "out")
+        
+        # add button.activated HAL pin
+        self._activated_pin = comp.addPin(obj_name + ".io", "bit", "io")
+        self._activated_pin.value = self.isDown()
+        self._activated_pin.valueChanged.connect(self.setDown)
 
         # add checkbox.checked HAL pin
         self._checked_pin = comp.addPin(obj_name + ".checked", "bit", "out")
