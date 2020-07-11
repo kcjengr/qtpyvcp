@@ -15,13 +15,13 @@ the minimum height to 50 and put the following into the `actionName`.
 
 Now when we run the configuration we can jog and set work offsets.
 
-.. image:: images/vcp1run-12.png
+.. image:: ../images/vcp1run-12.png
    :align: center
    :scale: 80 %
 
 Lets add a `Home All` `ActionButton` with the `actionName` `machine.home.all`.
 
-.. image:: images/vcp1run-13.png
+.. image:: ../images/vcp1run-13.png
    :align: center
    :scale: 80 %
 
@@ -92,7 +92,7 @@ This reads change the background color if all axes are homed else do nothing.
 Run the VCP and see the effects of the rules on the Home All button and the DRO
 status labels.
 
-.. image:: images/vcp1run-14.png
+.. image:: ../images/vcp1run-14.png
    :align: center
    :scale: 80 %
 
@@ -106,7 +106,7 @@ to a group box with the following `actionNames`
     program.abort
 
 
-.. image:: images/vcp1run-15.png
+.. image:: ../images/vcp1run-15.png
    :align: center
    :scale: 80 %
 

@@ -6,7 +6,7 @@ Clone and Prepare
     The following tutorial was done using Debian 9 (Stretch).
 
 Before cloning you should have installed QtPyVCP as shown on the
-:doc:`../install/quick_start` page.
+:doc:`/install/index` page.
 
 To start with you should clone the `VCP Template`. It has all the basic
 structure needed to build a VCP. In a terminal::

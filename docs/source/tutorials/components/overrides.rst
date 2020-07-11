@@ -31,7 +31,7 @@ enough for a touch screen. In the stylesheet of the slider add the following.::
 
 Now we have a slider big enough for a touch screen.
 
-.. image:: images/vcp1-06.png
+.. image:: ../images/vcp1-06.png
    :align: center
    :scale: 100 %
 
@@ -46,7 +46,7 @@ and in the channel put ``status:rapidrate`` and the expression is
 
 Now we can test the slider by issuing a rapid MDI command and moving the slider.
 
-.. image:: images/vcp1run-18.png
+.. image:: ../images/vcp1run-18.png
    :align: center
    :scale: 75 %
 
@@ -59,7 +59,7 @@ Now add the status label and create a rule as above with the channel
 
 Run the VCP and load a program to test the feed rate override slider.
 
-.. image:: images/vcp1run-19.png
+.. image:: ../images/vcp1run-19.png
    :align: center
    :scale: 75 %
 

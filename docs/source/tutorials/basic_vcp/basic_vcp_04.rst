@@ -148,5 +148,5 @@ You can also use a `StatusLabel` to display position. Create a rule for the
 
     position:rel?string&axis=x
 
-See the :doc:`../plugins/positions` page for more information on setting
+See the :doc:`/plugins/positions` page for more information on setting
 position display options.

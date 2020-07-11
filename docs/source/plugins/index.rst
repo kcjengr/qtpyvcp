@@ -9,6 +9,7 @@ Included plugins
 
 .. toctree::
    :maxdepth: 1
+   :titlesonly:
 
    base_plugins
    status

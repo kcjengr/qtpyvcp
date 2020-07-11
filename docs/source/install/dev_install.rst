@@ -2,47 +2,25 @@
 Development Install
 ===================
 
-If you wish to contribute to the project you need to do a develpment install.
+This installation method should be used if you are interested in
+contributing to `QtPyVCP`, or want to have access to the source
+code so you can study it and see how everything works.
 
-**Requirements**
-
-Debian 9 64 bit or Linux Mint 19 64 bit with LinuxCNC 2.8 (master) installed,
-either system wide or as a Run In Place (RIP) built from source.
-
-Instructions for installing on Debian 9 (stretch) and other distros can be
-found here: https://gnipsel.com/linuxcnc/uspace/debian9-emc.html
-
-The are multiple ways to install QtPyVCP, which one is best depends on how
-you intend to use QtPyVCP. If you are not interested in development then
-it is best is to install with pip per the :doc:`Quick Start <quick_start>` guide.
+This type of installation is editable, meaning you can make changes to
+the source files and the changes will take effect when `QtPyVCP` is next
+run, without the need to manually update or reinstall anything.
 
 
-Installing from Debian package
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. Note::
 
-.. warning ::
-    The QtPyVCP Debian packages are experimental, and may be missing some
-    dependencies. Installing via pip is the preferred installation method.
-
-Download the latest release here: https://github.com/kcjengr/qtpyvcp/releases
-
-Install by saying::
-
-  sudo apt install /path/to/download.deb
-
-or::
-
-  sudo dpkg -i /path/to/download.deb
+    If you are **not** interested in development then it is simpler to
+    install from PyPi per the :doc:`Standard Install <pypi_install>` guide.
 
 
-Development Install
-^^^^^^^^^^^^^^^^^^^
+.. Warning::
 
-If you intend to contribute to QtPyVCP or make your own VCPs
-then you will need a development install. This type of installation
-is editable, meaning you can make changes to the source files and the
-changes will take effect when QtPyVCP is next run, without the need to
-reinstall.
+    Before proceeding make sure you have satisfied the prerequisites listed on
+    the :doc:`Prerequisites <prerequisites>` page!
 
 
 Getting the QtPyVCP Source Code
@@ -60,7 +38,7 @@ Otherwise you can simply download the source code archive:
 Install Dev Dependencies
 ++++++++++++++++++++++++
 
-Development dependencies (in addition to those listed in the :doc:`Quick Start <quick_start>`) ::
+Development dependencies (in addition to those listed on the :doc:`Prerequisites <prerequisites>`) page::
 
   sudo apt install qttools5.dev qttools5-dev-tools wheel
 
@@ -86,11 +64,11 @@ From the qtpyvcp source directory install QtPyVCP by running::
 This will create a setup.py development install and will add command line scripts to
 ``~/.local/bin/`` for launching QtPyVCP, the example VCPs and the command line tools.
 
-.. note ::
-    If the pip install fails make sure you uninstall before trying to install
-    again. ``pip uninstall qtpyvcp``
+.. hint::
+    If the pip install fails, try uninstalling before trying to install again.
+    ``pip uninstall qtpyvcp``
 
-.. note ::
+.. note::
     On Debian 9 (Stretch) ``~/.local/bin/`` is not on the PATH due to a regression in bash.
     This prevents being able to launch qtpyvcp from the command line or being able to use it
     as the ``[DISPLAY]DISPLAY`` directive in the LinuxCNC INI file. For a single shell session

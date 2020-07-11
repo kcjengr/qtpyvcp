@@ -2,7 +2,7 @@
 Components
 ==========
 
-QtPyVCP components available in the Qt Designer
+QtPyVCP components available in Qt Designer
 
 .. toctree::
    :maxdepth: 1

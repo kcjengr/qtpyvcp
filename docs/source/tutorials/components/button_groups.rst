@@ -12,7 +12,8 @@ sends the button pressed to the function so every property is available to use.
 Then you can use the properties of the button like `button.text()` to get the
 text of the button.
 
-For this tutorial I'll clone a copy of the vcp template as shown in the :doc:`vcp_template` page and name the VCP ``button_group`` and copy the
+For this tutorial I'll clone a copy of the vcp template as shown in the :doc:`../vcp_template`
+page and name the VCP ``button_group`` and copy the
 LinuxCNC Configuration Files so we can test the VCP as we go along.
 
 Now open a terminal and edit the vcp with ``editvcp`` and select

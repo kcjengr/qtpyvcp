@@ -3,7 +3,7 @@ VCP Template
 ============
 
 To get a basic framework for building a VCP after installing `QtPyVCP` from the
-:doc:`../install/quick_start` page clone the
+:doc:`../install/index` page clone the
 `VCP Template <https://github.com/kcjengr/vcp-template>`_ which contains the
 basic framework for a QtPyVCP VCP.
 

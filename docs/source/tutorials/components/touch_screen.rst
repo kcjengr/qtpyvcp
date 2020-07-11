@@ -18,7 +18,7 @@ larger and easier to press with your finger.
 And you can see the tabs are large enough to touch with your finger on a touch
 screen.
 
-.. image:: images/vcp1run-17.png
+.. image:: ../images/vcp1run-17.png
    :align: center
    :scale: 75 %
 

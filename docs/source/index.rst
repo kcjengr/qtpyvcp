@@ -8,19 +8,29 @@ The goal is to provide a no-code, drag-and-drop system for making simple VCPs,
 as well as a straightforward, flexible and extensible framework to aid in
 building complex VCPs.
 
+
 .. toctree::
    :maxdepth: 1
-   :caption: QtPyVCP
+   :caption: Getting Started
+   :titlesonly:
 
    install/index
-   showcase/index
-   tutorials/index
+   install/basic_usage
    configuration/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Tutorials
+   :titlesonly:
+
+   tutorials/index
    components/index
+   showcase/index
 
 .. toctree::
    :maxdepth: 1
    :caption: Module & API Documentation
+   :titlesonly:
 
    plugins/index.rst
    actions/index.rst

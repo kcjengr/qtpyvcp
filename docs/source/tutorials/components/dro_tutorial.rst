@@ -8,7 +8,7 @@ section into a group box. Place three `StatusLabels` to the right side of the
 to 15 for the three labels and change the alignment to center and name them
 X, Y and Z.
 
-.. image:: images/vcp1-05.png
+.. image:: ../images/vcp1-05.png
    :align: center
    :scale: 40 %
 
@@ -46,7 +46,7 @@ pick the color.
 
 Now when we run the vcp we can see the DRO.
 
-.. image:: images/vcp1run-09.png
+.. image:: ../images/vcp1run-09.png
    :align: center
    :scale: 75 %
 
@@ -63,7 +63,7 @@ Repeat for the remaining axes with ``status:joint[1].homed`` for Y and
 ``status:joint[2].homed`` for Z. The expression is the same for all the axes.
 Now save and run the VCP.
 
-.. image:: images/vcp1run-10.png
+.. image:: ../images/vcp1run-10.png
    :align: center
    :scale: 75 %
 
@@ -81,7 +81,7 @@ Remember to use a label stylesheet to get the correct syntax and color.
 
 Now we can see the status label text is red because we have not homed yet.
 
-.. image:: images/vcp1run-11.png
+.. image:: ../images/vcp1run-11.png
    :align: center
    :scale: 75 %
 
