@@ -40,32 +40,3 @@ As improvements are made to QtPyVCP you can upgrade the pip install with
 ::
 
   pip install --upgrade qtpyvcp
-
-
-Launch a SIM config
-+++++++++++++++++++
-
-Launch LinuxCNC as usual and select one of the QtPyVCP sims. You should see a
-dialog from which you can select one of the example VCPs. Choose one and click
-"Launch VCP".
-
-
-Edit a VCP
-++++++++++
-
-To edit a VCP you need to install Qt Designer.
-::
-
-    sudo apt install qttools5.dev qttools5-dev-tools
-
-
-Notes
-+++++
-
-This installation method is tested to work on Debian 9 (Stretch) and Mint 19,
-it should work on other distros as well. If you intend to contribute to QtPyVCP
-you will need to set up a :doc:`development install <dev_install>`.
-
-.. Note::
-    You should un-install using ``pip uninstall qtpyvcp``
-    before using one of the other installation methods to avoid conflicts.

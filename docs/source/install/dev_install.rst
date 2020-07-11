@@ -57,6 +57,12 @@ can be added.*
 Install with pip
 +++++++++++++++++++++
 
+.. warning::
+
+    If you previously installed QtPyVCP using the standard install method
+    you should first uninstall with ``pip uninstall qtpyvcp`` before proceeding
+    to avoid the possibility of multiple installations conflicting.
+
 From the qtpyvcp source directory install QtPyVCP by running::
 
   pip install --editable .
@@ -92,8 +98,8 @@ Confirm that QtPyVCP installed correctly and is available by running::
 This will print a list of command line options if the installation was
 successful.
 
-QtDesigner Plug-ins
-^^^^^^^^^^^^^^^^^^^
+QtDesigner Plugins
+^^^^^^^^^^^^^^^^^^
 
 If you want to edit a VCP or create one from a template you need to have the
 QtDesigner plugins installed. To load, you must have the correct version of
