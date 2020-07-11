@@ -1,7 +1,10 @@
-"""QtPyVCP Plugins.
+"""
+QtPyVCP Plugins
+---------------
 
-This module handles the initialization of standard and custom plugins,
-and maintains a global registry of plugin IDs vs. plugin instances.
+These package level functions provide methods for registering and initializing
+plugins, as well as retrieving them for use and terminating them in the proper
+order.
 """
 import importlib
 
@@ -33,12 +36,27 @@ def registerPlugin(plugin_id, plugin_inst):
 def registerPluginFromClass(plugin_id, plugin_cls, args=[], kwargs={}):
     """Register a plugin from a class.
 
+    This is primarily used for registering plugins defined in the YAML config.
+
+    .. code-block:: yaml
+
+        data_plugins:
+          my_plugin:
+            provider: my_package.my_module:MyPluginClass
+            args:
+              - 10
+              - False
+            kwargs:
+              my_number: 75
+              my_string: A string argument
+
     Args:
-        plugin_id (str) : The unique name to register the plugin under.
-        plugin_cls (Plugin, str) : The python class defining the plugin. Can be either
-            a class reference, or a specifier with format ``package.module:Class``.
-        args (list) : A arguments to pass to the plugin class.
-        kwargs (dict) : A keyword argument to pass to the plugin class.
+        plugin_id (str) : A unique name to register the plugin under.
+        plugin_cls (class, str) : A :py:class:`.Plugin` subclass, or a fully
+            qualified class spec of format ``package.module:Class`` specifying
+            the location of an importable :py:class:`.Plugin` subclass.
+        args (list) : Arguments to pass to the plugin's __init__ method.
+        kwargs (dict) : Keyword argument to pass to the plugin's __init__ method.
 
     Returns:
         The plugin instance
@@ -55,7 +73,7 @@ def registerPluginFromClass(plugin_id, plugin_cls, args=[], kwargs={}):
             LOG.critical("Failed to import data plugin.")
             raise
 
-    assert issubclass(plugin_cls, Plugin), "Not a valid plugin, must be a DataPlugin subclass."
+    assert issubclass(plugin_cls, Plugin), "Not a valid plugin, must be a qtpyvcp.plugins.Plugin subclass."
 
     try:
         inst = plugin_cls(*args, **kwargs)
@@ -74,30 +92,38 @@ def getPlugin(plugin_id):
 
     Returns:
         A plugin instance, or None.
-
-    Raises:
-        ValueError if no plugin matching ``plugin_id`` is found.
     """
     try:
         return _PLUGINS[plugin_id]
     except KeyError:
-        raise ValueError("Failed to find plugin with ID: {}.".format(plugin_id))
+        LOG.error("Failed to find plugin with ID '%s'", plugin_id)
+        return None
 
 
 def iterPlugins():
-    """Returns an iter for the plugins dict."""
+    """Returns an iterator for the plugins dict."""
     return _PLUGINS.iteritems()
 
 
 def initialisePlugins():
-    """Initialize all registered plugins"""
+    """Initializes all registered plugins.
+
+        Plugins are initialized in the order they were registered in.
+        Plugins defined in the YAML file are registered in the order they
+        were defined.
+    """
     for plugin_id, plugin_inst in _PLUGINS.items():
         LOG.debug("Initializing '%s' plugin", plugin_id)
         plugin_inst.initialise()
 
 
 def terminatePlugins():
-    """Terminate all registered plugins"""
+    """Terminates all registered plugins.
+
+        Plugins are terminated in the reverse order they were registered in.
+        If an error is encountered while terminating a plugin it will be ignored
+        and the remaining plugins will still be terminated.
+    """
     # terminate in reverse order, this is to prevent problems
     # when terminating plugins that make use of other plugins.
     for plugin_id, plugin_inst in reversed(_PLUGINS.items()):
