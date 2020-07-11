@@ -17,7 +17,7 @@ import webbrowser
 from qtpy import uic
 from qtpy import QtWidgets, QtCore, QtDesigner
 
-from qtpyvcp.plugins import DataChannel, getPlugin, iterPlugins
+from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin, iterPlugins
 from qtpyvcp.utilities.settings import Setting
 from plugin_extension import _PluginExtension
 
@@ -94,8 +94,9 @@ class CompleterDelegate(QtWidgets.QStyledItemDelegate):
 
         items = []
         for plugin, obj in iterPlugins():
-            for chan_name in obj.channels:
-                items.append('{}:{}'.format(plugin, chan_name))
+            if isinstance(obj, DataPlugin):
+                for chan_name in obj.channels:
+                    items.append('{}:{}'.format(plugin, chan_name))
 
         self.completer = QtWidgets.QCompleter(sorted(items))
         self.completer.setCompletionColumn(0)

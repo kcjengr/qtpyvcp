@@ -86,7 +86,7 @@ def getPlugin(plugin_id):
 
 def iterPlugins():
     """Returns an iter for the plugins dict."""
-    return _PLUGINS.__iter__()
+    return _PLUGINS.iteritems()
 
 
 def initialisePlugins():
