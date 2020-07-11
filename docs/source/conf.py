@@ -126,6 +126,8 @@ keep_warnings = True
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
 
+# Order autodoc by source rather than alphabetically
+autodoc_member_order = 'bysource'
 
 # -- Options for HTML output ----------------------------------------------
 
