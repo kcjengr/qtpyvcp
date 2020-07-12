@@ -200,7 +200,7 @@ class gCodeEdit(QPlainTextEdit):
         self.setWindowIcon(QIcon('/usr/share/pixmaps/linuxcncicon.png'))
         self._setfont = QFont("DejaVu Sans Mono", 12)
         self.setFont(self._setfont)
-        self.lineNumbers = self.NumberBar(self)
+        self.lineNumbers = NumberBar(self)
         self.currentLine = None
         self.currentLineColor = self.palette().alternateBase()
         self.cursorPositionChanged.connect(self.highlightLine)
@@ -292,70 +292,71 @@ class gCodeEdit(QPlainTextEdit):
         QPlainTextEdit.resizeEvent(self, *e)
 
     def highlightLine(self): # highlights current line, find a way not to use QTextEdit
-            newCurrentLineNumber = self.textCursor().blockNumber()
-            if newCurrentLineNumber != self.currentLine:
-                self.currentLine = newCurrentLineNumber
-                selectedLine = QTextEdit.ExtraSelection()
-                selectedLine.format.setBackground(QColor('#d5d8dc'))
-                selectedLine.format.setProperty(QTextFormat.FullWidthSelection, True)
-                selectedLine.cursor = self.textCursor()
-                selectedLine.cursor.clearSelection()
-                self.setExtraSelections([selectedLine])
+        newCurrentLineNumber = self.textCursor().blockNumber()
+        if newCurrentLineNumber != self.currentLine:
+            self.currentLine = newCurrentLineNumber
+            selectedLine = QTextEdit.ExtraSelection()
+            selectedLine.format.setBackground(QColor('#d5d8dc'))
+            selectedLine.format.setProperty(QTextFormat.FullWidthSelection, True)
+            selectedLine.cursor = self.textCursor()
+            selectedLine.cursor.clearSelection()
+            self.setExtraSelections([selectedLine])
 
-    class NumberBar(QWidget):
-        def __init__(self, parent):
-            QWidget.__init__(self, parent)
-            self.parent = parent
-            # this only happens when lines are added or subtracted
-            self.parent.blockCountChanged.connect(self.updateWidth)
-            # this happens quite often
-            self.parent.updateRequest.connect(self.updateContents)
-            self.font = QFont()
-            self.numberBarColor = QColor("#e8e8e8")
 
-        def getWidth(self):
-            blocks = self.parent.blockCount()
-            return self.fontMetrics().width(str(blocks)) + 10
+class NumberBar(QWidget):
+    def __init__(self, parent):
+        QWidget.__init__(self, parent)
+        self.parent = parent
+        # this only happens when lines are added or subtracted
+        self.parent.blockCountChanged.connect(self.updateWidth)
+        # this happens quite often
+        self.parent.updateRequest.connect(self.updateContents)
+        self.font = QFont()
+        self.numberBarColor = QColor("#e8e8e8")
 
-        def updateWidth(self): # check the number column width and adjust
-            width = self.getWidth()
-            if self.width() != width:
-                self.setFixedWidth(width)
-                self.parent.setViewportMargins(width, 0, 0, 0)
+    def getWidth(self):
+        blocks = self.parent.blockCount()
+        return self.fontMetrics().width(str(blocks)) + 10
 
-        def updateContents(self, rect, scroll):
-            if scroll:
-                self.scroll(0, scroll)
+    def updateWidth(self): # check the number column width and adjust
+        width = self.getWidth()
+        if self.width() != width:
+            self.setFixedWidth(width)
+            self.parent.setViewportMargins(width, 0, 0, 0)
+
+    def updateContents(self, rect, scroll):
+        if scroll:
+            self.scroll(0, scroll)
+        else:
+            self.update(0, rect.y(), self.width(), rect.height())
+        if rect.contains(self.parent.viewport().rect()):
+            fontSize = self.parent.currentCharFormat().font().pointSize()
+            self.font.setPointSize(fontSize)
+            self.font.setStyle(QFont.StyleNormal)
+            self.updateWidth()
+
+    def paintEvent(self, event): # this puts the line numbers in the margin
+        painter = QPainter(self)
+        painter.fillRect(event.rect(), self.numberBarColor)
+        block = self.parent.firstVisibleBlock()
+        while block.isValid():
+            blockNumber = block.blockNumber()
+            block_top = self.parent.blockBoundingGeometry(block).translated(self.parent.contentOffset()).top()
+            # if the block is not visible stop wasting time
+            if not block.isVisible() or block_top >= event.rect().bottom():
+                break
+            if blockNumber == self.parent.textCursor().blockNumber():
+                self.font.setBold(True)
+                painter.setPen(QColor("#000000"))
             else:
-                self.update(0, rect.y(), self.width(), rect.height())
-            if rect.contains(self.parent.viewport().rect()):
-                fontSize = self.parent.currentCharFormat().font().pointSize()
-                self.font.setPointSize(fontSize)
-                self.font.setStyle(QFont.StyleNormal)
-                self.updateWidth()
-
-        def paintEvent(self, event): # this puts the line numbers in the margin
-            painter = QPainter(self)
-            painter.fillRect(event.rect(), self.numberBarColor)
-            block = self.parent.firstVisibleBlock()
-            while block.isValid():
-                blockNumber = block.blockNumber()
-                block_top = self.parent.blockBoundingGeometry(block).translated(self.parent.contentOffset()).top()
-                # if the block is not visible stop wasting time
-                if not block.isVisible() or block_top >= event.rect().bottom():
-                    break
-                if blockNumber == self.parent.textCursor().blockNumber():
-                    self.font.setBold(True)
-                    painter.setPen(QColor("#000000"))
-                else:
-                    self.font.setBold(False)
-                    painter.setPen(QColor("#717171"))
-                painter.setFont(self.font)
-                paint_rect = QRect(0, block_top, self.width(), self.parent.fontMetrics().height())
-                painter.drawText(paint_rect, Qt.AlignRight, str(blockNumber+1))
-                block = block.next()
-            painter.end()
-            QWidget.paintEvent(self, event)
+                self.font.setBold(False)
+                painter.setPen(QColor("#717171"))
+            painter.setFont(self.font)
+            paint_rect = QRect(0, block_top, self.width(), self.parent.fontMetrics().height())
+            painter.drawText(paint_rect, Qt.AlignRight, str(blockNumber+1))
+            block = block.next()
+        painter.end()
+        QWidget.paintEvent(self, event)
 
 """
 if __name__ == '__main__':
