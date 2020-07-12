@@ -166,11 +166,12 @@ class gCodeHighlight(QSyntaxHighlighter):
         for item in commentPatterns:
             self.rules.append([QRegularExpression(item, self.cio), commentFormat])
 
-    def highlightBlock(self, text): # Using QRegularExpression
-        for pattern, format in self.rules:
-            exp = QRegularExpression(pattern)
+    def highlightBlock(self, text):  # Using QRegularExpression
+        for exp, format in self.rules:
+
             result = exp.match(text)
             index = result.capturedStart()
+
             count = 0
             while index >= 0:
                 count += 1
