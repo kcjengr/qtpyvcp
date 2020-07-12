@@ -183,6 +183,9 @@ class gCodeHighlight(QSyntaxHighlighter):
                 result = exp.match(text, end)
                 index = result.capturedStart()
 
+        # process any pending events so we don't lock up the GUI
+        QApplication.processEvents()
+
 class gCodeEdit(QPlainTextEdit):
     """
     g Code Editor using QPlainTextEdit for speed in loading
