@@ -1,9 +1,22 @@
+# BUGs:
 
-syntaxSpec:
-  language: 'RS274 G-Code'
+# textFormat:
+#   fontCapitalization: QFont:AllUppercase
+# https://bugreports.qt.io/browse/QTBUG-32619
+
+
+RS274-Gcode:
+  description:
   author: 'Kurt Jacobson'
+  fileTypes: ['.ngc', '.nc']
 
   definitions:
+    default:
+      textFormat:
+        fontFixedPitch: True
+        fontWeight: QFont:Normal
+        fontCapitalization: QFont:AllUppercase
+
     modalGroup0:  # Non-Modal
       match: ['G4', 'G10', 'G28', 'G30', 'G52', 'G53', 'G92', 'G92.1', 'G92.2', 'G92.3']
       textFormat:
@@ -90,25 +103,42 @@ syntaxSpec:
         fontWeight: QFont:Bold
 
     mCodes:
-      match: ['M\d{1,3}']
+      match: ['M\d{1,3}', '%']
       textFormat:
         foreground: '#FF4500'  # Orange Red
         fontWeight: QFont:Bold
 
     axisLetters:
-      match: 'XYZABCUVW'
+      match: 'ABCUVW'
       textFormat:
         foreground: 'purple'
         fontWeight: QFont:Bold
 
+    xAxisLetter:
+      match: 'X'
+      textFormat:
+        foreground: '#76af00'
+        fontWeight: QFont:Bold
+
+    yAxisLetter:
+      match: 'Y'
+      textFormat:
+        foreground: '#0080c0'
+        fontWeight: QFont:Bold
+
+    zAxisLetter:
+      match: 'Z'
+      textFormat:
+        foreground: '#e24e29'
+        fontWeight: QFont:Bold
+
     otherCodes:
-      match: ['F\\d+', 'S\\d+', 'T\\d+']
+      match: ['F[0-9.]*', 'S[0-9.]*', 'T\d+']
       textFormat:
         foreground: '#006400'  # Dark Green
-        fontWeight: QFont:Bold
 
     comments:
       match: [';.*', '\(.*\)']
       textFormat:
+        foreground: 'gray'
         fontItalic: True
-        fontWeight: QFont:Light

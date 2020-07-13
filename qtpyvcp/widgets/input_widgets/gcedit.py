@@ -1,72 +1,98 @@
 
-import sys, os
-from PyQt5.QtWidgets import (QApplication, QPlainTextEdit,
-    QTextEdit, QWidget, QMenu)
-from PyQt5.QtGui import (QIcon, QFontDatabase, QFont, QColor, QPainter,
-    QTextFormat, QSyntaxHighlighter, QTextCharFormat, QTextCursor, QFontInfo)
-from PyQt5.QtCore import (QRect, Qt, QRegularExpression)
-
-from qtpy.QtCore import Slot, Signal, Property
-from qtpyvcp import actions
-
-from qtpyvcp.plugins import getPlugin
-STATUS = getPlugin('status')
-
+import os
 import yaml
 
-from qtpyvcp import DEFAULT_CONFIG_FILE
+from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal, Property)
+from qtpy.QtGui import (QIcon, QFont, QColor, QPainter, QSyntaxHighlighter,
+                        QTextOption, QTextFormat, QTextCharFormat, QTextCursor)
+from qtpy.QtWidgets import (QApplication, QPlainTextEdit, QTextEdit, QWidget, QMenu)
+
+from qtpyvcp import actions, DEFAULT_CONFIG_FILE
+from qtpyvcp.plugins import getPlugin
+
+STATUS = getPlugin('status')
 YAML_DIR = os.path.dirname(DEFAULT_CONFIG_FILE)
 
 
 class gCodeHighlight(QSyntaxHighlighter):
-    def __init__(self, parent=None):
-        super(gCodeHighlight, self).__init__(parent)
+    def __init__(self, document, parent):
+        super(gCodeHighlight, self).__init__(document)
+
+        self._parent = parent
 
         self.rules = []
+        self._char_fmt = QTextCharFormat()
 
         self.loadSyntaxFromYAML()
 
     def loadSyntaxFromYAML(self):
 
         with open(os.path.join(YAML_DIR, 'gcode_syntax.yml')) as fh:
-            syntax_spec = yaml.load(fh, Loader=yaml.FullLoader)
+            syntax_specs = yaml.load(fh, Loader=yaml.FullLoader)
 
-        syntax_spec = syntax_spec['syntaxSpec']
+        assert isinstance(syntax_specs, dict), \
+            "Invalid YAML format for language spec, root item must be a dictionary."
+
         cio = QRegularExpression.CaseInsensitiveOption
 
-        for name, spec in syntax_spec['definitions'].items():
-            char_fmt = QTextCharFormat()
+        for lang_name, language in syntax_specs.items():
 
-            for option, value in spec.get('textFormat', {}).items():
-                if value is None:
-                    continue
+            definitions = language.get('definitions', {})
 
-                if option in ['foreground', 'background']:
-                    value = QColor(value)
+            default_fmt_spec = definitions.get('default', {}).get('textFormat', {})
 
-                if isinstance(value, basestring) and value.startswith('QFont:'):
-                    value = getattr(QFont, value.lstrip('QFont:'))
+            for context_name, spec in definitions.items():
 
-                attr = 'set' + option[0].capitalize() + option[1:]
-                getattr(char_fmt, attr)(value)
+                base_fmt = default_fmt_spec.copy()
+                fmt_spec = spec.get('textFormat', {})
 
-            patterns = spec.get('match', '')
-            for pattern in patterns:
-                self.rules.append([QRegularExpression(pattern, cio), char_fmt])
+                # update the default fmt spec
+                base_fmt.update(fmt_spec)
+
+                char_fmt = self.charFormatFromSpec(fmt_spec)
+
+                patterns = spec.get('match', [])
+                for pattern in patterns:
+                    self.rules.append([QRegularExpression(pattern, cio), char_fmt])
+
+    def charFormatFromSpec(self, fmt_spec):
+
+        char_fmt = self.defaultCharFormat()
+
+        for option, value in fmt_spec.items():
+            if value is None:
+                continue
+
+            if option in ['foreground', 'background']:
+                value = QColor(value)
+
+            if isinstance(value, basestring) and value.startswith('QFont:'):
+                value = getattr(QFont, value[6:])
+
+            attr = 'set' + option[0].capitalize() + option[1:]
+            getattr(char_fmt, attr)(value)
+
+        return char_fmt
+
+    def defaultCharFormat(self):
+        char_fmt = QTextCharFormat()
+        char_fmt.setFont(self._parent.font())
+        return char_fmt
 
     def highlightBlock(self, text):  # Using QRegularExpression
-        for exp, format in self.rules:
+
+        self.setFormat(0, len(text), self.defaultCharFormat())
+
+        for exp, tex_fmt in self.rules:
 
             result = exp.match(text)
             index = result.capturedStart()
 
-            count = 0
             while index >= 0:
-                count += 1
                 start = result.capturedStart()
                 end = result.capturedEnd()
                 length = result.capturedLength()
-                self.setFormat(start, length, format)
+                self.setFormat(start, length, tex_fmt)
                 # check again starting at the end of the last match
                 result = exp.match(text, end)
                 index = result.capturedStart()
@@ -84,30 +110,31 @@ class gCodeEdit(QPlainTextEdit):
         super(gCodeEdit, self).__init__(parent)
         self.status = STATUS
         # if a program is loaded into LinuxCNC display that file
-        self.status.file.notify(self.load_program)
-        self.status.motion_line.onValueChanged(self.changeCursorPosition)
+        self.status.file.notify(self.loadProgramFile)
+        self.status.motion_line.onValueChanged(self.setCurrentLine)
 
         self.setGeometry(50, 50, 800, 640)
-        self.setWindowTitle("PyQt5 g Code Editor")
+        self.setWindowTitle("PyQt5 G-Code Editor")
         self.setWindowIcon(QIcon('/usr/share/pixmaps/linuxcncicon.png'))
-        self._setfont = QFont("DejaVu Sans Mono", 12)
-        self.setFont(self._setfont)
+
         self.lineNumbers = NumberBar(self)
         self.currentLine = None
         self.currentLineColor = self.palette().alternateBase()
         self.cursorPositionChanged.connect(self.highlightLine)
-        self.gCodeHighlighter = gCodeHighlight(self.document())
 
-        self._backgroundcolor = QColor(255,255,255)
-        self.pallet = self.viewport().palette()
-        self.pallet.setColor(self.viewport().backgroundRole(), self._backgroundcolor)
-        self.viewport().setPalette(self.pallet)
+        # syntax highlighting
+        self.gCodeHighlighter = gCodeHighlight(self.document(), self)
+
+        # self._backgroundcolor = QColor(255,255,255)
+        # self.pallet = self.viewport().palette()
+        # self.pallet.setColor(self.viewport().backgroundRole(), self._backgroundcolor)
+        # self.viewport().setPalette(self.pallet)
 
         # context menu
         self.focused_line = 1
         self.enable_run_action = actions.program_actions._run_ok()
         self.menu = QMenu(self)
-        self.menu.addAction(self.tr("run from line {}".format(self.focused_line)), self.run_from_here)
+        self.menu.addAction(self.tr("Run from line {}".format(self.focused_line)), self.runFromHere)
         self.menu.addSeparator()
         self.menu.addAction(self.tr('Cut'), self.cut)
         self.menu.addAction(self.tr('Copy'), self.copy)
@@ -115,10 +142,18 @@ class gCodeEdit(QPlainTextEdit):
         # FIXME picks the first action run from here, should not be by index
         self.run_action = self.menu.actions()[0]
         self.run_action.setEnabled(self.enable_run_action)
+
         self.cursorPositionChanged.connect(self.on_cursor_changed)
 
-        # file operations
-        gCodeFileName = ''
+        self.setCenterOnScroll(True)
+        self.setWordWrapMode(QTextOption.NoWrap)
+
+    def changeEvent(self, event):
+        if event.type() == QEvent.FontChange:
+            print "Font Changed:", self.font()
+
+            self.gCodeHighlighter = gCodeHighlight(self.document(), self)
+        super(gCodeEdit, self).changeEvent(event)
 
     @Slot(bool)
     def EditorReadOnly(self, state):
@@ -130,36 +165,30 @@ class gCodeEdit(QPlainTextEdit):
         else:
             self.setReadOnly(False)
 
-    @Property(QFont)
-    def setfont(self):
-        return self._setfont
+    # @Property(QColor)
+    # def backgroundcolor(self):
+    #     return self._backgroundcolor
+    #
+    # @backgroundcolor.setter
+    # def backgroundcolor(self, color):
+    #     self._backgroundcolor = color
+    #     self.pallet.setColor(self.viewport().backgroundRole(), color)
+    #     self.viewport().setPalette(self.pallet)
 
-    @setfont.setter
-    def setfont(self, font):
-        self._setfont = font
-        print(font.family())
-        self.setFont(font)
-
-    @Property(QColor)
-    def backgroundcolor(self):
-        return self._backgroundcolor
-
-    @backgroundcolor.setter
-    def backgroundcolor(self, color):
-        self._backgroundcolor = color
-        self.pallet.setColor(self.viewport().backgroundRole(), color)
-        self.viewport().setPalette(self.pallet)
-
-    def load_program(self, fname=None):
+    @Slot(str)
+    @Slot(object)
+    def loadProgramFile(self, fname=None):
         if fname:
             with open(fname) as f:
                 gcode = f.read()
             self.setPlainText(gcode)
 
-    def changeCursorPosition(self, line):
-        #print(line)
-        cursor = QTextCursor(self.document().findBlockByLineNumber(line))
+    @Slot(int)
+    @Slot(object)
+    def setCurrentLine(self, line):
+        cursor = QTextCursor(self.document().findBlockByLineNumber(line - 1))
         self.setTextCursor(cursor)
+        self.centerCursor()
 
     def on_cursor_changed(self):
         self.focused_line = self.textCursor().blockNumber() + 1
@@ -167,12 +196,12 @@ class gCodeEdit(QPlainTextEdit):
 
     def contextMenuEvent(self, event):
         self.enable_run_action = actions.program_actions._run_ok()
-        self.run_action.setText("run from line {}".format(self.focused_line))
+        self.run_action.setText("Run from line {}".format(self.focused_line))
         self.run_action.setEnabled(self.enable_run_action)
         self.menu.popup(event.globalPos())
         event.accept()
 
-    def run_from_here(self, *args, **kwargs):
+    def runFromHere(self, *args, **kwargs):
         line, _ = self.getCursorPosition()
         actions.program_actions.run(line + 1)
 
@@ -202,7 +231,7 @@ class NumberBar(QWidget):
         self.parent.blockCountChanged.connect(self.updateWidth)
         # this happens quite often
         self.parent.updateRequest.connect(self.updateContents)
-        self.font = QFont()
+        self.font = self.parent.font()
         self.numberBarColor = QColor("#e8e8e8")
 
     def getWidth(self):
@@ -213,7 +242,7 @@ class NumberBar(QWidget):
         width = self.getWidth()
         if self.width() != width:
             self.setFixedWidth(width)
-            self.parent.setViewportMargins(width, 0, 0, 0)
+            self.parent.setViewportMargins(width, 0, 5, 0)
 
     def updateContents(self, rect, scroll):
         if scroll:
@@ -221,15 +250,16 @@ class NumberBar(QWidget):
         else:
             self.update(0, rect.y(), self.width(), rect.height())
         if rect.contains(self.parent.viewport().rect()):
-            fontSize = self.parent.currentCharFormat().font().pointSize()
-            self.font.setPointSize(fontSize)
-            self.font.setStyle(QFont.StyleNormal)
+            # fontSize = self.parent.currentCharFormat().font().pointSize()
+            # self.font.setPointSize(fontSize)
+            # self.font.setStyle(QFont.StyleNormal)
             self.updateWidth()
 
-    def paintEvent(self, event): # this puts the line numbers in the margin
+    def paintEvent(self, event):  # this puts the line numbers in the margin
         painter = QPainter(self)
         painter.fillRect(event.rect(), self.numberBarColor)
         block = self.parent.firstVisibleBlock()
+
         while block.isValid():
             blockNumber = block.blockNumber()
             block_top = self.parent.blockBoundingGeometry(block).translated(self.parent.contentOffset()).top()
@@ -242,10 +272,12 @@ class NumberBar(QWidget):
             else:
                 self.font.setBold(False)
                 painter.setPen(QColor("#717171"))
-            painter.setFont(self.font)
+
+            # painter.setFont(self.font)
             paint_rect = QRect(0, block_top, self.width(), self.parent.fontMetrics().height())
             painter.drawText(paint_rect, Qt.AlignRight, str(blockNumber+1))
             block = block.next()
+
         painter.end()
         QWidget.paintEvent(self, event)
 
