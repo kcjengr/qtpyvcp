@@ -1155,8 +1155,8 @@ class PathBoundaries:
         cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
         if not IN_DESIGNER:
-            programBoundary = INIFILE.find("VTK", "PROGRAM_BOUNDARY") or ""
-            if programBoundary.lower() in ['true', 'on', 'yes', '1']:
+            programBoundry = INIFILE.find("VTK", "PROGRAM_BOUNDRY") or ""
+            if programBoundry.lower() in ['true', 'on', 'yes', '1']:
                 cube_axes_actor.XAxisVisibilityOn()
                 cube_axes_actor.YAxisVisibilityOn()
                 cube_axes_actor.ZAxisVisibilityOn()
@@ -1337,8 +1337,8 @@ class Machine:
         cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
         if not IN_DESIGNER:
-            machineBoundary = INIFILE.find("VTK", "MACHINE_BOUNDARY") or ""
-            if machineBoundary.lower() in ['true', 'on', 'yes', '1']:
+            machineBoundry = INIFILE.find("VTK", "MACHINE_BOUNDRY") or ""
+            if machineBoundry.lower() in ['true', 'on', 'yes', '1']:
                 cube_axes_actor.XAxisVisibilityOn()
                 cube_axes_actor.YAxisVisibilityOn()
                 cube_axes_actor.ZAxisVisibilityOn()
