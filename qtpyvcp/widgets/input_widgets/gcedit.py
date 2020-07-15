@@ -109,26 +109,23 @@ class gCodeEdit(QPlainTextEdit):
     def __init__(self, parent=None):
         super(gCodeEdit, self).__init__(parent)
         self.status = STATUS
+
         # if a program is loaded into LinuxCNC display that file
         self.status.file.notify(self.loadProgramFile)
         self.status.motion_line.onValueChanged(self.setCurrentLine)
 
         self.setGeometry(50, 50, 800, 640)
-        self.setWindowTitle("PyQt5 G-Code Editor")
-        self.setWindowIcon(QIcon('/usr/share/pixmaps/linuxcncicon.png'))
 
-        self.lineNumbers = NumberBar(self)
-        self.currentLine = None
+        self.margin = NumberMargin(self)
+        self.current_line = None
+
+        self.current_line_background = QColor(self.palette().alternateBase())
+
         self.currentLineColor = self.palette().alternateBase()
         self.cursorPositionChanged.connect(self.highlightLine)
 
         # syntax highlighting
         self.gCodeHighlighter = gCodeHighlight(self.document(), self)
-
-        # self._backgroundcolor = QColor(255,255,255)
-        # self.pallet = self.viewport().palette()
-        # self.pallet.setColor(self.viewport().backgroundRole(), self._backgroundcolor)
-        # self.viewport().setPalette(self.pallet)
 
         # context menu
         self.focused_line = 1
@@ -139,6 +136,7 @@ class gCodeEdit(QPlainTextEdit):
         self.menu.addAction(self.tr('Cut'), self.cut)
         self.menu.addAction(self.tr('Copy'), self.copy)
         self.menu.addAction(self.tr('Paste'), self.paste)
+
         # FIXME picks the first action run from here, should not be by index
         self.run_action = self.menu.actions()[0]
         self.run_action.setEnabled(self.enable_run_action)
@@ -150,30 +148,63 @@ class gCodeEdit(QPlainTextEdit):
 
     def changeEvent(self, event):
         if event.type() == QEvent.FontChange:
-            print "Font Changed:", self.font()
-
+            # Update syntax highlighter with new font
             self.gCodeHighlighter = gCodeHighlight(self.document(), self)
         super(gCodeEdit, self).changeEvent(event)
 
     @Slot(bool)
     def EditorReadOnly(self, state):
-        """
-        Set to Read Only to disable editing
-        """
+        """Set to Read Only to disable editing"""
         if state:
             self.setReadOnly(True)
         else:
             self.setReadOnly(False)
 
-    # @Property(QColor)
-    # def backgroundcolor(self):
-    #     return self._backgroundcolor
-    #
-    # @backgroundcolor.setter
-    # def backgroundcolor(self, color):
-    #     self._backgroundcolor = color
-    #     self.pallet.setColor(self.viewport().backgroundRole(), color)
-    #     self.viewport().setPalette(self.pallet)
+    @Property(QColor)
+    def currentLineBackground(self):
+        return self.current_line_background
+
+    @currentLineBackground.setter
+    def currentLineBackground(self, color):
+        self.current_line_background = color
+        self.setCurrentLine(2)
+        self.setCurrentLine(1)
+
+    @Property(QColor)
+    def marginBackground(self):
+        return self.margin.background
+
+    @marginBackground.setter
+    def marginBackground(self, color):
+        self.margin.background = color
+        self.margin.update()
+
+    @Property(QColor)
+    def marginCurrentLineBackground(self):
+        return self.margin.highlight_background
+
+    @marginCurrentLineBackground.setter
+    def marginCurrentLineBackground(self, color):
+        self.margin.highlight_background = color
+        self.margin.update()
+
+    @Property(QColor)
+    def marginColor(self):
+        return self.margin.color
+
+    @marginColor.setter
+    def marginColor(self, color):
+        self.margin.color = color
+        self.margin.update()
+
+    @Property(QColor)
+    def marginCurrentLineColor(self):
+        return self.margin.highlight_color
+
+    @marginCurrentLineColor.setter
+    def marginCurrentLineColor(self, color):
+        self.margin.highlight_color = color
+        self.margin.update()
 
     @Slot(str)
     @Slot(object)
@@ -207,23 +238,23 @@ class gCodeEdit(QPlainTextEdit):
 
     def resizeEvent(self, *e):
         cr = self.contentsRect()
-        rec = QRect(cr.left(), cr.top(), self.lineNumbers.getWidth(), cr.height())
-        self.lineNumbers.setGeometry(rec)
+        rec = QRect(cr.left(), cr.top(), self.margin.getWidth(), cr.height())
+        self.margin.setGeometry(rec)
         QPlainTextEdit.resizeEvent(self, *e)
 
     def highlightLine(self): # highlights current line, find a way not to use QTextEdit
-        newCurrentLineNumber = self.textCursor().blockNumber()
-        if newCurrentLineNumber != self.currentLine:
-            self.currentLine = newCurrentLineNumber
-            selectedLine = QTextEdit.ExtraSelection()
-            selectedLine.format.setBackground(QColor('#d5d8dc'))
-            selectedLine.format.setProperty(QTextFormat.FullWidthSelection, True)
-            selectedLine.cursor = self.textCursor()
-            selectedLine.cursor.clearSelection()
-            self.setExtraSelections([selectedLine])
+        line_number = self.textCursor().blockNumber()
+        if line_number != self.current_line:
+            self.current_line = line_number
+            selection = QTextEdit.ExtraSelection()
+            selection.format.setBackground(self.current_line_background)
+            selection.format.setProperty(QTextFormat.FullWidthSelection, True)
+            selection.cursor = self.textCursor()
+            selection.cursor.clearSelection()
+            self.setExtraSelections([selection])
 
 
-class NumberBar(QWidget):
+class NumberMargin(QWidget):
     def __init__(self, parent):
         QWidget.__init__(self, parent)
         self.parent = parent
@@ -231,51 +262,60 @@ class NumberBar(QWidget):
         self.parent.blockCountChanged.connect(self.updateWidth)
         # this happens quite often
         self.parent.updateRequest.connect(self.updateContents)
-        self.font = self.parent.font()
-        self.numberBarColor = QColor("#e8e8e8")
+
+        self.background = QColor('#e8e8e8')
+        self.highlight_background = QColor('#e8e8e8')
+        self.color = QColor('#717171')
+        self.highlight_color = QColor('#000000')
 
     def getWidth(self):
         blocks = self.parent.blockCount()
-        return self.fontMetrics().width(str(blocks)) + 10
+        return self.parent.fontMetrics().width(str(blocks)) + 5
 
     def updateWidth(self): # check the number column width and adjust
         width = self.getWidth()
         if self.width() != width:
             self.setFixedWidth(width)
-            self.parent.setViewportMargins(width, 0, 5, 0)
+            self.parent.setViewportMargins(width, 0, 0, 0)
 
     def updateContents(self, rect, scroll):
         if scroll:
             self.scroll(0, scroll)
         else:
             self.update(0, rect.y(), self.width(), rect.height())
+
         if rect.contains(self.parent.viewport().rect()):
-            # fontSize = self.parent.currentCharFormat().font().pointSize()
-            # self.font.setPointSize(fontSize)
-            # self.font.setStyle(QFont.StyleNormal)
             self.updateWidth()
 
     def paintEvent(self, event):  # this puts the line numbers in the margin
         painter = QPainter(self)
-        painter.fillRect(event.rect(), self.numberBarColor)
+        painter.fillRect(event.rect(), self.background)
         block = self.parent.firstVisibleBlock()
 
+        font = self.parent.font()
+
         while block.isValid():
-            blockNumber = block.blockNumber()
+            block_num = block.blockNumber()
             block_top = self.parent.blockBoundingGeometry(block).translated(self.parent.contentOffset()).top()
+
             # if the block is not visible stop wasting time
             if not block.isVisible() or block_top >= event.rect().bottom():
                 break
-            if blockNumber == self.parent.textCursor().blockNumber():
-                self.font.setBold(True)
-                painter.setPen(QColor("#000000"))
-            else:
-                self.font.setBold(False)
-                painter.setPen(QColor("#717171"))
 
-            # painter.setFont(self.font)
-            paint_rect = QRect(0, block_top, self.width(), self.parent.fontMetrics().height())
-            painter.drawText(paint_rect, Qt.AlignRight, str(blockNumber+1))
+            if block_num == self.parent.textCursor().blockNumber():
+                font.setBold(True)
+                painter.setFont(font)
+                painter.setPen(self.highlight_color)
+                background = self.highlight_background
+            else:
+                font.setBold(False)
+                painter.setFont(font)
+                painter.setPen(self.color)
+                background = self.background
+
+            text_rec = QRect(0, block_top, self.width(), self.parent.fontMetrics().height())
+            painter.fillRect(text_rec, background)
+            painter.drawText(text_rec, Qt.AlignRight, str(block_num + 1))
             block = block.next()
 
         painter.end()
