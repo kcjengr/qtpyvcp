@@ -167,6 +167,7 @@ class GcodeTextEdit(QPlainTextEdit):
     @currentLineBackground.setter
     def currentLineBackground(self, color):
         self.current_line_background = color
+        # Hack to get background to update
         self.setCurrentLine(2)
         self.setCurrentLine(1)
 
@@ -221,6 +222,9 @@ class GcodeTextEdit(QPlainTextEdit):
         self.setTextCursor(cursor)
         self.centerCursor()
 
+    def getCurrentLine(self):
+        return self.textCursor().blockNumber() + 1
+
     def on_cursor_changed(self):
         self.focused_line = self.textCursor().blockNumber() + 1
         self.focusLine.emit(self.focused_line)
@@ -233,8 +237,8 @@ class GcodeTextEdit(QPlainTextEdit):
         event.accept()
 
     def runFromHere(self, *args, **kwargs):
-        line, _ = self.getCursorPosition()
-        actions.program_actions.run(line + 1)
+        line = self.getCurrentLine()
+        actions.program_actions.run(line)
 
     def resizeEvent(self, *e):
         cr = self.contentsRect()
