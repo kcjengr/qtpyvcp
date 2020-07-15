@@ -1155,18 +1155,32 @@ class PathBoundaries:
         cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
         if not IN_DESIGNER:
-            programBoundry = INIFILE.find("VTK", "PROGRAM_BOUNDRY") or ""
-            if programBoundry.lower() in ['false', 'off', 'no', '0']:
+            programBoundary = INIFILE.find("VTK", "PROGRAM_BOUNDARY") or ""
+            if programBoundary.lower() in ['true', 'on', 'yes', '1']:
+                cube_axes_actor.XAxisVisibilityOn()
+                cube_axes_actor.YAxisVisibilityOn()
+                cube_axes_actor.ZAxisVisibilityOn()
+            else:
                 cube_axes_actor.XAxisVisibilityOff()
                 cube_axes_actor.YAxisVisibilityOff()
                 cube_axes_actor.ZAxisVisibilityOff()
+
             programTicks = INIFILE.find("VTK", "PROGRAM_TICKS") or ""
-            if programTicks.lower() in ['false', 'off', 'no', '0']:
+            if programTicks.lower() in ['true', 'on', 'yes', '1']:
+                cube_axes_actor.XAxisTickVisibilityOn()
+                cube_axes_actor.YAxisTickVisibilityOn()
+                cube_axes_actor.ZAxisTickVisibilityOn()
+            else:
                 cube_axes_actor.XAxisTickVisibilityOff()
                 cube_axes_actor.YAxisTickVisibilityOff()
                 cube_axes_actor.ZAxisTickVisibilityOff()
+
             programLabel = INIFILE.find("VTK", "PROGRAM_LABELS") or ""
-            if programLabel.lower() in ['false', 'off', 'no', '0']:
+            if programLabel.lower() in ['true', 'on', 'yes', '1']:
+                cube_axes_actor.XAxisLabelVisibilityOn()
+                cube_axes_actor.YAxisLabelVisibilityOn()
+                cube_axes_actor.ZAxisLabelVisibilityOn()
+            else:
                 cube_axes_actor.XAxisLabelVisibilityOff()
                 cube_axes_actor.YAxisLabelVisibilityOff()
                 cube_axes_actor.ZAxisLabelVisibilityOff()
@@ -1323,18 +1337,32 @@ class Machine:
         cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
         if not IN_DESIGNER:
-            machineBoundry = INIFILE.find("VTK", "MACHINE_BOUNDRY") or ""
-            if machineBoundry.lower() in ['false', 'off', 'no', '0']:
+            machineBoundary = INIFILE.find("VTK", "MACHINE_BOUNDARY") or ""
+            if machineBoundary.lower() in ['true', 'on', 'yes', '1']:
+                cube_axes_actor.XAxisVisibilityOn()
+                cube_axes_actor.YAxisVisibilityOn()
+                cube_axes_actor.ZAxisVisibilityOn()
+            else:
                 cube_axes_actor.XAxisVisibilityOff()
                 cube_axes_actor.YAxisVisibilityOff()
                 cube_axes_actor.ZAxisVisibilityOff()
+
             machineTicks = INIFILE.find("VTK", "MACHINE_TICKS") or ""
-            if machineTicks.lower() in ['false', 'off', 'no', '0']:
+            if machineTicks.lower() in ['true', 'on', 'yes', '1']:
+                cube_axes_actor.XAxisTickVisibilityOn()
+                cube_axes_actor.YAxisTickVisibilityOn()
+                cube_axes_actor.ZAxisTickVisibilityOn()
+            else:
                 cube_axes_actor.XAxisTickVisibilityOff()
                 cube_axes_actor.YAxisTickVisibilityOff()
                 cube_axes_actor.ZAxisTickVisibilityOff()
+
             machineLabels = INIFILE.find("VTK", "MACHINE_LABELS") or ""
-            if machineLabels.lower() in ['false', 'off', 'no', '0']:
+            if machineLabels.lower() in ['true', 'on', 'yes', '1']:
+                cube_axes_actor.XAxisLabelVisibilityOn()
+                cube_axes_actor.YAxisLabelVisibilityOn()
+                cube_axes_actor.ZAxisLabelVisibilityOn()
+            else:
                 cube_axes_actor.XAxisLabelVisibilityOff()
                 cube_axes_actor.YAxisLabelVisibilityOff()
                 cube_axes_actor.ZAxisLabelVisibilityOff()
@@ -1351,7 +1379,12 @@ class Machine:
 
         if not IN_DESIGNER:
             showGrid = INIFILE.find("VTK", "GRID_LINES") or ""
-            if showGrid.lower() in ['false', 'off', 'no', '0']:
+            if showGrid.lower() in ['true', 'on', 'yes', '1']:
+                cube_axes_actor.DrawXGridlinesOn()
+                cube_axes_actor.DrawYGridlinesOn()
+                cube_axes_actor.DrawZGridlinesOn()
+
+            else:
                 cube_axes_actor.DrawXGridlinesOff()
                 cube_axes_actor.DrawYGridlinesOff()
                 cube_axes_actor.DrawZGridlinesOff()
