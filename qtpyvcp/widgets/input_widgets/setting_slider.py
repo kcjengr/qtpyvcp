@@ -62,9 +62,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
     def setDisplayValue(self, value):
         self.blockSignals(True)
-
         self.setText(self.formatValue(value))
-
         self.blockSignals(False)
 
     def initialize(self):
@@ -86,8 +84,6 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
                 self._setting.setValue(self._tmp_value)
             else:
                 self.setDisplayValue(self._setting.getValue())
-
-            self.setPlaceholderText(self.formatValue(self._setting.default_value))
 
             self._setting.notify(self.setDisplayValue)
 
