@@ -14,9 +14,9 @@ STATUS = getPlugin('status')
 YAML_DIR = os.path.dirname(DEFAULT_CONFIG_FILE)
 
 
-class gCodeHighlight(QSyntaxHighlighter):
+class GcodeSyntaxHighlighter(QSyntaxHighlighter):
     def __init__(self, document, parent):
-        super(gCodeHighlight, self).__init__(document)
+        super(GcodeSyntaxHighlighter, self).__init__(document)
 
         self._parent = parent
 
@@ -100,14 +100,14 @@ class gCodeHighlight(QSyntaxHighlighter):
         # process any pending events so we don't lock up the GUI
         QApplication.processEvents()
 
-class gCodeEdit(QPlainTextEdit):
+class GcodeTextEdit(QPlainTextEdit):
     """
     g Code Editor using QPlainTextEdit for speed in loading
     """
     focusLine = Signal(int)
 
     def __init__(self, parent=None):
-        super(gCodeEdit, self).__init__(parent)
+        super(GcodeTextEdit, self).__init__(parent)
         self.status = STATUS
 
         # if a program is loaded into LinuxCNC display that file
@@ -125,7 +125,7 @@ class gCodeEdit(QPlainTextEdit):
         self.cursorPositionChanged.connect(self.highlightLine)
 
         # syntax highlighting
-        self.gCodeHighlighter = gCodeHighlight(self.document(), self)
+        self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self)
 
         # context menu
         self.focused_line = 1
@@ -149,8 +149,8 @@ class gCodeEdit(QPlainTextEdit):
     def changeEvent(self, event):
         if event.type() == QEvent.FontChange:
             # Update syntax highlighter with new font
-            self.gCodeHighlighter = gCodeHighlight(self.document(), self)
-        super(gCodeEdit, self).changeEvent(event)
+            self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self)
+        super(GcodeTextEdit, self).changeEvent(event)
 
     @Slot(bool)
     def EditorReadOnly(self, state):

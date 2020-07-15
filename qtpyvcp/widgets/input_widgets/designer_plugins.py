@@ -24,13 +24,10 @@ class GcodeEditorPlugin(_DesignerPlugin):
     def pluginClass(self):
         return GcodeEditor
 
-from gcedit import gCodeEdit
+from gcode_text_edit import GcodeTextEdit
 class gCodeEditPlugin(_DesignerPlugin):
     def pluginClass(self):
-        return gCodeEdit
-
-    def toolTip(self):
-        return "QPlainTextEdit based g Code Editor"
+        return GcodeTextEdit
 
 from recent_file_combobox import RecentFileComboBox
 class RecentFileComboBoxPlugin(_DesignerPlugin):
