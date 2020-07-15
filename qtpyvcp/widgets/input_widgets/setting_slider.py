@@ -63,11 +63,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
     def setDisplayValue(self, value):
         self.blockSignals(True)
 
-        if value == self._setting.default_value:
-            self.setText('')
-
-        else:
-            self.setText(self.formatValue(value))
+        self.setText(self.formatValue(value))
 
         self.blockSignals(False)
 
