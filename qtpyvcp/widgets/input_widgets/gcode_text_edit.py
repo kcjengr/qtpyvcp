@@ -100,9 +100,11 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
         # process any pending events so we don't lock up the GUI
         QApplication.processEvents()
 
+
 class GcodeTextEdit(QPlainTextEdit):
-    """
-    g Code Editor using QPlainTextEdit for speed in loading
+    """G-code Text Edit
+
+    QPlainTextEdit based G-code editor with syntax heightening.
     """
     focusLine = Signal(int)
 
