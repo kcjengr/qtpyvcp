@@ -148,6 +148,19 @@ class GcodeTextEdit(QPlainTextEdit):
         self.setCenterOnScroll(True)
         self.setWordWrapMode(QTextOption.NoWrap)
 
+    def keyPressEvent(self, event):
+        # keep the cursor centered
+        if event.key() == Qt.Key_Up:
+            self.moveCursor(QTextCursor.Up)
+            self.centerCursor()
+
+        elif event.key() == Qt.Key_Down:
+            self.moveCursor(QTextCursor.Down)
+            self.centerCursor()
+
+        else:
+            super(GcodeTextEdit, self).keyPressEvent(event)
+
     def changeEvent(self, event):
         if event.type() == QEvent.FontChange:
             # Update syntax highlighter with new font
