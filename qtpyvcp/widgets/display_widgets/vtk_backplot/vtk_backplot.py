@@ -1,12 +1,12 @@
 import os
 from math import cos, sin, radians
 
-from operator import add
+from operator import add, sub
 from collections import OrderedDict
 
 import linuxcnc
 
-from qtpy.QtCore import Property, Signal, Slot, QTimer
+from qtpy.QtCore import Property, Slot
 from qtpy.QtGui import QColor
 
 import vtk
@@ -121,9 +121,9 @@ class VTKCanon(StatCanon):
         self.path_points = OrderedDict()
 
         origin = 540
-
-        self.path_actors[origin] = PathActor()
-        self.path_points[origin] = list()
+        for i in range(1, 9):
+            self.path_actors[self.g5x_index_map[i]] = PathActor()
+            self.path_points[self.g5x_index_map[i]] = list()
 
         self.origin = origin
         self.previous_origin = origin
@@ -136,6 +136,16 @@ class VTKCanon(StatCanon):
 
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
 
+        LOG.debug("\nSET G5X Index:{}\n\tX{}\n\tY{}\n\tZ{}\n\tA{}\n\tB{}\n\tC{}\n\tU{}\n\tV{}\n\tW{}\n".format(index,
+                                                                                                               x,
+                                                                                                               y,
+                                                                                                               z,
+                                                                                                               a,
+                                                                                                               b,
+                                                                                                               c,
+                                                                                                               u,
+                                                                                                               v,
+                                                                                                               w))
         origin = self.g5x_index_map[index]
         if origin not in self.path_actors.keys():
             self.path_actors[origin] = PathActor()
@@ -145,7 +155,28 @@ class VTKCanon(StatCanon):
             self.origin = origin
 
     def set_g92_offset(self, x, y, z, a, b, c, u, v, w):
-        pass  # override function with empty
+        LOG.debug("\nSET G92\n\tX{}\n\tY{}\n\tZ{}\n\tA{}\n\tB{}\n\tC{}\n\tU{}\n\tV{}\n\tW{}\n".format(x,
+                                                                                                      y,
+                                                                                                      z,
+                                                                                                      a,
+                                                                                                      b,
+                                                                                                      c,
+                                                                                                      u,
+                                                                                                      v,
+                                                                                                      w))
+
+        # self.g92_offset_x = x
+        # self.g92_offset_y = y
+        # self.g92_offset_z = z
+        # self.g92_offset_a = a
+        # self.g92_offset_b = b
+        # self.g92_offset_c = c
+        # self.g92_offset_u = u
+        # self.g92_offset_v = v
+        # self.g92_offset_w = w
+
+        for _, actor in self.path_actors.items():
+            actor.SetPosition(x, y, z)
 
     def add_path_point(self, line_type, start_point, end_point):
 
@@ -395,8 +426,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.status.motion_type.notify(self.motion_type)
 
         # self.status.g5x_index.notify(self.update_g5x_index)
-        self.status.g5x_offset.notify(self.update_g5x_offset)
         self.status.g92_offset.notify(self.update_g92_offset)
+        self.status.g5x_offset.notify(self.update_g5x_offset)
         # self.status.rotation_xy.notify(self.update_rotation_xy)
 
         OFFSETTABLE.offset_table_changed.connect(self.on_offset_table_changed)
@@ -649,7 +680,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if value == linuxcnc.MOTION_TYPE_TOOLCHANGE:
             self.update_tool()
 
-
     def update_position(self, position):  # the tool movement
 
         self.spindle_position = position[:3]
@@ -678,14 +708,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def update_g5x_offset(self, offset):
         LOG.debug("update_g5x_offset")
 
+        path_offset = list(map(add, offset, self.g92_offset))
+
+        x, y, z, a, b, c, u, v, w = path_offset
+
         transform = vtk.vtkTransform()
-        transform.Translate(*offset[:3])
-        transform.RotateWXYZ(*offset[5:9])
+        transform.Translate(x, y, z)
+        transform.RotateWXYZ(w, x, y, z)
 
         self.axes_actor.SetUserTransform(transform)
 
         for origin, actor in self.path_actors.items():
-            # path_offset = [n - o for n, o in zip(position[:3], self.original_g5x_offset[:3])]
 
             path_index = self.origin_map[origin]
 
@@ -696,8 +729,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             if path_index == self.g5x_index:
                 path_transform = vtk.vtkTransform()
-                path_transform.Translate(*offset[:3])
-                path_transform.RotateWXYZ(*offset[5:9])
+                path_transform.Translate(x, y, z)
+                path_transform.RotateWXYZ(w, x, y, z)
 
                 axes.SetUserTransform(path_transform)
                 actor.SetUserTransform(path_transform)
@@ -740,10 +773,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug("update_g92_offset")
         if str(self.status.task_mode) == "MDI" or str(self.status.task_mode) == "Auto":
 
+            path_offset = list(map(sub, g92_offset, self.g92_offset))
+
             self.g92_offset = g92_offset
-
-            path_offset = list(map(add, self.g92_offset, self.original_g92_offset))
-
             for origin, actor in self.path_actors.items():
                 # LOG.debug('G92 Update Started')
                 # determine change in g92 offset since path was drawn
@@ -1218,6 +1250,7 @@ class PathCache:
     def get_actor(self):
         return self.actor
 
+
 class Machine:
     def __init__(self, axis):
         self.status = STATUS
@@ -1432,7 +1465,7 @@ class Tool:
                     # Setup four points
                     points = vtk.vtkPoints()
                     points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset + 0.05 ))
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset + 0.05))
                     points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset + 0.05))
                     points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset))
 
@@ -1602,8 +1635,10 @@ class Tool:
 
                     LOG.debug("Drawing Lathe tool id {}".format(tool.id))
 
-                    LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool.frontangle), p1_x_pos, p1_z_pos))
-                    LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool.backangle), p2_x_pos, p2_z_pos))
+                    LOG.debug(
+                        "FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool.frontangle), p1_x_pos, p1_z_pos))
+                    LOG.debug(
+                        "BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool.backangle), p2_x_pos, p2_z_pos))
 
                     # Setup three points
                     points = vtk.vtkPoints()
