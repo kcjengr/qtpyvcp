@@ -86,16 +86,11 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
         for exp, tex_fmt in self.rules:
 
             result = exp.match(text)
-            index = result.capturedStart()
+            start = result.capturedStart()
+            length = result.capturedLength()
+            end = result.capturedEnd()
 
-            while index >= 0:
-                start = result.capturedStart()
-                end = result.capturedEnd()
-                length = result.capturedLength()
-                self.setFormat(start, length, tex_fmt)
-                # check again starting at the end of the last match
-                result = exp.match(text, end)
-                index = result.capturedStart()
+            self.setFormat(start, length, tex_fmt)
 
         # process any pending events so we don't lock up the GUI
         QApplication.processEvents()
@@ -339,10 +334,3 @@ class NumberMargin(QWidget):
 
         painter.end()
         QWidget.paintEvent(self, event)
-
-"""
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    GUI = gcedit()
-    sys.exit(app.exec_())
-"""
