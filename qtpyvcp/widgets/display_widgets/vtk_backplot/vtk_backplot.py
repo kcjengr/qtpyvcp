@@ -1,12 +1,12 @@
 import os
 from math import cos, sin, radians
 
-from operator import add
+from operator import add, sub
 from collections import OrderedDict
 
 import linuxcnc
 
-from qtpy.QtCore import Property, Signal, Slot, QTimer
+from qtpy.QtCore import Property, Slot
 from qtpy.QtGui import QColor
 
 import vtk
@@ -104,26 +104,26 @@ class VTKCanon(StatCanon):
 
         self.units = MACHINE_UNITS
 
-        self.index_map = dict()
+        self.g5x_index_map = dict()
 
-        self.index_map[1] = 540
-        self.index_map[2] = 550
-        self.index_map[3] = 560
-        self.index_map[4] = 570
-        self.index_map[5] = 580
-        self.index_map[6] = 590
-        self.index_map[7] = 591
-        self.index_map[8] = 592
-        self.index_map[9] = 593
+        self.g5x_index_map[1] = 540
+        self.g5x_index_map[2] = 550
+        self.g5x_index_map[3] = 560
+        self.g5x_index_map[4] = 570
+        self.g5x_index_map[5] = 580
+        self.g5x_index_map[6] = 590
+        self.g5x_index_map[7] = 591
+        self.g5x_index_map[8] = 592
+        self.g5x_index_map[9] = 593
 
         self.path_colors = colors
         self.path_actors = OrderedDict()
         self.path_points = OrderedDict()
 
         origin = 540
-
-        self.path_actors[origin] = PathActor()
-        self.path_points[origin] = list()
+        for i in range(1, 9):
+            self.path_actors[self.g5x_index_map[i]] = PathActor()
+            self.path_points[self.g5x_index_map[i]] = list()
 
         self.origin = origin
         self.previous_origin = origin
@@ -136,13 +136,40 @@ class VTKCanon(StatCanon):
 
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
 
-        origin = self.index_map[index]
+        LOG.debug("\nSET G5X Index:{}\n\tX{}\n\tY{}\n\tZ{}\n\tA{}\n\tB{}\n\tC{}\n\tU{}\n\tV{}\n\tW{}\n".format(index,
+                                                                                                               x,
+                                                                                                               y,
+                                                                                                               z,
+                                                                                                               a,
+                                                                                                               b,
+                                                                                                               c,
+                                                                                                               u,
+                                                                                                               v,
+                                                                                                               w))
+        origin = self.g5x_index_map[index]
         if origin not in self.path_actors.keys():
             self.path_actors[origin] = PathActor()
             self.path_points[origin] = list()
 
             self.previous_origin = self.origin
             self.origin = origin
+
+    def set_g92_offset(self, x, y, z, a, b, c, u, v, w):
+        LOG.debug("\nSET G92\n\tX{}\n\tY{}\n\tZ{}\n\tA{}\n\tB{}\n\tC{}\n\tU{}\n\tV{}\n\tW{}\n".format(x,
+                                                                                                      y,
+                                                                                                      z,
+                                                                                                      a,
+                                                                                                      b,
+                                                                                                      c,
+                                                                                                      u,
+                                                                                                      v,
+                                                                                                      w))
+
+        for _, actor in self.path_actors.items():
+            actor.SetPosition(x, y, z)
+
+            axes = actor.get_axes()
+            axes.SetPosition(x, y, z)
 
     def add_path_point(self, line_type, start_point, end_point):
 
@@ -322,12 +349,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.machine_actor.SetCamera(self.camera)
 
         self.axes = Axes()
-        self.axes_actor = self.axes.get_actor()
+        self.main_axes_actor = self.axes.get_actor()
 
         transform = vtk.vtkTransform()
         transform.Translate(*self.g5x_offset[:3])
         transform.RotateZ(self.rotation_offset)
-        self.axes_actor.SetUserTransform(transform)
+        self.main_axes_actor.SetUserTransform(transform)
 
         self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
@@ -367,7 +394,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.machine_actor)
-        self.renderer.AddActor(self.axes_actor)
+        self.renderer.AddActor(self.main_axes_actor)
         self.renderer.AddActor(self.path_cache_actor)
 
         self.renderer.ResetCamera()
@@ -392,8 +419,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.status.motion_type.notify(self.motion_type)
 
         # self.status.g5x_index.notify(self.update_g5x_index)
-        self.status.g5x_offset.notify(self.update_g5x_offset)
         self.status.g92_offset.notify(self.update_g92_offset)
+        self.status.g5x_offset.notify(self.update_g5x_offset)
         # self.status.rotation_xy.notify(self.update_rotation_xy)
 
         OFFSETTABLE.offset_table_changed.connect(self.on_offset_table_changed)
@@ -579,12 +606,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def reload_program(self, *args, **kwargs):
-        LOG.debug("reload_program")
+        LOG.debug("Reload program")
         self.load_program(self._last_filename)
 
     def load_program(self, fname=None):
 
-        LOG.debug("load_program")
+        LOG.debug("Load program")
         for origin, actor in self.path_actors.items():
             axes = actor.get_axes()
             extents = self.extents[origin]
@@ -605,10 +632,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.canon.draw_lines()
 
-        self.axes_actor = self.axes.get_actor()
+        self.main_axes_actor = self.axes.get_actor()
         self.path_actors = self.canon.get_path_actors()
 
-        self.renderer.AddActor(self.axes_actor)
+        self.renderer.AddActor(self.main_axes_actor)
 
         for origin, actor in self.path_actors.items():
 
@@ -649,7 +676,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if value == linuxcnc.MOTION_TYPE_TOOLCHANGE:
             self.update_tool()
 
-
     def update_position(self, position):  # the tool movement
 
         self.spindle_position = position[:3]
@@ -672,20 +698,24 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     def on_offset_table_changed(self, table):
-        LOG.debug("on_offset_table_changed")
+        LOG.debug("OffsetTable changed")
         self.path_position_table = table
 
     def update_g5x_offset(self, offset):
-        LOG.debug("update_g5x_offset")
+
+        LOG.debug("\nUpdate G92\n\tX{}\n\tY{}\n\tZ{}\n\tA{}\n\tB{}\n\tC{}\n\tU{}\n\tV{}\n\tW{}\n".format(*offset))
+
+        # path_offset = list(map(add, offset, self.g92_offset))
+
+        x, y, z, a, b, c, u, v, w = offset
 
         transform = vtk.vtkTransform()
-        transform.Translate(*offset[:3])
-        transform.RotateWXYZ(*offset[5:9])
+        transform.Translate(x, y, z)
+        transform.RotateWXYZ(w, x, y, z)
 
-        self.axes_actor.SetUserTransform(transform)
+        self.main_axes_actor.SetUserTransform(transform)
 
         for origin, actor in self.path_actors.items():
-            # path_offset = [n - o for n, o in zip(position[:3], self.original_g5x_offset[:3])]
 
             path_index = self.origin_map[origin]
 
@@ -696,8 +726,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             if path_index == self.g5x_index:
                 path_transform = vtk.vtkTransform()
-                path_transform.Translate(*offset[:3])
-                path_transform.RotateWXYZ(*offset[5:9])
+                path_transform.Translate(x, y, z)
+                path_transform.RotateWXYZ(w, x, y, z)
 
                 axes.SetUserTransform(path_transform)
                 actor.SetUserTransform(path_transform)
@@ -722,43 +752,45 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     def update_g5x_index(self, index):
-        LOG.debug("update_g5x_index")
+        LOG.debug("Update G5x index")
         self.g5x_index = index
-        position = self.path_position_table[index - 1]
+        x, y, z, a, b, c, u, v, w = self.path_position_table[index - 1]
 
         transform = vtk.vtkTransform()
-        transform.Translate(*position[:3])
-        transform.RotateWXYZ(*position[5:9])
+        transform.Translate(x, y, z)
+        transform.RotateWXYZ(w, x, y, z)
 
-        self.axes_actor.SetUserTransform(transform)
+        self.main_axes_actor.SetUserTransform(transform)
 
         self.interactor.ReInitialize()
         self.update_render()
 
     def update_g92_offset(self, g92_offset):
 
-        LOG.debug("update_g92_offset")
+        LOG.debug("\nUpdate G92\n\tX{}\n\tY{}\n\tZ{}\n\tA{}\n\tB{}\n\tC{}\n\tU{}\n\tV{}\n\tW{}\n".format(*g92_offset))
         if str(self.status.task_mode) == "MDI" or str(self.status.task_mode) == "Auto":
-
-            self.g92_offset = g92_offset
-
-            path_offset = list(map(add, self.g92_offset, self.original_g92_offset))
+            x, y, z, a, b, c, u, v, w = g92_offset
+            # path_offset = list(map(sub, g92_offset, self.g92_offset))
+            # self.g92_offset = path_offset
+            # x, y, z, a, b, c, u, v, w = path_offset
 
             for origin, actor in self.path_actors.items():
                 # LOG.debug('G92 Update Started')
                 # determine change in g92 offset since path was drawn
-                index = self.origin_map[origin] - 1
+                # index = self.origin_map[origin] - 1
+                #
+                # x, y, z, a, b, c, u, v, w = list(map(add, self.path_position_table[index][:9], g92_offset))
 
-                new_path_position = list(map(add, self.path_position_table[index][:9], path_offset))
 
+                actor.SetPosition(x, y, z)
                 axes = actor.get_axes()
+                axes.SetPosition(x, y, z)
 
-                path_transform = vtk.vtkTransform()
-                path_transform.Translate(*new_path_position[:3])
+                transform = vtk.vtkTransform()
+                transform.Translate(x, y, z)
+                transform.RotateWXYZ(w, x, y, z)
 
-                self.axes_actor.SetUserTransform(path_transform)
-                axes.SetUserTransform(path_transform)
-                actor.SetUserTransform(path_transform)
+                self.main_axes_actor.SetUserTransform(transform)
 
                 extents = PathBoundaries(self.camera, actor)
                 extents_actor = extents.get_actor()
@@ -1233,77 +1265,6 @@ class PathCache:
         return self.actor
 
 
-class Grid:
-    def __init__(self):
-        x = [
-            -1.22396, -1.17188, -1.11979, -1.06771, -1.01562, -0.963542,
-            -0.911458, -0.859375, -0.807292, -0.755208, -0.703125, -0.651042,
-            -0.598958, -0.546875, -0.494792, -0.442708, -0.390625, -0.338542,
-            -0.286458, -0.234375, -0.182292, -0.130209, -0.078125, -0.026042,
-            0.0260415, 0.078125, 0.130208, 0.182291, 0.234375, 0.286458,
-            0.338542, 0.390625, 0.442708, 0.494792, 0.546875, 0.598958,
-            0.651042, 0.703125, 0.755208, 0.807292, 0.859375, 0.911458,
-            0.963542, 1.01562, 1.06771, 1.11979, 1.17188]
-
-        y = [
-            -1.25, -1.17188, -1.09375, -1.01562, -0.9375, -0.859375,
-            -0.78125, -0.703125, -0.625, -0.546875, -0.46875, -0.390625,
-            -0.3125, -0.234375, -0.15625, -0.078125, 0, 0.078125,
-            0.15625, 0.234375, 0.3125, 0.390625, 0.46875, 0.546875,
-            0.625, 0.703125, 0.78125, 0.859375, 0.9375, 1.01562,
-            1.09375, 1.17188, 1.25]
-
-        z = [
-            0, 0.1, 0.2, 0.3, 0.4, 0.5,
-            0.6, 0.7, 0.75, 0.8, 0.9, 1,
-            1.1, 1.2, 1.3, 1.4, 1.5, 1.6,
-            1.7, 1.75, 1.8, 1.9, 2, 2.1,
-            2.2, 2.3, 2.4, 2.5, 2.6, 2.7,
-            2.75, 2.8, 2.9, 3, 3.1, 3.2,
-            3.3, 3.4, 3.5, 3.6, 3.7, 3.75,
-            3.8, 3.9]
-
-        # Create a rectilinear grid by defining three arrays specifying the
-        # coordinates in the x-y-z directions.
-        xCoords = vtk.vtkFloatArray()
-        for i in x:
-            xCoords.InsertNextValue(i)
-
-        yCoords = vtk.vtkFloatArray()
-        for i in y:
-            yCoords.InsertNextValue(i)
-
-        zCoords = vtk.vtkFloatArray()
-        for i in z:
-            zCoords.InsertNextValue(i)
-
-        # The coordinates are assigned to the rectilinear grid. Make sure that
-        # the number of values in each of the XCoordinates, YCoordinates,
-        # and ZCoordinates is equal to what is defined in SetDimensions().
-        #
-        rgrid = vtk.vtkRectilinearGrid()
-        rgrid.SetDimensions(len(x), len(y), len(z))
-        rgrid.SetXCoordinates(xCoords)
-        rgrid.SetYCoordinates(yCoords)
-        rgrid.SetZCoordinates(zCoords)
-
-        # Extract a plane from the grid to see what we've got.
-        plane = vtk.vtkRectilinearGridGeometryFilter()
-        plane.SetInputData(rgrid)
-        plane.SetExtent(0, 46, 16, 16, 0, 43)
-
-        rgridMapper = vtk.vtkPolyDataMapper()
-        rgridMapper.SetInputConnection(plane.GetOutputPort())
-
-        self.wire_actor = vtk.vtkActor()
-        self.wire_actor.SetMapper(rgridMapper)
-        self.wire_actor.GetProperty().SetRepresentationToWireframe()
-        self.wire_actor.GetProperty().SetColor(0, 0, 0)
-
-    def get_actor(self):
-        return self.wire_actor
-
-
 class Machine:
     def __init__(self, axis):
         self.status = STATUS
@@ -1537,7 +1498,7 @@ class Tool:
                     # Setup four points
                     points = vtk.vtkPoints()
                     points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset + 0.05 ))
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset + 0.05))
                     points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset + 0.05))
                     points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset))
 
@@ -1707,8 +1668,10 @@ class Tool:
 
                     LOG.debug("Drawing Lathe tool id {}".format(tool.id))
 
-                    LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool.frontangle), p1_x_pos, p1_z_pos))
-                    LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool.backangle), p2_x_pos, p2_z_pos))
+                    LOG.debug(
+                        "FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool.frontangle), p1_x_pos, p1_z_pos))
+                    LOG.debug(
+                        "BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool.backangle), p2_x_pos, p2_z_pos))
 
                     # Setup three points
                     points = vtk.vtkPoints()
