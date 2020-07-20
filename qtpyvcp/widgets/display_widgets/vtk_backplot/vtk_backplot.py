@@ -121,9 +121,8 @@ class VTKCanon(StatCanon):
         self.path_points = OrderedDict()
 
         origin = 540
-        for i in range(1, 9):
-            self.path_actors[self.g5x_index_map[i]] = PathActor()
-            self.path_points[self.g5x_index_map[i]] = list()
+        self.path_actors[origin] = PathActor()
+        self.path_points[origin] = list()
 
         self.origin = origin
         self.previous_origin = origin
@@ -721,10 +720,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             old_extents = self.extents[origin]
             self.renderer.RemoveActor(old_extents)
-
-            axes = actor.get_axes()
-
             if path_index == self.g5x_index:
+                axes = actor.get_axes()
+
                 path_transform = vtk.vtkTransform()
                 path_transform.Translate(x, y, z)
                 path_transform.RotateWXYZ(w, x, y, z)
@@ -754,11 +752,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def update_g5x_index(self, index):
         LOG.debug("Update G5x index")
         self.g5x_index = index
-        x, y, z, a, b, c, u, v, w = self.path_position_table[index - 1]
+        position = self.path_position_table[index - 1]
 
         transform = vtk.vtkTransform()
-        transform.Translate(x, y, z)
-        transform.RotateWXYZ(w, x, y, z)
+        transform.Translate(*position[:3])
+        transform.RotateWXYZ(position[8], position[0], position[1], position[2])
 
         self.main_axes_actor.SetUserTransform(transform)
 
