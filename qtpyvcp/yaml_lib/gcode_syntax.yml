@@ -137,8 +137,38 @@ RS274-Gcode:
       textFormat:
         foreground: '#006400'  # Dark Green
 
+    brakets:
+      match: ['\[', '\]']
+      textFormat:
+        foreground: 'gray'
+        fontWeight: QFont:Bold
+
+    operators:
+      match: ['\*\*', '\*', 'MOD', '\+ ', '\- ', 'AND', 'OR', 'XOR', 'EQ', 'NE', 'GT', 'GE', 'LT', 'LE',]
+      textFormat:
+        foreground: 'blue'
+        fontWeight: QFont:Bold
+
+    functions:
+      match: ['SIN', 'COS', 'TAN', 'ASIN', 'ACOS', 'ATAN', 'ABS', 'EXP', 'FIx', 'FUP', 'ROUND', 'LN', 'SQRT', 'EXISTS']
+      textFormat:
+        foreground: 'blue'
+        fontWeight: QFont:Bold
+
+    lineNumbers:
+      match: ['N[0-9.]*']
+      textFormat:
+        foreground: 'gray'
+        fontWeight: QFont:Light
+
     comments:
       match: [';.*', '\(.*\)']
       textFormat:
         foreground: 'gray'
         fontItalic: True
+
+    variables:
+      match: ['#\<.*?\>']
+      textFormat:
+        foreground: 'purple'
+        fontWeight: QFont:Normal
