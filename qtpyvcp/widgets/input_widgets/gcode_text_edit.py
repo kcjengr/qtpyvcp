@@ -1,9 +1,15 @@
+"""
+GcodeTextEdit
+-------------
+
+QPlainTextEdit based G-code editor with syntax highlighting.
+"""
 
 import os
 import yaml
 
 from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal, Property)
-from qtpy.QtGui import (QIcon, QFont, QColor, QPainter, QSyntaxHighlighter,
+from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextOption, QTextFormat, QTextCharFormat, QTextCursor)
 from qtpy.QtWidgets import (QApplication, QPlainTextEdit, QTextEdit, QWidget, QMenu)
 
@@ -80,6 +86,9 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
         return char_fmt
 
     def highlightBlock(self, text):  # Using QRegularExpression
+
+        # ToDo: Need to find a way to not highlight matches within blocks
+        #       like comments and variable names.
 
         self.setFormat(0, len(text), self.defaultCharFormat())
 
