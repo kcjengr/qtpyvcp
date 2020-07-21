@@ -13,8 +13,9 @@ from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextOption, QTextFormat, QTextCharFormat, QTextCursor)
 from qtpy.QtWidgets import (QApplication, QPlainTextEdit, QTextEdit, QWidget, QMenu)
 
-from qtpyvcp import actions, DEFAULT_CONFIG_FILE
+from qtpyvcp import DEFAULT_CONFIG_FILE
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.actions import program_actions
 
 STATUS = getPlugin('status')
 YAML_DIR = os.path.dirname(DEFAULT_CONFIG_FILE)
@@ -27,7 +28,7 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
         self._parent = parent
 
         self.rules = []
-        self._char_fmt = QTextCharFormat()
+        self.char_fmt = QTextCharFormat()
 
         self.loadSyntaxFromYAML()
 
@@ -114,28 +115,22 @@ class GcodeTextEdit(QPlainTextEdit):
 
     def __init__(self, parent=None):
         super(GcodeTextEdit, self).__init__(parent)
-        self.status = STATUS
 
-        # if a program is loaded into LinuxCNC display that file
-        self.status.file.notify(self.loadProgramFile)
-        self.status.motion_line.onValueChanged(self.setCurrentLine)
-
+        self.setCenterOnScroll(True)
         self.setGeometry(50, 50, 800, 640)
+        self.setWordWrapMode(QTextOption.NoWrap)
 
-        self.margin = NumberMargin(self)
-        self.current_line = None
-
+        self.block_number = None
+        self.focused_line = 1
         self.current_line_background = QColor(self.palette().alternateBase())
 
-        self.currentLineColor = self.palette().alternateBase()
-        self.cursorPositionChanged.connect(self.highlightLine)
+        # set the custom margin
+        self.margin = NumberMargin(self)
 
-        # syntax highlighting
+        # set the syntax highlighter
         self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self)
 
         # context menu
-        self.focused_line = 1
-        self.enable_run_action = actions.program_actions._run_ok()
         self.menu = QMenu(self)
         self.menu.addAction(self.tr("Run from line {}".format(self.focused_line)), self.runFromHere)
         self.menu.addSeparator()
@@ -145,12 +140,15 @@ class GcodeTextEdit(QPlainTextEdit):
 
         # FIXME picks the first action run from here, should not be by index
         self.run_action = self.menu.actions()[0]
-        self.run_action.setEnabled(self.enable_run_action)
+        self.run_action.setEnabled(program_actions.run_from_line.ok())
+        program_actions.run_from_line.bindOk(self.run_action)
 
-        self.cursorPositionChanged.connect(self.on_cursor_changed)
+        # connect signals
+        self.cursorPositionChanged.connect(self.onCursorChanged)
 
-        self.setCenterOnScroll(True)
-        self.setWordWrapMode(QTextOption.NoWrap)
+        # connect status signals
+        STATUS.file.notify(self.loadProgramFile)
+        STATUS.motion_line.onValueChanged(self.setCurrentLine)
 
     def keyPressEvent(self, event):
         # keep the cursor centered
@@ -244,37 +242,36 @@ class GcodeTextEdit(QPlainTextEdit):
     def getCurrentLine(self):
         return self.textCursor().blockNumber() + 1
 
-    def on_cursor_changed(self):
-        self.focused_line = self.textCursor().blockNumber() + 1
-        self.focusLine.emit(self.focused_line)
-
-    def contextMenuEvent(self, event):
-        self.enable_run_action = actions.program_actions._run_ok()
-        self.run_action.setText("Run from line {}".format(self.focused_line))
-        self.run_action.setEnabled(self.enable_run_action)
-        self.menu.popup(event.globalPos())
-        event.accept()
-
-    def runFromHere(self, *args, **kwargs):
-        line = self.getCurrentLine()
-        actions.program_actions.run(line)
-
-    def resizeEvent(self, *e):
-        cr = self.contentsRect()
-        rec = QRect(cr.left(), cr.top(), self.margin.getWidth(), cr.height())
-        self.margin.setGeometry(rec)
-        QPlainTextEdit.resizeEvent(self, *e)
-
-    def highlightLine(self): # highlights current line, find a way not to use QTextEdit
-        line_number = self.textCursor().blockNumber()
-        if line_number != self.current_line:
-            self.current_line = line_number
+    def onCursorChanged(self):
+        # highlights current line, find a way not to use QTextEdit
+        block_number = self.textCursor().blockNumber()
+        if block_number != self.block_number:
+            self.block_number = block_number
             selection = QTextEdit.ExtraSelection()
             selection.format.setBackground(self.current_line_background)
             selection.format.setProperty(QTextFormat.FullWidthSelection, True)
             selection.cursor = self.textCursor()
             selection.cursor.clearSelection()
             self.setExtraSelections([selection])
+
+        # emit signals for backplot etc.
+        self.focused_line = block_number + 1
+        self.focusLine.emit(self.focused_line)
+
+    def contextMenuEvent(self, event):
+        self.run_action.setText("Run from line {}".format(self.focused_line))
+        self.menu.popup(event.globalPos())
+        event.accept()
+
+    def runFromHere(self, *args, **kwargs):
+        line = self.getCurrentLine()
+        program_actions.run(line)
+
+    def resizeEvent(self, *e):
+        cr = self.contentsRect()
+        rec = QRect(cr.left(), cr.top(), self.margin.getWidth(), cr.height())
+        self.margin.setGeometry(rec)
+        QPlainTextEdit.resizeEvent(self, *e)
 
 
 class NumberMargin(QWidget):
