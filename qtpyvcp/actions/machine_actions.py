@@ -1070,9 +1070,10 @@ jog.set_linear_speed_percentage.bindOk = _jog_speed_slider_bindOk
 
 def _jog_axis_ok(axis, direction=0, widget=None):
     axisnum = getAxisNumber(axis)
+    jnum = INFO.COORDINATES.index(axis)
     if STAT.task_state == linuxcnc.STATE_ON \
             and STAT.interp_state == linuxcnc.INTERP_IDLE \
-            and STAT.limit[axisnum] == 0:
+            and (STAT.limit[axisnum] == 0 or STAT.joint[jnum]['override_limits']):
         # and STAT.homed[axisnum] == 1 \
         ok = True
         msg = ""
