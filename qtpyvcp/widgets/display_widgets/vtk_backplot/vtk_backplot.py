@@ -419,7 +419,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.status.g5x_offset.notify(self.update_g5x_offset)
         # self.status.rotation_xy.notify(self.update_rotation_xy)
 
-        OFFSETTABLE.offset_table_changed.connect(self.on_offset_table_changed)
+        OFFSETTABLE.g5x_offset_table_changed.connect(self.on_g5x_offset_table_changed)
+        OFFSETTABLE.g92_offset_changed.connect(self.on_g92_offset_changed)
         OFFSETTABLE.active_offset_changed.connect(self.update_g5x_index)
 
         self.status.tool_offset.notify(self.update_tool)
@@ -693,9 +694,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_cache.add_line_point(self.tooltip_position)
         self.update_render()
 
-    def on_offset_table_changed(self, table):
-        LOG.debug("OffsetTable changed")
+    def on_g5x_offset_table_changed(self, table):
+        LOG.debug("G5X OffsetTable changed")
         self.path_position_table = table
+
+    def on_g92_offset_changed(self, offset):
+        LOG.debug("G92 Offset changed")
+        self.active_g92_offset = offset
 
     def update_g5x_offset(self, offset):
 
@@ -704,10 +709,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # path_offset = list(map(add, offset, self.g92_offset))
 
         x, y, z, a, b, c, u, v, w = offset
+        #
+        # main_axes_position = self.path_position_table[self.g5x_index - 1]
 
-        main_axes_position = self.path_position_table[self.g5x_index - 1]
-
-        main_axes_offset = list(map(add, self.active_g92_offset, main_axes_position[:9]))
+        main_axes_offset = list(map(add, self.active_g92_offset[:9], offset))
 
         main_axes_transform = vtk.vtkTransform()
         main_axes_transform.Translate(*main_axes_offset[:3])
@@ -728,9 +733,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                 actor.SetUserTransform(path_transform)
 
-                axes_position = self.path_position_table[self.g5x_index - 1]
-
-                axes_offset = list(map(add, self.active_g92_offset, axes_position[:9]))
+                axes_offset = list(map(add, self.active_g92_offset[:9], offset))
 
                 axes_transform = vtk.vtkTransform()
                 axes_transform.Translate(*axes_offset[:3])
@@ -764,7 +767,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.g5x_index = index
         position = self.path_position_table[index - 1]
 
-        main_axes_offset = list(map(add, self.active_g92_offset, position[:9]))
+        main_axes_offset = list(map(add, self.active_g92_offset, position))
 
         transform = vtk.vtkTransform()
         transform.Translate(*main_axes_offset[:3])
