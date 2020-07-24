@@ -62,7 +62,10 @@ def merge(a, b):
 
 
 class OffsetTable(DataPlugin):
-    DEFAULT_OFFSET = {
+
+    DEFAULT_G92_OFFSET = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+
+    DEFAULT_G5X_OFFSET = {
         0: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
         1: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
         2: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
@@ -74,7 +77,7 @@ class OffsetTable(DataPlugin):
         8: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     }
 
-    NO_TOOL = merge(DEFAULT_OFFSET, {'T': 0, 'R': 'No Tool Loaded'})  # FIXME Requires safe removal
+    NO_TOOL = merge(DEFAULT_G5X_OFFSET, {'T': 0, 'R': 'No Tool Loaded'})  # FIXME Requires safe removal
 
     COLUMN_LABELS = [
         'X',
@@ -101,7 +104,9 @@ class OffsetTable(DataPlugin):
         'G59.3'
     ]
 
-    offset_table_changed = Signal(dict)
+    g5x_offset_table_changed = Signal(dict)
+    g92_offset_changed = Signal(list)
+
     active_offset_changed = Signal(int)
 
     def __init__(self, columns='XYZABCUVWR', file_header_template=None):
@@ -123,7 +128,8 @@ class OffsetTable(DataPlugin):
 
         self.setCurrentOffsetNumber(1)
 
-        self.g5x_offset_table = self.DEFAULT_OFFSET.copy()
+        self.g5x_offset_table = self.DEFAULT_G5X_OFFSET.copy()
+        self.g92_offset = self.DEFAULT_G92_OFFSET[:]  # <-- like copy but for python2 list
         self.current_index = STATUS.stat.g5x_index
 
         self.loadOffsetTable()
@@ -223,7 +229,9 @@ class OffsetTable(DataPlugin):
                 for line in fh:
                     param, data = int(line.split()[0]), float(line.split()[1])
 
-                    if 5230 >= param >= 5221:
+                    if 5210 >= param >= 5219:
+                        self.g92_offset[param - 5219] = data
+                    elif 5230 >= param >= 5221:
                         self.g5x_offset_table.get(0)[param - 5221] = data
                     elif 5250 >= param >= 5241:
                         self.g5x_offset_table.get(1)[param - 5241] = data
@@ -242,7 +250,8 @@ class OffsetTable(DataPlugin):
                     elif 5390 >= param >= 5381:
                         self.g5x_offset_table.get(8)[param - 5381] = data
 
-        self.offset_table_changed.emit(self.g5x_offset_table)
+        self.g5x_offset_table_changed.emit(self.g5x_offset_table)
+        self.g92_offset_changed.emit(self.g92_offset)
 
         return self.g5x_offset_table
 

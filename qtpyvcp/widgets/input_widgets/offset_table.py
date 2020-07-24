@@ -82,7 +82,7 @@ class OffsetModel(QStandardItemModel):
         self.setColumnCount(self.columnCount())
         self.setRowCount(len(self._rows))  # (self.rowCount())
 
-        self.ot.offset_table_changed.connect(self.updateModel)
+        self.ot.g5x_offset_table_changed.connect(self.updateModel)
 
     def refreshModel(self):
         # refresh model so current row gets highlighted
