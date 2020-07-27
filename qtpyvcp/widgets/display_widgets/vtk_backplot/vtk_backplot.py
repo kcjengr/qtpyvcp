@@ -731,7 +731,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.extents[origin] = extents_actor
 
-            self.path_position_table[path_index - 1] = g5x_offset
 
         self.interactor.ReInitialize()
         self.update_render()
