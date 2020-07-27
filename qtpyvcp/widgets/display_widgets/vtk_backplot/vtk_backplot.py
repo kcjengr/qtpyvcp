@@ -144,6 +144,9 @@ class VTKCanon(StatCanon):
             self.previous_origin = self.origin
             self.origin = origin
 
+    def set_g92_offset(self, x, y, z, a, b, c, u, v, w):
+        pass
+
     def add_path_point(self, line_type, start_point, end_point):
 
         if self.ignore_next is True:
@@ -615,7 +618,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             axes = actor.get_axes()
 
             index = self.origin_map[origin]
-            path_position = self.path_position_table[index - 1]
+            g5x_offset = self.path_position_table[index - 1][:9]
+            g92_offset = self.g92_offset
+
+            path_position = list(map(add, g92_offset, g5x_offset))
 
             path_transform = vtk.vtkTransform()
             path_transform.Translate(*path_position[:3])
@@ -678,9 +684,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def update_g5x_offset(self, offset):
         LOG.debug("update_g5x_offset")
 
+        self.g5x_offset = offset
+
+        g5x_offset = self.g5x_offset
+        g92_offset = self.g92_offset
+
+        path_offset = list(map(add, g92_offset, g5x_offset))
+
         transform = vtk.vtkTransform()
-        transform.Translate(*offset[:3])
-        transform.RotateWXYZ(*offset[5:9])
+        transform.Translate(*path_offset[:3])
+        transform.RotateWXYZ(*path_offset[5:9])
 
         self.axes_actor.SetUserTransform(transform)
 
@@ -696,8 +709,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             if path_index == self.g5x_index:
                 path_transform = vtk.vtkTransform()
-                path_transform.Translate(*offset[:3])
-                path_transform.RotateWXYZ(*offset[5:9])
+                path_transform.Translate(*path_offset[:3])
+                path_transform.RotateWXYZ(*path_offset[5:9])
 
                 axes.SetUserTransform(path_transform)
                 actor.SetUserTransform(path_transform)
@@ -718,13 +731,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.extents[origin] = extents_actor
 
+            self.path_position_table[path_index - 1] = g5x_offset
+
         self.interactor.ReInitialize()
         self.update_render()
 
     def update_g5x_index(self, index):
         LOG.debug("update_g5x_index")
         self.g5x_index = index
-        position = self.path_position_table[index - 1]
+        position = self.path_position_table[index - 1][:9]
 
         transform = vtk.vtkTransform()
         transform.Translate(*position[:3])
@@ -742,19 +757,22 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.g92_offset = g92_offset
 
-            path_offset = list(map(add, self.g92_offset, self.original_g92_offset))
-
             for origin, actor in self.path_actors.items():
                 # LOG.debug('G92 Update Started')
                 # determine change in g92 offset since path was drawn
-                index = self.origin_map[origin] - 1
+                index = self.origin_map[origin]
 
-                new_path_position = list(map(add, self.path_position_table[index][:9], path_offset))
+                g5x_offset = self.path_position_table[index-1][:9]
+
+                path_offset = list(map(add, g5x_offset, g92_offset))
+
+                # path_offset = list(map(add, self.g92_offset, self.original_g92_offset))
+                # new_path_position = list(map(add, self.path_position_table[index][:9], path_offset))
 
                 axes = actor.get_axes()
 
                 path_transform = vtk.vtkTransform()
-                path_transform.Translate(*new_path_position[:3])
+                path_transform.Translate(*path_offset[:3])
 
                 self.axes_actor.SetUserTransform(path_transform)
                 axes.SetUserTransform(path_transform)
