@@ -77,7 +77,7 @@ class OffsetModel(QStandardItemModel):
         self._column_labels = self.ot.COLUMN_LABELS
         self._row_labels = self.ot.ROW_LABELS
 
-        self._offset_table = self.ot.getOffsetTable()
+        self._offset_table = self.ot.getG5xOffsetTable()
 
         self.setColumnCount(self.columnCount())
         self.setRowCount(len(self._rows))  # (self.rowCount())

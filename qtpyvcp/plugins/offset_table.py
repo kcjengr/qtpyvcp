@@ -229,8 +229,8 @@ class OffsetTable(DataPlugin):
                 for line in fh:
                     param, data = int(line.split()[0]), float(line.split()[1])
 
-                    if 5210 >= param >= 5219:
-                        self.g92_offset[param - 5219] = data
+                    if 5219 >= param >= 5210:
+                        self.g92_offset[param - 5210] = data
                     elif 5230 >= param >= 5221:
                         self.g5x_offset_table.get(0)[param - 5221] = data
                     elif 5250 >= param >= 5241:
@@ -255,8 +255,11 @@ class OffsetTable(DataPlugin):
 
         return self.g5x_offset_table
 
-    def getOffsetTable(self):
+    def getG5xOffsetTable(self):
         return self.g5x_offset_table
+
+    def getG92Offset(self):
+        return self.g92_offset
 
     def saveOffsetTable(self, offset_table, columns):
         """ Stores the offset table in memory.
