@@ -18,7 +18,13 @@ class HalButton(QPushButton, HALWidget):
         ========================= ===== =========
         qtpyvcp.button.enable     bit   in
         qtpyvcp.button.out        bit   out
+        qtpyvcp.button.checked    bit   out
         ========================= ===== =========
+
+    .. note::
+
+        The `qtpyvcp.button.checked` halpin is only present if the :class:`.checkable` property is set to true.
+
     """
     def __init__(self, parent=None):
         super(HalButton, self).__init__(parent)
@@ -84,9 +90,10 @@ class HalButton(QPushButton, HALWidget):
         # add button.out HAL pin
         self._pressed_pin = comp.addPin(obj_name + ".out", "bit", "out")
 
-        # add checkbox.checked HAL pin
-        self._checked_pin = comp.addPin(obj_name + ".checked", "bit", "out")
-        self._checked_pin.value = self.isChecked()
+        if self.isCheckable():
+            # add button.checked HAL pin
+            self._checked_pin = comp.addPin(obj_name + ".checked", "bit", "out")
+            self._checked_pin.value = self.isChecked()
 
         if self._pulse:
             self.pulse_timer = QTimer()
