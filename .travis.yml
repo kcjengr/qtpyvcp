@@ -2,7 +2,7 @@ language: python
 python: "2.7"
 
 install:
-- pip install sphinx sphinx_rtd_theme mock
+- pip install sphinx sphinx_rtd_theme sphinx-notfound-page mock
 - pip install git+https://github.com/KurtJacobson/sphinx-gitstamp@MoreInfo
 - pip install --upgrade setuptools
 - sudo apt-get install pyqt5-dev-tools
