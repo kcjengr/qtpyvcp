@@ -6,7 +6,7 @@ QPlainTextEdit based G-code editor with syntax highlighting.
 """
 
 import os
-import yaml
+import oyaml as yaml
 
 from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal, Property)
 from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
@@ -86,23 +86,26 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
         char_fmt.setFont(self._parent.font())
         return char_fmt
 
-    def highlightBlock(self, text):  # Using QRegularExpression
+    def highlightBlock(self, text):
+        """Apply syntax highlighting to the given block of text.
+        """
 
-        # ToDo: Need to find a way to not highlight matches within blocks
-        #       like comments and variable names.
+        for regex, fmt in self.rules:
 
-        self.setFormat(0, len(text), self.defaultCharFormat())
+            nth = 0
+            match = regex.match(text, offset=0)
+            index = match.capturedStart()
 
-        for exp, tex_fmt in self.rules:
+            while index >= 0:
+                # We actually want the index of the nth match
+                index = match.capturedStart(nth)
+                length = match.capturedLength(nth)
+                self.setFormat(index, length, fmt)
 
-            result = exp.match(text)
-            start = result.capturedStart()
-            length = result.capturedLength()
-            end = result.capturedEnd()
+                # check the rest of the string
+                match = regex.match(text, offset=index + length)
+                index = match.capturedStart()
 
-            self.setFormat(start, length, tex_fmt)
-
-        # process any pending events so we don't lock up the GUI
         QApplication.processEvents()
 
 

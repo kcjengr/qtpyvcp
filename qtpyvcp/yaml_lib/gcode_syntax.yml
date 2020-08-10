@@ -161,14 +161,15 @@ RS274-Gcode:
         foreground: 'gray'
         fontWeight: QFont:Light
 
-    comments:
-      match: [';.*', '\(.*\)']
-      textFormat:
-        foreground: 'gray'
-        fontItalic: True
-
     variables:
       match: ['#\<.*?\>']
       textFormat:
         foreground: 'purple'
         fontWeight: QFont:Normal
+
+    comments:
+      match: [';.*', '\(.*\)']
+      block: true
+      textFormat:
+        foreground: 'gray'
+        fontItalic: True
