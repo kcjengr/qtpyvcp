@@ -28,68 +28,68 @@ class VirtualInput(QWidget):
         uic.loadUi(os.path.join(os.path.dirname(__file__), ui), self)
 
     @Slot(QAbstractButton)
-    def on_buttonGroup_buttonClicked(self, btn):
+    def on_buttonGroup_buttonPressed(self, btn):
         event = QInputMethodEvent()
         event.setCommitString(btn.text())
         QGuiApplication.sendEvent(self.focus_object, event)
 
     @Slot()
-    def on_space_key_clicked(self):
+    def on_space_key_pressed(self):
         event = QInputMethodEvent()
         event.setCommitString(' ')
         QGuiApplication.sendEvent(self.focus_object, event)
 
     @Slot()
-    def on_enter_key_clicked(self):
+    def on_enter_key_pressed(self):
         self.send_key_(Qt.Key_Enter)
 
     @Slot()
-    def on_esc_key_clicked(self):
+    def on_esc_key_pressed(self):
         self.send_key_(Qt.Key_Escape)
         self.hide()
 
     @Slot()
-    def on_backspace_key_clicked(self):
+    def on_backspace_key_pressed(self):
         self.send_key_(Qt.Key_Backspace)
 
     @Slot()
-    def on_left_key_clicked(self):
+    def on_left_key_pressed(self):
         self.send_key_(Qt.Key_Left)
 
     @Slot()
-    def on_right_key_clicked(self):
+    def on_right_key_pressed(self):
         self.send_key_(Qt.Key_Right)
 
     @Slot()
-    def on_up_key_clicked(self):
+    def on_up_key_pressed(self):
         self.send_key_(Qt.Key_Up)
 
     @Slot()
-    def on_down_key_clicked(self):
+    def on_down_key_pressed(self):
         self.send_key_(Qt.Key_Down)
 
     @Slot()
-    def on_tab_key_clicked(self):
+    def on_tab_key_pressed(self):
         self.send_key_(Qt.Key_Tab)
 
     @Slot()
-    def on_home_key_clicked(self):
+    def on_home_key_pressed(self):
         self.send_key_(Qt.Key_Home)
 
     @Slot()
-    def on_end_key_clicked(self):
+    def on_end_key_pressed(self):
         self.send_key_(Qt.Key_End)
 
     @Slot()
-    def on_page_up_key_clicked(self):
+    def on_page_up_key_pressed(self):
         self.send_key_(Qt.Key_PageUp)
 
     @Slot()
-    def on_page_down_key_clicked(self):
+    def on_page_down_key_pressed(self):
         self.send_key_(Qt.Key_PageDown)
 
     @Slot()
-    def on_caps_key_clicked(self):
+    def on_caps_key_pressed(self):
         self.caps_on = not self.caps_on
         for btn in self.buttonGroup.buttons():
             if self.caps_on:
