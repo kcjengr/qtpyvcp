@@ -19,7 +19,6 @@ from qtpyvcp.utilities.logger import initBaseLogger
 from qtpyvcp.plugins import initialisePlugins, terminatePlugins, getPlugin
 from qtpyvcp.widgets.base_widgets.base_widget import VCPPrimitiveWidget
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
-from qtpyvcp.widgets.virtual_input.virtual_input import VirtualInput
 
 # initialize logging. If a base logger was already initialized in a startup
 # script (e.g. vcp_launcher.py), then that logger will be returned, otherwise
@@ -44,8 +43,6 @@ class VCPApplication(QApplication):
         opts = qtpyvcp.OPTIONS
 
         self.status = getPlugin('status')
-
-        VirtualInput.try_enable_virtual_input(self)
 
         # initialize plugins
         initialisePlugins()

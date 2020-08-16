@@ -19,13 +19,13 @@ class VirtualInput(QWidget):
     has text, and setText methods. The num pad is shown if the control is a SpinBox.
     """
 
-    def __init__(self, ui, parent=None):
+    def __init__(self, ui_file, parent=None):
         super(VirtualInput, self).__init__(parent)
 
         self.caps_on = False
         self.focus_object = None
         self.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.BypassWindowManagerHint)
-        uic.loadUi(os.path.join(os.path.dirname(__file__), ui), self)
+        uic.loadUi(os.path.join(os.path.dirname(__file__), ui_file), self)
 
     @Slot(QAbstractButton)
     def on_buttonGroup_buttonPressed(self, btn):
@@ -101,9 +101,9 @@ class VirtualInput(QWidget):
         self.focus_object = value
         self.position_keyboard_to_object(self.focus_object)
 
-    def show(self, obj):
+    def activate(self, obj):
         self.set_focus_object(obj)
-        super(VirtualInput, self).show()
+        self.show()
 
     def position_keyboard_to_object(self, obj):
         screen = QtWidgets.QDesktopWidget().screenGeometry()
@@ -124,29 +124,3 @@ class VirtualInput(QWidget):
 
         event = QKeyEvent(QEvent.KeyRelease, key, Qt.NoModifier)
         QGuiApplication.postEvent(self.focus_object, event)
-
-    @staticmethod
-    def try_enable_virtual_input(app):
-        ini = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
-        if ini.find("DISPLAY", "TOUCHSCREEN").lower() not in ['yes', '1', 'true']:
-            return
-
-        np = VirtualInput('numpad.ui')
-        kb = VirtualInput('keyboard.ui')
-
-        def show_keyboard(_, new):
-            kb.hide()
-            np.hide()
-
-            if isinstance(new, QAbstractSpinBox):
-                np.show(new)
-            elif not isinstance(new, QAbstractButton) and hasattr(new, 'text') and hasattr(new, 'setText'):
-                if hasattr(new, 'isReadOnly') and new.isReadOnly():
-                    return
-                try:
-                    float(new.text())
-                    np.show(new)
-                except Exception:
-                    kb.show(new)
-
-        app.focusChanged.connect(show_keyboard)

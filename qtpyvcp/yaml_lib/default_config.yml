@@ -66,6 +66,9 @@ data_plugins:
     exportedhal:
         provider: qtpyvcp.plugins.exported_hal:ExportedHal
 
+  virtual_input:
+    provider: qtpyvcp.plugins.virtual_input_manager:VirtualInputManager
+
 dialogs:
   open_file:
     provider: qtpyvcp.widgets.dialogs.open_file_dialog:OpenFileDialog
@@ -84,20 +87,31 @@ dialogs:
   about_qtpyvcp:
     provider: qtpyvcp.widgets.dialogs.about_dialog:AboutDialog
 
-virtual_keyboards:
-  default:
-    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
-    args: []
+virtual_input_providers:
+  number:
+    provider: qtpyvcp.widgets.virtual_input.virtual_input:VirtualInput
     kwargs:
-      ui_file: keyboards/default_vkb.ui
+      ui_file: {{ file.dir }}/../widgets/virtual_input/numpad.ui
 
-  integer:
-    provider: qtpyvcp.ui_vkb_loader.UIVKBLoader
-    args: []
+#  number.int:
+#    provider: qtpyvcp.widgets.virtual_input.virtual_input:VirtualInput
+#    kwargs:
+#      ui_file: {{ file.dir }}/../widgets/virtual_input/numpad.ui
+#
+#  number.float:
+#    provider: qtpyvcp.widgets.virtual_input.virtual_input:VirtualInput
+#    kwargs:
+#      ui_file: {{ file.dir }}/../widgets/virtual_input/numpad.ui
+
+  text:
+    provider: qtpyvcp.widgets.virtual_input.virtual_input:VirtualInput
     kwargs:
-      ui_file: keyboards/integer_vkb.ui
-      frameless: True
-      modal: False
+      ui_file: {{ file.dir }}/../widgets/virtual_input/keyboard.ui
+
+#  text.gcode:
+#    provider: qtpyvcp.widgets.virtual_input.virtual_input:VirtualInput
+#    kwargs:
+#      ui_file: {{ file.dir }}/../widgets/virtual_input/keyboard.ui
 
 application:
   provider: qtpyvcp.app.application:VCPApplication
@@ -105,8 +119,11 @@ application:
 #    stylesheet: {{ file.dir }}/widgets/default_stylesheet.qss   # application wide stylesheet
 
 settings:
+  virtual_input.enabled:
+    default_value: false
+
   touch-probe.diameter-offset:
-    default_value: 0.0
+    default_value: .123123
     persistent: true
     min_value: 0
     max_value: 1

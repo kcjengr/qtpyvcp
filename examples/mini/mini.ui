@@ -185,6 +185,16 @@
      <widget class="HalCheckBox" name="checkbox_xeo_enable"/>
     </item>
     <item>
+     <widget class="VCPSettingsCheckBox" name="settings_checkbox_2">
+      <property name="text">
+       <string>Enable Virtual Input</string>
+      </property>
+      <property name="settingName" stdset="0">
+       <string>virtual_input.enabled</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="VCPSettingsLineEdit" name="settings_lineedit">
       <property name="settingName" stdset="0">
        <string>touch-probe.diameter-offset</string>
