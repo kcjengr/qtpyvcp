@@ -25,7 +25,7 @@ class VirtualInput(QWidget):
         self.caps_on = False
         self.focus_object = None
         self.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.BypassWindowManagerHint)
-        uic.loadUi(os.path.join(os.path.dirname(__file__), ui_file), self)
+        uic.loadUi(ui_file, self)
 
     @Slot(QAbstractButton)
     def on_buttonGroup_buttonPressed(self, btn):
