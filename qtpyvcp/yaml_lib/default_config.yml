@@ -119,9 +119,6 @@ application:
 #    stylesheet: {{ file.dir }}/widgets/default_stylesheet.qss   # application wide stylesheet
 
 settings:
-  virtual_input.enabled:
-    default_value: false
-
   touch-probe.diameter-offset:
     default_value: .123123
     persistent: true

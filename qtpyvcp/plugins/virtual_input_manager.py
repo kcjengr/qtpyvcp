@@ -3,7 +3,7 @@
 from qtpy.QtWidgets import QApplication, QSpinBox, QDoubleSpinBox, QAbstractButton
 
 from qtpyvcp.app.launcher import _initialize_object_from_dict
-from qtpyvcp.utilities.settings import getSetting
+from qtpyvcp.utilities.settings import setting
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import Plugin
 
@@ -19,9 +19,21 @@ class VirtualInputManager(Plugin):
 
         self.input_providers = dict()
         self.active_vkb = None
-        self.enabled = False
 
-    def activateVKB(self, widget, input_type=None):
+    def activateVirtualInput(self, widget, input_type=None):
+        """Activate VKB
+
+        Args:
+            widget (QWidget) : The widget for which the VKB should provide input.
+            input_type (str) : The type of input that the VKB should provide.
+                Input types are specified as either `text` or `number` input,
+                with an optional sub-type separated by a colon. For example a
+                entry that accepts integer input could request a VKB matching
+                an input type of `number:int`. If a VKB does not exist for the
+                requested input type the VKB for the base input type will be used.
+                If `input_type` is not specified a suitable input type will be
+                chosen based on the widget type.
+        """
 
         if input_type is None:
             # determine input type from widget type
@@ -54,7 +66,7 @@ class VirtualInputManager(Plugin):
         vkb.activate(widget)
         self.active_vkb = vkb
 
-    def deactivateVKB(self):
+    def deactivateVirtualInput(self):
         if self.active_vkb is not None:
             self.active_vkb.hide()
             self.active_vkb = None
@@ -62,17 +74,18 @@ class VirtualInputManager(Plugin):
     def onFocusChanged(self, old_widget, new_widget):
 
         # hide any active VKBs
-        self.deactivateVKB()
+        self.deactivateVirtualInput()
 
-        if new_widget is None or not self.enabled:
+        if new_widget is None or not self.enabled():
             return
 
-        # show requested VKB type
-        input_type = new_widget.property('inputType')
-        self.activateVKB(new_widget, input_type)
+        # request VKB for input type
+        input_type = new_widget.property('virtualInputType')
+        self.activateVirtualInput(new_widget, input_type)
 
-    def onEnabledStateChanged(self, enabled):
-        self.enabled = enabled
+    @setting('virtual_input.enable', False)
+    def enabled(obj):
+        return obj.value
 
     def initialise(self):
 
@@ -88,7 +101,3 @@ class VirtualInputManager(Plugin):
 
         for vkb in self.input_providers.values():
             vkb.hide()
-
-        vkb_setting = getSetting('virtual_input.enabled')
-        self.enabled = vkb_setting.value
-        vkb_setting.notify(self.onEnabledStateChanged)
