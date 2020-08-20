@@ -51,7 +51,3 @@ class DROLineEdit(QLineEdit, DROBaseWidget):
 
     def onEditingFinished(self):
         self.updateValue()
-
-    @Property(str)
-    def inputType(self):
-        return 'int'
