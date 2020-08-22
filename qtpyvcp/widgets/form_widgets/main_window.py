@@ -125,7 +125,7 @@ class VCPMainWindow(QMainWindow):
                 setting_id = action_name[len('settings.'):]
                 setting = getSetting(setting_id)
 
-                if setting.value_type == bool:
+                if setting and setting.value_type == bool:
                     # works for bool settings
                     menu_action.setCheckable(True)
                     menu_action.triggered.connect(setting.setValue)

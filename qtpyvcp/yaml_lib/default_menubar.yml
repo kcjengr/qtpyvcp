@@ -97,7 +97,7 @@ default_menubar:
   - title: Settings
     items:
       - title: Show On-screen Keyboard
-        action: settings.virtual-input.enabl
+        action: settings.virtual-input.enable
 
   - title: View
     items:
