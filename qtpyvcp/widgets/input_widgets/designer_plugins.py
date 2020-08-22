@@ -120,6 +120,13 @@ class VCPSettingsCheckBoxPlugin(_DesignerPlugin):
           </property>
         </widget>"""
 
+from setting_slider import VCPSettingsComboBox
+class VCPSettingsCheckBoxPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return VCPSettingsComboBox
+    def designerExtensions(self):
+        return [SettingSelectorExtension, RulesEditorExtension]
+
 from offset_table import OffsetTable
 class OffsetTablePlugin(_DesignerPlugin):
     def pluginClass(self):

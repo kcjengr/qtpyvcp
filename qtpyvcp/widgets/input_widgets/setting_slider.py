@@ -1,5 +1,5 @@
 from qtpy.QtCore import Property
-from qtpy.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox
+from qtpy.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox, QComboBox
 from qtpy.QtGui import QIntValidator, QDoubleValidator
 
 from qtpyvcp import SETTINGS
@@ -235,3 +235,34 @@ class VCPSettingsCheckBox(QCheckBox, VCPAbstractSettingsWidget):
 
             self._setting.notify(self.setDisplayChecked)
             self.toggled.connect(self._setting.setValue)
+
+
+class VCPSettingsComboBox(QComboBox, VCPAbstractSettingsWidget):
+    """Settings ComboBox"""
+
+    DEFAULT_RULE_PROPERTY = 'Enable'
+
+    def __init__(self, parent):
+        super(VCPSettingsComboBox, self).__init__(parent=parent)
+
+    def setDisplayIndex(self, index):
+        self.blockSignals(True)
+        self.setCurrentIndex(index)
+        self.blockSignals(False)
+
+    def initialize(self):
+        self._setting = SETTINGS.get(self._setting_name)
+        if self._setting is not None:
+
+            value = self._setting.getValue()
+
+            options = self._setting.enum_options
+            if isinstance(options, list):
+                for option in options:
+                    self.addItem(option)
+
+            self.setDisplayIndex(value)
+            self.currentIndexChanged.emit(value)
+
+            self._setting.notify(self.setDisplayIndex)
+            self.currentIndexChanged.connect(self._setting.setValue)

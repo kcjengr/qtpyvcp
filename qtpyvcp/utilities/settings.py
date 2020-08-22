@@ -23,7 +23,7 @@ class Setting(QObject):
 
     def __init__(self, fget=None, fset=None, freset=None, default_value=False,
                  max_value=None, min_value=None, persistent=True, description=None,
-                 value_type=None):
+                 value_type=None, options=None):
         super(Setting, self).__init__()
 
         self.fget = fget
@@ -36,6 +36,12 @@ class Setting(QObject):
 
         self.max_value = max_value
         self.min_value = min_value
+
+        self.enum_options = None
+        if options and isinstance(options, list):
+            self.enum_options = options
+            self.min_value = 0
+            self.max_value = len(options) - 1
 
         self.value = self.default_value = default_value
 
@@ -137,13 +143,14 @@ class Setting(QObject):
         return str(self.value)
 
 
-def setting(id, default_value=False, max_value=None, min_value=None, persistent=True):
+def setting(id, default_value=False, max_value=None, min_value=None, persistent=True, options=None):
     def wrapper(func):
         obj = Setting(default_value=default_value,
                       max_value=max_value,
                       min_value=min_value,
                       persistent=persistent,
-                      description=func.__doc__)
+                      description=func.__doc__,
+                      options=options)
 
         SETTINGS[id] = obj
         return obj
