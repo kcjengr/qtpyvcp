@@ -22,6 +22,9 @@
      <property name="horizontalScrollMode">
       <enum>QAbstractItemView::ScrollPerPixel</enum>
      </property>
+     <property name="displayColumns" stdset="0">
+      <string>TPXYZABCUVWDIJQR</string>
+     </property>
     </widget>
    </item>
    <item>
@@ -32,7 +35,8 @@
         <string>Add Tool</string>
        </property>
        <property name="icon">
-        <iconset theme="add"/>
+        <iconset theme="add">
+         <normaloff>.</normaloff>.</iconset>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -45,7 +49,8 @@
         <string>Remove Tool</string>
        </property>
        <property name="icon">
-        <iconset theme="remove"/>
+        <iconset theme="remove">
+         <normaloff>.</normaloff>.</iconset>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -58,7 +63,8 @@
         <string>Reload Table</string>
        </property>
        <property name="icon">
-        <iconset theme="view-refresh"/>
+        <iconset theme="view-refresh">
+         <normaloff>.</normaloff>.</iconset>
        </property>
        <property name="autoDefault">
         <bool>false</bool>
@@ -71,7 +77,8 @@
         <string>Save Changes</string>
        </property>
        <property name="icon">
-        <iconset theme="object-select"/>
+        <iconset theme="object-select">
+         <normaloff>.</normaloff>.</iconset>
        </property>
       </widget>
      </item>

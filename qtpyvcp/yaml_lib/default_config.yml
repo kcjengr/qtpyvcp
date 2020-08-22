@@ -77,9 +77,7 @@ dialogs:
     provider: qtpyvcp.widgets.dialogs.offsets_dialog:OffsetsDialog
 
   tool_edit:
-    provider: qtpyvcp.widgets.dialogs.base_dialog:BaseDialog
-    kwargs:
-      ui_file: {{ file.dir }}/../widgets/dialogs/tooledit_dialog.ui
+    provider: qtpyvcp.widgets.dialogs.tool_edit_dialog:ToolEditDialog
 
   probe_sim:
     provider: qtpyvcp.widgets.dialogs.probesim_dialog:ProbeSim
