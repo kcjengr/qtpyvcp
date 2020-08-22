@@ -83,7 +83,7 @@ class VirtualInputManager(Plugin):
         input_type = new_widget.property('virtualInputType')
         self.activateVirtualInput(new_widget, input_type)
 
-    @setting('virtual_input.enable', False)
+    @setting('virtual-input.enable', False)
     def enabled(obj):
         return obj.value
 
