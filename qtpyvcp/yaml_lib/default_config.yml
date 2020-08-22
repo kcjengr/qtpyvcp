@@ -125,7 +125,11 @@ settings:
 
   dro.display-units:
     default_value: 0
-#    options: [Program, Inch, Metric]
+    options: [Auto, Inch, Metric]
+
+  dro.lathe-radius-mode:
+    default_value: 0
+    options: [Auto, Radius, Diameter]
 
   dro.inch-format:
     default_value: '%9.4f'

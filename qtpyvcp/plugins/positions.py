@@ -209,6 +209,11 @@ class Position(DataPlugin):
     def dtg(self, chan, anum):
         return self._current_format % chan.value[anum]
 
+    # aliases
+    Relative = rel
+    Absolute = abs
+    DistanceToGo = dtg
+
     @property
     def report_actual_pos(self):
         """Whether to report the actual position. Default True.

@@ -4,6 +4,8 @@ DROBaseWidget
 
 """
 
+from enum import IntEnum
+
 from qtpy.QtCore import Slot, Property
 
 from qtpyvcp.plugins import getPlugin
@@ -17,31 +19,28 @@ from qtpyvcp.utilities.info import Info
 LOG = logger.getLogger(__name__)
 INFO = Info()
 
-class Axis(object):
+
+class Axis(IntEnum):
     ALL = -1
     X, Y, Z, A, B, C, U, V, W = range(9)
 
 
-class Units(object):
-    Program = 0  # Use program units
-    Inch = 1     # CANON_UNITS_INCHES=1
-    Metric = 2   # CANON_UNITS_MM=2
+class Units(IntEnum):
+    Program = 0  # Auto based on G20/G21
+    Inch = 1     # Always show inch units
+    Metric = 2   # Always show metric units
 
 
-class RefType(object):
-    Absolute = 0
-    Relative = 1
-    DistanceToGo = 2
-
-    @classmethod
-    def toString(self, ref_type):
-        return ['abs', 'rel', 'dtg'][ref_type]
+class RefType(IntEnum):
+    Absolute = 0      # Relative to G53
+    Relative = 1      # Relative to current WCS
+    DistanceToGo = 2  # Remaining distance of the current move
 
 
-class LatheMode(object):
-    Auto = 0
-    Radius = 1
-    Diameter = 2
+class LatheMode(IntEnum):
+    Auto = 0      # Auto based on G7/G8
+    Radius = 1    # Always show radius
+    Diameter = 2  # Always show diameter
 
 
 class DROBaseWidget(VCPWidget):
@@ -68,6 +67,7 @@ class DROBaseWidget(VCPWidget):
         self.in_fmt_setting = None
         self.mm_fmt_setting = None
         self.deg_fmt_setting = None
+        self.lathe_mode_setting = None
 
         self._angular_axis = False
 
@@ -108,7 +108,7 @@ class DROBaseWidget(VCPWidget):
         self.updateValue()
 
     def initialize(self):
-        getattr(self.pos, RefType.toString(self._ref_typ)).notify(self.updateValue)
+        getattr(self.pos, self._ref_typ.name).notify(self.updateValue)
         self.updateValue()
 
         if self._is_lathe:
@@ -119,11 +119,14 @@ class DROBaseWidget(VCPWidget):
             self.in_fmt_setting = getSetting('dro.inch-format')
             self.mm_fmt_setting = getSetting('dro.millimeter-format')
             self.deg_fmt_setting = getSetting('dro.degree-format')
+            self.lathe_mode_setting = getSetting('dro.lathe-radius-mode')
 
             try:
-                self.in_fmt_setting.notify(lambda fmt: self.setProperty('inchFormat', fmt))
-                self.mm_fmt_setting.notify(lambda fmt: self.setProperty('millimeterFormat', fmt))
-                self.deg_fmt_setting.notify(lambda fmt: self.setProperty('degreeFormat', fmt))
+                self.in_fmt_setting.notify(self.setInchFormat)
+                self.mm_fmt_setting.notify(self.setMillimeterFormat)
+                self.deg_fmt_setting.notify(self.setDegreeFormat)
+                self.lathe_mode_setting.notify(self.setLatheMode)
+
             except AttributeError:  # settings not found
                 pass
 
@@ -134,7 +137,7 @@ class DROBaseWidget(VCPWidget):
     def updateValue(self, pos=None):
         """Update the displayed position."""
         if pos is None:
-            pos = getattr(self.pos, RefType.toString(self._ref_typ)).getValue()
+            pos = getattr(self.pos, self._ref_typ.name).getValue()
 
         if self._is_lathe and self._anum == Axis.X:
             if self._lathe_mode == LatheMode.Diameter or \
@@ -152,7 +155,7 @@ class DROBaseWidget(VCPWidget):
 
     @referenceType.setter
     def referenceType(self, ref_type):
-        self._ref_typ = ref_type
+        self._ref_typ = RefType(ref_type)
         self.updateValue()
 
     @Property(int)
@@ -186,6 +189,11 @@ class DROBaseWidget(VCPWidget):
 
         self.updateUnits()
 
+    @Slot(str)
+    @Slot(object)
+    def setInchFormat(self, fmt):
+        self.inchFormat = fmt
+
     @Property(str)
     def millimeterFormat(self):
         return self._mm_fmt
@@ -204,6 +212,11 @@ class DROBaseWidget(VCPWidget):
                     self.mm_fmt_setting.setValue(self._mm_fmt)
 
         self.updateUnits()
+
+    @Slot(str)
+    @Slot(object)
+    def setMillimeterFormat(self, fmt):
+        self.millimeterFormat = fmt
 
     # ToDO: Add support for DMS angle notation
     # https://stackoverflow.com/questions/2579535
@@ -227,6 +240,11 @@ class DROBaseWidget(VCPWidget):
 
         self.updateUnits()
 
+    @Slot(str)
+    @Slot(object)
+    def setDegreeFormat(self, fmt):
+        self.degreeFormat = fmt
+
     @Property(bool)
     def useGlobalDroFormatSettings(self):
         return self._use_global_fmt_settings
@@ -241,7 +259,7 @@ class DROBaseWidget(VCPWidget):
 
     @latheMode.setter
     def latheMode(self, mode):
-        self._lathe_mode = max(0, min(mode, 2))
+        self._lathe_mode = LatheMode(mode)
         self.updateValue()
 
     @Property(str)
@@ -253,8 +271,9 @@ class DROBaseWidget(VCPWidget):
         self._input_type = input_type
 
     @Slot(int)
+    @Slot(object)
     def setLatheMode(self, mode):
-        self.latheMode = mode
+        self.latheMode = LatheMode(mode)
 
     @Slot()
     def latheDiameterMode(self):
