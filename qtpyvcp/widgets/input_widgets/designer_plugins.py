@@ -126,7 +126,7 @@ class VCPSettingsCheckBoxPlugin(_DesignerPlugin):
         </widget>"""
 
 from setting_slider import VCPSettingsComboBox
-class VCPSettingsCheckBoxPlugin(_DesignerPlugin):
+class VCPSettingsComboBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
         return VCPSettingsComboBox
     def designerExtensions(self):
