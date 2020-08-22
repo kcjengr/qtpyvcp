@@ -24,6 +24,11 @@ class GcodeEditorPlugin(_DesignerPlugin):
     def pluginClass(self):
         return GcodeEditor
 
+from gcode_text_edit import GcodeTextEdit
+class gCodeEditPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return GcodeTextEdit
+
 from recent_file_combobox import RecentFileComboBox
 class RecentFileComboBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
