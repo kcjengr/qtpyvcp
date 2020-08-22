@@ -77,6 +77,7 @@ class DROBaseWidget(VCPWidget):
         self._lathe_mode = LatheMode.Auto  # latheDiameterMode
 
         self._fmt = self._in_fmt
+        self._input_type = 'number:float'
 
         self.updateValue()
 
@@ -242,6 +243,14 @@ class DROBaseWidget(VCPWidget):
     def latheMode(self, mode):
         self._lathe_mode = max(0, min(mode, 2))
         self.updateValue()
+
+    @Property(str)
+    def inputType(self):
+        return self._input_type
+
+    @inputType.setter
+    def inputType(self, input_type):
+        self._input_type = input_type
 
     @Slot(int)
     def setLatheMode(self, mode):

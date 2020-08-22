@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>636</width>
-    <height>822</height>
+    <height>851</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -183,6 +183,16 @@
     </item>
     <item>
      <widget class="HalCheckBox" name="checkbox_xeo_enable"/>
+    </item>
+    <item>
+     <widget class="VCPSettingsCheckBox" name="settings_checkbox_2">
+      <property name="text">
+       <string>Enable Virtual Input</string>
+      </property>
+      <property name="settingName" stdset="0">
+       <string>virtual_input.enable</string>
+      </property>
+     </widget>
     </item>
     <item>
      <widget class="VCPSettingsLineEdit" name="settings_lineedit">
