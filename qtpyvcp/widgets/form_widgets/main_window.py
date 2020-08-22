@@ -12,6 +12,7 @@ from qtpyvcp import actions
 from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.plugins import getPlugin
+from qtpyvcp.utilities.settings import getSetting
 from qtpyvcp.widgets.dialogs import showDialog as _showDialog
 from qtpyvcp.app.launcher import _initialize_object_from_dict
 
@@ -119,6 +120,18 @@ class VCPMainWindow(QMainWindow):
                }
 
         if action_name is not None:
+
+            if action_name.startswith('settings.'):
+                setting_id = action_name[len('settings.'):]
+                setting = getSetting(setting_id)
+
+                if setting.value_type == bool:
+                    # works for bool settings
+                    menu_action.setCheckable(True)
+                    menu_action.triggered.connect(setting.setValue)
+                    setting.notify(menu_action.setChecked)
+                    return
+
             try:
                 mod, action = action_name.split('.', 1)
                 method = getattr(env.get(mod, self), action)
