@@ -92,6 +92,7 @@ setup(
         'vtk',
         'pyqtgraph',
         'more-itertools',
+        'oyaml'
     ],
     entry_points={
         'console_scripts': [
