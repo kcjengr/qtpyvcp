@@ -6,6 +6,15 @@ def getSetting(id, default=None):
     return SETTINGS.get(id, default)
 
 
+def connectSetting(id, slot, silent_fail=True):
+    setting = getSetting(id)
+    if setting is None:
+        if silent_fail:
+            return
+        raise ValueError("Setting '%s' does not exists." % id)
+    return setting.notify(slot)
+
+
 def setSetting(id, value):
     try:
         SETTINGS[id].setValue(value)
