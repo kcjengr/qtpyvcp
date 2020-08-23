@@ -100,16 +100,8 @@ def prep_pxd_py_files():
 # Cython seems to cythonize these before cleaning, so we only add them, if we aren't cleaning.
 ext_modules = None
 if CYTHON and "clean" not in sys.argv:
-    if sys.platform == "win32":
-        # Cython currently has a bug in its code that results in symbol collision on Windows
-        def get_export_symbols(self, ext):
-            parts = ext.name.split(".")
-            initfunc_name = "PyInit_" + parts[-2] if parts[-1] == "init" else parts[-1] # noqa: F841
 
-        # Override function in Cython to fix symbol collision
-        build_ext.get_export_symbols = get_export_symbols
-        thread_count = 0 # Disables multiprocessing (windows)
-    elif platform.python_version().startswith("3.8"):
+    if platform.python_version().startswith("3.8"):
         # Causes infinite recursion
         thread_count = 0
     else:
@@ -128,6 +120,7 @@ if CYTHON and "clean" not in sys.argv:
             extra_compile_args=cflags
         ), list(py_pxd_files)
     )
+
     c_files = list()
     for c_file in cythonize_files:
         c_files.append(c_file)
@@ -308,4 +301,5 @@ setup(
     cmdclass={
         "build_ext": build_ext
     },
+    ext_modules=ext_modules,
 )
