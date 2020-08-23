@@ -1004,17 +1004,23 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def showProgramBounds(self, show):
         self.show_extents = show
         for origin, actor in self.path_actors.items():
-            extents_actor = self.extents[origin]
-            if extents_actor is not None:
+            extents = self.extents[origin]
+            if extents is not None:
                 if show:
-                    extents_actor.XAxisVisibilityOn()
-                    extents_actor.YAxisVisibilityOn()
-                    extents_actor.ZAxisVisibilityOn()
+                    extents.XAxisVisibilityOn()
+                    extents.YAxisVisibilityOn()
+                    extents.ZAxisVisibilityOn()
                 else:
-                    extents_actor.XAxisVisibilityOff()
-                    extents_actor.YAxisVisibilityOff()
-                    extents_actor.ZAxisVisibilityOff()
+                    extents.XAxisVisibilityOff()
+                    extents.YAxisVisibilityOff()
+                    extents.ZAxisVisibilityOff()
                 self.update_render()
+
+    @Slot()
+    def toggleProgramBounds(self):
+        for origin, actor in self.path_actors.items():
+            extents = self.extents[origin]
+            self.showProgramBounds(not extents.GetXAxisVisibility())
 
     @Slot(bool)
     @Slot(object)
@@ -1032,6 +1038,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     extents.ZAxisTickVisibilityOff()
         self.update_render()
 
+    @Slot()
+    def toggleProgramTicks(self):
+        for origin, actor in self.path_actors.items():
+            extents = self.extents[origin]
+            self.showProgramTicks(not extents.GetXAxisTickVisibility())
+
     @Slot(bool)
     @Slot(object)
     def showProgramLabels(self, labels):
@@ -1048,6 +1060,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                     extents.ZAxisLabelVisibilityOff()
         self.update_render()
 
+    @Slot()
+    def toggleProgramLabels(self):
+        for origin, actor in self.path_actors.items():
+            extents = self.extents[origin]
+            self.showProgramLabels(not extents.GetXAxisLabelVisibility())
+
     @Slot(bool)
     @Slot(object)
     def showMachineBounds(self, show):
@@ -1060,6 +1078,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.machine_actor.YAxisVisibilityOff()
             self.machine_actor.ZAxisVisibilityOff()
         self.update_render()
+
+    @Slot()
+    def toggleMachineBounds(self):
+        self.showMachineBounds(not self.machine_actor.GetXAxisVisibility())
 
     @Slot(bool)
     @Slot(object)
@@ -1074,6 +1096,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.machine_actor.ZAxisTickVisibilityOff()
         self.update_render()
 
+    @Slot()
+    def toggleMachineTicks(self):
+        self.showMachineTicks(not self.machine_actor.GetXAxisTickVisibility())
+
     @Slot(bool)
     @Slot(object)
     def showMachineLabels(self, labels):
@@ -1086,6 +1112,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.machine_actor.YAxisLabelVisibilityOff()
             self.machine_actor.ZAxisLabelVisibilityOff()
         self.update_render()
+
+    @Slot()
+    def toggleMachineLabels(self):
+        self.showMachineLabels(not self.machine_actor.GetXAxisLabelVisibility())
 
     @Property(QColor)
     def backgroundColor(self):
