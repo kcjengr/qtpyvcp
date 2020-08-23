@@ -1,6 +1,10 @@
 import os
+import platform
+import sys
+
 import versioneer
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Extension
+from multiprocessing import cpu_count
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
@@ -42,6 +46,16 @@ else:
         # ('~/linuxcnc/vcps', 'examples'),
     ]
 
+CYTHON = platform.python_implementation() != "PyPi"
+
+if CYTHON is True:
+    from setuptools import dist
+    dist.Distribution().fetch_build_eggs(["cython>=0.29.16"])
+
+    from Cython.Build import cythonize
+    import Cython.Compiler.Options
+    from Cython.Distutils import build_ext
+
 
 def data_files_from_dirs(data_dirs):
     data_files = []
@@ -56,6 +70,98 @@ def data_files_from_dirs(data_dirs):
 
 
 ROOT_DIR = "qtpyvcp"
+
+
+# Define libs, libdirs, includes and cflags for SDL2
+def define_lib_includes_cflags():
+    libs = []
+    libdirs = []
+    includes = []
+    cflags = []
+
+    return libs, libdirs, includes, cflags
+
+
+def prep_pxd_py_files():
+    ignore_py_files = ["__main__.py", "manager_gen.py", "opcodes_gen.py"]
+    # Cython doesn't trigger a recompile on .py files, where only the .pxd file has changed. So we fix this here.
+    # We also yield the py_files that have a .pxd file, as we feed these into the cythonize call.
+    for root, dirs, files in os.walk(ROOT_DIR):
+        for f in files:
+            if os.path.splitext(f)[1] == ".py" and f not in ignore_py_files:
+                yield os.path.join(root, f)
+            if os.path.splitext(f)[1] == ".pxd":
+                py_file = os.path.join(root, os.path.splitext(f)[0]) + ".py"
+                if os.path.isfile(py_file):
+                    if os.path.getmtime(os.path.join(root, f)) > os.path.getmtime(py_file):
+                        os.utime(py_file)
+
+
+# Cython seems to cythonize these before cleaning, so we only add them, if we aren't cleaning.
+ext_modules = None
+if CYTHON and "clean" not in sys.argv:
+    if sys.platform == "win32":
+        # Cython currently has a bug in its code that results in symbol collision on Windows
+        def get_export_symbols(self, ext):
+            parts = ext.name.split(".")
+            initfunc_name = "PyInit_" + parts[-2] if parts[-1] == "init" else parts[-1] # noqa: F841
+
+        # Override function in Cython to fix symbol collision
+        build_ext.get_export_symbols = get_export_symbols
+        thread_count = 0 # Disables multiprocessing (windows)
+    elif platform.python_version().startswith("3.8"):
+        # Causes infinite recursion
+        thread_count = 0
+    else:
+        thread_count = cpu_count()
+
+    # Set up some values for use in setup()
+    libs, libdirs, includes, cflags = define_lib_includes_cflags()
+
+    py_pxd_files = prep_pxd_py_files()
+    cythonize_files = map(
+        lambda src: Extension(
+            src.split(".")[0].replace(os.sep, "."), [src],
+            include_dirs=includes,
+            library_dirs=libdirs,
+            libraries=libs,
+            extra_compile_args=cflags
+        ), list(py_pxd_files)
+    )
+    c_files = list()
+    for c_file in cythonize_files:
+        c_files.append(c_file)
+
+    ext_modules = cythonize(
+        c_files,  # This runs even if build_ext isn't invoked...
+        nthreads=thread_count,
+        annotate=False,
+        gdb_debug=False,
+        language_level=2,
+        compiler_directives={
+            "boundscheck": False,
+            "cdivision": True,
+            "cdivision_warnings": False,
+            "infer_types": True,
+            "initializedcheck": False,
+            "nonecheck": False,
+            "overflowcheck": False,
+            # "profile" : True,
+            "wraparound": False,
+        },
+    )
+
+try:
+    this_directory = os.path.abspath(os.path.dirname(file))
+    with open(os.path.join(this_directory, "README.md"), encoding="utf-8") as f:
+        long_description = f.read()
+except Exception as e:
+    print("README.md not found")
+    long_description = ""
+
+
+data_files = [(os.path.expanduser(dest), src_list) for dest, src_list in DATA_FILES]
+data_files.extend(data_files_from_dirs(DATA_DIRS))
 
 
 # Define libs, libdirs, includes and cflags for SDL2
@@ -138,7 +244,7 @@ data_files = [('qtpyvcp/utilities/vcp_chooser', ['qtpyvcp/utilities/vcp_chooser/
 setup(
     name="qtpyvcp",
     version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass(),
+    # cmdclass=versioneer.get_cmdclass(),
     author="Kurt Jacobson",
     author_email="kcjengr@gmail.com",
     description="Qt and Python based Virtual Control Panel framework for LinuxCNC.",
@@ -198,5 +304,8 @@ setup(
             'opengl_test=video_tests.opengl_test',
             'qtpyvcp_test=video_tests.qtpyvcp_test',
         ],
+    },
+    cmdclass={
+        "build_ext": build_ext
     },
 )

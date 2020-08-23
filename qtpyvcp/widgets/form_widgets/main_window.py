@@ -312,8 +312,8 @@ class VCPMainWindow(QMainWindow):
             # Load after startup to not cause hang and 'Can't set mode while machine is running' error
             QTimer.singleShot(200, lambda: actions.program.load(splash_code, add_to_recents=False))
 
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = App()
-    sys.exit(app.exec_())
+#
+# if __name__ == '__main__':
+#     app = QApplication(sys.argv)
+#     ex = App()
+#     sys.exit(app.exec_())

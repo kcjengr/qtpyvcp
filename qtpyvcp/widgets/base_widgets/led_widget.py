@@ -150,15 +150,15 @@ class LEDWidget(QWidget):
     state = Property(bool, getState, setState)
     flashing = Property(bool, isFlashing, setFlashing)
     flashRate = Property(int, getFlashRate, setFlashRate)
-
-if __name__ == "__main__":
-
-    import sys
-
-    app = QApplication(sys.argv)
-    led = LEDWidget()
-    # led.setState(False)
-    led.setColor(QColor('green'))
-    led.setDiameter(16)
-    led.show()
-    sys.exit(app.exec_())
+#
+# if __name__ == "__main__":
+#
+#     import sys
+#
+#     app = QApplication(sys.argv)
+#     led = LEDWidget()
+#     # led.setState(False)
+#     led.setColor(QColor('green'))
+#     led.setDiameter(16)
+#     led.show()
+#     sys.exit(app.exec_())

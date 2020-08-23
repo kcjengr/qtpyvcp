@@ -1,6 +1,6 @@
 
 from qtpy.QtWidgets import QPushButton
-from qtpy.QtCore import Qt, Slot, Property, Signal
+from qtpy.QtCore import Qt, Slot, Property, Signal, QSize
 from qtpy.QtGui import QColor
 
 from qtpyvcp.utilities.obj_status import HALStatus
@@ -56,7 +56,7 @@ class HALLEDButton(QPushButton):
 
     def update(self):
         self.placeLed()
-        super(LEDButton, self).update()
+        super(HALLEDButton, self).update()
 
     def updateState(self, state):
         self.led.setState(state)
