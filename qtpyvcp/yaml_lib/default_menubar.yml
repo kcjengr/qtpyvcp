@@ -101,11 +101,30 @@ default_menubar:
 
   - title: View
     items:
-      - title: Show Machine Limits
-
-      - title: Show Program Limits
-
       - title: Show Gridlines
+        action: settings.backplot.show-grid
+
+      - separator
+
+      - title: Show Machine Bounds
+        action: settings.backplot.show-machine-bounds
+
+      - title: Show Machine Labels
+        action: settings.backplot.show-machine-labels
+
+      - title: Show Machine Ticks
+        action: settings.backplot.show-machine-ticks
+
+      - separator
+
+      - title: Show Program Bounds
+        action: settings.backplot.show-program-bounds
+
+      - title: Show Program Labels
+        action: settings.backplot.show-program-labels
+
+      - title: Show Program Ticks
+        action: settings.backplot.show-program-ticks
 
   - title: Tools
     items:

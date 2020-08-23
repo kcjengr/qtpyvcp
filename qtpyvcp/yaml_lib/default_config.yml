@@ -141,3 +141,24 @@ settings:
 
   dro.degree-format:
     default_value: '%9.2f'
+
+  backplot.show-grid:
+    default_value: false
+
+  backplot.show-program-bounds:
+    default_value: false
+
+  backplot.show-program-labels:
+    default_value: false
+
+  backplot.show-program-ticks:
+    default_value: false
+
+  backplot.show-machine-bounds:
+    default_value: false
+
+  backplot.show-machine-labels:
+    default_value: false
+
+  backplot.show-machine-ticks:
+    default_value: false
