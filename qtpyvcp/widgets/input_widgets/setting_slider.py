@@ -1,5 +1,5 @@
 from qtpy.QtCore import Property
-from qtpy.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox, QComboBox
+from qtpy.QtWidgets import QLineEdit, QSlider, QSpinBox, QDoubleSpinBox, QCheckBox, QComboBox, QPushButton
 from qtpy.QtGui import QIntValidator, QDoubleValidator
 
 from qtpyvcp import SETTINGS
@@ -227,6 +227,39 @@ class VCPSettingsCheckBox(QCheckBox, VCPAbstractSettingsWidget):
     def initialize(self):
         self._setting = SETTINGS.get(self._setting_name)
         if self._setting is not None:
+
+            value = self._setting.getValue()
+
+            self.setDisplayChecked(value)
+            self.toggled.emit(value)
+
+            self._setting.notify(self.setDisplayChecked)
+            self.toggled.connect(self._setting.setValue)
+
+
+class VCPSettingsPushButton(QPushButton, VCPAbstractSettingsWidget):
+    """Settings PushButton"""
+
+    DEFAULT_RULE_PROPERTY = 'Enable'
+    RULE_PROPERTIES = VCPAbstractSettingsWidget.RULE_PROPERTIES.copy()
+    RULE_PROPERTIES.update({
+        'Checked': ['setChecked', bool],
+    })
+
+    def __init__(self, parent):
+        super(VCPSettingsPushButton, self).__init__(parent=parent)
+        self.setCheckable(True)
+        self.setEnabled(False)
+
+    def setDisplayChecked(self, checked):
+        self.blockSignals(True)
+        self.setChecked(checked)
+        self.blockSignals(False)
+
+    def initialize(self):
+        self._setting = SETTINGS.get(self._setting_name)
+        if self._setting is not None:
+            self.setEnabled(True)
 
             value = self._setting.getValue()
 

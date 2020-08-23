@@ -125,6 +125,20 @@ class VCPSettingsCheckBoxPlugin(_DesignerPlugin):
           </property>
         </widget>"""
 
+from setting_slider import VCPSettingsPushButton
+class VCPSettingsPushButtonPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return VCPSettingsPushButton
+    def designerExtensions(self):
+        return [SettingSelectorExtension, RulesEditorExtension]
+    def domXml(self):
+        return """
+        <widget class="VCPSettingsPushButton" name="settings_pushbutton">
+          <property name="text">
+            <string>Settings Button</string>
+          </property>
+        </widget>"""
+
 from setting_slider import VCPSettingsComboBox
 class VCPSettingsComboBoxPlugin(_DesignerPlugin):
     def pluginClass(self):
