@@ -144,15 +144,6 @@ if CYTHON and "clean" not in sys.argv:
         },
     )
 
-try:
-    this_directory = os.path.abspath(os.path.dirname(file))
-    with open(os.path.join(this_directory, "README.md"), encoding="utf-8") as f:
-        long_description = f.read()
-except Exception as e:
-    print("README.md not found")
-    long_description = ""
-
-
 data_files = [(os.path.expanduser(dest), src_list) for dest, src_list in DATA_FILES]
 data_files.extend(data_files_from_dirs(DATA_DIRS))
 
