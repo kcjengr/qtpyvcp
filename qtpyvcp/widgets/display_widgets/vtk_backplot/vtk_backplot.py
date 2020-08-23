@@ -27,6 +27,7 @@ from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.utilities.settings import getSetting, connectSetting
 
 from base_canon import StatCanon
 from base_backplot import BaseBackPlot
@@ -414,6 +415,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         if self.lathe is True:
             self.setViewXZ()
+
+        # view settings
+        connectSetting('backplot.show-grid', self.showGrid)
+        connectSetting('backplot.show-program-bounds', self.showProgramBounds)
+        connectSetting('backplot.show-program-labels', self.showProgramLabels)
+        connectSetting('backplot.show-program-ticks', self.showProgramTicks)
+        connectSetting('backplot.show-machine-bounds', self.showMachineBounds)
+        connectSetting('backplot.show-machine-labels', self.showMachineLabels)
+        connectSetting('backplot.show-machine-ticks', self.showMachineTicks)
 
     # Handle the mouse button events.
     def button_event(self, obj, event):
@@ -976,6 +986,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug('alpha blend')
 
     @Slot(bool)
+    @Slot(object)
     def showGrid(self, grid):
         LOG.debug('show grid')
         if grid:
@@ -989,91 +1000,122 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     @Slot(bool)
-    def toggleProgramBounds(self, show):
+    @Slot(object)
+    def showProgramBounds(self, show):
         self.show_extents = show
         for origin, actor in self.path_actors.items():
-            extents_actor = self.extents[origin]
-            if extents_actor is not None:
+            extents = self.extents[origin]
+            if extents is not None:
                 if show:
-                    extents_actor.XAxisVisibilityOn()
-                    extents_actor.YAxisVisibilityOn()
-                    extents_actor.ZAxisVisibilityOn()
+                    extents.XAxisVisibilityOn()
+                    extents.YAxisVisibilityOn()
+                    extents.ZAxisVisibilityOn()
                 else:
-                    extents_actor.XAxisVisibilityOff()
-                    extents_actor.YAxisVisibilityOff()
-                    extents_actor.ZAxisVisibilityOff()
+                    extents.XAxisVisibilityOff()
+                    extents.YAxisVisibilityOff()
+                    extents.ZAxisVisibilityOff()
                 self.update_render()
+
+    @Slot()
+    def toggleProgramBounds(self):
+        for origin, actor in self.path_actors.items():
+            extents = self.extents[origin]
+            self.showProgramBounds(not extents.GetXAxisVisibility())
+
+    @Slot(bool)
+    @Slot(object)
+    def showProgramTicks(self, ticks):
+        for origin, actor in self.path_actors.items():
+            extents = self.extents[origin]
+            if extents is not None:
+                if ticks:
+                    extents.XAxisTickVisibilityOn()
+                    extents.YAxisTickVisibilityOn()
+                    extents.ZAxisTickVisibilityOn()
+                else:
+                    extents.XAxisTickVisibilityOff()
+                    extents.YAxisTickVisibilityOff()
+                    extents.ZAxisTickVisibilityOff()
+        self.update_render()
 
     @Slot()
     def toggleProgramTicks(self):
         for origin, actor in self.path_actors.items():
             extents = self.extents[origin]
+            self.showProgramTicks(not extents.GetXAxisTickVisibility())
+
+    @Slot(bool)
+    @Slot(object)
+    def showProgramLabels(self, labels):
+        for origin, actor in self.path_actors.items():
+            extents = self.extents[origin]
             if extents is not None:
-                ticks = extents.GetXAxisTickVisibility()
-                if ticks:
-                    extents.XAxisTickVisibilityOff()
-                    extents.YAxisTickVisibilityOff()
-                    extents.ZAxisTickVisibilityOff()
+                if labels:
+                    extents.XAxisLabelVisibilityOn()
+                    extents.YAxisLabelVisibilityOn()
+                    extents.ZAxisLabelVisibilityOn()
                 else:
-                    extents.XAxisTickVisibilityOn()
-                    extents.YAxisTickVisibilityOn()
-                    extents.ZAxisTickVisibilityOn()
-                self.update_render()
+                    extents.XAxisLabelVisibilityOff()
+                    extents.YAxisLabelVisibilityOff()
+                    extents.ZAxisLabelVisibilityOff()
+        self.update_render()
 
     @Slot()
     def toggleProgramLabels(self):
         for origin, actor in self.path_actors.items():
             extents = self.extents[origin]
-            if extents is not None:
-                labels = extents.GetXAxisLabelVisibility()
-                if labels:
-                    extents.XAxisLabelVisibilityOff()
-                    extents.YAxisLabelVisibilityOff()
-                    extents.ZAxisLabelVisibilityOff()
-                else:
-                    extents.XAxisLabelVisibilityOn()
-                    extents.YAxisLabelVisibilityOn()
-                    extents.ZAxisLabelVisibilityOn()
-                self.update_render()
+            self.showProgramLabels(not extents.GetXAxisLabelVisibility())
 
-    @Slot()
-    def toggleMachineBounds(self):
-        bounds = self.machine_actor.GetXAxisVisibility()
-        if bounds:
-            self.machine_actor.XAxisVisibilityOff()
-            self.machine_actor.YAxisVisibilityOff()
-            self.machine_actor.ZAxisVisibilityOff()
-        else:
+    @Slot(bool)
+    @Slot(object)
+    def showMachineBounds(self, show):
+        if show:
             self.machine_actor.XAxisVisibilityOn()
             self.machine_actor.YAxisVisibilityOn()
             self.machine_actor.ZAxisVisibilityOn()
+        else:
+            self.machine_actor.XAxisVisibilityOff()
+            self.machine_actor.YAxisVisibilityOff()
+            self.machine_actor.ZAxisVisibilityOff()
+        self.update_render()
+
+    @Slot()
+    def toggleMachineBounds(self):
+        self.showMachineBounds(not self.machine_actor.GetXAxisVisibility())
+
+    @Slot(bool)
+    @Slot(object)
+    def showMachineTicks(self, ticks):
+        if ticks:
+            self.machine_actor.XAxisTickVisibilityOn()
+            self.machine_actor.YAxisTickVisibilityOn()
+            self.machine_actor.ZAxisTickVisibilityOn()
+        else:
+            self.machine_actor.XAxisTickVisibilityOff()
+            self.machine_actor.YAxisTickVisibilityOff()
+            self.machine_actor.ZAxisTickVisibilityOff()
         self.update_render()
 
     @Slot()
     def toggleMachineTicks(self):
-        ticks = self.machine_actor.GetXAxisTickVisibility()
-        if ticks:
-            self.machine_actor.XAxisTickVisibilityOff()
-            self.machine_actor.YAxisTickVisibilityOff()
-            self.machine_actor.ZAxisTickVisibilityOff()
+        self.showMachineTicks(not self.machine_actor.GetXAxisTickVisibility())
+
+    @Slot(bool)
+    @Slot(object)
+    def showMachineLabels(self, labels):
+        if labels:
+            self.machine_actor.XAxisLabelVisibilityOn()
+            self.machine_actor.YAxisLabelVisibilityOn()
+            self.machine_actor.ZAxisLabelVisibilityOn()
         else:
-            self.machine_actor.XAxisTickVisibilityOn()
-            self.machine_actor.YAxisTickVisibilityOn()
-            self.machine_actor.ZAxisTickVisibilityOn()
+            self.machine_actor.XAxisLabelVisibilityOff()
+            self.machine_actor.YAxisLabelVisibilityOff()
+            self.machine_actor.ZAxisLabelVisibilityOff()
         self.update_render()
 
     @Slot()
     def toggleMachineLabels(self):
-        labels = self.machine_actor.GetXAxisLabelVisibility()
-        if labels:
-            self.machine_actor.XAxisLabelVisibilityOff()
-            self.machine_actor.YAxisLabelVisibilityOff()
-            self.machine_actor.ZAxisLabelVisibilityOff()
-        else:
-            self.machine_actor.XAxisLabelVisibilityOn()
-            self.machine_actor.YAxisLabelVisibilityOn()
-            self.machine_actor.ZAxisLabelVisibilityOn()
-        self.update_render()
+        self.showMachineLabels(not self.machine_actor.GetXAxisLabelVisibility())
 
     @Property(QColor)
     def backgroundColor(self):
@@ -1154,8 +1196,8 @@ class PathBoundaries:
         cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
         if not IN_DESIGNER:
-            programBoundry = INIFILE.find("VTK", "PROGRAM_BOUNDRY") or ""
-            if programBoundry.lower() in ['true', 'on', 'yes', '1']:
+            bounds = getSetting('backplot.show-program-bounds')
+            if bounds and bounds.value:
                 cube_axes_actor.XAxisVisibilityOn()
                 cube_axes_actor.YAxisVisibilityOn()
                 cube_axes_actor.ZAxisVisibilityOn()
@@ -1164,8 +1206,8 @@ class PathBoundaries:
                 cube_axes_actor.YAxisVisibilityOff()
                 cube_axes_actor.ZAxisVisibilityOff()
 
-            programTicks = INIFILE.find("VTK", "PROGRAM_TICKS") or ""
-            if programTicks.lower() in ['true', 'on', 'yes', '1']:
+            ticks = getSetting('backplot.show-program-ticks')
+            if ticks and ticks.value:
                 cube_axes_actor.XAxisTickVisibilityOn()
                 cube_axes_actor.YAxisTickVisibilityOn()
                 cube_axes_actor.ZAxisTickVisibilityOn()
@@ -1174,8 +1216,8 @@ class PathBoundaries:
                 cube_axes_actor.YAxisTickVisibilityOff()
                 cube_axes_actor.ZAxisTickVisibilityOff()
 
-            programLabel = INIFILE.find("VTK", "PROGRAM_LABELS") or ""
-            if programLabel.lower() in ['true', 'on', 'yes', '1']:
+            labels = getSetting('backplot.show-program-labels')
+            if labels and labels.value:
                 cube_axes_actor.XAxisLabelVisibilityOn()
                 cube_axes_actor.YAxisLabelVisibilityOn()
                 cube_axes_actor.ZAxisLabelVisibilityOn()
@@ -1335,37 +1377,6 @@ class Machine:
         cube_axes_actor.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
         cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
-        if not IN_DESIGNER:
-            machineBoundry = INIFILE.find("VTK", "MACHINE_BOUNDRY") or ""
-            if machineBoundry.lower() in ['true', 'on', 'yes', '1']:
-                cube_axes_actor.XAxisVisibilityOn()
-                cube_axes_actor.YAxisVisibilityOn()
-                cube_axes_actor.ZAxisVisibilityOn()
-            else:
-                cube_axes_actor.XAxisVisibilityOff()
-                cube_axes_actor.YAxisVisibilityOff()
-                cube_axes_actor.ZAxisVisibilityOff()
-
-            machineTicks = INIFILE.find("VTK", "MACHINE_TICKS") or ""
-            if machineTicks.lower() in ['true', 'on', 'yes', '1']:
-                cube_axes_actor.XAxisTickVisibilityOn()
-                cube_axes_actor.YAxisTickVisibilityOn()
-                cube_axes_actor.ZAxisTickVisibilityOn()
-            else:
-                cube_axes_actor.XAxisTickVisibilityOff()
-                cube_axes_actor.YAxisTickVisibilityOff()
-                cube_axes_actor.ZAxisTickVisibilityOff()
-
-            machineLabels = INIFILE.find("VTK", "MACHINE_LABELS") or ""
-            if machineLabels.lower() in ['true', 'on', 'yes', '1']:
-                cube_axes_actor.XAxisLabelVisibilityOn()
-                cube_axes_actor.YAxisLabelVisibilityOn()
-                cube_axes_actor.ZAxisLabelVisibilityOn()
-            else:
-                cube_axes_actor.XAxisLabelVisibilityOff()
-                cube_axes_actor.YAxisLabelVisibilityOff()
-                cube_axes_actor.ZAxisLabelVisibilityOff()
-
         units = str(self.status.program_units)
 
         cube_axes_actor.SetXUnits(units)
@@ -1375,18 +1386,6 @@ class Machine:
         cube_axes_actor.DrawXGridlinesOn()
         cube_axes_actor.DrawYGridlinesOn()
         cube_axes_actor.DrawZGridlinesOn()
-
-        if not IN_DESIGNER:
-            showGrid = INIFILE.find("VTK", "GRID_LINES") or ""
-            if showGrid.lower() in ['true', 'on', 'yes', '1']:
-                cube_axes_actor.DrawXGridlinesOn()
-                cube_axes_actor.DrawYGridlinesOn()
-                cube_axes_actor.DrawZGridlinesOn()
-
-            else:
-                cube_axes_actor.DrawXGridlinesOff()
-                cube_axes_actor.DrawYGridlinesOff()
-                cube_axes_actor.DrawZGridlinesOff()
 
         cube_axes_actor.SetGridLineLocation(cube_axes_actor.VTK_GRID_LINES_FURTHEST)
 
