@@ -91,7 +91,6 @@ setup(
         'pyopengl',
         'vtk',
         'pyqtgraph',
-        'more-itertools',
         'oyaml'
     ],
     entry_points={

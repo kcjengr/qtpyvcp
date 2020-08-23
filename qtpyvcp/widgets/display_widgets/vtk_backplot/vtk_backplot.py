@@ -30,7 +30,6 @@ from qtpyvcp.utilities.info import Info
 
 from base_canon import StatCanon
 from base_backplot import BaseBackPlot
-from more_itertools import numeric_range
 
 INFO = Info()
 
