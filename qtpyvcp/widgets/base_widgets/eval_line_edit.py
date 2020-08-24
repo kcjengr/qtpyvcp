@@ -39,4 +39,3 @@ class EvalLineEdit(QLineEdit):
             self.setText("{}".format(eval(self.text())))
         except Exception:
             LOG.exception('Error evaluating numeric expression "{}".'.format(self.text()))
-
