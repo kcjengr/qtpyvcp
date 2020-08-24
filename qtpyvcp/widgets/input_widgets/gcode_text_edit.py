@@ -9,7 +9,7 @@ import os
 import oyaml as yaml
 
 from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal, Property)
-from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
+from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter, QTextDocument,
                         QTextOption, QTextFormat, QTextCharFormat, QTextCursor)
 from qtpy.QtWidgets import (QApplication, QPlainTextEdit, QTextEdit, QWidget, QMenu)
 
@@ -22,13 +22,15 @@ YAML_DIR = os.path.dirname(DEFAULT_CONFIG_FILE)
 
 
 class GcodeSyntaxHighlighter(QSyntaxHighlighter):
-    def __init__(self, document, parent):
-        super(GcodeSyntaxHighlighter, self).__init__(document)
+    def __init__(self, parent):
+        super(GcodeSyntaxHighlighter, self).__init__(parent.document())
 
         self._parent = parent
 
         self.rules = []
         self.char_fmt = QTextCharFormat()
+
+        self._abort = False
 
         self.loadSyntaxFromYAML()
 
@@ -90,6 +92,12 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
         """Apply syntax highlighting to the given block of text.
         """
 
+        if self._abort:
+            print "abort"
+            return
+
+        QApplication.processEvents()
+
         for regex, fmt in self.rules:
 
             nth = 0
@@ -97,6 +105,7 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
             index = match.capturedStart()
 
             while index >= 0:
+
                 # We actually want the index of the nth match
                 index = match.capturedStart(nth)
                 length = match.capturedLength(nth)
@@ -106,7 +115,13 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
                 match = regex.match(text, offset=index + length)
                 index = match.capturedStart()
 
-        QApplication.processEvents()
+    def stop(self):
+        self._abort = True
+        self.setDocument(QTextDocument())
+
+    def start(self):
+        self._abort = False
+        self.setDocument(self._parent.document())
 
 
 class GcodeTextEdit(QPlainTextEdit):
@@ -131,7 +146,7 @@ class GcodeTextEdit(QPlainTextEdit):
         self.margin = NumberMargin(self)
 
         # set the syntax highlighter
-        self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self)
+        self.gCodeHighlighter = GcodeSyntaxHighlighter(self)
 
         # context menu
         self.menu = QMenu(self)
@@ -169,7 +184,7 @@ class GcodeTextEdit(QPlainTextEdit):
     def changeEvent(self, event):
         if event.type() == QEvent.FontChange:
             # Update syntax highlighter with new font
-            self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self)
+            self.gCodeHighlighter = GcodeSyntaxHighlighter(self)
         super(GcodeTextEdit, self).changeEvent(event)
 
     @Slot(bool)
@@ -234,6 +249,12 @@ class GcodeTextEdit(QPlainTextEdit):
             with open(fname) as f:
                 gcode = f.read()
             self.setPlainText(gcode)
+
+    def setPlainText(self, p_str):
+        self.gCodeHighlighter.stop()
+        super(GcodeTextEdit, self).setPlainText(p_str)
+        self.margin.updateWidth()
+        self.gCodeHighlighter.start()
 
     @Slot(int)
     @Slot(object)
