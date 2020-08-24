@@ -92,6 +92,7 @@ setup(
         'vtk',
         'pyqtgraph',
         'more-itertools',
+        'simpleeval',
     ],
     entry_points={
         'console_scripts': [

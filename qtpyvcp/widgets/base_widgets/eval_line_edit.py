@@ -3,6 +3,8 @@ from __future__ import division
 from qtpy.QtWidgets import QLineEdit
 from qtpyvcp.utilities import logger
 
+from simpleeval import simple_eval
+
 LOG = logger.getLogger(__name__)
 
 
@@ -41,6 +43,6 @@ class EvalLineEdit(QLineEdit):
         elif self.text().startswith(('+', '*', '/', '-=')):
             self.setText(self.orig_value + self.text().replace('=', ''))
         try:
-            self.setText("{}".format(eval(self.text())))
+            self.setText("{}".format(simple_eval(self.text())))
         except Exception:
             LOG.exception('Error evaluating numeric expression "{}".'.format(self.text()))
