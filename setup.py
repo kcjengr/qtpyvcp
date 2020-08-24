@@ -91,7 +91,7 @@ setup(
         'pyopengl',
         'vtk',
         'pyqtgraph',
-        'oyaml'
+        'oyaml',
         'simpleeval',
     ],
     entry_points={
