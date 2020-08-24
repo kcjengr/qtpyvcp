@@ -92,6 +92,7 @@ setup(
         'vtk',
         'pyqtgraph',
         'oyaml'
+        'simpleeval',
     ],
     entry_points={
         'console_scripts': [

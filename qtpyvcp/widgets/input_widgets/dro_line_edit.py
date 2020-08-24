@@ -5,7 +5,7 @@ DROLineEdit
 """
 
 from qtpy.QtCore import Property
-from qtpy.QtWidgets import QLineEdit
+from qtpyvcp.widgets.base_widgets.eval_line_edit import EvalLineEdit
 
 from qtpyvcp.widgets.base_widgets.dro_base_widget import DROBaseWidget, Axis, LatheMode
 from qtpyvcp.actions.machine_actions import issue_mdi
@@ -14,7 +14,7 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 
-class DROLineEdit(QLineEdit, DROBaseWidget):
+class DROLineEdit(EvalLineEdit, DROBaseWidget):
     """DROLineEdit
 
     DRO that supports typing in desired position to set work coordinate offset.
