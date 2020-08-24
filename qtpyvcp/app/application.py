@@ -56,8 +56,11 @@ class VCPApplication(QApplication):
             self.loadStylesheet(stylesheet, opts.develop)
 
         if custom_fonts:
-            for font in custom_fonts:
-                self.loadFont(font)
+            if isinstance(custom_fonts, basestring):  # single font
+                self.loadFont(custom_fonts)
+            else:  # list of fonts
+                for font in custom_fonts:
+                    self.loadFont(font)
 
         # self.window = self.loadVCPMainWindow(opts, vcp_file)
         # if self.window is not None:
@@ -196,7 +199,8 @@ class VCPApplication(QApplication):
         location of a font file or a qresource."""
         LOG.debug("Loading custom font: %s" % font_path)
         res = QFontDatabase.addApplicationFont(font_path)
-        if res != 0:
+        # per QT docs -1 is error and 0+ is index to font loaded for later use
+        if res < 0:
             LOG.error("Failed to load font: %s", font_path)
 
     def getWidget(self, name):
