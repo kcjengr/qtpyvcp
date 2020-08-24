@@ -16,6 +16,8 @@ class EvalLineEdit(QLineEdit):
     Any expression that begins with an operator (except -, see below), will be applied to the current value
     (ex. if current position is 20 and the user enters /2, then the resulting value will be 10).
 
+    Any entry that consists of a single - will invert the sign of the current value.
+
     NB: If the expression starts with '-' it will be interpreted as negating the value following it.
         This means that you cannot enter -10 and have that value subtract from the current value
         because there is no way to determine if the you wanted to subtract 10, or set the current
@@ -33,7 +35,10 @@ class EvalLineEdit(QLineEdit):
         self.orig_value = self.text()
 
     def evaluate_(self):
-        if self.text().startswith(('+', '*', '/', '-=')):
+        if self.text().strip() == '-':
+            # change sign if entry is just a '-'
+            self.setText('-' + self.orig_value)
+        elif self.text().startswith(('+', '*', '/', '-=')):
             self.setText(self.orig_value + self.text().replace('=', ''))
         try:
             self.setText("{}".format(eval(self.text())))
