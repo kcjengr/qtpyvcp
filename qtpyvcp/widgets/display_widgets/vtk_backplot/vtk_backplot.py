@@ -947,10 +947,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                                   position[1],
                                   position[2])
 
-        self.camera.SetPosition(position[0] + 1,
-                                position[1] - 1,
-                                position[2] + 1)
+        self.camera.SetPosition(position[0] + 1000,
+                                position[1] - 1000,
+                                position[2] + 1000)
 
+        self.camera.Zoom(1.0)
         self.interactor.ReInitialize()
 
     @Slot()
