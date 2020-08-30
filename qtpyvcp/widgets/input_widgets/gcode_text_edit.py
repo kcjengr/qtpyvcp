@@ -11,7 +11,7 @@ import oyaml as yaml
 from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal, Property)
 from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter, QTextDocument,
                         QTextOption, QTextFormat, QTextCharFormat, QTextCursor)
-from qtpy.QtWidgets import (QApplication, QPlainTextEdit, QTextEdit, QWidget, QMenu)
+from qtpy.QtWidgets import (QApplication, QPlainTextEdit, QTextEdit, QWidget, QMenu, QPlainTextDocumentLayout)
 
 from qtpyvcp import DEFAULT_CONFIG_FILE
 from qtpyvcp.plugins import getPlugin
@@ -92,10 +92,6 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
         """Apply syntax highlighting to the given block of text.
         """
 
-        if self._abort:
-            print "abort"
-            return
-
         QApplication.processEvents()
 
         for regex, fmt in self.rules:
@@ -114,14 +110,6 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
                 # check the rest of the string
                 match = regex.match(text, offset=index + length)
                 index = match.capturedStart()
-
-    def stop(self):
-        self._abort = True
-        self.setDocument(QTextDocument())
-
-    def start(self):
-        self._abort = False
-        self.setDocument(self._parent.document())
 
 
 class GcodeTextEdit(QPlainTextEdit):
@@ -142,6 +130,7 @@ class GcodeTextEdit(QPlainTextEdit):
         self.focused_line = 1
         self.current_line_background = QColor(self.palette().alternateBase())
 
+        self.old_docs = []
         # set the custom margin
         self.margin = NumberMargin(self)
 
@@ -156,7 +145,7 @@ class GcodeTextEdit(QPlainTextEdit):
         self.menu.addAction(self.tr('Copy'), self.copy)
         self.menu.addAction(self.tr('Paste'), self.paste)
 
-        # FIXME picks the first action run from here, should not be by index
+        # FixMe: Picks the first action run from here, should not be by index
         self.run_action = self.menu.actions()[0]
         self.run_action.setEnabled(program_actions.run_from_line.ok())
         program_actions.run_from_line.bindOk(self.run_action)
@@ -186,6 +175,22 @@ class GcodeTextEdit(QPlainTextEdit):
             # Update syntax highlighter with new font
             self.gCodeHighlighter = GcodeSyntaxHighlighter(self)
         super(GcodeTextEdit, self).changeEvent(event)
+
+    def setPlainText(self, p_str):
+        # FixMe: Keep a reference to old QTextDocuments form previously loaded
+        # files. This is needed to prevent garbage collection which results in a
+        # seg fault if the document is discarded while still being highlighted.
+        self.old_docs.append(self.document())
+
+        doc = QTextDocument()
+        doc.setDocumentLayout(QPlainTextDocumentLayout(doc))
+        doc.setPlainText(p_str)
+
+        self.setDocument(doc)
+        self.margin.updateWidth()
+
+        # start syntax heightening
+        self.gCodeHighlighter = GcodeSyntaxHighlighter(self)
 
     @Slot(bool)
     def EditorReadOnly(self, state):
@@ -249,12 +254,6 @@ class GcodeTextEdit(QPlainTextEdit):
             with open(fname) as f:
                 gcode = f.read()
             self.setPlainText(gcode)
-
-    def setPlainText(self, p_str):
-        self.gCodeHighlighter.stop()
-        super(GcodeTextEdit, self).setPlainText(p_str)
-        self.margin.updateWidth()
-        self.gCodeHighlighter.start()
 
     @Slot(int)
     @Slot(object)
