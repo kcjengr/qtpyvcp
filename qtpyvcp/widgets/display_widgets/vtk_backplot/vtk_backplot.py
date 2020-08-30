@@ -299,7 +299,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.clipping_range_near = 0.001
             self.clipping_range_far = 100.0
         elif units in ["mm", "metric"]:
-            self.clipping_range_near = 0.1
+            self.clipping_range_near = 0.01
             self.clipping_range_far = 10000.0
 
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
@@ -545,9 +545,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         camera.SetFocalPoint((FPoint0 - RPoint0) / 1.0 + FPoint0,
                              (FPoint1 - RPoint1) / 1.0 + FPoint1,
                              (FPoint2 - RPoint2) / 1.0 + FPoint2)
+
         camera.SetPosition((FPoint0 - RPoint0) / 1.0 + PPoint0,
                            (FPoint1 - RPoint1) / 1.0 + PPoint1,
                            (FPoint2 - RPoint2) / 1.0 + PPoint2)
+
         self.renderer_window.Render()
 
     # Dolly converts y-motion into a camera dolly commands.
@@ -937,9 +939,19 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def setViewPath(self):
         LOG.debug('Path')
 
-        active_offset = self.index_map[self.g5x_index]
-        self.extents[active_offset].SetCamera(self.camera)
-        self.renderer.ResetCamera()
+        position = self.path_position_table[self.g5x_index - 1]
+
+        self.camera.SetViewUp(0, 0, 1)
+
+        self.camera.SetFocalPoint(position[0],
+                                  position[1],
+                                  position[2])
+
+        self.camera.SetPosition(position[0] + 1000,
+                                position[1] - 1000,
+                                position[2] + 1000)
+
+        self.camera.Zoom(1.0)
         self.interactor.ReInitialize()
 
     @Slot()
