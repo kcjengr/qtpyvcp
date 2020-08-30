@@ -67,7 +67,7 @@ class GcodeLexer(QsciLexerCustom):
             3: 'Assignment',
             4: 'Value',
         }
-        for key, value in self._styles.iteritems():
+        for key, value in self._styles.items():
             setattr(self, value, key)
         font = QFont()
         font.setFamily('Courier')
@@ -118,7 +118,7 @@ class GcodeLexer(QsciLexerCustom):
                 editor.SendScintilla(
                     editor.SCI_GETTEXTRANGE, start, end, source)
             else:
-                source = unicode(editor.text()).encode('utf-8')[start:end]
+                source = str(editor.text()).encode('utf-8')[start:end]
         if not source:
             return
 
@@ -140,7 +140,7 @@ class GcodeLexer(QsciLexerCustom):
             # print line
             length = len(line)
             graymode = False
-            msg = ('msg' in line.lower() or 'debug' in line.lower())
+            msg = ('msg'.encode("utf-8") in line.lower() or 'debug'.encode("utf-8")  in line.lower())
             for char in str(line):
                 # print char
                 if char == '(':
@@ -327,7 +327,7 @@ class EditorBase(QsciScintilla):
             end_pos = self.SendScintilla(QsciScintilla.SCI_GETLENGTH)
             self.SendScintilla(QsciScintilla.SCI_SETTARGETEND, end_pos)
 
-            print(self.SendScintilla(QsciScintilla.SCI_SEARCHINTARGET, len(text), text))
+            print((self.SendScintilla(QsciScintilla.SCI_SEARCHINTARGET, len(text), text)))
 
             # match = self.findFirst(text, re, cs, wo, wrap, forward, line, index, show)
             # if match:

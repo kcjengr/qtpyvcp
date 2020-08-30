@@ -62,7 +62,7 @@ directory. Please set up a development install to edit the VCP.
 """.strip()
 
 if linuxcnc.version.startswith('2.7'):
-    print LCNC_VERSION_ERROR_MSG.format(linuxcnc.version)
+    print(LCNC_VERSION_ERROR_MSG.format(linuxcnc.version))
     sys.exit(1)
 
 LOG = initBaseLogger('qtpyvcp', log_file=os.devnull, log_level='WARNING')
@@ -97,14 +97,14 @@ def launch_designer(opts=DotDict()):
             pass
 
         if 'lib/python2.7/site-packages' in fname:
-            print INSTALLED_ERROR_MSG
+            print(INSTALLED_ERROR_MSG)
             sys.exit(1)
 
     cmd = ['designer']
     ext = os.path.splitext(fname)[1]
     if ext in ['.yml', '.yaml']:
 
-        print "Loading YAML config file:", fname
+        print("Loading YAML config file:", fname)
 
         from qtpyvcp import CONFIG, DEFAULT_CONFIG_FILE
         from qtpyvcp.utilities.config_loader import load_config_files
@@ -113,11 +113,11 @@ def launch_designer(opts=DotDict()):
             CONFIG.update(load_config_files(fname, DEFAULT_CONFIG_FILE))
             data = CONFIG.get('qtdesigner')
         except:
-            print "Error loading YAML config file:"
+            print("Error loading YAML config file:")
             raise
 
         from qtpyvcp.utilities.settings import addSetting
-        for k, v in CONFIG['settings'].items():
+        for k, v in list(CONFIG['settings'].items()):
             addSetting(k, **v)
 
         # add to path so that QtDesginer can load it when it starts
@@ -131,27 +131,27 @@ def launch_designer(opts=DotDict()):
             if ui_file is not None:
                 ui_file = os.path.join(yml_dir, ui_file)
                 cmd.append(ui_file)
-                print "Loading UI file:", ui_file
+                print("Loading UI file:", ui_file)
             else:
-                print "No UI file specified."
+                print("No UI file specified.")
 
             # prefer command line qss file
             qss_file = opts.qss_file or data.get('qss_file')
             if qss_file is not None:
                 qss_file = os.path.join(yml_dir, qss_file)
                 os.environ['QSS_STYLESHEET'] = qss_file
-                print "Loading QSS file:", qss_file
+                print("Loading QSS file:", qss_file)
             else:
-                print "No QSS file specified."
+                print("No QSS file specified.")
 
     elif ext == '.ui':
         cmd.append(fname)
 
-        print "Loading UI file:", fname
+        print("Loading UI file:", fname)
 
     else:
-        print "No valid file type selected.\n " \
-              "File must be a .yaml config file or a .ui file."
+        print("No valid file type selected.\n " \
+              "File must be a .yaml config file or a .ui file.")
         sys.exit()
 
     base = os.path.dirname(__file__)
@@ -161,7 +161,7 @@ def launch_designer(opts=DotDict()):
     os.environ['QT_SELECT'] = 'qt5'
     os.environ['PYQTDESIGNERPATH'] = os.path.join(base, '../widgets')
 
-    print "\nStarting QtDesigner ..."
+    print("\nStarting QtDesigner ...")
     sys.exit(subprocess.call(cmd))
 
 
@@ -169,7 +169,7 @@ def main():
     raw_args = docopt(__doc__)
     # convert raw argument keys to valid python names
     opts = DotDict({arg.strip('-<>').replace('-', '_'):
-                    value for arg, value in raw_args.items()})
+                    value for arg, value in list(raw_args.items())})
 
     app = QApplication(sys.argv)
     launch_designer(opts)

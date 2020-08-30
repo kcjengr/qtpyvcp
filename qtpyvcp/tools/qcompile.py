@@ -40,7 +40,7 @@ def compile(packages=['.',]):
             for f in files if f.endswith('.ui')]
 
         if len(files) > 0:
-            print("Compiling .ui files in package '{}':".format(package))
+            print(("Compiling .ui files in package '{}':".format(package)))
 
             for infile in files:
                 outfile = infile.replace('.ui', '_ui.py')
@@ -54,7 +54,7 @@ def compile(packages=['.',]):
                 try:
                     ret = subprocess.call([pyuic, '-o', outfile, infile])
                 except OSError:
-                    print(error.format(pyuic))
+                    print((error.format(pyuic)))
                     break
                 if ret == 0:
                     print(ok)
@@ -65,7 +65,7 @@ def compile(packages=['.',]):
                  for f in files if f.endswith('.qrc')]
 
         if len(files) > 0:
-            print("\nCompiling .qrc files in package '{}':".format(package))
+            print(("\nCompiling .qrc files in package '{}':".format(package)))
 
             for infile in files:
                 outfile = infile.replace('.qrc', '_rc.py')
@@ -79,7 +79,7 @@ def compile(packages=['.',]):
                 try:
                     ret = subprocess.call([pyrcc, '-o', outfile, infile])
                 except OSError:
-                    print(error.format(pyrcc))
+                    print((error.format(pyrcc)))
                     break
                 if ret == 0:
                     print(ok)

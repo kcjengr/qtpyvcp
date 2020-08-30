@@ -40,7 +40,7 @@ NOTIFICATIONS = {}
 
 class Urgency:
     """freedesktop.org notification urgency levels"""
-    LOW, NORMAL, CRITICAL = range(3)
+    LOW, NORMAL, CRITICAL = list(range(3))
 
 
 class UninitializedError(RuntimeError):
@@ -164,7 +164,7 @@ class DBusNotification(object):
 
     def setUrgency(self, value):
         """Set the freedesktop.org notification urgency level"""
-        if value not in range(3):
+        if value not in list(range(3)):
             raise ValueError("Unknown urgency level '%s' specified" % value)
         self.hints['urgency'] = dbus.Byte(value)
 
@@ -228,7 +228,7 @@ class DBusNotification(object):
     def _makeActionsList(self):
         """Make the actions array to send over DBus"""
         arr = []
-        for action, (label, callback, user_data) in self.actions.items():
+        for action, (label, callback, user_data) in list(self.actions.items()):
             arr.append(action)
             arr.append(label)
         return arr
@@ -250,19 +250,19 @@ class DBusNotification(object):
 
 def onHelp(n, action):
     assert (action == "help"), "Action was not help!"
-    print "You clicked Help action"
+    print("You clicked Help action")
     n.close()
 
 
 def onIgnore(n, action, data):
     assert (action == "ignore"), "Action was not ignore!"
-    print "You clicked Ignore action"
-    print "Passed user data was: ", data
+    print("You clicked Ignore action")
+    print("Passed user data was: ", data)
     n.close()
 
 
 def onClose(n):
-    print "Notification closed"
+    print("Notification closed")
     app.quit()
 
 

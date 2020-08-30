@@ -21,7 +21,7 @@ import sys
 import shutil
 import tempfile
 
-import thread
+import _thread
 
 import re
 import math
@@ -177,7 +177,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
                                               self.get_geometry()
                                               )
         # start tracking linuxcnc position so we can plot it
-        thread.start_new_thread(self.logger.start, (.01,))
+        _thread.start_new_thread(self.logger.start, (.01,))
         glcanon.GlCanonDraw.__init__(self, linuxcnc.stat(), self.logger)
 
         self.canon = None

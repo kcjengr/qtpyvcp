@@ -11,7 +11,7 @@ STATUS = getPlugin('status')
 STAT = STATUS.stat
 INFO = Info()
 
-SPINDLES = range(INFO.spindles())
+SPINDLES = list(range(INFO.spindles()))
 DEFAULT_SPEED = INFO.defaultSpindleSpeed()
 
 CMD = linuxcnc.command()

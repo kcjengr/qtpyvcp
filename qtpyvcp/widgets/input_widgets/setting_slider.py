@@ -43,7 +43,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         if self._setting.value_type in (int, float):
             return self._text_format.format(value)
 
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             return value
 
         else:

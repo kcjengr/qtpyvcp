@@ -1,12 +1,12 @@
 import os
 import sys
-if (sys.version_info > (3, 0)):
+if sys.version_info > (3, 0):
     print("ERROR: It appears QtDesigner is trying to load the QtPyVCP widgets \n"
           "using a python version greater than 2.7, this is not supported. \n"
           "Make sure that you have the correct version of the libpyqt5.so \n"
           "file in /usr/lib/x86_64-linux-gnu/qt5/plugins/designer/, see the \n"
           "Installation Trouble Shooting section of the QtPyVCP Documents for more info.")
-    sys.exit()
+    # sys.exit()
 
 import qtpy
 if qtpy.API != 'pyqt5':

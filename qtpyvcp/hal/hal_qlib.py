@@ -105,7 +105,7 @@ class QComponent(QObject):
         self._comp.ready()
 
     def exit(self, *a, **kw):
-        print("Unloading '%s' HAL component ..." % self.name)
+        print(("Unloading '%s' HAL component ..." % self.name))
         return self._comp.exit(*a, **kw)
 
     def signal_handler(self, signal, frame):
@@ -122,7 +122,7 @@ def main():
     app = QApplication([])
 
     def printChange(new_val):
-        print("Value Changed", new_val)
+        print(("Value Changed", new_val))
 
     c = QComponent('test')
     c.addPin('input', "s32", "in")

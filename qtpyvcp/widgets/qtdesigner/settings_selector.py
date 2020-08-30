@@ -35,8 +35,8 @@ class SettingSelector(QDialog):
         uic.loadUi(UI_FILE, self)
 
         for setting in sorted(SETTINGS):
-            print setting
-            print SETTINGS[setting].__doc__
+            print(setting)
+            print(SETTINGS[setting].__doc__)
             self.settingsCombo.addItem(setting)
 
         current_setting = self.widget.settingName

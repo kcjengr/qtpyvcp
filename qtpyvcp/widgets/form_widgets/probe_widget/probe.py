@@ -71,7 +71,7 @@ class SubCaller(QtWidgets.QWidget):
         cmd_str = "o<{}> call {}".format(subname, arg_str)
 
         # Print the command to the terminal so the user can see what is happening
-        print("Calling MDI command: {}".format(cmd_str))
+        print(("Calling MDI command: {}".format(cmd_str)))
 
         self.notification.setNotify("Probe", "Probing...")
 
@@ -101,7 +101,7 @@ class SubCaller(QtWidgets.QWidget):
 
         for anum, aletter in enumerate('xyz'):
             pos_str = "{:6.4f}".format(probed_pos[anum])
-            print("Probed {} pos: {}".format(aletter.upper(), pos_str))
+            print(("Probed {} pos: {}".format(aletter.upper(), pos_str)))
             getattr(self, '{}_probed_pos'.format(aletter)).setText(pos_str)
 
     def getArgs(self):

@@ -177,7 +177,7 @@ class MDIHistory(QListWidget, CMDWidget):
     def setHistory(self, items_list):
         """Clear and reset the history in the list.
         item_list is a list of strings."""
-        print 'Clear and load history to list'
+        print('Clear and load history to list')
         self.clear()
         for item in items_list:
             row_item = QListWidgetItem()
@@ -226,7 +226,7 @@ class MDIHistory(QListWidget, CMDWidget):
 
         # Get handle to windows list and seach through them
         # for the widget referenced in mdi_entryline_name
-        for win_name, obj in qtpyvcp.WINDOWS.items():
+        for win_name, obj in list(qtpyvcp.WINDOWS.items()):
             if hasattr(obj, str(self.mdi_entryline_name)):
                 self.mdi_entry_widget = getattr(obj, self.mdi_entryline_name)
                 break

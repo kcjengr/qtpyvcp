@@ -5,7 +5,7 @@ import os
 
 from qtpyvcp.lib.native_notification import NativeNotification
 
-from base_canon import BaseCanon
+from .base_canon import BaseCanon
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
@@ -88,7 +88,7 @@ class BaseBackPlot(object):
 
 if __name__ == "__main__":
     from qtpyvcp import TOP_DIR
-    from base_canon import PrintCanon
+    from .base_canon import PrintCanon
 
     INI_FILE = os.path.join(TOP_DIR, 'sim/xyz.ini')
     NGC_FILE = os.path.join(TOP_DIR, 'sim/example_gcode/blank.ngc')

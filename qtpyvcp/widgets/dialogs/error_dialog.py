@@ -45,13 +45,13 @@ class ErrorDialog(QDialog):
             IGNORE_LIST.append((str(self.exc_info[0]),
                                 str(self.exc_info[1]),
                                 self.exc_info[2].tb_lineno))
-            print IGNORE_LIST
+            print(IGNORE_LIST)
         self.accept()
 
     @Slot()
     def on_reportIssue_clicked(self):
         import qtpy
-        import urllib
+        import urllib.request, urllib.parse, urllib.error
         import webbrowser
         import subprocess
         import linuxcnc
@@ -77,8 +77,8 @@ class ErrorDialog(QDialog):
 
         new_issue_url = "https://github.com/kcjengr/qtpyvcp/issues/new?" \
                         "title={title}&body={body}&&labels=bug,auto+generated"\
-                        .format(title=urllib.quote(issue_title),
-                                body=urllib.quote(issue_body))
+                        .format(title=urllib.parse.quote(issue_title),
+                                body=urllib.parse.quote(issue_body))
 
         webbrowser.open(new_issue_url, new=2, autoraise=True)
 

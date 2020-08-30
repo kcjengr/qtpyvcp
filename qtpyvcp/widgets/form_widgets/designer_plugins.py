@@ -1,6 +1,6 @@
 from qtpyvcp.widgets.qtdesigner import _DesignerPlugin
 
-from main_window import VCPMainWindow
+from .main_window import VCPMainWindow
 class MainWindowPlugin(_DesignerPlugin):
     def pluginClass(self):
         return VCPMainWindow

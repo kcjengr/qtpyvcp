@@ -64,7 +64,7 @@ class OffsetsDialog(QDialog):
                          "P9": "P9 G59.3"
                          }
 
-        for key, value in OrderedDict(sorted(coord_systems.items(), key=lambda t: t[0])).items():
+        for key, value in list(OrderedDict(sorted(list(coord_systems.items()), key=lambda t: t[0])).items()):
             self.system_combo.addItem(value, key)
 
         close_button = QPushButton("Close")

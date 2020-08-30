@@ -1,7 +1,7 @@
 
 import os
 import ast
-import ConfigParser
+import configparser
 
 from qtpyvcp.utilities.logger import getLogger
 log = getLogger(__name__)
@@ -10,7 +10,7 @@ log = getLogger(__name__)
 class RuntimeConfig(object):
     def __init__(self, fname='~/.qtpyvcprc'):
         self.fname = fname
-        self._cp = ConfigParser.RawConfigParser()
+        self._cp = configparser.RawConfigParser()
         self._cp.optionxform = str
 
         self.require_write = False
@@ -40,7 +40,7 @@ class RuntimeConfig(object):
             getter = self.getters.get(typ)
             value = getter(section, option, default)
             return value
-        except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
+        except (configparser.NoSectionError, configparser.NoOptionError):
             # Add the section and the option
             self.set(section, option, default)
 
@@ -49,7 +49,7 @@ class RuntimeConfig(object):
     def set(self, section, option, value):
         try:
             self._cp.set(section, option, str(value))
-        except ConfigParser.NoSectionError:
+        except configparser.NoSectionError:
             # Add the section and the option
             self._cp.add_section(section)
             self._cp.set(section, option, str(value))
@@ -113,8 +113,8 @@ class RuntimeConfig(object):
 if __name__ == "__main__":
 
     with RuntimeConfig() as rc:
-        print rc.get('TEST', 'STR_VALUE', 'default')
+        print(rc.get('TEST', 'STR_VALUE', 'default'))
         rc.set('TEST', 'VALUE', 10)
 
     with RuntimeConfig('~/.axis_preferences') as rc:
-        print rc.get('DEFAULT', 'recentfiles', default=[])
+        print(rc.get('DEFAULT', 'recentfiles', default=[]))

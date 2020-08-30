@@ -98,7 +98,7 @@ class DataPlugin(Plugin):
             level (str, int) : Log level (DEBUG | INFO | ERROR | CRITICAL)
         """
         if level:
-            if isinstance(level, basestring):
+            if isinstance(level, str):
                 level = logLevelFromName(level)
             self.log.setLevel(level)
 

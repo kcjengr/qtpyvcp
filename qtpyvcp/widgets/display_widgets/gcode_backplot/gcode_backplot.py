@@ -122,7 +122,7 @@ class GcodeBackplot(QBackPlot):
         self.progressBar.setValue(percentage)
 
     def report_loading_finished(self):
-        print time.time() - self.start
+        print(time.time() - self.start)
         self.progressBar.hide()
         self.abortButton.hide()
 

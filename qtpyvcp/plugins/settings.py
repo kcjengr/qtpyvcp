@@ -17,7 +17,7 @@ class Settings(DataPlugin):
         self.data_manager = getPlugin('persistent_data_manager')
 
         # load settings defined in YAML file
-        for setting_name, kwargs in CONFIG['settings'].items():
+        for setting_name, kwargs in list(CONFIG['settings'].items()):
             addSetting(setting_name, **kwargs)
 
     def getChannel(self, url):
@@ -33,7 +33,7 @@ class Settings(DataPlugin):
     def initialise(self):
         settings = self.data_manager.getData('settings', {})
 
-        for key, value in settings.items():
+        for key, value in list(settings.items()):
             try:
                 SETTINGS[key].setValue(value)
             except KeyError:
@@ -41,7 +41,7 @@ class Settings(DataPlugin):
 
     def terminate(self):
         settings = {}
-        for key, obj in SETTINGS.items():
+        for key, obj in list(SETTINGS.items()):
             if obj.persistent == True:
                 value = obj.getValue()
                 if obj.default_value != value:

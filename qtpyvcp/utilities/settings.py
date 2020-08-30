@@ -169,14 +169,14 @@ def setting(id, default_value=False, max_value=None, min_value=None, persistent=
 if __name__ == "__main__":
 
     def printChanged(val):
-        print "Setting changed:", val
+        print("Setting changed:", val)
 
     s = Setting(default_value=9)
     s.notify(printChanged)
-    print repr(s)
-    print s.value
+    print(repr(s))
+    print(s.value)
     s.setValue(34)
-    print s.value
+    print(s.value)
 
 
     @setting('jog.speed', default_value=10.0, persistent=False)
@@ -185,26 +185,26 @@ if __name__ == "__main__":
 
     @speed.setter
     def speed(setting_obj, val):
-        print 'in speed setter'
-        print setting_obj, val
+        print('in speed setter')
+        print(setting_obj, val)
         setting_obj.value = val
         setting_obj.signal.emit(val)
 
 
 
-    print SETTINGS
-    print repr(speed)
+    print(SETTINGS)
+    print(repr(speed))
     speed.setValue(12.0)
-    print speed.value
+    print(speed.value)
     getSetting('jog.speed').setValue(13.0)
-    print speed.value
+    print(speed.value)
     setSetting('jog.speed', 14.0)
-    print speed.value
+    print(speed.value)
 
 
     class Test(QObject):
         def __init__(self):
-            print "inited"
+            print("inited")
 
 
         @setting('test.setting', False, True)
@@ -213,28 +213,28 @@ if __name__ == "__main__":
 
         @on.setter
         def on(self, setting_obj, val):
-            print "in settter", val
+            print("in settter", val)
             setting_obj.value = val
             setting_obj.signal.emit(val)
 
     t = Test()
-    print t
+    print(t)
 
     t.on.notify(printChanged)
 
 
-    print t.on.value
+    print(t.on.value)
     t.on.setValue(True)
-    print t.on.value
+    print(t.on.value)
 
-    print "resenting"
+    print("resenting")
     t.on.resetValue()
-    print t.on.value
+    print(t.on.value)
 
-    print SETTINGS
+    print(SETTINGS)
 
     getSetting('test.setting').setValue(False)
-    print t.on.value
+    print(t.on.value)
 
     setSetting('jog.speed', 42.0)
-    print SETTINGS['jog.speed'].value
+    print(SETTINGS['jog.speed'].value)
