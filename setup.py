@@ -35,6 +35,7 @@ else:
 
     # list of (destination, source_dir) tuples
     DATA_DIRS = [
+        ('utilities/vcp_chooser', 'qtpyvcp/utilities/vcp_chooser/vcp_chooser.ui'),
         ('~/linuxcnc/configs/sim.qtpyvcp', 'linuxcnc/configs/sim.qtpyvcp'),
         ('~/linuxcnc/nc_files/qtpyvcp', 'linuxcnc/nc_files/qtpyvcp'),
 
@@ -54,8 +55,85 @@ def data_files_from_dirs(data_dirs):
     return data_files
 
 
-data_files = [(os.path.expanduser(dest), src_list) for dest, src_list in DATA_FILES]
-data_files.extend(data_files_from_dirs(DATA_DIRS))
+ROOT_DIR = "qtpyvcp"
+
+
+# Define libs, libdirs, includes and cflags for SDL2
+def define_lib_includes_cflags():
+    libs = []
+    libdirs = []
+    includes = []
+    cflags = []
+
+    return libs, libdirs, includes, cflags
+
+
+def prep_pxd_py_files():
+    ignore_py_files = ["__main__.py", "glcanon.py"]
+    # Cython doesn't trigger a recompile on .py files, where only the .pxd file has changed. So we fix this here.
+    # We also yield the py_files that have a .pxd file, as we feed these into the cythonize call.
+    for root, dirs, files in os.walk(ROOT_DIR):
+        for f in files:
+            if os.path.splitext(f)[1] == ".py" and f not in ignore_py_files:
+                yield os.path.join(root, f)
+            if os.path.splitext(f)[1] == ".pxd":
+                py_file = os.path.join(root, os.path.splitext(f)[0]) + ".py"
+                if os.path.isfile(py_file):
+                    if os.path.getmtime(os.path.join(root, f)) > os.path.getmtime(py_file):
+                        os.utime(py_file)
+
+
+# Cython seems to cythonize these before cleaning, so we only add them, if we aren't cleaning.
+ext_modules = None
+if CYTHON and "clean" not in sys.argv:
+
+    if platform.python_version().startswith("3.8"):
+        # Causes infinite recursion
+        thread_count = 0
+    else:
+        thread_count = cpu_count()
+
+    # Set up some values for use in setup()
+    libs, libdirs, includes, cflags = define_lib_includes_cflags()
+
+    py_pxd_files = prep_pxd_py_files()
+    cythonize_files = map(
+        lambda src: Extension(
+            src.split(".")[0].replace(os.sep, "."), [src],
+            include_dirs=includes,
+            library_dirs=libdirs,
+            libraries=libs,
+            extra_compile_args=cflags
+        ), list(py_pxd_files)
+    )
+
+    c_files = list()
+    for c_file in cythonize_files:
+        c_files.append(c_file)
+
+    ext_modules = cythonize(
+        c_files,  # This runs even if build_ext isn't invoked...
+        nthreads=thread_count,
+        annotate=False,
+        gdb_debug=False,
+        language_level=2,
+        compiler_directives={
+            "boundscheck": False,
+            "cdivision": True,
+            "cdivision_warnings": False,
+            "infer_types": True,
+            "initializedcheck": False,
+            "nonecheck": False,
+            "overflowcheck": False,
+            # "profile" : True,
+            "wraparound": False,
+        },
+    )
+
+# data_files = [(os.path.expanduser(dest), src_list) for dest, src_list in DATA_FILES]
+# data_files.extend(data_files_from_dirs(DATA_DIRS))
+
+data_files = [('qtpyvcp/utilities/vcp_chooser', ['qtpyvcp/utilities/vcp_chooser/vcpchooser.ui'])]
 
 setup(
     name="qtpyvcp",
