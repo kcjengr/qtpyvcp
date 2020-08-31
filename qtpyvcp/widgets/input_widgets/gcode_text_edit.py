@@ -9,9 +9,9 @@ import os
 import oyaml as yaml
 
 from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal, Property)
-from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
+from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter, QTextDocument,
                         QTextOption, QTextFormat, QTextCharFormat, QTextCursor)
-from qtpy.QtWidgets import (QApplication, QPlainTextEdit, QTextEdit, QWidget, QMenu)
+from qtpy.QtWidgets import (QApplication, QPlainTextEdit, QTextEdit, QWidget, QMenu, QPlainTextDocumentLayout)
 
 from qtpyvcp import DEFAULT_CONFIG_FILE
 from qtpyvcp.plugins import getPlugin
@@ -22,13 +22,15 @@ YAML_DIR = os.path.dirname(DEFAULT_CONFIG_FILE)
 
 
 class GcodeSyntaxHighlighter(QSyntaxHighlighter):
-    def __init__(self, document, parent):
-        super(GcodeSyntaxHighlighter, self).__init__(document)
+    def __init__(self, parent):
+        super(GcodeSyntaxHighlighter, self).__init__(parent.document())
 
         self._parent = parent
 
         self.rules = []
         self.char_fmt = QTextCharFormat()
+
+        self._abort = False
 
         self.loadSyntaxFromYAML()
 
@@ -90,6 +92,8 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
         """Apply syntax highlighting to the given block of text.
         """
 
+        QApplication.processEvents()
+
         for regex, fmt in self.rules:
 
             nth = 0
@@ -97,6 +101,7 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
             index = match.capturedStart()
 
             while index >= 0:
+
                 # We actually want the index of the nth match
                 index = match.capturedStart(nth)
                 length = match.capturedLength(nth)
@@ -105,8 +110,6 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
                 # check the rest of the string
                 match = regex.match(text, offset=index + length)
                 index = match.capturedStart()
-
-        QApplication.processEvents()
 
 
 class GcodeTextEdit(QPlainTextEdit):
@@ -127,11 +130,12 @@ class GcodeTextEdit(QPlainTextEdit):
         self.focused_line = 1
         self.current_line_background = QColor(self.palette().alternateBase())
 
+        self.old_docs = []
         # set the custom margin
         self.margin = NumberMargin(self)
 
         # set the syntax highlighter
-        self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self)
+        self.gCodeHighlighter = GcodeSyntaxHighlighter(self)
 
         # context menu
         self.menu = QMenu(self)
@@ -141,7 +145,7 @@ class GcodeTextEdit(QPlainTextEdit):
         self.menu.addAction(self.tr('Copy'), self.copy)
         self.menu.addAction(self.tr('Paste'), self.paste)
 
-        # FIXME picks the first action run from here, should not be by index
+        # FixMe: Picks the first action run from here, should not be by index
         self.run_action = self.menu.actions()[0]
         self.run_action.setEnabled(program_actions.run_from_line.ok())
         program_actions.run_from_line.bindOk(self.run_action)
@@ -169,8 +173,24 @@ class GcodeTextEdit(QPlainTextEdit):
     def changeEvent(self, event):
         if event.type() == QEvent.FontChange:
             # Update syntax highlighter with new font
-            self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self)
+            self.gCodeHighlighter = GcodeSyntaxHighlighter(self)
         super(GcodeTextEdit, self).changeEvent(event)
+
+    def setPlainText(self, p_str):
+        # FixMe: Keep a reference to old QTextDocuments form previously loaded
+        # files. This is needed to prevent garbage collection which results in a
+        # seg fault if the document is discarded while still being highlighted.
+        self.old_docs.append(self.document())
+
+        doc = QTextDocument()
+        doc.setDocumentLayout(QPlainTextDocumentLayout(doc))
+        doc.setPlainText(p_str)
+
+        self.setDocument(doc)
+        self.margin.updateWidth()
+
+        # start syntax heightening
+        self.gCodeHighlighter = GcodeSyntaxHighlighter(self)
 
     @Slot(bool)
     def EditorReadOnly(self, state):
