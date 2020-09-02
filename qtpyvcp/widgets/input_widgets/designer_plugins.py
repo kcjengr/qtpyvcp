@@ -162,3 +162,13 @@ class DROLineEdit_Plugin(_DesignerPlugin):
         return 'dro_entry'
     def designerExtensions(self):
         return [DroEditorExtension, RulesEditorExtension]
+
+from int_line_edit import IntLineEdit
+class IntLineEditPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return IntLineEdit
+
+from float_line_edit import FloatLineEdit
+class FloatLineEditPlugin(_DesignerPlugin):
+    def pluginClass(self):
+        return FloatLineEdit
