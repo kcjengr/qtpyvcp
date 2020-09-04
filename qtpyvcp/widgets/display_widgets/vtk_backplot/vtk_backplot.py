@@ -291,14 +291,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera = vtk.vtkCamera()
         self.camera.ParallelProjectionOn()
 
-        self.clipping_range_near = 0.01
-        self.clipping_range_far = 10.0
-
-        units = INIFILE.find("TRAJ", "LINEAR_UNITS") or "inch"
-        if units in ["in", "inch", "inchs"]:
+        if self.units == 1:
+            self.position_mult = 10
             self.clipping_range_near = 0.001
             self.clipping_range_far = 100.0
-        elif units in ["mm", "metric"]:
+        elif self.units == 2:
+            self.position_mult = 1000
             self.clipping_range_near = 0.01
             self.clipping_range_far = 10000.0
 
@@ -415,6 +413,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         if self.lathe is True:
             self.setViewXZ()
+        else:
+            self.setViewMachine()
 
         # view settings
         connectSetting('backplot.show-grid', self.showGrid)
@@ -481,7 +481,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if self.rotating:
             if self.lathe is True:
                 self.pan(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
-            else:   
+            else:
                 self.rotate(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
         elif self.panning:
             self.pan(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
@@ -659,7 +659,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def motion_type(self, value):
         if value == linuxcnc.MOTION_TYPE_TOOLCHANGE:
             self.update_tool()
-
 
     def update_position(self, position):  # the tool movement
 
@@ -855,51 +854,62 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def setViewP(self):
-        self.camera.SetPosition(1, -1, 1)
+        self.active_view = 'P'
+        self.camera.SetPosition(self.position_mult, -self.position_mult, self.position_mult)
         self.camera.SetViewUp(0, 0, 1)
         self.camera.SetFocalPoint(0, 0, 0)
-        self.renderer.ResetCamera()
-        self.camera.Zoom(1.1)
+
+        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
+        self.renderer_window.Render()
+
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewX(self):
-        self.camera.SetPosition(1, 0, 0)
+        self.active_view = 'X'
+        self.camera.SetPosition(0, -self.position_mult, 0)
         self.camera.SetViewUp(0, 0, 1)
         self.camera.SetFocalPoint(0, 0, 0)
-        self.renderer.ResetCamera()
-        # FIXME ugly hack
-        self.camera.Zoom(1.5)
+
+        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
+        self.renderer_window.Render()
+
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewXZ(self):
-        self.camera.SetPosition(0, -1, 0)
-        self.camera.SetViewUp(-1, 0, 0)
+        self.active_view = 'XZ'
+        self.camera.SetPosition(0, 0, self.position_mult)
+        self.camera.SetViewUp(0, 1, 0)
         self.camera.SetFocalPoint(0, 0, 0)
-        self.renderer.ResetCamera()
-        # FIXME ugly hack
-        self.camera.Zoom(1.5)
+
+        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
+        self.renderer_window.Render()
+
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewY(self):
-        self.camera.SetPosition(0, -1, 0)
+        self.active_view = 'Y'
+        self.camera.SetPosition(self.position_mult, 0, 0)
         self.camera.SetViewUp(0, 0, 1)
         self.camera.SetFocalPoint(0, 0, 0)
-        self.renderer.ResetCamera()
-        # FIXME ugly hack
-        self.camera.Zoom(1.5)
+
+        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
+        self.renderer_window.Render()
+
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewZ(self):
-        self.camera.SetPosition(0, 0, 1)
+        self.active_view = 'Z'
+        self.camera.SetPosition(0, 0, self.position_mult)
         self.camera.SetViewUp(0, 1, 0)
         self.camera.SetFocalPoint(0, 0, 0)
-        self.renderer.ResetCamera()
-        # FIXME ugly hack
-        self.camera.Zoom(2)
+
+        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
+        self.renderer_window.Render()
+
         self.interactor.ReInitialize()
 
     @Slot()
@@ -922,36 +932,65 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def setViewZ2(self):
-        self.camera.SetPosition(0, 0, 1)
+
+        self.camera.SetPosition(0, 0, self.position_mult)
         self.camera.SetViewUp(1, 0, 0)
         self.camera.SetFocalPoint(0, 0, 0)
-        self.renderer.ResetCamera()
+
+        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
+        self.renderer_window.Render()
+
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewMachine(self):
-        LOG.debug('Machine')
-        self.machine_actor.SetCamera(self.camera)
-        self.renderer.ResetCamera()
+
+        LOG.debug('Set view to machine')
+
+        machine_bounds = self.machine_actor.GetBounds()
+        machine_center = ((machine_bounds[0] + machine_bounds[1]) / 2,
+                          (machine_bounds[2] + machine_bounds[3]) / 2,
+                          (machine_bounds[4] + machine_bounds[5]) / 2
+                          )
+
+        self.camera = self.renderer.GetActiveCamera()
+
+        self.camera.SetFocalPoint(machine_center[0],
+                                  machine_center[1],
+                                  machine_center[2])
+
+        self.camera.SetPosition(machine_center[0] + self.position_mult,
+                                -(machine_center[1] + self.position_mult),
+                                machine_center[2] + self.position_mult)
+
+        self.camera.SetViewUp(0, 0, 1)
+
+        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
+        self.renderer_window.Render()
+
         self.interactor.ReInitialize()
 
     @Slot()
     def setViewPath(self):
-        LOG.debug('Path')
 
-        position = self.path_position_table[self.g5x_index - 1]
+        LOG.debug('Set view to path')
+        active_path = self.path_actors[self.index_map[self.g5x_index]]
+        path_origin = active_path.GetPosition()
 
+        self.camera = self.renderer.GetActiveCamera()
+
+        self.camera.SetFocalPoint(path_origin[0],
+                                  path_origin[1],
+                                  path_origin[2])
+
+        self.camera.SetPosition(path_origin[0] + self.position_mult,
+                                -(path_origin[0] + self.position_mult),
+                                path_origin[0] + self.position_mult)
         self.camera.SetViewUp(0, 0, 1)
 
-        self.camera.SetFocalPoint(position[0],
-                                  position[1],
-                                  position[2])
+        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
+        self.renderer_window.Render()
 
-        self.camera.SetPosition(position[0] + 1000,
-                                position[1] - 1000,
-                                position[2] + 1000)
-
-        self.camera.Zoom(1.0)
         self.interactor.ReInitialize()
 
     @Slot()
@@ -1547,7 +1586,7 @@ class Tool:
                     # Setup four points
                     points = vtk.vtkPoints()
                     points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset + 0.05 ))
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset + 0.05))
                     points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset + 0.05))
                     points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset))
 
@@ -1717,8 +1756,10 @@ class Tool:
 
                     LOG.debug("Drawing Lathe tool id {}".format(tool.id))
 
-                    LOG.debug("FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool.frontangle), p1_x_pos, p1_z_pos))
-                    LOG.debug("BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool.backangle), p2_x_pos, p2_z_pos))
+                    LOG.debug(
+                        "FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool.frontangle), p1_x_pos, p1_z_pos))
+                    LOG.debug(
+                        "BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool.backangle), p2_x_pos, p2_z_pos))
 
                     # Setup three points
                     points = vtk.vtkPoints()
