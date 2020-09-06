@@ -2,6 +2,7 @@ import os
 import sys
 import time
 import importlib
+from PyQt5.QtCore import Qt
 from pkg_resources import iter_entry_points
 
 from qtpy.QtWidgets import QApplication
@@ -98,6 +99,9 @@ def launch_application(opts, config):
 
         if res:
             raise SystemExit("Failed to load POSTGUI_HALFILE with error: %s" % res)
+
+    # suppress QtQuick warnings
+    app.setAttribute(Qt.AA_DontCreateNativeWidgetSiblings)
 
     sys.exit(app.exec_())
 
