@@ -2,9 +2,9 @@ import os
 import sys
 import time
 import importlib
-from PyQt5.QtCore import Qt
 from pkg_resources import iter_entry_points
 
+from qtpy.QtCore import Qt
 from qtpy.QtWidgets import QApplication
 
 import qtpyvcp
