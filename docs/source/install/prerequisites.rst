@@ -12,7 +12,7 @@ These requirements are the same regardless of the install method.
 System Requirements
 -------------------
 
-* Debian 9 (Stretch) or Linux Mint 19, 64 bit
+* Debian 9 (Stretch) and 10 (buster) or Linux Mint 19, 64 bit
 * LinuxCNC **2.8** or later, installed either system wide or as a Run In Place (RIP) built from source
 * Graphics card that supports OpenGL 1.50 or later (for VTK backplot)
 
