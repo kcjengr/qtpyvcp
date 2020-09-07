@@ -5,7 +5,7 @@ from qtpy import uic
 from qtpy.QtGui import QKeySequence
 from qtpy.QtCore import Qt, Slot, QTimer
 from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, \
-    QMenu, QMenuBar, QLineEdit, QShortcut
+    QMenu, QMenuBar, QLineEdit, QShortcut, QActionGroup
 
 import qtpyvcp
 from qtpyvcp import actions
@@ -111,7 +111,7 @@ class VCPMainWindow(QMainWindow):
         LOG.info("Loading QSS stylesheet file: yellow<{}>".format(stylesheet))
         self.setStyleSheet("file:///" + stylesheet)
 
-    def getMenuAction(self, menu_action, title='notitle', action_name='noaction',
+    def getMenuAction(self, menu, title='notitle', action_name='noaction',
                       args=[], kwargs={}):
         # ToDo: Clean this up, it is very hacky
         env = {'app': QApplication.instance(),
@@ -125,35 +125,74 @@ class VCPMainWindow(QMainWindow):
                 setting_id = action_name[len('settings.'):]
                 setting = getSetting(setting_id)
 
-                if setting and setting.value_type == bool:
-                    # works for bool settings
-                    menu_action.setCheckable(True)
-                    menu_action.triggered.connect(setting.setValue)
-                    setting.notify(menu_action.setChecked)
+                if setting:
+                    if setting.enum_options is not None:
+                        submenu = QMenu(parent=self, title=title)
+
+                        group = QActionGroup(self)
+                        group.setExclusive(True)
+                        group.triggered.connect(lambda a: setting.setValue(a.data()))
+
+                        def update(group, val):
+                            for act in group.actions():
+                                if act.data() == val:
+                                    act.setChecked(True)
+                                    break
+
+                        for num, opt in enumerate(setting.enum_options):
+
+                            act = QAction(parent=self, text=opt)
+                            act.setCheckable(True)
+                            if setting.value == num:
+                                act.setChecked(True)
+
+                            act.setData(num)
+                            setting.notify(lambda v: update(group, v))
+
+                            act.setActionGroup(group)
+                            submenu.addAction(act)
+                        menu.addMenu(submenu)
+
+                    elif setting.value_type == bool:
+                        # works for bool settings
+                        menu_action = QAction(parent=self, text=title)
+                        menu_action.setCheckable(True)
+                        menu_action.triggered.connect(setting.setValue)
+                        setting.notify(menu_action.setChecked)
+                        menu.addAction(menu_action)
+
                     return
 
             try:
+                menu_action = QAction(parent=self, text=title)
+
                 mod, action = action_name.split('.', 1)
                 method = getattr(env.get(mod, self), action)
                 if menu_action.isCheckable():
                     menu_action.triggered.connect(method)
                 else:
                     menu_action.triggered.connect(lambda checked: method(*args, **kwargs))
+
+                menu.addAction(menu_action)
                 return
             except:
                 pass
 
             try:
+                menu_action = QAction(parent=self, text=title)
                 actions.bindWidget(menu_action, action_name)
+                menu.addAction(menu_action)
                 return
             except actions.InvalidAction:
                 LOG.exception('Error binding menu action %s', action_name)
 
+        menu_action = QAction(parent=self, text=title)
         msg = "The <b>{}</b> action specified for the " \
               "<b>{}</b> menu item could not be triggered. " \
               "Check the YAML config file for errors." \
               .format(action_name or '', title.replace('&', ''))
         menu_action.triggered.connect(lambda: QMessageBox.critical(self, "Menu Action Error!", msg))
+        menu.addAction(menu_action)
 
     def buildMenuBar(self, menus):
         """Recursively build menu bar.
@@ -195,12 +234,9 @@ class VCPMainWindow(QMainWindow):
                     menu.addMenu(new_menu)
 
                 else:
-                    act = QAction(parent=self, text=title)
-                    self.getMenuAction(act, title, item.get('action'),
+                    self.getMenuAction(menu, title, item.get('action'),
                                        item.get('args', []),
                                        item.get('kwargs', {}))
-                    act.setShortcut(item.get('shortcut', ''))
-                    menu.addAction(act)
 
         menu_bar = QMenuBar(self)
         recursiveAddItems(menu_bar, menus)

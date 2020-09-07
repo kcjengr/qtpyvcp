@@ -142,6 +142,8 @@ settings:
   dro.degree-format:
     default_value: '%9.2f'
 
+  # VTK backplot view settings
+
   backplot.show-grid:
     default_value: false
 
@@ -162,3 +164,11 @@ settings:
 
   backplot.show-machine-ticks:
     default_value: false
+
+  backplot.perspective-view:
+    default_value: True
+
+  backplot.view:
+    default_value: 0
+    options: ["X: Side View", "Y: Front View", "Z: Top View", "Z2: Bottom View", "Isometric"]
+

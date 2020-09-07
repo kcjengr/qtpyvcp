@@ -126,6 +126,14 @@ default_menubar:
       - title: Show Program Ticks
         action: settings.backplot.show-program-ticks
 
+      - separator
+
+      - title: Perspective View
+        action: settings.backplot.perspective-view
+
+      - title: View Angle
+        action: settings.backplot.view
+
   - title: Tools
     items:
       - title: HAL Meter
