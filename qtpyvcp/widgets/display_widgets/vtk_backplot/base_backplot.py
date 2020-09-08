@@ -5,7 +5,7 @@ import os
 
 from qtpyvcp.lib.native_notification import NativeNotification
 
-from base_canon import BaseCanon
+from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import BaseCanon
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 

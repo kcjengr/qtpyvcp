@@ -29,8 +29,8 @@ from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.settings import getSetting, connectSetting
 
-from base_canon import StatCanon
-from base_backplot import BaseBackPlot
+from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import StatCanon
+from qtpyvcp.widgets.display_widgets.vtk_backplot.base_backplot import BaseBackPlot
 
 INFO = Info()
 
@@ -129,6 +129,14 @@ class VTKCanon(StatCanon):
         self.previous_origin = origin
 
         self.ignore_next = False  # hacky way to ignore the second point next to a offset change
+
+    def comment(self, arg):
+        # print("Comment", arg)
+        pass
+
+    def message(self, msg):
+        # print("Message", msg)
+        pass
 
     def rotate_and_translate(self, x, y, z, a, b, c, u, v, w):
         # override function to handle it in vtk back plot
@@ -243,6 +251,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.status = STATUS
         self.stat = STATUS.stat
         self.lathe = LATHE
+        self.ploter_enabled = True
 
         self.canon_class = VTKCanon
 
@@ -495,7 +504,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         elif key == "s":
             self.surface()
 
-    # Routines that translate the events into camera motions.
+    # Functions that translate the events into camera motions.
 
     # This one is associated with the left mouse button. It translates x
     # and y relative motions into camera azimuth and elevation commands.
