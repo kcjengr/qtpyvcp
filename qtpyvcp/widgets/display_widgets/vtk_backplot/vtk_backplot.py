@@ -130,13 +130,21 @@ class VTKCanon(StatCanon):
 
         self.ignore_next = False  # hacky way to ignore the second point next to a offset change
 
-    def comment(self, arg):
-        # print("Comment", arg)
-        pass
+    def comment(self, comment):
+        LOG.debug("G-code Comment: %s", comment)
+        items = comment.lower().split(',', 1)
+        if len(items) > 0 and items[0] in ['axis', 'backplot']:
+            cmd = items[1].strip()
+            if cmd == "hide":
+                self.suppress += 1
+            elif cmd == "show":
+                self.suppress -= 1
+            elif cmd == 'stop':
+                LOG.info("Backplot generation aborted.")
+                raise KeyboardInterrupt
 
     def message(self, msg):
-        # print("Message", msg)
-        pass
+        LOG.debug("G-code Message: %s", msg)
 
     def rotate_and_translate(self, x, y, z, a, b, c, u, v, w):
         # override function to handle it in vtk back plot

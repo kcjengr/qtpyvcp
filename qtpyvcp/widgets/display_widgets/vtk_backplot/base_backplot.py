@@ -73,13 +73,19 @@ class BaseBackPlot(object):
         # call back to the canon with motion commands, and record a history
         # of all the movements.
 
-        result, seq = gcode.parse(filename, self.canon, unitcode, initcode)
+        try:
+            result, seq = gcode.parse(filename, self.canon, unitcode, initcode)
 
-        if result > gcode.MIN_ERROR:
-            msg = gcode.strerror(result)
-            fname = os.path.basename(filename)
-            self.notification.setNotify("3D plot", "Error in {} line {}\n{}".format(fname, seq - 1, msg))
-            # raise SyntaxError("Error in %s line %i: %s" % (fname, seq - 1, msg))
+            if result > gcode.MIN_ERROR:
+                msg = gcode.strerror(result)
+                fname = os.path.basename(filename)
+                self.notification.setNotify("3D plot", "Error in {} line {}\n{}".format(fname, seq - 1, msg))
+                # raise SyntaxError("Error in %s line %i: %s" % (fname, seq - 1, msg))
+
+        except KeyboardInterrupt:
+            # probably raised by an (AXIS, stop) comment in the G-code file
+            # abort generating the backplot
+            pass
 
         # clean up temp var file and the backup
         os.unlink(self.temp_parameter_file)
