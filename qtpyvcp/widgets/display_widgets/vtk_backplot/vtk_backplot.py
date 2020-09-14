@@ -887,7 +887,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             view = ['X', 'Y', 'Z', 'Z2', 'P'][view]
 
         view = view.upper()
-        LOG.error("Setting view to: %s", view)
+        LOG.debug("Setting view to: %s", view)
 
         if view == 'X':
             self.setViewX()
