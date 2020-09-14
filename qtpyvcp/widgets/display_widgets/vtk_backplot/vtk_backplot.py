@@ -441,6 +441,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         connectSetting('backplot.show-machine-bounds', self.showMachineBounds)
         connectSetting('backplot.show-machine-labels', self.showMachineLabels)
         connectSetting('backplot.show-machine-ticks', self.showMachineTicks)
+        connectSetting('backplot.perspective-view', self.viewPerspective)
+        connectSetting('backplot.view', self.setView)
 
     # Handle the mouse button events.
     def button_event(self, obj, event):
@@ -857,6 +859,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def update_render(self):
         self.GetRenderWindow().Render()
 
+    @Slot(bool)
+    @Slot(object)
+    def viewPerspective(self, persp):
+        if persp:
+            self.setViewPersp()
+        else:
+            self.setViewOrtho()
+
     @Slot()
     def setViewOrtho(self):
         self.camera.ParallelProjectionOn()
@@ -868,6 +878,27 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera.ParallelProjectionOff()
         # self.renderer.ResetCamera()
         self.interactor.ReInitialize()
+
+    @Slot(int)
+    @Slot(str)
+    @Slot(object)
+    def setView(self, view):
+        if isinstance(view, int):
+            view = ['X', 'Y', 'Z', 'Z2', 'P'][view]
+
+        view = view.upper()
+        LOG.error("Setting view to: %s", view)
+
+        if view == 'X':
+            self.setViewX()
+        elif view == 'Y':
+            self.setViewY()
+        elif view == 'Z':
+            self.setViewZ()
+        elif view == 'Z2':
+            self.setViewZ2()
+        elif view == 'P':
+            self.setViewP()
 
     @Slot()
     def setViewP(self):
