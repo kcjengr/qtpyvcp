@@ -880,7 +880,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(object)
     def setView(self, view):
         if isinstance(view, int):
-            view = ['X', 'XZ', 'Y', 'Z', 'Z2', 'P'][view]
+            view = ['X', 'XZ', 'XZ2', 'Y', 'Z', 'Z2', 'P'][view]
 
         view = view.upper()
         LOG.debug("Setting view to: %s", view)
@@ -889,6 +889,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.setViewX()
         elif view == 'XZ':
             self.setViewXZ()
+        elif view == 'XZ2':
+            self.setViewXZ2()
         elif view == 'Y':
             self.setViewY()
         elif view == 'Z':
