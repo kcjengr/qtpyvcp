@@ -428,10 +428,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.pan_mode = False
 
-        if self.lathe is True:
-            self.setViewXZ()
-        else:
-            self.setViewMachine()
 
         # view settings
         connectSetting('backplot.show-grid', self.showGrid)
@@ -884,13 +880,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(object)
     def setView(self, view):
         if isinstance(view, int):
-            view = ['X', 'Y', 'Z', 'Z2', 'P'][view]
+            view = ['X', 'XZ', 'Y', 'Z', 'Z2', 'P'][view]
 
         view = view.upper()
         LOG.debug("Setting view to: %s", view)
 
         if view == 'X':
             self.setViewX()
+        elif view == 'XZ':
+            self.setViewXZ()
         elif view == 'Y':
             self.setViewY()
         elif view == 'Z':
@@ -927,8 +925,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewXZ(self):
         self.active_view = 'XZ'
-        self.camera.SetPosition(0, 0, self.position_mult)
-        self.camera.SetViewUp(0, 1, 0)
+        self.camera.SetPosition(0, self.position_mult, 0)
+        self.camera.SetViewUp(1, 0, 0)
         self.camera.SetFocalPoint(0, 0, 0)
 
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
