@@ -935,6 +935,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.interactor.ReInitialize()
 
     @Slot()
+    def setViewXZ2(self):
+        self.active_view = 'XZ2'
+        self.camera.SetPosition(0, -self.position_mult, 0)
+        self.camera.SetViewUp(-1, 0, 0)
+        self.camera.SetFocalPoint(0, 0, 0)
+
+        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
+        self.renderer_window.Render()
+
+        self.interactor.ReInitialize()
+
+    @Slot()
     def setViewY(self):
         self.active_view = 'Y'
         self.camera.SetPosition(self.position_mult, 0, 0)
