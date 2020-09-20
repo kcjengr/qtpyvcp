@@ -129,6 +129,7 @@ class VTKCanon(StatCanon):
         self.path_actors = OrderedDict()
         self.path_points = OrderedDict()
         self.tool_path_color = None
+        self.prev_tool_path_color = None
 
         origin = 540
 
@@ -142,7 +143,18 @@ class VTKCanon(StatCanon):
 
     def change_tool(self, pocket):
         super(VTKCanon, self).change_tool(pocket)
-        self.tool_path_color = choice(TOOL_COLOR_MAP)
+
+        def choose_color():
+            tool_path_color = choice(TOOL_COLOR_MAP)
+            return tool_path_color
+
+        self.tool_path_color = choose_color()
+
+        while self.tool_path_color == self.prev_tool_path_color:
+            self.tool_path_color = choose_color()
+
+        self.prev_tool_path_color = self.tool_path_color
+
         LOG.debug("TOOL CHANGE {} color {}".format(pocket, self.tool_path_color))
 
     def comment(self, comment):
