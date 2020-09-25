@@ -56,11 +56,11 @@ class VCPApplication(QApplication):
             self.loadStylesheet(stylesheet, opts.develop)
 
         if custom_fonts:
-            if isinstance(custom_fonts, basestring):  # single font
-                self.loadFont(custom_fonts)
-            else:  # list of fonts
+            if isinstance(custom_fonts, basestring):  # single font or location
+                self.loadCustomFont(custom_fonts)
+            else:  # list of fonts or locations
                 for font in custom_fonts:
-                    self.loadFont(font)
+                    self.loadCustomFont(font)
 
         # self.window = self.loadVCPMainWindow(opts, vcp_file)
         # if self.window is not None:
@@ -194,7 +194,16 @@ class VCPApplication(QApplication):
 
         load(stylesheet)
 
-    def loadFont(self, font_path):
+    def loadCustomFont(self, font):
+        """Loads custom front from a file or directory."""
+        if os.path.isfile(font):
+            self.addApplicationFont(font)
+        elif os.path.isdir(font):
+            for ffile in os.listdir(font):
+                fpath = os.path.join(font, ffile)
+                self.loadCustomFont(fpath)
+
+    def addApplicationFont(self, font_path):
         """Loads a font file into the font database. The path can specify the
         location of a font file or a qresource."""
         LOG.debug("Loading custom font: %s" % font_path)
