@@ -20,9 +20,11 @@ import os
 
 import linuxcnc
 
+from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.plugins import DataPlugin, DataChannel
 
+STATUS = getPlugin('status')
 INFO = Info()
 
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
@@ -32,15 +34,17 @@ MAX_ANGULAR_VELOCITY = bool(INIFILE.find("TRAJ", "MAX_ANGULAR_VELOCITY"))
 
 MACHINE_UNITS = 2 if INFO.getIsMachineMetric() else 1
 
+
 class GCodeProperties(DataPlugin):
-    """Clock Plugin"""
+    """GCodeProperties Plugin"""
     def __init__(self):
         super(GCodeProperties, self).__init__()
-
+        self.status = STATUS
+        self.status.file.notify(self._file_event)
         self.loaded_file = None
 
     @DataChannel
-    def name(self, chan):
+    def file_name(self, chan):
         """The current file name.
 
         Args:
@@ -51,19 +55,19 @@ class GCodeProperties(DataPlugin):
 
         Channel syntax::
 
-            gcode_properties:name
+            gcode_properties:file_name
 
         """
 
         if not self.loaded_file:
-            return "No file loaded"
-
-        chan.setValue(os.path.basename(self.loaded_file))
+            chan.value = "No file loaded"
+        else:
+            chan.setValue(os.path.basename(self.loaded_file))
 
         return chan.value
 
     @DataChannel
-    def size(self, chan):
+    def file_size(self, chan):
         """The current file size.
 
         Args:
@@ -79,14 +83,18 @@ class GCodeProperties(DataPlugin):
         """
 
         if not self.loaded_file:
-            return 0
-
-        chan.setValue(os.stat(self.loaded_file).st_size)
+            chan.setValue(0)
+        else:
+            chan.setValue(os.stat(self.loaded_file).st_size)
 
         return chan.value
 
+    @file_size.tostring
+    def file_size(self, chan, format="{:4d}"):
+        return chan.value.str(format)
+
     @DataChannel
-    def rapids(self, chan):
+    def file_rapids(self, chan):
         """The current file rapis distance.
 
         Args:
@@ -114,7 +122,7 @@ class GCodeProperties(DataPlugin):
             fmt = "%.4f"
 
     @DataChannel
-    def lines(self, chan):
+    def file_lines(self, chan):
         """The current number of lines.
 
         Args:
@@ -135,7 +143,7 @@ class GCodeProperties(DataPlugin):
         return chan.value
 
     @DataChannel
-    def time(self, chan):
+    def file_time(self, chan):
         """The current file run time.
 
         Args:
@@ -158,8 +166,8 @@ class GCodeProperties(DataPlugin):
 
         return chan.value
 
-    @time.tostring
-    def time(self, chan, format="%I:%M:%S %p"):
+    @file_time.tostring
+    def file_time(self, chan, format="%I:%M:%S %p"):
         return chan.value.strftime(format)
 
     # @DataChannel
@@ -183,7 +191,7 @@ class GCodeProperties(DataPlugin):
     #     return chan.value
 
     @DataChannel
-    def feed(self, chan):
+    def file_feed(self, chan):
         """The current file run distance.
 
         Args:
@@ -198,6 +206,11 @@ class GCodeProperties(DataPlugin):
 
         """
         return chan.value
+
+    def _file_event(self, file_path):
+        self.loaded_file = file_path
+        self.file_name.setValue(os.path.basename(self.loaded_file))
+        self.file_size.setValue(os.stat(self.loaded_file).st_size)
 
     # @size.tostring
     # def date(self, chan, format="%m/%d/%Y"):
