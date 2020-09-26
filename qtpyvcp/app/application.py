@@ -196,7 +196,7 @@ class VCPApplication(QApplication):
 
     def loadCustomFont(self, font):
         """Loads custom front from a file or directory."""
-        if os.path.isfile(font):
+        if os.path.isfile(font) and os.path.splitext(font)[1] == '.ttf':
             self.addApplicationFont(font)
         elif os.path.isdir(font):
             for ffile in os.listdir(font):
