@@ -61,6 +61,24 @@ from qtpyvcp.lib.types import DotDict
 from qtpyvcp.utilities.misc import normalizePath
 
 
+def convType(val):
+    if isinstance(val, basestring):
+        if val.lower() in ['true', 'on', 'yes', 'false', 'off', 'no']:
+            return val.lower() in ['true', 'on', 'yes']
+
+        try:
+            return int(val)
+        except ValueError:
+            pass
+
+        try:
+            return float(val)
+        except ValueError:
+            pass
+
+    return val
+
+
 def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp_version=None):
     # LinuxCNC passes the INI file as `-ini=inifile` which docopt sees as a
     # short argument which does not support an equals sign, so we loop thru
@@ -82,25 +100,13 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
         printSystemInfo()
         sys.exit()
 
-    def convType(val):
-        if isinstance(val, basestring):
-            if val.lower() in ['true', 'on', 'yes', 'false', 'off', 'no']:
-                return val.lower() in ['true', 'on', 'yes']
-
-            try:
-                return int(val)
-            except ValueError:
-                pass
-
-            try:
-                return float(val)
-            except ValueError:
-                pass
-
-        return val
-
     # convert raw argument dict keys to valid python attribute names
     opts = DotDict({arg.strip('-<>').replace('-', '_') : convType(value) for arg, value in raw_args.items()})
+
+    return opts
+
+
+def apply_opts(opts):
 
     # read options from INI file and merge with cmd line options
     ini_file = normalizePath(opts.ini, os.path.expanduser('~/linuxcnc/configs'))
