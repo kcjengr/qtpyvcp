@@ -142,19 +142,21 @@ class VTKCanon(StatCanon):
 
         self.ignore_next = False  # hacky way to ignore the second point next to a offset change
 
+        self.multitool_colors = True
+
+
     def change_tool(self, pocket):
         super(VTKCanon, self).change_tool(pocket)
 
-        def choose_color():
-            tool_path_color = choice(TOOL_COLOR_MAP)
-            return tool_path_color
+        if self.multitool_colors is True:
+            self.tool_path_color = choice(TOOL_COLOR_MAP)
 
-        self.tool_path_color = choose_color()
+            while self.tool_path_color == self.prev_tool_path_color:
+                self.tool_path_color = choice(TOOL_COLOR_MAP)
 
-        while self.tool_path_color == self.prev_tool_path_color:
-            self.tool_path_color = choose_color()
-
-        self.prev_tool_path_color = self.tool_path_color
+            self.prev_tool_path_color = self.tool_path_color
+        else:
+            self.tool_path_color = False
 
         LOG.debug("TOOL CHANGE {} color {}".format(pocket, self.tool_path_color))
 
@@ -476,6 +478,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         connectSetting('backplot.show-machine-bounds', self.showMachineBounds)
         connectSetting('backplot.show-machine-labels', self.showMachineLabels)
         connectSetting('backplot.show-machine-ticks', self.showMachineTicks)
+        connectSetting('backplot.multitool-colors', self.showMachineTicks)
 
     # Handle the mouse button events.
     def button_event(self, obj, event):

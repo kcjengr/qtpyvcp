@@ -126,6 +126,9 @@ default_menubar:
       - title: Show Program Ticks
         action: settings.backplot.show-program-ticks
 
+      - title: Use Colors per Tool
+        action: settings.backplot.multitool-colors
+
       - separator
 
       - title: Perspective View
