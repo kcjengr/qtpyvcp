@@ -2,6 +2,7 @@
 
 Contains the VCPApplication class with core function and VCP loading logic.
 """
+import mimetypes
 import os
 import sys
 import imp
@@ -43,6 +44,12 @@ class VCPApplication(QApplication):
         opts = qtpyvcp.OPTIONS
 
         self.status = getPlugin('status')
+
+        mimetypes.init()
+
+        self.font_minmetypes = ['application/x-font-ttf',
+                                'application/x-font-opentype',
+                                'application/font-woff']
 
         # initialize plugins
         initialisePlugins()
@@ -196,7 +203,8 @@ class VCPApplication(QApplication):
 
     def loadCustomFont(self, font):
         """Loads custom front from a file or directory."""
-        if os.path.isfile(font) and os.path.splitext(font)[1] == '.ttf':
+
+        if os.path.isfile(font) and mimetypes.types_map[os.path.splitext(font)[1]] in self.font_minmetypes:
             self.addApplicationFont(font)
         elif os.path.isdir(font):
             for ffile in os.listdir(font):
