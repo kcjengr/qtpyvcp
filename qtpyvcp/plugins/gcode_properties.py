@@ -110,7 +110,7 @@ class GCodeProperties(DataPlugin):
         """
 
         if not self.loaded_file:
-            return 0.0
+            chan.value.float(0.0)
 
         if MACHINE_UNITS == 2:
             conv = 1
@@ -120,6 +120,8 @@ class GCodeProperties(DataPlugin):
             conv = 1/25.4
             units = "in"
             fmt = "%.4f"
+
+        return chan.value
 
     @DataChannel
     def file_lines(self, chan):
@@ -162,7 +164,7 @@ class GCodeProperties(DataPlugin):
         """
 
         if not self.loaded_file:
-            return 0
+            chan.value(0)
 
         return chan.value
 
@@ -207,7 +209,15 @@ class GCodeProperties(DataPlugin):
         """
         return chan.value
 
+    def initialise(self):
+        pass
+
+    def terminate(self):
+        pass
+
+
     def _file_event(self, file_path):
+        """" This function gets notified about files begin loaded """
         self.loaded_file = file_path
         self.file_name.setValue(os.path.basename(self.loaded_file))
         self.file_size.setValue(os.stat(self.loaded_file).st_size)
@@ -272,11 +282,6 @@ class GCodeProperties(DataPlugin):
 #                     props[c] = _("%(a)f to %(b)f = %(diff)f %(units)s").replace("%f", fmt) % {'a': a, 'b': b, 'diff': b-a, 'units': units}
 #         properties(root_window, _("G-Code Properties"), property_names, props)
 #
-#     def initialise(self):
-#         pass
-#
-#     def terminate(self):
-#         pass
 #
 # def dist(xxx_todo_changeme, xxx_todo_changeme1):
 #     (x,y,z) = xxx_todo_changeme
