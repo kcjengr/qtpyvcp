@@ -5,6 +5,7 @@ from operator import add
 from collections import OrderedDict
 
 import linuxcnc
+from random import choice
 
 from qtpy.QtCore import Property, Signal, Slot, QTimer
 from qtpy.QtGui import QColor
@@ -50,6 +51,15 @@ COLOR_MAP = {
     'dwell': (100, 100, 100, 255),
     'user': (100, 100, 100, 255),
 }
+
+TOOL_COLOR_MAP = (
+    (255, 0, 0, 255),
+    (0, 255, 0, 255),
+    (0, 0, 255, 255),
+    (255, 255, 0, 255),
+    (0, 255, 255, 255),
+    (255, 0, 255, 255),
+)
 
 
 class PathActor(vtk.vtkActor):
@@ -119,6 +129,8 @@ class VTKCanon(StatCanon):
         self.path_colors = colors
         self.path_actors = OrderedDict()
         self.path_points = OrderedDict()
+        self.tool_path_color = None
+        self.prev_tool_path_color = None
 
         origin = 540
 
@@ -129,6 +141,24 @@ class VTKCanon(StatCanon):
         self.previous_origin = origin
 
         self.ignore_next = False  # hacky way to ignore the second point next to a offset change
+
+        self.multitool_colors = True
+
+
+    def change_tool(self, pocket):
+        super(VTKCanon, self).change_tool(pocket)
+
+        if self.multitool_colors is True:
+            self.tool_path_color = choice(TOOL_COLOR_MAP)
+
+            while self.tool_path_color == self.prev_tool_path_color:
+                self.tool_path_color = choice(TOOL_COLOR_MAP)
+
+            self.prev_tool_path_color = self.tool_path_color
+        else:
+            self.tool_path_color = False
+
+        LOG.debug("TOOL CHANGE {} color {}".format(pocket, self.tool_path_color))
 
     def comment(self, comment):
         LOG.debug("G-code Comment: %s", comment)
@@ -162,6 +192,12 @@ class VTKCanon(StatCanon):
 
     def add_path_point(self, line_type, start_point, end_point):
 
+        if self.tool_path_color is not None:
+            color = self.tool_path_color
+        else:
+            color = self.path_colors[line_type]
+
+
         if self.ignore_next is True:
             self.ignore_next = False
             return
@@ -188,14 +224,14 @@ class VTKCanon(StatCanon):
             line.append(start_point_list)
             line.append(end_point_list)
 
-            path_points.append((line_type, line))
+            path_points.append((line_type, line, color))
 
         else:
             line = list()
             line.append(start_point)
             line.append(end_point)
 
-            path_points.append((line_type, line))
+            path_points.append((line_type, line, color))
 
     def draw_lines(self):
 
@@ -208,15 +244,15 @@ class VTKCanon(StatCanon):
             end_point = None
             last_line_type = None
 
-            for line_type, line_data in data:
-                # LOG.debug(line_type, end_point)
+            for line_type, line_data, color in data:
+                # LOG.debug("line_type {}, line_data {}".format(line_type, line_data))
 
                 start_point = line_data[0]
                 end_point = line_data[1]
                 last_line_type = line_type
 
                 path_actor.points.InsertNextPoint(start_point[:3])
-                path_actor.colors.InsertNextTypedTuple(self.path_colors[line_type])
+                path_actor.colors.InsertNextTypedTuple(color)
 
                 line = vtk.vtkLine()
                 line.GetPointIds().SetId(0, index)
@@ -227,8 +263,9 @@ class VTKCanon(StatCanon):
                 index += 1
 
             if end_point:
+
                 path_actor.points.InsertNextPoint(end_point[:3])
-                path_actor.colors.InsertNextTypedTuple(self.path_colors[last_line_type])
+                path_actor.colors.InsertNextTypedTuple(color)
 
                 line = vtk.vtkLine()
                 line.GetPointIds().SetId(0, index - 1)
@@ -439,6 +476,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         connectSetting('backplot.show-machine-ticks', self.showMachineTicks)
         connectSetting('backplot.perspective-view', self.viewPerspective)
         connectSetting('backplot.view', self.setView)
+        connectSetting('backplot.multitool-colors', self.showMachineTicks)
 
     # Handle the mouse button events.
     def button_event(self, obj, event):
