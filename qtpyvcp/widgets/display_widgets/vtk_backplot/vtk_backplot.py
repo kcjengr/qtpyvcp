@@ -1109,7 +1109,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         camera = self.camera
         if camera.GetParallelProjection():
-            parallelScale = camera.GetParallelScale() * 1.1
+            parallelScale = camera.GetParallelScale() * 0.9
             camera.SetParallelScale(parallelScale)
         else:
             self.renderer.ResetCameraClippingRange()
@@ -1122,7 +1122,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         camera = self.camera
         if camera.GetParallelProjection():
-            parallelScale = camera.GetParallelScale() * 0.9
+            parallelScale = camera.GetParallelScale() * 1.1
             camera.SetParallelScale(parallelScale)
         else:
             self.renderer.ResetCameraClippingRange()
