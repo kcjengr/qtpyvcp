@@ -17,6 +17,7 @@ ToDo:
     * be able to select a row and run commands from that point upwards
 
 """
+import os
 
 from qtpy.QtCore import Qt, Slot, Property, QTimer
 from qtpy.QtGui import QIcon
@@ -27,6 +28,7 @@ import qtpyvcp
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.actions.machine_actions import issue_mdi
+from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
 
 import linuxcnc
@@ -152,6 +154,37 @@ class MDIHistory(QListWidget, CMDWidget):
         """Item row clicked."""
         pass
 
+    @Slot()
+    def copySelectionToGcodeEditor(self):
+        fname = '/tmp/mdi_gcode.ngc'
+        selection = self.selectedItems()
+        with open(fname, 'w') as fh:
+            for item in selection:
+                cmd = str(item.text()).strip()
+                fh.write(cmd + '\n')
+            fh.write('M2\n')
+        loadProgram(fname)
+
+    @Slot()
+    def moveRowItemUp(self):
+        row = self.currentRow()
+        if row == 0:
+            return
+        item = self.takeItem(row)
+        self.insertItem(row-1, item)
+        self.setCurrentRow(row-1)
+        STATUS.mdi_swap_entries(row, row-1)
+
+    @Slot()
+    def moveRowItemDown(self):
+        row = self.currentRow()
+        if row == self.count()-1:
+            return
+        item = self.takeItem(row)
+        self.insertItem(row+1, item)
+        self.setCurrentRow(row+1)
+        STATUS.mdi_swap_entries(row, row+1)
+        
     def keyPressEvent(self, event):
         """Key movement processing.
         Arrow keys move the selected list item up/down
@@ -233,7 +266,7 @@ class MDIHistory(QListWidget, CMDWidget):
         # Setup the basic timer system as a heart beat on the queue
         self.heart_beat_timer = QTimer(self)
         # use a 1 second timer
-        self.heart_beat_timer.start(1000)
+        self.heart_beat_timer.start(250)
         self.heart_beat_timer.timeout.connect(self.heartBeat)
 
     def terminate(self):
