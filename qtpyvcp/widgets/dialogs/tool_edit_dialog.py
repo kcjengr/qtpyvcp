@@ -34,7 +34,6 @@ class ToolEditDialog(QDialog):
         self.mill_ui_dialog = 'tool_edit_mill_dialog.ui'
         self.lathe_ui_dialog = 'tool_edit_lathe_dialog.ui'
 
-        print(LATHE)
         if LATHE is True:
             self.dialog_ui = self.lathe_ui_dialog
         else:
