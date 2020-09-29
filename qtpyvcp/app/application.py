@@ -47,7 +47,11 @@ class VCPApplication(QApplication):
 
         mimetypes.init()
 
-        self.font_minmetypes = ['application/x-font-ttf',
+        self.font_minmetypes = ['font/ttf',
+                                'font/otf',
+                                'font/woff',
+                                'font/woff2',
+                                'application/x-font-ttf',
                                 'application/x-font-opentype',
                                 'application/font-woff']
 
