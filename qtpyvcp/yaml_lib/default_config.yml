@@ -170,7 +170,7 @@ settings:
 
   backplot.view:
     default_value: 0
-    options: ["X: Side View", "Y: Front View", "Z: Top View", "Z2: Bottom View", "Isometric"]
+    options: ["X: Front View", "XZ: Lathe View", "XZ2: Lathe View", "Y: Front View", "Z: Top View", "Z2: Bottom View", "P: Isometric"]
 
   backplot.multitool-colors:
     default_value: True
