@@ -59,7 +59,6 @@ Note:
 import os
 
 import qtpyvcp
-from qtpyvcp.utilities.opt_parser import parse_opts, apply_opts
 
 
 def main():
@@ -70,6 +69,7 @@ def main():
     docstring at the beginning of this module.
     """
 
+    from qtpyvcp.utilities.opt_parser import parse_opts
     opts = parse_opts(__doc__)
     run(opts, None)
 
@@ -91,6 +91,7 @@ def run(opts, config_file=None):
             the VCP will be loaded solely from the options passed in the
             options dict.
     """
+    from qtpyvcp.utilities.opt_parser import apply_opts
 
     # apply command line options
     apply_opts(opts)
