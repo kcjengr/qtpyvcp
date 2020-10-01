@@ -144,7 +144,6 @@ class VTKCanon(StatCanon):
 
         self.multitool_colors = True
 
-
     def change_tool(self, pocket):
         super(VTKCanon, self).change_tool(pocket)
 
@@ -196,7 +195,6 @@ class VTKCanon(StatCanon):
             color = self.tool_path_color
         else:
             color = self.path_colors[line_type]
-
 
         if self.ignore_next is True:
             self.ignore_next = False
@@ -263,7 +261,6 @@ class VTKCanon(StatCanon):
                 index += 1
 
             if end_point:
-
                 path_actor.points.InsertNextPoint(end_point[:3])
                 path_actor.colors.InsertNextTypedTuple(color)
 
@@ -465,7 +462,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.pan_mode = False
 
-
         # view settings
         connectSetting('backplot.show-grid', self.showGrid)
         connectSetting('backplot.show-program-bounds', self.showProgramBounds)
@@ -476,7 +472,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         connectSetting('backplot.show-machine-ticks', self.showMachineTicks)
         connectSetting('backplot.perspective-view', self.viewPerspective)
         connectSetting('backplot.view', self.setView)
-        connectSetting('backplot.multitool-colors', self.showMachineTicks)
+        connectSetting('backplot.multitool-colors', self.showMultiColorPath)
 
     # Handle the mouse button events.
     def button_event(self, obj, event):
@@ -1265,6 +1261,25 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def toggleMachineLabels(self):
         self.showMachineLabels(not self.machine_actor.GetXAxisLabelVisibility())
+
+    @Slot(bool)
+    @Slot(object)
+    def enablePathMultiColor(self, color):
+        # if color:
+        #     self.machine_actor.XAxisLabelVisibilityOn()
+        #     self.machine_actor.YAxisLabelVisibilityOn()
+        #     self.machine_actor.ZAxisLabelVisibilityOn()
+        # else:
+        #     self.machine_actor.XAxisLabelVisibilityOff()
+        #     self.machine_actor.YAxisLabelVisibilityOff()
+        #     self.machine_actor.ZAxisLabelVisibilityOff()
+        # self.update_render()
+        pass
+
+    @Slot()
+    def togglePathMultiColor(self):
+        pass
+    #     self.enablePathMultiColor(not)
 
     @Property(QColor)
     def backgroundColor(self):
