@@ -1264,7 +1264,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot(bool)
     @Slot(object)
-    def enablePathMultiColor(self, color):
+    def showMultiColorPath(self, color):
         # if color:
         #     self.machine_actor.XAxisLabelVisibilityOn()
         #     self.machine_actor.YAxisLabelVisibilityOn()
@@ -1277,7 +1277,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         pass
 
     @Slot()
-    def togglePathMultiColor(self):
+    def toggleMultiColorPath(self):
         pass
     #     self.enablePathMultiColor(not)
 
