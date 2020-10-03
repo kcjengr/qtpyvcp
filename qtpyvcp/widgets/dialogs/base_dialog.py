@@ -10,6 +10,7 @@ from qtpyvcp.utilities.logger import getLogger
 
 LOG = getLogger(__name__)
 
+
 class BaseDialog(QDialog):
     """Base Dialog
 

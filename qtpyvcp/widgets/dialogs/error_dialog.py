@@ -11,6 +11,7 @@ LOG = getLogger(__name__)
 
 IGNORE_LIST = []
 
+
 class ErrorDialog(QDialog):
     def __init__(self, exc_info):
         super(ErrorDialog, self).__init__()
