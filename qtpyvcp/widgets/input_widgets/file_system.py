@@ -37,6 +37,8 @@ class RemovableDeviceComboBox(QComboBox):
     def __init__(self, parent=None):
         super(RemovableDeviceComboBox, self).__init__(parent)
 
+        self._first_show = True
+
         self.setSizeAdjustPolicy(QComboBox.AdjustToContents)
 
         self._file_locations = getPlugin('file_locations')
@@ -52,9 +54,12 @@ class RemovableDeviceComboBox(QComboBox):
         self.onRemovableDevicesChanged(self._file_locations.removable_devices.value)
 
     def showEvent(self, event=None):
-        self.setCurrentText(self._file_locations.default_location)
-        data = self.currentData() or {}
-        self.currentDeviceEjectable.emit(data.get('removable', False))
+        if self._first_show:
+            self._first_show = False
+            self.setCurrentText(self._file_locations.default_location)
+            data = self.currentData() or {}
+            self.currentDeviceEjectable.emit(data.get('removable', False))
+        super(RemovableDeviceComboBox, self).showEvent(event)
 
     def onCurrentTextChanged(self, text):
         data = self.currentData()
