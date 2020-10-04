@@ -37,7 +37,8 @@ FILE_FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 def getLogger(name):
     if BASE_LOGGER_NAME is None:
         initBaseLogger('qtpyvcp')
-    name = '{1}'.format(BASE_LOGGER_NAME, name)
+    if not name.startswith(BASE_LOGGER_NAME):
+        name = '{}.{}'.format(BASE_LOGGER_NAME, name)
     return logging.getLogger(name.replace('qtpyvcp', BASE_LOGGER_NAME))
 
 # Get an integer log level from a level name
