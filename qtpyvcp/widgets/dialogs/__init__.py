@@ -5,6 +5,8 @@ from qtpyvcp.utilities.logger import getLogger
 
 LOG = getLogger(__name__)
 
+ACTIVE_DIALOGS = []
+
 
 def getDialog(name):
     """Get dialog instance from name.
@@ -40,6 +42,20 @@ def showDialog(name):
     dialog.move(win_pos.x() - dialog.width() / 2, win_pos.y() - dialog.height() / 2)
 
     dialog.show()
+    ACTIVE_DIALOGS.append(dialog)
+
+
+def hideActiveDialog():
+    try:
+        dialog = ACTIVE_DIALOGS.pop(-1)
+        dialog.hide()
+    except:
+        pass
+
+
+def hideDialog(name):
+    dialog = getDialog(name)
+    dialog.hide()
 
 
 def askQuestion(title='', message='', parent=None):
