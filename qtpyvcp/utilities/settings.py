@@ -134,7 +134,7 @@ class Setting(QObject):
 
         if update:
             try:
-                slot(self.value)
+                slot(self.getValue())
             except:
                 pass
 
@@ -152,7 +152,7 @@ class Setting(QObject):
         return str(self.value)
 
 
-def setting(id, default_value=False, max_value=None, min_value=None, persistent=True, options=None):
+def setting(id, default_value=False, value_type=None, max_value=None, min_value=None, persistent=True, options=None):
     def wrapper(func):
         obj = Setting(default_value=default_value,
                       max_value=max_value,
