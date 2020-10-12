@@ -274,12 +274,13 @@ class VTKCanon(StatCanon):
 
             self.path_points[self.origin] = list()
 
-            path_actor.poly_data.SetPoints(path_actor.points)
-            path_actor.poly_data.SetLines(path_actor.lines)
-            path_actor.poly_data.GetCellData().SetScalars(path_actor.colors)
-            path_actor.data_mapper.SetInputData(path_actor.poly_data)
-            path_actor.data_mapper.Update()
-            path_actor.SetMapper(path_actor.data_mapper)
+            if path_actor is not None:
+                path_actor.poly_data.SetPoints(path_actor.points)
+                path_actor.poly_data.SetLines(path_actor.lines)
+                path_actor.poly_data.GetCellData().SetScalars(path_actor.colors)
+                path_actor.data_mapper.SetInputData(path_actor.poly_data)
+                path_actor.data_mapper.Update()
+                path_actor.SetMapper(path_actor.data_mapper)
 
     def get_path_actors(self):
         return self.path_actors
