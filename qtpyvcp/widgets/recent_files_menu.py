@@ -58,7 +58,6 @@ class RecentFilesMenu(QMenu):
 
     def update(self, files):
         for i, fname in enumerate(files):
-            fname = fname.encode('utf-8')
             text = "&{} {}".format(i + 1, os.path.basename(fname))
             action = self._actions[i]
             action.setText(text)
