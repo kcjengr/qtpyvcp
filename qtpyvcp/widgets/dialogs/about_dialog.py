@@ -19,10 +19,12 @@
 from qtpy import uic
 from qtpy.QtWidgets import QVBoxLayout, QDialog, QDialogButtonBox, QLabel
 
+from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 
-class AboutDialog(QDialog):
+
+class AboutDialog(BaseDialog):
     def __init__(self, *args, **kwargs):
-        super(AboutDialog, self).__init__()
+        super(AboutDialog, self).__init__(stay_on_top=True)
 
         self.ui_file = kwargs.get('ui_file')
 
