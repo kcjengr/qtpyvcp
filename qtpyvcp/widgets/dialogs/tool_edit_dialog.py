@@ -23,13 +23,15 @@ import os
 from qtpy import uic
 from qtpy.QtWidgets import QDialog
 
+from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
+
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 LATHE = bool(INIFILE.find("DISPLAY", "LATHE"))
 
 
-class ToolEditDialog(QDialog):
+class ToolEditDialog(BaseDialog):
     def __init__(self, parent=None):
-        super(ToolEditDialog, self).__init__(parent=parent)
+        super(ToolEditDialog, self).__init__(parent=parent, stay_on_top=True)
 
         self.mill_ui_dialog = 'tool_edit_mill_dialog.ui'
         self.lathe_ui_dialog = 'tool_edit_lathe_dialog.ui'

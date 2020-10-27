@@ -25,14 +25,15 @@ from qtpy.QtWidgets import QComboBox, QDialog, QHBoxLayout, QLabel, \
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities import logger
 from qtpyvcp.actions.machine_actions import issue_mdi
+from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 
 Log = logger.getLogger(__name__)
 
 
-class OffsetsDialog(QDialog):
+class OffsetsDialog(BaseDialog):
 
     def __init__(self, parent=None):
-        super(OffsetsDialog, self).__init__(parent=parent)
+        super(OffsetsDialog, self).__init__(parent=parent, stay_on_top=True)
 
         self.info = Info()
         self.log = Log
@@ -89,7 +90,6 @@ class OffsetsDialog(QDialog):
         set_button.clicked.connect(self.set_method)
         close_button.clicked.connect(self.close_method)
 
-        self.setWindowFlags(Qt.Popup)
 
     def set_method(self):
         system = self.system_combo.currentData()

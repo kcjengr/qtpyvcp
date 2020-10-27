@@ -6,15 +6,17 @@ from qtpy.QtCore import Slot
 from qtpy.QtWidgets import QDialog, QApplication
 
 from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 
 LOG = getLogger(__name__)
 
 IGNORE_LIST = []
 
 
-class ErrorDialog(QDialog):
+class ErrorDialog(BaseDialog):
     def __init__(self, exc_info):
-        super(ErrorDialog, self).__init__()
+        super(ErrorDialog, self).__init__(stay_on_top=True)
+
         uic.loadUi(os.path.join(os.path.dirname(__file__), 'error_dialog.ui'), self)
 
         self.exc_info = exc_info
@@ -74,7 +76,6 @@ class ErrorDialog(QDialog):
             log_file=qtpyvcp.OPTIONS.get('log_file'),
             config_file=qtpyvcp.OPTIONS.get('config_file'),
             )
-
 
         new_issue_url = "https://github.com/kcjengr/qtpyvcp/issues/new?" \
                         "title={title}&body={body}&&labels=bug,auto+generated"\
