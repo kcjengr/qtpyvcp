@@ -24,6 +24,7 @@ import linuxcnc
 
 from qtpy.QtWidgets import QApplication
 
+import qtpyvcp
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 from qtpyvcp.lib.native_notification import NativeNotification
@@ -157,9 +158,10 @@ class Notifications(DataPlugin):
 
     def initialise(self):
 
+        mainwindow = qtpyvcp.WINDOWS.get('mainwindow')
         if self.enabled:
             if self.mode == "native":
-                self.notification_dispatcher = NativeNotification(parent=self)
+                self.notification_dispatcher = NativeNotification(parent=mainwindow)
                 self.notification_dispatcher.maxMessages = self.max_messages
             elif self.mode == "dbus":
                 self.notification_dispatcher = DBusNotification("qtpyvcp")

@@ -43,9 +43,9 @@ class VCPApplication(QApplication):
         opts = qtpyvcp.OPTIONS
 
         self.status = getPlugin('status')
-
-        # initialize plugins
-        initialisePlugins()
+        #
+        # # initialize plugins
+        # initialisePlugins()
 
         theme = opts.theme or theme
         if theme is not None:
@@ -249,6 +249,10 @@ class VCPApplication(QApplication):
         for w in self.allWidgets():
             if isinstance(w, VCPPrimitiveWidget):
                 w.initialize()
+
+        # initialize plugins
+        initialisePlugins()
+
 
     def terminateWidgets(self):
         LOG.debug("Terminating widgets")
