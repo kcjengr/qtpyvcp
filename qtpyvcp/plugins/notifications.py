@@ -159,7 +159,7 @@ class Notifications(DataPlugin):
 
         if self.enabled:
             if self.mode == "native":
-                self.notification_dispatcher = NativeNotification()
+                self.notification_dispatcher = NativeNotification(parent=self)
                 self.notification_dispatcher.maxMessages = self.max_messages
             elif self.mode == "dbus":
                 self.notification_dispatcher = DBusNotification("qtpyvcp")

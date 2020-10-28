@@ -118,7 +118,7 @@ class Example(QWidget):
         btn = QPushButton("Send Notify", self)
         self.layout().addWidget(btn)
 
-        self.notification = NativeNotification()
+        self.notification = NativeNotification(parent=self)
         btn.clicked.connect(self.notify)
         self.index = 0
 
