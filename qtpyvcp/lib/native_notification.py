@@ -26,6 +26,8 @@ from qtpy.QtCore import Qt, Signal
 from qtpy.QtGui import QIcon
 from qtpy.QtWidgets import QWidget, QGridLayout, QLabel, QPushButton, QDesktopWidget, QVBoxLayout, QApplication, QDialog
 
+from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
+
 
 class Message(QWidget):
     def __init__(self, title, message, parent=None):
@@ -54,11 +56,11 @@ class Message(QWidget):
         self.layout().addWidget(self.buttonClose, 0, 1, 2, 1)
 
 
-class NativeNotification(QDialog):
+class NativeNotification(BaseDialog):
     signNotifyClose = Signal(str)
 
     def __init__(self, parent=None):
-        super(NativeNotification, self).__init__(parent=parent)
+        super(NativeNotification, self).__init__(parent=parent, stay_on_top=True, frameless=True)
         time = datetime.now()
 
         current_time = "{}:{}".format(time.hour, time.minute)
