@@ -16,7 +16,7 @@ from qtpy.QtWidgets import QApplication, QStyleFactory
 import qtpyvcp
 
 from qtpyvcp.utilities.logger import initBaseLogger
-from qtpyvcp.plugins import initialisePlugins, terminatePlugins, getPlugin
+from qtpyvcp.plugins import initialisePlugins, terminatePlugins, getPlugin, postGuiInitialisePlugins
 from qtpyvcp.widgets.base_widgets.base_widget import VCPPrimitiveWidget
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
@@ -43,9 +43,9 @@ class VCPApplication(QApplication):
         opts = qtpyvcp.OPTIONS
 
         self.status = getPlugin('status')
-        #
-        # # initialize plugins
-        # initialisePlugins()
+
+        # initialize plugins
+        initialisePlugins()
 
         theme = opts.theme or theme
         if theme is not None:
@@ -250,8 +250,8 @@ class VCPApplication(QApplication):
             if isinstance(w, VCPPrimitiveWidget):
                 w.initialize()
 
-        # initialize plugins
-        initialisePlugins()
+        # initialize plugins after GUI
+        postGuiInitialisePlugins()
 
 
     def terminateWidgets(self):

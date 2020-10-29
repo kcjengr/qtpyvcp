@@ -163,7 +163,7 @@ class Notifications(DataPlugin):
 
         self.startTimer(200)
 
-    def postWindowInitialise(self):
+    def postGuiInitialise(self):
         mainwindow = qtpyvcp.WINDOWS.get('mainwindow')
         if self.enabled:
             if self.mode == "native":
@@ -173,7 +173,6 @@ class Notifications(DataPlugin):
                 self.notification_dispatcher = DBusNotification("qtpyvcp")
             else:
                 raise Exception("error notification mode {}".format(self.mode))
-
 
     def terminate(self):
         if self.persistent:
