@@ -117,6 +117,18 @@ def initialisePlugins():
         plugin_inst.initialise()
 
 
+def postGuiInitialisePlugins():
+    """Initializes all registered plugins after main window is shown.
+
+        Plugins are initialized in the order they were registered in.
+        Plugins defined in the YAML file are registered in the order they
+        were defined.
+    """
+    for plugin_id, plugin_inst in _PLUGINS.items():
+        LOG.debug("Post GUI Initializing '%s' plugin", plugin_id)
+        plugin_inst.postGuiInitialise()
+
+
 def terminatePlugins():
     """Terminates all registered plugins.
 

@@ -13,6 +13,7 @@ class Plugin(QObject):
 
         self._log = None
         self._initialized = False
+        self._postGuiInitialized = False
 
     @property
     def log(self):
@@ -30,6 +31,17 @@ class Plugin(QObject):
         This method should set ``self._initialized`` to true if successfully.
         """
         self._initialized = True
+
+    def postGuiInitialise(self):
+        """Initialize the plugin after mainwindow is shown.
+
+        This method is called after the main window is shown.
+
+        This method should set ``self._postGuiInitialized`` to true if successfully.
+        """
+        self._postGuiInitialized = True
+
+
 
     def terminate(self):
         """Terminate the plugin.

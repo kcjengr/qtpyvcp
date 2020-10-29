@@ -158,6 +158,12 @@ class Notifications(DataPlugin):
 
     def initialise(self):
 
+        if self.persistent:
+            self.messages = self.data_manager.getData('messages', [])
+
+        self.startTimer(200)
+
+    def postWindowInitialise(self):
         mainwindow = qtpyvcp.WINDOWS.get('mainwindow')
         if self.enabled:
             if self.mode == "native":
@@ -168,10 +174,6 @@ class Notifications(DataPlugin):
             else:
                 raise Exception("error notification mode {}".format(self.mode))
 
-        if self.persistent:
-            self.messages = self.data_manager.getData('messages', [])
-
-        self.startTimer(200)
 
     def terminate(self):
         if self.persistent:
