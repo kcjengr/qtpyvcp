@@ -157,19 +157,20 @@ class Notifications(DataPlugin):
 
     def initialise(self):
 
+        if self.persistent:
+            self.messages = self.data_manager.getData('messages', [])
+
+        self.startTimer(200)
+
+    def postGuiInitialise(self, main_window):
         if self.enabled:
             if self.mode == "native":
-                self.notification_dispatcher = NativeNotification()
+                self.notification_dispatcher = NativeNotification(parent=main_window)
                 self.notification_dispatcher.maxMessages = self.max_messages
             elif self.mode == "dbus":
                 self.notification_dispatcher = DBusNotification("qtpyvcp")
             else:
                 raise Exception("error notification mode {}".format(self.mode))
-
-        if self.persistent:
-            self.messages = self.data_manager.getData('messages', [])
-
-        self.startTimer(200)
 
     def terminate(self):
         if self.persistent:
