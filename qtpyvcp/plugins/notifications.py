@@ -24,7 +24,6 @@ import linuxcnc
 
 from qtpy.QtWidgets import QApplication
 
-import qtpyvcp
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
 from qtpyvcp.lib.native_notification import NativeNotification

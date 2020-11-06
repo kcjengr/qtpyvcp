@@ -117,7 +117,7 @@ def initialisePlugins():
         plugin_inst.initialise()
 
 
-def postGuiInitialisePlugins(main_window=None):
+def postGuiInitialisePlugins(main_window):
     """Initializes all registered plugins after main window is shown.
 
         Plugins are initialized in the order they were registered in.
