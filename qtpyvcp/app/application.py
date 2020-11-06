@@ -16,7 +16,7 @@ from qtpy.QtWidgets import QApplication, QStyleFactory
 import qtpyvcp
 
 from qtpyvcp.utilities.logger import initBaseLogger
-from qtpyvcp.plugins import initialisePlugins, terminatePlugins, getPlugin, postGuiInitialisePlugins
+from qtpyvcp.plugins import initialisePlugins, terminatePlugins, getPlugin
 from qtpyvcp.widgets.base_widgets.base_widget import VCPPrimitiveWidget
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 
@@ -249,10 +249,6 @@ class VCPApplication(QApplication):
         for w in self.allWidgets():
             if isinstance(w, VCPPrimitiveWidget):
                 w.initialize()
-
-        # initialize plugins after GUI
-        postGuiInitialisePlugins()
-
 
     def terminateWidgets(self):
         LOG.debug("Terminating widgets")

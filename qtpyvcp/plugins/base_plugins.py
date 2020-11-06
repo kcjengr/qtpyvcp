@@ -32,16 +32,16 @@ class Plugin(QObject):
         """
         self._initialized = True
 
-    def postGuiInitialise(self):
+    def postGuiInitialise(self, main_window):
         """Initialize the plugin after mainwindow is shown.
 
         This method is called after the main window is shown.
+        Args:
+            main_window (VCPMainWindow) : the VCPMainWindow object.
 
         This method should set ``self._postGuiInitialized`` to true if successfully.
         """
         self._postGuiInitialized = True
-
-
 
     def terminate(self):
         """Terminate the plugin.

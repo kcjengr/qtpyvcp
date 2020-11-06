@@ -163,11 +163,10 @@ class Notifications(DataPlugin):
 
         self.startTimer(200)
 
-    def postGuiInitialise(self):
-        mainwindow = qtpyvcp.WINDOWS.get('mainwindow')
+    def postGuiInitialise(self, main_window):
         if self.enabled:
             if self.mode == "native":
-                self.notification_dispatcher = NativeNotification(parent=mainwindow)
+                self.notification_dispatcher = NativeNotification(parent=main_window)
                 self.notification_dispatcher.maxMessages = self.max_messages
             elif self.mode == "dbus":
                 self.notification_dispatcher = DBusNotification("qtpyvcp")

@@ -10,7 +10,7 @@ from qtpy.QtWidgets import QApplication
 import qtpyvcp
 from qtpyvcp import hal
 from qtpyvcp.utilities.logger import getLogger
-from qtpyvcp.plugins import registerPluginFromClass
+from qtpyvcp.plugins import registerPluginFromClass, postGuiInitialisePlugins
 from qtpyvcp.widgets.dialogs.error_dialog import ErrorDialog, IGNORE_LIST
 
 from qtpyvcp.utilities.info import Info
@@ -227,6 +227,9 @@ def loadWindows(windows):
 
         window = _initialize_object_from_dict(window_dict)
         qtpyvcp.WINDOWS[window_id] = window
+
+        if window_id == 'mainwindow':
+            postGuiInitialisePlugins(window)
 
         # show the window by default
         if window_dict.get('show', True):
