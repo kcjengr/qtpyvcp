@@ -1928,14 +1928,22 @@ class Tool:
                 mapper = vtk.vtkPolyDataMapper()
                 mapper.SetInputConnection(transform_filter.GetOutputPort())
             else:
+
                 transform = vtk.vtkTransform()
 
-                source = vtk.vtkCylinderSource()
-                source.SetHeight(self.height / 2)
-                source.SetCenter(-tool.xoffset, self.height / 4 - tool.zoffset, tool.yoffset)
-                source.SetRadius(tool.diameter / 2)
-                source.SetResolution(64)
-                transform.RotateWXYZ(90, 1, 0, 0)
+                filename = os.path.join(os.path.dirname(__file__), "tool_models/original.stl")
+
+                source = vtk.vtkSTLReader()
+                source.SetFileName(filename)
+
+                # source = vtk.vtkCylinderSource()
+                # source.SetHeight(self.height / 2)
+                # source.SetCenter(-tool.xoffset, self.height / 4 - tool.zoffset, tool.yoffset)
+                # source.SetRadius(tool.diameter / 2)
+                # source.SetResolution(64)
+                # transform.RotateWXYZ(90, 1, 0, 0)
+
+                # transform.RotateWXYZ(0, 1, 0, 0)
 
                 transform_filter = vtk.vtkTransformPolyDataFilter()
                 transform_filter.SetTransform(transform)

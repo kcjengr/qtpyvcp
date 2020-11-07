@@ -4,6 +4,7 @@ from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, \
      QSpinBox, QLineEdit, QMessageBox
 
 from qtpyvcp.actions.machine_actions import issue_mdi
+from qtpyvcp.plugins.tool_table import ALL_COLUMNS
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
@@ -42,7 +43,7 @@ class ItemDelegate(QStyledItemDelegate):
             editor.setTextMargins(margins)
             return editor
 
-        elif col in 'TPQ':
+        elif col in ('T', 'P', 'Q'):
             editor = QSpinBox(parent)
             editor.setFrame(False)
             editor.setAlignment(Qt.AlignCenter)
@@ -52,7 +53,7 @@ class ItemDelegate(QStyledItemDelegate):
                 editor.setMaximum(99999)
             return editor
 
-        elif col in 'XYZABCUVWD':
+        elif col in ('X', 'Y', 'Z', 'A', 'B', 'C', 'U', 'V', 'W', 'D'):
             editor = QDoubleSpinBox(parent)
             editor.setFrame(False)
             editor.setAlignment(Qt.AlignCenter)
@@ -62,7 +63,7 @@ class ItemDelegate(QStyledItemDelegate):
             editor.setRange(-1000, 1000)
             return editor
 
-        elif col in 'IJ':
+        elif col in ('I', 'J'):
             editor = QDoubleSpinBox(parent)
             editor.setFrame(False)
             editor.setAlignment(Qt.AlignCenter)
@@ -138,7 +139,7 @@ class ToolModel(QStandardItemModel):
             col = self._columns[index.column()]
             if col == 'R':      # Remark
                 return Qt.AlignVCenter | Qt.AlignLeft
-            elif col in 'TPQ':  # Integers (Tool, Pocket, Orient)
+            elif col in ('T', 'P', 'Q'):  # Integers (Tool, Pocket, Orient)
                 return Qt.AlignVCenter | Qt.AlignCenter
             else:               # All the other floats
                 return Qt.AlignVCenter | Qt.AlignRight
@@ -327,14 +328,46 @@ class ToolTable(QTableView):
             return True
         else:
             return False
+    #
+    # @Property(str)
+    # def displayColumns(self):
+    #     return "".join(self._columns)
+    #
+    # @displayColumns.setter
+    # def displayColumns(self, columns):
+    #     self._columns = [col for col in columns.upper() if col in ALL_COLUMNS]
+    #     self.tool_model.setColumns(self._columns)
+    #     self.itemDelegate().setColumns(self._columns)
 
-    @Property(str)
-    def displayColumns(self):
-        return "".join(self._columns)
+    @Property(bool)
+    def displayXColumn(self):
+        if 'X' in self._columns:
+            return True
+        else:
+            return False
 
-    @displayColumns.setter
-    def displayColumns(self, columns):
-        self._columns = [col for col in columns.upper() if col in 'TPXYZABCUVWDIJQR']
+    @displayXColumn.setter
+    def displayXColumn(self, enable):
+        if enable:
+            self._columns[3] = 'X'
+        else:
+            self._columns[3] = ''
+        self.tool_model.setColumns(self._columns)
+        self.itemDelegate().setColumns(self._columns)
+
+    @Property(bool)
+    def displayYColumn(self):
+        if 'Y' in self._columns:
+            return True
+        else:
+            return False
+
+    @displayYColumn.setter
+    def displayYColumn(self, enable):
+        if enable:
+            self._columns[4] = 'Y'
+        else:
+            self._columns[4] = ''
         self.tool_model.setColumns(self._columns)
         self.itemDelegate().setColumns(self._columns)
 
@@ -361,7 +394,6 @@ class ToolTable(QTableView):
     @currentToolBackground.setter
     def currentToolBackground(self, color):
         self.tool_model.current_tool_bg = color
-
 
     def insertToolAbove(self):
         # it does not make sense to insert tools, since the numbering

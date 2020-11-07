@@ -52,6 +52,14 @@ def merge(a, b):
     return r
 
 
+ALL_COLUMNS = ('T', 'P',
+               'X', 'Y', 'Z',
+               'A', 'B', 'C',
+               'U', 'V', 'W',
+               'D', 'I', 'J',
+               'Q', 'R',
+               'STL', 'COLOR')
+
 DEFAULT_TOOL = {
     'A': 0.0,
     'B': 0.0,
@@ -69,6 +77,8 @@ DEFAULT_TOOL = {
     'Y': 0.0,
     'Z': 0.0,
     'R': '',
+    'STL': '',
+    'COLOR': ''
 }
 
 NO_TOOL = merge(DEFAULT_TOOL, {'T': 0, 'R': 'No Tool Loaded'})
@@ -101,6 +111,8 @@ COLUMN_LABELS = {
     'X': 'X Offset',
     'Y': 'Y Offset',
     'Z': 'Z Offset',
+    'STL': 'Tool STL Model',
+    'COLOR': 'Tool Path Color'
 }
 
 # Column formats when writing tool table
@@ -116,14 +128,13 @@ def makeLorumIpsumToolTable():
 
 
 class ToolTable(DataPlugin):
-
     TOOL_TABLE = {0: NO_TOOL}
     DEFAULT_TOOL = DEFAULT_TOOL
     COLUMN_LABELS = COLUMN_LABELS
 
     tool_table_changed = Signal(dict)
 
-    def __init__(self, columns='TPXYZABCUVWDIJQR', file_header_template=None,
+    def __init__(self, columns=ALL_COLUMNS, file_header_template=None,
                  remember_tool_in_spindle=True):
         super(ToolTable, self).__init__()
 
@@ -131,7 +142,7 @@ class ToolTable(DataPlugin):
         self.orig_header_lines = []
         self.file_header_template = file_header_template or ''
         self.remember_tool_in_spindle = remember_tool_in_spindle
-        self.columns = self.validateColumns(columns) or [c for c in 'TPXYZABCUVWDIJQR']
+        self.columns = self.validateColumns(columns) or [c for c in ALL_COLUMNS]
 
         self.data_manager = getPlugin('persistent_data_manager')
 
@@ -182,6 +193,8 @@ class ToolTable(DataPlugin):
         * J -- back angle
         * Q -- orientation
         * R -- remark
+        * STL -- tool stl model
+        * COLOR -- tool path color
 
         Rules channel syntax::
 
@@ -222,7 +235,7 @@ class ToolTable(DataPlugin):
             return
 
         return [col for col in [col.strip().upper() for col in columns]
-                if col in 'TPXYZABCUVWDIJQR' and not col == '']
+                if col in ALL_COLUMNS and not col == '']
 
     def newTool(self, tnum=None):
         """Get a dict of default tool values for a new tool."""
@@ -281,20 +294,26 @@ class ToolTable(DataPlugin):
                 lines = lines[lnum:]
 
                 self.orig_header_lines = list(takewhile(lambda l:
-                                        not l.strip() == '---' and
-                                        not l.startswith(';Tool'), raw_header))
+                                                        not l.strip() == '---' and
+                                                        not l.startswith(';Tool'), raw_header))
                 break
 
-        table = {0: NO_TOOL,}
+        table = {0: NO_TOOL, }
         for line in lines:
 
             data, sep, comment = line.partition(';')
+
+            tool_model = re.findall(r"\[([.*?]+)]", comment.lower())
+            path_color = re.findall(r"\[([#A-F0-9_]+)]", comment.upper())
+            print(tool_model)
+            print(path_color)
+
             items = re.findall(r"([A-Z]+[0-9.+-]+)", data.replace(' ', ''))
 
             tool = DEFAULT_TOOL.copy()
             for item in items:
                 descriptor = item[0]
-                if descriptor in 'TPXYZABCUVWDIJQR':
+                if descriptor in ALL_COLUMNS:
                     value = item[1:]
                     if descriptor in ('T', 'P', 'Q'):
                         try:
@@ -357,8 +376,8 @@ class ToolTable(DataPlugin):
         if self.file_header_template:
             try:
                 header_lines = self.file_header_template.format(
-                                    version=qtpyvcp.__version__,
-                                    datetime=datetime.now()).lstrip().splitlines()
+                    version=qtpyvcp.__version__,
+                    datetime=datetime.now()).lstrip().splitlines()
                 header_lines.append('')  # extra new line before table header
             except:
                 pass
