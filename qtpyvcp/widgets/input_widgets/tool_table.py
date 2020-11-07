@@ -195,7 +195,7 @@ class ToolModel(QStandardItemModel):
         return self._tool_table[tnum]
 
     def saveToolTable(self):
-        self.tt.saveToolTable(self._tool_table)
+        self.tt.saveToolTable(self._tool_table, self._columns)
         return True
 
     def clearToolTable(self):

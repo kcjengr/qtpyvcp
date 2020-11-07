@@ -59,8 +59,8 @@ DEFAULT_TOOL = {
     'D': 0.0,
     'I': 0.0,
     'J': 0.0,
-    'P': -1,
-    'Q':  1,
+    'P': 0,
+    'Q': 1,
     'T': -1,
     'U': 0.0,
     'V': 0.0,
@@ -345,6 +345,7 @@ class ToolTable(DataPlugin):
         """
 
         columns = self.validateColumns(columns) or self.columns
+        print(columns)
 
         if tool_file is None:
             tool_file = self.tool_table_file
@@ -358,7 +359,7 @@ class ToolTable(DataPlugin):
                 header_lines = self.file_header_template.format(
                                     version=qtpyvcp.__version__,
                                     datetime=datetime.now()).lstrip().splitlines()
-                header_lines.append('') # extra new line before table header
+                header_lines.append('')  # extra new line before table header
             except:
                 pass
 
