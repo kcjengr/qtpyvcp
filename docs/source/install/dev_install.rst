@@ -40,7 +40,7 @@ Install Dev Dependencies
 
 Development dependencies (in addition to those listed on the :doc:`Prerequisites <prerequisites>`) page::
 
-  sudo apt install qttools5.dev qttools5-dev-tools wheel
+  sudo apt install qttools5-dev qttools5-dev-tools python-wheel
 
 For building documentation::
 
