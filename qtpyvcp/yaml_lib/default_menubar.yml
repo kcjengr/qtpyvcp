@@ -137,6 +137,55 @@ default_menubar:
       - title: View Angle
         action: settings.backplot.view
 
+  - title: Tool Table
+    items:
+
+      - title: Show X Column
+        action: settings.tool_table.column_x
+
+      - title: Show Y Column
+        action: settings.tool_table.column_y
+
+      - title: Show Z Column
+        action: settings.tool_table.column_z
+
+      - separator
+
+      - title: Show A Column
+        action: settings.tool_table.column_a
+
+      - title: Show B Column
+        action: settings.tool_table.column_b
+
+      - title: Show C Column
+        action: settings.tool_table.column_c
+
+      - separator
+
+      - title: Show U Column
+        action: settings.tool_table.column_u
+
+      - title: Show V Column
+        action: settings.tool_table.column_v
+
+      - title: Show W Column
+        action: settings.tool_table.column_w
+
+      - separator
+
+      - title: Show Remark Column
+        action: settings.tool_table.column_r
+
+      - separator
+
+      - title: Show Color Column
+        action: settings.tool_table.column_color
+
+      - separator
+
+      - title: Show STL Column
+        action: settings.tool_table.column_stl
+
   - title: Tools
     items:
       - title: HAL Meter

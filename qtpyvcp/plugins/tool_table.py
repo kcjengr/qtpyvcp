@@ -52,13 +52,15 @@ def merge(a, b):
     return r
 
 
-ALL_COLUMNS = ('T', 'P',
-               'X', 'Y', 'Z',
+ALL_COLUMNS = [
                'A', 'B', 'C',
-               'U', 'V', 'W',
                'D', 'I', 'J',
-               'Q', 'R',
-               'STL', 'COLOR')
+               'P', 'Q', 'T',
+               'U', 'V', 'W',
+               'X', 'Y', 'Z',
+               'R',
+               'STL',
+               'COLOR']
 
 DEFAULT_TOOL = {
     'A': 0.0,
@@ -396,7 +398,7 @@ class ToolTable(DataPlugin):
         for col in columns:
             if col == 'R':
                 continue
-            w = (INT_COLUMN_WIDTH if col in 'TPQ' else FLOAT_COLUMN_WIDTH) - \
+            w = (INT_COLUMN_WIDTH if col in ['T', 'P', 'Q'] else FLOAT_COLUMN_WIDTH) - \
                 (1 if col == self.columns[0] else 0)
             items.append('{:<{w}}'.format(COLUMN_LABELS[col], w=w))
 
@@ -410,7 +412,7 @@ class ToolTable(DataPlugin):
             for col in columns:
                 if col == 'R':
                     continue
-                if col in 'TPQ':
+                if col in ['T', 'P', 'Q']:
                     items.append('{col}{val:<{w}}'
                                  .format(col=col,
                                          val=tool_data[col],

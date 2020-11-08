@@ -6,6 +6,7 @@ from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, \
 from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.plugins.tool_table import ALL_COLUMNS
 
+from qtpyvcp.utilities.settings import getSetting, connectSetting
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin
 
@@ -116,6 +117,11 @@ class ToolModel(QStandardItemModel):
 
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role == Qt.DisplayRole and orientation == Qt.Horizontal:
+
+            print(self._column_labels)
+            print(self._columns)
+            print(section)
+
             return self._column_labels[self._columns[section]]
 
         return QStandardItemModel.headerData(self, section, orientation, role)
@@ -181,7 +187,7 @@ class ToolModel(QStandardItemModel):
 
         row = len(self._tool_table) - 1
 
-        if row == 56:
+        if row == 9999:
             # max 56 tools
             return False
 
@@ -242,6 +248,27 @@ class ToolTable(QTableView):
         self.setSelectionMode(QTableView.SingleSelection)
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
+
+        connectSetting('tool_table.column_x', self.showX)
+        connectSetting('tool_table.column_y', self.showY)
+        connectSetting('tool_table.column_z', self.showZ)
+
+        connectSetting('tool_table.column_a', self.showA)
+        connectSetting('tool_table.column_b', self.showB)
+        connectSetting('tool_table.column_c', self.showC)
+
+        connectSetting('tool_table.column_u', self.showU)
+        connectSetting('tool_table.column_v', self.showV)
+        connectSetting('tool_table.column_w', self.showW)
+
+        connectSetting('tool_table.column_p', self.showP)
+        connectSetting('tool_table.column_q', self.showQ)
+        connectSetting('tool_table.column_t', self.showT)
+
+        connectSetting('tool_table.column_r', self.showR)
+
+        connectSetting('tool_table.column_color', self.showColor)
+        connectSetting('tool_table.column_stl', self.showSTL)
 
     @Slot()
     def saveToolTable(self):
@@ -328,8 +355,8 @@ class ToolTable(QTableView):
             return True
         else:
             return False
-    #
-    # @Property(str)
+
+    # @Property(dict)
     # def displayColumns(self):
     #     return "".join(self._columns)
     #
@@ -339,35 +366,127 @@ class ToolTable(QTableView):
     #     self.tool_model.setColumns(self._columns)
     #     self.itemDelegate().setColumns(self._columns)
 
-    @Property(bool)
-    def displayXColumn(self):
-        if 'X' in self._columns:
-            return True
-        else:
-            return False
-
-    @displayXColumn.setter
-    def displayXColumn(self, enable):
+    def showX(self, enable):
+        column = 'X'
         if enable:
-            self._columns[3] = 'X'
+            self._columns.append(column)
         else:
-            self._columns[3] = ''
-        self.tool_model.setColumns(self._columns)
-        self.itemDelegate().setColumns(self._columns)
+            self._columns.remove(column)
+        self.updateColumns()
 
-    @Property(bool)
-    def displayYColumn(self):
-        if 'Y' in self._columns:
-            return True
-        else:
-            return False
-
-    @displayYColumn.setter
-    def displayYColumn(self, enable):
+    def showY(self, enable):
+        column = 'Y'
         if enable:
-            self._columns[4] = 'Y'
+            self._columns.append(column)
         else:
-            self._columns[4] = ''
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def showZ(self, enable):
+        column = 'Z'
+        if enable:
+            self._columns.append(column)
+        else:
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def showA(self, enable):
+        column = 'A'
+        if enable:
+            self._columns.append(column)
+        else:
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def showB(self, enable):
+        column = 'B'
+        if enable:
+            self._columns.append(column)
+        else:
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def showC(self, enable):
+        column = 'C'
+        if enable:
+            self._columns.append(column)
+        else:
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def showU(self, enable):
+        column = 'U'
+        if enable:
+            self._columns.append(column)
+        else:
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def showV(self, enable):
+        column = 'V'
+        if enable:
+            self._columns.append(column)
+        else:
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def showW(self, enable):
+        column = 'W'
+        if enable:
+            self._columns.append(column)
+        else:
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def showP(self, enable):
+        column = 'P'
+        if enable:
+            self._columns.append(column)
+        else:
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def showQ(self, enable):
+        column = 'Q'
+        if enable:
+            self._columns.append(column)
+        else:
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def showT(self, enable):
+        column = 'T'
+        if enable:
+            self._columns.append(column)
+        else:
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def showR(self, enable):
+        column = 'R'
+        if enable:
+            self._columns.append(column)
+        else:
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def showColor(self, enable):
+        column = 'COLOR'
+        if enable:
+            self._columns.append(column)
+        else:
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def showSTL(self, enable):
+        column = 'STL'
+        if enable:
+            self._columns.append(column)
+        else:
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def updateColumns(self):
         self.tool_model.setColumns(self._columns)
         self.itemDelegate().setColumns(self._columns)
 
