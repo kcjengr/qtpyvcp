@@ -8,48 +8,46 @@ windows:
 settings:
 
   tool_table.column_x:
-    default_value: true
+    default_value: false
 
   tool_table.column_y:
-    default_value: true
+    default_value: false
 
   tool_table.column_z:
-    default_value: true
+    default_value: false
 
   tool_table.column_a:
-    default_value: true
+    default_value: false
 
   tool_table.column_b:
-    default_value: true
+    default_value: false
 
   tool_table.column_c:
-    default_value: true
+    default_value: false
 
   tool_table.column_u:
-    default_value: true
+    default_value: false
 
   tool_table.column_v:
-    default_value: true
+    default_value: false
 
   tool_table.column_w:
-    default_value: true
+    default_value: false
 
   tool_table.column_p:
-    default_value: true
+    default_value: false
 
   tool_table.column_q:
-    default_value: true
+    default_value: false
 
   tool_table.column_t:
-    default_value: true
+    default_value: false
 
   tool_table.column_r:
-    default_value: true
+    default_value: false
 
   tool_table.column_color:
-    default_value: true
+    default_value: false
 
   tool_table.column_stl:
-    default_value: true
-
-
+    default_value: false

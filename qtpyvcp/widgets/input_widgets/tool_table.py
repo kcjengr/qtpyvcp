@@ -224,8 +224,8 @@ class ToolTable(QTableView):
         super(ToolTable, self).__init__(parent)
 
         self.tool_model = ToolModel(self)
-
-        self.item_delegate = ItemDelegate(columns=self.tool_model._columns)
+        _columns = list()
+        self.item_delegate = ItemDelegate(columns=_columns)
         self.setItemDelegate(self.item_delegate)
 
         self.proxy_model = QSortFilterProxyModel()
@@ -235,7 +235,7 @@ class ToolTable(QTableView):
         self.setModel(self.proxy_model)
 
         # Properties
-        self._columns = self.tool_model._columns
+        self._columns = _columns
         self._confirm_actions = False
         self._current_tool_color = QColor('sage')
         self._current_tool_bg = None
@@ -488,7 +488,7 @@ class ToolTable(QTableView):
 
     def updateColumns(self):
         self.tool_model.setColumns(self._columns)
-        self.itemDelegate().setColumns(self._columns)
+        # self.itemDelegate().setColumns(self._columns)
 
     @Property(bool)
     def confirmActions(self):

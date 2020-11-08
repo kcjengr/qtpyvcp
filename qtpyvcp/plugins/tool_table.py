@@ -136,7 +136,7 @@ class ToolTable(DataPlugin):
 
     tool_table_changed = Signal(dict)
 
-    def __init__(self, columns=ALL_COLUMNS, file_header_template=None,
+    def __init__(self, columns=None, file_header_template=None,
                  remember_tool_in_spindle=True):
         super(ToolTable, self).__init__()
 
@@ -307,12 +307,10 @@ class ToolTable(DataPlugin):
 
             tool_model = re.findall(r"\[([.*?]+)]", comment.lower())
             path_color = re.findall(r"\[([#A-F0-9_]+)]", comment.upper())
-            print(tool_model)
-            print(path_color)
-
             items = re.findall(r"([A-Z]+[0-9.+-]+)", data.replace(' ', ''))
 
             tool = DEFAULT_TOOL.copy()
+
             for item in items:
                 descriptor = item[0]
                 if descriptor in ALL_COLUMNS:
@@ -331,6 +329,8 @@ class ToolTable(DataPlugin):
                             break
 
             tool['R'] = comment.strip()
+            tool['COLOR'] = path_color
+            tool['STL'] = tool_model
 
             tnum = tool['T']
             if tnum == -1:
