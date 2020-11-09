@@ -118,9 +118,6 @@ class ToolModel(QStandardItemModel):
     def headerData(self, section, orientation, role=Qt.DisplayRole):
         if role == Qt.DisplayRole and orientation == Qt.Horizontal:
 
-            print(self._column_labels)
-            print(self._columns)
-            print(section)
 
             return self._column_labels[self._columns[section]]
 

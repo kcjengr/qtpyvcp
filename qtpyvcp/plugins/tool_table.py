@@ -305,8 +305,9 @@ class ToolTable(DataPlugin):
 
             data, sep, comment = line.partition(';')
 
-            tool_model = re.findall(r"\[([.*?]+)]", comment.lower())
-            path_color = re.findall(r"\[([#A-F0-9_]+)]", comment.upper())
+            tool_model = re.search(r"\[([A-z0-9_\-.stl]+)]|$", comment.lower())
+            path_color = re.search(r"\[([#A-F0-9_]+)]|$", comment.upper())
+
             items = re.findall(r"([A-Z]+[0-9.+-]+)", data.replace(' ', ''))
 
             tool = DEFAULT_TOOL.copy()
@@ -329,8 +330,16 @@ class ToolTable(DataPlugin):
                             break
 
             tool['R'] = comment.strip()
-            tool['COLOR'] = path_color
-            tool['STL'] = tool_model
+
+            if path_color:
+
+                color = path_color.groups()[0]
+                print(type(color), color)
+                tool['COLOR'] = color
+            if tool_model:
+                model = tool_model.groups()[0]
+                print(type(model), model)
+                tool['STL'] = model
 
             tnum = tool['T']
             if tnum == -1:
