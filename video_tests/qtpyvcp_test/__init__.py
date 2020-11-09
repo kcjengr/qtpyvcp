@@ -29,8 +29,8 @@ def main(opts=None):
 
     if opts is None:
         from qtpyvcp.utilities.opt_parser import parse_opts
-        opts = parse_opts(vcp_cmd='no_graphics_test',
-                          vcp_name='no_graphics_test',
+        opts = parse_opts(vcp_cmd='qtpyvcp_test',
+                          vcp_name='qtpyvcp_test',
                           vcp_version=__version__)
 
     qtpyvcp.run_vcp(opts, VCP_CONFIG_FILE)
