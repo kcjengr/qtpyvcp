@@ -332,7 +332,6 @@ class ToolTable(DataPlugin):
             tool['R'] = comment.strip()
 
             if path_color:
-
                 color = path_color.groups()[0]
                 print(type(color), color)
                 tool['COLOR'] = color

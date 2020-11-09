@@ -1,4 +1,5 @@
 import os
+import re
 from math import cos, sin, radians
 
 from operator import add
@@ -381,7 +382,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
-        self.tool = Tool(self.stat.tool_table)
+        self.tool = Tool(self.stat.tool_table, TOOLTABLE)
         self.tool_actor = self.tool.get_actor()
 
         self.offset_axes = OrderedDict()
@@ -872,7 +873,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.RemoveActor(self.tool_actor)
 
-        self.tool = Tool(self.stat.tool_table)
+        self.tool = Tool(self.stat.tool_table, TOOLTABLE)
         self.tool_actor = self.tool.get_actor()
 
         tool_transform = vtk.vtkTransform()
@@ -1604,21 +1605,39 @@ class Axes:
 
 
 class Tool:
-    def __init__(self, tool_table):
+    def __init__(self, tool_table, plugin_tooltable):
 
         self.status = STATUS
         self.units = MACHINE_UNITS
         self.lathe = LATHE
-        tool = tool_table[0]
+        # tool = tool_table[0]
+        self.tool_table = plugin_tooltable
+
+        # print(ptool.current_tool().get('T'))
+        # print(ptool.current_tool().get('T'))
 
         if self.units == 2:
             self.height = 25.4 * 2.0
         else:
             self.height = 2.0
 
+        tool_id = self.tool_table.current_tool().get('T')
+
+        tool_orientation = self.tool_table.current_tool().get('Q')
+        tool_frontangle = self.tool_table.current_tool().get('I')
+        tool_backangle = self.tool_table.current_tool().get('J')
+
+        tool_xoffset = self.tool_table.current_tool().get('X')
+        tool_yoffset = self.tool_table.current_tool().get('Y')
+        tool_zoffset = self.tool_table.current_tool().get('Z')
+
+        tool_diameter = self.tool_table.current_tool().get('D')
+        tool_color = self.tool_table.current_tool().get('COLOR')
+        tool_stl = self.tool_table.current_tool().get('STL')
+
         if self.lathe is True:
 
-            if tool.id == 0 or tool.id == -1:
+            if tool_id == 0 or tool_id == -1:
                 polygonSource = vtk.vtkRegularPolygonSource()
                 polygonSource.SetNumberOfSides(64)
                 polygonSource.SetRadius(0.035)
@@ -1635,14 +1654,14 @@ class Tool:
                 mapper = vtk.vtkPolyDataMapper()
                 mapper.SetInputConnection(transform_filter.GetOutputPort())
             else:
-                if tool.orientation == 1 and tool.frontangle == 90 and tool.backangle == 90:
+                if tool_orientation == 1 and tool_frontangle == 90 and tool_backangle == 90:
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset - 0.05))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset - 0.05))
+                    points.InsertNextPoint((-tool_xoffset, 0.0, -tool_zoffset))
+                    points.InsertNextPoint((-tool_xoffset + 0.5, 0.0, -tool_zoffset))
+                    points.InsertNextPoint((-tool_xoffset + 0.5, 0.0, -tool_zoffset - 0.05))
+                    points.InsertNextPoint((-tool_xoffset, 0.0, -tool_zoffset - 0.05))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -1665,14 +1684,14 @@ class Tool:
                     mapper = vtk.vtkPolyDataMapper()
                     mapper.SetInputData(polygonPolyData)
 
-                elif tool.orientation == 2 and tool.frontangle == 90 and tool.backangle == 90:
+                elif tool_orientation == 2 and tool_frontangle == 90 and tool_backangle == 90:
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset + 0.05))
-                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset + 0.05))
-                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-tool_xoffset, 0.0, -tool_zoffset))
+                    points.InsertNextPoint((-tool_xoffset, 0.0, -tool_zoffset + 0.05))
+                    points.InsertNextPoint((-tool_xoffset + 0.5, 0.0, -tool_zoffset + 0.05))
+                    points.InsertNextPoint((-tool_xoffset + 0.5, 0.0, -tool_zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -1695,14 +1714,14 @@ class Tool:
                     mapper = vtk.vtkPolyDataMapper()
                     mapper.SetInputData(polygonPolyData)
 
-                elif tool.orientation == 3 and tool.frontangle == 90 and tool.backangle == 90:
+                elif tool_orientation == 3 and tool_frontangle == 90 and tool_backangle == 90:
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset + 0.05))
-                    points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset + 0.05))
-                    points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-tool_xoffset, 0.0, -tool_zoffset))
+                    points.InsertNextPoint((-tool_xoffset, 0.0, -tool_zoffset + 0.05))
+                    points.InsertNextPoint((-tool_xoffset - 0.5, 0.0, -tool_zoffset + 0.05))
+                    points.InsertNextPoint((-tool_xoffset - 0.5, 0.0, -tool_zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -1725,14 +1744,14 @@ class Tool:
                     mapper = vtk.vtkPolyDataMapper()
                     mapper.SetInputData(polygonPolyData)
 
-                elif tool.orientation == 4 and tool.frontangle == 90 and tool.backangle == 90:
+                elif tool_orientation == 4 and tool_frontangle == 90 and tool_backangle == 90:
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset - 0.05))
-                    points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset - 0.05))
-                    points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-tool_xoffset, 0.0, -tool_zoffset))
+                    points.InsertNextPoint((-tool_xoffset, 0.0, -tool_zoffset - 0.05))
+                    points.InsertNextPoint((-tool_xoffset - 0.5, 0.0, -tool_zoffset - 0.05))
+                    points.InsertNextPoint((-tool_xoffset - 0.5, 0.0, -tool_zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -1755,16 +1774,16 @@ class Tool:
                     mapper = vtk.vtkPolyDataMapper()
                     mapper.SetInputData(polygonPolyData)
 
-                elif tool.orientation == 9:
+                elif tool_orientation == 9:
 
-                    radius = tool.diameter / 2
+                    radius = tool_diameter / 2
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((-tool.xoffset + radius, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset + radius, 0.0, -tool.zoffset + 1.0))
-                    points.InsertNextPoint((-tool.xoffset - radius, 0.0, -tool.zoffset + 1.0))
-                    points.InsertNextPoint((-tool.xoffset - radius, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-tool_xoffset + radius, 0.0, -tool_zoffset))
+                    points.InsertNextPoint((-tool_xoffset + radius, 0.0, -tool_zoffset + 1.0))
+                    points.InsertNextPoint((-tool_xoffset - radius, 0.0, -tool_zoffset + 1.0))
+                    points.InsertNextPoint((-tool_xoffset - radius, 0.0, -tool_zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -1790,56 +1809,56 @@ class Tool:
                     positive = 1
                     negative = -1
 
-                    if tool.orientation == 1:
+                    if tool_orientation == 1:
                         fa_x_pol = negative
                         fa_z_pol = negative
 
                         ba_x_pol = negative
                         ba_z_pol = negative
 
-                    elif tool.orientation == 2:
+                    elif tool_orientation == 2:
                         fa_x_pol = negative
                         fa_z_pol = positive
 
                         ba_x_pol = negative
                         ba_z_pol = positive
 
-                    elif tool.orientation == 3:
+                    elif tool_orientation == 3:
                         fa_x_pol = positive
                         fa_z_pol = positive
 
                         ba_x_pol = positive
                         ba_z_pol = positive
 
-                    elif tool.orientation == 4:
+                    elif tool_orientation == 4:
                         fa_x_pol = positive
                         fa_z_pol = negative
 
                         ba_x_pol = positive
                         ba_z_pol = negative
 
-                    elif tool.orientation == 5:
+                    elif tool_orientation == 5:
                         fa_x_pol = positive
                         fa_z_pol = negative
 
                         ba_x_pol = negative
                         ba_z_pol = positive
 
-                    elif tool.orientation == 6:
+                    elif tool_orientation == 6:
                         fa_x_pol = negative
                         fa_z_pol = positive
 
                         ba_x_pol = negative
                         ba_z_pol = negative
 
-                    elif tool.orientation == 7:
+                    elif tool_orientation == 7:
                         fa_x_pol = positive
                         fa_z_pol = positive
 
                         ba_x_pol = negative
                         ba_z_pol = positive
 
-                    elif tool.orientation == 8:
+                    elif tool_orientation == 8:
                         fa_x_pol = positive
                         fa_z_pol = positive
 
@@ -1852,8 +1871,8 @@ class Tool:
                         ba_x_pol = 0.0
                         ba_z_pol = 0.0
 
-                    A = radians(float(tool.frontangle))
-                    B = radians(float(tool.backangle))
+                    A = radians(float(tool_frontangle))
+                    B = radians(float(tool_backangle))
                     C = 0.35
 
                     p1_x = abs(C * sin(A))
@@ -1868,18 +1887,18 @@ class Tool:
                     p2_x_pos = p2_x * ba_x_pol
                     p2_z_pos = p2_z * ba_z_pol
 
-                    LOG.debug("Drawing Lathe tool id {}".format(tool.id))
+                    LOG.debug("Drawing Lathe tool id {}".format(tool_id))
 
                     LOG.debug(
-                        "FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool.frontangle), p1_x_pos, p1_z_pos))
+                        "FrontAngle {} Point P1 X = {} P1 Z = {}".format(float(tool_frontangle), p1_x_pos, p1_z_pos))
                     LOG.debug(
-                        "BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool.backangle), p2_x_pos, p2_z_pos))
+                        "BackAngle {} Point P2 X = {} P2 Z = {}".format(float(tool_backangle), p2_x_pos, p2_z_pos))
 
                     # Setup three points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((tool.xoffset, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((tool.xoffset + p1_x_pos, 0.0, p1_z_pos - tool.zoffset))
-                    points.InsertNextPoint((tool.xoffset + p2_x_pos, 0.0, p2_z_pos - tool.zoffset))
+                    points.InsertNextPoint((tool_xoffset, 0.0, -tool_zoffset))
+                    points.InsertNextPoint((tool_xoffset + p1_x_pos, 0.0, p1_z_pos - tool_zoffset))
+                    points.InsertNextPoint((tool_xoffset + p2_x_pos, 0.0, p2_z_pos - tool_zoffset))
 
                     # Create the polygon
                     polygon = vtk.vtkPolygon()
@@ -1910,12 +1929,12 @@ class Tool:
                     mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         else:
-            if tool.id == 0 or tool.diameter < .05:
+            if tool_id == 0 or tool_diameter < .05:
                 transform = vtk.vtkTransform()
 
                 source = vtk.vtkConeSource()
                 source.SetHeight(self.height / 2)
-                source.SetCenter(-self.height / 4 - tool.zoffset, -tool.yoffset, -tool.xoffset)
+                source.SetCenter(-self.height / 4 - tool_zoffset, -tool_yoffset, -tool_xoffset)
                 source.SetRadius(self.height / 4)
                 source.SetResolution(64)
                 transform.RotateWXYZ(90, 0, 1, 0)
@@ -1931,7 +1950,7 @@ class Tool:
 
                 transform = vtk.vtkTransform()
 
-                filename = os.path.join(os.path.dirname(__file__), "tool_models/original.stl")
+                filename = os.path.join(os.path.dirname(__file__), "tool_models/{}".format(tool_stl))
 
                 source = vtk.vtkSTLReader()
                 source.SetFileName(filename)
@@ -1957,6 +1976,22 @@ class Tool:
         # Create an actor
         self.actor = vtk.vtkActor()
         self.actor.SetMapper(mapper)
+
+    def parseRemark(self, remark):
+        tool_model = re.search(r"\[([A-z0-9_\-.stl]+)]|$", remark.lower())
+        path_color = re.search(r"\[([#A-F0-9_]+)]|$", remark.upper())
+
+        info = dict()
+
+        if path_color:
+            color = path_color.groups()[0]
+            info['COLOR'] = color
+        if tool_model:
+            model = tool_model.groups()[0]
+            info['STL'] = model
+
+        return info
+
 
     def get_actor(self):
         return self.actor
