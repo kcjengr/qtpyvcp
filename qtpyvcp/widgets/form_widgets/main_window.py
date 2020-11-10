@@ -112,7 +112,7 @@ class VCPMainWindow(QMainWindow):
         self.setStyleSheet("file:///" + stylesheet)
 
     def getMenuAction(self, menu, title='notitle', action_name='noaction',
-                      args=[], kwargs={}):
+                      shortcut="", args=[], kwargs={}):
         # ToDo: Clean this up, it is very hacky
         env = {'app': QApplication.instance(),
                'win': self,
@@ -141,16 +141,16 @@ class VCPMainWindow(QMainWindow):
 
                         for num, opt in enumerate(setting.enum_options):
 
-                            act = QAction(parent=self, text=opt)
-                            act.setCheckable(True)
+                            menu_action = QAction(parent=self, text=opt)
+                            menu_action.setCheckable(True)
                             if setting.value == num:
-                                act.setChecked(True)
+                                menu_action.setChecked(True)
 
-                            act.setData(num)
+                            menu_action.setData(num)
                             setting.notify(lambda v: update(group, v))
 
-                            act.setActionGroup(group)
-                            submenu.addAction(act)
+                            menu_action.setActionGroup(group)
+                            submenu.addAction(menu_action)
                         menu.addMenu(submenu)
 
                     elif setting.value_type == bool:
@@ -158,6 +158,7 @@ class VCPMainWindow(QMainWindow):
                         menu_action = QAction(parent=self, text=title)
                         menu_action.setCheckable(True)
                         menu_action.triggered.connect(setting.setValue)
+                        menu_action.setShortcut(shortcut)
                         setting.notify(menu_action.setChecked)
                         menu.addAction(menu_action)
 
@@ -173,6 +174,7 @@ class VCPMainWindow(QMainWindow):
                 else:
                     menu_action.triggered.connect(lambda checked: method(*args, **kwargs))
 
+                menu_action.setShortcut(shortcut)
                 menu.addAction(menu_action)
                 return
             except:
@@ -181,6 +183,7 @@ class VCPMainWindow(QMainWindow):
             try:
                 menu_action = QAction(parent=self, text=title)
                 actions.bindWidget(menu_action, action_name)
+                menu_action.setShortcut(shortcut)
                 menu.addAction(menu_action)
                 return
             except actions.InvalidAction:
@@ -235,6 +238,7 @@ class VCPMainWindow(QMainWindow):
 
                 else:
                     self.getMenuAction(menu, title, item.get('action'),
+                                       item.get('shortcut', ''),
                                        item.get('args', []),
                                        item.get('kwargs', {}))
 
