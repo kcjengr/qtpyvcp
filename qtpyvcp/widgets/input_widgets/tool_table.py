@@ -75,6 +75,24 @@ class ItemDelegate(QStyledItemDelegate):
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
             return editor
 
+        if col in ('HOLDER_STL', 'TOOL_STL'):
+            editor = QLineEdit(parent)
+            editor.setFrame(False)
+            margins = editor.textMargins()
+            padding = editor.fontMetrics().width(self._padding) + 1
+            margins.setLeft(margins.left() + padding)
+            editor.setTextMargins(margins)
+            return editor
+
+        if col == 'PATH_COLOR':
+            editor = QLineEdit(parent)
+            editor.setFrame(False)
+            margins = editor.textMargins()
+            padding = editor.fontMetrics().width(self._padding) + 1
+            margins.setLeft(margins.left() + padding)
+            editor.setTextMargins(margins)
+            return editor
+
         return None
 
 
@@ -220,31 +238,14 @@ class ToolTable(QTableView):
     def __init__(self, parent=None):
         super(ToolTable, self).__init__(parent)
 
-        self.tool_model = ToolModel(self)
-        _columns = list()
-        self.item_delegate = ItemDelegate(columns=_columns)
-        self.setItemDelegate(self.item_delegate)
-
-        self.proxy_model = QSortFilterProxyModel()
-        self.proxy_model.setFilterKeyColumn(0)
-        self.proxy_model.setSourceModel(self.tool_model)
-
-        self.setModel(self.proxy_model)
-
         # Properties
-        self._columns = _columns
+
+        self._columns = list()
         self._confirm_actions = False
         self._current_tool_color = QColor('sage')
         self._current_tool_bg = None
 
-        # Appearance/Behaviour settings
-        self.setSortingEnabled(True)
-        self.verticalHeader().hide()
-        self.setAlternatingRowColors(True)
-        self.setSelectionBehavior(QTableView.SelectRows)
-        self.setSelectionMode(QTableView.SingleSelection)
-        self.horizontalHeader().setStretchLastSection(True)
-        self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
+        # Settings
 
         connectSetting('tool_table.column_x', self.showX)
         connectSetting('tool_table.column_y', self.showY)
@@ -264,8 +265,29 @@ class ToolTable(QTableView):
 
         connectSetting('tool_table.column_r', self.showR)
 
-        connectSetting('tool_table.column_color', self.showColor)
-        connectSetting('tool_table.column_stl', self.showSTL)
+        connectSetting('tool_table.column_holder_stl', self.showHolderSTL)
+        connectSetting('tool_table.column_tool_stl', self.showToolSTL)
+        connectSetting('tool_table.column_path_color', self.showPathColor)
+
+        self.tool_model = ToolModel(self)
+        self.item_delegate = ItemDelegate(columns=self._columns)
+        self.setItemDelegate(self.item_delegate)
+
+        self.proxy_model = QSortFilterProxyModel()
+        self.proxy_model.setFilterKeyColumn(0)
+        self.proxy_model.setSourceModel(self.tool_model)
+
+        self.setModel(self.proxy_model)
+
+        # Appearance/Behaviour settings
+
+        self.setSortingEnabled(True)
+        self.verticalHeader().hide()
+        self.setAlternatingRowColors(True)
+        self.setSelectionBehavior(QTableView.SelectRows)
+        self.setSelectionMode(QTableView.SingleSelection)
+        self.horizontalHeader().setStretchLastSection(True)
+        self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
 
     @Slot()
     def saveToolTable(self):
@@ -352,16 +374,6 @@ class ToolTable(QTableView):
             return True
         else:
             return False
-
-    # @Property(dict)
-    # def displayColumns(self):
-    #     return "".join(self._columns)
-    #
-    # @displayColumns.setter
-    # def displayColumns(self, columns):
-    #     self._columns = [col for col in columns.upper() if col in ALL_COLUMNS]
-    #     self.tool_model.setColumns(self._columns)
-    #     self.itemDelegate().setColumns(self._columns)
 
     def showX(self, enable):
         column = 'X'
@@ -467,16 +479,24 @@ class ToolTable(QTableView):
             self._columns.remove(column)
         self.updateColumns()
 
-    def showColor(self, enable):
-        column = 'COLOR'
+    def showPathColor(self, enable):
+        column = 'PATH_COLOR'
         if enable:
             self._columns.append(column)
         else:
             self._columns.remove(column)
         self.updateColumns()
 
-    def showSTL(self, enable):
-        column = 'STL'
+    def showHolderSTL(self, enable):
+        column = 'HOLDER_STL'
+        if enable:
+            self._columns.append(column)
+        else:
+            self._columns.remove(column)
+        self.updateColumns()
+
+    def showToolSTL(self, enable):
+        column = 'TOOL_STL'
         if enable:
             self._columns.append(column)
         else:
@@ -485,7 +505,7 @@ class ToolTable(QTableView):
 
     def updateColumns(self):
         self.tool_model.setColumns(self._columns)
-        # self.itemDelegate().setColumns(self._columns)
+        self.itemDelegate().setColumns(self._columns)
 
     @Property(bool)
     def confirmActions(self):

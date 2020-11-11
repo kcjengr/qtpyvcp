@@ -46,8 +46,12 @@ settings:
   tool_table.column_r:
     default_value: false
 
-  tool_table.column_color:
+  tool_table.column_holder_stl:
     default_value: false
 
-  tool_table.column_stl:
+  tool_table.column_tool_stl:
     default_value: false
+
+  tool_table.column_path_color:
+    default_value: false
+

@@ -59,8 +59,9 @@ ALL_COLUMNS = [
                'U', 'V', 'W',
                'X', 'Y', 'Z',
                'R',
-               'STL',
-               'COLOR']
+               'HOLDER_STL',
+               'TOOL_STL',
+               'PATH_COLOR']
 
 DEFAULT_TOOL = {
     'A': 0.0,
@@ -79,8 +80,9 @@ DEFAULT_TOOL = {
     'Y': 0.0,
     'Z': 0.0,
     'R': '',
-    'STL': '',
-    'COLOR': ''
+    'HOLDER_STL': '',
+    'TOOL_STL': '',
+    'PATH_COLOR': ''
 }
 
 NO_TOOL = merge(DEFAULT_TOOL, {'T': 0, 'R': 'No Tool Loaded'})
@@ -113,8 +115,9 @@ COLUMN_LABELS = {
     'X': 'X Offset',
     'Y': 'Y Offset',
     'Z': 'Z Offset',
-    'STL': 'Tool STL Model',
-    'COLOR': 'Tool Path Color'
+    'HOLDER_STL': 'Holder STL Model',
+    'TOOL_STL': 'Tool STL Model',
+    'PATH_COLOR': 'Tool Path Color'
 }
 
 # Column formats when writing tool table
@@ -195,8 +198,9 @@ class ToolTable(DataPlugin):
         * J -- back angle
         * Q -- orientation
         * R -- remark
-        * STL -- tool stl model
-        * COLOR -- tool path color
+        * HOLDER_STL -- holder stl model
+        * TOOL_STL -- tool stl model
+        * PATH_COLOR -- tool path color
 
         Rules channel syntax::
 
@@ -305,8 +309,8 @@ class ToolTable(DataPlugin):
 
             data, sep, comment = line.partition(';')
 
-            tool_model = re.search(r"\[([A-z0-9_\-.stl]+)]|$", comment.lower())
-            path_color = re.search(r"\[([#A-F0-9_]+)]|$", comment.upper())
+            stl_path = re.findall(r"\[([A-z0-9_\-.stl]+)]", comment.lower())
+            path_color = re.findall(r"\[([#A-F0-9_]+)]", comment.upper())
 
             items = re.findall(r"([A-Z]+[0-9.+-]+)", data.replace(' ', ''))
 
@@ -332,13 +336,16 @@ class ToolTable(DataPlugin):
             tool['R'] = comment.strip()
 
             if path_color:
-                color = path_color.groups()[0]
+                color = path_color[0]
                 print(type(color), color)
-                tool['COLOR'] = color
-            if tool_model:
-                model = tool_model.groups()[0]
-                print(type(model), model)
-                tool['STL'] = model
+                tool['PATH_COLOR'] = color
+
+            if stl_path:
+                holder_model = stl_path[0]
+                tool_model = stl_path[1]
+
+                tool['HOLDER_STL'] = holder_model
+                tool['TOOL_STL'] = tool_model
 
             tnum = tool['T']
             if tnum == -1:

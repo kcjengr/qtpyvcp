@@ -178,13 +178,16 @@ default_menubar:
 
       - separator
 
-      - title: Show Color Column
-        action: settings.tool_table.column_color
+      - title: Show Path Color Column
+        action: settings.tool_table.column_path_color
 
       - separator
 
-      - title: Show STL Column
-        action: settings.tool_table.column_stl
+      - title: Show Holder STL Column
+        action: settings.tool_table.column_holder_stl
+
+      - title: Show Tool STL Column
+        action: settings.tool_table.column_tool_stl
 
   - title: Tools
     items:

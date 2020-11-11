@@ -1950,19 +1950,18 @@ class Tool:
 
                 transform = vtk.vtkTransform()
 
-                filename = os.path.join(os.path.dirname(__file__), "tool_models/{}".format(tool_stl))
+                if tool_stl:
+                    filename = os.path.join(os.path.dirname(__file__), "tool_models/{}".format(tool_stl))
 
-                source = vtk.vtkSTLReader()
-                source.SetFileName(filename)
-
-                # source = vtk.vtkCylinderSource()
-                # source.SetHeight(self.height / 2)
-                # source.SetCenter(-tool.xoffset, self.height / 4 - tool.zoffset, tool.yoffset)
-                # source.SetRadius(tool.diameter / 2)
-                # source.SetResolution(64)
-                # transform.RotateWXYZ(90, 1, 0, 0)
-
-                # transform.RotateWXYZ(0, 1, 0, 0)
+                    source = vtk.vtkSTLReader()
+                    source.SetFileName(filename)
+                else:
+                    source = vtk.vtkCylinderSource()
+                    source.SetHeight(self.height / 2)
+                    source.SetCenter(-tool_xoffset.xoffset, self.height / 4 - tool_zoffset, tool_yoffset)
+                    source.SetRadius(tool_diameter / 2)
+                    source.SetResolution(64)
+                    transform.RotateWXYZ(90, 1, 0, 0)
 
                 transform_filter = vtk.vtkTransformPolyDataFilter()
                 transform_filter.SetTransform(transform)
@@ -1976,22 +1975,6 @@ class Tool:
         # Create an actor
         self.actor = vtk.vtkActor()
         self.actor.SetMapper(mapper)
-
-    def parseRemark(self, remark):
-        tool_model = re.search(r"\[([A-z0-9_\-.stl]+)]|$", remark.lower())
-        path_color = re.search(r"\[([#A-F0-9_]+)]|$", remark.upper())
-
-        info = dict()
-
-        if path_color:
-            color = path_color.groups()[0]
-            info['COLOR'] = color
-        if tool_model:
-            model = tool_model.groups()[0]
-            info['STL'] = model
-
-        return info
-
 
     def get_actor(self):
         return self.actor
