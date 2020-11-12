@@ -140,6 +140,17 @@ default_menubar:
   - title: Tool Table
     items:
 
+      - title: Show T Column
+        action: settings.tool_table.column_t
+
+      - title: Show P Column
+        action: settings.tool_table.column_p
+
+      - title: Show Q Column
+        action: settings.tool_table.column_q
+
+      - separator
+
       - title: Show X Column
         action: settings.tool_table.column_x
 
