@@ -429,15 +429,18 @@ class ToolTable(DataPlugin):
         # add the tools
         for tool_num in sorted(tool_table.iterkeys())[1:]:
             items = []
+            remark = str('; ')
             tool_data = tool_table[tool_num]
             for col in columns:
                 if col == 'R':
-                    continue
-                if col in ['T', 'P', 'Q']:
+                    remark += tool_data[col]
+                elif col in ['T', 'P', 'Q']:
                     items.append('{col}{val:<{w}}'
                                  .format(col=col,
                                          val=tool_data[col],
                                          w=INT_COLUMN_WIDTH))
+                elif col in ['HOLDER_STL', 'TOOL_STL', 'PATH_COLOR']:
+                    remark += '[{val}]'.format(val=tool_data[col])
                 else:
                     items.append('{col}{val:<+{w}.{d}f}'
                                  .format(col=col,
