@@ -1,10 +1,9 @@
 from qtpy.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
 from qtpy.QtGui import QStandardItemModel, QColor, QBrush
 from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, \
-     QSpinBox, QLineEdit, QMessageBox
+    QSpinBox, QLineEdit, QMessageBox, QColorDialog, QFileDialog
 
 from qtpyvcp.actions.machine_actions import issue_mdi
-from qtpyvcp.plugins.tool_table import ALL_COLUMNS
 
 from qtpyvcp.utilities.settings import getSetting, connectSetting
 from qtpyvcp.utilities.logger import getLogger
@@ -75,22 +74,22 @@ class ItemDelegate(QStyledItemDelegate):
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
             return editor
 
-        if col in ('HOLDER_STL', 'TOOL_STL'):
-            editor = QLineEdit(parent)
-            editor.setFrame(False)
-            margins = editor.textMargins()
-            padding = editor.fontMetrics().width(self._padding) + 1
-            margins.setLeft(margins.left() + padding)
-            editor.setTextMargins(margins)
+        elif col in ('HOLDER_STL', 'TOOL_STL'):
+            editor = QFileDialog(parent)
+            # editor.setFrame(False)
+            # margins = editor.textMargins()
+            # padding = editor.fontMetrics().width(self._padding) + 1
+            # margins.setLeft(margins.left() + padding)
+            # editor.setTextMargins(margins)
             return editor
 
-        if col == 'PATH_COLOR':
-            editor = QLineEdit(parent)
-            editor.setFrame(False)
-            margins = editor.textMargins()
-            padding = editor.fontMetrics().width(self._padding) + 1
-            margins.setLeft(margins.left() + padding)
-            editor.setTextMargins(margins)
+        elif col == 'PATH_COLOR':
+            editor = QColorDialog(parent)
+            # editor.setFrame(False)
+            # margins = editor.textMargins()
+            # padding = editor.fontMetrics().width(self._padding) + 1
+            # margins.setLeft(margins.left() + padding)
+            # editor.setTextMargins(margins)
             return editor
 
         return None
@@ -245,7 +244,50 @@ class ToolTable(QTableView):
         self._current_tool_color = QColor('sage')
         self._current_tool_bg = None
 
+        self.tool_model = ToolModel(self)
+        self.item_delegate = ItemDelegate(columns=self._columns)
+        self.setItemDelegate(self.item_delegate)
+
+        self.proxy_model = QSortFilterProxyModel()
+        self.proxy_model.setFilterKeyColumn(0)
+        self.proxy_model.setSourceModel(self.tool_model)
+
+        self.setModel(self.proxy_model)
+
+        # Appearance/Behaviour settings
+
+        self.setSortingEnabled(True)
+        self.verticalHeader().hide()
+        self.setAlternatingRowColors(True)
+        self.setSelectionBehavior(QTableView.SelectRows)
+        self.setSelectionMode(QTableView.SingleSelection)
+        self.horizontalHeader().setStretchLastSection(True)
+        self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
+
+
         # Settings
+
+        self.showX(getSetting('tool_table.column_x'))
+        self.showY(getSetting('tool_table.column_y'))
+        self.showZ(getSetting('tool_table.column_z'))
+
+        self.showA(getSetting('tool_table.column_a'))
+        self.showB(getSetting('tool_table.column_b'))
+        self.showC(getSetting('tool_table.column_c'))
+
+        self.showU(getSetting('tool_table.column_u'))
+        self.showV(getSetting('tool_table.column_v'))
+        self.showW(getSetting('tool_table.column_w'))
+
+        self.showP(getSetting('tool_table.column_p'))
+        self.showQ(getSetting('tool_table.column_q'))
+        self.showT(getSetting('tool_table.column_t'))
+
+        self.showR(getSetting('tool_table.column_r'))
+
+        self.showHolderSTL(getSetting('tool_table.column_holder_stl'))
+        self.showToolSTL(getSetting('tool_table.column_tool_stl'))
+        self.showPathColor(getSetting('tool_table.column_path_color'))
 
         connectSetting('tool_table.column_x', self.showX)
         connectSetting('tool_table.column_y', self.showY)
@@ -269,25 +311,6 @@ class ToolTable(QTableView):
         connectSetting('tool_table.column_tool_stl', self.showToolSTL)
         connectSetting('tool_table.column_path_color', self.showPathColor)
 
-        self.tool_model = ToolModel(self)
-        self.item_delegate = ItemDelegate(columns=self._columns)
-        self.setItemDelegate(self.item_delegate)
-
-        self.proxy_model = QSortFilterProxyModel()
-        self.proxy_model.setFilterKeyColumn(0)
-        self.proxy_model.setSourceModel(self.tool_model)
-
-        self.setModel(self.proxy_model)
-
-        # Appearance/Behaviour settings
-
-        self.setSortingEnabled(True)
-        self.verticalHeader().hide()
-        self.setAlternatingRowColors(True)
-        self.setSelectionBehavior(QTableView.SelectRows)
-        self.setSelectionMode(QTableView.SingleSelection)
-        self.horizontalHeader().setStretchLastSection(True)
-        self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
 
     @Slot()
     def saveToolTable(self):
