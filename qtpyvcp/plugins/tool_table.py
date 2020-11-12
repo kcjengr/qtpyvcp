@@ -215,6 +215,12 @@ class ToolTable(DataPlugin):
             return self.TOOL_TABLE[STAT.tool_in_spindle]
         return self.TOOL_TABLE[STAT.tool_in_spindle].get(item[0].upper())
 
+    def get_tool_info(self, tool, item=None):
+        """Get Current Tool Info"""
+        if item is None:
+            return self.TOOL_TABLE[tool]
+        return self.TOOL_TABLE[tool].get(item.upper())
+
     def initialise(self):
         self.fs_watcher = QFileSystemWatcher()
         self.fs_watcher.addPath(self.tool_table_file)
@@ -310,7 +316,7 @@ class ToolTable(DataPlugin):
             data, sep, comment = line.partition(';')
 
             stl_path = re.findall(r"\[([A-z0-9_\-.stl]+)]", comment.lower())
-            path_color = re.findall(r"\[([#A-F0-9_]+)]", comment.upper())
+            path_color = re.findall(r"\[([0-9,]+)]", comment.upper())
 
             items = re.findall(r"([A-Z]+[0-9.+-]+)", data.replace(' ', ''))
 

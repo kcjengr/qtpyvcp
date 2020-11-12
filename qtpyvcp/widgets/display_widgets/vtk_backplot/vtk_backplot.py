@@ -53,15 +53,6 @@ COLOR_MAP = {
     'user': (100, 100, 100, 255),
 }
 
-TOOL_COLOR_MAP = (
-    (255, 0, 0, 255),
-    (0, 255, 0, 255),
-    (0, 0, 255, 255),
-    (255, 255, 0, 255),
-    (0, 255, 255, 255),
-    (255, 0, 255, 255),
-)
-
 
 class PathActor(vtk.vtkActor):
     def __init__(self):
@@ -114,6 +105,7 @@ class VTKCanon(StatCanon):
         super(VTKCanon, self).__init__(*args, **kwargs)
 
         self.units = MACHINE_UNITS
+        self.tool_table = TOOLTABLE
 
         self.index_map = dict()
 
@@ -149,12 +141,20 @@ class VTKCanon(StatCanon):
         super(VTKCanon, self).change_tool(pocket)
 
         if self.multitool_colors is True:
-            self.tool_path_color = choice(TOOL_COLOR_MAP)
 
-            while self.tool_path_color == self.prev_tool_path_color:
-                self.tool_path_color = choice(TOOL_COLOR_MAP)
+            tool_no = self.get_tool(pocket)[0]
+            print("tool no", tool_no)
+            path_color = list(self.tool_table.get_tool_info(tool_no, item='PATH_COLOR').split(','))
 
-            self.prev_tool_path_color = self.tool_path_color
+            for i in range(len(path_color)):
+                path_color[i] = int(path_color[i])
+
+            print("path color", path_color)
+            if isinstance(path_color, list):
+                self.tool_path_color = path_color
+            else:
+                self.tool_path_color = False
+
         else:
             self.tool_path_color = False
 
@@ -286,7 +286,6 @@ class VTKCanon(StatCanon):
     def get_path_actors(self):
         return self.path_actors
 
-
 class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
@@ -382,7 +381,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.path_cache = PathCache(self.tooltip_position)
         self.path_cache_actor = self.path_cache.get_actor()
-        self.tool = Tool(self.stat.tool_table, TOOLTABLE)
+
+        self.tool = Tool()
         self.tool_actor = self.tool.get_actor()
 
         self.offset_axes = OrderedDict()
@@ -873,7 +873,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.RemoveActor(self.tool_actor)
 
-        self.tool = Tool(self.stat.tool_table, TOOLTABLE)
+        self.tool = Tool()
         self.tool_actor = self.tool.get_actor()
 
         tool_transform = vtk.vtkTransform()
@@ -1605,13 +1605,12 @@ class Axes:
 
 
 class Tool:
-    def __init__(self, tool_table, plugin_tooltable):
+    def __init__(self):
 
         self.status = STATUS
         self.units = MACHINE_UNITS
         self.lathe = LATHE
-        # tool = tool_table[0]
-        self.tool_table = plugin_tooltable
+        self.tool_table = TOOLTABLE
 
         # print(ptool.current_tool().get('T'))
         # print(ptool.current_tool().get('T'))
@@ -1632,8 +1631,9 @@ class Tool:
         tool_zoffset = self.tool_table.current_tool().get('Z')
 
         tool_diameter = self.tool_table.current_tool().get('D')
-        tool_color = self.tool_table.current_tool().get('COLOR')
-        tool_stl = self.tool_table.current_tool().get('STL')
+        tool_color = self.tool_table.current_tool().get('PATH_COLOR')
+        tool_holder_stl = self.tool_table.current_tool().get('HOLDER_STL')
+        tool_stl = self.tool_table.current_tool().get('TOOL_STL')
 
         if self.lathe is True:
 
@@ -1955,10 +1955,16 @@ class Tool:
 
                     source = vtk.vtkSTLReader()
                     source.SetFileName(filename)
+                # if tool_holder_stl:
+                #     filename = os.path.join(os.path.dirname(__file__), "tool_models/{}".format(tool_stl))
+                #
+                #     source = vtk.vtkSTLReader()
+                #     source.SetFileName(filename)
+
                 else:
                     source = vtk.vtkCylinderSource()
                     source.SetHeight(self.height / 2)
-                    source.SetCenter(-tool_xoffset.xoffset, self.height / 4 - tool_zoffset, tool_yoffset)
+                    source.SetCenter(-tool_xoffset, self.height / 4 - tool_zoffset, tool_yoffset)
                     source.SetRadius(tool_diameter / 2)
                     source.SetResolution(64)
                     transform.RotateWXYZ(90, 1, 0, 0)
