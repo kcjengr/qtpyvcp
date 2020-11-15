@@ -151,6 +151,11 @@ default_menubar:
 
       - separator
 
+      - title: Show D Column
+        action: settings.tool_table.column_d
+
+      - separator
+
       - title: Show X Column
         action: settings.tool_table.column_x
 

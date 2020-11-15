@@ -1612,9 +1612,6 @@ class Tool:
         self.lathe = LATHE
         self.tool_table = TOOLTABLE
 
-        # print(ptool.current_tool().get('T'))
-        # print(ptool.current_tool().get('T'))
-
         if self.units == 2:
             self.height = 25.4 * 2.0
         else:
@@ -1631,9 +1628,27 @@ class Tool:
         tool_zoffset = self.tool_table.current_tool().get('Z')
 
         tool_diameter = self.tool_table.current_tool().get('D')
-        tool_color = self.tool_table.current_tool().get('PATH_COLOR')
+
+        tool_path_color = self.tool_table.current_tool().get('PATH_COLOR')
         tool_holder_stl = self.tool_table.current_tool().get('HOLDER_STL')
         tool_stl = self.tool_table.current_tool().get('TOOL_STL')
+
+        print(tool_id)
+
+        print(tool_orientation)
+        print(tool_frontangle)
+        print(tool_backangle)
+
+        print(tool_xoffset)
+        print(tool_yoffset)
+        print(tool_zoffset)
+
+        print(tool_diameter)
+
+        print(tool_path_color)
+
+        print(tool_holder_stl)
+        print(tool_stl)
 
         if self.lathe is True:
 
@@ -1955,11 +1970,19 @@ class Tool:
 
                     source = vtk.vtkSTLReader()
                     source.SetFileName(filename)
-                # if tool_holder_stl:
-                #     filename = os.path.join(os.path.dirname(__file__), "tool_models/{}".format(tool_stl))
-                #
-                #     source = vtk.vtkSTLReader()
-                #     source.SetFileName(filename)
+
+                else:
+                    source = vtk.vtkCylinderSource()
+                    source.SetHeight(self.height / 2)
+                    source.SetCenter(-tool_xoffset, self.height / 4 - tool_zoffset, tool_yoffset)
+                    source.SetRadius(tool_diameter / 2)
+                    source.SetResolution(64)
+                    transform.RotateWXYZ(90, 1, 0, 0)
+
+                if tool_holder_stl:
+                    filename = os.path.join(os.path.dirname(__file__), "tool_models/{}".format(tool_holder_stl))
+                    source = vtk.vtkSTLReader()
+                    source.SetFileName(filename)
 
                 else:
                     source = vtk.vtkCylinderSource()
