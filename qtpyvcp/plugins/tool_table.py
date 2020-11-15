@@ -345,7 +345,6 @@ class ToolTable(DataPlugin):
         """
 
         columns = self.validateColumns(columns) or self.columns
-        print(columns)
 
         if tool_file is None:
             tool_file = self.tool_table_file
