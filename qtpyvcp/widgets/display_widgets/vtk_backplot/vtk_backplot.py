@@ -285,6 +285,11 @@ class VTKCanon(StatCanon):
     def get_path_actors(self):
         return self.path_actors
 
+# turn on antialiasing
+from PyQt5.QtOpenGL import QGLFormat
+f = QGLFormat()
+f.setSampleBuffers(True)
+QGLFormat.setDefaultFormat(f)
 
 class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
