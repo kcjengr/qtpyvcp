@@ -359,6 +359,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
 
+        # assume that we are standing upright and compute azimuth around that axis
+        self.natural_view_up = (0, 0, 1)
+
         self.renderer = vtk.vtkRenderer()
         self.renderer.SetActiveCamera(self.camera)
 
@@ -555,13 +558,23 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     # This one is associated with the left mouse button. It translates x
     # and y relative motions into camera azimuth and elevation commands.
     def rotate(self, renderer, camera, x, y, lastX, lastY, centerX, centerY):
-        camera.Azimuth(lastX - x)
+        self.natural_azimuth(camera, lastX - x)
         camera.Elevation(lastY - y)
         camera.OrthogonalizeViewUp()
         camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
         self.renderer_window.Render()
         # self.renderer.ResetCamera()
         self.interactor.ReInitialize()
+
+    # Change azimuth around natural view up vector
+    def natural_azimuth(self, camera, angle):
+        fp = self.camera.GetFocalPoint()
+
+        t = vtk.vtkTransform()
+        t.Translate(fp[0], fp[1], fp[2])
+        t.RotateWXYZ(angle, self.natural_view_up)
+        t.Translate(-fp[0], -fp[1], -fp[2])
+        camera.ApplyTransform(t)
 
     # Pan translates x-y motion into translation of the focal point and
     # position.
@@ -1022,7 +1035,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # dist = math.sqrt( (p[0]-fp[0])**2 + (p[1]-fp[1])**2 + (p[2]-fp[2])**2 )
         # print(dist)
         # self.camera.SetPosition(10, -40, -1)
-        # self.camera.SetViewUp(0.0, 1.0, 0.0)
+        # self.setViewUp(0.0, 1.0, 0.0)
         # self.renderer.ResetCamera()
         vu = self.camera.GetViewUp()
         LOG.debug('view up {}'.format(vu))
