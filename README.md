@@ -34,7 +34,7 @@ See the [documentation](https://kcjengr.github.io/qtpyvcp/).
 * [Freenode IRC](http://webchat.freenode.net/?channels=%23hazzy) (#hazzy)
 * [The Matrix](https://riot.im/app/#/room/#qtpyvcp:matrix.org) (#qtpyvcp:matrix.org)
 * [Gitter](https://gitter.im/kcjengr/qtpyvcp)
-* [Discord](https://discord.gg/463hMhd) (Issues joining? please try other network)
+* [Discord](https://discord.gg/463hMhd)
 
 
 ## Dependancies

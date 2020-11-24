@@ -246,7 +246,6 @@ class ToolTable(QTableView):
         self.horizontalHeader().setStretchLastSection(True)
         self.horizontalHeader().setSortIndicator(0, Qt.AscendingOrder)
 
-
         # Settings
 
         self.showX(getSetting('tool_table.column_x'))
@@ -267,7 +266,6 @@ class ToolTable(QTableView):
 
         self.showR(getSetting('tool_table.column_r'))
 
-
         connectSetting('tool_table.column_x', self.showX)
         connectSetting('tool_table.column_y', self.showY)
         connectSetting('tool_table.column_z', self.showZ)
@@ -285,7 +283,6 @@ class ToolTable(QTableView):
         connectSetting('tool_table.column_t', self.showT)
 
         connectSetting('tool_table.column_r', self.showR)
-
 
     @Slot()
     def saveToolTable(self):
