@@ -6,12 +6,13 @@ windows:
 
 settings:
   tool_table.custom:
-    default_value: {
-      holder_model: true,
-      tool_model: true,
-      flutes: true,
-      chip_load.rpm: true,
-      chip_load.feed: true
-    }
     value_type: dict
+    default_value: {
+      path_color: list,
+      holder_model: str,
+      tool_model: str,
+      flutes: int,
+      chip_load.rpm: int,
+      chip_load.feed: int
+    }
 

@@ -301,6 +301,17 @@ class ToolTable(DataPlugin):
                 break
 
         table = {0: NO_TOOL, }
+
+        self.data_manager.setData('tool-{}-{}'.format(1, 'chip_load.rpm'), 7500)
+        self.data_manager.setData('tool-{}-{}'.format(1, 'chip_load.feed'), 350)
+        self.data_manager.setData('tool-{}-{}'.format(1, 'flutes'), 3)
+
+        self.data_manager.setData('tool-{}-{}'.format(2, 'chip_load.rpm'), 3000)
+        self.data_manager.setData('tool-{}-{}'.format(2, 'chip_load.feed'), 1000)
+
+        self.data_manager.setData('tool-{}-{}'.format(3, 'chip_load.rpm'), 24000)
+        self.data_manager.setData('tool-{}-{}'.format(3, 'chip_load.feed'), 2100)
+
         for line in lines:
 
             data, sep, comment = line.partition(';')
@@ -333,30 +344,19 @@ class ToolTable(DataPlugin):
 
             # LOG.debug(str(getSetting('tool_table.custom')))
 
-            tool_no = tool['T']
-            for k in self.tool_table_custom.value:
-
-                data = self.data_manager.getData('tool-{}-{}'.format(tool_no, k))
-                print(data)
-
-            # self.data_manager.setData('tool-{}-path_color'.format(tool_no), STAT.tool_in_spindle)
-            # self.data_manager.setData('tool-{}-holder_model'.format(tool_no), STAT.tool_in_spindle)
-            # self.data_manager.setData('tool-{}-tool_model'.format(tool_no), STAT.tool_in_spindle)
-            # if path_color:
-            #     color = path_color[0]
-            #     print(type(color), color)
-            #     tool['PATH_COLOR'] = color
-            #
-            # if stl_path:
-            #     holder_model = stl_path[0]
-            #     tool_model = stl_path[1]
-            #
-            #     tool['HOLDER_STL'] = holder_model
-            #     tool['TOOL_STL'] = tool_model
-
             tnum = tool['T']
             if tnum == -1:
                 continue
+
+            # print(self.tool_table_custom)
+
+            for k in self.tool_table_custom.value:
+
+                if isinstance(k, int):
+                    print("INT", k)
+                else:
+                    # self.tool_table_custom = self.data_manager.getData('tool-{}-{}'.format(tnum, k))
+                    print(tnum, k, self.data_manager.getData('tool-{}-{}'.format(tnum, k)))
 
             # add the tool to the table
             table[tnum] = tool
