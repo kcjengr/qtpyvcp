@@ -58,10 +58,7 @@ ALL_COLUMNS = [
                'P', 'Q', 'T',
                'U', 'V', 'W',
                'X', 'Y', 'Z',
-               'R',
-               'HOLDER_STL',
-               'TOOL_STL',
-               'PATH_COLOR']
+               'R']
 
 DEFAULT_TOOL = {
     'A': 0.0,
@@ -80,9 +77,6 @@ DEFAULT_TOOL = {
     'Y': 0.0,
     'Z': 0.0,
     'R': '',
-    'HOLDER_STL': '',
-    'TOOL_STL': '',
-    'PATH_COLOR': ''
 }
 
 NO_TOOL = merge(DEFAULT_TOOL, {'T': 0, 'R': 'No Tool Loaded'})
@@ -114,10 +108,7 @@ COLUMN_LABELS = {
     'W': 'W Offset',
     'X': 'X Offset',
     'Y': 'Y Offset',
-    'Z': 'Z Offset',
-    'HOLDER_STL': 'Holder STL Model',
-    'TOOL_STL': 'Tool STL Model',
-    'PATH_COLOR': 'Tool Path Color'
+    'Z': 'Z Offset'
 }
 
 # Column formats when writing tool table
@@ -198,9 +189,6 @@ class ToolTable(DataPlugin):
         * J -- back angle
         * Q -- orientation
         * R -- remark
-        * HOLDER_STL -- holder stl model
-        * TOOL_STL -- tool stl model
-        * PATH_COLOR -- tool path color
 
         Rules channel syntax::
 
@@ -315,8 +303,8 @@ class ToolTable(DataPlugin):
 
             data, sep, comment = line.partition(';')
 
-            stl_path = re.findall(r"\[([A-z0-9_\-.stl]+)]", comment.lower())
-            path_color = re.findall(r"\[([0-9,]+)]", comment.upper())
+            # stl_path = re.findall(r"\[([A-z0-9_\-.stl]+)]", comment.lower())
+            # path_color = re.findall(r"\[([0-9,]+)]", comment.upper())
 
             items = re.findall(r"([A-Z]+[0-9.+-]+)", data.replace(' ', ''))
 
@@ -341,17 +329,17 @@ class ToolTable(DataPlugin):
 
             tool['R'] = comment.strip()
 
-            if path_color:
-                color = path_color[0]
-                print(type(color), color)
-                tool['PATH_COLOR'] = color
-
-            if stl_path:
-                holder_model = stl_path[0]
-                tool_model = stl_path[1]
-
-                tool['HOLDER_STL'] = holder_model
-                tool['TOOL_STL'] = tool_model
+            # if path_color:
+            #     color = path_color[0]
+            #     print(type(color), color)
+            #     tool['PATH_COLOR'] = color
+            #
+            # if stl_path:
+            #     holder_model = stl_path[0]
+            #     tool_model = stl_path[1]
+            #
+            #     tool['HOLDER_STL'] = holder_model
+            #     tool['TOOL_STL'] = tool_model
 
             tnum = tool['T']
             if tnum == -1:
@@ -439,8 +427,6 @@ class ToolTable(DataPlugin):
                                  .format(col=col,
                                          val=tool_data[col],
                                          w=INT_COLUMN_WIDTH))
-                elif col in ['HOLDER_STL', 'TOOL_STL', 'PATH_COLOR']:
-                    remark += '[{val}]'.format(val=tool_data[col])
                 else:
                     items.append('{col}{val:<+{w}.{d}f}'
                                  .format(col=col,

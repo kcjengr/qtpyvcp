@@ -74,24 +74,6 @@ class ItemDelegate(QStyledItemDelegate):
             editor.setProperty('stepType', 1)  # stepType was added in 5.12
             return editor
 
-        elif col in ('HOLDER_STL', 'TOOL_STL'):
-            editor = QFileDialog(parent)
-            # editor.setFrame(False)
-            # margins = editor.textMargins()
-            # padding = editor.fontMetrics().width(self._padding) + 1
-            # margins.setLeft(margins.left() + padding)
-            # editor.setTextMargins(margins)
-            return editor
-
-        elif col == 'PATH_COLOR':
-            editor = QColorDialog(parent)
-            # editor.setFrame(False)
-            # margins = editor.textMargins()
-            # padding = editor.fontMetrics().width(self._padding) + 1
-            # margins.setLeft(margins.left() + padding)
-            # editor.setTextMargins(margins)
-            return editor
-
         return None
 
 
@@ -285,9 +267,6 @@ class ToolTable(QTableView):
 
         self.showR(getSetting('tool_table.column_r'))
 
-        self.showHolderSTL(getSetting('tool_table.column_holder_stl'))
-        self.showToolSTL(getSetting('tool_table.column_tool_stl'))
-        self.showPathColor(getSetting('tool_table.column_path_color'))
 
         connectSetting('tool_table.column_x', self.showX)
         connectSetting('tool_table.column_y', self.showY)
@@ -306,10 +285,6 @@ class ToolTable(QTableView):
         connectSetting('tool_table.column_t', self.showT)
 
         connectSetting('tool_table.column_r', self.showR)
-
-        connectSetting('tool_table.column_holder_stl', self.showHolderSTL)
-        connectSetting('tool_table.column_tool_stl', self.showToolSTL)
-        connectSetting('tool_table.column_path_color', self.showPathColor)
 
 
     @Slot()
@@ -496,30 +471,6 @@ class ToolTable(QTableView):
 
     def showR(self, enable):
         column = 'R'
-        if enable:
-            self._columns.append(column)
-        else:
-            self._columns.remove(column)
-        self.updateColumns()
-
-    def showPathColor(self, enable):
-        column = 'PATH_COLOR'
-        if enable:
-            self._columns.append(column)
-        else:
-            self._columns.remove(column)
-        self.updateColumns()
-
-    def showHolderSTL(self, enable):
-        column = 'HOLDER_STL'
-        if enable:
-            self._columns.append(column)
-        else:
-            self._columns.remove(column)
-        self.updateColumns()
-
-    def showToolSTL(self, enable):
-        column = 'TOOL_STL'
         if enable:
             self._columns.append(column)
         else:

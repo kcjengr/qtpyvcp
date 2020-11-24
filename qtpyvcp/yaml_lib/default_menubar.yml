@@ -192,19 +192,6 @@ default_menubar:
       - title: Show Remark Column
         action: settings.tool_table.column_r
 
-      - separator
-
-      - title: Show Path Color Column
-        action: settings.tool_table.column_path_color
-
-      - separator
-
-      - title: Show Holder STL Column
-        action: settings.tool_table.column_holder_stl
-
-      - title: Show Tool STL Column
-        action: settings.tool_table.column_tool_stl
-
   - title: Tools
     items:
       - title: HAL Meter

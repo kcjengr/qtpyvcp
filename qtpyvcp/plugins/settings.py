@@ -21,7 +21,7 @@ class Settings(DataPlugin):
             addSetting(setting_name, **kwargs)
 
     def getChannel(self, url):
-
+        LOG.debug(url)
         try:
             chan_obj = SETTINGS[url]
             chan_exp = chan_obj.getValue

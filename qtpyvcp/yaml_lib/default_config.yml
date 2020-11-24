@@ -177,25 +177,6 @@ settings:
 
   # Tool Table Column settings
 
-#  tool_table.columns:
-#    default_x: true,
-#    default_y: true,
-#    default_z: true,
-#    default_a: true,
-#    default_b: true,
-#    default_c: true,
-#    default_u: true,
-#    default_v: true,
-#    default_w: true,
-#    default_p: true,
-#    default_q: true,
-#    default_t: true,
-#    default_d: true,
-#    default_r: true,
-#    default_holder_stl: true,
-#    default_tool_stl: true,
-#    default_tool_path_color: true
-
   tool_table.column_x:
     default_value: false
 
@@ -235,12 +216,6 @@ settings:
   tool_table.column_r:
     default_value: false
 
-  tool_table.column_holder_stl:
-    default_value: false
-
-  tool_table.column_tool_stl:
-    default_value: false
-
-  tool_table.column_path_color:
+  tool_table.column_d:
     default_value: false
 

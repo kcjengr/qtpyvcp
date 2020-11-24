@@ -3,3 +3,22 @@ windows:
   mainwindow:
     kwargs:
       confirm_exit: false
+
+settings:
+  tool_table.custom.path_color:
+    default_value: 0
+
+  tool_table.custom.holder_model:
+    default_value: 0
+
+  tool_table.custom.tool_model:
+    default_value: 0
+
+  tool_table.custom.flutes:
+    default_value: 0
+
+  tool_table.custom.chip_load.rpm:
+    default_value: 0
+
+  tool_table.custom.chip_load.feed:
+    default_value: 0
