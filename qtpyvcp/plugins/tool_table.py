@@ -35,6 +35,7 @@ from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.plugins import DataPlugin, DataChannel, getPlugin
+from qtpyvcp.utilities.settings import getSetting
 
 CMD = linuxcnc.command()
 LOG = getLogger(__name__)
@@ -141,6 +142,7 @@ class ToolTable(DataPlugin):
         self.columns = self.validateColumns(columns) or [c for c in ALL_COLUMNS]
 
         self.data_manager = getPlugin('persistent_data_manager')
+        self.tool_table_custom = getSetting('tool_table.custom')
 
         self.setCurrentToolNumber(0)
 
@@ -329,6 +331,17 @@ class ToolTable(DataPlugin):
 
             tool['R'] = comment.strip()
 
+            # LOG.debug(str(getSetting('tool_table.custom')))
+
+            tool_no = tool['T']
+            for k in self.tool_table_custom.value:
+
+                data = self.data_manager.getData('tool-{}-{}'.format(tool_no, k))
+                print(data)
+
+            # self.data_manager.setData('tool-{}-path_color'.format(tool_no), STAT.tool_in_spindle)
+            # self.data_manager.setData('tool-{}-holder_model'.format(tool_no), STAT.tool_in_spindle)
+            # self.data_manager.setData('tool-{}-tool_model'.format(tool_no), STAT.tool_in_spindle)
             # if path_color:
             #     color = path_color[0]
             #     print(type(color), color)
