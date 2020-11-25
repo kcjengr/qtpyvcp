@@ -302,18 +302,15 @@ class ToolTable(DataPlugin):
 
         table = {0: NO_TOOL, }
 
-        self.data_manager.setData('tool-{:02d}-{}'.format(1, 'path_color'), [0, 255, 0, 0])
-        self.data_manager.setData('tool-{:02d}-{}'.format(1, 'holder_model'), "original.stl")
-        self.data_manager.setData('tool-{:02d}-{}'.format(1, 'tool_model'), "original1.stl")
-        self.data_manager.setData('tool-{:02d}-{}'.format(1, 'flutes'), 3)
-        self.data_manager.setData('tool-{:02d}-{}'.format(1, 'chip_load.rpm'), 7500)
-
-        self.data_manager.setData('tool-{:02d}-{}'.format(1, 'chip_load.feed'), 350)
-        self.data_manager.setData('tool-{:02d}-{}'.format(2, 'chip_load.rpm'), 3000)
-        self.data_manager.setData('tool-{:02d}-{}'.format(2, 'chip_load.feed'), 1000)
-
-        self.data_manager.setData('tool-{:02d}-{}'.format(3, 'chip_load.rpm'), 24000)
-        self.data_manager.setData('tool-{:02d}-{}'.format(3, 'chip_load.feed'), 2100)
+        # Temporally fill the db
+        # for i in range(1, 6):
+        #     print(i)
+        #     self.data_manager.setData('tool-{:02d}-{}'.format(i, 'path_color'), [0, 255, 0, 0])
+        #     self.data_manager.setData('tool-{:02d}-{}'.format(i, 'holder_model'), "original.stl")
+        #     self.data_manager.setData('tool-{:02d}-{}'.format(i, 'tool_model'), "original1.stl")
+        #     self.data_manager.setData('tool-{:02d}-{}'.format(i, 'flutes'), 3)
+        #     self.data_manager.setData('tool-{:02d}-{}'.format(i, 'rpm'), 7500)
+        #     self.data_manager.setData('tool-{:02d}-{}'.format(i, 'feed'), 350)
 
         for line in lines:
 

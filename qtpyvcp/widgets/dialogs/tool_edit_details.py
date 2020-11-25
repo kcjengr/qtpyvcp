@@ -64,12 +64,12 @@ class ToolDetailsDialog(BaseDialog):
 
                     field_layout = self.create_field(setting_id, int, tool_data)
                     layout.addLayout(field_layout)
-                if isinstance(tool_data, str):
+                elif isinstance(tool_data, str):
                     Log.debug("{} {} {}".format(index, setting_id, tool_data))
 
                     field_layout = self.create_field(setting_id, str, tool_data)
                     layout.addLayout(field_layout)
-                if isinstance(tool_data, list):
+                elif isinstance(tool_data, list):
                     Log.debug("{} {} {}".format(index, setting_id, tool_data))
 
                     field_layout = self.create_field(setting_id, list, tool_data)
@@ -89,7 +89,7 @@ class ToolDetailsDialog(BaseDialog):
 
         if field_type == int:
             field = QSpinBox()
-            field.setRange(-2147483648, 2147483647)
+            field.setRange(-999999, 999999)
             if default:
                 field.setValue(default)
             layout.addWidget(field)

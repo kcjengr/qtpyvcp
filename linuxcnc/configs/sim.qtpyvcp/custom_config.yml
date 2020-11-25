@@ -12,7 +12,7 @@ settings:
       holder_model: str,
       tool_model: str,
       flutes: int,
-      chip_load.rpm: int,
-      chip_load.feed: int
+      rpm: int,
+      feed: int
     }
 
