@@ -82,6 +82,9 @@ dialogs:
   probe_sim:
     provider: qtpyvcp.widgets.dialogs.probesim_dialog:ProbeSim
 
+  tool_details:
+    provider: qtpyvcp.widgets.dialogs.tool_edit_details:ToolDetailsDialog
+
   about_qtpyvcp:
     provider: qtpyvcp.widgets.dialogs.about_dialog:AboutDialog
 

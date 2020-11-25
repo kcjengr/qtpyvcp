@@ -302,9 +302,12 @@ class ToolTable(DataPlugin):
 
         table = {0: NO_TOOL, }
 
-        self.data_manager.setData('tool-{}-{}'.format(1, 'chip_load.rpm'), 7500)
-        self.data_manager.setData('tool-{}-{}'.format(1, 'chip_load.feed'), 350)
-        self.data_manager.setData('tool-{}-{}'.format(1, 'flutes'), 3)
+        self.data_manager.setData('tool-{}-{}'.format('1', 'path_color'), [0, 255, 0, 0])
+        self.data_manager.setData('tool-{}-{}'.format('1', 'holder_model'), "original.stl")
+        self.data_manager.setData('tool-{}-{}'.format('1', 'tool_model'), "original1.stl")
+        self.data_manager.setData('tool-{}-{}'.format('1', 'flutes'), 3)
+        self.data_manager.setData('tool-{}-{}'.format('1', 'chip_load.rpm'), 7500)
+        self.data_manager.setData('tool-{}-{}'.format('1', 'chip_load.feed'), 350)
 
         self.data_manager.setData('tool-{}-{}'.format(2, 'chip_load.rpm'), 3000)
         self.data_manager.setData('tool-{}-{}'.format(2, 'chip_load.feed'), 1000)
@@ -348,15 +351,11 @@ class ToolTable(DataPlugin):
             if tnum == -1:
                 continue
 
-            # print(self.tool_table_custom)
+            for setting in self.tool_table_custom.value:
+                setting_id = 'tool-{}-{}'.format(tnum, setting)
+                data = self.data_manager.getData(setting_id)
 
-            for k in self.tool_table_custom.value:
-
-                if isinstance(k, int):
-                    print("INT", k)
-                else:
-                    # self.tool_table_custom = self.data_manager.getData('tool-{}-{}'.format(tnum, k))
-                    print(tnum, k, self.data_manager.getData('tool-{}-{}'.format(tnum, k)))
+                print(tnum, setting_id, data)
 
             # add the tool to the table
             table[tnum] = tool

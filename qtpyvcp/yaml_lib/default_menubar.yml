@@ -25,6 +25,10 @@ default_menubar:
       action: win.showDialog
       args: [tool_edit]
 
+    - title: "Tool Details"
+      action: win.showDialog
+      args: [tool_details]
+
     - separator
 
     - title: Exit
