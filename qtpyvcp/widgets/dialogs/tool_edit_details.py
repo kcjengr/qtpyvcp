@@ -20,7 +20,7 @@
 import linuxcnc
 import os
 
-from qtpy.QtWidgets import QVBoxLayout, QLineEdit
+from qtpy.QtWidgets import QVBoxLayout, QLineEdit, QHBoxLayout, QLabel, QComboBox, QSpinBox
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
@@ -46,31 +46,65 @@ class ToolDetailsDialog(BaseDialog):
         self.data_manager = getPlugin('persistent_data_manager')
         self.tool_table = getPlugin('tooltable')
 
-    def show(self):
-
         self.tool_table_custom = getSetting('tool_table.custom')
 
         for index, _ in self.tool_table.getToolTable().items():
+            print(index)
             if index == 0:
                 continue
-
-            for setting in self.tool_table_custom.value:
-                setting_id = 'tool-{}-{}'.format(index, setting)
+            layout = QHBoxLayout()
+            label = QLabel("Tool {}".format(index))
+            layout.addWidget(label)
+            for setting in self.tool_table_custom.getValue():
+                setting_id = 'tool-{:02d}-{}'.format(index, setting)
                 tool_data = self.data_manager.getData(setting_id)
-                print(index, setting_id, tool_data)
 
-                # if data:
-                #     field = self.create_field(k, 'str', data[1])
-                #
-                #     main_layout.addWidget(field)
+                if isinstance(tool_data, int):
+                    Log.debug("{} {} {}".format(index, setting_id, tool_data))
+
+                    field_layout = self.create_field(setting_id, int, tool_data)
+                    layout.addLayout(field_layout)
+                if isinstance(tool_data, str):
+                    Log.debug("{} {} {}".format(index, setting_id, tool_data))
+
+                    field_layout = self.create_field(setting_id, str, tool_data)
+                    layout.addLayout(field_layout)
+                if isinstance(tool_data, list):
+                    Log.debug("{} {} {}".format(index, setting_id, tool_data))
+
+                    field_layout = self.create_field(setting_id, list, tool_data)
+                    layout.addLayout(field_layout)
+
+            self.main_layout.addLayout(layout)
 
         self.setLayout(self.main_layout)
         self.setWindowTitle("Tool Custom Details")
-
+        
     def create_field(self, name, field_type, default=None):
-        if field_type == 'str':
+
+        print(name, field_type, default)
+        layout = QVBoxLayout()
+        label = QLabel(name)
+        layout.addWidget(label)
+
+        if field_type == int:
+            field = QSpinBox()
+            field.setRange(-2147483648, 2147483647)
+            if default:
+                field.setValue(default)
+            layout.addWidget(field)
+        if field_type == str:
             field = QLineEdit()
+            field.setPlaceholderText(name)
             if default:
                 field.setText(default)
+            layout.addWidget(field)
+        elif field_type == list:
+            field = QComboBox()
+            if default:
+                for index, item in enumerate(default):
+                    field.addItem(str(item), index)
 
-        return field
+            layout.addWidget(field)
+
+        return layout
