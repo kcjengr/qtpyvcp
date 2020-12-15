@@ -79,10 +79,9 @@ class ToolDetailsDialog(BaseDialog):
 
         self.setLayout(self.main_layout)
         self.setWindowTitle("Tool Custom Details")
-        
+
     def create_field(self, name, field_type, default=None):
 
-        print(name, field_type, default)
         layout = QVBoxLayout()
         label = QLabel(name)
         layout.addWidget(label)
