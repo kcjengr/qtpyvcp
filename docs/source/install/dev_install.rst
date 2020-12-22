@@ -45,6 +45,8 @@ Development dependencies (in addition to those listed on the :doc:`Prerequisites
 For building documentation::
 
   pip install sphinx sphinx_rtd_theme mock
+  pip install git+https://github.com/KurtJacobson/sphinx-gitstamp@MoreInfo
+
 
 (From the docs dir run ``make html`` to build the HTML documentation.)
 
