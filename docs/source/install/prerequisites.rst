@@ -17,7 +17,10 @@ System Requirements
 * Graphics card that supports OpenGL 1.50 or later (for VTK backplot)
 
 .. Note::
-    QtPyVCP requires a 64bit operating systems, 32bit systems are **not** supported.
+    QtPyVCP requires a x86_64 operating systems, x86_32 systems are **not** compatible unless you build VTK with QT support from sources.
+
+    There are VTK builds for Raspberry pi 4 32 bits. https://scottalford75.github.io/LinuxCNC-on-RPi/4.%20VTK%20for%20QtPyVCP.html
+
 
 Instructions for installing LinuxCNC on Debian 9 (stretch) and other distros
 can be found here: https://gnipsel.com/linuxcnc/uspace/debian9-emc.html
