@@ -15,7 +15,10 @@ INFO = Info()
 class Validator(QValidator):
     def validate(self, string, pos):
         # eventually could do some actual validating here
-        return QValidator.Acceptable, string.upper(), pos
+        inputVal = string
+        if not(inputVal.startswith(";") or inputVal.startswith("(")):
+            inputVal = inputVal.upper();
+        return QValidator.Acceptable, inputVal, pos
 
 
 class MDIEntry(QLineEdit, CMDWidget):
