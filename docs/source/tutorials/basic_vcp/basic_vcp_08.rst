@@ -163,8 +163,8 @@ the `MDICommands` for each button starting with the Set X button.
 ::
 
     G10L20P0X#<offsetLabel>
-    G10L20YP0#<offsetLabel>
-    G10L20ZP0#<offsetLabel>
+    G10L20P0Y#<offsetLabel>
+    G10L20P0Z#<offsetLabel>
 
 The magic is `#<offsetLabel>` which inserts the text from that label into the G
 code. This is how you can use the label contents in a MDI command.
