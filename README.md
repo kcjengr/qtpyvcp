@@ -39,7 +39,7 @@ See the [documentation](https://kcjengr.github.io/qtpyvcp/).
 
 ## Dependancies
 
-* LinuxCNC master (2.8~pre)
+* LinuxCNC 2.8^ or master
 * Python 2.7
 * PyQt5 or PySide2
 
