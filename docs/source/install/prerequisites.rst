@@ -22,9 +22,14 @@ System Requirements
     There are VTK builds for Raspberry pi 4 32 bits. https://scottalford75.github.io/LinuxCNC-on-RPi/4.%20VTK%20for%20QtPyVCP.html
 
 
-Instructions for installing LinuxCNC on Debian 9 (stretch) and other distros
-can be found here: https://gnipsel.com/linuxcnc/uspace/debian9-emc.html
+Instructions for installing LinuxCNC on Debian 10 (buster) and Linuxmint 19 can be found here:
 
+https://gnipsel.com/linuxcnc/uspace/debian10-emc.html
+https://gnipsel.com/linuxcnc/uspace/linuxmint19-emc.html
+
+LinuxCNC 2.80 ISO available here:
+
+http://linuxcnc.org/downloads/
 
 Software Dependencies
 ---------------------

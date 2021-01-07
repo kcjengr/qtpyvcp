@@ -77,7 +77,7 @@ This will create a setup.py development install and will add command line script
     ``pip uninstall qtpyvcp``
 
 .. note::
-    On Debian 9 (Stretch) ``~/.local/bin/`` is not on the PATH due to a regression in bash.
+    On Debian 9 and 10 (Stretch and Buster) ``~/.local/bin/`` is not on the PATH in bash.
     This prevents being able to launch qtpyvcp from the command line or being able to use it
     as the ``[DISPLAY]DISPLAY`` directive in the LinuxCNC INI file. For a single shell session
     you can get around this by running ``export PATH=$PATH:~/.local/bin/`` before launching
