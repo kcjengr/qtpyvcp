@@ -26,6 +26,8 @@ class ItemDelegate(QStyledItemDelegate):
 
         if type(value) == float:
             return "{0:.4f}".format(value)
+        if type(value) == unicode:
+            return "{}{}".format(self._padding, value.encode('utf-8'))
 
         return "{}{}".format(self._padding, value)
 
