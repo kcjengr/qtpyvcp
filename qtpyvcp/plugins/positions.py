@@ -66,7 +66,7 @@ class Position(DataPlugin):
                  metric_format='%9.3f', imperial_format='%8.4f'):
         super(Position, self).__init__()
 
-        self._report_actual_pos = False
+        self._report_actual_pos = report_actual_pos
         self._use_program_units = use_program_units
         self._metric_format = metric_format
         self._imperial_format = imperial_format
@@ -82,7 +82,7 @@ class Position(DataPlugin):
         STATUS.tool_offset.signal.connect(self._update)
         STATUS.program_units.signal.connect(self.updateUnits)
 
-        self.report_actual_pos = report_actual_pos
+        # self.report_actual_pos = report_actual_pos
 
     def getChannel(self, url):
         """Get data channel from URL.
