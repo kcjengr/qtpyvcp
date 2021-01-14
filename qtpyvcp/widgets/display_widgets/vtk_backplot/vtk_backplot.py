@@ -452,7 +452,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # self.status.g5x_index.notify(self.update_g5x_index)
         self.status.g5x_offset.notify(self.update_g5x_offset)
         self.status.g92_offset.notify(self.update_g92_offset)
-        # self.status.rotation_xy.notify(self.update_rotation_xy)
+        self.status.rotation_xy.notify(self.update_rotation_xy)
 
         OFFSETTABLE.offset_table_changed.connect(self.on_offset_table_changed)
         OFFSETTABLE.active_offset_changed.connect(self.update_g5x_index)
@@ -857,32 +857,35 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.interactor.ReInitialize()
             self.update_render()
 
-    # def update_rotation_xy(self, rotation):
-    #
-    #     self.rotation_offset = rotation
-    #
-    #     # LOG.debug("Rotation: {}".format(rotation))  # in degrees
-    #     # ToDo: use transform matrix to rotate existing path?
-    #     # probably not worth it since rotation is not used much ...
-    #
-    #     # LOG.debug('rotate offset: {}'.format(rotation))
-    #     if str(self.status.task_mode) == "MDI":
-    #
-    #         # LOG.debug('Rotation Update Started')
-    #
-    #         transform = vtk.vtkTransform()
-    #         transform.Translate(*self.g5x_offset[:3])
-    #         transform.RotateZ(self.rotation_offset)
-    #
-    #         self.axes_actor.SetUserTransform(transform)
-    #         self.path_actor.SetUserTransform(transform)
-    #         self.extents_actor.SetBounds(*self.path_actor.GetBounds())
-    #
-    #         self.interactor.ReInitialize()
-    #         self.update_render()
-    #
-    #     # nasty hack so ensure the positions have updated before loading
-    #     # QTimer.singleShot(10, self.reload_program)
+    def update_rotation_xy(self, rotation):
+
+        self.rotation_offset = rotation
+
+        LOG.debug("Rotate part {}: {}".format(self.g5x_index, rotation))  # in degrees
+        # ToDo: use transform matrix to rotate existing path?
+        # probably not worth it since rotation is not used much ...
+
+        # LOG.debug('rotate offset: {}'.format(rotation))
+        if str(self.status.task_mode) == "MDI":
+
+            # LOG.debug('Rotation Update Started')
+
+            transform = vtk.vtkTransform()
+            transform.Translate(*self.g5x_offset[:3])
+            transform.RotateZ(self.rotation_offset)
+
+            self.axes_actor.SetUserTransform(transform)
+            print(self.path_actors)
+            path_actor = self.path_actors.get(self.index_map[self.g5x_index])
+
+            path_actor.SetUserTransform(transform)
+            # self.extents_actor.SetBounds(*self.path_actor.GetBounds())
+
+            self.interactor.ReInitialize()
+            self.update_render()
+
+        # nasty hack so ensure the positions have updated before loading
+        # QTimer.singleShot(10, self.reload_program)
 
     def update_tool(self):
 
