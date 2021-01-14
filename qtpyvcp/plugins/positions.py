@@ -49,6 +49,7 @@ LOG = getLogger(__name__)
 
 MACHINE_COORDS = INFO.getCoordinates()
 MACHINE_UNITS = 2 if INFO.getIsMachineMetric() else 1
+POSITION_FEEDBACK = INFO.getPositionFeedback()
 
 # Set the conversions used for changing the DRO units
 # Only convert linear axes (XYZUVW), use factor of unity for ABC
@@ -82,7 +83,7 @@ class Position(DataPlugin):
         STATUS.tool_offset.signal.connect(self._update)
         STATUS.program_units.signal.connect(self.updateUnits)
 
-        # self.report_actual_pos = report_actual_pos
+        # self.report_actual_pos = self._report_actual_pos
 
     def getChannel(self, url):
         """Get data channel from URL.
@@ -229,14 +230,14 @@ class Position(DataPlugin):
             return
         self._report_actual_pos = report_actual_pos
 
-        if self._report_actual_pos:
+        if POSITION_FEEDBACK.lower() == "actual":
             # disconnect commanded pos update signals
             STATUS.position.signal.disconnect(self._update)
             # STATUS.joint_position.signal.disconnect(self._update)
             # connect actual pos update signals
             STATUS.actual_position.signal.connect(self._update)
             # STATUS.joint_actual_position.signal.connect(self.joint._update)
-        else:
+        elif POSITION_FEEDBACK == "commanded":
             # disconnect actual pos update signals
             STATUS.actual_position.signal.disconnect(self._update)
             # STATUS.joint_actual_position.signal.disconnect(self._update)
