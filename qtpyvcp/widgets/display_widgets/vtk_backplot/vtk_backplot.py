@@ -250,7 +250,11 @@ class VTKCanon(StatCanon):
                 last_line_type = line_type
 
                 path_actor.points.InsertNextPoint(start_point[:3])
-                path_actor.colors.InsertNextTypedTuple(color)
+
+                if line_type == "traverse":
+                    path_actor.colors.InsertNextTypedTuple(COLOR_MAP.get("traverse"))
+                else:
+                    path_actor.colors.InsertNextTypedTuple(color)
 
                 line = vtk.vtkLine()
                 line.GetPointIds().SetId(0, index)
