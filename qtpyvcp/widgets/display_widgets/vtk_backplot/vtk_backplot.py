@@ -9,7 +9,7 @@ from random import choice
 
 from qtpy.QtCore import Property, Signal, Slot, QTimer
 from qtpy.QtGui import QColor
-
+from enum import IntEnum
 import vtk
 
 # Fix poligons not drawing correctly on some GPU
@@ -41,8 +41,8 @@ TOOLTABLE = getPlugin('tooltable')
 OFFSETTABLE = getPlugin('offsettable')
 IN_DESIGNER = os.getenv('DESIGNER', False)
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
-MACHINE_UNITS = 2 if INFO.getIsMachineMetric() else 1
-LATHE = bool(INIFILE.find("DISPLAY", "LATHE"))
+IS_METRIC = INFO.getIsMachineMetric()
+IS_LATHE = bool(INIFILE.find("DISPLAY", "LATHE"))
 
 COLOR_MAP = {
     'traverse': (188, 252, 201, 75),
@@ -61,23 +61,33 @@ TOOL_COLOR_MAP = (
     (255, 0, 255, 255),
 )
 
+class CoordinateSystem(IntEnum):
+    G_54 = 540
+    G_55 = 550
+    G_56 = 560
+    G_57 = 570
+    G_58 = 580
+    G_59 = 590
+    G_59_1 = 591
+    G_59_2 = 592
+    G_59_3 = 593
+
 
 class PathActor(vtk.vtkActor):
     def __init__(self):
         super(PathActor, self).__init__()
         self.origin_index = None
         self.origin_cords = None
-        self.units = MACHINE_UNITS
-        self.lathe = LATHE
 
-        if self.units == 2:
+        if IS_METRIC:
             self.length = 2.5
         else:
             self.length = 0.25
 
         self.axes = Axes()
         self.axes_actor = self.axes.get_actor()
-        if self.lathe is True:
+
+        if IS_LATHE:
             self.axes_actor.SetTotalLength(self.length, 0, self.length)
         else:
             self.axes_actor.SetTotalLength(self.length, self.length, self.length)
@@ -111,8 +121,6 @@ class PathActor(vtk.vtkActor):
 class VTKCanon(StatCanon):
     def __init__(self, colors=COLOR_MAP, *args, **kwargs):
         super(VTKCanon, self).__init__(*args, **kwargs)
-
-        self.units = MACHINE_UNITS
 
         self.index_map = dict()
 
@@ -207,7 +215,7 @@ class VTKCanon(StatCanon):
 
         path_points = self.path_points.get(self.origin)
 
-        if self.units == 2:
+        if IS_METRIC: #TODO: check if this is correct, the logic inside if seems to be for imperial, not metric
             start_point_list = list()
             for point in end_point:
                 point *= 25.4
@@ -302,7 +310,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.parent = parent
         self.status = STATUS
         self.stat = STATUS.stat
-        self.lathe = LATHE
         self.ploter_enabled = True
 
         self.canon_class = VTKCanon
@@ -345,21 +352,19 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.spindle_rotation = (0.0, 0.0, 0.0)
         self.tooltip_position = (0.0, 0.0, 0.0)
 
-        self.units = MACHINE_UNITS
-
         self.axis = self.stat.axis
 
         self.camera = vtk.vtkCamera()
         self.camera.ParallelProjectionOn()
 
-        if self.units == 1:
-            self.position_mult = 10
-            self.clipping_range_near = 0.001
-            self.clipping_range_far = 100.0
-        elif self.units == 2:
+        if IS_METRIC:
             self.position_mult = 1000
             self.clipping_range_near = 0.01
-            self.clipping_range_far = 10000.0
+            self.clipping_range_far = 10000.0 #TODO: check this value
+        else:
+            self.position_mult = 10
+            self.clipping_range_near = 0.001
+            self.clipping_range_far = 100.0 #TODO: check this value
 
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
 
@@ -541,7 +546,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         centerY = center[1] / 2.0
 
         if self.rotating:
-            if self.lathe is True:
+            if IS_LATHE:
                 self.pan(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
             else:
                 self.rotate(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
@@ -1588,14 +1593,10 @@ class Machine:
 
 class Axes:
     def __init__(self):
-
-        self.lathe = LATHE
-
         self.status = STATUS
-        self.units = MACHINE_UNITS
         self.axis_mask = self.status.stat.axis_mask
 
-        if self.units == 2:
+        if IS_METRIC:
             self.length = 5.0
         else:
             self.length = 0.5
@@ -1629,17 +1630,14 @@ class Tool:
     def __init__(self, tool_table):
 
         self.status = STATUS
-        self.units = MACHINE_UNITS
-        self.lathe = LATHE
         tool = tool_table[0]
 
-        if self.units == 2:
+        if IS_METRIC:
             self.height = 25.4 * 2.0
         else:
             self.height = 2.0
 
-        if self.lathe is True:
-
+        if IS_LATHE:
             if tool.id == 0 or tool.id == -1:
                 polygonSource = vtk.vtkRegularPolygonSource()
                 polygonSource.SetNumberOfSides(64)
