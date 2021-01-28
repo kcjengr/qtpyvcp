@@ -1552,7 +1552,7 @@ class GlCanonDraw:
             used_letters = []
             for i in range(linuxcnc.MAX_AXIS):
                 a = "XYZABCUVW"[i]
-                if s.axis_mask & (1<<i):
+                if s._axis_mask & (1 << i):
                     posstrs.append(format % (a, positions[i]))
                     droposstrs.append(droformat % (a, positions[i], a, axisdtg[i]))
 
@@ -1566,14 +1566,14 @@ class GlCanonDraw:
                     label = "G59.%d" % (index-6)
 
                 a = "XYZABCUVW"[i]
-                if s.axis_mask & (1<<i):
+                if s._axis_mask & (1 << i):
                     droposstrs.append(offsetformat % (label, a, g5x_offset[i], a, g92_offset[i]))
             droposstrs.append(rotformat % (label, 'R', s.rotation_xy))
 
             droposstrs.append("")
             for i in range(linuxcnc.MAX_AXIS):
                 a = "XYZABCUVW"[i]
-                if s.axis_mask & (1<<i):
+                if s._axis_mask & (1 << i):
                     droposstrs.append(rotformat % ("TLO", a, tlo_offset[i]))
 
             if self.is_lathe:
