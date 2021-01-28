@@ -45,7 +45,7 @@ IS_METRIC = INFO.getIsMachineMetric()
 IS_LATHE = bool(INIFILE.find("DISPLAY", "LATHE"))
 
 COLOR_MAP = {
-    'traverse': (188, 252, 201, 75),
+    'traverse': (188, 252, 201, 255),
     'arcfeed': (255, 255, 255, 128),
     'feed': (255, 255, 255, 128),
     'dwell': (100, 100, 100, 255),
@@ -72,6 +72,17 @@ class CoordinateSystem(IntEnum):
     G_59_2 = 592
     G_59_3 = 593
 
+COORDINATE_SYSTEMS = OrderedDict([
+    ('1', CoordinateSystem.G_54),
+    ('2', CoordinateSystem.G_55),
+    ('3', CoordinateSystem.G_56),
+    ('4', CoordinateSystem.G_57),
+    ('5', CoordinateSystem.G_58),
+    ('6', CoordinateSystem.G_59),
+    ('7', CoordinateSystem.G_59_1),
+    ('8', CoordinateSystem.G_59_2),
+    ('9', CoordinateSystem.G_59_3)
+])
 
 class PathActor(vtk.vtkActor):
     def __init__(self):
@@ -84,8 +95,7 @@ class PathActor(vtk.vtkActor):
         else:
             self.length = 0.25
 
-        self.axes = Axes()
-        self.axes_actor = self.axes.get_actor()
+        self.axes_actor = AxesActor()
 
         if IS_LATHE:
             self.axes_actor.SetTotalLength(self.length, 0, self.length)
@@ -114,7 +124,7 @@ class PathActor(vtk.vtkActor):
     def get_origin_coords(self):
         return self.origin_cords
 
-    def get_axes(self):
+    def get_axes_actor(self):
         return self.axes_actor
 
 
@@ -150,7 +160,9 @@ class VTKCanon(StatCanon):
 
         self.ignore_next = False  # hacky way to ignore the second point next to a offset change
 
-        self.multitool_colors = True
+        self.multitool_colors = False #TODO: add a signal to set this true, but default it should be false
+
+        self.last_line_type = None
 
     def change_tool(self, pocket):
         super(VTKCanon, self).change_tool(pocket)
@@ -163,7 +175,7 @@ class VTKCanon(StatCanon):
 
             self.prev_tool_path_color = self.tool_path_color
         else:
-            self.tool_path_color = False
+            self.tool_path_color = None
 
         LOG.debug("TOOL CHANGE {} color {}".format(pocket, self.tool_path_color))
 
@@ -204,6 +216,10 @@ class VTKCanon(StatCanon):
         else:
             color = self.path_colors[line_type]
 
+        if line_type != self.last_line_type:
+            self.last_line_type = line_type
+            LOG.debug("---------line_type: {}, path_color: {}".format(line_type, color))
+
         if self.ignore_next is True:
             self.ignore_next = False
             return
@@ -217,8 +233,8 @@ class VTKCanon(StatCanon):
 
         if IS_METRIC: #TODO: check if this is correct, the logic inside if seems to be for imperial, not metric
             start_point_list = list()
-            for point in end_point:
-                point *= 25.4
+            for point in start_point: # TODO: here it should be start_point not end_point
+                point *= 25.4 # TODO: why is this conversion needed for metric? On the else branch, there is no conversion
                 start_point_list.append(point)
 
             end_point_list = list()
@@ -307,6 +323,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
 
+        LOG.debug("---------using my vtk code")
+
         self.parent = parent
         self.status = STATUS
         self.stat = STATUS.stat
@@ -322,6 +340,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # Todo: get active part
 
         self.g5x_index = self.stat.g5x_index
+
+        LOG.debug("---------g5x_index {}".format(self.g5x_index))
+
         self.path_position_table = OFFSETTABLE.getOffsetTable()
 
         self.index_map = dict()
@@ -344,6 +365,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.g92_offset = self.stat.g92_offset
         self.rotation_offset = self.stat.rotation_xy
 
+        LOG.debug("---------g5x_offset {}".format(self.g5x_offset))
+
         self.original_g5x_offset = [0.0] * 9
         self.original_g92_offset = [0.0] * 9
         self.original_rotation_offset = 0.0
@@ -358,7 +381,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera.ParallelProjectionOn()
 
         if IS_METRIC:
-            self.position_mult = 1000
+            self.position_mult = 1000 #500 here works for me
             self.clipping_range_near = 0.01
             self.clipping_range_far = 10000.0 #TODO: check this value
         else:
@@ -384,51 +407,61 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.interactor.SetInteractorStyle(None)
         self.interactor.SetRenderWindow(self.renderer_window)
 
-        self.machine = Machine(self.axis)
-        self.machine_actor = self.machine.get_actor()
+        self.machine_actor = MachineActor(self.axis)
         self.machine_actor.SetCamera(self.camera)
 
-        self.axes = Axes()
-        self.axes_actor = self.axes.get_actor()
+        self.axes_actor = AxesActor()
+
+        LOG.debug("---------translate1: {}".format(self.g5x_offset[:3]))
 
         transform = vtk.vtkTransform()
         transform.Translate(*self.g5x_offset[:3])
         transform.RotateZ(self.rotation_offset)
         self.axes_actor.SetUserTransform(transform)
 
-        self.path_cache = PathCache(self.tooltip_position)
-        self.path_cache_actor = self.path_cache.get_actor()
-        self.tool = Tool(self.stat.tool_table)
-        self.tool_actor = self.tool.get_actor()
+        self.path_cache_actor = PathCacheActor(self.tooltip_position)
+        self.tool_actor = ToolActor(self.stat.tool_table)
 
         self.offset_axes = OrderedDict()
-        self.extents = OrderedDict()
+        self.extents_actors = OrderedDict()
         self.show_extents = bool()
 
         if not IN_DESIGNER:
             self.canon = self.canon_class()
             self.path_actors = self.canon.get_path_actors()
+            LOG.debug("---------path_actors: {}".format(self.path_actors))
+
+            LOG.debug("---------path_position_table: {}".format(self.path_position_table))
 
             for origin, actor in self.path_actors.items():
                 index = self.origin_map[origin]
 
+                LOG.debug("---------origin_map: {}".format(self.origin_map))
+                LOG.debug("---------origin: {}".format(origin))
+                LOG.debug("---------index: {}".format(index))
+
+
                 actor_position = self.path_position_table[index - 1]
+
+                LOG.debug("---------actor_position: {}".format(actor_position))
 
                 actor_transform = vtk.vtkTransform()
                 actor_transform.Translate(*actor_position[:3])
                 actor_transform.RotateWXYZ(*actor_position[5:9])
 
                 actor.SetUserTransform(actor_transform)
+                actor.SetPosition(actor_position[:3])
 
-                extents = PathBoundaries(self.camera, actor)
-                extents_actor = extents.get_actor()
+                LOG.debug("---------actor: {}".format(actor))
 
-                axes = actor.get_axes()
+                extents_actor = PathBoundariesActor(self.camera, actor)
 
-                self.offset_axes[origin] = axes
-                self.extents[origin] = extents_actor
+                axes_actor = actor.get_axes_actor()
 
-                self.renderer.AddActor(axes)
+                self.offset_axes[origin] = axes_actor
+                self.extents_actors[origin] = extents_actor
+
+                self.renderer.AddActor(axes_actor)
                 self.renderer.AddActor(extents_actor)
                 self.renderer.AddActor(actor)
 
@@ -674,16 +707,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         LOG.debug("load_program")
         for origin, actor in self.path_actors.items():
-            axes = actor.get_axes()
-            extents = self.extents[origin]
+            axes_actor = actor.get_axes_actor()
+            extents_actor = self.extents_actors[origin]
 
-            self.renderer.RemoveActor(axes)
+            self.renderer.RemoveActor(axes_actor)
             self.renderer.RemoveActor(actor)
-            self.renderer.RemoveActor(extents)
+            self.renderer.RemoveActor(extents_actor)
 
         self.path_actors.clear()
         self.offset_axes.clear()
-        self.extents.clear()
+        self.extents_actors.clear()
 
         if fname:
             self.load(fname)
@@ -693,14 +726,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.canon.draw_lines()
 
-        self.axes_actor = self.axes.get_actor()
         self.path_actors = self.canon.get_path_actors()
 
         self.renderer.AddActor(self.axes_actor)
 
         for origin, actor in self.path_actors.items():
 
-            axes = actor.get_axes()
+            axes = actor.get_axes_actor()
 
             index = self.origin_map[origin]
             path_position = self.path_position_table[index - 1]
@@ -712,8 +744,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             axes.SetUserTransform(path_transform)
             actor.SetUserTransform(path_transform)
 
-            extents = PathBoundaries(self.camera, actor)
-            extents_actor = extents.get_actor()
+            extents_actor = PathBoundariesActor(self.camera, actor)
 
             if self.show_extents:
                 extents_actor.XAxisVisibilityOn()
@@ -729,7 +760,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(actor)
 
             self.offset_axes[origin] = axes
-            self.extents[origin] = extents_actor
+            self.extents_actors[origin] = extents_actor
 
         self.update_render()
 
@@ -755,7 +786,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         # self.spindle_actor.SetPosition(self.spindle_position)
         # self.tool_actor.SetPosition(self.spindle_position)
-        self.path_cache.add_line_point(self.tooltip_position)
+        self.path_cache_actor.add_line_point(self.tooltip_position)
         self.update_render()
 
     def on_offset_table_changed(self, table):
@@ -763,7 +794,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_position_table = table
 
     def update_g5x_offset(self, offset):
-        LOG.debug("update_g5x_offset")
+        LOG.debug("--------update_g5x_offset")
 
         transform = vtk.vtkTransform()
         transform.Translate(*offset[:3])
@@ -776,10 +807,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             path_index = self.origin_map[origin]
 
-            old_extents = self.extents[origin]
-            self.renderer.RemoveActor(old_extents)
+            old_extents_actor = self.extents_actors[origin]
+            self.renderer.RemoveActor(old_extents_actor)
 
-            axes = actor.get_axes()
+            axes = actor.get_axes_actor()
 
             if path_index == self.g5x_index:
                 path_transform = vtk.vtkTransform()
@@ -789,8 +820,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 axes.SetUserTransform(path_transform)
                 actor.SetUserTransform(path_transform)
 
-            extents = PathBoundaries(self.camera, actor)
-            extents_actor = extents.get_actor()
+            extents_actor = PathBoundariesActor(self.camera, actor)
 
             if self.show_extents:
                 extents_actor.XAxisVisibilityOn()
@@ -803,14 +833,16 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             self.renderer.AddActor(extents_actor)
 
-            self.extents[origin] = extents_actor
+            self.extents_actors[origin] = extents_actor
 
         self.interactor.ReInitialize()
         self.update_render()
 
     def update_g5x_index(self, index):
-        LOG.debug("update_g5x_index")
+        LOG.debug("--------update_g5x_index")
         self.g5x_index = index
+        LOG.debug("--------update_g5x_index: {}".format(index))
+        LOG.debug("--------self.path_position_table: {}".format(self.path_position_table))
         position = self.path_position_table[index - 1]
 
         transform = vtk.vtkTransform()
@@ -838,7 +870,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                 new_path_position = list(map(add, self.path_position_table[index][:9], path_offset))
 
-                axes = actor.get_axes()
+                axes = actor.get_axes_actor()
 
                 path_transform = vtk.vtkTransform()
                 path_transform.Translate(*new_path_position[:3])
@@ -847,8 +879,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 axes.SetUserTransform(path_transform)
                 actor.SetUserTransform(path_transform)
 
-                extents = PathBoundaries(self.camera, actor)
-                extents_actor = extents.get_actor()
+                extents_actor = PathBoundariesActor(self.camera, actor)
 
                 if self.show_extents:
                     extents_actor.XAxisVisibilityOn()
@@ -861,7 +892,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                 self.renderer.AddActor(extents_actor)
 
-                self.extents[origin] = extents_actor
+                self.extents_actors[origin] = extents_actor
 
             self.interactor.ReInitialize()
             self.update_render()
@@ -899,8 +930,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.RemoveActor(self.tool_actor)
 
-        self.tool = Tool(self.stat.tool_table)
-        self.tool_actor = self.tool.get_actor()
+        self.tool_actor = ToolActor(self.stat.tool_table)
 
         tool_transform = vtk.vtkTransform()
         tool_transform.Translate(*self.spindle_position)
@@ -1070,10 +1100,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug('Set view to machine')
 
         machine_bounds = self.machine_actor.GetBounds()
+        LOG.debug('-----machine_bounds: {}'.format(machine_bounds))
+
         machine_center = ((machine_bounds[0] + machine_bounds[1]) / 2,
                           (machine_bounds[2] + machine_bounds[3]) / 2,
                           (machine_bounds[4] + machine_bounds[5]) / 2
                           )
+
+        LOG.debug('-----machine_center: {}'.format(machine_center))
 
         self.camera = self.renderer.GetActiveCamera()
 
@@ -1096,8 +1130,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def setViewPath(self):
 
         LOG.debug('Set view to path')
+        LOG.debug('-----path_actors: {}'.format(self.path_actors))
+        LOG.debug('-----index_map: {}'.format(self.index_map))
+        LOG.debug('-----g5x_index: {}'.format(self.g5x_index))
+
         active_path = self.path_actors[self.index_map[self.g5x_index]]
+        LOG.debug('-----active_path: {}'.format(active_path))
         path_origin = active_path.GetPosition()
+
+        LOG.debug('-----path_origin: {}'.format(path_origin))
 
         self.camera = self.renderer.GetActiveCamera()
 
@@ -1119,8 +1160,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def clearLivePlot(self):
         LOG.debug('clear live plot')
         self.renderer.RemoveActor(self.path_cache_actor)
-        self.path_cache = PathCache(self.tooltip_position)
-        self.path_cache_actor = self.path_cache.get_actor()
+        self.path_cache_actor = PathCacheActor(self.tooltip_position)
         self.renderer.AddActor(self.path_cache_actor)
         self.update_render()
 
@@ -1177,67 +1217,67 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def showProgramBounds(self, show):
         self.show_extents = show
         for origin, actor in self.path_actors.items():
-            extents = self.extents[origin]
-            if extents is not None:
+            extents_actor = self.extents_actors[origin]
+            if extents_actor is not None:
                 if show:
-                    extents.XAxisVisibilityOn()
-                    extents.YAxisVisibilityOn()
-                    extents.ZAxisVisibilityOn()
+                    extents_actor.XAxisVisibilityOn()
+                    extents_actor.YAxisVisibilityOn()
+                    extents_actor.ZAxisVisibilityOn()
                 else:
-                    extents.XAxisVisibilityOff()
-                    extents.YAxisVisibilityOff()
-                    extents.ZAxisVisibilityOff()
+                    extents_actor.XAxisVisibilityOff()
+                    extents_actor.YAxisVisibilityOff()
+                    extents_actor.ZAxisVisibilityOff()
                 self.update_render()
 
     @Slot()
     def toggleProgramBounds(self):
         for origin, actor in self.path_actors.items():
-            extents = self.extents[origin]
-            self.showProgramBounds(not extents.GetXAxisVisibility())
+            extents_actor = self.extents_actors[origin]
+            self.showProgramBounds(not extents_actor.GetXAxisVisibility())
 
     @Slot(bool)
     @Slot(object)
     def showProgramTicks(self, ticks):
         for origin, actor in self.path_actors.items():
-            extents = self.extents[origin]
-            if extents is not None:
+            extents_actor = self.extents_actors[origin]
+            if extents_actor is not None:
                 if ticks:
-                    extents.XAxisTickVisibilityOn()
-                    extents.YAxisTickVisibilityOn()
-                    extents.ZAxisTickVisibilityOn()
+                    extents_actor.XAxisTickVisibilityOn()
+                    extents_actor.YAxisTickVisibilityOn()
+                    extents_actor.ZAxisTickVisibilityOn()
                 else:
-                    extents.XAxisTickVisibilityOff()
-                    extents.YAxisTickVisibilityOff()
-                    extents.ZAxisTickVisibilityOff()
+                    extents_actor.XAxisTickVisibilityOff()
+                    extents_actor.YAxisTickVisibilityOff()
+                    extents_actor.ZAxisTickVisibilityOff()
         self.update_render()
 
     @Slot()
     def toggleProgramTicks(self):
         for origin, actor in self.path_actors.items():
-            extents = self.extents[origin]
-            self.showProgramTicks(not extents.GetXAxisTickVisibility())
+            extents_actor = self.extents_actors[origin]
+            self.showProgramTicks(not extents_actor.GetXAxisTickVisibility())
 
     @Slot(bool)
     @Slot(object)
     def showProgramLabels(self, labels):
         for origin, actor in self.path_actors.items():
-            extents = self.extents[origin]
-            if extents is not None:
+            extents_actor = self.extents_actors[origin]
+            if extents_actor is not None:
                 if labels:
-                    extents.XAxisLabelVisibilityOn()
-                    extents.YAxisLabelVisibilityOn()
-                    extents.ZAxisLabelVisibilityOn()
+                    extents_actor.XAxisLabelVisibilityOn()
+                    extents_actor.YAxisLabelVisibilityOn()
+                    extents_actor.ZAxisLabelVisibilityOn()
                 else:
-                    extents.XAxisLabelVisibilityOff()
-                    extents.YAxisLabelVisibilityOff()
-                    extents.ZAxisLabelVisibilityOff()
+                    extents_actor.XAxisLabelVisibilityOff()
+                    extents_actor.YAxisLabelVisibilityOff()
+                    extents_actor.ZAxisLabelVisibilityOff()
         self.update_render()
 
     @Slot()
     def toggleProgramLabels(self):
         for origin, actor in self.path_actors.items():
-            extents = self.extents[origin]
-            self.showProgramLabels(not extents.GetXAxisLabelVisibility())
+            extents_actor = self.extents_actors[origin]
+            self.showProgramLabels(not extents_actor.GetXAxisLabelVisibility())
 
     @Slot(bool)
     @Slot(object)
@@ -1348,8 +1388,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._enableProgramTicks = enable
 
 
-class PathBoundaries:
+class PathBoundariesActor(vtk.vtkCubeAxesActor):
     def __init__(self, camera, path_actor):
+        super(PathBoundariesActor, self).__init__()
+
         self.path_actor = path_actor
 
         """
@@ -1366,66 +1408,60 @@ class PathBoundaries:
         LOG.debug('enableProgramTicks {}'.format(testit))
         """
 
-        cube_axes_actor = vtk.vtkCubeAxesActor()
+        self.SetBounds(self.path_actor.GetBounds())
 
-        cube_axes_actor.SetBounds(self.path_actor.GetBounds())
+        self.SetCamera(camera)
 
-        cube_axes_actor.SetCamera(camera)
+        self.SetXLabelFormat("%6.3f")
+        self.SetYLabelFormat("%6.3f")
+        self.SetZLabelFormat("%6.3f")
 
-        cube_axes_actor.SetXLabelFormat("%6.3f")
-        cube_axes_actor.SetYLabelFormat("%6.3f")
-        cube_axes_actor.SetZLabelFormat("%6.3f")
+        self.SetFlyModeToStaticEdges()
 
-        cube_axes_actor.SetFlyModeToStaticEdges()
+        self.GetTitleTextProperty(0).SetColor(1.0, 0.0, 0.0)
+        self.GetLabelTextProperty(0).SetColor(1.0, 0.0, 0.0)
 
-        cube_axes_actor.GetTitleTextProperty(0).SetColor(1.0, 0.0, 0.0)
-        cube_axes_actor.GetLabelTextProperty(0).SetColor(1.0, 0.0, 0.0)
+        self.GetTitleTextProperty(1).SetColor(0.0, 1.0, 0.0)
+        self.GetLabelTextProperty(1).SetColor(0.0, 1.0, 0.0)
 
-        cube_axes_actor.GetTitleTextProperty(1).SetColor(0.0, 1.0, 0.0)
-        cube_axes_actor.GetLabelTextProperty(1).SetColor(0.0, 1.0, 0.0)
-
-        cube_axes_actor.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
-        cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
+        self.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
+        self.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
         if not IN_DESIGNER:
             bounds = getSetting('backplot.show-program-bounds')
             if bounds and bounds.value:
-                cube_axes_actor.XAxisVisibilityOn()
-                cube_axes_actor.YAxisVisibilityOn()
-                cube_axes_actor.ZAxisVisibilityOn()
+                self.XAxisVisibilityOn()
+                self.YAxisVisibilityOn()
+                self.ZAxisVisibilityOn()
             else:
-                cube_axes_actor.XAxisVisibilityOff()
-                cube_axes_actor.YAxisVisibilityOff()
-                cube_axes_actor.ZAxisVisibilityOff()
+                self.XAxisVisibilityOff()
+                self.YAxisVisibilityOff()
+                self.ZAxisVisibilityOff()
 
             ticks = getSetting('backplot.show-program-ticks')
             if ticks and ticks.value:
-                cube_axes_actor.XAxisTickVisibilityOn()
-                cube_axes_actor.YAxisTickVisibilityOn()
-                cube_axes_actor.ZAxisTickVisibilityOn()
+                self.XAxisTickVisibilityOn()
+                self.YAxisTickVisibilityOn()
+                self.ZAxisTickVisibilityOn()
             else:
-                cube_axes_actor.XAxisTickVisibilityOff()
-                cube_axes_actor.YAxisTickVisibilityOff()
-                cube_axes_actor.ZAxisTickVisibilityOff()
+                self.XAxisTickVisibilityOff()
+                self.YAxisTickVisibilityOff()
+                self.ZAxisTickVisibilityOff()
 
             labels = getSetting('backplot.show-program-labels')
             if labels and labels.value:
-                cube_axes_actor.XAxisLabelVisibilityOn()
-                cube_axes_actor.YAxisLabelVisibilityOn()
-                cube_axes_actor.ZAxisLabelVisibilityOn()
+                self.XAxisLabelVisibilityOn()
+                self.YAxisLabelVisibilityOn()
+                self.ZAxisLabelVisibilityOn()
             else:
-                cube_axes_actor.XAxisLabelVisibilityOff()
-                cube_axes_actor.YAxisLabelVisibilityOff()
-                cube_axes_actor.ZAxisLabelVisibilityOff()
-
-        self.actor = cube_axes_actor
-
-    def get_actor(self):
-        return self.actor
+                self.XAxisLabelVisibilityOff()
+                self.YAxisLabelVisibilityOff()
+                self.ZAxisLabelVisibilityOff()
 
 
-class PathCache:
+class PathCacheActor(vtk.vtkActor):
     def __init__(self, current_position):
+        super(PathCacheActor, self).__init__()
         self.current_position = current_position
         self.index = 0
         self.num_points = 2
@@ -1439,11 +1475,10 @@ class PathCache:
 
         self.lines_poligon_data = vtk.vtkPolyData()
         self.polygon_mapper = vtk.vtkPolyDataMapper()
-        self.actor = vtk.vtkActor()
-        self.actor.GetProperty().SetColor(yellow)
-        self.actor.GetProperty().SetLineWidth(2)
-        self.actor.GetProperty().SetOpacity(0.5)
-        self.actor.SetMapper(self.polygon_mapper)
+        self.GetProperty().SetColor(yellow)
+        self.GetProperty().SetLineWidth(2)
+        self.GetProperty().SetOpacity(0.5)
+        self.SetMapper(self.polygon_mapper)
 
         self.lines_poligon_data.SetPoints(self.points)
         self.lines_poligon_data.SetLines(self.lines)
@@ -1462,12 +1497,10 @@ class PathCache:
         self.lines.InsertCellPoint(self.index)
         self.lines.Modified()
 
-    def get_actor(self):
-        return self.actor
 
-
-class Grid:
+class GridActor(vtk.vtkActor):
     def __init__(self):
+        super(GridActor, self).__init__()
         x = [
             -1.22396, -1.17188, -1.11979, -1.06771, -1.01562, -0.963542,
             -0.911458, -0.859375, -0.807292, -0.755208, -0.703125, -0.651042,
@@ -1528,20 +1561,15 @@ class Grid:
         rgridMapper = vtk.vtkPolyDataMapper()
         rgridMapper.SetInputConnection(plane.GetOutputPort())
 
-        self.wire_actor = vtk.vtkActor()
-        self.wire_actor.SetMapper(rgridMapper)
-        self.wire_actor.GetProperty().SetRepresentationToWireframe()
-        self.wire_actor.GetProperty().SetColor(0, 0, 0)
-
-    def get_actor(self):
-        return self.wire_actor
+        self.SetMapper(rgridMapper)
+        self.GetProperty().SetRepresentationToWireframe()
+        self.GetProperty().SetColor(0, 0, 0)
 
 
-class Machine:
+class MachineActor(vtk.vtkCubeAxesActor):
     def __init__(self, axis):
+        super(MachineActor, self).__init__()
         self.status = STATUS
-
-        cube_axes_actor = vtk.vtkCubeAxesActor()
 
         x_max = axis[0]["max_position_limit"]
         x_min = axis[0]["min_position_limit"]
@@ -1552,83 +1580,75 @@ class Machine:
         z_max = axis[2]["max_position_limit"]
         z_min = axis[2]["min_position_limit"]
 
-        cube_axes_actor.SetBounds(x_min, x_max, y_min, y_max, z_min, z_max)
+        self.SetBounds(x_min, x_max, y_min, y_max, z_min, z_max)
 
-        cube_axes_actor.SetXLabelFormat("%6.3f")
-        cube_axes_actor.SetYLabelFormat("%6.3f")
-        cube_axes_actor.SetZLabelFormat("%6.3f")
+        self.SetXLabelFormat("%6.3f")
+        self.SetYLabelFormat("%6.3f")
+        self.SetZLabelFormat("%6.3f")
 
-        cube_axes_actor.SetFlyModeToStaticEdges()
+        self.SetFlyModeToStaticEdges()
 
-        cube_axes_actor.GetTitleTextProperty(0).SetColor(1.0, 0.0, 0.0)
-        cube_axes_actor.GetLabelTextProperty(0).SetColor(1.0, 0.0, 0.0)
+        self.GetTitleTextProperty(0).SetColor(1.0, 0.0, 0.0)
+        self.GetLabelTextProperty(0).SetColor(1.0, 0.0, 0.0)
 
-        cube_axes_actor.GetTitleTextProperty(1).SetColor(0.0, 1.0, 0.0)
-        cube_axes_actor.GetLabelTextProperty(1).SetColor(0.0, 1.0, 0.0)
+        self.GetTitleTextProperty(1).SetColor(0.0, 1.0, 0.0)
+        self.GetLabelTextProperty(1).SetColor(0.0, 1.0, 0.0)
 
-        cube_axes_actor.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
-        cube_axes_actor.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
+        self.GetTitleTextProperty(2).SetColor(0.0, 0.0, 1.0)
+        self.GetLabelTextProperty(2).SetColor(0.0, 0.0, 1.0)
 
         units = str(self.status.program_units)
 
-        cube_axes_actor.SetXUnits(units)
-        cube_axes_actor.SetYUnits(units)
-        cube_axes_actor.SetZUnits(units)
+        self.SetXUnits(units)
+        self.SetYUnits(units)
+        self.SetZUnits(units)
 
-        cube_axes_actor.DrawXGridlinesOn()
-        cube_axes_actor.DrawYGridlinesOn()
-        cube_axes_actor.DrawZGridlinesOn()
+        self.DrawXGridlinesOn()
+        self.DrawYGridlinesOn()
+        self.DrawZGridlinesOn()
 
-        cube_axes_actor.SetGridLineLocation(cube_axes_actor.VTK_GRID_LINES_FURTHEST)
+        self.SetGridLineLocation(self.VTK_GRID_LINES_FURTHEST)
 
-        cube_axes_actor.GetXAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
-        cube_axes_actor.GetYAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
-        cube_axes_actor.GetZAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
-
-        self.actor = cube_axes_actor
-
-    def get_actor(self):
-        return self.actor
+        self.GetXAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
+        self.GetYAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
+        self.GetZAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
 
 
-class Axes:
+class AxesActor(vtk.vtkAxesActor):
     def __init__(self):
+        super(AxesActor, self).__init__()
         self.status = STATUS
         self.axis_mask = self.status.stat.axis_mask
 
         if IS_METRIC:
-            self.length = 5.0
+            self.length = 20.0
         else:
             self.length = 0.5
 
         transform = vtk.vtkTransform()
         transform.Translate(0.0, 0.0, 0.0)  # Z up
 
-        self.actor = vtk.vtkAxesActor()
-        self.actor.SetUserTransform(transform)
+        self.SetUserTransform(transform)
 
-        self.actor.AxisLabelsOff()
-        self.actor.SetShaftTypeToLine()
-        self.actor.SetTipTypeToCone()
+        self.AxisLabelsOff()
+        self.SetShaftTypeToLine()
+        self.SetTipTypeToCone()
 
         # Lathe modes
         if self.axis_mask == 3:
-            self.actor.SetTotalLength(self.length, self.length, 0)
+            self.SetTotalLength(self.length, self.length, 0)
         elif self.axis_mask == 5:
-            self.actor.SetTotalLength(self.length, 0, self.length)
+            self.SetTotalLength(self.length, 0, self.length)
         elif self.axis_mask == 6:
-            self.actor.SetTotalLength(0, self.length, self.length)
+            self.SetTotalLength(0, self.length, self.length)
         # Mill mode
         else:
-            self.actor.SetTotalLength(self.length, self.length, self.length)
-
-    def get_actor(self):
-        return self.actor
+            self.SetTotalLength(self.length, self.length, self.length)
 
 
-class Tool:
+class ToolActor(vtk.vtkActor):
     def __init__(self, tool_table):
-
+        super(ToolActor, self).__init__()
         self.status = STATUS
         tool = tool_table[0]
 
@@ -1966,17 +1986,11 @@ class Tool:
                 mapper = vtk.vtkPolyDataMapper()
                 mapper.SetInputConnection(transform_filter.GetOutputPort())
 
-        # Create an actor
-        self.actor = vtk.vtkActor()
-        self.actor.SetMapper(mapper)
+        self.SetMapper(mapper)
 
         # Avoid visible backfaces on Linux with some video cards like intel
         # From: https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1#comment89720589_51360335
-        self.actor.GetProperty().SetBackfaceCulling(1)
-
-    def get_actor(self):
-        return self.actor
-
+        self.GetProperty().SetBackfaceCulling(1)
 
 class CoordinateWidget:
     def __init__(self, interactor):
