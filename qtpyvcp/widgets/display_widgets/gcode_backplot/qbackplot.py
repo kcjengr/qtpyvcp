@@ -227,7 +227,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
 
         live_axis_count = 0
         for i, j in enumerate("XYZABCUVW"):
-            if self.stat._axis_mask & (1 << i) == 0: continue
+            if self.stat.axis_mask & (1 << i) == 0: continue
             live_axis_count += 1
         self.num_joints = int(self.inifile.find("KINS", "JOINTS") or live_axis_count)
 
