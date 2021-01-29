@@ -129,10 +129,11 @@ class VTKCanon(StatCanon):
 
         path_points = self.path_points.get(self.active_wcs_index)
 
+        #TODO: figure out why we need this conversion
         if self._datasource.isMachineMetric():
             start_point_list = list()
-            for point in start_point: # TODO: here it should be start_point not end_point
-                point *= 25.4 # TODO: why is this conversion needed for metric? On the else branch, there is no conversion
+            for point in start_point:
+                point *= 25.4
                 start_point_list.append(point)
 
             end_point_list = list()

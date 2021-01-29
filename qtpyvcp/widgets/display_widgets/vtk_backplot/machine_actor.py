@@ -49,3 +49,43 @@ class MachineActor(vtk.vtkCubeAxesActor):
         self.GetXAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
         self.GetYAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
         self.GetZAxesGridlinesProperty().SetColor(0.0, 0.0, 0.0)
+
+    def showMachineTicks(self, ticks):
+        if ticks:
+            self.XAxisTickVisibilityOn()
+            self.YAxisTickVisibilityOn()
+            self.ZAxisTickVisibilityOn()
+        else:
+            self.XAxisTickVisibilityOff()
+            self.YAxisTickVisibilityOff()
+            self.ZAxisTickVisibilityOff()
+
+    def showMachineBounds(self, bounds):
+        if bounds:
+            self.XAxisVisibilityOn()
+            self.YAxisVisibilityOn()
+            self.ZAxisVisibilityOn()
+        else:
+            self.XAxisVisibilityOff()
+            self.YAxisVisibilityOff()
+            self.ZAxisVisibilityOff()
+
+    def showMachineLabels(self, labels):
+        if labels:
+            self.XAxisLabelVisibilityOn()
+            self.YAxisLabelVisibilityOn()
+            self.ZAxisLabelVisibilityOn()
+        else:
+            self.XAxisLabelVisibilityOff()
+            self.YAxisLabelVisibilityOff()
+            self.ZAxisLabelVisibilityOff()
+
+    def showGridlines(self, grid):
+        if grid:
+            self.DrawXGridlinesOn()
+            self.DrawYGridlinesOn()
+            self.DrawZGridlinesOn()
+        else:
+            self.DrawXGridlinesOff()
+            self.DrawYGridlinesOff()
+            self.DrawZGridlinesOff()

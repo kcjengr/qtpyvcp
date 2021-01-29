@@ -134,9 +134,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         if not IN_DESIGNER:
             self.canon = self.canon_class()
             self.path_actors = self.canon.get_path_actors()
-            LOG.debug("---------path_actors: {}".format(self.path_actors))
 
-            for wcs_index, actor in self.path_actors.items():
+            for wcs_index, path_actor in self.path_actors.items():
                 current_offsets = self.wcs_offsets[wcs_index]
 
                 LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
@@ -147,23 +146,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 actor_transform.Translate(*current_offsets[:3])
                 actor_transform.RotateWXYZ(*current_offsets[5:9])
 
-                actor.SetUserTransform(actor_transform)
-                actor.SetPosition(*current_offsets[:3])
+                path_actor.SetUserTransform(actor_transform)
+                path_actor.SetPosition(*current_offsets[:3])
 
                 LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
 
-                LOG.debug("---------actor: {}".format(actor))
+                program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
 
-                program_bounds_actor = ProgramBoundsActor(self.camera, actor)
+                axes = path_actor.get_axes_actor()
 
-                axes_actor = actor.get_axes_actor()
-
-                self.offset_axes[wcs_index] = axes_actor
+                self.offset_axes[wcs_index] = axes
                 self.program_bounds_actors[wcs_index] = program_bounds_actor
 
-                self.renderer.AddActor(axes_actor)
+                self.renderer.AddActor(axes)
                 self.renderer.AddActor(program_bounds_actor)
-                self.renderer.AddActor(actor)
+                self.renderer.AddActor(path_actor)
 
         self.renderer.AddActor(self.tool_actor)
         self.renderer.AddActor(self.machine_actor)
@@ -426,45 +423,39 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             return
 
         self.canon.draw_lines()
-
         self.path_actors = self.canon.get_path_actors()
 
-        self.renderer.AddActor(self.axes_actor)
-
         for wcs_index, actor in self.path_actors.items():
+            current_offsets = self.wcs_offsets[wcs_index]
 
-            LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
-            axes = actor.get_axes_actor()
+            LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
+            LOG.debug("---------wcs_index: {}".format(wcs_index))
+            LOG.debug("---------current_offsets: {}".format(current_offsets))
 
-            path_position = self.wcs_offsets[wcs_index]
-            LOG.debug("-------placing program at position: {}".format(path_position))
+            actor_transform = vtk.vtkTransform()
+            actor_transform.Translate(*current_offsets[:3])
+            actor_transform.RotateWXYZ(*current_offsets[5:9])
 
-            path_transform = vtk.vtkTransform()
-            path_transform.Translate(*path_position[:3])
-            path_transform.RotateWXYZ(*path_position[5:9])
-
-            axes.SetUserTransform(path_transform)
-            actor.SetUserTransform(path_transform)
+            actor.SetUserTransform(actor_transform)
             #actor.SetPosition(path_position[:3])
 
-            program_bounds_actor = ProgramBoundsActor(self.camera, actor)
+            LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
 
-            if self.show_program_bounds:
-                program_bounds_actor.XAxisVisibilityOn()
-                program_bounds_actor.YAxisVisibilityOn()
-                program_bounds_actor.ZAxisVisibilityOn()
-            else:
-                program_bounds_actor.XAxisVisibilityOff()
-                program_bounds_actor.YAxisVisibilityOff()
-                program_bounds_actor.ZAxisVisibilityOff()
+            program_bounds_actor = ProgramBoundsActor(self.camera, actor)
+            program_bounds_actor.showProgramBounds(self.show_program_bounds)
+
+            axes = actor.get_axes_actor()
+
+            self.offset_axes[wcs_index] = axes
+            self.program_bounds_actors[wcs_index] = program_bounds_actor
+
+            axes.SetUserTransform(actor_transform) #TODO: not sure if this is needed
 
             self.renderer.AddActor(axes)
             self.renderer.AddActor(program_bounds_actor)
             self.renderer.AddActor(actor)
 
-            self.offset_axes[wcs_index] = axes
-            self.program_bounds_actors[wcs_index] = program_bounds_actor
-
+        self.renderer.AddActor(self.axes_actor)
         self.update_render()
 
     def motion_type(self, value):
@@ -506,15 +497,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.axes_actor.SetUserTransform(transform)
 
-        for wcs_index, actor in self.path_actors.items():
-            # path_offset = [n - o for n, o in zip(position[:3], self.original_g5x_offset[:3])]
-
-            #path_index = self.origin_map[origin]
+        for wcs_index, path_actor in self.path_actors.items():
 
             old_program_bounds_actor = self.program_bounds_actors[wcs_index]
             self.renderer.RemoveActor(old_program_bounds_actor)
 
-            axes = actor.get_axes_actor()
+            axes = path_actor.get_axes_actor()
 
             LOG.debug("--------wcs_index: {}, active_wcs_index: {}".format(wcs_index, self.active_wcs_index))
 
@@ -524,18 +512,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 path_transform.RotateWXYZ(*offset[5:9])
 
                 axes.SetUserTransform(path_transform)
-                actor.SetUserTransform(path_transform)
+                path_actor.SetUserTransform(path_transform)
 
-            program_bounds_actor = ProgramBoundsActor(self.camera, actor)
-
-            if self.show_program_bounds:
-                program_bounds_actor.XAxisVisibilityOn()
-                program_bounds_actor.YAxisVisibilityOn()
-                program_bounds_actor.ZAxisVisibilityOn()
-            else:
-                program_bounds_actor.XAxisVisibilityOff()
-                program_bounds_actor.YAxisVisibilityOff()
-                program_bounds_actor.ZAxisVisibilityOff()
+            program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
+            program_bounds_actor.showProgramBounds(self.show_program_bounds)
 
             self.renderer.AddActor(program_bounds_actor)
 
@@ -587,15 +567,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 actor.SetUserTransform(path_transform)
 
                 program_bounds_actor = ProgramBoundsActor(self.camera, actor)
-
-                if self.show_program_bounds:
-                    program_bounds_actor.XAxisVisibilityOn()
-                    program_bounds_actor.YAxisVisibilityOn()
-                    program_bounds_actor.ZAxisVisibilityOn()
-                else:
-                    program_bounds_actor.XAxisVisibilityOff()
-                    program_bounds_actor.YAxisVisibilityOff()
-                    program_bounds_actor.ZAxisVisibilityOff()
+                program_bounds_actor.showProgramBounds(self.show_program_bounds)
 
                 self.renderer.AddActor(program_bounds_actor)
 
@@ -900,14 +872,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(object)
     def showGrid(self, grid):
         LOG.debug('show grid')
-        if grid:
-            self.machine_actor.DrawXGridlinesOn()
-            self.machine_actor.DrawYGridlinesOn()
-            self.machine_actor.DrawZGridlinesOn()
-        else:
-            self.machine_actor.DrawXGridlinesOff()
-            self.machine_actor.DrawYGridlinesOff()
-            self.machine_actor.DrawZGridlinesOff()
+        self.machine_actor.showGridlines(grid)
         self.update_render()
 
     @Slot(bool)
@@ -917,14 +882,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         for wcs_index, actor in self.path_actors.items():
             program_bounds_actor = self.program_bounds_actors[wcs_index]
             if program_bounds_actor is not None:
-                if show:
-                    program_bounds_actor.XAxisVisibilityOn()
-                    program_bounds_actor.YAxisVisibilityOn()
-                    program_bounds_actor.ZAxisVisibilityOn()
-                else:
-                    program_bounds_actor.XAxisVisibilityOff()
-                    program_bounds_actor.YAxisVisibilityOff()
-                    program_bounds_actor.ZAxisVisibilityOff()
+                program_bounds_actor.showProgramBounds(self.show_program_bounds)
                 self.update_render()
 
     @Slot()
@@ -939,14 +897,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         for wcs_index, actor in self.path_actors.items():
             program_bounds_actor = self.program_bounds_actors[wcs_index]
             if program_bounds_actor is not None:
-                if ticks:
-                    program_bounds_actor.XAxisTickVisibilityOn()
-                    program_bounds_actor.YAxisTickVisibilityOn()
-                    program_bounds_actor.ZAxisTickVisibilityOn()
-                else:
-                    program_bounds_actor.XAxisTickVisibilityOff()
-                    program_bounds_actor.YAxisTickVisibilityOff()
-                    program_bounds_actor.ZAxisTickVisibilityOff()
+                program_bounds_actor.showProgramTicks(ticks)
         self.update_render()
 
     @Slot()
@@ -961,14 +912,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         for wcs_index, actor in self.path_actors.items():
             program_bounds_actor = self.program_bounds_actors[wcs_index]
             if program_bounds_actor is not None:
-                if labels:
-                    program_bounds_actor.XAxisLabelVisibilityOn()
-                    program_bounds_actor.YAxisLabelVisibilityOn()
-                    program_bounds_actor.ZAxisLabelVisibilityOn()
-                else:
-                    program_bounds_actor.XAxisLabelVisibilityOff()
-                    program_bounds_actor.YAxisLabelVisibilityOff()
-                    program_bounds_actor.ZAxisLabelVisibilityOff()
+                program_bounds_actor.showProgramLabels(labels)
         self.update_render()
 
     @Slot()
@@ -979,15 +923,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot(bool)
     @Slot(object)
-    def showMachineBounds(self, show):
-        if show:
-            self.machine_actor.XAxisVisibilityOn()
-            self.machine_actor.YAxisVisibilityOn()
-            self.machine_actor.ZAxisVisibilityOn()
-        else:
-            self.machine_actor.XAxisVisibilityOff()
-            self.machine_actor.YAxisVisibilityOff()
-            self.machine_actor.ZAxisVisibilityOff()
+    def showMachineBounds(self, bounds):
+        self.machine_actor.showMachineBounds(bounds)
         self.update_render()
 
     @Slot()
@@ -997,14 +934,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(bool)
     @Slot(object)
     def showMachineTicks(self, ticks):
-        if ticks:
-            self.machine_actor.XAxisTickVisibilityOn()
-            self.machine_actor.YAxisTickVisibilityOn()
-            self.machine_actor.ZAxisTickVisibilityOn()
-        else:
-            self.machine_actor.XAxisTickVisibilityOff()
-            self.machine_actor.YAxisTickVisibilityOff()
-            self.machine_actor.ZAxisTickVisibilityOff()
+        self.machine_actor.showMachineTicks(ticks)
         self.update_render()
 
     @Slot()
@@ -1014,14 +944,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(bool)
     @Slot(object)
     def showMachineLabels(self, labels):
-        if labels:
-            self.machine_actor.XAxisLabelVisibilityOn()
-            self.machine_actor.YAxisLabelVisibilityOn()
-            self.machine_actor.ZAxisLabelVisibilityOn()
-        else:
-            self.machine_actor.XAxisLabelVisibilityOff()
-            self.machine_actor.YAxisLabelVisibilityOff()
-            self.machine_actor.ZAxisLabelVisibilityOff()
+        self.machine_actor.showMachineLabels(labels)
         self.update_render()
 
     @Slot()
