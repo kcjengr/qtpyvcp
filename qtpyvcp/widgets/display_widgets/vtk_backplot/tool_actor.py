@@ -1,25 +1,24 @@
 from math import cos, sin, radians
 
 import vtk.qt
-from linuxcnc_wrapper import LinuxCncWrapper
 from qtpyvcp.utilities import logger
 
 LOG = logger.getLogger(__name__)
 
 class ToolActor(vtk.vtkActor):
-    def __init__(self):
+    def __init__(self, linuxcncDataSource):
         super(ToolActor, self).__init__()
-        self._linuxcnc_wrapper = LinuxCncWrapper()
-        self._tool_table = self._linuxcnc_wrapper.getToolTable()
+        self._datasource = linuxcncDataSource
+        self._tool_table = self._datasource.getToolTable()
 
         tool = self._tool_table[0]
 
-        if self._linuxcnc_wrapper.isMetric():
+        if self._datasource.isMachineMetric():
             self.height = 25.4 * 2.0
         else:
             self.height = 2.0
 
-        if self._linuxcnc_wrapper.isLathe():
+        if self._datasource.isMachineLathe():
             if tool.id == 0 or tool.id == -1:
                 polygonSource = vtk.vtkRegularPolygonSource()
                 polygonSource.SetNumberOfSides(64)

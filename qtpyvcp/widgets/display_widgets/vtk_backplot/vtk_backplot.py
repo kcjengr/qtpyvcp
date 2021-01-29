@@ -18,24 +18,21 @@ vtk.qt.QVTKRWIBase = "QGLWidget"
 
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
-from qtpyvcp.plugins import getPlugin
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.settings import connectSetting
 
-from qtpyvcp.widgets.display_widgets.vtk_backplot.base_backplot import BaseBackPlot
-
+from base_backplot import BaseBackPlot
 from axes_actor import AxesActor
 from machine_actor import MachineActor
 from tool_actor import ToolActor
 from path_cache_actor import PathCacheActor
 from program_bounds_actor import ProgramBoundsActor
 from vtk_cannon import VTKCanon
-from linuxcnc_wrapper import LinuxCncWrapper
+from linuxcnc_datasource import LinuxCncDataSource
 
 LOG = logger.getLogger(__name__)
-STATUS = getPlugin('status')
-OFFSETTABLE = getPlugin('offsettable')
+
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
 class CoordinateSystem(IntEnum):
@@ -70,12 +67,11 @@ QGLFormat.setDefaultFormat(f)
 class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
-        self._linuxcnc_wrapper = LinuxCncWrapper()
+        self._datasource = LinuxCncDataSource()
 
         LOG.debug("---------using my vtk code")
 
         self.parent = parent
-        self.status = STATUS
         self.ploter_enabled = True
 
         self.canon_class = VTKCanon
@@ -87,11 +83,12 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         # Todo: get active part
 
-        self.g5x_index = self._linuxcnc_wrapper.getG5x_index()
+        self.g5x_index = self._datasource.getG5x_index()
 
         LOG.debug("---------g5x_index {}".format(self.g5x_index))
 
-        self.path_position_table = self._linuxcnc_wrapper.getOffsetTable()
+        self.wcs_offsets = self._datasource.getWcsOffsets()
+        LOG.debug("---------wcs_offsets {}".format(self.wcs_offsets))
 
         self.index_map = dict()
         self.index_map[1] = 540
@@ -109,9 +106,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         for k, v in self.index_map.items():
             self.origin_map[v] = k
 
-        self.g5x_offset = self._linuxcnc_wrapper.getG5x_offset()
-        self.g92_offset = self._linuxcnc_wrapper.getG92_offset()
-        self.rotation_offset = self._linuxcnc_wrapper.getRotationXY()
+        self.g5x_offset = self._datasource.getG5x_offset()
+        self.g92_offset = self._datasource.getG92_offset()
+        self.rotation_offset = self._datasource.getRotationXY()
 
         LOG.debug("---------g5x_offset {}".format(self.g5x_offset))
 
@@ -126,7 +123,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera = vtk.vtkCamera()
         self.camera.ParallelProjectionOn()
 
-        if self._linuxcnc_wrapper.isMetric():
+        if self._datasource.isMachineMetric():
             self.position_mult = 1000 #500 here works for me
             self.clipping_range_near = 0.01
             self.clipping_range_far = 10000.0 #TODO: check this value
@@ -153,20 +150,21 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.interactor.SetInteractorStyle(None)
         self.interactor.SetRenderWindow(self.renderer_window)
 
-        self.machine_actor = MachineActor()
+        self.machine_actor = MachineActor(self._datasource)
         self.machine_actor.SetCamera(self.camera)
 
-        self.axes_actor = AxesActor()
+        self.axes_actor = AxesActor(self._datasource)
 
         LOG.debug("---------translate1: {}".format(self.g5x_offset[:3]))
+        LOG.debug("---------translate1: {}".format(*self.g5x_offset[:3]))
 
         transform = vtk.vtkTransform()
-        transform.Translate(*self.g5x_offset[:3]) #TODO: why the *self ?
+        transform.Translate(*self.g5x_offset[:3])
         transform.RotateZ(self.rotation_offset)
         self.axes_actor.SetUserTransform(transform)
 
         self.path_cache_actor = PathCacheActor(self.tooltip_position)
-        self.tool_actor = ToolActor()
+        self.tool_actor = ToolActor(self._datasource)
 
         self.offset_axes = OrderedDict()
         self.program_bounds_actors = OrderedDict()
@@ -177,7 +175,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.path_actors = self.canon.get_path_actors()
             LOG.debug("---------path_actors: {}".format(self.path_actors))
 
-            LOG.debug("---------path_position_table: {}".format(self.path_position_table))
+            LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
 
             for origin, actor in self.path_actors.items():
                 index = self.origin_map[origin]
@@ -187,7 +185,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 LOG.debug("---------index: {}".format(index))
 
 
-                actor_position = self.path_position_table[index - 1]
+                actor_position = self.wcs_offsets[index - 1]
 
                 LOG.debug("---------actor_position: {}".format(actor_position))
 
@@ -233,22 +231,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer_window.Render()
         self.interactor.Start()
 
-        #self._linuxcnc_wrapper.programLoaded.connect(self.load_program)
-
-        self.status.file.notify(self.load_program)
-        self.status.position.notify(self.update_position)
-        self.status.motion_type.notify(self.motion_type)
+        self._datasource.programLoaded.connect(self.load_program)
+        self._datasource.positionChanged.connect(self.update_position)
+        self._datasource.motionTypeChanged.connect(self.motion_type)
+        self._datasource.g5xOffsetChanged.connect(self.update_g5x_offset)
+        self._datasource.g92OffsetChanged.connect(self.update_g92_offset)
+        self._datasource.offsetTableChanged.connect(self.on_offset_table_changed)
+        self._datasource.activeOffsetChanged.connect(self.update_g5x_index)
+        self._datasource.toolTableChanged.connect(self.update_tool)
+        self._datasource.toolOffsetChanged.connect(self.update_tool)
 
         # self.status.g5x_index.notify(self.update_g5x_index)
-        self.status.g5x_offset.notify(self.update_g5x_offset)
-        self.status.g92_offset.notify(self.update_g92_offset)
         # self.status.rotation_xy.notify(self.update_rotation_xy)
-
-        OFFSETTABLE.offset_table_changed.connect(self.on_offset_table_changed)
-        OFFSETTABLE.active_offset_changed.connect(self.update_g5x_index)
-
-        self.status.tool_offset.notify(self.update_tool)
-        self.status.tool_table.notify(self.update_tool)
 
         self.line = None
         self._last_filename = str()
@@ -327,7 +321,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         centerY = center[1] / 2.0
 
         if self.rotating:
-            if self._linuxcnc_wrapper.isLathe():
+            if self._datasource.isMachineLathe():
                 self.pan(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
             else:
                 self.rotate(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
@@ -483,7 +477,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             axes = actor.get_axes_actor()
 
             index = self.origin_map[origin]
-            path_position = self.path_position_table[index - 1]
+            path_position = self.wcs_offsets[index - 1]
 
             path_transform = vtk.vtkTransform()
             path_transform.Translate(*path_position[:3])
@@ -514,6 +508,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.update_render()
 
     def motion_type(self, value):
+        LOG.debug("-----motion_type is: {}".format(value))
         if value == linuxcnc.MOTION_TYPE_TOOLCHANGE:
             self.update_tool()
 
@@ -530,7 +525,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.tool_actor.SetUserTransform(tool_transform)
 
-        tlo = self._linuxcnc_wrapper.getToolOffset()
+        tlo = self._datasource.getToolOffset()
         self.tooltip_position = [pos - tlo for pos, tlo in zip(self.spindle_position, tlo[:3])]
 
         # self.spindle_actor.SetPosition(self.spindle_position)
@@ -540,7 +535,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def on_offset_table_changed(self, table):
         LOG.debug("on_offset_table_changed")
-        self.path_position_table = table
+        self.wcs_offsets = table
 
     def update_g5x_offset(self, offset):
         LOG.debug("--------update_g5x_offset")
@@ -591,8 +586,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         LOG.debug("--------update_g5x_index")
         self.g5x_index = index
         LOG.debug("--------update_g5x_index: {}".format(index))
-        LOG.debug("--------self.path_position_table: {}".format(self.path_position_table))
-        position = self.path_position_table[index - 1]
+        LOG.debug("--------self.path_position_table: {}".format(self.wcs_offsets))
+        position = self.wcs_offsets[index - 1]
 
         transform = vtk.vtkTransform()
         transform.Translate(*position[:3])
@@ -606,7 +601,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def update_g92_offset(self, g92_offset):
 
         LOG.debug("update_g92_offset")
-        if self._linuxcnc_wrapper.isModeMdi() or self._linuxcnc_wrapper.isModeAuto():
+        if self._datasource.isModeMdi() or self._datasource.isModeAuto():
 
             self.g92_offset = g92_offset
 
@@ -617,7 +612,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                 # determine change in g92 offset since path was drawn
                 index = self.origin_map[origin] - 1
 
-                new_path_position = list(map(add, self.path_position_table[index][:9], path_offset))
+                new_path_position = list(map(add, self.wcs_offsets[index][:9], path_offset))
 
                 axes = actor.get_axes_actor()
 
@@ -679,7 +674,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.RemoveActor(self.tool_actor)
 
-        self.tool_actor = ToolActor()
+        self.tool_actor = ToolActor(self._datasource)
 
         tool_transform = vtk.vtkTransform()
         tool_transform.Translate(*self.spindle_position)

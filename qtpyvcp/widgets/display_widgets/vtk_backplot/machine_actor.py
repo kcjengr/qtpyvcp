@@ -1,15 +1,14 @@
 import vtk.qt
-from linuxcnc_wrapper import LinuxCncWrapper
 from qtpyvcp.utilities import logger
 
 LOG = logger.getLogger(__name__)
 
 class MachineActor(vtk.vtkCubeAxesActor):
-    def __init__(self):
+    def __init__(self, linuxcncDataSource):
         super(MachineActor, self).__init__()
-        self._linuxcnc_wrapper = LinuxCncWrapper()
-        axis = self._linuxcnc_wrapper.getAxis()
-        units = self._linuxcnc_wrapper.getProgramUnits()
+        self._datasource = linuxcncDataSource
+        axis = self._datasource.getAxis()
+        units = self._datasource.getProgramUnits()
 
         x_max = axis[0]["max_position_limit"]
         x_min = axis[0]["min_position_limit"]

@@ -1,16 +1,15 @@
 import vtk.qt
-from linuxcnc_wrapper import LinuxCncWrapper
 from qtpyvcp.utilities import logger
 
 LOG = logger.getLogger(__name__)
 
 class AxesActor(vtk.vtkAxesActor):
-    def __init__(self):
+    def __init__(self, linuxcncDataSource):
         super(AxesActor, self).__init__()
-        self._linuxcnc_wrapper = LinuxCncWrapper()
-        self._axis_mask = self._linuxcnc_wrapper.getAxisMask()
+        self._datasource = linuxcncDataSource
+        self._axis_mask = self._datasource.getAxisMask()
 
-        if  self._linuxcnc_wrapper.isMetric():
+        if  self._datasource.isMachineMetric():
             self.length = 20.0
         else:
             self.length = 0.5

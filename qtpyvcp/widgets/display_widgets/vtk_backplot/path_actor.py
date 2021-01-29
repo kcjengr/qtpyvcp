@@ -1,27 +1,26 @@
 import vtk.qt
 from axes_actor import AxesActor
-from linuxcnc_wrapper import LinuxCncWrapper
 from qtpyvcp.utilities import logger
 
 LOG = logger.getLogger(__name__)
 
 class PathActor(vtk.vtkActor):
-    def __init__(self):
+    def __init__(self, linuxcncDataSource):
         super(PathActor, self).__init__()
-        self._linuxcnc_wrapper = LinuxCncWrapper()
+        self._datasource = linuxcncDataSource
 
         self.origin_index = None
         self.origin_cords = None
 
 
-        if self._linuxcnc_wrapper.isMetric():
+        if self._datasource.isMachineMetric():
             self.length = 2.5
         else:
             self.length = 0.25
 
-        self.axes_actor = AxesActor()
+        self.axes_actor = AxesActor(self._datasource)
 
-        if self._linuxcnc_wrapper.isLathe():
+        if self._datasource.isMachineLathe():
             self.axes_actor.SetTotalLength(self.length, 0, self.length)
         else:
             self.axes_actor.SetTotalLength(self.length, self.length, self.length)

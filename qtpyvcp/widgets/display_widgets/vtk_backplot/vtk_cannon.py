@@ -12,9 +12,9 @@ vtk.qt.QVTKRWIBase = "QGLWidget"
 # Fix end
 
 from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import StatCanon
+from linuxcnc_datasource import LinuxCncDataSource
 
 from path_actor import PathActor
-from linuxcnc_wrapper import LinuxCncWrapper
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
@@ -38,7 +38,7 @@ TOOL_COLOR_MAP = (
 class VTKCanon(StatCanon):
     def __init__(self, colors=COLOR_MAP, *args, **kwargs):
         super(VTKCanon, self).__init__(*args, **kwargs)
-        self._linuxcnc_wrapper = LinuxCncWrapper()
+        self._datasource = LinuxCncDataSource()
 
         self.index_map = dict()
 
@@ -60,7 +60,7 @@ class VTKCanon(StatCanon):
 
         origin = 540
 
-        self.path_actors[origin] = PathActor()
+        self.path_actors[origin] = PathActor(self._datasource)
         self.path_points[origin] = list()
 
         self.origin = origin
@@ -111,7 +111,7 @@ class VTKCanon(StatCanon):
 
         origin = self.index_map[index]
         if origin not in self.path_actors.keys():
-            self.path_actors[origin] = PathActor()
+            self.path_actors[origin] = PathActor(self._datasource)
             self.path_points[origin] = list()
 
             self.previous_origin = self.origin
@@ -139,7 +139,7 @@ class VTKCanon(StatCanon):
 
         path_points = self.path_points.get(self.origin)
 
-        if self._linuxcnc_wrapper.isMetric():
+        if self._datasource.isMachineMetric():
             start_point_list = list()
             for point in start_point: # TODO: here it should be start_point not end_point
                 point *= 25.4 # TODO: why is this conversion needed for metric? On the else branch, there is no conversion
