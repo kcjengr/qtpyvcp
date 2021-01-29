@@ -74,20 +74,22 @@ class LinuxCncDataSource(QObject):
         self.g5xOffsetChanged.emit(offset)
 
     def __handleG5xIndexChange(self, value):
-        LOG.debug("__handleG5xIndexChange: {}".format(type(value)))
-        self.g5xIndexChanged.emit(value)
+        LOG.debug("__handleG5xIndexChange: {}".format(value - 1))
+        self.g5xIndexChanged.emit(value - 1)
 
     def __handleRotationChangeXY(self, value):
-        LOG.debug("__handleRotationChangeXY: {}".format(type(value)))
+        LOG.debug("__handleRotationChangeXY: {}".format(value))
         self.rotationChanged.emit(value)
 
     def __handleOffsetTableChanged(self, offset_table):
         #LOG.debug("__handleOffsetTableChanged: {}".format(type(offset_table)))
         self.offsetTableChanged.emit(offset_table)
 
-    def __handleActiveOffsetChanged(self, active_offset):
-        LOG.debug("__handleActiveOffsetChanged: {}".format(type(active_offset)))
-        self.activeOffsetChanged.emit(active_offset)
+    def __handleActiveOffsetChanged(self, active_offset_index):
+        # the first one is g53 - machine coordinates, we're not interested in that one
+        current_wcs_index = active_offset_index - 1
+        LOG.debug("__handleActiveOffsetChanged index: {}".format(current_wcs_index))
+        self.activeOffsetChanged.emit(current_wcs_index)
 
     def __handleToolOffsetChanged(self, tool_offset):
         #LOG.debug("__handleToolOffsetChanged: {}".format(type(tool_offset)))
@@ -124,10 +126,12 @@ class LinuxCncDataSource(QObject):
     def isModeAuto(self):
         return str(self._status.task_mode) == "Auto"
 
-    def getG5x_index(self):
-        return self._status.stat.g5x_index
+    def getActiveWcsIndex(self):
+        # in the stat, the first one the list is G53 (Machine Coordinates)
+        # therefore to get the correct index of the G54 we need to do a -1
+        return self._status.stat.g5x_index - 1
 
-    def getG5x_offset(self):
+    def getActiveWcsOffsets(self):
         return self._status.stat.g5x_offset
 
     def getG92_offset(self):
@@ -137,4 +141,5 @@ class LinuxCncDataSource(QObject):
         return self._status.stat.rotation_xy
 
     def getWcsOffsets(self):
+        # returns a dictionary with the coordinate systems from 0 to 8 (g54 up to g59.3)
         return self._offsettable.getOffsetTable()

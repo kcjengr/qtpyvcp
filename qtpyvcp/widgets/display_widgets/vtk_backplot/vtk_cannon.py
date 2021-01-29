@@ -40,31 +40,21 @@ class VTKCanon(StatCanon):
         super(VTKCanon, self).__init__(*args, **kwargs)
         self._datasource = LinuxCncDataSource()
 
-        self.index_map = dict()
-
-        self.index_map[1] = 540
-        self.index_map[2] = 550
-        self.index_map[3] = 560
-        self.index_map[4] = 570
-        self.index_map[5] = 580
-        self.index_map[6] = 590
-        self.index_map[7] = 591
-        self.index_map[8] = 592
-        self.index_map[9] = 593
-
         self.path_colors = colors
         self.path_actors = OrderedDict()
         self.path_points = OrderedDict()
         self.tool_path_color = None
         self.prev_tool_path_color = None
 
-        origin = 540
+        LOG.debug("---------VTKCanon init")
+        #TODO: figure the correct way to do this
+        active_wcs_index = 0 #self._datasource.getActiveWcsIndex()
 
-        self.path_actors[origin] = PathActor(self._datasource)
-        self.path_points[origin] = list()
+        self.path_actors[active_wcs_index] = PathActor(self._datasource)
+        self.path_points[active_wcs_index] = list()
 
-        self.origin = origin
-        self.previous_origin = origin
+        self.active_wcs_index = active_wcs_index
+        self.previous_wcs_index = active_wcs_index
 
         self.ignore_next = False  # hacky way to ignore the second point next to a offset change
 
@@ -108,14 +98,14 @@ class VTKCanon(StatCanon):
         return x, y, z, a, b, c, u, v, w
 
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
+        LOG.debug("---------received offset change", index)
+        new_wcs = index - 1 #this index counts also G53 so we need to do -1
+        if new_wcs not in self.path_actors.keys():
+            self.path_actors[new_wcs] = PathActor(self._datasource)
+            self.path_points[new_wcs] = list()
 
-        origin = self.index_map[index]
-        if origin not in self.path_actors.keys():
-            self.path_actors[origin] = PathActor(self._datasource)
-            self.path_points[origin] = list()
-
-            self.previous_origin = self.origin
-            self.origin = origin
+            self.previous_wcs_index = self.active_wcs_index
+            self.active_wcs_index = new_wcs
 
     def add_path_point(self, line_type, start_point, end_point):
 
@@ -132,12 +122,12 @@ class VTKCanon(StatCanon):
             self.ignore_next = False
             return
 
-        if self.previous_origin != self.origin:
-            self.previous_origin = self.origin
+        if self.previous_wcs_index != self.active_wcs_index:
+            self.previous_wcs_index = self.active_wcs_index
             self.ignore_next = True
             return
 
-        path_points = self.path_points.get(self.origin)
+        path_points = self.path_points.get(self.active_wcs_index)
 
         if self._datasource.isMachineMetric():
             start_point_list = list()
@@ -208,7 +198,7 @@ class VTKCanon(StatCanon):
 
             # free up memory, lots of it for big files
 
-            self.path_points[self.origin] = list()
+            self.path_points[self.active_wcs_index] = list()
 
             if path_actor is not None:
                 path_actor.poly_data.SetPoints(path_actor.points)
