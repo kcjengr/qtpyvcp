@@ -2,6 +2,7 @@ import linuxcnc
 import os
 from collections import OrderedDict
 from operator import add
+import time
 
 import vtk
 import vtk.qt
@@ -110,7 +111,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         #self.nav_style = vtk.vtkInteractorStyleMultiTouchCamera()
 
         self.interactor = self.renderer_window.GetInteractor()
-        self.interactor.SetInteractorStyle(vtk.vtkInteractorStyleMultiTouchCamera())
+        self.interactor.SetInteractorStyle(None)
         self.interactor.SetRenderWindow(self.renderer_window)
 
         self.machine_actor = MachineActor(self._datasource)
@@ -401,9 +402,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.load_program(self._last_filename)
 
     def load_program(self, fname=None):
-
-        LOG.debug("-------initial path actors count: {}".format(len(self.path_actors.items())))
-
         LOG.debug("-------load_program")
         for wcs_index, actor in self.path_actors.items():
             LOG.debug("-------load_program wcs_index: {}".format(wcs_index))
@@ -418,13 +416,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.offset_axes.clear()
         self.program_bounds_actors.clear()
 
+
+        start_time = time.time()
+
         if fname:
             self.load(fname)
 
         if self.canon is None:
             return
 
+        LOG.debug("-------Load time %s seconds ---" % (time.time() - start_time))
+
         self.canon.draw_lines()
+
+        LOG.debug("-------Draw time %s seconds ---" % (time.time() - start_time))
         self.path_actors = self.canon.get_path_actors()
 
         for wcs_index, actor in self.path_actors.items():

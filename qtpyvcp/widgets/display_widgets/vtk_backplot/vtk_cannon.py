@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from random import choice
 
+import sys
 import vtk
 import vtk.qt
 
@@ -20,7 +21,7 @@ LOG = logger.getLogger(__name__)
 
 COLOR_MAP = {
     'traverse': (188, 252, 201, 255),
-    'arcfeed': (255, 255, 255, 128),
+    'arcfeed': (255, 0, 0, 128),
     'feed': (255, 255, 255, 128),
     'dwell': (100, 100, 100, 255),
     'user': (100, 100, 100, 255),
@@ -48,7 +49,7 @@ class VTKCanon(StatCanon):
 
         LOG.debug("---------VTKCanon init")
         #TODO: figure the correct way to do this
-        active_wcs_index = 0 #self._datasource.getActiveWcsIndex()
+        active_wcs_index = self._datasource.getActiveWcsIndex()
 
         self.path_actors[active_wcs_index] = PathActor(self._datasource)
         self.path_points[active_wcs_index] = list()
@@ -109,15 +110,6 @@ class VTKCanon(StatCanon):
 
     def add_path_point(self, line_type, start_point, end_point):
 
-        if self.tool_path_color is not None:
-            color = self.tool_path_color
-        else:
-            color = self.path_colors[line_type]
-
-        if line_type != self.last_line_type:
-            self.last_line_type = line_type
-            LOG.debug("---------line_type: {}, path_color: {}".format(line_type, color))
-
         if self.ignore_next is True:
             self.ignore_next = False
             return
@@ -127,57 +119,41 @@ class VTKCanon(StatCanon):
             self.ignore_next = True
             return
 
-        path_points = self.path_points.get(self.active_wcs_index)
+        line = list()
+        line.append(start_point[:3])
+        line.append(end_point[:3])
 
-        #TODO: figure out why we need this conversion
-        if self._datasource.isMachineMetric():
-            start_point_list = list()
-            for point in start_point:
-                point *= 25.4
-                start_point_list.append(point)
-
-            end_point_list = list()
-            for point in end_point:
-                point *= 25.4
-                end_point_list.append(point)
-
-            line = list()
-            line.append(start_point_list)
-            line.append(end_point_list)
-
-            path_points.append((line_type, line, color))
-
-        else:
-            line = list()
-            line.append(start_point)
-            line.append(end_point)
-
-            path_points.append((line_type, line, color))
+        self.path_points.get(self.active_wcs_index).append((line_type, line))
 
     def draw_lines(self):
+        LOG.debug("---------path points size: {}".format(sys.getsizeof(self.path_points)))
+        LOG.debug("---------path points length: {}".format(len(self.path_points)))
 
-        for origin, data in self.path_points.items():
+        if self._datasource.isMachineMetric():
+            multiplication_factor = 25.4
+        else:
+            multiplication_factor = 1
 
-            path_actor = self.path_actors.get(origin)
+        for wcs_index, data in self.path_points.items():
+            # LOG.debug("---------origin: {}".format(wcs_index))
+            # LOG.debug("---------data: {}".format(data))
+            path_actor = self.path_actors.get(wcs_index)
 
             index = 0
 
             end_point = None
-            last_line_type = None
 
-            for line_type, line_data, color in data:
-                # LOG.debug("line_type {}, line_data {}".format(line_type, line_data))
+            for line_type, line_data in data:
 
                 start_point = line_data[0]
                 end_point = line_data[1]
-                last_line_type = line_type
 
-                path_actor.points.InsertNextPoint(start_point[:3])
+                path_actor.points.InsertNextPoint(start_point[0] * multiplication_factor,
+                                                  start_point[1] * multiplication_factor,
+                                                  start_point[2] * multiplication_factor)
+                LOG.debug("---------start point: {}".format(index))
 
-                if line_type == "traverse":
-                    path_actor.colors.InsertNextTypedTuple(COLOR_MAP.get("traverse"))
-                else:
-                    path_actor.colors.InsertNextTypedTuple(color)
+                path_actor.colors.InsertNextTypedTuple(COLOR_MAP.get(line_type))
 
                 line = vtk.vtkLine()
                 line.GetPointIds().SetId(0, index)
@@ -188,8 +164,11 @@ class VTKCanon(StatCanon):
                 index += 1
 
             if end_point:
-                path_actor.points.InsertNextPoint(end_point[:3])
-                path_actor.colors.InsertNextTypedTuple(color)
+                path_actor.points.InsertNextPoint(end_point[0] * multiplication_factor,
+                                                  end_point[1] * multiplication_factor,
+                                                  end_point[2] * multiplication_factor)
+                LOG.debug("---------end point: {}".format(index))
+                #path_actor.colors.InsertNextTypedTuple(color)
 
                 line = vtk.vtkLine()
                 line.GetPointIds().SetId(0, index - 1)
