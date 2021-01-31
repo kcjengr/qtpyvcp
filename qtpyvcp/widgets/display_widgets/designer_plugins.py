@@ -51,6 +51,8 @@ from vtk_backplot.vtk_backplot import VTKBackPlot
 class VTKWidgetPlugin(_DesignerPlugin):
     def pluginClass(self):
         return VTKBackPlot
+    def isContainer(self):
+        return True
 
 from atc_widget.atc import DynATC
 class DynATCPlugin(_DesignerPlugin):
