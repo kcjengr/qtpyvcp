@@ -267,6 +267,20 @@ class ToolTable(QTableView):
             return
 
         tdata = self.tool_model.toolDataFromRow(current_row)
+        tnum = tdata['T']
+
+        # should not delete tool if currently loaded in spindle. Warn user
+        if tnum == self.tool_model.stat.tool_in_spindle:
+
+            box = QMessageBox(QMessageBox.Warning,
+                              "Can't delete current tool!",
+                              "Tool #{} is currently loaded in the spindle.\n"
+                              "Please remove tool from spindle and try again.".format(tnum),
+                              QMessageBox.Ok,
+                              parent=self)
+            box.show()
+            return False
+
         if not self.confirmAction('Are you sure you want to delete T{tdata[T]}?\n'
                                   '"{tdata[R]}"'.format(tdata=tdata)):
             return
