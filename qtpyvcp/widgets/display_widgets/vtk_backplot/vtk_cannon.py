@@ -1,22 +1,13 @@
-from collections import OrderedDict
-from random import choice
-
 import sys
+from collections import OrderedDict
+
 import vtk
 import vtk.qt
-
-# Fix poligons not drawing correctly on some GPU
-# https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1
-
-vtk.qt.QVTKRWIBase = "QGLWidget"
-
-# Fix end
-
-from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import StatCanon
 from linuxcnc_datasource import LinuxCncDataSource
-
 from path_actor import PathActor
 from qtpyvcp.utilities import logger
+from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import StatCanon
+
 LOG = logger.getLogger(__name__)
 
 COLOR_MAP = {
@@ -26,15 +17,6 @@ COLOR_MAP = {
     'dwell': (100, 100, 100, 255),
     'user': (100, 100, 100, 255),
 }
-
-TOOL_COLOR_MAP = (
-    (255, 0, 0, 255),
-    (0, 255, 0, 255),
-    (0, 0, 255, 255),
-    (255, 255, 0, 255),
-    (0, 255, 255, 255),
-    (255, 0, 255, 255),
-)
 
 class VTKCanon(StatCanon):
     def __init__(self, colors=COLOR_MAP, *args, **kwargs):
@@ -58,25 +40,6 @@ class VTKCanon(StatCanon):
         self.previous_wcs_index = active_wcs_index
 
         self.ignore_next = False  # hacky way to ignore the second point next to a offset change
-
-        self.multitool_colors = False #TODO: add a signal to set this true, but default it should be false
-
-        self.last_line_type = None
-
-    def change_tool(self, pocket):
-        super(VTKCanon, self).change_tool(pocket)
-
-        if self.multitool_colors is True:
-            self.tool_path_color = choice(TOOL_COLOR_MAP)
-
-            while self.tool_path_color == self.prev_tool_path_color:
-                self.tool_path_color = choice(TOOL_COLOR_MAP)
-
-            self.prev_tool_path_color = self.tool_path_color
-        else:
-            self.tool_path_color = None
-
-        LOG.debug("TOOL CHANGE {} color {}".format(pocket, self.tool_path_color))
 
     def comment(self, comment):
         LOG.debug("G-code Comment: %s", comment)
@@ -109,7 +72,6 @@ class VTKCanon(StatCanon):
             self.active_wcs_index = new_wcs
 
     def add_path_point(self, line_type, start_point, end_point):
-
         if self.ignore_next is True:
             self.ignore_next = False
             return
@@ -120,8 +82,8 @@ class VTKCanon(StatCanon):
             return
 
         line = list()
-        line.append(start_point[:3])
-        line.append(end_point[:3])
+        line.append(start_point[:3]) # add only the xyz components
+        line.append(end_point[:3]) # add only the xyz components
 
         self.path_points.get(self.active_wcs_index).append((line_type, line))
 
@@ -129,58 +91,39 @@ class VTKCanon(StatCanon):
         LOG.debug("---------path points size: {}".format(sys.getsizeof(self.path_points)))
         LOG.debug("---------path points length: {}".format(len(self.path_points)))
 
-        if self._datasource.isMachineMetric():
-            multiplication_factor = 25.4
-        else:
-            multiplication_factor = 1
+        # TODO: for some reason, we need to multiply for metric, find out why!
+        multiplication_factor = 25.4 if self._datasource.isMachineMetric() else 1
 
         for wcs_index, data in self.path_points.items():
-            # LOG.debug("---------origin: {}".format(wcs_index))
-            # LOG.debug("---------data: {}".format(data))
-            path_actor = self.path_actors.get(wcs_index)
-
             index = 0
 
-            end_point = None
-
-            for line_type, line_data in data:
-
-                start_point = line_data[0]
-                end_point = line_data[1]
-
-                path_actor.points.InsertNextPoint(start_point[0] * multiplication_factor,
-                                                  start_point[1] * multiplication_factor,
-                                                  start_point[2] * multiplication_factor)
-                LOG.debug("---------start point: {}".format(index))
-
-                path_actor.colors.InsertNextTypedTuple(COLOR_MAP.get(line_type))
-
-                line = vtk.vtkLine()
-                line.GetPointIds().SetId(0, index)
-                line.GetPointIds().SetId(1, index + 1)
-
-                path_actor.lines.InsertNextCell(line)
-
-                index += 1
-
-            if end_point:
-                path_actor.points.InsertNextPoint(end_point[0] * multiplication_factor,
-                                                  end_point[1] * multiplication_factor,
-                                                  end_point[2] * multiplication_factor)
-                LOG.debug("---------end point: {}".format(index))
-                #path_actor.colors.InsertNextTypedTuple(color)
-
-                line = vtk.vtkLine()
-                line.GetPointIds().SetId(0, index - 1)
-                line.GetPointIds().SetId(1, index)
-
-                path_actor.lines.InsertNextCell(line)
-
-            # free up memory, lots of it for big files
-
-            self.path_points[self.active_wcs_index] = list()
-
+            path_actor = self.path_actors.get(wcs_index)
             if path_actor is not None:
+                for line_type, line_data in data:
+                    start_point = line_data[0]
+                    end_point = line_data[1]
+
+                    path_actor.points.InsertNextPoint(start_point[0] * multiplication_factor,
+                                                      start_point[1] * multiplication_factor,
+                                                      start_point[2] * multiplication_factor)
+
+                    path_actor.points.InsertNextPoint(end_point[0] * multiplication_factor,
+                                                      end_point[1] * multiplication_factor,
+                                                      end_point[2] * multiplication_factor)
+
+                    path_actor.colors.InsertNextTypedTuple(COLOR_MAP.get(line_type))
+
+                    line = vtk.vtkLine()
+                    line.GetPointIds().SetId(0, index)
+                    line.GetPointIds().SetId(1, index + 1)
+
+                    path_actor.lines.InsertNextCell(line)
+
+                    index += 2
+
+                # free up memory, lots of it for big files
+                self.path_points[wcs_index] = list()
+
                 path_actor.poly_data.SetPoints(path_actor.points)
                 path_actor.poly_data.SetLines(path_actor.lines)
                 path_actor.poly_data.GetCellData().SetScalars(path_actor.colors)

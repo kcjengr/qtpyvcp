@@ -48,34 +48,13 @@ class ProgramBoundsActor(vtk.vtkCubeAxesActor):
 
         if not IN_DESIGNER:
             bounds = getSetting('backplot.show-program-bounds')
-            if bounds and bounds.value:
-                self.XAxisVisibilityOn()
-                self.YAxisVisibilityOn()
-                self.ZAxisVisibilityOn()
-            else:
-                self.XAxisVisibilityOff()
-                self.YAxisVisibilityOff()
-                self.ZAxisVisibilityOff()
+            self.showProgramBounds(bounds and bounds.value)
 
             ticks = getSetting('backplot.show-program-ticks')
-            if ticks and ticks.value:
-                self.XAxisTickVisibilityOn()
-                self.YAxisTickVisibilityOn()
-                self.ZAxisTickVisibilityOn()
-            else:
-                self.XAxisTickVisibilityOff()
-                self.YAxisTickVisibilityOff()
-                self.ZAxisTickVisibilityOff()
+            self.showProgramTicks(ticks and ticks.value)
 
             labels = getSetting('backplot.show-program-labels')
-            if labels and labels.value:
-                self.XAxisLabelVisibilityOn()
-                self.YAxisLabelVisibilityOn()
-                self.ZAxisLabelVisibilityOn()
-            else:
-                self.XAxisLabelVisibilityOff()
-                self.YAxisLabelVisibilityOff()
-                self.ZAxisLabelVisibilityOff()
+            self.showProgramLabels(labels and labels.value)
 
     def showProgramLabels(self, labels):
         if labels:
