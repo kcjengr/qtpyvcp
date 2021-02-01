@@ -34,6 +34,7 @@ from linuxcnc_datasource import LinuxCncDataSource
 LOG = logger.getLogger(__name__)
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
+NUMBER_OF_WCS = 9
 
 # turn on antialiasing
 from PyQt5.QtOpenGL import QGLFormat
@@ -44,39 +45,39 @@ QGLFormat.setDefaultFormat(f)
 class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
+        LOG.debug("---------using refactored vtk code")
         self._datasource = LinuxCncDataSource()
-
-        LOG.debug("---------using my vtk code")
+        self.canon_class = VTKCanon
 
         self.parent = parent
         self.ploter_enabled = True
+        self.touch_enabled = False
+        self.pan_mode = False
+        self.line = None
+        self._last_filename = str()
+        self.rotating = 0
+        self.panning = 0
+        self.zooming = 0
 
-        self.canon_class = VTKCanon
+        # assume that we are standing upright and compute azimuth around that axis
+        self.natural_view_up = (0, 0, 1)
 
         # properties
         self._background_color = QColor(0, 0, 0)
         self._background_color2 = QColor(0, 0, 0)
         self._enableProgramTicks = True
 
-        # Todo: get active part
-
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
-
-        LOG.debug("---------active_wcs_index {}".format(self.active_wcs_index))
-
         self.wcs_offsets = self._datasource.getWcsOffsets()
-        LOG.debug("---------wcs_offsets {}".format(self.wcs_offsets))
-
-
         self.active_wcs_offset = self._datasource.getActiveWcsOffsets()
         self.g92_offset = self._datasource.getG92_offset()
-        self.rotation_offset = self._datasource.getRotationXY()
 
+        LOG.debug("---------active_wcs_index {}".format(self.active_wcs_index))
         LOG.debug("---------active_wcs_offset {}".format(self.active_wcs_offset))
+        LOG.debug("---------wcs_offsets {}".format(self.wcs_offsets))
 
-        self.original_g5x_offset = [0.0] * 9
-        self.original_g92_offset = [0.0] * 9
-        self.original_rotation_offset = 0.0
+        self.original_g5x_offset = [0.0] * NUMBER_OF_WCS
+        self.original_g92_offset = [0.0] * NUMBER_OF_WCS
 
         self.spindle_position = (0.0, 0.0, 0.0)
         self.spindle_rotation = (0.0, 0.0, 0.0)
@@ -95,10 +96,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.clipping_range_far = 100.0 #TODO: check this value
 
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
-
-        # assume that we are standing upright and compute azimuth around that axis
-        self.natural_view_up = (0, 0, 1)
-
         self.renderer = vtk.vtkRenderer()
         self.renderer.SetActiveCamera(self.camera)
 
@@ -106,12 +103,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer_window.AddRenderer(self.renderer)
 
         # self.nav_style = vtk.vtkInteractorStyleTrackballCamera()
-        # self.SetInteractorStyle(self.nav_style)
-
-        #self.nav_style = vtk.vtkInteractorStyleMultiTouchCamera()
+        self.nav_style = vtk.vtkInteractorStyleMultiTouchCamera() if self.touch_enabled else None
 
         self.interactor = self.renderer_window.GetInteractor()
-        self.interactor.SetInteractorStyle(None)
+        self.interactor.SetInteractorStyle(self.nav_style)
         self.interactor.SetRenderWindow(self.renderer_window)
 
         self.machine_actor = MachineActor(self._datasource)
@@ -120,11 +115,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.axes_actor = AxesActor(self._datasource)
 
         LOG.debug("---------translate1: {}".format(self.active_wcs_offset[:3]))
-        LOG.debug("---------translate2: {}".format(*self.active_wcs_offset[:3]))
+        LOG.debug("---------active_wcs_offset: {}".format(self.active_wcs_offset))
 
         transform = vtk.vtkTransform()
         transform.Translate(*self.active_wcs_offset[:3])
-        transform.RotateZ(self.rotation_offset)
+        transform.RotateZ(self.active_wcs_offset[9])
         self.axes_actor.SetUserTransform(transform)
 
         self.path_cache_actor = PathCacheActor(self.tooltip_position)
@@ -147,7 +142,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                 actor_transform = vtk.vtkTransform()
                 actor_transform.Translate(*current_offsets[:3])
-                actor_transform.RotateWXYZ(*current_offsets[5:9])
+                actor_transform.RotateZ(current_offsets[9])
 
                 path_actor.SetUserTransform(actor_transform)
                 path_actor.SetPosition(*current_offsets[:3])
@@ -172,6 +167,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.ResetCamera()
 
+        # Add the observers to watch for particular events. These invoke Python functions.
         self.interactor.AddObserver("LeftButtonPressEvent", self.button_event)
         self.interactor.AddObserver("LeftButtonReleaseEvent", self.button_event)
         self.interactor.AddObserver("MiddleButtonPressEvent", self.button_event)
@@ -198,7 +194,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._datasource.toolOffsetChanged.connect(self.update_tool)
 
         # self.status.g5x_index.notify(self.update_g5x_index)
-        # self.status.rotation_xy.notify(self.update_rotation_xy)
 
         self.line = None
         self._last_filename = str()
@@ -288,10 +283,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def keypress(self, obj, event):
         key = obj.GetKeySym()
-        if key == "w":
-            self.wireframe()
-        elif key == "s":
-            self.surface()
+        if key == 'w' or key == 's':
+            self._setRepresentation(key)
 
     # Functions that translate the events into camera motions.
 
@@ -316,8 +309,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         t.Translate(-fp[0], -fp[1], -fp[2])
         camera.ApplyTransform(t)
 
-    # Pan translates x-y motion into translation of the focal point and
-    # position.
+    # Pan translates x-y motion into translation of the focal point and position.
     def pan(self, renderer, camera, x, y, lastX, lastY, centerX, centerY):
         FPoint = camera.GetFocalPoint()
         FPoint0 = FPoint[0]
@@ -372,24 +364,18 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer_window.Render()
 
-    # Wireframe sets the representation of all actors to wireframe.
-    def wireframe(self):
+    # Surface sets the representation of all actors to surface or wireframe.
+    def _setRepresentation(self, keyPressed):
         actors = self.renderer.GetActors()
         actors.InitTraversal()
         actor = actors.GetNextItem()
         while actor:
-            actor.GetProperty().SetRepresentationToWireframe()
-            actor = actors.GetNextItem()
-
-        self.renderer_window.Render()
-
-    # Surface sets the representation of all actors to surface.
-    def surface(self):
-        actors = self.renderer.GetActors()
-        actors.InitTraversal()
-        actor = actors.GetNextItem()
-        while actor:
-            actor.GetProperty().SetRepresentationToSurface()
+            if keyPressed == 's':
+                # sets the representation of all actors to surface.
+                actor.GetProperty().SetRepresentationToSurface()
+            elif keyPressed == 'w':
+                # sets the representation of all actors to wireframe.
+                actor.GetProperty().SetRepresentationToWireframe()
             actor = actors.GetNextItem()
         self.renderer_window.Render()
 
@@ -403,6 +389,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def load_program(self, fname=None):
         LOG.debug("-------load_program")
+
+        # Cleanup the scene, remove any previous actors if any
         for wcs_index, actor in self.path_actors.items():
             LOG.debug("-------load_program wcs_index: {}".format(wcs_index))
             axes_actor = actor.get_axes_actor()
@@ -415,7 +403,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_actors.clear()
         self.offset_axes.clear()
         self.program_bounds_actors.clear()
-
 
         start_time = time.time()
 
@@ -441,7 +428,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
             actor_transform = vtk.vtkTransform()
             actor_transform.Translate(*current_offsets[:3])
-            actor_transform.RotateWXYZ(*current_offsets[5:9])
+            actor_transform.RotateZ(current_offsets[9])
 
             actor.SetUserTransform(actor_transform)
             #actor.SetPosition(path_position[:3])
@@ -463,7 +450,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.renderer.AddActor(actor)
 
         self.renderer.AddActor(self.axes_actor)
-        self.update_render()
+        self.renderer_window.Render()
 
     def motion_type(self, value):
         LOG.debug("-----motion_type is: {}".format(value))
@@ -489,7 +476,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         # self.spindle_actor.SetPosition(self.spindle_position)
         # self.tool_actor.SetPosition(self.spindle_position)
         self.path_cache_actor.add_line_point(self.tooltip_position)
-        self.update_render()
+        self.renderer_window.Render()
 
     def on_offset_table_changed(self, table):
         LOG.debug("on_offset_table_changed")
@@ -500,7 +487,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         transform = vtk.vtkTransform()
         transform.Translate(*offset[:3])
-        transform.RotateWXYZ(*offset[5:9])
+        transform.RotateZ(offset[9])
 
         self.axes_actor.SetUserTransform(transform)
 
@@ -516,7 +503,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             if wcs_index == self.active_wcs_index:
                 path_transform = vtk.vtkTransform()
                 path_transform.Translate(*offset[:3])
-                path_transform.RotateWXYZ(*offset[5:9])
+                path_transform.RotateZ(offset[9])
 
                 axes.SetUserTransform(path_transform)
                 path_actor.SetUserTransform(path_transform)
@@ -529,40 +516,41 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.program_bounds_actors[wcs_index] = program_bounds_actor
 
         self.interactor.ReInitialize()
-        self.update_render()
+        self.renderer_window.Render()
 
-    def update_active_wcs(self, index):
-        self.active_wcs_index = index
-        LOG.debug("--------update_active_wcs index: {}".format(index))
+    def update_active_wcs(self, wcs_index):
+        self.active_wcs_index = wcs_index
+        LOG.debug("--------update_active_wcs index: {}".format(wcs_index))
         LOG.debug("--------self.wcs_offsets: {}".format(self.wcs_offsets))
-        position = self.wcs_offsets[index]
 
+        position = self.wcs_offsets[wcs_index]
         LOG.debug("--------position: {}".format(position))
 
         transform = vtk.vtkTransform()
         transform.Translate(*position[:3])
-        transform.RotateWXYZ(*position[5:9])
+        transform.RotateZ(position[9])
 
         self.axes_actor.SetUserTransform(transform)
 
         self.interactor.ReInitialize()
-        self.update_render()
+        self.renderer_window.Render()
 
     def update_g92_offset(self, g92_offset):
-
-        LOG.debug("update_g92_offset")
+        LOG.debug("---------update_g92_offset: {}".format(g92_offset))
         if self._datasource.isModeMdi() or self._datasource.isModeAuto():
-
             self.g92_offset = g92_offset
 
             path_offset = list(map(add, self.g92_offset, self.original_g92_offset))
+            LOG.debug("---------path_offset: {}".format(path_offset))
 
-            for origin, actor in self.path_actors.items():
-                # LOG.debug('G92 Update Started')
+            for wcs_index, actor in self.path_actors.items():
+
+                old_program_bounds_actor = self.program_bounds_actors[wcs_index]
+                self.renderer.RemoveActor(old_program_bounds_actor)
                 # determine change in g92 offset since path was drawn
-                index = self.origin_map[origin] - 1
 
-                new_path_position = list(map(add, self.wcs_offsets[index][:9], path_offset))
+                new_path_position = list(map(add, self.wcs_offsets[wcs_index][:9], path_offset))
+                LOG.debug("---------new_path_position: {}".format(path_offset))
 
                 axes = actor.get_axes_actor()
 
@@ -578,37 +566,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
                 self.renderer.AddActor(program_bounds_actor)
 
-                self.program_bounds_actors[origin] = program_bounds_actor
+                self.program_bounds_actors[wcs_index] = program_bounds_actor
 
             self.interactor.ReInitialize()
-            self.update_render()
-
-    # def update_rotation_xy(self, rotation):
-    #
-    #     self.rotation_offset = rotation
-    #
-    #     # LOG.debug("Rotation: {}".format(rotation))  # in degrees
-    #     # ToDo: use transform matrix to rotate existing path?
-    #     # probably not worth it since rotation is not used much ...
-    #
-    #     # LOG.debug('rotate offset: {}'.format(rotation))
-    #     if str(self.status.task_mode) == "MDI":
-    #
-    #         # LOG.debug('Rotation Update Started')
-    #
-    #         transform = vtk.vtkTransform()
-    #         transform.Translate(*self.g5x_offset[:3])
-    #         transform.RotateZ(self.rotation_offset)
-    #
-    #         self.axes_actor.SetUserTransform(transform)
-    #         self.path_actor.SetUserTransform(transform)
-    #         self.extents_actor.SetBounds(*self.path_actor.GetBounds())
-    #
-    #         self.interactor.ReInitialize()
-    #         self.update_render()
-    #
-    #     # nasty hack so ensure the positions have updated before loading
-    #     # QTimer.singleShot(10, self.reload_program)
+            self.renderer_window.Render()
 
     def update_tool(self):
 
@@ -628,10 +589,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.AddActor(self.tool_actor)
 
-        self.update_render()
-
-    def update_render(self):
-        self.GetRenderWindow().Render()
+        self.renderer_window.Render()
 
     @Slot(bool)
     @Slot(object)
@@ -684,11 +642,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera.SetPosition(self.position_mult, -self.position_mult, self.position_mult)
         self.camera.SetViewUp(0, 0, 1)
         self.camera.SetFocalPoint(0, 0, 0)
-
-        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
-        self.renderer_window.Render()
-
-        self.interactor.ReInitialize()
+        self.__doCommonSetViewWork()
 
     @Slot()
     def setViewX(self):
@@ -696,11 +650,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera.SetPosition(0, -self.position_mult, 0)
         self.camera.SetViewUp(0, 0, 1)
         self.camera.SetFocalPoint(0, 0, 0)
-
-        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
-        self.renderer_window.Render()
-
-        self.interactor.ReInitialize()
+        self.__doCommonSetViewWork()
 
     @Slot()
     def setViewXZ(self):
@@ -708,11 +658,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera.SetPosition(0, self.position_mult, 0)
         self.camera.SetViewUp(1, 0, 0)
         self.camera.SetFocalPoint(0, 0, 0)
-
-        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
-        self.renderer_window.Render()
-
-        self.interactor.ReInitialize()
+        self.__doCommonSetViewWork()
 
     @Slot()
     def setViewXZ2(self):
@@ -720,11 +666,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera.SetPosition(0, -self.position_mult, 0)
         self.camera.SetViewUp(-1, 0, 0)
         self.camera.SetFocalPoint(0, 0, 0)
-
-        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
-        self.renderer_window.Render()
-
-        self.interactor.ReInitialize()
+        self.__doCommonSetViewWork()
 
     @Slot()
     def setViewY(self):
@@ -732,11 +674,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera.SetPosition(self.position_mult, 0, 0)
         self.camera.SetViewUp(0, 0, 1)
         self.camera.SetFocalPoint(0, 0, 0)
-
-        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
-        self.renderer_window.Render()
-
-        self.interactor.ReInitialize()
+        self.__doCommonSetViewWork()
 
     @Slot()
     def setViewZ(self):
@@ -744,41 +682,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.camera.SetPosition(0, 0, self.position_mult)
         self.camera.SetViewUp(0, 1, 0)
         self.camera.SetFocalPoint(0, 0, 0)
-
-        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
-        self.renderer_window.Render()
-
-        self.interactor.ReInitialize()
-
-    @Slot()
-    def printView(self):
-        LOG.debug('LOG.debug view stats')
-        fp = self.camera.GetFocalPoint()
-        LOG.debug('focal point {}'.format(fp))
-        p = self.camera.GetPosition()
-        print('position {}'.format(p))
-        # dist = math.sqrt( (p[0]-fp[0])**2 + (p[1]-fp[1])**2 + (p[2]-fp[2])**2 )
-        # print(dist)
-        # self.camera.SetPosition(10, -40, -1)
-        # self.setViewUp(0.0, 1.0, 0.0)
-        # self.renderer.ResetCamera()
-        vu = self.camera.GetViewUp()
-        LOG.debug('view up {}'.format(vu))
-        d = self.camera.GetDistance()
-        print('distance {}'.format(d))
-        # self.interactor.ReInitialize()
+        self.__doCommonSetViewWork()
 
     @Slot()
     def setViewZ2(self):
-
         self.camera.SetPosition(0, 0, self.position_mult)
         self.camera.SetViewUp(1, 0, 0)
         self.camera.SetFocalPoint(0, 0, 0)
-
-        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
-        self.renderer_window.Render()
-
-        self.interactor.ReInitialize()
+        self.__doCommonSetViewWork()
 
     @Slot()
     def setViewMachine(self):
@@ -804,11 +715,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                                 machine_center[2] + self.position_mult)
 
         self.camera.SetViewUp(0, 0, 1)
-
-        self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
-        self.renderer_window.Render()
-
-        self.interactor.ReInitialize()
+        self.__doCommonSetViewWork()
 
     @Slot()
     def setViewPath(self):
@@ -827,11 +734,31 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                                 -(position[0] + self.position_mult),
                                 position[0] + self.position_mult)
         self.camera.SetViewUp(0, 0, 1)
+        self.__doCommonSetViewWork()
 
+    def __doCommonSetViewWork(self):
+        # This is common logic for all setView**** methods.
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
         self.renderer_window.Render()
-
         self.interactor.ReInitialize()
+
+    @Slot()
+    def printView(self):
+        LOG.debug('LOG.debug view stats')
+        fp = self.camera.GetFocalPoint()
+        LOG.debug('focal point {}'.format(fp))
+        p = self.camera.GetPosition()
+        print('position {}'.format(p))
+        # dist = math.sqrt( (p[0]-fp[0])**2 + (p[1]-fp[1])**2 + (p[2]-fp[2])**2 )
+        # print(dist)
+        # self.camera.SetPosition(10, -40, -1)
+        # self.setViewUp(0.0, 1.0, 0.0)
+        # self.renderer.ResetCamera()
+        vu = self.camera.GetViewUp()
+        LOG.debug('view up {}'.format(vu))
+        d = self.camera.GetDistance()
+        print('distance {}'.format(d))
+        # self.interactor.ReInitialize()
 
     @Slot()
     def clearLivePlot(self):
@@ -839,11 +766,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.RemoveActor(self.path_cache_actor)
         self.path_cache_actor = PathCacheActor(self.tooltip_position)
         self.renderer.AddActor(self.path_cache_actor)
-        self.update_render()
+        self.renderer_window.Render()
 
     @Slot(bool)
     def enable_panning(self, enabled):
         self.pan_mode = enabled
+
+    @Slot(bool)
+    def enableMultiTouch(self, enabled):
+        self.touch_enabled = enabled
 
     @Slot()
     def zoomIn(self):
@@ -880,7 +811,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def showGrid(self, grid):
         LOG.debug('show grid')
         self.machine_actor.showGridlines(grid)
-        self.update_render()
+        self.renderer_window.Render()
 
     @Slot(bool)
     @Slot(object)
@@ -890,7 +821,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             program_bounds_actor = self.program_bounds_actors[wcs_index]
             if program_bounds_actor is not None:
                 program_bounds_actor.showProgramBounds(self.show_program_bounds)
-                self.update_render()
+                self.renderer_window.Render()
 
     @Slot()
     def toggleProgramBounds(self):
@@ -905,7 +836,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             program_bounds_actor = self.program_bounds_actors[wcs_index]
             if program_bounds_actor is not None:
                 program_bounds_actor.showProgramTicks(ticks)
-        self.update_render()
+        self.renderer_window.Render()
 
     @Slot()
     def toggleProgramTicks(self):
@@ -920,7 +851,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             program_bounds_actor = self.program_bounds_actors[wcs_index]
             if program_bounds_actor is not None:
                 program_bounds_actor.showProgramLabels(labels)
-        self.update_render()
+        self.renderer_window.Render()
 
     @Slot()
     def toggleProgramLabels(self):
@@ -932,7 +863,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(object)
     def showMachineBounds(self, bounds):
         self.machine_actor.showMachineBounds(bounds)
-        self.update_render()
+        self.renderer_window.Render()
 
     @Slot()
     def toggleMachineBounds(self):
@@ -942,7 +873,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(object)
     def showMachineTicks(self, ticks):
         self.machine_actor.showMachineTicks(ticks)
-        self.update_render()
+        self.renderer_window.Render()
 
     @Slot()
     def toggleMachineTicks(self):
@@ -952,7 +883,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(object)
     def showMachineLabels(self, labels):
         self.machine_actor.showMachineLabels(labels)
-        self.update_render()
+        self.renderer_window.Render()
 
     @Slot()
     def toggleMachineLabels(self):
@@ -961,21 +892,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot(bool)
     @Slot(object)
     def showMultiColorPath(self, color):
-        # if color:
-        #     self.machine_actor.XAxisLabelVisibilityOn()
-        #     self.machine_actor.YAxisLabelVisibilityOn()
-        #     self.machine_actor.ZAxisLabelVisibilityOn()
-        # else:
-        #     self.machine_actor.XAxisLabelVisibilityOff()
-        #     self.machine_actor.YAxisLabelVisibilityOff()
-        #     self.machine_actor.ZAxisLabelVisibilityOff()
-        # self.update_render()
         pass
 
     @Slot()
     def toggleMultiColorPath(self):
         pass
-    #     self.enablePathMultiColor(not)
 
     @Property(QColor)
     def backgroundColor(self):
@@ -986,7 +907,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._background_color = color
 
         self.renderer.SetBackground(color.getRgbF()[:3])
-        self.update_render()
+        self.renderer_window.Render()
 
     @Property(QColor)
     def backgroundColor2(self):
@@ -998,14 +919,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.GradientBackgroundOn()
         self.renderer.SetBackground2(color2.getRgbF()[:3])
-        self.update_render()
+        self.renderer_window.Render()
 
     @backgroundColor2.reset
     def backgroundColor2(self):
         self._background_color2 = QColor(0, 0, 0)
 
         self.renderer.GradientBackgroundOff()
-        self.update_render()
+        self.renderer_window.Render()
 
     @Property(bool)
     def enableProgramTicks(self):

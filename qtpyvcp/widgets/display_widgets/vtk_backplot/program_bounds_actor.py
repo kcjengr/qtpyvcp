@@ -66,6 +66,9 @@ class ProgramBoundsActor(vtk.vtkCubeAxesActor):
             self.YAxisLabelVisibilityOff()
             self.ZAxisLabelVisibilityOff()
 
+    def toggleProgramLabels(self):
+        self.showProgramLabels(not self.GetXAxisLabelVisibility())
+
     def showProgramTicks(self, ticks):
         if ticks:
             self.XAxisTickVisibilityOn()
@@ -76,6 +79,9 @@ class ProgramBoundsActor(vtk.vtkCubeAxesActor):
             self.YAxisTickVisibilityOff()
             self.ZAxisTickVisibilityOff()
 
+    def toggleProgramTicks(self):
+        self.showProgramTicks(not self.GetXAxisTickVisibility())
+
     def showProgramBounds(self, bounds):
         if bounds:
             self.XAxisVisibilityOn()
@@ -85,3 +91,6 @@ class ProgramBoundsActor(vtk.vtkCubeAxesActor):
             self.XAxisVisibilityOff()
             self.YAxisVisibilityOff()
             self.ZAxisVisibilityOff()
+
+    def toggleProgramBounds(self):
+        self.showProgramBounds(not self.GetXAxisVisibility())
