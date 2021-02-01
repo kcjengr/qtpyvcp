@@ -297,7 +297,10 @@ class ToolTable(DataPlugin):
                 if descriptor in 'TPXYZABCUVWDIJQR':
                     value = item[1:]
                     if descriptor in ('T', 'P', 'Q'):
+                        if descriptor == 'P' and 'P' not in self.columns:
+                            continue
                         try:
+                            print(value)
                             tool[descriptor] = int(value)
                         except:
                             LOG.error('Error converting value to int: {}'.format(value))
@@ -380,6 +383,9 @@ class ToolTable(DataPlugin):
                 (1 if col == self.columns[0] else 0)
             items.append('{:<{w}}'.format(COLUMN_LABELS[col], w=w))
 
+        if 'P' not in columns:
+            items.insert(1, 'P\t')
+
         items.append('Remark')
         lines.append(';' + ' '.join(items))
 
@@ -406,6 +412,8 @@ class ToolTable(DataPlugin):
             if comment is not '':
                 items.append('; ' + comment)
 
+            if 'P' not in columns:
+                items.insert(1, "0\t")
             lines.append(''.join(items))
 
         # for line in lines:
