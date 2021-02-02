@@ -183,6 +183,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer_window.Render()
         self.interactor.Start()
 
+        # Add the observers to watch for particular events. These invoke Python functions.
         self._datasource.programLoaded.connect(self.load_program)
         self._datasource.positionChanged.connect(self.update_position)
         self._datasource.motionTypeChanged.connect(self.motion_type)
@@ -192,19 +193,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._datasource.activeOffsetChanged.connect(self.update_active_wcs)
         self._datasource.toolTableChanged.connect(self.update_tool)
         self._datasource.toolOffsetChanged.connect(self.update_tool)
-
         # self.status.g5x_index.notify(self.update_g5x_index)
-
-        self.line = None
-        self._last_filename = str()
-
-        # Add the observers to watch for particular events. These invoke
-        # Python functions.
-        self.rotating = 0
-        self.panning = 0
-        self.zooming = 0
-
-        self.pan_mode = False
 
         # view settings
         connectSetting('backplot.show-grid', self.showGrid)
@@ -641,7 +630,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.active_view = 'P'
         self.camera.SetPosition(self.position_mult, -self.position_mult, self.position_mult)
         self.camera.SetViewUp(0, 0, 1)
-        self.camera.SetFocalPoint(0, 0, 0)
+        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
@@ -649,7 +638,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.active_view = 'X'
         self.camera.SetPosition(0, -self.position_mult, 0)
         self.camera.SetViewUp(0, 0, 1)
-        self.camera.SetFocalPoint(0, 0, 0)
+        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
@@ -657,7 +646,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.active_view = 'XZ'
         self.camera.SetPosition(0, self.position_mult, 0)
         self.camera.SetViewUp(1, 0, 0)
-        self.camera.SetFocalPoint(0, 0, 0)
+        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
@@ -665,7 +654,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.active_view = 'XZ2'
         self.camera.SetPosition(0, -self.position_mult, 0)
         self.camera.SetViewUp(-1, 0, 0)
-        self.camera.SetFocalPoint(0, 0, 0)
+        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
@@ -673,7 +662,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.active_view = 'Y'
         self.camera.SetPosition(self.position_mult, 0, 0)
         self.camera.SetViewUp(0, 0, 1)
-        self.camera.SetFocalPoint(0, 0, 0)
+        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
@@ -681,14 +670,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.active_view = 'Z'
         self.camera.SetPosition(0, 0, self.position_mult)
         self.camera.SetViewUp(0, 1, 0)
-        self.camera.SetFocalPoint(0, 0, 0)
+        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewZ2(self):
         self.camera.SetPosition(0, 0, self.position_mult)
         self.camera.SetViewUp(1, 0, 0)
-        self.camera.SetFocalPoint(0, 0, 0)
+        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
@@ -720,21 +709,19 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewPath(self):
         LOG.debug('-----setViewPath')
+        self.__setFocalPoint()
+
         position = self.wcs_offsets[self.active_wcs_index]
-
-        LOG.debug('-----position: {}'.format(position))
-
-        self.camera = self.renderer.GetActiveCamera()
-
-        self.camera.SetFocalPoint(position[0],
-                                  position[1],
-                                  position[2])
-
         self.camera.SetPosition(position[0] + self.position_mult,
                                 -(position[0] + self.position_mult),
                                 position[0] + self.position_mult)
         self.camera.SetViewUp(0, 0, 1)
         self.__doCommonSetViewWork()
+
+    def __setFocalPoint(self):
+        position = self.wcs_offsets[self.active_wcs_index]
+        LOG.debug('-----focal point: {}'.format(position))
+        self.camera.SetFocalPoint(position[:3])
 
     def __doCommonSetViewWork(self):
         # This is common logic for all setView**** methods.
@@ -778,27 +765,25 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def zoomIn(self):
-
-        camera = self.camera
-        if camera.GetParallelProjection():
-            parallelScale = camera.GetParallelScale() * 0.9
-            camera.SetParallelScale(parallelScale)
+        if self.camera.GetParallelProjection():
+            parallelScale = self.camera.GetParallelScale() * 0.9
+            self.camera.SetParallelScale(parallelScale)
+            LOG.debug("---camera parallel projection {}".format(parallelScale))
         else:
             self.renderer.ResetCameraClippingRange()
-            camera.Zoom(1.1)
+            self.camera.Zoom(1.1)
+            LOG.debug("---camera clipping range")
 
         self.renderer_window.Render()
 
     @Slot()
     def zoomOut(self):
-
-        camera = self.camera
-        if camera.GetParallelProjection():
-            parallelScale = camera.GetParallelScale() * 1.1
-            camera.SetParallelScale(parallelScale)
+        if self.camera.GetParallelProjection():
+            parallelScale = self.camera.GetParallelScale() * 1.1
+            self.camera.SetParallelScale(parallelScale)
         else:
             self.renderer.ResetCameraClippingRange()
-            camera.Zoom(0.9)
+            self.camera.Zoom(0.9)
 
         self.renderer_window.Render()
 
