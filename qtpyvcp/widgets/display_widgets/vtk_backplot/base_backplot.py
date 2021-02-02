@@ -1,10 +1,9 @@
-import linuxcnc
 import gcode
-import shutil
+import linuxcnc
 import os
+import shutil
 
 from qtpyvcp.lib.native_notification import NativeNotification
-
 from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import BaseCanon
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
