@@ -42,7 +42,7 @@ class VTKCanon(StatCanon):
         self.ignore_next = False  # hacky way to ignore the second point next to a offset change
 
     def comment(self, comment):
-        LOG.debug("G-code Comment: %s", comment)
+        LOG.debug("G-code Comment: {}".format(comment))
         items = comment.lower().split(',', 1)
         if len(items) > 0 and items[0] in ['axis', 'backplot']:
             cmd = items[1].strip()
@@ -55,14 +55,14 @@ class VTKCanon(StatCanon):
                 raise KeyboardInterrupt
 
     def message(self, msg):
-        LOG.debug("G-code Message: %s", msg)
+        LOG.debug("G-code Message: {}".format(msg))
 
     def rotate_and_translate(self, x, y, z, a, b, c, u, v, w):
         # override function to handle it in vtk back plot
         return x, y, z, a, b, c, u, v, w
 
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
-        LOG.debug("---------received offset change", index)
+        LOG.debug("---------received offset change {}".format(index))
         new_wcs = index - 1 #this index counts also G53 so we need to do -1
         if new_wcs not in self.path_actors.keys():
             self.path_actors[new_wcs] = PathActor(self._datasource)
