@@ -628,56 +628,63 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewP(self):
         self.active_view = 'P'
+        position = self.wcs_offsets[self.active_wcs_index]
         self.camera.SetPosition(self.position_mult, -self.position_mult, self.position_mult)
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(0, 0, 1)
-        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewX(self):
         self.active_view = 'X'
-        self.camera.SetPosition(0, -self.position_mult, 0)
+        position = self.wcs_offsets[self.active_wcs_index]
+        self.camera.SetPosition(position[0], position[1] - self.position_mult, position[2])
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(0, 0, 1)
-        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewXZ(self):
         self.active_view = 'XZ'
-        self.camera.SetPosition(0, self.position_mult, 0)
+        position = self.wcs_offsets[self.active_wcs_index]
+        self.camera.SetPosition(position[0], position[1] + self.position_mult, position[2])
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(1, 0, 0)
-        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewXZ2(self):
         self.active_view = 'XZ2'
-        self.camera.SetPosition(0, -self.position_mult, 0)
+        position = self.wcs_offsets[self.active_wcs_index]
+        self.camera.SetPosition(position[0], position[1] - self.position_mult, position[2])
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(-1, 0, 0)
-        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewY(self):
         self.active_view = 'Y'
-        self.camera.SetPosition(self.position_mult, 0, 0)
+        position = self.wcs_offsets[self.active_wcs_index]
+        self.camera.SetPosition(position[0] + self.position_mult, position[1], position[2])
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(0, 0, 1)
-        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewZ(self):
         self.active_view = 'Z'
-        self.camera.SetPosition(0, 0, self.position_mult)
+        position = self.wcs_offsets[self.active_wcs_index]
+        self.camera.SetPosition(position[0], position[1], position[2] + self.position_mult)
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(0, 1, 0)
-        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewZ2(self):
-        self.camera.SetPosition(0, 0, self.position_mult)
+        position = self.wcs_offsets[self.active_wcs_index]
+        self.camera.SetPosition(position[0], position[1], position[2] + self.position_mult)
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(1, 0, 0)
-        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
@@ -709,19 +716,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewPath(self):
         LOG.debug('-----setViewPath')
-        self.__setFocalPoint()
-
         position = self.wcs_offsets[self.active_wcs_index]
         self.camera.SetPosition(position[0] + self.position_mult,
-                                -(position[0] + self.position_mult),
-                                position[0] + self.position_mult)
+                                -(position[1] + self.position_mult),
+                                position[2] + self.position_mult)
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(0, 0, 1)
         self.__doCommonSetViewWork()
-
-    def __setFocalPoint(self):
-        position = self.wcs_offsets[self.active_wcs_index]
-        LOG.debug('-----focal point: {}'.format(position))
-        self.camera.SetFocalPoint(position[:3])
 
     def __doCommonSetViewWork(self):
         # This is common logic for all setView**** methods.
