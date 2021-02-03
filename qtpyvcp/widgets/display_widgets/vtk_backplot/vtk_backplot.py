@@ -46,16 +46,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
         LOG.debug("---------using refactored vtk code")
-       
-
-        # properties
-        self._background_color = QColor(0, 0, 0)
-        self._background_color2 = QColor(0, 0, 0)
-        self._enableProgramTicks = True
-        
-        if IN_DESIGNER:
-            return
-
         self._datasource = LinuxCncDataSource()
         self.canon_class = VTKCanon
 
@@ -71,6 +61,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         # assume that we are standing upright and compute azimuth around that axis
         self.natural_view_up = (0, 0, 1)
+
+        # properties
+        self._background_color = QColor(0, 0, 0)
+        self._background_color2 = QColor(0, 0, 0)
+        self._enableProgramTicks = True
 
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
         self.wcs_offsets = self._datasource.getWcsOffsets()
@@ -96,9 +91,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             self.clipping_range_near = 0.01
             self.clipping_range_far = 10000.0 #TODO: check this value
         else:
-            self.position_mult = 10
+            self.position_mult = 100
             self.clipping_range_near = 0.001
-            self.clipping_range_far = 100.0 #TODO: check this value
+            self.clipping_range_far = 1000.0 #TODO: check this value
 
         self.camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
         self.renderer = vtk.vtkRenderer()
@@ -633,56 +628,63 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewP(self):
         self.active_view = 'P'
+        position = self.wcs_offsets[self.active_wcs_index]
         self.camera.SetPosition(self.position_mult, -self.position_mult, self.position_mult)
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(0, 0, 1)
-        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewX(self):
         self.active_view = 'X'
-        self.camera.SetPosition(0, -self.position_mult, 0)
+        position = self.wcs_offsets[self.active_wcs_index]
+        self.camera.SetPosition(position[0], position[1] - self.position_mult, position[2])
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(0, 0, 1)
-        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewXZ(self):
         self.active_view = 'XZ'
-        self.camera.SetPosition(0, self.position_mult, 0)
+        position = self.wcs_offsets[self.active_wcs_index]
+        self.camera.SetPosition(position[0], position[1] + self.position_mult, position[2])
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(1, 0, 0)
-        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewXZ2(self):
         self.active_view = 'XZ2'
-        self.camera.SetPosition(0, -self.position_mult, 0)
+        position = self.wcs_offsets[self.active_wcs_index]
+        self.camera.SetPosition(position[0], position[1] - self.position_mult, position[2])
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(-1, 0, 0)
-        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewY(self):
         self.active_view = 'Y'
-        self.camera.SetPosition(self.position_mult, 0, 0)
+        position = self.wcs_offsets[self.active_wcs_index]
+        self.camera.SetPosition(position[0] + self.position_mult, position[1], position[2])
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(0, 0, 1)
-        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewZ(self):
         self.active_view = 'Z'
-        self.camera.SetPosition(0, 0, self.position_mult)
+        position = self.wcs_offsets[self.active_wcs_index]
+        self.camera.SetPosition(position[0], position[1], position[2] + self.position_mult)
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(0, 1, 0)
-        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
     def setViewZ2(self):
-        self.camera.SetPosition(0, 0, self.position_mult)
+        position = self.wcs_offsets[self.active_wcs_index]
+        self.camera.SetPosition(position[0], position[1], position[2] + self.position_mult)
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(1, 0, 0)
-        self.__setFocalPoint()
         self.__doCommonSetViewWork()
 
     @Slot()
@@ -714,19 +716,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @Slot()
     def setViewPath(self):
         LOG.debug('-----setViewPath')
-        self.__setFocalPoint()
-
         position = self.wcs_offsets[self.active_wcs_index]
         self.camera.SetPosition(position[0] + self.position_mult,
-                                -(position[0] + self.position_mult),
-                                position[0] + self.position_mult)
+                                -(position[1] + self.position_mult),
+                                position[2] + self.position_mult)
+        self.camera.SetFocalPoint(position[:3])
         self.camera.SetViewUp(0, 0, 1)
         self.__doCommonSetViewWork()
-
-    def __setFocalPoint(self):
-        position = self.wcs_offsets[self.active_wcs_index]
-        LOG.debug('-----focal point: {}'.format(position))
-        self.camera.SetFocalPoint(position[:3])
 
     def __doCommonSetViewWork(self):
         # This is common logic for all setView**** methods.
@@ -896,9 +892,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def backgroundColor(self, color):
         self._background_color = color
 
-        if not IN_DESIGNER:
-            self.renderer.SetBackground(color.getRgbF()[:3])
-            self.renderer_window.Render()
+        self.renderer.SetBackground(color.getRgbF()[:3])
+        self.renderer_window.Render()
 
     @Property(QColor)
     def backgroundColor2(self):
@@ -907,19 +902,17 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @backgroundColor2.setter
     def backgroundColor2(self, color2):
         self._background_color2 = color2
-        
-        if not IN_DESIGNER:
-            self.renderer.GradientBackgroundOn()
-            self.renderer.SetBackground2(color2.getRgbF()[:3])
-            self.renderer_window.Render()
+
+        self.renderer.GradientBackgroundOn()
+        self.renderer.SetBackground2(color2.getRgbF()[:3])
+        self.renderer_window.Render()
 
     @backgroundColor2.reset
     def backgroundColor2(self):
         self._background_color2 = QColor(0, 0, 0)
 
-        if not IN_DESIGNER:
-            self.renderer.GradientBackgroundOff()
-            self.renderer_window.Render()
+        self.renderer.GradientBackgroundOff()
+        self.renderer_window.Render()
 
     @Property(bool)
     def enableProgramTicks(self):
