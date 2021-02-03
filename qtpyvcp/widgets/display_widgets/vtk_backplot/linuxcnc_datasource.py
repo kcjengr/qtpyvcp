@@ -10,6 +10,7 @@ INFO = Info()
 LOG = logger.getLogger(__name__)
 from PyQt5.QtCore import QObject
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
 """
 This class acts as a datasource for the VTK components.
 It abstracts all the linuxcnc specific logic and exposes simple methods that could be eventually 
@@ -154,9 +155,12 @@ class LinuxCncDataSource(QObject):
         return tuple(xy)
 
     def __getRotationOfActiveWcs(self):
-        current_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
-        LOG.debug("-----current_wcs index: {}".format(current_wcs))
-        return current_wcs[9]
+        if not IN_DESIGNER:
+            current_wcs = self.getWcsOffsets()[self.getActiveWcsIndex()]
+            LOG.debug("-----current_wcs index: {}".format(current_wcs))
+            return current_wcs[9]
+        else:
+            return 0
 
     def getG92_offset(self):
         return self._status.stat.g92_offset
