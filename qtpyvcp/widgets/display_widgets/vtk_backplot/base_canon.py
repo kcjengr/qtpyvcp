@@ -359,7 +359,22 @@ class PrintCanon(BaseCanon):
             print("dwell %f seconds" % arg)
 
     def arc_feed(self, *args):
-        print("arc_feed %.4g %.4g  %.4g %.4g %.4g  %.4g  %.4g %.4g %.4g" % args)
+        print("arc_feed %.4g %.4g  %.4g %.4g %.4g  %.4g  %.4g %.4g %.4g  %.4g %.4g %.4g" % args)
 
     def get_axis_mask(self):
         return 7  # XYZ
+    
+    
+    def change_tool(self, pocket):
+        print("pocket", pocket)
+
+    def next_line(self, st):
+        # state attributes
+        # 'block', 'cutter_side', 'distance_mode', 'feed_mode', 'feed_rate',
+        # 'flood', 'gcodes', 'mcodes', 'mist', 'motion_mode', 'origin', 'units',
+        # 'overrides', 'path_mode', 'plane', 'retract_mode', 'sequence_number',
+        # 'speed', 'spindle', 'stopping', 'tool_length_offset', 'toolchange',
+        print("state", st)
+        print("seq", st.sequence_number)
+        print("MCODES", st.mcodes)
+        print("TOOLCHANGE", st.toolchange)

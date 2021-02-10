@@ -28,7 +28,7 @@ from machine_actor import MachineActor
 from tool_actor import ToolActor
 from path_cache_actor import PathCacheActor
 from program_bounds_actor import ProgramBoundsActor
-from vtk_cannon import VTKCanon
+from vtk_canon import VTKCanon
 from linuxcnc_datasource import LinuxCncDataSource
 
 LOG = logger.getLogger(__name__)
