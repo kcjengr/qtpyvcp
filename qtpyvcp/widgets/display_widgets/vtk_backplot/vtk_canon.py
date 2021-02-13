@@ -71,7 +71,7 @@ class VTKCanon(StatCanon):
             self.previous_wcs_index = self.active_wcs_index
             self.active_wcs_index = new_wcs
 
-    def add_path_point(self, line_type, start_point, end_point):
+    def add_path_point(self, line_type, origin, start_point, end_point):
         if self.ignore_next is True:
             self.ignore_next = False
             return
