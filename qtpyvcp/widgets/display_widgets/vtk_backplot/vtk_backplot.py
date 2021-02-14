@@ -409,10 +409,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_actors = self.canon.get_path_actors()
 
         for wcs_index, actor in self.path_actors.items():
-            current_offsets = self.wcs_offsets[wcs_index]
-
             LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
             LOG.debug("---------wcs_index: {}".format(wcs_index))
+
+            current_offsets = self.wcs_offsets[wcs_index]
             LOG.debug("---------current_offsets: {}".format(current_offsets))
 
             actor_transform = vtk.vtkTransform()

@@ -19,6 +19,8 @@ import gcode
 import linuxcnc
 import math
 
+from qtpyvcp.utilities import logger
+LOG = logger.getLogger(__name__)
 
 class BaseCanon(object):
     def __init__(self):
@@ -30,7 +32,7 @@ class BaseCanon(object):
         self.last_pos = (0,) * 9
 
         self.first_move = True
-        self.in_arc = 0
+        self.in_arc = False
         self.suppress = 0
 
         self.plane = 1
@@ -65,7 +67,6 @@ class BaseCanon(object):
         self.g92_offset_u = 0.0
         self.g92_offset_v = 0.0
         self.g92_offset_w = 0.0
-        self.origin = 540
 
         # g5x offsets
         self.g5x_offset_x = 0.0
@@ -83,7 +84,7 @@ class BaseCanon(object):
         self.rotation_cos = 1
         self.rotation_sin = 0
 
-    def add_path_point(self, line_type, origin, start_point, end_point):
+    def add_path_point(self, line_type, start_point, end_point):
         pass
 
     def comment(self, msg):
@@ -138,7 +139,6 @@ class BaseCanon(object):
         return [x, y, z, a, b, c, u, v, w]
 
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
-        self.origin = index
         self.g5x_offset_x = x
         self.g5x_offset_y = y
         self.g5x_offset_z = z
@@ -208,7 +208,7 @@ class BaseCanon(object):
 
         pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
         if not self.first_move:
-            self.add_path_point('traverse',self.origin, self.last_pos, pos)
+            self.add_path_point('traverse', self.last_pos, pos)
 
         self.last_pos = pos
 
@@ -220,19 +220,19 @@ class BaseCanon(object):
         pos = self.rotate_and_translate(x, y, z, 0, 0, 0, 0, 0, 0)[:3]
         pos += self.last_pos[3:]
 
-        self.add_path_point('feed',self.origin, self.last_pos, pos)
+        self.add_path_point('feed', self.last_pos, pos)
 
     def set_plane(self, plane):
         self.plane = plane
 
     def arc_feed(self, end_x, end_y, center_x, center_y, rot, end_z, a, b, c, u, v, w):
-
         if self.suppress > 0:
             return
 
         self.first_move = False
         self.in_arc = True
         try:
+            # this self.lo goes straight into the c code, cannot be changed
             self.lo = tuple(self.last_pos)
             segs = gcode.arc_to_segments(self, end_x, end_y, center_x, center_y,
                                          rot, end_z, a, b, c, u, v, w, self.arcdivision)
@@ -244,7 +244,7 @@ class BaseCanon(object):
         self.first_move = False
         last_pos = self.last_pos
         for pos in segs:
-            self.add_path_point('arcfeed', self.origin, last_pos, pos)
+            self.add_path_point('arcfeed', last_pos, pos)
             last_pos = pos
         self.last_pos = last_pos
 
@@ -255,7 +255,7 @@ class BaseCanon(object):
         self.first_move = False
         pos = self.rotate_and_translate(x, y, z, a, b, c, u, v, w)
 
-        self.add_path_point('feed', self.origin, self.last_pos, pos)
+        self.add_path_point('feed', self.last_pos, pos)
         self.last_pos = pos
 
     straight_probe = straight_feed
@@ -264,14 +264,14 @@ class BaseCanon(object):
         if self.suppress > 0:
             return
 
-        self.add_path_point('user', self.origin, self.last_pos, self.last_pos)
+        self.add_path_point('user', self.last_pos, self.last_pos)
 
     def dwell(self, arg):
         if self.suppress > 0:
             return
 
         self.dwell_time += arg
-        self.add_path_point('dwell', self.origin, self.last_pos, self.last_pos)
+        self.add_path_point('dwell', self.last_pos, self.last_pos)
 
     def get_external_angular_units(self):
         return 1.0
@@ -363,8 +363,8 @@ class PrintCanon(BaseCanon):
 
     def get_axis_mask(self):
         return 7  # XYZ
-    
-    
+
+
     def change_tool(self, pocket):
         print("pocket", pocket)
 

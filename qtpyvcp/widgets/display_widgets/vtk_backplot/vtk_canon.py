@@ -11,7 +11,7 @@ from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import StatCanon
 LOG = logger.getLogger(__name__)
 
 COLOR_MAP = {
-    'traverse': (188, 252, 201, 255),
+    'traverse': (188, 252, 201, 60),
     'arcfeed': (255, 0, 0, 128),
     'feed': (255, 255, 255, 128),
     'dwell': (100, 100, 100, 255),
@@ -26,20 +26,8 @@ class VTKCanon(StatCanon):
         self.path_colors = colors
         self.path_actors = OrderedDict()
         self.path_points = OrderedDict()
-        self.tool_path_color = None
-        self.prev_tool_path_color = None
 
-        LOG.debug("---------VTKCanon init")
-        #TODO: figure the correct way to do this
-        active_wcs_index = self._datasource.getActiveWcsIndex()
-
-        self.path_actors[active_wcs_index] = PathActor(self._datasource)
-        self.path_points[active_wcs_index] = list()
-
-        self.active_wcs_index = active_wcs_index
-        self.previous_wcs_index = active_wcs_index
-
-        self.ignore_next = False  # hacky way to ignore the second point next to a offset change
+        self.active_wcs_index = self._datasource.getActiveWcsIndex()
 
     def comment(self, comment):
         LOG.debug("G-code Comment: {}".format(comment))
@@ -57,34 +45,17 @@ class VTKCanon(StatCanon):
     def message(self, msg):
         LOG.debug("G-code Message: {}".format(msg))
 
-    def rotate_and_translate(self, x, y, z, a, b, c, u, v, w):
-        # override function to handle it in vtk back plot
-        return x, y, z, a, b, c, u, v, w
-
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
-        LOG.debug("---------received offset change {}".format(index))
-        new_wcs = index - 1 #this index counts also G53 so we need to do -1
+        new_wcs = index - 1  # this index counts also G53 so we need to do -1
+        LOG.debug("---------received wcs change: {}".format(new_wcs))
         if new_wcs not in self.path_actors.keys():
             self.path_actors[new_wcs] = PathActor(self._datasource)
             self.path_points[new_wcs] = list()
 
-            self.previous_wcs_index = self.active_wcs_index
-            self.active_wcs_index = new_wcs
+        self.active_wcs_index = new_wcs
 
-    def add_path_point(self, line_type, origin, start_point, end_point):
-        if self.ignore_next is True:
-            self.ignore_next = False
-            return
-
-        if self.previous_wcs_index != self.active_wcs_index:
-            self.previous_wcs_index = self.active_wcs_index
-            self.ignore_next = True
-            return
-
-        line = list()
-        line.append(start_point[:3]) # add only the xyz components
-        line.append(end_point[:3]) # add only the xyz components
-
+    def add_path_point(self, line_type, start_point, end_point):
+        line = [start_point[:3], end_point[:3]]
         self.path_points.get(self.active_wcs_index).append((line_type, line))
 
     def draw_lines(self):
