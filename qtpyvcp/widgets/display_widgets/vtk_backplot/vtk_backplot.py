@@ -47,7 +47,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         super(VTKBackPlot, self).__init__(parent)
         LOG.debug("---------using refactored vtk code")
         self._datasource = LinuxCncDataSource()
-        self.canon_class = VTKCanon
 
         self.parent = parent
         self.ploter_enabled = True
@@ -130,7 +129,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.show_program_bounds = bool()
 
         if not IN_DESIGNER:
-            self.canon = self.canon_class()
+            self.canon = VTKCanon()
             self.path_actors = self.canon.get_path_actors()
 
             for wcs_index, path_actor in self.path_actors.items():
@@ -396,9 +395,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         start_time = time.time()
 
         if fname:
+            # create the object which handles the canonical motion callbacks
+            # (straight_feed, straight_traverse, arc_feed, rigid_tap, etc.)
+            self.canon = VTKCanon()
             self.load(fname)
-
-        if self.canon is None:
+        else:
             return
 
         LOG.debug("-------Load time %s seconds ---" % (time.time() - start_time))
