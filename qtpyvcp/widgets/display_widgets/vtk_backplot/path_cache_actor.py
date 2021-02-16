@@ -1,6 +1,6 @@
 import vtk.qt
 from qtpyvcp.utilities import logger
-from vtk.util.colors import yellow
+from vtk.util.colors import cyan
 
 LOG = logger.getLogger(__name__)
 
@@ -20,11 +20,11 @@ class PathCacheActor(vtk.vtkActor):
 
         self.lines_poligon_data = vtk.vtkPolyData()
         self.polygon_mapper = vtk.vtkPolyDataMapper()
-        self.GetProperty().SetColor(yellow)
-        self.GetProperty().SetLineWidth(2)
+        self.GetProperty().SetColor(cyan)
+        self.GetProperty().SetLineWidth(2.5)
         self.GetProperty().SetOpacity(0.5)
         self.SetMapper(self.polygon_mapper)
-
+        
         self.lines_poligon_data.SetPoints(self.points)
         self.lines_poligon_data.SetLines(self.lines)
 
