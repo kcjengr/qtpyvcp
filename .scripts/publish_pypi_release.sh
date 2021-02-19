@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+PYPI_PASS=$1
+
 echo 'Installing twine... '
 pip install twine
 

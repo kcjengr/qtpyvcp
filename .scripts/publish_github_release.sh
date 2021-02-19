@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-REPO=$TRAVIS_REPO_SLUG
-TAG=$TRAVIS_TAG
-AUTH_TOKEN=$GH_TOKEN
+REPO=$1
+TAG=$2
+AUTH_TOKEN=$3
 
 PRERELEASE=false
 RELEASEFILES=(debs/python-qtpyvcp_*.deb dist/qtpyvcp-*.tar.gz)
