@@ -11,11 +11,11 @@ from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import StatCanon
 LOG = logger.getLogger(__name__)
 
 COLOR_MAP = {
-    'traverse': (188, 252, 201, 60),
-    'arcfeed': (255, 0, 0, 128),
-    'feed': (255, 255, 255, 128),
-    'dwell': (100, 100, 100, 255),
-    'user': (100, 100, 100, 255),
+    'traverse': (200, 35, 35, 255),
+    'arcfeed': (110, 110, 255, 255),
+    'feed': (210, 210, 255, 255),
+    'dwell': (0, 0, 255, 255),
+    'user': (0, 100, 255, 255),
 }
 
 class VTKCanon(StatCanon):
