@@ -182,8 +182,8 @@ class ToolModel(QStandardItemModel):
 
         row = len(self._tool_table) - 1
 
-        if row == 56:
-            # max 56 tools
+        if row == 1000:
+            # max 1000 tools
             return False
 
         self.beginInsertRows(QModelIndex(), row, row)
