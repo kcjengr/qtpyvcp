@@ -82,7 +82,7 @@ class VTKCanon(StatCanon):
                                                       end_point[1] * multiplication_factor,
                                                       end_point[2] * multiplication_factor)
 
-                    path_actor.colors.InsertNextTypedTuple(COLOR_MAP.get(line_type))
+                    path_actor.colors.InsertNextTypedTuple(self.path_colors.get(line_type).getRgb()[:4])
 
                     line = vtk.vtkLine()
                     line.GetPointIds().SetId(0, index)
