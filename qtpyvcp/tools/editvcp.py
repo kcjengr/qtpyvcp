@@ -162,7 +162,11 @@ def launch_designer(opts=DotDict()):
     os.environ['PYQTDESIGNERPATH'] = os.path.join(base, '../widgets')
 
     print "\nStarting QtDesigner ..."
-    sys.exit(subprocess.call(cmd))
+    try:
+        sys.exit(subprocess.call(cmd))
+    except OSError:
+        print('Designer not found, Install with\n' \
+        'sudo apt install qttools5-dev qttools5-dev-tools')
 
 
 def main():
