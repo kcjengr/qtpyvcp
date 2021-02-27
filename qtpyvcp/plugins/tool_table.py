@@ -213,8 +213,7 @@ class ToolTable(DataPlugin):
         :return: int
         """
         remark = self.TOOL_TABLE[STAT.tool_in_spindle].get("R").lower()
-        #remark = "1/8\" 3 Flute 45 deg Helix 0.375 loc 1.500 oal".lower()
-        fluteCountList = (re.findall(r"(\d+)fl", remark) + re.findall(r"(\d+) fl", remark))
+        fluteCountList = re.findall(r"(\d+)\s*fl", remark)
         if len(fluteCountList) == 0:
             return 1
         else:
