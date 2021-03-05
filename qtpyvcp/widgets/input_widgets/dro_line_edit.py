@@ -25,8 +25,11 @@ class DROLineEdit(EvalLineEdit, DROBaseWidget):
 
         self.returnPressed.connect(self.onReturnPressed)
         self.editingFinished.connect(self.onEditingFinished)
+        self.textEdited.connect(self.setCurrentPos)
 
         issue_mdi.bindOk(widget=self)
+        
+        self.last_commanded_pos = self.status.stat.position[self._anum]
 
     def onReturnPressed(self):
         try:
@@ -51,3 +54,15 @@ class DROLineEdit(EvalLineEdit, DROBaseWidget):
 
     def onEditingFinished(self):
         self.updateValue()
+
+    def updateValue(self, pos=None):
+        if self.pos.report_actual_pos and self.isModified():
+            # Only update if commanded position changes when user is editing.
+            if self.last_commanded_pos != self.status.stat.position[self._anum]:
+                super(DROLineEdit, self).updateValue(pos)
+        else:
+            super(DROLineEdit, self).updateValue(pos)
+
+    def setCurrentPos(self):
+        # Run once user starts editing field.
+        self.last_commanded_pos = self.status.stat.position[self._anum]
