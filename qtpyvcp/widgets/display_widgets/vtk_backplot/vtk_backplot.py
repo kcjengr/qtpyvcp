@@ -19,8 +19,10 @@ vtk.qt.QVTKRWIBase = "QGLWidget"
 from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 from qtpyvcp.widgets import VCPWidget
+from qtpyvcp.widgets.dialogs import showDialog, hideDialog
 from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.settings import connectSetting
+
 
 from base_backplot import BaseBackPlot
 from axes_actor import AxesActor
@@ -404,6 +406,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     def load_program(self, fname=None):
         LOG.debug("-------load_program")
+        
+        showDialog('loading_file')
 
         # Cleanup the scene, remove any previous actors if any
         for wcs_index, actor in self.path_actors.items():
@@ -468,6 +472,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.AddActor(self.axes_actor)
         self.renderer_window.Render()
+        
+        hideDialog('loading_file')
 
     def motion_type(self, value):
         LOG.debug("-----motion_type is: {}".format(value))
