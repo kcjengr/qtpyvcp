@@ -58,10 +58,10 @@ class DROLineEdit(EvalLineEdit, DROBaseWidget):
     def updateValue(self, pos=None):
         if self.pos.report_actual_pos and self.isModified():
             # Only update if commanded position changes when user is editing.
-            if self.last_commanded_pos != self.status.stat.position[self._anum]:
-                super(DROLineEdit, self).updateValue(pos)
-        else:
-            super(DROLineEdit, self).updateValue(pos)
+            if self.last_commanded_pos == self.status.stat.position[self._anum]:
+                return None
+
+        super(DROLineEdit, self).updateValue(pos)
 
     def setCurrentPos(self):
         # Run once user starts editing field.
