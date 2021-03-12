@@ -4,7 +4,7 @@ DROLineEdit
 
 """
 
-from qtpy.QtCore import Property
+from qtpy.QtCore import Qt, Property
 from qtpyvcp.widgets.base_widgets.eval_line_edit import EvalLineEdit
 
 from qtpyvcp.widgets.base_widgets.dro_base_widget import DROBaseWidget, Axis, LatheMode
@@ -65,4 +65,11 @@ class DROLineEdit(EvalLineEdit, DROBaseWidget):
 
     def setCurrentPos(self):
         # Run once user starts editing field.
+        self.isEdited = True
         self.last_commanded_pos = self.status.stat.position[self._anum]
+    
+    def keyPressEvent(self, e):
+        if e.key() == Qt.Key_Escape:
+            super(DROLineEdit, self).updateValue()
+        else:
+            super(DROLineEdit, self).keyPressEvent(e)
