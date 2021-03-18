@@ -2,15 +2,18 @@
 from qtpy.QtCore import Qt, Slot, Property, QStringListModel
 from qtpy.QtGui import QValidator
 from qtpy.QtWidgets import QLineEdit, QListWidgetItem, QCompleter
-
+from qtpyvcp.utilities import logger
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 
 STATUS = getPlugin('status')
 INFO = Info()
-
+LOG = logger.getLogger('qtpyvcp.' + __name__)
 
 class Validator(QValidator):
     def validate(self, string, pos):
@@ -19,6 +22,18 @@ class Validator(QValidator):
         if not(inputVal.startswith(";") or inputVal.startswith("(")):
             inputVal = inputVal.upper();
         return QValidator.Acceptable, inputVal, pos
+
+class MdiCompleter(QCompleter):
+    def __init__(self, parent=None):
+        super(MdiCompleter, self).__init__(parent)
+        self.setCaseSensitivity(Qt.CaseInsensitive)
+        self.setCompletionMode(QCompleter.PopupCompletion)
+        self.model = QStringListModel()
+        self.setModel(self.model)
+
+    def setValues(self, values):
+        self.model.setStringList(list(dict.fromkeys(values)))
+        #self.popup().setItemDelegate(QStyledItemDelegate())
 
 
 class MDIEntry(QLineEdit, CMDWidget):
@@ -30,11 +45,8 @@ class MDIEntry(QLineEdit, CMDWidget):
         super(MDIEntry, self).__init__(parent)
 
         self.mdi_history_size = 100
-        completer = QCompleter()
-        completer.setCaseSensitivity(Qt.CaseInsensitive)
-        self.model = QStringListModel()
-        completer.setModel(self.model)
-        self.setCompleter(completer)
+        self.mdiCompleter = MdiCompleter()
+        self.setCompleter(self.mdiCompleter)
 
         self.validator = Validator(self)
         self.setValidator(self.validator)
@@ -73,9 +85,10 @@ class MDIEntry(QLineEdit, CMDWidget):
 
     def initialize(self):
         history = STATUS.mdi_history.value
-        self.model.setStringList(history)
+        LOG.debug("------mdi initialize:{} {}".format(type(history), history))
+        self.mdiCompleter.setValues(history)
         STATUS.max_mdi_history_length = self.mdi_history_size
-        STATUS.mdi_history.notify(self.model.setStringList)
+        STATUS.mdi_history.notify(self.mdiCompleter.setValues)
 
     def terminate(self):
         pass
