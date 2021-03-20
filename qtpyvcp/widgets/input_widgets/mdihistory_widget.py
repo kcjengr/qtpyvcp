@@ -61,6 +61,10 @@ class MDIHistory(QListWidget, CMDWidget):
         # name and widget handle for MDI cmd entry widget
         self.mdi_entryline_name = None
         self.mdi_entry_widget = None
+        
+        # List order direction where Natural is latest at bottom.
+        # Default is Natural = False
+        self.mdi_listorder_natural = False
 
         self.heart_beat_timer = None
 
@@ -81,6 +85,16 @@ class MDIHistory(QListWidget, CMDWidget):
         """Set the name for Designer"""
         self.mdi_entryline_name = object_name
 
+    @Property(bool)
+    def mdiListOrderNatural(self):
+        """Return if list order is Natural - True/False"""
+        return self.mdi_listorder_natural
+    
+    @mdiListOrderNatural.setter
+    def mdiListOrderNatural(self, order_flag):
+        """Set Order flag for Designer"""
+        self.mdi_listorder_natural = order_flag
+
     @Slot(bool)
     def toggleQueue(self, toggle):
         """Toggle queue pause.
@@ -94,34 +108,40 @@ class MDIHistory(QListWidget, CMDWidget):
     @Slot()
     def clearQueue(self):
         """Clear queue items yet to be run."""
-        list_length = self.count()-1
-        while list_length >= 0:
-            row_item = self.item(list_length)
+        if self.mdi_listorder_natural:
+            list_length = range(self.count())
+        else:
+            list_length = range(self.count()-1, 0, -1)
+
+        for list_item in list_length:
+            row_item = self.item(list_item)
             row_item_data = row_item.data(MDIHistory.MDQQ_ROLE)
 
             if row_item_data == MDIHistory.MDIQ_TODO:
                 row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_DONE)
                 row_item.setIcon(QIcon())
 
-            list_length -= 1
-
     @Slot()
     def removeSelectedItem(self):
         """Remove the selected line"""
         row = self.currentRow()
-        self.takeItem(row)
-        STATUS.mdi_remove_entry(row)
+        if row != -1:
+            self.takeItem(row)
+            STATUS.mdi_remove_entry(row)
 
     @Slot()
     def runFromSelection(self):
-        """Start running MDI from the selected row back to top."""
-        row = self.currentRow()
-        # from selected row loop back to top and set ready for run
-        while row >= 0:
+        """Start running MDI from the selected row back to correct end."""
+        if self.mdi_listorder_natural:
+            row_list = range(self.currentRow(), self.count(), 1)
+        else:
+            row_list = range(self.currentRow(), -1, -1)
+
+        # from selected row loop back to top/bottom and set ready for run
+        for row in row_list:
             row_item = self.item(row)
             row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_TODO)
             row_item.setIcon(self.icon_waiting)
-            row -= 1
 
     @Slot()
     def runSelection(self):
@@ -142,7 +162,10 @@ class MDIHistory(QListWidget, CMDWidget):
         row_item.setText(cmd)
         row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_TODO)
         row_item.setIcon(self.icon_waiting)
-        self.insertItem(0, row_item)
+        if self.mdi_listorder_natural:
+            self.addItem(row_item)
+        else:
+            self.insertItem(0, row_item)
 
         # put the command onto the status channel mdi history
         STATUS.mdi_history.setValue(cmd)
@@ -212,6 +235,15 @@ class MDIHistory(QListWidget, CMDWidget):
         item_list is a list of strings."""
         print 'Clear and load history to list'
         self.clear()
+        
+        # check that there is anything do to
+        if len(items_list) == 0:
+            return 
+        
+        # load the history based on natural order or not
+        if self.mdi_listorder_natural:
+            items_list.reverse()
+        
         for item in items_list:
             row_item = QListWidgetItem()
             row_item.setText(item)
@@ -232,9 +264,13 @@ class MDIHistory(QListWidget, CMDWidget):
             return
 
         # scan for the next command to execute from bottom up.
-        list_length = self.count()-1
-        while list_length >= 0:
-            row_item = self.item(list_length)
+        if self.mdi_listorder_natural:
+            list_length = range(self.count())
+        else:
+            list_length = range(self.count()-1, 0, -1)
+        
+        for list_item in list_length:
+            row_item = self.item(list_item)
             row_item_data = row_item.data(MDIHistory.MDQQ_ROLE)
 
             if row_item_data == MDIHistory.MDIQ_RUNNING:
@@ -249,15 +285,13 @@ class MDIHistory(QListWidget, CMDWidget):
                 issue_mdi(cmd)
                 break
 
-            list_length -= 1
-
     def initialize(self):
         """Load up starting data and set signal connections."""
         history = STATUS.mdi_history.value
         self.setHistory(history)
         self.clicked.connect(self.rowClicked)
 
-        # Get handle to windows list and seach through them
+        # Get handle to windows list and search through them
         # for the widget referenced in mdi_entryline_name
         for win_name, obj in qtpyvcp.WINDOWS.items():
             if hasattr(obj, str(self.mdi_entryline_name)):
