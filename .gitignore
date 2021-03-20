@@ -39,3 +39,5 @@ qtpyvcp/.pydevproject
 qtpyvcp/.project
 /.project
 /.pydevproject
+
+.settings/
