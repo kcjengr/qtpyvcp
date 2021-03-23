@@ -39,3 +39,4 @@ qtpyvcp/.pydevproject
 qtpyvcp/.project
 /.project
 /.pydevproject
+/qtpyvcp/plugins/database/db.sqlite
