@@ -296,6 +296,8 @@ class MDIHistory(QListWidget, CMDWidget):
         for win_name, obj in qtpyvcp.WINDOWS.items():
             if hasattr(obj, str(self.mdi_entryline_name)):
                 self.mdi_entry_widget = getattr(obj, self.mdi_entryline_name)
+                # Use the handle to supress the widgets Rtn key behaviour
+                self.mdi_entry_widget.supress_rtn_key_behaviour()
                 break
         # Setup the basic timer system as a heart beat on the queue
         self.heart_beat_timer = QTimer(self)
