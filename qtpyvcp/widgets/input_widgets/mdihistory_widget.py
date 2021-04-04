@@ -166,6 +166,12 @@ class MDIHistory(QListWidget, CMDWidget):
             self.addItem(row_item)
         else:
             self.insertItem(0, row_item)
+        
+        # Set the recently added item as the "current" item
+        # if the queue is not paused this will quickly get overridden
+        # to the executing item highlight mode
+        self.clearSelection()
+        self.setCurrentItem(row_item)
 
         # put the command onto the status channel mdi history
         STATUS.mdi_history.setValue(cmd)
@@ -279,6 +285,8 @@ class MDIHistory(QListWidget, CMDWidget):
                 row_item.setIcon(QIcon())
 
             elif row_item_data == MDIHistory.MDIQ_TODO:
+                self.clearSelection()
+                self.setCurrentItem(row_item)
                 cmd = str(row_item.text()).strip()
                 row_item.setData(MDIHistory.MDQQ_ROLE, MDIHistory.MDIQ_RUNNING)
                 row_item.setIcon(self.icon_run)
@@ -296,10 +304,12 @@ class MDIHistory(QListWidget, CMDWidget):
         for win_name, obj in qtpyvcp.WINDOWS.items():
             if hasattr(obj, str(self.mdi_entryline_name)):
                 self.mdi_entry_widget = getattr(obj, self.mdi_entryline_name)
+                # Use the handle to supress the widgets Rtn key behaviour
+                self.mdi_entry_widget.supress_rtn_key_behaviour()
                 break
         # Setup the basic timer system as a heart beat on the queue
         self.heart_beat_timer = QTimer(self)
-        # use a 1 second timer
+        # use a sub-second second timer
         self.heart_beat_timer.start(250)
         self.heart_beat_timer.timeout.connect(self.heartBeat)
 
