@@ -7,7 +7,6 @@ from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.actions.machine_actions import issue_mdi
 from qtpyvcp.widgets.base_widgets.base_widget import CMDWidget
-from gtk import TRUE
 
 STATUS = getPlugin('status')
 INFO = Info()
