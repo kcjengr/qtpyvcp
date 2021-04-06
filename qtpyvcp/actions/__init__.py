@@ -112,4 +112,4 @@ def bindWidget(widget, action):
     except Exception as e:
         msg = "%s raised while trying to bind '%s' action to '%s'" % \
               (e.message, action, widget)
-        raise InvalidAction, msg, sys.exc_info()[2]
+        raise InvalidAction(msg, sys.exc_info()[2])
