@@ -31,14 +31,17 @@ class MDIEntry(QLineEdit, CMDWidget):
 
         self.mdi_rtnkey_behaviour_supressed = False
         self.mdi_history_size = 100
-        completer = QCompleter()
-        completer.setCaseSensitivity(Qt.CaseInsensitive)
-        self.model = QStringListModel()
-        completer.setModel(self.model)
-        self.setCompleter(completer)
 
         self.validator = Validator(self)
         self.setValidator(self.validator)
+        
+        # The completer is what creates the visual list mdi history
+        # that can be selected from. This is useful when mdientry is used
+        # stand alone but can get in the way when using this widget in
+        # conjunction with mdihistory widget and a rich on-screen data
+        # entry UI. So this designer exposed setting allows this to be enabled
+        # or disabled as needed.
+        self._completer_enabled = True
 
         self.returnPressed.connect(self.submit)
 
@@ -49,6 +52,14 @@ class MDIEntry(QLineEdit, CMDWidget):
     @mdi_history_size.setter
     def mdi_history_size(self, size):
         self._mdi_history_size = size
+
+    @Property(bool)
+    def completerEnabled(self):
+        return self._completer_enabled
+    
+    @completerEnabled.setter
+    def completerEnabled(self, flag):
+        self._completer_enabled = flag
 
     @Slot()
     def submit(self):
@@ -69,14 +80,20 @@ class MDIEntry(QLineEdit, CMDWidget):
             self.setText(listItem.text())
 
     def keyPressEvent(self, event):
-        if event.key() == Qt.Key_Up or event.key() == Qt.Key_Down:
+        if (    self._completer_enabled
+             and
+             (  event.key() == Qt.Key_Up
+              or event.key() == Qt.Key_Down
+             )
+           ):
             self.completer().complete()
         else:
             super(MDIEntry, self).keyPressEvent(event)
 
     def focusInEvent(self, event):
         super(MDIEntry, self).focusInEvent(event)
-        self.completer().complete()
+        if self._completer_enabled:
+            self.completer().complete()
 
     def supress_rtn_key_behaviour(self):
         self.mdi_rtnkey_behaviour_supressed = True
@@ -86,9 +103,16 @@ class MDIEntry(QLineEdit, CMDWidget):
 
     def initialize(self):
         history = STATUS.mdi_history.value
-        self.model.setStringList(history)
+        if self._completer_enabled:
+            completer = QCompleter()
+            completer.setCaseSensitivity(Qt.CaseInsensitive)
+            self.model = QStringListModel()
+            completer.setModel(self.model)
+            self.setCompleter(completer)
+            self.model.setStringList(history)
+            STATUS.mdi_history.notify(self.model.setStringList)
+
         STATUS.max_mdi_history_length = self.mdi_history_size
-        STATUS.mdi_history.notify(self.model.setStringList)
 
     def terminate(self):
         pass
