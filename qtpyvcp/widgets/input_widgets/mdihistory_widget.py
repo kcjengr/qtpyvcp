@@ -239,7 +239,7 @@ class MDIHistory(QListWidget, CMDWidget):
     def setHistory(self, items_list):
         """Clear and reset the history in the list.
         item_list is a list of strings."""
-        print 'Clear and load history to list'
+        print('Clear and load history to list')
         self.clear()
         
         # check that there is anything do to
