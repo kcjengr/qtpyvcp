@@ -290,7 +290,7 @@ class VCPMainWindow(QMainWindow):
         elif event.key() == Qt.Key_PageDown:
             actions.machine.jog.axis('Z', -1)
         #else:
-            #print 'Unhandled key press event'
+            #print('Unhandled key press event')
 
     def keyReleaseEvent(self, event):
         if event.isAutoRepeat():
@@ -309,17 +309,17 @@ class VCPMainWindow(QMainWindow):
         elif event.key() == Qt.Key_PageDown:
             actions.machine.jog.axis('Z', 0)
         #else:
-            #print 'Unhandled key release event'
+            #print('Unhandled key release event')
 
     def mousePressEvent(self, event):
-        #print 'Button press'
+        #print('Button press')
         focused_widget = self.focusWidget()
         if focused_widget is not None:
             focused_widget.clearFocus()
 
     def focusChangedEvent(self, old_w, new_w):
         if issubclass(new_w.__class__, QLineEdit):
-            #print "QLineEdit got focus: ", new_w
+            #print("QLineEdit got focus: ", new_w)
             QTimer.singleShot(0, new_w.selectAll)
 
 # ==============================================================================
@@ -347,7 +347,7 @@ class VCPMainWindow(QMainWindow):
     def loadSplashGcode(self):
         # Load backplot splash code
         splash_code = INFO.getOpenFile()
-        #print splash_code
+        #print(splash_code)
         if splash_code is not None and os.path.isfile(splash_code):
             # Load after startup to not cause hang and 'Can't set mode while machine is running' error
             QTimer.singleShot(200, lambda: actions.program.load(splash_code, add_to_recents=False))

@@ -394,7 +394,7 @@ class _Info(object):
                     self.ALETTER_JNUM_DICT[aletter] = jnum
                     log.info("Axis {0} --> Joint {1}".format(aletter, jnum))
 
-        # print "AXIS_LETTER_LIST ", AXIS_LETTER_LIST
-        # print "JOINT_AXIS_DICT, ", JOINT_AXIS_DICT
-        # print "ALETTER_JNUM_DICT ", ALETTER_JNUM_DICT
-        # print "JNUM_ALETTER_DICT ", JNUM_ALETTER_DICT
+        # print("AXIS_LETTER_LIST ", AXIS_LETTER_LIST)
+        # print("JOINT_AXIS_DICT, ", JOINT_AXIS_DICT)
+        # print("ALETTER_JNUM_DICT ", ALETTER_JNUM_DICT)
+        # print("JNUM_ALETTER_DICT ", JNUM_ALETTER_DICT)

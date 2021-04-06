@@ -113,8 +113,8 @@ class RuntimeConfig(object):
 if __name__ == "__main__":
 
     with RuntimeConfig() as rc:
-        print rc.get('TEST', 'STR_VALUE', 'default')
+        print(rc.get('TEST', 'STR_VALUE', 'default'))
         rc.set('TEST', 'VALUE', 10)
 
     with RuntimeConfig('~/.axis_preferences') as rc:
-        print rc.get('DEFAULT', 'recentfiles', default=[])
+        print(rc.get('DEFAULT', 'recentfiles', default=[]))

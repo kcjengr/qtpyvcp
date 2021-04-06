@@ -78,7 +78,7 @@ class DataPlugin(Plugin):
         chan, sep, query = url.partition('?')
         raw_args = query.split('&')
 
-        # print url, chan, raw_args
+        # print(url, chan, raw_args)
 
         args = []
         kwargs = {}
@@ -89,7 +89,7 @@ class DataPlugin(Plugin):
             else:
                 args.append(arg)
 
-        # print chan, args, kwargs
+        # print(chan, args, kwargs)
 
         try:
             chan_obj = self.channels[chan]
@@ -178,7 +178,7 @@ class DataChannel(QObject):
         return self
 
     def notify(self, slot, *args, **kwargs):
-        # print 'Connecting %s to slot %s' % (self._signal, slot)
+        # print('Connecting %s to slot %s' % (self._signal, slot))
         if len(args) == 0 and len(kwargs) == 0:
             self.signal.connect(slot)
         else:

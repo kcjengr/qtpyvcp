@@ -137,20 +137,20 @@ def apply_opts(opts):
     if not os.path.isfile('/tmp/linuxcnc.lock'):
         # LinuxCNC is not running.
         # TODO: maybe launch LinuxCNC using subprocess?
-        print 'LinuxCNC must be running to launch a VCP'
+        print('LinuxCNC must be running to launch a VCP')
         sys.exit()
 
     # setup the environment variables
     ini_file = os.environ.get('INI_FILE_NAME') or opts.ini
     if ini_file is None:
-        print 'LinuxCNC is running, but you must specify the INI file'
+        print('LinuxCNC is running, but you must specify the INI file')
         sys.exit()
 
     if not os.getenv('INI_FILE_NAME'):
         base_path = os.path.expanduser('~/linuxcnc/configs')
         ini_file = os.path.realpath(normalizePath(ini_file, base_path))
         if not os.path.isfile(ini_file):
-            print 'Specified INI file does not exist: {}'.format(ini_file)
+            print('Specified INI file does not exist: {}'.format(ini_file))
             sys.exit()
         os.environ['INI_FILE_NAME'] = ini_file
         os.environ['CONFIG_DIR'] = os.path.dirname(ini_file)
@@ -163,7 +163,7 @@ def apply_opts(opts):
         config_dir = os.getenv('CONFIG_DIR', '')
         config_file_path = normalizePath(opts.config_file, config_dir)
         if not os.path.isfile(config_file_path):
-            print 'Specified YAML file does not exist: {}'.format(config_file_path)
+            print('Specified YAML file does not exist: {}'.format(config_file_path))
             sys.exit()
         opts.config_file = config_file_path
 
@@ -259,7 +259,7 @@ def printSystemInfo():
             if "model name" in line:
                 return re.sub(".*model name.*:", "", line, 1).strip()
 
-    print system_info.format(
+    print(system_info.format(
         qtpyvcp_version=qtpyvcp.__version__,
 
         # linuxcnc info
@@ -286,4 +286,4 @@ def printSystemInfo():
         hostname=socket.gethostname(),
         ip_address=socket.gethostbyname(socket.gethostname()),
         mac_address=':'.join(re.findall('..', '%012x' % uuid.getnode())),
-    )
+    ))

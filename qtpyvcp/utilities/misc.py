@@ -18,7 +18,7 @@ def insertPath(env_var, index, file):
         files =[]
     else:
         files.strip(':').split(':')
-    print files
+    print(files)
     files.insert(index, file)
     os.environ[env_var] = ':'.join(files)
-    print os.environ[env_var]
+    print(os.environ[env_var])

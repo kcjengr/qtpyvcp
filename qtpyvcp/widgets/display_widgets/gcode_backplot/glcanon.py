@@ -433,7 +433,7 @@ class GlCanonDraw:
                     try:
                         test = temp % 1.234
                     except:
-                        print "Error: invalid [DISPLAY] DRO_FORMAT_IN in INI file"
+                        print("Error: invalid [DISPLAY] DRO_FORMAT_IN in INI file")
                     else:
                         self.dro_in = temp
                 if self.inifile.find("DISPLAY", "DRO_FORMAT_MM"):
@@ -441,7 +441,7 @@ class GlCanonDraw:
                     try:
                         test = temp % 1.234
                     except:
-                        print "Error: invalid [DISPLAY] DRO_FORMAT_MM in INI file"
+                        print("Error: invalid [DISPLAY] DRO_FORMAT_MM in INI file")
                     else:
                         self.dro_mm = temp
         except:
@@ -452,8 +452,8 @@ class GlCanonDraw:
         self.kinsmodule = kinsmodule
         self.no_joint_display = self.stat.kinematics_type == linuxcnc.KINEMATICS_IDENTITY
         if (msg != ""):
-            print "init_glcanondraw %s coords=%s kinsmodule=%s no_joint_display=%d"%(
-                   msg,self.trajcoordinates,self.kinsmodule,self.no_joint_display)
+            print("init_glcanondraw %s coords=%s kinsmodule=%s no_joint_display=%d"%(
+                   msg,self.trajcoordinates,self.kinsmodule,self.no_joint_display))
 
     def realize(self):
         self.hershey = hershey.Hershey()

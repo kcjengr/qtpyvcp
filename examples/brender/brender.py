@@ -26,5 +26,5 @@ class MainWindow(VCPMainWindow):
     # created in QtDesigner.
     @Slot()
     def on_actionTest_triggered(self):
-        print 'Test action triggered'
+        print('Test action triggered')
         # implement the action here

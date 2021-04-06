@@ -48,7 +48,7 @@ class ErrorDialog(BaseDialog):
             IGNORE_LIST.append((str(self.exc_info[0]),
                                 str(self.exc_info[1]),
                                 self.exc_info[2].tb_lineno))
-            print IGNORE_LIST
+            print(IGNORE_LIST)
         self.accept()
 
     @Slot()

@@ -326,7 +326,7 @@ class ToolTable(DataPlugin):
         self.current_tool.setValue(self.TOOL_TABLE[STATUS.tool_in_spindle.getValue()])
 
         # import json
-        # print json.dumps(table, sort_keys=True, indent=4)
+        # print(json.dumps(table, sort_keys=True, indent=4))
 
         self.tool_table_changed.emit(table)
         return table.copy()
@@ -416,7 +416,7 @@ class ToolTable(DataPlugin):
             lines.append(''.join(items))
 
         # for line in lines:
-        #     print line
+        #     print(line)
 
         # write to file
         with io.open(tool_file, 'w') as fh:

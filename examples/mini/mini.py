@@ -13,4 +13,4 @@ class MiniVCP(VCPMainWindow):
         comp.ready()
 
     def onHalTestingChanged(self, val):
-        print "hello.testing value changed: ", val
+        print("hello.testing value changed: ", val)
