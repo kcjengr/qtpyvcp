@@ -127,7 +127,12 @@ class MDIHistory(QListWidget, CMDWidget):
         row = self.currentRow()
         if row != -1:
             self.takeItem(row)
-            STATUS.mdi_remove_entry(row)
+            if not self.mdi_listorder_natural:
+                STATUS.mdi_remove_entry(row)
+            else:
+                history_length = len(STATUS.mdi_history.value)
+                history_target_row = history_length-1-row 
+                STATUS.mdi_remove_entry(history_target_row)
 
     @Slot()
     def runFromSelection(self):
@@ -174,6 +179,7 @@ class MDIHistory(QListWidget, CMDWidget):
         self.setCurrentItem(row_item)
 
         # put the command onto the status channel mdi history
+        # This always adds this item at position Zero on the channel
         STATUS.mdi_history.setValue(cmd)
 
         # now clear down the mdi entry text ready for new input
@@ -202,7 +208,12 @@ class MDIHistory(QListWidget, CMDWidget):
         item = self.takeItem(row)
         self.insertItem(row-1, item)
         self.setCurrentRow(row-1)
-        STATUS.mdi_swap_entries(row, row-1)
+        if not self.mdi_listorder_natural:
+            STATUS.mdi_swap_entries(row, row-1)
+        else:
+            history_length = len(STATUS.mdi_history.value)
+            history_target_row = history_length-1-row 
+            STATUS.mdi_swap_entries(history_target_row, history_target_row+1)
 
     @Slot()
     def moveRowItemDown(self):
@@ -212,7 +223,12 @@ class MDIHistory(QListWidget, CMDWidget):
         item = self.takeItem(row)
         self.insertItem(row+1, item)
         self.setCurrentRow(row+1)
-        STATUS.mdi_swap_entries(row, row+1)
+        if not self.mdi_listorder_natural:
+            STATUS.mdi_swap_entries(row, row+1)
+        else:
+            history_length = len(STATUS.mdi_history.value)
+            history_target_row = history_length-1-row 
+            STATUS.mdi_swap_entries(history_target_row, history_target_row-1)
         
     def keyPressEvent(self, event):
         """Key movement processing.
@@ -295,7 +311,8 @@ class MDIHistory(QListWidget, CMDWidget):
 
     def initialize(self):
         """Load up starting data and set signal connections."""
-        history = STATUS.mdi_history.value
+        # get a proper copy of the list so changes to it are contained.
+        history = STATUS.mdi_history.value[:]
         self.setHistory(history)
         self.clicked.connect(self.rowClicked)
 
