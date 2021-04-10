@@ -62,18 +62,30 @@ class Notifications(DataPlugin):
 
     @DataChannel
     def debug_message(self, chan):
+        """Debug messages from LinuxCNC.
+        """
         return chan.value or ''
 
     @DataChannel
     def info_message(self, chan):
+        """Gives messages from GCode.
+        Syntax: (MSG, ...)
+        (DEBUG, ...)
+        See http://linuxcnc.org/docs/html/gcode/overview.html#gcode:messages
+        for more information.
+        """
         return chan.value or ''
 
     @DataChannel
     def warn_message(self, chan):
+        """Warning messages from LinuxCNC.
+        """
         return chan.value or ''
 
     @DataChannel
     def error_message(self, chan):
+        """Error messages from LinuxCNC.
+        """
         return chan.value or ''
 
     def captureMessage(self, m_type, msg):

@@ -1,21 +1,3 @@
-"""
-HAL Bar Indicator
------------------
-
-Bar for indicating the value of `float` HAL pins.
-
-.. table:: Generated HAL Pins
-
-    ============================= ===== =========
-    HAL Pin Name                  Type  Direction
-    ============================= ===== =========
-    qtpyvcp.bar-indicator.in-i    u32   in
-    qtpyvcp.bar-indicator.in-f    float in
-    qtpyvcp.bar-indicator.min-val float in
-    qtpyvcp.bar-indicator.max-val float in
-    ============================= ===== =========
-"""
-
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget
 from qtpyvcp.widgets.base_widgets.bar_indicator import BarIndicatorBase
@@ -26,7 +8,22 @@ log = getLogger(__name__)
 
 
 class HalBarIndicator(BarIndicatorBase, HALWidget):
-    """HAL Bar Indicator"""
+    """
+    HAL Bar Indicator
+
+    Bar for indicating the value of `float` HAL pins.
+
+    .. table:: Generated HAL Pins
+
+        ============================= ===== =========
+        HAL Pin Name                  Type  Direction
+        ============================= ===== =========
+        qtpyvcp.bar-indicator.in-i    u32   in
+        qtpyvcp.bar-indicator.in-f    float in
+        qtpyvcp.bar-indicator.min-val float in
+        qtpyvcp.bar-indicator.max-val float in
+        ============================= ===== =========
+    """
     def __init__(self, parent=None):
         super(HalBarIndicator, self).__init__(parent)
 

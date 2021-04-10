@@ -33,6 +33,7 @@ import qtpyvcp
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
+
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.todo',
@@ -423,12 +424,12 @@ class Mock(object):
     def __getitem__(self, key):
         return Mock()
 
-Mock.mock_modules('qtpy',
-                  'qtpy.QtCore',
-                  'qtpy.QtGui',
-                  'qtpy.QtWidgets',
-                  'docopt',
-                  'dbus')
+#Mock.mock_modules('qtpy',
+#                  'qtpy.QtCore',
+#                  'qtpy.QtGui',
+#                  'qtpy.QtWidgets',
+#                  'docopt',
+#                  'dbus')
 
 import qtpyvcp.plugins
 qtpyvcp.plugins._PLUGINS = mock.MagicMock()
