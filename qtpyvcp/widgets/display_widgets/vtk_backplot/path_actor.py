@@ -4,6 +4,7 @@ from qtpyvcp.utilities import logger
 
 LOG = logger.getLogger(__name__)
 
+
 class PathActor(vtk.vtkActor):
     def __init__(self, linuxcncDataSource):
         super(PathActor, self).__init__()
@@ -11,7 +12,6 @@ class PathActor(vtk.vtkActor):
 
         self.origin_index = None
         self.origin_cords = None
-
 
         if self._datasource.isMachineMetric():
             self.length = 2.5

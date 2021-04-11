@@ -23,6 +23,7 @@ Tool Table YAML configuration:
 
 import os
 import re
+import io
 from itertools import takewhile
 from datetime import datetime
 
@@ -293,7 +294,7 @@ class ToolTable(DataPlugin):
             LOG.critical("Tool table file does not exist: {}".format(tool_file))
             return {}
 
-        with open(tool_file, 'r') as fh:
+        with io.open(tool_file, 'r') as fh:
             lines = [line.strip() for line in fh.readlines()]
 
         # find opening colon, and get header data so it can be restored
@@ -348,7 +349,7 @@ class ToolTable(DataPlugin):
         self.current_tool.setValue(self.TOOL_TABLE[STATUS.tool_in_spindle.getValue()])
 
         # import json
-        # print json.dumps(table, sort_keys=True, indent=4)
+        # print(json.dumps(table, sort_keys=True, indent=4))
 
         self.tool_table_changed.emit(table)
         return table.copy()
@@ -438,12 +439,12 @@ class ToolTable(DataPlugin):
             lines.append(''.join(items))
 
         # for line in lines:
-        #     print line
+        #     print(line)
 
         # write to file
-        with open(tool_file, 'w') as fh:
+        with io.open(tool_file, 'w') as fh:
             fh.write('\n'.join(lines))
-            fh.write('\n')  # new line at end of file
+            fh.write('\n'.decode('utf-8'))  # new line at end of file
             fh.flush()
             os.fsync(fh.fileno())
 

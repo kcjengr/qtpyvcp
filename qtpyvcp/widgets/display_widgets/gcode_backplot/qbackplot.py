@@ -559,7 +559,7 @@ class QBackPlot(QGLWidget, glcanon.GlCanonDraw, glnav.GlNavBase):
         self.end_of_move_mouse_release = False
         if (event.buttons() & Qt.LeftButton):
             self.select_prime(event.pos().x(), event.pos().y())
-            # print self.winfo_width()/2 - event.pos().x(), self.winfo_height()/2 - event.pos().y()
+            # print(self.winfo_width()/2 - event.pos().x(), self.winfo_height()/2 - event.pos().y())
         self.recordMouse(event.pos().x(), event.pos().y())
         self.startZoom(event.pos().y())
 

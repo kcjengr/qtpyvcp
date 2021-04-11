@@ -100,8 +100,8 @@ if __name__ == "__main__":
     c.initialise()
 
     def onTimeChanged(val):
-        print c.time
-        print c.date
+        print(c.time)
+        print(c.date)
 
     c.time.notify(onTimeChanged)
 

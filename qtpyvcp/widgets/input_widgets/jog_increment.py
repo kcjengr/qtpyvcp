@@ -62,7 +62,7 @@ class JogIncrementWidget(QWidget):
 
             if increment != 0:
                 raw_increment = increment.strip()
-                # print '[', raw_increment, ']'
+                # print('[', raw_increment, ']')
                 button.setText(raw_increment)
                 button.clicked.connect(self.setJogIncrement)
 

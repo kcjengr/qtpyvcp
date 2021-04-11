@@ -4,21 +4,18 @@ import os
 import shutil
 
 from qtpyvcp.lib.native_notification import NativeNotification
-from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import BaseCanon
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
 
 class BaseBackPlot(object):
-    def __init__(self, inifile=None, canon=BaseCanon):
-
+    def __init__(self, inifile=None):
         self.notification = NativeNotification()
 
         inifile = inifile or os.getenv("INI_FILE_NAME")
         if inifile is None or not os.path.isfile(inifile) and not IN_DESIGNER:
             raise ValueError("Invalid INI file: %s", inifile)
 
-        self.canon_class = canon
         self.canon = None
 
         self.stat = linuxcnc.stat()
@@ -40,8 +37,9 @@ class BaseBackPlot(object):
 
         self.last_filename = None
 
-    def load(self, filename=None, *args, **kwargs):
-        # args and kwargs are passed to the canon init method
+    def load(self, filename=None):
+        if self.canon is None:
+            return
 
         filename = filename or self.last_filename
         if filename is None:
@@ -54,10 +52,6 @@ class BaseBackPlot(object):
             # raise ValueError("Can't load backplot, invalid file: {}".format(filename))
 
         self.last_filename = filename
-
-        # create the object which handles the canonical motion callbacks
-        # (straight_feed, straight_traverse, arc_feed, rigid_tap, etc.)
-        self.canon = self.canon_class(*args, **kwargs)
 
         if os.path.exists(self.parameter_file):
             shutil.copy(self.parameter_file, self.temp_parameter_file)

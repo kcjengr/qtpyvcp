@@ -19,6 +19,8 @@ import gcode
 import linuxcnc
 import math
 
+from qtpyvcp.utilities import logger
+LOG = logger.getLogger(__name__)
 
 class BaseCanon(object):
     def __init__(self):
@@ -30,7 +32,7 @@ class BaseCanon(object):
         self.last_pos = (0,) * 9
 
         self.first_move = True
-        self.in_arc = 0
+        self.in_arc = False
         self.suppress = 0
 
         self.plane = 1
@@ -65,7 +67,6 @@ class BaseCanon(object):
         self.g92_offset_u = 0.0
         self.g92_offset_v = 0.0
         self.g92_offset_w = 0.0
-        self.origin = 540
 
         # g5x offsets
         self.g5x_offset_x = 0.0
@@ -138,7 +139,6 @@ class BaseCanon(object):
         return [x, y, z, a, b, c, u, v, w]
 
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
-        self.origin = index
         self.g5x_offset_x = x
         self.g5x_offset_y = y
         self.g5x_offset_z = z
@@ -226,13 +226,13 @@ class BaseCanon(object):
         self.plane = plane
 
     def arc_feed(self, end_x, end_y, center_x, center_y, rot, end_z, a, b, c, u, v, w):
-
         if self.suppress > 0:
             return
 
         self.first_move = False
         self.in_arc = True
         try:
+            # this self.lo goes straight into the c code, cannot be changed
             self.lo = tuple(self.last_pos)
             segs = gcode.arc_to_segments(self, end_x, end_y, center_x, center_y,
                                          rot, end_z, a, b, c, u, v, w, self.arcdivision)
@@ -359,7 +359,22 @@ class PrintCanon(BaseCanon):
             print("dwell %f seconds" % arg)
 
     def arc_feed(self, *args):
-        print("arc_feed %.4g %.4g  %.4g %.4g %.4g  %.4g  %.4g %.4g %.4g" % args)
+        print("arc_feed %.4g %.4g  %.4g %.4g %.4g  %.4g  %.4g %.4g %.4g  %.4g %.4g %.4g" % args)
 
     def get_axis_mask(self):
         return 7  # XYZ
+
+
+    def change_tool(self, pocket):
+        print("pocket", pocket)
+
+    def next_line(self, st):
+        # state attributes
+        # 'block', 'cutter_side', 'distance_mode', 'feed_mode', 'feed_rate',
+        # 'flood', 'gcodes', 'mcodes', 'mist', 'motion_mode', 'origin', 'units',
+        # 'overrides', 'path_mode', 'plane', 'retract_mode', 'sequence_number',
+        # 'speed', 'spindle', 'stopping', 'tool_length_offset', 'toolchange',
+        print("state", st)
+        print("seq", st.sequence_number)
+        print("MCODES", st.mcodes)
+        print("TOOLCHANGE", st.toolchange)

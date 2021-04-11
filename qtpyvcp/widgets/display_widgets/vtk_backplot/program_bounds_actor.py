@@ -7,6 +7,7 @@ from qtpyvcp.utilities.settings import getSetting
 LOG = logger.getLogger(__name__)
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
+
 class ProgramBoundsActor(vtk.vtkCubeAxesActor):
     def __init__(self, camera, path_actor):
         super(ProgramBoundsActor, self).__init__()

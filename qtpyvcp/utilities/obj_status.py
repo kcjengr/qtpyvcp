@@ -27,7 +27,7 @@ try:
     log = logger.getLogger(__name__)
     log.setLevel('WARNING')
 except Exception as e:
-    print e
+    print(e)
     import logging as log
     FORMAT = "[%(levelname)s]: %(message)s (%(filename)s:%(lineno)d)"
     log.basicConfig(level=log.DEBUG, format=FORMAT)
@@ -167,7 +167,7 @@ class StatusPoller(QObject):
             except Exception as e:
                 log.exception(e)
                 del self.status_items[hash(status_item)]
-        # print time.time() - s
+        # print(time.time() - s)
 
     def getStatAttr(self, name, index=None, key=None, stat_class=StatusItem):
         si = self.status_items.get(hash((name, index, key)))
@@ -356,7 +356,7 @@ class HALPoller(QObject):
 
             changed_items = set(pin_dict.items()) - set(self.pin_dict.items())
             # for item in changed_items:
-            #     print 'HAL pin Changed: {} => {}'.format(item[0], item[1])
+            #     print('HAL pin Changed: {} => {}'.format(item[0], item[1]))
 
             self.pin_dict = pin_dict
             self.sig_dict = sig_dict
@@ -365,8 +365,8 @@ class HALPoller(QObject):
                 if changed_item[0] in self.status_items:
                     self.status_items[changed_item[0]].update(changed_item[1])
 
-            # print time.time() - s
-            # print json.dumps(pin_dict, indent=4, sort_keys=True)
+            # print(time.time() - s)
+            # print(json.dumps(pin_dict, indent=4, sort_keys=True))
 
             # before starting the next check, sleep a little so we don't use all the CPU
             time.sleep(self.cycle_time/1000.0)

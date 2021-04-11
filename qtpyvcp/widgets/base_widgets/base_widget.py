@@ -124,7 +124,7 @@ class VCPBaseWidget(VCPPrimitiveWidget):
     def registerRules(self):
         rules = json.loads(self._rules)
         for rule in rules:
-            # print rule
+            # print(rule)
             ch = ChanList()
             triggers = []
             for chan in rule['channels']:

@@ -713,7 +713,7 @@ class Status(DataPlugin):
         for spindle in self.spindle:
             spindle._update()
 
-        # print time.time() - s
+        # print(time.time() - s)
 
 
 class JointStatus(DataPlugin):

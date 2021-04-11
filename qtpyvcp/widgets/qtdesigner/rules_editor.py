@@ -524,7 +524,7 @@ class RulesEditor(QtWidgets.QDialog):
             idx = self.get_current_index()
             self.change_entry("property", self.cmb_property.currentText())
         except Exception as e:
-            print "error", e
+            print("error", e)
             self.lbl_expected_type.setText("")
 
     def tbl_channels_changed(self, table_item):
@@ -666,7 +666,7 @@ class RulesEditor(QtWidgets.QDialog):
         is_valid, message = self.is_data_valid()
         if is_valid:
             data = json.dumps(self.rules)
-            #print json.dumps(self.rules, sort_keys=True, indent=4)
+            print(json.dumps(self.rules, sort_keys=True, indent=4))
             formWindow = QtDesigner.QDesignerFormWindowInterface.findFormWindow(self.widget)
             if formWindow:
                 formWindow.cursor().setProperty("rules", data)

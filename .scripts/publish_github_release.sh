@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-REPO=$TRAVIS_REPO_SLUG
-TAG=$TRAVIS_TAG
-AUTH_TOKEN=$GH_TOKEN
+REPO="$1"
+TAG="$2"
+AUTH_TOKEN="$3"
 
 PRERELEASE=false
 RELEASEFILES=(debs/python-qtpyvcp_*.deb dist/qtpyvcp-*.tar.gz)
@@ -134,7 +134,7 @@ JSON=$(cat <<EOF
 EOF
 )
 RESULT=`curl -s -w "\n%{http_code}\n"     \
-  -H "Authorization: token $GH_TOKEN"  \
+  -H "Authorization: token $AUTH_TOKEN"  \
   -d "$JSON"                              \
   "https://api.github.com/repos/$REPO/releases"`
 if [ "`echo "$RESULT" | tail -1`" != "201" ]; then
@@ -159,7 +159,7 @@ for FILE in "${RELEASEFILES[@]}"; do
   FILENAME=`basename $FILE`
   echo -n "Uploading $FILENAME... "
   RESULT=`curl -s -w "\n%{http_code}\n"                   \
-    -H "Authorization: token $GH_TOKEN"                \
+    -H "Authorization: token $AUTH_TOKEN"                \
     -H "Accept: application/vnd.github.manifold-preview"  \
     -H "Content-Type: application/zip"                    \
     --data-binary "@$FILE"                                \
@@ -181,7 +181,7 @@ EOF
 )
 RESULT=`curl -s -w "\n%{http_code}\n"     \
   -X PATCH                                \
-  -H "Authorization: token $GH_TOKEN"  \
+  -H "Authorization: token $AUTH_TOKEN"  \
   -d "$JSON"                              \
   "https://api.github.com/repos/$REPO/releases/$RELEASEID"`
 if [ "`echo "$RESULT" | tail -1`" = "200" ]; then

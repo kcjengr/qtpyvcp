@@ -70,7 +70,7 @@ class SubCaller(QtWidgets.QWidget):
 
         cmd_str = "o<{}> call {}".format(subname, arg_str)
 
-        # Print the command to the terminal so the user can see what is happening
+        # Print(the command to the terminal so the user can see what is happening)
         print("Calling MDI command: {}".format(cmd_str))
 
         self.notification.setNotify("Probe", "Probing...")

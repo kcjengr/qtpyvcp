@@ -28,7 +28,7 @@ from machine_actor import MachineActor
 from tool_actor import ToolActor
 from path_cache_actor import PathCacheActor
 from program_bounds_actor import ProgramBoundsActor
-from vtk_cannon import VTKCanon
+from vtk_canon import VTKCanon
 from linuxcnc_datasource import LinuxCncDataSource
 
 LOG = logger.getLogger(__name__)
@@ -47,7 +47,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         super(VTKBackPlot, self).__init__(parent)
         LOG.debug("---------using refactored vtk code")
         self._datasource = LinuxCncDataSource()
-        self.canon_class = VTKCanon
 
         self.parent = parent
         self.ploter_enabled = True
@@ -66,6 +65,20 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._background_color = QColor(0, 0, 0)
         self._background_color2 = QColor(0, 0, 0)
         self._enableProgramTicks = True
+        
+        self._default_traverse_color = QColor(200, 35, 35, 255)
+        self._default_arcfeed_color = QColor(110, 110, 255, 255)
+        self._default_feed_color = QColor(210, 210, 255, 255)
+        self._default_dwell_color = QColor(0, 0, 255, 255)
+        self._default_user_color = QColor(0, 100, 255, 255)
+        
+        self._traverse_color = self._default_traverse_color
+        self._arcfeed_color = self._default_arcfeed_color
+        self._feed_color = self._default_feed_color
+        self._dwel_color = self._default_dwell_color
+        self._user_color = self._default_user_color
+
+        
 
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
         self.wcs_offsets = self._datasource.getWcsOffsets()
@@ -104,11 +117,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         # self.nav_style = vtk.vtkInteractorStyleTrackballCamera()
         self.nav_style = vtk.vtkInteractorStyleMultiTouchCamera() if self.touch_enabled else None
-
+           
         self.interactor = self.renderer_window.GetInteractor()
         self.interactor.SetInteractorStyle(self.nav_style)
         self.interactor.SetRenderWindow(self.renderer_window)
-
+        
         self.machine_actor = MachineActor(self._datasource)
         self.machine_actor.SetCamera(self.camera)
 
@@ -128,45 +141,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.offset_axes = OrderedDict()
         self.program_bounds_actors = OrderedDict()
         self.show_program_bounds = bool()
-
-        if not IN_DESIGNER:
-            self.canon = self.canon_class()
-            self.path_actors = self.canon.get_path_actors()
-
-            for wcs_index, path_actor in self.path_actors.items():
-                current_offsets = self.wcs_offsets[wcs_index]
-
-                LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
-                LOG.debug("---------wcs_index: {}".format(wcs_index))
-                LOG.debug("---------current_offsets: {}".format(current_offsets))
-
-                actor_transform = vtk.vtkTransform()
-                actor_transform.Translate(*current_offsets[:3])
-                actor_transform.RotateZ(current_offsets[9])
-
-                path_actor.SetUserTransform(actor_transform)
-                path_actor.SetPosition(*current_offsets[:3])
-
-                LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
-
-                program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
-
-                axes = path_actor.get_axes_actor()
-
-                self.offset_axes[wcs_index] = axes
-                self.program_bounds_actors[wcs_index] = program_bounds_actor
-
-                self.renderer.AddActor(axes)
-                self.renderer.AddActor(program_bounds_actor)
-                self.renderer.AddActor(path_actor)
-
-        self.renderer.AddActor(self.tool_actor)
-        self.renderer.AddActor(self.machine_actor)
-        self.renderer.AddActor(self.axes_actor)
-        self.renderer.AddActor(self.path_cache_actor)
-
-        self.renderer.ResetCamera()
-
+    
+        
         # Add the observers to watch for particular events. These invoke Python functions.
         self.interactor.AddObserver("LeftButtonPressEvent", self.button_event)
         self.interactor.AddObserver("LeftButtonReleaseEvent", self.button_event)
@@ -206,6 +182,56 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         connectSetting('backplot.perspective-view', self.viewPerspective)
         connectSetting('backplot.view', self.setView)
         connectSetting('backplot.multitool-colors', self.showMultiColorPath)
+        
+
+    def initialize(self):
+        self.path_colors = {'traverse': self._traverse_color,
+                       'arcfeed': self._arcfeed_color,
+                       'feed': self._feed_color,
+                       'dwell': QColor(0, 0, 255, 255),
+                       'user': QColor(0, 100, 255, 255)
+                       }
+        
+        if not IN_DESIGNER:
+            
+            
+            self.canon = VTKCanon(colors=self.path_colors)
+            self.path_actors = self.canon.get_path_actors()
+
+            for wcs_index, path_actor in self.path_actors.items():
+                current_offsets = self.wcs_offsets[wcs_index]
+
+                LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
+                LOG.debug("---------wcs_index: {}".format(wcs_index))
+                LOG.debug("---------current_offsets: {}".format(current_offsets))
+
+                actor_transform = vtk.vtkTransform()
+                actor_transform.Translate(*current_offsets[:3])
+                actor_transform.RotateZ(current_offsets[9])
+
+                path_actor.SetUserTransform(actor_transform)
+                path_actor.SetPosition(*current_offsets[:3])
+
+                LOG.debug("---------current_position: {}".format(*current_offsets[:3]))
+
+                program_bounds_actor = ProgramBoundsActor(self.camera, path_actor)
+
+                axes = path_actor.get_axes_actor()
+
+                self.offset_axes[wcs_index] = axes
+                self.program_bounds_actors[wcs_index] = program_bounds_actor
+
+                self.renderer.AddActor(axes)
+                self.renderer.AddActor(program_bounds_actor)
+                self.renderer.AddActor(path_actor)
+
+        self.renderer.AddActor(self.tool_actor)
+        self.renderer.AddActor(self.machine_actor)
+        self.renderer.AddActor(self.axes_actor)
+        self.renderer.AddActor(self.path_cache_actor)
+
+        self.renderer.ResetCamera()
+
 
     # Handle the mouse button events.
     def button_event(self, obj, event):
@@ -396,9 +422,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         start_time = time.time()
 
         if fname:
+            # create the object which handles the canonical motion callbacks
+            # (straight_feed, straight_traverse, arc_feed, rigid_tap, etc.)
+            self.canon = VTKCanon(colors=self.path_colors)
             self.load(fname)
-
-        if self.canon is None:
+        else:
             return
 
         LOG.debug("-------Load time %s seconds ---" % (time.time() - start_time))
@@ -409,10 +437,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.path_actors = self.canon.get_path_actors()
 
         for wcs_index, actor in self.path_actors.items():
-            current_offsets = self.wcs_offsets[wcs_index]
-
             LOG.debug("---------wcs_offsets: {}".format(self.wcs_offsets))
             LOG.debug("---------wcs_index: {}".format(wcs_index))
+
+            current_offsets = self.wcs_offsets[wcs_index]
             LOG.debug("---------current_offsets: {}".format(current_offsets))
 
             actor_transform = vtk.vtkTransform()
@@ -895,6 +923,14 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.SetBackground(color.getRgbF()[:3])
         self.renderer_window.Render()
 
+    @backgroundColor.reset
+    def backgroundColor(self):
+        self._background_color = QColor(0, 0, 0)
+
+        self.renderer.GradientBackgroundOff()
+        self.renderer_window.Render()
+
+
     @Property(QColor)
     def backgroundColor2(self):
         return self._background_color2
@@ -921,3 +957,73 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     @enableProgramTicks.setter
     def enableProgramTicks(self, enable):
         self._enableProgramTicks = enable
+    
+    # Traverse color property
+
+    @Property(QColor)
+    def traverseColor(self):
+        return self._traverse_color
+
+    @traverseColor.setter
+    def traverseColor(self, color):
+        self._traverse_color = color
+
+    @traverseColor.reset
+    def traverseColor(self):
+        self._traverse_color = self._default_traverse_color
+    
+    # Arcfeed color property
+
+    @Property(QColor)
+    def arcfeedColor(self):
+        return self._arcfeed_color
+
+    @arcfeedColor.setter
+    def arcfeedColor(self, color):
+        self._arcfeed_color = color
+
+    @arcfeedColor.reset
+    def arcfeedColor(self):
+        self._arcfeed_color = self._default_arcfeed_color
+    
+    # Feed color property
+
+    @Property(QColor)
+    def feedColor(self):
+        return self._feed_color
+
+    @feedColor.setter
+    def feedColor(self, color):
+        self._feed_color = color
+
+    @feedColor.reset
+    def feedColor(self):
+        self._feed_color = self._default_feed_color
+    
+    # Dwell color property
+
+    @Property(QColor)
+    def dwellColor(self):
+        return self._dwel_color
+
+    @dwellColor.setter
+    def dwellColor(self, color):
+        self._dwel_color = color
+
+    @dwellColor.reset
+    def dwellColor(self):
+        self._dwel_color = self._default_dwell_color
+    
+    # User color property
+
+    @Property(QColor)
+    def userColor(self):
+        return self._user_color
+
+    @userColor.setter
+    def userColor(self, color):
+        self._user_color = color
+
+    @userColor.reset
+    def userColor(self):
+        self._user_color = self._default_user_color

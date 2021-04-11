@@ -137,12 +137,12 @@ class GcodeLexer(QsciLexerCustom):
 
         # scintilla always asks to style whole lines
         for line in source.splitlines(True):
-            # print line
+            # print(line)
             length = len(line)
             graymode = False
             msg = ('msg' in line.lower() or 'debug' in line.lower())
             for char in str(line):
-                # print char
+                # print(char)
                 if char == '(':
                     graymode = True
                     set_style(1, self.Comment)

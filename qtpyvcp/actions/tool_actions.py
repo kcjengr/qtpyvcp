@@ -79,7 +79,7 @@ def classicladder():
         p = os.popen("classicladder  &", "w")
     else:
         text = "Classicladder real-time component not detected"
-        print text
+        print(text)
         # self.error_dialog.run(text)
 
 def simulate_probe():
