@@ -420,14 +420,15 @@ class Mock(object):
     def __getitem__(self, key):
         return Mock()
 
-Mock.mock_modules('qtpy',
-                  'qtpy.QtCore',
-                  'qtpy.QtGui',
-                  'qtpy.QtWidgets',
-                  'docopt',
-                  'dbus')
+# Mock.mock_modules('qtpy',
+#                   'qtpy.QtCore',
+#                   'qtpy.QtGui',
+#                   'qtpy.QtWidgets',
+#                   'docopt',
+#                   'dbus')
 
 import qtpyvcp.plugins
+
 qtpyvcp.plugins._PLUGINS = mock.MagicMock()
 qtpyvcp.plugins.iterPlugins = mock.MagicMock()
 qtpyvcp.WINDOWS = mock.MagicMock()
