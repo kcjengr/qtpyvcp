@@ -19,6 +19,9 @@ import os
 import sys
 import mock
 
+qtpyvcp_dir = os.path.join(os.path.abspath('.'), '..', '..')
+sys.path.insert(0, os.path.abspath(qtpyvcp_dir))
+
 import qtpyvcp
 
 # -- General configuration ------------------------------------------------
@@ -420,12 +423,13 @@ class Mock(object):
     def __getitem__(self, key):
         return Mock()
 
-# Mock.mock_modules('qtpy',
-#                   'qtpy.QtCore',
-#                   'qtpy.QtGui',
-#                   'qtpy.QtWidgets',
-#                   'docopt',
-#                   'dbus')
+Mock.mock_modules('qtpy',
+                  'qtpy.QtCore',
+                  'qtpy.QtGui',
+                  'qtpy.QtWidgets',
+                  'docopt',
+                  'dbus')
+
 
 import qtpyvcp.plugins
 
