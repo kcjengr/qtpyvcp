@@ -2,11 +2,11 @@ import os
 import sys
 from qtpy.QtWidgets import QAction, QPushButton, QCheckBox, QSlider, QSpinBox, QComboBox, QDial
 
-import machine_actions as machine
-import program_actions as program
-import spindle_actions as spindle
-import coolant_actions as coolant
-import tool_actions as tool
+import qtpyvcp.actions.machine_actions as machine
+import qtpyvcp.actions.program_actions as program
+import qtpyvcp.actions.spindle_actions as spindle
+import qtpyvcp.actions.coolant_actions as coolant
+import qtpyvcp.actions.tool_actions as tool
 
 # Set up logging
 from qtpyvcp.utilities import logger
