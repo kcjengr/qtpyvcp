@@ -19,10 +19,10 @@ import os
 import sys
 import mock
 
+qtpyvcp_dir = os.path.join(os.path.abspath('.'), '..', '..')
+sys.path.insert(0, os.path.abspath(qtpyvcp_dir))
 
 import qtpyvcp
-sys.path.insert(0, os.path.abspath('../..'))
-
 
 # -- General configuration ------------------------------------------------
 
@@ -422,7 +422,6 @@ class Mock(object):
 
     def __getitem__(self, key):
         return Mock()
-
 
 Mock.mock_modules('qtpy',
                   'qtpy.QtCore',
