@@ -355,6 +355,8 @@ class EditorBase(QsciScintilla):
 class GcodeEditor(EditorBase, QObject):
     ARROW_MARKER_NUM = 8
 
+    somethingHasChanged = Signal(bool)
+
     def __init__(self, parent=None):
         super(GcodeEditor, self).__init__(parent)
 
@@ -365,6 +367,7 @@ class GcodeEditor(EditorBase, QObject):
         # self.setEolVisibility(True)
 
         self.is_editor = False
+        self.text_before_edit = ''
 
         self.dialog = FindReplaceDialog(parent=self)
 
@@ -379,13 +382,20 @@ class GcodeEditor(EditorBase, QObject):
         #self.prev_taskmode = STATUS.task_mode
 
         #self.cursorPositionChanged.connect(self.line_changed)
+        self.somethingHasChanged.emit(False)
 
     @Slot(bool)
     def setEditable(self, state):
         if state:
             self.setReadOnly(False)
+            self.setCaretLineVisible(True)
+            if self.text_before_edit != '':
+                self.text_before_edit = self.text()
+            self.somethingHasChanged.emit(False)
         else:
             self.setReadOnly(True)
+            self.setCaretLineVisible(False)
+            self.somethingHasChanged.emit(self.text_before_edit != self.text())
 
     @Slot(str)
     def setFilename(self, path):
@@ -393,18 +403,18 @@ class GcodeEditor(EditorBase, QObject):
 
     @Slot()
     def save(self):
-        self.filename = str(STATUS.file)
-
         save_file = QFile(self.filename)
 
         result = save_file.open(QFile.WriteOnly)
         if result:
+            LOG.debug("---self.text(): {}".format(self.text()))
             save_stream = QTextStream(save_file)
             save_stream << self.text()
             save_file.close()
+            self.text_before_edit = ''
+            self.somethingHasChanged.emit(False)
         else:
-            print("save error")
-
+            LOG.debug("---save error")
 
     @Slot()
     def saveAs(self):
@@ -426,7 +436,8 @@ class GcodeEditor(EditorBase, QObject):
             save_stream = QTextStream(new_file)
             save_stream << self.text()
             new_file.close()
-
+        self.text_before_edit = ''
+        self.somethingHasChanged.emit(False)
 
     @Slot()
     def find_replace(self):
