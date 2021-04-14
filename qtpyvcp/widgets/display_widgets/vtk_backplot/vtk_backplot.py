@@ -51,6 +51,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.parent = parent
         self.ploter_enabled = True
         self.touch_enabled = False
+        self.programViewWhenLoadingProgram = False
         self.pan_mode = False
         self.line = None
         self._last_filename = str()
@@ -193,8 +194,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                        }
         
         if not IN_DESIGNER:
-            
-            
+
             self.canon = VTKCanon(colors=self.path_colors)
             self.path_actors = self.canon.get_path_actors()
 
@@ -468,6 +468,8 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.AddActor(self.axes_actor)
         self.renderer_window.Render()
+        if self.setProgramViewWhenLoadingProgram:
+            self.setViewProgram()
 
     def motion_type(self, value):
         LOG.debug("-----motion_type is: {}".format(value))
@@ -742,6 +744,42 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.__doCommonSetViewWork()
 
     @Slot()
+    def setViewProgram(self):
+        LOG.debug('-----setViewProgram')
+        program_bounds = self.program_bounds_actors[self.active_wcs_index].GetBounds()
+        LOG.debug('-----program_bounds: {}'.format(program_bounds))
+
+        program_center = ((program_bounds[0] + program_bounds[1]) / 2,
+                          (program_bounds[2] + program_bounds[3]) / 2,
+                          (program_bounds[4] + program_bounds[5]) / 2)
+
+        LOG.debug('-----program_center: {}'.format(program_center))
+
+        self.camera = self.renderer.GetActiveCamera()
+        self.camera.SetFocalPoint(program_center[0],
+                                  program_center[1],
+                                  program_center[2])
+
+        self.camera.SetPosition(program_center[0] + self.position_mult,
+                                -(program_center[1] + self.position_mult),
+                                program_center[2] + self.position_mult)
+
+        x_dist = abs(program_bounds[0] - program_bounds[1])
+        y_dist = abs(program_bounds[2] - program_bounds[3])
+        z_dist = abs(program_bounds[4] - program_bounds[5])
+
+        LOG.debug('-----x_dist: {}'.format(x_dist))
+        LOG.debug('-----y_dist: {}'.format(y_dist))
+        LOG.debug('-----z_dist: {}'.format(z_dist))
+
+        scale = max(x_dist, y_dist, z_dist)
+
+        self.camera.SetParallelScale(scale)
+        self.camera.SetViewUp(0, 0, 1)
+        self.__doCommonSetViewWork()
+        self.clearLivePlot()
+
+    @Slot()
     def setViewPath(self):
         LOG.debug('-----setViewPath')
         position = self.wcs_offsets[self.active_wcs_index]
@@ -790,6 +828,10 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot(bool)
     def enableMultiTouch(self, enabled):
+        self.touch_enabled = enabled
+
+    @Slot(bool)
+    def setProgramViewWhenLoadingProgram(self, enabled):
         self.touch_enabled = enabled
 
     @Slot()

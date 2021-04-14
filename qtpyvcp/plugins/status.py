@@ -163,16 +163,20 @@ class Status(DataPlugin):
 
     @mdi_history.setter
     def mdi_history(self, chan, new_value):
+        LOG.debug("---------set mdi_history: {}, {}".format(chan, new_value))
         if isinstance(new_value, list):
             chan.value = new_value[:self._max_mdi_history_length]
         else:
-            #cmd = str(new_value.strip())
+            cmd = str(new_value.strip())
             cmds = chan.value
-            #if cmd in cmds:
-            #    cmds.remove(cmd)
+            LOG.debug("---------cmd: {}".format(cmd))
+            LOG.debug("---------cmds: {}".format(cmds))
+            if cmd in cmds:
+               cmds.remove(cmd)
 
-            cmds.insert(0, new_value)
+            cmds.insert(0, cmd)
             chan.value = cmds[:self._max_mdi_history_length]
+            LOG.debug("---------chan.value: {}".format(chan.value))
 
         chan.signal.emit(chan.value)
 
@@ -216,10 +220,13 @@ class Status(DataPlugin):
             chan.signal.emit(fname)
 
     def updateFile(self, path):
-        LOG.debug("Reloading edited G-Code file: %s", path)
-        if os.path.isfile(path):
-            self.file.signal.emit(path)
-            CMD.program_open(path)
+        if STAT.interp_state == linuxcnc.INTERP_IDLE:
+            LOG.debug("Reloading edited G-Code file: %s", path)
+            if os.path.isfile(path):
+                self.file.signal.emit(path)
+                CMD.program_open(path)
+        else:
+            LOG.debug("G-Code file changed, won't reload: %s", path)
 
     @DataChannel
     def state(self, chan):
