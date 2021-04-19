@@ -29,12 +29,21 @@ building complex VCPs.
 
 .. toctree::
    :maxdepth: 1
-   :caption: Module & API Documentation
+   :caption: Designer Documentation
    :titlesonly:
 
-   plugins/index.rst
-   actions/index.rst
-   widgets/index.rst
+   designer/widgets/index
+   designer/plugins/index
+   
+
+.. toctree::
+   :maxdepth: 1
+   :caption: API Documentation
+   :titlesonly:
+
+   plugins/index
+   actions/index
+   widgets/index
    application
    hal
 

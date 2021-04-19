@@ -196,29 +196,6 @@ class ToolTable(DataPlugin):
         if item is None:
             return self.TOOL_TABLE[STAT.tool_in_spindle]
         return self.TOOL_TABLE[STAT.tool_in_spindle].get(item[0].upper())
-    
-    @DataChannel
-    def get_flutecount(self, chan):
-        """Retrieves number of flutes of the current tool based on remark.
-
-        A number preceding "fl" in the remark of the tool is used (not case-sensitive)
-        Single space between number is allowed.
-        Examples:
-        "3fl"
-        "6 flute"
-
-        Rules channel syntax::
-
-            tooltable:get_flutecount
-
-        :return: int
-        """
-        remark = self.TOOL_TABLE[STAT.tool_in_spindle].get("R").lower()
-        fluteCountList = re.findall(r"(\d+)\s*fl", remark)
-        if len(fluteCountList) == 0:
-            return 1
-        else:
-            return int(fluteCountList[0])
 
     def initialise(self):
         self.fs_watcher = QFileSystemWatcher()
