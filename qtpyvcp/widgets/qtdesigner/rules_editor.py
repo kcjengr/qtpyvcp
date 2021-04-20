@@ -641,9 +641,9 @@ class RulesEditor(QtWidgets.QDialog):
                     errors.append("Rule #{} expression returned '{}', but expected '{}'."
                                   .format(idx + 1, act_typ.__name__, exp_typ.__name__))
 
-            except:
-                LOG.exception("Error evaluating Rule #{} expression.".format(idx))
-                errors.append("Rule #{} expression is not valid.".format(idx))
+            except Exception as e:
+                LOG.exception("Error evaluating Rule #{} expression. Exception was: {}".format(idx, e))
+                errors.append("Rule #{} expression is not valid.\n{}".format(idx, e))
 
         if len(errors) > 0:
             error_msg = os.linesep.join(errors)
