@@ -45,6 +45,7 @@ QGLFormat.setDefaultFormat(f)
 class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
         super(VTKBackPlot, self).__init__(parent)
+        self.current_millis = round(time.time()*1000)
         LOG.debug("---------using refactored vtk code")
         self._datasource = LinuxCncDataSource()
 
@@ -306,6 +307,13 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     # This one is associated with the left mouse button. It translates x
     # and y relative motions into camera azimuth and elevation commands.
     def rotate(self, renderer, camera, x, y, lastX, lastY, centerX, centerY):
+
+        millis = round(time.time()*1000)
+        if millis - self.current_millis > 30:
+            self.current_millis = round(time.time()*1000)
+        else:
+            return
+
         self.natural_azimuth(camera, lastX - x)
         camera.Elevation(lastY - y)
         camera.OrthogonalizeViewUp()
