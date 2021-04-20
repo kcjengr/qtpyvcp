@@ -312,7 +312,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         camera.SetClippingRange(self.clipping_range_near, self.clipping_range_far)
         self.renderer_window.Render()
         # self.renderer.ResetCamera()
-        self.interactor.ReInitialize()
+        # self.interactor.ReInitialize()
 
     # Change azimuth around natural view up vector
     def natural_azimuth(self, camera, angle):
