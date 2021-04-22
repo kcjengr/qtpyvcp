@@ -1,4 +1,3 @@
-
 from qtpy.QtWidgets import QLCDNumber
 from qtpy.QtCore import Property
 
@@ -38,6 +37,11 @@ class HalLCDNumber(QLCDNumber, HALWidget):
 
     @Property(str)
     def numberFormat(self):
+        """Number Format Property
+
+        Args:
+            fmt (str) : A valid python style format string. Defaults to ``%i``.
+        """
         return self._format
 
     @numberFormat.setter

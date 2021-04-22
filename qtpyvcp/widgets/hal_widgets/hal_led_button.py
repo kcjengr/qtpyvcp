@@ -1,4 +1,3 @@
-
 from qtpy.QtWidgets import QPushButton
 from qtpy.QtCore import Qt, Slot, Property, Signal
 from qtpy.QtGui import QColor
@@ -10,7 +9,11 @@ hal_status = HALStatus()
 
 
 class HALLEDButton(QPushButton):
-    """HAL LED Button"""
+    """HAL Led Button
+
+    Button for displaying HAL pin values.
+
+    """
     def __init__(self, parent=None):
         super(HALLEDButton, self).__init__(parent)
 

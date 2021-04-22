@@ -1,4 +1,3 @@
-
 from qtpy.QtWidgets import QLabel
 from qtpy.QtCore import Property, Q_ENUMS
 
