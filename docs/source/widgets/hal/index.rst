@@ -37,7 +37,7 @@ underscores replaced by dashes.
     :members:
 
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_led_button
-    :members:!
+    :members:
 
 .. automodule:: qtpyvcp.widgets.hal_widgets.hal_label
     :members:

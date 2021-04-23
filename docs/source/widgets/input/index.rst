@@ -2,19 +2,19 @@ Input Widgets
 -------------
 
 .. automodule:: qtpyvcp.widgets.input_widgets.jog_increment
-    :members:!
+    :members:
 
 .. automodule:: qtpyvcp.widgets.input_widgets.file_system
     :members:
 
 .. automodule:: qtpyvcp.widgets.input_widgets.mdientry_widget
-    :members:!
+    :members:
 
 .. automodule:: qtpyvcp.widgets.input_widgets.action_slider
     :members:
 
 .. automodule:: qtpyvcp.widgets.input_widgets.offset_table
-    :members:!
+    :members:
     
 .. automodule:: qtpyvcp.widgets.input_widgets.dro_line_edit
     :members:
@@ -26,10 +26,10 @@ Input Widgets
     :members:
 
 .. automodule:: qtpyvcp.widgets.input_widgets.tool_table
-    :members:!
+    :members:
 
 .. automodule:: qtpyvcp.widgets.input_widgets.gcode_text_edit
-    :members:!
+    :members:
 
 .. automodule:: qtpyvcp.widgets.input_widgets.gcode_editor
     :members:
@@ -44,4 +44,4 @@ Input Widgets
     :members:
 
 .. automodule:: qtpyvcp.widgets.input_widgets.setting_slider
-    :members:!
+    :members:
