@@ -1,0 +1,1069 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Input Widgets &mdash; QtPyVCP 0.3.13</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Buttons" href="../buttons/index.html" />
+    <link rel="prev" title="Base Widgets" href="../base_widget.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> QtPyVCP
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.13
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../actions/index.html">Actions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Widgets</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html">Base Widgets</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Input Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buttons/index.html">Buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hal/index.html">HAL Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rules.html">Widget Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../menus.html">Recent Files Menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../menus.html#homing-menu">Homing Menu</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html">HAL Interface</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QtPyVCP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Widgets</a> &raquo;</li>
+        
+      <li>Input Widgets</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/widgets/input/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-qtpyvcp.widgets.input_widgets.jog_increment">
+<span id="input-widgets"></span><h1>Input Widgets<a class="headerlink" href="#module-qtpyvcp.widgets.input_widgets.jog_increment" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.jog_increment.JogIncrementWidget">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.jog_increment.</code><code class="descname">JogIncrementWidget</code><span class="sig-paren">(</span><em>parent=None</em>, <em>standalone=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/jog_increment.html#JogIncrementWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.jog_increment.JogIncrementWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.input_widgets.file_system"></span><dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.RemovableDeviceComboBox">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.file_system.</code><code class="descname">RemovableDeviceComboBox</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#RemovableDeviceComboBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.RemovableDeviceComboBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>ComboBox for choosing from a list of removable devices.</p>
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.RemovableDeviceComboBox.showEvent">
+<code class="descname">showEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QShowEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#RemovableDeviceComboBox.showEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.RemovableDeviceComboBox.showEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.file_system.</code><code class="descname">FileSystemTable</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.showEvent">
+<code class="descname">showEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QShowEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.showEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.showEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.openSelectedItem">
+<code class="descname">openSelectedItem</code><span class="sig-paren">(</span><em>index=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.openSelectedItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.openSelectedItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>If ngc file, opens in LinuxCNC, if dir displays dir.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.editSelectedFile">
+<code class="descname">editSelectedFile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.editSelectedFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.editSelectedFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open the selected file in editor.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.loadSelectedFile">
+<code class="descname">loadSelectedFile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.loadSelectedFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.loadSelectedFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the selected file into LinuxCNC.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.selectPrevious">
+<code class="descname">selectPrevious</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.selectPrevious"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.selectPrevious" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select the previous item in the view.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.selectNext">
+<code class="descname">selectNext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.selectNext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.selectNext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select the next item in the view.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.rename">
+<code class="descname">rename</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.rename"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.rename" title="Permalink to this definition">¶</a></dt>
+<dd><p>renames the selected file or folder</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.newFile">
+<code class="descname">newFile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.newFile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.newFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new empty file</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.deleteItem">
+<code class="descname">deleteItem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.deleteItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.deleteItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the selected item (either a file or folder).</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.setRootPath">
+<code class="descname">setRootPath</code><span class="sig-paren">(</span><em>root_path</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.setRootPath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.setRootPath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the currently displayed path.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.viewParentDirectory">
+<code class="descname">viewParentDirectory</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.viewParentDirectory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.viewParentDirectory" title="Permalink to this definition">¶</a></dt>
+<dd><p>View the parent directory of the current view.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.getSelection">
+<code class="descname">getSelection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/file_system.html#FileSystemTable.getSelection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.getSelection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns list of selected indexes, or None.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.hiddenColumns">
+<code class="descname">hiddenColumns</code><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.file_system.FileSystemTable.hiddenColumns" title="Permalink to this definition">¶</a></dt>
+<dd><p>String of comma separated column numbers to hide.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.input_widgets.mdientry_widget"></span><dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.mdientry_widget.Validator">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.mdientry_widget.</code><code class="descname">Validator</code><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdientry_widget.html#Validator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdientry_widget.Validator" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdientry_widget.Validator.validate">
+<code class="descname">validate</code><span class="sig-paren">(</span><em>self</em>, <em>str</em>, <em>int</em><span class="sig-paren">)</span> &#x2192; Tuple[QValidator.State, str, int]<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdientry_widget.html#Validator.validate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdientry_widget.Validator.validate" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.mdientry_widget.</code><code class="descname">MDIEntry</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdientry_widget.html#MDIEntry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry" title="Permalink to this definition">¶</a></dt>
+<dd><p>MDI Entry</p>
+<p>Input any valid g Code. Enter sends the g Code.</p>
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.keyPressEvent">
+<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdientry_widget.html#MDIEntry.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.focusInEvent">
+<code class="descname">focusInEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QFocusEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdientry_widget.html#MDIEntry.focusInEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.focusInEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdientry_widget.html#MDIEntry.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.terminate">
+<code class="descname">terminate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdientry_widget.html#MDIEntry.terminate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdientry_widget.MDIEntry.terminate" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application ends.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.input_widgets.action_slider"></span><dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.action_slider.ActionSlider">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.action_slider.</code><code class="descname">ActionSlider</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_slider.html#ActionSlider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_slider.ActionSlider" title="Permalink to this definition">¶</a></dt>
+<dd><p>docstring for ActionSlider.</p>
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.input_widgets.action_slider.ActionSlider.actionName">
+<code class="descname">actionName</code><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_slider.ActionSlider.actionName" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fully qualified name of the action the slider should trigger.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The action name.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.input_widgets.offset_table"></span><dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.offset_table.ItemDelegate">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.offset_table.</code><code class="descname">ItemDelegate</code><span class="sig-paren">(</span><em>columns</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#ItemDelegate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.ItemDelegate" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.offset_table.ItemDelegate.displayText">
+<code class="descname">displayText</code><span class="sig-paren">(</span><em>self</em>, <em>Any</em>, <em>QLocale</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#ItemDelegate.displayText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.ItemDelegate.displayText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.offset_table.ItemDelegate.createEditor">
+<code class="descname">createEditor</code><span class="sig-paren">(</span><em>self</em>, <em>QWidget</em>, <em>QStyleOptionViewItem</em>, <em>QModelIndex</em><span class="sig-paren">)</span> &#x2192; QWidget<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#ItemDelegate.createEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.ItemDelegate.createEditor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.offset_table.OffsetModel">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.offset_table.</code><code class="descname">OffsetModel</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.headerData">
+<code class="descname">headerData</code><span class="sig-paren">(</span><em>self</em>, <em>int</em>, <em>Qt.Orientation</em>, <em>role: int = Qt.DisplayRole</em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetModel.headerData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.headerData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.columnCount">
+<code class="descname">columnCount</code><span class="sig-paren">(</span><em>self</em>, <em>parent: QModelIndex = QModelIndex()</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetModel.columnCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.columnCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.rowCount">
+<code class="descname">rowCount</code><span class="sig-paren">(</span><em>self</em>, <em>parent: QModelIndex = QModelIndex()</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetModel.rowCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.rowCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.flags">
+<code class="descname">flags</code><span class="sig-paren">(</span><em>self</em>, <em>QModelIndex</em><span class="sig-paren">)</span> &#x2192; Qt.ItemFlags<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetModel.flags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.flags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.data">
+<code class="descname">data</code><span class="sig-paren">(</span><em>self</em>, <em>QModelIndex</em>, <em>role: int = Qt.DisplayRole</em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetModel.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.setData">
+<code class="descname">setData</code><span class="sig-paren">(</span><em>self</em>, <em>QModelIndex</em>, <em>Any</em>, <em>role: int = Qt.EditRole</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetModel.setData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetModel.setData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.offset_table.OffsetTable">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.offset_table.</code><code class="descname">OffsetTable</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetTable" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.deleteSelectedOffset">
+<code class="descname">deleteSelectedOffset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetTable.deleteSelectedOffset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.deleteSelectedOffset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the currently selected item</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.clearOffsetTable">
+<code class="descname">clearOffsetTable</code><span class="sig-paren">(</span><em>confirm=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetTable.clearOffsetTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.clearOffsetTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all items from the model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.selectedRow">
+<code class="descname">selectedRow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/offset_table.html#OffsetTable.selectedRow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.offset_table.OffsetTable.selectedRow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the row number of the currently selected row, or 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.input_widgets.dro_line_edit"></span><div class="section" id="drolineedit">
+<h2>DROLineEdit<a class="headerlink" href="#drolineedit" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.dro_line_edit.DROLineEdit">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.dro_line_edit.</code><code class="descname">DROLineEdit</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/dro_line_edit.html#DROLineEdit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.dro_line_edit.DROLineEdit" title="Permalink to this definition">¶</a></dt>
+<dd><p>DRO that supports typing in desired position to set work coordinate offset.</p>
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.dro_line_edit.DROLineEdit.updateValue">
+<code class="descname">updateValue</code><span class="sig-paren">(</span><em>pos=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/dro_line_edit.html#DROLineEdit.updateValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.dro_line_edit.DROLineEdit.updateValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the displayed position.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.dro_line_edit.DROLineEdit.keyPressEvent">
+<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/dro_line_edit.html#DROLineEdit.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.dro_line_edit.DROLineEdit.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-qtpyvcp.widgets.input_widgets.action_dial"></span><dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.action_dial.ActionDial">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.action_dial.</code><code class="descname">ActionDial</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_dial.html#ActionDial"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_dial.ActionDial" title="Permalink to this definition">¶</a></dt>
+<dd><p>docstring for ActionDial.</p>
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.input_widgets.action_dial.ActionDial.actionName">
+<code class="descname">actionName</code><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_dial.ActionDial.actionName" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fully qualified name of the action the dial should trigger.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The action name.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.input_widgets.recent_file_combobox"></span><dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.recent_file_combobox.RecentFileComboBox">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.recent_file_combobox.</code><code class="descname">RecentFileComboBox</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/recent_file_combobox.html#RecentFileComboBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.recent_file_combobox.RecentFileComboBox" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.input_widgets.tool_table"></span><dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ItemDelegate">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.tool_table.</code><code class="descname">ItemDelegate</code><span class="sig-paren">(</span><em>columns</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ItemDelegate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ItemDelegate" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ItemDelegate.displayText">
+<code class="descname">displayText</code><span class="sig-paren">(</span><em>self</em>, <em>Any</em>, <em>QLocale</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ItemDelegate.displayText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ItemDelegate.displayText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ItemDelegate.createEditor">
+<code class="descname">createEditor</code><span class="sig-paren">(</span><em>self</em>, <em>QWidget</em>, <em>QStyleOptionViewItem</em>, <em>QModelIndex</em><span class="sig-paren">)</span> &#x2192; QWidget<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ItemDelegate.createEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ItemDelegate.createEditor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.tool_table.</code><code class="descname">ToolModel</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel.headerData">
+<code class="descname">headerData</code><span class="sig-paren">(</span><em>self</em>, <em>int</em>, <em>Qt.Orientation</em>, <em>role: int = Qt.DisplayRole</em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel.headerData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel.headerData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel.columnCount">
+<code class="descname">columnCount</code><span class="sig-paren">(</span><em>self</em>, <em>parent: QModelIndex = QModelIndex()</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel.columnCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel.columnCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel.rowCount">
+<code class="descname">rowCount</code><span class="sig-paren">(</span><em>self</em>, <em>parent: QModelIndex = QModelIndex()</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel.rowCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel.rowCount" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel.flags">
+<code class="descname">flags</code><span class="sig-paren">(</span><em>self</em>, <em>QModelIndex</em><span class="sig-paren">)</span> &#x2192; Qt.ItemFlags<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel.flags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel.flags" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel.data">
+<code class="descname">data</code><span class="sig-paren">(</span><em>self</em>, <em>QModelIndex</em>, <em>role: int = Qt.DisplayRole</em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel.data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel.setData">
+<code class="descname">setData</code><span class="sig-paren">(</span><em>self</em>, <em>QModelIndex</em>, <em>Any</em>, <em>role: int = Qt.EditRole</em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel.setData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel.setData" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolModel.toolDataFromRow">
+<code class="descname">toolDataFromRow</code><span class="sig-paren">(</span><em>row</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolModel.toolDataFromRow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolModel.toolDataFromRow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns dictionary of tool data</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.tool_table.</code><code class="descname">ToolTable</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable.deleteSelectedTool">
+<code class="descname">deleteSelectedTool</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable.deleteSelectedTool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable.deleteSelectedTool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete the currently selected item</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable.selectPrevious">
+<code class="descname">selectPrevious</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable.selectPrevious"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable.selectPrevious" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select the previous item in the view.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable.selectNext">
+<code class="descname">selectNext</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable.selectNext"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable.selectNext" title="Permalink to this definition">¶</a></dt>
+<dd><p>Select the next item in the view.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable.clearToolTable">
+<code class="descname">clearToolTable</code><span class="sig-paren">(</span><em>confirm=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable.clearToolTable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable.clearToolTable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all items from the model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable.addTool">
+<code class="descname">addTool</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable.addTool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable.addTool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Appends a new item to the model</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable.loadSelectedTool">
+<code class="descname">loadSelectedTool</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable.loadSelectedTool"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable.loadSelectedTool" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the currently selected tool</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.tool_table.ToolTable.selectedRow">
+<code class="descname">selectedRow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/tool_table.html#ToolTable.selectedRow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.tool_table.ToolTable.selectedRow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the row number of the currently selected row, or 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.input_widgets.gcode_text_edit"></span><div class="section" id="gcodetextedit">
+<h2>GcodeTextEdit<a class="headerlink" href="#gcodetextedit" title="Permalink to this headline">¶</a></h2>
+<p>QPlainTextEdit based G-code editor with syntax highlighting.</p>
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeSyntaxHighlighter">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.gcode_text_edit.</code><code class="descname">GcodeSyntaxHighlighter</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeSyntaxHighlighter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeSyntaxHighlighter" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeSyntaxHighlighter.highlightBlock">
+<code class="descname">highlightBlock</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeSyntaxHighlighter.highlightBlock"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeSyntaxHighlighter.highlightBlock" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply syntax highlighting to the given block of text.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.gcode_text_edit.</code><code class="descname">GcodeTextEdit</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit" title="Permalink to this definition">¶</a></dt>
+<dd><p>G-code Text Edit</p>
+<p>QPlainTextEdit based G-code editor with syntax heightening.</p>
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.keyPressEvent">
+<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.changeEvent">
+<code class="descname">changeEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.changeEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.changeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.setPlainText">
+<code class="descname">setPlainText</code><span class="sig-paren">(</span><em>self</em>, <em>str</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.setPlainText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.setPlainText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.EditorReadOnly">
+<code class="descname">EditorReadOnly</code><span class="sig-paren">(</span><em>state</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.EditorReadOnly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.EditorReadOnly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set to Read Only to disable editing</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.contextMenuEvent">
+<code class="descname">contextMenuEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QContextMenuEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.contextMenuEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.contextMenuEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.resizeEvent">
+<code class="descname">resizeEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QResizeEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#GcodeTextEdit.resizeEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.GcodeTextEdit.resizeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_text_edit.NumberMargin">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.gcode_text_edit.</code><code class="descname">NumberMargin</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#NumberMargin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.NumberMargin" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_text_edit.NumberMargin.paintEvent">
+<code class="descname">paintEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QPaintEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_text_edit.html#NumberMargin.paintEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_text_edit.NumberMargin.paintEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-qtpyvcp.widgets.input_widgets.gcode_editor"></span><dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.gcode_editor.</code><code class="descname">GcodeLexer</code><span class="sig-paren">(</span><em>parent=None</em>, <em>standalone=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#GcodeLexer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.description">
+<code class="descname">description</code><span class="sig-paren">(</span><em>self</em>, <em>int</em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#GcodeLexer.description"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.description" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.defaultColor">
+<code class="descname">defaultColor</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span> &#x2192; QColor<a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#GcodeLexer.defaultColor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.defaultColor" title="Permalink to this definition">¶</a></dt>
+<dd><p>defaultColor(self, int) -&gt; QColor</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.styleText">
+<code class="descname">styleText</code><span class="sig-paren">(</span><em>self</em>, <em>int</em>, <em>int</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#GcodeLexer.styleText"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeLexer.styleText" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_editor.EditorBase">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.gcode_editor.</code><code class="descname">EditorBase</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#EditorBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.EditorBase" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_editor.EditorBase.find_text_occurences">
+<code class="descname">find_text_occurences</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#EditorBase.find_text_occurences"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.EditorBase.find_text_occurences" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return byte positions of start and end of all ‘text’ occurences in the document</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_editor.GcodeEditor">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.gcode_editor.</code><code class="descname">GcodeEditor</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#GcodeEditor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeEditor" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_editor.GcodeEditor.backgroundcolor">
+<code class="descname">backgroundcolor</code><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeEditor.backgroundcolor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to set the background color of the GCodeEditor (str).</p>
+<p>sets the background color of the GCodeEditor</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_editor.GcodeEditor.marginbackgroundcolor">
+<code class="descname">marginbackgroundcolor</code><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.GcodeEditor.marginbackgroundcolor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property to set the background color of the GCodeEditor margin (str).</p>
+<p>sets the background color of the GCodeEditor margin</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.gcode_editor.FindReplaceDialog">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.gcode_editor.</code><code class="descname">FindReplaceDialog</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/gcode_editor.html#FindReplaceDialog"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.gcode_editor.FindReplaceDialog" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.input_widgets.mdihistory_widget"></span><p>QtPyVCP MDI History Widget</p>
+<p>This widget implements the following key elements:
+[1] A history display of MDI commands issued with the latest
+command at the top of the list and the oldest at the bottom
+of the list.</p>
+<p>[2] A queue system of commands that have been entered
+but have not yet been executed. This allows the rapid entry
+of MDI commands to be executed without having to wait for any
+running commands to complete.</p>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<ul class="last simple">
+<li>add/test for styling based on the class queue codes</li>
+<li>be able to select and remove unwanted commands from the history</li>
+<li>be able to select a row and run commands from that point upwards</li>
+</ul>
+</div>
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.mdihistory_widget.</code><code class="descname">MDIHistory</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>MDI History and Queuing Widget.</p>
+<p>This widget implements a visual view of the MDI command
+history.  It also implements a command queuing startegy
+so that commands can be entered and queued up for execution.
+Visual style is used to identify items that have been completed,
+are running and are yet to run.</p>
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.mdiEntrylineName">
+<code class="descname">mdiEntrylineName</code><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.mdiEntrylineName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return name of entry object to Designer</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.mdiListOrderNatural">
+<code class="descname">mdiListOrderNatural</code><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.mdiListOrderNatural" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return if list order is Natural - True/False</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.toggleQueue">
+<code class="descname">toggleQueue</code><span class="sig-paren">(</span><em>toggle</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.toggleQueue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.toggleQueue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Toggle queue pause.
+Starting point is the queue is active.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.clearQueue">
+<code class="descname">clearQueue</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.clearQueue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.clearQueue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear queue items yet to be run.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.removeSelectedItem">
+<code class="descname">removeSelectedItem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.removeSelectedItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.removeSelectedItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the selected line</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.runFromSelection">
+<code class="descname">runFromSelection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.runFromSelection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.runFromSelection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Start running MDI from the selected row back to correct end.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.runSelection">
+<code class="descname">runSelection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.runSelection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.runSelection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the selected row only.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.submit">
+<code class="descname">submit</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.submit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.submit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put a new command on the queue for later execution.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.rowClicked">
+<code class="descname">rowClicked</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.rowClicked"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.rowClicked" title="Permalink to this definition">¶</a></dt>
+<dd><p>Item row clicked.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.keyPressEvent">
+<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Key movement processing.
+Arrow keys move the selected list item up/down
+Return key generates a submit situation by making the item as
+the next available command to processes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.setHistory">
+<code class="descname">setHistory</code><span class="sig-paren">(</span><em>items_list</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.setHistory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.setHistory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear and reset the history in the list.
+item_list is a list of strings.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.heartBeat">
+<code class="descname">heartBeat</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.heartBeat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.heartBeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Supports heart beat on the MDI History execution queue.
+Issue the next command from the queue.
+Double check machine is in ok state to accept next command.
+Issue the command and if success mark command as being active.
+Mark last command as done.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load up starting data and set signal connections.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.terminate">
+<code class="descname">terminate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/mdihistory_widget.html#MDIHistory.terminate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.mdihistory_widget.MDIHistory.terminate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Teardown processing.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.input_widgets.line_edit"></span><div class="section" id="line-edit">
+<h2>Line Edit<a class="headerlink" href="#line-edit" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.line_edit.</code><code class="descname">VCPLineEdit</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/line_edit.html#VCPLineEdit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit" title="Permalink to this definition">¶</a></dt>
+<dd><p>VCP Entry Widget</p>
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit.actionName">
+<code class="descname">actionName</code><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit.actionName" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the action the entry should trigger.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The action name.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/line_edit.html#VCPLineEdit.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit.terminate">
+<code class="descname">terminate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/line_edit.html#VCPLineEdit.terminate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.line_edit.VCPLineEdit.terminate" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application ends.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<span class="target" id="module-qtpyvcp.widgets.input_widgets.action_combobox"></span><dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.action_combobox.</code><code class="descname">ActionComboBox</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/action_combobox.html#ActionComboBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>General purpose combobox for triggering QtPyVCP actions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>parent</strong> (<em>QWidget</em>) – The parent widget of the combobox, or None.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox._action_name">
+<code class="descname">_action_name</code><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox._action_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The fully qualified name of the action the
+combobox triggers when the selection is changed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox.actionName">
+<code class="descname">actionName</code><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.action_combobox.ActionComboBox.actionName" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>The <cite>actionName</cite> property for setting the action the combobox</dt>
+<dd>should trigger from within QtDesigner.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The action name.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.input_widgets.setting_slider"></span><dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPAbstractSettingsWidget">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.setting_slider.</code><code class="descname">VCPAbstractSettingsWidget</code><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPAbstractSettingsWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPAbstractSettingsWidget" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsLineEdit">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.setting_slider.</code><code class="descname">VCPSettingsLineEdit</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsLineEdit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsLineEdit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Settings LineEdit</p>
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsLineEdit.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsLineEdit.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsLineEdit.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSlider">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.setting_slider.</code><code class="descname">VCPSettingsSlider</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsSlider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSlider" title="Permalink to this definition">¶</a></dt>
+<dd><p>Settings Slider</p>
+<p>Set action options like:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">machine</span><span class="o">.</span><span class="n">jog</span><span class="o">.</span><span class="n">linear</span><span class="o">-</span><span class="n">speed</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSlider.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsSlider.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSlider.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSpinBox">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.setting_slider.</code><code class="descname">VCPSettingsSpinBox</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsSpinBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSpinBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Settings SpinBox</p>
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSpinBox.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsSpinBox.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsSpinBox.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsDoubleSpinBox">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.setting_slider.</code><code class="descname">VCPSettingsDoubleSpinBox</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsDoubleSpinBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsDoubleSpinBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Settings DoubleSpinBox</p>
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsDoubleSpinBox.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsDoubleSpinBox.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsDoubleSpinBox.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsCheckBox">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.setting_slider.</code><code class="descname">VCPSettingsCheckBox</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsCheckBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsCheckBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Settings CheckBox</p>
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsCheckBox.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsCheckBox.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsCheckBox.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.setting_slider.</code><code class="descname">VCPSettingsPushButton</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsPushButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Settings PushButton</p>
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsPushButton.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsPushButton.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsComboBox">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.input_widgets.setting_slider.</code><code class="descname">VCPSettingsComboBox</code><span class="sig-paren">(</span><em>parent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsComboBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsComboBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Settings ComboBox</p>
+<dl class="method">
+<dt id="qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsComboBox.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/input_widgets/setting_slider.html#VCPSettingsComboBox.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.input_widgets.setting_slider.VCPSettingsComboBox.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../buttons/index.html" class="btn btn-neutral float-right" title="Buttons" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../base_widget.html" class="btn btn-neutral float-left" title="Base Widgets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2020, Kurt Jacobson.
+    <br>
+    Page last updated on Apr 24, 2021 at 01:18 AM (UTC+0200) by TurBoss.
+      <a href="https://github.com/kcjengr/qtpyvcp/commit/48b1adef">[diff]</a>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

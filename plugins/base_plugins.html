@@ -1,0 +1,360 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Base Plugins &mdash; QtPyVCP 0.3.13</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Status" href="status.html" />
+    <link rel="prev" title="Plugins" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> QtPyVCP
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.13
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Plugins</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Base Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status.html">Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="positions.html">Machine Positions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tool_table.html">Tool Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html">Notifications Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clock.html">Clock</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QtPyVCP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Plugins</a> &raquo;</li>
+        
+      <li>Base Plugins</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/plugins/base_plugins.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-qtpyvcp.plugins.base_plugins">
+<span id="base-plugins"></span><h1>Base Plugins<a class="headerlink" href="#module-qtpyvcp.plugins.base_plugins" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="qtpyvcp.plugins.base_plugins.Plugin">
+<em class="property">class </em><code class="descclassname">qtpyvcp.plugins.base_plugins.</code><code class="descname">Plugin</code><a class="reference internal" href="../_modules/qtpyvcp/plugins/base_plugins.html#Plugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.base_plugins.Plugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>QtPyVCP Plugin base class.</p>
+<dl class="method">
+<dt id="qtpyvcp.plugins.base_plugins.Plugin.initialise">
+<code class="descname">initialise</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/base_plugins.html#Plugin.initialise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.base_plugins.Plugin.initialise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the plugin.</p>
+<p>This method is called after the main event loop has started. Any timers
+or threads used by the plugin should be started here.</p>
+<p>This method should set <code class="docutils literal notranslate"><span class="pre">self._initialized</span></code> to true if successfully.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.plugins.base_plugins.Plugin.postGuiInitialise">
+<code class="descname">postGuiInitialise</code><span class="sig-paren">(</span><em>main_window</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/base_plugins.html#Plugin.postGuiInitialise"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.base_plugins.Plugin.postGuiInitialise" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the plugin after mainwindow is shown.</p>
+<p>This method is called after the main window is shown.
+:param main_window: the VCPMainWindow object.
+:type main_window: VCPMainWindow</p>
+<p>This method should set <code class="docutils literal notranslate"><span class="pre">self._postGuiInitialized</span></code> to true if successfully.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.plugins.base_plugins.Plugin.terminate">
+<code class="descname">terminate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/base_plugins.html#Plugin.terminate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.base_plugins.Plugin.terminate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminate the plugin.</p>
+<p>This is called right before the main event loop exits. Any cleanup
+of the plugin should be done here, such as saving persistent data.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.plugins.base_plugins.DataPlugin">
+<em class="property">class </em><code class="descclassname">qtpyvcp.plugins.base_plugins.</code><code class="descname">DataPlugin</code><a class="reference internal" href="../_modules/qtpyvcp/plugins/base_plugins.html#DataPlugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.base_plugins.DataPlugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>DataPlugin.</p>
+<dl class="method">
+<dt id="qtpyvcp.plugins.base_plugins.DataPlugin.getChannel">
+<code class="descname">getChannel</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/base_plugins.html#DataPlugin.getChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.base_plugins.DataPlugin.getChannel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get data channel from URL.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>url</strong> (<em>str</em>) – The URL of the channel to get.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">(chan_obj, chan_exp)</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tuple</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.plugins.base_plugins.DataPlugin.setLogLevel">
+<code class="descname">setLogLevel</code><span class="sig-paren">(</span><em>level</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/base_plugins.html#DataPlugin.setLogLevel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.base_plugins.DataPlugin.setLogLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set plugin log level.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>level</strong> (<em>str</em><em>, </em><em>int</em>) – Log level (DEBUG | INFO | ERROR | CRITICAL)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.plugins.base_plugins.DataChannel">
+<em class="property">class </em><code class="descclassname">qtpyvcp.plugins.base_plugins.</code><code class="descname">DataChannel</code><span class="sig-paren">(</span><em>fget=None</em>, <em>fset=None</em>, <em>fstr=None</em>, <em>data=None</em>, <em>settable=False</em>, <em>doc=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/base_plugins.html#DataChannel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.base_plugins.DataChannel" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="qtpyvcp.plugins.base_plugins.DataChannel.getValue">
+<code class="descname">getValue</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/base_plugins.html#DataChannel.getValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.base_plugins.DataChannel.getValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Channel data getter method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.plugins.base_plugins.DataChannel.getString">
+<code class="descname">getString</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/base_plugins.html#DataChannel.getString"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.base_plugins.DataChannel.getString" title="Permalink to this definition">¶</a></dt>
+<dd><p>Channel data getter method.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.plugins.base_plugins.DataChannel.setValue">
+<code class="descname">setValue</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins/base_plugins.html#DataChannel.setValue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.base_plugins.DataChannel.setValue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Channel data setter method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="status.html" class="btn btn-neutral float-right" title="Status" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Plugins" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2020, Kurt Jacobson.
+    <br>
+    Page last updated on Jul 09, 2020 at 10:53 PM (UTC-0400) by Kurt Jacobson.
+      <a href="https://github.com/kcjengr/qtpyvcp/commit/f7fad26a">[diff]</a>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

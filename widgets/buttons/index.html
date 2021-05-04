@@ -1,0 +1,464 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Buttons &mdash; QtPyVCP 0.3.13</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Containers" href="../containers/index.html" />
+    <link rel="prev" title="Input Widgets" href="../input/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> QtPyVCP
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.13
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../actions/index.html">Actions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Widgets</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html">Base Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">Input Widgets</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../containers/index.html">Containers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hal/index.html">HAL Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rules.html">Widget Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../menus.html">Recent Files Menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../menus.html#homing-menu">Homing Menu</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html">HAL Interface</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QtPyVCP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Widgets</a> &raquo;</li>
+        
+      <li>Buttons</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/widgets/buttons/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-qtpyvcp.widgets.button_widgets.action_button">
+<span id="buttons"></span><h1>Buttons<a class="headerlink" href="#module-qtpyvcp.widgets.button_widgets.action_button" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="qtpyvcp.widgets.button_widgets.action_button.ActionButton">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.button_widgets.action_button.</code><code class="descname">ActionButton</code><span class="sig-paren">(</span><em>parent=None</em>, <em>action=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/action_button.html#ActionButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.action_button.ActionButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>General purpose button for triggering QtPyVCP actions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> (<em>QWidget</em><em>, </em><em>optional</em>) – The parent widget of the button, or None.</li>
+<li><strong>action</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the action the button should trigger.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.button_widgets.action_button.ActionButton.actionName">
+<code class="descname">actionName</code><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.action_button.ActionButton.actionName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property for the name of the action the button triggers (str).</p>
+<p>When this property is set it calls <code class="xref py py-meth docutils literal notranslate"><span class="pre">QtPyVCP.actions.bindWidget()</span></code>
+to bind the widget to the action.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.button_widgets.action_checkbox"></span><dl class="class">
+<dt id="qtpyvcp.widgets.button_widgets.action_checkbox.ActionCheckBox">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.button_widgets.action_checkbox.</code><code class="descname">ActionCheckBox</code><span class="sig-paren">(</span><em>parent=None</em>, <em>action=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/action_checkbox.html#ActionCheckBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.action_checkbox.ActionCheckBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>General purpose checkbox for triggering QtPyVCP actions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> (<em>QWidget</em><em>, </em><em>optional</em>) – The parent widget of the checkbox, or None.</li>
+<li><strong>action</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the action the checkbox should trigger.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.button_widgets.action_checkbox.ActionCheckBox.actionName">
+<code class="descname">actionName</code><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.action_checkbox.ActionCheckBox.actionName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property for the name of the action the checkbox triggers (str).</p>
+<p>When this property is set it calls <code class="xref py py-meth docutils literal notranslate"><span class="pre">QtPyVCP.actions.bindWidget()</span></code>
+to bind the widget to the action.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.button_widgets.action_spinbox"></span><dl class="class">
+<dt id="qtpyvcp.widgets.button_widgets.action_spinbox.ActionSpinBox">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.button_widgets.action_spinbox.</code><code class="descname">ActionSpinBox</code><span class="sig-paren">(</span><em>parent=None</em>, <em>action=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/action_spinbox.html#ActionSpinBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.action_spinbox.ActionSpinBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>Action spinbox for triggering QtPyVCP actions that take a numeric argument.</p>
+<p>On spinbox valueChange the action will be triggered with the spinbox
+value passed as the action argument.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> (<em>QWidget</em><em>, </em><em>optional</em>) – The parent widget of the spindbox, or None.</li>
+<li><strong>action</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the action the spindbox should trigger.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.button_widgets.action_spinbox.ActionSpinBox.actionName">
+<code class="descname">actionName</code><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.action_spinbox.ActionSpinBox.actionName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property for the name of the action the spindbox triggers (str).</p>
+<p>When this property is set it calls <code class="xref py py-meth docutils literal notranslate"><span class="pre">QtPyVCP.actions.bindWidget()</span></code>
+to bind the widget to the action.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.button_widgets.dialog_button"></span><dl class="class">
+<dt id="qtpyvcp.widgets.button_widgets.dialog_button.DialogButton">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.button_widgets.dialog_button.</code><code class="descname">DialogButton</code><span class="sig-paren">(</span><em>parent=None</em>, <em>dialog_name=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/dialog_button.html#DialogButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.dialog_button.DialogButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dialog Button.</p>
+<p>Button for launching dialogs.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> (<em>QObject</em>) – The dialog’s parent or None.</li>
+<li><strong>dialog_name</strong> (<em>str</em>) – The name of the dialog to show then the button is clicked.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.button_widgets.dialog_button.DialogButton.dialogName">
+<code class="descname">dialogName</code><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.dialog_button.DialogButton.dialogName" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property for the name of the dialog the button triggers (str).</p>
+<p>When this property is set it calls <code class="xref py py-meth docutils literal notranslate"><span class="pre">QtPyVCP.actions.bindWidget()</span></code>
+to bind the widget to the action.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.button_widgets.mdi_button"></span><dl class="class">
+<dt id="qtpyvcp.widgets.button_widgets.mdi_button.MDIButton">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.button_widgets.mdi_button.</code><code class="descname">MDIButton</code><span class="sig-paren">(</span><em>parent=None</em>, <em>command=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/mdi_button.html#MDIButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.mdi_button.MDIButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>MDI Button</p>
+<p>This widget is intended for calling individual MDI commands. Useful for
+<cite>Go To Home</cite>, <cite>Tool Change</cite> and similar actions.</p>
+<p>The MDI command can include variables to be expanded from widgets present
+in the active window. For example, to make a <cite>Change Tool</cite> button you could
+add an MDIButton and a QLineEdit named <code class="docutils literal notranslate"><span class="pre">tool_number_entry</span></code>. Then set the
+the MDICommand property of the button to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">T</span><span class="c1">#&lt;tool_number_entry&gt; M6 G43</span>
+</pre></div>
+</div>
+<p>When the button is pressed <code class="docutils literal notranslate"><span class="pre">#&lt;tool_number_entry&gt;</span></code> will be substituted with
+the current text in the QLineEdit.</p>
+<p>Button for issuing MDI commands.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> (<em>QWidget</em><em>, </em><em>optional</em>) – The parent widget of the button, or None.</li>
+<li><strong>command</strong> (<em>str</em><em>, </em><em>optional</em>) – A gcode command string for the button to trigger.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.button_widgets.mdi_button.MDIButton.MDICommand">
+<code class="descname">MDICommand</code><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.mdi_button.MDIButton.MDICommand" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the MDI command property (str).</p>
+<blockquote>
+<div>A valid RS274 gcode command string. It can include variables to be
+expanded from UI widgets present in the active window.</div></blockquote>
+<p class="rubric">Example</p>
+<p>Assuming there is a QLineEdit in the active window with the
+objectName <code class="docutils literal notranslate"><span class="pre">tool_number_entry</span></code>, the <code class="docutils literal notranslate"><span class="pre">#&lt;tool_number_entry&gt;</span></code>
+variable would be substituted with the current text in the QLineEdit:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">T</span><span class="c1">#&lt;tool_number_entry&gt; M6 G43</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.button_widgets.subcall_button"></span><dl class="class">
+<dt id="qtpyvcp.widgets.button_widgets.subcall_button.SubCallButton">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.button_widgets.subcall_button.</code><code class="descname">SubCallButton</code><span class="sig-paren">(</span><em>parent=None</em>, <em>filename=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/button_widgets/subcall_button.html#SubCallButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.subcall_button.SubCallButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Button for calling ngc subroutines.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> (<em>QWidget</em><em>, </em><em>optional</em>) – The parent widget of the button, or None.</li>
+<li><strong>filename</strong> (<em>str</em><em>, </em><em>optional</em>) – The filename of the NGCGUI style subroutine
+the button should call, including any extension. The subroutine must
+be on the subroutine path specified in the INI. The name of the
+subroutine must match exactly the sub/endsub name. The parameter
+#&lt;parameter1&gt; if found in the VCP the value from that widget will be
+used instead of the default value. If you don’t have a default value
+you must have a widget by the same name. The widget can be a line
+edit, a spin box or a double spin box.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">example</span><span class="o">.</span><span class="n">ngc</span>
+<span class="n">o</span><span class="o">&lt;</span><span class="n">example</span><span class="o">&gt;</span> <span class="n">sub</span>
+<span class="c1">#&lt;parameter1&gt; = #1</span>
+<span class="c1">#&lt;parameter2&gt; = #2 (=default_value)</span>
+
+<span class="p">;</span><span class="n">Body</span> <span class="n">of</span> <span class="n">the</span> <span class="n">subroutine</span>
+
+<span class="n">o</span><span class="o">&lt;</span><span class="n">example</span><span class="o">&gt;</span> <span class="n">endsub</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.button_widgets.subcall_button.SubCallButton.filename">
+<code class="descname">filename</code><a class="headerlink" href="#qtpyvcp.widgets.button_widgets.subcall_button.SubCallButton.filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets or sets the filename of the subroutine the button should call (str).</p>
+<p>The subroutine file must be on the subroutine path as specified in the INI.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../containers/index.html" class="btn btn-neutral float-right" title="Containers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../input/index.html" class="btn btn-neutral float-left" title="Input Widgets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2020, Kurt Jacobson.
+    <br>
+    Page last updated on Dec 31, 2019 at 11:32 AM (UTC-0600) by John Thornton.
+      <a href="https://github.com/kcjengr/qtpyvcp/commit/57c1acdf">[diff]</a>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

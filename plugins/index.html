@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Plugins &mdash; QtPyVCP 0.3.13</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Base Plugins" href="base_plugins.html" />
+    <link rel="prev" title="Clock plugin" href="../designer/plugins/clock.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> QtPyVCP
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.13
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Plugins</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="base_plugins.html">Base Plugins</a></li>
+<li class="toctree-l2"><a class="reference internal" href="status.html">Status</a></li>
+<li class="toctree-l2"><a class="reference internal" href="positions.html">Machine Positions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tool_table.html">Tool Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notifications.html">Notifications Plugin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clock.html">Clock</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../actions/index.html">Actions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hal.html">HAL Interface</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">QtPyVCP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Plugins</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/plugins/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="plugins">
+<h1>Plugins<a class="headerlink" href="#plugins" title="Permalink to this headline">¶</a></h1>
+<div class="admonition-todo admonition" id="index-0">
+<p class="first admonition-title">Todo</p>
+<p class="last">Add info about plugins, their usage and adding custom plugins.</p>
+</div>
+<div class="section" id="included-plugins">
+<h2>Included plugins<a class="headerlink" href="#included-plugins" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="base_plugins.html">Base Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="status.html">Status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="positions.html">Machine Positions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tool_table.html">Tool Table</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notifications.html">Notifications Plugin</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clock.html">Clock</a></li>
+</ul>
+</div>
+<span class="target" id="module-qtpyvcp.plugins"></span><div class="section" id="qtpyvcp-plugins">
+<h3>QtPyVCP Plugins<a class="headerlink" href="#qtpyvcp-plugins" title="Permalink to this headline">¶</a></h3>
+<p>These package level functions provide methods for registering and initializing
+plugins, as well as retrieving them for use and terminating them in the proper
+order.</p>
+<dl class="function">
+<dt id="qtpyvcp.plugins.registerPlugin">
+<code class="descclassname">qtpyvcp.plugins.</code><code class="descname">registerPlugin</code><span class="sig-paren">(</span><em>plugin_id</em>, <em>plugin_inst</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins.html#registerPlugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.registerPlugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a Plugin instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>plugin_id</strong> (<em>str</em>) – The unique name to register the plugin under.</li>
+<li><strong>plugin_inst</strong> (<em>plugin_inst</em>) – The plugin instance to register.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="qtpyvcp.plugins.registerPluginFromClass">
+<code class="descclassname">qtpyvcp.plugins.</code><code class="descname">registerPluginFromClass</code><span class="sig-paren">(</span><em>plugin_id</em>, <em>plugin_cls</em>, <em>args=[]</em>, <em>kwargs={}</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins.html#registerPluginFromClass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.registerPluginFromClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a plugin from a class.</p>
+<p>This is primarily used for registering plugins defined in the YAML config.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">data_plugins</span><span class="p">:</span>
+  <span class="nt">my_plugin</span><span class="p">:</span>
+    <span class="nt">provider</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my_package.my_module:MyPluginClass</span>
+    <span class="nt">args</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">10</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">False</span>
+    <span class="nt">kwargs</span><span class="p">:</span>
+      <span class="nt">my_number</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">75</span>
+      <span class="nt">my_string</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">A string argument</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>plugin_id</strong> (<em>str</em>) – A unique name to register the plugin under.</li>
+<li><strong>plugin_cls</strong> (<em>class</em><em>, </em><em>str</em>) – A <a class="reference internal" href="base_plugins.html#qtpyvcp.plugins.base_plugins.Plugin" title="qtpyvcp.plugins.base_plugins.Plugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plugin</span></code></a> subclass, or a fully
+qualified class spec of format <code class="docutils literal notranslate"><span class="pre">package.module:Class</span></code> specifying
+the location of an importable <a class="reference internal" href="base_plugins.html#qtpyvcp.plugins.base_plugins.Plugin" title="qtpyvcp.plugins.base_plugins.Plugin"><code class="xref py py-class docutils literal notranslate"><span class="pre">Plugin</span></code></a> subclass.</li>
+<li><strong>args</strong> (<em>list</em>) – Arguments to pass to the plugin’s __init__ method.</li>
+<li><strong>kwargs</strong> (<em>dict</em>) – Keyword argument to pass to the plugin’s __init__ method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The plugin instance</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="qtpyvcp.plugins.getPlugin">
+<code class="descclassname">qtpyvcp.plugins.</code><code class="descname">getPlugin</code><span class="sig-paren">(</span><em>plugin_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins.html#getPlugin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.getPlugin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get plugin instance from ID.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>plugin_id</strong> (<em>str</em>) – The ID of the plugin to retrieve.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A plugin instance, or None.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="qtpyvcp.plugins.initialisePlugins">
+<code class="descclassname">qtpyvcp.plugins.</code><code class="descname">initialisePlugins</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins.html#initialisePlugins"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.initialisePlugins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes all registered plugins.</p>
+<p>Plugins are initialized in the order they were registered in.
+Plugins defined in the YAML file are registered in the order they
+were defined.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="qtpyvcp.plugins.postGuiInitialisePlugins">
+<code class="descclassname">qtpyvcp.plugins.</code><code class="descname">postGuiInitialisePlugins</code><span class="sig-paren">(</span><em>main_window</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins.html#postGuiInitialisePlugins"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.postGuiInitialisePlugins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initializes all registered plugins after main window is shown.</p>
+<p>Plugins are initialized in the order they were registered in.
+Plugins defined in the YAML file are registered in the order they
+were defined.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="qtpyvcp.plugins.terminatePlugins">
+<code class="descclassname">qtpyvcp.plugins.</code><code class="descname">terminatePlugins</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/qtpyvcp/plugins.html#terminatePlugins"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.plugins.terminatePlugins" title="Permalink to this definition">¶</a></dt>
+<dd><p>Terminates all registered plugins.</p>
+<p>Plugins are terminated in the reverse order they were registered in.
+If an error is encountered while terminating a plugin it will be ignored
+and the remaining plugins will still be terminated.</p>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="base_plugins.html" class="btn btn-neutral float-right" title="Base Plugins" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../designer/plugins/clock.html" class="btn btn-neutral float-left" title="Clock plugin" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2020, Kurt Jacobson.
+    <br>
+    Page last updated on Jul 11, 2020 at 02:21 PM (UTC-0400) by Kurt Jacobson.
+      <a href="https://github.com/kcjengr/qtpyvcp/commit/11fa3405">[diff]</a>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

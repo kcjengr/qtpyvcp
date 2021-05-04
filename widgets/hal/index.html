@@ -1,0 +1,853 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html4" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>HAL Widgets &mdash; QtPyVCP 0.3.13</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Dialogs" href="../dialogs/index.html" />
+    <link rel="prev" title="Containers" href="../containers/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> QtPyVCP
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.13
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../install/basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../configuration/index.html">Configuration</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Tutorials</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../components/index.html">Components</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../showcase/index.html">VCP Showcase</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Designer Documentation</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/widgets/index.html">Widgets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../designer/plugins/index.html">Plugins</a></li>
+</ul>
+<p class="caption"><span class="caption-text">API Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../plugins/index.html">Plugins</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../actions/index.html">Actions</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Widgets</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../base_widget.html">Base Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../input/index.html">Input Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../buttons/index.html">Buttons</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../containers/index.html">Containers</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">HAL Widgets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dialogs/index.html">Dialogs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../rules.html">Widget Rules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../menus.html">Recent Files Menu</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../menus.html#homing-menu">Homing Menu</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../application.html">Application</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../hal.html">HAL Interface</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Developers Corner</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../development/contribution_guide.html">Contribution Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development/dev_environment.html">Development Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools/index.html">Command-line Tools</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Acknowledgements</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../acknowledgements.html">Acknowledgements</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Links</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/kcjengr/qtpyvcp">QtPyVCP GitHub</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/linuxcnc/linuxcnc">LinuxCNC Github</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://forum.linuxcnc.org/qtpyvcp">LinuxCNC Forum</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">QtPyVCP</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Widgets</a> &raquo;</li>
+        
+      <li>HAL Widgets</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/widgets/hal/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hal-widgets">
+<h1>HAL Widgets<a class="headerlink" href="#hal-widgets" title="Permalink to this headline">¶</a></h1>
+<p>These widgets generate HAL pins by which they can control or be
+controlled by external HAL signals. HAL signals must be connected
+in the <code class="docutils literal notranslate"><span class="pre">POSTGUI_HALFILE</span></code> since they do not exist until the GUI
+has been fully loaded.</p>
+<p>All pins belong to the <code class="docutils literal notranslate"><span class="pre">qtpyvcp</span></code> HAL component. Pin names are
+derived from the widget’s ObjectName as set in designer, with any
+underscores replaced by dashes.</p>
+<span class="target" id="module-qtpyvcp.widgets.hal_widgets.hal_button"></span><dl class="class">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_button.HalButton">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.hal_widgets.hal_button.</code><code class="descname">HalButton</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_button.html#HalButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_button.HalButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>HAL Button</p>
+<p>Button for setting <cite>bit</cite> HAL pin values.</p>
+<table border="1" class="docutils" id="id1">
+<caption><span class="caption-text">Generated HAL Pins</span><a class="headerlink" href="#id1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="64%" />
+<col width="13%" />
+<col width="23%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HAL Pin Name</th>
+<th class="head">Type</th>
+<th class="head">Direction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>qtpyvcp.button.enable</td>
+<td>bit</td>
+<td>in</td>
+</tr>
+<tr class="row-odd"><td>qtpyvcp.button.out</td>
+<td>bit</td>
+<td>out</td>
+</tr>
+<tr class="row-even"><td>qtpyvcp.button.checked</td>
+<td>bit</td>
+<td>out</td>
+</tr>
+<tr class="row-odd"><td>qtpyvcp.button.io</td>
+<td>bit</td>
+<td>io</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The <cite>qtpyvcp.button.checked</cite> halpin is only present if the <code class="xref py py-class docutils literal notranslate"><span class="pre">checkable</span></code> property is set to true.</p>
+</div>
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_button.HalButton.pulseOnPress">
+<code class="descname">pulseOnPress</code><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_button.HalButton.pulseOnPress" title="Permalink to this definition">¶</a></dt>
+<dd><p>If active, when the button is pressed the <code class="docutils literal notranslate"><span class="pre">out</span></code> pin will be <cite>True</cite>
+for <code class="xref py py-class docutils literal notranslate"><span class="pre">pulseDuration</span></code> ms, otherwise the <code class="docutils literal notranslate"><span class="pre">out</span></code> pin will
+be <cite>True</cite> for the duration of the button press.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_button.HalButton.pulseDuration">
+<code class="descname">pulseDuration</code><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_button.HalButton.pulseDuration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pulse duration in ms used when <code class="xref py py-class docutils literal notranslate"><span class="pre">pulseOnPress</span></code> is active.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_button.HalButton.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_button.html#HalButton.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_button.HalButton.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_plot.HalPlot">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.hal_widgets.hal_plot.</code><code class="descname">HalPlot</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_plot.html#HalPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_plot.HalPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>HAL Plot</p>
+<p>Plots HAL pin values over time, similar to HAL scope.
+Up to four HAL pin values can be plotted.</p>
+<table border="1" class="docutils" id="id2">
+<caption><span class="caption-text">Generated HAL Pins</span><a class="headerlink" href="#id2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="63%" />
+<col width="20%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HAL Pin Name</th>
+<th class="head">Type</th>
+<th class="head">Direction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>qtpyvcp.pinBaseName.seriesXname.in</td>
+<td>float</td>
+<td>in</td>
+</tr>
+</tbody>
+</table>
+<p>both pinBaseName and seriesXname can be set in the property editor in QtDesigner.</p>
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.hal_widgets.hal_spinbox"></span><dl class="class">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_spinbox.HalQSpinBox">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.hal_widgets.hal_spinbox.</code><code class="descname">HalQSpinBox</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_spinbox.html#HalQSpinBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_spinbox.HalQSpinBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>HAL SpinBox</p>
+<p>SpinBox for displaying and setting <cite>u32</cite> and <cite>s32</cite> HAL pin values.</p>
+<table border="1" class="docutils" id="id3">
+<caption><span class="caption-text">Generated HAL Pins</span><a class="headerlink" href="#id3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="58%" />
+<col width="21%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HAL Pin Name</th>
+<th class="head">Type</th>
+<th class="head">Direction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>qtpyvcp.spinbox.enable</td>
+<td>s32 | u32</td>
+<td>in</td>
+</tr>
+<tr class="row-odd"><td>qtpyvcp.spinbox.in</td>
+<td>s32 | u32</td>
+<td>in</td>
+</tr>
+<tr class="row-even"><td>qtpyvcp.spinbox.out</td>
+<td>s32 | u32</td>
+<td>out</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">If the <code class="docutils literal notranslate"><span class="pre">minimum</span></code> value property is set to 0 or greater a u32 HAL pin will
+be created, if the <code class="docutils literal notranslate"><span class="pre">minumum</span></code> value is less than 0 then a s32 HAL pin will
+be created.</p>
+</div>
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_spinbox.HalQSpinBox.changeEvent">
+<code class="descname">changeEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_spinbox.html#HalQSpinBox.changeEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_spinbox.HalQSpinBox.changeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_spinbox.HalQSpinBox.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_spinbox.html#HalQSpinBox.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_spinbox.HalQSpinBox.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.hal_widgets.hal_groupbox"></span><dl class="class">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_groupbox.HalGroupBox">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.hal_widgets.hal_groupbox.</code><code class="descname">HalGroupBox</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_groupbox.html#HalGroupBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_groupbox.HalGroupBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>HAL GroupBox</p>
+<p>GroupBox that can be enabled/disabled via HAL pins.</p>
+<table border="1" class="docutils" id="id4">
+<caption><span class="caption-text">Generated HAL Pins</span><a class="headerlink" href="#id4" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="64%" />
+<col width="13%" />
+<col width="23%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HAL Pin Name</th>
+<th class="head">Type</th>
+<th class="head">Direction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>qtpyvcp.group-box.enable</td>
+<td>bit</td>
+<td>in</td>
+</tr>
+<tr class="row-odd"><td>qtpyvcp.group-box.visible</td>
+<td>bit</td>
+<td>in</td>
+</tr>
+<tr class="row-even"><td>qtpyvcp.group-box.check</td>
+<td>bit</td>
+<td>in</td>
+</tr>
+<tr class="row-odd"><td>qtpyvcp.group-box.checked</td>
+<td>bit</td>
+<td>out</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_groupbox.HalGroupBox.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_groupbox.html#HalGroupBox.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_groupbox.HalGroupBox.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.hal_widgets.hal_slider"></span><dl class="class">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_slider.HalSlider">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.hal_widgets.hal_slider.</code><code class="descname">HalSlider</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_slider.html#HalSlider"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_slider.HalSlider" title="Permalink to this definition">¶</a></dt>
+<dd><p>HAL Slider</p>
+<p>Slider for setting <cite>u32</cite> or <cite>float</cite> HAL pin values.</p>
+<table border="1" class="docutils" id="id5">
+<caption><span class="caption-text">Generated HAL Pins</span><a class="headerlink" href="#id5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="64%" />
+<col width="13%" />
+<col width="23%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HAL Pin Name</th>
+<th class="head">Type</th>
+<th class="head">Direction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>qtpyvcp.slider.enable</td>
+<td>bit</td>
+<td>in</td>
+</tr>
+<tr class="row-odd"><td>qtpyvcp.slider.out-i</td>
+<td>u32</td>
+<td>out</td>
+</tr>
+<tr class="row-even"><td>qtpyvcp.slider.out-f</td>
+<td>float</td>
+<td>out</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_slider.HalSlider.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_slider.html#HalSlider.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_slider.HalSlider.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.hal_widgets.hal_checkbox"></span><dl class="class">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_checkbox.HalCheckBox">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.hal_widgets.hal_checkbox.</code><code class="descname">HalCheckBox</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_checkbox.html#HalCheckBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_checkbox.HalCheckBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>HAL CheckBox</p>
+<p>CheckBox for displaying and setting <cite>bit</cite> HAL pin values.</p>
+<table border="1" class="docutils" id="id6">
+<caption><span class="caption-text">Generated HAL Pins</span><a class="headerlink" href="#id6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="64%" />
+<col width="13%" />
+<col width="23%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HAL Pin Name</th>
+<th class="head">Type</th>
+<th class="head">Direction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>qtpyvcp.checkbox.enable</td>
+<td>bit</td>
+<td>in</td>
+</tr>
+<tr class="row-odd"><td>qtpyvcp.checkbox.check</td>
+<td>bit</td>
+<td>in</td>
+</tr>
+<tr class="row-even"><td>qtpyvcp.checkbox.checked</td>
+<td>bit</td>
+<td>out</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_checkbox.HalCheckBox.changeEvent">
+<code class="descname">changeEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_checkbox.html#HalCheckBox.changeEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_checkbox.HalCheckBox.changeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_checkbox.HalCheckBox.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_checkbox.html#HalCheckBox.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_checkbox.HalCheckBox.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.hal_widgets.hal_lcd"></span><dl class="class">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_lcd.HalLCDNumber">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.hal_widgets.hal_lcd.</code><code class="descname">HalLCDNumber</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_lcd.html#HalLCDNumber"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_lcd.HalLCDNumber" title="Permalink to this definition">¶</a></dt>
+<dd><p>HAL LCD Number</p>
+<p>LCD Number for displaying <cite>float</cite> or <cite>s32</cite> HAL pin values.</p>
+<table border="1" class="docutils" id="id7">
+<caption><span class="caption-text">Generated HAL Pins</span><a class="headerlink" href="#id7" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="54%" />
+<col width="23%" />
+<col width="23%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HAL Pin Name</th>
+<th class="head">Type</th>
+<th class="head">Direction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>qtpyvcp.lcd.in-i</td>
+<td>s32</td>
+<td>in</td>
+</tr>
+<tr class="row-odd"><td>qtpyvcp.lcd.in-f</td>
+<td>float</td>
+<td>in</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_lcd.HalLCDNumber.numberFormat">
+<code class="descname">numberFormat</code><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_lcd.HalLCDNumber.numberFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number Format Property</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fmt</strong> (<em>str</em>) – A valid python style format string. Defaults to <code class="docutils literal notranslate"><span class="pre">%i</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_lcd.HalLCDNumber.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_lcd.html#HalLCDNumber.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_lcd.HalLCDNumber.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.hal_widgets.hal_double_spinbox"></span><dl class="class">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_double_spinbox.HalDoubleSpinBox">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.hal_widgets.hal_double_spinbox.</code><code class="descname">HalDoubleSpinBox</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_double_spinbox.html#HalDoubleSpinBox"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_double_spinbox.HalDoubleSpinBox" title="Permalink to this definition">¶</a></dt>
+<dd><p>HAL DoubleSpinBox</p>
+<p>DoubleSpinBox for displaying and setting <cite>float</cite> HAL pin values.</p>
+<table border="1" class="docutils" id="id8">
+<caption><span class="caption-text">Generated HAL Pins</span><a class="headerlink" href="#id8" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="58%" />
+<col width="21%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HAL Pin Name</th>
+<th class="head">Type</th>
+<th class="head">Direction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>qtpyvcp.spinbox.enable</td>
+<td>bit</td>
+<td>in</td>
+</tr>
+<tr class="row-odd"><td>qtpyvcp.spinbox.in</td>
+<td>float</td>
+<td>in</td>
+</tr>
+<tr class="row-even"><td>qtpyvcp.spinbox.out</td>
+<td>float</td>
+<td>out</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_double_spinbox.HalDoubleSpinBox.changeEvent">
+<code class="descname">changeEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_double_spinbox.html#HalDoubleSpinBox.changeEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_double_spinbox.HalDoubleSpinBox.changeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_double_spinbox.HalDoubleSpinBox.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_double_spinbox.html#HalDoubleSpinBox.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_double_spinbox.HalDoubleSpinBox.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.hal_widgets.hal_led"></span><dl class="class">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_led.HalLedIndicator">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.hal_widgets.hal_led.</code><code class="descname">HalLedIndicator</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_led.html#HalLedIndicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_led.HalLedIndicator" title="Permalink to this definition">¶</a></dt>
+<dd><p>HAL LED</p>
+<p>LED for indicated the state of <cite>bit</cite> HAL pins.</p>
+<table border="1" class="docutils" id="id9">
+<caption><span class="caption-text">Generated HAL Pins</span><a class="headerlink" href="#id9" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="58%" />
+<col width="21%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HAL Pin Name</th>
+<th class="head">Type</th>
+<th class="head">Direction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>qtpyvcp.led.on</td>
+<td>bit</td>
+<td>in</td>
+</tr>
+<tr class="row-odd"><td>qtpyvcp.led.flash</td>
+<td>bit</td>
+<td>in</td>
+</tr>
+<tr class="row-even"><td>qtpyvcp.led.flash-rate</td>
+<td>u32</td>
+<td>out</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_led.HalLedIndicator.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_led.html#HalLedIndicator.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_led.HalLedIndicator.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.hal_widgets.hal_led_button"></span><dl class="class">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.hal_widgets.hal_led_button.</code><code class="descname">HALLEDButton</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_led_button.html#HALLEDButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>HAL Led Button</p>
+<p>Button for displaying HAL pin values.</p>
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton.resizeEvent">
+<code class="descname">resizeEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QResizeEvent</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_led_button.html#HALLEDButton.resizeEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton.resizeEvent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton.update">
+<code class="descname">update</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_led_button.html#HALLEDButton.update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>update(self, QRect)
+update(self, QRegion)
+update(self, int, int, int, int)</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton.sizeHint">
+<code class="descname">sizeHint</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span> &#x2192; QSize<a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_led_button.html#HALLEDButton.sizeHint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton.sizeHint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton.flashPinName">
+<code class="descname">flashPinName</code><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton.flashPinName" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>The <cite>actionName</cite> property for setting the action the button</dt>
+<dd>should trigger from within QtDesigner.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The action name.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton.pinName">
+<code class="descname">pinName</code><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_led_button.HALLEDButton.pinName" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>The <cite>actionName</cite> property for setting the action the button</dt>
+<dd>should trigger from within QtDesigner.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">The action name.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.hal_widgets.hal_label"></span><dl class="class">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_label.HalLabel">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.hal_widgets.hal_label.</code><code class="descname">HalLabel</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_label.html#HalLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_label.HalLabel" title="Permalink to this definition">¶</a></dt>
+<dd><p>HAL Label</p>
+<p>Label for displaying HAL pin values.</p>
+<p>Input pin type is selectable via the <code class="xref py py-class docutils literal notranslate"><span class="pre">pinType</span></code> property in designer,
+and can be any valid HAL type (bit, u32, s32, float).</p>
+<p>The text format can be specified via the <code class="xref py py-class docutils literal notranslate"><span class="pre">textFormat</span></code> property in
+designer and can be any valid python style format string.</p>
+<table border="1" class="docutils" id="id10">
+<caption><span class="caption-text">Generated HAL Pins</span><a class="headerlink" href="#id10" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="56%" />
+<col width="24%" />
+<col width="20%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HAL Pin Name</th>
+<th class="head">Type</th>
+<th class="head">Direction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>qtpyvcp.label.enable</td>
+<td>bit</td>
+<td>in</td>
+</tr>
+<tr class="row-odd"><td>qtpyvcp.label.in</td>
+<td>selecatable</td>
+<td>in</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_label.HalLabel.textFormat">
+<code class="descname">textFormat</code><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_label.HalLabel.textFormat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Text Format Property</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fmt</strong> (<em>str</em>) – A valid python style format string. Defaults to <code class="docutils literal notranslate"><span class="pre">%s</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_label.HalLabel.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_label.html#HalLabel.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_label.HalLabel.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+<span class="target" id="module-qtpyvcp.widgets.hal_widgets.hal_bar_indicator"></span><dl class="class">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_bar_indicator.HalBarIndicator">
+<em class="property">class </em><code class="descclassname">qtpyvcp.widgets.hal_widgets.hal_bar_indicator.</code><code class="descname">HalBarIndicator</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_bar_indicator.html#HalBarIndicator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_bar_indicator.HalBarIndicator" title="Permalink to this definition">¶</a></dt>
+<dd><p>HAL Bar Indicator</p>
+<p>Bar for indicating the value of <cite>float</cite> HAL pins.</p>
+<table border="1" class="docutils" id="id11">
+<caption><span class="caption-text">Generated HAL Pins</span><a class="headerlink" href="#id11" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="67%" />
+<col width="12%" />
+<col width="21%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">HAL Pin Name</th>
+<th class="head">Type</th>
+<th class="head">Direction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>qtpyvcp.bar-indicator.in-i</td>
+<td>u32</td>
+<td>in</td>
+</tr>
+<tr class="row-odd"><td>qtpyvcp.bar-indicator.in-f</td>
+<td>float</td>
+<td>in</td>
+</tr>
+<tr class="row-even"><td>qtpyvcp.bar-indicator.min-val</td>
+<td>float</td>
+<td>in</td>
+</tr>
+<tr class="row-odd"><td>qtpyvcp.bar-indicator.max-val</td>
+<td>float</td>
+<td>in</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="qtpyvcp.widgets.hal_widgets.hal_bar_indicator.HalBarIndicator.initialize">
+<code class="descname">initialize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/qtpyvcp/widgets/hal_widgets/hal_bar_indicator.html#HalBarIndicator.initialize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#qtpyvcp.widgets.hal_widgets.hal_bar_indicator.HalBarIndicator.initialize" title="Permalink to this definition">¶</a></dt>
+<dd><p>This method is called right before the main application starts.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../dialogs/index.html" class="btn btn-neutral float-right" title="Dialogs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../containers/index.html" class="btn btn-neutral float-left" title="Containers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2020, Kurt Jacobson.
+    <br>
+    Page last updated on Apr 24, 2021 at 01:18 AM (UTC+0200) by TurBoss.
+      <a href="https://github.com/kcjengr/qtpyvcp/commit/48b1adef">[diff]</a>
+
+    </p>
+  </div>
+
+  <!---->
+  <!--Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.-->
+  <!----> 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
