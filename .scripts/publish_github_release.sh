@@ -26,7 +26,7 @@ declare -a COMMIT_TYPES=(
 "REV:Reverted commits"
 )
 
-LAST_RELEASE=$( git describe --abbrev=0 --tags `git rev-list --tags --skip=1  --max-count=1` )
+LAST_RELEASE=$( git describe --abbrev=0 --tags "$(git rev-list --tags --skip=1  --max-count=1)" )
 
 CREATE_CHANGELOG() {
 
@@ -133,16 +133,16 @@ JSON=$(cat <<EOF
 }
 EOF
 )
-RESULT=`curl -s -w "\n%{http_code}\n"     \
+RESULT=$(curl -s -w "\n%{http_code}\n"     \
   -H "Authorization: token $AUTH_TOKEN"  \
   -d "$JSON"                              \
-  "https://api.github.com/repos/$REPO/releases"`
-if [ "`echo "$RESULT" | tail -1`" != "201" ]; then
+  "https://api.github.com/repos/$REPO/releases")
+if [ "$(echo "$RESULT" | tail -1)" != "201" ]; then
   echo FAILED
   echo "$RESULT"
   exit 1
 fi
-RELEASEID=`echo "$RESULT" | sed -ne 's/^  "id": \(.*\),$/\1/p'`
+RELEASEID=$(echo "$RESULT" | sed -ne 's/^  "id": \(.*\),$/\1/p')
 if [[ -z "$RELEASEID" ]]; then
   echo FAILED
   echo "$RESULT"
@@ -155,16 +155,16 @@ for FILE in "${RELEASEFILES[@]}"; do
     echo "Warning: $FILE is not a file"
     continue
   fi
-  FILESIZE=`stat -c '%s' "$FILE"`
-  FILENAME=`basename $FILE`
+  FILESIZE=$(stat -c '%s' "$FILE")
+  FILENAME=$(basename $FILE)
   echo -n "Uploading $FILENAME... "
-  RESULT=`curl -s -w "\n%{http_code}\n"                   \
+  RESULT=$(curl -s -w "\n%{http_code}\n"                   \
     -H "Authorization: token $AUTH_TOKEN"                \
     -H "Accept: application/vnd.github.manifold-preview"  \
     -H "Content-Type: application/zip"                    \
     --data-binary "@$FILE"                                \
-    "https://uploads.github.com/repos/$REPO/releases/$RELEASEID/assets?name=$FILENAME&size=$FILESIZE"`
-  if [ "`echo "$RESULT" | tail -1`" != "201" ]; then
+    "https://uploads.github.com/repos/$REPO/releases/$RELEASEID/assets?name=$FILENAME&size=$FILESIZE")
+  if [ "$(echo "$RESULT" | tail -1)" != "201" ]; then
     echo FAILED
     echo "$RESULT"
     exit 1
@@ -179,12 +179,12 @@ JSON=$(cat <<EOF
 }
 EOF
 )
-RESULT=`curl -s -w "\n%{http_code}\n"     \
+RESULT=$(curl -s -w "\n%{http_code}\n"     \
   -X PATCH                                \
   -H "Authorization: token $AUTH_TOKEN"  \
   -d "$JSON"                              \
-  "https://api.github.com/repos/$REPO/releases/$RELEASEID"`
-if [ "`echo "$RESULT" | tail -1`" = "200" ]; then
+  "https://api.github.com/repos/$REPO/releases/$RELEASEID")
+if [ "$(echo "$RESULT" | tail -1)" = "200" ]; then
   echo DONE
 else
   echo FAILED
