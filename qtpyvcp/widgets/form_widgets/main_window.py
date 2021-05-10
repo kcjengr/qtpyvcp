@@ -277,18 +277,19 @@ class VCPMainWindow(QMainWindow):
         if event.isAutoRepeat():
             return
 
+        speed = actions.machine.MAX_JOG_SPEED / 60.0 if event.modifiers() & Qt.ShiftModifier else None
         if event.key() == Qt.Key_Up:
-            actions.machine.jog.axis('Y', 1)
+            actions.machine.jog.axis('Y', 1, speed=speed)
         elif event.key() == Qt.Key_Down:
-            actions.machine.jog.axis('Y', -1)
+            actions.machine.jog.axis('Y', -1, speed=speed)
         elif event.key() == Qt.Key_Left:
-            actions.machine.jog.axis('X', -1)
+            actions.machine.jog.axis('X', -1, speed=speed)
         elif event.key() == Qt.Key_Right:
-            actions.machine.jog.axis('X', 1)
+            actions.machine.jog.axis('X', 1, speed=speed)
         elif event.key() == Qt.Key_PageUp:
-            actions.machine.jog.axis('Z', 1)
+            actions.machine.jog.axis('Z', 1, speed=speed)
         elif event.key() == Qt.Key_PageDown:
-            actions.machine.jog.axis('Z', -1)
+            actions.machine.jog.axis('Z', -1, speed=speed)
         #else:
             #print('Unhandled key press event')
 
