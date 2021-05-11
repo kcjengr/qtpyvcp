@@ -32,10 +32,10 @@ See the [documentation](https://kcjengr.github.io/qtpyvcp/).
 
 * [Documentation](https://www.qtpyvcp.com)
 * [LinuxCNC Forum](https://forum.linuxcnc.org/qtpyvcp)
-* [Freenode IRC](http://webchat.freenode.net/?channels=%23hazzy) (#hazzy)
+* [Freenode IRC](http://webchat.freenode.net/?channels=%23hazzy) (#hazzy)  (Issues joining? please try other network)
 * [The Matrix](https://riot.im/app/#/room/#qtpyvcp:matrix.org) (#qtpyvcp:matrix.org)
-* [Gitter](https://gitter.im/kcjengr/qtpyvcp)
-* [Discord](https://discord.gg/463hMhd) (Issues joining? please try other network)
+* [Gitter](https://gitter.im/kcjengr/qtpyvcp)  (Issues joining? please try other network)
+* [Discord](https://discord.gg/463hMhd)
 
 
 ## Dependancies
