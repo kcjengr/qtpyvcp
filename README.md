@@ -70,4 +70,3 @@ This software is released under the GPLv2.
 [matrix-badge]: https://img.shields.io/badge/Chat%20on%20Matrix-%23qtpyvcp%3Amatrix.org-green.svg
 [gitter-badge]: https://img.shields.io/badge/Chat%20on%20Gitter-%23kcjengr/qtpyvcp-green.svg
 [discord-badge]: https://img.shields.io/discord/587006691162325008.svg?label=Discord
-
