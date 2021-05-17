@@ -2,7 +2,7 @@
 
 REPO="$1"
 TAG="$2"
-AUTH_TOKEN="$3"
+AUTH_TOKEN=$("/home/buildbot/.github_token")
 
 PRERELEASE=false
 RELEASEFILES=(debs/python-qtpyvcp_*.deb dist/qtpyvcp-*.tar.gz)
@@ -100,10 +100,10 @@ if [ "true" != "$(git rev-parse --is-inside-work-tree 2> /dev/null)" ]
     exit 1
 fi
 
-if [ "$TRAVIS" = "true" ] && [ -z "$TRAVIS_TAG" ]; then
-  echo "This build is not for a tag so not creating a release"
-  exit 0
-fi
+#if [ "$TRAVIS" = "true" ] && [ -z "$TRAVIS_TAG" ]; then
+#  echo "This build is not for a tag so not creating a release"
+#  exit 0
+#fi
 
 echo "Creating GitHub release for $TAG"
 
