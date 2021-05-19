@@ -5,7 +5,7 @@ TAG="$2"
 AUTH_TOKEN="$(<'/home/buildbot/.github_token')"
 
 PRERELEASE=false
-RELEASEFILES=(debs/python-qtpyvcp_*.deb dist/qtpyvcp-*.tar.gz)
+RELEASEFILES=(dist/qtpyvcp-*.tar.gz)
 
 # commit prefix vs. change log section name
 declare -a COMMIT_TYPES=(
