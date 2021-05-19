@@ -2,7 +2,7 @@
 
 REPO="$1"
 TAG="$2"
-AUTH_TOKEN=$(<"/home/buildbot/.github_token")
+AUTH_TOKEN="$(<"/home/buildbot/.github_token")"
 
 PRERELEASE=false
 RELEASEFILES=(debs/python-qtpyvcp_*.deb dist/qtpyvcp-*.tar.gz)
