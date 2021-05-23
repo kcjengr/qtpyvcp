@@ -403,7 +403,7 @@ class GcodeEditor(EditorBase, QObject):
 
     @Slot()
     def save(self):
-        save_file = QFile(self.filename)
+        save_file = QFile(str(STATUS.file))
 
         result = save_file.open(QFile.WriteOnly)
         if result:
