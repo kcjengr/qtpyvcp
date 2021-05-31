@@ -37,10 +37,11 @@ IN_DESIGNER = os.getenv('DESIGNER', False)
 NUMBER_OF_WCS = 9
 
 # turn on antialiasing
-from PyQt5.QtOpenGL import QGLFormat
+from qtpy.QtOpenGL import QGLFormat
 f = QGLFormat()
 f.setSampleBuffers(True)
 QGLFormat.setDefaultFormat(f)
+
 
 class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
@@ -51,7 +52,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.parent = parent
         self.ploter_enabled = True
         self.touch_enabled = False
-        self.programViewWhenLoadingProgram = False
+        self.program_view_when_loading_program = False
         self.pan_mode = False
         self.line = None
         self._last_filename = str()
@@ -79,7 +80,6 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self._dwel_color = self._default_dwell_color
         self._user_color = self._default_user_color
 
-        
 
         self.active_wcs_index = self._datasource.getActiveWcsIndex()
         self.wcs_offsets = self._datasource.getWcsOffsets()
@@ -468,7 +468,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
         self.renderer.AddActor(self.axes_actor)
         self.renderer_window.Render()
-        if self.setProgramViewWhenLoadingProgram:
+        if self.program_view_when_loading_program:
             self.setViewProgram()
 
     def motion_type(self, value):
@@ -711,6 +711,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot()
     def setViewZ2(self):
+        self.active_view = 'Z2'
         position = self.wcs_offsets[self.active_wcs_index]
         self.camera.SetPosition(position[0], position[1], position[2] + self.position_mult)
         self.camera.SetFocalPoint(position[:3])
@@ -832,7 +833,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
 
     @Slot(bool)
     def setProgramViewWhenLoadingProgram(self, enabled):
-        self.touch_enabled = enabled
+        self.program_view_when_loading_program = enabled
 
     @Slot()
     def zoomIn(self):

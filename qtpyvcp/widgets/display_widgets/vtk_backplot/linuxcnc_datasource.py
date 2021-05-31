@@ -1,14 +1,13 @@
 import linuxcnc
 import os
 
-from qtpy.QtCore import Signal
+from qtpy.QtCore import Signal, QObject
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.info import Info
 
 INFO = Info()
 LOG = logger.getLogger(__name__)
-from PyQt5.QtCore import QObject
 
 IN_DESIGNER = os.getenv('DESIGNER', False)
 """
