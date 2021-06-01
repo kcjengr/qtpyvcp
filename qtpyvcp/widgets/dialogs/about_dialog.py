@@ -48,7 +48,7 @@ class AboutDialog(BaseDialog):
                 """
                 <center>
                 QtPyVCP is a Qt and Python based framework for LinuxCNC.<br />
-                Copyright (c) 2018 - 2020 Kurt Jacobson<br />
+                Copyright (c) 2018 - 2021 Kurt Jacobson<br />
                 <a href="https://www.qtpyvcp.com">https://www.qtpyvcp.com</a>
                 </center>
                 """
