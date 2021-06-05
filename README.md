@@ -28,8 +28,8 @@ See the [documentation](https://qtpyvcp.com/).
 
 * [Documentation](https://www.qtpyvcp.com)
 * [LinuxCNC Forum](https://forum.linuxcnc.org/qtpyvcp)
-* [libera.chat IRC](http://webchat.freenode.net/?channels=%23qtpyvcp) (#qtpyvcp)
-* [The Matrix](https://riot.im/app/#/room/#qtpyvcp:matrix.org) (#qtpyvcp:matrix.org)
+* [libera.chat IRC](http://web.libera.chat/) (#qtpyvcp)
+* [The Matrix](https://app.element.io/#/room/#qtpyvcp:matrix.org) (#qtpyvcp:matrix.org)
 * [Discord](https://discord.gg/463hMhd)
 
 
