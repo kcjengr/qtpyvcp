@@ -4,10 +4,6 @@
 [![Travis CI][Travis-badge]](https://travis-ci.org/kcjengr/qtpyvcp)
 [![pypi version][pypi-badge]](https://pypi.org/project/QtPyVCP/)
 [![LinuxCNC 2.8][linuxcnc-badge]](https://github.com/LinuxCNC/linuxcnc)
-[![Chat on IRC ][irc-badge]](https://kiwiirc.com/client/irc.kiwiirc.com/hazzy)
-[![Chat on Matrix ][matrix-badge]](https://riot.im/app/#/room/#qtpyvcp:matrix.org)
-[![Chat on Gitter ][gitter-badge]](https://gitter.im/kcjengr/qtpyvcp)
-[![Chat on Discord ][discord-badge]](https://discord.gg/463hMhd)
 
 
 QtPyVCP is a Qt and Python based framework for building virtual control panels
@@ -20,7 +16,7 @@ building complex VCPs.
 
 ## Installation and Usage
 
-See the [documentation](https://kcjengr.github.io/qtpyvcp/).
+See the [documentation](https://qtpyvcp.com/).
 
 
 ## Development
@@ -32,9 +28,8 @@ See the [documentation](https://kcjengr.github.io/qtpyvcp/).
 
 * [Documentation](https://www.qtpyvcp.com)
 * [LinuxCNC Forum](https://forum.linuxcnc.org/qtpyvcp)
-* [Freenode IRC](http://webchat.freenode.net/?channels=%23hazzy) (#hazzy)  (Issues joining? please try other network)
+* [libera.chat IRC](http://webchat.freenode.net/?channels=%23qtpyvcp) (#qtpyvcp)
 * [The Matrix](https://riot.im/app/#/room/#qtpyvcp:matrix.org) (#qtpyvcp:matrix.org)
-* [Gitter](https://gitter.im/kcjengr/qtpyvcp)  (Issues joining? please try other network)
 * [Discord](https://discord.gg/463hMhd)
 
 
@@ -66,7 +61,4 @@ This software is released under the GPLv2.
 [Travis-badge]: https://img.shields.io/travis/kcjengr/qtpyvcp/master.svg?label=build
 [pypi-badge]: https://img.shields.io/pypi/v/qtpyvcp.svg
 [linuxcnc-badge]: https://img.shields.io/badge/LinuxCNC-%202.8-blue.svg
-[irc-badge]: https://img.shields.io/badge/Chat%20on%20IRC-%23hazzy-green.svg
-[matrix-badge]: https://img.shields.io/badge/Chat%20on%20Matrix-%23qtpyvcp%3Amatrix.org-green.svg
-[gitter-badge]: https://img.shields.io/badge/Chat%20on%20Gitter-%23kcjengr/qtpyvcp-green.svg
-[discord-badge]: https://img.shields.io/discord/587006691162325008.svg?label=Discord
+
