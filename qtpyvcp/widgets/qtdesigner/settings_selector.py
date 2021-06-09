@@ -36,7 +36,7 @@ class SettingSelector(QDialog):
 
         for setting in sorted(SETTINGS):
             print(setting)
-            print(SETTINGS[setting].__doc__)
+            print((SETTINGS[setting].__doc__))
             self.settingsCombo.addItem(setting)
 
         current_setting = self.widget.settingName

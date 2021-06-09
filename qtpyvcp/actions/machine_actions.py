@@ -909,7 +909,7 @@ def fromInternalLinearUnits(v, unit=None):
 
 def parseJogIncrement(jogincr):
     scale = 1
-    if isinstance(jogincr, basestring):
+    if isinstance(jogincr, str):
         jogincr = jogincr.lower()
         if jogincr.endswith("mm"):
             scale = fromInternalLinearUnits(1 / 25.4)

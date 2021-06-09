@@ -128,7 +128,7 @@ class Position(DataPlugin):
         return chan_obj, chan_exp
 
     def updateUnits(self, canon_units):
-        print('updating units', canon_units)
+        print(('updating units', canon_units))
         if canon_units == 2:
             self._current_format = self._metric_format
         else:

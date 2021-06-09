@@ -153,7 +153,7 @@ class VCPBaseWidget(VCPPrimitiveWidget):
 
             eval_env = {'ch': ch, 'widget': self}
             eval_exp = 'lambda: widget.{}({})'.format(
-                            prop[0], rule['expression'].encode('utf-8'))
+                            prop[0], rule['expression']).encode('utf-8')
             exp = eval(eval_exp, eval_env)
 
             # initial call to update

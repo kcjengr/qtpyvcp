@@ -1,5 +1,5 @@
 import vtk.qt
-from axes_actor import AxesActor
+from .axes_actor import AxesActor
 from qtpyvcp.utilities import logger
 
 LOG = logger.getLogger(__name__)

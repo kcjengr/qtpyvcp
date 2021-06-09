@@ -91,7 +91,7 @@ class VirtualInputManager(Plugin):
 
         virtual_input_providers = CONFIG.get("virtual_input_providers", {})
 
-        for input_type, provider in virtual_input_providers.items():
+        for input_type, provider in list(virtual_input_providers.items()):
             obj = _initialize_object_from_dict(provider)
             input_type = input_type.replace('.', ':')
             self.input_providers[input_type] = obj
@@ -99,5 +99,5 @@ class VirtualInputManager(Plugin):
         app = QApplication.instance()
         app.focusChanged.connect(self.onFocusChanged)
 
-        for vkb in self.input_providers.values():
+        for vkb in list(self.input_providers.values()):
             vkb.hide()

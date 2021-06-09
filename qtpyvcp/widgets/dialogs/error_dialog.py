@@ -54,7 +54,7 @@ class ErrorDialog(BaseDialog):
     @Slot()
     def on_reportIssue_clicked(self):
         import qtpy
-        import urllib
+        import urllib.request, urllib.parse, urllib.error
         import webbrowser
         import subprocess
         import linuxcnc
@@ -79,8 +79,8 @@ class ErrorDialog(BaseDialog):
 
         new_issue_url = "https://github.com/kcjengr/qtpyvcp/issues/new?" \
                         "title={title}&body={body}&&labels=bug,auto+generated"\
-                        .format(title=urllib.quote(issue_title),
-                                body=urllib.quote(issue_body))
+                        .format(title=urllib.parse.quote(issue_title),
+                                body=urllib.parse.quote(issue_body))
 
         webbrowser.open(new_issue_url, new=2, autoraise=True)
 

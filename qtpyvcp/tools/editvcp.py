@@ -62,7 +62,7 @@ directory. Please set up a development install to edit the VCP.
 """.strip()
 
 if linuxcnc.version.startswith('2.7'):
-    print(LCNC_VERSION_ERROR_MSG.format(linuxcnc.version))
+    print((LCNC_VERSION_ERROR_MSG.format(linuxcnc.version)))
     sys.exit(1)
 
 LOG = initBaseLogger('qtpyvcp', log_file=os.devnull, log_level='WARNING')
@@ -104,7 +104,7 @@ def launch_designer(opts=DotDict()):
     ext = os.path.splitext(fname)[1]
     if ext in ['.yml', '.yaml']:
 
-        print("Loading YAML config file:", fname)
+        print(("Loading YAML config file:", fname))
 
         from qtpyvcp import CONFIG, DEFAULT_CONFIG_FILE
         from qtpyvcp.utilities.config_loader import load_config_files
@@ -117,7 +117,7 @@ def launch_designer(opts=DotDict()):
             raise
 
         from qtpyvcp.utilities.settings import addSetting
-        for k, v in CONFIG['settings'].items():
+        for k, v in list(CONFIG['settings'].items()):
             addSetting(k, **v)
 
         # add to path so that QtDesginer can load it when it starts
@@ -131,7 +131,7 @@ def launch_designer(opts=DotDict()):
             if ui_file is not None:
                 ui_file = os.path.join(yml_dir, ui_file)
                 cmd.append(ui_file)
-                print("Loading UI file:", ui_file)
+                print(("Loading UI file:", ui_file))
             else:
                 print("No UI file specified.")
 
@@ -140,14 +140,14 @@ def launch_designer(opts=DotDict()):
             if qss_file is not None:
                 qss_file = os.path.join(yml_dir, qss_file)
                 os.environ['QSS_STYLESHEET'] = qss_file
-                print("Loading QSS file:", qss_file)
+                print(("Loading QSS file:", qss_file))
             else:
                 print("No QSS file specified.")
 
     elif ext == '.ui':
         cmd.append(fname)
 
-        print("Loading UI file:", fname)
+        print(("Loading UI file:", fname))
 
     else:
         print("No valid file type selected.\n File must be a .yaml config file or a .ui file.")
@@ -171,7 +171,7 @@ def main():
     raw_args = docopt(__doc__)
     # convert raw argument keys to valid python names
     opts = DotDict({arg.strip('-<>').replace('-', '_'):
-                    value for arg, value in raw_args.items()})
+                    value for arg, value in list(raw_args.items())})
 
     app = QApplication(sys.argv)
     launch_designer(opts)
