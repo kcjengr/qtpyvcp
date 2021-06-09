@@ -161,7 +161,7 @@ class StatusPoller(QObject):
             log.warning("Status polling failed, is LinuxCNC running?", exc_info=e)
             self.timer.stop()
             return
-        for status_item in self.status_items.values():
+        for status_item in list(self.status_items.values()):
             try:
                 status_item.update()
             except Exception as e:
@@ -335,7 +335,7 @@ class HALPoller(QObject):
                 continue
             raw = rawtuple[0].split('\n')
 
-            pins = [ filter( lambda a: a != '', [x.strip() for x in line.split(' ')] ) for line in raw ]
+            pins = [ [a for a in [x.strip() for x in line.split(' ')] if a != ''] for line in raw ]
 
             # UPDATE THE DICTIONARY OF PIN INFO
             # Acquire the mutex so we don't step on other threads

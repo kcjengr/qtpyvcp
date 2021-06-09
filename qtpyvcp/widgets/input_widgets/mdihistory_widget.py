@@ -109,9 +109,9 @@ class MDIHistory(QListWidget, CMDWidget):
     def clearQueue(self):
         """Clear queue items yet to be run."""
         if self.mdi_listorder_natural:
-            list_length = range(self.count())
+            list_length = list(range(self.count()))
         else:
-            list_length = range(self.count()-1, 0, -1)
+            list_length = list(range(self.count()-1, 0, -1))
 
         for list_item in list_length:
             row_item = self.item(list_item)
@@ -138,9 +138,9 @@ class MDIHistory(QListWidget, CMDWidget):
     def runFromSelection(self):
         """Start running MDI from the selected row back to correct end."""
         if self.mdi_listorder_natural:
-            row_list = range(self.currentRow(), self.count(), 1)
+            row_list = list(range(self.currentRow(), self.count(), 1))
         else:
-            row_list = range(self.currentRow(), -1, -1)
+            row_list = list(range(self.currentRow(), -1, -1))
 
         # from selected row loop back to top/bottom and set ready for run
         for row in row_list:
@@ -287,9 +287,9 @@ class MDIHistory(QListWidget, CMDWidget):
 
         # scan for the next command to execute from bottom up.
         if self.mdi_listorder_natural:
-            list_length = range(self.count())
+            list_length = list(range(self.count()))
         else:
-            list_length = range(self.count()-1, 0, -1)
+            list_length = list(range(self.count()-1, 0, -1))
         
         for list_item in list_length:
             row_item = self.item(list_item)
@@ -318,7 +318,7 @@ class MDIHistory(QListWidget, CMDWidget):
 
         # Get handle to windows list and search through them
         # for the widget referenced in mdi_entryline_name
-        for win_name, obj in qtpyvcp.WINDOWS.items():
+        for win_name, obj in list(qtpyvcp.WINDOWS.items()):
             if hasattr(obj, str(self.mdi_entryline_name)):
                 self.mdi_entry_widget = getattr(obj, self.mdi_entryline_name)
                 # Use the handle to supress the widgets Rtn key behaviour

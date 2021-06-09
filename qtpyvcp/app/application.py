@@ -56,7 +56,7 @@ class VCPApplication(QApplication):
             self.loadStylesheet(stylesheet, opts.develop)
 
         if custom_fonts:
-            if isinstance(custom_fonts, basestring):  # single font or location
+            if isinstance(custom_fonts, str):  # single font or location
                 self.loadCustomFont(custom_fonts)
             else:  # list of fonts or locations
                 for font in custom_fonts:
@@ -221,7 +221,7 @@ class VCPApplication(QApplication):
 
         Returns: QWidget
         """
-        for win_name, obj in qtpyvcp.WINDOWS.items():
+        for win_name, obj in list(qtpyvcp.WINDOWS.items()):
             if hasattr(obj, name):
                 return getattr(obj, name)
 

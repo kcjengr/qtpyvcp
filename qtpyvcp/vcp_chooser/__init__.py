@@ -1,1 +1,1 @@
-from vcp_chooser import VCPChooser
+from .vcp_chooser import VCPChooser

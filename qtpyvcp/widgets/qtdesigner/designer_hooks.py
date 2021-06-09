@@ -9,7 +9,7 @@
 #   PyDM Project: https://github.com/slaclab/pydm
 #   PyDM Licence: https://github.com/slaclab/pydm/blob/master/LICENSE.md
 
-import stylesheet
+from . import stylesheet
 
 class DesignerHooks(object):
     """Class that handles the integration with QtPyVCP and Qt Designer

@@ -31,7 +31,7 @@ Example:
 
 from qtpyvcp.utilities.logger import getLogger
 
-from hal_qlib import QComponent, QPin
+from .hal_qlib import QComponent, QPin
 
 COMPONENTS = {}
 LOG = getLogger(__name__)
@@ -81,7 +81,7 @@ if __name__ == "__main__":
 
     # define a function to call when the input pin changes
     def onInChanged(new_value):
-        print("loop-back.in pin changed:", new_value)
+        print(("loop-back.in pin changed:", new_value))
         # loop the out pin to the in pin value
         comp.getPin('out').value = new_value
 

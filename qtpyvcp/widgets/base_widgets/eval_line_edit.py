@@ -1,5 +1,5 @@
 # import to get true floating point division even if the arguments are ints (ex. 1/2 => 0.5, not 0)
-from __future__ import division
+
 from qtpy.QtWidgets import QLineEdit
 from qtpyvcp.utilities import logger
 

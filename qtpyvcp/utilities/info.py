@@ -11,7 +11,7 @@ import sys
 from linuxcnc import ini
 
 from qtpyvcp import TOP_DIR
-from misc import normalizePath
+from .misc import normalizePath
 
 # Setup logging
 from qtpyvcp.utilities import logger
