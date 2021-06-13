@@ -111,5 +111,5 @@ def bindWidget(widget, action):
         method.bindOk(*args, widget=widget, **kwargs)
     except Exception as e:
         msg = "%s raised while trying to bind '%s' action to '%s'" % \
-              (e.message, action, widget)
+              (e, action, widget)
         raise InvalidAction(msg, sys.exc_info()[2])
