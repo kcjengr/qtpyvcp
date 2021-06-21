@@ -421,7 +421,7 @@ class ToolTable(DataPlugin):
         # write to file
         with io.open(tool_file, 'w') as fh:
             fh.write('\n'.join(lines))
-            fh.write('\n'.decode('utf-8'))  # new line at end of file
+            fh.write('\n')  # new line at end of file
             fh.flush()
             os.fsync(fh.fileno())
 
