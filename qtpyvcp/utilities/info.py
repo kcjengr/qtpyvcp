@@ -95,6 +95,9 @@ class _Info(object):
     def getMDIHistoryFile(self, default='~/.axis_mdi_history'):
         return self.getFilePath('DISPLAY', 'MDI_HISTORY_FILE', self.CONFIG_DIR, default)
 
+    def getGcodeSyntaxFile(self, default=None):
+        return self.ini.find('DISPLAY', 'GCODE_SYNTAX') or default
+
     def getToolTableFile(self, default='tool.tbl'):
         return self.getFilePath('EMCIO', 'TOOL_TABLE', self.CONFIG_DIR, default)
 
