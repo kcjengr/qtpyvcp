@@ -16,7 +16,9 @@ from qtpy.QtWidgets import (QApplication, QPlainTextEdit, QTextEdit, QWidget, QM
 from qtpyvcp import DEFAULT_CONFIG_FILE
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.actions import program_actions
+from qtpyvcp.utilities.info import Info
 
+INFO = Info()
 STATUS = getPlugin('status')
 YAML_DIR = os.path.dirname(DEFAULT_CONFIG_FILE)
 
@@ -36,11 +38,15 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
 
     def loadSyntaxFromYAML(self):
 
-        with open(os.path.join(YAML_DIR, 'gcode_syntax.yml')) as fh:
-            syntax_specs = yaml.load(fh, Loader=yaml.FullLoader)
+        if INFO.getGcodeSyntaxFile() is not None:
+            YAML_DIR = os.environ['CONFIG_DIR']
+            gcode_syntax_file = INFO.getGcodeSyntaxFile()
+        else:
+            YAML_DIR = os.path.dirname(DEFAULT_CONFIG_FILE)
+            gcode_syntax_file = 'gcode_syntax.yml'
 
-        assert isinstance(syntax_specs, dict), \
-            "Invalid YAML format for language spec, root item must be a dictionary."
+        with open(os.path.join(YAML_DIR, gcode_syntax_file)) as fh:
+            syntax_specs = yaml.load(fh, Loader=yaml.FullLoader)
 
         cio = QRegularExpression.CaseInsensitiveOption
 
