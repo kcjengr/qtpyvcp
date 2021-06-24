@@ -70,6 +70,9 @@ Options available in the INI file are:
     # Additional args passed to the QtApplication.
     COMMAND_LINE_ARGS = <args>
 
+    # Provide user defined G code Syntax file
+    GCODE_SYNTAX = file
+
     # VTK_BackPlot Options
     [VTK]
     # Boolean False to hide the machine boundry
