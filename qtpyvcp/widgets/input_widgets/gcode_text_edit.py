@@ -365,7 +365,8 @@ class NumberMargin(QWidget):
             text_rec = QRect(0, block_top, self.width(), self.parent.fontMetrics().height())
             painter.fillRect(text_rec, background)
             painter.drawText(text_rec, Qt.AlignRight, str(block_num + 1))
-            block = next(block)
+            block = block.next()
 
         painter.end()
+        block.end()
         QWidget.paintEvent(self, event)
