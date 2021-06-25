@@ -368,5 +368,4 @@ class NumberMargin(QWidget):
             block = block.next()
 
         painter.end()
-        block.end()
         QWidget.paintEvent(self, event)
