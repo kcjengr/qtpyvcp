@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """QCompile - compile .ui and .qrc files to Python
 

@@ -94,7 +94,7 @@ class BarIndicatorBase(QWidget):
         if self._border_width > 0:
             self.drawBorder()
 
-        if self._format is not '':
+        if self._format != '':
             self.drawText()
 
         self._painter.end()

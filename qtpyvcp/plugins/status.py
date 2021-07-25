@@ -639,7 +639,7 @@ class Status(DataPlugin):
             all_homed = True
         else:
             for anum in INFO.AXIS_NUMBER_LIST:
-                if STAT.homed[anum] is not 1:
+                if STAT.homed[anum] != 1:
                     all_homed = False
                     break
             else:

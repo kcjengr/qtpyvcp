@@ -86,7 +86,7 @@ def launch_application(opts, config):
 
     # load any post GUI hal file
     postgui_halfile = INFO.getPostguiHalfile()
-    if postgui_halfile is not "":
+    if postgui_halfile != "":
         if not os.path.exists(postgui_halfile):
             raise IOError('The specified POSTGUI_HALFILE does not exist: %s' %
                           postgui_halfile)

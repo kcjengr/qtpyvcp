@@ -408,7 +408,7 @@ class ToolTable(DataPlugin):
                                          d=FLOAT_DECIMAL_PLACES))
 
             comment = tool_data.get('R', '')
-            if comment is not '':
+            if comment != '':
                 items.append('; ' + comment)
 
             if 'P' not in columns:
