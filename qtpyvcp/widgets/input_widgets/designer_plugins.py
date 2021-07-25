@@ -19,10 +19,10 @@ class MDIHistoryPlugin(_DesignerPlugin):
     def pluginClass(self):
         return MDIHistory
 
-from .gcode_editor import GcodeEditor
-class GcodeEditorPlugin(_DesignerPlugin):
-    def pluginClass(self):
-        return GcodeEditor
+# from .gcode_editor import GcodeEditor
+# class GcodeEditorPlugin(_DesignerPlugin):
+#     def pluginClass(self):
+#         return GcodeEditor
 
 from .gcode_text_edit import GcodeTextEdit
 class gCodeEditPlugin(_DesignerPlugin):

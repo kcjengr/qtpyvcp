@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
 Command line tool to set up and launch QtDesigner for editing VCPs::
@@ -29,8 +29,16 @@ Command line tool to set up and launch QtDesigner for editing VCPs::
    --designer-args <args>...
 """
 
+
+
 import os
 import sys
+
+# sys.path.append(r'/home/turboss/Apps/eclipse-cpp-2020-12-R-linux-gtk-x86_64/eclipse/plugins/org.python.pydev.core_8.3.0.202104101217/pysrc')
+# import pydevd
+#
+# pydevd.settrace()
+
 import linuxcnc
 import subprocess
 from pkg_resources import iter_entry_points

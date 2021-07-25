@@ -100,7 +100,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
     @textFormat.setter
     def textFormat(self, text_fmt):
-        if self._setting_name is not "":
+        if self._setting_name != "":
             setting = SETTINGS.get(self._setting_name)
             try:
                 str = text_fmt.format(setting.getValue())
