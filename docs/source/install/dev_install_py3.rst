@@ -20,7 +20,7 @@ run, without the need to manually update or reinstall anything.
 .. Warning::
 
     Before proceeding make sure you have satisfied the prerequisites listed on
-    the :doc:`Prerequisites <prerequisites>` page!
+    the :doc:`Prerequisites for python3 <prerequisites_py3>` page!
 
 
 .. warning::
