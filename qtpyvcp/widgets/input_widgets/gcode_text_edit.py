@@ -24,10 +24,10 @@ YAML_DIR = os.path.dirname(DEFAULT_CONFIG_FILE)
 
 
 class GcodeSyntaxHighlighter(QSyntaxHighlighter):
-    def __init__(self, parent):
-        super(GcodeSyntaxHighlighter, self).__init__(parent.document())
+    def __init__(self, document, font):
+        super(GcodeSyntaxHighlighter, self).__init__(document)
 
-        self._parent = parent
+        self.font = font
 
         self.rules = []
         self.char_fmt = QTextCharFormat()
@@ -91,7 +91,7 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
 
     def defaultCharFormat(self):
         char_fmt = QTextCharFormat()
-        char_fmt.setFont(self._parent.font())
+        char_fmt.setFont(self.font())
         return char_fmt
 
     def highlightBlock(self, text):
@@ -140,8 +140,8 @@ class GcodeTextEdit(QPlainTextEdit):
         # set the custom margin
         self.margin = NumberMargin(self)
 
-        # set the syntax highlighter
-        self.gCodeHighlighter = GcodeSyntaxHighlighter(self)
+        # set the syntax highlighter # Fixme un needed init here
+        # self.gCodeHighlighter = GcodeSyntaxHighlighter(self)
 
         # context menu
         self.menu = QMenu(self)
@@ -158,10 +158,56 @@ class GcodeTextEdit(QPlainTextEdit):
 
         # connect signals
         self.cursorPositionChanged.connect(self.onCursorChanged)
+        self.updateRequest.connect(self.onUpdateEvent)
 
         # connect status signals
         STATUS.file.notify(self.loadProgramFile)
         STATUS.motion_line.onValueChanged(self.setCurrentLine)
+
+    def onUpdateEvent(self, e):
+        pass
+        # print("Update", e)
+
+    @Slot(str)
+    def findForward(self, text):
+
+        flags = QTextDocument.FindFlag(0)
+        cursor = self.document().find(text, flags)
+
+        if cursor.position() > 0:
+            print(f"found {cursor.selection().toPlainText()} at {cursor.position()} line")
+            # self.document().
+
+    @Slot(str)
+    def findBackward(self, text):
+        doc = self.document()
+        flags = QTextDocument.FindFlag(0)
+        flags |= QTextDocument.FindBackward
+        cursor = doc.find(text, flags)
+        print(text)
+        if cursor.position() > 0:
+            print(f"found {cursor.selection().toPlainText()} at {cursor.position()} line")
+
+    def highlight_occurences(self, text):
+        pass
+
+    def clear_highlights(self):
+        pass
+
+    def text_search(self, text, from_start, highlight_all, re=False,
+                    cs=True, wo=False, wrap=True, forward=True,
+                    line=-1, index=-1, show=True):
+        pass
+
+    def text_replace(self, text, sub, from_start, re=False,
+                     cs=True, wo=False, wrap=True, forward=True,
+                     line=-1, index=-1, show=True):
+        pass
+
+    def text_replace_all(self, text, sub, from_start, re=False,
+                         cs=True, wo=False, wrap=True, forward=True,
+                         line=-1, index=-1, show=True):
+        pass
 
     def keyPressEvent(self, event):
         # keep the cursor centered
@@ -179,7 +225,7 @@ class GcodeTextEdit(QPlainTextEdit):
     def changeEvent(self, event):
         if event.type() == QEvent.FontChange:
             # Update syntax highlighter with new font
-            self.gCodeHighlighter = GcodeSyntaxHighlighter(self)
+            self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self.font)
         super(GcodeTextEdit, self).changeEvent(event)
 
     def setPlainText(self, p_str):
@@ -192,11 +238,15 @@ class GcodeTextEdit(QPlainTextEdit):
         doc.setDocumentLayout(QPlainTextDocumentLayout(doc))
         doc.setPlainText(p_str)
 
+
+        # start syntax heightening
+        self.gCodeHighlighter = GcodeSyntaxHighlighter(doc, self.font)
+
         self.setDocument(doc)
         self.margin.updateWidth()
 
         # start syntax heightening
-        self.gCodeHighlighter = GcodeSyntaxHighlighter(self)
+        # self.gCodeHighlighter = GcodeSyntaxHighlighter(self)
 
     @Slot(bool)
     def EditorReadOnly(self, state):
@@ -259,7 +309,10 @@ class GcodeTextEdit(QPlainTextEdit):
         if fname:
             with open(fname) as f:
                 gcode = f.read()
+
+            # set the syntax highlighter
             self.setPlainText(gcode)
+            # self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self.font)
 
     @Slot(int)
     @Slot(object)
