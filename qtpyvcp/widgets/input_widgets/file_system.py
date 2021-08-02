@@ -73,13 +73,13 @@ class RemovableDeviceComboBox(QComboBox):
 
         self.clear()
 
-        for label, path in self._file_locations.local_locations.items():
+        for label, path in list(self._file_locations.local_locations.items()):
             self.addItem(label, {'path': os.path.expanduser(path)})
 
         self.insertSeparator(100)
 
         if devices:
-            for devices_node, device_data in devices.items():
+            for devices_node, device_data in list(devices.items()):
                 self.addItem(device_data.get('label', 'Unknown'), device_data)
 
         self.blockSignals(False)

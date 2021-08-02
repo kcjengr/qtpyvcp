@@ -3,8 +3,8 @@ from collections import OrderedDict
 
 import vtk
 import vtk.qt
-from linuxcnc_datasource import LinuxCncDataSource
-from path_actor import PathActor
+from .linuxcnc_datasource import LinuxCncDataSource
+from .path_actor import PathActor
 from qtpyvcp.utilities import logger
 from qtpyvcp.widgets.display_widgets.vtk_backplot.base_canon import StatCanon
 
@@ -48,7 +48,7 @@ class VTKCanon(StatCanon):
     def set_g5x_offset(self, index, x, y, z, a, b, c, u, v, w):
         new_wcs = index - 1  # this index counts also G53 so we need to do -1
         LOG.debug("---------received wcs change: {}".format(new_wcs))
-        if new_wcs not in self.path_actors.keys():
+        if new_wcs not in list(self.path_actors.keys()):
             self.path_actors[new_wcs] = PathActor(self._datasource)
             self.path_points[new_wcs] = list()
 
@@ -65,7 +65,7 @@ class VTKCanon(StatCanon):
         # TODO: for some reason, we need to multiply for metric, find out why!
         multiplication_factor = 25.4 if self._datasource.isMachineMetric() else 1
 
-        for wcs_index, data in self.path_points.items():
+        for wcs_index, data in list(self.path_points.items()):
             index = 0
 
             path_actor = self.path_actors.get(wcs_index)

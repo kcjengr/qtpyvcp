@@ -219,7 +219,7 @@ class ToolTable(DataPlugin):
         Returns:
             None if not valid, else a list of uppercase column IDs.
         """
-        if not isinstance(columns, (basestring, list, tuple)):
+        if not isinstance(columns, (str, list, tuple)):
             return
 
         return [col for col in [col.strip().upper() for col in columns]
@@ -254,7 +254,7 @@ class ToolTable(DataPlugin):
     def iterTools(self, tool_table=None, columns=None):
         tool_table = tool_table or self.TOOL_TABLE
         columns = self.validateColumns(columns) or self.columns
-        for tool in sorted(tool_table.iterkeys()):
+        for tool in sorted(tool_table.keys()):
             tool_data = tool_table[tool]
             yield [tool_data[key] for key in columns]
 
@@ -389,7 +389,7 @@ class ToolTable(DataPlugin):
         lines.append(';' + ' '.join(items))
 
         # add the tools
-        for tool_num in sorted(tool_table.iterkeys())[1:]:
+        for tool_num in sorted(tool_table.keys())[1:]:
             items = []
             tool_data = tool_table[tool_num]
             for col in columns:
@@ -408,7 +408,7 @@ class ToolTable(DataPlugin):
                                          d=FLOAT_DECIMAL_PLACES))
 
             comment = tool_data.get('R', '')
-            if comment is not '':
+            if comment != '':
                 items.append('; ' + comment)
 
             if 'P' not in columns:
@@ -421,7 +421,7 @@ class ToolTable(DataPlugin):
         # write to file
         with io.open(tool_file, 'w') as fh:
             fh.write('\n'.join(lines))
-            fh.write('\n'.decode('utf-8'))  # new line at end of file
+            fh.write('\n')  # new line at end of file
             fh.flush()
             os.fsync(fh.fileno())
 

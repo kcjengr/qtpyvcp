@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 """
 QtPyVCP - Qt and Python based Virtual Control Panel framework for LinuxCNC.

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from qtpy.QtCore import Slot
 from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow

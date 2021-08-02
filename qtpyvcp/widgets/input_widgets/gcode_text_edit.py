@@ -50,13 +50,13 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
 
         cio = QRegularExpression.CaseInsensitiveOption
 
-        for lang_name, language in syntax_specs.items():
+        for lang_name, language in list(syntax_specs.items()):
 
             definitions = language.get('definitions', {})
 
             default_fmt_spec = definitions.get('default', {}).get('textFormat', {})
 
-            for context_name, spec in definitions.items():
+            for context_name, spec in list(definitions.items()):
 
                 base_fmt = default_fmt_spec.copy()
                 fmt_spec = spec.get('textFormat', {})
@@ -74,14 +74,14 @@ class GcodeSyntaxHighlighter(QSyntaxHighlighter):
 
         char_fmt = self.defaultCharFormat()
 
-        for option, value in fmt_spec.items():
+        for option, value in list(fmt_spec.items()):
             if value is None:
                 continue
 
             if option in ['foreground', 'background']:
                 value = QColor(value)
 
-            if isinstance(value, basestring) and value.startswith('QFont:'):
+            if isinstance(value, str) and value.startswith('QFont:'):
                 value = getattr(QFont, value[6:])
 
             attr = 'set' + option[0].capitalize() + option[1:]

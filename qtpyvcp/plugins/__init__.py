@@ -62,7 +62,7 @@ def registerPluginFromClass(plugin_id, plugin_cls, args=[], kwargs={}):
         The plugin instance
     """
 
-    if isinstance(plugin_cls, basestring):
+    if isinstance(plugin_cls, str):
         LOG.debug("Loading plugin '{}' from '{}'".format(plugin_id, plugin_cls))
 
         modname, sep, clsname = plugin_cls.partition(':')
@@ -102,7 +102,7 @@ def getPlugin(plugin_id):
 
 def iterPlugins():
     """Returns an iterator for the plugins dict."""
-    return _PLUGINS.iteritems()
+    return iter(_PLUGINS.items())
 
 
 def initialisePlugins():
@@ -112,7 +112,7 @@ def initialisePlugins():
         Plugins defined in the YAML file are registered in the order they
         were defined.
     """
-    for plugin_id, plugin_inst in _PLUGINS.items():
+    for plugin_id, plugin_inst in list(_PLUGINS.items()):
         LOG.debug("Initializing '%s' plugin", plugin_id)
         plugin_inst.initialise()
 
@@ -124,7 +124,7 @@ def postGuiInitialisePlugins(main_window):
         Plugins defined in the YAML file are registered in the order they
         were defined.
     """
-    for plugin_id, plugin_inst in _PLUGINS.items():
+    for plugin_id, plugin_inst in list(_PLUGINS.items()):
         LOG.debug("Post GUI Initializing '%s' plugin", plugin_id)
         plugin_inst.postGuiInitialise(main_window)
 
@@ -138,7 +138,7 @@ def terminatePlugins():
     """
     # terminate in reverse order, this is to prevent problems
     # when terminating plugins that make use of other plugins.
-    for plugin_id, plugin_inst in reversed(_PLUGINS.items()):
+    for plugin_id, plugin_inst in reversed(list(_PLUGINS.items())):
         LOG.debug("Terminating '%s' plugin", plugin_id)
         try:
             # try so that other plugins are terminated properly

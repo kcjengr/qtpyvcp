@@ -176,7 +176,7 @@ class OffsetTable(DataPlugin):
         Returns:
             None if not valid, else a list of uppercase column IDs.
         """
-        if not isinstance(columns, (basestring, list, tuple)):
+        if not isinstance(columns, (str, list, tuple)):
             return
 
         return [col for col in [col.strip().upper() for col in columns]
@@ -212,7 +212,7 @@ class OffsetTable(DataPlugin):
     def iterTools(self, offset_table=None, columns=None):
         offset_table = offset_table or self.OFFSET_TABLE
         columns = self.validateColumns(columns) or self.columns
-        for offset in sorted(offset_table.iterkeys()):
+        for offset in sorted(offset_table.keys()):
             offset_data = offset_table[offset]
             yield [offset_data[key] for key in columns]
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 
 #############################################################################
@@ -63,7 +63,7 @@ try:
     # FixMe: PySide2 is missing QMediaMetaData bingings.
     #        https://wiki.qt.io/Qt_for_Python_Missing_Bindings
 
-    from settings import Settings
+    from .settings import Settings
 except ImportError:
     multimedia_available = False
     LOG.error('Can\'t import QtMultimedia, is package "python-pyqt5.qtmultimedia" installed?')

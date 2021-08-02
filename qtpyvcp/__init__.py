@@ -1,4 +1,4 @@
-#import sys;sys.path.append(r'/root/.p2/pool/plugins/org.python.pydev.core_7.5.0.202001101138/pysrc')
+#import sys;sys.path.append(r'/home/turboss/.p2/pool/plugins/org.python.pydev.core_8.3.0.202104101217/pysrc')
 #import pydevd;pydevd.settrace()
 
 import os

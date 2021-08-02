@@ -53,6 +53,14 @@ Note:
 import os
 import sys
 import json
+
+
+
+# FIXME: hack to get python libs from linuxcnc with python3 support
+BASE = os.path.abspath(os.path.join(os.path.dirname(sys.argv[0]), ".."))
+sys.path.insert(0, os.path.join(BASE, "lib", "python"))
+
+
 from linuxcnc import ini
 from docopt import docopt
 
@@ -62,7 +70,7 @@ from qtpyvcp.utilities.misc import normalizePath
 
 
 def convType(val):
-    if isinstance(val, basestring):
+    if isinstance(val, str):
         if val.lower() in ['true', 'on', 'yes', 'false', 'off', 'no']:
             return val.lower() in ['true', 'on', 'yes']
 
@@ -101,7 +109,7 @@ def parse_opts(doc=__doc__, vcp_name='NotSpecified', vcp_cmd='notspecified', vcp
         sys.exit()
 
     # convert raw argument dict keys to valid python attribute names
-    opts = DotDict({arg.strip('-<>').replace('-', '_') : convType(value) for arg, value in raw_args.items()})
+    opts = DotDict({arg.strip('-<>').replace('-', '_') : convType(value) for arg, value in list(raw_args.items())})
 
     return opts
 
@@ -111,7 +119,7 @@ def apply_opts(opts):
     # read options from INI file and merge with cmd line options
     ini_file = normalizePath(opts.ini, os.path.expanduser('~/linuxcnc/configs'))
     ini_obj = ini(ini_file)
-    for k, v in opts.iteritems():
+    for k, v in opts.items():
         ini_val = ini_obj.find('DISPLAY', k.upper().replace('-', '_'))
         if ini_val is None:
             continue
@@ -150,7 +158,7 @@ def apply_opts(opts):
         base_path = os.path.expanduser('~/linuxcnc/configs')
         ini_file = os.path.realpath(normalizePath(ini_file, base_path))
         if not os.path.isfile(ini_file):
-            print('Specified INI file does not exist: {}'.format(ini_file))
+            print(('Specified INI file does not exist: {}'.format(ini_file)))
             sys.exit()
         os.environ['INI_FILE_NAME'] = ini_file
         os.environ['CONFIG_DIR'] = os.path.dirname(ini_file)
@@ -163,7 +171,7 @@ def apply_opts(opts):
         config_dir = os.getenv('CONFIG_DIR', '')
         config_file_path = normalizePath(opts.config_file, config_dir)
         if not os.path.isfile(config_file_path):
-            print('Specified YAML file does not exist: {}'.format(config_file_path))
+            print(('Specified YAML file does not exist: {}'.format(config_file_path)))
             sys.exit()
         opts.config_file = config_file_path
 
@@ -259,7 +267,7 @@ def printSystemInfo():
             if "model name" in line:
                 return re.sub(".*model name.*:", "", line, 1).strip()
 
-    print(system_info.format(
+    print((system_info.format(
         qtpyvcp_version=qtpyvcp.__version__,
 
         # linuxcnc info
@@ -286,4 +294,4 @@ def printSystemInfo():
         hostname=socket.gethostname(),
         ip_address=socket.gethostbyname(socket.gethostname()),
         mac_address=':'.join(re.findall('..', '%012x' % uuid.getnode())),
-    ))
+    )))

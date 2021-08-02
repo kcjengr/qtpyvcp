@@ -35,7 +35,7 @@ class PersistentDataManager(Plugin):
 
     def initialise(self):
         if os.path.isfile(self.persistence_file):
-            with open(self.persistence_file, 'r') as fh:
+            with open(self.persistence_file, 'rb') as fh:
                 try:
                     self.data = self.serializer.loads(fh.read())
                 except:
@@ -50,5 +50,5 @@ class PersistentDataManager(Plugin):
             str_data = self.serializer.dumps(self.data,
                                              protocol=self.serializer.HIGHEST_PROTOCOL)
 
-        with open(self.persistence_file, 'w') as fh:
+        with open(self.persistence_file, 'wb') as fh:
             fh.write(str_data)

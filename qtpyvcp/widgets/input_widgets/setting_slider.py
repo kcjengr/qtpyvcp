@@ -43,7 +43,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
         if self._setting.value_type in (int, float):
             return self._text_format.format(value)
 
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             return value
 
         else:
@@ -100,7 +100,7 @@ class VCPSettingsLineEdit(QLineEdit, VCPAbstractSettingsWidget):
 
     @textFormat.setter
     def textFormat(self, text_fmt):
-        if self._setting_name is not "":
+        if self._setting_name != "":
             setting = SETTINGS.get(self._setting_name)
             try:
                 str = text_fmt.format(setting.getValue())

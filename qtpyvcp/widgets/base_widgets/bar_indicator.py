@@ -39,9 +39,9 @@ class BarIndicatorBase(QWidget):
         self._origin_at_zero = False
         self._origin_position = 0
 
-        self.barGradient = [u'0.0, 0, 255, 0',
-                            u'0.8, 255, 255, 0',
-                            u'1.0, 255, 0, 0',]
+        self.barGradient = ['0.0, 0, 255, 0',
+                            '0.8, 255, 255, 0',
+                            '1.0, 255, 0, 0',]
 
     def adjustTransformation(self):
         """This method sets parameters for the widget transformations (needed
@@ -93,7 +93,7 @@ class BarIndicatorBase(QWidget):
         if self._border_width > 0:
             self.drawBorder()
 
-        if self._format is not '':
+        if self._format != '':
             self.drawText()
 
         self._painter.end()

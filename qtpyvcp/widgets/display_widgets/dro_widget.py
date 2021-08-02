@@ -41,7 +41,7 @@ from qtpyvcp.lib.decorators import deprecated
 
 class Axis(object):
     ALL = -1
-    X, Y, Z, A, B, C, U, V, W = range(9)
+    X, Y, Z, A, B, C, U, V, W = list(range(9))
 
 
 class Units(object):

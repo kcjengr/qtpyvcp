@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #   Copyright (c) 2017 Kurt Jacobson
 
@@ -141,7 +141,7 @@ if __name__ == '__main__':
 
     # Example exception logging
     try:
-        print(False + "True")
+        print((False + "True"))
     except Exception as e:
         log.debug('That did not work!', exc_info=e)
 

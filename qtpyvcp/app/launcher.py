@@ -86,7 +86,7 @@ def launch_application(opts, config):
 
     # load any post GUI hal file
     postgui_halfile = INFO.getPostguiHalfile()
-    if postgui_halfile is not "":
+    if postgui_halfile != "":
         if not os.path.exists(postgui_halfile):
             raise IOError('The specified POSTGUI_HALFILE does not exist: %s' %
                           postgui_halfile)
@@ -209,7 +209,7 @@ def _initialize_object_from_dict(object_dict, parent=None):
 
 
 def loadPlugins(plugins):
-    for plugin_id, plugin_dict in plugins.items():
+    for plugin_id, plugin_dict in list(plugins.items()):
 
         try:
             cls = plugin_dict['provider']
@@ -223,7 +223,7 @@ def loadPlugins(plugins):
 
 
 def loadWindows(windows):
-    for window_id, window_dict in windows.items():
+    for window_id, window_dict in list(windows.items()):
 
         window = _initialize_object_from_dict(window_dict)
         qtpyvcp.WINDOWS[window_id] = window
@@ -237,7 +237,7 @@ def loadWindows(windows):
 
 
 def loadDialogs(dialogs):
-    for dialogs_id, dialogs_dict in dialogs.items():
+    for dialogs_id, dialogs_dict in list(dialogs.items()):
 
         inst = _initialize_object_from_dict(dialogs_dict)
         qtpyvcp.DIALOGS[dialogs_id] = inst
