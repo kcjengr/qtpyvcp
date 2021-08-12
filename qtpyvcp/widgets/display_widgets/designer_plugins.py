@@ -6,11 +6,6 @@ class StatusLabelPlugin(_DesignerPlugin):
     def pluginClass(self):
         return StatusLabel
 
-# from .dro_widget import DROWidget
-# class DROPlugin(_DesignerPlugin):
-#     def pluginClass(self):
-#         return DROWidget
-
 from .dro_label import DROLabel
 from qtpyvcp.widgets.qtdesigner.dro_editor import DroEditorExtension
 class DROLabel_Plugin(_DesignerPlugin):
@@ -18,15 +13,6 @@ class DROLabel_Plugin(_DesignerPlugin):
         return DROLabel
     def designerExtensions(self):
         return [DroEditorExtension, RulesEditorExtension]
-
-# from .gcode_backplot.gcode_backplot import GcodeBackplot
-# class GcodeBackPlotPlugin(_DesignerPlugin):
-#     def pluginClass(self):
-#         return GcodeBackplot
-#     def toolTip(self):
-#         return "G-code backplot widget"
-#     def isContainer(self):
-#         return True
 
 from .camera.camera import Camera
 class CameraPlugin(_DesignerPlugin):

@@ -1,1 +1,1 @@
-from qtpyvcp.widgets.base_widgets.base_widget import *
+from .base_widgets.base_widget import *
