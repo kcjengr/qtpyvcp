@@ -29,17 +29,20 @@ Command line tool to set up and launch QtDesigner for editing VCPs::
    --designer-args <args>...
 """
 
-
-
 import os
 import sys
 
+# enable remote debug on kernel
+# ➜  ~ sudo echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+
+# eclipse plugins
 # sys.path.append(r'/home/turboss/Apps/eclipse-cpp-2020-12-R-linux-gtk-x86_64/eclipse/plugins/org.python.pydev.core_8.3.0.202104101217/pysrc')
 # import pydevd
-#
 # pydevd.settrace()
 
-import linuxcnc
+
+from linuxcnc import version as lcnc_version
+
 import subprocess
 from pkg_resources import iter_entry_points
 
@@ -65,18 +68,18 @@ to do that can be found here: https://gnipsel.com/linuxcnc/uspace/
 INSTALLED_ERROR_MSG = """
 \033[31mERROR:\033[0m Can not edit an installed VCP
 
-The specified VCP appears to be installed in the `python2.7/site-packages` 
+The specified VCP appears to be installed in the `python2.7/site-packages`
 directory. Please set up a development install to edit the VCP.
 """.strip()
 
-if linuxcnc.version.startswith('2.7'):
-    print((LCNC_VERSION_ERROR_MSG.format(linuxcnc.version)))
+if lcnc_version.startswith('2.7'):
+    print((LCNC_VERSION_ERROR_MSG.format(lcnc_version)))
     sys.exit(1)
 
 LOG = initBaseLogger('qtpyvcp', log_file=os.devnull, log_level='WARNING')
 
-def launch_designer(opts=DotDict()):
 
+def launch_designer(opts=DotDict()) -> None:
     if not opts.vcp and not opts.ui_file:
         fname, _ = QFileDialog.getOpenFileName(
             parent=None,
@@ -89,7 +92,6 @@ def launch_designer(opts=DotDict()):
 
     else:
         fname = opts.vcp or opts.ui_file
-
 
     if not '.' in fname or not '/' in fname:
         entry_points = {}
@@ -129,7 +131,7 @@ def launch_designer(opts=DotDict()):
             addSetting(k, **v)
 
         # add to path so that QtDesginer can load it when it starts
-        os.environ['VCP_CONFIG_FILES'] = fname + ':' + os.getenv('VCP_CONFIG_FILES', '')
+        os.environ['VCP_CONFIG_FILES'] = f"{fname}:{os.getenv('VCP_CONFIG_FILES', '')}"
 
         if data is not None:
             yml_dir = os.path.realpath(os.path.dirname(fname))
@@ -169,13 +171,14 @@ def launch_designer(opts=DotDict()):
     os.environ['PYQTDESIGNERPATH'] = os.path.join(base, '../widgets')
 
     print("\nStarting QtDesigner ...")
+
     try:
-        sys.exit(subprocess.call(cmd))
+        sys.exit(subprocess.Popen(cmd))
     except OSError:
         print('Designer not found, Install with\nsudo apt install qttools5-dev qttools5-dev-tools')
 
 
-def main():
+def main() -> None:
     raw_args = docopt(__doc__)
     # convert raw argument keys to valid python names
     opts = DotDict({arg.strip('-<>').replace('-', '_'):
