@@ -12,7 +12,7 @@ LOG = logger.getLogger(__name__)
 IN_DESIGNER = os.getenv('DESIGNER', False)
 """
 This class acts as a datasource for the VTK components.
-It abstracts all the linuxcnc specific logic and exposes simple methods that could be eventually 
+It abstracts all the linuxcnc specific logic and exposes simple methods that could be eventually
 mocked for testing the VTK outside of a linuxcnc context.
 """
 
@@ -145,7 +145,7 @@ class LinuxCncDataSource(QObject):
     def getActiveWcsIndex(self):
         # in the stat, the first one the list is G53 (Machine Coordinates)
         # therefore to get the correct index of the G54 we need to do a -1
-        return self._status.stat.g5x_index
+        return self._status.stat.g5x_index -1
 
     def getActiveWcsOffsets(self):
         # g5x_offset does not contain the rotation information
