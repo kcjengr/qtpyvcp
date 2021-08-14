@@ -8,16 +8,24 @@ QPlainTextEdit based G-code editor with syntax highlighting.
 import os
 import oyaml as yaml
 
-from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal, Property)
-from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter, QTextDocument,
-                        QTextOption, QTextFormat, QTextCharFormat, QTextCursor)
-from qtpy.QtWidgets import (QApplication, QPlainTextEdit, QTextEdit, QWidget, QMenu, QPlainTextDocumentLayout)
+from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
+                         Property)
+
+from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
+                        QTextDocument, QTextOption, QTextFormat,
+                        QTextCharFormat, QTextCursor)
+
+from qtpy.QtWidgets import (QApplication, QTextEdit, QLineEdit,
+                            QPlainTextEdit, QWidget, QMenu,
+                            QPlainTextDocumentLayout)
 
 from qtpyvcp import DEFAULT_CONFIG_FILE
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.actions import program_actions
 from qtpyvcp.utilities.info import Info
+from qtpyvcp.utilities.logger import getLogger
 
+LOG = getLogger(__name__)
 INFO = Info()
 STATUS = getPlugin('status')
 YAML_DIR = os.path.dirname(DEFAULT_CONFIG_FILE)
@@ -128,6 +136,8 @@ class GcodeTextEdit(QPlainTextEdit):
     def __init__(self, parent=None):
         super(GcodeTextEdit, self).__init__(parent)
 
+        self.parent = parent
+
         self.setCenterOnScroll(True)
         self.setGeometry(50, 50, 800, 640)
         self.setWordWrapMode(QTextOption.NoWrap)
@@ -141,7 +151,21 @@ class GcodeTextEdit(QPlainTextEdit):
         self.margin = NumberMargin(self)
 
         # set the syntax highlighter # Fixme un needed init here
-        # self.gCodeHighlighter = GcodeSyntaxHighlighter(self)
+        self.gCodeHighlighter = None
+
+        if parent is not None:
+
+            self.find_case = None
+            self.find_words = None
+
+            self.search_entry = None
+            self.replace_entry = None
+
+            for widget in self.parent.findChildren(QLineEdit, "search_entry"):
+                self.search_entry = widget
+
+            for widget in self.parent.findChildren(QLineEdit, "replace_entry"):
+                self.replace_entry = widget
 
         # context menu
         self.menu = QMenu(self)
@@ -150,6 +174,10 @@ class GcodeTextEdit(QPlainTextEdit):
         self.menu.addAction(self.tr('Cut'), self.cut)
         self.menu.addAction(self.tr('Copy'), self.copy)
         self.menu.addAction(self.tr('Paste'), self.paste)
+        self.menu.addAction(self.tr('Find'), self.findForward)
+        self.menu.addAction(self.tr('Find All'), self.findAll)
+        self.menu.addAction(self.tr('Replace'), self.replace)
+        self.menu.addAction(self.tr('Replace All'), self.replace)
 
         # FixMe: Picks the first action run from here, should not be by index
         self.run_action = self.menu.actions()[0]
@@ -158,56 +186,133 @@ class GcodeTextEdit(QPlainTextEdit):
 
         # connect signals
         self.cursorPositionChanged.connect(self.onCursorChanged)
-        self.updateRequest.connect(self.onUpdateEvent)
 
         # connect status signals
         STATUS.file.notify(self.loadProgramFile)
         STATUS.motion_line.onValueChanged(self.setCurrentLine)
 
-    def onUpdateEvent(self, e):
-        pass
-        # print("Update", e)
 
-    @Slot(str)
-    def findForward(self, text):
+
+
+    @Slot(bool)
+    def findCase(self, enabled):
+        self.find_case = enabled
+
+    @Slot(bool)
+    def findWords(self, enabled):
+        self.find_words = enabled
+
+    @Slot()
+    def findAll(self):
+
+        text = self.search_entry.text()
 
         flags = QTextDocument.FindFlag(0)
-        cursor = self.document().find(text, flags)
 
-        if cursor.position() > 0:
-            print(f"found {cursor.selection().toPlainText()} at {cursor.position()} line")
-            # self.document().
+        if self.find_case:
+            flags |= QTextDocument.FindCaseSensitively
+        if self.find_words:
+            flags |= QTextDocument.FindWholeWords
 
-    @Slot(str)
-    def findBackward(self, text):
-        doc = self.document()
-        flags = QTextDocument.FindFlag(0)
+        searching = True
+        cursor = self.textCursor()
+
+        while searching:
+            found = self.find(text, flags)
+            if found:
+                cursor = self.textCursor()
+            else:
+                searching = False
+
+        if cursor.hasSelection():
+            self.setTextCursor(cursor)
+
+
+    @Slot()
+    def findForward(self):
+        text = self.search_entry.text()
+
+        flags = QTextDocument.FindFlag()
+
+        if self.find_case:
+            flags |= QTextDocument.FindCaseSensitively
+        if self.find_words:
+            flags |= QTextDocument.FindWholeWords
+
+        found = self.find(text, flags)
+
+        if found:
+            cursor = self.document().find(text, flags)
+            if cursor.position() > 0:
+                self.setTextCursor(cursor)
+
+    @Slot()
+    def findBackward(self):
+        text = self.search_entry.text()
+        flags = QTextDocument.FindFlag()
         flags |= QTextDocument.FindBackward
-        cursor = doc.find(text, flags)
-        print(text)
-        if cursor.position() > 0:
-            print(f"found {cursor.selection().toPlainText()} at {cursor.position()} line")
 
-    def highlight_occurences(self, text):
-        pass
+        if self.find_case:
+            flags |= QTextDocument.FindCaseSensitively
+        if self.find_words:
+            flags |= QTextDocument.FindWholeWords
 
-    def clear_highlights(self):
-        pass
+        found = self.find(text, flags)
 
-    def text_search(self, text, from_start, highlight_all, re=False,
-                    cs=True, wo=False, wrap=True, forward=True,
-                    line=-1, index=-1, show=True):
-        pass
+        if found:
+            cursor = self.document().find(text, flags)
+            if cursor.position() > 0:
+                self.setTextCursor(cursor)
 
-    def text_replace(self, text, sub, from_start, re=False,
-                     cs=True, wo=False, wrap=True, forward=True,
-                     line=-1, index=-1, show=True):
-        pass
+    @Slot()
+    def replace(self):
+        search_text = self.search_entry.text()
+        replace_text = self.replace_entry.text()
+        selected_text = self.textCursor().selectedText()
 
-    def text_replace_all(self, text, sub, from_start, re=False,
-                         cs=True, wo=False, wrap=True, forward=True,
-                         line=-1, index=-1, show=True):
-        pass
+        cursor = self.textCursor()
+        cursor.beginEditBlock()
+
+        flags = QTextDocument.FindFlag()
+
+        if self.find_case:
+            flags |= QTextDocument.FindCaseSensitively
+        if self.find_words:
+            flags |= QTextDocument.FindWholeWords
+
+        found = self.find(search_text, flags)
+        if found:
+            find_cursor = self.textCursor()
+            LOG.debug("CURSOR")
+            if find_cursor.hasSelection():
+                LOG.debug("SELCTION")
+                find_cursor.insertText(replace_text)
+
+    @Slot()
+    def replaceAll(self):
+        search_text = self.search_entry.text()
+        replace_text = self.replace_entry.text()
+        selected_text = self.textCursor().selectedText()
+
+        cursor = self.textCursor()
+        cursor.beginEditBlock()
+
+        flags = QTextDocument.FindFlag()
+
+        if self.find_case:
+            flags |= QTextDocument.FindCaseSensitively
+        if self.find_words:
+            flags |= QTextDocument.FindWholeWords
+
+        searchng = True
+        while searchng:
+            found = self.find(search_text, flags)
+            if found:
+                find_cursor = self.textCursor()
+                if find_cursor.hasSelection():
+                    find_cursor.insertText(replace_text)
+            else:
+                searchng = False
 
     def keyPressEvent(self, event):
         # keep the cursor centered
@@ -237,7 +342,6 @@ class GcodeTextEdit(QPlainTextEdit):
         doc = QTextDocument()
         doc.setDocumentLayout(QPlainTextDocumentLayout(doc))
         doc.setPlainText(p_str)
-
 
         # start syntax heightening
         self.gCodeHighlighter = GcodeSyntaxHighlighter(doc, self.font)
