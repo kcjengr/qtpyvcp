@@ -24,6 +24,7 @@ from qtpyvcp.plugins import getPlugin
 from qtpyvcp.actions import program_actions
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.widgets.dialogs.find_replace_dialog import FindReplaceDialog
 
 LOG = getLogger(__name__)
 INFO = Info()
@@ -184,6 +185,8 @@ class GcodeTextEdit(QPlainTextEdit):
         self.run_action.setEnabled(program_actions.run_from_line.ok())
         program_actions.run_from_line.bindOk(self.run_action)
 
+        self.dialog = FindReplaceDialog(parent=self)
+
         # connect signals
         self.cursorPositionChanged.connect(self.onCursorChanged)
 
@@ -191,8 +194,9 @@ class GcodeTextEdit(QPlainTextEdit):
         STATUS.file.notify(self.loadProgramFile)
         STATUS.motion_line.onValueChanged(self.setCurrentLine)
 
-
-
+    @Slot()
+    def findDialog(self):
+        self.dialog.show()
 
     @Slot(bool)
     def findCase(self, enabled):
@@ -202,11 +206,7 @@ class GcodeTextEdit(QPlainTextEdit):
     def findWords(self, enabled):
         self.find_words = enabled
 
-    @Slot()
-    def findAll(self):
-
-        text = self.search_entry.text()
-
+    def findAllText(self, text):
         flags = QTextDocument.FindFlag(0)
 
         if self.find_case:
@@ -227,11 +227,7 @@ class GcodeTextEdit(QPlainTextEdit):
         if cursor.hasSelection():
             self.setTextCursor(cursor)
 
-
-    @Slot()
-    def findForward(self):
-        text = self.search_entry.text()
-
+    def findForwardText(self, text):
         flags = QTextDocument.FindFlag()
 
         if self.find_case:
@@ -246,9 +242,7 @@ class GcodeTextEdit(QPlainTextEdit):
             if cursor.position() > 0:
                 self.setTextCursor(cursor)
 
-    @Slot()
-    def findBackward(self):
-        text = self.search_entry.text()
+    def findBackwardText(self, text):
         flags = QTextDocument.FindFlag()
         flags |= QTextDocument.FindBackward
 
@@ -264,10 +258,8 @@ class GcodeTextEdit(QPlainTextEdit):
             if cursor.position() > 0:
                 self.setTextCursor(cursor)
 
-    @Slot()
-    def replace(self):
-        search_text = self.search_entry.text()
-        replace_text = self.replace_entry.text()
+    def replaceText(self, search, replace):
+
         selected_text = self.textCursor().selectedText()
 
         cursor = self.textCursor()
@@ -280,18 +272,15 @@ class GcodeTextEdit(QPlainTextEdit):
         if self.find_words:
             flags |= QTextDocument.FindWholeWords
 
-        found = self.find(search_text, flags)
+        found = self.find(search, flags)
         if found:
             find_cursor = self.textCursor()
             LOG.debug("CURSOR")
             if find_cursor.hasSelection():
                 LOG.debug("SELCTION")
-                find_cursor.insertText(replace_text)
+                find_cursor.insertText(replace)
 
-    @Slot()
-    def replaceAll(self):
-        search_text = self.search_entry.text()
-        replace_text = self.replace_entry.text()
+    def replaceAllText(self, search, replace):
         selected_text = self.textCursor().selectedText()
 
         cursor = self.textCursor()
@@ -306,13 +295,43 @@ class GcodeTextEdit(QPlainTextEdit):
 
         searchng = True
         while searchng:
-            found = self.find(search_text, flags)
+            found = self.find(search, flags)
             if found:
                 find_cursor = self.textCursor()
                 if find_cursor.hasSelection():
-                    find_cursor.insertText(replace_text)
+                    find_cursor.insertText(replace)
             else:
                 searchng = False
+
+    @Slot()
+    def findAll(self):
+
+        text = self.search_entry.text()
+        self.findAllText(text)
+
+    @Slot()
+    def findForward(self):
+        text = self.search_entry.text()
+        self.findForwardText(text)
+
+    @Slot()
+    def findBackward(self):
+        text = self.search_entry.text()
+        self.findBackwardText(text)
+
+    @Slot()
+    def replace(self):
+        search_text = self.search_entry.text()
+        replace_text = self.replace_entry.text()
+
+        self.replaceText(search_text, replace_text)
+
+    @Slot()
+    def replaceAll(self):
+        search_text = self.search_entry.text()
+        replace_text = self.replace_entry.text()
+
+        self.replaceAllText(search_text, replace_text)
 
     def keyPressEvent(self, event):
         # keep the cursor centered
