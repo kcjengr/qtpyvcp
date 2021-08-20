@@ -58,6 +58,10 @@ LOG = initBaseLogger('EditVCP',
                      log_file=None,
                      log_level='DEBUG')
 
+DESIGNER_LOG = initBaseLogger('Designer',
+                              log_file=None,
+                              log_level='DEBUG')
+
 
 LCNC_VERSION_ERROR_MSG = """
 \033[31mERROR:\033[0m Unsupported LinuxCNC version
@@ -86,7 +90,7 @@ if lcnc_version.startswith('2.7'):
 
 def log_subprocess_output(stdout):
     for line in TextIOWrapper(stdout, encoding="utf-8"):
-        LOG.info(line.rstrip())
+        DESIGNER_LOG.info(line.rstrip('\n'))
 
 
 def launch_designer(opts=DotDict()) -> None:
