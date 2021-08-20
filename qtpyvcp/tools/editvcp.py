@@ -41,9 +41,9 @@ import sys
 # pydevd.settrace()
 
 
-from linuxcnc import version as lcnc_version
+from io import TextIOWrapper
 
-import subprocess
+from subprocess import Popen, PIPE, STDOUT
 from pkg_resources import iter_entry_points
 
 from docopt import docopt
@@ -51,6 +51,13 @@ from qtpy.QtWidgets import QApplication, QFileDialog
 
 from qtpyvcp.lib.types import DotDict
 from qtpyvcp.utilities.logger import initBaseLogger
+
+from linuxcnc import version as lcnc_version
+
+LOG = initBaseLogger('EditVCP',
+                     log_file=None,
+                     log_level='DEBUG')
+
 
 LCNC_VERSION_ERROR_MSG = """
 \033[31mERROR:\033[0m Unsupported LinuxCNC version
@@ -73,13 +80,17 @@ directory. Please set up a development install to edit the VCP.
 """.strip()
 
 if lcnc_version.startswith('2.7'):
-    print((LCNC_VERSION_ERROR_MSG.format(lcnc_version)))
+    LOG.info(LCNC_VERSION_ERROR_MSG.format(lcnc_version))
     sys.exit(1)
 
-LOG = initBaseLogger('qtpyvcp', log_file=os.devnull, log_level='WARNING')
+
+def log_subprocess_output(stdout):
+    for line in TextIOWrapper(stdout, encoding="utf-8"):
+        LOG.info(line.rstrip())
 
 
 def launch_designer(opts=DotDict()) -> None:
+
     if not opts.vcp and not opts.ui_file:
         fname, _ = QFileDialog.getOpenFileName(
             parent=None,
@@ -93,7 +104,7 @@ def launch_designer(opts=DotDict()) -> None:
     else:
         fname = opts.vcp or opts.ui_file
 
-    if not '.' in fname or not '/' in fname:
+    if '.'not in fname or '/' not in fname:
         entry_points = {}
         for entry_point in iter_entry_points(group='qtpyvcp.example_vcp'):
             entry_points[entry_point.name] = entry_point
@@ -107,14 +118,14 @@ def launch_designer(opts=DotDict()) -> None:
             pass
 
         if 'lib/python2.7/site-packages' in fname:
-            print(INSTALLED_ERROR_MSG)
+            LOG.error(INSTALLED_ERROR_MSG)
             sys.exit(1)
 
     cmd = ['designer']
     ext = os.path.splitext(fname)[1]
     if ext in ['.yml', '.yaml']:
 
-        print(("Loading YAML config file:", fname))
+        LOG.info(f"Loading YAML config file: {fname}")
 
         from qtpyvcp import CONFIG, DEFAULT_CONFIG_FILE
         from qtpyvcp.utilities.config_loader import load_config_files
@@ -122,8 +133,9 @@ def launch_designer(opts=DotDict()) -> None:
         try:
             CONFIG.update(load_config_files(fname, DEFAULT_CONFIG_FILE))
             data = CONFIG.get('qtdesigner')
-        except:
-            print("Error loading YAML config file:")
+        except Exception as e:
+            LOG.error("Error loading YAML config file:")
+            LOG.error(e)
             raise
 
         from qtpyvcp.utilities.settings import addSetting
@@ -131,7 +143,8 @@ def launch_designer(opts=DotDict()) -> None:
             addSetting(k, **v)
 
         # add to path so that QtDesginer can load it when it starts
-        os.environ['VCP_CONFIG_FILES'] = f"{fname}:{os.getenv('VCP_CONFIG_FILES', '')}"
+        config_file = f"{fname}:{os.getenv('VCP_CONFIG_FILES', '')}"
+        os.environ['VCP_CONFIG_FILES'] = config_file
 
         if data is not None:
             yml_dir = os.path.realpath(os.path.dirname(fname))
@@ -141,26 +154,27 @@ def launch_designer(opts=DotDict()) -> None:
             if ui_file is not None:
                 ui_file = os.path.join(yml_dir, ui_file)
                 cmd.append(ui_file)
-                print(("Loading UI file:", ui_file))
+                LOG.info(f"Loading UI file: {ui_file}")
             else:
-                print("No UI file specified.")
+                LOG.info("No UI file specified.")
 
             # prefer command line qss file
             qss_file = opts.qss_file or data.get('qss_file')
             if qss_file is not None:
                 qss_file = os.path.join(yml_dir, qss_file)
                 os.environ['QSS_STYLESHEET'] = qss_file
-                print(("Loading QSS file:", qss_file))
+                LOG.info(f"Loading QSS file: {qss_file}")
             else:
-                print("No QSS file specified.")
+                LOG.info("No QSS file specified.")
 
     elif ext == '.ui':
         cmd.append(fname)
 
-        print(("Loading UI file:", fname))
+        LOG.info(f"Loading UI file: {fname}")
 
     else:
-        print("No valid file type selected.\n File must be a .yaml config file or a .ui file.")
+        LOG.error("""No valid file type selected.\n
+                  File must be a .yaml config file or a .ui file.""")
         sys.exit()
 
     base = os.path.dirname(__file__)
@@ -170,12 +184,25 @@ def launch_designer(opts=DotDict()) -> None:
     os.environ['QT_SELECT'] = 'qt5'
     os.environ['PYQTDESIGNERPATH'] = os.path.join(base, '../widgets')
 
-    print("\nStarting QtDesigner ...")
+    LOG.info("Starting QtDesigner ...")
 
     try:
-        sys.exit(subprocess.Popen(cmd))
-    except OSError:
-        print('Designer not found, Install with\nsudo apt install qttools5-dev qttools5-dev-tools')
+        process = Popen(cmd, stdout=PIPE, stderr=STDOUT)
+
+        with process.stdout:
+            log_subprocess_output(process.stdout)
+
+        exitcode = process.wait()  # 0 means success
+
+    except OSError as exception:
+        LOG.error("""Designer not found, Install with\n
+                  sudo apt install qttools5-dev qttools5-dev-tools""")
+        LOG.error(f'Exception occured: {exception}')
+        LOG.error('Subprocess failed')
+        return False
+    else:
+        # no exception was raised
+        LOG.info('EditVCP finished')
 
 
 def main() -> None:
