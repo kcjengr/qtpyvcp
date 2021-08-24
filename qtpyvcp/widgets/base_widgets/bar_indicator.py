@@ -14,6 +14,7 @@ class BarIndicatorBase(QWidget):
         self._value = 100
         self._minimum = 0.0
         self._maximum = 100.0
+        self._value_at_100_percent = 100.0
         self._format = '{p}%'
 
         self._text_color = QColor(0, 0, 0)
@@ -226,9 +227,18 @@ class BarIndicatorBase(QWidget):
         self.adjustTransformation()
         self.update()
 
+    @Property(float)
+    def valueAt100Percent(self):
+        return self._value_at_100_percent
+    
+    @valueAt100Percent.setter
+    def valueAt100Percent(self, value_at):
+        self._value_at_100_percent = value_at
+        self.update()
+
     def text(self):
         values = {'v': self._value,
-                  'p': int((self._value * 100 / self._maximum) + .5)}
+                  'p': int((self._value * 100 / self._value_at_100_percent) + .5)}
         try:
             return self.format.encode("utf-8").format(**values)
         except:
