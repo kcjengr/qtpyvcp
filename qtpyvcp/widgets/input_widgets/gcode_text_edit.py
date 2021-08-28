@@ -146,6 +146,7 @@ class GcodeTextEdit(QPlainTextEdit):
         self.block_number = None
         self.focused_line = 1
         self.current_line_background = QColor(self.palette().alternateBase())
+        self.readonly = False
 
         self.old_docs = []
         # set the custom margin
@@ -333,6 +334,14 @@ class GcodeTextEdit(QPlainTextEdit):
 
         self.replaceAllText(search_text, replace_text)
 
+    @Slot()
+    def saveFile(self):
+        pass
+
+    @Slot()
+    def saveFileAs(self):
+        pass
+
     def keyPressEvent(self, event):
         # keep the cursor centered
         if event.key() == Qt.Key_Up:
@@ -374,10 +383,38 @@ class GcodeTextEdit(QPlainTextEdit):
     @Slot(bool)
     def EditorReadOnly(self, state):
         """Set to Read Only to disable editing"""
+
         if state:
             self.setReadOnly(True)
         else:
             self.setReadOnly(False)
+
+        self.readonly = state
+
+    @Slot(bool)
+    def EditorReadWrite(self, state):
+        """Set to Read Only to disable editing"""
+
+        if state:
+            self.setReadOnly(False)
+        else:
+            self.setReadOnly(True)
+
+        self.readonly != state
+
+    @Property(bool)
+    def readOnly(self):
+        return self.readonly
+
+    @readOnly.setter
+    def readOnly(self, state):
+
+        if state:
+            self.setReadOnly(True)
+        else:
+            self.setReadOnly(False)
+
+        self.readonly = state
 
     @Property(QColor)
     def currentLineBackground(self):
