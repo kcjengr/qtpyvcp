@@ -223,27 +223,27 @@ def printSystemInfo():
     system_info = """
     QtPyVCP Info
         Version:        {qtpyvcp_version}
-    
+
     LinuxCNC Info
         Version:        {lcnc_version}
-    
+
     Qt Info
         Qt Version:     {qt_version}
         Qt API:         {qt_api}
         Qt API Version: {api_version}
-    
+
     System Info
         Description:    {dist}
         Kernel:         {kernel}
         Version:        {version}
         Ram:            {ram}
-    
+
     CPU Info
         Vendor ID:      {cpu_model}
         Architecture:   {architecture}
         Physical Cores: {cpu_cores}
         Logical Cores:  {logical_cores}
-    
+
     Network
         Hostname:       {hostname}
         IP Address:     {ip_address}
@@ -263,7 +263,7 @@ def printSystemInfo():
 
     def getProcessorModelName():
         info = subprocess.check_output("cat /proc/cpuinfo", shell=True).strip()
-        for line in info.split("\n"):
+        for line in info.decode("utf-8").split("\n"):
             if "model name" in line:
                 return re.sub(".*model name.*:", "", line, 1).strip()
 
@@ -279,7 +279,7 @@ def printSystemInfo():
         api_version=qtpy.PYQT_VERSION or qtpy.PYSIDE_VERSION,
 
         # system info
-        dist=subprocess.check_output(['lsb_release', '-d']).strip().split('\t')[1],
+        dist=subprocess.check_output(['lsb_release', '-d']).decode("utf-8").split('\t')[1],
         kernel=platform.release(),
         version=platform.version(),
         ram=str(round(psutil.virtual_memory().total / (1024.0 ** 3))) + " GB",
