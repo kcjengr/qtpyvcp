@@ -179,7 +179,7 @@ class FileSystemTable(QTableView, TableType):
                     with open(path,  'r', encoding=enc) as f:
                         content = f.read()
                 except Exception as e:
-                    LOG.debug(e)
+                    # LOG.debug(e)
                     LOG.info(f"File encoding doesn't match {enc}, trying others")
             LOG.info(f"File encoding: {enc}")
             self.filePreviewText.emit(content)
