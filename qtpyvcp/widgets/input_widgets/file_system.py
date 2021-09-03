@@ -4,6 +4,7 @@ import subprocess
 import linuxcnc
 import psutil
 
+
 from pyudev.pyqt5 import MonitorObserver
 from pyudev import Context, Monitor, Devices
 
@@ -15,6 +16,7 @@ from qtpyvcp.plugins import getPlugin
 from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.utilities.encode_utils import allEncodings
 from qtpyvcp.lib.decorators import deprecated
 
 
@@ -170,8 +172,16 @@ class FileSystemTable(QTableView, TableType):
 
         if os.path.isfile(path):
             self.gcodeFileSelected.emit(True)
-            with open(path, 'r') as fh:
-                content = fh.read()
+            encodings = allEncodings()
+            enc = None
+            for enc in encodings:
+                try:
+                    with open(path,  'r', encoding=enc) as f:
+                        content = f.read()
+                except Exception as e:
+                    LOG.debug(e)
+                    LOG.info(f"File encoding doesn't match {enc}, trying others")
+            LOG.info(f"File encoding: {enc}")
             self.filePreviewText.emit(content)
             self.fileNamePreviewText.emit(path)
         else:

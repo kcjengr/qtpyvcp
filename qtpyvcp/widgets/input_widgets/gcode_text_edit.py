@@ -24,6 +24,8 @@ from qtpyvcp.plugins import getPlugin
 from qtpyvcp.actions import program_actions
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities.logger import getLogger
+from qtpyvcp.utilities.encode_utils import allEncodings
+
 from qtpyvcp.widgets.dialogs.find_replace_dialog import FindReplaceDialog
 
 LOG = getLogger(__name__)
@@ -467,9 +469,16 @@ class GcodeTextEdit(QPlainTextEdit):
     @Slot(object)
     def loadProgramFile(self, fname=None):
         if fname:
-            with open(fname) as f:
-                gcode = f.read()
-
+            encodings = allEncodings()
+            enc = None
+            for enc in encodings:
+                try:
+                    with open(fname,  'r', encoding=enc) as f:
+                        gcode = f.read()
+                except Exception as e:
+                    LOG.debug(e)
+                    LOG.info(f"File encoding doesn't match {enc}, trying others")
+            LOG.info(f"File encoding: {enc}")
             # set the syntax highlighter
             self.setPlainText(gcode)
             # self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self.font)
@@ -534,7 +543,7 @@ class NumberMargin(QWidget):
         blocks = self.parent.blockCount()
         return self.parent.fontMetrics().width(str(blocks)) + 5
 
-    def updateWidth(self): # check the number column width and adjust
+    def updateWidth(self):  # check the number column width and adjust
         width = self.getWidth()
         if self.width() != width:
             self.setFixedWidth(width)
