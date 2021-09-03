@@ -476,7 +476,7 @@ class GcodeTextEdit(QPlainTextEdit):
                     with open(fname,  'r', encoding=enc) as f:
                         gcode = f.read()
                 except Exception as e:
-                    LOG.debug(e)
+                    # LOG.debug(e)
                     LOG.info(f"File encoding doesn't match {enc}, trying others")
             LOG.info(f"File encoding: {enc}")
             # set the syntax highlighter
