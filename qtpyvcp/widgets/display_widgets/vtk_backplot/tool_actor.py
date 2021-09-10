@@ -225,11 +225,12 @@ class ToolActor(vtk.vtkActor):
                         flip = True
 
                     elif tool.orientation == 5:
-                        fa_x_pol = positive
+                        fa_x_pol = negative
                         fa_z_pol = negative
 
-                        ba_x_pol = negative
-                        ba_z_pol = positive
+                        ba_x_pol = positive
+                        ba_z_pol = negative
+                        flip = True
 
                     elif tool.orientation == 6:
                         fa_x_pol = negative
