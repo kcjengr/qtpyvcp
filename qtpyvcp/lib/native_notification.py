@@ -24,7 +24,10 @@ from datetime import datetime
 
 from qtpy.QtCore import Qt, Signal
 from qtpy.QtGui import QIcon
-from qtpy.QtWidgets import QWidget, QGridLayout, QLabel, QPushButton, QDesktopWidget, QVBoxLayout, QApplication, QDialog
+
+from qtpy.QtWidgets import (QWidget, QGridLayout, QLabel, QPushButton,
+                            QDesktopWidget, QVBoxLayout, QApplication,
+                            QDialog,QScrollArea)
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 
@@ -48,11 +51,14 @@ class Message(QWidget):
             font-weight: normal;
             padding: 0;
             """)
+        self.messageArea = QScrollArea()
+        self.messageArea.setWidget(self.messageLabel)
         self.buttonClose = QPushButton(self)
         self.buttonClose.setIcon(QIcon.fromTheme("window-close"))
         self.buttonClose.setFixedSize(32, 32)
+
         self.layout().addWidget(self.titleLabel, 0, 0)
-        self.layout().addWidget(self.messageLabel, 1, 0)
+        self.layout().addWidget(self.messageArea, 1, 0)
         self.layout().addWidget(self.buttonClose, 0, 1, 2, 1)
 
 
