@@ -13,6 +13,21 @@ The goal is to provide a no-code, drag-and-drop system for making simple VCPs,
 as well as a straightforward, flexible and extensible framework to aid in
 building complex VCPs.
 
+## Warning
+
+QtPyVCP is master branch is now python 3 only
+
+What I need to install?
+You may need a linuxcnc 2.9.0~pre or latter
+detailed packages requiered for `runtime` or `develop` are mentioned here:
+https://www.qtpyvcp.com/install/prerequisites.html
+
+How does affect your VCP?
+  You only need to run 2to3.py` in your VCP root directory
+
+In runtime mode how does affect my configs?
+Nothing it should be transparent
+
 
 ## Installation and Usage
 
