@@ -15,7 +15,14 @@ building complex VCPs.
 
 ## Warning
 
-QtPyVCP is master branch is now python 3 only
+QtPyVCP master branch is now python 3 only
+
+Do I need to install master branch?
+
+Only if you want to use linuxcnc 2.9.0~pre or help porting qtpyvcp to python3
+
+Master branch is our develop channel, we offer stable releases but none yet for Python3
+latest python2 release is 0.3.9
 
 What I need to install?
 You may need a linuxcnc 2.9.0~pre or latter
@@ -23,10 +30,14 @@ detailed packages requiered for `runtime` or `develop` are mentioned here:
 https://www.qtpyvcp.com/install/prerequisites.html
 
 How does affect your VCP?
-  You only need to run 2to3.py` in your VCP root directory
+  You only need to run `2to3.py` in your VCP root directory
 
 In runtime mode how does affect my configs?
+
 Nothing it should be transparent
+
+I have python component
+run `2to3.py`in yor component directory
 
 
 ## Installation and Usage
