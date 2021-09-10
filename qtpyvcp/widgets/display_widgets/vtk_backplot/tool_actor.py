@@ -5,6 +5,7 @@ from qtpyvcp.utilities import logger
 
 LOG = logger.getLogger(__name__)
 
+
 class ToolActor(vtk.vtkActor):
     def __init__(self, linuxcncDataSource):
         super(ToolActor, self).__init__()
@@ -40,10 +41,10 @@ class ToolActor(vtk.vtkActor):
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset - 0.05))
                     points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset - 0.05))
+                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset - 0.05))
+                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -70,10 +71,10 @@ class ToolActor(vtk.vtkActor):
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset + 0.05))
-                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset + 0.05))
                     points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-tool.xoffset + 0.5, 0.0, -tool.zoffset + 0.05))
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset + 0.05))
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -130,10 +131,10 @@ class ToolActor(vtk.vtkActor):
 
                     # Setup four points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset - 0.05))
-                    points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset - 0.05))
                     points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset))
+                    points.InsertNextPoint((-tool.xoffset - 0.5, 0.0, -tool.zoffset - 0.05))
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset - 0.05))
+                    points.InsertNextPoint((-tool.xoffset, 0.0, -tool.zoffset))
 
                     # Create the polygon
                     # Create a quad on the four points
@@ -190,6 +191,7 @@ class ToolActor(vtk.vtkActor):
                 else:
                     positive = 1
                     negative = -1
+                    flip = False
 
                     if tool.orientation == 1:
                         fa_x_pol = negative
@@ -197,6 +199,7 @@ class ToolActor(vtk.vtkActor):
 
                         ba_x_pol = negative
                         ba_z_pol = negative
+                        flip = True
 
                     elif tool.orientation == 2:
                         fa_x_pol = negative
@@ -211,6 +214,7 @@ class ToolActor(vtk.vtkActor):
 
                         ba_x_pol = positive
                         ba_z_pol = positive
+                        flip = True
 
                     elif tool.orientation == 4:
                         fa_x_pol = positive
@@ -218,6 +222,7 @@ class ToolActor(vtk.vtkActor):
 
                         ba_x_pol = positive
                         ba_z_pol = negative
+                        flip = True
 
                     elif tool.orientation == 5:
                         fa_x_pol = positive
@@ -232,6 +237,7 @@ class ToolActor(vtk.vtkActor):
 
                         ba_x_pol = negative
                         ba_z_pol = negative
+                        flip = True
 
                     elif tool.orientation == 7:
                         fa_x_pol = positive
@@ -278,9 +284,15 @@ class ToolActor(vtk.vtkActor):
 
                     # Setup three points
                     points = vtk.vtkPoints()
-                    points.InsertNextPoint((tool.xoffset, 0.0, -tool.zoffset))
-                    points.InsertNextPoint((tool.xoffset + p1_x_pos, 0.0, p1_z_pos - tool.zoffset))
-                    points.InsertNextPoint((tool.xoffset + p2_x_pos, 0.0, p2_z_pos - tool.zoffset))
+
+                    if flip:
+                        points.InsertNextPoint((tool.xoffset + p2_x_pos, 0.0, p2_z_pos - tool.zoffset))
+                        points.InsertNextPoint((tool.xoffset + p1_x_pos, 0.0, p1_z_pos - tool.zoffset))
+                        points.InsertNextPoint((tool.xoffset, 0.0, -tool.zoffset))
+                    else:
+                        points.InsertNextPoint((tool.xoffset, 0.0, -tool.zoffset))
+                        points.InsertNextPoint((tool.xoffset + p1_x_pos, 0.0, p1_z_pos - tool.zoffset))
+                        points.InsertNextPoint((tool.xoffset + p2_x_pos, 0.0, p2_z_pos - tool.zoffset))
 
                     # Create the polygon
                     polygon = vtk.vtkPolygon()
