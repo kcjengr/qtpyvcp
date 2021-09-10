@@ -1,5 +1,5 @@
 =============
-Prerequisites
+Prerequisites for python3
 =============
 
 QtPyVCP can be installed and run on most reasonably modern PCs and operating systems.
@@ -12,8 +12,8 @@ These requirements are the same regardless of the install method.
 System Requirements
 -------------------
 
-* Debian 9 (Stretch) and 10 (buster) or Linux Mint 19, 64 bit
-* LinuxCNC **2.8** or later, installed either system wide or as a Run In Place (RIP) built from source
+* Debian 10 (Buster) and 11 (bullseye) 64 bit
+* LinuxCNC **2.9** branch master-gtk3, installed as a Run In Place (RIP) built from source
 * Graphics card that supports OpenGL 1.50 or later (for VTK backplot)
 
 .. Note::
@@ -21,11 +21,6 @@ System Requirements
 
     There are VTK builds for Raspberry pi 4 32 bits. https://scottalford75.github.io/LinuxCNC-on-RPi/4.%20VTK%20for%20QtPyVCP.html
 
-
-Instructions for installing LinuxCNC on Debian 10 (buster) and Linuxmint 19 can be found here:
-
-https://gnipsel.com/linuxcnc/uspace/debian10-emc.html
-https://gnipsel.com/linuxcnc/uspace/linuxmint19-emc.html
 
 LinuxCNC 2.80 ISO available here:
 
@@ -38,4 +33,4 @@ These packages should be installed prior to attempting to install QtPyVCP.
 
 ::
 
-  sudo apt install python-pyqt5 python-dbus.mainloop.pyqt5 python-pyqt5.qtopengl python-pyqt5.qsci python-pyqt5.qtmultimedia python-pyqt5.qtquick qml-module-qtquick-controls gstreamer1.0-plugins-bad libqt5multimedia5-plugins pyqt5-dev-tools python-dev python-setuptools python-wheel python-pip git
+  sudo apt install python3-pyqt5 python3-dbus.mainloop.pyqt5 python3-pyqt5.qtopengl python3-pyqt5.qsci python3-pyqt5.qtmultimedia python3-pyqt5.qtquick qml-module-qtquick-controls gstreamer1.0-plugins-bad libqt5multimedia5-plugins pyqt5-dev-tools python3-dev python3-setuptools python3-wheel python3-pip git
