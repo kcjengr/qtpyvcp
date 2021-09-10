@@ -1,10 +1,10 @@
 ===================
-Development Install
+Development Install for python 3
 ===================
 
 This installation method should be used if you are interested in
 contributing to `QtPyVCP`, or want to have access to the source
-code so you can study it and see how everything works.
+code so you can study it and see how everything works using python3
 
 This type of installation is editable, meaning you can make changes to
 the source files and the changes will take effect when `QtPyVCP` is next
@@ -20,32 +20,37 @@ run, without the need to manually update or reinstall anything.
 .. Warning::
 
     Before proceeding make sure you have satisfied the prerequisites listed on
-    the :doc:`Prerequisites <prerequisites>` page!
+    the :doc:`Prerequisites for python3 <prerequisites_py3>` page!
 
+
+.. warning::
+
+    If the system has a python2 interpreter is recommended to remove it
+    ``sudo apt remove python2``
+    also remove
+    ``~/.local/lib/python2.7``
 
 Getting the QtPyVCP Source Code
 +++++++++++++++++++++++++++++++
 
-If you intend to contribute to QtPyVCP you should clone the
+If you intend to contribute to QtPyVCP you should clone the python3_master branch from the
 `QtPyVCP repository <https://github.com/kcjengr/qtpyvcp>`_ with git::
 
-  git clone https://github.com/kcjengr/qtpyvcp qtpyvcp
-
-Otherwise you can simply download the source code archive:
-:download:`qtpyvcp-master.tar.gz <https://github.com/kcjengr/qtpyvcp/tarball/master>`
-
+  git clone https://github.com/kcjengr/qtpyvcp -b python3_master
 
 Install Dev Dependencies
 ++++++++++++++++++++++++
 
-Development dependencies (in addition to those listed on the :doc:`Prerequisites <prerequisites>`) page::
+Development dependencies (in addition to those listed on the :doc:`Prerequisites for python3 <prerequisites_py3>`) page::
 
-  sudo apt install qttools5-dev qttools5-dev-tools python-wheel
+  sudo apt install qttools5-dev qttools5-dev-tools python3-wheel
+
+
 
 For building documentation::
 
-  pip install sphinx sphinx_rtd_theme mock
-  pip install git+https://github.com/KurtJacobson/sphinx-gitstamp@MoreInfo
+  pip3 install sphinx sphinx_rtd_theme mock
+  pip3 install git+https://github.com/KurtJacobson/sphinx-gitstamp@MoreInfo
 
 
 (From the docs dir run ``make html`` to build the HTML documentation.)
@@ -56,25 +61,25 @@ dependencies are needed please notify one of the developers so it
 can be added.*
 
 
-Install with pip
+Install with pip3
 +++++++++++++++++++++
 
 .. warning::
 
     If you previously installed QtPyVCP using the standard install method
-    you should first uninstall with ``pip uninstall qtpyvcp`` before proceeding
+    you should first uninstall with ``pip uninstall qtpyvcp``  ``pip3 uninstall qtpyvcp`` before proceeding
     to avoid the possibility of multiple installations conflicting.
 
 From the qtpyvcp source directory install QtPyVCP by running::
 
-  pip install --editable .
+  pip3 install --editable .
 
 This will create a setup.py development install and will add command line scripts to
 ``~/.local/bin/`` for launching QtPyVCP, the example VCPs and the command line tools.
 
 .. hint::
     If the pip install fails, try uninstalling before trying to install again.
-    ``pip uninstall qtpyvcp``
+    ``pip3 uninstall qtpyvcp``
 
 .. note::
     On Debian 9 and 10 (Stretch and Buster) ``~/.local/bin/`` is not on the PATH in bash.
@@ -106,10 +111,10 @@ QtDesigner Plugins
 If you want to edit a VCP or create one from a template you need to have the
 QtDesigner plugins installed. To load, you must have the correct version of
 `libpyqt5.so` in `/usr/lib/x86_64-linux-gnu/qt5/plugins/designer/`. Precompiled
-libraries suitable for 64Bit Debian Stretch (or other system with Qt v5.7.1 and
-Py v2.7) are included in the `QtDesigner` directory. The easiest way to install
+libraries suitable for 64Bit Debian Stretch (or other system with Qt v5.11.3 and
+Py v3.9) are included in the `QtDesigner` directory. The easiest way to install
 the libs to the correct location is to use the `install.sh` script located in
-the `qtpyvcp/pyqt5designer/Qt5.7.1-64bit` directory with this command.
+the `qtpyvcp/pyqt5designer/Qt5.11.3-64bit` directory with this command.
 ::
 
     sudo ./install.sh
