@@ -49,7 +49,7 @@ Development dependencies (in addition to those listed on the :doc:`Prerequisites
 
 For building documentation::
 
-  pip3 install sphinx sphinx_rtd_theme mock
+  pip3 install sphinx sphinx_rtd_theme mock sphinx-notfound-page
   pip3 install git+https://github.com/KurtJacobson/sphinx-gitstamp@MoreInfo
 
 
