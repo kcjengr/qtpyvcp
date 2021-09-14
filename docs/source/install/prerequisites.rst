@@ -1,6 +1,6 @@
-=============
+============
 Prerequisites for python3
-=============
+============
 
 QtPyVCP can be installed and run on most reasonably modern PCs and operating systems.
 There are a few requirements that need to be satisfied, however, and it's best to
@@ -13,7 +13,7 @@ System Requirements
 -------------------
 
 * Debian 10 (Buster) and 11 (bullseye) 64 bit
-* LinuxCNC **2.9** branch master-gtk3, installed as a Run In Place (RIP) built from source
+* LinuxCNC **2.9** branch master, installed as a Run In Place (RIP) built from source or debian buster buildbot packages
 * Graphics card that supports OpenGL 1.50 or later (for VTK backplot)
 
 .. Note::
