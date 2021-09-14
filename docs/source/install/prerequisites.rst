@@ -1,6 +1,6 @@
-============
+=========================
 Prerequisites for python3
-============
+=========================
 
 QtPyVCP can be installed and run on most reasonably modern PCs and operating systems.
 There are a few requirements that need to be satisfied, however, and it's best to
