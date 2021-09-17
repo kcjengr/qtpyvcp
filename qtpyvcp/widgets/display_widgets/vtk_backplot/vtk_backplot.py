@@ -36,13 +36,13 @@ LOG = logger.getLogger(__name__)
 IN_DESIGNER = os.getenv('DESIGNER', False)
 NUMBER_OF_WCS = 9
 
+
 # turn on antialiasing
 from qtpy.QtOpenGL import QGLFormat
 f = QGLFormat()
 f.setSampleBuffers(True)
 QGLFormat.setDefaultFormat(f)
 
-IN_DESIGNER = os.getenv('DESIGNER', False)
 
 class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
     def __init__(self, parent=None):
@@ -289,7 +289,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         centerY = center[1] / 2.0
 
         if self.rotating:
-            if self._datasource.isMachineLathe():
+            if self._datasource.isMachineLathe() and False:
                 self.pan(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
             else:
                 self.rotate(self.renderer, self.camera, x, y, lastX, lastY, centerX, centerY)
