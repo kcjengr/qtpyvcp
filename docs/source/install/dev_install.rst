@@ -33,10 +33,10 @@ run, without the need to manually update or reinstall anything.
 Getting the QtPyVCP Source Code
 +++++++++++++++++++++++++++++++
 
-If you intend to contribute to QtPyVCP you should clone the python3_master branch from the
+If you intend to contribute to QtPyVCP you should clone the master branch from the
 `QtPyVCP repository <https://github.com/kcjengr/qtpyvcp>`_ with git::
 
-  git clone https://github.com/kcjengr/qtpyvcp -b python3_master
+  git clone https://github.com/kcjengr/qtpyvcp
 
 Install Dev Dependencies
 ++++++++++++++++++++++++
