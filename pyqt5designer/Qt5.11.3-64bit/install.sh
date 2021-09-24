@@ -10,8 +10,5 @@ then
     mv "$OLD_LIB" "$OLD_LIB.old"
 fi
 
-# echo "copying libpyqt5_py2.so to $LIB_PATH"
-# cp  $SCRIPT_PATH/libpyqt5_py2.so $LIB_PATH
-
-echo "copying libpyqt5_py3.so for pytho 3.9 to $LIB_PATH"
-cp  $SCRIPT_PATH/libpyqt5_py3.so $LIB_PATH
+echo "copying libpyqt5.so for python 3.9 to $LIB_PATH"
+cp  $SCRIPT_PATH/libpyqt5.so $LIB_PATH
