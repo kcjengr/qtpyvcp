@@ -1,0 +1,16 @@
+# Installing Designer Libs
+
+PyQt5_gpl-5.11.3
+
+sip-4.19.13
+
+python-3.7
+
+
+These libraries have been tested to work in Debian 10 (buster).
+They will likely work on other systems
+as well.
+
+To install simply run:
+
+`sudo ./install.sh`
