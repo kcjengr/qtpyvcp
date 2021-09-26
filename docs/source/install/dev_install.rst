@@ -49,8 +49,8 @@ Development dependencies (in addition to those listed on the :doc:`Prerequisites
 
 For building documentation::
 
-  pip3 install sphinx sphinx_rtd_theme mock sphinx-notfound-page
-  pip3 install git+https://github.com/KurtJacobson/sphinx-gitstamp@MoreInfo
+  python3 -m pip install sphinx sphinx_rtd_theme mock sphinx-notfound-page
+  python3 -m pip install git+https://github.com/KurtJacobson/sphinx-gitstamp@MoreInfo
 
 
 (From the docs dir run ``make html`` to build the HTML documentation.)
@@ -67,12 +67,12 @@ Install with pip3
 .. warning::
 
     If you previously installed QtPyVCP using the standard install method
-    you should first uninstall with ``pip uninstall qtpyvcp``  ``pip3 uninstall qtpyvcp`` before proceeding
+    you should first uninstall with ``python3 -m pip uninstall qtpyvcp``  ``pip3 uninstall qtpyvcp`` before proceeding
     to avoid the possibility of multiple installations conflicting.
 
 From the qtpyvcp source directory install QtPyVCP by running::
 
-  pip3 install --editable .
+  python3 -m pip install --editable .
 
 This will create a setup.py development install and will add command line scripts to
 ``~/.local/bin/`` for launching QtPyVCP, the example VCPs and the command line tools.
