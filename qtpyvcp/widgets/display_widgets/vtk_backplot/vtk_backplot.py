@@ -124,27 +124,27 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.interactor.SetInteractorStyle(self.nav_style)
         self.interactor.SetRenderWindow(self.renderer_window)
 
-        self.machine_actor = MachineActor(self._datasource)
-        self.machine_actor.SetCamera(self.camera)
-
-        self.axes_actor = AxesActor(self._datasource)
-
-        LOG.debug("---------translate1: {}".format(self.active_wcs_offset[:3]))
-        LOG.debug("---------active_wcs_offset: {}".format(self.active_wcs_offset))
-
-        transform = vtk.vtkTransform()
-        transform.Translate(*self.active_wcs_offset[:3])
-        transform.RotateZ(self.active_wcs_offset[9])
-        self.axes_actor.SetUserTransform(transform)
-
-        self.path_cache_actor = PathCacheActor(self.tooltip_position)
-        self.tool_actor = ToolActor(self._datasource)
-
-        self.offset_axes = OrderedDict()
-        self.program_bounds_actors = OrderedDict()
-        self.show_program_bounds = bool()
-
         if not IN_DESIGNER:
+
+            self.machine_actor = MachineActor(self._datasource)
+            self.machine_actor.SetCamera(self.camera)
+
+            self.axes_actor = AxesActor(self._datasource)
+
+            LOG.debug("---------translate1: {}".format(self.active_wcs_offset[:3]))
+            LOG.debug("---------active_wcs_offset: {}".format(self.active_wcs_offset))
+
+            transform = vtk.vtkTransform()
+            transform.Translate(*self.active_wcs_offset[:3])
+            transform.RotateZ(self.active_wcs_offset[9])
+            self.axes_actor.SetUserTransform(transform)
+
+            self.path_cache_actor = PathCacheActor(self.tooltip_position)
+            self.tool_actor = ToolActor(self._datasource)
+
+            self.offset_axes = OrderedDict()
+            self.program_bounds_actors = OrderedDict()
+            self.show_program_bounds = bool()
 
             # Add the observers to watch for particular events. These invoke Python functions.
             self.interactor.AddObserver("LeftButtonPressEvent", self.button_event)

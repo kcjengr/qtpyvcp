@@ -15,12 +15,15 @@ STAT = linuxcnc.stat()
 CMD = linuxcnc.command()
 
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
+
 class Status(DataPlugin):
 
     stat = STAT
 
     def __init__(self, cycle_time=100):
         super(Status, self).__init__()
+
 
         self.no_force_homing = INFO.noForceHoming()
 
@@ -44,10 +47,12 @@ class Status(DataPlugin):
         self.linear_jog_velocity = INFO.getJogVelocity()
         self.angular_jog_velocity = INFO.getJogVelocity()
 
-        try:
-            STAT.poll()
-        except:
-            pass
+        if not IN_DESIGNER:
+            try:
+                STAT.poll()
+            except Exception as e:
+                LOG.Error("Unable to poll status channel")
+                LOG.Debug(e)
 
         excluded_items = ['axis', 'joint', 'spindle', 'poll']
 
