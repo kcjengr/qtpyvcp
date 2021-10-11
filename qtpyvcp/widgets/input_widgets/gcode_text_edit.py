@@ -270,11 +270,6 @@ class GcodeTextEdit(QPlainTextEdit):
 
     def replaceText(self, search, replace):
 
-        selected_text = self.textCursor().selectedText()
-
-        cursor = self.textCursor()
-        cursor.beginEditBlock()
-
         flags = QTextDocument.FindFlag()
 
         if self.find_case:
@@ -284,22 +279,16 @@ class GcodeTextEdit(QPlainTextEdit):
 
         found = self.find(search, flags)
         if found:
-            find_cursor = self.textCursor()
-            LOG.debug("CURSOR")
-            if find_cursor.hasSelection():
-                LOG.debug("SELCTION")
-                find_cursor.setPlainText(replace)
+            cursor = self.textCursor()
+            cursor.beginEditBlock()
+            if cursor.hasSelection():
+                cursor.insertText(replace)
+            cursor.endEditBlock();
 
     def replaceAllText(self, search, replace):
-        LOG.debug(f"Replace all text :{search} with {replace}")
-        selected_text = self.textCursor().selectedText()
-
-        cursor = self.textCursor()
-        cursor.setCurrentLine  = 0 
-        cursor.beginEditBlock()
-
+        
         flags = QTextDocument.FindFlag()
-
+        
         if self.find_case:
             flags |= QTextDocument.FindCaseSensitively
         if self.find_words:
@@ -309,12 +298,14 @@ class GcodeTextEdit(QPlainTextEdit):
         while searchng:
             found = self.find(search, flags)
             if found:
-                find_cursor = self.textCursor()
-                if find_cursor.hasSelection():
-                    find_cursor.insertText(replace)
+                cursor = self.textCursor()
+                cursor.beginEditBlock()
+                if cursor.hasSelection():
+                    cursor.insertText(replace)
+                cursor.endEditBlock();
             else:
                 searchng = False
-
+    
     @Slot()
     def findAll(self):
 
@@ -379,6 +370,7 @@ class GcodeTextEdit(QPlainTextEdit):
         if event.type() == QEvent.FontChange:
             # Update syntax highlighter with new font
             self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self.font)
+            pass
         super(GcodeTextEdit, self).changeEvent(event)
 
     def setPlainText(self, p_str):
