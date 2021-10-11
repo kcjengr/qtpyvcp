@@ -162,14 +162,8 @@ class GcodeTextEdit(QPlainTextEdit):
             self.find_case = None
             self.find_words = None
 
-            self.search_entry = None
-            self.replace_entry = None
-
-            for widget in self.parent.findChildren(QLineEdit, "search_entry"):
-                self.search_entry = widget
-
-            for widget in self.parent.findChildren(QLineEdit, "replace_entry"):
-                self.replace_entry = widget
+            self.search_term = ""
+            self.replace_term = ""
 
         # context menu
         self.menu = QMenu(self)
@@ -197,16 +191,29 @@ class GcodeTextEdit(QPlainTextEdit):
         STATUS.file.notify(self.loadProgramFile)
         STATUS.motion_line.onValueChanged(self.setCurrentLine)
 
+    @Slot(str)
+    def set_search_term(self, text):
+        LOG.debug(f"Set search term :{text}")
+        self.search_term = text
+
+    @Slot(str)
+    def set_replace_term(self, text):
+        LOG.debug(f"Set replace term :{text}")
+        self.replace_term = text
+
     @Slot()
     def findDialog(self):
+        LOG.debug("Show find dialog")
         self.dialog.show()
 
     @Slot(bool)
     def findCase(self, enabled):
+        LOG.debug(f"Find case sensitive :{enabled}")
         self.find_case = enabled
 
     @Slot(bool)
     def findWords(self, enabled):
+        LOG.debug(f"Find whole words :{enabled}")
         self.find_words = enabled
 
     def findAllText(self, text):
@@ -281,12 +288,14 @@ class GcodeTextEdit(QPlainTextEdit):
             LOG.debug("CURSOR")
             if find_cursor.hasSelection():
                 LOG.debug("SELCTION")
-                find_cursor.insertText(replace)
+                find_cursor.setPlainText(replace)
 
     def replaceAllText(self, search, replace):
+        LOG.debug(f"Replace all text :{search} with {replace}")
         selected_text = self.textCursor().selectedText()
 
         cursor = self.textCursor()
+        cursor.setCurrentLine  = 0 
         cursor.beginEditBlock()
 
         flags = QTextDocument.FindFlag()
@@ -309,30 +318,39 @@ class GcodeTextEdit(QPlainTextEdit):
     @Slot()
     def findAll(self):
 
-        text = self.search_entry.text()
+        text = self.search_term
+        LOG.debug(f"Find all text :{text}")
         self.findAllText(text)
 
     @Slot()
     def findForward(self):
-        text = self.search_entry.text()
+        text = self.search_term
+        LOG.debug(f"Find forward :{text}")
         self.findForwardText(text)
 
     @Slot()
     def findBackward(self):
-        text = self.search_entry.text()
+        text = self.search_term
+        LOG.debug(f"Find backwars :{text}")
         self.findBackwardText(text)
 
     @Slot()
     def replace(self):
-        search_text = self.search_entry.text()
-        replace_text = self.replace_entry.text()
+
+        search_text = self.search_term
+        replace_text = self.replace_term
+
+        LOG.debug(f"Replace text :{search_text} with {replace_text}")
 
         self.replaceText(search_text, replace_text)
 
     @Slot()
     def replaceAll(self):
-        search_text = self.search_entry.text()
-        replace_text = self.replace_entry.text()
+
+        search_text = self.search_term
+        replace_text = self.replace_term
+
+        LOG.debug(f"Replace all text :{search_text} with {replace_text}")
 
         self.replaceAllText(search_text, replace_text)
 
