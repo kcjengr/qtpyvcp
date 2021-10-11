@@ -370,7 +370,7 @@ class GcodeTextEdit(QPlainTextEdit):
         if event.type() == QEvent.FontChange:
             # Update syntax highlighter with new font
             self.gCodeHighlighter = GcodeSyntaxHighlighter(self.document(), self.font)
-            pass
+
         super(GcodeTextEdit, self).changeEvent(event)
 
     def setPlainText(self, p_str):
