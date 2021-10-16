@@ -346,27 +346,19 @@ class GCodeProperties(DataPlugin):
                 units = "in"
                 fmt = "%.4f"
 
-            mf = 100000.0
-            
-            print(self.canon.traverse)
+            mf = 1.0
             
             g0 = sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.traverse)
             
-            print(g0)
-            
             g1 = (sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.feed) +
                 sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.arcfeed))
-            
-            print(g1)
-            print(g1)
             
             gt = (sum(self.dist(l[0][:3], l[1][:3])/min(mf, l[1][0]) for l in self.canon.feed) +
                 sum(self.dist(l[0][:3], l[1][:3])/min(mf, l[1][0])  for l in self.canon.arcfeed) +
                 sum(self.dist(l[0][:3], l[1][:3])/mf  for l in self.canon.traverse) +
                 self.canon.dwell_time
                 )
-            print(gt)
-
+            
             props['g0'] = "%f %s".replace("%f", fmt) % (self.from_internal_linear_unit(g0, conv), units)
             props['g1'] = "%f %s".replace("%f", fmt) % (self.from_internal_linear_unit(g1, conv), units)
             
