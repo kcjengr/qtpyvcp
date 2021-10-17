@@ -223,48 +223,52 @@ class GCodeProperties(DataPlugin):
         return chan.value.strftime(format)
 
     @DataChannel
-    def file_path_distance(self, chan):
-        """The full distance of the path.
+    def file_rapid_distance(self, chan):
+        """The full distance done in rapid of the path.
 
         Args:
 
         Returns:
-            The full distance of the path
+            The full distance done in rapid of the path
 
         Channel syntax::
 
-            gcode_properties:file_path_distance
+            gcode_properties:file_rapid_distance
 
         """
 
         if not self.loaded_file:
-            chan.value(0)
+            chan.value = 0
 
         return chan.value
 
-    @file_path_distance.tostring
-    def file_path_distance(self, chan):
+    @file_rapid_distance.tostring
+    def file_rapid_distance(self, chan):
         return chan.value.strftime(format)
+    
+    @DataChannel
+    def file_feed_distance(self, chan):
+        """The full distance done in feed velocity of the path.
 
-    # @DataChannel
-    # def x_limit(self, chan):
-    #     """The current date, updated every second.
-    #
-    #     Args:
-    #         format (str) : Format spec. Defaults to ``%m/%d/%Y``.
-    #             See http://strftime.org for supported formats.
-    #
-    #     Returns:
-    #         The current date as a formatted string. Default MM/DD/YYYY
-    #
-    #     Channel syntax::
-    #
-    #         clock:date
-    #         clock:date?string
-    #         clock:date?string&format=%Y
-    #
-    #     """
-    #     return chan.value
+        Args:
+
+        Returns:
+            The full distance done in feed velocity of the path
+
+        Channel syntax::
+
+            gcode_properties:file_feed_distance
+
+        """
+
+        if not self.loaded_file:
+            chan.value = 0
+
+        return chan.value
+
+    @file_feed_distance.tostring
+    def file_feed_distance(self, chan):
+        return chan.value.strftime(format)
 
     @DataChannel
     def file_feed(self, chan):
@@ -292,6 +296,7 @@ class GCodeProperties(DataPlugin):
     def _file_event(self, file_path):
         """" This function gets notified about files begin loaded """
         self.loaded_file = file_path
+        self.canon = None
         self.canon = PropertiesCanon()
 
         if os.path.exists(self.parameter_file):
@@ -318,8 +323,7 @@ class GCodeProperties(DataPlugin):
         # clean up temp var file and the backup
         os.unlink(self.temp_parameter_file)
         os.unlink(self.temp_parameter_file + '.bak')
-        
-        
+
         file_name = self.loaded_file
         file_size = os.stat(self.loaded_file).st_size
         file_lines = self.canon.num_lines
@@ -329,55 +333,39 @@ class GCodeProperties(DataPlugin):
         self.file_size.setValue(file_size)
         self.file_lines.setValue(file_lines)
         self.tool_calls_num.setValue(tool_calls)
-        # self.calc_distance()
+        
+        self.calc_distance()
 
     def calc_distance(self):
-        props = {}
-        if not self.loaded_file:
-            props['name'] = "No file loaded"
-        else:
 
-            if MACHINE_UNITS == 2:
-                conv = 1
-                units = "mm"
-                fmt = "%.3f"
-            else:
-                conv = 1/25.4
-                units = "in"
-                fmt = "%.4f"
-
-            mf = 100.0
-            
-            g0 = sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.traverse)
-            
-            g1 = (sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.feed) +
-                sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.arcfeed))
-            
-            gt = (sum(self.dist(l[0][:3], l[1][:3])/min(mf, l[1][0]) for l in self.canon.feed) +
-                sum(self.dist(l[0][:3], l[1][:3])/min(mf, l[1][0])  for l in self.canon.arcfeed) +
-                sum(self.dist(l[0][:3], l[1][:3])/mf  for l in self.canon.traverse) +
-                self.canon.dwell_time
-                )
-            
-            print(g0)
-            print(g1)
-            print(gt)
-            
-            props['g0'] = "%f %s".replace("%f", fmt) % (self.from_internal_linear_unit(g0, conv), units)
-            props['g1'] = "%f %s".replace("%f", fmt) % (self.from_internal_linear_unit(g1, conv), units)
-            
-            LOG.debug(f"path time {gt} secconds")        
-            
-            min_extents = self.from_internal_units(self.canon.min_extents, conv)
-            max_extents = self.from_internal_units(self.canon.max_extents, conv)
-            
-            for (i, c) in enumerate("xyz"):
-                a = min_extents[i]
-                b = max_extents[i]
-                if a != b:
-                        props[c] = ("%(a)f to %(b)f = %(diff)f %(units)s").replace("%f", fmt) % {'a': a, 'b': b, 'diff': b-a, 'units': units}
-            # properties(root_window, _("G-Code Properties"), property_names, props)
-            pprint.pprint(props)
+        mf = 100.0
+        
+        g0 = sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.traverse)
+        
+        g1 = (sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.feed) +
+            sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.arcfeed))
+        
+        self.file_rapid_distance.setValue(g0)
+        self.file_feed_distance.setValue(g1)
+        
+        # gt = (sum(self.dist(l[0][:3], l[1][:3])/min(mf, l[1][0]) for l in self.canon.feed) +
+        #     sum(self.dist(l[0][:3], l[1][:3])/min(mf, l[1][0])  for l in self.canon.arcfeed) +
+        #     sum(self.dist(l[0][:3], l[1][:3])/mf  for l in self.canon.traverse) +
+        #     self.canon.dwell_time
+        #     )
+        #
+        # LOG.debug(f"path time {gt} secconds")        
+        #
+        # min_extents = self.from_internal_units(self.canon.min_extents, conv)
+        # max_extents = self.from_internal_units(self.canon.max_extents, conv)
+        #
+        # for (i, c) in enumerate("xyz"):
+        #     a = min_extents[i]
+        #     b = max_extents[i]
+        #     if a != b:
+        #             props[c] = ("%(a)f to %(b)f = %(diff)f %(units)s").replace("%f", fmt) % {'a': a, 'b': b, 'diff': b-a, 'units': units}
+        # # properties(root_window, _("G-Code Properties"), property_names, props)
+        # pprint.pprint(props)
 
     def dist(self, xxx, xxx_1):
         (x,y,z) = xxx  # todo changeme
@@ -402,67 +390,68 @@ class GCodeProperties(DataPlugin):
 
 class PropertiesCanon(BaseCanon):
     
-    num_lines = 0
-    tool_calls = 0
-    
-    # traverse list - [line number, [start position], [end position], [tlo x, tlo y, tlo z]]
-    traverse = []
-    # feed list - [line number, [start position], [end position], feedrate, [tlo x, tlo y, tlo z]]
-    feed = []
-    # arcfeed list - [line number, [start position], [end position], feedrate, [tlo x, tlo y, tlo z]]
-    arcfeed = []
-    # dwell list - [line number, color, pos x, pos y, pos z, plane]
-    dwells = []
-    
-    choice = None
-    feedrate = 1
-    lo = (0,) * 9
-    first_move = True
-    # geometry = geometry
-    min_extents = [9e99,9e99,9e99]
-    max_extents = [-9e99,-9e99,-9e99]
-    min_extents_notool = [9e99,9e99,9e99]
-    max_extents_notool = [-9e99,-9e99,-9e99]
-    # colors = colors
-    in_arc = 0
-    xo = yo = zo = ao = bo = co = uo = vo = wo = 0
-    dwell_time = 0
-    suppress = 0
-    g92_offset_x = 0.0
-    g92_offset_y = 0.0
-    g92_offset_z = 0.0
-    g92_offset_a = 0.0
-    g92_offset_b = 0.0
-    g92_offset_c = 0.0
-    g92_offset_u = 0.0
-    g92_offset_v = 0.0
-    g92_offset_w = 0.0
-    g5x_index = 1
-    g5x_offset_x = 0.0
-    g5x_offset_y = 0.0
-    g5x_offset_z = 0.0
-    g5x_offset_a = 0.0
-    g5x_offset_b = 0.0
-    g5x_offset_c = 0.0
-    g5x_offset_u = 0.0
-    g5x_offset_v = 0.0
-    g5x_offset_w = 0.0
-    # is_foam = is_foam
-    foam_z = 0
-    foam_w = 1.5
-    notify = 0
-    notify_message = ""
-    highlight_line = None
-    
-    x = 0.0
-    y = 0.0
-    z = 0.0
-    a = 0.0
-    b = 0.0
-    c = 0.0
-    u = 0.0
-    v = 0.0
-    w = 0.0
+    def __init__(self):
+        self.num_lines = 0
+        self.tool_calls = 0
+        
+        # traverse list - [line number, [start position], [end position], [tlo x, tlo y, tlo z]]
+        self.traverse = []
+        # feed list - [line number, [start position], [end position], feedrate, [tlo x, tlo y, tlo z]]
+        self.feed = []
+        # arcfeed list - [line number, [start position], [end position], feedrate, [tlo x, tlo y, tlo z]]
+        self.arcfeed = []
+        # dwell list - [line number, color, pos x, pos y, pos z, plane]
+        self.dwells = []
+        
+        self.choice = None
+        self.feedrate = 1
+        self.lo = (0,) * 9
+        self.first_move = True
+        # geometry = geometry
+        self.min_extents = [9e99,9e99,9e99]
+        self.max_extents = [-9e99,-9e99,-9e99]
+        self.min_extents_notool = [9e99,9e99,9e99]
+        self.max_extents_notool = [-9e99,-9e99,-9e99]
+        # colors = colors
+        self.in_arc = 0
+        self.xo = self.yo = self.zo = self.ao = self.bo = self.co = self.uo = self.vo = self.wo = 0
+        self.dwell_time = 0
+        self.suppress = 0
+        self.g92_offset_x = 0.0
+        self.g92_offset_y = 0.0
+        self.g92_offset_z = 0.0
+        self.g92_offset_a = 0.0
+        self.g92_offset_b = 0.0
+        self.g92_offset_c = 0.0
+        self.g92_offset_u = 0.0
+        self.g92_offset_v = 0.0
+        self.g92_offset_w = 0.0
+        self.g5x_index = 1
+        self.g5x_offset_x = 0.0
+        self.g5x_offset_y = 0.0
+        self.g5x_offset_z = 0.0
+        self.g5x_offset_a = 0.0
+        self.g5x_offset_b = 0.0
+        self.g5x_offset_c = 0.0
+        self.g5x_offset_u = 0.0
+        self.g5x_offset_v = 0.0
+        self.g5x_offset_w = 0.0
+        # is_foam = is_foam
+        self.foam_z = 0
+        self.foam_w = 1.5
+        self.notify = 0
+        self.notify_message = ""
+        self.highlight_line = None
+        
+        self.x = 0.0
+        self.y = 0.0
+        self.z = 0.0
+        self.a = 0.0
+        self.b = 0.0
+        self.c = 0.0
+        self.u = 0.0
+        self.v = 0.0
+        self.w = 0.0
     
     def set_g5x_offset(self, *args):
         print(("set_g5x_offset", args))
