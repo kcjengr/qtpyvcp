@@ -54,7 +54,7 @@ class GCodeProperties(DataPlugin):
         self.canon = None
         self.stat.file.notify(self._file_event)
         self.loaded_file = None
-
+        
         temp = self.ini.find("RS274NGC", "PARAMETER_FILE") or "linuxcnc.var"
         self.parameter_file = os.path.join(self.config_dir, temp)
         self.temp_parameter_file = os.path.join(self.parameter_file + '.temp')
@@ -329,7 +329,7 @@ class GCodeProperties(DataPlugin):
         self.file_size.setValue(file_size)
         self.file_lines.setValue(file_lines)
         self.tool_calls_num.setValue(tool_calls)
-        self.calc_distance()
+        # self.calc_distance()
 
     def calc_distance(self):
         props = {}
@@ -346,7 +346,7 @@ class GCodeProperties(DataPlugin):
                 units = "in"
                 fmt = "%.4f"
 
-            mf = 1.0
+            mf = 100.0
             
             g0 = sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.traverse)
             
@@ -358,6 +358,10 @@ class GCodeProperties(DataPlugin):
                 sum(self.dist(l[0][:3], l[1][:3])/mf  for l in self.canon.traverse) +
                 self.canon.dwell_time
                 )
+            
+            print(g0)
+            print(g1)
+            print(gt)
             
             props['g0'] = "%f %s".replace("%f", fmt) % (self.from_internal_linear_unit(g0, conv), units)
             props['g1'] = "%f %s".replace("%f", fmt) % (self.from_internal_linear_unit(g1, conv), units)
@@ -376,8 +380,8 @@ class GCodeProperties(DataPlugin):
             pprint.pprint(props)
 
     def dist(self, xxx, xxx_1):
-        (x,y,z) = xxx # todo changeme
-        (p,q,r) = xxx_1 # todo changeme
+        (x,y,z) = xxx  # todo changeme
+        (p,q,r) = xxx_1  # todo changeme
         return ((x-p)**2 + (y-q)**2 + (z-r)**2) ** .5
     
     def from_internal_units(self, pos, unit=None):
