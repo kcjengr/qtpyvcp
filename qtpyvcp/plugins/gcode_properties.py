@@ -386,10 +386,8 @@ class GCodeProperties(DataPlugin):
         lu = (unit or 1) * 25.4
         return v*lu
 
-
-
 class PropertiesCanon(BaseCanon):
-    
+
     def __init__(self):
         self.num_lines = 0
         self.tool_calls = 0
@@ -403,20 +401,41 @@ class PropertiesCanon(BaseCanon):
         # dwell list - [line number, color, pos x, pos y, pos z, plane]
         self.dwells = []
         
-        self.choice = None
+        
+
         self.feedrate = 1
-        self.lo = (0,) * 9
-        self.first_move = True
-        # geometry = geometry
-        self.min_extents = [9e99,9e99,9e99]
-        self.max_extents = [-9e99,-9e99,-9e99]
-        self.min_extents_notool = [9e99,9e99,9e99]
-        self.max_extents_notool = [-9e99,-9e99,-9e99]
-        # colors = colors
-        self.in_arc = 0
-        self.xo = self.yo = self.zo = self.ao = self.bo = self.co = self.uo = self.vo = self.wo = 0
         self.dwell_time = 0
+
+        self.seq_num = -1
+        self.last_pos = (0,) * 9
+
+        self.first_move = True
+        self.in_arc = False
         self.suppress = 0
+
+        self.plane = 1
+        self.arcdivision = 64
+
+        # extents
+        self.min_extents = [9e99, 9e99, 9e99]
+        self.max_extents = [-9e99, -9e99, -9e99]
+        self.min_extents_notool = [9e99, 9e99, 9e99]
+        self.max_extents_notool = [-9e99, -9e99, -9e99]
+
+        # tool length offsets
+        self.tlo_x = 0.0
+        self.tlo_y = 0.0
+        self.tlo_z = 0.0
+        self.tlo_a = 0.0
+        self.tlo_b = 0.0
+        self.tlo_c = 0.0
+        self.tlo_u = 0.0
+        self.tlo_v = 0.0
+        self.tlo_w = 0.0
+
+        self.tool_offsets = (0.0,) * 9
+
+        # G92/G52 offsets
         self.g92_offset_x = 0.0
         self.g92_offset_y = 0.0
         self.g92_offset_z = 0.0
@@ -426,7 +445,8 @@ class PropertiesCanon(BaseCanon):
         self.g92_offset_u = 0.0
         self.g92_offset_v = 0.0
         self.g92_offset_w = 0.0
-        self.g5x_index = 1
+
+        # g5x offsets
         self.g5x_offset_x = 0.0
         self.g5x_offset_y = 0.0
         self.g5x_offset_z = 0.0
@@ -436,22 +456,11 @@ class PropertiesCanon(BaseCanon):
         self.g5x_offset_u = 0.0
         self.g5x_offset_v = 0.0
         self.g5x_offset_w = 0.0
-        # is_foam = is_foam
-        self.foam_z = 0
-        self.foam_w = 1.5
-        self.notify = 0
-        self.notify_message = ""
-        self.highlight_line = None
-        
-        self.x = 0.0
-        self.y = 0.0
-        self.z = 0.0
-        self.a = 0.0
-        self.b = 0.0
-        self.c = 0.0
-        self.u = 0.0
-        self.v = 0.0
-        self.w = 0.0
+
+        # XY rotation (degrees)
+        self.rotation_xy = 0
+        self.rotation_cos = 1
+        self.rotation_sin = 0
     
     def set_g5x_offset(self, *args):
         print(("set_g5x_offset", args))
