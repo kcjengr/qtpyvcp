@@ -296,6 +296,56 @@ class GCodeProperties(DataPlugin):
         return chan.value.strftime(format)
     
     @DataChannel
+    def file_rigid_taps(self, chan):
+        """The rigid taps found in file.
+
+        Args:
+            None
+
+        Returns:
+            The rigid taps found in file.
+
+        Channel syntax::
+
+            gcode_properties:file_rigid_taps
+
+        """
+
+        if not self.loaded_file:
+            chan.value = []
+        
+        return chan.value
+
+    @file_rigid_taps.tostring
+    def file_rigid_taps(self, chan):
+        return chan.value.strftime(format)
+    
+    @DataChannel
+    def file_offsets(self, chan):
+        """The offsets found in file.
+
+        Args:
+            None
+
+        Returns:
+            The offsets found in file.
+
+        Channel syntax::
+
+            gcode_properties:file_offsets
+
+        """
+
+        if not self.loaded_file:
+            chan.value = dict()
+        
+        return chan.value
+
+    @file_offsets.tostring
+    def file_offsets(self, chan):
+        return chan.value.strftime(format)
+
+    @DataChannel
     def file_feed(self, chan):
         """The current file run distance.
 
@@ -373,8 +423,8 @@ class GCodeProperties(DataPlugin):
         self.file_feed_distance.setValue(g1)
         
         self.file_work_planes.setValue(self.canon.work_planes)
-
-        print(self.canon.g5x_offset_dict)
+        self.file_rigid_taps.setValue(self.canon.rigid_taps)
+        self.file_offsets.setValue(self.canon.g5x_offset_dict)
 
     def calc_distance(self):
 
@@ -432,14 +482,20 @@ class PropertiesCanon(BaseCanon):
         
         # traverse list - [line number, [start position], [end position], [tlo x, tlo y, tlo z]]
         self.traverse = []
+        
         # feed list - [line number, [start position], [end position], feedrate, [tlo x, tlo y, tlo z]]
         self.feed = []
+        
         # arcfeed list - [line number, [start position], [end position], feedrate, [tlo x, tlo y, tlo z]]
         self.arcfeed = []
+        
         # dwell list - [line number, color, pos x, pos y, pos z, plane]
         self.dwells = []
-        
-        
+                
+        self.work_planes = []    
+                    
+        self.rigid_taps = []
+            
 
         self.feedrate = 1
         self.dwell_time = 0
@@ -452,7 +508,6 @@ class PropertiesCanon(BaseCanon):
         self.suppress = 0
 
         self.plane = 1
-        self.work_planes = []
         
         self.arcdivision = 64
 
@@ -590,7 +645,9 @@ class PropertiesCanon(BaseCanon):
         try:
             if self.suppress > 0:
                 return
-        
+            
+            self.rigid_taps.append((x, y, z))
+            
             self.first_move = False
             pos = self.rotate_and_translate(x, y, z, 0, 0, 0, 0, 0, 0)[:3]
             pos += self.last_pos[3:]
