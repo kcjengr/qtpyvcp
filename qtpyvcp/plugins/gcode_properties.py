@@ -271,6 +271,31 @@ class GCodeProperties(DataPlugin):
         return chan.value.strftime(format)
 
     @DataChannel
+    def file_work_planes(self, chan):
+        """The current file plane.
+
+        Args:
+            None
+
+        Returns:
+            The file work planes
+
+        Channel syntax::
+
+            gcode_properties:file_work_planes
+
+        """
+
+        if not self.loaded_file:
+            chan.value = []
+        
+        return chan.value
+
+    @file_work_planes.tostring
+    def file_work_planes(self, chan):
+        return chan.value.strftime(format)
+    
+    @DataChannel
     def file_feed(self, chan):
         """The current file run distance.
 
@@ -287,6 +312,10 @@ class GCodeProperties(DataPlugin):
         """
         return chan.value
 
+    @file_feed.tostring
+    def file_feed(self, chan):
+        return chan.value.strftime(format)
+
     def initialise(self):
         pass
 
@@ -296,7 +325,7 @@ class GCodeProperties(DataPlugin):
     def _file_event(self, file_path):
         """" This function gets notified about files begin loaded """
         self.loaded_file = file_path
-        self.canon = None
+
         self.canon = PropertiesCanon()
 
         if os.path.exists(self.parameter_file):
@@ -327,14 +356,25 @@ class GCodeProperties(DataPlugin):
         file_name = self.loaded_file
         file_size = os.stat(self.loaded_file).st_size
         file_lines = self.canon.num_lines
+        
         tool_calls = self.canon.tool_calls
+        
+        g0 = sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.traverse)
+        g1 = (sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.feed) +
+            sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.arcfeed))
         
         self.file_name.setValue(file_name)
         self.file_size.setValue(file_size)
         self.file_lines.setValue(file_lines)
+        
         self.tool_calls_num.setValue(tool_calls)
         
-        self.calc_distance()
+        self.file_rapid_distance.setValue(g0)
+        self.file_feed_distance.setValue(g1)
+        
+        self.file_work_planes.setValue(self.canon.work_planes)
+
+        print(self.canon.g5x_offset_dict)
 
     def calc_distance(self):
 
@@ -345,8 +385,6 @@ class GCodeProperties(DataPlugin):
         g1 = (sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.feed) +
             sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.arcfeed))
         
-        self.file_rapid_distance.setValue(g0)
-        self.file_feed_distance.setValue(g1)
         
         # gt = (sum(self.dist(l[0][:3], l[1][:3])/min(mf, l[1][0]) for l in self.canon.feed) +
         #     sum(self.dist(l[0][:3], l[1][:3])/min(mf, l[1][0])  for l in self.canon.arcfeed) +
@@ -414,6 +452,8 @@ class PropertiesCanon(BaseCanon):
         self.suppress = 0
 
         self.plane = 1
+        self.work_planes = []
+        
         self.arcdivision = 64
 
         # extents
@@ -457,29 +497,41 @@ class PropertiesCanon(BaseCanon):
         self.g5x_offset_v = 0.0
         self.g5x_offset_w = 0.0
 
+        self.g5x_offset_dict = dict()
+
         # XY rotation (degrees)
         self.rotation_xy = 0
         self.rotation_cos = 1
         self.rotation_sin = 0
     
-    def set_g5x_offset(self, *args):
-        print(("set_g5x_offset", args))
+    def set_g5x_offset(self, offset, x, y, z, a, b, c, u, v, w):
+        try:
+            self.g5x_offset_dict[str(offset)] = (x, y, z, a, b, c, u, v, w)
+        except Exception as e:
+            LOG.debug(f"straight_traverse: {e}")
 
-    def set_g92_offset(self, *args):
-        print(("set_g92_offset", args))
-
-    def next_line(self, state):
-        print(("next_line", state.sequence_number))
-        self.state = state
+    def set_g92_offset(self, x, y, z, a, b, c, u, v, w):
+        
+        self.g92_offset_x = x
+        self.g92_offset_y = y
+        self.g92_offset_z = z
+        self.g92_offset_a = z
+        self.g92_offset_b = b
+        self.g92_offset_c = c
+        self.g92_offset_u = u
+        self.g92_offset_v = v
+        self.g92_offset_w = w
 
     def set_plane(self, plane):
-        print(("set plane", plane))
+        self.work_planes.append(plane)
 
     def set_feed_rate(self, arg):
-        print(("set feed rate", arg))
+        pass
+        # print(("set feed rate", arg))
 
-    def comment(self, arg):
-        print(("#", arg))
+    def comment(self, comment):
+        pass
+        # print(("#", comment))
 
     def straight_traverse(self, x, y, z, a, b, c, u, v, w):
         try:
@@ -551,16 +603,17 @@ class PropertiesCanon(BaseCanon):
     def change_tool(self, pocket):
         if pocket != -1:
             self.tool_calls += 1
-        print(("pocket", pocket))
+        # print(("pocket", pocket))
 
     def next_line(self, st):
         self.num_lines += 1
+        
         # state attributes
         # 'block', 'cutter_side', 'distance_mode', 'feed_mode', 'feed_rate',
         # 'flood', 'gcodes', 'mcodes', 'mist', 'motion_mode', 'origin', 'units',
         # 'overrides', 'path_mode', 'plane', 'retract_mode', 'sequence_number',
         # 'speed', 'spindle', 'stopping', 'tool_length_offset', 'toolchange',
-        print(("state", st))
-        print(("seq", st.sequence_number))
-        print(("MCODES", st.mcodes))
-        print(("TOOLCHANGE", st.toolchange))
+        # print(("state", st))
+        # print(("seq", st.sequence_number))
+        # print(("MCODES", st.mcodes))
+        # print(("TOOLCHANGE", st.toolchange))
