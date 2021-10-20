@@ -186,7 +186,7 @@ class Status(DataPlugin):
         chan = self.mdi_history
         cmds = chan.value
         # only attempt to delete if index is in range.
-        if len(cmds) > 0:
+        if mdi_index > -1 and mdi_index < len(cmds):
             del cmds[mdi_index]
             chan.signal.emit(cmds)
         else:
