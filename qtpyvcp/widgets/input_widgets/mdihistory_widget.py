@@ -129,10 +129,19 @@ class MDIHistory(QListWidget, CMDWidget):
             self.takeItem(row)
             if not self.mdi_listorder_natural:
                 STATUS.mdi_remove_entry(row)
+                if row >= self.count():
+                    row = self.count()-1
+                self.setCurrentRow(row)
             else:
+                # The order of MDI is latest LAST in the list.
+                # framework mdi history is latest FIRST in the list.
                 history_length = len(STATUS.mdi_history.value)
                 history_target_row = history_length-1-row 
                 STATUS.mdi_remove_entry(history_target_row)
+                row = row - 1
+                if row < 0 and self.count() > 0:
+                    row = 0
+                self.setCurrentRow(row)
 
     @Slot()
     def runFromSelection(self):
