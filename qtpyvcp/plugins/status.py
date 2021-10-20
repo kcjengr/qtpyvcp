@@ -185,8 +185,12 @@ class Status(DataPlugin):
         # TODO: This has some potential code redundancy. Follow above pattern
         chan = self.mdi_history
         cmds = chan.value
-        del cmds[mdi_index]
-        chan.signal.emit(cmds)
+        # only attempt to delete if index is in range.
+        if len(cmds) > 0:
+            del cmds[mdi_index]
+            chan.signal.emit(cmds)
+        else:
+            LOG.debug("---------mdi history delete attempt on zero list")
 
     def mdi_swap_entries(self, index1, index2):
         """Swicth two entries about."""
