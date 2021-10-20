@@ -190,7 +190,7 @@ class Status(DataPlugin):
             del cmds[mdi_index]
             chan.signal.emit(cmds)
         else:
-            LOG.debug("---------mdi history delete attempt on zero list")
+            LOG.debug("---------mdi history delete attempt index out of range")
 
     def mdi_swap_entries(self, index1, index2):
         """Swicth two entries about."""
