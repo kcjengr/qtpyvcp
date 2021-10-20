@@ -21,8 +21,18 @@ Do I need to install master branch?
 
 Only if you want to use linuxcnc 2.9.0~pre or help porting qtpyvcp to python3
 
-Master branch is our develop channel, we offer stable releases but none yet for Python3
-latest python2 release is 0.3.9
+Master branch is our develop channel, we offer stable releases but none yet for Python3,
+latest python2 release is 0.3.19
+
+a maintenance branch is keept until linuxcnc 2.9 is released
+
+to install it you need to run
+
+```
+pip install -U git+https://github.com/kcjengr/qtpyvcp@python2_maintenance
+```
+
+
 
 What I need to install?
 You may need a linuxcnc 2.9.0~pre or latter
