@@ -17,7 +17,7 @@ install from PyPi. Which one you choose depends on how you intend to use QtPyVCP
 .. Warning::
 
     QtPyVCP master branch is currently python3 only, there is no stable release for python3 yet
-    if you need a stable release please download 0.3.9 the latest with python2 support
+    if you need a stable release please download 0.3.19 the latest with python2 support
 
 
 .. Note::
