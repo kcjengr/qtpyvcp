@@ -40,11 +40,6 @@ class VTKWidgetPlugin(_DesignerPlugin):
     def isContainer(self):
         return True
 
-from .atc_widget.atc import DynATC
-class DynATCPlugin(_DesignerPlugin):
-    def pluginClass(self):
-        return DynATC
-
 from .notification_widget import NotificationWidget
 class NotificationPlugin(_DesignerPlugin):
     def pluginClass(self):
