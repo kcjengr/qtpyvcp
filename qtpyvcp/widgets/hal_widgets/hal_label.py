@@ -41,7 +41,7 @@ class HalLabel(QLabel, HALWidget, HalType):
         self.setValue(0)
 
     def setValue(self, value):
-        self.setText(self._fmt % value)
+        self.setText(f"{value}")
 
     @Property(str)
     def textFormat(self):
@@ -79,11 +79,11 @@ class HalLabel(QLabel, HALWidget, HalType):
         obj_name = self.getPinBaseName()
 
         # add label.enable HAL pin
-        self._enable_pin = comp.addPin(obj_name + ".enable", "bit", "in")
+        self._enable_pin = comp.addPin(f"{obj_name}.enable", "bit", "in")
         self._enable_pin.value = self.isEnabled()
         self._enable_pin.valueChanged.connect(self.setEnabled)
 
         # add label.in HAL pin
-        self._in_pin = comp.addPin(obj_name + ".in", self._typ, "in")
+        self._in_pin = comp.addPin(f"{obj_name}.in", self._typ, "in")
         self.setValue(self._in_pin.value)
         self._in_pin.valueChanged.connect(self.setValue)
