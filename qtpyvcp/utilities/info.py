@@ -205,6 +205,22 @@ class _Info(object):
             temp = 15.0
         return float(temp) * 60
 
+    def getJogAngularVelocity(self):
+        # get default jog angular velocity
+        # must convert from self.ini's units per second to hazzys's units per minute
+        temp = self.ini.find('DISPLAY', 'DEFAULT_ANGULAR_VELOCITY')
+        if not temp:
+            temp = 3.0
+        return float(temp) * 60
+
+    def getMaxJogAngularVelocity(self):
+        # get max jog angular velocity
+        # must convert from self.ini's units per second to hazzy's units per minute
+        temp = self.ini.find('DISPLAY', 'MAX_ANGULAR_VELOCITY')
+        if not temp:
+            temp = 10.0
+        return float(temp) * 60
+
     def defaultSpindleSpeed(self):
         # check for default spindle speed settings
         temp = self.ini.find('DISPLAY', 'DEFAULT_SPINDLE_SPEED')
