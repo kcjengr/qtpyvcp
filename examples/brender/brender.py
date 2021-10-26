@@ -15,9 +15,9 @@ class MainWindow(VCPMainWindow):
 
         self.setWindowTitle("Brender VCP")
 
-    # ==========================================================================
-    #  Add/Override methods and slots below to customize the main window
-    # ==========================================================================
+        # ==========================================================================
+        #  Add/Override methods and slots below to customize the main window
+        # ==========================================================================
 
         actions.bindWidget(self.flood, action='coolant.flood.toggle')
         actions.bindWidget(self.floodCheckBox, action="coolant.flood.toggle")

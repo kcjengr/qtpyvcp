@@ -99,9 +99,9 @@
                </widget>
               </item>
               <item>
-               <widget class="GcodeEditor" name="gcodeeditor">
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
+               <widget class="GcodeTextEdit" name="gcodetextedit">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
                 </property>
                </widget>
               </item>
@@ -123,62 +123,24 @@
               </item>
              </layout>
             </widget>
-            <widget class="GcodeBackplot" name="gcodebackplot">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="renderProgramAlpha" stdset="0">
-              <bool>true</bool>
-             </property>
-             <property name="backgroundColor">
-              <color>
-               <red>46</red>
-               <green>52</green>
-               <blue>54</blue>
-              </color>
-             </property>
-             <widget class="QComboBox" name="comboBox">
-              <property name="geometry">
-               <rect>
-                <x>10</x>
-                <y>10</y>
-                <width>79</width>
-                <height>23</height>
-               </rect>
-              </property>
-              <item>
-               <property name="text">
-                <string>p</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>x</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>y</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>z</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>z2</string>
-               </property>
-              </item>
-             </widget>
-            </widget>
+           </widget>
+          </item>
+          <item>
+           <widget class="VTKBackPlot" name="vtkbackplot">
+            <property name="backgroundColor" stdset="0">
+             <color>
+              <red>154</red>
+              <green>153</green>
+              <blue>150</blue>
+             </color>
+            </property>
+            <property name="backgroundColor2" stdset="0">
+             <color>
+              <red>246</red>
+              <green>245</green>
+              <blue>244</blue>
+             </color>
+            </property>
            </widget>
           </item>
          </layout>
@@ -1549,299 +1511,51 @@
            <property name="topMargin">
             <number>6</number>
            </property>
-           <item row="4" column="3">
-            <widget class="DROWidget" name="dro_8">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+           <item row="1" column="1">
+            <widget class="DROLabel" name="drolabel">
              <property name="font">
               <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="referenceType" stdset="0">
-              <enum>DROWidget::DistanceToGo</enum>
-             </property>
-             <property name="axis" stdset="0">
-              <enum>DROWidget::A</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <widget class="QLabel" name="label_3">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
+               <family>Noto Sans Adlam</family>
                <pointsize>12</pointsize>
                <weight>75</weight>
                <bold>true</bold>
               </font>
              </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
+             <property name="lineWidth">
+              <number>1</number>
              </property>
-             <property name="text">
-              <string>DTG</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="DROWidget" name="dro">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
+             <property name="scaledContents">
+              <bool>false</bool>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="referenceType" stdset="0">
-              <enum>DROWidget::Relative</enum>
+             <property name="wordWrap">
+              <bool>false</bool>
              </property>
-            </widget>
-           </item>
-           <item row="3" column="2">
-            <widget class="DROWidget" name="dro_3">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+             <property name="margin">
+              <number>5</number>
              </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             <property name="indent">
+              <number>-1</number>
              </property>
              <property name="referenceType" stdset="0">
-              <enum>DROWidget::Relative</enum>
+              <number>0</number>
              </property>
-             <property name="axis" stdset="0">
-              <enum>DROWidget::Z</enum>
+             <property name="axisNumber" stdset="0">
+              <number>0</number>
              </property>
-            </widget>
-           </item>
-           <item row="3" column="3">
-            <widget class="DROWidget" name="dro_7">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
+             <property name="inchFormat" stdset="0">
+              <string>%9.4f</string>
              </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
+             <property name="millimeterFormat" stdset="0">
+              <string>%10.3f</string>
              </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
+             <property name="degreeFormat" stdset="0">
+              <string>%10.2f</string>
              </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="referenceType" stdset="0">
-              <enum>DROWidget::DistanceToGo</enum>
-             </property>
-             <property name="axis" stdset="0">
-              <enum>DROWidget::Z</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="0">
-            <widget class="QPushButton" name="pushButton_6">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <italic>false</italic>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="text">
-              <string>A</string>
-             </property>
-            </widget>
-           </item>
-           <item row="4" column="2">
-            <widget class="DROWidget" name="dro_4">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="referenceType" stdset="0">
-              <enum>DROWidget::Relative</enum>
-             </property>
-             <property name="axis" stdset="0">
-              <enum>DROWidget::A</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="3">
-            <widget class="DROWidget" name="dro_5">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="referenceType" stdset="0">
-              <enum>DROWidget::DistanceToGo</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="2" column="2">
-            <widget class="DROWidget" name="dro_2">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="referenceType" stdset="0">
-              <enum>DROWidget::Relative</enum>
-             </property>
-             <property name="axis" stdset="0">
-              <enum>DROWidget::Y</enum>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QPushButton" name="pushButton_3">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>30</width>
-               <height>30</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <weight>75</weight>
-               <italic>false</italic>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="text">
-              <string>X</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
+             <property name="latheMode" stdset="0">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -1872,39 +1586,6 @@
              </property>
              <property name="text">
               <string>REL</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="label">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>20</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Roboto</family>
-               <pointsize>12</pointsize>
-               <weight>75</weight>
-               <bold>true</bold>
-              </font>
-             </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
-             </property>
-             <property name="text">
-              <string>ABS</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -1946,31 +1627,170 @@
              </property>
             </widget>
            </item>
-           <item row="2" column="3">
-            <widget class="DROWidget" name="dro_6">
+           <item row="0" column="1">
+            <widget class="QLabel" name="label">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <family>Roboto</family>
-               <pointsize>16</pointsize>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
               </font>
              </property>
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="text">
+              <string>ABS</string>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="3">
+            <widget class="DROLabel" name="drolabel_3">
+             <property name="font">
+              <font>
+               <family>Noto Sans Adlam</family>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="scaledContents">
+              <bool>false</bool>
+             </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="referenceType" stdset="0">
-              <enum>DROWidget::DistanceToGo</enum>
+             <property name="wordWrap">
+              <bool>false</bool>
              </property>
-             <property name="axis" stdset="0">
-              <enum>DROWidget::Y</enum>
+             <property name="margin">
+              <number>5</number>
+             </property>
+             <property name="indent">
+              <number>-1</number>
+             </property>
+             <property name="referenceType" stdset="0">
+              <number>2</number>
+             </property>
+             <property name="axisNumber" stdset="0">
+              <number>0</number>
+             </property>
+             <property name="inchFormat" stdset="0">
+              <string>%9.4f</string>
+             </property>
+             <property name="millimeterFormat" stdset="0">
+              <string>%10.3f</string>
+             </property>
+             <property name="degreeFormat" stdset="0">
+              <string>%10.2f</string>
+             </property>
+             <property name="latheMode" stdset="0">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QPushButton" name="pushButton_3">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <italic>false</italic>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="text">
+              <string>X</string>
+             </property>
+             <property name="checkable">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="DROLabel" name="drolabel_2">
+             <property name="font">
+              <font>
+               <family>Noto Sans Adlam</family>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="scaledContents">
+              <bool>false</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+             <property name="margin">
+              <number>5</number>
+             </property>
+             <property name="indent">
+              <number>-1</number>
+             </property>
+             <property name="referenceType" stdset="0">
+              <number>1</number>
+             </property>
+             <property name="axisNumber" stdset="0">
+              <number>0</number>
+             </property>
+             <property name="inchFormat" stdset="0">
+              <string>%9.4f</string>
+             </property>
+             <property name="millimeterFormat" stdset="0">
+              <string>%10.3f</string>
+             </property>
+             <property name="degreeFormat" stdset="0">
+              <string>%10.2f</string>
+             </property>
+             <property name="latheMode" stdset="0">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2009,100 +1829,503 @@
              </property>
             </widget>
            </item>
-           <item row="1" column="1">
-            <widget class="DROWidget" name="dro_9">
+           <item row="0" column="3">
+            <widget class="QLabel" name="label_3">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>20</height>
+              </size>
+             </property>
              <property name="font">
               <font>
                <family>Roboto</family>
-               <pointsize>16</pointsize>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
               </font>
              </property>
              <property name="focusPolicy">
               <enum>Qt::NoFocus</enum>
              </property>
+             <property name="text">
+              <string>DTG</string>
+             </property>
              <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QPushButton" name="pushButton_6">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="minimumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>30</width>
+               <height>30</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <weight>75</weight>
+               <italic>false</italic>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="focusPolicy">
+              <enum>Qt::NoFocus</enum>
+             </property>
+             <property name="text">
+              <string>A</string>
              </property>
             </widget>
            </item>
            <item row="2" column="1">
-            <widget class="DROWidget" name="dro_10">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+            <widget class="DROLabel" name="drolabel_4">
              <property name="font">
               <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
+               <family>Noto Sans Adlam</family>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
               </font>
              </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="scaledContents">
+              <bool>false</bool>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="axis" stdset="0">
-              <enum>DROWidget::Y</enum>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+             <property name="margin">
+              <number>5</number>
+             </property>
+             <property name="indent">
+              <number>-1</number>
+             </property>
+             <property name="referenceType" stdset="0">
+              <number>0</number>
+             </property>
+             <property name="axisNumber" stdset="0">
+              <number>1</number>
+             </property>
+             <property name="inchFormat" stdset="0">
+              <string>%9.4f</string>
+             </property>
+             <property name="millimeterFormat" stdset="0">
+              <string>%10.3f</string>
+             </property>
+             <property name="degreeFormat" stdset="0">
+              <string>%10.2f</string>
+             </property>
+             <property name="latheMode" stdset="0">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="2">
+            <widget class="DROLabel" name="drolabel_5">
+             <property name="font">
+              <font>
+               <family>Noto Sans Adlam</family>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="scaledContents">
+              <bool>false</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+             <property name="margin">
+              <number>5</number>
+             </property>
+             <property name="indent">
+              <number>-1</number>
+             </property>
+             <property name="referenceType" stdset="0">
+              <number>1</number>
+             </property>
+             <property name="axisNumber" stdset="0">
+              <number>1</number>
+             </property>
+             <property name="inchFormat" stdset="0">
+              <string>%9.4f</string>
+             </property>
+             <property name="millimeterFormat" stdset="0">
+              <string>%10.3f</string>
+             </property>
+             <property name="degreeFormat" stdset="0">
+              <string>%10.2f</string>
+             </property>
+             <property name="latheMode" stdset="0">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="3">
+            <widget class="DROLabel" name="drolabel_6">
+             <property name="font">
+              <font>
+               <family>Noto Sans Adlam</family>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="scaledContents">
+              <bool>false</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+             <property name="margin">
+              <number>5</number>
+             </property>
+             <property name="indent">
+              <number>-1</number>
+             </property>
+             <property name="referenceType" stdset="0">
+              <number>2</number>
+             </property>
+             <property name="axisNumber" stdset="0">
+              <number>1</number>
+             </property>
+             <property name="inchFormat" stdset="0">
+              <string>%9.4f</string>
+             </property>
+             <property name="millimeterFormat" stdset="0">
+              <string>%10.3f</string>
+             </property>
+             <property name="degreeFormat" stdset="0">
+              <string>%10.2f</string>
+             </property>
+             <property name="latheMode" stdset="0">
+              <number>0</number>
              </property>
             </widget>
            </item>
            <item row="3" column="1">
-            <widget class="DROWidget" name="dro_11">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+            <widget class="DROLabel" name="drolabel_7">
              <property name="font">
               <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
+               <family>Noto Sans Adlam</family>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
               </font>
              </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="scaledContents">
+              <bool>false</bool>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="axis" stdset="0">
-              <enum>DROWidget::Z</enum>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+             <property name="margin">
+              <number>5</number>
+             </property>
+             <property name="indent">
+              <number>-1</number>
+             </property>
+             <property name="referenceType" stdset="0">
+              <number>0</number>
+             </property>
+             <property name="axisNumber" stdset="0">
+              <number>2</number>
+             </property>
+             <property name="inchFormat" stdset="0">
+              <string>%9.4f</string>
+             </property>
+             <property name="millimeterFormat" stdset="0">
+              <string>%10.3f</string>
+             </property>
+             <property name="degreeFormat" stdset="0">
+              <string>%10.2f</string>
+             </property>
+             <property name="latheMode" stdset="0">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="DROLabel" name="drolabel_8">
+             <property name="font">
+              <font>
+               <family>Noto Sans Adlam</family>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="scaledContents">
+              <bool>false</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+             <property name="margin">
+              <number>5</number>
+             </property>
+             <property name="indent">
+              <number>-1</number>
+             </property>
+             <property name="referenceType" stdset="0">
+              <number>1</number>
+             </property>
+             <property name="axisNumber" stdset="0">
+              <number>2</number>
+             </property>
+             <property name="inchFormat" stdset="0">
+              <string>%9.4f</string>
+             </property>
+             <property name="millimeterFormat" stdset="0">
+              <string>%10.3f</string>
+             </property>
+             <property name="degreeFormat" stdset="0">
+              <string>%10.2f</string>
+             </property>
+             <property name="latheMode" stdset="0">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="3">
+            <widget class="DROLabel" name="drolabel_9">
+             <property name="font">
+              <font>
+               <family>Noto Sans Adlam</family>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="scaledContents">
+              <bool>false</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+             <property name="margin">
+              <number>5</number>
+             </property>
+             <property name="indent">
+              <number>-1</number>
+             </property>
+             <property name="referenceType" stdset="0">
+              <number>2</number>
+             </property>
+             <property name="axisNumber" stdset="0">
+              <number>2</number>
+             </property>
+             <property name="inchFormat" stdset="0">
+              <string>%9.4f</string>
+             </property>
+             <property name="millimeterFormat" stdset="0">
+              <string>%10.3f</string>
+             </property>
+             <property name="degreeFormat" stdset="0">
+              <string>%10.2f</string>
+             </property>
+             <property name="latheMode" stdset="0">
+              <number>0</number>
              </property>
             </widget>
            </item>
            <item row="4" column="1">
-            <widget class="DROWidget" name="dro_12">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
+            <widget class="DROLabel" name="drolabel_10">
              <property name="font">
               <font>
-               <family>Roboto</family>
-               <pointsize>16</pointsize>
+               <family>Noto Sans Adlam</family>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
               </font>
              </property>
-             <property name="focusPolicy">
-              <enum>Qt::NoFocus</enum>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="scaledContents">
+              <bool>false</bool>
              </property>
              <property name="alignment">
               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
              </property>
-             <property name="axis" stdset="0">
-              <enum>DROWidget::A</enum>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+             <property name="margin">
+              <number>5</number>
+             </property>
+             <property name="indent">
+              <number>-1</number>
+             </property>
+             <property name="referenceType" stdset="0">
+              <number>0</number>
+             </property>
+             <property name="axisNumber" stdset="0">
+              <number>3</number>
+             </property>
+             <property name="inchFormat" stdset="0">
+              <string>%9.4f</string>
+             </property>
+             <property name="millimeterFormat" stdset="0">
+              <string>%10.3f</string>
+             </property>
+             <property name="degreeFormat" stdset="0">
+              <string>%10.2f</string>
+             </property>
+             <property name="latheMode" stdset="0">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="2">
+            <widget class="DROLabel" name="drolabel_11">
+             <property name="font">
+              <font>
+               <family>Noto Sans Adlam</family>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="scaledContents">
+              <bool>false</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+             <property name="margin">
+              <number>5</number>
+             </property>
+             <property name="indent">
+              <number>-1</number>
+             </property>
+             <property name="referenceType" stdset="0">
+              <number>1</number>
+             </property>
+             <property name="axisNumber" stdset="0">
+              <number>3</number>
+             </property>
+             <property name="inchFormat" stdset="0">
+              <string>%9.4f</string>
+             </property>
+             <property name="millimeterFormat" stdset="0">
+              <string>%10.3f</string>
+             </property>
+             <property name="degreeFormat" stdset="0">
+              <string>%10.2f</string>
+             </property>
+             <property name="latheMode" stdset="0">
+              <number>0</number>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="3">
+            <widget class="DROLabel" name="drolabel_12">
+             <property name="font">
+              <font>
+               <family>Noto Sans Adlam</family>
+               <pointsize>12</pointsize>
+               <weight>75</weight>
+               <bold>true</bold>
+              </font>
+             </property>
+             <property name="lineWidth">
+              <number>1</number>
+             </property>
+             <property name="scaledContents">
+              <bool>false</bool>
+             </property>
+             <property name="alignment">
+              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+             </property>
+             <property name="wordWrap">
+              <bool>false</bool>
+             </property>
+             <property name="margin">
+              <number>5</number>
+             </property>
+             <property name="indent">
+              <number>-1</number>
+             </property>
+             <property name="referenceType" stdset="0">
+              <number>2</number>
+             </property>
+             <property name="axisNumber" stdset="0">
+              <number>3</number>
+             </property>
+             <property name="inchFormat" stdset="0">
+              <string>%9.4f</string>
+             </property>
+             <property name="millimeterFormat" stdset="0">
+              <string>%10.3f</string>
+             </property>
+             <property name="degreeFormat" stdset="0">
+              <string>%10.2f</string>
+             </property>
+             <property name="latheMode" stdset="0">
+              <number>0</number>
              </property>
             </widget>
            </item>
@@ -2380,7 +2603,7 @@
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuExit">
@@ -2722,67 +2945,10 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>RecentFileComboBox</class>
-   <extends>QComboBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
-  </customwidget>
-  <customwidget>
-   <class>ActionCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>qtpyvcp.widgets.button_widgets.action_checkbox</header>
-  </customwidget>
-  <customwidget>
-   <class>GcodeBackplot</class>
-   <extends>QWidget</extends>
-   <header>qtpyvcp.widgets.display_widgets.gcode_backplot.gcode_backplot</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>GcodeEditor</class>
-   <extends>QFrame</extends>
-   <header>qtpyvcp.widgets.input_widgets.gcode_editor</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>VCPMainWindow</class>
    <extends>QMainWindow</extends>
    <header>qtpyvcp.widgets.form_widgets.main_window</header>
    <container>1</container>
-  </customwidget>
-  <customwidget>
-   <class>DialogButton</class>
-   <extends>QPushButton</extends>
-   <header>qtpyvcp.widgets.button_widgets.dialog_button</header>
-  </customwidget>
-  <customwidget>
-   <class>SubCallButton</class>
-   <extends>QPushButton</extends>
-   <header>qtpyvcp.widgets.button_widgets.subcall_button</header>
-  </customwidget>
-  <customwidget>
-   <class>ActionComboBox</class>
-   <extends>QComboBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.action_combobox</header>
-  </customwidget>
-  <customwidget>
-   <class>ActionSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>qtpyvcp.widgets.button_widgets.action_spinbox</header>
-  </customwidget>
-  <customwidget>
-   <class>MDIButton</class>
-   <extends>QPushButton</extends>
-   <header>qtpyvcp.widgets.button_widgets.mdi_button</header>
-  </customwidget>
-  <customwidget>
-   <class>MDIEntry</class>
-   <extends>QLineEdit</extends>
-   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
-  </customwidget>
-  <customwidget>
-   <class>ActionSlider</class>
-   <extends>QSlider</extends>
-   <header>qtpyvcp.widgets.input_widgets.action_slider</header>
   </customwidget>
   <customwidget>
    <class>ActionButton</class>
@@ -2790,37 +2956,76 @@
    <header>qtpyvcp.widgets.button_widgets.action_button</header>
   </customwidget>
   <customwidget>
-   <class>DROWidget</class>
-   <extends>QLabel</extends>
-   <header>qtpyvcp.widgets.display_widgets.dro_widget</header>
+   <class>ActionCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>qtpyvcp.widgets.button_widgets.action_checkbox</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>qtpyvcp.widgets.button_widgets.action_spinbox</header>
+  </customwidget>
+  <customwidget>
+   <class>SubCallButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.subcall_button</header>
+  </customwidget>
+  <customwidget>
+   <class>MDIButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.mdi_button</header>
+  </customwidget>
+  <customwidget>
+   <class>DialogButton</class>
+   <extends>QPushButton</extends>
+   <header>qtpyvcp.widgets.button_widgets.dialog_button</header>
   </customwidget>
   <customwidget>
    <class>StatusLabel</class>
    <extends>QLabel</extends>
    <header>qtpyvcp.widgets.display_widgets.status_label</header>
   </customwidget>
+  <customwidget>
+   <class>DROLabel</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.display_widgets.dro_label</header>
+  </customwidget>
+  <customwidget>
+   <class>VTKBackPlot</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.display_widgets.vtk_backplot.vtk_backplot</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>MDIEntry</class>
+   <extends>QLineEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
+  </customwidget>
+  <customwidget>
+   <class>GcodeTextEdit</class>
+   <extends>QPlainTextEdit</extends>
+   <header>qtpyvcp.widgets.input_widgets.gcode_text_edit</header>
+  </customwidget>
+  <customwidget>
+   <class>RecentFileComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.recent_file_combobox</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionSlider</class>
+   <extends>QSlider</extends>
+   <header>qtpyvcp.widgets.input_widgets.action_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>ActionComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.action_combobox</header>
+  </customwidget>
  </customwidgets>
  <resources>
   <include location="../resources/brender.qrc"/>
  </resources>
- <connections>
-  <connection>
-   <sender>comboBox</sender>
-   <signal>currentIndexChanged(QString)</signal>
-   <receiver>gcodebackplot</receiver>
-   <slot>setView(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>472</x>
-     <y>64</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>474</x>
-     <y>112</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
  <designerdata>
   <property name="gridDeltaX">
    <number>10</number>
