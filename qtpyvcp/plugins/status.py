@@ -198,10 +198,17 @@ class Status(DataPlugin):
             LOG.debug("---------mdi history delete attempt index out of range")
 
     def mdi_swap_entries(self, index1, index2):
-        """Swicth two entries about."""
+        """Switch two entries about."""
         chan = self.mdi_history
         cmds = chan.value
         cmds[index2], cmds[index1] = cmds[index1], cmds[index2]
+        chan.signal.emit(cmds)
+    
+    def mdi_remove_all(self):
+        """Remove all entries in mdi history"""
+        chan = self.mdi_history
+        cmds = chan.value
+        cmds.clear()
         chan.signal.emit(cmds)
 
     @DataChannel
