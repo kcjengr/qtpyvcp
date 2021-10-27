@@ -13,8 +13,6 @@ running commands to complete.
 
 ToDo:
     * add/test for styling based on the class queue codes
-    * be able to select and remove unwanted commands from the history
-    * be able to select a row and run commands from that point upwards
 
 """
 import os
@@ -107,7 +105,7 @@ class MDIHistory(QListWidget, CMDWidget):
 
     @Slot()
     def clearQueue(self):
-        """Clear queue items yet to be run."""
+        """Clear queue items pending run state for items yet to be run."""
         if self.mdi_listorder_natural:
             list_length = range(self.count())
         else:
@@ -123,25 +121,37 @@ class MDIHistory(QListWidget, CMDWidget):
 
     @Slot()
     def removeSelectedItem(self):
-        """Remove the selected line"""
-        row = self.currentRow()
-        if row != -1:
-            self.takeItem(row)
-            if not self.mdi_listorder_natural:
-                STATUS.mdi_remove_entry(row)
-                if row >= self.count():
-                    row = self.count()-1
-                self.setCurrentRow(row)
+        """Remove the selected lines"""
+        selItems = self.selectedItems()
+        if len(selItems) > 0:
+            if self.mdi_listorder_natural:
+                firstItemRow = self.row(selItems[0]) - 1
             else:
-                # The order of MDI is latest LAST in the list.
-                # framework mdi history is latest FIRST in the list.
-                history_length = len(STATUS.mdi_history.value)
-                history_target_row = history_length-1-row 
-                STATUS.mdi_remove_entry(history_target_row)
-                row = row - 1
-                if row < 0 and self.count() > 0:
-                    row = 0
-                self.setCurrentRow(row)
+                firstItemRow = self.row(selItems[len(selItems)-1])
+            for item in selItems:
+                row = self.row(item)
+                self.takeItem(row)
+                if not self.mdi_listorder_natural:
+                    STATUS.mdi_remove_entry(row)
+                else:
+                    # The order of MDI is latest LAST in the list.
+                    # framework mdi history is latest FIRST in the list.
+                    history_length = len(STATUS.mdi_history.value)
+                    history_target_row = history_length-1-row 
+                    STATUS.mdi_remove_entry(history_target_row)
+            # select an item that makes sense for the case of a single
+            # item having been selected and deleted.
+            if firstItemRow < 0 and self.count() > 0:
+                row = 0
+            else:
+                row = firstItemRow
+            self.setCurrentRow(row)
+            
+    @Slot()
+    def removeAll(self):
+        """Remove all items from list and from history"""
+        self.clear()
+        STATUS.mdi_remove_all()
 
     @Slot()
     def runFromSelection(self):
