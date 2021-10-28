@@ -116,6 +116,8 @@ class FileSystemTable(QTableView, TableType):
 
         self._table_type = TableType.Local
         self._hidden_columns = ''
+        self._name_columns_width = 0
+        self._fixed_name_column = False
 
         # This prevents doing unneeded initialization
         # when QtDesginer loads the plugin.
@@ -458,6 +460,33 @@ class FileSystemTable(QTableView, TableType):
                 header.hideSection(col)
             else:
                 header.showSection(col)
+
+
+    @Property(bool)
+    def fixedMameColumn(self):
+        """Allows to set a fixed width defined in the nameColumnsWidth property"""
+        return self._fixed_name_column
+
+    @fixedMameColumn.setter
+    def fixedMameColumn(self, value):
+        self._fixed_name_column = value
+        
+        if self._fixed_name_column:
+            self.setColumnWidth(0, self._fixed_name_column)
+            
+
+    @Property(int)
+    def nameColumnsWidth(self):
+        """If the fixedMameColumn is enabled sets its width."""
+        return self._name_columns_width
+
+    @nameColumnsWidth.setter
+    def nameColumnsWidth(self, width):
+        self._name_columns_width = width
+        
+        if self._fixed_name_column:
+            self.setColumnWidth(0, self._name_columns_width)
+        
 
     def ask_dialog(self, message):
         box = QMessageBox.question(self.parent,
