@@ -5,6 +5,7 @@ from qtpyvcp.utilities.settings import setting
 
 # Set up logging
 from qtpyvcp.utilities import logger
+from abc import abstractstaticmethod
 LOG = logger.getLogger(__name__)
 
 from qtpyvcp.actions.base_actions import setTaskMode
@@ -846,6 +847,8 @@ override_limits.bindOk = _override_limits_bindOk
 
 DEFAULT_JOG_SPEED = INFO.getJogVelocity()
 MAX_JOG_SPEED = INFO.getMaxJogVelocity()
+DEFAULT_JOG_ANGULAR_SPEED = INFO.getJogAngularVelocity()
+MAX_JOG_ANGULAR_SPEED = INFO.getMaxJogAngularVelocity()
 
 @setting('machine.jog.linear-speed',
          default_value=DEFAULT_JOG_SPEED,
@@ -881,14 +884,36 @@ def jog_linear_speed_percentage(obj, percentage):
     jog_linear_speed.setValue(float(MAX_JOG_SPEED * percentage / 100))
 
 
-@setting('machine.jog.angular-speed', default_value=100.0, persistent=False)
+@setting('machine.jog.angular-speed',
+         default_value=DEFAULT_JOG_ANGULAR_SPEED,
+         min_value=0,
+         max_value=MAX_JOG_ANGULAR_SPEED,
+         persistent=True)
 def jog_angular_speed(obj):
     return obj.value
 
 @jog_angular_speed.setter
 def jog_angular_speed(obj, value):
+    obj.value = obj.clampValue(value)
+    jog_angular_speed.signal.emit(obj.value)
     LOG.debug("Setting Jog Angular Speed: %d", value)
-    obj.value = value
+
+    percentage = int(obj.value * 100 / MAX_JOG_ANGULAR_SPEED)
+    jog_angular_speed_percentage.value = percentage
+    jog_angular_speed_percentage.signal.emit(percentage)
+
+@setting('machine.jog.angular-speed-percentage',
+         default_value=int(DEFAULT_JOG_ANGULAR_SPEED * 100 / MAX_JOG_ANGULAR_SPEED),
+         min_value=0,
+         max_value=100,
+         persistent=False)
+def jog_angular_speed_percentage(obj):
+    return obj.value
+
+@jog_angular_speed_percentage.setter
+def jog_angular_speed_percentage(obj, percentage):
+    LOG.debug("Setting jog angular speed percentage: %d", percentage)
+    jog_angular_speed.setValue(float(MAX_JOG_ANGULAR_SPEED * percentage / 100))
 
 
 @setting('machine.jog.mode-incremental', default_value=True)
@@ -958,7 +983,8 @@ class jog:
     """Jog Actions Group"""
 
     max_linear_speed = INFO.getMaxJogVelocity()
-    angular_speed = INFO.getJogVelocity()
+    max_angular_speed = INFO.getMaxJogAngularVelocity()
+    angular_speed = INFO.getJogAngularVelocity()
     continuous = False
     increment = INFO.getIncrements()[0]
 
@@ -1048,6 +1074,10 @@ class jog:
         """Set Jog Linear Speed Percentage"""
         jog_linear_speed_percentage.setValue(percentage)
 
+    @staticmethod
+    def set_angular_speed_percentage(percentage):
+        """Set Jog Angular Speed Percentage"""
+        jog_angular_speed_percentage.setValue(percentage)
 
 def _jog_speed_slider_bindOk(widget):
 
@@ -1061,11 +1091,27 @@ def _jog_speed_slider_bindOk(widget):
     except AttributeError:
         pass
 
+def _jog_angular_speed_slider_bindOk(widget):
+
+    try:
+        # these will only work for QSlider or QSpinBox
+        widget.setMinimum(0)
+        widget.setMaximum(100)
+        widget.setValue((jog.angular_speed.getValue() / jog.max_angular_speed) * 100)
+
+        # jog.linear_speed.connect(lambda v: widget.setValue(v * 100))
+    except AttributeError:
+        pass
+
+
 jog.set_linear_speed.ok = jog.set_angular_speed.ok = lambda *a, **k: True
 jog.set_linear_speed.bindOk = jog.set_angular_speed.bindOk = lambda *a, **k: True
 
 jog.set_linear_speed_percentage.ok = lambda *a, **k: True
 jog.set_linear_speed_percentage.bindOk = _jog_speed_slider_bindOk
+
+jog.set_angular_speed_percentage.ok = lambda *a, **k: True
+jog.set_angular_speed_percentage.bindOk = _jog_angular_speed_slider_bindOk
 
 
 def _jog_axis_ok(axis, direction=0, widget=None):
