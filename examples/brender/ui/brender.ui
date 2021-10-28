@@ -141,6 +141,13 @@
               <blue>244</blue>
              </color>
             </property>
+            <property name="feedColor" stdset="0">
+             <color>
+              <red>255</red>
+              <green>120</green>
+              <blue>0</blue>
+             </color>
+            </property>
            </widget>
           </item>
          </layout>
