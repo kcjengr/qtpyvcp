@@ -6,6 +6,9 @@ from qtpyvcp.widgets import HALWidget
 
 from . import HalType
 
+# Setup logging
+from qtpyvcp.utilities.logger import getLogger
+LOG = getLogger(__name__)
 
 class HalLabel(QLabel, HALWidget, HalType):
     """HAL Label
@@ -36,12 +39,16 @@ class HalLabel(QLabel, HALWidget, HalType):
         self._enable_pin = None
 
         self._typ = "float"
-        self._fmt = "%s"
+        self._fmt = ".2f"
+        
+        self._value = 0
 
         self.setValue(0)
 
     def setValue(self, value):
-        self.setText(f"{value}")
+        self._value = value
+        self.setText(f"{value:{self._fmt}}")
+            
 
     @Property(str)
     def textFormat(self):
@@ -50,17 +57,14 @@ class HalLabel(QLabel, HALWidget, HalType):
         Args:
             fmt (str) : A valid python style format string. Defaults to ``%s``.
         """
+        
         return self._fmt
 
     @textFormat.setter
     def textFormat(self, fmt):
         self._fmt = fmt
-        try:
-            val = {'bit': False, 'u32': 0, 's32': 0, 'float': 0.0}[self._typ]
-            self.setValue(val)
-        except:
-            pass
-
+        self.setValue(self._value)
+             
     @Property(HalType)
     def pinType(self):
         return getattr(HalType, self._typ)
@@ -69,10 +73,10 @@ class HalLabel(QLabel, HALWidget, HalType):
     def pinType(self, typ_enum):
         self._typ = HalType.toString(typ_enum)
         try:
-            val = {'bit': False, 'u32': 0, 's32': 0, 'float': 0.0}[self._typ]
+            val = {'bit': False, 'u32': 0, 's32': 0, 'float': 0.0}[self._typ.encode("utf-8")]
             self.setValue(val)
-        except:
-            pass
+        except Exception as ex:
+            LOG.debug(ex)
 
     def initialize(self):
         comp = hal.getComponent()
