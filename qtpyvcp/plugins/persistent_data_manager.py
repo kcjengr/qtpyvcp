@@ -46,9 +46,11 @@ class PersistentDataManager(Plugin):
         LOG.debug("Writing persistent data to file: %s", self.persistence_file)
         if self.serialization_method == 'json':
             str_data = self.serializer.dumps(self.data, indent=4, sort_keys=True)
+            write_method = "w"
         else:
             str_data = self.serializer.dumps(self.data,
                                              protocol=self.serializer.HIGHEST_PROTOCOL)
+            write_method = "wb"
 
-        with open(self.persistence_file, 'wb') as fh:
+        with open(self.persistence_file, write_method) as fh:
             fh.write(str_data)
