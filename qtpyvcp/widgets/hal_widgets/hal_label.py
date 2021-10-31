@@ -40,10 +40,13 @@ class HalLabel(QLabel, HALWidget, HalType):
 
         self._typ = "float"
         self._fmt = ".2f"
+        
+        self._value = 0
 
         self.setValue(0)
 
     def setValue(self, value):
+        self._value = value
         self.setText(f"{value:{self._fmt}}")
             
 
@@ -60,7 +63,7 @@ class HalLabel(QLabel, HALWidget, HalType):
     @textFormat.setter
     def textFormat(self, fmt):
         self._fmt = fmt
-            
+        self.setValue(self._value)
              
     @Property(HalType)
     def pinType(self):
