@@ -73,7 +73,7 @@ class HalLabel(QLabel, HALWidget, HalType):
     def pinType(self, typ_enum):
         self._typ = HalType.toString(typ_enum)
         try:
-            val = {'bit': False, 'u32': 0, 's32': 0, 'float': 0.0}[self._typ.encode("utf-8")]
+            val = {'bit': False, 'u32': 0, 's32': 0, 'float': 0.0}[self._typ]
             self.setValue(val)
         except Exception as ex:
             LOG.debug(ex)
