@@ -149,6 +149,7 @@ class GcodeTextEdit(QPlainTextEdit):
         self.focused_line = 1
         self.current_line_background = QColor(self.palette().alternateBase())
         self.readonly = False
+        self.syntax_highlighting = False
 
         self.old_docs = []
         # set the custom margin
