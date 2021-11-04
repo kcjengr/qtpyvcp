@@ -67,7 +67,43 @@ class VCPBaseWidget(VCPPrimitiveWidget):
         self._rules = '[]'
         self._style = ''
         self._data_channels = []
+        self._security_level = 0
 
+    #
+    # Security implementation
+    #
+    
+    @Property(int)
+    def security(self):
+        """ Security level
+        
+        An integer representing the security level for a widget.
+        The higher the integer value the higher the operator access level
+        needs to be to be able to interact with the widget.
+        
+        Example:
+        
+            security = 0 requires an operator to have an assigned security value
+            of 0 or more.  This is essentially the lowest security rating.
+            Negative numbers having no effect.
+            
+            security = 5 requires an operator to have an assigned security level
+            of 5 or more to interact with the widget.  So an operator with a
+            rating of 2 will not be able to interact with the widget. The widget
+            will be represented as "disabled" to them.
+        
+        returns:
+            int
+        """
+        return self._security_level
+
+    @security.setter
+    def security(self, security):
+        self._security_level = security
+
+    #
+    # Style Rules implementation
+    #
     def setStyleClass(self, style_class):
         """Set the QSS style class for the widget"""
         self.setProperty('style', style_class)
