@@ -1,3 +1,21 @@
+"""
+Plasma Processes Plugin
+--------------------
+
+Plugin to provide data storage and exposure for plasma table processes.
+
+Example entry into yaml config file:
+data_plugins:
+  plasmaprocesses:
+    provider: qtpyvcp.plugins.plasma_processes:PlasmaProcesses
+    kwargs:
+        # valid db_type string is "sqlite" or any other text.
+        db_type: "sqlite"
+        # connection_string is only used for non sqlite DBs.
+        # Use a string that is appropriate for the specific DB in use.
+        connect_string: "mysql+pymysql://someuser:somepassword@somehostname/plasma_table"
+"""
+
 import os
 
 from qtpyvcp.utilities.logger import getLogger
@@ -16,10 +34,11 @@ from requests.sessions import session
 LOG = getLogger(__name__)
 BASE = declarative_base()
 
+
 class Gas(BASE):
     __tablename__ = 'gas'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String(100))
     
     def __init__(self, name):
         self.name = name
@@ -32,7 +51,7 @@ class Gas(BASE):
 class LeadIn(BASE):
     __tablename__ = 'leadin'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String(100))
     
     def __init__(self, name):
         self.name = name
@@ -44,7 +63,7 @@ class LeadIn(BASE):
 class Machine(BASE):
     __tablename__ = 'machine'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String(100))
     service_height = Column(Integer)
 
     def __init__(self, name, service_height):
@@ -58,7 +77,7 @@ class Machine(BASE):
 class Material(BASE):
     __tablename__ = 'material'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String(100))
 
     def __init__(self, name):
         self.name = name
@@ -70,7 +89,7 @@ class Material(BASE):
 class Thickness(BASE):
     __tablename__ = 'thickness'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String(50))
     thickness = Column(Float)
 
     def __init__(self, name, thickness):
@@ -85,7 +104,7 @@ class Thickness(BASE):
 class LinearSystem(BASE):
     __tablename__ = 'linearsystem'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String(50))
     unit_per_inch = Column(Float)
 
     def __init__(self, name, unit_per_inch):
@@ -100,7 +119,7 @@ class LinearSystem(BASE):
 class PressureSystem(BASE):
     __tablename__ = 'pressuresystem'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String(50))
     unit_per_psi = Column(Float)
 
     def __init__(self, name, unit_per_psi):
@@ -115,7 +134,7 @@ class PressureSystem(BASE):
 class Operation(BASE):
     __tablename__ = 'operation'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String(50))
 
     def __init__(self, name):
         self.name = name
@@ -128,7 +147,7 @@ class Operation(BASE):
 class Quality(BASE):
     __tablename__ = 'quality'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String(50))
 
     def __init__(self, name):
         self.name = name
@@ -141,8 +160,8 @@ class Quality(BASE):
 class Consumable(BASE):
     __tablename__ = 'consumable'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    image_path = Column(String)
+    name = Column(String(50))
+    image_path = Column(String(100))
 
     def __init__(self, name, image_path):
         self.name = name
@@ -204,7 +223,7 @@ class Cutchart(BASE):
     gas = relationship('Gas')
     quality = relationship('Quality')
     # values for this combination of foreign keys
-    name = Column(String)
+    name = Column(String(100))
     pierce_height = Column(Float)
     pierce_delay = Column(Float)
     cut_height = Column(Float)
@@ -243,9 +262,16 @@ class Cutchart(BASE):
 class PlasmaProcesses(Plugin):
     def __init__(self, **kwargs):
         super(PlasmaProcesses, self).__init__()
-        self._persistence_file = normalizePath(path='plasma_table.db',
+        # determine what database to connect to.  Support types are:
+        
+        if kwargs["db_type"] != "sqlite":
+            self._engine = create_engine(kwargs["connect_string"])
+        else:
+            self._persistence_file = normalizePath(path='plasma_table.db',
                                               base=os.getenv('CONFIG_DIR', '~/'))
-        self._engine = create_engine('sqlite:///'+self._persistence_file, echo=True)
+            self._engine = create_engine('sqlite:///'+self._persistence_file, echo=True)
+
+
         # create the database for anything not already in place
         BASE.metadata.create_all(self._engine)
         # create and hold session for use of transactions
