@@ -17,6 +17,8 @@ building complex VCPs.
 
 QtPyVCP master branch is now python 3 only
 
+Requires debian 11
+
 Do I need to install master branch?
 
 Only if you want to use linuxcnc 2.9.0~pre or help porting qtpyvcp to python3
