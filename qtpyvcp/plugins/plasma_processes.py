@@ -24,7 +24,7 @@ from qtpyvcp.plugins import Plugin
 
 from sqlalchemy import create_engine
 from sqlalchemy import Column, ForeignKey
-from sqlalchemy import Integer, String, Float
+from sqlalchemy import Integer, String, Float, LargeBinary
 from sqlalchemy import and_
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
@@ -33,9 +33,16 @@ from requests.sessions import session
 
 LOG = getLogger(__name__)
 BASE = declarative_base()
+IN_DESIGNER = os.getenv('DESIGNER', False)
 
+class addMixin(object):
+    @classmethod
+    def create(cls, session,  **kw):
+        obj = cls(**kw)
+        session.add(obj)
+        session.commit()
 
-class Gas(BASE):
+class Gas(addMixin, BASE):
     __tablename__ = 'gas'
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
@@ -48,7 +55,7 @@ class Gas(BASE):
         return session.query(cls).order_by(cls.name).all()
 
 
-class LeadIn(BASE):
+class LeadIn(addMixin, BASE):
     __tablename__ = 'leadin'
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
@@ -60,7 +67,7 @@ class LeadIn(BASE):
     def get_all(cls, session):
         return session.query(cls).order_by(cls.name).all()
 
-class Machine(BASE):
+class Machine(addMixin, BASE):
     __tablename__ = 'machine'
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
@@ -74,7 +81,7 @@ class Machine(BASE):
     def get_all(cls, session):
         return session.query(cls).order_by(cls.name).all()
 
-class Material(BASE):
+class Material(addMixin, BASE):
     __tablename__ = 'material'
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
@@ -86,7 +93,7 @@ class Material(BASE):
     def get_all(cls, session):
         return session.query(cls).order_by(cls.name).all()
 
-class Thickness(BASE):
+class Thickness(addMixin, BASE):
     __tablename__ = 'thickness'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
@@ -101,7 +108,7 @@ class Thickness(BASE):
         return session.query(cls).order_by(cls.thickness).all()
 
 
-class LinearSystem(BASE):
+class LinearSystem(addMixin, BASE):
     __tablename__ = 'linearsystem'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
@@ -116,7 +123,7 @@ class LinearSystem(BASE):
         return session.query(cls).order_by(cls.name).all()
 
 
-class PressureSystem(BASE):
+class PressureSystem(addMixin, BASE):
     __tablename__ = 'pressuresystem'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
@@ -131,7 +138,7 @@ class PressureSystem(BASE):
         return session.query(cls).order_by(cls.name).all()
 
 
-class Operation(BASE):
+class Operation(addMixin, BASE):
     __tablename__ = 'operation'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
@@ -144,7 +151,7 @@ class Operation(BASE):
         return session.query(cls).order_by(cls.name).all()
 
 
-class Quality(BASE):
+class Quality(addMixin, BASE):
     __tablename__ = 'quality'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
@@ -157,11 +164,12 @@ class Quality(BASE):
         return session.query(cls).order_by(cls.name).all()
 
 
-class Consumable(BASE):
+class Consumable(addMixin, BASE):
     __tablename__ = 'consumable'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
     image_path = Column(String(100))
+    image_blob = Column(LargeBinary)
 
     def __init__(self, name, image_path):
         self.name = name
@@ -172,7 +180,7 @@ class Consumable(BASE):
         return session.query(cls).order_by(cls.name).all()
 
 
-class HoleCut(BASE):
+class HoleCut(addMixin, BASE):
     __tablename__ = 'holecut'
     id = Column(Integer, primary_key=True)
     # Foreign key relationship
@@ -199,7 +207,7 @@ class HoleCut(BASE):
 
 
 
-class Cutchart(BASE):
+class Cutchart(addMixin,BASE):
     __tablename__ = 'cutchart'
     id = Column(Integer, primary_key=True)
     # Foreign keys
@@ -264,8 +272,12 @@ class PlasmaProcesses(Plugin):
         super(PlasmaProcesses, self).__init__()
         # determine what database to connect to.  Support types are:
         
+        # stop data load processing if in designer
+        if IN_DESIGNER:
+            return
+        
         if kwargs["db_type"] != "sqlite":
-            self._engine = create_engine(kwargs["connect_string"])
+            self._engine = create_engine(kwargs["connect_string"], echo=True)
         else:
             self._persistence_file = normalizePath(path='plasma_table.db',
                                               base=os.getenv('CONFIG_DIR', '~/'))
@@ -282,6 +294,10 @@ class PlasmaProcesses(Plugin):
         data = Gas.get_all(self._session)
         LOG.debug("Found Gases.")
         return data
+    
+    def addGas(self, gasname):
+        Gas.create(self._session, name = gasname)
+        LOG.debug(f"Add Gas {gasname}.")
 
     def leadins(self):
         data = LeadIn.get_all(self._session)
@@ -348,6 +364,34 @@ class PlasmaProcesses(Plugin):
         LOG.debug("Look for Cut data.")
         return data
 
+    def addCut(self, **args):
+        # build up forign keys. These are mandatory, we want things
+        # to break if they are not dealt with.
+        Cutchart.create(self._session, \
+                        linearsystemid = args['linearsystems'], \
+                        pressuresystemid = args['pressuresystems'], \
+                        machineid = args['machines'], \
+                        consumableid = args['consumables'], \
+                        materialid = args['materials'], \
+                        thickenssid = args['thicknesses'], \
+                        operationid = args['operations'], \
+                        gasid = args['gases'], \
+                        qualityid = args['qualities'], \
+                        name = args['name'], \
+                        pierce_height = args['pierce_height'], \
+                        pierce_delay = args['pierce_delay'], \
+                        cut_height = args['cut_height'], 
+                        cut_speed = args['cut_speed'], \
+                        volts = args['volts'], \
+                        kerf_width = args['kerf_width'], \
+                        plunge_rate = 0, \
+                        puddle_height = args['puddle_height'], \
+                        puddle_delay = args['puddle_delay'], \
+                        amps = args['amps'], \
+                        pressure = args['pressure'], \
+                        pause_at_end = args['pause_at_end'])
+        LOG.debug(f"Add Gas {args['name']}.")
+
     def initialise(self):
         LOG.debug('Initialising Plasma Processes plugin')
         self._initialized = True
@@ -355,3 +399,9 @@ class PlasmaProcesses(Plugin):
     def terminate(self):
         self._session.close()
         return super().terminate()
+
+if __name__ == "__main__":
+    p = PlasmaProcesses(db_type='mysql', connect_string='mysql+pymysql://james:silk007@localhost/plasma_table')
+    p.initialise()
+    # ToDO: Possible initial load/import routines below here - for OEM type use
+    
