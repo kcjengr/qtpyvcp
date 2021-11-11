@@ -45,7 +45,7 @@ class addMixin(object):
     @classmethod
     def update(cls, session, qry, **kw):
         for k in kw:
-            setattr(qry, k, kw[k])
+            setattr(qry[0], k, kw[k])
         session.commit()
 
 class Gas(addMixin, BASE):
