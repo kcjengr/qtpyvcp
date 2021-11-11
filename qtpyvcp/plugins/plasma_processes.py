@@ -42,6 +42,12 @@ class addMixin(object):
         session.add(obj)
         session.commit()
 
+    @classmethod
+    def update(cls, session, qry, **kw):
+        for k in kw:
+            setattr(qry, k, kw[k])
+        session.commit()
+
 class Gas(addMixin, BASE):
     __tablename__ = 'gas'
     id = Column(Integer, primary_key=True)
@@ -384,13 +390,30 @@ class PlasmaProcesses(Plugin):
                         cut_speed = args['cut_speed'], \
                         volts = args['volts'], \
                         kerf_width = args['kerf_width'], \
-                        plunge_rate = 0, \
+                        plunge_rate = args['plunge_rate'], \
                         puddle_height = args['puddle_height'], \
                         puddle_delay = args['puddle_delay'], \
                         amps = args['amps'], \
                         pressure = args['pressure'], \
                         pause_at_end = args['pause_at_end'])
-        LOG.debug(f"Add Gas {args['name']}.")
+        LOG.debug(f"Add cutchart: {args['name']}.")
+    
+    def updateCut(self, q, **args):
+        Cutchart.update(self._session, q, \
+                        pierce_height = args['pierce_height'], \
+                        pierce_delay = args['pierce_delay'], \
+                        cut_height = args['cut_height'], 
+                        cut_speed = args['cut_speed'], \
+                        volts = args['volts'], \
+                        kerf_width = args['kerf_width'], \
+                        plunge_rate = args['plunge_rate'], \
+                        puddle_height = args['puddle_height'], \
+                        puddle_delay = args['puddle_delay'], \
+                        amps = args['amps'], \
+                        pressure = args['pressure'], \
+                        pause_at_end = args['pause_at_end'])
+        LOG.debug(f"Update cutchart.")
+
 
     def initialise(self):
         LOG.debug('Initialising Plasma Processes plugin')
