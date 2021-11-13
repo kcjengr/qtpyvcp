@@ -41,7 +41,7 @@ If you intend to contribute to QtPyVCP you should clone the master branch from t
 Install Dev Dependencies
 ++++++++++++++++++++++++
 
-Development dependencies (in addition to those listed on the :doc:`Prerequisites for python3 <prerequisites_py3>`) page::
+Development dependencies (in addition to those listed on the :doc:`Prerequisites for python3 <prerequisites>`) page::
 
   sudo apt install qttools5-dev qttools5-dev-tools python3-wheel
 
