@@ -12,7 +12,10 @@ These requirements are the same regardless of the install method.
 System Requirements
 -------------------
 
-* Debian 10 (Buster) and 11 (bullseye) 64 bit
+
+* Debian 11 (bullseye) 64 bit ( Debian 10 latest Qt is 5.11 )
+* Python 3.7
+* Qt 5.12 or more recent
 * LinuxCNC **2.9** branch master, installed as a Run In Place (RIP) built from source or debian buster buildbot packages
 * Graphics card that supports OpenGL 1.50 or later (for VTK backplot)
 
@@ -22,9 +25,13 @@ System Requirements
     There are VTK builds for Raspberry pi 4 32 bits. https://scottalford75.github.io/LinuxCNC-on-RPi/4.%20VTK%20for%20QtPyVCP.html
 
 
-LinuxCNC 2.80 ISO available here:
+LinuxCNC **2.9** packages available here:
 
-http://linuxcnc.org/downloads/
+http://buildbot.linuxcnc.org/
+
+.. Note::
+    Debian 10 buster binaries work on Debian 11 bullseye
+    
 
 Software Dependencies
 ---------------------
