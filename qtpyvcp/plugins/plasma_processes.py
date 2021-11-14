@@ -41,6 +41,7 @@ class addMixin(object):
         obj = cls(**kw)
         session.add(obj)
         session.commit()
+        return obj.id
 
     @classmethod
     def update(cls, session, qry, **kw):
@@ -58,8 +59,8 @@ class Gas(addMixin, BASE):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
     
-    def __init__(self, name):
-        self.name = name
+#    def __init__(self, name):
+#        self.name = name
 
 
 class LeadIn(addMixin, BASE):
@@ -67,8 +68,8 @@ class LeadIn(addMixin, BASE):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
     
-    def __init__(self, name):
-        self.name = name
+#    def __init__(self, name):
+#        self.name = name
 
 
 class Machine(addMixin, BASE):
@@ -77,9 +78,9 @@ class Machine(addMixin, BASE):
     name = Column(String(100))
     service_height = Column(Integer)
 
-    def __init__(self, name, service_height):
-        self.name = name
-        self.service_height = service_height
+#    def __init__(self, name, service_height):
+#        self.name = name
+#        self.service_height = service_height
 
 
 class Material(addMixin, BASE):
@@ -87,23 +88,8 @@ class Material(addMixin, BASE):
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
 
-    def __init__(self, name):
-        self.name = name
-
-
-class Thickness(addMixin, BASE):
-    __tablename__ = 'thickness'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(50))
-    thickness = Column(Float)
-
-    def __init__(self, name, thickness):
-        self.name = name
-        self.thickness = thickness
-
-    @classmethod
-    def get_all(cls, session):
-        return session.query(cls).order_by(cls.thickness).all()
+#    def __init__(self, name):
+#        self.name = name
 
 
 class LinearSystem(addMixin, BASE):
@@ -112,9 +98,29 @@ class LinearSystem(addMixin, BASE):
     name = Column(String(50))
     unit_per_inch = Column(Float)
 
-    def __init__(self, name, unit_per_inch):
-        self.name = name
-        self.unit_per_inch = unit_per_inch
+#    def __init__(self, name, unit_per_inch):
+#        self.name = name
+#        self.unit_per_inch = unit_per_inch
+
+
+class Thickness(addMixin, BASE):
+    __tablename__ = 'thickness'
+    id = Column(Integer, primary_key=True)
+    linearsystemid = Column(Integer, ForeignKey('linearsystem.id'))
+    linearsystem = relationship('LinearSystem')
+    name = Column(String(50))
+    thickness = Column(Float)
+
+#    def __init__(self, name, thickness, linearsystemid):
+#        self.name = name
+#        self.thickness = thickness
+
+    @classmethod
+    def get_all(cls, session, linear=None):
+        if linear == None:
+            return session.query(cls).order_by(cls.thickness).all()
+        else:
+            return session.query(cls).filter(cls.linearsystemid == linear).order_by(cls.thickness).all()
 
 
 class PressureSystem(addMixin, BASE):
@@ -123,9 +129,9 @@ class PressureSystem(addMixin, BASE):
     name = Column(String(50))
     unit_per_psi = Column(Float)
 
-    def __init__(self, name, unit_per_psi):
-        self.name = name
-        self.unit_per_psi = unit_per_psi
+#    def __init__(self, name, unit_per_psi):
+#        self.name = name
+#        self.unit_per_psi = unit_per_psi
 
 
 class Operation(addMixin, BASE):
@@ -133,8 +139,8 @@ class Operation(addMixin, BASE):
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
 
-    def __init__(self, name):
-        self.name = name
+#    def __init__(self, name):
+#        self.name = name
 
 
 class Quality(addMixin, BASE):
@@ -142,8 +148,8 @@ class Quality(addMixin, BASE):
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
 
-    def __init__(self, name):
-        self.name = name
+#    def __init__(self, name):
+#        self.name = name
 
 
 class Consumable(addMixin, BASE):
@@ -153,9 +159,9 @@ class Consumable(addMixin, BASE):
     image_path = Column(String(100))
     image_blob = Column(LargeBinary)
 
-    def __init__(self, name, image_path):
-        self.name = name
-        self.image_path = image_path
+#    def __init__(self, name, image_path):
+#        self.name = name
+#        self.image_path = image_path
 
 
 class HoleCut(addMixin, BASE):
@@ -238,7 +244,7 @@ class Cutchart(addMixin,BASE):
                          cls.operationid == op, \
                          cls.gasid == gas, \
                          cls.qualityid == qua\
-                        )).all()
+                        )).order_by(cls.name).all()
         return result_set
 
 class PlasmaProcesses(Plugin):
@@ -278,7 +284,7 @@ class PlasmaProcesses(Plugin):
         return data
     
     def add_gas(self, gasname):
-        Gas.create(self._session, name = gasname)
+        return Gas.create(self._session, name = gasname)
         LOG.debug(f"Add Gas {gasname}.")
 
     # Lead-ins
@@ -294,7 +300,7 @@ class PlasmaProcesses(Plugin):
         return data
     
     def add_machine(self, machinename, amps):
-        Machine.create(self._session, name=machinename, service_height=amps)
+        return Machine.create(self._session, name=machinename, service_height=amps)
         LOG.debug(f"Add Machine {machinename}.")
 
     # Materials
@@ -304,17 +310,17 @@ class PlasmaProcesses(Plugin):
         return data
 
     def add_materials(self, matname):
-        Material.create(self._session, name=matname)
+        return Material.create(self._session, name=matname)
         LOG.debug(f"Add Material {matname}.")
 
     # Thickness    
-    def thicknesses(self):
-        data = Thickness.get_all(self._session)
+    def thicknesses(self,  measureid=None):
+        data = Thickness.get_all(self._session, measureid)
         LOG.debug("Found Thicknesses.")
         return data
 
-    def add_thickness(self, thicknessname, size):
-        Thickness.create(self._session, name=thicknessname, thickness=size)
+    def add_thickness(self, thicknessname, size, linear_id):
+        Thickness.create(self._session, name=thicknessname, thickness=size, linearsystemid=linear_id)
         LOG.debug(f"Add Thickness {thicknessname}.")
 
     # Measurement Systems
@@ -324,7 +330,7 @@ class PlasmaProcesses(Plugin):
         return data
 
     def add_linearsystems(self, systemname, unit_scale):
-        LinearSystem.create(self._session, name=systemname, unit_per_inch=unit_scale)
+        return LinearSystem.create(self._session, name=systemname, unit_per_inch=unit_scale)
         LOG.debug(f"Add LinearSystem {systemname}.")
 
 
@@ -334,7 +340,7 @@ class PlasmaProcesses(Plugin):
         return data
 
     def add_pressuresystems(self, systemname, unit_scale):
-        PressureSystem.create(self._session, name=systemname, unit_per_psi=unit_scale)
+        return PressureSystem.create(self._session, name=systemname, unit_per_psi=unit_scale)
         LOG.debug(f"Add PressureSystem {systemname}.")
 
 
@@ -345,7 +351,7 @@ class PlasmaProcesses(Plugin):
         return data
 
     def add_operations(self, opname):
-        Operation.create(self._session, name=opname)
+        return Operation.create(self._session, name=opname)
         LOG.debug(f"Add Operation {opname}.")
 
 
@@ -356,7 +362,7 @@ class PlasmaProcesses(Plugin):
         return data
 
     def add_qualities(self, opname):
-        Quality.create(self._session, name=opname)
+        return Quality.create(self._session, name=opname)
         LOG.debug(f"Add Quality {opname}.")
 
 
@@ -367,7 +373,7 @@ class PlasmaProcesses(Plugin):
         return data
     
     def add_consumables(self, conname, imagefile=None):
-        Consumable.create(self._session, name=conname, image_path=None)
+        return Consumable.create(self._session, name=conname, image_path=None)
         LOG.debug(f"Add Consumable {conname}. File = {imagefile}")
     
 
@@ -394,7 +400,7 @@ class PlasmaProcesses(Plugin):
     def addCut(self, **args):
         # build up forign keys. These are mandatory, we want things
         # to break if they are not dealt with.
-        Cutchart.create(self._session, \
+        id = Cutchart.create(self._session, \
                         linearsystemid = args['linearsystems'], \
                         pressuresystemid = args['pressuresystems'], \
                         machineid = args['machines'], \
@@ -418,6 +424,7 @@ class PlasmaProcesses(Plugin):
                         pressure = args['pressure'], \
                         pause_at_end = args['pause_at_end'])
         LOG.debug(f"Add cutchart: {args['name']}.")
+        return id
     
     def updateCut(self, q, **args):
         Cutchart.update(self._session, q, \
@@ -435,6 +442,9 @@ class PlasmaProcesses(Plugin):
                         pause_at_end = args['pause_at_end'])
         LOG.debug(f"Update cutchart.")
 
+    def seed_data_base(self, db_type, connect_string, source_file):
+        # This method tears down the DB and loads net new from a source file
+        pass
 
     def initialise(self):
         LOG.debug('Initialising Plasma Processes plugin')
@@ -445,7 +455,7 @@ class PlasmaProcesses(Plugin):
         return super().terminate()
 
 if __name__ == "__main__":
-    p = PlasmaProcesses(db_type='mysql', connect_string='mysql+pymysql://james:xxxx@localhost/plasma_table')
+    p = PlasmaProcesses(db_type='mysql', connect_string='mysql+pymysql://james:silk007@localhost/plasma_table')
     p.initialise()
     # ToDO: Possible initial load/import routines below here - for OEM type use
     import csv
@@ -469,14 +479,28 @@ if __name__ == "__main__":
     for k in machines:
         p.add_machine(k, machines[k])
 
+    # add in linear system
+    mm_id = p.add_linearsystems('mm', 24.5)
+    inch_id = p.add_linearsystems('inch', 1)
+
+    #import pydevd;pydevd.settrace()
+
+
     # unique thicknesses in list
     thicknesses = {}
     for r in file:
         if r['thickness_name'] not in thicknesses.keys():
-            thicknesses[r['thickness_name']] = r['thickness']
+            thicknesses[r['thickness_name']] = [r['thickness'], r['thickness_unit']]
+            
     
     for k in thicknesses:
-        p.add_thickness(k, thicknesses[k])
+        print(k)
+        print(thicknesses[k][1])
+        if thicknesses[k][1] == "mm":
+            p.add_thickness(k, thicknesses[k][0], mm_id)
+        else:
+            p.add_thickness(k, thicknesses[k][0], inch_id)
+    
 
     # unique materials
     mats = {}
@@ -496,10 +520,6 @@ if __name__ == "__main__":
     p.add_gas('Argon Hydrogen')
     p.add_gas('Argon Hydrogen - Water')
     
-    # add in linear system
-    p.add_linearsystems('mm', 24.5)
-    p.add_linearsystems('inch', 1)
-    
     # add pressure system
     p.add_pressuresystems('psi', 1)
     p.add_pressuresystems('bar', 0.0689476)
@@ -517,8 +537,6 @@ if __name__ == "__main__":
     # add consumable
     p.add_consumables('Shielded')
     p.add_consumables('Unshielded')
-
-    #import pydevd;pydevd.settrace()
 
 
     # build initial cut chart
