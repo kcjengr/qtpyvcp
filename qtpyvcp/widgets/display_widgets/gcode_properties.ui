@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="1">
+      <widget class="StatusLabel" name="statuslabel">
+       <property name="rules" stdset="0">
+        <string>[{&quot;name&quot;: &quot;file_name&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:file_name&quot;, &quot;trigger&quot;: true}]}]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Size</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="StatusLabel" name="statuslabel_3">
+       <property name="rules" stdset="0">
+        <string>[{&quot;name&quot;: &quot;file_size&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;f\&quot;{ch[0]/1024:.2f} kB\&quot;&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:file_size&quot;, &quot;trigger&quot;: true}]}]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="label_5">
+       <property name="text">
+        <string>Lines</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="StatusLabel" name="statuslabel_4">
+       <property name="rules" stdset="0">
+        <string>[{&quot;name&quot;: &quot;file lines&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;f\&quot;{ch[0]}\&quot;&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:file_lines&quot;, &quot;trigger&quot;: true}]}]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="label_6">
+       <property name="text">
+        <string>Tool calls</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="StatusLabel" name="statuslabel_5">
+       <property name="rules" stdset="0">
+        <string>[{&quot;name&quot;: &quot;tool_calls&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;f\&quot;{ch[0]}\&quot;&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:tool_calls_num&quot;, &quot;trigger&quot;: true}]}]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label_7">
+       <property name="text">
+        <string>Distance in rapid</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="StatusLabel" name="statuslabel_6">
+       <property name="rules" stdset="0">
+        <string>[{&quot;name&quot;: &quot;path_rapids&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;f\&quot;{ch[0]:.2f}\&quot;&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:file_rapid_distance&quot;, &quot;trigger&quot;: true}]}]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="label_8">
+       <property name="text">
+        <string>Distance in feed</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="StatusLabel" name="statuslabel_7">
+       <property name="rules" stdset="0">
+        <string>[{&quot;name&quot;: &quot;path_feed&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;f\&quot;{ch[0]:.2f}\&quot;&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:file_feed_distance&quot;, &quot;trigger&quot;: true}]}]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="label_9">
+       <property name="text">
+        <string>Distance total</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="StatusLabel" name="statuslabel_8">
+       <property name="rules" stdset="0">
+        <string>[{&quot;name&quot;: &quot;path_feed&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;f\&quot;{ch[0] + ch[1]:.2f}\&quot;&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:file_feed_distance&quot;, &quot;trigger&quot;: true}, {&quot;url&quot;: &quot;gcode_properties:file_rapid_distance&quot;, &quot;trigger&quot;: true}]}]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="0">
+      <widget class="QLabel" name="label_10">
+       <property name="text">
+        <string>Work planes</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="1">
+      <widget class="StatusLabel" name="statuslabel_18">
+       <property name="rules" stdset="0">
+        <string>[{&quot;name&quot;: &quot;work_planes&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;f\&quot;{ch[0]}\&quot;&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:file_work_planes&quot;, &quot;trigger&quot;: true}]}]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="label_11">
+       <property name="text">
+        <string>Rigid taps</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="StatusLabel" name="statuslabel_19">
+       <property name="rules" stdset="0">
+        <string>[{&quot;name&quot;: &quot;rigid_taps&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;f\&quot;{ch[0]}\&quot;&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:file_rigid_taps&quot;, &quot;trigger&quot;: true}]}]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="label_12">
+       <property name="text">
+        <string>Offsets</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <widget class="StatusLabel" name="statuslabel_20">
+       <property name="rules" stdset="0">
+        <string>[{&quot;name&quot;: &quot;offset_changes&quot;, &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;f\&quot;{ch[0]}\&quot;&quot;, &quot;channels&quot;: [{&quot;url&quot;: &quot;gcode_properties:file_offsets&quot;, &quot;trigger&quot;: true}]}]</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Name</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>StatusLabel</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.display_widgets.status_label</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
