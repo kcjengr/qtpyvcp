@@ -35,7 +35,7 @@ LOG = getLogger(__name__)
 BASE = declarative_base()
 IN_DESIGNER = os.getenv('DESIGNER', False)
 
-class addMixin(object):
+class crudMixin(object):
     @classmethod
     def create(cls, session,  **kw):
         obj = cls(**kw)
@@ -50,11 +50,24 @@ class addMixin(object):
         session.commit()
 
     @classmethod
+    def delete(cls, sesson, qry):
+        session.delete(qry)
+        session.commit()
+
+    @classmethod
     def get_all(cls, session):
         return session.query(cls).order_by(cls.name).all()
 
+    @classmethod
+    def get_by_key(cls, session, key, value):
+        try:
+            cls_key = getattr(cls, key)
+            return session.qyery(cls).filter(cls_key == value).all()
+        except:
+            LOG.debug('Possible key name error in crudMixin')
+            return None
 
-class Gas(addMixin, BASE):
+class Gas(crudMixin, BASE):
     __tablename__ = 'gas'
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
@@ -63,7 +76,7 @@ class Gas(addMixin, BASE):
 #        self.name = name
 
 
-class LeadIn(addMixin, BASE):
+class LeadIn(crudMixin, BASE):
     __tablename__ = 'leadin'
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
@@ -72,7 +85,7 @@ class LeadIn(addMixin, BASE):
 #        self.name = name
 
 
-class Machine(addMixin, BASE):
+class Machine(crudMixin, BASE):
     __tablename__ = 'machine'
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
@@ -83,7 +96,7 @@ class Machine(addMixin, BASE):
 #        self.service_height = service_height
 
 
-class Material(addMixin, BASE):
+class Material(crudMixin, BASE):
     __tablename__ = 'material'
     id = Column(Integer, primary_key=True)
     name = Column(String(100))
@@ -92,7 +105,7 @@ class Material(addMixin, BASE):
 #        self.name = name
 
 
-class LinearSystem(addMixin, BASE):
+class LinearSystem(crudMixin, BASE):
     __tablename__ = 'linearsystem'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
@@ -103,7 +116,7 @@ class LinearSystem(addMixin, BASE):
 #        self.unit_per_inch = unit_per_inch
 
 
-class Thickness(addMixin, BASE):
+class Thickness(crudMixin, BASE):
     __tablename__ = 'thickness'
     id = Column(Integer, primary_key=True)
     linearsystemid = Column(Integer, ForeignKey('linearsystem.id'))
@@ -123,7 +136,7 @@ class Thickness(addMixin, BASE):
             return session.query(cls).filter(cls.linearsystemid == linear).order_by(cls.thickness).all()
 
 
-class PressureSystem(addMixin, BASE):
+class PressureSystem(crudMixin, BASE):
     __tablename__ = 'pressuresystem'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
@@ -134,7 +147,7 @@ class PressureSystem(addMixin, BASE):
 #        self.unit_per_psi = unit_per_psi
 
 
-class Operation(addMixin, BASE):
+class Operation(crudMixin, BASE):
     __tablename__ = 'operation'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
@@ -143,7 +156,7 @@ class Operation(addMixin, BASE):
 #        self.name = name
 
 
-class Quality(addMixin, BASE):
+class Quality(crudMixin, BASE):
     __tablename__ = 'quality'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
@@ -152,7 +165,7 @@ class Quality(addMixin, BASE):
 #        self.name = name
 
 
-class Consumable(addMixin, BASE):
+class Consumable(crudMixin, BASE):
     __tablename__ = 'consumable'
     id = Column(Integer, primary_key=True)
     name = Column(String(50))
@@ -164,7 +177,7 @@ class Consumable(addMixin, BASE):
 #        self.image_path = image_path
 
 
-class HoleCut(addMixin, BASE):
+class HoleCut(crudMixin, BASE):
     __tablename__ = 'holecut'
     id = Column(Integer, primary_key=True)
     # Foreign key relationship
@@ -193,7 +206,7 @@ class HoleCut(addMixin, BASE):
 
 
 
-class Cutchart(addMixin,BASE):
+class Cutchart(crudMixin,BASE):
     __tablename__ = 'cutchart'
     id = Column(Integer, primary_key=True)
     # Foreign keys
@@ -442,10 +455,169 @@ class PlasmaProcesses(Plugin):
                         pause_at_end = args['pause_at_end'])
         LOG.debug(f"Update cutchart.")
 
-    def seed_data_base(self, db_type, connect_string, source_file):
+    def seed_data_base(self, source_file):
         # This method tears down the DB and loads net new from a source file
-        pass
-
+        # ToDO: Possible initial load/import routines below here - for OEM type use
+        import csv
+        
+        # tear down the whole DB
+        self.drop_all()
+        self.build_all()
+        
+        file = []
+        with open(source_file, newline='') as csvfile:
+            reader = csv.DictReader(csvfile,dialect=csv.excel_tab)
+            for row in reader:
+                file.append(row)
+        # unique machines in list
+        machines = {}
+        for r in file:
+            if r['machine_name'] not in machines.keys():
+                machines[r['machine_name']] = r['service_height']
+        
+        for k in machines:
+            self.add_machine(k, machines[k])
+    
+        # add in linear system
+        mm_id = self.add_linearsystems('mm', 24.5)
+        inch_id = self.add_linearsystems('inch', 1)
+    
+        #import pydevd;pydevd.settrace()
+    
+    
+        # unique thicknesses in list
+        thicknesses = {}
+        for r in file:
+            if r['thickness_name'] not in thicknesses.keys():
+                thicknesses[r['thickness_name']] = [r['thickness'], r['thickness_unit']]
+                
+        
+        for k in thicknesses:
+            print(k)
+            print(thicknesses[k][1])
+            if thicknesses[k][1] == "mm":
+                self.add_thickness(k, thicknesses[k][0], mm_id)
+            else:
+                self.add_thickness(k, thicknesses[k][0], inch_id)
+        
+    
+        # unique materials
+        mats = {}
+        for r in file:
+            if r['material'] not in mats.keys():
+                mats[r['material']] = ''
+        
+        for k in mats:
+            self.add_materials(k)
+    
+        # Add plasma/shield 'gasses'
+        self.add_gas('Air - Air')
+        self.add_gas('Nitrogen - Air')
+        self.add_gas('Nitrogen - CO2')
+        self.add_gas('Nitrogen - Water')
+        self.add_gas('Oxygen - Air')
+        self.add_gas('Argon Hydrogen')
+        self.add_gas('Argon Hydrogen - Water')
+        
+        # add pressure system
+        self.add_pressuresystems('psi', 1)
+        self.add_pressuresystems('bar', 0.0689476)
+        
+        # add operations
+        self.add_operations('Cut')
+        self.add_operations('Pierce')
+        self.add_operations('Mark/Spot')
+        self.add_operations('Cut (from side)')
+    
+        # add quality
+        self.add_qualities('Production')
+        self.add_qualities('Fine')
+        
+        # add consumable
+        self.add_consumables('Shielded')
+        self.add_consumables('Unshielded')
+    
+    
+        # build initial cut chart
+        linearsys = self.linearsystems()
+        pressuresys = self.pressuresystems()
+        machines = self.machines()
+        cons = self.consumables()
+        mats = self.materials()
+        thick = self.thicknesses()
+        ops = self.operations()
+        gases = self.gases()
+        qual = self.qualities()
+        
+        for r in file:
+            # get the ids for foriegn keys
+            for unit in linearsys:
+                if unit.name == r['thickness_unit']:
+                    linearsys_id = unit.id
+            for unit in pressuresys:
+                if unit.name == 'psi':
+                    pressuresys_id = unit.id
+            for machine in machines:
+                if machine.name == r['machine_name']:
+                    machines_id = machine.id
+            for con in cons:
+                if con.name == 'Shielded':
+                    cons_id = con.id
+            for m in mats:
+                if m.name == r['material']:
+                    mats_id = m.id
+            for t in thick:
+                if t.name == r['thickness_name']:
+                    thick_id = t.id
+            for o in ops:
+                if o.name == 'Cut':
+                    ops_id = o.id
+            for g in gases:
+                if g.name == 'Air - Air':
+                    gases_id = g.id
+            for q in qual:
+                if q.name == 'Production':
+                    qual_id = q.id
+    
+            name = r['name']
+            pierce_height = r['pierce_height']
+            pierce_delay = r['pierce_delay']
+            cut_height = r['cut_height']
+            cut_speed = r['cut_speed']
+            volts = r['volts']
+            kerf_width = r['kerf_width']
+            plunge_rate = r['plunge_rate']
+            puddle_height = r['puddle_height']
+            puddle_delay = r['puddle_delay']
+            amps = r['amps']
+            pressure = r['pressure']
+            pause_at_end = r['pause_at_end']
+            
+            self.addCut(linearsystems=linearsys_id, \
+                 pressuresystems=pressuresys_id, \
+                 machines=machines_id, \
+                 consumables=cons_id, \
+                 materials=mats_id, \
+                 thicknesses=thick_id, \
+                 operations=ops_id, \
+                 gases=gases_id, \
+                 qualities=qual_id,\
+                 name=name,\
+                 pierce_height=float(pierce_height), \
+                 pierce_delay=float(pierce_delay), \
+                 cut_height=float(cut_height), \
+                 cut_speed=float(cut_speed), \
+                 volts=float(volts), \
+                 kerf_width=float(kerf_width), \
+                 plunge_rate=float(plunge_rate), \
+                 puddle_height=float(puddle_height), \
+                 puddle_delay=float(puddle_delay), \
+                 amps=float(amps), \
+                 pressure=float(pressure), \
+                 pause_at_end=float(pause_at_end))
+        
+        # finish up
+    
     def initialise(self):
         LOG.debug('Initialising Plasma Processes plugin')
         self._initialized = True
@@ -455,167 +627,10 @@ class PlasmaProcesses(Plugin):
         return super().terminate()
 
 if __name__ == "__main__":
+    import sys
+
     p = PlasmaProcesses(db_type='mysql', connect_string='mysql+pymysql://james:silk007@localhost/plasma_table')
     p.initialise()
-    # ToDO: Possible initial load/import routines below here - for OEM type use
-    import csv
-    import sys
-    
-    # tear down the whole DB
-    p.drop_all()
-    p.build_all()
-    
-    file = []
-    with open(sys.argv[1], newline='') as csvfile:
-        reader = csv.DictReader(csvfile,dialect=csv.excel_tab)
-        for row in reader:
-            file.append(row)
-    # unique machines in list
-    machines = {}
-    for r in file:
-        if r['machine_name'] not in machines.keys():
-            machines[r['machine_name']] = r['service_height']
-    
-    for k in machines:
-        p.add_machine(k, machines[k])
-
-    # add in linear system
-    mm_id = p.add_linearsystems('mm', 24.5)
-    inch_id = p.add_linearsystems('inch', 1)
-
-    #import pydevd;pydevd.settrace()
-
-
-    # unique thicknesses in list
-    thicknesses = {}
-    for r in file:
-        if r['thickness_name'] not in thicknesses.keys():
-            thicknesses[r['thickness_name']] = [r['thickness'], r['thickness_unit']]
-            
-    
-    for k in thicknesses:
-        print(k)
-        print(thicknesses[k][1])
-        if thicknesses[k][1] == "mm":
-            p.add_thickness(k, thicknesses[k][0], mm_id)
-        else:
-            p.add_thickness(k, thicknesses[k][0], inch_id)
-    
-
-    # unique materials
-    mats = {}
-    for r in file:
-        if r['material'] not in mats.keys():
-            mats[r['material']] = ''
-    
-    for k in mats:
-        p.add_materials(k)
-
-    # Add plasma/shield 'gasses'
-    p.add_gas('Air - Air')
-    p.add_gas('Nitrogen - Air')
-    p.add_gas('Nitrogen - CO2')
-    p.add_gas('Nitrogen - Water')
-    p.add_gas('Oxygen - Air')
-    p.add_gas('Argon Hydrogen')
-    p.add_gas('Argon Hydrogen - Water')
-    
-    # add pressure system
-    p.add_pressuresystems('psi', 1)
-    p.add_pressuresystems('bar', 0.0689476)
-    
-    # add operations
-    p.add_operations('Cut')
-    p.add_operations('Pierce')
-    p.add_operations('Mark/Spot')
-    p.add_operations('Cut (from side)')
-
-    # add quality
-    p.add_qualities('Production')
-    p.add_qualities('Fine')
-    
-    # add consumable
-    p.add_consumables('Shielded')
-    p.add_consumables('Unshielded')
-
-
-    # build initial cut chart
-    linearsys = p.linearsystems()
-    pressuresys = p.pressuresystems()
-    machines = p.machines()
-    cons = p.consumables()
-    mats = p.materials()
-    thick = p.thicknesses()
-    ops = p.operations()
-    gases = p.gases()
-    qual = p.qualities()
-    
-    for r in file:
-        # get the ids for foriegn keys
-        for unit in linearsys:
-            if unit.name == r['thickness_unit']:
-                linearsys_id = unit.id
-        for unit in pressuresys:
-            if unit.name == 'psi':
-                pressuresys_id = unit.id
-        for machine in machines:
-            if machine.name == r['machine_name']:
-                machines_id = machine.id
-        for con in cons:
-            if con.name == 'Shielded':
-                cons_id = con.id
-        for m in mats:
-            if m.name == r['material']:
-                mats_id = m.id
-        for t in thick:
-            if t.name == r['thickness_name']:
-                thick_id = t.id
-        for o in ops:
-            if o.name == 'Cut':
-                ops_id = o.id
-        for g in gases:
-            if g.name == 'Air - Air':
-                gases_id = g.id
-        for q in qual:
-            if q.name == 'Production':
-                qual_id = q.id
-
-        name = r['name']
-        pierce_height = r['pierce_height']
-        pierce_delay = r['pierce_delay']
-        cut_height = r['cut_height']
-        cut_speed = r['cut_speed']
-        volts = r['volts']
-        kerf_width = r['kerf_width']
-        plunge_rate = r['plunge_rate']
-        puddle_height = r['puddle_height']
-        puddle_delay = r['puddle_delay']
-        amps = r['amps']
-        pressure = r['pressure']
-        pause_at_end = r['pause_at_end']
-        
-        p.addCut(linearsystems=linearsys_id, \
-             pressuresystems=pressuresys_id, \
-             machines=machines_id, \
-             consumables=cons_id, \
-             materials=mats_id, \
-             thicknesses=thick_id, \
-             operations=ops_id, \
-             gases=gases_id, \
-             qualities=qual_id,\
-             name=name,\
-             pierce_height=float(pierce_height), \
-             pierce_delay=float(pierce_delay), \
-             cut_height=float(cut_height), \
-             cut_speed=float(cut_speed), \
-             volts=float(volts), \
-             kerf_width=float(kerf_width), \
-             plunge_rate=float(plunge_rate), \
-             puddle_height=float(puddle_height), \
-             puddle_delay=float(puddle_delay), \
-             amps=float(amps), \
-             pressure=float(pressure), \
-             pause_at_end=float(pause_at_end))
-    
-    # finish up
+    p.seed_data_base(sys.argv[1])
     p.terminate()
+    
