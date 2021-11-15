@@ -17,6 +17,7 @@ data_plugins:
 """
 
 import os
+import csv
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.utilities.misc import normalizePath
@@ -402,7 +403,6 @@ class PlasmaProcesses(Plugin):
         #  6 -> 'filter_operation',
         #  7 -> 'filter_quality',
         #  8 -> 'filter_consumable'
-
         data = Cutchart.get_exact_cut(self._session, ls=arglst[4], ps=arglst[5], \
                                       mch=arglst[1], con=arglst[8], mat=arglst[2], \
                                       thi=arglst[3], op=arglst[6], gas=arglst[0], \
@@ -458,7 +458,6 @@ class PlasmaProcesses(Plugin):
     def seed_data_base(self, source_file):
         # This method tears down the DB and loads net new from a source file
         # ToDO: Possible initial load/import routines below here - for OEM type use
-        import csv
         
         # tear down the whole DB
         self.drop_all()
