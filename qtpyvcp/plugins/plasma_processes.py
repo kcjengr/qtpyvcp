@@ -77,11 +77,12 @@ class Gas(crudMixin, BASE):
 #        self.name = name
 
 
-class LeadIn(crudMixin, BASE):
-    __tablename__ = 'leadin'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(100))
-    
+# class LeadIn(crudMixin, BASE):
+#     __tablename__ = 'leadin'
+#     id = Column(Integer, primary_key=True)
+#     type = Column(Integer)
+#     name = Column(String(100))
+#    
 #    def __init__(self, name):
 #        self.name = name
 
@@ -188,13 +189,11 @@ class HoleCut(crudMixin, BASE):
     machine = relationship('Machine')
     material = relationship('Material')
     thickness = relationship('Thickness')
-    # hole base size that interperlation stems from
-    base_hole = Column(Float)
-    # hole base interperlation factor (i.e. scaling from base)
-    scale = Column(Float)
-    # hole size banding
-    lower_size = Column(Float)
-    upper_size = Column(Float)
+    # Amp filter - as params are tied to amperage.
+    # Question do amps need to be exact? Would +/- 10% be good enough?
+    amps = Column(Float)
+    # hole size
+    hole_size = Column(Float)
     # cut data
     leadin_radius = Column(Float)
     kerf = Column(Float)
@@ -298,14 +297,18 @@ class PlasmaProcesses(Plugin):
         return data
     
     def add_gas(self, gasname):
-        return Gas.create(self._session, name = gasname)
         LOG.debug(f"Add Gas {gasname}.")
+        return Gas.create(self._session, name = gasname)
 
-    # Lead-ins
-    def leadins(self):
-        data = LeadIn.get_all(self._session)
-        LOG.debug("Found Leadins.")
-        return data
+    # # Lead-ins
+    # def leadins(self):
+    #     data = LeadIn.get_all(self._session)
+    #     LOG.debug("Found Leadins.")
+    #     return data
+    #
+    # def add_leadins(self, type, name):
+    #     LOG.debug(f"Add LeadIn {name}.")
+    #     return LeadIn.create(self._session, name=name, type=type)
 
     # Machines
     def machines(self):
@@ -314,8 +317,8 @@ class PlasmaProcesses(Plugin):
         return data
     
     def add_machine(self, machinename, amps):
-        return Machine.create(self._session, name=machinename, service_height=amps)
         LOG.debug(f"Add Machine {machinename}.")
+        return Machine.create(self._session, name=machinename, service_height=amps)
 
     # Materials
     def materials(self):
@@ -324,8 +327,8 @@ class PlasmaProcesses(Plugin):
         return data
 
     def add_materials(self, matname):
-        return Material.create(self._session, name=matname)
         LOG.debug(f"Add Material {matname}.")
+        return Material.create(self._session, name=matname)
 
     # Thickness    
     def thicknesses(self,  measureid=None):
@@ -334,8 +337,8 @@ class PlasmaProcesses(Plugin):
         return data
 
     def add_thickness(self, thicknessname, size, linear_id):
-        Thickness.create(self._session, name=thicknessname, thickness=size, linearsystemid=linear_id)
         LOG.debug(f"Add Thickness {thicknessname}.")
+        return Thickness.create(self._session, name=thicknessname, thickness=size, linearsystemid=linear_id)
 
     # Measurement Systems
     def linearsystems(self):
@@ -344,8 +347,8 @@ class PlasmaProcesses(Plugin):
         return data
 
     def add_linearsystems(self, systemname, unit_scale):
-        return LinearSystem.create(self._session, name=systemname, unit_per_inch=unit_scale)
         LOG.debug(f"Add LinearSystem {systemname}.")
+        return LinearSystem.create(self._session, name=systemname, unit_per_inch=unit_scale)
 
 
     def pressuresystems(self):
@@ -354,8 +357,8 @@ class PlasmaProcesses(Plugin):
         return data
 
     def add_pressuresystems(self, systemname, unit_scale):
-        return PressureSystem.create(self._session, name=systemname, unit_per_psi=unit_scale)
         LOG.debug(f"Add PressureSystem {systemname}.")
+        return PressureSystem.create(self._session, name=systemname, unit_per_psi=unit_scale)
 
 
     # Operations
@@ -365,8 +368,8 @@ class PlasmaProcesses(Plugin):
         return data
 
     def add_operations(self, opname):
-        return Operation.create(self._session, name=opname)
         LOG.debug(f"Add Operation {opname}.")
+        return Operation.create(self._session, name=opname)
 
 
     # Qualities
@@ -376,8 +379,8 @@ class PlasmaProcesses(Plugin):
         return data
 
     def add_qualities(self, opname):
-        return Quality.create(self._session, name=opname)
         LOG.debug(f"Add Quality {opname}.")
+        return Quality.create(self._session, name=opname)
 
 
     # Consumables
@@ -387,8 +390,8 @@ class PlasmaProcesses(Plugin):
         return data
     
     def add_consumables(self, conname, imagefile=None):
-        return Consumable.create(self._session, name=conname, image_path=None)
         LOG.debug(f"Add Consumable {conname}. File = {imagefile}")
+        return Consumable.create(self._session, name=conname, image_path=None)
     
 
     def cut(self, arglst):
@@ -628,7 +631,7 @@ class PlasmaProcesses(Plugin):
 if __name__ == "__main__":
     import sys
 
-    p = PlasmaProcesses(db_type='mysql', connect_string='mysql+pymysql://james:silk007@localhost/plasma_table')
+    p = PlasmaProcesses(db_type='mysql', connect_string='mysql+pymysql://james:xxxxx@localhost/plasma_table')
     p.initialise()
     p.seed_data_base(sys.argv[1])
     p.terminate()
