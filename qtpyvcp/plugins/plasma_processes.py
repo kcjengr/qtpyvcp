@@ -458,7 +458,7 @@ class PlasmaProcesses(Plugin):
                         pause_at_end = args['pause_at_end'])
         LOG.debug(f"Update cutchart.")
 
-    def seed_data_base(self, source_file):
+    def seed_data_base(self, source_file, holes_file=None):
         # This method tears down the DB and loads net new from a source file
         # ToDO: Possible initial load/import routines below here - for OEM type use
         
@@ -630,8 +630,8 @@ class PlasmaProcesses(Plugin):
 
 if __name__ == "__main__":
     import sys
-
-    p = PlasmaProcesses(db_type='mysql', connect_string='mysql+pymysql://james:xxxxx@localhost/plasma_table')
+    con_str = f'mysql+pymysql://james:{sys.argv[2]}@localhost/plasma_table'
+    p = PlasmaProcesses(db_type='mysql', connect_string=con_str)
     p.initialise()
     p.seed_data_base(sys.argv[1])
     p.terminate()
