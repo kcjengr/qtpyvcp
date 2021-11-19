@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 """Plasma GCode Preprocessor - process gcode files for qtpyvcp plasma_db usage
 
     Using the 'filter' program model of linuxcnc,
@@ -22,7 +24,7 @@ from enum import Enum, auto
 from typing import List, Dict, Tuple, Union
 #from dataclasses import dataclass
 
-import pydevd;pydevd.settrace()
+#import pydevd;pydevd.settrace()
 
 # Define some globals that will be referenced from anywhere
 # assumption is MM's is the base unit of reference.
