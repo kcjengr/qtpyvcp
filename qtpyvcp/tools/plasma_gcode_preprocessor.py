@@ -83,6 +83,7 @@ class Commands(Enum):
     SPINDLE_ON                  = auto()
     SPINDLE_OFF                 = auto()
     DIGITAL_IN                  = auto()
+    REMOVE                      = auto()
 
 class CodeLine:
 
@@ -196,8 +197,8 @@ class CodeLine:
                     break
                 else:
                     # nothing of interest just mark the line for pass through processing
-                    self.type = Commands.OTHER
-            if self.type is Commands.OTHER:
+                    self.type = Commands.PASSTHROUGH
+            if self.type is Commands.PASSTHROUGH:
                 # If the result was seen as 'OTHER' do some further checks
                 # As soon as we shift off being type OTHER, exit the method
                 # 1. is it an XY line
@@ -235,6 +236,9 @@ class CodeLine:
     
     def parse_passthrough(self):
         self.type = Commands.PASSTHROUGH
+    
+    def parse_remove(self):
+        self.type = Commands.REMOVE
     
     def parse_linear(self):
         # linear motion means either G0 or G1. So looking for X/Y on this line
@@ -292,6 +296,8 @@ class CodeLine:
         self.errors['compError'] = "Cutter compensation detected. \
                                     Ensure all compensation is baked into the tool path."
         print(f'ERROR:CUTTER_COMP:INVALID GCODE FOUND',file=sys.stderr)
+        sys.stderr.flush()
+        self.type = Commands.REMOVE
         
         
     def placeholder(self):
@@ -327,9 +333,13 @@ class PreProcessor:
         self._line = ''
         self._line_num = 0
         self._line_type = 0
-        self._orig_gcode = inCode
+        self._orig_gcode = None
         self.active_g_modal_grps = {}
         self.active_m_modal_grps = {}
+
+        openfile= open(inCode, 'r')
+        self._orig_gcode = openfile.readlines()
+        openfile.close()
             
     def set_active_g_modal(self, gcode):
         # get the modal grp for the code and set things
@@ -378,18 +388,17 @@ class PreProcessor:
             i += 1
 
     def parse(self):
-        with open(self._orig_gcode, 'r') as fRead:
-            for line in fRead:
-                self._line_num += 1
-                self._line = line.strip()
-                l = CodeLine(self._line, parent=self)
-                try:
-                    gcode = f'{l.command[0]}{l.command[1]}'
-                except:
-                    gcode = ''
-                self.set_active_g_modal(gcode)
-                l.save_g_modal_group(self.active_g_modal_grps)
-                self._parsed.append(l)
+        for line in self._orig_gcode:
+            self._line_num += 1
+            self._line = line.strip()
+            l = CodeLine(self._line, parent=self)
+            try:
+                gcode = f'{l.command[0]}{l.command[1]}'
+            except:
+                gcode = ''
+            self.set_active_g_modal(gcode)
+            l.save_g_modal_group(self.active_g_modal_grps)
+            self._parsed.append(l)
 
 
         
@@ -404,9 +413,12 @@ class PreProcessor:
                 out = l.comment
             elif l.type is Commands.OTHER:
                 # Other at the moment means not recognised
-                out = ">>  "+l.raw
+                out = "; >>  "+l.raw
             elif l.type is Commands.PASSTHROUGH:
                 out = l.raw
+            elif l.type is Commands.REMOVE:
+                # skip line as not to ba used
+                out = ''
             else:
                 try:
                     out = f"{l.command[0]}{l.command[1]}"
@@ -419,10 +431,18 @@ class PreProcessor:
                     out = out.strip()
                 except:
                     out = ''
-            print(out)
+            print(out, file=sys.stdout)
+            sys.stdout.flush()
+
 
 def main():
-    inCode = sys.argv[1]
+    try:
+        inCode = sys.argv[1]
+    except:
+        # no arg found, probably being run from command line and someone forgot a file
+        print(__doc__)
+        return
+
     if len(inCode) == 0 or '-h' == inCode:
         print(__doc__)
         return
