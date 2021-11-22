@@ -22,6 +22,8 @@ import sys
 import re
 from enum import Enum, auto
 from typing import List, Dict, Tuple, Union
+
+import hal
 from qtpyvcp.plugins.plasma_processes import PlasmaProcesses
 from qtpyvcp.utilities.logger import initBaseLogger
 
@@ -29,7 +31,16 @@ from qtpyvcp.utilities.logger import initBaseLogger
 
 
 # Constrcut LOG from qtpyvcp standard logging framework
-LOG = initBaseLogger('qtpyvcp.tools.plasma_gcode_preprocessor', log_file='qtpyvcp_plasma')
+LOG = initBaseLogger('qtpyvcp.tools.plasma_gcode_preprocessor')
+
+# force the python HAL lib to load/init. Not doing this causes a silent "crash"
+# when trying to set a hal pin
+try:
+    h = hal.component('dummy')
+    LOG.debug('Python HAL is available')
+except:
+    LOG.warn('Python HAL is NOT available')
+
 
 # Define some globals that will be referenced from anywhere
 # assumption is MM's is the base unit of reference.
@@ -98,6 +109,7 @@ class CodeLine:
         line:  the gcode line to be parsed
         mode: the model state. i.e. what G state has been set
         """
+        self._parent = parent
         self.command = ()
         self.params = {}
         self.comment = ''
@@ -108,6 +120,7 @@ class CodeLine:
         self.token = ''
         self.active_g_modal_groups = {}
         self.cutchart_id = None
+
     
         # token mapping for line commands
         tokens = {
@@ -153,7 +166,7 @@ class CodeLine:
             'M190':(Commands.MATERIAL_CHANGE, self.parse_passthrough),
             'M66':(Commands.DIGITAL_IN, self.parse_passthrough),
             'F#':(Commands.FEEDRATE_MATERIAL, self.parse_passthrough),
-            'F':(Commands.FEEDRATE_LINE, self.parse_passthrough),
+            'F':(Commands.FEEDRATE_LINE, self.parse_feedrate),
             '#<holes>':(Commands.HOLE_MODE, self.placeholder),
             '#<h_diameter>':(Commands.HOLE_DIAM, self.placeholder),
             '#<h_velocity>':(Commands.HOLE_VEL, self.placeholder),
@@ -173,7 +186,7 @@ class CodeLine:
         # [1] Recognise it is there
         # [2] Scan for any illegal codes, set any error codes if needed
         # [3] Mark line for pass through
-        multi_codes = re.findall(r"G\d+|M\d+|T.\d", line.upper().strip())
+        multi_codes = re.findall(r"G\d+|T\s*\d+|M\d+", line.upper().strip())
         if len(multi_codes) > 1:
             # we have multiple codes on the line
             self.type = Commands.PASSTHROUGH
@@ -183,7 +196,7 @@ class CodeLine:
                     # we have an error state
                     self.cutter_comp_error()
             # look for Tx M6 combo
-            f = re.findall("T.\d+|M6", line.upper().strip())
+            f = re.findall("T\s*\d+|M6", line.upper().strip())
             if len(f) == 2:
                 # we have a tool change combo. Assume in form Tx M6
                 self.parse_toolchange(combo=True)
@@ -307,7 +320,7 @@ class CodeLine:
         # Param: combo - if True then line has both Tx and M6
         line = self.strip_inline_comment(self.raw)
         if combo:
-            f = re.findall("T.\d+|M6", line.upper().strip())
+            f = re.findall(r"T\s*\d+|M6", line.upper().strip())
             # assume is in format Tx M6
             tool = int(re.split('T', f[0], 1)[1])
             self.type = Commands.PASSTHROUGH
@@ -321,8 +334,20 @@ class CodeLine:
             # rewrite the raw line as an error comment
             self.raw = f"; ERROR: Invalid Cutchart ID. Check CAM Tools: {self.raw}"
             LOG.warn(f'Tool {tool} not a valid cut process in DB')
-        #else:
+        else:
             self.cutchart_id = tool
+            self._parent.active_cutchart = tool
+            self._parent.active_feedrate = cut_process[0].cut_speed
+
+        
+    def parse_feedrate(self):
+        # assumption is that the feed is on its own line
+        line = self.strip_inline_comment(self.raw)
+        feed = float(re.split('F', line, 1)[1])
+        if self._parent.active_feedrate is not None:
+            feed = self._parent.active_feedrate
+        self.command = ('F', feed)
+
 
     def set_inches(self):
         global UNITS_PER_MM
@@ -381,6 +406,8 @@ class PreProcessor:
         self._orig_gcode = None
         self.active_g_modal_grps = {}
         self.active_m_modal_grps = {}
+        self.active_cutchart = None
+        self.active_feedrate = None
 
         openfile= open(inCode, 'r')
         self._orig_gcode = openfile.readlines()
@@ -462,7 +489,7 @@ class PreProcessor:
             elif l.type is Commands.PASSTHROUGH:
                 out = l.raw
             elif l.type is Commands.REMOVE:
-                # skip line as not to ba used
+                # skip line as not to be used
                 out = ''
             else:
                 try:
@@ -479,6 +506,13 @@ class PreProcessor:
             print(out, file=sys.stdout)
             sys.stdout.flush()
 
+    def set_ui_hal_cutchart_pin(self):
+        if self.active_cutchart is not None:
+            rtn = hal.set_p("qtpyvcp.cutchart-id", f"{self.active_cutchart}")
+            LOG.debug('Set hal cutchart-id pin')
+        else:
+            LOG.debug('No active cutchart')
+        
 
 def main():
     global PLASMADB
@@ -503,6 +537,8 @@ def main():
     p.flag_holes()
     # pass file to stdio and set any hal pins
     p.dump_parsed()
+    # Set hal pin on UI for cutchart.id
+    p.set_ui_hal_cutchart_pin()
     # Close out DB
     PLASMADB.terminate()
     
