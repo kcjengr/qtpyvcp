@@ -63,7 +63,7 @@ class crudMixin(object):
     def get_by_key(cls, session, key, value):
         try:
             cls_key = getattr(cls, key)
-            return session.qyery(cls).filter(cls_key == value).all()
+            return session.query(cls).filter(cls_key == value).all()
         except:
             LOG.debug('Possible key name error in crudMixin')
             return None
@@ -270,11 +270,11 @@ class PlasmaProcesses(Plugin):
             return
         
         if kwargs["db_type"] != "sqlite":
-            self._engine = create_engine(kwargs["connect_string"], echo=True)
+            self._engine = create_engine(kwargs["connect_string"], echo=False)
         else:
             self._persistence_file = normalizePath(path='plasma_table.db',
                                               base=os.getenv('CONFIG_DIR', '~/'))
-            self._engine = create_engine('sqlite:///'+self._persistence_file, echo=True)
+            self._engine = create_engine('sqlite:///'+self._persistence_file, echo=False)
 
 
         # create the database for anything not already in place
