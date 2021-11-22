@@ -394,6 +394,14 @@ class PlasmaProcesses(Plugin):
         return Consumable.create(self._session, name=conname, image_path=None)
     
 
+    def cut_by_id(self, id):
+        data = Cutchart.get_by_key(self._session, 'id', id)
+        if data is not None:
+            LOG.debug(f'Find specific cut id: {id}.  Found: {len(data)}')
+        else:
+            LOG.debug('Find specific cut id is: None')
+        return data
+
     def cut(self, arglst):
         # Order of params sent in.  Order matters for mapping to
         # arg list call. Not ideal 
