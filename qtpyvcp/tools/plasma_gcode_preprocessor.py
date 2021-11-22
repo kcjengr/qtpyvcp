@@ -22,13 +22,19 @@ import sys
 import re
 from enum import Enum, auto
 from typing import List, Dict, Tuple, Union
-#from dataclasses import dataclass
+from qtpyvcp.plugins.plasma_processes import PlasmaProcesses
+from qtpyvcp.utilities.logger import initBaseLogger
 
 #import pydevd;pydevd.settrace()
+
+
+# Constrcut LOG from qtpyvcp standard logging framework
+LOG = initBaseLogger('qtpyvcp.tools.plasma_gcode_preprocessor', log_file='qtpyvcp_plasma')
 
 # Define some globals that will be referenced from anywhere
 # assumption is MM's is the base unit of reference.
 UNITS_PER_MM = 1
+PLASMADB = None
 
 
 # Enum for line type
@@ -101,6 +107,7 @@ class CodeLine:
         self.is_hole = False
         self.token = ''
         self.active_g_modal_groups = {}
+        self.cutchart_id = None
     
         # token mapping for line commands
         tokens = {
@@ -154,8 +161,8 @@ class CodeLine:
             '#<pierce-only>':(Commands.PIERCE_MODE, self.placeholder),
             #'#<keep-z-motion>':Commands.KEEP_Z,
             ';':(Commands.COMMENT, self.parse_comment),
-            '(':(Commands.COMMENT, self.parse_comment)
-            #'T':Commands.TOOLCHANGE,
+            '(':(Commands.COMMENT, self.parse_comment),
+            'T':(Commands.TOOLCHANGE, self.parse_toolchange)
             #'(o=':Commands.MAGIC_MATERIAL
             }
         
@@ -166,14 +173,20 @@ class CodeLine:
         # [1] Recognise it is there
         # [2] Scan for any illegal codes, set any error codes if needed
         # [3] Mark line for pass through
-        multi_codes = re.findall(r"G\d+|M\d+", line.upper().strip())
+        multi_codes = re.findall(r"G\d+|M\d+|T.\d", line.upper().strip())
         if len(multi_codes) > 1:
             # we have multiple codes on the line
+            self.type = Commands.PASSTHROUGH
+            # scan for possible 'bad' codes
             for code in multi_codes:
                 if code in ('G41','G42','G41.1','G42.1'):
                     # we have an error state
                     self.cutter_comp_error()
-            self.type = Commands.PASSTHROUGH
+            # look for Tx M6 combo
+            f = re.findall("T.\d+|M6", line.upper().strip())
+            if len(f) == 2:
+                # we have a tool change combo. Assume in form Tx M6
+                self.parse_toolchange(combo=True)
         else:
             # not a multi code on single line situation so process line
             # to set line type
@@ -206,6 +219,13 @@ class CodeLine:
                 #if self.type is not Commands.OTHER: return
             
 
+    def strip_inline_comment(self, line):
+        s = re.split(";|\(", line, 1)
+        try:
+            return s[0].strip()
+        except:
+            return line
+
     def save_g_modal_group(self, grp):
         self.active_g_modal_groups = grp.copy()
         
@@ -232,6 +252,7 @@ class CodeLine:
         
 
     def parse_other(self):
+        LOG.debug(f'Type OTHER -- {self.token} -- found - this code is not handled or considered')
         pass
     
     def parse_passthrough(self):
@@ -278,6 +299,30 @@ class CodeLine:
             if len(params) == 2:
                 self.params[params[0]] = float(params[1])
 
+    def parse_toolchange(self, combo=False):
+        # A tool change is deemed a process change.
+        # The Tool Number is to be the unique ID of a Process combination from
+        # the CustChart table. This will need to be supported by the
+        # CAM having a loading of tools where the tool #  is the ID from this table
+        # Param: combo - if True then line has both Tx and M6
+        line = self.strip_inline_comment(self.raw)
+        if combo:
+            f = re.findall("T.\d+|M6", line.upper().strip())
+            # assume is in format Tx M6
+            tool = int(re.split('T', f[0], 1)[1])
+            self.type = Commands.PASSTHROUGH
+        else:
+            tool = int(re.split('T', line, 1)[1])
+            self.command = ('T',tool)
+            self.type = Commands.TOOLCHANGE
+        # test if this process ID is known about
+        cut_process = PLASMADB.cut_by_id(tool)
+        if len(cut_process) == 0:
+            # rewrite the raw line as an error comment
+            self.raw = f"; ERROR: Invalid Cutchart ID. Check CAM Tools: {self.raw}"
+            LOG.warn(f'Tool {tool} not a valid cut process in DB')
+        #else:
+            self.cutchart_id = tool
 
     def set_inches(self):
         global UNITS_PER_MM
@@ -301,8 +346,8 @@ class CodeLine:
         
         
     def placeholder(self):
+        LOG.debug(f'Type PLACEHOLDER -- {self.token} -- found - this code is not handled or considered')
         pass
-
         
 G_MODAL_GROUPS = {
     1: ('G0','G1','G2','G3','G33','G38.n','G73','G76','G80','G81',\
@@ -436,6 +481,8 @@ class PreProcessor:
 
 
 def main():
+    global PLASMADB
+    
     try:
         inCode = sys.argv[1]
     except:
@@ -447,11 +494,17 @@ def main():
         print(__doc__)
         return
 
+    PLASMADB = PlasmaProcesses(db_type='sqlite')
+    
     # Start cycling through each line of the file and processing it
     p = PreProcessor(inCode)
     p.parse()
+    # Holes processing
     p.flag_holes()
+    # pass file to stdio and set any hal pins
     p.dump_parsed()
+    # Close out DB
+    PLASMADB.terminate()
     
 
 if __name__ == '__main__':
