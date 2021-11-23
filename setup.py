@@ -93,6 +93,7 @@ setup(
         'pyqtgraph',
         'oyaml',
         'simpleeval',
+        'sqlalchemy',
     ],
     entry_points={
         'console_scripts': [
