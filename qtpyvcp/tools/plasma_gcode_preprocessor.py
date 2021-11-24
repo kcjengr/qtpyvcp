@@ -77,6 +77,8 @@ class Commands(Enum):
     CONTAINS_COMMENT            = auto()
     MOVE_LINEAR                 = auto()
     MOVE_ARC                    = auto()
+    ARC_RELATIVE                = auto()
+    ARC_ABSOLUTE                = auto()
     TOOLCHANGE                  = auto()
     PASSTHROUGH                 = auto()
     OTHER                       = auto()
@@ -192,6 +194,8 @@ class CodeLine:
             'M5':(Commands.SPINDLE_OFF, self.parse_passthrough),
             'M190':(Commands.MATERIAL_CHANGE, self.parse_passthrough),
             'M66':(Commands.DIGITAL_IN, self.parse_passthrough),
+            'G91.1':(Commands.ARC_RELATIVE, self.parse_passthrough),
+            'G90.1':(Commands.ARC_ABSOLUTE, self.parse_passthrough),
             'F#':(Commands.FEEDRATE_MATERIAL, self.parse_passthrough),
             'F':(Commands.FEEDRATE_LINE, self.parse_feedrate),
             '#<holes>':(Commands.HOLE_MODE, self.placeholder),
@@ -484,7 +488,7 @@ class HoleBuilder:
         return line
 
 
-    def plasma_hole(self, x, y, d, kerf, leadin_radius, splits=[]):
+    def plasma_hole(self, line, x, y, d, kerf, leadin_radius, splits=[]):
         # Params:
         # x:              Hole Centre X position
         # y:              Hole Centre y position
@@ -501,8 +505,10 @@ class HoleBuilder:
         r = float(d)/2.00
         kc = float(kerf) / 2
         # kerf larger than hole -> hole disappears
+        # Make that hole has been ignored with a comment.
         if kc > r:
             self.elements = []
+            self.elements.append(self.create_comment('1/2 Kerf > Hole Radius.  Smart Hole processing skipped.'))
             return
         # convert split distances to angles (in radians)
         split_angles = []
@@ -535,7 +541,8 @@ class HoleBuilder:
 
         self.elements = []
 
-        self.elements.append(self.create_absolute_arc())
+        if line.active_g_modal_groups[4] == 'G91.1':
+            self.elements.append(self.create_absolute_arc())
         self.elements.append(self.create_comment('Leadin...'))
         # done nothing here
 
@@ -618,7 +625,8 @@ class HoleBuilder:
             self.elements.append(self.create_ccw_arc_gcode(x+r, y, x, y))
             self.elements.append(self.create_ccw_arc_gcode(x, y+r, x, y))
 
-        self.elements.append(self.create_relative_arc())
+        if line.active_g_modal_groups[4] == 'G91.1':
+            self.elements.append(self.create_relative_arc())
         # cut off
         self.elements.append(self.create_cut_on_off_gcode(False))
 
@@ -709,7 +717,7 @@ class PreProcessor:
                         # splits[]:       List of length segments. Segments will support different speeds. +ve is left of 12 o'clock
                         #                 -ve is right of 12 o'clock
                         #                 and starting positions of the circle. Including overburn
-                        line.hole_builder.plasma_hole(centre_x, centre_y, diameter, 1.5, 4.0, [-3,3])
+                        line.hole_builder.plasma_hole(line, centre_x, centre_y, diameter, 1.5, 4.0, [-3,3])
                         
                         # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
                         j = i-1
@@ -719,9 +727,18 @@ class PreProcessor:
                             if prev.token.startswith('M3'):
                                 prev.type = Commands.REMOVE
                                 break
+                        j = i+1
+                        for j in range(j, len(self._parsed)):
+                            next = self._parsed[j]
+                            if next.token.startswith('M5'):
+                                next.type = Commands.REMOVE
+                                break                        
             i += 1
 
     def parse(self):
+        # setup any global default modal groups that we need to be aware of
+        self.set_active_g_modal('G91.1')
+        # start parsing through the loaded file
         for line in self._orig_gcode:
             self._line_num += 1
             self._line = line.strip()
@@ -730,7 +747,7 @@ class PreProcessor:
                 gcode = f'{l.command[0]}{l.command[1]}'
             except:
                 gcode = ''
-            self.set_active_g_modal(gcode)
+            self.set_active_g_modal(l.token)
             l.save_g_modal_group(self.active_g_modal_grps)
             self._parsed.append(l)
 
