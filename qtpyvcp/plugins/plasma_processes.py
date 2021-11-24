@@ -638,7 +638,8 @@ class PlasmaProcesses(Plugin):
 
 if __name__ == "__main__":
     import sys
-    con_str = f'mysql+pymysql://james:{sys.argv[2]}@localhost/plasma_table'
+    # command line usage is:  <file> <user> <password>
+    con_str = f'mysql+pymysql://{sys.argv[2]}:{sys.argv[3]}@localhost/plasma_table'
     p = PlasmaProcesses(db_type='mysql', connect_string=con_str)
     p.initialise()
     p.seed_data_base(sys.argv[1])
