@@ -502,6 +502,12 @@ class HoleBuilder:
         # often code is already compensated. We need to be able to tell the script if it is
         #changed the radius parameter to be ad diameter which is more in keeping with the hole data methodology
 
+        # is G40 oavtive or not
+        if line.active_g_modal_groups[7] == 'G40':
+            g40 = True
+        else:
+            g40 = False
+
         r = float(d)/2.00
         kc = float(kerf) / 2
         # kerf larger than hole -> hole disappears
@@ -531,9 +537,10 @@ class HoleBuilder:
         #sort angles, smallest first
 
         # compensate hole radius and leadin radius if not already compensated code
-        # TODO: allow for uncompensated code
-        r = r - kc
-        leadin_radius = leadin_radius -kc
+        # Testing for g40 active.  HOWEVER using a G41/42 code causes so many lost plasmac featrues
+        # why on earth would you use it?
+        r = r if g40 else r - kc
+        leadin_radius = leadin_radius if g40 else leadin_radius -kc
 
         # the first real point of the hole (after leadin)
         arc_x0 = x
@@ -543,6 +550,8 @@ class HoleBuilder:
 
         if line.active_g_modal_groups[4] == 'G91.1':
             self.elements.append(self.create_absolute_arc())
+        self.elements.append(self.create_comment(f'Hole Center x={x} y={y} r={r}'))
+        self.elements.append(self.create_comment(f'First point on hole: x={arc_x0} y={arc_y0}'))
         self.elements.append(self.create_comment('Leadin...'))
         # done nothing here
 
@@ -571,6 +580,16 @@ class HoleBuilder:
         else:
             # TODO:
             self.elements.append(self.create_comment('use combination of leadin arc and a smaller arc from the hole center'))
+
+            
+            self.elements.append(self.create_line_gcode(x, y, True))
+            self.elements.append(self.create_kerf_off_gcode())
+            self.elements.append(self.create_cut_on_off_gcode(True))
+            self.elements.append(self.create_line_gcode(arc_x0, arc_y0, False))
+            pass
+            
+            
+            
             leadin_diameter =  (leadin_radius + kc) * 2
             from_centre = leadin_diameter - (r + kc)  # distance from centre
             start1_x = x
@@ -677,19 +696,20 @@ class PreProcessor:
             if len(line.command) == 2:
                 if line.command[0] == 'G' and line.command[1] in (2,3):
                     # this could be a hole, test for it
+                                        
                     #[1] find the last X and Y position while grp 1 was either G0 or G1
                     j = i-1
                     for j in range(j, -1, -1):
                         prev = self._parsed[j]
                         # is there an X or Y in the line
-                        if 'X' in prev.params.keys() and prev.active_g_modal_groups[1] in ('G0','G1'):
+                        if 'X' in prev.params.keys() and prev.active_g_modal_groups[1] in ('G0','G1','G2','G3'):
                             lastx = prev.params['X']
                             break
                     j = i-1
                     for j in range(j, -1, -1):
                         prev = self._parsed[j]
                         # is there an X or Y in the line
-                        if 'Y' in prev.params.keys() and prev.active_g_modal_groups[1] in ('G0','G1'):
+                        if 'Y' in prev.params.keys() and prev.active_g_modal_groups[1] in ('G0','G1','G2','G3'):
                             lasty = prev.params['Y']
                             break
                     endx = line.params['X'] if 'X' in line.params.keys() else lastx
@@ -706,7 +726,7 @@ class PreProcessor:
                         arc_j = line.params['J']
                         centre_x = endx + arc_i
                         centre_y = endy + arc_j
-                        radius = line.hole_builder.line_length(centre_x, endx, centre_y, endy)
+                        radius = line.hole_builder.line_length(centre_x, centre_y,endx, endy)
                         diameter = 2 * math.fabs(radius)
                         # Params:
                         # x:              Hole Centre X position
@@ -717,7 +737,7 @@ class PreProcessor:
                         # splits[]:       List of length segments. Segments will support different speeds. +ve is left of 12 o'clock
                         #                 -ve is right of 12 o'clock
                         #                 and starting positions of the circle. Including overburn
-                        line.hole_builder.plasma_hole(line, centre_x, centre_y, diameter, 1.5, 4.0, [-3,3])
+                        line.hole_builder.plasma_hole(line, centre_x, centre_y, diameter, 1.5, 2.0, [-3,3])
                         
                         # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
                         j = i-1
@@ -738,6 +758,7 @@ class PreProcessor:
     def parse(self):
         # setup any global default modal groups that we need to be aware of
         self.set_active_g_modal('G91.1')
+        self.set_active_g_modal('G40')
         # start parsing through the loaded file
         for line in self._orig_gcode:
             self._line_num += 1
