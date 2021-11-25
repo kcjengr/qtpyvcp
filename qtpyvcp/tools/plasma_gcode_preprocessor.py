@@ -423,7 +423,7 @@ class HoleBuilder:
 
     def create_ccw_arc_gcode(self, x, y, rx, ry):
         return {
-            "code": "g03",
+            "code": "G3",
             "x": x,
             "y": y,
             "i": rx,
@@ -432,7 +432,7 @@ class HoleBuilder:
 
     def create_cw_arc_gcode(self, x, y, rx, ry):
         return {
-            "code": "g02",
+            "code": "G2",
             "x": x,
             "y": y,
             "i": rx,
@@ -441,19 +441,19 @@ class HoleBuilder:
 
     def create_line_gcode(self, x, y, rapid):
         return {
-            "code": "g00" if rapid else "g01",
+            "code": "G0" if rapid else "G1",
             "x": x,
             "y": y
         }
 
     def create_cut_on_off_gcode(self, cut_on):
         return {
-            "code": "m03" if cut_on else "m05"
+            "code": "M3" if cut_on else "M5"
         }
 
     def create_kerf_off_gcode(self):
         return {
-            "code": "g40"
+            "code": "G40"
         }
 
     def create_comment(self, txt):
@@ -464,25 +464,25 @@ class HoleBuilder:
     def create_dwell(self, t):
         # add a G4 Pn dwell between segments
         return {
-             "code": f"g4 P{t}"
+             "code": f"G4 P{t}"
         }
     
     def create_absolute_arc(self):
         return {
-            "code": "g90.1"
+            "code": "G90.1"
         }
 
     def create_relative_arc(self):
         return {
-            "code": "g91.1"
+            "code": "G91.1"
         }
 
 
     def element_to_gcode_line(self, e):
         if 'i' in e:
-            line = '{} x{:.2f} y{:.2f} i{:.2f} j{:.2f}'.format(e['code'], e['x'], e['y'], e['i'], e['j'])
+            line = '{} x{:.3f} y{:.3f} i{:.3f} j{:.3f}'.format(e['code'], e['x'], e['y'], e['i'], e['j'])
         elif 'x' in e:
-            line = '{} x{:.2f} y{:.2f}'.format(e['code'], e['x'], e['y'])
+            line = '{} x{:.3f} y{:.3f}'.format(e['code'], e['x'], e['y'])
         else:
             line = e['code']
         return line
@@ -511,7 +511,7 @@ class HoleBuilder:
         r = float(d)/2.00
         kc = float(kerf) / 2
         # kerf larger than hole -> hole disappears
-        # Make that hole has been ignored with a comment.
+        # Mark that hole has been ignored with a comment.
         if kc > r:
             self.elements = []
             self.elements.append(self.create_comment('1/2 Kerf > Hole Radius.  Smart Hole processing skipped.'))
@@ -546,14 +546,14 @@ class HoleBuilder:
         arc_x0 = x
         arc_y0 = y + r
 
+        # make sure gcode elements list is empty
         self.elements = []
 
         if line.active_g_modal_groups[4] == 'G91.1':
             self.elements.append(self.create_absolute_arc())
-        self.elements.append(self.create_comment(f'Hole Center x={x} y={y} r={r}'))
+        self.elements.append(self.create_comment(f'Hole Center x={x} y={y} r={r} leadin_r={leadin_radius}'))
         self.elements.append(self.create_comment(f'First point on hole: x={arc_x0} y={arc_y0}'))
         self.elements.append(self.create_comment('Leadin...'))
-        # done nothing here
 
         # leadin radius too small or greater (or equal) than r.
         # --> use straight leadin from the hole center.
@@ -561,6 +561,7 @@ class HoleBuilder:
             self.elements.append(self.create_comment('too small'))
             self.elements.append(self.create_line_gcode(x, y, True))
             self.elements.append(self.create_kerf_off_gcode())
+            # TORCH ON
             self.elements.append(self.create_cut_on_off_gcode(True))
             self.elements.append(self.create_line_gcode(arc_x0, arc_y0, False))
 
@@ -568,12 +569,28 @@ class HoleBuilder:
         # --> use half circle leadin
         # done nothing here
         elif leadin_radius <= (r / 2):
-            self.elements.append(self.create_comment('half circle radius'))
-            self.elements.append(self.create_line_gcode(x, arc_y0 - 2 * leadin_radius, True))
-            self.elements.append(self.create_kerf_off_gcode())
-            self.elements.append(self.create_cut_on_off_gcode(True))
-            self.elements.append(self.create_ccw_arc_gcode(x + leadin_radius, arc_y0 - leadin_radius, x, arc_y0 - leadin_radius))
-            self.elements.append(self.create_ccw_arc_gcode(arc_x0, arc_y0, x, arc_y0 - leadin_radius))
+            self.elements.append(self.create_comment('Half circle radius'))
+            # rapid to hole centre
+            centre_to_leadin_diam_gap = arc_y0 - (2 * leadin_radius) - y
+            self.elements.append(self.create_comment(f'Half circle radius. Centre-to-Leadin-Gap={centre_to_leadin_diam_gap}'))
+            if centre_to_leadin_diam_gap < kerf:
+                self.elements.append(self.create_comment('... single arc'))
+                self.elements.append(self.create_line_gcode(x, y, True))
+                self.elements.append(self.create_kerf_off_gcode())
+                # TORCH ON
+                self.elements.append(self.create_cut_on_off_gcode(True))
+                self.elements.append(self.create_line_gcode(x, arc_y0 - 2 * leadin_radius, False))
+                self.elements.append(self.create_ccw_arc_gcode(arc_x0, arc_y0, x, arc_y0 - leadin_radius))
+            else:
+                self.elements.append(self.create_comment('... double back arc'))
+                self.elements.append(self.create_line_gcode(x, y, True))
+                self.elements.append(self.create_kerf_off_gcode())
+                # TORCH ON
+                self.elements.append(self.create_cut_on_off_gcode(True))
+                self.elements.append(self.create_cw_arc_gcode(x, y + centre_to_leadin_diam_gap, \
+                                                              x, y + centre_to_leadin_diam_gap/2))
+                self.elements.append(self.create_ccw_arc_gcode(arc_x0, arc_y0, x, arc_y0 - leadin_radius))
+            
 
         # r/2 < leadin radius < r.
         # --> use combination of leadin arc and a smaller arc from the hole center
@@ -584,30 +601,36 @@ class HoleBuilder:
             
             self.elements.append(self.create_line_gcode(x, y, True))
             self.elements.append(self.create_kerf_off_gcode())
+            # TORCH ON
             self.elements.append(self.create_cut_on_off_gcode(True))
             self.elements.append(self.create_line_gcode(arc_x0, arc_y0, False))
-            pass
             
             
             
-            leadin_diameter =  (leadin_radius + kc) * 2
-            from_centre = leadin_diameter - (r + kc)  # distance from centre
-            start1_x = x
-            start1_y = r + from_centre  + kc # Y coordinate of start position
-            self.elements.append(self.create_line_gcode(x, y-d/2 , True))
-            if abs(from_centre) < (kerf * 2):
-                 # no room for arc, use straight segment from hole centre
-                self.elements.append(self.create_comment('no room for arc, use straight segment from hole centre...'))
-                self.elements.append(self.create_line_gcode(start1_x, start1_y, False))
-            elif start1_y < r:
-                # leadin diameter is shorter than hole radius, Use G2 for first arc
-                self.elements.append(self.create_comment('leadin diameter is shorter than hole radius, Use G2 for first arc...'))
-                self.elements.append(self.create_cw_arc_gcode(start1_x , start1_y, x, start1_y - from_centre))
-            else:
-                #leadin diameter is longer than hole radius, Use G3 for first arc
-                self.elements.append(self.create_comment('leadin diameter is longer than hole radius, Use G3 for first arc...'))
-                self.elements.append(self.create_ccw_arc_gcode(x , -(leadin_diameter) , x, -(start1_y - from_centre/2)))
-            self.elements.append(self.create_ccw_arc_gcode(x , y - kc, x, -(leadin_diameter-(leadin_diameter - kc)/2)))
+            #leadin_diameter =  (leadin_radius + kc) * 2
+            #from_centre = leadin_diameter - (r + kc)  # distance from centre
+            # always start from centre of the hole
+            #start1_x = x
+            #startl_y = y
+            #start1_y = r + from_centre  + kc # Y coordinate of start position
+            
+            # rapid to hole centre
+            #self.elements.append(self.create_line_gcode(x, y , True))
+            
+            # self.elements.append(self.create_line_gcode(x, y-d/2 , True))
+            # if abs(from_centre) < (kerf * 2):
+            #      # no room for arc, use straight segment from hole centre
+            #     self.elements.append(self.create_comment('no room for arc, use straight segment from hole centre...'))
+            #     self.elements.append(self.create_line_gcode(start1_x, start1_y, False))
+            # elif start1_y < r:
+            #     # leadin diameter is shorter than hole radius, Use G2 for first arc
+            #     self.elements.append(self.create_comment('leadin diameter is shorter than hole radius, Use G2 for first arc...'))
+            #     self.elements.append(self.create_cw_arc_gcode(start1_x , start1_y, x, start1_y - from_centre))
+            # else:
+            #     #leadin diameter is longer than hole radius, Use G3 for first arc
+            #     self.elements.append(self.create_comment('leadin diameter is longer than hole radius, Use G3 for first arc...'))
+            #     self.elements.append(self.create_ccw_arc_gcode(x , -(leadin_diameter) , x, -(start1_y - from_centre/2)))
+            # self.elements.append(self.create_ccw_arc_gcode(x , y - kc, x, -(leadin_diameter-(leadin_diameter - kc)/2)))
 
         self.elements.append(self.create_comment('Hole...'))
         #this has been reworked quite a bit. The original code was referring to the cursor X & Y positions and they needed to be the hole centre
@@ -616,6 +639,7 @@ class HoleBuilder:
         cy =  y
 
         if len(split_angles) > 0:
+            sector_num = 0
             for sang in split_angles:
                 end_angle = sang
                 end_x = ( cx+ r * math.cos(end_angle))
@@ -631,12 +655,13 @@ class HoleBuilder:
                 #comment the code
                 ourcomment = 'Settings: angle = ' + str(sang) + ' end_angle ' + str(end_angle) +' radians ' + str(self.degrees(end_angle)) + ' degrees'
                 self.elements.append(self.create_comment(ourcomment))
+                self.elements.append(self.create_comment(f'Sector num: {sector_num}'))
                 self.elements.append(self.create_ccw_arc_gcode(end_x, end_y, cx, cy))
                 if (end_x == 0.00 and end_y == 0.00) == False:
                     #if not 12 O'clock, dwell for 0.5 sec so we have a visual indicator of each segment
                     # we need to insert a call to a procedure that creates the required gcode actions at the end of each segment
                     self.elements.append(self.create_dwell('0.5'))
-
+                sector_num += 1
         else:
             # create hole as four arcs. no overburn or anything special.
             self.elements.append(self.create_ccw_arc_gcode(x-r, y, x, y))
@@ -644,10 +669,10 @@ class HoleBuilder:
             self.elements.append(self.create_ccw_arc_gcode(x+r, y, x, y))
             self.elements.append(self.create_ccw_arc_gcode(x, y+r, x, y))
 
+        # TORCH OFF
+        self.elements.append(self.create_cut_on_off_gcode(False))
         if line.active_g_modal_groups[4] == 'G91.1':
             self.elements.append(self.create_relative_arc())
-        # cut off
-        self.elements.append(self.create_cut_on_off_gcode(False))
 
     def generate_hole_gcode(self):
         for e in self.elements:
@@ -737,12 +762,14 @@ class PreProcessor:
                         # splits[]:       List of length segments. Segments will support different speeds. +ve is left of 12 o'clock
                         #                 -ve is right of 12 o'clock
                         #                 and starting positions of the circle. Including overburn
-                        line.hole_builder.plasma_hole(line, centre_x, centre_y, diameter, 1.5, 2.0, [-3,3])
+                        line.hole_builder.plasma_hole(line, centre_x, centre_y, diameter, 1.5, 4, [-3,3])
                         
                         # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
                         j = i-1
                         for j in range(j, -1, -1):
                             prev = self._parsed[j]
+                            # mark for removal any lines until find the M3
+                            prev.type = Commands.REMOVE
                             # find and mark for removal the first M3
                             if prev.token.startswith('M3'):
                                 prev.type = Commands.REMOVE
@@ -750,6 +777,8 @@ class PreProcessor:
                         j = i+1
                         for j in range(j, len(self._parsed)):
                             next = self._parsed[j]
+                            # mark all lines for removal until find M5
+                            next.type = Commands.REMOVE
                             if next.token.startswith('M5'):
                                 next.type = Commands.REMOVE
                                 break                        
