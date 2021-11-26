@@ -260,6 +260,21 @@ class Cutchart(crudMixin,BASE):
                         )).order_by(cls.name).all()
         return result_set
 
+    @classmethod
+    def tool_list_for_lcnc(cls, session, machine, pressure, measurement):
+        
+        measurementid = LinearSystem.get_by_key(session, 'name', measurement)[0].id
+        machineid = Machine.get_by_key(session, 'name', machine)[0].id
+        pressureid = PressureSystem.get_by_key(session, 'name', pressure)[0].id
+        result_set = session.query(cls) \
+            .filter(and_( \
+                          cls.linearsystemid == measurementid, \
+                          cls.machineid == machineid, \
+                          cls.pressuresystemid == pressureid \
+                        )).order_by(cls.id).all()
+        return result_set
+    
+
 class PlasmaProcesses(Plugin):
     def __init__(self, **kwargs):
         super(PlasmaProcesses, self).__init__()
@@ -396,11 +411,18 @@ class PlasmaProcesses(Plugin):
 
     def cut_by_id(self, id):
         data = Cutchart.get_by_key(self._session, 'id', id)
-        if data is not None:
-            LOG.debug(f'Find specific cut id: {id}.  Found: {len(data)}')
-        else:
-            LOG.debug('Find specific cut id is: None')
+        # if data is not None:
+        #     LOG.debug(f'Find specific cut id: {id}.  Found: {len(data)}')
+        # else:
+        #     LOG.debug('Find specific cut id is: None')
         return data
+
+
+    def tool_list_for_lcnc(self, machine, pressure, measurement):
+        data = Cutchart.tool_list_for_lcnc(self._session, machine, pressure, measurement)
+        #LOG.debug(f'lcnc tool list for filters machine={machine}, pressure={pressure}, measurement={measurement}')
+        return data
+
 
     def cut(self, arglst):
         # Order of params sent in.  Order matters for mapping to
