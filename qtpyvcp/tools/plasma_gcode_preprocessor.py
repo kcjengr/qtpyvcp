@@ -25,6 +25,7 @@ from enum import Enum, auto
 from typing import List, Dict, Tuple, Union
 
 import hal
+import linuxcnc
 from qtpyvcp.plugins.plasma_processes import PlasmaProcesses
 from qtpyvcp.utilities.logger import initBaseLogger
 
@@ -33,6 +34,10 @@ from qtpyvcp.utilities.logger import initBaseLogger
 
 # Constrcut LOG from qtpyvcp standard logging framework
 LOG = initBaseLogger('qtpyvcp.tools.plasma_gcode_preprocessor')
+# Set over arching converstion fact. All thinking and calcs are in mm so need
+# convert and arbirary values to bannas when they are in use
+INI = linuxcnc.ini(os.environ['INI_FILE_NAME'])
+UNITS, PRECISION, UNITS_PER_MM = ['in',6,25.4] if INI.find('TRAJ', 'LINEAR_UNITS') == 'inch' else ['mm',4,1]
 
 # force the python HAL lib to load/init. Not doing this causes a silent "crash"
 # when trying to set a hal pin
@@ -45,7 +50,6 @@ except:
 
 # Define some globals that will be referenced from anywhere
 # assumption is MM's is the base unit of reference.
-UNITS_PER_MM = 1
 PLASMADB = None
 
 G_MODAL_GROUPS = {
@@ -68,7 +72,6 @@ M_MODAL_GROUPS = {
     4: ('M0','M1','M2','M30','M60'),
     7: ('M3','M4','M5'),
     9: ('M48','M49')}
-
 
 
 # Enum for line type
@@ -330,7 +333,6 @@ class CodeLine:
             self.type = Commands.XY
 
 
-
     def parse_arc(self):
         # arc motion means either G2 or G3. So looking for X/Y/I/J/P on this line
         self.command = ('G',int(self.token[1:]))
@@ -342,6 +344,7 @@ class CodeLine:
             # this is now a list which can be added to the params dictionary
             if len(params) == 2:
                 self.params[params[0]] = float(params[1])
+
 
     def parse_toolchange(self, combo=False):
         # A tool change is deemed a process change.
@@ -363,13 +366,14 @@ class CodeLine:
         cut_process = PLASMADB.cut_by_id(tool)
         if len(cut_process) == 0:
             # rewrite the raw line as an error comment
-            self.raw = f"; ERROR: Invalid Cutchart ID. Check CAM Tools: {self.raw}"
+            self.raw = f"; ERROR: Invalid Cutchart ID in Tx. Check CAM Tools: {self.raw}"
             LOG.warn(f'Tool {tool} not a valid cut process in DB')
         else:
             self.cutchart_id = tool
             self._parent.active_cutchart = tool
             self._parent.active_feedrate = cut_process[0].cut_speed
-
+            self._parent.active_thickness = cut_process[0].thickness.thickness
+            
 
     def parse_feedrate(self):
         # assumption is that the feed is on its own line
@@ -479,16 +483,23 @@ class HoleBuilder:
 
 
     def element_to_gcode_line(self, e):
+        if PRECISION == 4:
+            xy = '{} x{:.4f} y{:.4f}'
+            ij = ' i{:.4f} j{:.4f}'
+        else:
+            xy = '{} x{:.6f} y{:.6f}'
+            ij = ' i{:.6f} j{:.6f}'
+        
         if 'i' in e:
-            line = '{} x{:.3f} y{:.3f} i{:.3f} j{:.3f}'.format(e['code'], e['x'], e['y'], e['i'], e['j'])
+            line = (xy + ij).format(e['code'], e['x'], e['y'], e['i'], e['j'])
         elif 'x' in e:
-            line = '{} x{:.3f} y{:.3f}'.format(e['code'], e['x'], e['y'])
+            line = xy.format(e['code'], e['x'], e['y'])
         else:
             line = e['code']
         return line
 
 
-    def plasma_hole(self, line, x, y, d, kerf, leadin_radius, splits=[]):
+    def plasma_hole(self, line, x, y, d, kerf, leadin_radius, splits=[], auto_leadin=False):
         # Params:
         # x:              Hole Centre X position
         # y:              Hole Centre y position
@@ -555,9 +566,18 @@ class HoleBuilder:
         self.elements.append(self.create_comment(f'First point on hole: x={arc_x0} y={arc_y0}'))
         self.elements.append(self.create_comment('Leadin...'))
 
+        centre_to_leadin_diam_gap = math.fabs(arc_y0 - (2 * leadin_radius) - y)
+
+        if auto_leadin:
+            # Auto-leadin is essentially the none - hidef leadin.
+            # it uses a basic set of rules to auto create 'sensible'
+            # hole gcode.
+            # Calculate all leadins as an arch from centre.
+            # Only use a straight leadin if r is <= kerf*2
+            LOG.debug('Auto holes processing')
         # leadin radius too small or greater (or equal) than r.
         # --> use straight leadin from the hole center.
-        if leadin_radius < 0 or leadin_radius >= r:
+        elif leadin_radius < 0 or leadin_radius >= r-kc:
             self.elements.append(self.create_comment('too small'))
             self.elements.append(self.create_line_gcode(x, y, True))
             self.elements.append(self.create_kerf_off_gcode())
@@ -571,7 +591,6 @@ class HoleBuilder:
         elif leadin_radius <= (r / 2):
             self.elements.append(self.create_comment('Half circle radius'))
             # rapid to hole centre
-            centre_to_leadin_diam_gap = arc_y0 - (2 * leadin_radius) - y
             self.elements.append(self.create_comment(f'Half circle radius. Centre-to-Leadin-Gap={centre_to_leadin_diam_gap}'))
             if centre_to_leadin_diam_gap < kerf:
                 self.elements.append(self.create_comment('... single arc'))
@@ -596,15 +615,36 @@ class HoleBuilder:
         # --> use combination of leadin arc and a smaller arc from the hole center
         else:
             # TODO:
-            self.elements.append(self.create_comment('use combination of leadin arc and a smaller arc from the hole center'))
+            self.elements.append(self.create_comment('Use combination of leadin arc and a smaller arc from the hole center'))
+            self.elements.append(self.create_comment(f'Half circle radius. Centre-to-Leadin-Gap={centre_to_leadin_diam_gap}'))
 
+            #
+            # self.elements.append(self.create_line_gcode(x, y, True))
+            # self.elements.append(self.create_kerf_off_gcode())
+            # # TORCH ON
+            # self.elements.append(self.create_cut_on_off_gcode(True))
+            # self.elements.append(self.create_line_gcode(arc_x0, arc_y0, False))
             
-            self.elements.append(self.create_line_gcode(x, y, True))
-            self.elements.append(self.create_kerf_off_gcode())
-            # TORCH ON
-            self.elements.append(self.create_cut_on_off_gcode(True))
-            self.elements.append(self.create_line_gcode(arc_x0, arc_y0, False))
-            
+
+            if centre_to_leadin_diam_gap < kerf:
+                self.elements.append(self.create_comment('... single arc'))
+                self.elements.append(self.create_line_gcode(x, y, True))
+                self.elements.append(self.create_kerf_off_gcode())
+                # TORCH ON
+                self.elements.append(self.create_cut_on_off_gcode(True))
+                self.elements.append(self.create_line_gcode(x, y - centre_to_leadin_diam_gap, False))
+                self.elements.append(self.create_ccw_arc_gcode(arc_x0, arc_y0, x, arc_y0 - leadin_radius))
+            else:
+                self.elements.append(self.create_comment('... double back arc'))
+                self.elements.append(self.create_line_gcode(x, y, True))
+                self.elements.append(self.create_kerf_off_gcode())
+                # TORCH ON
+                self.elements.append(self.create_cut_on_off_gcode(True))
+                self.elements.append(self.create_ccw_arc_gcode(x, y - centre_to_leadin_diam_gap, \
+                                                              x, y - centre_to_leadin_diam_gap/2))
+                self.elements.append(self.create_ccw_arc_gcode(arc_x0, arc_y0, x, arc_y0 - leadin_radius))
+
+
             
             
             #leadin_diameter =  (leadin_radius + kc) * 2
@@ -691,6 +731,8 @@ class PreProcessor:
         self.active_m_modal_grps = {}
         self.active_cutchart = None
         self.active_feedrate = None
+        self.active_thickness = None
+        
 
         openfile= open(inCode, 'r')
         self._orig_gcode = openfile.readlines()
@@ -719,8 +761,10 @@ class PreProcessor:
         while i < len(self._parsed):
             line = self._parsed[i]
             if len(line.command) == 2:
-                if line.command[0] == 'G' and line.command[1] in (2,3):
-                    # this could be a hole, test for it
+                if line.command[0] == 'G' and line.command[1] == 3:
+                    # this could be a hole, test for it.
+                    # NB: Only circles that are defined as cww are deemed to be
+                    # a hole.  cw (G2) cuts are deemed as an outer edge not inner.
                                         
                     #[1] find the last X and Y position while grp 1 was either G0 or G1
                     j = i-1
@@ -744,7 +788,9 @@ class PreProcessor:
                     else:
                         line.is_hole = False
 
-                    # if line is a hole then prepare to replace with "smart" holes
+                    # if line is a hole then prepare to replace
+                    # with "smart" holes IF it is within the upper params of a
+                    # hole definition.  Nomally <= 5 * thickness
                     if line.is_hole:
                         line.hole_builder = HoleBuilder()
                         arc_i = line.params['I']
@@ -753,35 +799,42 @@ class PreProcessor:
                         centre_y = endy + arc_j
                         radius = line.hole_builder.line_length(centre_x, centre_y,endx, endy)
                         diameter = 2 * math.fabs(radius)
-                        # Params:
-                        # x:              Hole Centre X position
-                        # y:              Hole Centre y position
-                        # d:              Hole diameter
-                        # kerf:           Kerf width for cut
-                        # leadin_radius:  Radius for the lead in arc
-                        # splits[]:       List of length segments. Segments will support different speeds. +ve is left of 12 o'clock
-                        #                 -ve is right of 12 o'clock
-                        #                 and starting positions of the circle. Including overburn
-                        line.hole_builder.plasma_hole(line, centre_x, centre_y, diameter, 1.5, 4, [-3,3])
-                        
-                        # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
-                        j = i-1
-                        for j in range(j, -1, -1):
-                            prev = self._parsed[j]
-                            # mark for removal any lines until find the M3
-                            prev.type = Commands.REMOVE
-                            # find and mark for removal the first M3
-                            if prev.token.startswith('M3'):
+                        # diameter <= self.active_thickness * 5
+                        if (diameter <= self.active_thickness * 5) or (diameter <= 50 / UNITS_PER_MM):
+                            # Only build the hole of within a certain size of 
+                            
+                            # Params:
+                            # x:              Hole Centre X position
+                            # y:              Hole Centre y position
+                            # d:              Hole diameter
+                            # kerf:           Kerf width for cut
+                            # leadin_radius:  Radius for the lead in arc
+                            # splits[]:       List of length segments. Segments will support different speeds. +ve is left of 12 o'clock
+                            #                 -ve is right of 12 o'clock
+                            #                 and starting positions of the circle. Including overburn
+                            line.hole_builder.plasma_hole(line, centre_x, centre_y, diameter, 1.5, 3.25, [-3,3])
+                            
+                            # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
+                            j = i-1
+                            for j in range(j, -1, -1):
+                                prev = self._parsed[j]
+                                # mark for removal any lines until find the M3
                                 prev.type = Commands.REMOVE
-                                break
-                        j = i+1
-                        for j in range(j, len(self._parsed)):
-                            next = self._parsed[j]
-                            # mark all lines for removal until find M5
-                            next.type = Commands.REMOVE
-                            if next.token.startswith('M5'):
+                                # find and mark for removal the first M3
+                                if prev.token.startswith('M3'):
+                                    prev.type = Commands.REMOVE
+                                    break
+                            j = i+1
+                            for j in range(j, len(self._parsed)):
+                                next = self._parsed[j]
+                                # mark all lines for removal until find M5
                                 next.type = Commands.REMOVE
-                                break                        
+                                if next.token.startswith('M5'):
+                                    next.type = Commands.REMOVE
+                                    break
+                        else:
+                            line.is_hole = False
+                            line.hole_builder = None
             i += 1
 
     def parse(self):
