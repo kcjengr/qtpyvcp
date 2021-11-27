@@ -284,12 +284,16 @@ class PlasmaProcesses(Plugin):
         if IN_DESIGNER:
             return
         
+        # open DB and expose the DB type and if relevant the
+        # connection string to the environment.  This makes for a simple
+        # measn to unform the tool DB prog and the filter prog.
         if kwargs["db_type"] != "sqlite":
             self._engine = create_engine(kwargs["connect_string"], echo=False)
         else:
             self._persistence_file = normalizePath(path='plasma_table.db',
                                               base=os.getenv('CONFIG_DIR', '~/'))
             self._engine = create_engine('sqlite:///'+self._persistence_file, echo=False)
+            os.environ['PLASMA_DB'] = 'sqlite'
 
 
         # create the database for anything not already in place
