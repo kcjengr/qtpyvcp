@@ -27,15 +27,31 @@ from tooldb import tooldb_loop      # main loop
 
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.plugins.plasma_processes import PlasmaProcesses
+from qtpyvcp.utilities.config_loader import load_config_files
 
 #import pydevd;pydevd.settrace()
 
-PLASMADB = PlasmaProcesses(db_type='sqlite')
-ini_file_name = normalizePath(path='xyz.ini', base=os.getenv('CONFIG_DIR', '~/'))
+
+base_ini_file = os.environ['INI_FILE_NAME']
+ini_file_name = normalizePath(path=base_ini_file, base=os.getenv('CONFIG_DIR', '~/'))
+# ini_file_name = normalizePath(path='xyz.ini', base=os.getenv('CONFIG_DIR', '~/'))
 INI_FILE = linuxcnc.ini(ini_file_name)
 UNITS = INI_FILE.find('TRAJ', 'LINEAR_UNITS')
 MACHINE = INI_FILE.find('PLASMAC', 'MACHINE')
 PRESSURE = INI_FILE.find('PLASMAC', 'PRESSURE')
+
+custom_config_yaml_file_name = normalizePath(path='custom_config.yml', base=os.getenv('CONFIG_DIR', '~/'))
+cfg_dic = load_config_files(custom_config_yaml_file_name)
+
+# we assume that things are sqlit unless we find custom_config.yml
+# pointing to different type of DB
+try:
+    db_connect_str = cfg_dic['data_plugins']['plasmaprocesses']['kwargs']['connect_string']
+    # if no error then we found a db connection string. Use it.
+    PLASMADB = PlasmaProcesses(connect_string=db_connect_str)
+except:
+    # no connect string found OR can't connect so assume sqlite on local machine
+    PLASMADB = PlasmaProcesses(db_type='sqlite')
 
 TOOLS = {}
  

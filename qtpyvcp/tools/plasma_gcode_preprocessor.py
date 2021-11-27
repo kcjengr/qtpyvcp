@@ -28,6 +28,8 @@ import hal
 import linuxcnc
 from qtpyvcp.plugins.plasma_processes import PlasmaProcesses
 from qtpyvcp.utilities.logger import initBaseLogger
+from qtpyvcp.utilities.misc import normalizePath
+from qtpyvcp.utilities.config_loader import load_config_files
 
 #import pydevd;pydevd.settrace()
 
@@ -915,7 +917,19 @@ def main():
         print(__doc__)
         return
 
-    PLASMADB = PlasmaProcesses(db_type='sqlite')
+    custom_config_yaml_file_name = normalizePath(path='custom_config.yml', base=os.getenv('CONFIG_DIR', '~/'))
+    cfg_dic = load_config_files(custom_config_yaml_file_name)
+    
+    # we assume that things are sqlit unless we find custom_config.yml
+    # pointing to different type of DB
+    try:
+        db_connect_str = cfg_dic['data_plugins']['plasmaprocesses']['kwargs']['connect_string']
+        # if no error then we found a db connection string. Use it.
+        PLASMADB = PlasmaProcesses(connect_string=db_connect_str)
+    except:
+        # no connect string found OR can't connect so assume sqlite on local machine
+        PLASMADB = PlasmaProcesses(db_type='sqlite')
+
 
     # Start cycling through each line of the file and processing it
     p = PreProcessor(inCode)
