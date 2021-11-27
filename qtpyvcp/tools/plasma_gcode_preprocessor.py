@@ -757,6 +757,11 @@ class PreProcessor:
 
 
     def flag_holes(self):
+        # connect to HAL and collect the data we need to determine what holes
+        # should be processes and what are too large
+        thickness_ratio = hal.get_value('qtpyvcp.plasma-hole-thickness-ratio.out')
+        max_hole_size = hal.get_value('qtpyvcp.plasma-max-hole-size.out')
+        
         # old school loop so we can easily peek forward or back of the current
         # record being processed.
         i = 0
@@ -802,7 +807,7 @@ class PreProcessor:
                         radius = line.hole_builder.line_length(centre_x, centre_y,endx, endy)
                         diameter = 2 * math.fabs(radius)
                         # diameter <= self.active_thickness * 5
-                        if (diameter <= self.active_thickness * 5) or (diameter <= 50 / UNITS_PER_MM):
+                        if (diameter <= self.active_thickness * thickness_ratio) or (diameter <= max_hole_size / UNITS_PER_MM):
                             # Only build the hole of within a certain size of 
                             
                             # Params:
@@ -930,12 +935,16 @@ def main():
         # no connect string found OR can't connect so assume sqlite on local machine
         PLASMADB = PlasmaProcesses(db_type='sqlite')
 
-
     # Start cycling through each line of the file and processing it
     p = PreProcessor(inCode)
     p.parse()
     # Holes processing
-    p.flag_holes()
+    try:
+        do_holes = hal.get_value('qtpyvcp.plasma-hole-detect-enable.checked')
+    except:
+        do_holes = False
+    if do_holes:
+        p.flag_holes()
     # pass file to stdio and set any hal pins
     p.dump_parsed()
     # Set hal pin on UI for cutchart.id
