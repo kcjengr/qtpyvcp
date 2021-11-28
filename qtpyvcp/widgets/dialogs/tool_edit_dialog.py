@@ -20,8 +20,8 @@
 import linuxcnc
 import os
 
-from qtpy import uic
-from qtpy.QtWidgets import QDialog
+from PySide2.QtUiTools import QUiLoader
+from PySide2.QtWidgets import QDialog
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 
@@ -33,6 +33,7 @@ class ToolEditDialog(BaseDialog):
     def __init__(self, parent=None):
         super(ToolEditDialog, self).__init__(parent=parent, stay_on_top=True)
 
+        self.loader = QUiLoader()
         self.mill_ui_dialog = 'tool_edit_mill_dialog.ui'
         self.lathe_ui_dialog = 'tool_edit_lathe_dialog.ui'
 
@@ -41,4 +42,7 @@ class ToolEditDialog(BaseDialog):
         else:
             self.dialog_ui = self.mill_ui_dialog
 
-        uic.loadUi(os.path.join(os.path.dirname(__file__), self.dialog_ui), self)
+        ui_file = os.path.join(os.path.dirname(__file__), self.dialog_ui)
+
+        self.loader.registerCustomWidget(self)
+        self.loader.load(ui_file)

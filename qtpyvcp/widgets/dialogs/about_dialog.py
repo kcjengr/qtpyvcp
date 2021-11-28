@@ -16,8 +16,8 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-from qtpy import uic
-from qtpy.QtWidgets import QVBoxLayout, QDialog, QDialogButtonBox, QLabel
+from PySide2.QtUiTools import QUiLoader
+from PySide2.QtWidgets import QVBoxLayout, QDialog, QDialogButtonBox, QLabel
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 
@@ -29,7 +29,9 @@ class AboutDialog(BaseDialog):
         self.ui_file = kwargs.get('ui_file')
 
         if self.ui_file:
-            uic.loadUi(self.ui_file, self)
+            self.loader = QUiLoader()
+            self.loader.registerCustomWidget(self)
+            self.loader.load(self.ui_file)
         else:
 
             self.setFixedSize(600, 200)

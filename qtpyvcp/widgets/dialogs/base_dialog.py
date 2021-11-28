@@ -2,9 +2,10 @@
 
 import os
 
-from qtpy import uic
-from qtpy.QtCore import Qt
-from qtpy.QtWidgets import QDialog
+from PySide2.QtUiTools import QUiLoader
+
+from PySide2.QtCore import Qt
+from PySide2.QtWidgets import QDialog
 
 from qtpyvcp.utilities.logger import getLogger
 
@@ -61,6 +62,7 @@ class BaseDialog(QDialog):
         super(BaseDialog, self).__init__(parent)
 
         if ui_file is not None:
+            self.loader = QUiLoader()
             self.loadUiFile(ui_file)
 
         if title is not None:
@@ -95,7 +97,8 @@ class BaseDialog(QDialog):
             return
 
         LOG.debug("Loading dialog from ui_file: %s", ui_file)
-        uic.loadUi(ui_file, self)
+        self.loader.registerCustomWidget(self)
+        self.loader.load(ui_file)
 
     def setWindowFlag(self, flag, on):
         """BackPort QWidget.setWindowFlag() implementation from Qt 5.9

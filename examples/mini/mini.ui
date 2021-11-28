@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>636</width>
-    <height>851</height>
+    <height>927</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -27,6 +27,16 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="CodeEditor" name="codeEditor">
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="About this editor" stdset="0">
+       <string>The code editor widget displays a syntax highlighted gcode file.</string>
+      </property>
+     </widget>
+    </item>
     <item>
      <widget class="QWidget" name="gridWidget" native="true">
       <layout class="QGridLayout" name="gridLayout">
@@ -594,19 +604,20 @@
  <layoutdefault spacing="6" margin="9"/>
  <customwidgets>
   <customwidget>
-   <class>JogIncrementWidget</class>
-   <extends>QWidget</extends>
-   <header>qtpyvcp.widgets.input_widgets.jog_increment</header>
+   <class>CodeEditor</class>
+   <extends>QPlainTextEdit</extends>
+   <header>codeeditor.h</header>
   </customwidget>
   <customwidget>
-   <class>HalQSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>qtpyvcp.widgets.hal_widgets.hal_spinbox</header>
+   <class>VCPMainWindow</class>
+   <extends>QMainWindow</extends>
+   <header>qtpyvcp.widgets.form_widgets.main_window</header>
+   <container>1</container>
   </customwidget>
   <customwidget>
-   <class>VCPSettingsSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+   <class>StatusLabel</class>
+   <extends>QLabel</extends>
+   <header>qtpyvcp.widgets.display_widgets.status_label</header>
   </customwidget>
   <customwidget>
    <class>MDIEntry</class>
@@ -614,29 +625,14 @@
    <header>qtpyvcp.widgets.input_widgets.mdientry_widget</header>
   </customwidget>
   <customwidget>
+   <class>JogIncrementWidget</class>
+   <extends>QWidget</extends>
+   <header>qtpyvcp.widgets.input_widgets.jog_increment</header>
+  </customwidget>
+  <customwidget>
    <class>ActionSlider</class>
    <extends>QSlider</extends>
    <header>qtpyvcp.widgets.input_widgets.action_slider</header>
-  </customwidget>
-  <customwidget>
-   <class>VCPSettingsDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
-   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
-  </customwidget>
-  <customwidget>
-   <class>HalCheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>qtpyvcp.widgets.hal_widgets.hal_checkbox</header>
-  </customwidget>
-  <customwidget>
-   <class>HalDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
-   <header>qtpyvcp.widgets.hal_widgets.hal_double_spinbox</header>
-  </customwidget>
-  <customwidget>
-   <class>StatusLabel</class>
-   <extends>QLabel</extends>
-   <header>qtpyvcp.widgets.display_widgets.status_label</header>
   </customwidget>
   <customwidget>
    <class>VCPSettingsLineEdit</class>
@@ -649,15 +645,34 @@
    <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
   </customwidget>
   <customwidget>
-   <class>VCPMainWindow</class>
-   <extends>QMainWindow</extends>
-   <header>qtpyvcp.widgets.form_widgets.main_window</header>
-   <container>1</container>
+   <class>VCPSettingsSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>VCPSettingsDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
   </customwidget>
   <customwidget>
    <class>VCPSettingsCheckBox</class>
    <extends>QCheckBox</extends>
    <header>qtpyvcp.widgets.input_widgets.setting_slider</header>
+  </customwidget>
+  <customwidget>
+   <class>HalCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_checkbox</header>
+  </customwidget>
+  <customwidget>
+   <class>HalQSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_spinbox</header>
+  </customwidget>
+  <customwidget>
+   <class>HalDoubleSpinBox</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>qtpyvcp.widgets.hal_widgets.hal_double_spinbox</header>
   </customwidget>
  </customwidgets>
  <resources>

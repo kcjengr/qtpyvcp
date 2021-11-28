@@ -1,11 +1,12 @@
 import os
 import sys
 
-from qtpy import uic
-from qtpy.QtGui import QKeySequence
-from qtpy.QtCore import Qt, Slot, QTimer
-from qtpy.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, \
+from PySide2.QtUiTools import QUiLoader
+from PySide2.QtGui import QKeySequence
+from PySide2.QtCore import Qt, Slot, QTimer
+from PySide2.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, \
     QMenu, QMenuBar, QLineEdit, QShortcut, QActionGroup
+
 
 import qtpyvcp
 from qtpyvcp import actions
@@ -19,7 +20,6 @@ from qtpyvcp.app.launcher import _initialize_object_from_dict
 LOG = logger.getLogger(__name__)
 INFO = Info()
 
-
 class VCPMainWindow(QMainWindow):
 
     def __init__(self, parent=None, opts=None, ui_file=None, stylesheet=None,
@@ -27,7 +27,7 @@ class VCPMainWindow(QMainWindow):
                  confirm_exit=True, title=None, menu='default'):
 
         super(VCPMainWindow, self).__init__(parent)
-
+        
         if opts is None:
             opts = qtpyvcp.OPTIONS
 
@@ -40,6 +40,8 @@ class VCPMainWindow(QMainWindow):
         # Load the UI file AFTER defining variables, otherwise the values
         # set in QtDesigner get overridden by the default values
         if ui_file is not None:
+            self.loader = QUiLoader()
+            
             self.loadUi(ui_file)
             self.initUi()
 
@@ -99,7 +101,9 @@ class VCPMainWindow(QMainWindow):
             ui_file (str) : Path to a .ui file to load.
         """
         # TODO: Check for compiled *_ui.py files and load from that if exists
-        uic.loadUi(ui_file, self)
+            
+        self.loader.registerCustomWidget(self)
+        self.loader.load(ui_file)
 
     def loadStylesheet(self, stylesheet):
         """Loads a QSS stylesheet containing styles to be applied
