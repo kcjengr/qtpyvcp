@@ -31,7 +31,7 @@ from qtpyvcp.utilities.logger import initBaseLogger
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.config_loader import load_config_files
 
-#import pydevd;pydevd.settrace()
+import pydevd;pydevd.settrace()
 
 
 # Constrcut LOG from qtpyvcp standard logging framework
@@ -406,6 +406,8 @@ class CodeLine:
         sys.stderr.flush()
         self.type = Commands.REMOVE
 
+    def get_active_feedrate(self):
+        return self._parent.active_feedrate
 
     def placeholder(self):
         LOG.debug(f'Type PLACEHOLDER -- {self.token} -- found - this code is not handled or considered')
@@ -472,6 +474,11 @@ class HoleBuilder:
         return {
              "code": f"G4 P{t}"
         }
+        
+    def create_feed(self, r):
+        return {
+            "code": f"F{r}"
+        }
     
     def create_absolute_arc(self):
         return {
@@ -501,7 +508,7 @@ class HoleBuilder:
         return line
 
 
-    def plasma_hole(self, line, x, y, d, kerf, leadin_radius, splits=[], auto_leadin=False):
+    def plasma_hole(self, line, x, y, d, kerf, leadin_radius, splits=[]):
         # Params:
         # x:              Hole Centre X position
         # y:              Hole Centre y position
@@ -514,6 +521,11 @@ class HoleBuilder:
         #kerf compensation
         # often code is already compensated. We need to be able to tell the script if it is
         #changed the radius parameter to be ad diameter which is more in keeping with the hole data methodology
+        feed_rate = line.get_active_feedrate()
+        arc1_feed = feed_rate * hal.get_value('qtpyvcp.plasma-arc1-percent.out')/100
+        arc2_feed = feed_rate * hal.get_value('qtpyvcp.plasma-arc2-percent.out')/100
+        arc3_feed = feed_rate * hal.get_value('qtpyvcp.plasma-arc3-percent.out')/100
+        leadin_feed = feed_rate * hal.get_value('qtpyvcp.plasma-leadin-percent.out')/100
 
         # is G40 oavtive or not
         if line.active_g_modal_groups[7] == 'G40':
@@ -529,6 +541,7 @@ class HoleBuilder:
             self.elements = []
             self.elements.append(self.create_comment('1/2 Kerf > Hole Radius.  Smart Hole processing skipped.'))
             return
+
         # convert split distances to angles (in radians)
         split_angles = []
         full_circle = math.pi * 2  # 360 degrees. We need to use this for a segment moving to 12 O'clock
@@ -569,17 +582,12 @@ class HoleBuilder:
         self.elements.append(self.create_comment('Leadin...'))
 
         centre_to_leadin_diam_gap = math.fabs(arc_y0 - (2 * leadin_radius) - y)
+        
+        self.elements.append(self.create_feed(leadin_feed))
 
-        if auto_leadin:
-            # Auto-leadin is essentially the none - hidef leadin.
-            # it uses a basic set of rules to auto create 'sensible'
-            # hole gcode.
-            # Calculate all leadins as an arch from centre.
-            # Only use a straight leadin if r is <= kerf*2
-            LOG.debug('Auto holes processing')
         # leadin radius too small or greater (or equal) than r.
         # --> use straight leadin from the hole center.
-        elif leadin_radius < 0 or leadin_radius >= r-kc:
+        if leadin_radius < 0 or leadin_radius >= r-kc:
             self.elements.append(self.create_comment('too small'))
             self.elements.append(self.create_line_gcode(x, y, True))
             self.elements.append(self.create_kerf_off_gcode())
@@ -617,16 +625,8 @@ class HoleBuilder:
         # --> use combination of leadin arc and a smaller arc from the hole center
         else:
             # TODO:
-            self.elements.append(self.create_comment('Use combination of leadin arc and a smaller arc from the hole center'))
+            self.elements.append(self.create_comment('Greater then Half circle radius'))
             self.elements.append(self.create_comment(f'Half circle radius. Centre-to-Leadin-Gap={centre_to_leadin_diam_gap}'))
-
-            #
-            # self.elements.append(self.create_line_gcode(x, y, True))
-            # self.elements.append(self.create_kerf_off_gcode())
-            # # TORCH ON
-            # self.elements.append(self.create_cut_on_off_gcode(True))
-            # self.elements.append(self.create_line_gcode(arc_x0, arc_y0, False))
-            
 
             if centre_to_leadin_diam_gap < kerf:
                 self.elements.append(self.create_comment('... single arc'))
@@ -680,6 +680,8 @@ class HoleBuilder:
         cx = x
         cy =  y
 
+        self.elements.append(self.create_feed(arc1_feed))
+
         if len(split_angles) > 0:
             sector_num = 0
             for sang in split_angles:
@@ -695,14 +697,18 @@ class HoleBuilder:
                     end_x = (cx - r * math.cos(end_angle))
                     end_y = (cy - r * math.sin(end_angle))
                 #comment the code
-                ourcomment = 'Settings: angle = ' + str(sang) + ' end_angle ' + str(end_angle) +' radians ' + str(self.degrees(end_angle)) + ' degrees'
-                self.elements.append(self.create_comment(ourcomment))
+                self.elements.append(self.create_comment(f'Settings: angle = {str(sang)} end_angle {str(end_angle)} radians {str(self.degrees(end_angle))} degrees'))
+                self.elements.append(self.create_comment(f'Arc length = {r * sang}'))
                 self.elements.append(self.create_comment(f'Sector num: {sector_num}'))
                 self.elements.append(self.create_ccw_arc_gcode(end_x, end_y, cx, cy))
                 if (end_x == 0.00 and end_y == 0.00) == False:
                     #if not 12 O'clock, dwell for 0.5 sec so we have a visual indicator of each segment
                     # we need to insert a call to a procedure that creates the required gcode actions at the end of each segment
                     self.elements.append(self.create_dwell('0.5'))
+                    if sector_num == 1:
+                            self.elements.append(self.create_feed(arc2_feed))
+                    elif sector_num == 2:
+                            self.elements.append(self.create_feed(arc3_feed))
                 sector_num += 1
         else:
             # create hole as four arcs. no overburn or anything special.
@@ -713,6 +719,7 @@ class HoleBuilder:
 
         # TORCH OFF
         self.elements.append(self.create_cut_on_off_gcode(False))
+        self.elements.append(self.create_feed(feed_rate))
         if line.active_g_modal_groups[4] == 'G91.1':
             self.elements.append(self.create_relative_arc())
 
@@ -760,7 +767,23 @@ class PreProcessor:
         # connect to HAL and collect the data we need to determine what holes
         # should be processes and what are too large
         thickness_ratio = hal.get_value('qtpyvcp.plasma-hole-thickness-ratio.out')
-        max_hole_size = hal.get_value('qtpyvcp.plasma-max-hole-size.out')
+        max_hole_size = hal.get_value('qtpyvcp.plasma-max-hole-size.out')/UNITS_PER_MM
+        
+        arc1_feed_percent = hal.get_value('qtpyvcp.plasma-arc1-percent.out')/100
+        
+        arc2_distance = hal.get_value('qtpyvcp.plasma-arc2-distance.out')/UNITS_PER_MM
+        arc2_feed_percent = hal.get_value('qtpyvcp.plasma-arc2-percent.out')/100
+        
+        arc3_distance = hal.get_value('qtpyvcp.plasma-arc3-distance.out')/UNITS_PER_MM
+        arc3_feed_percent = hal.get_value('qtpyvcp.plasma-arc3-percent.out')/100
+        
+        leadin_feed_percent = hal.get_value('qtpyvcp.plasma-leadin-percent.out')/100
+        leadin_radius = hal.get_value('qtpyvcp.plasma-leadin-radius.out')/UNITS_PER_MM
+        
+        kerf_width = hal.get_value('qtpyvcp.param-kirfwidth.out')/UNITS_PER_MM
+
+        torch_off_distance_before_zero = hal.get_value('qtpyvcp.plasma-torch-off-distance.out')/UNITS_PER_MM
+
         
         # old school loop so we can easily peek forward or back of the current
         # record being processed.
@@ -806,6 +829,7 @@ class PreProcessor:
                         centre_y = endy + arc_j
                         radius = line.hole_builder.line_length(centre_x, centre_y,endx, endy)
                         diameter = 2 * math.fabs(radius)
+                        circumferance = diameter * math.pi
                         # diameter <= self.active_thickness * 5
                         if (diameter <= self.active_thickness * thickness_ratio) or (diameter <= max_hole_size / UNITS_PER_MM):
                             # Only build the hole of within a certain size of 
@@ -819,7 +843,19 @@ class PreProcessor:
                             # splits[]:       List of length segments. Segments will support different speeds. +ve is left of 12 o'clock
                             #                 -ve is right of 12 o'clock
                             #                 and starting positions of the circle. Including overburn
-                            line.hole_builder.plasma_hole(line, centre_x, centre_y, diameter, 1.5, 3.25, [-3,3])
+                            if leadin_radius == 0:
+                                this_hole_leadin_radius = radius-(radius/4)-(kerf_width/2)
+                            else:
+                                this_hole_leadin_radius = leadin_radius
+                                
+                            arc1_distance = circumferance - arc2_distance - torch_off_distance_before_zero
+                            arc2_from_zero = arc2_distance + torch_off_distance_before_zero
+                            line.hole_builder.\
+                                plasma_hole(line, centre_x, centre_y, diameter, \
+                                            kerf_width, this_hole_leadin_radius, \
+                                            [-arc2_from_zero, \
+                                             -torch_off_distance_before_zero, \
+                                             arc3_distance])
                             
                             # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
                             j = i-1
