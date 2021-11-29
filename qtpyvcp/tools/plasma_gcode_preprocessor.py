@@ -31,7 +31,7 @@ from qtpyvcp.utilities.logger import initBaseLogger
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.config_loader import load_config_files
 
-import pydevd;pydevd.settrace()
+#import pydevd;pydevd.settrace()
 
 
 # Constrcut LOG from qtpyvcp standard logging framework
@@ -96,6 +96,8 @@ class Commands(Enum):
     END_SCRIBE                  = auto()
     BEGIN_SPOT                  = auto()
     END_SPOT                    = auto()
+    BEGIN_MARK                  = auto()
+    END_MARK                    = auto()
     END_ALL                     = auto()
     SELECT_PROCESS              = auto()
     WAIT_PROCESS                = auto()
@@ -545,18 +547,20 @@ class HoleBuilder:
         # convert split distances to angles (in radians)
         split_angles = []
         full_circle = math.pi * 2  # 360 degrees. We need to use this for a segment moving to 12 O'clock
+        degs90 = math.pi / 2
         crossed_origin = False
         for spt in splits:
             # using the relationship of arc_length/circumfrance = angle/360 if you work the algebra you find:
             # angle = arc_length/radius (in radians)
             tmp_ang = float(spt) / float(r)     # need to typecast to prevent Python from truncating to whole values, maybe should be double?
-            this_ang = full_circle + tmp_ang    # Accoding to Juha, all angles are from 0 degrees, -ve angles to the right, +ve angles to the left
-            if (this_ang > full_circle) and (crossed_origin == False):
-                # Has this split got to the 0deg/360 deg  origin?
-                # when we cross the origin, add a 360 degree keep it in the correct order
-                split_angles.append(full_circle)
-                this_ang = tmp_ang
-                crossed_origin = True
+            this_ang = tmp_ang    # Accoding to Juha, all angles are from 0 degrees, -ve angles to the right, +ve angles to the left
+            # this_ang = full_circle + tmp_ang    # Accoding to Juha, all angles are from 0 degrees, -ve angles to the right, +ve angles to the left
+            # if (this_ang > full_circle) and (crossed_origin == False):
+            #     # Has this split got to the 0deg/360 deg  origin?
+            #     # when we cross the origin, add a 360 degree keep it in the correct order
+            #     split_angles.append(full_circle)
+            #     this_ang = tmp_ang
+            #     crossed_origin = True
             split_angles.append(this_ang)
         #Sorting is not helpful with splits becasue the smaller values come befor ethe first segment.
         #We need to keep ssegments in order
@@ -680,35 +684,36 @@ class HoleBuilder:
         cx = x
         cy =  y
 
-        self.elements.append(self.create_feed(arc1_feed))
-
         if len(split_angles) > 0:
             sector_num = 0
             for sang in split_angles:
                 end_angle = sang
-                end_x = ( cx+ r * math.cos(end_angle))
-                end_y = ( cy +r * math.sin(end_angle))
-                if sang == full_circle:
+                end_x = ( cx + r * math.cos(end_angle + degs90))
+                end_y = ( cy + r * math.sin(end_angle + degs90))
+                if sang == full_circle or sang == 0:
                     #reset coordinates to 0,0 if angle = 360 degrees. We want the next segments to refer to 0 degrees
                     end_x = x
                     end_y = y + r
-                if sang < split_angles[0] and sang > 0.00:
-                    #conditional to coordinate positive angles
-                    end_x = (cx - r * math.cos(end_angle))
-                    end_y = (cy - r * math.sin(end_angle))
+                # if sang < split_angles[0] and sang > 0.00:
+                #     #conditional to coordinate positive angles
+                #     end_x = (cx - r * math.cos(end_angle + degs90))
+                #     end_y = (cy - r * math.sin(end_angle + degs90))
                 #comment the code
                 self.elements.append(self.create_comment(f'Settings: angle = {str(sang)} end_angle {str(end_angle)} radians {str(self.degrees(end_angle))} degrees'))
                 self.elements.append(self.create_comment(f'Arc length = {r * sang}'))
                 self.elements.append(self.create_comment(f'Sector num: {sector_num}'))
+                if sector_num == 0:
+                        self.elements.append(self.create_feed(arc1_feed))
+                elif sector_num == 1:
+                        self.elements.append(self.create_feed(arc2_feed))
+                elif sector_num == 2:
+                        self.elements.append(self.create_cut_on_off_gcode(False))
+                        self.elements.append(self.create_feed(arc3_feed))
                 self.elements.append(self.create_ccw_arc_gcode(end_x, end_y, cx, cy))
                 if (end_x == 0.00 and end_y == 0.00) == False:
                     #if not 12 O'clock, dwell for 0.5 sec so we have a visual indicator of each segment
                     # we need to insert a call to a procedure that creates the required gcode actions at the end of each segment
                     self.elements.append(self.create_dwell('0.5'))
-                    if sector_num == 1:
-                            self.elements.append(self.create_feed(arc2_feed))
-                    elif sector_num == 2:
-                            self.elements.append(self.create_feed(arc3_feed))
                 sector_num += 1
         else:
             # create hole as four arcs. no overburn or anything special.
@@ -718,7 +723,6 @@ class HoleBuilder:
             self.elements.append(self.create_ccw_arc_gcode(x, y+r, x, y))
 
         # TORCH OFF
-        self.elements.append(self.create_cut_on_off_gcode(False))
         self.elements.append(self.create_feed(feed_rate))
         if line.active_g_modal_groups[4] == 'G91.1':
             self.elements.append(self.create_relative_arc())
@@ -849,13 +853,14 @@ class PreProcessor:
                                 this_hole_leadin_radius = leadin_radius
                                 
                             arc1_distance = circumferance - arc2_distance - torch_off_distance_before_zero
-                            arc2_from_zero = arc2_distance + torch_off_distance_before_zero
+                            arc2_from_zero = arc1_distance + arc2_distance
+                            arc3_from_zero = arc2_from_zero + arc3_distance - circumferance
                             line.hole_builder.\
                                 plasma_hole(line, centre_x, centre_y, diameter, \
                                             kerf_width, this_hole_leadin_radius, \
-                                            [-arc2_from_zero, \
-                                             -torch_off_distance_before_zero, \
-                                             arc3_distance])
+                                            [arc1_distance, \
+                                             arc2_from_zero, \
+                                             arc3_from_zero])
                             
                             # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
                             j = i-1
