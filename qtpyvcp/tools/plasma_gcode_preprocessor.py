@@ -509,6 +509,15 @@ class HoleBuilder:
             line = e['code']
         return line
 
+    def plasma_mark(self, line, x, y, time):
+        self.elements=[]
+        feed_rate = line.get_active_feedrate()
+        self.elements.append(self.create_feed(feed_rate))
+        self.elements.append(self.create_line_gcode(x, y, True))
+        self.elements.append(self.create_cut_on_off_gcode(True))
+        self.elements.append(self.create_line_gcode(x+0.001, y, False))
+        self.elements.append(self.create_dwell(time))
+        self.elements.append(self.create_cut_on_off_gcode(False))
 
     def plasma_hole(self, line, x, y, d, kerf, leadin_radius, splits=[]):
         # Params:
@@ -787,6 +796,12 @@ class PreProcessor:
         kerf_width = hal.get_value('qtpyvcp.param-kirfwidth.out')/UNITS_PER_MM
 
         torch_off_distance_before_zero = hal.get_value('qtpyvcp.plasma-torch-off-distance.out')/UNITS_PER_MM
+        
+        small_hole_size = 0
+        small_hole_detect = hal.get_value('qtpyvcp.plasma-small-hole-detect.checked')
+        if small_hole_detect:
+            small_hole_size = hal.get_value('qtpyvcp.plasma-small-hole-threshold.out')/UNITS_PER_MM
+            
 
         
         # old school loop so we can easily peek forward or back of the current
@@ -834,10 +849,41 @@ class PreProcessor:
                         radius = line.hole_builder.line_length(centre_x, centre_y,endx, endy)
                         diameter = 2 * math.fabs(radius)
                         circumferance = diameter * math.pi
-                        # diameter <= self.active_thickness * 5
-                        if (diameter <= self.active_thickness * thickness_ratio) or (diameter <= max_hole_size / UNITS_PER_MM):
-                            # Only build the hole of within a certain size of 
-                            
+                        if diameter < small_hole_size and small_hole_detect:
+                            # removde the hole and replace with a pulse
+                            line.hole_builder.\
+                                plasma_mark(line, centre_x, centre_y, 0.5)
+                            # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
+                            j = i-1
+                            found_m3 = False
+                            for j in range(j, -1, -1):
+                                prev = self._parsed[j]
+                                # mark for removal any lines until find the M3
+                                if prev.token.startswith('M3'):
+                                    found_m3 = True
+                                    prev.type = Commands.REMOVE
+                                if not found_m3:
+                                    prev.type = Commands.REMOVE
+                                try:
+                                    if prev.active_g_modal_groups[1] != 'G0' and found_m3:
+                                        break
+                                    elif prev.active_g_modal_groups[1] == 'G0':
+                                        prev.type = Commands.REMOVE
+                                except KeyError:
+                                    # access to the dictionary index failed,
+                                    # so no longer in a g0 mode
+                                    break
+                            j = i+1
+                            for j in range(j, len(self._parsed)):
+                                next = self._parsed[j]
+                                # mark all lines for removal until find M5
+                                next.type = Commands.REMOVE
+                                if next.token.startswith('M5'):
+                                    next.type = Commands.REMOVE
+                                    break                             
+                        elif (diameter <= self.active_thickness * thickness_ratio) or \
+                           (diameter <= max_hole_size / UNITS_PER_MM):
+                            # Only build the hole of within a certain size of
                             # Params:
                             # x:              Hole Centre X position
                             # y:              Hole Centre y position
@@ -864,13 +910,23 @@ class PreProcessor:
                             
                             # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
                             j = i-1
+                            found_m3 = False
                             for j in range(j, -1, -1):
                                 prev = self._parsed[j]
                                 # mark for removal any lines until find the M3
-                                prev.type = Commands.REMOVE
-                                # find and mark for removal the first M3
                                 if prev.token.startswith('M3'):
+                                    found_m3 = True
                                     prev.type = Commands.REMOVE
+                                if not found_m3:
+                                    prev.type = Commands.REMOVE
+                                try:
+                                    if prev.active_g_modal_groups[1] != 'G0' and found_m3:
+                                        break
+                                    elif prev.active_g_modal_groups[1] == 'G0':
+                                        prev.type = Commands.REMOVE
+                                except KeyError:
+                                    # access to the dictionary index failed,
+                                    # so no longer in a g0 mode
                                     break
                             j = i+1
                             for j in range(j, len(self._parsed)):
