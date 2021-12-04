@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+P=$1
+
+halcmd setp atcsim.cw ${P}
+
+exit 0
