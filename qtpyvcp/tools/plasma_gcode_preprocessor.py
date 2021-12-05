@@ -31,7 +31,7 @@ from qtpyvcp.utilities.logger import initBaseLogger
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.config_loader import load_config_files
 
-import pydevd;pydevd.settrace()
+#import pydevd;pydevd.settrace()
 
 
 # Constrcut LOG from qtpyvcp standard logging framework
