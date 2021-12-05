@@ -24,7 +24,7 @@ Install QtPyVCP
 
 ::
 
-  pip install qtpyvcp
+  python3 -m pip install qtpyvcp
 
 This will install QtPyVCP along with the examples, and will add
 QtPyVCP specific sim configs to ``~/linuxcnc/configs/sim.qtpyvcp``.
@@ -39,4 +39,4 @@ Upgrade QtPyVCP
 As improvements are made to QtPyVCP you can upgrade the pip install with
 ::
 
-  pip install --upgrade qtpyvcp
+  python3 -m pip install --upgrade qtpyvcp
