@@ -31,7 +31,7 @@ from qtpyvcp.utilities.logger import initBaseLogger
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.config_loader import load_config_files
 
-#import pydevd;pydevd.settrace()
+import pydevd;pydevd.settrace()
 
 
 # Constrcut LOG from qtpyvcp standard logging framework
@@ -377,6 +377,9 @@ class CodeLine:
             self._parent.active_cutchart = tool
             self._parent.active_feedrate = cut_process[0].cut_speed
             self._parent.active_thickness = cut_process[0].thickness.thickness
+            self._parent.active_machineid = cut_process[0].machineid
+            self._parent.active_thicknessid = cut_process[0].thicknessid
+            self._parent.active_materialid = cut_process[0].materialid
             
 
     def parse_feedrate(self):
@@ -741,6 +744,59 @@ class HoleBuilder:
             print(self.element_to_gcode_line(e), file=sys.stdout)
             sys.stdout.flush()
 
+class HiDefHole:
+    def __init__(self, data_list):
+        self.hole_list = []
+        for d in data_list:
+            self.hole_list.append({'hole': d.hole_size, \
+                                   'leadinradius': d.leadin_radius, \
+                                   'kerf': d.kerf, \
+                                   'cutheight': d.cut_height, \
+                                   'speed1': d.speed1, \
+                                   'speed2': d.speed2, \
+                                   'speed2dist': d.speed2_distance, \
+                                   'offdistance': d.plasma_off_distance, \
+                                   'overcut': d.over_cut, \
+                                   'amps': d.amps
+                                   })
+        for i in range(len(self.hole_list)):
+            # calculate the scale factors to use.
+            # Factors are scaled over the diameter range of the hole
+            if i > 0:
+                delta = self.hole_list[i]['hole'] - self.hole_list[i-1]['hole']
+                self.hole_list[i]['scale_leadinradius'] = self.hole_list[i]['leadinradius']/delta
+                self.hole_list[i]['scale_cutheight'] = self.hole_list[i]['cutheight']/delta
+                self.hole_list[i]['scale_speed1'] = self.hole_list[i]['speed1']/delta
+                self.hole_list[i]['scale_speed2'] = self.hole_list[i]['speed2']/delta
+                self.hole_list[i]['scale_speed2dist'] = self.hole_list[i]['speed2dist']/delta
+                self.hole_list[i]['scale_offdistance'] = self.hole_list[i]['offdistance']/delta
+                self.hole_list[i]['scale_overcut'] = self.hole_list[i]['overcut']/delta
+
+    def leadin_radius(self, holesize):
+        pass
+    
+    def kerf(self, holesize):
+        pass
+    
+    def cut_height(self, holesize):
+        pass
+    
+    def speed1(self, holesize):
+        pass
+    
+    def speed2(self, holesize):
+        pass
+    
+    def speed2_distance(self, holesize):
+        pass
+    
+    def plasma_off_distance(self, holesize):
+        pass
+    
+    def overcut(self, holesize):
+        pass
+    
+
 class PreProcessor:
     def __init__(self, inCode):
         self._new_gcode = []
@@ -754,6 +810,9 @@ class PreProcessor:
         self.active_cutchart = None
         self.active_feedrate = None
         self.active_thickness = None
+        self.active_machineid = None
+        self.active_thicknessid = None
+        self.active_materialid = None
         
 
         openfile= open(inCode, 'r')
@@ -849,6 +908,10 @@ class PreProcessor:
                         radius = line.hole_builder.line_length(centre_x, centre_y,endx, endy)
                         diameter = 2 * math.fabs(radius)
                         circumferance = diameter * math.pi
+                        
+                        # see if can find hidef data for this hole scenario
+                        hidef_data = PLASMADB.hidef_holes(self.active_machineid, self.active_materialid, self.active_thicknessid)
+                        
                         if diameter < small_hole_size and small_hole_detect:
                             # removde the hole and replace with a pulse
                             line.hole_builder.\
@@ -880,7 +943,7 @@ class PreProcessor:
                                 next.type = Commands.REMOVE
                                 if next.token.startswith('M5'):
                                     next.type = Commands.REMOVE
-                                    break                             
+                                    break
                         elif (diameter <= self.active_thickness * thickness_ratio) or \
                            (diameter <= max_hole_size / UNITS_PER_MM):
                             # Only build the hole of within a certain size of

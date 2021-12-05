@@ -185,10 +185,12 @@ class HoleCut(crudMixin, BASE):
     # Foreign key relationship
     machineid = Column(Integer, ForeignKey('machine.id'))
     materialid = Column(Integer, ForeignKey('material.id'))
-    thickenssid = Column(Integer, ForeignKey('thickness.id'))
+    thicknessid = Column(Integer, ForeignKey('thickness.id'))
+    gas2id = Column(Integer, ForeignKey('gas.id'))
     machine = relationship('Machine')
     material = relationship('Material')
     thickness = relationship('Thickness')
+    gas2 = relationship('Gas')
     # Amp filter - as params are tied to amperage.
     # Question do amps need to be exact? Would +/- 10% be good enough?
     amps = Column(Float)
@@ -204,6 +206,27 @@ class HoleCut(crudMixin, BASE):
     plasma_off_distance = Column(Float)
     over_cut = Column(Float)
 
+    @classmethod
+    def get_holes(cls, session, mch=0, mat=0, thi=0):
+        """
+        Get all holes for a machine/matherial/thickness combo
+        
+        Params:
+            mch = MachineId
+            mat = MaterialID
+            thi = ThicknessID
+        
+        Returns:
+            Matching hole data ordered by hole_size
+        """
+        result_set = session.query(cls) \
+            .filter(and_( \
+                         cls.machineid == mch, \
+                         cls.materialid == mat, \
+                         cls.thicknessid == thi \
+                        )).order_by(cls.hole_size).all()
+        return result_set
+
 
 
 class Cutchart(crudMixin,BASE):
@@ -215,7 +238,7 @@ class Cutchart(crudMixin,BASE):
     machineid = Column(Integer, ForeignKey('machine.id'))
     consumableid = Column(Integer, ForeignKey('consumable.id'))
     materialid = Column(Integer, ForeignKey('material.id'))
-    thickenssid = Column(Integer, ForeignKey('thickness.id'))
+    thicknessid = Column(Integer, ForeignKey('thickness.id'))
     operationid = Column(Integer, ForeignKey('operation.id'))
     gasid = Column(Integer, ForeignKey('gas.id'))
     qualityid = Column(Integer, ForeignKey('quality.id'))
@@ -243,6 +266,8 @@ class Cutchart(crudMixin,BASE):
     amps = Column(Float)
     pressure = Column(Float)
     pause_at_end = Column(Float)
+    smallest_hole = Column(Float)
+
 
     @classmethod
     def get_exact_cut(cls, session, ls=0, ps=0, mch=0, con=0, mat=0, thi=0, op=0, gas=0, qua=0):
@@ -253,7 +278,7 @@ class Cutchart(crudMixin,BASE):
                          cls.machineid == mch, \
                          cls.consumableid == con, \
                          cls.materialid == mat, \
-                         cls.thickenssid == thi, \
+                         cls.thicknessid == thi, \
                          cls.operationid == op, \
                          cls.gasid == gas, \
                          cls.qualityid == qua\
@@ -413,6 +438,13 @@ class PlasmaProcesses(Plugin):
         return Consumable.create(self._session, name=conname, image_path=None)
     
 
+    # HiDef Hole List
+    def hidef_holes(self, machineid, materialid, thicknessid):
+        data = HoleCut.get_holes(self._session, machineid, materialid, thicknessid)
+        LOG.debug('Get hidef hole list')
+        return data
+
+    # Cut Data
     def cut_by_id(self, id):
         data = Cutchart.get_by_key(self._session, 'id', id)
         # if data is not None:
