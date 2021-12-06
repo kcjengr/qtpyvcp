@@ -41,3 +41,7 @@ qtpyvcp/.project
 /.pydevproject
 
 .settings/
+
+.vscode/
+
+docs/source/_build/
