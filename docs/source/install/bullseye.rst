@@ -31,6 +31,14 @@ can be added.*
 Install Into a Clean Debian-11 Environment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+.. Note::
+    By NOT setting a root password (i.e. leave those fields blank) 
+    during the Debian-11 install, your user will automatically be 
+    a part of the sudo group.
+    Otherwise you will need to add your user to the group OR
+    use the 'su' command to login as root. Just remember to 'exit'
+    before performing non sudo commands.
+
 After you have completed a clean Debian 11 installation, log in and open a terminal window.
 
 If you are performing this install for simulation/development 
