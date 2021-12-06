@@ -31,7 +31,7 @@ from qtpyvcp.utilities.logger import initBaseLogger
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.config_loader import load_config_files
 
-#import pydevd;pydevd.settrace()
+import pydevd;pydevd.settrace()
 
 
 # Constrcut LOG from qtpyvcp standard logging framework
@@ -421,6 +421,7 @@ class CodeLine:
 
 class HoleBuilder:
     def __init__(self):
+        torch_on = False
         self.elements = []
 
     def degrees(self, rad):
@@ -460,6 +461,7 @@ class HoleBuilder:
         }
 
     def create_cut_on_off_gcode(self, cut_on):
+        self.torch_on = cut_on
         return {
             "code": "M3" if cut_on else "M5"
         }
@@ -493,6 +495,17 @@ class HoleBuilder:
     def create_relative_arc(self):
         return {
             "code": "G91.1"
+        }
+
+    def create_thc_off_synch(self):
+        return {
+            "code": "M62 P2"
+        }
+
+
+    def create_thc_on_synch(self):
+        return {
+            "code": "M63 P2"
         }
 
 
@@ -599,7 +612,10 @@ class HoleBuilder:
 
         centre_to_leadin_diam_gap = math.fabs(arc_y0 - (2 * leadin_radius) - y)
         
+        # set the lead in speed
         self.elements.append(self.create_feed(leadin_feed))
+        # turn off the THC
+        self.elements.append(self.create_thc_off_synch())
 
         # leadin radius too small or greater (or equal) than r.
         # --> use straight leadin from the hole center.
@@ -715,12 +731,13 @@ class HoleBuilder:
                 self.elements.append(self.create_comment(f'Arc length = {r * sang}'))
                 self.elements.append(self.create_comment(f'Sector num: {sector_num}'))
                 if sector_num == 0:
-                        self.elements.append(self.create_feed(arc1_feed))
+                    self.elements.append(self.create_feed(arc1_feed))
                 elif sector_num == 1:
-                        self.elements.append(self.create_feed(arc2_feed))
+                    self.elements.append(self.create_feed(arc2_feed))
                 elif sector_num == 2:
-                        self.elements.append(self.create_cut_on_off_gcode(False))
-                        self.elements.append(self.create_feed(arc3_feed))
+                    # TORCH OFF
+                    self.elements.append(self.create_cut_on_off_gcode(False))
+                    self.elements.append(self.create_feed(arc3_feed))
                 self.elements.append(self.create_ccw_arc_gcode(end_x, end_y, cx, cy))
                 if (end_x == 0.00 and end_y == 0.00) == False:
                     #if not 12 O'clock, dwell for 0.5 sec so we have a visual indicator of each segment
@@ -735,6 +752,11 @@ class HoleBuilder:
             self.elements.append(self.create_ccw_arc_gcode(x, y+r, x, y))
 
         # TORCH OFF
+        if self.torch_on:
+            self.elements.append(self.create_cut_on_off_gcode(False))
+        # turn on the THC
+        self.elements.append(self.create_thc_on_synch())
+        # rest feed rate
         self.elements.append(self.create_feed(feed_rate))
         if line.active_g_modal_groups[4] == 'G91.1':
             self.elements.append(self.create_relative_arc())
@@ -765,6 +787,7 @@ class HiDefHole:
             if i > 0:
                 delta = self.hole_list[i]['hole'] - self.hole_list[i-1]['hole']
                 self.hole_list[i]['scale_leadinradius'] = self.hole_list[i]['leadinradius']/delta
+                self.hole_list[i]['scale_kerf'] = self.hole_list[i]['kerf']/delta
                 self.hole_list[i]['scale_cutheight'] = self.hole_list[i]['cutheight']/delta
                 self.hole_list[i]['scale_speed1'] = self.hole_list[i]['speed1']/delta
                 self.hole_list[i]['scale_speed2'] = self.hole_list[i]['speed2']/delta
@@ -772,29 +795,48 @@ class HiDefHole:
                 self.hole_list[i]['scale_offdistance'] = self.hole_list[i]['offdistance']/delta
                 self.hole_list[i]['scale_overcut'] = self.hole_list[i]['overcut']/delta
 
+    def get_attribute(self, attribute, holesize):
+        """
+        Valid attributes:
+            leadinradius
+            kerf
+            cutheight
+            speed1
+            speed2
+            speed2dist
+            offdistance
+            overcut
+        """
+        for i in range(1, len(self.hole_list)):
+            if self.hole_list[i-1]['hole'] <= holesize and holesize <= self.hole_list[i]['hole']:
+                lr = holesize * self.hole_list[i][f'scale_{attribute}']
+                return lr
+        return None
+
+
     def leadin_radius(self, holesize):
-        pass
+        return self.get_attribute('leadinradius', holesize)
     
     def kerf(self, holesize):
-        pass
+        return self.get_attribute('kerf', holesize)
     
     def cut_height(self, holesize):
-        pass
+        return self.get_attribute('cutheight', holesize)
     
     def speed1(self, holesize):
-        pass
+        return self.get_attribute('speed1', holesize)
     
     def speed2(self, holesize):
-        pass
+        return self.get_attribute('speed2', holesize)
     
     def speed2_distance(self, holesize):
-        pass
+        return self.get_attribute('speed2dist', holesize)
     
     def plasma_off_distance(self, holesize):
-        pass
+        return self.get_attribute('offdistance', holesize)
     
     def overcut(self, holesize):
-        pass
+        return self.get_attribute('overcut', holesize)
     
 
 class PreProcessor:
@@ -911,6 +953,30 @@ class PreProcessor:
                         
                         # see if can find hidef data for this hole scenario
                         hidef_data = PLASMADB.hidef_holes(self.active_machineid, self.active_materialid, self.active_thicknessid)
+                        hidef = False
+                        if len(hidef_data) > 0:
+                            # leadinradius
+                            # kerf
+                            # cutheight
+                            # speed1
+                            # speed2
+                            # speed2dist
+                            # offdistance
+                            # overcut
+                            hidef_hole = HiDefHole(hidef_data)
+                            hidef_leadin = hidef_hole.leadin_radius(diameter)
+                            hidef_kerf = hidef_hole.kerf(diameter)
+                            hidef_cutheight = hidef_hole.cut_height(diameter)
+                            hidef_speed1 = hidef_hole.speed1(diameter)
+                            hidef_speed2 = hidef_hole.speed2(diameter)
+                            hidef_speed2dist = hidef_hole.speed2_distance(diameter)
+                            hidef_offdistance = hidef_hole.plasma_off_distance(diameter)
+                            hidef_overcut = hidef_hole.overcut(diameter)
+                            if None not in (hidef_leadin, hidef_kerf, \
+                                            hidef_cutheight, hidef_speed1, \
+                                            hidef_speed2, hidef_speed2dist, \
+                                            hidef_offdistance, hidef_overcut):
+                                hidef = True
                         
                         if diameter < small_hole_size and small_hole_detect:
                             # removde the hole and replace with a pulse
@@ -944,6 +1010,8 @@ class PreProcessor:
                                 if next.token.startswith('M5'):
                                     next.type = Commands.REMOVE
                                     break
+                        elif hidef:
+                            pass
                         elif (diameter <= self.active_thickness * thickness_ratio) or \
                            (diameter <= max_hole_size / UNITS_PER_MM):
                             # Only build the hole of within a certain size of
