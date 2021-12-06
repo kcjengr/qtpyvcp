@@ -9,6 +9,7 @@ Installation
    prerequisites
    pypi_install
    dev_install
+   bullseye
 
 
 There are multiple ways to install QtPyVCP, either a development install, or a standard
