@@ -29,7 +29,7 @@ LOG = initBaseLogger('qtpyvcp')
 #    Qt WebEngine seems to be initialized from a plugin. Please set
 #    Qt::AA_ShareOpenGLContexts using QCoreApplication::setAttribute
 #    before constructing QGuiApplication.
-if API == 'pyside2':
+if API == 'pyside6':
     from PySide6.QtCore import Qt
     QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
 

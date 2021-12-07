@@ -1,5 +1,5 @@
-from led_widget import LEDWidget
-from ledplugin import LEDWidgetPlugin
+from .led_widget import LEDWidget
+from .ledplugin import LEDWidgetPlugin
 
 from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
 
