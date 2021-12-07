@@ -18,9 +18,9 @@
 
 import os
 
-from qtpy.QtGui import QColor
-from qtpy.QtCore import Qt, Slot, Property
-from qtpy.QtWidgets import QWidget, QBoxLayout, QSizePolicy
+from PySide6.QtGui import QColor
+from PySide6.QtCore import Qt, Slot, Property
+from PySide6.QtWidgets import QWidget, QBoxLayout, QSizePolicy
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.actions.machine_actions import jog
@@ -142,7 +142,7 @@ class JogIncrementWidget(QWidget):
 
 if __name__ == "__main__":
     import sys
-    from qtpy.QtWidgets import QApplication
+    from PySide6.QtWidgets import QApplication
     app = QApplication(sys.argv)
     w = JogIncrementWidget(standalone=True)
     w.show()

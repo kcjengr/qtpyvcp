@@ -1,11 +1,4 @@
 import os
-import sys
-import qtpy
-
-if qtpy.API != 'pyqt5':
-    print("ERROR: You must use the PyQt5 bindings in order to use the custom \n"
-          "widgets in QtDesigner.")
-    sys.exit()
 
 os.environ['DESIGNER'] = 'true'
 

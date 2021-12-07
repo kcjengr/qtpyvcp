@@ -2,9 +2,9 @@ import os
 
 import linuxcnc
 from qtpy import uic, QtWidgets
-from qtpy.QtCore import Slot, Qt, QEvent, QPoint
-from qtpy.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent
-from qtpy.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox
+from PySide6.QtCore import Slot, Qt, QEvent, QPoint
+from PySide6.QtGui import QInputMethodEvent, QGuiApplication, QKeyEvent
+from PySide6.QtWidgets import QWidget, QAbstractButton, QAbstractSpinBox
 
 
 class VirtualInput(QWidget):

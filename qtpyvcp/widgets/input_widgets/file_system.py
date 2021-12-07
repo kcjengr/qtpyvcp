@@ -8,8 +8,8 @@ import psutil
 from pyudev.pyqt5 import MonitorObserver
 from pyudev import Context, Monitor, Devices
 
-from qtpy.QtCore import Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevice
-from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, \
+from PySide6.QtCore import Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevice
+from PySide6.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, \
     QApplication, QAbstractItemView, QInputDialog, QLineEdit
 
 from qtpyvcp.plugins import getPlugin

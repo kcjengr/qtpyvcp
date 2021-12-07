@@ -1,4 +1,4 @@
-from qtpy.QtCore import Property
+from PySide6.QtCore import Property
 
 from qtpyvcp.widgets import VCPButton
 from qtpyvcp.actions import bindWidget, InvalidAction

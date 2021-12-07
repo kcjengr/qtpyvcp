@@ -1,5 +1,6 @@
-from qtpy.QtGui import QIcon
-from qtpy.QtDesigner import QPyDesignerCustomWidgetPlugin
+from PySide6.QtGui import QIcon
+from PySide6.QtDesigner import QPyDesignerCustomWidgetPlugin
+
 
 from .plugin_extension import ExtensionFactory, Q_TYPEID
 from .designer_hooks import DesignerHooks
@@ -88,6 +89,7 @@ class _DesignerPlugin(QPyDesignerCustomWidgetPlugin):
         return self.initialized
 
     def createWidget(self, parent):
+        LOG.debug(parent)
         w = self.pluginClass()(parent)
         w.extensions = self.designerExtensions()
         return w

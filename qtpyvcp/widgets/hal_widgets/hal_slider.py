@@ -1,5 +1,5 @@
 
-from qtpy.QtWidgets import QSlider
+from PySide6.QtWidgets import QSlider
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget

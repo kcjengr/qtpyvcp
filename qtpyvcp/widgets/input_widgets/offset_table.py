@@ -17,9 +17,9 @@
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from qtpy.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
-from qtpy.QtGui import QStandardItemModel, QColor, QBrush
-from qtpy.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, QMessageBox
+from PySide6.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
+from PySide6.QtGui import QStandardItemModel, QColor, QBrush
+from PySide6.QtWidgets import QTableView, QStyledItemDelegate, QDoubleSpinBox, QMessageBox
 
 from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.plugins import getPlugin

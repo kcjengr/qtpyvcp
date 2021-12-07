@@ -18,8 +18,8 @@
 
 import subprocess
 
-from qtpy.QtCore import QTimer
-from qtpy.QtWidgets import QPushButton, QHBoxLayout, QPushButton, QWidget
+from PySide6.QtCore import QTimer
+from PySide6.QtWidgets import QPushButton, QHBoxLayout, QPushButton, QWidget
 
 from qtpyvcp.utilities.info import Info
 from qtpyvcp.utilities import logger

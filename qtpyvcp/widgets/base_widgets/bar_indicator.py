@@ -1,6 +1,6 @@
-from qtpy.QtCore import Qt, Property, Slot, QRectF, QSize
-from qtpy.QtGui import QColor, QLinearGradient, QPainter, QPen
-from qtpy.QtWidgets import QWidget, QSizePolicy, QWIDGETSIZE_MAX
+from PySide6.QtCore import Qt, Property, Slot, QRectF, QSize
+from PySide6.QtGui import QColor, QLinearGradient, QPainter, QPen
+from PySide6.QtWidgets import QWidget, QSizePolicy, QWIDGETSIZE_MAX
 
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -309,7 +309,7 @@ class BarIndicatorBase(QWidget):
 
 if __name__ == "__main__":
     import sys
-    from qtpy.QtWidgets import QApplication
+    from PySide6.QtWidgets import QApplication
 
     app = QApplication(sys.argv)
     w = BarIndicatorBase()

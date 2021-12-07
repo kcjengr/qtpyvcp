@@ -6,8 +6,8 @@ import time
 
 import vtk
 import vtk.qt
-from qtpy.QtCore import Property, Slot
-from qtpy.QtGui import QColor
+from PySide6.QtCore import Property, Slot
+from PySide6.QtGui import QColor
 
 # Fix poligons not drawing correctly on some GPU
 # https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1
@@ -38,7 +38,7 @@ NUMBER_OF_WCS = 9
 
 
 # turn on antialiasing
-from qtpy.QtOpenGL import QGLFormat
+from PySide6.QtOpenGL import QGLFormat
 f = QGLFormat()
 f.setSampleBuffers(True)
 QGLFormat.setDefaultFormat(f)

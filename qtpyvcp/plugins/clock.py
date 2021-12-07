@@ -19,7 +19,7 @@ YAML configuration:
 
 from datetime import datetime
 
-from qtpy.QtCore import QTimer
+from PySide6.QtCore import QTimer
 from qtpyvcp.plugins import DataPlugin, DataChannel
 
 
@@ -93,7 +93,7 @@ class Clock(DataPlugin):
 
 
 if __name__ == "__main__":
-    from qtpy.QtWidgets import QApplication
+    from PySide6.QtWidgets import QApplication
     app = QApplication([])
 
     c = Clock()

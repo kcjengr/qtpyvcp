@@ -1,6 +1,6 @@
 import os
 
-from qtpy.QtWidgets import QComboBox
+from PySide6.QtWidgets import QComboBox
 
 from qtpyvcp.actions.program_actions import load as loadProgram
 from qtpyvcp.plugins import getPlugin
