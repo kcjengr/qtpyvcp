@@ -31,7 +31,7 @@ from qtpyvcp.utilities.logger import initBaseLogger
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.config_loader import load_config_files
 
-import pydevd;pydevd.settrace()
+#import pydevd;pydevd.settrace()
 
 
 # Constrcut LOG from qtpyvcp standard logging framework
@@ -53,6 +53,7 @@ except:
 # Define some globals that will be referenced from anywhere
 # assumption is MM's is the base unit of reference.
 PLASMADB = None
+DEBUG_COMMENTS = False
 
 G_MODAL_GROUPS = {
     1: ('G0','G1','G2','G3','G33','G38.n','G73','G76','G80','G81',\
@@ -460,10 +461,10 @@ class HoleBuilder:
             "y": y
         }
 
-    def create_cut_on_off_gcode(self, cut_on):
+    def create_cut_on_off_gcode(self, cut_on, spindle=0):
         self.torch_on = cut_on
         return {
-            "code": "M3" if cut_on else "M5"
+            "code": f"M3 ${spindle}" if cut_on else "M5 $-1"
         }
 
     def create_kerf_off_gcode(self):
@@ -474,6 +475,11 @@ class HoleBuilder:
     def create_comment(self, txt):
         return {
             "code": f"({txt})"
+        }
+        
+    def create_debug_comment(self, txt):
+        return {
+            "code": f"{txt}" if DEBUG_COMMENTS else None
         }
 
     def create_dwell(self, t):
@@ -507,6 +513,12 @@ class HoleBuilder:
         return {
             "code": "M63 P2"
         }
+        
+    def create_marking_voltage_wait(self):
+        return {
+            # Wait on digital pin 4 to go HIGH
+            "code": "M66 P3 L3 Q10"
+        }
 
 
     def element_to_gcode_line(self, e):
@@ -528,14 +540,17 @@ class HoleBuilder:
     def plasma_mark(self, line, x, y, time):
         self.elements=[]
         feed_rate = line.get_active_feedrate()
+        self.elements.append(self.create_comment('---- Marking Start ----'))
         self.elements.append(self.create_feed(feed_rate))
         self.elements.append(self.create_line_gcode(x, y, True))
         self.elements.append(self.create_cut_on_off_gcode(True))
         self.elements.append(self.create_line_gcode(x+0.001, y, False))
+        self.elements.append(self.create_marking_voltage_wait())
         self.elements.append(self.create_dwell(time))
         self.elements.append(self.create_cut_on_off_gcode(False))
+        self.elements.append(self.create_comment('---- Marking End ----'))
 
-    def plasma_hole(self, line, x, y, d, kerf, leadin_radius, splits=[]):
+    def plasma_hole(self, line, x, y, d, kerf, leadin_radius, splits=[], hidef=False):
         # Params:
         # x:              Hole Centre X position
         # y:              Hole Centre y position
@@ -606,9 +621,11 @@ class HoleBuilder:
 
         if line.active_g_modal_groups[4] == 'G91.1':
             self.elements.append(self.create_absolute_arc())
-        self.elements.append(self.create_comment(f'Hole Center x={x} y={y} r={r} leadin_r={leadin_radius}'))
-        self.elements.append(self.create_comment(f'First point on hole: x={arc_x0} y={arc_y0}'))
-        self.elements.append(self.create_comment('Leadin...'))
+        if hidef:
+            self.elements.append(self.create_comment('---- HiDef Hole ----'))
+        self.elements.append(self.create_debug_comment(f'Hole Center x={x} y={y} r={r} leadin_r={leadin_radius}'))
+        self.elements.append(self.create_debug_comment(f'First point on hole: x={arc_x0} y={arc_y0}'))
+        self.elements.append(self.create_debug_comment('Leadin...'))
 
         centre_to_leadin_diam_gap = math.fabs(arc_y0 - (2 * leadin_radius) - y)
         
@@ -620,7 +637,7 @@ class HoleBuilder:
         # leadin radius too small or greater (or equal) than r.
         # --> use straight leadin from the hole center.
         if leadin_radius < 0 or leadin_radius >= r-kc:
-            self.elements.append(self.create_comment('too small'))
+            self.elements.append(self.create_debug_comment('too small'))
             self.elements.append(self.create_line_gcode(x, y, True))
             self.elements.append(self.create_kerf_off_gcode())
             # TORCH ON
@@ -631,11 +648,11 @@ class HoleBuilder:
         # --> use half circle leadin
         # done nothing here
         elif leadin_radius <= (r / 2):
-            self.elements.append(self.create_comment('Half circle radius'))
+            self.elements.append(self.create_debug_comment('Half circle radius'))
             # rapid to hole centre
-            self.elements.append(self.create_comment(f'Half circle radius. Centre-to-Leadin-Gap={centre_to_leadin_diam_gap}'))
+            self.elements.append(self.create_debug_comment(f'Half circle radius. Centre-to-Leadin-Gap={centre_to_leadin_diam_gap}'))
             if centre_to_leadin_diam_gap < kerf:
-                self.elements.append(self.create_comment('... single arc'))
+                self.elements.append(self.create_debug_comment('... single arc'))
                 self.elements.append(self.create_line_gcode(x, y, True))
                 self.elements.append(self.create_kerf_off_gcode())
                 # TORCH ON
@@ -643,7 +660,7 @@ class HoleBuilder:
                 self.elements.append(self.create_line_gcode(x, arc_y0 - 2 * leadin_radius, False))
                 self.elements.append(self.create_ccw_arc_gcode(arc_x0, arc_y0, x, arc_y0 - leadin_radius))
             else:
-                self.elements.append(self.create_comment('... double back arc'))
+                self.elements.append(self.create_debug_comment('... double back arc'))
                 self.elements.append(self.create_line_gcode(x, y, True))
                 self.elements.append(self.create_kerf_off_gcode())
                 # TORCH ON
@@ -657,11 +674,11 @@ class HoleBuilder:
         # --> use combination of leadin arc and a smaller arc from the hole center
         else:
             # TODO:
-            self.elements.append(self.create_comment('Greater then Half circle radius'))
-            self.elements.append(self.create_comment(f'Half circle radius. Centre-to-Leadin-Gap={centre_to_leadin_diam_gap}'))
+            self.elements.append(self.create_debug_comment('Greater then Half circle radius'))
+            self.elements.append(self.create_debug_comment(f'Half circle radius. Centre-to-Leadin-Gap={centre_to_leadin_diam_gap}'))
 
             if centre_to_leadin_diam_gap < kerf:
-                self.elements.append(self.create_comment('... single arc'))
+                self.elements.append(self.create_debug_comment('... single arc'))
                 self.elements.append(self.create_line_gcode(x, y, True))
                 self.elements.append(self.create_kerf_off_gcode())
                 # TORCH ON
@@ -669,7 +686,7 @@ class HoleBuilder:
                 self.elements.append(self.create_line_gcode(x, y - centre_to_leadin_diam_gap, False))
                 self.elements.append(self.create_ccw_arc_gcode(arc_x0, arc_y0, x, arc_y0 - leadin_radius))
             else:
-                self.elements.append(self.create_comment('... double back arc'))
+                self.elements.append(self.create_debug_comment('... double back arc'))
                 self.elements.append(self.create_line_gcode(x, y, True))
                 self.elements.append(self.create_kerf_off_gcode())
                 # TORCH ON
@@ -727,9 +744,9 @@ class HoleBuilder:
                 #     end_x = (cx - r * math.cos(end_angle + degs90))
                 #     end_y = (cy - r * math.sin(end_angle + degs90))
                 #comment the code
-                self.elements.append(self.create_comment(f'Settings: angle = {str(sang)} end_angle {str(end_angle)} radians {str(self.degrees(end_angle))} degrees'))
-                self.elements.append(self.create_comment(f'Arc length = {r * sang}'))
-                self.elements.append(self.create_comment(f'Sector num: {sector_num}'))
+                self.elements.append(self.create_debug_comment(f'Settings: angle = {str(sang)} end_angle {str(end_angle)} radians {str(self.degrees(end_angle))} degrees'))
+                self.elements.append(self.create_debug_comment(f'Arc length = {r * sang}'))
+                self.elements.append(self.create_comment(f'Sector number: {sector_num}'))
                 if sector_num == 0:
                     self.elements.append(self.create_feed(arc1_feed))
                 elif sector_num == 1:
@@ -739,10 +756,10 @@ class HoleBuilder:
                     self.elements.append(self.create_cut_on_off_gcode(False))
                     self.elements.append(self.create_feed(arc3_feed))
                 self.elements.append(self.create_ccw_arc_gcode(end_x, end_y, cx, cy))
-                if (end_x == 0.00 and end_y == 0.00) == False:
-                    #if not 12 O'clock, dwell for 0.5 sec so we have a visual indicator of each segment
-                    # we need to insert a call to a procedure that creates the required gcode actions at the end of each segment
-                    self.elements.append(self.create_dwell('0.5'))
+                # if (end_x == 0.00 and end_y == 0.00) == False:
+                #     #if not 12 O'clock, dwell for 0.5 sec so we have a visual indicator of each segment
+                #     # we need to insert a call to a procedure that creates the required gcode actions at the end of each segment
+                #     self.elements.append(self.create_dwell('0.5'))
                 sector_num += 1
         else:
             # create hole as four arcs. no overburn or anything special.
@@ -763,8 +780,9 @@ class HoleBuilder:
 
     def generate_hole_gcode(self):
         for e in self.elements:
-            print(self.element_to_gcode_line(e), file=sys.stdout)
-            sys.stdout.flush()
+            if e['code'] is not None:
+                print(self.element_to_gcode_line(e), file=sys.stdout)
+                sys.stdout.flush()
 
 class HiDefHole:
     def __init__(self, data_list):
@@ -903,7 +921,9 @@ class PreProcessor:
         if small_hole_detect:
             small_hole_size = hal.get_value('qtpyvcp.plasma-small-hole-threshold.out')/UNITS_PER_MM
             
-
+        marking_voltage = hal.get_value('qtpyvcp.plasma-marking-voltage.out')
+        marking_delay = hal.get_value('qtpyvcp.plasma-marking-delay.out')
+        
         
         # old school loop so we can easily peek forward or back of the current
         # record being processed.
@@ -981,7 +1001,7 @@ class PreProcessor:
                         if diameter < small_hole_size and small_hole_detect:
                             # removde the hole and replace with a pulse
                             line.hole_builder.\
-                                plasma_mark(line, centre_x, centre_y, 0.5)
+                                plasma_mark(line, centre_x, centre_y, marking_delay)
                             # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
                             j = i-1
                             found_m3 = False
@@ -1011,7 +1031,45 @@ class PreProcessor:
                                     next.type = Commands.REMOVE
                                     break
                         elif hidef:
-                            pass
+                            arc1_distance = circumferance - hidef_speed2dist - hidef_offdistance
+                            arc2_from_zero = arc1_distance + hidef_speed2dist
+                            arc3_from_zero = arc2_from_zero + hidef_overcut - circumferance
+                            line.hole_builder.\
+                                plasma_hole(line, centre_x, centre_y, diameter, \
+                                            hidef_kerf, hidef_leadin, \
+                                            [arc1_distance, \
+                                             arc2_from_zero, \
+                                             arc3_from_zero], hidef)
+                            
+                            # scan forward and back to mark the M3 and M5 as Coammands.REMOVE
+                            j = i-1
+                            found_m3 = False
+                            for j in range(j, -1, -1):
+                                prev = self._parsed[j]
+                                # mark for removal any lines until find the M3
+                                if prev.token.startswith('M3'):
+                                    found_m3 = True
+                                    prev.type = Commands.REMOVE
+                                if not found_m3:
+                                    prev.type = Commands.REMOVE
+                                try:
+                                    if prev.active_g_modal_groups[1] != 'G0' and found_m3:
+                                        break
+                                    elif prev.active_g_modal_groups[1] == 'G0':
+                                        prev.type = Commands.REMOVE
+                                except KeyError:
+                                    # access to the dictionary index failed,
+                                    # so no longer in a g0 mode
+                                    break
+                            j = i+1
+                            for j in range(j, len(self._parsed)):
+                                next = self._parsed[j]
+                                # mark all lines for removal until find M5
+                                next.type = Commands.REMOVE
+                                if next.token.startswith('M5'):
+                                    next.type = Commands.REMOVE
+                                    break
+                            
                         elif (diameter <= self.active_thickness * thickness_ratio) or \
                            (diameter <= max_hole_size / UNITS_PER_MM):
                             # Only build the hole of within a certain size of
@@ -1101,6 +1159,7 @@ class PreProcessor:
                 print('(---- Smart Hole Start ----)')
                 l.hole_builder.generate_hole_gcode()
                 print('(---- Smart Hole End ----)')
+                print()
                 continue
             if l.type is Commands.COMMENT:
                 out = l.comment
