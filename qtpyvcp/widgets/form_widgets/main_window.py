@@ -1,11 +1,11 @@
 import os
 import sys
 
-from PySide2.QtUiTools import QUiLoader
-from PySide2.QtGui import QKeySequence
-from PySide2.QtCore import Qt, Slot, QTimer
-from PySide2.QtWidgets import QMainWindow, QApplication, QAction, QMessageBox, \
-    QMenu, QMenuBar, QLineEdit, QShortcut, QActionGroup
+from PySide6.QtUiTools import QUiLoader
+from PySide6.QtGui import QKeySequence, QAction, QShortcut, QActionGroup
+from PySide6.QtCore import Qt, Slot, QTimer
+from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox, \
+    QMenu, QMenuBar, QLineEdit
 
 
 import qtpyvcp

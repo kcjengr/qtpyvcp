@@ -22,12 +22,12 @@ import sys
 
 from datetime import datetime
 
-from PySide2.QtCore import Qt, Signal
-from PySide2.QtGui import QIcon
+from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QIcon, QScreen
 
-from PySide2.QtWidgets import (QWidget, QGridLayout, QLabel, QPushButton,
-                            QDesktopWidget, QVBoxLayout, QApplication,
-                            QDialog,QScrollArea)
+from PySide6.QtWidgets import (QWidget, QGridLayout, QLabel, QPushButton,
+                            QVBoxLayout, QApplication,
+                            QDialog, QScrollArea)
 
 from qtpyvcp.widgets.dialogs.base_dialog import BaseDialog
 
@@ -73,7 +73,7 @@ class NativeNotification(BaseDialog):
 
         self.setWindowFlags(Qt.Tool | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.WindowSystemMenuHint)
 
-        resolution = QDesktopWidget().screenGeometry(-1)
+        resolution = QScreen.screenGeometry(-1)
         screenWidth = resolution.width()
         screenHeight = resolution.height()
 

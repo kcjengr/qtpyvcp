@@ -25,7 +25,7 @@ from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 # this will initialise a base logger with default log level of DEBUG
 LOG = initBaseLogger('qtpyvcp')
 
-# Needed to silence this PySide2 warning:
+# Needed to silence this PySide6 warning:
 #    Qt WebEngine seems to be initialized from a plugin. Please set
 #    Qt::AA_ShareOpenGLContexts using QCoreApplication::setAttribute
 #    before constructing QGuiApplication.

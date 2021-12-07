@@ -187,7 +187,7 @@ def launch_designer(opts=DotDict()) -> None:
     os.environ['QTPYVCP_LOG_LEVEL'] = opts.log_level
     os.environ['QT_SELECT'] = 'qt6'
     os.environ['QT_PLUGIN_PATH'] = '/usr/lib/qt6/plugins'
-    os.environ['PYSIDE_DESIGNER_PLUGINS'] = os.path.join(base, '../widgets/display_widgets/camera')
+    os.environ['PYSIDE_DESIGNER_PLUGINS'] = os.path.join(base, '../widgets/base_widgets')
 
     LOG.info("Starting QtDesigner ...")
 

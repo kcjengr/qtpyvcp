@@ -18,8 +18,8 @@
 
 from collections import OrderedDict
 
-from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QComboBox, QDialog, QHBoxLayout, QLabel, \
+from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QComboBox, QDialog, QHBoxLayout, QLabel, \
     QDoubleSpinBox, QPushButton, QVBoxLayout
 
 from qtpyvcp.utilities.info import Info

@@ -64,10 +64,12 @@ sys.path.insert(0, os.path.join(BASE, "lib", "python"))
 from linuxcnc import ini
 from docopt import docopt
 
+import PySide6
+import PySide6.QtCore
+
 from qtpyvcp import __version__ as QTPYVCP_VERSION
 from qtpyvcp.lib.types import DotDict
 from qtpyvcp.utilities.misc import normalizePath
-
 
 def convType(val):
     if isinstance(val, str):
@@ -208,8 +210,8 @@ def apply_opts(opts):
 
     if LOG.getEffectiveLevel() == logger.logLevelFromName("DEBUG"):
         import qtpy
-        LOG.debug("Qt Version: %s", PySide6.QT_VERSION)
-        LOG.debug("Qt API: %s", PySide6.QT_API)
+        LOG.debug("Qt Version: %s", PySide6.QtCore.__version__)
+        LOG.debug("Qt API: %s", PySide6.__version_info__)
         LOG.debug("QtPy Version: %s", PySide6.__version__)
 
 
@@ -228,7 +230,7 @@ def printSystemInfo():
         Version:        {lcnc_version}
 
     Qt Info
-        Qt Version:     {qt_version}
+        Qt Version:     {}
         Qt API:         {qt_api}
         Qt API Version: {api_version}
 
@@ -274,9 +276,9 @@ def printSystemInfo():
         lcnc_version=linuxcnc.version,
 
         # qt info
-        qt_version=PySide6.QT_VERSION,
-        qt_api=PySide6.API_NAME,
-        api_version=PySide6.PYQT_VERSION or PySide6.PYSIDE_VERSION,
+        qt_version=PySide6.QtCore.__version__,
+        qt_api=PySide6.__version_info__,
+        api_version=PySide6.__version__,
 
         # system info
         dist=subprocess.check_output(['lsb_release', '-d']).decode("utf-8").split('\t')[1],

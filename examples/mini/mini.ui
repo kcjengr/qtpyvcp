@@ -28,16 +28,6 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="CodeEditor" name="codeEditor">
-      <property name="toolTip">
-       <string/>
-      </property>
-      <property name="About this editor" stdset="0">
-       <string>The code editor widget displays a syntax highlighted gcode file.</string>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QWidget" name="gridWidget" native="true">
       <layout class="QGridLayout" name="gridLayout">
        <property name="leftMargin">
@@ -55,94 +45,101 @@
        <property name="spacing">
         <number>5</number>
        </property>
-       <item row="0" column="1">
-        <widget class="StatusLabel" name="statuslabel_3">
-         <property name="rules" stdset="0">
-          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;clock:date?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-         </property>
-        </widget>
-       </item>
-       <item row="5" column="0">
-        <widget class="StatusLabel" name="statuslabel_19">
-         <property name="rules" stdset="0">
-          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:program_units?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Progam Units: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="StatusLabel" name="statuslabel_7">
-         <property name="rules" stdset="0">
-          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_state?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Task State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="StatusLabel" name="statuslabel_17">
-         <property name="rules" stdset="0">
-          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:state?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="StatusLabel" name="statuslabel">
-         <property name="rules" stdset="0">
-          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;clock:time?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="StatusLabel" name="statuslabel_16">
-         <property name="rules" stdset="0">
-          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_mode?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Task Mode: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="1">
+       <item row="5" column="1">
         <widget class="StatusLabel" name="statuslabel_10">
          <property name="rules" stdset="0">
           <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:motion_type?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Motion Type: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="StatusLabel" name="statuslabel_6">
-         <property name="rules" stdset="0">
-          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:motion_mode?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Motion Mode: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0">
-        <widget class="StatusLabel" name="statuslabel_8">
-         <property name="rules" stdset="0">
-          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:interp_state?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Interp State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="StatusLabel" name="statuslabel_2">
-         <property name="rules" stdset="0">
-          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:estop&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Estoped: \&quot; + str(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
+       <item row="4" column="1">
         <widget class="StatusLabel" name="statuslabel_18">
          <property name="rules" stdset="0">
           <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:exec_state?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Exec State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
          </property>
         </widget>
        </item>
-       <item row="5" column="1">
+       <item row="5" column="0">
+        <widget class="StatusLabel" name="statuslabel_8">
+         <property name="rules" stdset="0">
+          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:interp_state?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Interp State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="StatusLabel" name="statuslabel_2">
+         <property name="rules" stdset="0">
+          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:estop&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Estoped: \&quot; + str(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="StatusLabel" name="statuslabel_6">
+         <property name="rules" stdset="0">
+          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:motion_mode?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Motion Mode: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="StatusLabel" name="statuslabel_3">
+         <property name="rules" stdset="0">
+          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;clock:date?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+         </property>
+        </widget>
+       </item>
+       <item row="7" column="0" colspan="2">
+        <widget class="StatusLabel" name="statuslabel_11">
+         <property name="rules" stdset="0">
+          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:file&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;File: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="StatusLabel" name="statuslabel_7">
+         <property name="rules" stdset="0">
+          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_state?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Task State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="StatusLabel" name="statuslabel_19">
+         <property name="rules" stdset="0">
+          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:program_units?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Progam Units: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="StatusLabel" name="statuslabel_17">
+         <property name="rules" stdset="0">
+          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:state?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;State: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="StatusLabel" name="statuslabel">
+         <property name="rules" stdset="0">
+          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;clock:time?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="StatusLabel" name="statuslabel_16">
+         <property name="rules" stdset="0">
+          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:task_mode?string&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Task Mode: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
         <widget class="StatusLabel" name="statuslabel_5">
          <property name="rules" stdset="0">
           <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:tool_in_spindle&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;Tool No.: \&quot; + str(ch[0])&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
          </property>
         </widget>
        </item>
-       <item row="6" column="0" colspan="2">
-        <widget class="StatusLabel" name="statuslabel_11">
-         <property name="rules" stdset="0">
-          <string notr="true">[{&quot;channels&quot;: [{&quot;url&quot;: &quot;status:file&quot;, &quot;trigger&quot;: true}], &quot;property&quot;: &quot;Text&quot;, &quot;expression&quot;: &quot;\&quot;File: \&quot; + ch[0]&quot;, &quot;name&quot;: &quot;New Rule&quot;}]</string>
+       <item row="0" column="1">
+        <widget class="LEDWidget" name="ledWidget">
+         <property name="state" stdset="0">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -231,7 +228,7 @@
      <widget class="HalDoubleSpinBox" name="spinbox_xeo_scale"/>
     </item>
     <item>
-     <widget class="JogIncrementWidget" name="jogincrement"/>
+     <widget class="JogIncrementWidget" name="jogincrement" native="true"/>
     </item>
     <item>
      <widget class="ActionSlider" name="actionslider">
@@ -604,9 +601,9 @@
  <layoutdefault spacing="6" margin="9"/>
  <customwidgets>
   <customwidget>
-   <class>CodeEditor</class>
-   <extends>QPlainTextEdit</extends>
-   <header>codeeditor.h</header>
+   <class>LEDWidget</class>
+   <extends>QWidget</extends>
+   <header>ledwidget</header>
   </customwidget>
   <customwidget>
    <class>VCPMainWindow</class>
