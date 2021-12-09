@@ -17,6 +17,8 @@ from qtpyvcp.utilities.settings import getSetting
 from qtpyvcp.widgets.dialogs import showDialog as _showDialog
 from qtpyvcp.app.launcher import _initialize_object_from_dict
 
+from mini_ui import Ui_Form
+
 LOG = logger.getLogger(__name__)
 INFO = Info()
 
@@ -40,10 +42,12 @@ class VCPMainWindow(QMainWindow):
         # Load the UI file AFTER defining variables, otherwise the values
         # set in QtDesigner get overridden by the default values
         if ui_file is not None:
-            self.loader = QUiLoader()
+            # self.loader = QUiLoader()
             
-            self.loadUi(ui_file)
-            self.initUi()
+            # self.loadUi(ui_file)
+            # self.initUi()
+            self.ui = Ui_Form()
+            self.ui.setupUi(self)
 
         if menu is not None:
             try:

@@ -137,13 +137,23 @@
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="LEDWidget" name="ledWidget">
+        <widget class="LEDWidget" name="ledWidget" native="true">
          <property name="state" stdset="0">
           <bool>true</bool>
          </property>
         </widget>
        </item>
       </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="CodeEditor" name="codeEditor">
+      <property name="toolTip">
+       <string/>
+      </property>
+      <property name="About this editor" stdset="0">
+       <string>The code editor widget displays a syntax highlighted gcode file.</string>
+      </property>
      </widget>
     </item>
     <item>
@@ -600,6 +610,11 @@
  </widget>
  <layoutdefault spacing="6" margin="9"/>
  <customwidgets>
+  <customwidget>
+   <class>CodeEditor</class>
+   <extends>QPlainTextEdit</extends>
+   <header>codeeditor.h</header>
+  </customwidget>
   <customwidget>
    <class>LEDWidget</class>
    <extends>QWidget</extends>
