@@ -20,8 +20,8 @@ import os
 import linuxcnc
 INIFILE = linuxcnc.ini(os.getenv("INI_FILE_NAME"))
 
-from PySide6.QtWidgets import QLabel
-from PySide6.QtCore import Slot, Property
+from PySide2.QtWidgets import QLabel
+from PySide2.QtCore import Slot, Property
 
 from qtpyvcp.plugins import getPlugin
 
@@ -164,7 +164,7 @@ class DROWidget(QLabel, VCPWidget, Axis, RefType, Units):
 
 if __name__ == "__main__":
     import sys
-    from PySide6.QtWidgets import QApplication
+    from PySide2.QtWidgets import QApplication
 
     app = QApplication(sys.argv)
     w = DROWidget()

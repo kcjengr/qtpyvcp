@@ -38,10 +38,10 @@
 ##
 #############################################################################
 
-"""PySide6 port of the Qt Designer taskmenuextension example from Qt v6.x"""
+"""PySide2 port of the Qt Designer taskmenuextension example from Qt v6.x"""
 
 import sys
-from PySide6.QtWidgets import QApplication
+from PySide2.QtWidgets import QApplication
 
 from tictactoe import TicTacToe
 

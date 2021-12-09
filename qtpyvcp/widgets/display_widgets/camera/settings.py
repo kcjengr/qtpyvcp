@@ -42,9 +42,9 @@ import os
 
 from qtpy import uic
 
-from PySide6.QtCore import qFuzzyCompare
-from PySide6.QtMultimedia import QMultimedia
-from PySide6.QtWidgets import QDialog
+from PySide2.QtCore import qFuzzyCompare
+from PySide2.QtMultimedia import QMultimedia
+from PySide2.QtWidgets import QDialog
 
 WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 

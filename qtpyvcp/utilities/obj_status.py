@@ -19,7 +19,7 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import linuxcnc, time, threading, subprocess, os, json
-from PySide6.QtCore import QObject, QTimer, Signal
+from PySide2.QtCore import QObject, QTimer, Signal
 
 # Setup logging
 try:

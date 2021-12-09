@@ -75,7 +75,7 @@ See the [documentation](https://qtpyvcp.com/).
 
 * LinuxCNC 2.8^ or master
 * Python 3.6^
-* PyQt5 or PySide6
+* PyQt5 or PySide2
 
 QtPyVCP is developed and tested using the Debian 10 and 11 x64 (buster and bullseye)
 [Live ISO](http://linuxcnc.org/downloads/). It should run

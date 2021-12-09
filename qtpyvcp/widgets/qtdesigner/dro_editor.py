@@ -1,10 +1,10 @@
 
 import os
 from qtpy import uic
-from PySide6.QtCore import Slot
-from PySide6.QtWidgets import QDialog, QDialogButtonBox, QApplication
+from PySide2.QtCore import Slot
+from PySide2.QtWidgets import QDialog, QDialogButtonBox, QApplication
 
-from PySide6.QtDesigner import QDesignerFormWindowInterface
+from PySide2.QtDesigner import QDesignerFormWindowInterface
 
 
 from qtpyvcp.widgets.qtdesigner import _PluginExtension

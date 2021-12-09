@@ -39,19 +39,19 @@
 ##
 #############################################################################
 
-"""PySide6 Multimedia Camera Example"""
+"""PySide2 Multimedia Camera Example"""
 
 import os
 import sys
-from PySide6.QtCore import QDate, QDir, QStandardPaths, Qt, QUrl, Slot
-from PySide6.QtGui import QAction, QGuiApplication, QDesktopServices, QIcon
-from PySide6.QtGui import QImage, QPixmap
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel,
+from PySide2.QtCore import QDate, QDir, QStandardPaths, Qt, QUrl, Slot
+from PySide2.QtGui import QAction, QGuiApplication, QDesktopServices, QIcon
+from PySide2.QtGui import QImage, QPixmap
+from PySide2.QtWidgets import (QApplication, QHBoxLayout, QLabel,
     QMainWindow, QPushButton, QTabWidget, QToolBar, QVBoxLayout, QWidget)
-from PySide6.QtMultimedia import (QCamera, QImageCapture,
+from PySide2.QtMultimedia import (QCamera, QImageCapture,
                                   QCameraDevice, QMediaCaptureSession,
                                   QMediaDevices)
-from PySide6.QtMultimediaWidgets import QVideoWidget
+from PySide2.QtMultimediaWidgets import QVideoWidget
 
 
 class ImageView(QWidget):
@@ -143,14 +143,14 @@ class MainWindow(QMainWindow):
 
         if self._camera and self._camera.error() == QCamera.NoError:
             name = self._camera_info.description()
-            self.setWindowTitle(f"PySide6 Camera Example ({name})")
+            self.setWindowTitle(f"PySide2 Camera Example ({name})")
             self.show_status_message(f"Starting: '{name}'")
             self._capture_session.setVideoOutput(self._camera_viewfinder)
             self._take_picture_action.setEnabled(self._image_capture.isReadyForCapture())
             self._image_capture.readyForCaptureChanged.connect(self._take_picture_action.setEnabled)
             self._camera.start()
         else:
-            self.setWindowTitle("PySide6 Camera Example")
+            self.setWindowTitle("PySide2 Camera Example")
             self._take_picture_action.setEnabled(False)
             self.show_status_message("Camera unavailable")
 

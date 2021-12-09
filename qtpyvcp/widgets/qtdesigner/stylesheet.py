@@ -14,7 +14,7 @@
 
 import os
 
-from PySide6.QtWidgets import QApplication
+from PySide2.QtWidgets import QApplication
 
 # Set up logging
 from qtpyvcp.utilities import logger

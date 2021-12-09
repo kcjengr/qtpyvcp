@@ -3,8 +3,8 @@ import yaml
 from pkg_resources import iter_entry_points
 from qtpy import uic
 
-from PySide6.QtCore import Qt, Slot
-from PySide6.QtWidgets import QFileDialog, QApplication, QDialog, QTreeWidgetItem, \
+from PySide2.QtCore import Qt, Slot
+from PySide2.QtWidgets import QFileDialog, QApplication, QDialog, QTreeWidgetItem, \
     QStyleFactory
 
 from qtpyvcp import TOP_DIR

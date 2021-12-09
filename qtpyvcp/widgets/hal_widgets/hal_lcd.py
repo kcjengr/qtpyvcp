@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QLCDNumber
-from PySide6.QtCore import Property
+from PySide2.QtWidgets import QLCDNumber
+from PySide2.QtCore import Property
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget

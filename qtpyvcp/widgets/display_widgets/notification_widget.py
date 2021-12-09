@@ -16,9 +16,9 @@
 #   You should have received a copy of the GNU General Public License
 #   along with QtPyVCP.  If not, see <http://www.gnu.org/licenses/>.
 
-from PySide6.QtCore import Qt, QSortFilterProxyModel, QRegExp
-from PySide6.QtGui import QStandardItemModel, QStandardItem, QIcon
-from PySide6.QtWidgets import QVBoxLayout, QStackedWidget, QLabel, QListView, QHBoxLayout, QWidget, QPushButton
+from PySide2.QtCore import Qt, QSortFilterProxyModel, QRegExp
+from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon
+from PySide2.QtWidgets import QVBoxLayout, QStackedWidget, QLabel, QListView, QHBoxLayout, QWidget, QPushButton
 
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.plugins import getPlugin

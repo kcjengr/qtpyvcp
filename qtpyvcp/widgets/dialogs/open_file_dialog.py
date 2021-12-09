@@ -1,5 +1,5 @@
-from PySide6.QtCore import QUrl, QFileInfo
-from PySide6.QtWidgets import QFileDialog
+from PySide2.QtCore import QUrl, QFileInfo
+from PySide2.QtWidgets import QFileDialog
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.logger import getLogger

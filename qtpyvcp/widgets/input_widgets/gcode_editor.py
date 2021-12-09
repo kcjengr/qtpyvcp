@@ -27,9 +27,9 @@
 import sys
 import os
 
-from PySide6.QtCore import Property, QObject, Slot, QFile, QFileInfo, QTextStream, Signal
-from PySide6.QtGui import QFont, QFontMetrics, QColor
-from PySide6.QtWidgets import QInputDialog, QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QCheckBox
+from PySide2.QtCore import Property, QObject, Slot, QFile, QFileInfo, QTextStream, Signal
+from PySide2.QtGui import QFont, QFontMetrics, QColor
+from PySide2.QtWidgets import QInputDialog, QLineEdit, QDialog, QHBoxLayout, QVBoxLayout, QLabel, QPushButton, QCheckBox
 
 from qtpyvcp.utilities import logger
 from qtpyvcp.plugins import getPlugin
@@ -656,7 +656,7 @@ class FindReplaceDialog(QDialog):
 # For testing
 # ==============================================================================
 # if __name__ == "__main__":
-#     from PySide6.QtGui import QApplication
+#     from PySide2.QtGui import QApplication
 #
 #     app = QApplication(sys.argv)
 #     editor = GcodeEditor(standalone=True)

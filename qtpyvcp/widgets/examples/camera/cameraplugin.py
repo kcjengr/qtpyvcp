@@ -51,8 +51,8 @@
 from camera import ImageView
 from tictactoetaskmenu import TicTacToeTaskMenuFactory
 
-from PySide6.QtGui import QIcon
-from PySide6.QtDesigner import (QExtensionManager,
+from PySide2.QtGui import QIcon
+from PySide2.QtDesigner import (QExtensionManager,
     QDesignerCustomWidgetInterface)
 
 

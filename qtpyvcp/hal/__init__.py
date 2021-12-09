@@ -66,7 +66,7 @@ def getComponent(name='qtpyvcp'):
 
 if __name__ == "__main__":
 
-    from PySide6.QtWidgets import QApplication
+    from PySide2.QtWidgets import QApplication
     from qtpyvcp import hal
 
     app = QApplication([])

@@ -1,6 +1,6 @@
 
-from PySide6.QtWidgets import QSpinBox
-from PySide6.QtCore import QEvent
+from PySide2.QtWidgets import QSpinBox
+from PySide2.QtCore import QEvent
 
 from qtpyvcp import hal
 from qtpyvcp.widgets import HALWidget
