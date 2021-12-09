@@ -20,8 +20,8 @@ import sys
 import fnmatch
 import subprocess
 
-pyrcc = 'pyside2-rcc'
-pyuic = 'pyside2-uic'
+pyrcc = 'rcc'
+pyuic = 'uic'
 
 ok = "\033[32mok\033[0m"
 error = "\033[31mERROR - unable to call {}\033[0m"
@@ -49,7 +49,7 @@ def compile(packages=['.',]):
                 sys.stdout.flush()
 
                 try:
-                    ret = subprocess.call([pyuic, '-o', outfile, infile])
+                    ret = subprocess.call([pyuic, '-g', 'python', '-o', outfile, infile])
                 except OSError:
                     print((error.format(pyuic)))
                     break
@@ -71,7 +71,7 @@ def compile(packages=['.',]):
                 sys.stdout.flush()
 
                 try:
-                    ret = subprocess.call([pyrcc, '-o', outfile, infile])
+                    ret = subprocess.call([pyrcc, '-g', 'python', '-o', outfile, infile])
                 except OSError:
                     print((error.format(pyrcc)))
                     break
