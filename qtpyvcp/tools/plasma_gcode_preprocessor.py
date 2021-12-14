@@ -921,8 +921,8 @@ class PreProcessor:
         if small_hole_detect:
             small_hole_size = hal.get_value('qtpyvcp.plasma-small-hole-threshold.out')/UNITS_PER_MM
             
-        marking_voltage = hal.get_value('qtpyvcp.plasma-marking-voltage.out')
-        marking_delay = hal.get_value('qtpyvcp.plasma-marking-delay.out')
+        marking_voltage = hal.get_value('qtpyvcp.spot-threshold.out')
+        marking_delay = hal.get_value('qtpyvcp.spot-delay.out')
         
         
         # old school loop so we can easily peek forward or back of the current

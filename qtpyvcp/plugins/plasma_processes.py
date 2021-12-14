@@ -203,7 +203,9 @@ class HoleCut(crudMixin, BASE):
     speed1 = Column(Float)
     speed2 = Column(Float)
     speed2_distance = Column(Float)
+    # distance before 12 o'clock that torch is OFF
     plasma_off_distance = Column(Float)
+    # distance to keep going after torch-off
     over_cut = Column(Float)
 
     @classmethod
