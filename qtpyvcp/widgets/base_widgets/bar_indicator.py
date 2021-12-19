@@ -1,6 +1,7 @@
+import PySide6
 from PySide6.QtCore import Qt, Property, Slot, QRectF, QSize
 from PySide6.QtGui import QColor, QLinearGradient, QPainter, QPen
-from PySide6.QtWidgets import QWidget, QSizePolicy, QWIDGETSIZE_MAX
+from PySide6.QtWidgets import QWidget, QSizePolicy
 
 from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
@@ -230,7 +231,7 @@ class BarIndicatorBase(QWidget):
     @Property(float)
     def valueAt100Percent(self):
         return self._value_at_100_percent
-    
+
     @valueAt100Percent.setter
     def valueAt100Percent(self, value_at):
         self._value_at_100_percent = value_at

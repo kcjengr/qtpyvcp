@@ -180,7 +180,8 @@ def apply_opts(opts):
     # show the chooser if the --chooser flag was specified
     if opts.chooser or not opts.get('vcp', True):
         from qtpyvcp.vcp_chooser import VCPChooser
-        from PySide6.QtWidgets import QApplication, qApp
+        import PySide6
+        from PySide6.QtWidgets import QApplication
         app = QApplication([])
         result = VCPChooser(opts).exec_()
         if result == VCPChooser.Rejected:

@@ -1,5 +1,6 @@
 import os
-from PySide6.QtWidgets import QMenu, QAction
+from PySide6.QtGui import QAction
+from PySide6.QtWidgets import QMenu
 
 from qtpyvcp import actions
 from qtpyvcp.plugins import getPlugin
@@ -58,7 +59,7 @@ class RecentFilesMenu(QMenu):
 
     def update(self, files):
         for i, fname in enumerate(files):
-            
+
             text = "&{} {}".format(i + 1, os.path.basename(fname))
             action = self._actions[i]
             action.setText(text)

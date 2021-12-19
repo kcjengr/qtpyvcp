@@ -1,6 +1,7 @@
 import os
 import re
-from PySide6.QtWidgets import qApp
+
+import PySide6
 from PySide6.QtCore import Property
 
 from qtpyvcp.utilities.info import Info

@@ -2,10 +2,10 @@ import os
 import sys
 
 from PySide6.QtUiTools import QUiLoader
-from PySide6.QtGui import QKeySequence
+from PySide6.QtGui import QKeySequence, QAction, QActionGroup, QShortcut
 from PySide6.QtCore import Qt, Slot, QTimer
 from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox, \
-    QMenu, QMenuBar, QLineEdit, QAction, QActionGroup, QShortcut
+    QMenu, QMenuBar, QLineEdit
 
 
 import qtpyvcp
@@ -29,7 +29,7 @@ class VCPMainWindow(QMainWindow):
                  confirm_exit=True, title=None, menu='default'):
 
         super(VCPMainWindow, self).__init__(parent)
-        
+
         if opts is None:
             opts = qtpyvcp.OPTIONS
 
@@ -43,7 +43,7 @@ class VCPMainWindow(QMainWindow):
         # set in QtDesigner get overridden by the default values
         if ui_file is not None:
             # self.loader = QUiLoader()
-            
+
             # self.loadUi(ui_file)
             # self.initUi()
             self.ui = Ui_Form()
@@ -105,7 +105,7 @@ class VCPMainWindow(QMainWindow):
             ui_file (str) : Path to a .ui file to load.
         """
         # TODO: Check for compiled *_ui.py files and load from that if exists
-            
+
         self.loader.registerCustomWidget(self)
         self.loader.load(ui_file)
 

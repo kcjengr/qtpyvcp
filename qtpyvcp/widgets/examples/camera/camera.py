@@ -43,6 +43,7 @@
 
 import os
 import sys
+import PySide6
 from PySide6.QtCore import QDate, QDir, QStandardPaths, Qt, QUrl, Slot
 from PySide6.QtGui import QGuiApplication, QDesktopServices, QIcon
 from PySide6.QtGui import QImage, QPixmap, QAction
