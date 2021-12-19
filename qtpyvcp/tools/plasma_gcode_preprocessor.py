@@ -198,7 +198,7 @@ class CodeLine:
             'G40':(Commands.CUTTER_COMP_OFF, self.placeholder),
             'G64':(Commands.PATH_BLENDING, self.parse_passthrough),
             'M52':(Commands.ADAPTIVE_FEED, self.parse_passthrough),
-            'M3':(Commands.SPINDLE_ON, self.parse_passthrough),
+            'M3':(Commands.SPINDLE_ON, self.parse_spindle_on),
             'M5':(Commands.SPINDLE_OFF, self.parse_passthrough),
             'M190':(Commands.MATERIAL_CHANGE, self.parse_passthrough),
             'M66':(Commands.DIGITAL_IN, self.parse_passthrough),
@@ -349,6 +349,16 @@ class CodeLine:
             # this is now a list which can be added to the params dictionary
             if len(params) == 2:
                 self.params[params[0]] = float(params[1])
+
+    def parse_spindle_on(self):
+        self.type = Commands.SPINDLE_ON
+        self.command = ('M', int(self.token[1:]))
+        # split the raw line at the token
+        line = self.strip_inline_comment(self.raw).upper().split(self.token,1)[1].strip()
+        params = re.findall('S\d+|\$\d+', line)
+        if len(params) == 1:
+            self.params['$'] = int(params[0][1:])
+    
 
 
     def parse_toolchange(self, combo=False):
