@@ -66,7 +66,7 @@ def build_tool_list():
 def get_tool(toolno):
     return f'T{toolno} P{TOOLS[toolno][0]} D{TOOLS[toolno][1]} ;{TOOLS[toolno][2]}'
 
-def put_tool(toolno, **kwargs):
+def put_tool(toolno, pocketno, **kwargs):
     pass
 
 
