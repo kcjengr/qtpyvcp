@@ -8,10 +8,10 @@ import imp
 import inspect
 from pkg_resources import iter_entry_points
 
-# from PySide2 import API
-from PySide2.QtGui import QFontDatabase
-from PySide2.QtCore import QTimer, Slot, Qt
-from PySide2.QtWidgets import QApplication, QStyleFactory
+# from PySide6 import API
+from PySide6.QtGui import QFontDatabase
+from PySide6.QtCore import QTimer, Slot, Qt
+from PySide6.QtWidgets import QApplication, QStyleFactory
 
 import qtpyvcp
 
@@ -25,12 +25,12 @@ from qtpyvcp.widgets.form_widgets.main_window import VCPMainWindow
 # this will initialise a base logger with default log level of DEBUG
 LOG = initBaseLogger('qtpyvcp')
 
-# Needed to silence this PySide2 warning:
+# Needed to silence this PySide6 warning:
 #    Qt WebEngine seems to be initialized from a plugin. Please set
 #    Qt::AA_ShareOpenGLContexts using QCoreApplication::setAttribute
 #    before constructing QGuiApplication.
 # if API == 'pyside2':
-from PySide2.QtCore import Qt
+from PySide6.QtCore import Qt
 QApplication.setAttribute(Qt.AA_ShareOpenGLContexts)
 
 
@@ -67,7 +67,7 @@ class VCPApplication(QApplication):
         #     self.window.show()
 
         if opts.hide_cursor:
-            from PySide2.QtGui import QCursor
+            from PySide6.QtGui import QCursor
             self.setOverrideCursor(QCursor(Qt.BlankCursor))
 
         # Performance monitoring
@@ -187,7 +187,7 @@ class VCPApplication(QApplication):
             self.setStyleSheet("file:///" + path)
 
             if watch:
-                from PySide2.QtCore import QFileSystemWatcher
+                from PySide6.QtCore import QFileSystemWatcher
                 self.qss_file_watcher = QFileSystemWatcher()
                 self.qss_file_watcher.addPath(stylesheet)
                 self.qss_file_watcher.fileChanged.connect(load)

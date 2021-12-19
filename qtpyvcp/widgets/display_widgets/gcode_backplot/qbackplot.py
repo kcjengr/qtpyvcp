@@ -26,9 +26,9 @@ import _thread
 import re
 import math
 
-from PySide2.QtGui import QColor
-from PySide2.QtCore import Signal, QSize, Qt
-from PySide2.QtWidgets import QApplication, QHBoxLayout, QSlider, QWidget
+from PySide6.QtGui import QColor
+from PySide6.QtCore import Signal, QSize, Qt
+from PySide6.QtWidgets import QApplication, QHBoxLayout, QSlider, QWidget
 
 # Set up logging
 from qtpyvcp.utilities import logger
@@ -36,7 +36,7 @@ from qtpyvcp.utilities import logger
 LOG = logger.getLogger(__name__)
 
 try:
-    from PySide2.QtOpenGL import QGLWidget
+    from PySide6.QtOpenGL import QGLWidget
 except ImportError:
     LOG.exception("QtOpenGL ImportError - are any QtOpenGL python bindings installed?")
     sys.exit()

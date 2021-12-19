@@ -1,7 +1,7 @@
 import linuxcnc
 import os
 
-from PySide2.QtCore import Signal, QObject
+from PySide6.QtCore import Signal, QObject
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities import logger
 from qtpyvcp.utilities.info import Info

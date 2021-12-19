@@ -1,7 +1,7 @@
 
-from PySide2.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
-from PySide2.QtGui import QStandardItemModel, QColor, QBrush
-from PySide2.QtWidgets import QTableView
+from PySide6.QtCore import Qt, Slot, Property, QModelIndex, QSortFilterProxyModel
+from PySide6.QtGui import QStandardItemModel, QColor, QBrush
+from PySide6.QtWidgets import QTableView
 
 from qtpyvcp.plugins import getPlugin
 

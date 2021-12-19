@@ -1,5 +1,7 @@
 import os
 
+from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
+
 os.environ['DESIGNER'] = 'true'
 
 from qtpyvcp.utilities.logger import initBaseLogger
@@ -27,3 +29,16 @@ from qtpyvcp.widgets.hal_widgets.designer_plugins import *
 from qtpyvcp.widgets.containers.designer_plugins import *
 
 from qtpyvcp.widgets.external_widgets import *
+
+# Set PYSIDE_DESIGNER_PLUGINS to point to this directory and load the plugin
+
+
+if __name__ == '__main__':
+    QPyDesignerCustomWidgetCollection.addCustomWidget(ProbePlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(ActionButtonPlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(ActionCheckBoxPlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(ActionSpinBoxPlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(MacroButtonPlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(LedButtonPlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(MDIButtonPlugin())
+    # QPyDesignerCustomWidgetCollection.addCustomWidget(DialogButtonPlugin())

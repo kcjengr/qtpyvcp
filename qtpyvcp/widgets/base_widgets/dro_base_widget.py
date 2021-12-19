@@ -6,7 +6,7 @@ DROBaseWidget
 
 from enum import IntEnum
 
-from PySide2.QtCore import Slot, Property
+from PySide6.QtCore import Slot, Property
 
 from qtpyvcp.plugins import getPlugin
 from qtpyvcp.utilities.settings import getSetting

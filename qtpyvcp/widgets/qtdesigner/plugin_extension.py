@@ -9,8 +9,8 @@
 #   PyDM Project: https://github.com/slaclab/pydm
 #   PyDM Licence: https://github.com/slaclab/pydm/blob/master/LICENSE.md
 
-from PySide2.QtWidgets import QAction
-from PySide2.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
+from PySide6.QtGui import QAction
+from PySide6.QtDesigner import QExtensionFactory, QPyDesignerTaskMenuExtension
 
 Q_TYPEID = {
     'QDesignerTaskMenuExtension':      'org.qt-project.Qt.Designer.TaskMenu',

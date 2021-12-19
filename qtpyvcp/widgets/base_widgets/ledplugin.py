@@ -1,7 +1,7 @@
 from led_widget import LEDWidget
 
-from PySide2.QtGui import QIcon
-from PySide2.QtDesigner import (QExtensionManager,
+from PySide6.QtGui import QIcon
+from PySide6.QtDesigner import (QExtensionManager,
     QDesignerCustomWidgetInterface)
 
 

@@ -39,23 +39,20 @@
 ##
 #############################################################################
 
-"""PySide2 Multimedia Camera Example"""
+"""PySide6 Multimedia Camera Example"""
 
 import os
 import sys
-from PySide2.QtCore import QDate, QDir, QStandardPaths, Qt, QUrl, Slot
-from PySide2.QtGui import QAction, QGuiApplication, QDesktopServices, QIcon
-from PySide2.QtGui import QImage, QPixmap
-from PySide2.QtWidgets import (QApplication, QHBoxLayout, QLabel,
+from PySide6.QtCore import QDate, QDir, QStandardPaths, Qt, QUrl, Slot
+from PySide6.QtGui import QGuiApplication, QDesktopServices, QIcon
+from PySide6.QtGui import QImage, QPixmap, QAction
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel,
     QMainWindow, QPushButton, QTabWidget, QToolBar, QVBoxLayout, QWidget)
-from PySide2.QtMultimedia import (QCamera, QImageCapture,
-                                  QCameraDevice, QMediaCaptureSession,
-                                  QMediaDevices)
-from PySide2.QtMultimediaWidgets import QVideoWidget
+
 
 
 class ImageView(QWidget):
-    def __init__(self, previewImage, fileName):
+    def __init__(self, parent):
         super().__init__()
 
         self._file_name = fileName
@@ -99,18 +96,6 @@ class MainWindow(QMainWindow):
         self._camera_info = None
         self._image_capture = None
 
-        available_cameras = QMediaDevices.videoInputs()
-        if available_cameras:
-            self._camera_info = available_cameras[0]
-            self._camera = QCamera(self._camera_info)
-            self._camera.errorOccurred.connect(self._camera_error)
-            self._image_capture = QImageCapture(self._camera)
-            self._image_capture.imageCaptured.connect(self.image_captured)
-            self._image_capture.imageSaved.connect(self.image_saved)
-            self._image_capture.errorOccurred.connect(self._capture_error)
-            self._capture_session = QMediaCaptureSession()
-            self._capture_session.setCamera(self._camera)
-            self._capture_session.setImageCapture(self._image_capture)
 
         self._current_preview = QImage()
 
@@ -138,19 +123,16 @@ class MainWindow(QMainWindow):
         self._tab_widget = QTabWidget()
         self.setCentralWidget(self._tab_widget)
 
-        self._camera_viewfinder = QVideoWidget()
-        self._tab_widget.addTab(self._camera_viewfinder, "Viewfinder")
-
         if self._camera and self._camera.error() == QCamera.NoError:
             name = self._camera_info.description()
-            self.setWindowTitle(f"PySide2 Camera Example ({name})")
+            self.setWindowTitle(f"PySide6 Camera Example ({name})")
             self.show_status_message(f"Starting: '{name}'")
             self._capture_session.setVideoOutput(self._camera_viewfinder)
             self._take_picture_action.setEnabled(self._image_capture.isReadyForCapture())
             self._image_capture.readyForCaptureChanged.connect(self._take_picture_action.setEnabled)
             self._camera.start()
         else:
-            self.setWindowTitle("PySide2 Camera Example")
+            self.setWindowTitle("PySide6 Camera Example")
             self._take_picture_action.setEnabled(False)
             self.show_status_message("Camera unavailable")
 
@@ -190,15 +172,6 @@ class MainWindow(QMainWindow):
         self._tab_widget.addTab(image_view, f"Capture #{index}")
         self._tab_widget.setCurrentIndex(index)
 
-    @Slot(int, QImageCapture.Error, str)
-    def _capture_error(self, id, error, error_string):
-        print(error_string, file=sys.stderr)
-        self.show_status_message(error_string)
-
-    @Slot(QCamera.Error, str)
-    def _camera_error(self, error, error_string):
-        print(error_string, file=sys.stderr)
-        self.show_status_message(error_string)
 
 
 if __name__ == '__main__':
@@ -207,4 +180,4 @@ if __name__ == '__main__':
     available_geometry = main_win.screen().availableGeometry()
     main_win.resize(available_geometry.width() / 3, available_geometry.height() / 2)
     main_win.show()
-    sys.exit(app.exec())
+    sys.exit(app.exec_())

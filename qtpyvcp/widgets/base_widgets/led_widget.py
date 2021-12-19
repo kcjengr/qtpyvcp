@@ -1,6 +1,6 @@
-from PySide2.QtCore import Qt, Slot, Property, QTimer, QSize
-from PySide2.QtGui import QColor, QPainter, QRadialGradient, QBrush
-from PySide2.QtWidgets import QWidget
+from PySide6.QtCore import Qt, Slot, Property, QTimer, QSize
+from PySide6.QtGui import QColor, QPainter, QRadialGradient, QBrush
+from PySide6.QtWidgets import QWidget
 
 
 class LEDWidget(QWidget):

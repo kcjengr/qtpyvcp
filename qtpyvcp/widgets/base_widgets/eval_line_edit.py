@@ -1,6 +1,6 @@
 # import to get true floating point division even if the arguments are ints (ex. 1/2 => 0.5, not 0)
 
-from PySide2.QtWidgets import QLineEdit
+from PySide6.QtWidgets import QLineEdit
 from qtpyvcp.utilities import logger
 
 from simpleeval import simple_eval

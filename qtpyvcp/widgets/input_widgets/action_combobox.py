@@ -1,5 +1,5 @@
-from PySide2.QtWidgets import QComboBox
-from PySide2.QtCore import Property
+from PySide6.QtWidgets import QComboBox
+from PySide6.QtCore import Property
 
 from qtpyvcp.actions import bindWidget
 
