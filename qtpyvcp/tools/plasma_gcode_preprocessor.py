@@ -81,6 +81,8 @@ M_MODAL_GROUPS = {
 class Commands(Enum):
     COMMENT                     = auto()
     CONTAINS_COMMENT            = auto()
+    ABSOLUTE                    = auto()
+    RELATIVE                    = auto()
     MOVE_LINEAR                 = auto()
     MOVE_ARC                    = auto()
     ARC_RELATIVE                = auto()
@@ -153,10 +155,12 @@ class CodeLine:
         self.errors = {}
         self.type = None
         self.is_hole = False
+        self.is_pierce = False
         self.token = ''
         self.active_g_modal_groups = {}
         self.cutchart_id = None
         self.hole_builder = None
+        self.pierce_builder = None
 
 
         # token mapping for line commands
@@ -202,6 +206,8 @@ class CodeLine:
             'M5':(Commands.SPINDLE_OFF, self.parse_passthrough),
             'M190':(Commands.MATERIAL_CHANGE, self.parse_passthrough),
             'M66':(Commands.DIGITAL_IN, self.parse_passthrough),
+            'G90':(Commands.ABSOLUTE, self.parse_passthrough),
+            'G91':(Commands.RELATIVE, self.parse_passthrough),
             'G91.1':(Commands.ARC_RELATIVE, self.parse_passthrough),
             'G90.1':(Commands.ARC_ABSOLUTE, self.parse_passthrough),
             'F#':(Commands.FEEDRATE_MATERIAL, self.parse_passthrough),
@@ -234,6 +240,12 @@ class CodeLine:
                 if code in ('G41','G42','G41.1','G42.1'):
                     # we have an error state
                     self.cutter_comp_error()
+                # look for G90
+                if code == 'G90':
+                    self._parent.set_active_g_modal('G90')
+                # look for G90
+                if code == 'G91':
+                    self._parent.set_active_g_modal('G91')
             # look for Tx M6 combo
             f = re.findall("T\s*\d+|M6", line.upper().strip())
             if len(f) == 2:
@@ -794,6 +806,22 @@ class HoleBuilder:
                 print(self.element_to_gcode_line(e), file=sys.stdout)
                 sys.stdout.flush()
 
+
+class PierceBuilder:
+    def generate_pierce_gcode(self, line):
+        print('M3 $0', file=sys.stdout)
+        if line.active_g_modal_groups[3] == 'G90':
+            # shift from absolute to relative
+            print('G91', file=sys.stdout)
+        # small wiggle
+        print('G1 X0.0001', file=sys.stdout)
+        if line.active_g_modal_groups[3] == 'G90':
+            # shift back to absolute
+            print('G90', file=sys.stdout)
+        print('M5 $0', file=sys.stdout)
+        sys.stdout.flush()
+
+
 class HiDefHole:
     def __init__(self, data_list):
         self.hole_list = []
@@ -1140,6 +1168,32 @@ class PreProcessor:
                             line.hole_builder = None
             i += 1
 
+    def flag_pierce(self):
+        # old school loop so we can easily peek forward or back of the current
+        # record being processed.
+        i = 0
+        while i < len(self._parsed):
+            line = self._parsed[i]
+            if len(line.command) == 2:
+                if line.command[0] == 'M' and line.command[1] == 3:
+                    # this is a torce start so must be a pierce.
+                    line.is_pierce = True
+                    line.pierce_builder = PierceBuilder()
+                            
+                    # scan forward to find the M5 and remove all the 
+                    # stuff in the moddle using Coammands.REMOVE
+                    # Aadd in a wiggle for the pierce 
+                    j = i+1
+                    for j in range(j, len(self._parsed)):
+                        next = self._parsed[j]
+                        # mark all lines for removal until find M5
+                        next.type = Commands.REMOVE
+                        if next.token.startswith('M5'):
+                            next.type = Commands.REMOVE
+                            break
+            i += 1
+        
+
     def parse(self):
         # setup any global default modal groups that we need to be aware of
         self.set_active_g_modal('G91.1')
@@ -1160,7 +1214,7 @@ class PreProcessor:
 
 
     def dump_parsed(self):
-        LOG.debug('Dum parsed gcode to stdio')
+        LOG.debug('Dump parsed gcode to stdio')
         for l in self._parsed:
             #print(f'{l.type}\t\t -- {l.command} \
             #    {l.params} {l.comment}')
@@ -1170,6 +1224,10 @@ class PreProcessor:
                 l.hole_builder.generate_hole_gcode()
                 print('(---- Smart Hole End ----)')
                 print()
+                continue
+            if l.is_pierce:
+                print('(---- Pierce ----)')
+                l.pierce_builder.generate_pierce_gcode(l)
                 continue
             if l.type is Commands.COMMENT:
                 out = l.comment
@@ -1222,7 +1280,7 @@ def main():
     custom_config_yaml_file_name = normalizePath(path='custom_config.yml', base=os.getenv('CONFIG_DIR', '~/'))
     cfg_dic = load_config_files(custom_config_yaml_file_name)
     
-    # we assume that things are sqlit unless we find custom_config.yml
+    # we assume that things are sqlite unless we find custom_config.yml
     # pointing to different type of DB
     try:
         db_connect_str = cfg_dic['data_plugins']['plasmaprocesses']['kwargs']['connect_string']
@@ -1235,13 +1293,23 @@ def main():
     # Start cycling through each line of the file and processing it
     p = PreProcessor(inCode)
     p.parse()
-    # Holes processing
+    # Holes flag
     try:
         do_holes = hal.get_value('qtpyvcp.plasma-hole-detect-enable.checked')
     except:
         do_holes = False
-    if do_holes:
+    
+    # Pierce only flag
+    try:
+        do_pierce = hal.get_value('qtpyvcp.plasma-pierce-only-enable.checked')
+    except:
+        do_pierce = False
+    
+    if do_holes and not do_pierce:
         p.flag_holes()
+    elif do_pierce:
+        p.flag_pierce()
+    
     # pass file to stdio and set any hal pins
     p.dump_parsed()
     # Set hal pin on UI for cutchart.id
