@@ -631,7 +631,16 @@ class Status(DataPlugin):
         """
         if anum is None:
             return STAT.homed
-        return bool(STAT.homed[int(anum)])
+        axis_ltr = AXIS_LETTER_LIST[anum]
+        is_homed = []
+        for ax in ALETTER_JNUM_DICT:
+            if axis_ltr == ax[0]:
+                is_homed.append(ALETTER_JNUM_DICT[ax])
+        if 0 in is_homed:
+            return False
+        else:
+            return True
+        #return bool(STAT.homed[int(anum)])
 
     @DataChannel
     def all_axes_homed(self, chan):
