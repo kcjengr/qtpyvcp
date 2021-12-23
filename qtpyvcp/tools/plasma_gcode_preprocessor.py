@@ -27,18 +27,17 @@ from typing import List, Dict, Tuple, Union
 import hal
 import linuxcnc
 from qtpyvcp.plugins.plasma_processes import PlasmaProcesses
-from qtpyvcp.utilities.logger import initBaseLogger
+from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.config_loader import load_config_files
 
-#import pydevd;pydevd.settrace()
+import pydevd;pydevd.settrace()
 
-
+INI = linuxcnc.ini(os.environ['INI_FILE_NAME'])
 # Constrcut LOG from qtpyvcp standard logging framework
-LOG = initBaseLogger('qtpyvcp.tools.plasma_gcode_preprocessor')
+LOG = getLogger(__name__)
 # Set over arching converstion fact. All thinking and calcs are in mm so need
 # convert and arbirary values to bannas when they are in use
-INI = linuxcnc.ini(os.environ['INI_FILE_NAME'])
 UNITS, PRECISION, UNITS_PER_MM = ['in',6,25.4] if INI.find('TRAJ', 'LINEAR_UNITS') == 'inch' else ['mm',4,1]
 
 # force the python HAL lib to load/init. Not doing this causes a silent "crash"
@@ -1268,6 +1267,7 @@ def main():
 
     try:
         inCode = sys.argv[1]
+        LOG.debug(f'File to process: {inCode}')
     except:
         # no arg found, probably being run from command line and someone forgot a file
         print(__doc__)
@@ -1277,6 +1277,7 @@ def main():
         print(__doc__)
         return
 
+    LOG.debug('Log custom config yaml file')
     custom_config_yaml_file_name = normalizePath(path='custom_config.yml', base=os.getenv('CONFIG_DIR', '~/'))
     cfg_dic = load_config_files(custom_config_yaml_file_name)
     
@@ -1286,13 +1287,18 @@ def main():
         db_connect_str = cfg_dic['data_plugins']['plasmaprocesses']['kwargs']['connect_string']
         # if no error then we found a db connection string. Use it.
         PLASMADB = PlasmaProcesses(connect_string=db_connect_str)
+        LOG.debug('Connected to NON SQLite DB')
     except:
         # no connect string found OR can't connect so assume sqlite on local machine
         PLASMADB = PlasmaProcesses(db_type='sqlite')
+        LOG.debug('Connected to SQLite DB')
 
     # Start cycling through each line of the file and processing it
+    LOG.debug('Build preprocessor object and process gcode')
     p = PreProcessor(inCode)
     p.parse()
+    LOG.debug('Parsing done.')
+
     # Holes flag
     try:
         do_holes = hal.get_value('qtpyvcp.plasma-hole-detect-enable.checked')
@@ -1306,16 +1312,23 @@ def main():
         do_pierce = False
     
     if do_holes and not do_pierce:
+        LOG.debug('Flag holes ...')
         p.flag_holes()
+        LOG.debug('... Flag holes done')
     elif do_pierce:
+        LOG.debug('Flag piercing ...')
         p.flag_pierce()
+        LOG.debug('... Flag piercing done')
     
     # pass file to stdio and set any hal pins
+    LOG.debug('Dump parsed file')
     p.dump_parsed()
     # Set hal pin on UI for cutchart.id
+    LOG.debug('Set UI param data via cutchart pin')
     p.set_ui_hal_cutchart_pin()
     # Close out DB
     PLASMADB.terminate()
+    LOG.debug('Plasma DB closed and end.')
 
 
 if __name__ == '__main__':
