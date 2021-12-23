@@ -21,21 +21,41 @@ import os
 import sys
 import re
 import math
+import logging
 from enum import Enum, auto
 from typing import List, Dict, Tuple, Union
 
 import hal
 import linuxcnc
 from qtpyvcp.plugins.plasma_processes import PlasmaProcesses
-from qtpyvcp.utilities.logger import getLogger
 from qtpyvcp.utilities.misc import normalizePath
 from qtpyvcp.utilities.config_loader import load_config_files
 
-import pydevd;pydevd.settrace()
+#import pydevd;pydevd.settrace()
 
 INI = linuxcnc.ini(os.environ['INI_FILE_NAME'])
+preprocessor_log_name = normalizePath(path='gcode_preprocessor.log', base=os.getenv('CONFIG_DIR', '~/'))
 # Constrcut LOG from qtpyvcp standard logging framework
-LOG = getLogger(__name__)
+formatter = "%(asctime)s; %(levelname)s; %(message)s"
+logging.basicConfig(filename=preprocessor_log_name, level=logging.DEBUG, format=formatter)
+LOG = logging.getLogger(__name__)
+LOG.info('Initialising log system.')
+
+
+# Catch unhandled exceptions
+def excepthook(exc_type, exc_msg, exc_tb):
+    try:
+        LOG.debug(exc_type)
+        LOG.debug(exc_msg)
+        LOG.debug(exc_tb)
+    except Exception as e:
+        LOG.info("lol")
+
+
+sys.excepthook = excepthook
+LOG.info("Initialising ExceptionHook.")
+
+
 # Set over arching converstion fact. All thinking and calcs are in mm so need
 # convert and arbirary values to bannas when they are in use
 UNITS, PRECISION, UNITS_PER_MM = ['in',6,25.4] if INI.find('TRAJ', 'LINEAR_UNITS') == 'inch' else ['mm',4,1]
