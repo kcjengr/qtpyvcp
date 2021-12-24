@@ -20,8 +20,8 @@ import sys
 import fnmatch
 import subprocess
 
-pyrcc = 'rcc'
-pyuic = 'uic'
+pyrcc = 'pyside6-rcc'
+pyuic = 'pyside6-uic'
 
 ok = "\033[32mok\033[0m"
 error = "\033[31mERROR - unable to call {}\033[0m"
