@@ -39,7 +39,9 @@ preprocessor_log_name = normalizePath(path='gcode_preprocessor.log', base=os.get
 formatter = "%(asctime)s; %(levelname)s; %(message)s"
 logging.basicConfig(filename=preprocessor_log_name, level=logging.DEBUG, format=formatter)
 LOG = logging.getLogger(__name__)
-LOG.info('Initialising log system.')
+LOG.info('---------------------------------------------------')
+LOG.info('------------- Initialising log system -------------')
+LOG.info('---------------------------------------------------')
 
 
 # Catch unhandled exceptions
@@ -252,6 +254,7 @@ class CodeLine:
         # [3] Mark line for pass through
         multi_codes = re.findall(r"G\d+|T\s*\d+|M\d+", line.upper().strip())
         if len(multi_codes) > 1:
+            LOG.debug('Codeline: Multi codes on line detected')
             # we have multiple codes on the line
             self.type = Commands.PASSTHROUGH
             # scan for possible 'bad' codes
@@ -273,6 +276,7 @@ class CodeLine:
         else:
             # not a multi code on single line situation so process line
             # to set line type
+            LOG.debug('Codeline: Non-Multi code: Scan tokens on line.')
             for k in tokens:
                 # do regex searches to find exact matches of the token patterns
                 pattern = r"^"+k + r"{1}"
@@ -295,6 +299,7 @@ class CodeLine:
                     # nothing of interest just mark the line for pass through processing
                     self.type = Commands.PASSTHROUGH
             if self.type is Commands.PASSTHROUGH:
+                LOG.debug('Codeline: Command type = PASSTHROUGH: Do further checks, e.g. XY line/')
                 # If the result was seen as 'OTHER' do some further checks
                 # As soon as we shift off being type OTHER, exit the method
                 # 1. is it an XY line
@@ -1221,6 +1226,7 @@ class PreProcessor:
         for line in self._orig_gcode:
             self._line_num += 1
             self._line = line.strip()
+            LOG.debug('Parse: Build gcode line.')
             l = CodeLine(self._line, parent=self)
             try:
                 gcode = f'{l.command[0]}{l.command[1]}'
