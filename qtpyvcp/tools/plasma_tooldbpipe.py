@@ -66,13 +66,18 @@ def build_tool_list():
 def get_tool(toolno):
     return f'T{toolno} P{TOOLS[toolno][0]} D{TOOLS[toolno][1]} ;{TOOLS[toolno][2]}'
 
-def put_tool(toolno, pocketno, **kwargs):
+def put_tool(toolno, params):
     pass
 
+def load_spindle(toolno, parmas):
+    pass
+
+def unload_spindle(toolno, params):
+    pass
 
 build_tool_list()
 tooldb_tools(TOOLS.keys())
-tooldb_callbacks(get_tool, put_tool)
+tooldb_callbacks(get_tool, put_tool, load_spindle, unload_spindle)
 
 try:
     tooldb_loop()  # loop forever, use callbacks
