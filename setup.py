@@ -100,6 +100,8 @@ setup(
             'qtpyvcp=qtpyvcp.app:main',
             'qcompile=qtpyvcp.tools.qcompile:main',
             'editvcp=qtpyvcp.tools.editvcp:main',
+            'plasma_tooldbpipe=qtpyvcp.tools.plasma_tooldbpipe:main',
+            'plasma_gcode_preprocessor=qtpyvcp.tools.plasma_gcode_preprocessor:main',
 
             # example VCPs
             'mini=examples.mini:main',
