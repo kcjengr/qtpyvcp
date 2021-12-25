@@ -56,8 +56,9 @@ class SubCallButton(VCPButton):
 
         subfile = None
         for dir in SUBROUTINE_SEARCH_DIRS:
-            subfile = os.path.join(dir, self._filename)
-            if os.path.isfile(subfile):
+            tempfile = os.path.join(dir, self._filename)
+            if os.path.isfile(tempfile):
+                subfile = tempfile
                 break
 
         if subfile is None:
