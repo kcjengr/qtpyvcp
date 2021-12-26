@@ -3,6 +3,10 @@ from qtpy.QtWidgets import QSlider
 from qtpy.QtCore import Slot, Property
 
 from qtpyvcp.actions import bindWidget
+from qtpyvcp.utilities.logger import getLogger
+
+LOG = getLogger(__name__)
+
 
 class ActionSlider(QSlider):
     """docstring for ActionSlider."""
@@ -29,3 +33,6 @@ class ActionSlider(QSlider):
         """
         self._action_name = action_name
         bindWidget(self, action_name)
+
+    def mouseDoubleClickEvent(self, event):
+        self.setValue(100)

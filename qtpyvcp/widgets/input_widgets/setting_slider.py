@@ -134,6 +134,10 @@ class VCPSettingsSlider(QSlider, VCPAbstractSettingsWidget):
         self.setValue(value)
         self.blockSignals(False)
 
+    def mouseDoubleClickEvent(self, event):
+        self.setValue(100)
+
+
     def initialize(self):
         self._setting = SETTINGS.get(self._setting_name)
         if self._setting is not None:
