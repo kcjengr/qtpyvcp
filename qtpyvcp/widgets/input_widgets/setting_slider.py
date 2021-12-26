@@ -193,6 +193,9 @@ class VCPSettingsDoubleSpinBox(QDoubleSpinBox, VCPAbstractSettingsWidget):
         self.blockSignals(True)
         self.setValue(value)
         self.blockSignals(False)
+        
+    def editingEnded(self):
+        self._setting.setValue(self.value())
 
     def initialize(self):
         self._setting = SETTINGS.get(self._setting_name)
@@ -204,7 +207,8 @@ class VCPSettingsDoubleSpinBox(QDoubleSpinBox, VCPAbstractSettingsWidget):
 
             self.setDisplayValue(self._setting.getValue())
             self._setting.notify(self.setDisplayValue)
-            self.valueChanged.connect(self._setting.setValue)
+            #self.valueChanged.connect(self._setting.setValue)
+            self.editingFinished.connect(self.editingEnded)
 
 
 class VCPSettingsCheckBox(QCheckBox, VCPAbstractSettingsWidget):
