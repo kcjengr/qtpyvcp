@@ -75,17 +75,23 @@ def load_spindle(toolno, parmas):
 def unload_spindle(toolno, params):
     pass
 
-build_tool_list()
-tooldb_tools(TOOLS.keys())
-tooldb_callbacks(get_tool, put_tool, load_spindle, unload_spindle)
 
-try:
-    tooldb_loop()  # loop forever, use callbacks
-except Exception as e:
+def main():
+    build_tool_list()
+    tooldb_tools(TOOLS.keys())
+    tooldb_callbacks(get_tool, put_tool, load_spindle, unload_spindle)
+    
+    try:
+        tooldb_loop()  # loop forever, use callbacks
+    except Exception as e:
+        PLASMADB.terminate()
+        if sys.stdin.isatty():
+            print(("exception=",e))
+        else:
+            pass # avoid messages at termination
+    
     PLASMADB.terminate()
-    if sys.stdin.isatty():
-        print(("exception=",e))
-    else:
-        pass # avoid messages at termination
+    
 
-PLASMADB.terminate()
+if __name__ == '__main__':
+    main()
