@@ -224,7 +224,7 @@ class CodeLine:
             'G64':(Commands.PATH_BLENDING, self.parse_passthrough),
             'M52':(Commands.ADAPTIVE_FEED, self.parse_passthrough),
             'M3':(Commands.SPINDLE_ON, self.parse_spindle_on),
-            'M5':(Commands.SPINDLE_OFF, self.parse_passthrough),
+            'M5':(Commands.SPINDLE_OFF, self.parse_spindle_off),
             'M190':(Commands.MATERIAL_CHANGE, self.parse_passthrough),
             'M66':(Commands.DIGITAL_IN, self.parse_passthrough),
             'G90':(Commands.ABSOLUTE, self.parse_passthrough),
@@ -394,7 +394,21 @@ class CodeLine:
         params = re.findall('S\d+|\$\d+', line)
         if len(params) == 1:
             self.params['$'] = int(params[0][1:])
+        elif len(params) == 0:
+            # no spindle reference found so assume $0
+            self.params['$'] = int(0)
     
+    def parse_spindle_off(self):
+        self.type = Commands.SPINDLE_OFF
+        self.command = ('M', int(self.token[1:]))
+        # split the raw line at the token
+        line = self.strip_inline_comment(self.raw).upper().split(self.token,1)[1].strip()
+        params = re.findall('S\d+|\$\d+', line)
+        if len(params) == 1:
+            self.params['$'] = int(params[0][1:])
+        elif len(params) == 0:
+            # no spindle reference found so assume $-1
+            self.params['$'] = int(-1)
 
 
     def parse_toolchange(self, combo=False):
@@ -560,11 +574,6 @@ class HoleBuilder:
             "code": "M63 P2"
         }
         
-    def create_marking_voltage_wait(self):
-        return {
-            # Wait on digital pin 4 to go HIGH
-            "code": "M66 P3 L3 Q10"
-        }
 
 
     def element_to_gcode_line(self, e):
@@ -583,18 +592,17 @@ class HoleBuilder:
             line = e['code']
         return line
 
-    def plasma_mark(self, line, x, y, time):
+    def plasma_mark(self, line, x, y, delay):
         self.elements=[]
         feed_rate = line.get_active_feedrate()
-        self.elements.append(self.create_comment('---- Marking Start ----'))
+        self.elements.append(self.create_comment('---- Marking/Spotting Start ----'))
         self.elements.append(self.create_feed(feed_rate))
         self.elements.append(self.create_line_gcode(x, y, True))
-        self.elements.append(self.create_cut_on_off_gcode(True))
-        self.elements.append(self.create_line_gcode(x+0.001, y, False))
-        self.elements.append(self.create_marking_voltage_wait())
-        self.elements.append(self.create_dwell(time))
+        self.elements.append(self.create_cut_on_off_gcode(True, 2))
+        self.elements.append(self.create_line_gcode(x+(0.001/UNITS_PER_MM), y, False))
+        self.elements.append(self.create_dwell(delay *1.2))
         self.elements.append(self.create_cut_on_off_gcode(False))
-        self.elements.append(self.create_comment('---- Marking End ----'))
+        self.elements.append(self.create_comment('---- Marking/Spotting End ----'))
 
     def plasma_hole(self, line, x, y, d, kerf, leadin_radius, splits=[], hidef=False):
         # Params:
