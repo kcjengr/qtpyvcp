@@ -155,6 +155,7 @@ class Commands(Enum):
     ADAPTIVE_FEED               = auto()
     SPINDLE_ON                  = auto()
     SPINDLE_OFF                 = auto()
+    PROGRAM_END                 = auto()
     DIGITAL_IN                  = auto()
     REMOVE                      = auto()
 
@@ -223,6 +224,8 @@ class CodeLine:
             'G40':(Commands.CUTTER_COMP_OFF, self.placeholder),
             'G64':(Commands.PATH_BLENDING, self.parse_passthrough),
             'M52':(Commands.ADAPTIVE_FEED, self.parse_passthrough),
+            'M2':(Commands.PROGRAM_END, self.parse_passthrough),
+            'M30':(Commands.PROGRAM_END, self.parse_passthrough),
             'M3':(Commands.SPINDLE_ON, self.parse_spindle_on),
             'M5':(Commands.SPINDLE_OFF, self.parse_spindle_off),
             'M190':(Commands.MATERIAL_CHANGE, self.parse_passthrough),
@@ -391,7 +394,7 @@ class CodeLine:
         self.command = ('M', int(self.token[1:]))
         # split the raw line at the token
         line = self.strip_inline_comment(self.raw).upper().split(self.token,1)[1].strip()
-        params = re.findall('S\d+|\$\d+', line)
+        params = re.findall('\$\d+', line)
         if len(params) == 1:
             self.params['$'] = int(params[0][1:])
         elif len(params) == 0:
@@ -403,7 +406,7 @@ class CodeLine:
         self.command = ('M', int(self.token[1:]))
         # split the raw line at the token
         line = self.strip_inline_comment(self.raw).upper().split(self.token,1)[1].strip()
-        params = re.findall('S\d+|\$\d+', line)
+        params = re.findall('\$\d+', line)
         if len(params) == 1:
             self.params['$'] = int(params[0][1:])
         elif len(params) == 0:
@@ -568,13 +571,20 @@ class HoleBuilder:
             "code": "M62 P2"
         }
 
-
     def create_thc_on_synch(self):
         return {
             "code": "M63 P2"
         }
         
-
+    def create_relative(self):
+        return {
+            "code": "G91"
+        }
+    
+    def create_absolute(self):
+        return {
+            "code": "G90"
+        }
 
     def element_to_gcode_line(self, e):
         if PRECISION == 4:
@@ -596,11 +606,13 @@ class HoleBuilder:
         self.elements=[]
         feed_rate = line.get_active_feedrate()
         self.elements.append(self.create_comment('---- Marking/Spotting Start ----'))
-        self.elements.append(self.create_feed(feed_rate))
+        #self.elements.append(self.create_feed(feed_rate))
         self.elements.append(self.create_line_gcode(x, y, True))
         self.elements.append(self.create_cut_on_off_gcode(True, 2))
-        self.elements.append(self.create_line_gcode(x+(0.001/UNITS_PER_MM), y, False))
-        self.elements.append(self.create_dwell(delay *1.2))
+        self.elements.append(self.create_relative())
+        self.elements.append(self.create_line_gcode((0.001/UNITS_PER_MM), 0, False))
+        self.elements.append(self.create_absolute())
+        #self.elements.append(self.create_dwell(delay *1.2))
         self.elements.append(self.create_cut_on_off_gcode(False))
         self.elements.append(self.create_comment('---- Marking/Spotting End ----'))
 
