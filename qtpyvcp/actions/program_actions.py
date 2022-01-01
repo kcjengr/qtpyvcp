@@ -307,7 +307,7 @@ def _abort_ok(widget=None):
     Returns:
         bool : True if Ok, else False.
     """
-    if STAT.state == linuxcnc.RCS_EXEC:
+    if STAT.state == linuxcnc.RCS_EXEC or STAT.state == linuxcnc.RCS_ERROR:
         ok = True
         msg = ""
     else:

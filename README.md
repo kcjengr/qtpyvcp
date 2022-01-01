@@ -13,9 +13,11 @@ The goal is to provide a no-code, drag-and-drop system for making simple VCPs,
 as well as a straightforward, flexible and extensible framework to aid in
 building complex VCPs.
 
-## Warning
+## Warning Python2.7
 
 QtPyVCP master branch is now python 3 only
+
+Requires debian 11
 
 Do I need to install master branch?
 
@@ -24,20 +26,15 @@ Only if you want to use linuxcnc 2.9.0~pre or help porting qtpyvcp to python3
 Master branch is our develop channel, we offer stable releases but none yet for Python3,
 latest python2 release is 0.3.19
 
-a maintenance branch is keept until linuxcnc 2.9 is released
+a maintenance branch for python2.7 is keept until linuxcnc 2.9 is released
 
-to install it you need to run
+to install it you need to run as user
 
 ```
-pip install -U git+https://github.com/kcjengr/qtpyvcp@python2_maintenance
+python2.7 -m pip install -U git+https://github.com/kcjengr/qtpyvcp@python2_maintenance
 ```
 
 
-
-What I need to install?
-You may need a linuxcnc 2.9.0~pre or latter
-detailed packages requiered for `runtime` or `develop` are mentioned here:
-https://www.qtpyvcp.com/install/prerequisites.html
 
 How does affect your VCP?
   You only need to run `2to3.py` in your VCP root directory
@@ -51,6 +48,11 @@ run `2to3.py`in yor component directory
 
 
 ## Installation and Usage
+
+What I need to install?
+You may need a linuxcnc 2.9.0~pre or latter
+detailed packages requiered for `runtime` or `develop` are described here:
+https://www.qtpyvcp.com/install/prerequisites.html
 
 See the [documentation](https://qtpyvcp.com/).
 
@@ -69,15 +71,15 @@ See the [documentation](https://qtpyvcp.com/).
 * [Discord](https://discord.gg/463hMhd)
 
 
-## Dependancies
+## Dependencies
 
-* LinuxCNC 2.8^ or master
-* Python 3.6^
+* LinuxCNC 2.9-pre^
+* Python 3.9^
+* Qt 5.12^
 * PyQt5 or PySide2
 
-QtPyVCP is developed and tested using the Debian 10 and 11 x64 (buster and bullseye)
-[Live ISO](http://linuxcnc.org/downloads/). It should run
-on any system that can have PyQt5 installed, but Debian 9 and 10 x64 is the only OS
+QtPyVCP is developed and tested using the Debian 11 x64 (bullseye).
+It should run on any system that can have PyQt5 installed, but Debian 11 x64 is the only OS
 that is officially supported.
 
 
@@ -93,7 +95,3 @@ codes, and the authors of this software can not, and do not, take
 any responsibility for such compliance.
 
 This software is released under the GPLv2.
-
-[Travis-badge]: https://img.shields.io/travis/kcjengr/qtpyvcp/master.svg?label=build
-[pypi-badge]: https://img.shields.io/pypi/v/qtpyvcp.svg
-[linuxcnc-badge]: https://img.shields.io/badge/LinuxCNC-%202.8-blue.svg

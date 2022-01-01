@@ -70,6 +70,8 @@ except ImportError:
 
 WIDGET_PATH = os.path.dirname(os.path.abspath(__file__))
 
+IN_DESIGNER = os.getenv('DESIGNER', False)
+
 class Camera(QWidget):
 
     def __init__(self, parent=None, standalone=False):
@@ -126,9 +128,10 @@ class Camera(QWidget):
         self.ui.devicesCombo.currentIndexChanged.connect(self.get_device_action)
 
         self.ui.lockButton.hide()
-
-        # Start camera 2s after the UI has loaded
-        QTimer.singleShot(2000, lambda: self.setCamera(camera_device))
+        
+        if not IN_DESIGNER:
+            # Start camera 2s after the UI has loaded
+            QTimer.singleShot(2000, lambda: self.setCamera(camera_device))
 
     def setCamera(self, cameraDevice):
         try:

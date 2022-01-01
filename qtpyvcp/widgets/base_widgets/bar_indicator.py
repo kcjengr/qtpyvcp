@@ -1,3 +1,5 @@
+from string import Template
+
 from qtpy.QtCore import Qt, Property, Slot, QRectF, QSize
 from qtpy.QtGui import QColor, QLinearGradient, QPainter, QPen
 from qtpy.QtWidgets import QWidget, QSizePolicy, QWIDGETSIZE_MAX
@@ -15,7 +17,7 @@ class BarIndicatorBase(QWidget):
         self._minimum = 0.0
         self._maximum = 100.0
         self._value_at_100_percent = 100.0
-        self._format = '{p}%'
+        self._format = '$value %'
 
         self._text_color = QColor(0, 0, 0)
         self._border_color = Qt.gray
@@ -230,7 +232,7 @@ class BarIndicatorBase(QWidget):
     @Property(float)
     def valueAt100Percent(self):
         return self._value_at_100_percent
-    
+
     @valueAt100Percent.setter
     def valueAt100Percent(self, value_at):
         self._value_at_100_percent = value_at
@@ -240,7 +242,7 @@ class BarIndicatorBase(QWidget):
         values = {'v': self._value,
                   'p': int((self._value * 100 / self._value_at_100_percent) + .5)}
         try:
-            return self.format.encode("utf-8").format(**values)
+            return Template(self._format).substitute(value=values['p'])
         except:
             return self.format
 
