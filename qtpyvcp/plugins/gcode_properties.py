@@ -82,7 +82,7 @@ class GCodeProperties(DataPlugin):
 
     @file_name.tostring
     def file_name(self, chan):
-        return chan.value.strftime(format)
+        return chan.value
 
     @DataChannel
     def tool_calls_num(self, chan):
@@ -107,7 +107,7 @@ class GCodeProperties(DataPlugin):
 
     @tool_calls_num.tostring
     def tool_calls_num(self, chan):
-        return chan.value.strftime(format)
+        return chan.value
 
     @DataChannel
     def file_size(self, chan):
@@ -132,7 +132,7 @@ class GCodeProperties(DataPlugin):
 
     @file_size.tostring
     def file_size(self, chan):
-        return chan.value.strftime(format)
+        return chan.value
     
     @DataChannel
     def file_rapids(self, chan):
@@ -166,7 +166,7 @@ class GCodeProperties(DataPlugin):
 
     @file_rapids.tostring
     def file_rapids(self, chan):
-        return chan.value.strftime(format)
+        return chan.value
 
     @DataChannel
     def file_lines(self, chan):
@@ -191,7 +191,7 @@ class GCodeProperties(DataPlugin):
 
     @file_lines.tostring
     def file_lines(self, chan):
-        return chan.value.strftime(format)
+        return chan.value
     
     
     @DataChannel
@@ -244,7 +244,7 @@ class GCodeProperties(DataPlugin):
 
     @file_rapid_distance.tostring
     def file_rapid_distance(self, chan):
-        return chan.value.strftime(format)
+        return chan.value
     
     @DataChannel
     def file_feed_distance(self, chan):
@@ -268,7 +268,7 @@ class GCodeProperties(DataPlugin):
 
     @file_feed_distance.tostring
     def file_feed_distance(self, chan):
-        return chan.value.strftime(format)
+        return chan.value
 
     @DataChannel
     def file_work_planes(self, chan):
@@ -293,7 +293,7 @@ class GCodeProperties(DataPlugin):
 
     @file_work_planes.tostring
     def file_work_planes(self, chan):
-        return chan.value.strftime(format)
+        return chan.value
     
     @DataChannel
     def file_rigid_taps(self, chan):
@@ -318,7 +318,7 @@ class GCodeProperties(DataPlugin):
 
     @file_rigid_taps.tostring
     def file_rigid_taps(self, chan):
-        return chan.value.strftime(format)
+        return chan.value
     
     @DataChannel
     def file_offsets(self, chan):
@@ -343,8 +343,8 @@ class GCodeProperties(DataPlugin):
 
     @file_offsets.tostring
     def file_offsets(self, chan):
-        return chan.value.strftime(format)
-
+        return chan.value
+    
     @DataChannel
     def file_feed(self, chan):
         """The current file run distance.
@@ -364,7 +364,7 @@ class GCodeProperties(DataPlugin):
 
     @file_feed.tostring
     def file_feed(self, chan):
-        return chan.value.strftime(format)
+        return chan.value
 
     def initialise(self):
         pass
