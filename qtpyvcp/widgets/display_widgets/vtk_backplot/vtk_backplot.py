@@ -747,7 +747,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.__doCommonSetViewWork()
 
     @Slot()
-    def setViewProgram(self):
+    def setViewProgram(self,view='p'):
         LOG.debug('-----setViewProgram')
         program_bounds = self.program_bounds_actors[self.active_wcs_index].GetBounds()
         LOG.debug('-----program_bounds: {}'.format(program_bounds))
@@ -763,9 +763,43 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
                                   program_center[1],
                                   program_center[2])
 
-        self.camera.SetPosition(program_center[0] + self.position_mult,
-                                -(program_center[1] + self.position_mult),
-                                program_center[2] + self.position_mult)
+        # self.camera.SetPosition(program_center[0] + self.position_mult,
+        #                         -(program_center[1] + self.position_mult),
+        #                         program_center[2] + self.position_mult)
+
+
+        x_up = 0
+        y_up = 0
+        z_up = 0
+        pc_x = program_center[0]
+        pc_y = program_center[1]
+        pc_z = program_center[2]
+        if view.lower() == 'x':
+            pc_y = program_center[1] - self.position_mult
+            z_up = 1
+        elif view.lower() == 'y':
+            pc_x = program_center[0] + self.position_mult
+            z_up = 1
+        elif view.lower() == 'xz':
+            pc_y = program_center[1] + self.position_mult
+            x_up = 1
+        elif view.lower() == 'xz2':
+            pc_y = program_center[1] - self.position_mult
+            x_up = -1
+        elif view.lower() == 'z':
+            pc_z = program_center[2] + self.position_mult
+            y_up = 1
+        elif view.lower() == 'z2':
+            pc_z = program_center[2] + self.position_mult
+            x_up = 1
+        else:
+            # treat as P
+            pc_x = program_center[0] + self.position_mult
+            pc_y = -(program_center[1] + self.position_mult)
+            pc_z = program_center[2] + self.position_mult
+            z_up = 1
+            
+        self.camera.SetPosition(pc_x, pc_y, pc_z)
 
         x_dist = abs(program_bounds[0] - program_bounds[1])
         y_dist = abs(program_bounds[2] - program_bounds[3])
@@ -778,9 +812,11 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         scale = max(x_dist, y_dist, z_dist)
 
         self.camera.SetParallelScale(scale)
-        self.camera.SetViewUp(0, 0, 1)
+        self.camera.SetViewUp(x_up, y_up, z_up)
         self.__doCommonSetViewWork()
         self.clearLivePlot()
+        
+        
 
     @Slot()
     def setViewPath(self):
