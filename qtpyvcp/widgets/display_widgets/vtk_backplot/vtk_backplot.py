@@ -55,6 +55,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.ploter_enabled = True
         self.touch_enabled = False
         self.program_view_when_loading_program = False
+        self.program_view_when_loading_program_view = 'p'
         self.pan_mode = False
         self.line = None
         self._last_filename = str()
@@ -471,7 +472,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.renderer.AddActor(self.axes_actor)
         self.renderer_window.Render()
         if self.program_view_when_loading_program:
-            self.setViewProgram()
+            self.setViewProgram(self.program_view_when_loading_program_view)
 
     def motion_type(self, value):
         LOG.debug("-----motion_type is: {}".format(value))
@@ -874,8 +875,9 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         self.touch_enabled = enabled
 
     @Slot(bool)
-    def setProgramViewWhenLoadingProgram(self, enabled):
+    def setProgramViewWhenLoadingProgram(self, enabled, view='p'):
         self.program_view_when_loading_program = enabled
+        self.program_view_when_loading_program_view = view
 
     @Slot()
     def zoomIn(self):
