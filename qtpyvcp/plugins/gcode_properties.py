@@ -365,6 +365,28 @@ class GCodeProperties(DataPlugin):
     @file_feed.tostring
     def file_feed(self, chan):
         return chan.value
+    
+    @DataChannel
+    def file_extents(self, chan):
+        """The boundaries of the whole file.
+
+        Args:
+            None
+
+        Returns:
+            The boundaries of the whole file.
+
+        Channel syntax::
+
+            gcode_properties:file_extents
+            
+
+        """
+
+        if not self.loaded_file:
+            chan.value = []
+        
+        return chan.value
 
     def initialise(self):
         pass
@@ -413,6 +435,16 @@ class GCodeProperties(DataPlugin):
         g1 = (sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.feed) +
             sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.arcfeed))
         
+        x = (self.canon.min_extents[0] + self.canon.max_extents[0])/2
+        y = (self.canon.min_extents[1] + self.canon.max_extents[1])/2
+        z = (self.canon.min_extents[2] + self.canon.max_extents[2])/2
+        
+        # self.set_centerpoint(x, y, z)
+        
+        x_extents = [self.canon.min_extents[0], self.canon.max_extents[0]]
+        y_extents = [self.canon.min_extents[1], self.canon.max_extents[1]]
+        z_extetns = [self.canon.min_extents[2], self.canon.max_extents[2]]
+    
         self.file_name.setValue(file_name)
         self.file_size.setValue(file_size)
         self.file_lines.setValue(file_lines)
@@ -425,6 +457,7 @@ class GCodeProperties(DataPlugin):
         self.file_work_planes.setValue(self.canon.work_planes)
         self.file_rigid_taps.setValue(self.canon.rigid_taps)
         self.file_offsets.setValue(self.canon.g5x_offset_dict)
+        self.file_extents.setValue([x, y, z])
 
     def calc_distance(self):
 
@@ -674,3 +707,6 @@ class PropertiesCanon(BaseCanon):
         # print(("seq", st.sequence_number))
         # print(("MCODES", st.mcodes))
         # print(("TOOLCHANGE", st.toolchange))
+
+    def calc_extents(self):
+        self.min_extents, self.max_extents, self.min_extents_notool, self.max_extents_notool = gcode.calc_extents(self.arcfeed, self.feed, self.traverse)
