@@ -435,6 +435,8 @@ class GCodeProperties(DataPlugin):
         g1 = (sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.feed) +
             sum(self.dist(l[0][:3], l[1][:3]) for l in self.canon.arcfeed))
         
+        self.canon.calc_extents()
+        
         x = (self.canon.min_extents[0] + self.canon.max_extents[0])/2
         y = (self.canon.min_extents[1] + self.canon.max_extents[1])/2
         z = (self.canon.min_extents[2] + self.canon.max_extents[2])/2
