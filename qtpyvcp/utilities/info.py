@@ -251,6 +251,25 @@ class _Info(object):
             log.warning("No [DISPLAY] MAX_FEED_OVERRIDE entry found in INI, using 1.0")
         return float(temp)
 
+    def getAxisMinMax(self, axis=None):
+        result = []
+        if axis == None:
+            for ltr in AXIS_LETTER_LIST:
+                temp_min = self.ini.find(f'AXIS_{ltr.upper()}', 'MIN_LIMIT')
+                temp_max = self.ini.find(f'AXIS_{ltr.upper()}', 'MAX_LIMIT')
+                if None in (temp_min, temp_max):
+                    LOG.error('getAxisMinMax: Missing min or max entry in ini file')
+                else:
+                    result.append((float(temp_min), float(temp_max)))
+        else:
+            temp_min = self.ini.find(f'AXIS_{axis.upper()}', 'MIN_LIMIT')
+            temp_max = self.ini.find(f'AXIS_{axis.upper()}', 'MAX_LIMIT')
+            if None in (temp_min, temp_max):
+                LOG.error('getAxisMinMax: Missing min or max entry in ini file')
+            else:
+                result.append((float(temp_min), float(temp_max)))
+        return result
+
     def getParameterFile(self):
         temp = self.ini.find('RS274NGC', 'PARAMETER_FILE')
         if not temp:
