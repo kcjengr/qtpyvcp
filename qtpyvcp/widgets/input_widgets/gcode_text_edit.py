@@ -9,7 +9,7 @@ import os
 import oyaml as yaml
 
 from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
-                         Property)
+                         Property, QFile, QTextStream)
 
 from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextDocument, QTextOption, QTextFormat,
@@ -347,11 +347,24 @@ class GcodeTextEdit(QPlainTextEdit):
         self.replaceAllText(search_text, replace_text)
 
     @Slot()
-    def saveFile(self):
-        pass
+    def saveFile(self, save_file_name = None):
+        if save_file_name == None:
+            save_file = QFile(str(STATUS.file))
+        else:
+            save_file = QFile(str(save_file_name))
+
+        result = save_file.open(QFile.WriteOnly)
+        if result:
+            LOG.debug(f'---Save file: {save_file.fileName()}')
+            save_stream = QTextStream(save_file)
+            save_stream << self.toPlainText()
+            save_file.close()
+        else:
+            LOG.debug("---save error")
 
     @Slot()
     def saveFileAs(self):
+        # intended for dialog support save processing
         pass
 
     def keyPressEvent(self, event):
@@ -374,6 +387,11 @@ class GcodeTextEdit(QPlainTextEdit):
 
         super(GcodeTextEdit, self).changeEvent(event)
 
+    @Slot(bool)
+    def syntaxHighlightingOnOff(self, state):
+        """Toggle syntax highlighting on/off"""
+        pass
+    
     @Property(bool)
     def syntaxHighlighting(self):
         return self.syntax_highlighting
