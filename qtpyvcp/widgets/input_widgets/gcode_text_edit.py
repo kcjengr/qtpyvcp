@@ -15,7 +15,7 @@ from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextDocument, QTextOption, QTextFormat,
                         QTextCharFormat, QTextCursor)
 
-from qtpy.QtWidgets import (QApplication, QTextEdit, QLineEdit,
+from qtpy.QtWidgets import (QApplication, QInputDialog, QTextEdit, QLineEdit,
                             QPlainTextEdit, QWidget, QMenu,
                             QPlainTextDocumentLayout)
 
@@ -364,8 +364,21 @@ class GcodeTextEdit(QPlainTextEdit):
 
     @Slot()
     def saveFileAs(self):
-        # intended for dialog support save processing
-        pass
+        open_file = QFile(str(STATUS.file))
+        if save_file == None:
+            return
+        
+        save_file = save_as_dialog(open_file)
+        saveFile(save_file)
+
+    # simple input dialog for save as
+    def save_as_dialog(self, filename):
+        text, ok_pressed = QInputDialog.getText(self, "Save as", "New name:", QLineEdit.Normal, filename)
+
+        if ok_pressed and text != '':
+            return text
+        else:
+            return False
 
     def keyPressEvent(self, event):
         # keep the cursor centered
