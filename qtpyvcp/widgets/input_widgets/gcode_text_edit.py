@@ -248,10 +248,10 @@ class GcodeTextEdit(QPlainTextEdit):
 
         found = self.find(text, flags)
 
-        if found:
-            cursor = self.document().find(text, flags)
-            if cursor.position() > 0:
-                self.setTextCursor(cursor)
+        # if found:
+        #     cursor = self.document().find(text, flags)
+        #     if cursor.position() > 0:
+        #         self.setTextCursor(cursor)
 
     def findBackwardText(self, text):
         flags = QTextDocument.FindFlag()
@@ -264,10 +264,10 @@ class GcodeTextEdit(QPlainTextEdit):
 
         found = self.find(text, flags)
 
-        if found:
-            cursor = self.document().find(text, flags)
-            if cursor.position() > 0:
-                self.setTextCursor(cursor)
+        # if found:
+        #     cursor = self.document().find(text, flags)
+        #     if cursor.position() > 0:
+        #         self.setTextCursor(cursor)
 
     def replaceText(self, search, replace):
 
