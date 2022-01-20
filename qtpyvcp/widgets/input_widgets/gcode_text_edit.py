@@ -295,8 +295,8 @@ class GcodeTextEdit(QPlainTextEdit):
         if self.find_words:
             flags |= QTextDocument.FindWholeWords
 
-        searchng = True
-        while searchng:
+        searching = True
+        while searching:
             found = self.find(search, flags)
             if found:
                 cursor = self.textCursor()
@@ -305,7 +305,7 @@ class GcodeTextEdit(QPlainTextEdit):
                     cursor.insertText(replace)
                 cursor.endEditBlock();
             else:
-                searchng = False
+                searching = False
     
     @Slot()
     def findAll(self):
@@ -323,7 +323,7 @@ class GcodeTextEdit(QPlainTextEdit):
     @Slot()
     def findBackward(self):
         text = self.search_term
-        LOG.debug(f"Find backwars :{text}")
+        LOG.debug(f"Find backwards :{text}")
         self.findBackwardText(text)
 
     @Slot()
