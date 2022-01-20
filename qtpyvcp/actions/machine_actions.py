@@ -749,9 +749,12 @@ class unhome:
         if axis.lower() == 'all': # not sure what this is copied from home
             unhome.all()
             return
-        jnum = INFO.COORDINATES.index(axis)
-        LOG.info('Unhoming Axis: {}'.format(axis.upper()))
-        _unhome_joint(jnum)
+        #jnum = INFO.COORDINATES.index(axis)
+        for ax in INFO.ALETTER_JNUM_DICT:
+            #LOG.info('Unhoming Axis: {}'.format(axis.upper()))
+            if axis == ax[0]:
+                LOG.info('Unhoming Axis: {}'.format(ax.upper()))
+                _unhome_joint(INFO.ALETTER_JNUM_DICT[ax])
 
     @staticmethod
     def joint(jnum):
