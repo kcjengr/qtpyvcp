@@ -362,15 +362,6 @@ class GcodeTextEdit(QPlainTextEdit):
         else:
             LOG.debug("---save error")
 
-    @Slot()
-    def saveFileAs(self):
-        open_file = QFile(str(STATUS.file))
-        if save_file == None:
-            return
-        
-        save_file = save_as_dialog(open_file)
-        saveFile(save_file)
-
     # simple input dialog for save as
     def save_as_dialog(self, filename):
         text, ok_pressed = QInputDialog.getText(self, "Save as", "New name:", QLineEdit.Normal, filename)
@@ -379,6 +370,15 @@ class GcodeTextEdit(QPlainTextEdit):
             return text
         else:
             return False
+
+    @Slot()
+    def saveFileAs(self):
+        open_file = QFile(str(STATUS.file))
+        if open_file == None:
+            return
+        
+        save_file = self.save_as_dialog(open_file.fileName())
+        self.saveFile(save_file)
 
     def keyPressEvent(self, event):
         # keep the cursor centered
