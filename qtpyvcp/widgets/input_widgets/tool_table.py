@@ -25,12 +25,12 @@ class ItemDelegate(QStyledItemDelegate):
     def displayText(self, value, locale):
 
         if type(value) == float:
-            return "{0:.4f}".format(value)
+            return f"{value:.4f}"
         if type(value) == str:
-            return "{}{}".format(self._padding, value.encode('utf-8'))
+            return f"{self._padding}{value}"
 
-        return "{}{}".format(self._padding, value)
-
+        return f"{self._padding}{value}"
+    
     def createEditor(self, parent, option, index):
         # ToDo: set dec placed for IN and MM machines
         col = self._columns[index.column()]
