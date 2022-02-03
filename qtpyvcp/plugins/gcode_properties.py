@@ -146,7 +146,7 @@ class GCodeProperties(DataPlugin):
 
         Channel syntax::
 
-            gcpde_properties:rapids
+            gcode_properties:rapids
 
         """
 

@@ -463,12 +463,12 @@ class FileSystemTable(QTableView, TableType):
 
 
     @Property(bool)
-    def fixedMameColumn(self):
+    def fixedNameColumn(self):
         """Allows to set a fixed width defined in the nameColumnsWidth property"""
         return self._fixed_name_column
 
-    @fixedMameColumn.setter
-    def fixedMameColumn(self, value):
+    @fixedNameColumn.setter
+    def fixedNameColumn(self, value):
         self._fixed_name_column = value
         
         if self._fixed_name_column:
@@ -477,7 +477,7 @@ class FileSystemTable(QTableView, TableType):
 
     @Property(int)
     def nameColumnsWidth(self):
-        """If the fixedMameColumn is enabled sets its width."""
+        """If the fixedNameColumn is enabled sets its width."""
         return self._name_columns_width
 
     @nameColumnsWidth.setter
