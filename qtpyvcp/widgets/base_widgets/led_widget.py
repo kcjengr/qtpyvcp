@@ -65,7 +65,7 @@ class LEDWidget(QWidget):
         painter.setPen(pen_color)
         painter.setRenderHint(QPainter.Antialiasing, True)
         painter.setBrush(brush)
-        painter.drawEllipse(x + 1, y + 1, self._diameter - 2, self._diameter - 2)
+        painter.drawEllipse(int(x) + 1, int(y) + 1, int(self._diameter) - 2, int(self._diameter) - 2)
 
         if self._flashRate > 0 and self._flashing:
             self._timer.start(self._flashRate)

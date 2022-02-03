@@ -45,7 +45,7 @@ class LEDButton(ActionButton):
         elif alignment & Qt.AlignVCenter:
             y = self.height()/2 - halfLed
         # print(x, y)
-        self.led.move(x, y)
+        self.led.move(int(x), int(y))
         self.updateGeometry()
 
     def resizeEvent(self, event):
