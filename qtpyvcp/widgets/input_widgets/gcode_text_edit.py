@@ -636,7 +636,7 @@ class NumberMargin(QWidget):
                 painter.setPen(self.color)
                 background = self.background
 
-            text_rec = QRect(0, block_top, self.width(), self.parent.fontMetrics().height())
+            text_rec = QRect(0, int(block_top), self.width(), self.parent.fontMetrics().height())
             painter.fillRect(text_rec, background)
             painter.drawText(text_rec, Qt.AlignRight, str(block_num + 1))
             block = block.next()
