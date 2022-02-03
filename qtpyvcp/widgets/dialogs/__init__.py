@@ -39,7 +39,7 @@ def showDialog(name):
 
     win = QApplication.instance().activeWindow()
     win_pos = win.mapToGlobal(win.rect().center())
-    dialog.move(win_pos.x() - dialog.width() / 2, win_pos.y() - dialog.height() / 2)
+    dialog.move(win_pos.x() - int(dialog.width() / 2), win_pos.y() - int(dialog.height() / 2))
 
     dialog.show()
     ACTIVE_DIALOGS.append(dialog)
