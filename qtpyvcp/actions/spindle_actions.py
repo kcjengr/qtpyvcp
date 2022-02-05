@@ -304,8 +304,8 @@ def _or_bindOk(value=100, spindle=0, widget=None):
 
     try:
         # these will only work for QSlider or QSpinBox
-        widget.setMinimum(INFO.minSpindleOverride() * 100)
-        widget.setMaximum(INFO.maxSpindleOverride() * 100)
+        widget.setMinimum(int(INFO.minSpindleOverride() * 100))
+        widget.setMaximum(int(INFO.maxSpindleOverride() * 100))
 
         try:
             widget.setSliderPosition(100)
