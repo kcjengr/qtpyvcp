@@ -344,16 +344,6 @@ class ToolTable(QTableView):
         else:
             return False
 
-    @Property(str)
-    def displayColumns(self):
-        return "".join(self._columns)
-
-    @displayColumns.setter
-    def displayColumns(self, columns):
-        self._columns = [col for col in columns.upper() if col in 'TPXYZABCUVWDIJQR']
-        self.tool_model.setColumns(self._columns)
-        self.itemDelegate().setColumns(self._columns)
-
     @Property(bool)
     def confirmActions(self):
         return self._confirm_actions
