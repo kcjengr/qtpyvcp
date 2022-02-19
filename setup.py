@@ -83,6 +83,7 @@ setup(
     data_files=data_files,
     include_package_data=True,
     install_requires=[
+        'six',
         'docopt',
         'qtpy',
         'pyudev',
