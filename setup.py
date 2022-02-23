@@ -77,7 +77,7 @@ setup(
         'Topic :: Software Development :: Widget Sets',
         'Topic :: Software Development :: User Interfaces',
         'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
-        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3.9',
     ],
     packages=find_packages(),
     data_files=data_files,
