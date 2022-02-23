@@ -89,6 +89,7 @@ setup(
         'pyudev',
         'psutil',
         'HiYaPyCo',
+        'MarkupSafe==2.0.1',
         'pyopengl',
         'vtk',
         'pyqtgraph',
