@@ -3,6 +3,9 @@ import re
 from qtpy.QtWidgets import qApp
 from qtpy.QtCore import Property
 
+import qtpy
+from qtpy.QtCore import Property
+
 from qtpyvcp.utilities.info import Info
 INFO = Info()
 

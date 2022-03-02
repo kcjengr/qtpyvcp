@@ -64,6 +64,9 @@ sys.path.insert(0, os.path.join(BASE, "lib", "python"))
 from linuxcnc import ini
 from docopt import docopt
 
+import qtpy
+import qtpy.QtCore
+
 from qtpyvcp import __version__ as QTPYVCP_VERSION
 from qtpyvcp.lib.types import DotDict
 from qtpyvcp.utilities.misc import normalizePath

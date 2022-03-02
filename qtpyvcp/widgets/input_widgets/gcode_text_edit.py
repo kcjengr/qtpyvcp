@@ -9,13 +9,13 @@ import os
 import oyaml as yaml
 
 from qtpy.QtCore import (Qt, QRect, QRegularExpression, QEvent, Slot, Signal,
-                         Property, QFile, QTextStream)
+                         Property)
 
 from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextDocument, QTextOption, QTextFormat,
                         QTextCharFormat, QTextCursor)
 
-from qtpy.QtWidgets import (QApplication, QInputDialog, QTextEdit, QLineEdit,
+from qtpy.QtWidgets import (QApplication, QTextEdit, QLineEdit,
                             QPlainTextEdit, QWidget, QMenu,
                             QPlainTextDocumentLayout)
 

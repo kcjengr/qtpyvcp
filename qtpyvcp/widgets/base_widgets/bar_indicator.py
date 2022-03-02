@@ -1,4 +1,8 @@
 from string import Template
+import qtpy
+from qtpy.QtCore import Qt, Property, Slot, QRectF, QSize
+from qtpy.QtGui import QColor, QLinearGradient, QPainter, QPen
+from qtpy.QtWidgets import QWidget, QSizePolicy
 
 from qtpy.QtCore import Qt, Property, Slot, QRectF, QSize
 from qtpy.QtGui import QColor, QLinearGradient, QPainter, QPen

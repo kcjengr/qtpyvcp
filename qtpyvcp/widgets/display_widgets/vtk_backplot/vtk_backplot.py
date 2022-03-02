@@ -38,10 +38,11 @@ NUMBER_OF_WCS = 9
 
 
 # turn on antialiasing
-from qtpy.QtOpenGL import QGLFormat
-f = QGLFormat()
-f.setSampleBuffers(True)
-QGLFormat.setDefaultFormat(f)
+# fixme: disabled on qtpy port
+# from qtpy.QtOpenGL import QGLFormat
+# f = QGLFormat()
+# f.setSampleBuffers(True)
+# QGLFormat.setDefaultFormat(f)
 
 
 class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
