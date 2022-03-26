@@ -641,8 +641,8 @@ class HoleBuilder:
         else:
             g40 = False
 
-        r = float(d)/2.00
-        kc = float(kerf) / 2
+        r = float(d) / 2.00
+        kc = float(kerf) / 2.00
         # kerf larger than hole -> hole disappears
         # Mark that hole has been ignored with a comment.
         if kc > r:
@@ -981,27 +981,27 @@ class PreProcessor:
         # connect to HAL and collect the data we need to determine what holes
         # should be processes and what are too large
         thickness_ratio = hal.get_value('qtpyvcp.plasma-hole-thickness-ratio.out')
-        max_hole_size = hal.get_value('qtpyvcp.plasma-max-hole-size.out')/UNITS_PER_MM
+        max_hole_size = hal.get_value('qtpyvcp.plasma-max-hole-size.out')
         
         arc1_feed_percent = hal.get_value('qtpyvcp.plasma-arc1-percent.out')/100
         
-        arc2_distance = hal.get_value('qtpyvcp.plasma-arc2-distance.out')/UNITS_PER_MM
+        arc2_distance = hal.get_value('qtpyvcp.plasma-arc2-distance.out')
         arc2_feed_percent = hal.get_value('qtpyvcp.plasma-arc2-percent.out')/100
         
-        arc3_distance = hal.get_value('qtpyvcp.plasma-arc3-distance.out')/UNITS_PER_MM
+        arc3_distance = hal.get_value('qtpyvcp.plasma-arc3-distance.out')
         arc3_feed_percent = hal.get_value('qtpyvcp.plasma-arc3-percent.out')/100
         
         leadin_feed_percent = hal.get_value('qtpyvcp.plasma-leadin-percent.out')/100
-        leadin_radius = hal.get_value('qtpyvcp.plasma-leadin-radius.out')/UNITS_PER_MM
+        leadin_radius = hal.get_value('qtpyvcp.plasma-leadin-radius.out')
         
-        kerf_width = hal.get_value('qtpyvcp.param-kirfwidth.out')/UNITS_PER_MM
+        kerf_width = hal.get_value('qtpyvcp.param-kirfwidth.out')
 
-        torch_off_distance_before_zero = hal.get_value('qtpyvcp.plasma-torch-off-distance.out')/UNITS_PER_MM
+        torch_off_distance_before_zero = hal.get_value('qtpyvcp.plasma-torch-off-distance.out')
         
         small_hole_size = 0
         small_hole_detect = hal.get_value('qtpyvcp.plasma-small-hole-detect.checked')
         if small_hole_detect:
-            small_hole_size = hal.get_value('qtpyvcp.plasma-small-hole-threshold.out')/UNITS_PER_MM
+            small_hole_size = hal.get_value('qtpyvcp.plasma-small-hole-threshold.out')
             
         marking_voltage = hal.get_value('qtpyvcp.spot-threshold.out')
         marking_delay = hal.get_value('qtpyvcp.spot-delay.out')
@@ -1153,7 +1153,7 @@ class PreProcessor:
                                     break
                             
                         elif (diameter <= self.active_thickness * thickness_ratio) or \
-                           (diameter <= max_hole_size / UNITS_PER_MM):
+                           (diameter <= max_hole_size):
                             # Only build the hole of within a certain size of
                             # Params:
                             # x:              Hole Centre X position
