@@ -31,6 +31,10 @@ class PathCacheActor(vtk.vtkActor):
         self.polygon_mapper.SetInputData(self.lines_poligon_data)
         self.polygon_mapper.Update()
 
+        # Avoid visible backfaces on Linux with some video cards like intel
+        # From: https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1#comment89720589_51360335
+        self.GetProperty().SetBackfaceCulling(1)
+
     def add_line_point(self, point):
         self.index += 1
 
