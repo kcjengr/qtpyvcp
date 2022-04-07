@@ -29,6 +29,8 @@ import io
 from itertools import takewhile
 from datetime import datetime
 
+from deepdiff import DeepDiff
+
 from  linuxcnc import command
 
 from qtpy.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
@@ -251,7 +253,8 @@ class ToolTable(DataPlugin):
         self.loadToolTable()
         
     def loadToolTable(self): 
-        print("Loads ToolTable")       
+        print("Loads ToolTable")
+        
         tool_list = self.session.query(Tool).all()
         
         for tool in tool_list:
@@ -273,11 +276,13 @@ class ToolTable(DataPlugin):
                                         'Y': tool.y_offset,
                                         'Z': tool.z_offset}
 
-        self.tool_table_changed.emit(self.table.copy())
+        # CMD.load_tool_table()
+        
+        self.tool_table_changed.emit(self.table.copy())     
 
     def getToolTable(self):
         return self.table.copy()
-
+    
     def saveToolTable(self, tool_table, columns=None):
         """Write tooltable data to db.
 
@@ -290,97 +295,98 @@ class ToolTable(DataPlugin):
                 Defaults to ``self.tool_table_file``.
         """
         
-        print("#########################")
-        print("##### TOOLS IN DB #######")
+        self.table = tool_table
         
-        for k, v in self.table.items():
-            print(k, v)
-        print("#########################")
-        print("#### TOOLS IN WIDGET ####")
+        tool_data = self.session.query(Tool)
+        
+        new_tool_dict = dict()
+        
+        for tool in tool_data:
+            tool_dict = dict()
             
-        for k, v in tool_table.items():
-            print(k, v)
-        print("#########################")
+            tool_dict['R'] = tool.remark
+            tool_dict['T'] = tool.tool_no
+            tool_dict['P'] = tool.pocket
+            tool_dict['X'] = tool.x_offset
+            tool_dict['Y'] = tool.y_offset
+            tool_dict['Z'] = tool.z_offset
+            tool_dict['A'] = tool.a_offset
+            tool_dict['B'] = tool.b_offset
+            tool_dict['C'] = tool.c_offset
+            tool_dict['U'] = tool.u_offset
+            tool_dict['V'] = tool.v_offset
+            tool_dict['W'] = tool.w_offset
+            tool_dict['Q'] = 1
+            tool_dict['I'] = 0.0
+            tool_dict['J'] = 0.0
+            tool_dict['D'] = tool.diameter
             
-        return
-    
-    
-        for tool in tool_db:
-            if tool.tool_no not in tool_table.keys():
-                print(f"TO DELETE tool {tool.tool_no}")
-                # tool_data = tool.filter(Tool.tool_no == tool['T']).one()
-                # self.session.delete(tool_data)
+            new_tool_dict[tool.tool_no] = tool_dict
 
-            elif tool.tool_no not in self.table.keys():
-                print(f"TO INSERT tool {too.tool_no}")
+        diff = DeepDiff(new_tool_dict, self.table, view="tree")
+                #
+        to_insert = diff.get("dictionary_item_added")
+        to_update = diff.get("values_changed")
+        to_delete = diff.get("dictionary_item_removed")
+        
+        if to_insert is not None:
+            print("TO INSTER")
+            for a in to_insert:
+                temp_tool = a.t2
                 
-                # self.session.add(
-                #     Tool(remark=tool['R'],
-                #          tool_no=tool['T'],
-                #          in_use=False,
-                #          pocket=tool['P'],
-                #          x_offset=tool['X'],
-                #          y_offset=tool['Y'],
-                #          z_offset=tool['Z'],
-                #          a_offset=tool['A'],
-                #          b_offset=tool['B'],
-                #          c_offset=tool['C'],
-                #          u_offset=tool['U'],
-                #          v_offset=tool['V'],
-                #          w_offset=tool['W'],
-                #          diameter=tool['D'],
-                #          tool_holder="models/tool.stl",
-                #          tool_table_id=0
-                #     )
-                # )
-            
-            else:
-                print(f"TO UPDATE tool {tool.tool_no}")
-                # print( tool_no)
-                #
-                # pprint.pprint(tool_db)
-                #
-                # a = tool
-                # b = tool_db[tool_no]
-                #
-                # print(a)
-                # print(b)
+                self.session.add(
+                    Tool(remark=temp_tool['R'],
+                         tool_no=temp_tool['T'],
+                         in_use=False,
+                         pocket=temp_tool['P'],
+                         x_offset=temp_tool['X'],
+                         y_offset=temp_tool['Y'],
+                         z_offset=temp_tool['Z'],
+                         a_offset=temp_tool['A'],
+                         b_offset=temp_tool['B'],
+                         c_offset=temp_tool['C'],
+                         u_offset=temp_tool['U'],
+                         v_offset=temp_tool['V'],
+                         w_offset=temp_tool['W'],
+                         diameter=temp_tool['D'],
+                         tool_holder="models/tool.stl",
+                         tool_table_id=0
+                    )
+                )
+                self.session.commit()
                 
-                # value = { k : second_dict[k] for k in set(second_dict) - set(first_dict) }
-                #
-                # result = dict(a ^ b)
-                #
-                # print(result)
-                # continue
-                #
-                # s = SequenceMatcher(None,a, b)
-                # for opcode in s.get_grouped_opcodes():
-                #     print("%6s a[%d:%d] b[%d:%d]" % opcode)
-                # continue
-                #
-                # for k,v in tool.items():
-                #     if v != self.table[tool_no][k]:
-                #         print(f"TO UPDATE tool {tool_no}")
-                #     else:
-                #         print(f"No UPDATE {v} {self.table[tool_no][k]}")
+        if to_update is not None:
+            print("TO UPDATE")
+            for a in to_update:
+                temp_tool = a.up.t2
                 
-                # tool_data = self.session.query(Tool).filter(Tool.tool_no == tool['T']).one()
-                #
-                # tool_data.remark=tool['R'],
-                # tool_data.tool_no=tool['T'],
-                # tool_data.in_use=False,
-                # tool_data.pocket=tool['P'],
-                # tool_data.x_offset=tool['X'],
-                # tool_data.y_offset=tool['Y'],
-                # tool_data.z_offset=tool['Z'],
-                # tool_data.a_offset=tool['A'],
-                # tool_data.b_offset=tool['B'],
-                # tool_data.c_offset=tool['C'],
-                # tool_data.u_offset=tool['U'],
-                # tool_data.v_offset=tool['V'],
-                # tool_data.w_offset=tool['W'],
-                # tool_data.diameter=tool['D'],
-                # tool_data.tool_holder="models/tool.stl",
-                # tool_data.tool_table_id=0
+                tool_data = self.session.query(Tool).filter(Tool.tool_no == temp_tool['T']).one()
+                
+                tool_data.remark = temp_tool['R']
+                tool_data.tool_no = temp_tool['T']
+                tool_data.in_use = False
+                tool_data.pocket = temp_tool['P']
+                tool_data.x_offset = temp_tool['X']
+                tool_data.y_offset = temp_tool['Y']
+                tool_data.z_offset = temp_tool['Z']
+                tool_data.a_offset = temp_tool['A']
+                tool_data.b_offset = temp_tool['B']
+                tool_data.c_offset = temp_tool['C']
+                tool_data.u_offset = temp_tool['U']
+                tool_data.v_offset = temp_tool['V']
+                tool_data.w_offset = temp_tool['W']
+                tool_data.diameter = temp_tool['D']
+                tool_data.tool_holder = "models/tool.stl"
+                tool_data.tool_table_id = 0
+                
+                self.session.commit()
 
-        self.session.commit()
+        if to_delete is not None:
+            print("TO DELETE")
+            for a in to_delete:
+                temp_tool = a.t1
+                tool_row = tool_data.filter(Tool.tool_no == temp_tool['T']).one()
+                self.session.delete(tool_row)
+                self.session.commit()
+        
+        CMD.load_tool_table()
