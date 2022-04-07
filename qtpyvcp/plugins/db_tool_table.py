@@ -37,7 +37,6 @@ from qtpy.QtCore import QFileSystemWatcher, QTimer, Signal, Slot
 
 import qtpyvcp
 
-from sqlalchemy import delete
 from qtpyvcp.lib.db_tool.base import Session, Base, engine
 from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool
 
@@ -127,7 +126,7 @@ def makeLorumIpsumToolTable():
             for i in range(10)}
 
 
-class ToolTable(DataPlugin):
+class DBToolTable(DataPlugin):
 
     TOOL_TABLE = {0: NO_TOOL}
     DEFAULT_TOOL = DEFAULT_TOOL
@@ -137,7 +136,7 @@ class ToolTable(DataPlugin):
 
     def __init__(self, columns='TPXYZABCUVWDIJQR', file_header_template=None,
                  remember_tool_in_spindle=True):
-        super(ToolTable, self).__init__()
+        super(DBToolTable, self).__init__()
 
         Base.metadata.create_all(engine)
         
