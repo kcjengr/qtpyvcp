@@ -25,12 +25,12 @@ class ItemDelegate(QStyledItemDelegate):
     def displayText(self, value, locale):
 
         if type(value) == float:
-            return "{0:.4f}".format(value)
+            return f"{value:.4f}"
         if type(value) == str:
-            return "{}{}".format(self._padding, value.encode('utf-8'))
+            return f"{self._padding}{value}"
 
-        return "{}{}".format(self._padding, value)
-
+        return f"{self._padding}{value}"
+    
     def createEditor(self, parent, option, index):
         # ToDo: set dec placed for IN and MM machines
         col = self._columns[index.column()]
@@ -343,16 +343,6 @@ class ToolTable(QTableView):
             return True
         else:
             return False
-
-    @Property(str)
-    def displayColumns(self):
-        return "".join(self._columns)
-
-    @displayColumns.setter
-    def displayColumns(self, columns):
-        self._columns = [col for col in columns.upper() if col in 'TPXYZABCUVWDIJQR']
-        self.tool_model.setColumns(self._columns)
-        self.itemDelegate().setColumns(self._columns)
 
     @Property(bool)
     def confirmActions(self):

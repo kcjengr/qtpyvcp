@@ -47,7 +47,12 @@ class HalLabel(QLabel, HALWidget, HalType):
 
     def setValue(self, value):
         self._value = value
-        self.setText(f"{value:{self._fmt}}")
+        
+        try:
+            self.setText(f"{value:{self._fmt}}")
+        except Exception as e:
+            self.setText(f"ERR: {self._fmt}")
+            LOG.warning("Invalid format specified")
             
 
     @Property(str)

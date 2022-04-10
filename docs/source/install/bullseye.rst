@@ -94,7 +94,7 @@ Create the working directories to hold linuxcnc source and qtpyvcp source::
     cd dev
     mkdir linuxcnc
     cd linuxcnc
-    git clone git://github.com/linuxcnc/linuxcnc.git rip
+    git clone https://github.com/LinuxCNC/linuxcnc.git rip
     cd rip/src
     ./autogen.sh
     ./configure --with-realtime=uspace

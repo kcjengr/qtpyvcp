@@ -5,10 +5,11 @@ import linuxcnc
 import psutil
 
 
+from dateutil.parser import parse
 from pyudev.pyqt5 import MonitorObserver
 from pyudev import Context, Monitor, Devices
 
-from qtpy.QtCore import Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevice
+from qtpy.QtCore import Qt, Slot, Property, Signal, QFile, QFileInfo, QDir, QIODevice
 from qtpy.QtWidgets import QFileSystemModel, QComboBox, QTableView, QMessageBox, \
     QApplication, QAbstractItemView, QInputDialog, QLineEdit
 
@@ -98,6 +99,26 @@ class RemovableDeviceComboBox(QComboBox):
         if data:
             self._file_locations.ejectDevice(data.get('device'))
 
+class QtpyVCPQFileSystemModel(QFileSystemModel):
+    
+    def data(self, index, role=Qt.DisplayRole):
+        # Column nº 3 is datem, align it to right
+        col = index.column()
+        
+        if role == Qt.DisplayRole:
+            data = QFileSystemModel.data(self, index, role)
+            if col == 3:
+                date = parse(data)
+                return f"{date:%m/%d/%y   %I:%M  %p}"
+            else:
+                return f"{data}"
+
+        if role == Qt.TextAlignmentRole:
+            if col == 3:
+                return Qt.AlignVCenter | Qt.AlignRight
+    
+        return QFileSystemModel.data(self, index, role)
+
 class FileSystemTable(QTableView, TableType):
 
     if IN_DESIGNER:
@@ -130,7 +151,7 @@ class FileSystemTable(QTableView, TableType):
         self.selected_row = None
         self.clipboard = QApplication.clipboard()
 
-        self.model = QFileSystemModel()
+        self.model = QtpyVCPQFileSystemModel()
         self.model.setReadOnly(True)
         self.model.setFilter(QDir.AllDirs | QDir.NoDotAndDotDot | QDir.AllEntries)
 
@@ -463,12 +484,12 @@ class FileSystemTable(QTableView, TableType):
 
 
     @Property(bool)
-    def fixedMameColumn(self):
+    def fixedNameColumn(self):
         """Allows to set a fixed width defined in the nameColumnsWidth property"""
         return self._fixed_name_column
 
-    @fixedMameColumn.setter
-    def fixedMameColumn(self, value):
+    @fixedNameColumn.setter
+    def fixedNameColumn(self, value):
         self._fixed_name_column = value
         
         if self._fixed_name_column:
@@ -477,7 +498,7 @@ class FileSystemTable(QTableView, TableType):
 
     @Property(int)
     def nameColumnsWidth(self):
-        """If the fixedMameColumn is enabled sets its width."""
+        """If the fixedNameColumn is enabled sets its width."""
         return self._name_columns_width
 
     @nameColumnsWidth.setter

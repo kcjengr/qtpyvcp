@@ -375,15 +375,15 @@ class ToolTable(DataPlugin):
 
         # create the table header
         items = []
+        if 'P' not in columns:
+            columns.insert(1, 'P')
+        
         for col in columns:
             if col == 'R':
                 continue
             w = (INT_COLUMN_WIDTH if col in 'TPQ' else FLOAT_COLUMN_WIDTH) - \
                 (1 if col == self.columns[0] else 0)
             items.append('{:<{w}}'.format(COLUMN_LABELS[col], w=w))
-
-        if 'P' not in columns:
-            items.insert(1, 'P\t')
 
         items.append('Remark')
         lines.append(';' + ' '.join(items))
@@ -411,8 +411,7 @@ class ToolTable(DataPlugin):
             if comment != '':
                 items.append('; ' + comment)
 
-            if 'P' not in columns:
-                items.insert(1, 'P-1\t')
+
             lines.append(''.join(items))
 
         # for line in lines:

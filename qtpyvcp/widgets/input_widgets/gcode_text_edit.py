@@ -15,7 +15,7 @@ from qtpy.QtGui import (QFont, QColor, QPainter, QSyntaxHighlighter,
                         QTextDocument, QTextOption, QTextFormat,
                         QTextCharFormat, QTextCursor)
 
-from qtpy.QtWidgets import (QApplication, QTextEdit, QLineEdit,
+from qtpy.QtWidgets import (QApplication, QInputDialog, QTextEdit, QLineEdit,
                             QPlainTextEdit, QWidget, QMenu,
                             QPlainTextDocumentLayout)
 
@@ -248,10 +248,10 @@ class GcodeTextEdit(QPlainTextEdit):
 
         found = self.find(text, flags)
 
-        if found:
-            cursor = self.document().find(text, flags)
-            if cursor.position() > 0:
-                self.setTextCursor(cursor)
+        # if found:
+        #     cursor = self.document().find(text, flags)
+        #     if cursor.position() > 0:
+        #         self.setTextCursor(cursor)
 
     def findBackwardText(self, text):
         flags = QTextDocument.FindFlag()
@@ -264,10 +264,10 @@ class GcodeTextEdit(QPlainTextEdit):
 
         found = self.find(text, flags)
 
-        if found:
-            cursor = self.document().find(text, flags)
-            if cursor.position() > 0:
-                self.setTextCursor(cursor)
+        # if found:
+        #     cursor = self.document().find(text, flags)
+        #     if cursor.position() > 0:
+        #         self.setTextCursor(cursor)
 
     def replaceText(self, search, replace):
 
@@ -295,8 +295,8 @@ class GcodeTextEdit(QPlainTextEdit):
         if self.find_words:
             flags |= QTextDocument.FindWholeWords
 
-        searchng = True
-        while searchng:
+        searching = True
+        while searching:
             found = self.find(search, flags)
             if found:
                 cursor = self.textCursor()
@@ -305,7 +305,7 @@ class GcodeTextEdit(QPlainTextEdit):
                     cursor.insertText(replace)
                 cursor.endEditBlock();
             else:
-                searchng = False
+                searching = False
     
     @Slot()
     def findAll(self):
@@ -323,7 +323,7 @@ class GcodeTextEdit(QPlainTextEdit):
     @Slot()
     def findBackward(self):
         text = self.search_term
-        LOG.debug(f"Find backwars :{text}")
+        LOG.debug(f"Find backwards :{text}")
         self.findBackwardText(text)
 
     @Slot()
@@ -362,10 +362,23 @@ class GcodeTextEdit(QPlainTextEdit):
         else:
             LOG.debug("---save error")
 
+    # simple input dialog for save as
+    def save_as_dialog(self, filename):
+        text, ok_pressed = QInputDialog.getText(self, "Save as", "New name:", QLineEdit.Normal, filename)
+
+        if ok_pressed and text != '':
+            return text
+        else:
+            return False
+
     @Slot()
     def saveFileAs(self):
-        # intended for dialog support save processing
-        pass
+        open_file = QFile(str(STATUS.file))
+        if open_file == None:
+            return
+        
+        save_file = self.save_as_dialog(open_file.fileName())
+        self.saveFile(save_file)
 
     def keyPressEvent(self, event):
         # keep the cursor centered
@@ -623,7 +636,7 @@ class NumberMargin(QWidget):
                 painter.setPen(self.color)
                 background = self.background
 
-            text_rec = QRect(0, block_top, self.width(), self.parent.fontMetrics().height())
+            text_rec = QRect(0, int(block_top), self.width(), self.parent.fontMetrics().height())
             painter.fillRect(text_rec, background)
             painter.drawText(text_rec, Qt.AlignRight, str(block_num + 1))
             block = block.next()

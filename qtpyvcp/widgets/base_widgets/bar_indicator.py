@@ -126,7 +126,7 @@ class BarIndicatorBase(QWidget):
 
         p.setBrush(Qt.transparent)
         border_pen = QPen()
-        border_pen.setWidth(bw)
+        border_pen.setWidth(int(bw))
         border_pen.setColor(self._border_color)
         p.setPen(border_pen)
 

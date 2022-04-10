@@ -391,7 +391,7 @@ def _feed_override_bindOk(value=100, widget=None):
     try:
         # these will only work for QSlider or QSpinBox
         widget.setMinimum(0)
-        widget.setMaximum(INFO.maxFeedOverride() * 100)
+        widget.setMaximum(int(INFO.maxFeedOverride() * 100))
 
         try:
             widget.setSliderPosition(100)
@@ -517,10 +517,10 @@ def _max_velocity_bindOk(value=100, widget=None):
     try:
         # these will only work for QSlider or QSpinBox
         widget.setMinimum(0)
-        widget.setMaximum(INFO.maxVelocity())
+        widget.setMaximum(int(INFO.maxVelocity()))
 
         try:
-            widget.setSliderPosition(INFO.maxVelocity())
+            widget.setSliderPosition(int(INFO.maxVelocity()))
             STATUS.max_velocity.onValueChanged(
                 lambda v: widget.setSliderPosition(v * 60))
 
