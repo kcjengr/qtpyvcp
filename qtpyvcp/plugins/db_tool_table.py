@@ -344,12 +344,14 @@ class DBToolTable(DataPlugin):
                          a_offset=temp_tool['A'],
                          b_offset=temp_tool['B'],
                          c_offset=temp_tool['C'],
+                         i_offset=temp_tool['I'],
+                         j_offset=temp_tool['J'],
+                         q_offset=temp_tool['Q'],
                          u_offset=temp_tool['U'],
                          v_offset=temp_tool['V'],
                          w_offset=temp_tool['W'],
                          diameter=temp_tool['D'],
-                         tool_holder="models/tool.stl",
-                         tool_table_id=0
+                         tool_table_id=1
                     )
                 )
                 self.session.commit()
@@ -371,12 +373,14 @@ class DBToolTable(DataPlugin):
                 tool_data.a_offset = temp_tool['A']
                 tool_data.b_offset = temp_tool['B']
                 tool_data.c_offset = temp_tool['C']
+                tool_data.i_offset = temp_tool['I']
+                tool_data.j_offset = temp_tool['J']
+                tool_data.q_offset = temp_tool['Q']
                 tool_data.u_offset = temp_tool['U']
                 tool_data.v_offset = temp_tool['V']
                 tool_data.w_offset = temp_tool['W']
                 tool_data.diameter = temp_tool['D']
-                tool_data.tool_holder = "models/tool.stl"
-                tool_data.tool_table_id = 0
+                tool_data.tool_table_id = 1
                 
                 self.session.commit()
 
