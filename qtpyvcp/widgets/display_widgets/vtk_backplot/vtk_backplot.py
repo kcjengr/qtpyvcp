@@ -20,7 +20,8 @@ from vtk.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 
 from qtpyvcp.widgets import VCPWidget
 from qtpyvcp.utilities import logger
-from qtpyvcp.utilities.settings import connectSetting
+from qtpyvcp.utilities.settings import connectSetting, getSetting
+from qtpyvcp.plugins import iterPlugins, getPlugin
 
 from .base_backplot import BaseBackPlot
 from .axes_actor import AxesActor
@@ -179,6 +180,7 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
             # self.status.g5x_index.notify(self.update_g5x_index)
 
             # view settings
+            connectSetting('backplot.show-spindle', self.showSpindle)
             connectSetting('backplot.show-grid', self.showGrid)
             connectSetting('backplot.show-program-bounds', self.showProgramBounds)
             connectSetting('backplot.show-program-labels', self.showProgramLabels)
@@ -632,6 +634,15 @@ class VTKBackPlot(QVTKRenderWindowInteractor, VCPWidget, BaseBackPlot):
         else:
             self.setViewOrtho()
 
+    @Slot(bool)
+    @Slot(object)
+    def showSpindle(self, value):
+    
+        self.spindle_actor.SetVisibility(value)
+            
+        # self.renderer.ResetCamera()
+        self.interactor.ReInitialize()
+        
     @Slot()
     def setViewOrtho(self):
         self.camera.ParallelProjectionOn()

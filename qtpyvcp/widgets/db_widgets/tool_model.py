@@ -4,7 +4,7 @@ Tool Model Property fields
 """
 
 from qtpy.QtCore import Slot
-from qtpy.QtWidgets import QWidget, QLineEdit, QHBoxLayout, QPushButton, QFileDialog, QDialog
+from qtpy.QtWidgets import QWidget, QLineEdit, QHBoxLayout, QPushButton, QFileDialog, QDialog, QLabel
 
 
 from qtpyvcp.lib.db_tool.base import Session, Base, engine
@@ -30,11 +30,13 @@ class ToolSTLField(QWidget):
         self.layout = QHBoxLayout(self)
         self.filename = None
         
+        self.label = QLabel("Tool STL Path")
         self.model_path = QLineEdit()
         self.browse_button = QPushButton()
         self.browse_button.setText("Load STL")
         self.browse_button.clicked.connect(self.stl_dialog)
         
+        self.layout.addWidget(self.label)
         self.layout.addWidget(self.model_path)
         self.layout.addWidget(self.browse_button)
 
@@ -66,10 +68,13 @@ class ToolSTLField(QWidget):
     
     @Slot()
     def saveField(self):
-        tool_data = self.session.query(ToolModel).filter(ToolModel.tool_no == tool_no).first()
-        tool_data.model = self.filename
+        if self.tool_selected is not None:
+            
+            tool_data = self.session.query(ToolModel).filter(ToolModel.tool_no == self.tool_selected).first()
         
-        self.session.commit()
+            if tool_data:
+                tool_data.model = self.filename
+                self.session.commit()
         
     def setFilename(self, name):
         self.filename = name

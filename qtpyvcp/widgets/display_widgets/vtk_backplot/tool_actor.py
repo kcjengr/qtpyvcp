@@ -12,6 +12,13 @@ from vtkmodules.vtkFiltersSources import vtkCylinderSource
 from vtkmodules.vtkRenderingCore import vtkPolyDataMapper
 
 from qtpyvcp.utilities import logger
+from qtpyvcp.utilities.settings import getSetting
+
+from qtpyvcp.plugins import iterPlugins, getPlugin
+from qtpyvcp.plugins.db_tool_table import DBToolTable
+
+from qtpyvcp.lib.db_tool.base import Session, Base, engine
+from qtpyvcp.lib.db_tool.tool_table import ToolTable, Tool, ToolModel
 
 LOG = logger.getLogger(__name__)
 
@@ -60,6 +67,7 @@ class SpindleActor(vtk.vtkActor):
         self.GetProperty().SetDiffuseColor(colors.GetColor3d('LightSteelBlue'))
         self.GetProperty().SetSpecular(0.3)
         self.GetProperty().SetSpecularPower(60.0)
+        
         # Avoid visible backfaces on Linux with some video cards like intel
         # From: https://stackoverflow.com/questions/51357630/vtk-rendering-not-working-as-expected-inside-pyqt?rq=1#comment89720589_51360335
         self.GetProperty().SetBackfaceCulling(1)
@@ -69,6 +77,8 @@ class ToolActor(vtk.vtkActor):
         super(ToolActor, self).__init__()
         self._datasource = linuxcncDataSource
         self._tool_table = self._datasource.getToolTable()
+
+        self.session = Session()
 
         tool = self._tool_table[0]
 
@@ -403,7 +413,23 @@ class ToolActor(vtk.vtkActor):
             else:
                 transform = vtk.vtkTransform()
                 
-                filename = os.path.join(os.path.dirname(__file__), "models/tool.stl")
+                
+                plugins = dict(iterPlugins())
+                
+                tool_table_plugin = plugins["tooltable"]
+                
+                if isinstance(tool_table_plugin, DBToolTable):
+                    tool_data = self.session.query(ToolModel).filter(ToolModel.tool_no == tool.id).first()
+        
+                    if tool_data:
+                        filename = tool_data.model
+                    else:
+                        filename = ""
+                    
+                else:
+                    filename = os.path.join(os.path.dirname(__file__), "models/tool.stl")
+    
+    
     
                 source = vtk.vtkSTLReader()
                 source.SetFileName(filename)
