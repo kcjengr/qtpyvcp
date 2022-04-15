@@ -40,7 +40,7 @@ class SpindleActor(vtk.vtkActor):
         start_point = [-tool.xoffset, -tool.yoffset, -tool.zoffset]
         end_point = [0, 0, 0]
         
-        filename = os.path.join(os.path.dirname(__file__), "models/spindle_elte.stl")
+        filename = os.path.join(os.path.dirname(__file__), "models/GDZ80X73-1.stl")
 
         source = vtk.vtkSTLReader()
         source.SetFileName(filename)
@@ -411,46 +411,38 @@ class ToolActor(vtk.vtkActor):
                 mapper = vtk.vtkPolyDataMapper()
                 mapper.SetInputConnection(transform_filter.GetOutputPort())
             else:
-                transform = vtk.vtkTransform()
-                
-                
                 plugins = dict(iterPlugins())
-                
                 tool_table_plugin = plugins["tooltable"]
+                
+                transform = vtk.vtkTransform()
+                # Create a mapper
+                mapper = vtk.vtkPolyDataMapper()
                 
                 if isinstance(tool_table_plugin, DBToolTable):
                     tool_data = self.session.query(ToolModel).filter(ToolModel.tool_no == tool.id).first()
         
                     if tool_data:
+                        
                         filename = tool_data.model
-                    else:
-                        filename = ""
-                    
-                else:
-                    filename = os.path.join(os.path.dirname(__file__), "models/tool.stl")
-    
-    
-    
-                source = vtk.vtkSTLReader()
-                source.SetFileName(filename)
-                
-                # source = vtk.vtkCylinderSource()
-                # source.SetHeight(self.height / 2)
-                # #source.SetCenter(-tool.xoffset, self.height / 4 - tool.zoffset, tool.yoffset)
-                # source.SetCenter(0, self.height / 4, 0)
-                # source.SetRadius(tool.diameter / 2)
-                # source.SetResolution(64)
-                
-                # transform.RotateWXYZ(180, 1, 0, 0)
-
-                transform_filter = vtk.vtkTransformPolyDataFilter()
-                transform_filter.SetTransform(transform)
-                transform_filter.SetInputConnection(source.GetOutputPort())
-                transform_filter.Update()
-
-                # Create a mapper
-                mapper = vtk.vtkPolyDataMapper()
-                mapper.SetInputConnection(transform_filter.GetOutputPort())
+                        
+                        source = vtk.vtkSTLReader()
+                        source.SetFileName(filename)
+                        
+                        # source = vtk.vtkCylinderSource()
+                        # source.SetHeight(self.height / 2)
+                        # #source.SetCenter(-tool.xoffset, self.height / 4 - tool.zoffset, tool.yoffset)
+                        # source.SetCenter(0, self.height / 4, 0)
+                        # source.SetRadius(tool.diameter / 2)
+                        # source.SetResolution(64)
+                        
+                        # transform.RotateWXYZ(180, 1, 0, 0)
+        
+                        transform_filter = vtk.vtkTransformPolyDataFilter()
+                        transform_filter.SetTransform(transform)
+                        transform_filter.SetInputConnection(source.GetOutputPort())
+                        transform_filter.Update()
+        
+                        mapper.SetInputConnection(transform_filter.GetOutputPort())
 
         self.SetMapper(mapper)
 

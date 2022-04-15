@@ -2,6 +2,7 @@
 
 import os
 import sys
+import re
 
 from tooldb import tooldb_callbacks # functions (g,p,l,u)
 from tooldb import tooldb_tools     # list of tool numbers
@@ -49,42 +50,7 @@ class DataBaseManager():
   
     def close(self):
         self.session.close()
-    
-    def apply_db_rules(self):
-        # Apply database rules (typically when a tooldata reload requested)
-        # Rule: For tools having identical diameter (within diameter_epsilon),
-        #       lowest tool number is assigned to the pocket/parameters for
-        #       the tool with the lowest operating time (in minutes).
-        #
-        #       So if t10diameter==t11diameter==t12diameter,
-        #       t10 will select tool with lowest operating minutes
-        #       ...
-        #       t12 will select tool with most   operating minutes
-        #
-        # NOTE: Tooldata must be reloaded for computed updates.
-        #       Use gui reload buttons or G10L0 in mdi or gcode programs
-    
-        #ewrite("APPLY_DB_RULES================================\n")
-        diameter_epsilon = 0.001
-        for tno in range(0, 12):
-            CUR   = self.toolline_to_dict(self.tools[tno],all_letters)
-            diam  = float(CUR["D"])
-            if not 'M' in CUR: CUR['M'] = "0"
-    
-            for tryno in range(tno+1,  12):
-                TRY = self.toolline_to_dict(tools[tryno],self.all_letters)
-                if abs(diam - float(TRY["D"])) > diameter_epsilon: continue
-                # found equal diameters
-                #ewrite("MATCH: tno=%d tryno=%d diam=%s\n"%(tno,tryno,CUR["D"]))
-                if not 'M' in TRY: TRY['M'] = "0.0"
-                if float(TRY['M']) < float(CUR['M']):
-                    CUR['T'] = str(tryno)
-                    TRY['T'] = str(tno)
-                    tools[tno]   = self.dict_to_toolline(TRY,self.all_letters)
-                    tools[tryno] = self.dict_to_toolline(CUR,self.all_letters)
-                    CUR = self.toolline_to_dict(self.tools[tno],self.all_letters)
-                    # save_tools_to_file(db_savefile)
-    
+
     def user_get_tool(self, tool_no):
         print(f"GET tool {tool_no}", file = sys.stderr)
 
@@ -107,67 +73,36 @@ class DataBaseManager():
 
 
     def user_put_tool(self, toolno, params):
-        print(f"PUT tool {toolno} {params}", file = sys.stderr)
-        # tno = int(toolno)
-        # update_tool(tno,params.upper() )
-        # save_tools_to_file(db_savefile)
-        # tooltable = self.tool_table.getToolTable()
-        # pprint(tooltable)
-        #
-        # tools = list()
-        #
-        # for k, tool in tooltable.items():
-        #
-        #     tools.append(Tool(
-        #         remark=tool.get("R"),
-        #         tool_no=k,
-        #         pocket=tool.get("P"),
-        #         x_offset=tool.get("X"),
-        #         y_offset=tool.get("Y"),
-        #         z_offset=tool.get("Z"),
-        #         a_offset=tool.get("A"),
-        #         b_offset=tool.get("B"),
-        #         c_offset=tool.get("C"),
-        #         u_offset=tool.get("U"),
-        #         v_offset=tool.get("V"),
-        #         w_offset=tool.get("W"),
-        #         diameter=tool.get("D"),
-        #         model_stl=tool.get("tool_holder")
-        #     ))
-        #
-        # tool_table = ToolTable(name="Test Tool Table")
-        #
-        # tool_table.tools = tools
-        #
-        # # 9 - persists data
-        # self.session.add(tool_table)
-        # for tool in tools:
-        #     self.session.add(tool)
-        #
-        # # 10 - commit and close session
-        # self.session.commit()
+        print(f"PUT tool {toolno} {params}", file=sys.stderr)
+        
+        tool = self.session.query(Tool).filter(Tool.tool_no==toolno).one()
+        params_list = re.split(r'   | |;', params)
+        
+        tool_dict = dict()
+        
+        for param in params_list:
+            column = param[0]
+            value = param[1::]
+            tool_dict[column] = value
 
-    # examples cmds received for load_spindle and unload_spindle
-    # NONRAN example:
-    # t15m6 l T15  P0
-    # t0 m6 u T0   P0
-    #
-    # t15m6 l T15  P0
-    # t16m6 l T16  P0
-    # t0 m6 u T0   P0
-    
-    # RAN example (two commands each step):
-    # t15 m6 u T0   P16
-    #        l T15  P0
-    # t0  m6 u T15  P16
-    #        l T0   P0
-    #
-    # t15 m6 u T0   P16
-    #        l T15  P0
-    # t16 m6 u T15  P17
-    #        l T16  P0
-    # t0  m6 u T16  P16
-    #        l T0   P0
+        tool.tool_no = tool_dict.get("T")
+        tool.pocket = tool_dict.get("P")
+        tool.x_offset = tool_dict.get("X")
+        tool.y_offset = tool_dict.get("Y")
+        tool.z_offset = tool_dict.get("Z")
+        tool.a_offset = tool_dict.get("A")
+        tool.b_offset = tool_dict.get("B")
+        tool.c_offset = tool_dict.get("C")
+        tool.i_offset = tool_dict.get("I")
+        tool.j_offset = tool_dict.get("J")
+        tool.q_offset = tool_dict.get("Q")
+        tool.u_offset = tool_dict.get("U")
+        tool.v_offset = tool_dict.get("V")
+        tool.w_offset = tool_dict.get("W")
+        tool.diameter = tool_dict.get("D")
+        
+        self.session.commit()
+
     
     def user_load_spindle(self, toolno, params):
         print(f"LOAD SPINDLE {toolno} {params}", file=sys.stderr)
